@@ -21,6 +21,8 @@ Copied verbatim from `docs/superpowers/specs/2026-08-05-phase0-modular-port-desi
 - **No file in `src/` may exceed 400 lines**, except `src/legacy.js`. Hard gate, enforced by `npm test`.
 - **No import cycles.** Hard gate, enforced by `madge --circular src/` in `npm test`.
 - **Every task ends with a playable game.** If the game does not run after a task, the task is not done.
+- **When a section is carved out of `src/legacy.js`, its banner comment goes with it.** Leaving `/* ===== FOO ===== */` behind with nothing under it turns the file into a map of rooms that no longer exist. Move the header's intent into the new module's doc comment.
+- **Burn-down line-count figures in this plan are estimates.** If the number you get differs, the plan is wrong — record the real one and move on. Never edit a source file to make its line count match a figure in a document.
 - Anything tempting to fix that is out of scope goes in `docs/known-issues.md`, not in the code.
 
 ---
