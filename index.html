@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>THE BLACK SILENCE — The Hollow Parish</title>
+<style>
+  html,body{margin:0;padding:0;background:#000;overflow:hidden;height:100%;
+    font-family:"Courier New",monospace;color:#b8b2a6;user-select:none;cursor:crosshair}
+  #game{position:fixed;inset:0;width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges}
+  #fx2d{position:fixed;inset:0;width:100%;height:100%;image-rendering:pixelated;pointer-events:none;z-index:5}
+  #crt{position:fixed;inset:0;pointer-events:none;z-index:8;
+    background:repeating-linear-gradient(0deg,rgba(0,0,0,.22) 0 1px,transparent 1px 3px)}
+  #vig{position:fixed;inset:0;pointer-events:none;z-index:7;
+    background:radial-gradient(ellipse at center,transparent 52%,rgba(0,0,0,.78) 100%)}
+  #dmg{position:fixed;inset:0;pointer-events:none;z-index:9;background:#6e1208;opacity:0;transition:opacity .12s}
+  #holy{position:fixed;inset:0;pointer-events:none;z-index:9;background:#fff8e0;opacity:0;transition:opacity .1s}
+  /* letterbox cinematic bars */
+  #barTop,#barBot{position:fixed;left:0;right:0;height:0;background:#000;z-index:14;transition:height .7s ease}
+  #barTop{top:0}#barBot{bottom:0}
+  #bossTitle{position:fixed;left:0;right:0;top:18%;text-align:center;z-index:15;opacity:0;transition:opacity .6s;
+    pointer-events:none}
+  #bossTitle .bt1{font-size:clamp(20px,4.5vw,44px);letter-spacing:.3em;color:#9c2f1e;text-shadow:3px 3px 0 #000}
+  #bossTitle .bt2{font-size:12px;letter-spacing:.5em;color:#6e6a5e;text-transform:uppercase;margin-top:8px}
+  /* boss health bar */
+  #bossbar{position:fixed;left:50%;top:26px;transform:translateX(-50%);width:min(560px,72vw);z-index:11;
+    display:none;text-align:center}
+  #bossname{font-size:12px;letter-spacing:4px;color:#b8a26a;text-shadow:2px 2px 0 #000;text-transform:uppercase;margin-bottom:4px}
+  #bossback{height:10px;background:#1a0d0f;border:1px solid #3a2024;box-shadow:0 0 12px #000}
+  #bossfill{height:100%;width:100%;background:linear-gradient(90deg,#6e1208,#9c2f1e);transition:width .15s}
+  #hud{position:fixed;left:0;right:0;bottom:0;z-index:10;display:flex;justify-content:space-between;align-items:flex-end;
+    padding:10px 18px;pointer-events:none;text-shadow:2px 2px 0 #000;letter-spacing:2px}
+  .stat{font-size:13px;color:#6e6a5e}
+  .num{font-size:34px;font-weight:bold;line-height:.9}
+  .sub2{font-size:13px;color:#6e6a5e}
+  #hp .num{color:#9c2f1e} #ar .num{color:#4a6b8a} #am .num{color:#a08c5a}
+  #wname{font-size:12px;color:#6e6a5e;text-align:center;letter-spacing:3px}
+  /* kick meter */
+  #kickwrap{margin-top:6px;width:120px;margin-left:auto;margin-right:auto}
+  #kicklabel{font-size:10px;letter-spacing:3px;color:#6e6a5e;text-align:center}
+  #kickback{height:6px;background:#15171b;border:1px solid #2a2d33;margin-top:2px}
+  #kickfill{height:100%;width:100%;background:#7a5c2e}
+  #kickwrap.ready #kickfill{background:#b8a26a;box-shadow:0 0 8px #b8a26a}
+  #kickwrap.ready #kicklabel{color:#b8a26a}
+  #cross{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:6;pointer-events:none;
+    color:#b8b2a6;font-size:16px;text-shadow:1px 1px 0 #000;opacity:.8}
+  #msg{position:fixed;left:50%;top:13%;transform:translateX(-50%);z-index:10;text-align:center;
+    font-size:15px;letter-spacing:3px;color:#b8b2a6;text-shadow:2px 2px 0 #000;pointer-events:none;
+    text-transform:uppercase;width:90%}
+  /* subtitles (protagonist monologue) */
+  #subt{position:fixed;left:50%;bottom:120px;transform:translateX(-50%);z-index:11;width:min(640px,86vw);
+    text-align:center;font-size:15px;font-style:italic;letter-spacing:1px;color:#d8c89a;
+    text-shadow:2px 2px 0 #000;pointer-events:none;line-height:1.5}
+  #subt b{color:#9c8a5a;font-style:normal;letter-spacing:3px;font-size:11px}
+  #keys{position:fixed;right:18px;top:14px;z-index:10;font-size:12px;letter-spacing:2px;color:#9c2f1e;text-shadow:2px 2px 0 #000}
+  #lvltitle{position:fixed;left:18px;top:14px;z-index:10;font-size:12px;letter-spacing:3px;color:#6e6a5e;
+    text-shadow:2px 2px 0 #000;text-transform:uppercase;opacity:0;transition:opacity 1.2s}
+  /* achievement toasts */
+  #toasts{position:fixed;right:14px;top:54px;z-index:12;display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+  .toast{background:#0e1014;border:1px solid #3a3324;padding:8px 14px;font-size:11px;letter-spacing:2px;
+    color:#b8a26a;text-transform:uppercase;box-shadow:0 0 20px #000;opacity:0;transition:opacity .4s}
+  .toast small{display:block;color:#6e6a5e;letter-spacing:1px;margin-top:2px;text-transform:none}
+  .overlay{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:radial-gradient(ellipse at center,#0c0e12 0%,#040506 75%);text-align:center;padding:24px}
+  .title{font-size:clamp(26px,6.5vw,60px);letter-spacing:.32em;color:#b8b2a6;margin:0;
+    text-shadow:0 0 18px rgba(120,80,140,.3),3px 3px 0 #000}
+  .title b{color:#9c2f1e;font-weight:bold}
+  .sub{margin-top:10px;font-size:13px;letter-spacing:.5em;color:#5c5850;text-transform:uppercase}
+  .controls{margin-top:30px;font-size:12px;line-height:2;letter-spacing:2px;color:#6e6a5e;text-transform:uppercase}
+  .start{margin-top:30px;font-size:15px;letter-spacing:.4em;color:#b8b2a6;text-transform:uppercase;
+    animation:blink 1.6s infinite;cursor:pointer}
+  .menu{margin-top:34px;display:flex;flex-direction:column;gap:16px;align-items:center}
+  .mbtn{font-size:16px;letter-spacing:.36em;color:#9a948a;text-transform:uppercase;cursor:pointer;
+    padding:8px 22px;border:1px solid rgba(120,110,98,.18);transition:.16s;min-width:240px}
+  .mbtn:hover{color:#e6dcc8;border-color:rgba(184,162,106,.6);text-shadow:0 0 14px rgba(184,162,106,.4);
+    background:rgba(120,80,60,.08)}
+  .mbtn.locked{color:#3e3a34;border-color:rgba(60,56,50,.2);cursor:not-allowed;text-shadow:none}
+  .mbtn.locked:hover{color:#3e3a34;border-color:rgba(60,56,50,.2);background:none}
+  .mbtn.back{margin-top:30px;min-width:160px;font-size:13px;animation:none}
+  .setwrap{margin-top:30px;width:min(560px,90vw);display:flex;flex-direction:column;gap:8px}
+  .setrow{display:flex;align-items:center;gap:16px;font-size:13px;letter-spacing:2px;
+    color:#8a847a;text-transform:uppercase}
+  .setlabel{flex:0 0 150px;text-align:right}
+  .setrow input[type=range]{flex:1;accent-color:#b8a26a;height:4px;cursor:pointer}
+  .setval{flex:0 0 36px;color:#b8a26a}
+  .setsection{margin-top:22px;font-size:12px;letter-spacing:.4em;color:#5c5850;text-transform:uppercase;
+    border-bottom:1px solid rgba(120,110,98,.18);padding-bottom:6px}
+  .ctrlgrid{margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:8px 24px;
+    font-size:12px;letter-spacing:2px;text-transform:uppercase}
+  .ctrlgrid span{color:#6e6a5e;text-align:right}
+  .ctrlgrid b{color:#b8b2a6;text-align:left;font-weight:normal}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+  .hidden{display:none !important}
+  .stats{margin-top:24px;font-size:13px;letter-spacing:3px;line-height:2.1;color:#6e6a5e;text-transform:uppercase}
+  .stats b{color:#b8b2a6}
+  .grade{font-size:54px;color:#b8a26a;margin-top:14px;text-shadow:3px 3px 0 #000}
+  /* piano */
+  #piano{position:fixed;inset:0;z-index:22;display:none;align-items:center;justify-content:center;
+    background:rgba(2,3,4,.86);flex-direction:column}
+  #pianoTitle{font-size:13px;letter-spacing:4px;color:#b8a26a;text-transform:uppercase;margin-bottom:18px;
+    text-shadow:2px 2px 0 #000}
+  #pkeys{position:relative;height:170px;display:flex;filter:drop-shadow(0 0 30px #000)}
+  .wk{width:42px;height:170px;background:linear-gradient(#cfc8b8,#a8a294);border:1px solid #15171b;
+    cursor:pointer;position:relative;border-radius:0 0 3px 3px}
+  .wk.on{background:linear-gradient(#8a8478,#6e6a5e);transform:translateY(2px)}
+  .wk span{position:absolute;bottom:6px;left:0;right:0;text-align:center;font-size:9px;color:#3a3530;letter-spacing:0}
+  .bk{width:26px;height:104px;background:linear-gradient(#23262b,#0a0b0d);position:absolute;top:0;z-index:2;
+    cursor:pointer;border:1px solid #000;border-radius:0 0 3px 3px}
+  .bk.on{background:#3a3d44;transform:translateY(2px)}
+  .bk span{position:absolute;bottom:5px;left:0;right:0;text-align:center;font-size:8px;color:#6e6a5e}
+  #pianoHint{margin-top:18px;font-size:11px;letter-spacing:2px;color:#5c5850;text-transform:uppercase}
+</style>
+</head>
+<body>
+<canvas id="game"></canvas>
+<canvas id="fx2d"></canvas>
+<div id="vig"></div><div id="crt"></div><div id="dmg"></div><div id="holy"></div>
+<div id="barTop"></div><div id="barBot"></div>
+<div id="bossTitle"><div class="bt1"></div><div class="bt2"></div></div>
+<div id="bossbar"><div id="bossname"></div><div id="bossback"><div id="bossfill"></div></div></div>
+<div id="cross">+</div>
+<div id="msg"></div>
+<div id="subt"></div>
+<div id="keys"></div>
+<div id="lvltitle"></div>
+<div id="toasts"></div>
+<div id="hud">
+  <div style="display:flex;gap:34px">
+    <div id="hp"><div class="stat">HEALTH</div><div class="num">100</div></div>
+    <div id="ar"><div class="stat">ARMOR</div><div class="num">0</div></div>
+  </div>
+  <div>
+    <div id="wname">RUSTED REVOLVER</div>
+    <div id="kickwrap"><div id="kicklabel">KICK [RMB]</div><div id="kickback"><div id="kickfill"></div></div></div>
+  </div>
+  <div id="am"><div class="stat">AMMO</div><div class="num">6<span class="sub2"> | 60</span></div></div>
+</div>
+
+<div id="piano">
+  <div id="pianoTitle">A Piano, Untouched By The End</div>
+  <div id="pkeys"></div>
+  <div id="pianoHint">KEYS A–; (WHITE) · W E T Y U O P (BLACK) · CLICK TO PLAY · [E] WALK AWAY</div>
+</div>
+
+<div id="intro" class="overlay">
+  <h1 class="title">THE BLACK <b>SILENCE</b></h1>
+  <div class="sub">The Hollow Parish</div>
+  <div class="menu" id="mainmenu">
+    <div class="mbtn" id="mNew">[ NEW GAME ]</div>
+    <div class="mbtn" id="mChapter">[ SELECT CHAPTER ]</div>
+    <div class="mbtn" id="mSettings">[ SETTINGS ]</div>
+  </div>
+</div>
+
+<div id="chapsel" class="overlay hidden">
+  <h1 class="title" style="font-size:clamp(22px,5vw,44px)">SELECT <b>CHAPTER</b></h1>
+  <div class="sub">Only what you have survived</div>
+  <div class="menu" id="chaplist"></div>
+  <div class="mbtn back" id="chapBack">[ BACK ]</div>
+</div>
+
+<div id="settings" class="overlay hidden">
+  <h1 class="title" style="font-size:clamp(22px,5vw,44px)">SETTINGS</h1>
+  <div class="setwrap">
+    <div class="setrow">
+      <span class="setlabel">MASTER VOLUME</span>
+      <input type="range" id="volSlider" min="0" max="100" value="50">
+      <span class="setval" id="volVal">50</span>
+    </div>
+    <div class="setsection">CONTROLS</div>
+    <div class="ctrlgrid">
+      <span>MOVE</span><b>W A S D</b>
+      <span>SPRINT</span><b>SHIFT</b>
+      <span>JUMP</span><b>SPACE</b>
+      <span>FIRE</span><b>MOUSE / LMB</b>
+      <span>POWER KICK</span><b>RMB</b>
+      <span>RELOAD</span><b>R</b>
+      <span>WEAPONS</span><b>1 – 8 / WHEEL</b>
+      <span>INTERACT</span><b>E</b>
+      <span>SNIPER ZOOM</span><b>Z</b>
+    </div>
+  </div>
+  <div class="mbtn back" id="setBack">[ BACK ]</div>
+</div>
+
+<div id="dead" class="overlay hidden">
+  <h1 class="title" style="color:#9c2f1e">THE PARISH<br>KEEPS YOU</h1>
+  <div class="stats" id="deadquip"></div>
+  <div class="start" onclick="location.reload()">[ CLICK TO TRY AGAIN ]</div>
+</div>
+
+<div id="levelend" class="overlay hidden">
+  <h1 class="title" id="letitle">DUNGEON <b>CLEARED</b></h1>
+  <div class="grade" id="legrade">B</div>
+  <div class="stats" id="lestats"></div>
+  <div class="start" id="lebtn">[ CONTINUE INTO THE CHURCH ]</div>
+</div>
+
+<div id="win" class="overlay hidden">
+  <h1 class="title">THE PARISH <b>FALLS SILENT</b></h1>
+  <div class="sub">The bell will not ring again. Probably.</div>
+  <div class="grade" id="wingrade">A</div>
+  <div class="stats" id="winstats"></div>
+  <div class="start" onclick="location.reload()">[ CLICK TO DESCEND AGAIN ]</div>
+</div>
+
+<script type="module" src="/src/main.ts"></script>
+</body>
+</html>
