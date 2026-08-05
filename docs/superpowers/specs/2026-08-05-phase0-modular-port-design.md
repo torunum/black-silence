@@ -41,7 +41,7 @@ Phase 0 is done when all of these are true:
 | 3 | `npm run typecheck` passes with zero errors | CI command |
 | 4 | `npm test` passes | CI command |
 | 5 | Three.js is a local dependency; **the game runs with no network** | DevTools offline mode |
-| 6 | No file in `src/` exceeds 400 lines | `scripts/check-file-size.mjs` |
+| 6 | No file in `src/` exceeds 400 lines — hard gate, not a guideline | `scripts/check-file-size.mjs`, run by `npm test` |
 | 7 | Prologue + Level 1 play identically to the reference | smoke checklist, §8 |
 
 The original file is vendored at `reference/sonsurum.html` and is **never edited**.
@@ -149,7 +149,8 @@ src/
     LevelGeometry.ts       grid -> meshes (+ dispose registry)
     LevelLoader.ts         loadLevel / unloadLevel
     WorldState.ts
-    Doors.ts  Props.ts  Pickups.ts  Ambience.ts  Events.ts
+    Doors.ts  Props.ts  Pickups.ts  Ambience.ts
+    RandomEvents.ts        the darkness / bell events from eventTick
     levels/
       prologue.ts  level1.ts  level2.ts  level3.ts
       level4.ts    level5.ts  level6.ts  level7.ts
@@ -198,8 +199,10 @@ reference/
 Leaf-first. Each step ends with a playable game and a commit — never a broken tree.
 
 1. **Scaffold.** Vite, TypeScript (`allowJs: true`, `strict: false`), Vitest,
-   `three@0.128.0` from npm. `index.html` loads `src/main.ts`. Game still one blob,
-   but building and running offline.
+   `madge`, and `three@0.128.0` from npm. `index.html` loads `src/main.ts`. Game still
+   one blob, but building and running offline.
+   Also created here, because later steps reference them:
+   `scripts/check-file-size.mjs`, `docs/known-issues.md`, `docs/assets.md`.
 2. **Pure leaves.** `utils/math`, `content/monologue`, `content/achievements`,
    `weapons/definitions`, `enemies/EnemyDefs`.
 3. **Level data.** `world/LevelBuilder` + `world/levels/*`. The reference already
@@ -214,7 +217,20 @@ Leaf-first. Each step ends with a playable game and a commit — never a broken 
 8. **Systems.** `Renderer`, `world/*`, `player/*`, `weapons/*`, `enemies/*`.
 9. **UI.** `Hud`, `Menus`, `Subtitles`, `Toasts`, `BossBar`, `Piano`, `Cinematic`.
 10. **Loop.** `core/Loop`, `core/Time`, `core/Game`, `main.ts`.
-11. **Kill `setTimeout`.** Replace all 9 gameplay uses with `Time.schedule()`.
+11. **Kill gameplay `setTimeout`.** The reference has 21 `setTimeout` calls. Four of
+    them run damage or hit-detection after a delay and **must** move to
+    `Time.schedule()`, because as written they ignore hitstop, ignore pause, and
+    survive level unload — a boss can attack from a level that no longer exists:
+
+    | Reference line | What fires late |
+    |---|---|
+    | 2052 | power kick hit test, 110 ms |
+    | 3358 | Mancubus second barrel, 220 ms |
+    | 3360 | Slaughtaur second bolt, 180 ms |
+    | 3375 | brute slam damage, 480 ms |
+
+    The other 17 are audio tails and UI fades. They move opportunistically, and any
+    that remain must be cancelled on level unload.
 12. **Dispose registry.** `unloadLevel()` frees geometries, materials, textures.
 13. **Tighten TypeScript.** `strict: true`, remove `allowJs`, type the remaining
     `any`s.
@@ -245,6 +261,9 @@ when the magazine is empty and no reserve.
 
 **Save schema.** Round-trip write/read, and an unknown future version is rejected
 without throwing.
+
+**Structure.** `npm test` also runs `madge --circular src/` (no import cycles) and
+`scripts/check-file-size.mjs` (the 400-line gate). Both fail the build.
 
 ---
 
