@@ -874,6 +874,26 @@ import { findAll, floodFill, isOpen } from "../../src/world/analysis";
 
 const built = LEVELS.map((def) => ({ name: def.name, grid: def.build().g }));
 
+/**
+ * A level completes in one of three ways, so "has an exit" is not one check.
+ * All three verified against bossDeath() and openExit() in the reference:
+ *   - Prologue and Level 1 place a static `X` tile in the grid.
+ *   - Levels 2-6 are boss-gated: killing Q/Z/N/H/V calls openExit(), which
+ *     places the pad on the first open cell in a hardcoded candidate list.
+ *   - Level 7 is the finale: its boss G calls showWin(), so it has no exit.
+ */
+
+/** The cells openExit() tries, in order. Hardcoded in the game. */
+const EXIT_CANDIDATES: ReadonlyArray<readonly [number, number]> = [
+  [16, 16], [16, 15], [15, 16], [17, 16], [16, 17],
+];
+
+/** Bosses whose death calls openExit(). */
+const EXIT_OPENING_BOSSES = ["Q", "Z", "N", "H", "V"];
+
+/** The finale boss, which calls showWin() instead of opening an exit. */
+const FINALE_BOSS = "G";
+
 it("builds every declared level", () => {
   expect(built).toHaveLength(8);
 });
@@ -883,16 +903,32 @@ describe.each(built)("$name", ({ grid }) => {
     expect(findAll(grid, "P")).toHaveLength(1);
   });
 
-  it("has at least one exit", () => {
-    expect(findAll(grid, "X").length).toBeGreaterThan(0);
-  });
-
-  it("every exit is reachable from the spawn", () => {
+  it("is completable — a reachable static exit, or a boss that opens a reachable one", () => {
     const [spawn] = findAll(grid, "P");
     const seen = floodFill(grid, spawn, true);
-    for (const exit of findAll(grid, "X")) {
-      expect(seen[exit.z][exit.x], `exit at ${exit.x},${exit.z}`).toBe(true);
+
+    const staticExits = findAll(grid, "X");
+    if (staticExits.length > 0) {
+      expect(staticExits.some((e) => seen[e.z]?.[e.x]), "no static exit is reachable").toBe(true);
+      return;
     }
+
+    if (EXIT_OPENING_BOSSES.some((b) => findAll(grid, b).length > 0)) {
+      // openExit() walks EXIT_CANDIDATES and takes the first cell solidAt()
+      // reports open. If none is open the loop falls through and the pad is
+      // placed at (16,16) anyway — inside a wall, unreachable, level
+      // unfinishable. So at least one candidate must be open, reachable, and
+      // not a door (a door reads open statically but is solid until used).
+      const usable = EXIT_CANDIDATES.filter(
+        ([x, z]) => isOpen(grid, x, z) && !"+DS".includes(grid[z]?.[x]) && seen[z]?.[x],
+      );
+      expect(usable.length, "no openExit() candidate is open and reachable").toBeGreaterThan(0);
+      return;
+    }
+
+    // No static exit and no exit-opening boss is legal only for the finale,
+    // whose boss calls showWin() instead.
+    expect(findAll(grid, FINALE_BOSS).length, "no exit and no finale boss").toBeGreaterThan(0);
   });
 
   it("every key is reachable without passing a locked door", () => {
@@ -1048,7 +1084,7 @@ Run:
 ```bash
 npx vitest run tests/world/levels.test.ts
 ```
-Expected: PASS, 58 tests (1 + 8 levels × 7 + 1).
+Expected: PASS, around 50 tests (1 + 8 levels × 6 + 1). Counts are estimates.
 
 If the "stranded content" test fails on a level, do **not** move the item. Record it in `docs/known-issues.md` as a new KNOWN-n, relax the assertion to a characterization test naming that level exactly as KNOWN-1 does, and let Phase 4 fix it. Moving an item is a level design change, which §1 forbids.
 
@@ -1081,7 +1117,7 @@ Run:
 ```bash
 npm run typecheck && npm test
 ```
-Expected: PASS, 84 tests (26 + 58). Burn-down should read roughly `3100 lines remaining`.
+Expected: PASS, around 76 tests (26 + 50) — counts are estimates. Burn-down should read roughly `3100 lines remaining`.
 
 - [ ] **Step 9: Commit**
 
@@ -1381,7 +1417,7 @@ Run:
 ```bash
 npm run typecheck && npm test
 ```
-Expected: PASS, 93 tests (84 + 9). Burn-down should read roughly `3040 lines remaining`.
+Expected: PASS, around 85 tests (76 + 9) — counts are estimates. Burn-down should read roughly `3040 lines remaining`.
 
 - [ ] **Step 9: Commit**
 
@@ -1411,7 +1447,7 @@ EOF
 - [ ] `npm run dev` serves the game; it plays identically to `reference/sonsurum.html`
 - [ ] `npm run build` produces a working `dist/`
 - [ ] `npm run typecheck` is clean
-- [ ] `npm test` passes: 93 tests, file-size gate, no circular imports
+- [ ] `npm test` passes (around 85 tests), file-size gate, no circular imports
 - [ ] The game runs with DevTools set to Offline
 - [ ] `src/legacy.js` is down from ~3759 to roughly 3040 lines
 - [ ] `docs/known-issues.md` records KNOWN-1 with Phase 4 as owner
