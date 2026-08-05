@@ -390,8 +390,8 @@ export const MONOLOGUE: Record<string, string[]> = {
 Delete the three arrow-function consts `rnd`, `clamp`, `pick` (reference lines 214–216) and the whole `const M={…};` block (reference lines 781–885). Add these imports immediately after the `import * as THREE` line:
 
 ```js
-import { clamp, pick, rnd } from "./utils/math.ts";
-import { MONOLOGUE as M } from "./content/monologue.ts";
+import { clamp, pick, rnd } from "./utils/math";
+import { MONOLOGUE as M } from "./content/monologue";
 ```
 
 The `as M` alias means the ~40 existing `M.something` call sites need no edit. That is the point — an alias is a zero-risk change, a rename is not.
@@ -787,7 +787,7 @@ Expected: PASS, 10 tests.
 Delete reference lines 229–273 (`emptyGrid` through `roomXZ`, including the `/*BUILDER-BEGIN*/` marker comment) and line 375 (`put1`). Keep the `/*BUILDER-END*/` comment position irrelevant — delete it too. Add:
 
 ```js
-import { aperture, blankGrid, carve, emptyGrid, hall, link, pillarsRing, put, put1, putAbs, roomXZ } from "./world/LevelBuilder.ts";
+import { aperture, blankGrid, carve, emptyGrid, hall, link, pillarsRing, put, put1, putAbs, roomXZ } from "./world/LevelBuilder";
 ```
 
 The `buildLevelN()` functions stay in `legacy.js` for now — Task 4 moves them.
@@ -1053,7 +1053,7 @@ If the "stranded content" test fails on a level, do **not** move the item. Recor
 Delete reference lines 275–374, 376–434, 437–776 — every `buildX()` function and the `LEVELS` array. Add:
 
 ```js
-import { LEVELS } from "./world/levels/index.ts";
+import { LEVELS } from "./world/levels/index";
 ```
 
 The builder helper import added in Task 3 stays: `legacy.js` no longer calls the helpers, but leaving an unused import is a lint concern, not a behavior one — remove any helper name that is now unreferenced.
@@ -1334,8 +1334,8 @@ If the roster-length test reports a number other than 25, count the keys in refe
 Delete `const EDEF={…};` (reference lines 2678–2716) and add to the import block:
 
 ```js
-import { ENEMY_DEFS as EDEF } from "./enemies/EnemyDefs.ts";
-import { WEAPON_STATS } from "./weapons/definitions.ts";
+import { ENEMY_DEFS as EDEF } from "./enemies/EnemyDefs";
+import { WEAPON_STATS } from "./weapons/definitions";
 ```
 
 Replace `const WEAPONS=[…];` (reference lines 1919–1944) with the stats merged back onto their sound closures. The array literal below holds only the `snd` functions, in slot order, exactly as they appear in the reference:
