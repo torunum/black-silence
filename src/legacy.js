@@ -1,13 +1,12 @@
 import * as THREE from "three";
+import { clamp, pick, rnd } from "./utils/math";
+import { MONOLOGUE as M } from "./content/monologue";
 /* ============================================================
    THE BLACK SILENCE — The Hollow Parish (v3 gothic overhaul)
    2 levels · 9 enemy types + elites · 3 bosses · 6 weapons ·
    power kick · destructibles · playable piano · monologues
    ============================================================ */
 const CELL=2, WALLH=3.4, EYE=1.0;
-const rnd=(a,b)=>a+Math.random()*(b-a);
-const clamp=(v,a,b)=>v<a?a:v>b?b:v;
-const pick=a=>a[Math.random()*a.length|0];
 
 /* ============================================================
    LEVEL BUILDER (pure — validated offline)
@@ -572,111 +571,6 @@ const LEVELS=[
 /* ============================================================
    ADEM'S MOUTH — monologue data
    ============================================================ */
-const M={
- lvl0:["...I was in the ground. In the fire. And now I am climbing.",
-   "Hell spat me back out. Rude. I was just getting comfortable.",
-   "There's a stairway. Up is up. Up is better than this."],
- lvl1:["A dungeon. Of course it's a dungeon. My therapist is going to love this.",
-   "Stone walls, chains, screaming in the distance. Real estate around here is criminal."],
- lvl2:["A church. Great. I'm sure everyone inside is super normal.",
-   "Hallowed ground. Hopefully it's picky about who it hallows."],
- lvl3:["A graveyard with a roof. Cute. Whose idea was the roof?",
-   "Bones in the walls. Bones in the floor. Bones with OPINIONS, apparently."],
- boss_Z:["A skeleton wearing a crown. Sure. Why would death have a dress code.",
-   "Every dead king in this dump, welded into one guy. Efficient, I'll give it that."],
- boss_Z2:["It's rebuilding itself. From the OTHER skeletons. That's cheating.",
-   "Put the bones down. PUT THEM DOWN."],
- boss_Z3:["Okay that is too many ribs. That is a criminal amount of ribs.",
-   "Last crown's coming off, your majesty."],
- lvl4:["Outside. Sort of. A graveyard the size of a town. Cozy.",
-   "Fresh air and open graves. Two things that should never go together."],
- lvl5:["Down the drain. Literally. My life is a metaphor now.",
-   "Sewers. It smells like a decision I regret. Several decisions."],
- boss_N:["A gravedigger. Buddy, business must be booming down here.",
-   "Put the shovel down. We can both walk away from this. ...Okay, one of us."],
- boss_N2:["He dug himself up. That's the kind of work ethic I avoid.",
-   "Stay in the hole you came from!"],
- boss_N3:["Whatever he was burying, I think it was himself.",
-   "Time to file you under 'closed'."],
- boss_H:["Something in the water. Of COURSE there's something in the water.",
-   "I'm not even mad. I'm impressed it survived down here."],
- boss_H2:["It SPLIT. Why do they always split? Nothing good ever splits.",
-   "Two of you, half the manners."],
- boss_H3:["This is the most disgusting thing I have ever shot. And I keep a list.",
-   "Last one. Then I'm taking a very long, very hot shower."],
- lvl6:["A factory. So this is where they MAKE them. Lovely. Vertical integration.",
-   "Machines still running, nobody at the wheel. Story of my whole week."],
- see_C:["A floating... head? With one eye? I hate it. I hate it so much.",
-   "It's grinning. Why is the flying meatball GRINNING?"],
- see_A:["That is a LOT of guy. With guns for arms. Cool. Cool cool cool.",
-   "Big, slow, and on fire. Two out of three I can work with."],
- see_L:["Flaming skulls. FLAMING SKULLS. Who signs off on this?",
-   "Incoming! And it's screaming! And it's a head!"],
- see_j:["Cultists. Great. Robes, chanting, the whole starter pack.",
-   "Put the gun down, padre's-helper."],
- see_n:["Big fella with a hammer. Hexen sends its regards, apparently.",
-   "That maul is bigger than my rent. And my rent is a crime."],
- see_k:["A horse-man with a screaming shield. Hexen, you absolute lunatic.",
-   "Shield up front, fire out the face. Flank it, idiot — me, I mean me."],
- see_q:["Flaming bat-thing. And it blows up when it dies. Of course it does.",
-   "Don't melee the Afrit. DON'T melee the— too late."],
- see_R:["Half a corpse, floating, furious. Didn't even bring its legs.",
-   "A Reiver. Undead, airborne, and clearly holding a grudge."],
- see_y:["Stone wings. Blue eyes. Cheogh's old crew, still mad about the boss.",
-   "Gargoyle. Crouch trick won't save you here, this isn't '97."],
- boss_V:["The boss of the place. Of course it's still working overtime.",
-   "Sir, I'm here about the noise complaint. And the screaming."],
- boss_V2:["It's overheating! Good! Cook, you magnificent appliance!",
-   "Less foreman, more furnace now."],
- boss_V3:["The core's exposed. Industrial safety was clearly optional here.",
-   "Closing time. Permanently."],
- lvl7:["The walls are... breathing. The whole place is alive. I do not love that.",
-   "I'm inside something now. I'd rather not think about what."],
- boss_G:["There it is. The heart of the whole rotten thing. Big, wet, and stupid.",
-   "All this — the church, the pit, the factory — it was one body. And here's the pump."],
- boss_G2:["It split open and it's STILL beating. Stop that. Stop beating.",
-   "Every door I opened was a mouth. Every hall was a gut. And you were the heart."],
- boss_G3:["Bleed out already. I've earned a quiet room and a long sit-down.",
-   "One more good hit. For the road. For all of it."],
- see_z:["Zombies. Classic. At least they groan before they bite — very considerate."],
- see_f:["That one's fast. Why is that one FAST?!"],
- see_g:["Great. Zombie dogs. Because regular dogs weren't enough trouble."],
- see_m:["That one's wearing armor. Somebody took their job way too seriously."],
- see_t:["It's green and it's bubbling. I am NOT touching it."],
- see_w:["It's crawling. That's somehow worse. Why is that worse?"],
- see_s:["Oh good, this one screams. Everybody needs a hobby."],
- see_B:["Who has been FEEDING these things?"],
- see_elite:["That one's glowing. Glowing is never a good sign."],
- boss_E:["Big axe. Bigger attitude. Let's dance, ugly."],
- boss_U:["A stone knight. The church really sprung for security."],
- boss_Q:["This priest definitely took his Sunday sermons too seriously."],
- boss_Q2:["Teleporting now? That's just rude."],
- boss_Q3:["I've seen ugly before, but this thing is winning."],
- boss_dead:["Sermon's over.","And STAY down."],
- lowhp:["Okay. Bleeding. Bleeding is fine. Everything is fine.",
-   "Note to self: stop getting hit."],
- gib:["That's... everywhere. Great.","I'm going to need so many showers.",
-   "Cleanup on aisle everything."],
- kickready:["Boot's charged. Time for percussive diplomacy."],
- kicksplat:["FIELD GOAL!","And he sticks the landing. Into a wall."],
- secret:["Ooh, a secret room. I knew this place liked me.",
-   "Hidden door. The architect had trust issues."],
- piano:["A piano? In this economy?"],
- piano_played:["Beautiful. The zombies are weeping. Probably."],
- w6:["A cross launcher. Subtlety died with everyone else."],
- w5:["Hello, gorgeous."],
- w2:["A shotgun. Now we're having a conversation."],
- idle:["I'm not lost. The dungeon is just badly organized.",
-   "Just me and the ominous dripping. Cozy."],
- challenge:["A glowing floor plate. This is either treasure or regret."],
- challenge_done:["Treasure! It WAS treasure. ...And a little regret."],
- event_dark:["Who turned off the... oh no.","Lights out. Fantastic. Love that for me."],
- event_bell:["Bells. Nothing good has ever followed bells."],
- key:["A key! Step one of getting out of here. Step two: everything else."],
- locked:["Locked. Naturally. Nothing in my life opens on the first try."],
- wallkill:["Pinned. He's a wall ornament now."],
- dead:["Well. That happened.","I regret several recent decisions."]
-};
 
 /* ============================================================
    GLOBAL STATE
