@@ -249,7 +249,9 @@ Run:
 ```bash
 npm run build && npm run typecheck && npm test
 ```
-Expected: `build` writes `dist/`; `typecheck` reports no errors; `test` prints `port burn-down: src/legacy.js = 3758 lines remaining` and `file-size gate OK`. Vitest will report "No test files found" — that is expected, Task 3 adds the first tests.
+Expected: `build` writes `dist/`; `typecheck` reports no errors; `test` prints `file-size gate OK` and a `port burn-down: src/legacy.js = <N> lines remaining` line where N is around 3759. Vitest will report "No test files found" — that is expected, Task 3 adds the first tests.
+
+**Every burn-down figure in this plan is an estimate.** If the number you get differs, the number in the plan is wrong — record the real one and move on. Never edit a source file to make it match a figure in a document. A faithful extraction is the requirement; the line count is only a progress readout.
 
 If Vitest exits non-zero on an empty suite, add `passWithNoTests: true` to `vitest.config.ts` under `test`.
 
@@ -1409,7 +1411,7 @@ EOF
 - [ ] `npm run typecheck` is clean
 - [ ] `npm test` passes: 93 tests, file-size gate, no circular imports
 - [ ] The game runs with DevTools set to Offline
-- [ ] `src/legacy.js` is down from 3758 to roughly 3040 lines
+- [ ] `src/legacy.js` is down from ~3759 to roughly 3040 lines
 - [ ] `docs/known-issues.md` records KNOWN-1 with Phase 4 as owner
 
 ## What comes next
