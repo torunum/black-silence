@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { clamp, pick, rnd } from "./utils/math";
 import { MONOLOGUE as M } from "./content/monologue";
+import { aperture, blankGrid, carve, emptyGrid, hall, link, pillarsRing, put, put1, putAbs, roomXZ } from "./world/LevelBuilder";
 /* ============================================================
    THE BLACK SILENCE — The Hollow Parish (v3 gothic overhaul)
    2 levels · 9 enemy types + elites · 3 bosses · 6 weapons ·
@@ -18,53 +19,6 @@ const CELL=2, WALLH=3.4, EYE=1.0;
    props x crate · T table · C chair · F shelf · V pew · O ex-barrel
    ambient i torch · l candles · p piano · Y challenge plate
    ============================================================ */
-/*BUILDER-BEGIN*/
-function emptyGrid(C,R,rw,rh){
-  const W=C*(rw+1)+1,H=R*(rh+1)+1;
-  const g=Array.from({length:H},()=>Array(W).fill("#"));
-  for(let rr=0;rr<R;rr++)for(let rc=0;rc<C;rc++){
-    const x0=rc*(rw+1)+1,z0=rr*(rh+1)+1;
-    for(let z=0;z<rh;z++)for(let x=0;x<rw;x++)g[z0+z][x0+x]=".";
-  }
-  return {g,W,H,rw,rh,C,R};
-}
-function link(L,a,b,kind){
-  const[ac,ar]=a,[bc,br]=b;
-  if(ac===bc){
-    const wz=(Math.min(ar,br)+1)*(L.rh+1),x0=ac*(L.rw+1)+1;
-    if(kind==="open"){for(let x=0;x<L.rw;x++)L.g[wz][x0+x]=".";}
-    else L.g[wz][x0+(L.rw>>1)]=kind==="door"?"+":kind==="locked"?"D":"S";
-  }else{
-    const wx=(Math.min(ac,bc)+1)*(L.rw+1),z0=ar*(L.rh+1)+1;
-    if(kind==="open"){for(let z=0;z<L.rh;z++)L.g[z0+z][wx]=".";}
-    else L.g[z0+(L.rh>>1)][wx]=kind==="door"?"+":kind==="locked"?"D":"S";
-  }
-}
-function put(L,rc,rr,dx,dz,ch){L.g[rr*(L.rh+1)+1+dz][rc*(L.rw+1)+1+dx]=ch;}
-function putAbs(L,x,z,ch){L.g[z][x]=ch;}
-/* ===== free-form (Doom-style) carving helpers ===== */
-function blankGrid(W,H){return {g:Array.from({length:H},()=>Array(W).fill("#")),W,H};}
-function carve(g,x0,z0,x1,z1,ch){ // fill a rectangle of floor (or any char)
-  ch=ch||".";
-  for(let z=Math.min(z0,z1);z<=Math.max(z0,z1);z++)
-    for(let x=Math.min(x0,x1);x<=Math.max(x0,x1);x++)
-      if(g[z]&&x>=0&&x<g[z].length)g[z][x]=ch;}
-function hall(g,x0,z0,x1,z1,wdt){ // an L/straight corridor of given width
-  wdt=wdt||1;const hw=(wdt-1>>1);
-  if(Math.abs(x1-x0)>=Math.abs(z1-z0)){
-    for(let w=-hw;w<=hw;w++)carve(g,x0,z0+w,x1,z0+w);
-    for(let w=-hw;w<=hw;w++)carve(g,x1+w,z0,x1+w,z1);
-  }else{
-    for(let w=-hw;w<=hw;w++)carve(g,x0+w,z0,x0+w,z1);
-    for(let w=-hw;w<=hw;w++)carve(g,x0,z1+w,x1,z1+w);}}
-function aperture(g,x,z,ch){ // a window/sightline opening in a wall (default stained glass)
-  if(g[z]&&g[z][x]!==undefined)g[z][x]=ch||"W";}
-function pillarsRing(g,x0,z0,x1,z1,step){ // pillars around a room interior for cover/sightlines
-  step=step||3;
-  for(let x=x0;x<=x1;x+=step){if(g[z0])g[z0][x]="I";if(g[z1])g[z1][x]="I";}
-  for(let z=z0;z<=z1;z+=step){if(g[z])g[z][x0]="I";if(g[z])g[z][x1]="I";}}
-function roomXZ(L,rc,rr,dx,dz){return {x:rc*(L.rw+1)+1+dx, z:rr*(L.rh+1)+1+dz};}
-
 function buildPrologue(){
   /* Hand-built open map with a real rising staircase (height map).
      Layout (21 wide x 27 tall): hell cavern at the bottom (south),
@@ -165,7 +119,6 @@ function buildLevel1(){
 
   return L;
 }
-function put1(g,x,z,ch){if(g[z]&&g[z][x]!==undefined)g[z][x]=ch;}
 function buildLevel2(){
   const L=emptyGrid(4,4,7,5);
   /* ring circulation */
@@ -225,7 +178,6 @@ function buildLevel2(){
   [[11,0],[16,0],[21,0]].forEach(([x,z])=>putAbs(L,x,z,"W"));
   return L;
 }
-/*BUILDER-END*/
 
 function buildLevel3(){
   const L=emptyGrid(4,4,7,5);
