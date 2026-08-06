@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { LEVELS } from "../../src/world/levels";
 import { findAll, floodFill, isOpen } from "../../src/world/analysis";
+import { ENEMY_DEFS } from "../../src/enemies/EnemyDefs";
 
 const built = LEVELS.map((def) => ({ name: def.name, grid: def.build().g }));
 
@@ -69,15 +70,23 @@ describe.each(built)("$name", ({ grid }) => {
     }
   });
 
-  it("every locked door is reachable without passing another locked door", () => {
+  // The game has a single global key: S.key in legacy.js is a boolean, not
+  // a per-door token, and one red key opens every "D" door in the level.
+  // So a locked door standing behind another locked door is not a hazard —
+  // there is nothing to chain. What must hold is weaker: every locked door
+  // has open floor on at least one side, so the player can walk up and use
+  // it once the (single) key is held. Keep this .every(), not .some() —
+  // .some() only proves one door is approachable, which is not the
+  // invariant the game's key model actually requires.
+  it("every locked door is approachable without the key", () => {
     const [spawn] = findAll(grid, "P");
     const seen = floodFill(grid, spawn, false);
     const doors = findAll(grid, "D");
     if (doors.length === 0) return;
-    const anyReachable = doors.some(
+    const allReachable = doors.every(
       (d) => [[1, 0], [-1, 0], [0, 1], [0, -1]].some(([dx, dz]) => seen[d.z + dz]?.[d.x + dx]),
     );
-    expect(anyReachable).toBe(true);
+    expect(allReachable).toBe(true);
   });
 
   it("every secret door has open floor on both sides", () => {
@@ -114,3 +123,58 @@ it("records levels that place a key with no locked door (KNOWN-1)", () => {
     .map(({ name }) => name);
   expect(offenders).toEqual(["LEVEL 1 — THE GOTHIC DUNGEON"]);
 });
+
+/**
+ * Characterization test for KNOWN-4. `loadLevel` in legacy.js dispatches a
+ * grid character to an enemy spawn (`EDEF[ch]`) before it ever checks the
+ * prop set (`"xTCFVO".includes(ch)`, legacy.js:2011) — so any character
+ * present in BOTH rosters always spawns the enemy, never the prop. The prop
+ * set is not extracted yet (Phase 0A only carves data, not this dispatch),
+ * so it is copied here as a literal — kept in sync by this test failing
+ * the moment either roster or any level grid changes under it. The enemy
+ * side is derived programmatically from ENEMY_DEFS rather than duplicated.
+ *
+ * This does not just pin an abstract overlap — it pins the concrete blast
+ * radius: Level 2 alone carries 8 `V` tiles (intended as pews) and 1 `C`
+ * tile (intended as a chair), which the collision turns into eight Factory
+ * Foreman bosses and a Cacodemon. See docs/known-issues.md KNOWN-4.
+ */
+const PROP_CHARS = "xTCFVO"; // legacy.js:2011 — spawnProp()'s dispatch string, not yet an export
+const AMBIGUOUS_CHARS = Object.keys(ENEMY_DEFS)
+  .filter((ch) => PROP_CHARS.includes(ch))
+  .sort();
+
+it("pins which grid characters are claimed by both an enemy and a prop (KNOWN-4)", () => {
+  expect(AMBIGUOUS_CHARS).toEqual(["C", "V"]);
+});
+
+it("pins how many ambiguous tiles each level grid contains (KNOWN-4)", () => {
+  const counts = Object.fromEntries(
+    built.map(({ name, grid }) => [
+      name,
+      Object.fromEntries(AMBIGUOUS_CHARS.map((ch) => [ch, findAll(grid, ch).length])),
+    ]),
+  );
+  expect(counts).toEqual({
+    "PROLOGUE — OUT OF THE PIT": { C: 0, V: 0 },
+    "LEVEL 1 — THE GOTHIC DUNGEON": { C: 0, V: 0 },
+    "LEVEL 2 — THE ABANDONED CHURCH": { C: 1, V: 8 },
+    "LEVEL 3 — THE NECROPOLIS": { C: 0, V: 0 },
+    "LEVEL 4 — THE GRAVEYARD": { C: 0, V: 0 },
+    "LEVEL 5 — THE SEWERS": { C: 0, V: 0 },
+    "LEVEL 6 — THE FACTORY": { C: 3, V: 1 },
+    "LEVEL 7 — THE WOMB": { C: 2, V: 0 },
+  });
+});
+
+/**
+ * Not KNOWN-4 itself, but discovered alongside it: the grid-legend
+ * docstring atop src/world/levels/index.ts is inherited verbatim from the
+ * reference's old banner comment and is inaccurate — it does not list
+ * every character that actually appears in a grid (e.g. `0`, `7`, `8`, `9`,
+ * the pickup digits used by put()/putAbs() calls throughout these level
+ * files). It is left as-is (inherited, unreliable) rather than rewritten,
+ * since correcting it is a documentation change orthogonal to this fix
+ * wave — flagged here and in docs/known-issues.md so nobody mistakes it
+ * for an exhaustive reference.
+ */
