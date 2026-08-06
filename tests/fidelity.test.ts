@@ -12,6 +12,7 @@ import { PXDEF } from "../src/enemies/pixels";
 import { PX, buildSprites } from "../src/enemies/SpriteBaker";
 import { evalReference, REF, refSource } from "./support/reference";
 import { installDomStubs } from "./support/domStubs";
+import { normalizeTsSource } from "./support/normalizeTsSource";
 
 /**
  * The fidelity oracle. reference/sonsurum.html is a frozen golden master —
@@ -315,19 +316,27 @@ describe("SpriteBaker (texFromPx/buildSprites) vs. reference", () => {
     }
   });
 
-  it("texFromPx's body is byte-identical to the reference", () => {
+  // texFromPx and buildSprites are code, not data: this port's convention is
+  // to annotate every extracted function's signature and, where JS's lenient
+  // call arity forces it (buildSprites' local mk/mkM closures), its inline
+  // parameter lists too. Byte-identity is incoherent for annotated code —
+  // see normalizeTsSource's doc comment — so these two compare *normalized*
+  // source: strip the TS-only syntax the port adds, then require the
+  // remainder to match the reference exactly. PXDEF above stays strictly
+  // byte-identical because it is pure data that no annotation ever touches.
+  it("texFromPx's body is identical to the reference once TS-only syntax is stripped", () => {
     const moduleSource = readFileSync("src/enemies/SpriteBaker.ts", "utf8");
     const refChunk = refSource(REF.texFromPx);
-    expect(extractFunctionBody(moduleSource, "texFromPx")).toBe(
-      extractFunctionBody(refChunk, "texFromPx"),
+    expect(normalizeTsSource(extractFunctionBody(moduleSource, "texFromPx"))).toBe(
+      normalizeTsSource(extractFunctionBody(refChunk, "texFromPx")),
     );
   });
 
-  it("buildSprites' body is byte-identical to the reference — the dismemberment mask arithmetic (armTop, armBot, region rectangles) untouched", () => {
+  it("buildSprites' body is identical to the reference once TS-only syntax is stripped — the dismemberment mask arithmetic (armTop, armBot, region rectangles) untouched", () => {
     const moduleSource = readFileSync("src/enemies/SpriteBaker.ts", "utf8");
     const refChunk = refSource(REF.buildSprites);
-    expect(extractFunctionBody(moduleSource, "buildSprites")).toBe(
-      extractFunctionBody(refChunk, "buildSprites"),
+    expect(normalizeTsSource(extractFunctionBody(moduleSource, "buildSprites"))).toBe(
+      normalizeTsSource(extractFunctionBody(refChunk, "buildSprites")),
     );
   });
 });
