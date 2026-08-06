@@ -46,6 +46,12 @@ export const REF = {
   mathHelpers: [214, 216],
   /** makeTex, noiseFill, const TEX={}, and buildTextures — the procedural texture generator. */
   procTextures: [917, 1084],
+  /** texFromPx — bakes a PXDEF creature's rows into a canvas texture, including the dismemberment mask/stump logic. */
+  texFromPx: [1089, 1125],
+  /** PXDEF — 361 lines of ASCII sprite data for all 31 creatures (grunts, demons, bosses and their alternate forms). */
+  pxdef: [1126, 1486],
+  /** const PX={} and buildSprites — bakes every PXDEF entry's walk pair, dismemberment frames, attack pose and death frames. */
+  buildSprites: [1487, 1516],
 } as const satisfies Record<string, readonly [number, number]>;
 
 /** Reference source text for a [start, end] 1-indexed inclusive line range. */

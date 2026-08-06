@@ -8,6 +8,8 @@ import { ENEMY_DEFS } from "../src/enemies/EnemyDefs";
 import { WEAPON_STATS } from "../src/weapons/definitions";
 import { MONOLOGUE } from "../src/content/monologue";
 import { TEX, buildTextures } from "../src/render/ProcTextures";
+import { PXDEF } from "../src/enemies/pixels";
+import { PX, buildSprites } from "../src/enemies/SpriteBaker";
 import { evalReference, REF, refSource } from "./support/reference";
 import { installDomStubs } from "./support/domStubs";
 
@@ -224,6 +226,108 @@ describe("ProcTextures (buildTextures) vs. reference", () => {
     const refChunk = refSource(REF.procTextures);
     expect(extractFunctionBody(moduleSource, "buildTextures")).toBe(
       extractFunctionBody(refChunk, "buildTextures"),
+    );
+  });
+});
+
+describe("PXDEF vs. reference", () => {
+  // Pure data literal — no document/THREE dependency, so this evaluates
+  // standalone. This is the single largest body of art in the project (361
+  // lines of ASCII sprite rows and hex palettes for 31 creatures); this is
+  // the oracle entry that proves it survived the three-way file split intact.
+  const refPxdef = evalReference<typeof PXDEF>([refSource(REF.pxdef)], "PXDEF");
+
+  it("has the identical key set, in the identical order", () => {
+    // Order isn't behaviorally significant (buildSprites iterates
+    // `for...in`), but the brief for this extraction promised it would be
+    // preserved, so pin it rather than silently sorting it away.
+    expect(Object.keys(PXDEF)).toEqual(Object.keys(refPxdef));
+  });
+
+  it("matches every row, every palette entry, and every atk/die frame of every creature", () => {
+    expect(PXDEF).toEqual(refPxdef);
+  });
+});
+
+interface RefSpriteBaker {
+  PX: Record<string, Record<string, THREE.CanvasTexture | number | null | undefined>>;
+  buildSprites: () => void;
+}
+
+describe("SpriteBaker (texFromPx/buildSprites) vs. reference", () => {
+  // texFromPx draws to a real <canvas> and constructs real
+  // THREE.CanvasTexture instances, so — like ProcTextures above — its
+  // reference chunk needs document and THREE seeded into the vm sandbox.
+  // PXDEF rides along because buildSprites iterates it by closure.
+  let refModule: RefSpriteBaker;
+
+  beforeAll(() => {
+    installDomStubs();
+    refModule = evalReference<RefSpriteBaker>(
+      [refSource(REF.texFromPx), refSource(REF.pxdef), refSource(REF.buildSprites)],
+      "({PX, buildSprites})",
+      { document, THREE },
+    );
+    refModule.buildSprites();
+    buildSprites();
+  });
+
+  it("produces the identical PX key set as the reference", () => {
+    expect(Object.keys(PX).sort()).toEqual(Object.keys(refModule.PX).sort());
+  });
+
+  it("bakes noHead as null/non-null in agreement with the reference, for every creature", () => {
+    for (const key of Object.keys(PX)) {
+      const ours = PX[key] as unknown as Record<string, unknown>;
+      const ref = refModule.PX[key];
+      expect(ours.noHead === null, `${key}.noHead nullness`).toBe(ref.noHead === null);
+    }
+  });
+
+  it("computes the identical dismemberment regions (W, H, head, armTop, armBot) for every creature", () => {
+    for (const key of Object.keys(PX)) {
+      const ours = (PX[key] as unknown as Record<string, unknown>).regions;
+      const ref = refModule.PX[key].regions;
+      expect(ours, key).toEqual(ref);
+    }
+  });
+
+  it("every baked frame agrees with the reference on presence and keeps its filter settings", () => {
+    const frames = [
+      "a", "b", "hl", "hlb",
+      "noHead", "noHeadB", "noLArm", "noLArmB", "noRArm", "noRArmB", "noLegs", "noLegsB",
+      "gibbed", "gibbedB", "atk", "die1", "die2",
+    ];
+    for (const key of Object.keys(PX)) {
+      const oursSprite = PX[key] as unknown as Record<string, THREE.CanvasTexture | null>;
+      const refSprite = refModule.PX[key] as unknown as Record<string, THREE.CanvasTexture | null>;
+      for (const f of frames) {
+        const ours = oursSprite[f];
+        const ref = refSprite[f];
+        if (ours == null) {
+          expect(ref, `${key}.${f} should be null to match ours`).toBeNull();
+          continue;
+        }
+        expect(ref, `reference ${key}.${f} missing`).toBeDefined();
+        expect(ours.magFilter, `${key}.${f} magFilter`).toBe(ref!.magFilter);
+        expect(ours.minFilter, `${key}.${f} minFilter`).toBe(ref!.minFilter);
+      }
+    }
+  });
+
+  it("texFromPx's body is byte-identical to the reference", () => {
+    const moduleSource = readFileSync("src/enemies/SpriteBaker.ts", "utf8");
+    const refChunk = refSource(REF.texFromPx);
+    expect(extractFunctionBody(moduleSource, "texFromPx")).toBe(
+      extractFunctionBody(refChunk, "texFromPx"),
+    );
+  });
+
+  it("buildSprites' body is byte-identical to the reference — the dismemberment mask arithmetic (armTop, armBot, region rectangles) untouched", () => {
+    const moduleSource = readFileSync("src/enemies/SpriteBaker.ts", "utf8");
+    const refChunk = refSource(REF.buildSprites);
+    expect(extractFunctionBody(moduleSource, "buildSprites")).toBe(
+      extractFunctionBody(refChunk, "buildSprites"),
     );
   });
 });
