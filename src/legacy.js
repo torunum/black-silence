@@ -12,10 +12,6 @@ import { ENEMY_DEFS as EDEF } from "./enemies/EnemyDefs";
 const CELL=2, WALLH=3.4, EYE=1.0;
 
 /* ============================================================
-   ADEM'S MOUTH — monologue data
-   ============================================================ */
-
-/* ============================================================
    GLOBAL STATE
    ============================================================ */
 const S={hp:100,armor:0,key:false,dead:false,won:false,level:0,

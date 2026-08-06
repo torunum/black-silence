@@ -2,7 +2,29 @@ import type { Grid } from "./LevelBuilder";
 
 export interface Cell { x: number; z: number; }
 
-/** Characters the player can never walk through. Mirrors solidAt() in legacy.js. */
+/**
+ * Characters that are unconditionally solid — never walkable under any
+ * circumstance. This mirrors only the fixed part of solidAt() in legacy.js:
+ * its `#`/`I`/`W` branch, which is not gated on anything.
+ *
+ * It deliberately does NOT mirror solidAt()'s door handling. solidAt()
+ * also treats `+`/`D`/`S` as solid, but conditionally — gated on the live
+ * `doors[gx+","+gz].open` flag, i.e. "can the player walk here on this
+ * frame, given which doors have been opened so far". isWalkable() answers
+ * a different question — "can this cell ever be reached at all" — which is
+ * what a static completability check needs. A door is a topology feature
+ * here, not a runtime obstacle: `D` is walkable exactly when the caller
+ * asserts the key is held (the `throughLocked` parameter), regardless of
+ * legacy.js's runtime door state, and `+`/`S` are always walkable since
+ * they can always eventually be opened.
+ *
+ * Do not "fix" this to gate D/S/+ on a simulated open flag to match
+ * solidAt()'s runtime behavior — that would make floodFill() answer "is
+ * this reachable right now, mid-playthrough" instead of "is this reachable
+ * at all", and would silently gut the connectivity suite in
+ * tests/world/levels.test.ts (every level would look unfinishable, since
+ * no door starts open).
+ */
 const SOLID = new Set(["#", "I", "W"]);
 
 /** The red-key door. Passable only once the key is held. */

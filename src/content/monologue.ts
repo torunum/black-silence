@@ -1,5 +1,5 @@
 /**
- * ADEM's monologue lines, keyed by trigger id.
+ * ADEM's mouth — his monologue lines, keyed by trigger id.
  * Keys: lvl<N>, boss_<K>, boss_<K>2, boss_<K>3, see_<K>, and named events.
  * Copied verbatim from reference/sonsurum.html lines 781-885.
  */
