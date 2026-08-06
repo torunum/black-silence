@@ -52,6 +52,8 @@ export const REF = {
   pxdef: [1126, 1486],
   /** const PX={} and buildSprites — bakes every PXDEF entry's walk pair, dismemberment frames, attack pose and death frames. */
   buildSprites: [1487, 1516],
+  /** pickupTex, const ITEMTEX={}, and buildItemTex — the pickup/prop art: health, every ammo type, armor, the key, weapon pickups, torch (2-frame) and candle. */
+  itemTex: [1517, 1531],
 } as const satisfies Record<string, readonly [number, number]>;
 
 /** Reference source text for a [start, end] 1-indexed inclusive line range. */

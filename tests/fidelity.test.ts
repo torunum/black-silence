@@ -9,6 +9,7 @@ import { MONOLOGUE } from "../src/content/monologue";
 import { TEX, buildTextures } from "../src/render/ProcTextures";
 import { PXDEF } from "../src/enemies/pixels";
 import { PX, buildSprites } from "../src/enemies/SpriteBaker";
+import { ITEMTEX, buildItemTex } from "../src/render/ItemTextures";
 import { evalReference, REF, refSource } from "./support/reference";
 import { installDomStubs } from "./support/domStubs";
 import { normalizeTsSource } from "./support/normalizeTsSource";
@@ -337,6 +338,89 @@ describe("SpriteBaker (texFromPx/buildSprites) vs. reference", () => {
     const refChunk = refSource(REF.buildSprites);
     expect(normalizeTsSource(extractFunctionBody(moduleSource, "buildSprites"))).toBe(
       normalizeTsSource(extractFunctionBody(refChunk, "buildSprites")),
+    );
+  });
+});
+
+interface RefItemTextures {
+  ITEMTEX: Record<string, THREE.CanvasTexture | THREE.CanvasTexture[]>;
+  buildItemTex: () => void;
+}
+
+describe("ItemTextures (pickupTex/buildItemTex) vs. reference", () => {
+  // Draws to a real <canvas> and constructs real THREE.CanvasTexture
+  // instances, like ProcTextures/SpriteBaker above, so the sandbox needs
+  // document and THREE. texFromPx rides along by closure because
+  // pickupTex/buildItemTex call it.
+  let refModule: RefItemTextures;
+
+  beforeAll(() => {
+    installDomStubs();
+    refModule = evalReference<RefItemTextures>(
+      [refSource(REF.texFromPx), refSource(REF.itemTex)],
+      "({ITEMTEX, buildItemTex})",
+      { document, THREE },
+    );
+    refModule.buildItemTex();
+    buildItemTex();
+  });
+
+  it("produces the identical ITEMTEX key set as the reference", () => {
+    expect(Object.keys(ITEMTEX).sort()).toEqual(Object.keys(refModule.ITEMTEX).sort());
+  });
+
+  it("keeps ITEMTEX.torch a two-frame array and every other entry a single texture, matching the reference", () => {
+    for (const key of Object.keys(ITEMTEX)) {
+      const ours = ITEMTEX[key];
+      const ref = refModule.ITEMTEX[key];
+      expect(ref, `reference ITEMTEX.${key} missing`).toBeDefined();
+      expect(Array.isArray(ours), `${key} array-ness`).toBe(Array.isArray(ref));
+      if (Array.isArray(ours) && Array.isArray(ref)) {
+        expect(ours.length, `${key} frame count`).toBe(ref.length);
+      }
+    }
+  });
+
+  it("every texture keeps the reference's filter settings", () => {
+    const check = (ours: THREE.CanvasTexture, ref: THREE.CanvasTexture, label: string) => {
+      expect(ours.magFilter, `${label} magFilter`).toBe(ref.magFilter);
+      expect(ours.minFilter, `${label} minFilter`).toBe(ref.minFilter);
+    };
+    for (const key of Object.keys(ITEMTEX)) {
+      const ours = ITEMTEX[key];
+      const ref = refModule.ITEMTEX[key];
+      if (Array.isArray(ours) && Array.isArray(ref)) {
+        ours.forEach((t, i) => check(t, ref[i] as THREE.CanvasTexture, `${key}[${i}]`));
+      } else if (!Array.isArray(ours) && !Array.isArray(ref)) {
+        check(ours as THREE.CanvasTexture, ref as THREE.CanvasTexture, key);
+      }
+    }
+  });
+
+  // pickupTex's and buildItemTex's bodies contain no TS-only syntax — the
+  // pixel rows and hex palettes are literal call arguments, not annotated
+  // declarations — so unlike SpriteBaker's texFromPx/buildSprites above,
+  // these compare byte-identical rather than through normalizeTsSource (see
+  // normalizeTsSource's doc comment on why byte-identity is the right bar
+  // for unannotated bodies and incoherent for annotated ones). This is also
+  // the assertion that actually proves fidelity for this module: under
+  // domStubs' no-op 2D context (see tests/support/domStubs.ts) no rendered
+  // pixel or colour ever reaches a texture object, so a byte-identical
+  // source comparison is the only thing in this suite that would catch a
+  // wrong pixel row or a transposed hex colour.
+  it("buildItemTex's body is byte-identical to the reference — every pixel row and hex colour untouched", () => {
+    const moduleSource = readModuleSource("src/render/ItemTextures.ts");
+    const refChunk = refSource(REF.itemTex);
+    expect(extractFunctionBody(moduleSource, "buildItemTex")).toBe(
+      extractFunctionBody(refChunk, "buildItemTex"),
+    );
+  });
+
+  it("pickupTex's body is byte-identical to the reference", () => {
+    const moduleSource = readModuleSource("src/render/ItemTextures.ts");
+    const refChunk = refSource(REF.itemTex);
+    expect(extractFunctionBody(moduleSource, "pickupTex")).toBe(
+      extractFunctionBody(refChunk, "pickupTex"),
     );
   });
 });

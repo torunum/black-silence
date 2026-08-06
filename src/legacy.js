@@ -5,7 +5,8 @@ import { LEVELS } from "./world/levels/index";
 import { WEAPON_STATS } from "./weapons/definitions";
 import { ENEMY_DEFS as EDEF } from "./enemies/EnemyDefs";
 import { TEX, buildTextures } from "./render/ProcTextures";
-import { PX, buildSprites, texFromPx } from "./enemies/SpriteBaker";
+import { PX, buildSprites } from "./enemies/SpriteBaker";
+import { ITEMTEX, buildItemTex } from "./render/ItemTextures";
 /* ============================================================
    THE BLACK SILENCE — The Hollow Parish (v3 gothic overhaul)
    2 levels · 9 enemy types + elites · 3 bosses · 6 weapons ·
@@ -40,21 +41,6 @@ addEventListener("resize",sizeRender);sizeRender();
 let trauma=0,hitStop=0,zoomT=0;
 function shake(a){trauma=Math.min(1,trauma+a);}
 
-function pickupTex(rows,pal){return texFromPx(rows,pal);}
-const ITEMTEX={};
-function buildItemTex(){
-  ITEMTEX.health=pickupTex(["........",".wwwwww.",".w.RR.w.",".wRRRRw.",".wRRRRw.",".w.RR.w.",".wwwwww.","........"],{".":"#101216","w":"#7a766c","R":"#9c2f1e"});
-  ITEMTEX.bullets=pickupTex(["........",".bbbbbb.",".b.y.yb.",".b.y.yb.",".b.y.yb.",".b.y.yb.",".bbbbbb.","........"],{".":"#101216","b":"#4a4438","y":"#a08c5a"});
-  ITEMTEX.shells=pickupTex(["........",".RRRRRR.",".RyRRyR.",".RyRRyR.",".RyRRyR.",".RyRRyR.",".RRRRRR.","........"],{".":"#101216","R":"#6e2e1c","y":"#a08c5a"});
-  ITEMTEX.slugs=pickupTex(["........",".kkkkkk.",".k.y..k.",".k.yy.k.",".k.yy.k.",".k..y.k.",".kkkkkk.","........"],{".":"#101216","k":"#3a3d44","y":"#b8b2a6"});
-  ITEMTEX.crosses=pickupTex(["...yy...","...yy...",".yyyyyy.",".yyyyyy.","...yy...","...yy...","...yy...","........"],{".":"#00000000","y":"#d8c87a"});
-  ITEMTEX.armor=pickupTex(["...AA...","..AAAA..",".AAAAAA.",".A.AA.A.",".AAAAAA.","..AAAA..","...AA...","........"],{".":"#101216","A":"#4a6b8a"});
-  ITEMTEX.key=pickupTex(["..RR....",".R..R...",".R..R...","..RR....","...R....","...RR...","...R....","...RR..."],{".":"#00000000","R":"#c83a20"});
-  ITEMTEX.gun=pickupTex(["........","..gggg..",".gggggg.",".gg..gg.",".gggggg.","..g..g..","..g..g..","........"],{".":"#101216","g":"#5c6068"});
-  ITEMTEX.torch=[texFromPx(["..yy.",".yYYy","yYOYy",".yOy.","..w..","..w..","..w.."],{".":"#00000000","y":"#e8a83a","Y":"#f8e87a","O":"#c85a1e","w":"#3a2c1e"}),
-    texFromPx([".yy..","yYYy.","yYOYy",".yOy.","..w..","..w..","..w.."],{".":"#00000000","y":"#e8a83a","Y":"#f8e87a","O":"#c85a1e","w":"#3a2c1e"})];
-  ITEMTEX.candle=texFromPx(["..y..",".yYy.","..w..",".www.",".www."],{".":"#00000000","y":"#e8c85a","Y":"#f8f0a0","w":"#b8b2a6"});
-}
 const blobTexC=document.createElement("canvas");blobTexC.width=blobTexC.height=32;
 {const g=blobTexC.getContext("2d");const gr=g.createRadialGradient(16,16,2,16,16,16);
  gr.addColorStop(0,"rgba(0,0,0,.55)");gr.addColorStop(1,"rgba(0,0,0,0)");
