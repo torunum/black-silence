@@ -1,5 +1,23 @@
 import { readFileSync } from "node:fs";
 
+/**
+ * Limits of what this harness proves (not exhaustive coverage of the real
+ * browser environment — see tests/smoke.test.ts for what it does assert):
+ *
+ * - The `HTMLCanvasElement.prototype.getContext` override below is a global,
+ *   process-wide patch. It's safe only because Vitest's default
+ *   `isolate: true` gives each test file its own jsdom instance/global
+ *   object, so the patch doesn't leak into other test files. If isolation is
+ *   ever turned off (`isolate: false`, or a shared worker pool) this stub
+ *   would leak across files with no test to catch it.
+ * - The WebGL Proxy in `makeGlContext` answers *any* unknown property with a
+ *   no-op function. That's a safe stand-in today only because `legacy.js`
+ *   never calls the WebGL API directly — every draw call is routed through
+ *   three.js's pinned (0.128.0) API surface. If raw `gl.*` calls were ever
+ *   added to the port, a typo'd method name would silently resolve to a
+ *   no-op here instead of throwing, and this harness would not notice.
+ */
+
 /** A 2D context stub: every method the texture generators call, all no-ops. */
 function make2dContext(): Record<string, unknown> {
   const noop = () => {};
@@ -83,6 +101,19 @@ export function installDomStubs(): void {
 /** Install index.html's body markup so every element id the game reads exists. */
 export function loadGameHtml(): void {
   const html = readFileSync("index.html", "utf8");
-  const body = html.slice(html.indexOf("<body>") + "<body>".length, html.indexOf("</body>"));
+  // Match a body *tag*, not the literal string "<body>", so this doesn't
+  // silently break (and slice from the wrong place) the day the tag gains an
+  // attribute, e.g. <body class="x">. Fail loudly rather than falling back
+  // to a bad slice that jsdom's tolerant parser might swallow quietly.
+  const openMatch = /<body[^>]*>/i.exec(html);
+  const closeIdx = html.indexOf("</body>");
+  if (!openMatch || closeIdx === -1) {
+    throw new Error(
+      "loadGameHtml: couldn't find a <body>...</body> section in index.html — " +
+        "the game's element ids would silently not be installed.",
+    );
+  }
+  const bodyStart = openMatch.index + openMatch[0].length;
+  const body = html.slice(bodyStart, closeIdx);
   document.body.innerHTML = body.replace(/<script[\s\S]*?<\/script>/g, "");
 }
