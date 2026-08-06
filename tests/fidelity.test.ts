@@ -1,5 +1,4 @@
 // @vitest-environment jsdom
-import { readFileSync } from "node:fs";
 import { beforeAll, describe, expect, it } from "vitest";
 import * as THREE from "three";
 import * as Builder from "../src/world/LevelBuilder";
@@ -13,6 +12,7 @@ import { PX, buildSprites } from "../src/enemies/SpriteBaker";
 import { evalReference, REF, refSource } from "./support/reference";
 import { installDomStubs } from "./support/domStubs";
 import { normalizeTsSource } from "./support/normalizeTsSource";
+import { readModuleSource } from "./support/readModuleSource";
 
 /**
  * The fidelity oracle. reference/sonsurum.html is a frozen golden master —
@@ -223,7 +223,7 @@ describe("ProcTextures (buildTextures) vs. reference", () => {
   });
 
   it("buildTextures' body is byte-identical to the reference — no drawing call, colour or literal changed", () => {
-    const moduleSource = readFileSync("src/render/ProcTextures.ts", "utf8");
+    const moduleSource = readModuleSource("src/render/ProcTextures.ts");
     const refChunk = refSource(REF.procTextures);
     expect(extractFunctionBody(moduleSource, "buildTextures")).toBe(
       extractFunctionBody(refChunk, "buildTextures"),
@@ -325,7 +325,7 @@ describe("SpriteBaker (texFromPx/buildSprites) vs. reference", () => {
   // remainder to match the reference exactly. PXDEF above stays strictly
   // byte-identical because it is pure data that no annotation ever touches.
   it("texFromPx's body is identical to the reference once TS-only syntax is stripped", () => {
-    const moduleSource = readFileSync("src/enemies/SpriteBaker.ts", "utf8");
+    const moduleSource = readModuleSource("src/enemies/SpriteBaker.ts");
     const refChunk = refSource(REF.texFromPx);
     expect(normalizeTsSource(extractFunctionBody(moduleSource, "texFromPx"))).toBe(
       normalizeTsSource(extractFunctionBody(refChunk, "texFromPx")),
@@ -333,7 +333,7 @@ describe("SpriteBaker (texFromPx/buildSprites) vs. reference", () => {
   });
 
   it("buildSprites' body is identical to the reference once TS-only syntax is stripped — the dismemberment mask arithmetic (armTop, armBot, region rectangles) untouched", () => {
-    const moduleSource = readFileSync("src/enemies/SpriteBaker.ts", "utf8");
+    const moduleSource = readModuleSource("src/enemies/SpriteBaker.ts");
     const refChunk = refSource(REF.buildSprites);
     expect(normalizeTsSource(extractFunctionBody(moduleSource, "buildSprites"))).toBe(
       normalizeTsSource(extractFunctionBody(refChunk, "buildSprites")),
