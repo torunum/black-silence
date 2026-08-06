@@ -1,10 +1,15 @@
-import { describe, expect, it } from "vitest";
+// @vitest-environment jsdom
+import { readFileSync } from "node:fs";
+import { beforeAll, describe, expect, it } from "vitest";
+import * as THREE from "three";
 import * as Builder from "../src/world/LevelBuilder";
 import { LEVELS } from "../src/world/levels";
 import { ENEMY_DEFS } from "../src/enemies/EnemyDefs";
 import { WEAPON_STATS } from "../src/weapons/definitions";
 import { MONOLOGUE } from "../src/content/monologue";
+import { TEX, buildTextures } from "../src/render/ProcTextures";
 import { evalReference, REF, refSource } from "./support/reference";
+import { installDomStubs } from "./support/domStubs";
 
 /**
  * The fidelity oracle. reference/sonsurum.html is a frozen golden master —
@@ -142,5 +147,83 @@ describe("MONOLOGUE vs. reference", () => {
 
   it("matches every line of every key", () => {
     expect(MONOLOGUE).toEqual(refM);
+  });
+});
+
+/**
+ * Extracts the body of a top-level `function name(...){ ... }` declaration
+ * — the text strictly between its opening and closing braces — by
+ * balanced-brace scanning forward from the first `{` after the signature.
+ * A naive counter is adequate here: every brace in this source is either a
+ * block delimiter or part of a `${...}` template placeholder, and template
+ * placeholders are always brace-balanced too, so nothing throws the count
+ * off.
+ */
+function extractFunctionBody(source: string, name: string): string {
+  const sigIdx = source.indexOf(`function ${name}(`);
+  if (sigIdx === -1) throw new Error(`extractFunctionBody: "function ${name}(" not found`);
+  const braceIdx = source.indexOf("{", sigIdx);
+  let depth = 0;
+  let i = braceIdx;
+  for (; i < source.length; i++) {
+    if (source[i] === "{") depth++;
+    else if (source[i] === "}") {
+      depth--;
+      if (depth === 0) break;
+    }
+  }
+  if (depth !== 0) throw new Error(`extractFunctionBody: unbalanced braces in "${name}"`);
+  return source.slice(braceIdx + 1, i);
+}
+
+interface RefProcTextures {
+  TEX: Record<string, THREE.CanvasTexture>;
+  buildTextures: () => void;
+}
+
+describe("ProcTextures (buildTextures) vs. reference", () => {
+  // The texture generator draws to a real <canvas> and constructs real
+  // THREE.CanvasTexture instances, so — unlike every other block in this
+  // file — its reference chunk needs document and THREE seeded into the vm
+  // sandbox (see evalReference's `globals` param). It also calls rnd/pick,
+  // declared elsewhere in the reference, so mathHelpers rides along.
+  let refModule: RefProcTextures;
+
+  beforeAll(() => {
+    installDomStubs();
+    refModule = evalReference<RefProcTextures>(
+      [refSource(REF.mathHelpers), refSource(REF.procTextures)],
+      "({TEX, buildTextures})",
+      { document, THREE },
+    );
+    refModule.buildTextures();
+    buildTextures();
+  });
+
+  it("produces the identical TEX key set as the reference", () => {
+    // Pixel content can't be compared under domStubs' no-op 2D context (see
+    // tests/support/domStubs.ts), so this is the closest thing to a value
+    // comparison available: same keys, built by the same calls.
+    expect(Object.keys(TEX).sort()).toEqual(Object.keys(refModule.TEX).sort());
+  });
+
+  it("every texture keeps the reference's filter and wrap settings", () => {
+    for (const key of Object.keys(TEX)) {
+      const ours = TEX[key];
+      const ref = refModule.TEX[key];
+      expect(ref, `reference TEX.${key} missing`).toBeDefined();
+      expect(ours.magFilter, `${key} magFilter`).toBe(ref.magFilter);
+      expect(ours.minFilter, `${key} minFilter`).toBe(ref.minFilter);
+      expect(ours.wrapS, `${key} wrapS`).toBe(ref.wrapS);
+      expect(ours.wrapT, `${key} wrapT`).toBe(ref.wrapT);
+    }
+  });
+
+  it("buildTextures' body is byte-identical to the reference — no drawing call, colour or literal changed", () => {
+    const moduleSource = readFileSync("src/render/ProcTextures.ts", "utf8");
+    const refChunk = refSource(REF.procTextures);
+    expect(extractFunctionBody(moduleSource, "buildTextures")).toBe(
+      extractFunctionBody(refChunk, "buildTextures"),
+    );
   });
 });

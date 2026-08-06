@@ -42,6 +42,10 @@ export const REF = {
   weapons: [1919, 1944],
   /** const EDEF={...} — the enemy roster. */
   enemyDefs: [2678, 2716],
+  /** const rnd=..., clamp=..., pick=... — needed alongside procTextures below, which calls rnd/pick. */
+  mathHelpers: [214, 216],
+  /** makeTex, noiseFill, const TEX={}, and buildTextures — the procedural texture generator. */
+  procTextures: [917, 1084],
 } as const satisfies Record<string, readonly [number, number]>;
 
 /** Reference source text for a [start, end] 1-indexed inclusive line range. */
@@ -63,8 +67,20 @@ export function refSource(range: readonly [number, number]): string {
  * renderer) and cannot be loaded outside a browser. Extracting the pure
  * chunks by line range and evaluating them in isolation is the only way
  * to get real reference *values* into a Node test process.
+ *
+ * `globals` seeds the sandbox's global object before `chunks` runs — the
+ * one legitimate reason a chunk needs it is a dependency this function's
+ * own doc comment disclaims (DOM or THREE), e.g. the texture generator's
+ * `document.createElement("canvas")` and `new THREE.CanvasTexture(...)`.
+ * Objects passed this way are the caller's real objects/classes, not
+ * cross-realm copies, so `instanceof` and prototype methods behave exactly
+ * as they do outside the sandbox.
  */
-export function evalReference<T>(chunks: readonly string[], expr: string): T {
+export function evalReference<T>(
+  chunks: readonly string[],
+  expr: string,
+  globals: Record<string, unknown> = {},
+): T {
   const code = `${chunks.join("\n")}\n(${expr});`;
-  return runInNewContext(code, {}, { filename: "reference/sonsurum.html (sandbox)" }) as T;
+  return runInNewContext(code, { ...globals }, { filename: "reference/sonsurum.html (sandbox)" }) as T;
 }
