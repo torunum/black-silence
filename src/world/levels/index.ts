@@ -8,6 +8,19 @@ import { buildLevel5 } from "./level5";
 import { buildLevel6 } from "./level6";
 import { buildLevel7 } from "./level7";
 
+/**
+ * The eight level tables. Grid characters (also used by LevelBuilder.ts's
+ * carving helpers):
+ *   chars: # wall · I pillar · W window-wall · . floor
+ *   + door · D locked · S secret
+ *   P spawn · K key · X exit pad
+ *   enemies z f g m t w s B · bosses E U Q
+ *   pickups h A a b o c · weapons 2 3 4 5 6
+ *   props x crate · T table · C chair · F shelf · V pew · O ex-barrel
+ *   ambient i torch · l candles · p piano · Y challenge plate
+ * Moved verbatim from the "LEVEL BUILDER (pure — validated offline)" banner
+ * that used to precede these level tables in legacy.js.
+ */
 export interface LevelDef {
   name: string;
   build: () => BuiltLevel;

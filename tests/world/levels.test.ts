@@ -4,6 +4,26 @@ import { findAll, floodFill, isOpen } from "../../src/world/analysis";
 
 const built = LEVELS.map((def) => ({ name: def.name, grid: def.build().g }));
 
+/**
+ * A level completes in one of three ways, so "has an exit" is not one check.
+ * All three verified against bossDeath() and openExit() in the reference:
+ *   - Prologue and Level 1 place a static `X` tile in the grid.
+ *   - Levels 2-6 are boss-gated: killing Q/Z/N/H/V calls openExit(), which
+ *     places the pad on the first open cell in a hardcoded candidate list.
+ *   - Level 7 is the finale: its boss G calls showWin(), so it has no exit.
+ */
+
+/** The cells openExit() tries, in order. Hardcoded in the game. */
+const EXIT_CANDIDATES: ReadonlyArray<readonly [number, number]> = [
+  [16, 16], [16, 15], [15, 16], [17, 16], [16, 17],
+];
+
+/** Bosses whose death calls openExit(). */
+const EXIT_OPENING_BOSSES = ["Q", "Z", "N", "H", "V"];
+
+/** The finale boss, which calls showWin() instead of opening an exit. */
+const FINALE_BOSS = "G";
+
 it("builds every declared level", () => {
   expect(built).toHaveLength(8);
 });
@@ -13,16 +33,32 @@ describe.each(built)("$name", ({ grid }) => {
     expect(findAll(grid, "P")).toHaveLength(1);
   });
 
-  it("has at least one exit", () => {
-    expect(findAll(grid, "X").length).toBeGreaterThan(0);
-  });
-
-  it("every exit is reachable from the spawn", () => {
+  it("is completable — a reachable static exit, or a boss that opens a reachable one", () => {
     const [spawn] = findAll(grid, "P");
     const seen = floodFill(grid, spawn, true);
-    for (const exit of findAll(grid, "X")) {
-      expect(seen[exit.z][exit.x], `exit at ${exit.x},${exit.z}`).toBe(true);
+
+    const staticExits = findAll(grid, "X");
+    if (staticExits.length > 0) {
+      expect(staticExits.some((e) => seen[e.z]?.[e.x]), "no static exit is reachable").toBe(true);
+      return;
     }
+
+    if (EXIT_OPENING_BOSSES.some((b) => findAll(grid, b).length > 0)) {
+      // openExit() walks EXIT_CANDIDATES and takes the first cell solidAt()
+      // reports open. If none is open the loop falls through and the pad is
+      // placed at (16,16) anyway — inside a wall, unreachable, level
+      // unfinishable. So at least one candidate must be open, reachable, and
+      // not a door (a door reads open statically but is solid until used).
+      const usable = EXIT_CANDIDATES.filter(
+        ([x, z]) => isOpen(grid, x, z) && !"+DS".includes(grid[z]?.[x]) && seen[z]?.[x],
+      );
+      expect(usable.length, "no openExit() candidate is open and reachable").toBeGreaterThan(0);
+      return;
+    }
+
+    // No static exit and no exit-opening boss is legal only for the finale,
+    // whose boss calls showWin() instead.
+    expect(findAll(grid, FINALE_BOSS).length, "no exit and no finale boss").toBeGreaterThan(0);
   });
 
   it("every key is reachable without passing a locked door", () => {
