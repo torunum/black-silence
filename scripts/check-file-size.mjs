@@ -18,7 +18,14 @@ function walk(dir) {
   return out;
 }
 
-const lineCount = (p) => readFileSync(p, "utf8").split("\n").length;
+// Counts newline characters, matching `wc -l`'s definition of a line count
+// rather than `split("\n").length`, which over-counts by one for any file
+// ending in a trailing newline (the common case) — e.g. legacy.js reported
+// 2225 here where `wc -l` said 2224. That one-line phantom once pushed an
+// implementer into truncating a real source file to make a reported number
+// match a figure in a planning document; this must track the same tool
+// every human on the project reaches for to sanity-check it.
+const lineCount = (p) => (readFileSync(p, "utf8").match(/\n/g) ?? []).length;
 
 const files = walk(ROOT);
 const offenders = files.filter((p) => !EXEMPT.has(p) && lineCount(p) > LIMIT);
