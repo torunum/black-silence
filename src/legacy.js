@@ -7,7 +7,7 @@ import { ENEMY_DEFS as EDEF } from "./enemies/EnemyDefs";
 import { TEX, buildTextures } from "./render/ProcTextures";
 import { PX, buildSprites } from "./enemies/SpriteBaker";
 import { ITEMTEX, buildItemTex } from "./render/ItemTextures";
-import { audioInit, ctx, echoBus, getMasterVolume, isReady, masterBus, setMasterVolume } from "./audio/AudioEngine";
+import { audioInit, ctx, getMasterVolume, setMasterVolume } from "./audio/AudioEngine";
 import { bang, blip, boom, click } from "./audio/Sfx";
 import { deathCry, growl, gurgle, pain, snarl } from "./audio/Voice";
 import { bellToll, organChord, pianoNote, startBossMusic, stopBossMusic, stoneDoor, wetDoor } from "./audio/Ambient";
