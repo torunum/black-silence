@@ -515,3 +515,141 @@ describe("AudioEngine/Sfx vs reference", () => {
     );
   });
 });
+
+/**
+ * pianoNote's one array-destructuring parameter — the three
+ * [frequency, waveform, gain] partials — needs the same inline tuple type
+ * annotation as audioInit's drone bed above and for the identical reason
+ * (see stripDroneParamAnnotation's doc comment): TypeScript otherwise infers
+ * the outer array literal's element type as (string | number)[], which
+ * won't flow into pianoNote's OscillatorType-/number-typed assignments. Kept
+ * as its own narrow strip, local to this one oracle entry, rather than
+ * generalizing stripDroneParamAnnotation across two unrelated bodies.
+ */
+function stripPianoParamAnnotation(src: string): string {
+  return src.replace("([fr,t,v]:[number,OscillatorType,number])", "([fr,t,v])");
+}
+
+describe("Voice/Ambient vs reference", () => {
+  // Same accessor rewiring as AudioEngine/Sfx above: the reference's bare
+  // AC/masterG/echoG become ctx()/masterBus()/echoBus() calls, reversed here
+  // before comparison.
+  it("noiseBuf's body matches the reference exactly once accessor calls are reversed — this generator has no ctx() guard of its own in the reference either; only called from functions that already checked", () => {
+    const moduleSource = readModuleSource("src/audio/Voice.ts");
+    const refChunk = refSource(REF.noiseBuf);
+    expect(denormalizeAudioAccessors(extractFunctionBody(moduleSource, "noiseBuf"))).toBe(
+      extractFunctionBody(refChunk, "noiseBuf"),
+    );
+  });
+
+  it("growl's body matches the reference exactly once accessor calls are reversed — the detune ratios, formant bandpass Q/sweep and tremolo LFO rate untouched", () => {
+    const moduleSource = readModuleSource("src/audio/Voice.ts");
+    const refChunk = refSource(REF.growl);
+    expect(denormalizeAudioAccessors(extractFunctionBody(moduleSource, "growl"))).toBe(
+      extractFunctionBody(refChunk, "growl"),
+    );
+  });
+
+  it("gurgle's body matches the reference exactly once accessor calls are reversed", () => {
+    const moduleSource = readModuleSource("src/audio/Voice.ts");
+    const refChunk = refSource(REF.gurgle);
+    expect(denormalizeAudioAccessors(extractFunctionBody(moduleSource, "gurgle"))).toBe(
+      extractFunctionBody(refChunk, "gurgle"),
+    );
+  });
+
+  it("pain's body matches the reference exactly once accessor calls are reversed", () => {
+    const moduleSource = readModuleSource("src/audio/Voice.ts");
+    const refChunk = refSource(REF.pain);
+    expect(denormalizeAudioAccessors(extractFunctionBody(moduleSource, "pain"))).toBe(
+      extractFunctionBody(refChunk, "pain"),
+    );
+  });
+
+  it("deathCry's body matches the reference exactly once accessor calls are reversed — it only calls growl()/gurgle() otherwise, no engine state of its own", () => {
+    const moduleSource = readModuleSource("src/audio/Voice.ts");
+    const refChunk = refSource(REF.deathCry);
+    expect(denormalizeAudioAccessors(extractFunctionBody(moduleSource, "deathCry"))).toBe(
+      extractFunctionBody(refChunk, "deathCry"),
+    );
+  });
+
+  it("snarl's body matches the reference exactly once accessor calls are reversed — every enemy archetype's dispatch call untouched", () => {
+    const moduleSource = readModuleSource("src/audio/Voice.ts");
+    const refChunk = refSource(REF.snarl);
+    expect(denormalizeAudioAccessors(extractFunctionBody(moduleSource, "snarl"))).toBe(
+      extractFunctionBody(refChunk, "snarl"),
+    );
+  });
+
+  it("wetDoor's body matches the reference exactly once accessor calls are reversed", () => {
+    const moduleSource = readModuleSource("src/audio/Ambient.ts");
+    const refChunk = refSource(REF.wetDoor);
+    expect(denormalizeAudioAccessors(extractFunctionBody(moduleSource, "wetDoor"))).toBe(
+      extractFunctionBody(refChunk, "wetDoor"),
+    );
+  });
+
+  it("stoneDoor's body matches the reference exactly once accessor calls are reversed", () => {
+    const moduleSource = readModuleSource("src/audio/Ambient.ts");
+    const refChunk = refSource(REF.stoneDoor);
+    expect(denormalizeAudioAccessors(extractFunctionBody(moduleSource, "stoneDoor"))).toBe(
+      extractFunctionBody(refChunk, "stoneDoor"),
+    );
+  });
+
+  it("bellToll's body matches the reference exactly once accessor calls are reversed", () => {
+    const moduleSource = readModuleSource("src/audio/Ambient.ts");
+    const refChunk = refSource(REF.bellToll);
+    expect(denormalizeAudioAccessors(extractFunctionBody(moduleSource, "bellToll"))).toBe(
+      extractFunctionBody(refChunk, "bellToll"),
+    );
+  });
+
+  it("organChord's body matches the reference exactly once accessor calls are reversed", () => {
+    const moduleSource = readModuleSource("src/audio/Ambient.ts");
+    const refChunk = refSource(REF.organChord);
+    expect(denormalizeAudioAccessors(extractFunctionBody(moduleSource, "organChord"))).toBe(
+      extractFunctionBody(refChunk, "organChord"),
+    );
+  });
+
+  it("pianoNote's body matches the reference exactly once its required type annotation is stripped and accessor calls are reversed", () => {
+    const moduleSource = readModuleSource("src/audio/Ambient.ts");
+    const refChunk = refSource(REF.pianoNote);
+    expect(
+      denormalizeAudioAccessors(stripPianoParamAnnotation(extractFunctionBody(moduleSource, "pianoNote"))),
+    ).toBe(extractFunctionBody(refChunk, "pianoNote"));
+  });
+
+  it("startBossMusic's body matches the reference exactly once accessor calls are reversed, including the bossPulse guard that stops a second call from stacking a second interval", () => {
+    const moduleSource = readModuleSource("src/audio/Ambient.ts");
+    const refChunk = refSource(REF.startBossMusic);
+    expect(denormalizeAudioAccessors(extractFunctionBody(moduleSource, "startBossMusic"))).toBe(
+      extractFunctionBody(refChunk, "startBossMusic"),
+    );
+  });
+
+  // stopBossMusic has no AC/masterG/echoG reference at all — it only touches
+  // bossPulse — so unlike startBossMusic above it compares byte-identical
+  // rather than through denormalizeAudioAccessors. bossPulse itself is the
+  // one genuine departure from verbatim in this whole module: the reference
+  // declares it as a bare global alongside AC/masterG/echoG/masterVol
+  // (REF.audioState, see the comment there), sharing that pattern's
+  // inability to cross an ES module boundary as a live exported `let`.
+  // Ambient.ts (src/audio/Ambient.ts) instead declares it as private module
+  // state with the same `ReturnType<typeof setInterval> | null` shape, read
+  // and written only by startBossMusic/stopBossMusic exactly as in the
+  // reference. There is no separate byte-comparison possible for a bare
+  // `let` declaration, so this comment is the oracle entry for that one
+  // substitution — the behavioral guarantee it actually matters for (no
+  // double-stacking on repeated startBossMusic calls) is what
+  // tests/audio/Voice.test.ts's "boss music" describe block pins.
+  it("stopBossMusic's body is byte-identical to the reference", () => {
+    const moduleSource = readModuleSource("src/audio/Ambient.ts");
+    const refChunk = refSource(REF.stopBossMusic);
+    expect(extractFunctionBody(moduleSource, "stopBossMusic")).toBe(
+      extractFunctionBody(refChunk, "stopBossMusic"),
+    );
+  });
+});

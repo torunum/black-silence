@@ -76,6 +76,32 @@ export const REF = {
   click: [1691, 1691],
   /** boom — the one clean explosion sound: a sub thud (sine drop) plus a soft lowpassed noise tail. */
   boom: [1693, 1709],
+  /** noiseBuf — a random-sample AudioBuffer generator, the raw material every guttural voice/door filters into shape. No `if(!AC)return;` guard of its own; only ever called from functions that have already checked AC. */
+  noiseBuf: [1713, 1717],
+  /** growl — low throaty roar: detuned rumble oscillators, a breathy noise layer through a moving bandpass "throat", and a vocal-cord tremolo LFO. */
+  growl: [1719, 1743],
+  /** gurgle — wet bubbling viscera: lowpassed noise plus a wobbling sawtooth pitch. */
+  gurgle: [1745, 1757],
+  /** pain — short rising-then-falling throaty yelp: a bandpassed sawtooth plus a highpassed noise burst. */
+  pain: [1759, 1773],
+  /** deathCry — a growl collapsing into a gurgle 180ms later. */
+  deathCry: [1775, 1778],
+  /** snarl — per-enemy-archetype sighting cue, dispatching to growl/blip/bang by kind. */
+  snarl: [1780, 1792],
+  /** wetDoor — tearing membrane/squelch (lowpassed noise sweep) plus a low organic bandpassed groan, then a gurgle 260ms later. */
+  wetDoor: [1794, 1811],
+  /** stoneDoor — deep grind (bandpassed noise sweep) plus a low square-wave thud. */
+  stoneDoor: [1813, 1826],
+  /** bellToll — three detuned sine partials with staggered decay. */
+  bellToll: [1827, 1828],
+  /** organChord — four sustained square-wave partials. */
+  organChord: [1829, 1830],
+  /** pianoNote — a MIDI-to-frequency triangle+sine partial stack with a 1.4s decay. */
+  pianoNote: [1831, 1839],
+  /** startBossMusic — the setInterval-driven boss pulse; guards on `bossPulse` so a second call doesn't stack a second interval. */
+  startBossMusic: [1840, 1846],
+  /** stopBossMusic — clears and nulls bossPulse. */
+  stopBossMusic: [1847, 1847],
 } as const satisfies Record<string, readonly [number, number]>;
 
 /** Reference source text for a [start, end] 1-indexed inclusive line range. */
