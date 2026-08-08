@@ -15,6 +15,7 @@ import { evalReference, REF, refSource } from "./support/reference";
 import { installDomStubs } from "./support/domStubs";
 import { normalizeTsSource } from "./support/normalizeTsSource";
 import { readModuleSource } from "./support/readModuleSource";
+import { assertNoDanglingQuote } from "./support/assertNoDanglingQuote";
 
 /**
  * The fidelity oracle. reference/sonsurum.html is a frozen golden master —
@@ -163,6 +164,13 @@ describe("MONOLOGUE vs. reference", () => {
  * block delimiter or part of a `${...}` template placeholder, and template
  * placeholders are always brace-balanced too, so nothing throws the count
  * off.
+ *
+ * That counter is still blind to string literals in general, though: a `}`
+ * sitting inside a string (not a balanced `${...}` pair) would make it stop
+ * early, on both sides of a comparison at the same point, so a real diff
+ * could silently read as a pass. See assertNoDanglingQuote's doc comment
+ * for why the guard against that is a quote-parity check on the extracted
+ * text rather than a brace recount, and why a recount could never work.
  */
 function extractFunctionBody(source: string, name: string): string {
   const sigIdx = source.indexOf(`function ${name}(`);
@@ -178,7 +186,9 @@ function extractFunctionBody(source: string, name: string): string {
     }
   }
   if (depth !== 0) throw new Error(`extractFunctionBody: unbalanced braces in "${name}"`);
-  return source.slice(braceIdx + 1, i);
+  const body = source.slice(braceIdx + 1, i);
+  assertNoDanglingQuote(body, `extractFunctionBody("${name}")`);
+  return body;
 }
 
 interface RefProcTextures {
