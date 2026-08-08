@@ -54,6 +54,28 @@ export const REF = {
   buildSprites: [1487, 1516],
   /** pickupTex, const ITEMTEX={}, and buildItemTex — the pickup/prop art: health, every ammo type, armor, the key, weapon pickups, torch (2-frame) and candle. */
   itemTex: [1517, 1531],
+  /**
+   * `let AC=null,masterG=null,echoG=null,bossPulse=null,masterVol=.5;` — the
+   * audio engine's live state. Task 5 (see src/audio/AudioEngine.ts) turns
+   * this into private module state behind accessor functions, because bare
+   * exported `let` bindings can't cross an ES module boundary the way a
+   * global `var` could — so this range is NOT compared byte-for-byte
+   * anywhere. What fidelity.test.ts does pin from it is the one fact that
+   * would be a real behavior change if it drifted: the default `masterVol`
+   * of 0.5 that AudioEngine's getMasterVolume() must still return before
+   * audioInit()/setMasterVolume() ever run.
+   */
+  audioState: [1649, 1649],
+  /** audioInit — builds the echo/delay feedback loop, the ambience lowpass, and starts the four detuned drone oscillators (with LFOs modulating their gain) that are the game's ambient bed. */
+  audioInit: [1650, 1664],
+  /** blip — the general-purpose tone/sweep effect used by nearly every gunshot, UI beep and monster cue. */
+  blip: [1665, 1679],
+  /** bang — filtered-noise transient used for footsteps, impacts and static. */
+  bang: [1680, 1690],
+  /** click — a bang() preset for UI clicks. References neither AC, masterG nor echoG directly, so it carries over untouched by Task 5's accessor rewrite. */
+  click: [1691, 1691],
+  /** boom — the one clean explosion sound: a sub thud (sine drop) plus a soft lowpassed noise tail. */
+  boom: [1693, 1709],
 } as const satisfies Record<string, readonly [number, number]>;
 
 /** Reference source text for a [start, end] 1-indexed inclusive line range. */

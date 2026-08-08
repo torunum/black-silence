@@ -10,6 +10,7 @@ import { TEX, buildTextures } from "../src/render/ProcTextures";
 import { PXDEF } from "../src/enemies/pixels";
 import { PX, buildSprites } from "../src/enemies/SpriteBaker";
 import { ITEMTEX, buildItemTex } from "../src/render/ItemTextures";
+import { getMasterVolume } from "../src/audio/AudioEngine";
 import { evalReference, REF, refSource } from "./support/reference";
 import { installDomStubs } from "./support/domStubs";
 import { normalizeTsSource } from "./support/normalizeTsSource";
@@ -421,6 +422,96 @@ describe("ItemTextures (pickupTex/buildItemTex) vs. reference", () => {
     const refChunk = refSource(REF.itemTex);
     expect(extractFunctionBody(moduleSource, "pickupTex")).toBe(
       extractFunctionBody(refChunk, "pickupTex"),
+    );
+  });
+});
+
+/**
+ * Reverses the one mechanical substitution Task 5 makes to blip/bang/boom's
+ * bodies: the reference's bare AC/masterG/echoG reads become calls to
+ * AudioEngine's ctx()/masterBus()/echoBus() accessors (src/audio/Sfx.ts's
+ * doc comment explains why — bare module bindings can't cross a module
+ * boundary the way legacy.js's global `let`s could). It's a lossless,
+ * one-to-one textual substitution — every occurrence of one becomes exactly
+ * the other, nothing else changes — so reversing it should reproduce the
+ * reference body exactly. If it doesn't, that's a genuine fidelity break,
+ * not a false positive from this transform.
+ */
+function denormalizeAudioAccessors(src: string): string {
+  return src
+    .replace(/\bctx\(\)/g, "AC")
+    .replace(/\bmasterBus\(\)/g, "masterG")
+    .replace(/\bechoBus\(\)/g, "echoG");
+}
+
+/**
+ * audioInit's one array-destructuring parameter — the four detuned drone
+ * oscillators' [frequency, waveform, gain] triples — needs an inline tuple
+ * type annotation to type-check: TypeScript otherwise infers the outer
+ * array literal's element type as (string | number)[], which it won't let
+ * flow into OscillatorType-/number-typed properties. normalizeTsSource
+ * deliberately doesn't strip destructuring-parameter type annotations in
+ * general (see its doc comment — the SpriteBaker body it was written for
+ * has an ambiguous colon nearby), but there's no such ambiguity in this
+ * body, so this narrow, exact-text strip is safe and kept local to this one
+ * oracle entry rather than widening that shared normalizer.
+ */
+function stripDroneParamAnnotation(src: string): string {
+  return src.replace("([f,t,g]:[number,OscillatorType,number])", "([f,t,g])");
+}
+
+describe("AudioEngine/Sfx vs reference", () => {
+  // AC, masterG, echoG and masterVol are bare globals in the reference;
+  // Task 5 (src/audio/AudioEngine.ts) turns them into private module state
+  // behind accessor functions, because bare exported `let`s can't cross an
+  // ES module boundary the way legacy.js's globals could — see
+  // REF.audioState's comment in tests/support/reference.ts. That range is
+  // therefore never compared byte-for-byte. The one part of it that's still
+  // a real fidelity claim — the default volume — is pinned here by parsing
+  // it straight out of the reference rather than hardcoding 0.5 on both
+  // sides.
+  it("pins the reference's default masterVol as AudioEngine's default getMasterVolume()", () => {
+    const stateLine = refSource(REF.audioState);
+    const match = /masterVol=(\.\d+|\d+(?:\.\d+)?)/.exec(stateLine);
+    if (!match) throw new Error("couldn't find masterVol=... in the reference's audio state line");
+    expect(getMasterVolume()).toBe(Number(match[1]));
+  });
+
+  it("audioInit's body matches the reference exactly once its one required type annotation is stripped — the drone bed's frequencies, gains and LFO rates untouched", () => {
+    const moduleSource = readModuleSource("src/audio/AudioEngine.ts");
+    const refChunk = refSource(REF.audioInit);
+    expect(stripDroneParamAnnotation(extractFunctionBody(moduleSource, "audioInit"))).toBe(
+      extractFunctionBody(refChunk, "audioInit"),
+    );
+  });
+
+  it("blip's body matches the reference exactly once accessor calls are reversed to bare AC/masterG/echoG", () => {
+    const moduleSource = readModuleSource("src/audio/Sfx.ts");
+    const refChunk = refSource(REF.blip);
+    expect(denormalizeAudioAccessors(extractFunctionBody(moduleSource, "blip"))).toBe(
+      extractFunctionBody(refChunk, "blip"),
+    );
+  });
+
+  it("bang's body matches the reference exactly once accessor calls are reversed", () => {
+    const moduleSource = readModuleSource("src/audio/Sfx.ts");
+    const refChunk = refSource(REF.bang);
+    expect(denormalizeAudioAccessors(extractFunctionBody(moduleSource, "bang"))).toBe(
+      extractFunctionBody(refChunk, "bang"),
+    );
+  });
+
+  it("click's body is byte-identical to the reference — it only calls bang() and touches no engine state of its own", () => {
+    const moduleSource = readModuleSource("src/audio/Sfx.ts");
+    const refChunk = refSource(REF.click);
+    expect(extractFunctionBody(moduleSource, "click")).toBe(extractFunctionBody(refChunk, "click"));
+  });
+
+  it("boom's body matches the reference exactly once accessor calls are reversed — the sub thud and noise-tail envelopes untouched", () => {
+    const moduleSource = readModuleSource("src/audio/Sfx.ts");
+    const refChunk = refSource(REF.boom);
+    expect(denormalizeAudioAccessors(extractFunctionBody(moduleSource, "boom"))).toBe(
+      extractFunctionBody(refChunk, "boom"),
     );
   });
 });

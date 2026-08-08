@@ -7,6 +7,8 @@ import { ENEMY_DEFS as EDEF } from "./enemies/EnemyDefs";
 import { TEX, buildTextures } from "./render/ProcTextures";
 import { PX, buildSprites } from "./enemies/SpriteBaker";
 import { ITEMTEX, buildItemTex } from "./render/ItemTextures";
+import { audioInit, ctx, echoBus, getMasterVolume, isReady, masterBus, setMasterVolume } from "./audio/AudioEngine";
+import { bang, blip, boom, click } from "./audio/Sfx";
 /* ============================================================
    THE BLACK SILENCE — The Hollow Parish (v3 gothic overhaul)
    2 levels · 9 enemy types + elites · 3 bosses · 6 weapons ·
@@ -156,98 +158,42 @@ function gibTick(dt){for(const g of gibs){if(!g.live)continue;
     else{g.live=false;g.vy=0;}}}}
 
 /* ============================================================
-   AUDIO
+   AUDIO — ambient/monster effects layered on the engine and core SFX
+   (audioInit/blip/bang/click/boom now live in src/audio/AudioEngine.ts
+   and src/audio/Sfx.ts; this section is Task 6's remaining ground:
+   guttural monster voices, ambient stingers, doors, bells and boss
+   music, all still reaching the engine's state through its accessors)
    ============================================================ */
-let AC=null,masterG=null,echoG=null,bossPulse=null,masterVol=.5;
-function audioInit(){
-  AC=new (window.AudioContext||window.webkitAudioContext)();
-  masterG=AC.createGain();masterG.gain.value=masterVol;masterG.connect(AC.destination);
-  const dly=AC.createDelay(1);dly.delayTime.value=.34;
-  const fb=AC.createGain();fb.gain.value=.42;
-  echoG=AC.createGain();echoG.gain.value=1;
-  echoG.connect(dly);dly.connect(fb);fb.connect(dly);dly.connect(masterG);
-  const lp=AC.createBiquadFilter();lp.type="lowpass";lp.frequency.value=170;lp.connect(masterG);
-  [[33,"sawtooth",.05],[49.5,"sine",.07],[24.7,"triangle",.06],[66,"sine",.025]].forEach(([f,t,g])=>{
-    const o=AC.createOscillator();o.type=t;o.frequency.value=f;
-    const og=AC.createGain();og.gain.value=g;
-    const lfo=AC.createOscillator();lfo.frequency.value=.05+Math.random()*.07;
-    const lg=AC.createGain();lg.gain.value=g*.6;
-    lfo.connect(lg);lg.connect(og.gain);
-    o.connect(og);og.connect(lp);o.start();lfo.start();});}
-function blip(freq,dur,type,vol,slide,echo){
-  if(!AC)return;
-  const o=AC.createOscillator(),g=AC.createGain();
-  o.type=type||"square";o.frequency.setValueAtTime(freq,AC.currentTime);
-  if(slide)o.frequency.exponentialRampToValueAtTime(slide,AC.currentTime+dur);
-  g.gain.setValueAtTime(vol||.15,AC.currentTime);
-  g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+dur);
-  o.connect(g);
-  // harsh waveforms get muffled through a lowpass so they read as dark/organic, not chiptune
-  if(o.type==="square"||o.type==="sawtooth"){
-    const lp=AC.createBiquadFilter();lp.type="lowpass";
-    lp.frequency.value=Math.max(420,Math.min(freq*3.2,2200));lp.Q.value=.6;
-    g.connect(lp);lp.connect(echo?echoG:masterG);
-  } else g.connect(echo?echoG:masterG);
-  o.start();o.stop(AC.currentTime+dur);}
-function bang(dur,vol,low,hi){
-  if(!AC)return;
-  const n=AC.createBufferSource(),buf=AC.createBuffer(1,AC.sampleRate*dur,AC.sampleRate);
-  const d=buf.getChannelData(0);
-  for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,2);
-  n.buffer=buf;
-  const f=AC.createBiquadFilter();f.type="lowpass";f.frequency.value=low||1800;
-  let node=f;
-  if(hi){const h=AC.createBiquadFilter();h.type="highpass";h.frequency.value=hi;f.connect(h);node=h;}
-  const g=AC.createGain();g.gain.value=vol||.4;
-  n.connect(f);node.connect(g);g.connect(masterG);n.start();}
-function click(vol){bang(.025,vol||.18,4000,600);}
-/* one clean, deep explosion — low body thud + soft noise tail, no chiptune, no stacking */
-function boom(power){
-  if(!AC)return;const t0=AC.currentTime;power=power||1;
-  const out=AC.createGain();out.gain.value=Math.min(.7,.5*power);out.connect(masterG);
-  // sub thud (sine drop)
-  const o=AC.createOscillator();o.type="sine";
-  o.frequency.setValueAtTime(150,t0);o.frequency.exponentialRampToValueAtTime(38,t0+.4);
-  const og=AC.createGain();og.gain.setValueAtTime(.9,t0);og.gain.exponentialRampToValueAtTime(.001,t0+.5);
-  o.connect(og);og.connect(out);o.start(t0);o.stop(t0+.5);
-  // low rumble noise, lowpassed, fading
-  const dur=.7;const ns=AC.createBufferSource();
-  const buf=AC.createBuffer(1,AC.sampleRate*dur,AC.sampleRate);const d=buf.getChannelData(0);
-  for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,1.6);
-  ns.buffer=buf;
-  const lp=AC.createBiquadFilter();lp.type="lowpass";
-  lp.frequency.setValueAtTime(900,t0);lp.frequency.exponentialRampToValueAtTime(120,t0+dur);
-  const ng=AC.createGain();ng.gain.setValueAtTime(.6,t0);ng.gain.exponentialRampToValueAtTime(.001,t0+dur);
-  ns.connect(lp);lp.connect(ng);ng.connect(out);ns.start(t0);ns.stop(t0+dur);}
+let bossPulse=null;
 /* ===== GUTTURAL MONSTER VOICES (Doom/Blood style, not chiptune) =====
    Built from filtered noise + detuned low oscillators + formant bandpass,
    so they read as wet, throaty, organic — never clean beeps. */
 function noiseBuf(dur){
-  const n=AC.createBuffer(1,Math.max(1,AC.sampleRate*dur|0),AC.sampleRate);
+  const n=ctx().createBuffer(1,Math.max(1,ctx().sampleRate*dur|0),ctx().sampleRate);
   const d=n.getChannelData(0);
   for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;
   return n;}
 /* low throaty growl: a roar with a formant + tremolo "vocal cords" */
 function growl(base,dur,vol,echo){
-  if(!AC)return;
-  const t0=AC.currentTime;
-  const out=AC.createGain();out.gain.value=vol||.5;out.connect(echo?echoG:masterG);
+  if(!ctx())return;
+  const t0=ctx().currentTime;
+  const out=ctx().createGain();out.gain.value=vol||.5;out.connect(echo?echoBus():masterBus());
   // rumble oscillators (detuned, sub + body)
   [base,base*1.01,base*1.5,base*.5].forEach((f,i)=>{
-    const o=AC.createOscillator();o.type=i<2?"sawtooth":"square";
+    const o=ctx().createOscillator();o.type=i<2?"sawtooth":"square";
     o.frequency.setValueAtTime(f*1.15,t0);
     o.frequency.exponentialRampToValueAtTime(f*.7,t0+dur);
-    const g=AC.createGain();g.gain.value=(i<2?.6:.25);
+    const g=ctx().createGain();g.gain.value=(i<2?.6:.25);
     o.connect(g);g.connect(out);o.start(t0);o.stop(t0+dur);});
   // breathy noise layer through a moving bandpass (the "throat")
-  const ns=AC.createBufferSource();ns.buffer=noiseBuf(dur);
-  const bp=AC.createBiquadFilter();bp.type="bandpass";bp.Q.value=4;
+  const ns=ctx().createBufferSource();ns.buffer=noiseBuf(dur);
+  const bp=ctx().createBiquadFilter();bp.type="bandpass";bp.Q.value=4;
   bp.frequency.setValueAtTime(420,t0);bp.frequency.linearRampToValueAtTime(160,t0+dur);
-  const ng=AC.createGain();ng.gain.value=.5;
+  const ng=ctx().createGain();ng.gain.value=.5;
   ns.connect(bp);bp.connect(ng);ng.connect(out);ns.start(t0);ns.stop(t0+dur);
   // vocal-cord tremolo
-  const lfo=AC.createOscillator();lfo.type="sine";lfo.frequency.value=22+Math.random()*18;
-  const lg=AC.createGain();lg.gain.value=vol*.5||.25;lfo.connect(lg);lg.connect(out.gain);
+  const lfo=ctx().createOscillator();lfo.type="sine";lfo.frequency.value=22+Math.random()*18;
+  const lg=ctx().createGain();lg.gain.value=vol*.5||.25;lfo.connect(lg);lg.connect(out.gain);
   lfo.start(t0);lfo.stop(t0+dur);
   // amplitude envelope
   out.gain.setValueAtTime(.0001,t0);
@@ -255,42 +201,42 @@ function growl(base,dur,vol,echo){
   out.gain.exponentialRampToValueAtTime(.0001,t0+dur);}
 /* wet gurgle / splatter — bubbling viscera */
 function gurgle(dur,vol){
-  if(!AC)return;const t0=AC.currentTime;
-  const out=AC.createGain();out.gain.value=vol||.4;out.connect(masterG);
-  const ns=AC.createBufferSource();ns.buffer=noiseBuf(dur);
-  const lp=AC.createBiquadFilter();lp.type="lowpass";lp.frequency.value=900;
+  if(!ctx())return;const t0=ctx().currentTime;
+  const out=ctx().createGain();out.gain.value=vol||.4;out.connect(masterBus());
+  const ns=ctx().createBufferSource();ns.buffer=noiseBuf(dur);
+  const lp=ctx().createBiquadFilter();lp.type="lowpass";lp.frequency.value=900;
   ns.connect(lp);lp.connect(out);ns.start(t0);ns.stop(t0+dur);
   // burbling pitch wobble
-  const o=AC.createOscillator();o.type="sawtooth";
+  const o=ctx().createOscillator();o.type="sawtooth";
   o.frequency.setValueAtTime(120,t0);
   for(let i=0;i<6;i++)o.frequency.linearRampToValueAtTime(80+Math.random()*120,t0+dur*(i+1)/6);
-  const og=AC.createGain();og.gain.value=.3;o.connect(og);og.connect(out);
+  const og=ctx().createGain();og.gain.value=.3;o.connect(og);og.connect(out);
   o.start(t0);o.stop(t0+dur);
   out.gain.setValueAtTime(vol||.4,t0);out.gain.exponentialRampToValueAtTime(.0001,t0+dur);}
 /* pain yelp — short rising-then-falling throaty cry */
 function pain(base,vol){
-  if(!AC)return;const t0=AC.currentTime,dur=.22;
-  const out=AC.createGain();out.gain.value=vol||.3;out.connect(echoG);
-  const o=AC.createOscillator();o.type="sawtooth";
+  if(!ctx())return;const t0=ctx().currentTime,dur=.22;
+  const out=ctx().createGain();out.gain.value=vol||.3;out.connect(echoBus());
+  const o=ctx().createOscillator();o.type="sawtooth";
   o.frequency.setValueAtTime(base*1.4,t0);
   o.frequency.exponentialRampToValueAtTime(base*.6,t0+dur);
-  const bp=AC.createBiquadFilter();bp.type="bandpass";bp.Q.value=3;bp.frequency.value=base*2;
+  const bp=ctx().createBiquadFilter();bp.type="bandpass";bp.Q.value=3;bp.frequency.value=base*2;
   o.connect(bp);bp.connect(out);
-  const ns=AC.createBufferSource();ns.buffer=noiseBuf(dur);
-  const hp=AC.createBiquadFilter();hp.type="highpass";hp.frequency.value=600;
-  const ng=AC.createGain();ng.gain.value=.25;ns.connect(hp);hp.connect(ng);ng.connect(out);
+  const ns=ctx().createBufferSource();ns.buffer=noiseBuf(dur);
+  const hp=ctx().createBiquadFilter();hp.type="highpass";hp.frequency.value=600;
+  const ng=ctx().createGain();ng.gain.value=.25;ns.connect(hp);hp.connect(ng);ng.connect(out);
   ns.start(t0);ns.stop(t0+dur);
   o.start(t0);o.stop(t0+dur);
   out.gain.setValueAtTime(.0001,t0);out.gain.exponentialRampToValueAtTime(vol||.3,t0+.02);
   out.gain.exponentialRampToValueAtTime(.0001,t0+dur);}
 /* death — guttural roar collapsing into a wet gurgle */
 function deathCry(base){
-  if(!AC)return;
+  if(!ctx())return;
   growl(base,.5,.5,true);
   setTimeout(()=>gurgle(.4,.4),180);}
 /* sighting snarl per enemy archetype */
 function snarl(kind){
-  if(!AC)return;
+  if(!ctx())return;
   if(kind==="C"){growl(70,.7,.4,true);}          // cacodemon bellow
   else if(kind==="A"){growl(48,.9,.55,true);}    // mancubus deep groan
   else if(kind==="L"){blip(900,.18,"sawtooth",.14,1700,true);growl(220,.25,.25);} // lost soul shriek
@@ -304,52 +250,52 @@ function snarl(kind){
   else growl(110+Math.random()*60,.45,.32,true);} // generic ghoul moan
 /* wet flesh door — tearing membrane, squelch, low organic groan */
 function wetDoor(){
-  if(!AC)return;const t0=AC.currentTime,dur=1.1;
-  const out=AC.createGain();out.gain.value=.5;out.connect(echoG);
+  if(!ctx())return;const t0=ctx().currentTime,dur=1.1;
+  const out=ctx().createGain();out.gain.value=.5;out.connect(echoBus());
   // squelch: lowpassed noise sweeping down (suction/tearing)
-  const ns=AC.createBufferSource();ns.buffer=noiseBuf(dur);
-  const lp=AC.createBiquadFilter();lp.type="lowpass";
+  const ns=ctx().createBufferSource();ns.buffer=noiseBuf(dur);
+  const lp=ctx().createBiquadFilter();lp.type="lowpass";
   lp.frequency.setValueAtTime(1400,t0);lp.frequency.exponentialRampToValueAtTime(180,t0+dur);
-  const ng=AC.createGain();ng.gain.value=.6;
+  const ng=ctx().createGain();ng.gain.value=.6;
   ns.connect(lp);lp.connect(ng);ng.connect(out);ns.start(t0);ns.stop(t0+dur);
   // low organic groan underneath
-  const o=AC.createOscillator();o.type="sawtooth";
+  const o=ctx().createOscillator();o.type="sawtooth";
   o.frequency.setValueAtTime(60,t0);o.frequency.linearRampToValueAtTime(38,t0+dur);
-  const bp=AC.createBiquadFilter();bp.type="bandpass";bp.Q.value=5;bp.frequency.value=160;
-  const og=AC.createGain();og.gain.value=.4;
+  const bp=ctx().createBiquadFilter();bp.type="bandpass";bp.Q.value=5;bp.frequency.value=160;
+  const og=ctx().createGain();og.gain.value=.4;
   o.connect(bp);bp.connect(og);og.connect(out);o.start(t0);o.stop(t0+dur);
   out.gain.setValueAtTime(.0001,t0);out.gain.exponentialRampToValueAtTime(.5,t0+.06);
   out.gain.exponentialRampToValueAtTime(.0001,t0+dur);
   setTimeout(()=>gurgle(.4,.35),260);}
 /* heavy stone/iron door — deep grind + low thud, no chiptune */
 function stoneDoor(){
-  if(!AC)return;const t0=AC.currentTime,dur=.9;
-  const out=AC.createGain();out.gain.value=.45;out.connect(echoG);
-  const ns=AC.createBufferSource();ns.buffer=noiseBuf(dur);
-  const bp=AC.createBiquadFilter();bp.type="bandpass";bp.Q.value=2;
+  if(!ctx())return;const t0=ctx().currentTime,dur=.9;
+  const out=ctx().createGain();out.gain.value=.45;out.connect(echoBus());
+  const ns=ctx().createBufferSource();ns.buffer=noiseBuf(dur);
+  const bp=ctx().createBiquadFilter();bp.type="bandpass";bp.Q.value=2;
   bp.frequency.setValueAtTime(300,t0);bp.frequency.linearRampToValueAtTime(90,t0+dur);
-  const ng=AC.createGain();ng.gain.value=.5;
+  const ng=ctx().createGain();ng.gain.value=.5;
   ns.connect(bp);bp.connect(ng);ng.connect(out);ns.start(t0);ns.stop(t0+dur);
-  const o=AC.createOscillator();o.type="square";
+  const o=ctx().createOscillator();o.type="square";
   o.frequency.setValueAtTime(44,t0);o.frequency.linearRampToValueAtTime(30,t0+dur);
-  const og=AC.createGain();og.gain.value=.3;o.connect(og);og.connect(out);
+  const og=ctx().createGain();og.gain.value=.3;o.connect(og);og.connect(out);
   o.start(t0);o.stop(t0+dur);
   out.gain.setValueAtTime(.0001,t0);out.gain.exponentialRampToValueAtTime(.45,t0+.05);
   out.gain.exponentialRampToValueAtTime(.0001,t0+dur);}
-function bellToll(){if(!AC)return;
+function bellToll(){if(!ctx())return;
   [196,98,147].forEach((f,i)=>blip(f,2.6-i*.4,"sine",.05-i*.012,f*.99,true));}
-function organChord(){if(!AC)return;
+function organChord(){if(!ctx())return;
   [65.4,98,130.8,155.6].forEach(f=>blip(f,4,"square",.012,f*.995,true));}
 function pianoNote(midi){
-  if(!AC)return;
+  if(!ctx())return;
   const f=440*Math.pow(2,(midi-69)/12);
   [[f,"triangle",.12],[f*2,"sine",.04],[f*.5,"sine",.03]].forEach(([fr,t,v])=>{
-    const o=AC.createOscillator(),g=AC.createGain();
+    const o=ctx().createOscillator(),g=ctx().createGain();
     o.type=t;o.frequency.value=fr;
-    g.gain.setValueAtTime(v,AC.currentTime);
-    g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+1.4);
-    o.connect(g);g.connect(echoG);o.start();o.stop(AC.currentTime+1.4);});}
-function startBossMusic(){if(!AC||bossPulse)return;
+    g.gain.setValueAtTime(v,ctx().currentTime);
+    g.gain.exponentialRampToValueAtTime(.001,ctx().currentTime+1.4);
+    o.connect(g);g.connect(echoBus());o.start();o.stop(ctx().currentTime+1.4);});}
+function startBossMusic(){if(!ctx()||bossPulse)return;
   let beat=0;
   bossPulse=setInterval(()=>{
     bang(.09,.22,140);
@@ -706,7 +652,7 @@ const casings=[],puffs=[],bloodHits=[];
 function ejectCasing(kind){
   casings.push({x:FW/2+rnd(4,12),y:FH*.62,vx:rnd(20,55),vy:rnd(-70,-30),
     rot:rnd(0,6),vr:rnd(-12,12),kind,life:1.6});
-  if(AC)setTimeout(()=>blip(rnd(1800,2600),.04,"square",.025),rnd(250,450));}
+  if(ctx())setTimeout(()=>blip(rnd(1800,2600),.04,"square",.025),rnd(250,450));}
 function screenBlood(){
   for(let i=0;i<5;i++)bloodHits.push({x:rnd(0,FW),y:rnd(0,FH),r:rnd(6,22),life:1});}
 const SKIN="#7a6a52",SLEEVE="#2e3036",BOOT="#241c14",
@@ -1151,7 +1097,7 @@ function woodP(x,y,z,n){for(let i=0;i<n;i++)
     rnd(.32,.45),rnd(.2,.3),rnd(.08,.14),rnd(.4,.9),2);}
 let ambT=6,heartT=0,breathT=0;
 function ambience(dt){
-  if(!AC)return;ambT-=dt;if(ambT>0)return;
+  if(!ctx())return;ambT-=dt;if(ambT>0)return;
   ambT=rnd(8,18);
   const r=Math.random();
   if(r<.28)blip(rnd(480,720),1.4,"sine",.022,rnd(140,200),true);      // distant scream
@@ -1160,7 +1106,7 @@ function ambience(dt){
   else blip(rnd(1200,2200),.08,"sine",.03,undefined,true);            // drip
 }
 function vitalsAudio(dt){
-  if(!AC||S.dead)return;
+  if(!ctx()||S.dead)return;
   if(S.hp<35){heartT-=dt;
     if(heartT<=0){heartT=S.hp<15?.55:.85;
       blip(52,.1,"sine",.22,40);setTimeout(()=>blip(48,.12,"sine",.18,36),130);}}
@@ -2069,7 +2015,7 @@ function collides(x,z){
     if(Math.hypot(x-p.x,z-p.z)<p.r+R)return true;}
   return false;}
 function footstep(sprinting){
-  if(!AC)return;
+  if(!ctx())return;
   const marble=S.level===1;
   bang(.05,sprinting?.09:.06,marble?2400:700,marble?600:0);
   if(marble)blip(rnd(800,1000),.05,"sine",.02);}
@@ -2395,10 +2341,9 @@ document.getElementById("mChapter").addEventListener("click",()=>{
 /* ---- settings: master volume ---- */
 (function(){
   const sl=document.getElementById("volSlider"),vv=document.getElementById("volVal");
-  sl.value=Math.round(masterVol*100);vv.textContent=sl.value;
+  sl.value=Math.round(getMasterVolume()*100);vv.textContent=sl.value;
   sl.addEventListener("input",()=>{
-    masterVol=sl.value/100;vv.textContent=sl.value;
-    if(masterG)masterG.gain.value=masterVol;});
+    setMasterVolume(sl.value/100);vv.textContent=sl.value;});
 })();
 let last=performance.now();
 function loop(t){
