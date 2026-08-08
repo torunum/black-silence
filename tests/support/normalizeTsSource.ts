@@ -34,12 +34,7 @@
  *     parameter marker. Verified against the current file with
  *     `grep -noE '.\?.' src/enemies/SpriteBaker.ts` before relying on this.
  *
- *  4. An `as Type` cast: word-boundary `as` followed by a type-looking
- *     token. Not currently present in either body (the only `as` in
- *     SpriteBaker.ts is the file's `import * as THREE`, which sits outside
- *     any extracted function body). Included for forward compatibility.
- *
- *  5. A non-null assertion `!`: immediately after a word character, `)` or
+ *  4. A non-null assertion `!`: immediately after a word character, `)` or
  *     `]`, and NOT immediately followed by `=` (which would make it the
  *     real operators `!=`/`!==` — e.g. `stumps!==false` in buildSprites
  *     must NOT be touched, and is not, because its `!` is followed by `=`).
@@ -64,7 +59,13 @@ export function normalizeTsSource(src: string): string {
   out = out.replace(/\bexport\s+(function|const|let|var|class|interface|type|default)\b/g, "$1");
   out = out.replace(/\)\s*:\s*[A-Za-z_$][\w$.<>[\],\s|]*?\s*(?=\{|=>)/g, ")");
   out = out.replace(/(\w)\?(?=[,)])/g, "$1");
-  out = out.replace(/\bas\s+[A-Za-z_$][\w$.<>[\]]*\b/g, "");
+  // TypeScript `as` casts are deliberately NOT normalized here: a
+  // text-level regex for `as Type` cannot distinguish code from string
+  // content — e.g. the literal string "as dark" would lose "as" too — and
+  // this file's whole premise is that every transform is provably safe on
+  // this codebase's source, not merely safe on the bodies it happens to run
+  // against today. If a guarded body ever needs an `as` cast normalized,
+  // reach for a real parser, not a regex.
   out = out.replace(/(?<=[\w)\]])!(?!=)/g, "");
   return out;
 }
