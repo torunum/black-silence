@@ -3,8 +3,9 @@ import { describe, expect, it } from "vitest";
 import * as THREE from "three";
 import { evalReference, REF, refSource } from "../support/reference";
 import { installDomStubs } from "../support/domStubs";
-import { recordingCanvas, type DrawCall } from "../support/recordingCanvas";
+import { recordingCanvas, installRecordingGetContext, type DrawCall } from "../support/recordingCanvas";
 import { seedRandom } from "../support/seededRandom";
+import { expectCallLogEqual } from "../support/expectCallLogEqual";
 import { buildTextures as moduleBuildTextures } from "../../src/render/ProcTextures";
 import { texFromPx as moduleTexFromPx } from "../../src/enemies/SpriteBaker";
 import { buildItemTex as moduleBuildItemTex } from "../../src/render/ItemTextures";
@@ -36,18 +37,29 @@ import { PXDEF } from "../../src/enemies/pixels";
 
 installDomStubs();
 
-/** Points HTMLCanvasElement.prototype.getContext("2d") at a fresh recording context for the duration of `run`, restoring the previous getContext afterward. Every canvas created during `run` shares the same call log, in creation order — buildTextures/buildItemTex each create many canvases (one per texture), and the log is their concatenation, exactly like a single recording session across the whole build. */
+/**
+ * Points HTMLCanvasElement.prototype.getContext("2d") at a fresh recording
+ * context for the duration of `run`, restoring the previous getContext
+ * afterward. Every canvas created during `run` shares the same call log, in
+ * creation order — buildTextures/buildItemTex each create many canvases
+ * (one per texture), and the log is their concatenation, exactly like a
+ * single recording session across the whole build.
+ *
+ * Delegates the actual patching to recordingCanvas.ts's
+ * installRecordingGetContext, which also logs a "getContext" boundary entry
+ * per canvas — tagged with a stable creation-ordered canvas id and that
+ * canvas's width/height — so canvas *reuse* and wrong dimensions are
+ * visible in the log too, not just what got drawn once a context existed.
+ */
 function recordCanvasCalls(seed: number, run: () => void): DrawCall[] {
   const { ctx, calls } = recordingCanvas();
-  const previousGetContext = HTMLCanvasElement.prototype.getContext;
-  HTMLCanvasElement.prototype.getContext = ((kind: string) =>
-    kind === "2d" ? ctx : null) as typeof HTMLCanvasElement.prototype.getContext;
+  const restoreGetContext = installRecordingGetContext(ctx, calls);
   const restoreRandom = seedRandom(seed);
   try {
     run();
   } finally {
     restoreRandom();
-    HTMLCanvasElement.prototype.getContext = previousGetContext;
+    restoreGetContext();
   }
   return calls;
 }
@@ -66,12 +78,12 @@ describe("buildTextures behavioral parity with reference", () => {
     // A recorder that can pass on an empty log proves nothing (see the
     // brief's "a recorder that cannot fail is worse than no test").
     expect(referenceCalls.length).toBeGreaterThan(2000);
-    expect(moduleCalls).toEqual(referenceCalls);
+    expectCallLogEqual(moduleCalls, referenceCalls, "buildTextures call log");
   });
 });
 
 describe("texFromPx behavioral parity with reference (one representative sprite)", () => {
-  it("draws an identical ordered sequence of canvas calls as the reference, across plain, mirrored and dismembered variants", () => {
+  it("draws an identical ordered sequence of canvas calls as the reference, across plain, mirrored, headless (blankTop) and dismembered variants", () => {
     const refModule = evalReference<{
       texFromPx: (px: string[], pal: Record<string, string>, opts?: unknown) => unknown;
     }>([refSource(REF.texFromPx)], "({texFromPx})", { document, THREE, Math });
@@ -87,6 +99,13 @@ describe("texFromPx behavioral parity with reference (one representative sprite)
     const run = (fn: typeof moduleTexFromPx) => {
       fn(px, pal);
       fn(px, pal, { mirror: true });
+      // blankTop is buildSprites' own path for the headless walk frames
+      // (`hl`/`hlb`) — it takes `masks ||
+      // (blankTop ? [[0,0,w,blankTop]] : null)`'s SECOND branch, which a
+      // call that always passes `masks` explicitly (below, and previously
+      // the only variant this test exercised) never reaches.
+      fn(px, pal, { blankTop: head });
+      fn(px, pal, { blankTop: head, mirror: true });
       fn(px, pal, { masks: headMask, stumps: true });
       fn(px, pal, { masks: headMask, stumps: true, mirror: true });
     };
@@ -95,7 +114,7 @@ describe("texFromPx behavioral parity with reference (one representative sprite)
     const moduleCalls = recordCanvasCalls(2, () => run(moduleTexFromPx));
 
     expect(referenceCalls.length).toBeGreaterThan(50);
-    expect(moduleCalls).toEqual(referenceCalls);
+    expectCallLogEqual(moduleCalls, referenceCalls, "texFromPx call log");
   });
 });
 
@@ -111,6 +130,6 @@ describe("buildItemTex behavioral parity with reference", () => {
     const moduleCalls = recordCanvasCalls(3, () => moduleBuildItemTex());
 
     expect(referenceCalls.length).toBeGreaterThan(50);
-    expect(moduleCalls).toEqual(referenceCalls);
+    expectCallLogEqual(moduleCalls, referenceCalls, "buildItemTex call log");
   });
 });

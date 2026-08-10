@@ -1,8 +1,9 @@
 // @vitest-environment jsdom
-import { afterEach, describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { evalReference, REF, refSource } from "../support/reference";
 import { recordingAudioContext, type AudioEvent } from "../support/recordingAudio";
 import { seedRandom } from "../support/seededRandom";
+import { expectCallLogEqual } from "../support/expectCallLogEqual";
 import { audioInit as moduleAudioInit } from "../../src/audio/AudioEngine";
 import { bang as moduleBang, blip as moduleBlip, boom as moduleBoom } from "../../src/audio/Sfx";
 import { growl as moduleGrowl, snarl as moduleSnarl } from "../../src/audio/Voice";
@@ -27,7 +28,7 @@ import { growl as moduleGrowl, snarl as moduleSnarl } from "../../src/audio/Voic
  * explicitly returns an object makes `new` use that object instead of a
  * fresh `this`, which is exactly what's needed to hand both the reference
  * and the module the very same recording surface. Math is injected
- * alongside document/THREE-style globals in tests/fidelity.test.ts,
+ * alongside document/THREE-style globals in tests/behavior/textures.test.ts,
  * because vm sandboxes get their own separate realm intrinsics: without
  * explicitly passing the *outer* Math object (the one seedRandom patches)
  * into the sandbox, the sandboxed code would call its own, unpatched
@@ -39,6 +40,16 @@ import { growl as moduleGrowl, snarl as moduleSnarl } from "../../src/audio/Voic
  * only the events logged *after* that setup are compared — audioInit gets
  * its own dedicated describe block below that compares its full log
  * instead.
+ *
+ * withReferenceAudioSession/withModuleAudioSession are callback-shaped
+ * (rather than returning a `{ ..., restore }` the test calls manually) so
+ * the seedRandom/window.AudioContext restore is inside a `try/finally` —
+ * guaranteed to run even if something inside `run` throws, matching how
+ * tests/behavior/textures.test.ts's recordCanvasCalls is structured. A
+ * manual-restore-at-the-end shape does NOT give that guarantee: an
+ * exception between session start and the manual restore call (a real bug
+ * in the audio code under test, not just a failed assertion) would leak
+ * the seeded Math.random into every test that runs afterward in this file.
  */
 
 const AUDIO_CHUNKS = [
@@ -70,164 +81,175 @@ function constructorReturning(target: unknown): new () => unknown {
   return Ctor as unknown as new () => unknown;
 }
 
-function startReferenceAudioSession(seed: number): { fns: RefAudioFns; events: AudioEvent[]; restore: () => void } {
+/** Runs `run` against a fresh recording session built from the reference's audio functions, seeded for the duration. `run` gets both the reference functions and the live, still-growing `events` array, so callers can mark a baseline (e.g. right after audioInit()) and slice off just their own contribution. */
+function withReferenceAudioSession<T>(seed: number, run: (fns: RefAudioFns, events: AudioEvent[]) => T): T {
   const { ctx, events } = recordingAudioContext();
   const restoreRandom = seedRandom(seed);
-  const fns = evalReference<RefAudioFns>(AUDIO_CHUNKS, AUDIO_EXPR, {
-    window: { AudioContext: constructorReturning(ctx) },
-    Math,
-  });
-  return { fns, events, restore: restoreRandom };
+  try {
+    const fns = evalReference<RefAudioFns>(AUDIO_CHUNKS, AUDIO_EXPR, {
+      window: { AudioContext: constructorReturning(ctx) },
+      Math,
+    });
+    return run(fns, events);
+  } finally {
+    restoreRandom();
+  }
 }
 
-let restoreGlobalAudioContext: (() => void) | undefined;
-
-function startModuleAudioSession(seed: number): { events: AudioEvent[]; restore: () => void } {
+/** The module-side equivalent of withReferenceAudioSession: patches window.AudioContext to hand back the recording ctx, seeds Math.random, and guarantees both are undone in a finally. */
+function withModuleAudioSession<T>(seed: number, run: (events: AudioEvent[]) => T): T {
   const { ctx, events } = recordingAudioContext();
   const previous = (globalThis as unknown as { AudioContext?: unknown }).AudioContext;
   (globalThis as unknown as { AudioContext: unknown }).AudioContext = constructorReturning(ctx);
   const restoreRandom = seedRandom(seed);
-  const restore = () => {
+  try {
+    return run(events);
+  } finally {
     restoreRandom();
     (globalThis as unknown as { AudioContext?: unknown }).AudioContext = previous;
-  };
-  restoreGlobalAudioContext = restore;
-  return { events, restore };
+  }
 }
-
-afterEach(() => {
-  // Safety net: if an assertion throws mid-test, still undo the
-  // window.AudioContext patch and the Math.random seed so a failure in one
-  // test can't leak determinism/global state into the next.
-  restoreGlobalAudioContext?.();
-  restoreGlobalAudioContext = undefined;
-});
 
 describe("audioInit behavioral parity with reference", () => {
   it("builds an identical WebAudio graph for the echo loop, ambience lowpass and four-oscillator drone bed", () => {
-    const ref = startReferenceAudioSession(10);
-    ref.fns.audioInit();
-    const referenceEvents = [...ref.events];
-    ref.restore();
-
-    const mod = startModuleAudioSession(10);
-    moduleAudioInit();
-    const moduleEvents = [...mod.events];
-    mod.restore();
+    const referenceEvents = withReferenceAudioSession(10, (fns, events) => {
+      fns.audioInit();
+      return [...events];
+    });
+    const moduleEvents = withModuleAudioSession(10, (events) => {
+      moduleAudioInit();
+      return [...events];
+    });
 
     // A recorder that can pass on an empty log proves nothing.
     expect(referenceEvents.length).toBeGreaterThan(50);
-    expect(moduleEvents).toEqual(referenceEvents);
+    expectCallLogEqual(moduleEvents, referenceEvents, "audioInit event log");
   });
 });
 
 describe("blip behavioral parity with reference", () => {
-  it("schedules an identical oscillator+gain graph, including the harsh-waveform lowpass and echo-bus routing branches", () => {
-    const ref = startReferenceAudioSession(11);
-    ref.fns.audioInit();
-    const refBaseline = ref.events.length;
-    ref.fns.blip(440, 0.12, "square", 0.2, 900, false); // square -> lowpass branch, dry
-    ref.fns.blip(660, 0.08, "sine", 0.15, 0, true); // sine -> no lowpass, echo bus
-    const referenceEvents = ref.events.slice(refBaseline);
-    ref.restore();
+  it("schedules an identical oscillator+gain graph, including the harsh-waveform lowpass branch, echo-bus routing, and the type/vol default-argument fallbacks", () => {
+    const run = (fns: Pick<RefAudioFns, "blip">) => {
+      fns.blip(440, 0.12, "square", 0.2, 900, false); // square -> lowpass branch, dry
+      fns.blip(660, 0.08, "sine", 0.15, 0, true); // sine -> no lowpass, echo bus
+      fns.blip(300, 0.05); // type/vol/slide/echo all omitted -> type||"square", vol||.15
+    };
 
-    const mod = startModuleAudioSession(11);
-    moduleAudioInit();
-    const modBaseline = mod.events.length;
-    moduleBlip(440, 0.12, "square", 0.2, 900, false);
-    moduleBlip(660, 0.08, "sine", 0.15, 0, true);
-    const moduleEvents = mod.events.slice(modBaseline);
-    mod.restore();
+    const referenceEvents = withReferenceAudioSession(11, (fns, events) => {
+      fns.audioInit();
+      const baseline = events.length;
+      run(fns);
+      return events.slice(baseline);
+    });
+    const moduleEvents = withModuleAudioSession(11, (events) => {
+      moduleAudioInit();
+      const baseline = events.length;
+      run({ blip: moduleBlip });
+      return events.slice(baseline);
+    });
 
     expect(referenceEvents.length).toBeGreaterThan(10);
-    expect(moduleEvents).toEqual(referenceEvents);
+    expectCallLogEqual(moduleEvents, referenceEvents, "blip call log");
   });
 });
 
 describe("bang behavioral parity with reference", () => {
   it("schedules an identical buffer-source+filter(+highpass) graph", () => {
-    const ref = startReferenceAudioSession(12);
-    ref.fns.audioInit();
-    const refBaseline = ref.events.length;
-    ref.fns.bang(0.02, 0.3, 1200, 300); // hi given -> highpass branch
-    ref.fns.bang(0.015, 0.18); // defaults -> no highpass
-    const referenceEvents = ref.events.slice(refBaseline);
-    ref.restore();
+    const run = (fns: Pick<RefAudioFns, "bang">) => {
+      fns.bang(0.02, 0.3, 1200, 300); // hi given -> highpass branch
+      fns.bang(0.015, 0.18); // low/hi omitted -> defaults
+    };
 
-    const mod = startModuleAudioSession(12);
-    moduleAudioInit();
-    const modBaseline = mod.events.length;
-    moduleBang(0.02, 0.3, 1200, 300);
-    moduleBang(0.015, 0.18);
-    const moduleEvents = mod.events.slice(modBaseline);
-    mod.restore();
+    const referenceEvents = withReferenceAudioSession(12, (fns, events) => {
+      fns.audioInit();
+      const baseline = events.length;
+      run(fns);
+      return events.slice(baseline);
+    });
+    const moduleEvents = withModuleAudioSession(12, (events) => {
+      moduleAudioInit();
+      const baseline = events.length;
+      run({ bang: moduleBang });
+      return events.slice(baseline);
+    });
 
     expect(referenceEvents.length).toBeGreaterThan(10);
-    expect(moduleEvents).toEqual(referenceEvents);
+    expectCallLogEqual(moduleEvents, referenceEvents, "bang call log");
   });
 });
 
 describe("boom behavioral parity with reference", () => {
-  it("schedules an identical sub-thud + noise-tail graph", () => {
-    const ref = startReferenceAudioSession(13);
-    ref.fns.audioInit();
-    const refBaseline = ref.events.length;
-    ref.fns.boom(1.2);
-    const referenceEvents = ref.events.slice(refBaseline);
-    ref.restore();
+  it("schedules an identical sub-thud + noise-tail graph, including the power default-argument fallback", () => {
+    const run = (fns: Pick<RefAudioFns, "boom">) => {
+      fns.boom(1.2);
+      fns.boom(); // power omitted -> power||1
+    };
 
-    const mod = startModuleAudioSession(13);
-    moduleAudioInit();
-    const modBaseline = mod.events.length;
-    moduleBoom(1.2);
-    const moduleEvents = mod.events.slice(modBaseline);
-    mod.restore();
+    const referenceEvents = withReferenceAudioSession(13, (fns, events) => {
+      fns.audioInit();
+      const baseline = events.length;
+      run(fns);
+      return events.slice(baseline);
+    });
+    const moduleEvents = withModuleAudioSession(13, (events) => {
+      moduleAudioInit();
+      const baseline = events.length;
+      run({ boom: moduleBoom });
+      return events.slice(baseline);
+    });
 
     expect(referenceEvents.length).toBeGreaterThan(10);
-    expect(moduleEvents).toEqual(referenceEvents);
+    expectCallLogEqual(moduleEvents, referenceEvents, "boom call log");
   });
 });
 
 describe("growl behavioral parity with reference", () => {
-  it("schedules an identical rumble+throat+tremolo graph — the detuned oscillators, moving bandpass and vocal-cord LFO", () => {
-    const ref = startReferenceAudioSession(14);
-    ref.fns.audioInit();
-    const refBaseline = ref.events.length;
-    ref.fns.growl(70, 0.3, 0.4, true);
-    const referenceEvents = ref.events.slice(refBaseline);
-    ref.restore();
+  it("schedules an identical rumble+throat+tremolo graph — the detuned oscillators, moving bandpass, vocal-cord LFO, and the vol/echo default-argument fallbacks", () => {
+    const run = (fns: Pick<RefAudioFns, "growl">) => {
+      fns.growl(70, 0.3, 0.4, true);
+      fns.growl(90, 0.2); // vol/echo omitted -> vol||.5, vol*.5||.25, echo?...:masterBus()
+    };
 
-    const mod = startModuleAudioSession(14);
-    moduleAudioInit();
-    const modBaseline = mod.events.length;
-    moduleGrowl(70, 0.3, 0.4, true);
-    const moduleEvents = mod.events.slice(modBaseline);
-    mod.restore();
+    const referenceEvents = withReferenceAudioSession(14, (fns, events) => {
+      fns.audioInit();
+      const baseline = events.length;
+      run(fns);
+      return events.slice(baseline);
+    });
+    const moduleEvents = withModuleAudioSession(14, (events) => {
+      moduleAudioInit();
+      const baseline = events.length;
+      run({ growl: moduleGrowl });
+      return events.slice(baseline);
+    });
 
     expect(referenceEvents.length).toBeGreaterThan(10);
-    expect(moduleEvents).toEqual(referenceEvents);
+    expectCallLogEqual(moduleEvents, referenceEvents, "growl call log");
   });
 });
 
 describe("snarl behavioral parity with reference", () => {
-  it("dispatches identically per enemy archetype, including the Math.random-seeded generic-ghoul fallback", () => {
-    const kinds = ["C", "L", "j", "unknown-fallback"];
+  it("dispatches identically for every enemy archetype (C, A, L, j, n, k, q, R, y, s) plus the Math.random-seeded generic-ghoul fallback", () => {
+    // Every branch of snarl's kind dispatch (src/audio/Voice.ts) — not a
+    // sample, all eleven, so a change to any single archetype's call is
+    // guaranteed to be caught rather than hoping the sampled subset happens
+    // to include it.
+    const kinds = ["C", "A", "L", "j", "n", "k", "q", "R", "y", "s", "unknown-fallback"];
 
-    const ref = startReferenceAudioSession(15);
-    ref.fns.audioInit();
-    const refBaseline = ref.events.length;
-    for (const kind of kinds) ref.fns.snarl(kind);
-    const referenceEvents = ref.events.slice(refBaseline);
-    ref.restore();
-
-    const mod = startModuleAudioSession(15);
-    moduleAudioInit();
-    const modBaseline = mod.events.length;
-    for (const kind of kinds) moduleSnarl(kind);
-    const moduleEvents = mod.events.slice(modBaseline);
-    mod.restore();
+    const referenceEvents = withReferenceAudioSession(15, (fns, events) => {
+      fns.audioInit();
+      const baseline = events.length;
+      for (const kind of kinds) fns.snarl(kind);
+      return events.slice(baseline);
+    });
+    const moduleEvents = withModuleAudioSession(15, (events) => {
+      moduleAudioInit();
+      const baseline = events.length;
+      for (const kind of kinds) moduleSnarl(kind);
+      return events.slice(baseline);
+    });
 
     expect(referenceEvents.length).toBeGreaterThan(10);
-    expect(moduleEvents).toEqual(referenceEvents);
+    expectCallLogEqual(moduleEvents, referenceEvents, "snarl call log");
   });
 });
