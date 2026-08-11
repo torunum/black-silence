@@ -113,6 +113,43 @@ export const REF = {
   startBossMusic: [1840, 1846],
   /** stopBossMusic — clears and nulls bossPulse. */
   stopBossMusic: [1847, 1847],
+  /**
+   * The fx2d overlay canvas + FW/FH/VW/VH + sizeFx, the casing/puff/
+   * blood-hit arrays, ejectCasing and screenBlood — src/render/Overlay2D.ts.
+   */
+  overlay2d: [2198, 2212],
+  /**
+   * SKIN/SLEEVE/BOOT/DARK/MID/LIT/RUST/WOOD/GLOW/HOLY, the VM palette,
+   * vRect/vFlat/vGrad/vBarrel/vTube/vWood/vScrew/vHole/vTrigger, and MUZ —
+   * src/render/viewmodel/kit.ts.
+   */
+  viewmodelKit: [2213, 2263],
+  /**
+   * pxCanvas, GP, WPX, wcv and buildWeaponSprites (including every weapon's
+   * inline pistolIdle/sgIdle/... row-array literals) —
+   * src/render/viewmodel/sprites.ts and its pixels/weapons0.ts, weapons1.ts.
+   */
+  viewmodelSprites: [2264, 2509],
+  /**
+   * buildWeaponSprites alone, without pxCanvas/GP/WPX/wcv above it — lets a
+   * caller override pxCanvas (e.g. to the identity function, so reg()'s
+   * frames.map(f=>pxCanvas(f,GP)) hands back raw row arrays instead of a
+   * baked, JSON-opaque canvas) via evalReference's globals. Injecting a
+   * pxCanvas global against REF.viewmodelSprites instead would not work:
+   * that chunk's own `function pxCanvas(...)` declaration would win once
+   * evaluated (a chunk's top-level function declarations bind on the
+   * sandbox's global object the same way a script's would, overwriting
+   * whatever the caller injected under the same name) — see
+   * tests/behavior/viewmodel.test.ts's referenceWeaponFrames.
+   */
+  viewmodelBuildWeaponSprites: [2310, 2509],
+  /**
+   * frameFor, fxTick, drawKickBoot and drawViewmodel — frameFor/
+   * drawKickBoot/drawViewmodel live in src/render/viewmodel/draw.ts; fxTick
+   * lives in src/render/Overlay2D.ts (see REF.overlay2d's doc comment for
+   * why fxTick moved apart from the draw functions it calls).
+   */
+  viewmodelDraw: [2510, 2646],
 } as const satisfies Record<string, readonly [number, number]>;
 
 /** Reference source text for a [start, end] 1-indexed inclusive line range. */

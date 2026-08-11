@@ -11,6 +11,9 @@ import { PXDEF } from "../src/enemies/pixels";
 import { PX, buildSprites } from "../src/enemies/SpriteBaker";
 import { ITEMTEX, buildItemTex } from "../src/render/ItemTextures";
 import { getMasterVolume } from "../src/audio/AudioEngine";
+import { GP, WEAPON_PIXELS } from "../src/render/viewmodel/sprites";
+import { loadGameHtml } from "./support/domStubs";
+import type * as ViewmodelKit from "../src/render/viewmodel/kit";
 import { evalReference, REF, refSource } from "./support/reference";
 import { installDomStubs } from "./support/domStubs";
 import { normalizeTsSource } from "./support/normalizeTsSource";
@@ -604,5 +607,98 @@ describe("Voice/Ambient vs reference", () => {
     expect(extractFunctionBody(moduleSource, "stopBossMusic")).toBe(
       extractFunctionBody(refChunk, "stopBossMusic"),
     );
+  });
+});
+
+describe("WEAPON_PIXELS vs. reference", () => {
+  // Pure data literal — src/render/viewmodel/sprites.ts hoists each
+  // weapon's row-array literals (the reference's own local pistolIdle/
+  // sgIdle/.../srIdle consts, declared inline inside buildWeaponSprites)
+  // out to src/render/viewmodel/pixels/{weapons0,weapons1}.ts, the same
+  // "data lives apart from the code that consumes it" shape as PXDEF above.
+  // Extracted here by running the reference's own buildWeaponSprites() with
+  // pxCanvas faked to the identity function, so reg()'s
+  // frames.map(f=>pxCanvas(f,GP)) hands back the raw row arrays instead of
+  // a baked (and therefore byte-incomparable) canvas — see
+  // tests/behavior/viewmodel.test.ts's referenceWeaponFrames, which uses
+  // the identical technique for its per-weapon sabotage-proof coverage.
+  const refWPX: Record<number, { idle: string[][]; fire: string[][]; reload: string[][] }> = {};
+  evalReference(
+    [refSource(REF.viewmodelBuildWeaponSprites)],
+    "buildWeaponSprites()",
+    { WPX: refWPX, GP: {}, pxCanvas: (rows: string[]) => rows },
+  );
+  const refWeaponPixels = Object.keys(refWPX).map(Number).sort((a, b) => a - b).map((k) => refWPX[k]);
+
+  it("has the identical 8 weapon slots, in order", () => {
+    expect(WEAPON_PIXELS.length).toBe(8);
+    expect(refWeaponPixels.length).toBe(8);
+  });
+
+  it("matches every row of every idle/fire/reload frame, slot for slot — the largest single body of art this task moved", () => {
+    expect(WEAPON_PIXELS).toEqual(refWeaponPixels);
+  });
+});
+
+describe("GP (weapon sprite palette) vs. reference", () => {
+  const refGP = evalReference<Record<string, string>>([refSource(REF.viewmodelSprites)], "GP");
+
+  it("has the identical key set", () => {
+    expect(Object.keys(GP).sort()).toEqual(Object.keys(refGP).sort());
+  });
+
+  it("matches every palette entry", () => {
+    expect(GP).toEqual(refGP);
+  });
+});
+
+describe("viewmodel kit (SKIN/SLEEVE/.../HOLY, VM, MUZ) vs. reference", () => {
+  // src/render/viewmodel/kit.ts — SKIN, DARK, MID, LIT, RUST, WOOD, GLOW and
+  // HOLY are unused by the current game (dead code in the reference too,
+  // preserved verbatim rather than pruned); SLEEVE and BOOT feed
+  // drawKickBoot's vGrad calls, already covered behaviorally by
+  // tests/behavior/viewmodel.test.ts's drawKickBoot suite. This is the data
+  // fidelity claim for all ten, plus VM and MUZ, independent of whether
+  // anything currently calls the functions that read them.
+  //
+  // kit.ts imports src/render/Overlay2D.ts's getFx(), and Overlay2D.ts
+  // grabs the real fx2d 2D context eagerly at its own module top level (see
+  // tests/behavior/viewmodel.test.ts's doc comment) — so, like that file,
+  // kit.ts is imported dynamically here, after loadGameHtml()/
+  // installDomStubs() make `#fx2d` and a working (stub) getContext exist,
+  // rather than statically at this file's top (which would resolve before
+  // either ran).
+  interface RefKitConstants {
+    SKIN: string; SLEEVE: string; BOOT: string; DARK: string; MID: string;
+    LIT: string; RUST: string; WOOD: string; GLOW: string; HOLY: string;
+    VM: Record<string, string>;
+    MUZ: Array<{ y: number; r: number }>;
+  }
+  const ref = evalReference<RefKitConstants>(
+    [refSource(REF.viewmodelKit)],
+    "({SKIN,SLEEVE,BOOT,DARK,MID,LIT,RUST,WOOD,GLOW,HOLY,VM,MUZ})",
+  );
+  let Kit: typeof ViewmodelKit;
+
+  beforeAll(async () => {
+    installDomStubs();
+    loadGameHtml();
+    Kit = await import("../src/render/viewmodel/kit");
+  });
+
+  it("matches SKIN/SLEEVE/BOOT/DARK/MID/LIT/RUST/WOOD/GLOW/HOLY", () => {
+    const ours = { SKIN: Kit.SKIN, SLEEVE: Kit.SLEEVE, BOOT: Kit.BOOT, DARK: Kit.DARK, MID: Kit.MID,
+      LIT: Kit.LIT, RUST: Kit.RUST, WOOD: Kit.WOOD, GLOW: Kit.GLOW, HOLY: Kit.HOLY };
+    const refs = { SKIN: ref.SKIN, SLEEVE: ref.SLEEVE, BOOT: ref.BOOT, DARK: ref.DARK, MID: ref.MID,
+      LIT: ref.LIT, RUST: ref.RUST, WOOD: ref.WOOD, GLOW: ref.GLOW, HOLY: ref.HOLY };
+    expect(ours).toEqual(refs);
+  });
+
+  it("matches the VM palette", () => {
+    expect(Kit.VM).toEqual(ref.VM);
+  });
+
+  it("matches MUZ, the per-weapon muzzle-flash alignment table, slot for slot", () => {
+    expect(Kit.MUZ).toEqual(ref.MUZ);
   });
 });
