@@ -44,6 +44,17 @@ export const REF = {
   enemyDefs: [2678, 2716],
   /** const rnd=..., clamp=..., pick=... — needed alongside procTextures below, which calls rnd/pick. */
   mathHelpers: [214, 216],
+  /**
+   * buildParticles/spawnP/blood/sparks/smoke3d/fireP/holyP/toxicP/emberP/
+   * partTick, then the pools/wallDecals/gibs state, materials, POOLMAX/
+   * WDMAX/GIBMAX, and addPool/poolTick/addWallDecal/spawnGibs/gibTick — the
+   * PARTICLES / DECALS / GIBS section (see src/fx/Particles.ts, Decals.ts,
+   * Gibs.ts). `heads` is declared on the same `let` line (1596) but its
+   * logic lives elsewhere and is not part of this range's behavior.
+   */
+  particlesDecalsGibs: [1548, 1644],
+  /** woodP — the stray particle helper filed under the reference's "AMBIENT AUDIO + MISSING PARTICLE HELPER" banner, far from the rest of PARTICLES/DECALS/GIBS. Ambient audio itself (ambience/vitalsAudio, same banner) is a later plan's concern. */
+  woodP: [2650, 2652],
   /** makeTex, noiseFill, const TEX={}, and buildTextures — the procedural texture generator. */
   procTextures: [917, 1084],
   /** texFromPx — bakes a PXDEF creature's rows into a canvas texture, including the dismemberment mask/stump logic. */

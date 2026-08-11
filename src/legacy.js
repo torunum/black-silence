@@ -11,6 +11,10 @@ import { audioInit, ctx, getMasterVolume, setMasterVolume } from "./audio/AudioE
 import { bang, blip, boom, click } from "./audio/Sfx";
 import { deathCry, growl, gurgle, pain, snarl } from "./audio/Voice";
 import { bellToll, organChord, pianoNote, startBossMusic, stopBossMusic, stoneDoor, wetDoor } from "./audio/Ambient";
+import { setScene } from "./render/SceneRef";
+import { buildParticles, spawnP, blood, sparks, smoke3d, fireP, holyP, toxicP, emberP, woodP, partTick } from "./fx/Particles";
+import { splatMat, holeMat, scorchMat, addPool, poolTick, addWallDecal, resetDecals } from "./fx/Decals";
+import { gibGeo, gibMatsFlesh, spawnGibs, gibTick, resetGibs, spawnGibChunk } from "./fx/Gibs";
 /* ============================================================
    THE BLACK SILENCE — The Hollow Parish (v3 gothic overhaul)
    2 levels · 9 enemy types + elites · 3 bosses · 6 weapons ·
@@ -58,106 +62,7 @@ function addBlob(wx,wz,s){const m=new THREE.Mesh(new THREE.PlaneGeometry(s,s),
   new THREE.MeshBasicMaterial({map:blobTex,transparent:true,depthWrite:false}));
   m.rotation.x=-Math.PI/2;m.position.set(wx,.012,wz);scene.add(m);return m;}
 
-/* ============================================================
-   PARTICLES / DECALS / GIBS (pooled, rebuilt per level)
-   ============================================================ */
-const PMAX=1100;
-let pGeo,pPos,pCol,points,parts,pNext;
-function buildParticles(){
-  pGeo=new THREE.BufferGeometry();
-  pPos=new Float32Array(PMAX*3);pCol=new Float32Array(PMAX*3);
-  pGeo.setAttribute("position",new THREE.BufferAttribute(pPos,3));
-  pGeo.setAttribute("color",new THREE.BufferAttribute(pCol,3));
-  const pMat=new THREE.PointsMaterial({size:.09,vertexColors:true,sizeAttenuation:true});
-  points=new THREE.Points(pGeo,pMat);points.frustumCulled=false;scene.add(points);
-  parts=Array.from({length:PMAX},()=>({life:0}));pNext=0;
-  for(let i=0;i<PMAX;i++)pPos[i*3+1]=-100;
-}
-function spawnP(x,y,z,vx,vy,vz,r,g,b,life,kind){
-  const i=pNext;pNext=(pNext+1)%PMAX;
-  const p=parts[i];
-  p.x=x;p.y=y;p.z=z;p.vx=vx;p.vy=vy;p.vz=vz;p.life=life;p.kind=kind||0;
-  pCol[i*3]=r;pCol[i*3+1]=g;pCol[i*3+2]=b;}
-function blood(x,y,z,n,pow){for(let i=0;i<n;i++)
-  spawnP(x,y,z,rnd(-1,1)*pow,rnd(.3,1.6)*pow,rnd(-1,1)*pow,
-    rnd(.35,.62),rnd(.02,.08),rnd(.01,.04),rnd(.5,1.3),1);}
-function sparks(x,y,z,n){for(let i=0;i<n;i++)
-  spawnP(x,y,z,rnd(-2.4,2.4),rnd(.5,3),rnd(-2.4,2.4),
-    rnd(.8,1),rnd(.6,.85),rnd(.2,.4),rnd(.15,.4),2);}
-function smoke3d(x,y,z,n){for(let i=0;i<n;i++)
-  spawnP(x,y,z,rnd(-.3,.3),rnd(.4,1),rnd(-.3,.3),.28,.28,.3,rnd(.6,1.4),3);}
-function fireP(x,y,z,n){for(let i=0;i<n;i++)
-  spawnP(x,y,z,rnd(-1.5,1.5),rnd(1,4),rnd(-1.5,1.5),
-    rnd(.85,1),rnd(.3,.6),.1,rnd(.3,.8),2);}
-function holyP(x,y,z,n){for(let i=0;i<n;i++)
-  spawnP(x,y,z,rnd(-2.5,2.5),rnd(.5,3.5),rnd(-2.5,2.5),
-    rnd(.9,1),rnd(.85,1),rnd(.5,.7),rnd(.3,.7),2);}
-function toxicP(x,y,z,n){for(let i=0;i<n;i++)
-  spawnP(x,y,z,rnd(-.6,.6),rnd(.1,.8),rnd(-.6,.6),
-    rnd(.3,.5),rnd(.6,.85),rnd(.15,.25),rnd(.4,1),3);}
-function emberP(x,y,z){spawnP(x,y,z,rnd(-.2,.2),rnd(.4,.9),rnd(-.2,.2),
-  rnd(.85,1),rnd(.45,.65),.15,rnd(.3,.7),3);}
-function partTick(dt){
-  for(let i=0;i<PMAX;i++){const p=parts[i];
-    if(p.life<=0){pPos[i*3+1]=-100;continue;}
-    p.life-=dt;
-    p.vy-=(p.kind===3?-1.2:14)*dt;
-    p.x+=p.vx*dt;p.y+=p.vy*dt;p.z+=p.vz*dt;
-    if(p.y<0.02&&p.kind!==3){
-      if(p.kind===1){if(Math.random()<.14)addPool(p.x,p.z,rnd(.12,.3));p.life=0;}
-      else{p.y=.02;p.vy*=-.35;p.vx*=.6;p.vz*=.6;}}
-    pPos[i*3]=p.x;pPos[i*3+1]=p.y;pPos[i*3+2]=p.z;}
-  pGeo.attributes.position.needsUpdate=true;
-  pGeo.attributes.color.needsUpdate=true;}
-let pools,wallDecals,gibs,heads=[];
-const poolMat=new THREE.MeshBasicMaterial({color:0x4a0d06,transparent:true,opacity:.85,depthWrite:false});
-const splatMat=new THREE.MeshBasicMaterial({color:0x5a1008,transparent:true,opacity:.8,depthWrite:false});
-const holeMat=new THREE.MeshBasicMaterial({color:0x0c0d10,transparent:true,opacity:.9,depthWrite:false});
-const scorchMat=new THREE.MeshBasicMaterial({color:0x0a0a0a,transparent:true,opacity:.85,depthWrite:false});
-const POOLMAX=150,WDMAX=200,GIBMAX=110;
-function addPool(x,z,s){
-  let m;
-  if(pools.length>=POOLMAX){m=pools.shift();}
-  else{m=new THREE.Mesh(new THREE.CircleGeometry(1,8),poolMat);m.rotation.x=-Math.PI/2;scene.add(m);}
-  m.position.set(x,.01+Math.random()*.004,z);m.scale.set(s*.3,s*.3,1);m.userData.target=s;
-  pools.push(m);}
-function poolTick(dt){for(const m of pools){const t=m.userData.target;
-  if(m.scale.x<t){m.scale.x=Math.min(t,m.scale.x+dt*1.4);m.scale.y=m.scale.x;}}}
-function addWallDecal(x,y,z,nx,nz,s,mat){
-  let m;
-  if(wallDecals.length>=WDMAX){m=wallDecals.shift();m.material=mat;}
-  else{m=new THREE.Mesh(new THREE.PlaneGeometry(1,1),mat);scene.add(m);}
-  m.scale.set(s,s*rnd(.7,1.3),1);
-  m.position.set(x+nx*.012,y,z+nz*.012);
-  m.lookAt(x+nx,y,z+nz);m.rotation.z=Math.random()*Math.PI;
-  wallDecals.push(m);}
-const gibMatsFlesh=[new THREE.MeshLambertMaterial({color:0x6e1208}),
-  new THREE.MeshLambertMaterial({color:0x3a0c06}),
-  new THREE.MeshLambertMaterial({color:0x9a948a})];
-const gibMatsWood=[new THREE.MeshLambertMaterial({color:0x4a3826}),
-  new THREE.MeshLambertMaterial({color:0x2e2418}),
-  new THREE.MeshLambertMaterial({color:0x6a543a})];
-const gibGeo=new THREE.BoxGeometry(.13,.13,.13);
-function spawnGibs(x,y,z,n,pow,wood){
-  const mats=wood?gibMatsWood:gibMatsFlesh;
-  for(let i=0;i<n;i++){
-    let g;
-    if(gibs.length>=GIBMAX){g=gibs.shift();}
-    else{g={m:new THREE.Mesh(gibGeo,mats[0])};scene.add(g.m);}
-    g.m.material=mats[Math.random()*3|0];
-    g.m.position.set(x,y,z);
-    g.vx=rnd(-1,1)*pow;g.vy=rnd(.5,1.4)*pow;g.vz=rnd(-1,1)*pow;
-    g.spin=rnd(2,9);g.live=true;g.wood=wood;
-    g.m.scale.setScalar(rnd(.6,1.7));
-    gibs.push(g);}
-  if(!wood)blood(x,y,z,Math.min(40,n*3),3.4);}
-function gibTick(dt){for(const g of gibs){if(!g.live)continue;
-  g.vy-=16*dt;g.m.position.x+=g.vx*dt;g.m.position.y+=g.vy*dt;g.m.position.z+=g.vz*dt;
-  g.m.rotation.x+=g.spin*dt;g.m.rotation.z+=g.spin*.7*dt;
-  if(g.m.position.y<.07){g.m.position.y=.07;
-    if(Math.abs(g.vy)>1.2){g.vy*=-.4;g.vx*=.5;g.vz*=.5;
-      if(!g.wood&&Math.random()<.5)addPool(g.m.position.x,g.m.position.z,rnd(.15,.35));}
-    else{g.live=false;g.vy=0;}}}}
+let heads=[];
 
 /* ============================================================
    SUBTITLES (Adem) + ACHIEVEMENTS
@@ -946,10 +851,8 @@ function drawViewmodel(dt,tNow){
 }
 /* ============================================================
    AMBIENT AUDIO + MISSING PARTICLE HELPER
+   (the "missing particle helper", woodP, now lives in src/fx/Particles.ts)
    ============================================================ */
-function woodP(x,y,z,n){for(let i=0;i<n;i++)
-  spawnP(x,y,z,rnd(-2.5,2.5),rnd(.6,3.4),rnd(-2.5,2.5),
-    rnd(.32,.45),rnd(.2,.3),rnd(.08,.14),rnd(.4,.9),2);}
 let ambT=6,heartT=0,breathT=0;
 function ambience(dt){
   if(!ctx())return;ambT-=dt;if(ambT>0)return;
@@ -1069,6 +972,7 @@ function loadLevel(idx){
   heightMap=L.hmap||null;
   wallSegs=L.segs||[];
   scene=new THREE.Scene();
+  setScene(scene);
   scene.background=new THREE.Color(Ldef.fog);
   scene.fog=new THREE.FogExp2(Ldef.fog,Ldef.fogD*1.5);
   ambLight=new THREE.AmbientLight(Ldef.amb,Ldef.ambI*0.42);scene.add(ambLight);
@@ -1078,7 +982,7 @@ function loadLevel(idx){
   muzzleLight=new THREE.PointLight(0xffc878,0,14,1.4);scene.add(muzzleLight);
   boomLight=new THREE.PointLight(0xff7830,0,20,1.4);scene.add(boomLight);
   buildParticles();
-  pools=[];wallDecals=[];gibs=[];
+  resetDecals();resetGibs();
   doors={};enemies=[];props=[];items=[];torches=[];candles=[];
   poisonZones=[];rings=[];strikes=[];nails=[];orbs=[];heads=[];
   exitPos=null;pianoPos=null;challenge=null;bossRef=null;cine=null;
@@ -1274,14 +1178,7 @@ function severLimb(e,type,info){
   addPool(e.x,e.z,rnd(.3,.5));
   gurgle(.25,.4);
   if(info&&info.dir){ // throw a big chunk in the shot direction
-    let g;
-    if(gibs.length>=GIBMAX){g=gibs.shift();}
-    else{g={m:new THREE.Mesh(gibGeo,gibMatsFlesh[0])};scene.add(g.m);}
-    g.m.material=gibMatsFlesh[0];
-    g.m.position.set(e.x,y,e.z);g.m.scale.setScalar(2.2);
-    g.vx=info.dir.x*5+rnd(-2,2);g.vy=rnd(3,5);g.vz=info.dir.z*5+rnd(-2,2);
-    g.spin=rnd(6,12);g.live=true;g.wood=false;
-    gibs.push(g);}
+    spawnGibChunk(e.x,y,e.z,info.dir.x,info.dir.z);}
   showMsg(type==="legs"?"LEGS BLOWN OFF":"LIMB SEVERED");}
 function killEnemy(e,finalDmg,info){
   e.dead=true;
