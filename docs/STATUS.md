@@ -4,7 +4,7 @@ Written to survive session loss. If you are picking this up cold, read this
 file, then `docs/direction.md`, then the current plan under
 `docs/superpowers/plans/`. Trust this file and `git log` over any recollection.
 
-Last updated: 2026-08-12, after Plan 0C Task 3.
+Last updated: 2026-08-13, after Plan 0C Task 3's follow-up (KNOWN-6 closed).
 
 ---
 
@@ -48,7 +48,7 @@ done.
 3759 → 3040 (0A) → 2224 (0B) → 1682 (0C, in progress)
 ```
 
-Tests: 0 → 114 → 167 → 272.
+Tests: 0 → 114 → 167 → 299.
 
 ## Plan 0C status
 
@@ -58,15 +58,20 @@ Branch: `phase-0c-oracle-and-fx`, HEAD `df2efe1`, merged from `master`.
 |---|---|
 | 1 — behavioral oracle | complete, reviewed clean |
 | 2 — FX layer (particles, decals, gibs) | complete, reviewed clean |
-| 3 — weapon viewmodel art (447 lines) | complete, reviewed; **one open finding, KNOWN-6** |
+| 3 — weapon viewmodel art (447 lines) | complete, reviewed; KNOWN-6 closed |
 | 4 — subtitles, achievements, HUD messages | not started |
 | 5 — input | not started |
 
-**The immediate next action** is to close KNOWN-6 — write tests for
-`src/render/Overlay2D.ts`, which has none. `REF.overlay2d` already exists in
-`tests/support/reference.ts` as unused scaffolding, so it is a test-writing
-job with no source changes. Then Tasks 4 and 5, then the final whole-branch
-review, then merge to `master`.
+KNOWN-6 (Overlay2D untested) is closed by `tests/behavior/overlay2d.test.ts`
+— 26 cases, no source changes, verified by re-running the seven sabotages
+that originally exposed the gap plus five chosen independently. One literal,
+the casing's `life:1.6`, is provably unobservable, and finding out why turned
+up **KNOWN-7: spent casings never reach the screen at all** (spawned in
+`FW`/`FH` space, culled in `VW`/`VH` space), with most blood splats drawn
+off-canvas for the same reason.
+
+**The immediate next action** is Task 4, then Task 5, then the final
+whole-branch review, then merge to `master`.
 
 Task 4 must finally build `src/content/achievements.ts` — deferred since Plan
 0A because the reference has no achievements table; all 20 are inline literals
@@ -126,9 +131,9 @@ Two practices that have mattered most:
   gitignored `THE-BLACK-SILENCE.html` at the repo root is that artifact — it
   loads from `file://` with no network.
 
-## Two bugs a player will actually hit
+## Three bugs a player will actually hit
 
-Both predate the port, both are preserved on purpose, both are pinned by tests
+All predate the port, all are preserved on purpose, all are pinned by tests
 so they cannot change unnoticed. See `docs/known-issues.md`.
 
 - **KNOWN-1** — Level 1 has a red key and a miniboss guarding it, but no locked
@@ -139,3 +144,8 @@ so they cannot change unnoticed. See `docs/known-issues.md`.
   The chair in the priest's chambers is a Cacodemon. Do not "fix" the character
   collision without deciding what Level 2's furniture should be — removing
   eight bosses is a balance change.
+- **KNOWN-7** — Spent shell casings are spawned in `FW`/`FH` coordinates but
+  culled and drawn in `VW`/`VH` space, so every casing is spliced away before
+  its first draw. The whole casing art path is unreachable in a real window.
+  Screen-blood splats share the mix-up without the cull: about three quarters
+  of each flash lands off-canvas.

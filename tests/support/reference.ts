@@ -144,6 +144,18 @@ export const REF = {
    */
   viewmodelBuildWeaponSprites: [2310, 2509],
   /**
+   * fxTick alone, carved out of the viewmodelDraw range below so it can be
+   * evaluated WITHOUT frameFor/drawKickBoot/drawViewmodel beside it: the
+   * reference's fxTick ends by calling drawKickBoot()/drawViewmodel(dt,t),
+   * which src/render/Overlay2D.ts's port takes as parameters instead (to
+   * break an import cycle). Evaluating this range on its own leaves those
+   * two names unbound, so a test can inject them as sandbox globals and see
+   * the call ORDER — evaluating REF.viewmodelDraw instead would bind the
+   * reference's own declarations over any injected stub, the same trap
+   * REF.viewmodelBuildWeaponSprites documents for pxCanvas.
+   */
+  fxTick: [2524, 2557],
+  /**
    * frameFor, fxTick, drawKickBoot and drawViewmodel — frameFor/
    * drawKickBoot/drawViewmodel live in src/render/viewmodel/draw.ts; fxTick
    * lives in src/render/Overlay2D.ts (see REF.overlay2d's doc comment for
