@@ -45,10 +45,10 @@ printed by `npm test` as the port burn-down. When it reaches zero the port is
 done.
 
 ```
-3759 → 3040 (0A) → 2224 (0B) → 1682 (0C, in progress)
+3759 → 3040 (0A) → 2224 (0B) → 1652 (0C, in progress)
 ```
 
-Tests: 0 → 114 → 167 → 299.
+Tests: 0 → 114 → 167 → 314.
 
 ## Plan 0C status
 
@@ -59,7 +59,7 @@ Branch: `phase-0c-oracle-and-fx`, HEAD `df2efe1`, merged from `master`.
 | 1 — behavioral oracle | complete, reviewed clean |
 | 2 — FX layer (particles, decals, gibs) | complete, reviewed clean |
 | 3 — weapon viewmodel art (447 lines) | complete, reviewed; KNOWN-6 closed |
-| 4 — subtitles, achievements, HUD messages | not started |
+| 4 — subtitles, achievements, HUD messages | complete, sabotage-verified |
 | 5 — input | not started |
 
 KNOWN-6 (Overlay2D untested) is closed by `tests/behavior/overlay2d.test.ts`
@@ -70,14 +70,15 @@ up **KNOWN-7: spent casings never reach the screen at all** (spawned in
 `FW`/`FH` space, culled in `VW`/`VH` space), with most blood splats drawn
 off-canvas for the same reason.
 
-**The immediate next action** is Task 4, then Task 5, then the final
-whole-branch review, then merge to `master`.
+Task 4 built `src/content/achievements.ts` — deferred since Plan 0A because
+the reference has no achievements table; all 20 were inline literals at their
+trigger sites. Since there is no reference range to compare it against,
+`tests/content/achievements.test.ts` re-extracts all 20 triples from the
+frozen reference by regex and asserts the table reproduces them, and that
+every `ach(ACHIEVEMENTS.x, S.ach)` call site names an id the table defines.
 
-Task 4 must finally build `src/content/achievements.ts` — deferred since Plan
-0A because the reference has no achievements table; all 20 are inline literals
-at their trigger sites. The ids are `behead boot curious deadeye digger exec
-first foreman gauntlet guard heart leviathan organ pianist priest punt recital
-redec sixty sovereign`.
+**The immediate next action** is Task 5 (input), then the final whole-branch
+review, then merge to `master`.
 
 ## How fidelity is guarded
 

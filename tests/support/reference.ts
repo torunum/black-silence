@@ -143,6 +143,21 @@ export const REF = {
    * tests/behavior/viewmodel.test.ts's referenceWeaponFrames.
    */
   viewmodelBuildWeaponSprites: [2310, 2509],
+  /** onceSaid/subT/lastSayT and say — ADEM's subtitles, src/ui/Subtitles.ts. */
+  subtitles: [1852, 1862],
+  /**
+   * The two lines that open the reference's chatterTick — the subtitle
+   * countdown and the clear-on-expiry. src/ui/Subtitles.ts's tickSubtitles
+   * is these two lines and nothing else; chatterTick itself belongs to Plan
+   * 0F, so only this fragment moved.
+   */
+  subtitleTimer: [3893, 3894],
+  /** ach — the achievement toast, src/ui/Toasts.ts. Its three string arguments are the only place the reference records the achievement text; see src/content/achievements.ts. */
+  achievementToast: [1863, 1870],
+  /** msgEl/msgT, showMsg, flashDmg and flashHoly — src/ui/HudMessages.ts. */
+  hudMessages: [1909, 1914],
+  /** The one main-loop line that counts the HUD message down; src/ui/HudMessages.ts's tickMessage is exactly this, and the loop around it belongs to Plan 0F. */
+  messageTimer: [3959, 3959],
   /**
    * fxTick alone, carved out of the viewmodelDraw range below so it can be
    * evaluated WITHOUT frameFor/drawKickBoot/drawViewmodel beside it: the

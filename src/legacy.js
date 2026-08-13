@@ -18,6 +18,10 @@ import { gibGeo, gibMatsFlesh, spawnGibs, gibTick, resetGibs, spawnGibChunk } fr
 import { ejectCasing, screenBlood, fxTick } from "./render/Overlay2D";
 import { buildWeaponSprites } from "./render/viewmodel/sprites";
 import { drawKickBoot, drawViewmodel } from "./render/viewmodel/draw";
+import { ACHIEVEMENTS } from "./content/achievements";
+import { say, tickSubtitles } from "./ui/Subtitles";
+import { ach } from "./ui/Toasts";
+import { showMsg, tickMessage, flashDmg, flashHoly } from "./ui/HudMessages";
 /* ============================================================
    THE BLACK SILENCE — The Hollow Parish (v3 gothic overhaul)
    2 levels · 9 enemy types + elites · 3 bosses · 6 weapons ·
@@ -68,29 +72,6 @@ function addBlob(wx,wz,s){const m=new THREE.Mesh(new THREE.PlaneGeometry(s,s),
 let heads=[];
 
 /* ============================================================
-   SUBTITLES (Adem) + ACHIEVEMENTS
-   ============================================================ */
-const onceSaid={};let subT=0,lastSayT=-9;
-function say(id,force){
-  const lines=M[id];if(!lines)return;
-  const now=performance.now()/1000;
-  if(!force){
-    if(id.startsWith("see_")||id.startsWith("boss_")||["kickready","piano","w2","w5","w6","challenge","key"].includes(id)){
-      if(onceSaid[id])return;onceSaid[id]=1;}
-    if(now-lastSayT<3)return;}
-  lastSayT=now;
-  document.getElementById("subt").innerHTML="<b>ADEM</b><br>“"+pick(lines)+"”";
-  subT=4.3;}
-function ach(id,title,desc){
-  if(S.ach[id])return;S.ach[id]={title,desc};
-  const t=document.createElement("div");t.className="toast";
-  t.innerHTML="✦ "+title+"<small>"+desc+"</small>";
-  document.getElementById("toasts").appendChild(t);
-  requestAnimationFrame(()=>t.style.opacity=1);
-  blip(160,.5,"sine",.05,120,true);
-  setTimeout(()=>{t.style.opacity=0;setTimeout(()=>t.remove(),500);},4200);}
-
-/* ============================================================
    INPUT
    ============================================================ */
 const keys={};
@@ -123,16 +104,6 @@ addEventListener("contextmenu",e=>e.preventDefault());
 function overlayOpen(){return !document.getElementById("levelend").classList.contains("hidden")||
   !document.getElementById("win").classList.contains("hidden")||
   !document.getElementById("dead").classList.contains("hidden")||pianoOpen;}
-
-/* ============================================================
-   HUD MESSAGES
-   ============================================================ */
-const msgEl=document.getElementById("msg");let msgT=0;
-function showMsg(t,sec){msgEl.textContent=t;msgT=sec||2.2;}
-function flashDmg(a){const d=document.getElementById("dmg");d.style.opacity=a;
-  setTimeout(()=>d.style.opacity=0,90);}
-function flashHoly(a){const d=document.getElementById("holy");d.style.opacity=a;
-  setTimeout(()=>d.style.opacity=0,80);}
 
 /* ============================================================
    WEAPONS — 8 slots, state machine, interruptible reloads
@@ -495,7 +466,7 @@ function breakProp(p){
   if(Math.random()<.2){
     const k=pick(["health","bullets","shells"]);
     items.push({kind:k,x:p.x,z:p.z,sp:addSprite(ITEMTEX[k],p.x,p.z,.55,.55,.5),bob:0});}
-  if(S.propsBroken===15)ach("redec","REDECORATOR","Destroy 15 objects");}
+  if(S.propsBroken===15)ach(ACHIEVEMENTS.redec,S.ach);}
 function explodeBarrel(b){
   if(b.dead)return;b.dead=true;scene.remove(b.m);S.propsBroken++;
   shake(.7);hitStop=Math.max(hitStop,.05);
@@ -748,9 +719,9 @@ function killEnemy(e,finalDmg,info){
     for(const o of enemies){if(o.dead||o===e)continue;
       if(Math.hypot(o.x-e.x,o.z-e.z)<3)o.hp-=30;}}
   if(info.wIdx===-1){S.kickK=(S.kickK||0)+1;
-    if(S.kickK===3)ach("boot","PERCUSSIVE DIPLOMACY","3 kick kills");}
-  if(S.totKills===1)ach("first","FIRST BLOOD","The parish notices you");
-  if(S.totKills===60)ach("sixty","EXTERMINATOR","60 kills");
+    if(S.kickK===3)ach(ACHIEVEMENTS.boot,S.ach);}
+  if(S.totKills===1)ach(ACHIEVEMENTS.first,S.ach);
+  if(S.totKills===60)ach(ACHIEVEMENTS.sixty,S.ach);
   alertSound(e.x,e.z,10);
   if(e.toxic){poisonZones.push({x:e.x,z:e.z,r:1.8,t:4.5});}
   if(e.boss){bossDeath(e);return;}
@@ -763,7 +734,7 @@ function killEnemy(e,finalDmg,info){
     shake(.22);hitStop=Math.max(hitStop,.045);
     bang(.2,.45,800);gurgle(.45,.5);
     if(Math.random()<.4)say("gib");
-    if(S.totGibs===10)ach("organ","ORGAN DONOR","Gib 10 enemies");
+    if(S.totGibs===10)ach(ACHIEVEMENTS.organ,S.ach);
     if(Math.random()<.35)dropAmmo(e.x,e.z);
     return;}
   deathCry(clamp(e.pain*.3,42,200));
@@ -777,7 +748,7 @@ function killEnemy(e,finalDmg,info){
     gurgle(.32,.45);shake(.16);
     showMsg("DECAPITATED");
     if(!S.beheads)S.beheads=0;
-    if(++S.beheads===5)ach("behead","OFF WITH THEIR HEADS","Decapitate 5 enemies");
+    if(++S.beheads===5)ach(ACHIEVEMENTS.behead,S.ach);
   } else e.deathKind=1;
   e.deathDir=Math.random()<.7?1:-1;
   if(info.dir){e.kx+=info.dir.x*2.5;e.kz+=info.dir.z*2.5;}
@@ -830,26 +801,26 @@ function bossDeath(e){
   addPool(e.x,e.z,1.8);
   e.deathKind=1;e.deathT=0;e.deathDir=Math.random()<.5?1:-1;
   say("boss_dead",true);
-  if(e.key==="E"){ach("exec","HEADSMAN'S HOLIDAY","Slay the Executioner");
+  if(e.key==="E"){ach(ACHIEVEMENTS.exec,S.ach);
     showMsg("THE EXECUTIONER FALLS — TAKE THE KEY",4);}
-  if(e.key==="U"){ach("guard","ICONOCLAST","Fell the Cathedral Guardian");
+  if(e.key==="U"){ach(ACHIEVEMENTS.guard,S.ach);
     showMsg("THE GUARDIAN CRUMBLES",3.5);}
-  if(e.key==="Q"){ach("priest","DEFROCKED","End the Corrupted Priest");
+  if(e.key==="Q"){ach(ACHIEVEMENTS.priest,S.ach);
     showMsg("THE PRIEST IS SILENCED — A STAIR OPENS DOWNWARD",4.5);
     openExit();}
-  if(e.key==="Z"){ach("sovereign","NO MORE CROWNS","End the Bone Sovereign");
+  if(e.key==="Z"){ach(ACHIEVEMENTS.sovereign,S.ach);
     showMsg("THE SOVEREIGN IS UNMADE — A WAY OPENS",4.5);
     openExit();}
-  if(e.key==="N"){ach("digger","FILLED HIS OWN GRAVE","End the Gravedigger");
+  if(e.key==="N"){ach(ACHIEVEMENTS.digger,S.ach);
     showMsg("THE GRAVEDIGGER LIES STILL — A DRAIN YAWNS OPEN",4.5);
     openExit();}
-  if(e.key==="H"){ach("leviathan","DRAINED","End the Hollow Leviathan");
+  if(e.key==="H"){ach(ACHIEVEMENTS.leviathan,S.ach);
     showMsg("THE LEVIATHAN COMES APART — A SERVICE LIFT GRINDS OPEN",4.5);
     openExit();}
-  if(e.key==="V"){ach("foreman","CLOCKED OUT","End the Factory Foreman");
+  if(e.key==="V"){ach(ACHIEVEMENTS.foreman,S.ach);
     showMsg("THE FOREMAN GOES DARK — A WET TUNNEL OPENS BELOW",4.5);
     openExit();}
-  if(e.key==="G"){ach("heart","STILL LIFE","Stop the Living Heart");
+  if(e.key==="G"){ach(ACHIEVEMENTS.heart,S.ach);
     showMsg("THE HEART STOPS — AND SO DOES EVERYTHING",4.5);
     setTimeout(()=>showWin(),2800);}}
 function openExit(){
@@ -1015,7 +986,7 @@ function enemyTick(dt){
         blood(e.x,1,e.z,14,2.5);
         bang(.18,.5,600);shake(.2);
         say(Math.random()<.5?"kicksplat":"wallkill",true);
-        ach("punt","FIELD GOAL","Kick an enemy into a wall");
+        ach(ACHIEVEMENTS.punt,S.ach);
         e.kx=0;e.kz=0;
       }else{e.x=nx;e.z=nz;}
       e.sp.position.set(e.x,e.h/2+(e.fy||0)+Math.sin(Math.min(1,e.flungT/.9)*Math.PI)*1.1,e.z);
@@ -1390,7 +1361,7 @@ function playerTick(dt){
   if(challenge&&challenge.state===1){
     if(!enemies.some(e=>e.summoned&&!e.dead)){
       challenge.state=2;say("challenge_done",true);
-      ach("gauntlet","THE GAUNTLET","Survive the challenge plate");
+      ach(ACHIEVEMENTS.gauntlet,S.ach);
       challenge.plate.material.color.setHex(0x4ab86a);
       challenge.light.color.setHex(0x4ab86a);
       ["armor","crosses","bullets"].forEach((k,i)=>{
@@ -1417,7 +1388,7 @@ function interact(){
       alertSound(wx_,wz_,8);
       if(d.secret){S.secrets++;S.totSecrets++;say("secret",true);
         showMsg("SECRET FOUND — "+S.secrets+"/"+S.secretsTotal,3);
-        if(S.totSecrets===2)ach("curious","TRUST ISSUES","Find 2 secret rooms");}
+        if(S.totSecrets===2)ach(ACHIEVEMENTS.curious,S.ach);}
       else if(d.locked)showMsg("THE GATE ACCEPTS THE KEY",2.4);
       return;}
     if(solidAt(wx_,wz_))return;}}
@@ -1519,12 +1490,12 @@ function pressKey(midi){
   const el=keyEls[midi];
   if(el){el.classList.add("on");setTimeout(()=>el.classList.remove("on"),140);}
   noteHist.push(midi);if(noteHist.length>8)noteHist.shift();
-  if(S.pianoNotes===12)ach("pianist","NOCTURNE FOR THE DEAD","Play 12 notes");
+  if(S.pianoNotes===12)ach(ACHIEVEMENTS.pianist,S.ach);
   /* E D C D E E E — recital */
   const want=[64,62,60,62,64,64,64];
   if(noteHist.length>=7&&want.every((m,i)=>noteHist[noteHist.length-7+i]===m)){
     noteHist=[];
-    ach("recital","RECITAL","Perform a melody for no one");
+    ach(ACHIEVEMENTS.recital,S.ach);
     say("piano_played",true);organChord();
     if(pianoPos)items.push({kind:"crosses",x:pianoPos.x+1.4,z:pianoPos.z,
       sp:addSprite(ITEMTEX.crosses,pianoPos.x+1.4,pianoPos.z,.55,.55,.5),bob:0});}}
@@ -1547,7 +1518,7 @@ function gradeOf(){
   const score=(S.killsTotal?S.kills/S.killsTotal:1)*40+
     (S.secretsTotal?S.secrets/S.secretsTotal:1)*25+Math.min(1,acc)*25+
     Math.min(1,S.propsBroken/10)*10;
-  if(acc>=.7)ach("deadeye","DEADEYE","Finish a level with 70%+ accuracy");
+  if(acc>=.7)ach(ACHIEVEMENTS.deadeye,S.ach);
   return score>=85?"S":score>=70?"A":score>=55?"B":score>=40?"C":"D";}
 function statsHtml(){
   const t=((performance.now()-S.levelT0)/1000)|0;
@@ -1602,8 +1573,7 @@ function hud(){
    IDLE QUIPS + SUBTITLE TIMER
    ============================================================ */
 function chatterTick(dt,anyAware){
-  if(subT>0){subT-=dt;
-    if(subT<=0)document.getElementById("subt").innerHTML="";}
+  tickSubtitles(dt);
   if(anyAware){idleT=rnd(26,40);return;}
   idleT-=dt;
   if(idleT<=0){idleT=rnd(26,40);say("idle");}}
@@ -1667,7 +1637,7 @@ function loop(t){
     itemsTick(dt);doorTick(dt);propTick(dt);
     eventTick(dt);ambience(dt);vitalsAudio(dt);
     chatterTick(dt,anyAware);
-    if(msgT>0){msgT-=dt;if(msgT<=0)msgEl.textContent="";}}
+    tickMessage(dt);}
   if(scene){
     partTick(dt);gibTick(dt);poolTick(dt);headTick(dt);torchTick(dt,t);
     fxTick(dt,t,zoomLerp,
