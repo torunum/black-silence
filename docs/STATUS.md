@@ -32,7 +32,7 @@ pinned by characterization tests.
 |---|---|---|
 | 0A | Vite + TypeScript scaffold, pure data layers, level tables | **merged** |
 | 0B | Procedural textures, sprite baker, item textures, the whole audio layer | **merged** |
-| 0C | Behavioral oracle, FX layer, weapon viewmodel art, subtitles, input | **in progress** |
+| 0C | Behavioral oracle, FX layer, weapon viewmodel art, subtitles, input | **merged** |
 | 0D | The global-to-state migration (~40 mutable globals) | not started |
 | 0E | Systems: renderer, level loader, weapons, enemy AI, player, interaction | not started |
 | 0F | UI, piano, loop and boot; then hardening — gameplay `setTimeout` removal, dispose registry, `strict: true`, the Three.js upgrade | not started |
@@ -79,11 +79,24 @@ trigger sites. Since there is no reference range to compare it against,
 frozen reference by regex and asserts the table reproduces them, and that
 every `ach(ACHIEVEMENTS.x, S.ach)` call site names an id the table defines.
 
-**The immediate next action** is the whole-branch review, then merge to
-`master`. Plan 0C sized the end state as "roughly 1550 lines"; the real
-figure is 1633, because Task 5 could not simply delete its section — the
-input handlers call back into gameplay code that is still in legacy.js, so a
-12-line `setInputHooks({...})` block replaced the 32 lines that left.
+Plan 0C sized the end state as "roughly 1550 lines"; the real figure is 1633,
+because Task 5 could not simply delete its section — the input handlers call
+back into gameplay code that is still in legacy.js, so a 12-line
+`setInputHooks({...})` block replaced the 32 lines that left.
+
+The whole-branch review is done. It found no behavioral defect — every
+extracted seam was checked field-by-field against the globals the reference
+actually reads — but it did find one systemic gap, recorded as **KNOWN-9**:
+the *wiring* in legacy.js has no coverage at all. Three sabotages of that
+wiring (`swayX:getSwayY()`, `drawKickBoot(0)`, `currentWeapon:()=>S.cur+1`)
+each leave all 331 tests green while visibly breaking the game. The module
+oracles cannot see it by construction — they supply their own frames and
+hooks — which is what makes them good module tests and useless as
+integration tests.
+
+**The immediate next action** is Plan 0D, and KNOWN-9 must be closed first:
+0D rewrites every one of those seams, so it is the worst possible time to
+have them untested.
 
 ## How fidelity is guarded
 
