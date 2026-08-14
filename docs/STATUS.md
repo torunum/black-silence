@@ -33,7 +33,7 @@ pinned by characterization tests.
 | 0A | Vite + TypeScript scaffold, pure data layers, level tables | **merged** |
 | 0B | Procedural textures, sprite baker, item textures, the whole audio layer | **merged** |
 | 0C | Behavioral oracle, FX layer, weapon viewmodel art, subtitles, input | **merged** |
-| 0D | The global-to-state migration (~40 mutable globals) | not started |
+| 0D | The global-to-state migration (62 globals, 633 call sites) | planned, not started |
 | 0E | Systems: renderer, level loader, weapons, enemy AI, player, interaction | not started |
 | 0F | UI, piano, loop and boot; then hardening — gameplay `setTimeout` removal, dispose registry, `strict: true`, the Three.js upgrade | not started |
 
@@ -98,7 +98,12 @@ the pattern to copy whenever a later plan parameterises another carve. See
 `docs/known-issues.md` for the two residual seams it documents rather than
 closes.
 
-**The immediate next action** is Plan 0D.
+**The immediate next action** is Plan 0D, whose plan document now exists at
+`docs/superpowers/plans/2026-08-14-phase0d-global-to-state-migration.md`.
+Start at its Task 1 — the gameplay trace oracle — and do not start any
+migration task until Task 1 Step 6 has proved the trace fails on a `px`/`pz`
+transposition. The measured starting point: 62 globals still declared in
+`legacy.js` across 633 call sites.
 
 ## How fidelity is guarded
 
