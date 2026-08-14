@@ -521,17 +521,39 @@ grep -n "trauma\|hitStop\|zoomT" src/legacy.js
 
 Every hit must be either `screenShake.` prefixed or `w.trauma`.
 
-- [ ] **Step 4: Run the full gate**
+- [ ] **Step 4: Cover `hitStop`, which the trace cannot reach**
+
+Task 1 measured this: the prologue trace never lands an enemy hit, so
+`hitStop`'s `dt*=.08` in the main loop survives sabotage there. Migrating
+it is what makes it reachable — `screenShake.hitStop` is now an exported
+property a test can assign directly. Add to
+`tests/integration/wiring.test.ts`:
+
+```ts
+it("slows the frame while hit-stop is running, and burns it down", () => {
+  screenShake.hitStop = 0.05;
+  const before = screenShake.hitStop;
+  const frame = runFrame(nextTimestamp());
+  // The loop scales dt to 8% while hit-stop is active, so the dt the 2D
+  // layer receives is a fraction of the wall-clock frame time.
+  expect(frame.dt).toBeLessThan(1 / 60 * 0.5);
+  expect(screenShake.hitStop).toBeLessThan(before);
+});
+```
+
+Then sabotage `dt*=.08` to `dt*=.09` and confirm this test fails. Record it.
+
+- [ ] **Step 5: Run the full gate**
 
 Run: `npm run typecheck && npm test`
 Expected: 349+ tests pass, trace test included. If the trace test fails, a
 call site was rewritten wrong — read the diff it prints; it names the first
 frame that diverged.
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 6: Commit**
 
 ```bash
-git add src/fx/ShakeState.ts src/legacy.js
+git add src/fx/ShakeState.ts src/legacy.js tests/integration/wiring.test.ts
 git commit -m "refactor: move screen shake and hit-stop onto a state object"
 ```
 
@@ -1027,12 +1049,21 @@ cur:S.cur,vx:player.vx,vz:player.vz,
 sprintKey:!!(keys.ShiftLeft||keys.ShiftRight),bobT:player.bobT,
 ```
 
-- [ ] **Step 5: Run the wiring test and the gate, then commit**
+- [ ] **Step 5: Cover `spawnGuard`, which the trace cannot reach**
+
+The other constant Task 1 measured as unreachable: the prologue trace never
+takes damage, so `spawnGuard=2.0` survives sabotage there. Now that
+`player.spawnGuard` is an exported property, a focused test can set it and
+assert the entry-invulnerability window behaves — assign a known value, run
+frames, and confirm it counts down at exactly one second per second and
+stops at zero. Sabotage `2.0` to `2.5` and confirm the new test fails.
+
+- [ ] **Step 6: Run the wiring test and the gate, then commit**
 
 ```bash
 npx vitest run tests/integration/wiring.test.ts
 npm run typecheck && npm test
-git add src/player/PlayerState.ts src/legacy.js
+git add src/player/PlayerState.ts src/legacy.js tests/integration/wiring.test.ts
 git commit -m "refactor: move player position, velocity and gait onto a state object"
 ```
 
