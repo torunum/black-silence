@@ -4,8 +4,12 @@ import { evalReference, REF, refSource } from "../support/reference";
 import { recordingScene, snapshotObject3D, type Object3DSnapshot } from "../support/recordingScene";
 import { seedRandom } from "../support/seededRandom";
 import { expectCallLogEqual } from "../support/expectCallLogEqual";
+import { fakeScene } from "../support/fakeScene";
 import { setScene } from "../../src/render/SceneRef";
-import { buildParticles as moduleBuildParticles } from "../../src/fx/Particles";
+import {
+  buildParticles as moduleBuildParticles, partTick as modulePartTick,
+  woodP as moduleWoodP,
+} from "../../src/fx/Particles";
 import {
   addPool as moduleAddPool, addWallDecal as moduleAddWallDecal,
   holeMat as moduleHoleMat, splatMat as moduleSplatMat,
@@ -126,5 +130,103 @@ describe("PARTICLES/DECALS/GIBS behavioral parity with reference", () => {
     // caps at WDMAX) + 110 (spawnGibs caps at GIBMAX, 1 gib/call over 115 calls) = 461.
     expect(refSnapshots.length).toBeGreaterThan(300);
     expectCallLogEqual(modSnapshots, refSnapshots, "PARTICLES/DECALS/GIBS scene.add() snapshot log");
+  });
+});
+
+/**
+ * woodP was the third instance of KNOWN-9. It lives in its own reference
+ * range (REF.woodP — the reference files it under a different banner,
+ * nowhere near the rest of the FX section), and that range was the one
+ * entry in tests/support/reference.ts that no test consumed: scaffolding
+ * for a comparison never written, the same signal that preceded KNOWN-6.
+ * Its unit test in tests/fx/Particles.test.ts pinned only the particle
+ * count and the red colour channel, so its three velocity ranges, its
+ * green/blue channels, its life and its `kind` argument were all free to
+ * drift.
+ *
+ * The comparison below reaches them all without a single extra export:
+ * spawn into both pools under one seed, then integrate both with partTick.
+ * Velocity becomes visible as displacement in the position buffer, life and
+ * kind as *when and how* partTick moves and retires each particle, and the
+ * colour triple is in the colour buffer directly.
+ */
+const WOODP_CHUNKS = [refSource(REF.mathHelpers), refSource(REF.particlesDecalsGibs), refSource(REF.woodP)];
+const WOODP_EXPR = "(() => { pools=[]; wallDecals=[]; gibs=[]; return {buildParticles, woodP, partTick}; })()";
+
+interface RefParticleFns {
+  buildParticles: () => void;
+  woodP: (x: number, y: number, z: number, n: number) => void;
+  partTick: (dt: number) => void;
+}
+
+/** The live position/colour Float32Arrays of the THREE.Points buildParticles() just added to a fake scene. */
+function poolBuffers(added: THREE.Object3D[]): { pos: Float32Array; col: Float32Array } {
+  const points = added[0] as unknown as {
+    geometry: { attributes: { position: { array: Float32Array }; color: { array: Float32Array } } };
+  };
+  return { pos: points.geometry.attributes.position.array, col: points.geometry.attributes.color.array };
+}
+
+describe("woodP behavioral parity with reference", () => {
+  const SPAWNED = 12, DT = 1 / 60, SLOTS = SPAWNED * 3;
+  /**
+   * 90 frames is 1.5 seconds, chosen so the run outlives both things that
+   * make `life` and `kind` observable at all. woodP's lives are rnd(.4,.9),
+   * so every particle expires inside the window and the exact frame it does
+   * freezes its x/z in the buffer; and a particle launched from y=1.5 at
+   * rnd(.6,3.4) upward under 14/s² reaches the ground around 0.6-0.9s,
+   * which is where kind finally matters (kind 1 dies on contact and rolls a
+   * pool, anything else bounces). A shorter run compares twelve particles
+   * still in mid-air, where neither literal has had any effect yet — the
+   * first version of this test used 20 frames and let `life` .4→.5 and
+   * `kind` 2→1 both pass.
+   */
+  const CHECKPOINTS = [1, 10, 30, 55, 90];
+
+  it("spawns and integrates an identical particle pool to the reference — through launch, ground contact and expiry", () => {
+    const snapshotsFor = (fns: RefParticleFns, added: THREE.Object3D[]) => {
+      const out: Array<{ frame: number; pos: number[]; col: number[] }> = [];
+      fns.buildParticles();
+      fns.woodP(3, 1.5, -2, SPAWNED);
+      let done = 0;
+      for (const upTo of CHECKPOINTS) {
+        for (; done < upTo; done++) fns.partTick(DT);
+        const { pos, col } = poolBuffers(added);
+        out.push({ frame: upTo, pos: [...pos.slice(0, SLOTS)], col: [...col.slice(0, SLOTS)] });
+      }
+      return out;
+    };
+
+    // Evaluated OUTSIDE the seeded block, deliberately. Evaluating the
+    // reference chunk constructs its materials and geometries, and every
+    // THREE object generates a UUID from Math.random — so seeding first
+    // would spend the reference side's seeded sequence on UUIDs that the
+    // module side (whose materials were built at import time) never draws,
+    // and the two runs would diverge on the very first particle.
+    const { scene: refScene, added: refAdded } = fakeScene();
+    const refFns = evalReference<RefParticleFns>(WOODP_CHUNKS, WOODP_EXPR, { THREE, Math, scene: refScene });
+    let refSnapshots!: ReturnType<typeof snapshotsFor>;
+    withSeed(77, () => { refSnapshots = snapshotsFor(refFns, refAdded); });
+
+    const { scene: modScene, added: modAdded } = fakeScene();
+    setScene(modScene);
+    let modSnapshots!: ReturnType<typeof snapshotsFor>;
+    withSeed(77, () => {
+      modSnapshots = snapshotsFor(
+        { buildParticles: moduleBuildParticles, woodP: moduleWoodP, partTick: modulePartTick },
+        modAdded,
+      );
+    });
+
+    // A pool of zeroes compares equal to a pool of zeroes, and a run where
+    // every particle already died compares equal too (every y is -100), so
+    // check the spawn wrote colour and that the particles were still moving
+    // at the first checkpoint before trusting the equalities below.
+    expect(refSnapshots[0].col.some((v) => v !== 0)).toBe(true);
+    expect(refSnapshots[0].pos).not.toEqual(refSnapshots[2].pos);
+
+    for (let i = 0; i < CHECKPOINTS.length; i++) {
+      expect({ frame: CHECKPOINTS[i], ...modSnapshots[i] }).toEqual({ frame: CHECKPOINTS[i], ...refSnapshots[i] });
+    }
   });
 });

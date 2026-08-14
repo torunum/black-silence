@@ -49,15 +49,33 @@ function makeGlContext(): unknown {
   // getParameter can recognize it) and getParameter needs to answer it with
   // a version string rather than the generic numeric stub.
   const VERSION = 0x1f02;
+  // Real WebGL1 enum values. Three.js asks getProgramParameter for both a
+  // link-status *flag* and two uniform/attribute *counts*, so a stub that
+  // answers everything with `true` makes it loop once over a program with no
+  // uniforms and dereference the undefined it gets back. Answering the two
+  // counts with 0 is what lets a real frame render against this stub.
+  // They must be numbers on the base object, not the Proxy's generic no-op
+  // function, or `gl.ACTIVE_UNIFORMS` would arrive here as a function.
+  const ACTIVE_UNIFORMS = 0x8b86, ACTIVE_ATTRIBUTES = 0x8b89;
   const base: Record<string, unknown> = {
-    VERSION,
+    VERSION, ACTIVE_UNIFORMS, ACTIVE_ATTRIBUTES,
     getExtension: () => null,
     getParameter: (pname: unknown) => (pname === VERSION ? "WebGL 1.0 (Stub)" : 0),
     getShaderPrecisionFormat: () => ({ precision: 1, rangeMin: 1, rangeMax: 1 }),
     getContextAttributes: () => ({}),
+    // Three.js r128 calls .trim() on all three unconditionally while
+    // debug.checkShaderErrors is on, so the Proxy's generic no-op (which
+    // returns undefined) is not enough for anything that actually renders a
+    // frame — see tests/integration/wiring.test.ts, which runs the real
+    // main loop.
+    getProgramInfoLog: () => "",
+    getShaderInfoLog: () => "",
+    getShaderSource: () => "",
     createTexture: () => ({}), createBuffer: () => ({}),
     createProgram: () => ({}), createShader: () => ({}),
-    getProgramParameter: () => true, getShaderParameter: () => true,
+    getProgramParameter: (_p: unknown, pname: unknown) =>
+      pname === ACTIVE_UNIFORMS || pname === ACTIVE_ATTRIBUTES ? 0 : true,
+    getShaderParameter: () => true,
     canvas: { width: 400, height: 300 },
   };
   return new Proxy(base, {
@@ -80,18 +98,33 @@ export function installDomStubs(): void {
     return makeGlContext();
   } as typeof HTMLCanvasElement.prototype.getContext;
 
-  // The game declares AudioContext support but only constructs one on
-  // audioInit(), which boot does not call. A constructor stub is enough.
+  // Boot alone never constructs one (audioInit() is called from startGame),
+  // but anything that actually starts a level and plays a sound does — see
+  // tests/integration/wiring.test.ts. Every AudioParam therefore carries the
+  // full scheduling surface this codebase uses, not just `value`: a param
+  // missing setValueAtTime fails only inside whichever sound happens to be
+  // played, which reads as a bug in the caller rather than a gap here.
+  // tests/support/recordingAudio.ts is the stub to use when the audio graph
+  // itself is what's under test; this one only has to not throw.
+  const param = (value = 0) => ({
+    value,
+    setValueAtTime() { return this; },
+    exponentialRampToValueAtTime() { return this; },
+    linearRampToValueAtTime() { return this; },
+    setTargetAtTime() { return this; },
+    cancelScheduledValues() { return this; },
+  });
   (globalThis as Record<string, unknown>).AudioContext = class {
     destination = {};
     currentTime = 0;
     sampleRate = 44100;
-    createGain() { return { gain: { value: 0 }, connect() {} }; }
-    createDelay() { return { delayTime: { value: 0 }, connect() {} }; }
-    createBiquadFilter() { return { type: "", frequency: { value: 0 }, Q: { value: 0 }, connect() {} }; }
-    createOscillator() { return { type: "", frequency: { value: 0, setValueAtTime() {}, exponentialRampToValueAtTime() {} }, connect() {}, start() {}, stop() {} }; }
+    createGain() { return { gain: param(), connect() {}, disconnect() {} }; }
+    createDelay() { return { delayTime: param(), connect() {}, disconnect() {} }; }
+    createBiquadFilter() { return { type: "", frequency: param(), Q: param(), gain: param(), detune: param(), connect() {}, disconnect() {} }; }
+    createOscillator() { return { type: "", frequency: param(), detune: param(), connect() {}, disconnect() {}, start() {}, stop() {} }; }
     createBuffer() { return { getChannelData: () => new Float32Array(1) }; }
-    createBufferSource() { return { buffer: null, connect() {}, start() {}, stop() {} }; }
+    createBufferSource() { return { buffer: null, playbackRate: param(1), detune: param(), connect() {}, disconnect() {}, start() {}, stop() {} }; }
+    createStereoPanner() { return { pan: param(), connect() {}, disconnect() {} }; }
   };
 
   (globalThis as Record<string, unknown>).requestAnimationFrame = () => 0;

@@ -4,8 +4,8 @@ Written to survive session loss. If you are picking this up cold, read this
 file, then `docs/direction.md`, then the current plan under
 `docs/superpowers/plans/`. Trust this file and `git log` over any recollection.
 
-Last updated: 2026-08-14, after Plan 0C Task 5. All five tasks are done;
-the whole-branch review is next.
+Last updated: 2026-08-14, after Plan 0C merged and KNOWN-9 was closed.
+Plan 0D is next, and nothing blocks it.
 
 ---
 
@@ -49,7 +49,7 @@ done.
 3759 → 3040 (0A) → 2224 (0B) → 1633 (0C, tasks complete)
 ```
 
-Tests: 0 → 114 → 167 → 331.
+Tests: 0 → 114 → 167 → 348.
 
 ## Plan 0C status
 
@@ -84,23 +84,25 @@ because Task 5 could not simply delete its section — the input handlers call
 back into gameplay code that is still in legacy.js, so a 12-line
 `setInputHooks({...})` block replaced the 32 lines that left.
 
-The whole-branch review is done. It found no behavioral defect — every
-extracted seam was checked field-by-field against the globals the reference
-actually reads — but it did find one systemic gap, recorded as **KNOWN-9**:
-the *wiring* in legacy.js has no coverage at all. Three sabotages of that
-wiring (`swayX:getSwayY()`, `drawKickBoot(0)`, `currentWeapon:()=>S.cur+1`)
-each leave all 331 tests green while visibly breaking the game. The module
-oracles cannot see it by construction — they supply their own frames and
-hooks — which is what makes them good module tests and useless as
-integration tests.
+The whole-branch review found no behavioral defect — every extracted seam
+was checked field-by-field against the globals the reference actually reads
+— but it did find one systemic gap, KNOWN-9: the *wiring* in legacy.js had
+no coverage at all. Three sabotages of it (`swayX:getSwayY()`,
+`drawKickBoot(0)`, `currentWeapon:()=>S.cur+1`) each left all 331 tests
+green while visibly breaking the game.
 
-**The immediate next action** is Plan 0D, and KNOWN-9 must be closed first:
-0D rewrites every one of those seams, so it is the worst possible time to
-have them untested.
+**KNOWN-9 is now closed** by `tests/integration/wiring.test.ts`, which boots
+the real legacy.js under jsdom, starts a real level and runs real frames
+with only the modules under test swapped for recorders. That file is also
+the pattern to copy whenever a later plan parameterises another carve. See
+`docs/known-issues.md` for the two residual seams it documents rather than
+closes.
+
+**The immediate next action** is Plan 0D.
 
 ## How fidelity is guarded
 
-Three mechanisms, and they are **not** interchangeable:
+Four mechanisms, and they are **not** interchangeable:
 
 - **`tests/behavior/`** — a recorder. Runs the reference's code and the ported
   module's side by side against instrumented canvas and WebAudio stubs, under a
@@ -110,6 +112,12 @@ Three mechanisms, and they are **not** interchangeable:
   **data** only. It was once written as the rule for code too, which was
   incoherent for code the port necessarily annotates.
 - **Ordinary unit tests** — for math over state that draws nothing.
+- **`tests/integration/wiring.test.ts`** — the newest, and the one every
+  other mechanism is blind to. The three above all test a *module* against
+  the reference; none of them tests whether `legacy.js` hands that module the
+  right values, because each supplies its own inputs. This one boots the real
+  `legacy.js`, starts a real level and runs real frames. Add to it whenever a
+  carve is parameterised — that is exactly when a new seam appears.
 
 KNOWN-5 in `docs/known-issues.md` documents the recorder in full, including an
 honest list of what it still cannot reach.
