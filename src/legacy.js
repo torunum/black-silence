@@ -22,6 +22,8 @@ import { ACHIEVEMENTS } from "./content/achievements";
 import { say, tickSubtitles } from "./ui/Subtitles";
 import { ach } from "./ui/Toasts";
 import { showMsg, tickMessage, flashDmg, flashHoly } from "./ui/HudMessages";
+import { keys, setInputHooks, overlayOpen, getYaw, setYaw, getPitch, setPitch,
+  getSwayX, setSwayX, getSwayY, setSwayY, isFiring, setFiring, isZoomOn, setZoomOn } from "./player/Input";
 /* ============================================================
    THE BLACK SILENCE — The Hollow Parish (v3 gothic overhaul)
    2 levels · 9 enemy types + elites · 3 bosses · 6 weapons ·
@@ -71,39 +73,18 @@ function addBlob(wx,wz,s){const m=new THREE.Mesh(new THREE.PlaneGeometry(s,s),
 
 let heads=[];
 
-/* ============================================================
-   INPUT
-   ============================================================ */
-const keys={};
-let yaw=Math.PI,pitch=0,locked=false,swayX=0,swayY=0,firing=false,zoomOn=false;
-addEventListener("keydown",e=>{
-  if(pianoOpen){pianoKeyDown(e.code);if(e.code==="KeyE")closePiano();return;}
-  keys[e.code]=true;
-  if(e.code==="KeyE")interact();
-  if(e.code==="KeyR")startReload();
-  if(e.code==="KeyZ"&&S.cur===4)zoomOn=!zoomOn;
-  if(/^Digit[1-8]$/.test(e.code))requestSwitch(+e.code[5]-1);},false);
-addEventListener("keyup",e=>keys[e.code]=false);
-addEventListener("wheel",e=>{if(!started||pianoOpen)return;
-  let i=S.cur;for(let k=0;k<6;k++){i=(i+(e.deltaY>0?1:5))%6;
-    if(S.weapons[i]){requestSwitch(i);break;}}});
-document.addEventListener("mousemove",e=>{if(!locked||inputLock)return;
-  const sens=.0022*(1-.68*zoomLerp);
-  yaw-=e.movementX*sens;pitch-=e.movementY*sens;
-  pitch=clamp(pitch,-1.45,1.45);
-  swayX=clamp(swayX+e.movementX*.035,-10,10);
-  swayY=clamp(swayY+e.movementY*.035,-7,7);});
-document.addEventListener("pointerlockchange",()=>{locked=document.pointerLockElement===renderer.domElement;});
-addEventListener("mousedown",e=>{
-  if(pianoOpen)return;
-  if(started&&!locked&&!overlayOpen())renderer.domElement.requestPointerLock();
-  if(e.button===0)firing=true;
-  if(e.button===2)doKick();});
-addEventListener("mouseup",e=>{if(e.button===0)firing=false;});
-addEventListener("contextmenu",e=>e.preventDefault());
-function overlayOpen(){return !document.getElementById("levelend").classList.contains("hidden")||
-  !document.getElementById("win").classList.contains("hidden")||
-  !document.getElementById("dead").classList.contains("hidden")||pianoOpen;}
+/* Input lives in src/player/Input.ts; its listeners are already registered
+   (at that module's scope, as in the reference). This hands it the gameplay
+   callbacks and state reads it cannot import back from here, at module
+   scope so it is done before any event can be delivered. */
+setInputHooks({
+  isPianoOpen:()=>pianoOpen, isStarted:()=>started, isInputLocked:()=>inputLock,
+  zoomLerp:()=>zoomLerp, canvas:()=>renderer.domElement,
+  currentWeapon:()=>S.cur, ownsWeapon:i=>!!S.weapons[i],
+  pianoKeyDown:code=>pianoKeyDown(code), closePiano:()=>closePiano(),
+  interact:()=>interact(), startReload:()=>startReload(),
+  requestSwitch:i=>requestSwitch(i), doKick:()=>doKick(),
+});
 
 /* ============================================================
    WEAPONS — 8 slots, state machine, interruptible reloads
@@ -126,7 +107,7 @@ let kickAmt=0,kickRot=0,muzzle=0,zoomLerp=0;
 const EQUIP_T=.24,UNEQUIP_T=.16;
 function requestSwitch(i){
   if(!started||!S.weapons[i]||i===S.cur||pending===i)return;
-  pending=i;zoomOn=false;
+  pending=i;setZoomOn(false);
   if(wstate!=="unequip"){wstate="unequip";wtime=0;click(.12);}}
 function startReload(){
   if(!started||S.dead||inputLock)return;
@@ -154,8 +135,8 @@ function weaponTick(dt){
       const take=Math.min(need,S.ammo[w.ammo]);
       S.ammo[w.ammo]-=take;S.mag[S.cur]+=take;
       wstate="idle";wtime=0;click(.2);}
-    if(firing&&S.mag[S.cur]>0){wstate="idle";wtime=0;}}
-  if(firing&&(wstate==="idle"||wstate==="fire")&&wCool<=0&&!S.dead&&started&&!inputLock){
+    if(isFiring()&&S.mag[S.cur]>0){wstate="idle";wtime=0;}}
+  if(isFiring()&&(wstate==="idle"||wstate==="fire")&&wCool<=0&&!S.dead&&started&&!inputLock){
     if(S.mag[S.cur]<=0){
       if(S.ammo[w.ammo]>0)startReload();
       else{click(.1);wCool=.3;}}        // dry click, not a beep
@@ -165,9 +146,9 @@ function weaponTick(dt){
   muzzle=Math.max(0,muzzle-dt*9);
   muzzleLight.intensity*=Math.exp(-16*dt);
   boomLight.intensity*=Math.exp(-7*dt);
-  swayX*=Math.exp(-7*dt);swayY*=Math.exp(-7*dt);
+  setSwayX(getSwayX()*Math.exp(-7*dt));setSwayY(getSwayY()*Math.exp(-7*dt));
   /* sniper zoom */
-  const zt=(S.cur===4&&zoomOn)?1:0;
+  const zt=(S.cur===4&&isZoomOn())?1:0;
   zoomLerp+=(zt-zoomLerp)*Math.min(1,dt*9);
   camera.fov=78-46*zoomLerp;camera.updateProjectionMatrix();
   /* kick cooldown */
@@ -336,7 +317,7 @@ function hitscan(dir,dmg,wIdx){
     const ecy0=e.fly?(e.flyH||1.5):e.h*.5;
     const frac=clamp((c.cy-(ecy0-e.h*.5))/e.h,0,1);
     // horizontal: project hit point onto camera-right axis, normalized to half-width
-    const rightX=Math.cos(yaw),rightZ=-Math.sin(yaw);
+    const rightX=Math.cos(getYaw()),rightZ=-Math.sin(getYaw());
     const hxp=o.x+dir.x*c.t,hzp=o.z+dir.z*c.t;
     const lateral=((hxp-e.x)*rightX+(hzp-e.z)*rightZ)/(e.w*.5); // -1..1
     const head=frac>0.74&&PX[e.key].head>0;
@@ -631,7 +612,7 @@ function loadLevel(idx){
       const tex=k[0]==="w"?ITEMTEX.gun:ITEMTEX[k];
       items.push({kind:k,x:wx,z:wz,sp:addSprite(tex,wx,wz,.55,.55,.5),bob:Math.random()*6});}
     grid[z][x]=".";}
-  vx=vy=vz=0;pyy=EYE+floorHeightAt(px,pz);yaw=Math.PI;pitch=0;grounded=true;
+  vx=vy=vz=0;pyy=EYE+floorHeightAt(px,pz);setYaw(Math.PI);setPitch(0);grounded=true;
   const lt=document.getElementById("lvltitle");
   lt.textContent=Ldef.name;lt.style.opacity=1;
   setTimeout(()=>lt.style.opacity=0,5000);
@@ -841,7 +822,7 @@ function wakeBoss(e){
   if(!e.dormant)return;
   e.dormant=false;
   cine={t:0,dur:2.7,e};
-  inputLock=true;firing=false;
+  inputLock=true;setFiring(false);
   document.getElementById("barTop").style.height="11%";
   document.getElementById("barBot").style.height="11%";
   const bt=document.getElementById("bossTitle");
@@ -856,10 +837,10 @@ function cineTick(dt){
   cine.t+=dt;
   const b=cine.e;
   const target=Math.atan2(-(b.x-px),-(b.z-pz));
-  let diff=((target-yaw+Math.PI*3)%(Math.PI*2))-Math.PI;
-  yaw+=diff*Math.min(1,dt*4);
+  let diff=((target-getYaw()+Math.PI*3)%(Math.PI*2))-Math.PI;
+  setYaw(getYaw()+diff*Math.min(1,dt*4));
   const want=Math.atan2(b.h*.7-pyy,Math.hypot(b.x-px,b.z-pz));
-  pitch+=(want-pitch)*Math.min(1,dt*4);
+  setPitch(getPitch()+(want-getPitch())*Math.min(1,dt*4));
   if(cine.t>=cine.dur){
     document.getElementById("barTop").style.height="0";
     document.getElementById("barBot").style.height="0";
@@ -1301,7 +1282,7 @@ function playerTick(dt){
   if(spawnGuard>0)spawnGuard-=dt;
   let f=0,s2=0;
   if(keys.KeyW)f++;if(keys.KeyS)f--;if(keys.KeyD)s2++;if(keys.KeyA)s2--;
-  const sin=Math.sin(yaw),cos=Math.cos(yaw);
+  const sin=Math.sin(getYaw()),cos=Math.cos(getYaw());
   let wx_=-sin*f+cos*s2,wz_=-cos*f-sin*s2;
   const l=Math.hypot(wx_,wz_);if(l>0){wx_/=l;wz_/=l;}
   const sprint=keys.ShiftLeft||keys.ShiftRight;
@@ -1335,7 +1316,7 @@ function playerTick(dt){
   recoilPitch*=Math.exp(-8*dt);
   camera.position.set(px+shx,pyy+(grounded?bobSin*.025*Math.min(1,spd/7):0)+shy,pz);
   camera.rotation.order="YXZ";
-  camera.rotation.y=yaw;camera.rotation.x=pitch+recoilPitch;camera.rotation.z=shr;
+  camera.rotation.y=getYaw();camera.rotation.x=getPitch()+recoilPitch;camera.rotation.z=shr;
   lamp.position.set(px,pyy+.4,pz);
   if(lampCore)lampCore.position.set(px,pyy+.2,pz);
   /* exit pad (level 1) */
@@ -1501,7 +1482,7 @@ function pressKey(midi){
       sp:addSprite(ITEMTEX.crosses,pianoPos.x+1.4,pianoPos.z,.55,.55,.5),bob:0});}}
 function pianoKeyDown(code){const m=KEYMAP[code];if(m)pressKey(m);}
 function openPiano(){
-  pianoOpen=true;firing=false;
+  pianoOpen=true;setFiring(false);
   document.getElementById("piano").style.display="flex";
   document.exitPointerLock();
   say("piano",true);}
@@ -1645,7 +1626,7 @@ function loop(t){
       (fdt,ft)=>drawViewmodel(fdt,ft,{
         started,dead:S.dead,pianoOpen,zoomLerp,cur:S.cur,vx,vz,
         sprintKey:!!(keys.ShiftLeft||keys.ShiftRight),bobT,wstate,wtime,
-        equipT:EQUIP_T,unequipT:UNEQUIP_T,kickAmt,kickRot,swayX,swayY,muzzle,
+        equipT:EQUIP_T,unequipT:UNEQUIP_T,kickAmt,kickRot,swayX:getSwayX(),swayY:getSwayY(),muzzle,
       },WEAPONS));
     hud();
     renderer.render(scene,camera);}}

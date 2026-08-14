@@ -4,7 +4,8 @@ Written to survive session loss. If you are picking this up cold, read this
 file, then `docs/direction.md`, then the current plan under
 `docs/superpowers/plans/`. Trust this file and `git log` over any recollection.
 
-Last updated: 2026-08-13, after Plan 0C Task 3's follow-up (KNOWN-6 closed).
+Last updated: 2026-08-14, after Plan 0C Task 5. All five tasks are done;
+the whole-branch review is next.
 
 ---
 
@@ -45,14 +46,15 @@ printed by `npm test` as the port burn-down. When it reaches zero the port is
 done.
 
 ```
-3759 → 3040 (0A) → 2224 (0B) → 1652 (0C, in progress)
+3759 → 3040 (0A) → 2224 (0B) → 1633 (0C, tasks complete)
 ```
 
-Tests: 0 → 114 → 167 → 314.
+Tests: 0 → 114 → 167 → 331.
 
 ## Plan 0C status
 
-Branch: `phase-0c-oracle-and-fx`, HEAD `df2efe1`, merged from `master`.
+Branch: `phase-0c-oracle-and-fx`, merged from `master`. All five tasks
+committed; nothing is stranded.
 
 | Task | State |
 |---|---|
@@ -60,7 +62,7 @@ Branch: `phase-0c-oracle-and-fx`, HEAD `df2efe1`, merged from `master`.
 | 2 — FX layer (particles, decals, gibs) | complete, reviewed clean |
 | 3 — weapon viewmodel art (447 lines) | complete, reviewed; KNOWN-6 closed |
 | 4 — subtitles, achievements, HUD messages | complete, sabotage-verified |
-| 5 — input | not started |
+| 5 — input | complete, sabotage-verified |
 
 KNOWN-6 (Overlay2D untested) is closed by `tests/behavior/overlay2d.test.ts`
 — 26 cases, no source changes, verified by re-running the seven sabotages
@@ -77,8 +79,11 @@ trigger sites. Since there is no reference range to compare it against,
 frozen reference by regex and asserts the table reproduces them, and that
 every `ach(ACHIEVEMENTS.x, S.ach)` call site names an id the table defines.
 
-**The immediate next action** is Task 5 (input), then the final whole-branch
-review, then merge to `master`.
+**The immediate next action** is the whole-branch review, then merge to
+`master`. Plan 0C sized the end state as "roughly 1550 lines"; the real
+figure is 1633, because Task 5 could not simply delete its section — the
+input handlers call back into gameplay code that is still in legacy.js, so a
+12-line `setInputHooks({...})` block replaced the 32 lines that left.
 
 ## How fidelity is guarded
 
@@ -121,18 +126,25 @@ Two practices that have mattered most:
   - Bash: `export PATH="/c/Program Files/nodejs:$PATH"`
   - PowerShell: `$env:PATH = "$env:ProgramFiles\nodejs;$env:PATH"; `
   A restart of the session fixes it properly.
-- **The browser harness cannot drive this game.** Automated key events arrive
-  with an empty `code` field and the game reads `e.code`; pointer lock is
-  blocked; and the animation-frame pipeline has frozen entirely on several
-  sessions (a bare `requestAnimationFrame` counter with no game code involved
-  gets zero callbacks). Menu clicks and level loads do work. Substitute
-  evidence that has worked: dynamically importing the live-served module in the
-  running page and exercising it directly.
+- **The browser harness only partly drives this game.** Pointer lock is
+  blocked (`requestPointerLock` rejects with `WrongDocumentError`), so mouse
+  look cannot be exercised in the page at all; screenshots fail whenever the
+  Browser pane is not displayed, because a hidden pane composites no frames;
+  and the animation-frame pipeline has frozen entirely on several sessions (a
+  bare `requestAnimationFrame` counter with no game code involved gets zero
+  callbacks). What *does* work, verified in the Task 5 session: menu clicks,
+  level loads, and **synthetic `KeyboardEvent`/`MouseEvent`/`WheelEvent`
+  dispatched from `javascript_tool` with a real `code` field** — the earlier
+  note that automated key events arrive with an empty `code` did not hold
+  here; `new KeyboardEvent("keydown",{code:"KeyW"})` reaches the game's
+  handlers and sets `keys.KeyW`. Combined with dynamically importing the
+  live-served module in the running page, that is enough to verify input,
+  HUD and subtitle behavior end to end.
 - **`npm run build` plus inlining produces a single playable file.** The
   gitignored `THE-BLACK-SILENCE.html` at the repo root is that artifact — it
   loads from `file://` with no network.
 
-## Three bugs a player will actually hit
+## Four bugs a player will actually hit
 
 All predate the port, all are preserved on purpose, all are pinned by tests
 so they cannot change unnoticed. See `docs/known-issues.md`.
@@ -150,3 +162,6 @@ so they cannot change unnoticed. See `docs/known-issues.md`.
   its first draw. The whole casing art path is unreachable in a real window.
   Screen-blood splats share the mix-up without the cull: about three quarters
   of each flash lands off-canvas.
+- **KNOWN-8** — The mouse wheel cycles six weapon slots (`%6`) while the game
+  has eight. The nail cannon and soul reaper are reachable only with `7` and
+  `8`. The reference's own banner still reads "WEAPONS — 6 slots".

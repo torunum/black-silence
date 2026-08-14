@@ -143,6 +143,15 @@ export const REF = {
    * tests/behavior/viewmodel.test.ts's referenceWeaponFrames.
    */
   viewmodelBuildWeaponSprites: [2310, 2509],
+  /**
+   * keys, yaw/pitch/locked/swayX/swayY/firing/zoomOn, all eight event
+   * listeners and overlayOpen — src/player/Input.ts.
+   *
+   * The listeners register as a side effect of evaluating this range, so a
+   * test must inject its own `addEventListener` (and a `document` standing
+   * in for the real one) to capture them, exactly as the browser would.
+   */
+  input: [1875, 1904],
   /** onceSaid/subT/lastSayT and say — ADEM's subtitles, src/ui/Subtitles.ts. */
   subtitles: [1852, 1862],
   /**
