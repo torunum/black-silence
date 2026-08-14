@@ -11,6 +11,9 @@ import { PXDEF } from "../src/enemies/pixels";
 import { PX, buildSprites } from "../src/enemies/SpriteBaker";
 import { ITEMTEX, buildItemTex } from "../src/render/ItemTextures";
 import { getMasterVolume } from "../src/audio/AudioEngine";
+import { GP, WEAPON_PIXELS } from "../src/render/viewmodel/sprites";
+import { loadGameHtml } from "./support/domStubs";
+import type * as ViewmodelKit from "../src/render/viewmodel/kit";
 import { evalReference, REF, refSource } from "./support/reference";
 import { installDomStubs } from "./support/domStubs";
 import { normalizeTsSource } from "./support/normalizeTsSource";
@@ -234,13 +237,11 @@ describe("ProcTextures (buildTextures) vs. reference", () => {
     }
   });
 
-  it("buildTextures' body is byte-identical to the reference — no drawing call, colour or literal changed", () => {
-    const moduleSource = readModuleSource("src/render/ProcTextures.ts");
-    const refChunk = refSource(REF.procTextures);
-    expect(extractFunctionBody(moduleSource, "buildTextures")).toBe(
-      extractFunctionBody(refChunk, "buildTextures"),
-    );
-  });
+  // buildTextures' former byte-identity test (Plan 0B) is retired: it's
+  // superseded by tests/behavior/textures.test.ts's ordered draw-call-log
+  // comparison, which proves the same fidelity (every drawing call,
+  // argument and colour) without requiring source text to stay verbatim —
+  // see docs/known-issues.md KNOWN-5.
 });
 
 describe("PXDEF vs. reference", () => {
@@ -328,22 +329,25 @@ describe("SpriteBaker (texFromPx/buildSprites) vs. reference", () => {
     }
   });
 
-  // texFromPx and buildSprites are code, not data: this port's convention is
-  // to annotate every extracted function's signature and, where JS's lenient
-  // call arity forces it (buildSprites' local mk/mkM closures), its inline
-  // parameter lists too. Byte-identity is incoherent for annotated code —
-  // see normalizeTsSource's doc comment — so these two compare *normalized*
-  // source: strip the TS-only syntax the port adds, then require the
-  // remainder to match the reference exactly. PXDEF above stays strictly
-  // byte-identical because it is pure data that no annotation ever touches.
-  it("texFromPx's body is identical to the reference once TS-only syntax is stripped", () => {
-    const moduleSource = readModuleSource("src/enemies/SpriteBaker.ts");
-    const refChunk = refSource(REF.texFromPx);
-    expect(normalizeTsSource(extractFunctionBody(moduleSource, "texFromPx"))).toBe(
-      normalizeTsSource(extractFunctionBody(refChunk, "texFromPx")),
-    );
-  });
-
+  // texFromPx's former byte-identity test (Plan 0B) is retired: it's
+  // superseded by tests/behavior/textures.test.ts's texFromPx draw-call-log
+  // comparison (plain, mirrored and dismembered/stumped variants on a
+  // representative sprite), which proves the same fidelity without
+  // requiring source text to stay verbatim — see docs/known-issues.md
+  // KNOWN-5.
+  //
+  // buildSprites itself has no behavior-test coverage — its dismemberment
+  // region math (armTop, armBot, the mask rectangles) is arithmetic that
+  // decides *what* to pass to texFromPx, not a draw call itself, so a
+  // texFromPx-level recorder can't see it — so its body-identity comparison
+  // stays. It is code, not data: this port's convention is to annotate
+  // every extracted function's signature and, where JS's lenient call arity
+  // forces it (buildSprites' local mk/mkM closures), its inline parameter
+  // lists too. Byte-identity is incoherent for annotated code — see
+  // normalizeTsSource's doc comment — so this compares *normalized* source:
+  // strip the TS-only syntax the port adds, then require the remainder to
+  // match the reference exactly. PXDEF above stays strictly byte-identical
+  // because it is pure data that no annotation ever touches.
   it("buildSprites' body is identical to the reference once TS-only syntax is stripped — the dismemberment mask arithmetic (armTop, armBot, region rectangles) untouched", () => {
     const moduleSource = readModuleSource("src/enemies/SpriteBaker.ts");
     const refChunk = refSource(REF.buildSprites);
@@ -408,32 +412,13 @@ describe("ItemTextures (pickupTex/buildItemTex) vs. reference", () => {
     }
   });
 
-  // pickupTex's and buildItemTex's bodies contain no TS-only syntax — the
-  // pixel rows and hex palettes are literal call arguments, not annotated
-  // declarations — so unlike SpriteBaker's texFromPx/buildSprites above,
-  // these compare byte-identical rather than through normalizeTsSource (see
-  // normalizeTsSource's doc comment on why byte-identity is the right bar
-  // for unannotated bodies and incoherent for annotated ones). This is also
-  // the assertion that actually proves fidelity for this module: under
-  // domStubs' no-op 2D context (see tests/support/domStubs.ts) no rendered
-  // pixel or colour ever reaches a texture object, so a byte-identical
-  // source comparison is the only thing in this suite that would catch a
-  // wrong pixel row or a transposed hex colour.
-  it("buildItemTex's body is byte-identical to the reference — every pixel row and hex colour untouched", () => {
-    const moduleSource = readModuleSource("src/render/ItemTextures.ts");
-    const refChunk = refSource(REF.itemTex);
-    expect(extractFunctionBody(moduleSource, "buildItemTex")).toBe(
-      extractFunctionBody(refChunk, "buildItemTex"),
-    );
-  });
-
-  it("pickupTex's body is byte-identical to the reference", () => {
-    const moduleSource = readModuleSource("src/render/ItemTextures.ts");
-    const refChunk = refSource(REF.itemTex);
-    expect(extractFunctionBody(moduleSource, "pickupTex")).toBe(
-      extractFunctionBody(refChunk, "pickupTex"),
-    );
-  });
+  // buildItemTex's and pickupTex's former byte-identity tests (Plan 0B) are
+  // retired: superseded by tests/behavior/textures.test.ts's buildItemTex
+  // draw-call-log comparison, which exercises every pickupTex call site (one
+  // per item) and proves the same fidelity — every pixel row and hex colour
+  // — without requiring source text to stay verbatim. pickupTex has no logic
+  // beyond forwarding its args to texFromPx, so exercising every call site is
+  // full coverage of it, not partial. See docs/known-issues.md KNOWN-5.
 });
 
 /**
@@ -454,22 +439,6 @@ function denormalizeAudioAccessors(src: string): string {
     .replace(/\bechoBus\(\)/g, "echoG");
 }
 
-/**
- * audioInit's one array-destructuring parameter — the four detuned drone
- * oscillators' [frequency, waveform, gain] triples — needs an inline tuple
- * type annotation to type-check: TypeScript otherwise infers the outer
- * array literal's element type as (string | number)[], which it won't let
- * flow into OscillatorType-/number-typed properties. normalizeTsSource
- * deliberately doesn't strip destructuring-parameter type annotations in
- * general (see its doc comment — the SpriteBaker body it was written for
- * has an ambiguous colon nearby), but there's no such ambiguity in this
- * body, so this narrow, exact-text strip is safe and kept local to this one
- * oracle entry rather than widening that shared normalizer.
- */
-function stripDroneParamAnnotation(src: string): string {
-  return src.replace("([f,t,g]:[number,OscillatorType,number])", "([f,t,g])");
-}
-
 describe("AudioEngine/Sfx vs reference", () => {
   // AC, masterG, echoG and masterVol are bare globals in the reference;
   // Task 5 (src/audio/AudioEngine.ts) turns them into private module state
@@ -487,54 +456,34 @@ describe("AudioEngine/Sfx vs reference", () => {
     expect(getMasterVolume()).toBe(Number(match[1]));
   });
 
-  it("audioInit's body matches the reference exactly once its one required type annotation is stripped — the drone bed's frequencies, gains and LFO rates untouched", () => {
-    const moduleSource = readModuleSource("src/audio/AudioEngine.ts");
-    const refChunk = refSource(REF.audioInit);
-    expect(stripDroneParamAnnotation(extractFunctionBody(moduleSource, "audioInit"))).toBe(
-      extractFunctionBody(refChunk, "audioInit"),
-    );
-  });
-
-  it("blip's body matches the reference exactly once accessor calls are reversed to bare AC/masterG/echoG", () => {
-    const moduleSource = readModuleSource("src/audio/Sfx.ts");
-    const refChunk = refSource(REF.blip);
-    expect(denormalizeAudioAccessors(extractFunctionBody(moduleSource, "blip"))).toBe(
-      extractFunctionBody(refChunk, "blip"),
-    );
-  });
-
-  it("bang's body matches the reference exactly once accessor calls are reversed", () => {
-    const moduleSource = readModuleSource("src/audio/Sfx.ts");
-    const refChunk = refSource(REF.bang);
-    expect(denormalizeAudioAccessors(extractFunctionBody(moduleSource, "bang"))).toBe(
-      extractFunctionBody(refChunk, "bang"),
-    );
-  });
-
+  // audioInit's, blip's, bang's and boom's former byte-identity tests
+  // (Plan 0B) are retired: superseded by tests/behavior/audio.test.ts's
+  // recorded-WebAudio-graph comparisons (node creation, connect edges,
+  // parameter assignments and scheduled automation), which prove the same
+  // fidelity — every frequency, gain, filter setting and connection —
+  // without requiring source text to stay verbatim. See
+  // docs/known-issues.md KNOWN-5.
+  //
+  // click has no behavior-test coverage of its own (it isn't in the list
+  // tests/behavior/audio.test.ts exercises), so its body-identity
+  // comparison stays.
   it("click's body is byte-identical to the reference — it only calls bang() and touches no engine state of its own", () => {
     const moduleSource = readModuleSource("src/audio/Sfx.ts");
     const refChunk = refSource(REF.click);
     expect(extractFunctionBody(moduleSource, "click")).toBe(extractFunctionBody(refChunk, "click"));
   });
-
-  it("boom's body matches the reference exactly once accessor calls are reversed — the sub thud and noise-tail envelopes untouched", () => {
-    const moduleSource = readModuleSource("src/audio/Sfx.ts");
-    const refChunk = refSource(REF.boom);
-    expect(denormalizeAudioAccessors(extractFunctionBody(moduleSource, "boom"))).toBe(
-      extractFunctionBody(refChunk, "boom"),
-    );
-  });
 });
 
 /**
  * pianoNote's one array-destructuring parameter — the three
- * [frequency, waveform, gain] partials — needs the same inline tuple type
- * annotation as audioInit's drone bed above and for the identical reason
- * (see stripDroneParamAnnotation's doc comment): TypeScript otherwise infers
- * the outer array literal's element type as (string | number)[], which
- * won't flow into pianoNote's OscillatorType-/number-typed assignments. Kept
- * as its own narrow strip, local to this one oracle entry, rather than
- * generalizing stripDroneParamAnnotation across two unrelated bodies.
+ * [frequency, waveform, gain] partials — needs an inline tuple type
+ * annotation to type-check, for the same reason AudioEngine's audioInit
+ * once needed one for its four-oscillator drone bed (that body-identity
+ * test is retired now — see the "AudioEngine/Sfx vs reference" describe
+ * block above): TypeScript otherwise infers the outer array literal's
+ * element type as (string | number)[], which won't flow into pianoNote's
+ * OscillatorType-/number-typed assignments. Kept as its own narrow strip,
+ * local to this one oracle entry.
  */
 function stripPianoParamAnnotation(src: string): string {
   return src.replace("([fr,t,v]:[number,OscillatorType,number])", "([fr,t,v])");
@@ -552,14 +501,19 @@ describe("Voice/Ambient vs reference", () => {
     );
   });
 
-  it("growl's body matches the reference exactly once accessor calls are reversed — the detune ratios, formant bandpass Q/sweep and tremolo LFO rate untouched", () => {
-    const moduleSource = readModuleSource("src/audio/Voice.ts");
-    const refChunk = refSource(REF.growl);
-    expect(denormalizeAudioAccessors(extractFunctionBody(moduleSource, "growl"))).toBe(
-      extractFunctionBody(refChunk, "growl"),
-    );
-  });
-
+  // growl's and snarl's former byte-identity tests (Plan 0B) are retired:
+  // superseded by tests/behavior/audio.test.ts's recorded-WebAudio-graph
+  // comparisons (growl's rumble/throat/tremolo graph directly, snarl's
+  // per-archetype dispatch — including the Math.random-seeded generic-ghoul
+  // fallback — through the growl/blip/bang calls it makes), which prove the
+  // same fidelity without requiring source text to stay verbatim. See
+  // docs/known-issues.md KNOWN-5.
+  //
+  // gurgle, pain, deathCry, wetDoor, stoneDoor, bellToll, organChord,
+  // pianoNote, startBossMusic, stopBossMusic and noiseBuf below have no
+  // behavior-test coverage of their own, so their body-identity comparisons
+  // stay — removing them would leave those functions with no fidelity
+  // coverage at all.
   it("gurgle's body matches the reference exactly once accessor calls are reversed", () => {
     const moduleSource = readModuleSource("src/audio/Voice.ts");
     const refChunk = refSource(REF.gurgle);
@@ -581,14 +535,6 @@ describe("Voice/Ambient vs reference", () => {
     const refChunk = refSource(REF.deathCry);
     expect(denormalizeAudioAccessors(extractFunctionBody(moduleSource, "deathCry"))).toBe(
       extractFunctionBody(refChunk, "deathCry"),
-    );
-  });
-
-  it("snarl's body matches the reference exactly once accessor calls are reversed — every enemy archetype's dispatch call untouched", () => {
-    const moduleSource = readModuleSource("src/audio/Voice.ts");
-    const refChunk = refSource(REF.snarl);
-    expect(denormalizeAudioAccessors(extractFunctionBody(moduleSource, "snarl"))).toBe(
-      extractFunctionBody(refChunk, "snarl"),
     );
   });
 
@@ -661,5 +607,98 @@ describe("Voice/Ambient vs reference", () => {
     expect(extractFunctionBody(moduleSource, "stopBossMusic")).toBe(
       extractFunctionBody(refChunk, "stopBossMusic"),
     );
+  });
+});
+
+describe("WEAPON_PIXELS vs. reference", () => {
+  // Pure data literal — src/render/viewmodel/sprites.ts hoists each
+  // weapon's row-array literals (the reference's own local pistolIdle/
+  // sgIdle/.../srIdle consts, declared inline inside buildWeaponSprites)
+  // out to src/render/viewmodel/pixels/{weapons0,weapons1}.ts, the same
+  // "data lives apart from the code that consumes it" shape as PXDEF above.
+  // Extracted here by running the reference's own buildWeaponSprites() with
+  // pxCanvas faked to the identity function, so reg()'s
+  // frames.map(f=>pxCanvas(f,GP)) hands back the raw row arrays instead of
+  // a baked (and therefore byte-incomparable) canvas — see
+  // tests/behavior/viewmodel.test.ts's referenceWeaponFrames, which uses
+  // the identical technique for its per-weapon sabotage-proof coverage.
+  const refWPX: Record<number, { idle: string[][]; fire: string[][]; reload: string[][] }> = {};
+  evalReference(
+    [refSource(REF.viewmodelBuildWeaponSprites)],
+    "buildWeaponSprites()",
+    { WPX: refWPX, GP: {}, pxCanvas: (rows: string[]) => rows },
+  );
+  const refWeaponPixels = Object.keys(refWPX).map(Number).sort((a, b) => a - b).map((k) => refWPX[k]);
+
+  it("has the identical 8 weapon slots, in order", () => {
+    expect(WEAPON_PIXELS.length).toBe(8);
+    expect(refWeaponPixels.length).toBe(8);
+  });
+
+  it("matches every row of every idle/fire/reload frame, slot for slot — the largest single body of art this task moved", () => {
+    expect(WEAPON_PIXELS).toEqual(refWeaponPixels);
+  });
+});
+
+describe("GP (weapon sprite palette) vs. reference", () => {
+  const refGP = evalReference<Record<string, string>>([refSource(REF.viewmodelSprites)], "GP");
+
+  it("has the identical key set", () => {
+    expect(Object.keys(GP).sort()).toEqual(Object.keys(refGP).sort());
+  });
+
+  it("matches every palette entry", () => {
+    expect(GP).toEqual(refGP);
+  });
+});
+
+describe("viewmodel kit (SKIN/SLEEVE/.../HOLY, VM, MUZ) vs. reference", () => {
+  // src/render/viewmodel/kit.ts — SKIN, DARK, MID, LIT, RUST, WOOD, GLOW and
+  // HOLY are unused by the current game (dead code in the reference too,
+  // preserved verbatim rather than pruned); SLEEVE and BOOT feed
+  // drawKickBoot's vGrad calls, already covered behaviorally by
+  // tests/behavior/viewmodel.test.ts's drawKickBoot suite. This is the data
+  // fidelity claim for all ten, plus VM and MUZ, independent of whether
+  // anything currently calls the functions that read them.
+  //
+  // kit.ts imports src/render/Overlay2D.ts's getFx(), and Overlay2D.ts
+  // grabs the real fx2d 2D context eagerly at its own module top level (see
+  // tests/behavior/viewmodel.test.ts's doc comment) — so, like that file,
+  // kit.ts is imported dynamically here, after loadGameHtml()/
+  // installDomStubs() make `#fx2d` and a working (stub) getContext exist,
+  // rather than statically at this file's top (which would resolve before
+  // either ran).
+  interface RefKitConstants {
+    SKIN: string; SLEEVE: string; BOOT: string; DARK: string; MID: string;
+    LIT: string; RUST: string; WOOD: string; GLOW: string; HOLY: string;
+    VM: Record<string, string>;
+    MUZ: Array<{ y: number; r: number }>;
+  }
+  const ref = evalReference<RefKitConstants>(
+    [refSource(REF.viewmodelKit)],
+    "({SKIN,SLEEVE,BOOT,DARK,MID,LIT,RUST,WOOD,GLOW,HOLY,VM,MUZ})",
+  );
+  let Kit: typeof ViewmodelKit;
+
+  beforeAll(async () => {
+    installDomStubs();
+    loadGameHtml();
+    Kit = await import("../src/render/viewmodel/kit");
+  });
+
+  it("matches SKIN/SLEEVE/BOOT/DARK/MID/LIT/RUST/WOOD/GLOW/HOLY", () => {
+    const ours = { SKIN: Kit.SKIN, SLEEVE: Kit.SLEEVE, BOOT: Kit.BOOT, DARK: Kit.DARK, MID: Kit.MID,
+      LIT: Kit.LIT, RUST: Kit.RUST, WOOD: Kit.WOOD, GLOW: Kit.GLOW, HOLY: Kit.HOLY };
+    const refs = { SKIN: ref.SKIN, SLEEVE: ref.SLEEVE, BOOT: ref.BOOT, DARK: ref.DARK, MID: ref.MID,
+      LIT: ref.LIT, RUST: ref.RUST, WOOD: ref.WOOD, GLOW: ref.GLOW, HOLY: ref.HOLY };
+    expect(ours).toEqual(refs);
+  });
+
+  it("matches the VM palette", () => {
+    expect(Kit.VM).toEqual(ref.VM);
+  });
+
+  it("matches MUZ, the per-weapon muzzle-flash alignment table, slot for slot", () => {
+    expect(Kit.MUZ).toEqual(ref.MUZ);
   });
 });

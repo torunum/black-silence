@@ -44,6 +44,17 @@ export const REF = {
   enemyDefs: [2678, 2716],
   /** const rnd=..., clamp=..., pick=... — needed alongside procTextures below, which calls rnd/pick. */
   mathHelpers: [214, 216],
+  /**
+   * buildParticles/spawnP/blood/sparks/smoke3d/fireP/holyP/toxicP/emberP/
+   * partTick, then the pools/wallDecals/gibs state, materials, POOLMAX/
+   * WDMAX/GIBMAX, and addPool/poolTick/addWallDecal/spawnGibs/gibTick — the
+   * PARTICLES / DECALS / GIBS section (see src/fx/Particles.ts, Decals.ts,
+   * Gibs.ts). `heads` is declared on the same `let` line (1596) but its
+   * logic lives elsewhere and is not part of this range's behavior.
+   */
+  particlesDecalsGibs: [1548, 1644],
+  /** woodP — the stray particle helper filed under the reference's "AMBIENT AUDIO + MISSING PARTICLE HELPER" banner, far from the rest of PARTICLES/DECALS/GIBS. Ambient audio itself (ambience/vitalsAudio, same banner) is a later plan's concern. */
+  woodP: [2650, 2652],
   /** makeTex, noiseFill, const TEX={}, and buildTextures — the procedural texture generator. */
   procTextures: [917, 1084],
   /** texFromPx — bakes a PXDEF creature's rows into a canvas texture, including the dismemberment mask/stump logic. */
@@ -102,6 +113,79 @@ export const REF = {
   startBossMusic: [1840, 1846],
   /** stopBossMusic — clears and nulls bossPulse. */
   stopBossMusic: [1847, 1847],
+  /**
+   * The fx2d overlay canvas + FW/FH/VW/VH + sizeFx, the casing/puff/
+   * blood-hit arrays, ejectCasing and screenBlood — src/render/Overlay2D.ts.
+   */
+  overlay2d: [2198, 2212],
+  /**
+   * SKIN/SLEEVE/BOOT/DARK/MID/LIT/RUST/WOOD/GLOW/HOLY, the VM palette,
+   * vRect/vFlat/vGrad/vBarrel/vTube/vWood/vScrew/vHole/vTrigger, and MUZ —
+   * src/render/viewmodel/kit.ts.
+   */
+  viewmodelKit: [2213, 2263],
+  /**
+   * pxCanvas, GP, WPX, wcv and buildWeaponSprites (including every weapon's
+   * inline pistolIdle/sgIdle/... row-array literals) —
+   * src/render/viewmodel/sprites.ts and its pixels/weapons0.ts, weapons1.ts.
+   */
+  viewmodelSprites: [2264, 2509],
+  /**
+   * buildWeaponSprites alone, without pxCanvas/GP/WPX/wcv above it — lets a
+   * caller override pxCanvas (e.g. to the identity function, so reg()'s
+   * frames.map(f=>pxCanvas(f,GP)) hands back raw row arrays instead of a
+   * baked, JSON-opaque canvas) via evalReference's globals. Injecting a
+   * pxCanvas global against REF.viewmodelSprites instead would not work:
+   * that chunk's own `function pxCanvas(...)` declaration would win once
+   * evaluated (a chunk's top-level function declarations bind on the
+   * sandbox's global object the same way a script's would, overwriting
+   * whatever the caller injected under the same name) — see
+   * tests/behavior/viewmodel.test.ts's referenceWeaponFrames.
+   */
+  viewmodelBuildWeaponSprites: [2310, 2509],
+  /**
+   * keys, yaw/pitch/locked/swayX/swayY/firing/zoomOn, all eight event
+   * listeners and overlayOpen — src/player/Input.ts.
+   *
+   * The listeners register as a side effect of evaluating this range, so a
+   * test must inject its own `addEventListener` (and a `document` standing
+   * in for the real one) to capture them, exactly as the browser would.
+   */
+  input: [1875, 1904],
+  /** onceSaid/subT/lastSayT and say — ADEM's subtitles, src/ui/Subtitles.ts. */
+  subtitles: [1852, 1862],
+  /**
+   * The two lines that open the reference's chatterTick — the subtitle
+   * countdown and the clear-on-expiry. src/ui/Subtitles.ts's tickSubtitles
+   * is these two lines and nothing else; chatterTick itself belongs to Plan
+   * 0F, so only this fragment moved.
+   */
+  subtitleTimer: [3893, 3894],
+  /** ach — the achievement toast, src/ui/Toasts.ts. Its three string arguments are the only place the reference records the achievement text; see src/content/achievements.ts. */
+  achievementToast: [1863, 1870],
+  /** msgEl/msgT, showMsg, flashDmg and flashHoly — src/ui/HudMessages.ts. */
+  hudMessages: [1909, 1914],
+  /** The one main-loop line that counts the HUD message down; src/ui/HudMessages.ts's tickMessage is exactly this, and the loop around it belongs to Plan 0F. */
+  messageTimer: [3959, 3959],
+  /**
+   * fxTick alone, carved out of the viewmodelDraw range below so it can be
+   * evaluated WITHOUT frameFor/drawKickBoot/drawViewmodel beside it: the
+   * reference's fxTick ends by calling drawKickBoot()/drawViewmodel(dt,t),
+   * which src/render/Overlay2D.ts's port takes as parameters instead (to
+   * break an import cycle). Evaluating this range on its own leaves those
+   * two names unbound, so a test can inject them as sandbox globals and see
+   * the call ORDER — evaluating REF.viewmodelDraw instead would bind the
+   * reference's own declarations over any injected stub, the same trap
+   * REF.viewmodelBuildWeaponSprites documents for pxCanvas.
+   */
+  fxTick: [2524, 2557],
+  /**
+   * frameFor, fxTick, drawKickBoot and drawViewmodel — frameFor/
+   * drawKickBoot/drawViewmodel live in src/render/viewmodel/draw.ts; fxTick
+   * lives in src/render/Overlay2D.ts (see REF.overlay2d's doc comment for
+   * why fxTick moved apart from the draw functions it calls).
+   */
+  viewmodelDraw: [2510, 2646],
 } as const satisfies Record<string, readonly [number, number]>;
 
 /** Reference source text for a [start, end] 1-indexed inclusive line range. */
