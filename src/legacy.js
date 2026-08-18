@@ -20,6 +20,7 @@ import { headPool } from "./fx/Heads";
 import { projectiles } from "./fx/Projectiles";
 import { save } from "./save/SaveGame";
 import { pianoState } from "./ui/PianoState";
+import { ambienceState } from "./world/AmbienceState";
 import { ejectCasing, screenBlood, fxTick } from "./render/Overlay2D";
 import { buildWeaponSprites } from "./render/viewmodel/sprites";
 import { drawKickBoot, drawViewmodel } from "./render/viewmodel/draw";
@@ -360,10 +361,9 @@ function crossExplode(x,y,z){
    AMBIENT AUDIO + MISSING PARTICLE HELPER
    (the "missing particle helper", woodP, now lives in src/fx/Particles.ts)
    ============================================================ */
-let ambT=6,heartT=0,breathT=0;
 function ambience(dt){
-  if(!ctx())return;ambT-=dt;if(ambT>0)return;
-  ambT=rnd(8,18);
+  if(!ctx())return;ambienceState.ambT-=dt;if(ambienceState.ambT>0)return;
+  ambienceState.ambT=rnd(8,18);
   const r=Math.random();
   if(r<.28)blip(rnd(480,720),1.4,"sine",.022,rnd(140,200),true);      // distant scream
   else if(r<.5)for(let i=0;i<3;i++)setTimeout(()=>bang(.08,.05,400),i*rnd(120,260)); // machinery
@@ -372,11 +372,11 @@ function ambience(dt){
 }
 function vitalsAudio(dt){
   if(!ctx()||S.dead)return;
-  if(S.hp<35){heartT-=dt;
-    if(heartT<=0){heartT=S.hp<15?.55:.85;
+  if(S.hp<35){ambienceState.heartT-=dt;
+    if(ambienceState.heartT<=0){ambienceState.heartT=S.hp<15?.55:.85;
       blip(52,.1,"sine",.22,40);setTimeout(()=>blip(48,.12,"sine",.18,36),130);}}
-  if(S.hp<50){breathT-=dt;
-    if(breathT<=0){breathT=rnd(2.2,3);bang(.5,.04,900,300);}}}
+  if(S.hp<50){ambienceState.breathT-=dt;
+    if(ambienceState.breathT<=0){ambienceState.breathT=rnd(2.2,3);bang(.5,.04,900,300);}}}
 
 /* ============================================================
    WORLD STATE + LEVEL LOADER
@@ -1424,19 +1424,18 @@ function torchTick(dt,t){
 /* ============================================================
    RANDOM EVENTS
    ============================================================ */
-let darkT=0,savedAmb=0;
 function eventTick(dt){
-  if(darkT>0){darkT-=dt;
-    if(darkT<=0){ambLight.intensity=savedAmb;
+  if(ambienceState.darkT>0){ambienceState.darkT-=dt;
+    if(ambienceState.darkT<=0){ambLight.intensity=ambienceState.savedAmb;
       for(const tc of torches)tc.L.visible=true;
       showMsg("THE LIGHT RETURNS");}}
   eventT-=dt;if(eventT>0)return;
   eventT=rnd(55,100);
   const r=Math.random();
   if(r<.45){ /* blackout */
-    savedAmb=ambLight.intensity;ambLight.intensity=.12;
+    ambienceState.savedAmb=ambLight.intensity;ambLight.intensity=.12;
     for(const tc of torches)tc.L.visible=false;
-    darkT=8;say("event_dark",true);
+    ambienceState.darkT=8;say("event_dark",true);
     blip(50,2,"sine",.1,30,true);bang(.4,.1,300);
   }else if(r<.8&&S.level===1){ /* the bells */
     bellToll();say("event_bell",true);
