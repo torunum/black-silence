@@ -31,6 +31,7 @@ import { showMsg, tickMessage, flashDmg, flashHoly } from "./ui/HudMessages";
 import { keys, setInputHooks, overlayOpen, getYaw, setYaw, getPitch, setPitch,
   getSwayX, setSwayX, getSwayY, setSwayY, isFiring, setFiring, isZoomOn, setZoomOn } from "./player/Input";
 import { game } from "./core/Game";
+import { weaponRuntime } from "./weapons/WeaponRuntime";
 
 /* ============================================================
    THE BLACK SILENCE — The Hollow Parish (v3 gothic overhaul)
@@ -84,7 +85,7 @@ function addBlob(wx,wz,s){const m=new THREE.Mesh(new THREE.PlaneGeometry(s,s),
    scope so it is done before any event can be delivered. */
 setInputHooks({
   isPianoOpen:()=>game.pianoOpen, isStarted:()=>game.started, isInputLocked:()=>game.inputLock,
-  zoomLerp:()=>zoomLerp, canvas:()=>renderer.domElement,
+  zoomLerp:()=>weaponRuntime.zoomLerp, canvas:()=>renderer.domElement,
   currentWeapon:()=>S.cur, ownsWeapon:i=>!!S.weapons[i],
   pianoKeyDown:code=>pianoKeyDown(code), closePiano:()=>closePiano(),
   interact:()=>interact(), startReload:()=>startReload(),
@@ -107,74 +108,72 @@ const WEAPON_SOUNDS = [
   () => { blip(70,.5,"sawtooth",.16,360,true); bang(.28,.45,500); growl(90,.4,.3,true); },
 ];
 const WEAPONS = WEAPON_STATS.map((w, i) => ({ ...w, snd: WEAPON_SOUNDS[i] }));
-let wstate="equip",wtime=0,wCool=0,pending=-1,reloadFlags={},recoilPitch=0;
-let kickAmt=0,kickRot=0,muzzle=0,zoomLerp=0;
 const EQUIP_T=.24,UNEQUIP_T=.16;
 function requestSwitch(i){
-  if(!game.started||!S.weapons[i]||i===S.cur||pending===i)return;
-  pending=i;setZoomOn(false);
-  if(wstate!=="unequip"){wstate="unequip";wtime=0;click(.12);}}
+  if(!game.started||!S.weapons[i]||i===S.cur||weaponRuntime.pending===i)return;
+  weaponRuntime.pending=i;setZoomOn(false);
+  if(weaponRuntime.wstate!=="unequip"){weaponRuntime.wstate="unequip";weaponRuntime.wtime=0;click(.12);}}
 function startReload(){
   if(!game.started||S.dead||game.inputLock)return;
   const w=WEAPONS[S.cur];
-  if(wstate!=="idle"&&wstate!=="fire")return;
+  if(weaponRuntime.wstate!=="idle"&&weaponRuntime.wstate!=="fire")return;
   if(S.mag[S.cur]>=w.magSize||S.ammo[w.ammo]<=0)return;
-  wstate="reload";wtime=0;reloadFlags={};}
+  weaponRuntime.wstate="reload";weaponRuntime.wtime=0;weaponRuntime.reloadFlags={};}
 function weaponTick(dt){
-  wtime+=dt;wCool-=dt;
+  weaponRuntime.wtime+=dt;weaponRuntime.wCool-=dt;
   const w=WEAPONS[S.cur];
-  if(wstate==="unequip"&&wtime>=UNEQUIP_T){
-    if(pending>=0){S.cur=pending;pending=-1;}
-    wstate="equip";wtime=0;click(.16);}
-  else if(wstate==="equip"&&wtime>=EQUIP_T){wstate="idle";wtime=0;}
-  else if(wstate==="fire"&&wtime>=Math.min(.35,w.rate)){wstate="idle";wtime=0;}
-  else if(wstate==="reload"){
-    const rt=wtime/w.reload;
-    if(rt>.18&&!reloadFlags.a){reloadFlags.a=1;click(.16);
+  if(weaponRuntime.wstate==="unequip"&&weaponRuntime.wtime>=UNEQUIP_T){
+    if(weaponRuntime.pending>=0){S.cur=weaponRuntime.pending;weaponRuntime.pending=-1;}
+    weaponRuntime.wstate="equip";weaponRuntime.wtime=0;click(.16);}
+  else if(weaponRuntime.wstate==="equip"&&weaponRuntime.wtime>=EQUIP_T){weaponRuntime.wstate="idle";weaponRuntime.wtime=0;}
+  else if(weaponRuntime.wstate==="fire"&&weaponRuntime.wtime>=Math.min(.35,w.rate)){weaponRuntime.wstate="idle";weaponRuntime.wtime=0;}
+  else if(weaponRuntime.wstate==="reload"){
+    const rt=weaponRuntime.wtime/w.reload;
+    if(rt>.18&&!weaponRuntime.reloadFlags.a){weaponRuntime.reloadFlags.a=1;click(.16);
       if(S.cur===0)for(let i=0;i<6;i++)ejectCasing(1);
       if(S.cur===1){ejectCasing(2);ejectCasing(2);}
       if(S.cur===4)ejectCasing(3);}
-    if(rt>.62&&!reloadFlags.b){reloadFlags.b=1;click(.14);}
+    if(rt>.62&&!weaponRuntime.reloadFlags.b){weaponRuntime.reloadFlags.b=1;click(.14);}
     if(rt>=1){
       const need=w.magSize-S.mag[S.cur];
       const take=Math.min(need,S.ammo[w.ammo]);
       S.ammo[w.ammo]-=take;S.mag[S.cur]+=take;
-      wstate="idle";wtime=0;click(.2);}
-    if(isFiring()&&S.mag[S.cur]>0){wstate="idle";wtime=0;}}
-  if(isFiring()&&(wstate==="idle"||wstate==="fire")&&wCool<=0&&!S.dead&&game.started&&!game.inputLock){
+      weaponRuntime.wstate="idle";weaponRuntime.wtime=0;click(.2);}
+    if(isFiring()&&S.mag[S.cur]>0){weaponRuntime.wstate="idle";weaponRuntime.wtime=0;}}
+  if(isFiring()&&(weaponRuntime.wstate==="idle"||weaponRuntime.wstate==="fire")&&weaponRuntime.wCool<=0&&!S.dead&&game.started&&!game.inputLock){
     if(S.mag[S.cur]<=0){
       if(S.ammo[w.ammo]>0)startReload();
-      else{click(.1);wCool=.3;}}        // dry click, not a beep
+      else{click(.1);weaponRuntime.wCool=.3;}}        // dry click, not a beep
     else fire(w);}
-  if(wstate==="idle"&&S.mag[S.cur]===0&&S.ammo[w.ammo]>0&&wtime>.4)startReload();
-  kickAmt*=Math.exp(-10*dt);kickRot*=Math.exp(-9*dt);
-  muzzle=Math.max(0,muzzle-dt*9);
+  if(weaponRuntime.wstate==="idle"&&S.mag[S.cur]===0&&S.ammo[w.ammo]>0&&weaponRuntime.wtime>.4)startReload();
+  weaponRuntime.kickAmt*=Math.exp(-10*dt);weaponRuntime.kickRot*=Math.exp(-9*dt);
+  weaponRuntime.muzzle=Math.max(0,weaponRuntime.muzzle-dt*9);
   muzzleLight.intensity*=Math.exp(-16*dt);
   boomLight.intensity*=Math.exp(-7*dt);
   setSwayX(getSwayX()*Math.exp(-7*dt));setSwayY(getSwayY()*Math.exp(-7*dt));
   /* sniper zoom */
   const zt=(S.cur===4&&isZoomOn())?1:0;
-  zoomLerp+=(zt-zoomLerp)*Math.min(1,dt*9);
-  camera.fov=78-46*zoomLerp;camera.updateProjectionMatrix();
+  weaponRuntime.zoomLerp+=(zt-weaponRuntime.zoomLerp)*Math.min(1,dt*9);
+  camera.fov=78-46*weaponRuntime.zoomLerp;camera.updateProjectionMatrix();
   /* kick cooldown */
   if(S.kickCd>0){S.kickCd-=dt;
     if(S.kickCd<=0){say("kickready");click(.12);}}
-  kickAnim=Math.max(0,kickAnim-dt);}
+  weaponRuntime.kickAnim=Math.max(0,weaponRuntime.kickAnim-dt);}
 function fire(w){
-  S.mag[S.cur]--;wCool=w.rate;wstate="fire";wtime=0;
+  S.mag[S.cur]--;weaponRuntime.wCool=w.rate;weaponRuntime.wstate="fire";weaponRuntime.wtime=0;
   S.shots++;
-  kickAmt=w.kick;kickRot=(Math.random()-.5)*w.kick*.25;
-  shake(w.trauma);muzzle=.4+(S.cur===1?.15:0)+(S.cur===4?.2:0);
+  weaponRuntime.kickAmt=w.kick;weaponRuntime.kickRot=(Math.random()-.5)*w.kick*.25;
+  shake(w.trauma);weaponRuntime.muzzle=.4+(S.cur===1?.15:0)+(S.cur===4?.2:0);
   muzzleLight.position.copy(camera.position);
   muzzleLight.intensity=2.6+(S.cur===1?1.4:0)+(S.cur===5?1.6:0);
   muzzleLight.color.setHex(S.cur===5?0xfff0b0:0xffc878);
   w.snd();
   if(S.cur===2||S.cur===3)ejectCasing(0);
   if(S.cur===1)setTimeout(()=>{ejectCasing(2);click(.12);},300); // pump
-  recoilPitch+=(S.cur===1?.04:S.cur===4?.05:S.cur===0?.022:S.cur===5?.03:.006);
+  weaponRuntime.recoilPitch+=(S.cur===1?.04:S.cur===4?.05:S.cur===0?.022:S.cur===5?.03:.006);
   alertSound(px,pz,18);
   const dir=new THREE.Vector3();camera.getWorldDirection(dir);
-  volleyHit=false;
+  weaponRuntime.volleyHit=false;
   for(let i=0;i<w.pellets;i++){
     const d=dir.clone();
     d.x+=(Math.random()-.5)*w.spread*2;d.y+=(Math.random()-.5)*w.spread*2;d.z+=(Math.random()-.5)*w.spread*2;
@@ -200,19 +199,17 @@ function fire(w){
       projectiles.nails.push({m:grp,vx:d.x*22,vy:d.y*22,vz:d.z*22,dmg:w.dmg,life:3,cross:true,
         spin:rnd(4,7)});
       scene.add(grp);}}
-  if(volleyHit)S.hitsLanded++;
+  if(weaponRuntime.volleyHit)S.hitsLanded++;
   const mp=camera.position.clone().add(dir.clone().multiplyScalar(.5));
   smoke3d(mp.x,mp.y-.1,mp.z,S.cur===1?6:2);}
-let volleyHit=false;
 const crossMat=new THREE.MeshBasicMaterial({color:0xe8d88a});
 const reapCoreMat=new THREE.MeshBasicMaterial({color:0xaff060});
 const reapTailMat=new THREE.MeshBasicMaterial({color:0x4fa030,transparent:true,opacity:.7});
 
 /* ---------- POWER KICK ---------- */
-let kickAnim=0;
 function doKick(){
   if(!game.started||S.dead||game.inputLock||S.kickCd>0||game.pianoOpen)return;
-  S.kickCd=15;kickAnim=.32;
+  S.kickCd=15;weaponRuntime.kickAnim=.32;
   shake(.3);bang(.15,.5,900);
   setTimeout(()=>{
     const dir=new THREE.Vector3();camera.getWorldDirection(dir);
@@ -305,7 +302,7 @@ function hitscan(dir,dmg,wIdx){
   for(const c of cands){
     if(c.t>wallT)break;
     if(c.kind==="p"){
-      volleyHit=true;
+      weaponRuntime.volleyHit=true;
       if(c.p.explosive){c.p.hp-=dmg;
         sparks(o.x+dir.x*c.t,o.y+dir.y*c.t,o.z+dir.z*c.t,5);
         if(c.p.hp<=0)explodeBarrel(c.p);}
@@ -315,7 +312,7 @@ function hitscan(dir,dmg,wIdx){
         if(c.p.hp<=0)breakProp(c.p);}
       used++;if(used>=pierce)return;continue;}
     const e=c.e;
-    volleyHit=true;
+    weaponRuntime.volleyHit=true;
     const reg=PX[e.key].regions||{H:e.h,head:0};
     // vertical fraction up the sprite (0 feet .. 1 head)
     const ecy0=e.fly?(e.flyH||1.5):e.h*.5;
@@ -768,10 +765,10 @@ function headTick(dt){
     const pd=Math.hypot(h.x-px,h.z-pz);
     if(pd<.7){
       const a=Math.atan2(h.x-px,h.z-pz);
-      const force=kickAnim>0?9:3.4;
-      h.vx=Math.sin(a)*force;h.vz=Math.cos(a)*force;h.vy=kickAnim>0?5:2.2;
+      const force=weaponRuntime.kickAnim>0?9:3.4;
+      h.vx=Math.sin(a)*force;h.vz=Math.cos(a)*force;h.vy=weaponRuntime.kickAnim>0?5:2.2;
       h.spin=rnd(-12,12);h.rest=false;
-      if(kickAnim>0){bang(.08,.3,500);blood(h.x,h.y,h.z,4,1.4);}}
+      if(weaponRuntime.kickAnim>0){bang(.08,.3,500);blood(h.x,h.y,h.z,4,1.4);}}
     h.sp.position.set(h.x,h.y,h.z);
     if(h.life<=0){scene.remove(h.sp);headPool.heads.splice(i,1);}}}
 function dropAmmo(x,z){
@@ -1225,7 +1222,7 @@ function projTick(dt){
       if(Math.hypot(mx-p.x,mz-p.z)<p.r+.1&&my<p.hgt){boom=true;break;}}
     if(!boom)for(const e of enemies){if(e.dead||e.dormant)continue;
       if(Math.hypot(mx-e.x,mz-e.z)<e.w*.5&&my>0&&my<e.h*1.05){
-        volleyHit=true;S.hitsLanded++;boom=true;break;}}
+        weaponRuntime.volleyHit=true;S.hitsLanded++;boom=true;break;}}
     if(boom){crossExplode(mx,Math.max(my,.3),mz);
       scene.remove(n.m);projectiles.nails.splice(i,1);}}
   for(let i=projectiles.orbs.length-1;i>=0;i--){const o=projectiles.orbs[i];
@@ -1316,10 +1313,10 @@ function playerTick(dt){
   screenShake.trauma=Math.max(0,screenShake.trauma-dt*1.6);
   const sh=screenShake.trauma*screenShake.trauma,t=performance.now();
   const shx=sh*.06*Math.sin(t*.061),shy=sh*.05*Math.sin(t*.083),shr=sh*.05*Math.sin(t*.047);
-  recoilPitch*=Math.exp(-8*dt);
+  weaponRuntime.recoilPitch*=Math.exp(-8*dt);
   camera.position.set(px+shx,pyy+(grounded?bobSin*.025*Math.min(1,spd/7):0)+shy,pz);
   camera.rotation.order="YXZ";
-  camera.rotation.y=getYaw();camera.rotation.x=getPitch()+recoilPitch;camera.rotation.z=shr;
+  camera.rotation.y=getYaw();camera.rotation.x=getPitch()+weaponRuntime.recoilPitch;camera.rotation.z=shr;
   lamp.position.set(px,pyy+.4,pz);
   if(lampCore)lampCore.position.set(px,pyy+.2,pz);
   /* exit pad (level 1) */
@@ -1536,7 +1533,7 @@ function hud(){
   document.querySelector("#am .num").innerHTML=
     S.mag[S.cur]+'<span class="sub2"> | '+S.ammo[w.ammo]+"</span>";
   document.getElementById("wname").textContent=
-    w.name+(wstate==="reload"?" — RELOADING":"");
+    w.name+(weaponRuntime.wstate==="reload"?" — RELOADING":"");
   document.getElementById("keys").textContent=S.key?"■ RED KEY":"";
   const kw=document.getElementById("kickwrap");
   document.getElementById("kickfill").style.width=(100*(1-S.kickCd/15))+"%";
@@ -1621,12 +1618,12 @@ function loop(t){
     tickMessage(dt);}
   if(scene){
     partTick(dt);gibTick(dt);poolTick(dt);headTick(dt);torchTick(dt,t);
-    fxTick(dt,t,zoomLerp,
-      ()=>drawKickBoot(kickAnim),
+    fxTick(dt,t,weaponRuntime.zoomLerp,
+      ()=>drawKickBoot(weaponRuntime.kickAnim),
       (fdt,ft)=>drawViewmodel(fdt,ft,{
-        started:game.started,dead:S.dead,pianoOpen:game.pianoOpen,zoomLerp,cur:S.cur,vx,vz,
-        sprintKey:!!(keys.ShiftLeft||keys.ShiftRight),bobT,wstate,wtime,
-        equipT:EQUIP_T,unequipT:UNEQUIP_T,kickAmt,kickRot,swayX:getSwayX(),swayY:getSwayY(),muzzle,
+        started:game.started,dead:S.dead,pianoOpen:game.pianoOpen,zoomLerp:weaponRuntime.zoomLerp,cur:S.cur,vx,vz,
+        sprintKey:!!(keys.ShiftLeft||keys.ShiftRight),bobT,wstate:weaponRuntime.wstate,wtime:weaponRuntime.wtime,
+        equipT:EQUIP_T,unequipT:UNEQUIP_T,kickAmt:weaponRuntime.kickAmt,kickRot:weaponRuntime.kickRot,swayX:getSwayX(),swayY:getSwayY(),muzzle:weaponRuntime.muzzle,
       },WEAPONS));
     hud();
     renderer.render(scene,camera);}}
