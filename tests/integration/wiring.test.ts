@@ -321,13 +321,21 @@ describe("screenShake — hit-stop slows and burns down the frame", () => {
     screenShake.hitStop = 0;
   });
 
-  it("slows the frame while hit-stop is running", () => {
+  it("slows the frame while hit-stop is running, and burns it down", () => {
     screenShake.hitStop = 0.05;
-    const frame = runFrame(performance.now());
-    // When hit-stop is active, the main loop scales dt to 8% before passing it
-    // to the 2D layer: dt*=.08. If this is sabotaged to dt*=.09, the trace test
-    // (which exercises the full gameplay loop) would fail. Here we verify the
-    // scaled dt is small while hit-stop is active.
-    expect(frame.dt).toBeLessThan(1 / 60 * 0.5);
+    // Establish a known `last` first, then jump the timestamp far enough
+    // ahead (5s) to force legacy.js's own dt cap (Math.min(.05, ...)) to
+    // trigger deterministically — this makes pre-scale dt exactly .05
+    // regardless of how much real wall-clock time the test runner itself
+    // consumed between calls.
+    const t1 = performance.now();
+    runFrame(t1);
+    const before = screenShake.hitStop;
+    const frame = runFrame(t1 + 5000);
+    // dt is capped at .05 before hit-stop scaling, so the real .08
+    // multiplier yields dt === .05*.08 (mod float noise); a .09 sabotage
+    // would yield .05*.09 which fails this check.
+    expect(frame.dt).toBeCloseTo(0.05 * 0.08, 5);
+    expect(screenShake.hitStop).toBeLessThan(before);
   });
 });
