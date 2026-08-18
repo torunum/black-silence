@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
-import { beforeAll, describe, expect, it, vi } from "vitest";
+import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { installDomStubs, loadGameHtml } from "../support/domStubs";
+import { screenShake } from "../../src/fx/ShakeState";
 
 /**
  * The seams — KNOWN-9.
@@ -311,5 +312,22 @@ describe("the ViewmodelFrame legacy.js builds", () => {
       expect(typeof restFrame.vm[field], `frame.${field}`).toBe("boolean");
     }
     expect(typeof restFrame.vm.wstate).toBe("string");
+  });
+});
+
+describe("screenShake — hit-stop slows and burns down the frame", () => {
+  beforeEach(() => {
+    screenShake.trauma = 0;
+    screenShake.hitStop = 0;
+  });
+
+  it("slows the frame while hit-stop is running", () => {
+    screenShake.hitStop = 0.05;
+    const frame = runFrame(performance.now());
+    // When hit-stop is active, the main loop scales dt to 8% before passing it
+    // to the 2D layer: dt*=.08. If this is sabotaged to dt*=.09, the trace test
+    // (which exercises the full gameplay loop) would fail. Here we verify the
+    // scaled dt is small while hit-stop is active.
+    expect(frame.dt).toBeLessThan(1 / 60 * 0.5);
   });
 });

@@ -15,6 +15,7 @@ import { setScene } from "./render/SceneRef";
 import { buildParticles, spawnP, blood, sparks, smoke3d, fireP, holyP, toxicP, emberP, woodP, partTick } from "./fx/Particles";
 import { splatMat, holeMat, scorchMat, addPool, poolTick, addWallDecal, resetDecals } from "./fx/Decals";
 import { gibGeo, gibMatsFlesh, spawnGibs, gibTick, resetGibs, spawnGibChunk } from "./fx/Gibs";
+import { screenShake } from "./fx/ShakeState";
 import { ejectCasing, screenBlood, fxTick } from "./render/Overlay2D";
 import { buildWeaponSprites } from "./render/viewmodel/sprites";
 import { drawKickBoot, drawViewmodel } from "./render/viewmodel/draw";
@@ -55,8 +56,7 @@ function sizeRender(){const a=innerWidth/innerHeight,w=400,h=Math.round(w/a);
   renderer.setSize(w,h,false);camera.aspect=a;camera.updateProjectionMatrix();
   const c=renderer.domElement;c.style.width="100%";c.style.height="100%";}
 addEventListener("resize",sizeRender);sizeRender();
-let trauma=0,hitStop=0,zoomT=0;
-function shake(a){trauma=Math.min(1,trauma+a);}
+function shake(a){screenShake.trauma=Math.min(1,screenShake.trauma+a);}
 
 const blobTexC=document.createElement("canvas");blobTexC.width=blobTexC.height=32;
 {const g=blobTexC.getContext("2d");const gr=g.createRadialGradient(16,16,2,16,16,16);
@@ -231,7 +231,7 @@ function doKick(){
       if(dot<.5)continue;
       hitAny=true;
       if(p.explosive)explodeBarrel(p);else breakProp(p);}
-    if(hitAny){bang(.12,.4,500);shake(.15);hitStop=Math.max(hitStop,.03);}
+    if(hitAny){bang(.12,.4,500);shake(.15);screenShake.hitStop=Math.max(screenShake.hitStop,.03);}
   },110);}
 
 /* ---------- HITSCAN ---------- */
@@ -341,7 +341,7 @@ function hitscan(dir,dmg,wIdx){
     addWallDecal(wx,clamp(wy,.15,WALLH-.15),wz,n.x,n.z,.08,holeMat);
     if(Math.random()<.3)bang(.03,.08,4000,800);}}
 function crossExplode(x,y,z){
-  flashHoly(.35);shake(.35);hitStop=Math.max(hitStop,.04);
+  flashHoly(.35);shake(.35);screenShake.hitStop=Math.max(screenShake.hitStop,.04);
   boomLight.position.set(x,y,z);boomLight.intensity=4;boomLight.color.setHex(0xfff0b0);
   holyP(x,y,z,40);smoke3d(x,y,z,10);
   boom(.7);
@@ -450,7 +450,7 @@ function breakProp(p){
   if(S.propsBroken===15)ach(ACHIEVEMENTS.redec,S.ach);}
 function explodeBarrel(b){
   if(b.dead)return;b.dead=true;scene.remove(b.m);S.propsBroken++;
-  shake(.7);hitStop=Math.max(hitStop,.05);
+  shake(.7);screenShake.hitStop=Math.max(screenShake.hitStop,.05);
   boomLight.position.set(b.x,1.2,b.z);boomLight.intensity=4;boomLight.color.setHex(0xff7830);
   fireP(b.x,.8,b.z,40);smoke3d(b.x,1,b.z,22);sparks(b.x,.8,b.z,18);
   spawnGibs(b.x,.8,b.z,6,5,true);
@@ -712,7 +712,7 @@ function killEnemy(e,finalDmg,info){
     e.gone=true;scene.remove(e.sp);scene.remove(e.blob);
     spawnGibs(e.x,e.h*.6,e.z,12,4.5);
     addPool(e.x,e.z,rnd(.8,1.2));
-    shake(.22);hitStop=Math.max(hitStop,.045);
+    shake(.22);screenShake.hitStop=Math.max(screenShake.hitStop,.045);
     bang(.2,.45,800);gurgle(.45,.5);
     if(Math.random()<.4)say("gib");
     if(S.totGibs===10)ach(ACHIEVEMENTS.organ,S.ach);
@@ -776,7 +776,7 @@ function dropAmmo(x,z){
   items.push({kind:k,x,z,sp:addSprite(ITEMTEX[k],x,z,.55,.55,.5),bob:0});}
 function bossDeath(e){
   stopBossMusic();
-  shake(.7);hitStop=Math.max(hitStop,.12);
+  shake(.7);screenShake.hitStop=Math.max(screenShake.hitStop,.12);
   bang(.6,.7,400);blip(50,1.4,"sawtooth",.2,28,true);
   spawnGibs(e.x,e.h*.6,e.z,10,5,e.stone);
   addPool(e.x,e.z,1.8);
@@ -1098,10 +1098,10 @@ function enemyTick(dt){
 function priestThink(e,dt,dist,dx,dz){
   /* phase transitions */
   if(e.phase===1&&e.hp<e.maxhp*.66){e.phase=2;
-    say("boss_"+e.key+"2",true);roarFor(e);shake(.3);hitStop=Math.max(hitStop,.06);
+    say("boss_"+e.key+"2",true);roarFor(e);shake(.3);screenShake.hitStop=Math.max(screenShake.hitStop,.06);
     priestTeleport(e,true);}
   if(e.phase===2&&e.hp<e.maxhp*.33){e.phase=3;
-    say("boss_"+e.key+"3",true);roarFor(e);roarFor(e);shake(.5);hitStop=Math.max(hitStop,.1);
+    say("boss_"+e.key+"3",true);roarFor(e);roarFor(e);shake(.5);screenShake.hitStop=Math.max(screenShake.hitStop,.1);
     flashHoly(.25);
     e.formKey=e.key+"2";
     e.sp.material.map=PX[e.formKey].a;e.sp.material.needsUpdate=true;
@@ -1310,8 +1310,8 @@ function playerTick(dt){
   const bobSin=Math.sin(bobT*4);
   if(grounded&&spd>1&&lastBobSin<=0&&bobSin>0)footstep(sprint);
   lastBobSin=bobSin;
-  trauma=Math.max(0,trauma-dt*1.6);
-  const sh=trauma*trauma,t=performance.now();
+  screenShake.trauma=Math.max(0,screenShake.trauma-dt*1.6);
+  const sh=screenShake.trauma*screenShake.trauma,t=performance.now();
   const shx=sh*.06*Math.sin(t*.061),shy=sh*.05*Math.sin(t*.083),shr=sh*.05*Math.sin(t*.047);
   recoilPitch*=Math.exp(-8*dt);
   camera.position.set(px+shx,pyy+(grounded?bobSin*.025*Math.min(1,spd/7):0)+shy,pz);
@@ -1607,7 +1607,7 @@ function loop(t){
   requestAnimationFrame(loop);
   let dt=Math.min(.05,(t-last)/1000);last=t;
   if(!started){return;}
-  if(hitStop>0){hitStop-=dt;dt*=.08;}
+  if(screenShake.hitStop>0){screenShake.hitStop-=dt;dt*=.08;}
   const paused=pianoOpen||overlayOpen()&&!pianoOpen;
   let anyAware=false;
   if(!paused&&!S.dead&&!S.won){
