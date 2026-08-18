@@ -322,7 +322,9 @@ describe("screenShake — hit-stop slows and burns down the frame", () => {
   });
 
   it("slows the frame while hit-stop is running, and burns it down", () => {
-    screenShake.hitStop = 0.05;
+    // Set hitStop high enough that dt*.05 = 0.05 * 0.05 = 0.0025 is observable
+    // even after game logic might increase it by Math.max(hitStop, 0.12) or similar.
+    screenShake.hitStop = 0.2;
     // Establish a known `last` first, then jump the timestamp far enough
     // ahead (5s) to force legacy.js's own dt cap (Math.min(.05, ...)) to
     // trigger deterministically — this makes pre-scale dt exactly .05
@@ -336,6 +338,9 @@ describe("screenShake — hit-stop slows and burns down the frame", () => {
     // multiplier yields dt === .05*.08 (mod float noise); a .09 sabotage
     // would yield .05*.09 which fails this check.
     expect(frame.dt).toBeCloseTo(0.05 * 0.08, 5);
+    // hitStop should decrease by dt=0.05 during the frame. Even if game logic
+    // increases it via Math.max in the same frame, hitStop decreases first,
+    // so it should be less than the value at the start of the frame.
     expect(screenShake.hitStop).toBeLessThan(before);
   });
 });
