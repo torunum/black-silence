@@ -16,6 +16,10 @@ import { buildParticles, spawnP, blood, sparks, smoke3d, fireP, holyP, toxicP, e
 import { splatMat, holeMat, scorchMat, addPool, poolTick, addWallDecal, resetDecals } from "./fx/Decals";
 import { gibGeo, gibMatsFlesh, spawnGibs, gibTick, resetGibs, spawnGibChunk } from "./fx/Gibs";
 import { screenShake } from "./fx/ShakeState";
+import { headPool } from "./fx/Heads";
+import { projectiles } from "./fx/Projectiles";
+import { save } from "./save/SaveGame";
+import { pianoState } from "./ui/PianoState";
 import { ejectCasing, screenBlood, fxTick } from "./render/Overlay2D";
 import { buildWeaponSprites } from "./render/viewmodel/sprites";
 import { drawKickBoot, drawViewmodel } from "./render/viewmodel/draw";
@@ -70,8 +74,6 @@ function addSprite(tex,wx,wz,sw,sh,y){
 function addBlob(wx,wz,s){const m=new THREE.Mesh(new THREE.PlaneGeometry(s,s),
   new THREE.MeshBasicMaterial({map:blobTex,transparent:true,depthWrite:false}));
   m.rotation.x=-Math.PI/2;m.position.set(wx,.012,wz);scene.add(m);return m;}
-
-let heads=[];
 
 /* Input lives in src/player/Input.ts; its listeners are already registered
    (at that module's scope, as in the reference). This hands it the gameplay
@@ -183,7 +185,7 @@ function fire(w){
       const tail=new THREE.Mesh(new THREE.BoxGeometry(.12,.12,.7),reapTailMat);
       tail.position.z=-.35;grp.add(core);grp.add(tail);
       grp.position.copy(camera.position);
-      nails.push({m:grp,vx:d.x*30,vy:d.y*30,vz:d.z*30,dmg:0,life:1.2,reap:true,spin:0});
+      projectiles.nails.push({m:grp,vx:d.x*30,vy:d.y*30,vz:d.z*30,dmg:0,life:1.2,reap:true,spin:0});
       scene.add(grp);
       muzzleLight.color.setHex(0x7fe05a);muzzleLight.intensity=2.4;}
     else if(w.kind==="cross"){
@@ -192,7 +194,7 @@ function fire(w){
       const m2=new THREE.Mesh(new THREE.BoxGeometry(.3,.09,.09),crossMat);
       m2.position.y=.1;grp.add(m1);grp.add(m2);
       grp.position.copy(camera.position);grp.position.y-=.1;
-      nails.push({m:grp,vx:d.x*22,vy:d.y*22,vz:d.z*22,dmg:w.dmg,life:3,cross:true,
+      projectiles.nails.push({m:grp,vx:d.x*22,vy:d.y*22,vz:d.z*22,dmg:w.dmg,life:3,cross:true,
         spin:rnd(4,7)});
       scene.add(grp);}}
   if(volleyHit)S.hitsLanded++;
@@ -235,7 +237,6 @@ function doKick(){
   },110);}
 
 /* ---------- HITSCAN ---------- */
-let nails=[],orbs=[];
 const orbGeo=new THREE.SphereGeometry(.16,6,6);
 function solidAt(wx,wz){
   const gx=wx/CELL|0,gz=wz/CELL|0;
@@ -490,7 +491,7 @@ function loadLevel(idx){
   buildParticles();
   resetDecals();resetGibs();
   doors={};enemies=[];props=[];items=[];torches=[];candles=[];
-  poisonZones=[];rings=[];strikes=[];nails=[];orbs=[];heads=[];
+  poisonZones=[];rings=[];strikes=[];projectiles.nails=[];projectiles.orbs=[];headPool.heads=[];
   exitPos=null;pianoPos=null;challenge=null;bossRef=null;cine=null;
   S.dead=false;S.won=false;S.hp=100;
   eventT=rnd(55,100);idleT=rnd(26,40);
@@ -743,11 +744,11 @@ function spawnHead(e,info){
   sp.position.set(e.x,e.h*.92,e.z);
   scene.add(sp);
   const dx=info&&info.dir?info.dir.x:rnd(-1,1),dz=info&&info.dir?info.dir.z:rnd(-1,1);
-  heads.push({sp,x:e.x,y:e.h*.92,z:e.z,
+  headPool.heads.push({sp,x:e.x,y:e.h*.92,z:e.z,
     vx:dx*rnd(2,4)+rnd(-1,1),vy:rnd(3.5,5.5),vz:dz*rnd(2,4)+rnd(-1,1),
     spin:rnd(-8,8),rest:false,life:30,sz});}
 function headTick(dt){
-  for(let i=heads.length-1;i>=0;i--){const h=heads[i];
+  for(let i=headPool.heads.length-1;i>=0;i--){const h=headPool.heads[i];
     h.life-=dt;
     if(!h.rest){
       h.vy-=15*dt;
@@ -770,7 +771,7 @@ function headTick(dt){
       h.spin=rnd(-12,12);h.rest=false;
       if(kickAnim>0){bang(.08,.3,500);blood(h.x,h.y,h.z,4,1.4);}}
     h.sp.position.set(h.x,h.y,h.z);
-    if(h.life<=0){scene.remove(h.sp);heads.splice(i,1);}}}
+    if(h.life<=0){scene.remove(h.sp);headPool.heads.splice(i,1);}}}
 function dropAmmo(x,z){
   const k=pick(["bullets","shells","bullets"]);
   items.push({kind:k,x,z,sp:addSprite(ITEMTEX[k],x,z,.55,.55,.5),bob:0});}
@@ -890,7 +891,7 @@ function fireOrb(e,spreadA,tox){
   const oy=e.fly?(e.flyH||1.5):e.h*.6+(e.fy||0);
   const m=new THREE.Mesh(orbGeo,mat);m.position.set(e.x,oy,e.z);
   if(ot==="manc")m.scale.setScalar(1.6);
-  orbs.push({m,vx:Math.sin(a)*spd,vz:Math.cos(a)*spd,
+  projectiles.orbs.push({m,vx:Math.sin(a)*spd,vz:Math.cos(a)*spd,
     vy:((pyy-.2)-oy)/(dist/spd),dmg,life:3.2,tox,col});
   scene.add(m);
   blip(tox?420:ot==="manc"?180:300,.2,"sawtooth",.08,90);}
@@ -901,7 +902,7 @@ function throwFlesh(e){
   const m=new THREE.Mesh(gibGeo,gibMatsFlesh[0].clone());
   m.position.set(e.x,oy,e.z);m.scale.setScalar(1.9);
   const spd=10;
-  orbs.push({m,vx:Math.sin(a)*spd,vz:Math.cos(a)*spd,
+  projectiles.orbs.push({m,vx:Math.sin(a)*spd,vz:Math.cos(a)*spd,
     vy:((pyy-.2)-oy)/(dist/spd)+1.0,dmg:14,life:2.4,flesh:true,spin:rnd(6,12),col:0x8c1e10});
   scene.add(m);
   blood(e.x,oy,e.z,6,1.6);    // it rips the chunk out of its own body
@@ -1206,7 +1207,7 @@ function poisonTick(dt){
    PROJECTILES (player crosses + enemy orbs)
    ============================================================ */
 function projTick(dt){
-  for(let i=nails.length-1;i>=0;i--){const n=nails[i];
+  for(let i=projectiles.nails.length-1;i>=0;i--){const n=projectiles.nails[i];
     n.life-=dt;
     if(!n.reap)n.vy-=5*dt;        // reap flies straight; crosses arc
     n.m.position.x+=n.vx*dt;n.m.position.y+=n.vy*dt;n.m.position.z+=n.vz*dt;
@@ -1215,7 +1216,7 @@ function projTick(dt){
     if(n.reap){ // visual tracer only — damage already applied by hitscan
       if(Math.random()<.6)spawnP(mx,my,mz,0,0,0,.5,.9,.35,.2,3);
       if(n.life<=0||my<0.05||my>WALLH||solidAt(mx,mz)){
-        smoke3d(mx,Math.max(my,.3),mz,4);scene.remove(n.m);nails.splice(i,1);}
+        smoke3d(mx,Math.max(my,.3),mz,4);scene.remove(n.m);projectiles.nails.splice(i,1);}
       continue;}
     let boom=n.life<=0||my<0.05||my>WALLH||solidAt(mx,mz);
     if(!boom)for(const p of props){if(p.dead)continue;
@@ -1224,8 +1225,8 @@ function projTick(dt){
       if(Math.hypot(mx-e.x,mz-e.z)<e.w*.5&&my>0&&my<e.h*1.05){
         volleyHit=true;S.hitsLanded++;boom=true;break;}}
     if(boom){crossExplode(mx,Math.max(my,.3),mz);
-      scene.remove(n.m);nails.splice(i,1);}}
-  for(let i=orbs.length-1;i>=0;i--){const o=orbs[i];
+      scene.remove(n.m);projectiles.nails.splice(i,1);}}
+  for(let i=projectiles.orbs.length-1;i>=0;i--){const o=projectiles.orbs[i];
     o.life-=dt;
     if(o.flesh){o.vy-=11*dt;o.m.rotation.x+=o.spin*dt;o.m.rotation.z+=o.spin*.7*dt;}
     o.m.position.x+=o.vx*dt;o.m.position.y+=o.vy*dt;o.m.position.z+=o.vz*dt;
@@ -1243,7 +1244,7 @@ function projTick(dt){
     if(dead){
       if(o.flesh){blood(o.m.position.x,Math.max(.1,o.m.position.y),o.m.position.z,8,1.4);
         addPool(o.m.position.x,o.m.position.z,rnd(.2,.4));gurgle(.16,.25);}
-      scene.remove(o.m);orbs.splice(i,1);}}}
+      scene.remove(o.m);projectiles.orbs.splice(i,1);}}}
 
 /* ============================================================
    PLAYER
@@ -1451,31 +1452,30 @@ const WHITE=[[60,"A"],[62,"S"],[64,"D"],[65,"F"],[67,"G"],[69,"H"],[71,"J"],[72,
 const BLACK=[[61,"W",0],[63,"E",1],[66,"T",3],[68,"Y",4],[70,"U",5],[73,"O",7],[75,"P",8]];
 const KEYMAP={KeyA:60,KeyS:62,KeyD:64,KeyF:65,KeyG:67,KeyH:69,KeyJ:71,KeyK:72,KeyL:74,Semicolon:76,
   KeyW:61,KeyE:63,KeyT:66,KeyY:68,KeyU:70,KeyO:73,KeyP:75};
-let keyEls={},noteHist=[];
 function buildPiano(){
   const wrap=document.getElementById("pkeys");
   WHITE.forEach(([midi,label])=>{
     const k=document.createElement("div");k.className="wk";
     k.innerHTML="<span>"+label+"</span>";
     k.addEventListener("mousedown",()=>pressKey(midi));
-    wrap.appendChild(k);keyEls[midi]=k;});
+    wrap.appendChild(k);pianoState.keyEls[midi]=k;});
   BLACK.forEach(([midi,label,after])=>{
     const k=document.createElement("div");k.className="bk";
     k.style.left=(after*43+43-13)+"px";
     k.innerHTML="<span>"+label+"</span>";
     k.addEventListener("mousedown",ev=>{ev.stopPropagation();pressKey(midi);});
-    wrap.appendChild(k);keyEls[midi]=k;});}
+    wrap.appendChild(k);pianoState.keyEls[midi]=k;});}
 function pressKey(midi){
   pianoNote(midi);
   S.pianoNotes++;
-  const el=keyEls[midi];
+  const el=pianoState.keyEls[midi];
   if(el){el.classList.add("on");setTimeout(()=>el.classList.remove("on"),140);}
-  noteHist.push(midi);if(noteHist.length>8)noteHist.shift();
+  pianoState.noteHist.push(midi);if(pianoState.noteHist.length>8)pianoState.noteHist.shift();
   if(S.pianoNotes===12)ach(ACHIEVEMENTS.pianist,S.ach);
   /* E D C D E E E — recital */
   const want=[64,62,60,62,64,64,64];
-  if(noteHist.length>=7&&want.every((m,i)=>noteHist[noteHist.length-7+i]===m)){
-    noteHist=[];
+  if(pianoState.noteHist.length>=7&&want.every((m,i)=>pianoState.noteHist[pianoState.noteHist.length-7+i]===m)){
+    pianoState.noteHist=[];
     ach(ACHIEVEMENTS.recital,S.ach);
     say("piano_played",true);organChord();
     if(pianoPos)items.push({kind:"crosses",x:pianoPos.x+1.4,z:pianoPos.z,
@@ -1509,7 +1509,7 @@ function statsHtml(){
     `ACCURACY <b>${acc}%</b> · TIME <b>${(t/60|0)}:${String(t%60).padStart(2,"0")}</b>`;}
 function endLevel(){
   if(S.won)return;S.won=true;
-  maxLevel=Math.max(maxLevel,Math.min(S.level+1,LEVELS.length-1));
+  save.maxLevel=Math.max(save.maxLevel,Math.min(S.level+1,LEVELS.length-1));
   stopBossMusic();document.exitPointerLock();
   document.getElementById("legrade").textContent=gradeOf();
   document.getElementById("lestats").innerHTML=statsHtml();
@@ -1562,7 +1562,6 @@ function chatterTick(dt,anyAware){
 /* ============================================================
    MAIN LOOP + BOOT
    ============================================================ */
-let maxLevel=0;
 function startGame(idx){
   if(started)return;
   document.getElementById("intro").classList.add("hidden");
@@ -1578,7 +1577,7 @@ function startGame(idx){
 function showScreen(id){
   ["intro","chapsel","settings"].forEach(s=>
     document.getElementById(s).classList.toggle("hidden",s!==id));}
-document.getElementById("mNew").addEventListener("click",()=>{maxLevel=0;startGame(0);});
+document.getElementById("mNew").addEventListener("click",()=>{save.maxLevel=0;startGame(0);});
 document.getElementById("mSettings").addEventListener("click",()=>showScreen("settings"));
 document.getElementById("setBack").addEventListener("click",()=>showScreen("intro"));
 document.getElementById("chapBack").addEventListener("click",()=>showScreen("intro"));
@@ -1586,7 +1585,7 @@ document.getElementById("mChapter").addEventListener("click",()=>{
   const list=document.getElementById("chaplist");
   list.innerHTML="";
   LEVELS.forEach((lv,i)=>{
-    const unlocked=i<=maxLevel;
+    const unlocked=i<=save.maxLevel;
     const row=document.createElement("div");
     const label=lv.name.replace(/^(LEVEL \d+|PROLOGUE)\s*—\s*/,"");
     const tag=i===0?"PROLOGUE":"CH "+i;
