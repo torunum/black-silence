@@ -30,6 +30,8 @@ import { ach } from "./ui/Toasts";
 import { showMsg, tickMessage, flashDmg, flashHoly } from "./ui/HudMessages";
 import { keys, setInputHooks, overlayOpen, getYaw, setYaw, getPitch, setPitch,
   getSwayX, setSwayX, getSwayY, setSwayY, isFiring, setFiring, isZoomOn, setZoomOn } from "./player/Input";
+import { game } from "./core/Game";
+
 /* ============================================================
    THE BLACK SILENCE — The Hollow Parish (v3 gothic overhaul)
    2 levels · 9 enemy types + elites · 3 bosses · 6 weapons ·
@@ -46,7 +48,7 @@ const S={hp:100,armor:0,key:false,dead:false,won:false,level:0,
   ammo:{bullets:60,shells:0,slugs:0,crosses:0,nails:0,souls:0},
   mag:[6,0,0,0,0,0,0,0],weapons:[true,false,false,false,false,false,false,false],cur:0,
   kickCd:0,pianoNotes:0,ach:{}};
-let started=false,inputLock=false,pianoOpen=false;
+
 
 /* ============================================================
    THREE CORE
@@ -81,7 +83,7 @@ function addBlob(wx,wz,s){const m=new THREE.Mesh(new THREE.PlaneGeometry(s,s),
    callbacks and state reads it cannot import back from here, at module
    scope so it is done before any event can be delivered. */
 setInputHooks({
-  isPianoOpen:()=>pianoOpen, isStarted:()=>started, isInputLocked:()=>inputLock,
+  isPianoOpen:()=>game.pianoOpen, isStarted:()=>game.started, isInputLocked:()=>game.inputLock,
   zoomLerp:()=>zoomLerp, canvas:()=>renderer.domElement,
   currentWeapon:()=>S.cur, ownsWeapon:i=>!!S.weapons[i],
   pianoKeyDown:code=>pianoKeyDown(code), closePiano:()=>closePiano(),
@@ -109,11 +111,11 @@ let wstate="equip",wtime=0,wCool=0,pending=-1,reloadFlags={},recoilPitch=0;
 let kickAmt=0,kickRot=0,muzzle=0,zoomLerp=0;
 const EQUIP_T=.24,UNEQUIP_T=.16;
 function requestSwitch(i){
-  if(!started||!S.weapons[i]||i===S.cur||pending===i)return;
+  if(!game.started||!S.weapons[i]||i===S.cur||pending===i)return;
   pending=i;setZoomOn(false);
   if(wstate!=="unequip"){wstate="unequip";wtime=0;click(.12);}}
 function startReload(){
-  if(!started||S.dead||inputLock)return;
+  if(!game.started||S.dead||game.inputLock)return;
   const w=WEAPONS[S.cur];
   if(wstate!=="idle"&&wstate!=="fire")return;
   if(S.mag[S.cur]>=w.magSize||S.ammo[w.ammo]<=0)return;
@@ -139,7 +141,7 @@ function weaponTick(dt){
       S.ammo[w.ammo]-=take;S.mag[S.cur]+=take;
       wstate="idle";wtime=0;click(.2);}
     if(isFiring()&&S.mag[S.cur]>0){wstate="idle";wtime=0;}}
-  if(isFiring()&&(wstate==="idle"||wstate==="fire")&&wCool<=0&&!S.dead&&started&&!inputLock){
+  if(isFiring()&&(wstate==="idle"||wstate==="fire")&&wCool<=0&&!S.dead&&game.started&&!game.inputLock){
     if(S.mag[S.cur]<=0){
       if(S.ammo[w.ammo]>0)startReload();
       else{click(.1);wCool=.3;}}        // dry click, not a beep
@@ -209,7 +211,7 @@ const reapTailMat=new THREE.MeshBasicMaterial({color:0x4fa030,transparent:true,o
 /* ---------- POWER KICK ---------- */
 let kickAnim=0;
 function doKick(){
-  if(!started||S.dead||inputLock||S.kickCd>0||pianoOpen)return;
+  if(!game.started||S.dead||game.inputLock||S.kickCd>0||game.pianoOpen)return;
   S.kickCd=15;kickAnim=.32;
   shake(.3);bang(.15,.5,900);
   setTimeout(()=>{
@@ -823,7 +825,7 @@ function wakeBoss(e){
   if(!e.dormant)return;
   e.dormant=false;
   cine={t:0,dur:2.7,e};
-  inputLock=true;setFiring(false);
+  game.inputLock=true;setFiring(false);
   document.getElementById("barTop").style.height="11%";
   document.getElementById("barBot").style.height="11%";
   const bt=document.getElementById("bossTitle");
@@ -846,7 +848,7 @@ function cineTick(dt){
     document.getElementById("barTop").style.height="0";
     document.getElementById("barBot").style.height="0";
     document.getElementById("bossTitle").style.opacity=0;
-    inputLock=false;
+    game.inputLock=false;
     say("boss_"+cine.e.key,true);
     startBossMusic();
     cine=null;}}
@@ -1279,7 +1281,7 @@ function footstep(sprinting){
   bang(.05,sprinting?.09:.06,marble?2400:700,marble?600:0);
   if(marble)blip(rnd(800,1000),.05,"sine",.02);}
 function playerTick(dt){
-  if(S.dead||S.won||inputLock)return;
+  if(S.dead||S.won||game.inputLock)return;
   if(spawnGuard>0)spawnGuard-=dt;
   let f=0,s2=0;
   if(keys.KeyW)f++;if(keys.KeyS)f--;if(keys.KeyD)s2++;if(keys.KeyA)s2--;
@@ -1356,7 +1358,7 @@ function playerTick(dt){
    ============================================================ */
 const WNAMES={w1:"SAWED-OFF SHOTGUN",w2:"COMBAT RIFLE",w3:"TOMMY GUN",w4:"BMG SNIPER",w5:"HOLY CROSS LAUNCHER",w6:"NAIL CANNON",w7:"SOUL REAPER"};
 function interact(){
-  if(!started||inputLock)return;
+  if(!game.started||game.inputLock)return;
   if(pianoPos&&Math.hypot(px-pianoPos.x,pz-pianoPos.z)<1.9){openPiano();return;}
   const dir=new THREE.Vector3();camera.getWorldDirection(dir);
   for(let t=.4;t<2.6;t+=.2){
@@ -1481,12 +1483,12 @@ function pressKey(midi){
       sp:addSprite(ITEMTEX.crosses,pianoPos.x+1.4,pianoPos.z,.55,.55,.5),bob:0});}}
 function pianoKeyDown(code){const m=KEYMAP[code];if(m)pressKey(m);}
 function openPiano(){
-  pianoOpen=true;setFiring(false);
+  game.pianoOpen=true;setFiring(false);
   document.getElementById("piano").style.display="flex";
   document.exitPointerLock();
   say("piano",true);}
 function closePiano(){
-  pianoOpen=false;
+  game.pianoOpen=false;
   document.getElementById("piano").style.display="none";
   renderer.domElement.requestPointerLock();}
 
@@ -1562,11 +1564,11 @@ function chatterTick(dt,anyAware){
    MAIN LOOP + BOOT
    ============================================================ */
 function startGame(idx){
-  if(started)return;
+  if(game.started)return;
   document.getElementById("intro").classList.add("hidden");
   document.getElementById("chapsel").classList.add("hidden");
   document.getElementById("settings").classList.add("hidden");
-  started=true;
+  game.started=true;
   audioInit();
   buildTextures();buildSprites();buildItemTex();buildWeaponSprites();buildPiano();
   loadLevel(idx||0);
@@ -1600,13 +1602,13 @@ document.getElementById("mChapter").addEventListener("click",()=>{
   sl.addEventListener("input",()=>{
     setMasterVolume(sl.value/100);vv.textContent=sl.value;});
 })();
-let last=performance.now();
+
 function loop(t){
   requestAnimationFrame(loop);
-  let dt=Math.min(.05,(t-last)/1000);last=t;
-  if(!started){return;}
+  let dt=Math.min(.05,(t-game.last)/1000);game.last=t;
+  if(!game.started){return;}
   if(screenShake.hitStop>0){screenShake.hitStop-=dt;dt*=.08;}
-  const paused=pianoOpen||overlayOpen()&&!pianoOpen;
+  const paused=game.pianoOpen||overlayOpen()&&!game.pianoOpen;
   let anyAware=false;
   if(!paused&&!S.dead&&!S.won){
     cineTick(dt);
@@ -1622,7 +1624,7 @@ function loop(t){
     fxTick(dt,t,zoomLerp,
       ()=>drawKickBoot(kickAnim),
       (fdt,ft)=>drawViewmodel(fdt,ft,{
-        started,dead:S.dead,pianoOpen,zoomLerp,cur:S.cur,vx,vz,
+        started:game.started,dead:S.dead,pianoOpen:game.pianoOpen,zoomLerp,cur:S.cur,vx,vz,
         sprintKey:!!(keys.ShiftLeft||keys.ShiftRight),bobT,wstate,wtime,
         equipT:EQUIP_T,unequipT:UNEQUIP_T,kickAmt,kickRot,swayX:getSwayX(),swayY:getSwayY(),muzzle,
       },WEAPONS));
