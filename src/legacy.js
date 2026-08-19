@@ -22,6 +22,7 @@ import { projectiles } from "./fx/Projectiles";
 import { save } from "./save/SaveGame";
 import { pianoState } from "./ui/PianoState";
 import { ambienceState } from "./world/AmbienceState";
+import { world } from "./world/WorldState";
 import { ejectCasing, screenBlood, fxTick } from "./render/Overlay2D";
 import { buildWeaponSprites } from "./render/viewmodel/sprites";
 import { drawKickBoot, drawViewmodel } from "./render/viewmodel/draw";
@@ -214,7 +215,7 @@ function doKick(){
   setTimeout(()=>{
     const dir=new THREE.Vector3();renderState.camera.getWorldDirection(dir);
     let hitAny=false;
-    for(const e of enemies){if(e.dead)continue;
+    for(const e of world.enemies){if(e.dead)continue;
       const dx=e.x-px,dz=e.z-pz,d=Math.hypot(dx,dz);
       if(d>2.5)continue;
       const dot=(dx*dir.x+dz*dir.z)/d;
@@ -226,7 +227,7 @@ function doKick(){
       if(!e.boss&&e.maxhp<=60){e.flung=.9;e.flungT=0;}
       blood(e.x,e.h*.6,e.z,4,2);
       damageEnemy(e,15,{dir:{x:dx/d,z:dz/d},wIdx:-1});}
-    for(const p of props){if(p.dead)continue;
+    for(const p of world.props){if(p.dead)continue;
       const dx=p.x-px,dz=p.z-pz,d=Math.hypot(dx,dz);
       if(d>2.6)continue;
       const dot=(dx*dir.x+dz*dir.z)/Math.max(.001,d);
@@ -240,25 +241,24 @@ function doKick(){
 const orbGeo=new THREE.SphereGeometry(.16,6,6);
 function solidAt(wx,wz){
   const gx=wx/CELL|0,gz=wz/CELL|0;
-  const row=grid[gz];if(!row)return true;
+  const row=world.grid[gz];if(!row)return true;
   const ch=row[gx];if(ch===undefined)return true;
   if(ch==="#"||ch==="I"||ch==="W")return true;
-  if(ch==="+"||ch==="D"||ch==="S"){const d=doors[gx+","+gz];return d&&!d.open;}
+  if(ch==="+"||ch==="D"||ch==="S"){const d=world.doors[gx+","+gz];return d&&!d.open;}
   return false;}
 /* ===== arbitrary (non-orthogonal) wall segments — the Doom/Blood look =====
    Each seg: {x1,z1,x2,z2}. Rendered as angled wall meshes; collided against
    with a point-to-segment distance test; line-of-sight blocked by crossing. */
-let wallSegs=[];
 function distToSeg(px_,pz_,s){
   const dx=s.x2-s.x1,dz=s.z2-s.z1,L2=dx*dx+dz*dz;
   let t=L2?((px_-s.x1)*dx+(pz_-s.z1)*dz)/L2:0;t=Math.max(0,Math.min(1,t));
   const cx=s.x1+t*dx,cz=s.z1+t*dz;
   return Math.hypot(px_-cx,pz_-cz);}
 function segBlocked(x,z,rad){
-  for(const s of wallSegs)if(distToSeg(x,z,s)<rad)return true;
+  for(const s of world.wallSegs)if(distToSeg(x,z,s)<rad)return true;
   return false;}
 function segsCrossRay(ax,az,bx,bz){ // does player->target ray cross any wall segment?
-  for(const s of wallSegs){
+  for(const s of world.wallSegs){
     const d1x=bx-ax,d1z=bz-az,d2x=s.x2-s.x1,d2z=s.z2-s.z1;
     const den=d1x*d2z-d1z*d2x;if(Math.abs(den)<1e-6)continue;
     const t=((s.x1-ax)*d2z-(s.z1-az)*d2x)/den;
@@ -267,11 +267,10 @@ function segsCrossRay(ax,az,bx,bz){ // does player->target ray cross any wall se
   return false;}
 /* per-cell floor height (0 = base). Lets us build raised galleries,
    balconies and sunken courtyards you can look/shoot down into. */
-let heightMap=null;
 function floorHeightAt(wx,wz){
-  if(!heightMap)return 0;
+  if(!world.heightMap)return 0;
   const gx=wx/CELL|0,gz=wz/CELL|0;
-  const row=heightMap[gz];if(!row)return 0;
+  const row=world.heightMap[gz];if(!row)return 0;
   return row[gx]||0;}
 function wallNormal(x,z,dir){
   if(!solidAt(x-dir.x*.13,z))return{x:-Math.sign(dir.x),z:0};
@@ -280,14 +279,14 @@ function wallNormal(x,z,dir){
 function hitscan(dir,dmg,wIdx){
   const o=renderState.camera.position;
   const cands=[];
-  enemies.forEach(e=>{if(e.dead||e.dormant)return;
+  world.enemies.forEach(e=>{if(e.dead||e.dormant)return;
     const ecy=e.fly?(e.flyH||1.5):e.h*.5+(e.fy||0);   // sprite center height
     const ex=e.x-o.x,ez=e.z-o.z,ey=ecy-o.y;
     const t=ex*dir.x+ez*dir.z+ey*dir.y;if(t<0)return;
     const cx=o.x+dir.x*t,cz=o.z+dir.z*t,cy=o.y+dir.y*t;
     const dd=Math.hypot(cx-e.x,cz-e.z);
     if(dd<e.w*.45+.1&&cy>ecy-e.h*.55&&cy<ecy+e.h*.55)cands.push({kind:"e",t,e,cy});});
-  props.forEach(p=>{if(p.dead)return;
+  world.props.forEach(p=>{if(p.dead)return;
     const ex=p.x-o.x,ez=p.z-o.z;
     const t=ex*dir.x+ez*dir.z;if(t<0)return;
     const cx=o.x+dir.x*t,cz=o.z+dir.z*t,cy=o.y+dir.y*t;
@@ -295,7 +294,7 @@ function hitscan(dir,dmg,wIdx){
   let wallT=1e9,wx=0,wz=0,wy=0;
   for(let t=0;t<46;t+=.1){
     const sx=o.x+dir.x*t,sz=o.z+dir.z*t;
-    if(solidAt(sx,sz)||(wallSegs.length&&segBlocked(sx,sz,.12))){wallT=t;wx=sx;wz=sz;wy=o.y+dir.y*t;break;}}
+    if(solidAt(sx,sz)||(world.wallSegs.length&&segBlocked(sx,sz,.12))){wallT=t;wx=sx;wz=sz;wy=o.y+dir.y*t;break;}}
   cands.sort((a,b)=>a.t-b.t);
   const pierce=WEAPONS[wIdx]&&WEAPONS[wIdx].pierce||1;
   let used=0;
@@ -346,13 +345,13 @@ function crossExplode(x,y,z){
   renderState.boomLight.position.set(x,y,z);renderState.boomLight.intensity=4;renderState.boomLight.color.setHex(0xfff0b0);
   holyP(x,y,z,40);smoke3d(x,y,z,10);
   boom(.7);
-  for(const e of enemies){if(e.dead)continue;
+  for(const e of world.enemies){if(e.dead)continue;
     const d=Math.hypot(e.x-x,e.z-z);
     if(d<3.4){
       const dd=60*(1-d/3.4)+20;
       e.kx+=(e.x-x)/Math.max(.2,d)*6;e.kz+=(e.z-z)/Math.max(.2,d)*6;
       damageEnemy(e,dd,{explosive:true,dir:{x:(e.x-x)/Math.max(.2,d),z:(e.z-z)/Math.max(.2,d)}});}}
-  for(const p of props){if(p.dead)continue;
+  for(const p of world.props){if(p.dead)continue;
     if(Math.hypot(p.x-x,p.z-z)<3){p.explosive?explodeBarrel(p):breakProp(p);}}
   alertSound(x,z,20);}
 
@@ -380,8 +379,7 @@ function vitalsAudio(dt){
 /* ============================================================
    WORLD STATE + LEVEL LOADER
    ============================================================ */
-let grid,GW,GH,doors,enemies,props,items,torches,candles,exitPos,pianoPos,
-  challenge,bossRef,poisonZones,rings,strikes,cine=null,eventT=40,idleT=28;
+let challenge,bossRef,poisonZones,rings,strikes,cine=null,eventT=40,idleT=28;
 let px=3,pz=3,vx=0,vy=0,vz=0,pyy=EYE,grounded=true,bobT=0,lastBobSin=0,spawnGuard=0;
 const R=.35;
 function spawnEnemy(ch,wx,wz,summoned){
@@ -405,7 +403,7 @@ function spawnEnemy(ch,wx,wz,summoned){
     fy:floorHeightAt(wx,wz),
     dormant:!!d.boss,phase:1,tpT:5,atkT:2.5,sumT:6,ringT:4,debT:3,chT:5,charging:0,cdx:0,cdz:0};
   if(elite)e.sp.material.color.setHex(0xd8c878);
-  enemies.push(e);
+  world.enemies.push(e);
   if(!summoned)S.killsTotal=(S.killsTotal||0)+1;
   if(d.boss)bossRef=bossRef||e;
   return e;}
@@ -439,14 +437,14 @@ function spawnProp(ch,wx,wz){
     new THREE.MeshLambertMaterial({map:TEX.barrel}));
     m.position.set(wx,.525,wz);r=.48;hgt=1.1;hp=24;explosive=true;addBlob(wx,wz,1.1);}
   renderState.scene.add(m);
-  props.push({m,x:wx,z:wz,r,hgt,hp,dead:false,explosive,kind,fuse:-1});}
+  world.props.push({m,x:wx,z:wz,r,hgt,hp,dead:false,explosive,kind,fuse:-1});}
 function breakProp(p){
   if(p.dead)return;p.dead=true;renderState.scene.remove(p.m);S.propsBroken++;
   woodP(p.x,.5,p.z,12);spawnGibs(p.x,.55,p.z,6,3.4,true);
   bang(.12,.32,1200);bang(.08,.2,500);
   if(Math.random()<.2){
     const k=pick(["health","bullets","shells"]);
-    items.push({kind:k,x:p.x,z:p.z,sp:addSprite(ITEMTEX[k],p.x,p.z,.55,.55,.5),bob:0});}
+    world.items.push({kind:k,x:p.x,z:p.z,sp:addSprite(ITEMTEX[k],p.x,p.z,.55,.55,.5),bob:0});}
   if(S.propsBroken===15)ach(ACHIEVEMENTS.redec,S.ach);}
 function explodeBarrel(b){
   if(b.dead)return;b.dead=true;renderState.scene.remove(b.m);S.propsBroken++;
@@ -459,24 +457,24 @@ function explodeBarrel(b){
   boom(1.1);
   const pd=Math.hypot(px-b.x,pz-b.z);
   if(pd<5)damagePlayer(60*(1-pd/5));
-  for(const e of enemies){if(e.dead)continue;
+  for(const e of world.enemies){if(e.dead)continue;
     const dd=Math.hypot(e.x-b.x,e.z-b.z);
     if(dd<5){const f=Math.max(dd,.2);
       e.kx+=(e.x-b.x)/f*9;e.kz+=(e.z-b.z)/f*9;
       damageEnemy(e,70*(1-dd/5),{explosive:true,dir:{x:(e.x-b.x)/f,z:(e.z-b.z)/f}});}}
-  for(const o of props){if(!o.dead&&o!==b&&Math.hypot(o.x-b.x,o.z-b.z)<4){
+  for(const o of world.props){if(!o.dead&&o!==b&&Math.hypot(o.x-b.x,o.z-b.z)<4){
     if(o.explosive&&o.fuse<0)o.fuse=rnd(.15,.4);else breakProp(o);}}
   alertSound(b.x,b.z,22);}
 function alertSound(x,z,radius){
-  for(const e of enemies){if(e.dead||e.dormant)continue;
+  for(const e of world.enemies){if(e.dead||e.dormant)continue;
     if(Math.hypot(e.x-x,e.z-z)<radius){e.alertX=x;e.alertZ=z;}}}
 
 function loadLevel(idx){
   S.level=idx;
   const Ldef=LEVELS[idx],L=Ldef.build();
-  grid=L.g;GW=L.W;GH=L.H;
-  heightMap=L.hmap||null;
-  wallSegs=L.segs||[];
+  world.grid=L.g;world.GW=L.W;world.GH=L.H;
+  world.heightMap=L.hmap||null;
+  world.wallSegs=L.segs||[];
   renderState.scene=new THREE.Scene();
   setScene(renderState.scene);
   renderState.scene.background=new THREE.Color(Ldef.fog);
@@ -489,9 +487,9 @@ function loadLevel(idx){
   renderState.boomLight=new THREE.PointLight(0xff7830,0,20,1.4);renderState.scene.add(renderState.boomLight);
   buildParticles();
   resetDecals();resetGibs();
-  doors={};enemies=[];props=[];items=[];torches=[];candles=[];
+  world.doors={};world.enemies=[];world.props=[];world.items=[];world.torches=[];world.candles=[];
   poisonZones=[];rings=[];strikes=[];projectiles.nails=[];projectiles.orbs=[];headPool.heads=[];
-  exitPos=null;pianoPos=null;challenge=null;bossRef=null;cine=null;
+  world.exitPos=null;world.pianoPos=null;challenge=null;bossRef=null;cine=null;
   S.dead=false;S.won=false;S.hp=100;
   eventT=rnd(55,100);idleT=rnd(26,40);
   spawnGuard=2.0;   // brief invulnerability on entry
@@ -504,11 +502,11 @@ function loadLevel(idx){
   const wallGeo=new THREE.BoxGeometry(CELL,WALLH,CELL);
   const pilGeo=new THREE.CylinderGeometry(.46,.55,WALLH,8);
   const matPil=new THREE.MeshLambertMaterial({map:TEX.pillar});
-  for(let z=0;z<GH;z++)for(let x=0;x<GW;x++){
-    const ch=grid[z][x],wx=(x+.5)*CELL,wz=(z+.5)*CELL;
+  for(let z=0;z<world.GH;z++)for(let x=0;x<world.GW;x++){
+    const ch=world.grid[z][x],wx=(x+.5)*CELL,wz=(z+.5)*CELL;
     if(ch==="#"||ch==="W"){
       let dx0=0,dz0=0,open=false;
-      for(const[dx,dz]of[[1,0],[-1,0],[0,1],[0,-1]]){const r=grid[z+dz];
+      for(const[dx,dz]of[[1,0],[-1,0],[0,1],[0,-1]]){const r=world.grid[z+dz];
         if(r&&r[x+dx]&&"#W".indexOf(r[x+dx])<0){open=true;dx0=dx;dz0=dz;break;}}
       if(!open)continue;
       const m=new THREE.Mesh(wallGeo,matWall);m.position.set(wx,WALLH/2,wz);renderState.scene.add(m);
@@ -529,50 +527,50 @@ function loadLevel(idx){
       let mat;if(ch==="S"){mat=matWall;S.secretsTotal++;}
       else mat=new THREE.MeshLambertMaterial({map:ch==="D"?TEX.doorLocked:(flesh?TEX.fleshDoor:TEX.door)});
       const m=new THREE.Mesh(wallGeo,mat);m.position.set(wx,WALLH/2,wz);renderState.scene.add(m);
-      doors[x+","+z]={mesh:m,open:false,locked:ch==="D",secret:ch==="S",flesh:flesh&&ch!=="D"};}}
+      world.doors[x+","+z]={mesh:m,open:false,locked:ch==="D",secret:ch==="S",flesh:flesh&&ch!=="D"};}}
   const floorTex=(hell?TEX.hellFloor:flesh?TEX.fleshFloor:(dungeon?TEX.dungeonFloor:TEX.churchFloor)).clone();
-  floorTex.needsUpdate=true;floorTex.repeat.set(GW,GH);
+  floorTex.needsUpdate=true;floorTex.repeat.set(world.GW,world.GH);
   floorTex.wrapS=floorTex.wrapT=THREE.RepeatWrapping;
   floorTex.magFilter=THREE.NearestFilter;floorTex.minFilter=THREE.NearestFilter;
-  const fm=new THREE.Mesh(new THREE.PlaneGeometry(GW*CELL,GH*CELL),
+  const fm=new THREE.Mesh(new THREE.PlaneGeometry(world.GW*CELL,world.GH*CELL),
     new THREE.MeshLambertMaterial({map:floorTex}));
-  fm.rotation.x=-Math.PI/2;fm.position.set(GW*CELL/2,0,GH*CELL/2);renderState.scene.add(fm);
-  const ceilTex=(hell?TEX.hellCeil:flesh?TEX.fleshCeil:TEX.ceil).clone();ceilTex.needsUpdate=true;ceilTex.repeat.set(GW,GH);
+  fm.rotation.x=-Math.PI/2;fm.position.set(world.GW*CELL/2,0,world.GH*CELL/2);renderState.scene.add(fm);
+  const ceilTex=(hell?TEX.hellCeil:flesh?TEX.fleshCeil:TEX.ceil).clone();ceilTex.needsUpdate=true;ceilTex.repeat.set(world.GW,world.GH);
   ceilTex.wrapS=ceilTex.wrapT=THREE.RepeatWrapping;
   ceilTex.magFilter=THREE.NearestFilter;ceilTex.minFilter=THREE.NearestFilter;
-  const cm=new THREE.Mesh(new THREE.PlaneGeometry(GW*CELL,GH*CELL),
+  const cm=new THREE.Mesh(new THREE.PlaneGeometry(world.GW*CELL,world.GH*CELL),
     new THREE.MeshLambertMaterial({map:ceilTex}));
-  cm.rotation.x=Math.PI/2;cm.position.set(GW*CELL/2,WALLH,GH*CELL/2);renderState.scene.add(cm);
+  cm.rotation.x=Math.PI/2;cm.position.set(world.GW*CELL/2,WALLH,world.GH*CELL/2);renderState.scene.add(cm);
   /* raised floor platforms (verticality) — a textured block per elevated cell */
-  if(heightMap){
+  if(world.heightMap){
     const platTexTop=(hell?TEX.hellFloor:flesh?TEX.fleshFloor:(dungeon?TEX.dungeonFloor:TEX.churchFloor));
     const platTexSide=hell?TEX.stair:flesh?TEX.fleshWall:TEX.stair;
     const topMat=new THREE.MeshLambertMaterial({map:platTexTop});
     const sideMat=new THREE.MeshLambertMaterial({map:platTexSide});
     const pmats=[sideMat,sideMat,topMat,sideMat,sideMat,sideMat]; // box face order: +x,-x,+y,-y,+z,-z
-    for(let z=0;z<GH;z++)for(let x=0;x<GW;x++){
-      const hgt=heightMap[z]&&heightMap[z][x]||0;
+    for(let z=0;z<world.GH;z++)for(let x=0;x<world.GW;x++){
+      const hgt=world.heightMap[z]&&world.heightMap[z][x]||0;
       if(hgt<=0)continue;
       const wx=(x+.5)*CELL,wz=(z+.5)*CELL;
       const bg=new THREE.BoxGeometry(CELL,hgt,CELL);
       const bm=new THREE.Mesh(bg,pmats);
       bm.position.set(wx,hgt/2,wz);renderState.scene.add(bm);}}
   /* angled wall meshes from arbitrary segments — non-orthogonal Doom/Blood walls */
-  if(wallSegs.length){
+  if(world.wallSegs.length){
     const segMat=new THREE.MeshLambertMaterial({map:wallTex});
-    for(const s of wallSegs){
+    for(const s of world.wallSegs){
       const len=Math.hypot(s.x2-s.x1,s.z2-s.z1);if(len<.01)continue;
       const geo=new THREE.BoxGeometry(len,WALLH,0.18);
       const m=new THREE.Mesh(geo,segMat);
       m.position.set((s.x1+s.x2)/2,WALLH/2,(s.z1+s.z2)/2);
       m.rotation.y=-Math.atan2(s.z2-s.z1,s.x2-s.x1);
       renderState.scene.add(m);}}
-  for(let z=0;z<GH;z++)for(let x=0;x<GW;x++){
-    const ch=grid[z][x];
+  for(let z=0;z<world.GH;z++)for(let x=0;x<world.GW;x++){
+    const ch=world.grid[z][x];
     if(".#WI+DS".includes(ch))continue;
     const wx=(x+.5)*CELL,wz=(z+.5)*CELL;
     if(ch==="P"){px=wx;pz=wz;}
-    else if(ch==="X"){exitPos={x:wx,z:wz};
+    else if(ch==="X"){world.exitPos={x:wx,z:wz};
       const ph=floorHeightAt(wx,wz);
       const pad=new THREE.Mesh(new THREE.BoxGeometry(CELL*1.3,.06,CELL*1.3),
         new THREE.MeshBasicMaterial({color:0x4a6b8a}));
@@ -585,18 +583,18 @@ function loadLevel(idx){
       const fl=addSprite(ITEMTEX.torch[0],wx,wz,.45,.6,1.35);
       const Lt=new THREE.PointLight(0xff9838,1.6,10,1.8);
       Lt.position.set(wx,1.45,wz);renderState.scene.add(Lt);
-      torches.push({L:Lt,sp:fl,x:wx,z:wz,seed:Math.random()*99,fr:0});}
+      world.torches.push({L:Lt,sp:fl,x:wx,z:wz,seed:Math.random()*99,fr:0});}
     else if(ch==="l"){
       const c2=addSprite(ITEMTEX.candle,wx,wz,.25,.3,.18);
-      candles.push({sp:c2,x:wx,z:wz,seed:Math.random()*99});}
-    else if(ch==="p"){pianoPos={x:wx,z:wz};
+      world.candles.push({sp:c2,x:wx,z:wz,seed:Math.random()*99});}
+    else if(ch==="p"){world.pianoPos={x:wx,z:wz};
       const body=new THREE.Mesh(new THREE.BoxGeometry(1.7,1.0,.95),
         new THREE.MeshLambertMaterial({color:0x14100a}));
       body.position.set(wx,.5,wz);renderState.scene.add(body);
       const kb=new THREE.Mesh(new THREE.BoxGeometry(1.35,.06,.3),
         new THREE.MeshLambertMaterial({color:0xcfc8b8}));
       kb.position.set(wx,1.02,wz+.42);renderState.scene.add(kb);
-      props.push({m:body,x:wx,z:wz,r:.95,hgt:1.2,hp:1e9,dead:false,explosive:false,kind:"piano"});}
+      world.props.push({m:body,x:wx,z:wz,r:.95,hgt:1.2,hp:1e9,dead:false,explosive:false,kind:"piano"});}
     else if(ch==="Y"){challenge={x:wx,z:wz,state:0,spawned:[]};
       const plate=new THREE.Mesh(new THREE.CircleGeometry(.9,10),
         new THREE.MeshBasicMaterial({color:0x6a4ab8,transparent:true,opacity:.5}));
@@ -610,8 +608,8 @@ function loadLevel(idx){
         "2":"w1","3":"w2","4":"w3","5":"w4","6":"w5","7":"w6","8":"w7","9":"nails","0":"souls"};
       const k=map2[ch];if(!k)continue;
       const tex=k[0]==="w"?ITEMTEX.gun:ITEMTEX[k];
-      items.push({kind:k,x:wx,z:wz,sp:addSprite(tex,wx,wz,.55,.55,.5),bob:Math.random()*6});}
-    grid[z][x]=".";}
+      world.items.push({kind:k,x:wx,z:wz,sp:addSprite(tex,wx,wz,.55,.55,.5),bob:Math.random()*6});}
+    world.grid[z][x]=".";}
   vx=vy=vz=0;pyy=EYE+floorHeightAt(px,pz);setYaw(Math.PI);setPitch(0);grounded=true;
   const lt=document.getElementById("lvltitle");
   lt.textContent=Ldef.name;lt.style.opacity=1;
@@ -697,7 +695,7 @@ function killEnemy(e,finalDmg,info){
     renderState.boomLight.position.set(e.x,1.2,e.z);renderState.boomLight.intensity=3.5;renderState.boomLight.color.setHex(0xff7830);
     const pd=Math.hypot(px-e.x,pz-e.z);
     if(pd<3.5&&Math.abs((e.fy||0)-(pyy-EYE))<2)damagePlayer(28*(1-pd/3.5));
-    for(const o of enemies){if(o.dead||o===e)continue;
+    for(const o of world.enemies){if(o.dead||o===e)continue;
       if(Math.hypot(o.x-e.x,o.z-e.z)<3)o.hp-=30;}}
   if(info.wIdx===-1){S.kickK=(S.kickK||0)+1;
     if(S.kickK===3)ach(ACHIEVEMENTS.boot,S.ach);}
@@ -773,7 +771,7 @@ function headTick(dt){
     if(h.life<=0){renderState.scene.remove(h.sp);headPool.heads.splice(i,1);}}}
 function dropAmmo(x,z){
   const k=pick(["bullets","shells","bullets"]);
-  items.push({kind:k,x,z,sp:addSprite(ITEMTEX[k],x,z,.55,.55,.5),bob:0});}
+  world.items.push({kind:k,x,z,sp:addSprite(ITEMTEX[k],x,z,.55,.55,.5),bob:0});}
 function bossDeath(e){
   stopBossMusic();
   shake(.7);screenShake.hitStop=Math.max(screenShake.hitStop,.12);
@@ -805,18 +803,18 @@ function bossDeath(e){
     showMsg("THE HEART STOPS — AND SO DOES EVERYTHING",4.5);
     setTimeout(()=>showWin(),2800);}}
 function openExit(){
-  if(exitPos)return;
+  if(world.exitPos)return;
   // place exit on a guaranteed-open tile in the south processional area
   const cands=[[16,16],[16,15],[15,16],[17,16],[16,17]];
   let gx=16,gz=16;
   for(const[cx,cz] of cands){
     const wx=(cx+.5)*CELL,wz=(cz+.5)*CELL;
     if(!solidAt(wx,wz)){gx=cx;gz=cz;break;}}
-  exitPos={x:(gx+.5)*CELL,z:(gz+.5)*CELL};
+  world.exitPos={x:(gx+.5)*CELL,z:(gz+.5)*CELL};
   const pad=new THREE.Mesh(new THREE.BoxGeometry(CELL*1.3,.06,CELL*1.3),
     new THREE.MeshBasicMaterial({color:0x4a6b8a}));
-  pad.position.set(exitPos.x,.03,exitPos.z);renderState.scene.add(pad);
-  const gl=new THREE.PointLight(0x4a6b8a,1.1,8);gl.position.set(exitPos.x,1,exitPos.z);renderState.scene.add(gl);
+  pad.position.set(world.exitPos.x,.03,world.exitPos.z);renderState.scene.add(pad);
+  const gl=new THREE.PointLight(0x4a6b8a,1.1,8);gl.position.set(world.exitPos.x,1,world.exitPos.z);renderState.scene.add(gl);
   blip(120,.7,"sine",.09,90,true);growl(70,.4,.2,true);}
 function wakeBoss(e){
   if(!e.dormant)return;
@@ -857,12 +855,12 @@ function los(x1,z1,x2,z2){
   const d=Math.hypot(x2-x1,z2-z1),steps=d/.3|0;
   for(let i=1;i<steps;i++){const t=i/steps;
     if(solidAt(x1+(x2-x1)*t,z1+(z2-z1)*t))return false;}
-  if(wallSegs.length&&segsCrossRay(x1,z1,x2,z2))return false;
+  if(world.wallSegs.length&&segsCrossRay(x1,z1,x2,z2))return false;
   return true;}
 function moveEnemy(e,sx,sz,spd,dt){
   const smash=e.boss||e.key==="B";
   const nx=e.x+sx*spd*dt,nz=e.z+sz*spd*dt,rr=e.r;
-  for(const p of props){if(p.dead||p.kind==="piano")continue;
+  for(const p of world.props){if(p.dead||p.kind==="piano")continue;
     if(Math.hypot(nx-p.x,nz-p.z)<rr+p.r){
       if(smash){p.explosive?explodeBarrel(p):breakProp(p);}
       else return false;}}
@@ -917,7 +915,7 @@ function priestTeleport(e,far){
   blip(140,.25,"sine",.12,700,true);}
 function enemyTick(dt){
   let anyAware=false;
-  for(const e of enemies){
+  for(const e of world.enemies){
     if(e.gone)continue;
     /* during a boss cinematic, nothing moves or attacks — just hold position */
     if(cine&&!e.dead){
@@ -1010,7 +1008,7 @@ function enemyTick(dt){
       if(e.scream&&e.screamT<=0&&dist<14){
         e.screamT=9;e.stun=1.1;
         growl(180,.9,.4,true);blip(500,.7,"sawtooth",.1,180,true);
-        for(const o of enemies){if(o.dead||o.dormant||o===e)continue;
+        for(const o of world.enemies){if(o.dead||o.dormant||o===e)continue;
           if(Math.hypot(o.x-e.x,o.z-e.z)<16){o.alertX=px;o.alertZ=pz;o.slow=1;
             o.frenzy=5;}}
         showMsg("THE SCREAMER CALLS THE DEAD");
@@ -1119,7 +1117,7 @@ function priestThink(e,dt,dist,dx,dz){
     if(e.atkT<=0){e.atkT=2.8;
       for(let i=-2;i<=2;i++)fireOrb(e,i*.13);}
     if(e.sumT<=0){e.sumT=8;
-      const alive=enemies.filter(o=>o.summoned&&!o.dead).length;
+      const alive=world.enemies.filter(o=>o.summoned&&!o.dead).length;
       if(alive<5){
         for(let n=0;n<2;n++){
           for(let tries=0;tries<20;tries++){
@@ -1137,7 +1135,7 @@ function priestThink(e,dt,dist,dx,dz){
     if(e.debT<=0){e.debT=3;spawnStrike();}
     if(e.atkT<=0){e.atkT=3.6;for(let i=-1;i<=1;i++)fireOrb(e,i*.15);}
     if(e.sumT<=0){e.sumT=12;
-      const alive=enemies.filter(o=>o.summoned&&!o.dead).length;
+      const alive=world.enemies.filter(o=>o.summoned&&!o.dead).length;
       if(alive<3){const a=rnd(0,6.28);
         const nx=px+Math.sin(a)*4,nz=pz+Math.cos(a)*4;
         if(!solidAt(nx,nz)){const ne=spawnEnemy("f",nx,nz,true);
@@ -1166,7 +1164,7 @@ function ringTick(dt){
     const pd=Math.hypot(px-r.x,pz-r.z);
     if(!r.hitDone&&Math.abs(pd-r.r)<.5&&pyy<EYE+.18){
       r.hitDone=true;damagePlayer(20);vx+=(px-r.x)/Math.max(pd,.2)*5;vz+=(pz-r.z)/Math.max(pd,.2)*5;}
-    for(const p of props){if(p.dead)continue;
+    for(const p of world.props){if(p.dead)continue;
       if(Math.abs(Math.hypot(p.x-r.x,p.z-r.z)-r.r)<.5)
         p.explosive?explodeBarrel(p):breakProp(p);}
     if(r.r>9){renderState.scene.remove(r.m);rings.splice(i,1);}}}
@@ -1192,7 +1190,7 @@ function strikeTick(dt){
       smoke3d(s.x,1.4,s.z,10);sparks(s.x,1,s.z,6);
       bang(.25,.5,400);shake(.18);
       if(Math.hypot(px-s.x,pz-s.z)<1.3)damagePlayer(18);
-      for(const p of props){if(!p.dead&&Math.hypot(p.x-s.x,p.z-s.z)<1.3)
+      for(const p of world.props){if(!p.dead&&Math.hypot(p.x-s.x,p.z-s.z)<1.3)
         p.explosive?explodeBarrel(p):breakProp(p);}
       strikes.splice(i,1);}}}
 function poisonTick(dt){
@@ -1218,9 +1216,9 @@ function projTick(dt){
         smoke3d(mx,Math.max(my,.3),mz,4);renderState.scene.remove(n.m);projectiles.nails.splice(i,1);}
       continue;}
     let boom=n.life<=0||my<0.05||my>WALLH||solidAt(mx,mz);
-    if(!boom)for(const p of props){if(p.dead)continue;
+    if(!boom)for(const p of world.props){if(p.dead)continue;
       if(Math.hypot(mx-p.x,mz-p.z)<p.r+.1&&my<p.hgt){boom=true;break;}}
-    if(!boom)for(const e of enemies){if(e.dead||e.dormant)continue;
+    if(!boom)for(const e of world.enemies){if(e.dead||e.dormant)continue;
       if(Math.hypot(mx-e.x,mz-e.z)<e.w*.5&&my>0&&my<e.h*1.05){
         weaponRuntime.volleyHit=true;S.hitsLanded++;boom=true;break;}}
     if(boom){crossExplode(mx,Math.max(my,.3),mz);
@@ -1268,8 +1266,8 @@ function accelerate(wx_,wz_,maxs,acc,dt){
 function collides(x,z){
   for(const[ox,oz]of[[R,R],[R,-R],[-R,R],[-R,-R],[R,0],[-R,0],[0,R],[0,-R]])
     if(solidAt(x+ox,z+oz))return true;
-  if(wallSegs.length&&segBlocked(x,z,R+.05))return true;
-  for(const p of props){if(p.dead)continue;
+  if(world.wallSegs.length&&segBlocked(x,z,R+.05))return true;
+  for(const p of world.props){if(p.dead)continue;
     if(Math.hypot(x-p.x,z-p.z)<p.r+R)return true;}
   return false;}
 function footstep(sprinting){
@@ -1320,8 +1318,8 @@ function playerTick(dt){
   renderState.lamp.position.set(px,pyy+.4,pz);
   if(renderState.lampCore)renderState.lampCore.position.set(px,pyy+.2,pz);
   /* exit pad (level 1) */
-  if(exitPos&&Math.hypot(px-exitPos.x,pz-exitPos.z)<1.2){
-    const bossLeft=enemies.some(e=>e.boss&&!e.dead);
+  if(world.exitPos&&Math.hypot(px-world.exitPos.x,pz-world.exitPos.z)<1.2){
+    const bossLeft=world.enemies.some(e=>e.boss&&!e.dead);
     if(bossLeft)showMsg("SOMETHING STILL BREATHES HERE",1.5);
     else endLevel();}
   /* challenge plate */
@@ -1340,13 +1338,13 @@ function playerTick(dt){
         smoke3d(sxp,.6,szp,8);}}
     alertSound(px,pz,30);}
   if(challenge&&challenge.state===1){
-    if(!enemies.some(e=>e.summoned&&!e.dead)){
+    if(!world.enemies.some(e=>e.summoned&&!e.dead)){
       challenge.state=2;say("challenge_done",true);
       ach(ACHIEVEMENTS.gauntlet,S.ach);
       challenge.plate.material.color.setHex(0x4ab86a);
       challenge.light.color.setHex(0x4ab86a);
       ["armor","crosses","bullets"].forEach((k,i)=>{
-        items.push({kind:k,x:challenge.x+(i-1)*.8,z:challenge.z,
+        world.items.push({kind:k,x:challenge.x+(i-1)*.8,z:challenge.z,
           sp:addSprite(ITEMTEX[k],challenge.x+(i-1)*.8,challenge.z,.55,.55,.5),bob:i});});
       blip(523,.3,"sine",.1,1046,true);}}}
 
@@ -1356,11 +1354,11 @@ function playerTick(dt){
 const WNAMES={w1:"SAWED-OFF SHOTGUN",w2:"COMBAT RIFLE",w3:"TOMMY GUN",w4:"BMG SNIPER",w5:"HOLY CROSS LAUNCHER",w6:"NAIL CANNON",w7:"SOUL REAPER"};
 function interact(){
   if(!game.started||game.inputLock)return;
-  if(pianoPos&&Math.hypot(px-pianoPos.x,pz-pianoPos.z)<1.9){openPiano();return;}
+  if(world.pianoPos&&Math.hypot(px-world.pianoPos.x,pz-world.pianoPos.z)<1.9){openPiano();return;}
   const dir=new THREE.Vector3();renderState.camera.getWorldDirection(dir);
   for(let t=.4;t<2.6;t+=.2){
     const wx_=px+dir.x*t,wz_=pz+dir.z*t;
-    const gx=wx_/CELL|0,gz=wz_/CELL|0,d=doors[gx+","+gz];
+    const gx=wx_/CELL|0,gz=wz_/CELL|0,d=world.doors[gx+","+gz];
     if(d&&!d.open){
       if(d.locked&&!S.key){showMsg("IT WANTS THE RED KEY",2.2);
         say("locked");growl(80,.3,.25,true);return;}
@@ -1374,7 +1372,7 @@ function interact(){
       return;}
     if(solidAt(wx_,wz_))return;}}
 function itemsTick(dt){
-  for(const it of items){
+  for(const it of world.items){
     if(it.taken)continue;
     it.bob+=dt*2.4;it.sp.position.y=.5+Math.sin(it.bob)*.07;
     if(Math.hypot(px-it.x,pz-it.z)<.95){
@@ -1405,19 +1403,19 @@ function itemsTick(dt){
   /* free SMG after enough kills if not yet found */
   if(!S.weapons[3]&&S.totKills>=8){S.weapons[3]=true;S.mag[3]=36;
     showMsg("SCRAP SMG ASSEMBLED FROM THE DEAD",3);blip(330,.12,"square",.08);}}
-function doorTick(dt){for(const k in doors){const d=doors[k];
+function doorTick(dt){for(const k in world.doors){const d=world.doors[k];
   if(d.open&&d.mesh.position.y>-WALLH/2+.1)d.mesh.position.y-=dt*2.6;}}
-function propTick(dt){for(const p of props){
+function propTick(dt){for(const p of world.props){
   if(p.dead||p.fuse<0)continue;
   p.fuse-=dt;if(p.fuse<=0)explodeBarrel(p);}}
 function torchTick(dt,t){
-  for(const tc of torches){
+  for(const tc of world.torches){
     const n=Math.sin(t*.011+tc.seed*7)*Math.sin(t*.017+tc.seed*3);
     tc.L.intensity=1.6+n*.45+Math.random()*.18;
     if(Math.random()<.06){tc.fr=1-tc.fr;
       tc.sp.material.map=ITEMTEX.torch[tc.fr];tc.sp.material.needsUpdate=true;}
     if(Math.random()<.04)emberP(tc.x+rnd(-.1,.1),1.4,tc.z+rnd(-.1,.1));}
-  for(const c of candles){
+  for(const c of world.candles){
     c.sp.material.opacity=.8+Math.sin(t*.02+c.seed*9)*.2;}}
 
 /* ============================================================
@@ -1426,19 +1424,19 @@ function torchTick(dt,t){
 function eventTick(dt){
   if(ambienceState.darkT>0){ambienceState.darkT-=dt;
     if(ambienceState.darkT<=0){renderState.ambLight.intensity=ambienceState.savedAmb;
-      for(const tc of torches)tc.L.visible=true;
+      for(const tc of world.torches)tc.L.visible=true;
       showMsg("THE LIGHT RETURNS");}}
   eventT-=dt;if(eventT>0)return;
   eventT=rnd(55,100);
   const r=Math.random();
   if(r<.45){ /* blackout */
     ambienceState.savedAmb=renderState.ambLight.intensity;renderState.ambLight.intensity=.12;
-    for(const tc of torches)tc.L.visible=false;
+    for(const tc of world.torches)tc.L.visible=false;
     ambienceState.darkT=8;say("event_dark",true);
     blip(50,2,"sine",.1,30,true);bang(.4,.1,300);
   }else if(r<.8&&S.level===1){ /* the bells */
     bellToll();say("event_bell",true);
-    for(const e of enemies){if(!e.dead&&!e.dormant)e.frenzy=7;}
+    for(const e of world.enemies){if(!e.dead&&!e.dormant)e.frenzy=7;}
     showMsg("THE BELLS ARE RINGING",3);
   }else{ /* whispers */
     for(let i=0;i<3;i++)setTimeout(()=>blip(rnd(300,500),.7,"sine",.025,rnd(120,200),true),i*600);}}
@@ -1476,8 +1474,8 @@ function pressKey(midi){
     pianoState.noteHist=[];
     ach(ACHIEVEMENTS.recital,S.ach);
     say("piano_played",true);organChord();
-    if(pianoPos)items.push({kind:"crosses",x:pianoPos.x+1.4,z:pianoPos.z,
-      sp:addSprite(ITEMTEX.crosses,pianoPos.x+1.4,pianoPos.z,.55,.55,.5),bob:0});}}
+    if(world.pianoPos)world.items.push({kind:"crosses",x:world.pianoPos.x+1.4,z:world.pianoPos.z,
+      sp:addSprite(ITEMTEX.crosses,world.pianoPos.x+1.4,world.pianoPos.z,.55,.55,.5),bob:0});}}
 function pianoKeyDown(code){const m=KEYMAP[code];if(m)pressKey(m);}
 function openPiano(){
   game.pianoOpen=true;setFiring(false);
@@ -1540,7 +1538,7 @@ function hud(){
   document.getElementById("kicklabel").textContent=
     S.kickCd>0?("KICK "+Math.ceil(S.kickCd)+"s"):"KICK [RMB]";
   kw.classList.toggle("ready",S.kickCd<=0);
-  const boss=enemies&&enemies.find(e=>e.boss&&!e.dead&&!e.dormant);
+  const boss=world.enemies&&world.enemies.find(e=>e.boss&&!e.dead&&!e.dormant);
   const bb=document.getElementById("bossbar");
   if(boss&&!cine){bb.style.display="block";
     document.getElementById("bossname").textContent=
