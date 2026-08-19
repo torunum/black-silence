@@ -4,11 +4,12 @@
  * segments used by collision, and the live entity lists.
  *
  * The spec's inventory also assigns challenge/bossRef/poisonZones/rings/
- * strikes/cine/eventT/idleT to this owner (spec §3). They are NOT here:
- * they are still bare mutable globals in src/legacy.js, declared on the
- * continuation line of the very same `let` statement as this module's own
- * 13 fields, and are migrated separately as Task 8b rather than folded into
- * this task — see the plan doc's "Correction, found during Task 8" note.
+ * strikes/cine/eventT/idleT to this owner (spec §3) — they are the eight
+ * fields below. They were bare mutable globals in src/legacy.js, declared
+ * on the continuation line of the very same `let` statement as this
+ * module's other 13 fields; Task 8 migrated those 13 here and deliberately
+ * left these eight behind as a standalone statement, migrated separately
+ * as Task 8b — see the plan doc's "Correction, found during Task 8" note.
  *
  * Element types are deliberately loose. These arrays hold object literals
  * built inline by loadLevel and mutated by half a dozen systems; typing
@@ -29,4 +30,12 @@ export const world = {
   candles: [] as Array<Record<string, unknown>>,
   exitPos: null as Record<string, unknown> | null,
   pianoPos: null as Record<string, unknown> | null,
+  challenge: null as Record<string, unknown> | null,
+  bossRef: null as Record<string, unknown> | null,
+  poisonZones: [] as Array<Record<string, unknown>>,
+  rings: [] as Array<Record<string, unknown>>,
+  strikes: [] as Array<Record<string, unknown>>,
+  cine: null as Record<string, unknown> | null,
+  eventT: 40,
+  idleT: 28,
 };
