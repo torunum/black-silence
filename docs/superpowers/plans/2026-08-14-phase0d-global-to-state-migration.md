@@ -45,10 +45,40 @@ rather than assumed — 62 declarations across 633 bare call sites in
 | WeaponRuntime | 12 | 92 | `wstate` `wtime` `wCool` `pending` `reloadFlags` `recoilPitch`:105 `kickAmt` `kickRot` `muzzle` `zoomLerp`:106 `volleyHit`:201 `kickAnim`:207 |
 | Renderer | 8 | 123 | `scene` `camera` `renderer` `lamp` `lampCore` `muzzleLight` `boomLight` `ambLight`:48 |
 | WorldState | 13 | 126 | `grid` `GW` `GH` `doors` `enemies` `props` `items` `torches` `candles` `exitPos` `pianoPos`:383 `heightMap`:269 `wallSegs`:250 |
+| WorldState (part 2) | 8 | 68 | `challenge` `bossRef` `poisonZones` `rings` `strikes` `cine` `eventT` `idleT`:384 — **see the correction below** |
 | PlayerState | 10 | 178 | `px` `pz` `vx` `vy` `vz` `pyy` `grounded` `bobT` `lastBobSin` `spawnGuard`:385 |
 
 Regenerate this table at any time — the two scripts that produced it are
 reproduced in Task 1, Step 1.
+
+### Correction, found during Task 8 (2026-08-15)
+
+The starting-state table above originally listed `challenge`, `bossRef`,
+`poisonZones`, `rings`, `strikes`, `cine`, `eventT` and `idleT` as **already
+migrated**, and Task 8's Step 1 doc comment repeated that claim. **They were
+not.** All eight are still bare mutable globals in `src/legacy.js`, declared
+on line 384 — the *continuation* line of the same `let` statement that
+declares Task 8's own 13 fields on line 383:
+
+```js
+let grid,GW,GH,doors,enemies,props,items,torches,candles,exitPos,pianoPos,
+  challenge,bossRef,poisonZones,rings,strikes,cine=null,eventT=40,idleT=28;
+```
+
+Root cause: the `globals.mjs` inventory script in Task 1 Step 1 only reads
+declaration names from lines that *start* with `let`/`const`/`var`. Line 384
+starts with whitespace, so its eight names were never seen, and the script's
+"declared in legacy.js?" test defaulted them to migrated. Anyone re-running
+that script gets the same wrong answer — **fix the script before trusting it
+again**, or cross-check with `grep -n "^\s" ` over multi-line declarations.
+
+Consequence: Plan 0D's Definition of Done ("No mutable cross-module global
+remains declared in `src/legacy.js`") was unmeetable as written. These eight
+are the spec §3 inventory's own `world/WorldState.ts` assignment, so they
+belong to this owner — they are now **Task 8b**, taken as a separate task
+rather than folded into Task 8, because 68 call sites across eight
+semantically distinct values (the cinematic, the boss reference, three
+entity pools, two timers) deserve their own reviewer's gate.
 
 ### Three decisions this plan locks in
 
