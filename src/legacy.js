@@ -12,6 +12,7 @@ import { bang, blip, boom, click } from "./audio/Sfx";
 import { deathCry, growl, gurgle, pain, snarl } from "./audio/Voice";
 import { bellToll, organChord, pianoNote, startBossMusic, stopBossMusic, stoneDoor, wetDoor } from "./audio/Ambient";
 import { setScene } from "./render/SceneRef";
+import { renderState } from "./render/Renderer";
 import { buildParticles, spawnP, blood, sparks, smoke3d, fireP, holyP, toxicP, emberP, woodP, partTick } from "./fx/Particles";
 import { splatMat, holeMat, scorchMat, addPool, poolTick, addWallDecal, resetDecals } from "./fx/Decals";
 import { gibGeo, gibMatsFlesh, spawnGibs, gibTick, resetGibs, spawnGibChunk } from "./fx/Gibs";
@@ -54,15 +55,14 @@ const S={hp:100,armor:0,key:false,dead:false,won:false,level:0,
 /* ============================================================
    THREE CORE
    ============================================================ */
-let scene,camera,renderer,lamp,lampCore,muzzleLight,boomLight,ambLight;
-camera=new THREE.PerspectiveCamera(78,4/3,.05,90);
-renderer=new THREE.WebGLRenderer({canvas:document.getElementById("game"),antialias:false});
-renderer.toneMapping=THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure=1.15;
-if(THREE.sRGBEncoding!==undefined)renderer.outputEncoding=THREE.sRGBEncoding;
+renderState.camera=new THREE.PerspectiveCamera(78,4/3,.05,90);
+renderState.renderer=new THREE.WebGLRenderer({canvas:document.getElementById("game"),antialias:false});
+renderState.renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderState.renderer.toneMappingExposure=1.15;
+if(THREE.sRGBEncoding!==undefined)renderState.renderer.outputEncoding=THREE.sRGBEncoding;
 function sizeRender(){const a=innerWidth/innerHeight,w=400,h=Math.round(w/a);
-  renderer.setSize(w,h,false);camera.aspect=a;camera.updateProjectionMatrix();
-  const c=renderer.domElement;c.style.width="100%";c.style.height="100%";}
+  renderState.renderer.setSize(w,h,false);renderState.camera.aspect=a;renderState.camera.updateProjectionMatrix();
+  const c=renderState.renderer.domElement;c.style.width="100%";c.style.height="100%";}
 addEventListener("resize",sizeRender);sizeRender();
 function shake(a){screenShake.trauma=Math.min(1,screenShake.trauma+a);}
 
@@ -74,10 +74,10 @@ const blobTex=new THREE.CanvasTexture(blobTexC);
 function addSprite(tex,wx,wz,sw,sh,y){
   const m=new THREE.SpriteMaterial({map:tex,transparent:true});
   const sp=new THREE.Sprite(m);sp.scale.set(sw,sh,1);
-  sp.position.set(wx,y!==undefined?y:sh/2,wz);scene.add(sp);return sp;}
+  sp.position.set(wx,y!==undefined?y:sh/2,wz);renderState.scene.add(sp);return sp;}
 function addBlob(wx,wz,s){const m=new THREE.Mesh(new THREE.PlaneGeometry(s,s),
   new THREE.MeshBasicMaterial({map:blobTex,transparent:true,depthWrite:false}));
-  m.rotation.x=-Math.PI/2;m.position.set(wx,.012,wz);scene.add(m);return m;}
+  m.rotation.x=-Math.PI/2;m.position.set(wx,.012,wz);renderState.scene.add(m);return m;}
 
 /* Input lives in src/player/Input.ts; its listeners are already registered
    (at that module's scope, as in the reference). This hands it the gameplay
@@ -85,7 +85,7 @@ function addBlob(wx,wz,s){const m=new THREE.Mesh(new THREE.PlaneGeometry(s,s),
    scope so it is done before any event can be delivered. */
 setInputHooks({
   isPianoOpen:()=>game.pianoOpen, isStarted:()=>game.started, isInputLocked:()=>game.inputLock,
-  zoomLerp:()=>weaponRuntime.zoomLerp, canvas:()=>renderer.domElement,
+  zoomLerp:()=>weaponRuntime.zoomLerp, canvas:()=>renderState.renderer.domElement,
   currentWeapon:()=>S.cur, ownsWeapon:i=>!!S.weapons[i],
   pianoKeyDown:code=>pianoKeyDown(code), closePiano:()=>closePiano(),
   interact:()=>interact(), startReload:()=>startReload(),
@@ -148,13 +148,13 @@ function weaponTick(dt){
   if(weaponRuntime.wstate==="idle"&&S.mag[S.cur]===0&&S.ammo[w.ammo]>0&&weaponRuntime.wtime>.4)startReload();
   weaponRuntime.kickAmt*=Math.exp(-10*dt);weaponRuntime.kickRot*=Math.exp(-9*dt);
   weaponRuntime.muzzle=Math.max(0,weaponRuntime.muzzle-dt*9);
-  muzzleLight.intensity*=Math.exp(-16*dt);
-  boomLight.intensity*=Math.exp(-7*dt);
+  renderState.muzzleLight.intensity*=Math.exp(-16*dt);
+  renderState.boomLight.intensity*=Math.exp(-7*dt);
   setSwayX(getSwayX()*Math.exp(-7*dt));setSwayY(getSwayY()*Math.exp(-7*dt));
   /* sniper zoom */
   const zt=(S.cur===4&&isZoomOn())?1:0;
   weaponRuntime.zoomLerp+=(zt-weaponRuntime.zoomLerp)*Math.min(1,dt*9);
-  camera.fov=78-46*weaponRuntime.zoomLerp;camera.updateProjectionMatrix();
+  renderState.camera.fov=78-46*weaponRuntime.zoomLerp;renderState.camera.updateProjectionMatrix();
   /* kick cooldown */
   if(S.kickCd>0){S.kickCd-=dt;
     if(S.kickCd<=0){say("kickready");click(.12);}}
@@ -164,15 +164,15 @@ function fire(w){
   S.shots++;
   weaponRuntime.kickAmt=w.kick;weaponRuntime.kickRot=(Math.random()-.5)*w.kick*.25;
   shake(w.trauma);weaponRuntime.muzzle=.4+(S.cur===1?.15:0)+(S.cur===4?.2:0);
-  muzzleLight.position.copy(camera.position);
-  muzzleLight.intensity=2.6+(S.cur===1?1.4:0)+(S.cur===5?1.6:0);
-  muzzleLight.color.setHex(S.cur===5?0xfff0b0:0xffc878);
+  renderState.muzzleLight.position.copy(renderState.camera.position);
+  renderState.muzzleLight.intensity=2.6+(S.cur===1?1.4:0)+(S.cur===5?1.6:0);
+  renderState.muzzleLight.color.setHex(S.cur===5?0xfff0b0:0xffc878);
   w.snd();
   if(S.cur===2||S.cur===3)ejectCasing(0);
   if(S.cur===1)setTimeout(()=>{ejectCasing(2);click(.12);},300); // pump
   weaponRuntime.recoilPitch+=(S.cur===1?.04:S.cur===4?.05:S.cur===0?.022:S.cur===5?.03:.006);
   alertSound(px,pz,18);
-  const dir=new THREE.Vector3();camera.getWorldDirection(dir);
+  const dir=new THREE.Vector3();renderState.camera.getWorldDirection(dir);
   weaponRuntime.volleyHit=false;
   for(let i=0;i<w.pellets;i++){
     const d=dir.clone();
@@ -186,21 +186,21 @@ function fire(w){
       const core=new THREE.Mesh(new THREE.SphereGeometry(.22,8,8),reapCoreMat);
       const tail=new THREE.Mesh(new THREE.BoxGeometry(.12,.12,.7),reapTailMat);
       tail.position.z=-.35;grp.add(core);grp.add(tail);
-      grp.position.copy(camera.position);
+      grp.position.copy(renderState.camera.position);
       projectiles.nails.push({m:grp,vx:d.x*30,vy:d.y*30,vz:d.z*30,dmg:0,life:1.2,reap:true,spin:0});
-      scene.add(grp);
-      muzzleLight.color.setHex(0x7fe05a);muzzleLight.intensity=2.4;}
+      renderState.scene.add(grp);
+      renderState.muzzleLight.color.setHex(0x7fe05a);renderState.muzzleLight.intensity=2.4;}
     else if(w.kind==="cross"){
       const grp=new THREE.Group();
       const m1=new THREE.Mesh(new THREE.BoxGeometry(.09,.5,.09),crossMat);
       const m2=new THREE.Mesh(new THREE.BoxGeometry(.3,.09,.09),crossMat);
       m2.position.y=.1;grp.add(m1);grp.add(m2);
-      grp.position.copy(camera.position);grp.position.y-=.1;
+      grp.position.copy(renderState.camera.position);grp.position.y-=.1;
       projectiles.nails.push({m:grp,vx:d.x*22,vy:d.y*22,vz:d.z*22,dmg:w.dmg,life:3,cross:true,
         spin:rnd(4,7)});
-      scene.add(grp);}}
+      renderState.scene.add(grp);}}
   if(weaponRuntime.volleyHit)S.hitsLanded++;
-  const mp=camera.position.clone().add(dir.clone().multiplyScalar(.5));
+  const mp=renderState.camera.position.clone().add(dir.clone().multiplyScalar(.5));
   smoke3d(mp.x,mp.y-.1,mp.z,S.cur===1?6:2);}
 const crossMat=new THREE.MeshBasicMaterial({color:0xe8d88a});
 const reapCoreMat=new THREE.MeshBasicMaterial({color:0xaff060});
@@ -212,7 +212,7 @@ function doKick(){
   S.kickCd=15;weaponRuntime.kickAnim=.32;
   shake(.3);bang(.15,.5,900);
   setTimeout(()=>{
-    const dir=new THREE.Vector3();camera.getWorldDirection(dir);
+    const dir=new THREE.Vector3();renderState.camera.getWorldDirection(dir);
     let hitAny=false;
     for(const e of enemies){if(e.dead)continue;
       const dx=e.x-px,dz=e.z-pz,d=Math.hypot(dx,dz);
@@ -278,7 +278,7 @@ function wallNormal(x,z,dir){
   if(!solidAt(x,z-dir.z*.13))return{x:0,z:-Math.sign(dir.z)};
   return{x:-dir.x,z:-dir.z};}
 function hitscan(dir,dmg,wIdx){
-  const o=camera.position;
+  const o=renderState.camera.position;
   const cands=[];
   enemies.forEach(e=>{if(e.dead||e.dormant)return;
     const ecy=e.fly?(e.flyH||1.5):e.h*.5+(e.fy||0);   // sprite center height
@@ -343,7 +343,7 @@ function hitscan(dir,dmg,wIdx){
     if(Math.random()<.3)bang(.03,.08,4000,800);}}
 function crossExplode(x,y,z){
   flashHoly(.35);shake(.35);screenShake.hitStop=Math.max(screenShake.hitStop,.04);
-  boomLight.position.set(x,y,z);boomLight.intensity=4;boomLight.color.setHex(0xfff0b0);
+  renderState.boomLight.position.set(x,y,z);renderState.boomLight.intensity=4;renderState.boomLight.color.setHex(0xfff0b0);
   holyP(x,y,z,40);smoke3d(x,y,z,10);
   boom(.7);
   for(const e of enemies){if(e.dead)continue;
@@ -438,10 +438,10 @@ function spawnProp(ch,wx,wz){
   else{m=new THREE.Mesh(new THREE.CylinderGeometry(.42,.42,1.05,8),
     new THREE.MeshLambertMaterial({map:TEX.barrel}));
     m.position.set(wx,.525,wz);r=.48;hgt=1.1;hp=24;explosive=true;addBlob(wx,wz,1.1);}
-  scene.add(m);
+  renderState.scene.add(m);
   props.push({m,x:wx,z:wz,r,hgt,hp,dead:false,explosive,kind,fuse:-1});}
 function breakProp(p){
-  if(p.dead)return;p.dead=true;scene.remove(p.m);S.propsBroken++;
+  if(p.dead)return;p.dead=true;renderState.scene.remove(p.m);S.propsBroken++;
   woodP(p.x,.5,p.z,12);spawnGibs(p.x,.55,p.z,6,3.4,true);
   bang(.12,.32,1200);bang(.08,.2,500);
   if(Math.random()<.2){
@@ -449,13 +449,13 @@ function breakProp(p){
     items.push({kind:k,x:p.x,z:p.z,sp:addSprite(ITEMTEX[k],p.x,p.z,.55,.55,.5),bob:0});}
   if(S.propsBroken===15)ach(ACHIEVEMENTS.redec,S.ach);}
 function explodeBarrel(b){
-  if(b.dead)return;b.dead=true;scene.remove(b.m);S.propsBroken++;
+  if(b.dead)return;b.dead=true;renderState.scene.remove(b.m);S.propsBroken++;
   shake(.7);screenShake.hitStop=Math.max(screenShake.hitStop,.05);
-  boomLight.position.set(b.x,1.2,b.z);boomLight.intensity=4;boomLight.color.setHex(0xff7830);
+  renderState.boomLight.position.set(b.x,1.2,b.z);renderState.boomLight.intensity=4;renderState.boomLight.color.setHex(0xff7830);
   fireP(b.x,.8,b.z,40);smoke3d(b.x,1,b.z,22);sparks(b.x,.8,b.z,18);
   spawnGibs(b.x,.8,b.z,6,5,true);
   const sc=new THREE.Mesh(new THREE.CircleGeometry(1.5,10),scorchMat);
-  sc.rotation.x=-Math.PI/2;sc.position.set(b.x,.015,b.z);scene.add(sc);
+  sc.rotation.x=-Math.PI/2;sc.position.set(b.x,.015,b.z);renderState.scene.add(sc);
   boom(1.1);
   const pd=Math.hypot(px-b.x,pz-b.z);
   if(pd<5)damagePlayer(60*(1-pd/5));
@@ -477,16 +477,16 @@ function loadLevel(idx){
   grid=L.g;GW=L.W;GH=L.H;
   heightMap=L.hmap||null;
   wallSegs=L.segs||[];
-  scene=new THREE.Scene();
-  setScene(scene);
-  scene.background=new THREE.Color(Ldef.fog);
-  scene.fog=new THREE.FogExp2(Ldef.fog,Ldef.fogD*1.5);
-  ambLight=new THREE.AmbientLight(Ldef.amb,Ldef.ambI*0.42);scene.add(ambLight);
-  lamp=new THREE.PointLight(0xffb060,1.7,9,1.6);scene.add(lamp);
+  renderState.scene=new THREE.Scene();
+  setScene(renderState.scene);
+  renderState.scene.background=new THREE.Color(Ldef.fog);
+  renderState.scene.fog=new THREE.FogExp2(Ldef.fog,Ldef.fogD*1.5);
+  renderState.ambLight=new THREE.AmbientLight(Ldef.amb,Ldef.ambI*0.42);renderState.scene.add(renderState.ambLight);
+  renderState.lamp=new THREE.PointLight(0xffb060,1.7,9,1.6);renderState.scene.add(renderState.lamp);
   // a tighter hot core so the player is always in a warm pool that falls off to black
-  lampCore=new THREE.PointLight(0xffd890,1.1,4.5,2);scene.add(lampCore);
-  muzzleLight=new THREE.PointLight(0xffc878,0,14,1.4);scene.add(muzzleLight);
-  boomLight=new THREE.PointLight(0xff7830,0,20,1.4);scene.add(boomLight);
+  renderState.lampCore=new THREE.PointLight(0xffd890,1.1,4.5,2);renderState.scene.add(renderState.lampCore);
+  renderState.muzzleLight=new THREE.PointLight(0xffc878,0,14,1.4);renderState.scene.add(renderState.muzzleLight);
+  renderState.boomLight=new THREE.PointLight(0xff7830,0,20,1.4);renderState.scene.add(renderState.boomLight);
   buildParticles();
   resetDecals();resetGibs();
   doors={};enemies=[];props=[];items=[];torches=[];candles=[];
@@ -511,24 +511,24 @@ function loadLevel(idx){
       for(const[dx,dz]of[[1,0],[-1,0],[0,1],[0,-1]]){const r=grid[z+dz];
         if(r&&r[x+dx]&&"#W".indexOf(r[x+dx])<0){open=true;dx0=dx;dz0=dz;break;}}
       if(!open)continue;
-      const m=new THREE.Mesh(wallGeo,matWall);m.position.set(wx,WALLH/2,wz);scene.add(m);
+      const m=new THREE.Mesh(wallGeo,matWall);m.position.set(wx,WALLH/2,wz);renderState.scene.add(m);
       if(ch==="W"){
         const gm=new THREE.Mesh(new THREE.PlaneGeometry(1.6,2.6),matWin);
         gm.position.set(wx+dx0*(CELL/2+.02),WALLH*.56,wz+dz0*(CELL/2+.02));
-        gm.lookAt(wx+dx0*4,WALLH*.56,wz+dz0*4);scene.add(gm);
+        gm.lookAt(wx+dx0*4,WALLH*.56,wz+dz0*4);renderState.scene.add(gm);
         const col=pick([0x5a3a8e,0x3a5a9e,0x9e3a3a]);
         const wl=new THREE.PointLight(col,1.1,9,1.5);
-        wl.position.set(wx+dx0*1.7,WALLH*.6,wz+dz0*1.7);scene.add(wl);
+        wl.position.set(wx+dx0*1.7,WALLH*.6,wz+dz0*1.7);renderState.scene.add(wl);
         const cone=new THREE.Mesh(new THREE.ConeGeometry(1.2,WALLH-.6,8,1,true),
           new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:.05,
             side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending}));
-        cone.position.set(wx+dx0*1.7,(WALLH-.6)/2,wz+dz0*1.7);scene.add(cone);}}
+        cone.position.set(wx+dx0*1.7,(WALLH-.6)/2,wz+dz0*1.7);renderState.scene.add(cone);}}
     else if(ch==="I"){
-      const m=new THREE.Mesh(pilGeo,matPil);m.position.set(wx,WALLH/2,wz);scene.add(m);}
+      const m=new THREE.Mesh(pilGeo,matPil);m.position.set(wx,WALLH/2,wz);renderState.scene.add(m);}
     else if(ch==="+"||ch==="D"||ch==="S"){
       let mat;if(ch==="S"){mat=matWall;S.secretsTotal++;}
       else mat=new THREE.MeshLambertMaterial({map:ch==="D"?TEX.doorLocked:(flesh?TEX.fleshDoor:TEX.door)});
-      const m=new THREE.Mesh(wallGeo,mat);m.position.set(wx,WALLH/2,wz);scene.add(m);
+      const m=new THREE.Mesh(wallGeo,mat);m.position.set(wx,WALLH/2,wz);renderState.scene.add(m);
       doors[x+","+z]={mesh:m,open:false,locked:ch==="D",secret:ch==="S",flesh:flesh&&ch!=="D"};}}
   const floorTex=(hell?TEX.hellFloor:flesh?TEX.fleshFloor:(dungeon?TEX.dungeonFloor:TEX.churchFloor)).clone();
   floorTex.needsUpdate=true;floorTex.repeat.set(GW,GH);
@@ -536,13 +536,13 @@ function loadLevel(idx){
   floorTex.magFilter=THREE.NearestFilter;floorTex.minFilter=THREE.NearestFilter;
   const fm=new THREE.Mesh(new THREE.PlaneGeometry(GW*CELL,GH*CELL),
     new THREE.MeshLambertMaterial({map:floorTex}));
-  fm.rotation.x=-Math.PI/2;fm.position.set(GW*CELL/2,0,GH*CELL/2);scene.add(fm);
+  fm.rotation.x=-Math.PI/2;fm.position.set(GW*CELL/2,0,GH*CELL/2);renderState.scene.add(fm);
   const ceilTex=(hell?TEX.hellCeil:flesh?TEX.fleshCeil:TEX.ceil).clone();ceilTex.needsUpdate=true;ceilTex.repeat.set(GW,GH);
   ceilTex.wrapS=ceilTex.wrapT=THREE.RepeatWrapping;
   ceilTex.magFilter=THREE.NearestFilter;ceilTex.minFilter=THREE.NearestFilter;
   const cm=new THREE.Mesh(new THREE.PlaneGeometry(GW*CELL,GH*CELL),
     new THREE.MeshLambertMaterial({map:ceilTex}));
-  cm.rotation.x=Math.PI/2;cm.position.set(GW*CELL/2,WALLH,GH*CELL/2);scene.add(cm);
+  cm.rotation.x=Math.PI/2;cm.position.set(GW*CELL/2,WALLH,GH*CELL/2);renderState.scene.add(cm);
   /* raised floor platforms (verticality) — a textured block per elevated cell */
   if(heightMap){
     const platTexTop=(hell?TEX.hellFloor:flesh?TEX.fleshFloor:(dungeon?TEX.dungeonFloor:TEX.churchFloor));
@@ -556,7 +556,7 @@ function loadLevel(idx){
       const wx=(x+.5)*CELL,wz=(z+.5)*CELL;
       const bg=new THREE.BoxGeometry(CELL,hgt,CELL);
       const bm=new THREE.Mesh(bg,pmats);
-      bm.position.set(wx,hgt/2,wz);scene.add(bm);}}
+      bm.position.set(wx,hgt/2,wz);renderState.scene.add(bm);}}
   /* angled wall meshes from arbitrary segments — non-orthogonal Doom/Blood walls */
   if(wallSegs.length){
     const segMat=new THREE.MeshLambertMaterial({map:wallTex});
@@ -566,7 +566,7 @@ function loadLevel(idx){
       const m=new THREE.Mesh(geo,segMat);
       m.position.set((s.x1+s.x2)/2,WALLH/2,(s.z1+s.z2)/2);
       m.rotation.y=-Math.atan2(s.z2-s.z1,s.x2-s.x1);
-      scene.add(m);}}
+      renderState.scene.add(m);}}
   for(let z=0;z<GH;z++)for(let x=0;x<GW;x++){
     const ch=grid[z][x];
     if(".#WI+DS".includes(ch))continue;
@@ -576,15 +576,15 @@ function loadLevel(idx){
       const ph=floorHeightAt(wx,wz);
       const pad=new THREE.Mesh(new THREE.BoxGeometry(CELL*1.3,.06,CELL*1.3),
         new THREE.MeshBasicMaterial({color:0x4a6b8a}));
-      pad.position.set(wx,ph+.04,wz);scene.add(pad);
-      const gl=new THREE.PointLight(0x4a6b8a,.9,6);gl.position.set(wx,ph+1,wz);scene.add(gl);}
+      pad.position.set(wx,ph+.04,wz);renderState.scene.add(pad);
+      const gl=new THREE.PointLight(0x4a6b8a,.9,6);gl.position.set(wx,ph+1,wz);renderState.scene.add(gl);}
     else if(ch==="i"){
       const pole=new THREE.Mesh(new THREE.CylinderGeometry(.06,.09,1.15,6),
         new THREE.MeshLambertMaterial({color:0x1a160f}));
-      pole.position.set(wx,.575,wz);scene.add(pole);
+      pole.position.set(wx,.575,wz);renderState.scene.add(pole);
       const fl=addSprite(ITEMTEX.torch[0],wx,wz,.45,.6,1.35);
       const Lt=new THREE.PointLight(0xff9838,1.6,10,1.8);
-      Lt.position.set(wx,1.45,wz);scene.add(Lt);
+      Lt.position.set(wx,1.45,wz);renderState.scene.add(Lt);
       torches.push({L:Lt,sp:fl,x:wx,z:wz,seed:Math.random()*99,fr:0});}
     else if(ch==="l"){
       const c2=addSprite(ITEMTEX.candle,wx,wz,.25,.3,.18);
@@ -592,16 +592,16 @@ function loadLevel(idx){
     else if(ch==="p"){pianoPos={x:wx,z:wz};
       const body=new THREE.Mesh(new THREE.BoxGeometry(1.7,1.0,.95),
         new THREE.MeshLambertMaterial({color:0x14100a}));
-      body.position.set(wx,.5,wz);scene.add(body);
+      body.position.set(wx,.5,wz);renderState.scene.add(body);
       const kb=new THREE.Mesh(new THREE.BoxGeometry(1.35,.06,.3),
         new THREE.MeshLambertMaterial({color:0xcfc8b8}));
-      kb.position.set(wx,1.02,wz+.42);scene.add(kb);
+      kb.position.set(wx,1.02,wz+.42);renderState.scene.add(kb);
       props.push({m:body,x:wx,z:wz,r:.95,hgt:1.2,hp:1e9,dead:false,explosive:false,kind:"piano"});}
     else if(ch==="Y"){challenge={x:wx,z:wz,state:0,spawned:[]};
       const plate=new THREE.Mesh(new THREE.CircleGeometry(.9,10),
         new THREE.MeshBasicMaterial({color:0x6a4ab8,transparent:true,opacity:.5}));
-      plate.rotation.x=-Math.PI/2;plate.position.set(wx,.02,wz);scene.add(plate);
-      const gl=new THREE.PointLight(0x6a4ab8,.7,5);gl.position.set(wx,.8,wz);scene.add(gl);
+      plate.rotation.x=-Math.PI/2;plate.position.set(wx,.02,wz);renderState.scene.add(plate);
+      const gl=new THREE.PointLight(0x6a4ab8,.7,5);gl.position.set(wx,.8,wz);renderState.scene.add(gl);
       challenge.plate=plate;challenge.light=gl;}
     else if(EDEF[ch])spawnEnemy(ch,wx,wz);
     else if("xTCFVO".includes(ch))spawnProp(ch,wx,wz);
@@ -694,7 +694,7 @@ function killEnemy(e,finalDmg,info){
   /* Afrit death explosion */
   if(e.key==="q"){
     fireP(e.x,e.fy?e.fy+1:1,e.z,26);sparks(e.x,1,e.z,16);boom(.8);
-    boomLight.position.set(e.x,1.2,e.z);boomLight.intensity=3.5;boomLight.color.setHex(0xff7830);
+    renderState.boomLight.position.set(e.x,1.2,e.z);renderState.boomLight.intensity=3.5;renderState.boomLight.color.setHex(0xff7830);
     const pd=Math.hypot(px-e.x,pz-e.z);
     if(pd<3.5&&Math.abs((e.fy||0)-(pyy-EYE))<2)damagePlayer(28*(1-pd/3.5));
     for(const o of enemies){if(o.dead||o===e)continue;
@@ -709,7 +709,7 @@ function killEnemy(e,finalDmg,info){
   const overkill=info.explosive||(-e.hp>22)||(info.wIdx===1&&info.dist<4.5);
   if(overkill){
     S.gibs++;S.totGibs++;
-    e.gone=true;scene.remove(e.sp);scene.remove(e.blob);
+    e.gone=true;renderState.scene.remove(e.sp);renderState.scene.remove(e.blob);
     spawnGibs(e.x,e.h*.6,e.z,12,4.5);
     addPool(e.x,e.z,rnd(.8,1.2));
     shake(.22);screenShake.hitStop=Math.max(screenShake.hitStop,.045);
@@ -741,7 +741,7 @@ function spawnHead(e,info){
   const sz=Math.max(.34,e.w*.34);
   sp.scale.set(sz,sz,1);
   sp.position.set(e.x,e.h*.92,e.z);
-  scene.add(sp);
+  renderState.scene.add(sp);
   const dx=info&&info.dir?info.dir.x:rnd(-1,1),dz=info&&info.dir?info.dir.z:rnd(-1,1);
   headPool.heads.push({sp,x:e.x,y:e.h*.92,z:e.z,
     vx:dx*rnd(2,4)+rnd(-1,1),vy:rnd(3.5,5.5),vz:dz*rnd(2,4)+rnd(-1,1),
@@ -770,7 +770,7 @@ function headTick(dt){
       h.spin=rnd(-12,12);h.rest=false;
       if(weaponRuntime.kickAnim>0){bang(.08,.3,500);blood(h.x,h.y,h.z,4,1.4);}}
     h.sp.position.set(h.x,h.y,h.z);
-    if(h.life<=0){scene.remove(h.sp);headPool.heads.splice(i,1);}}}
+    if(h.life<=0){renderState.scene.remove(h.sp);headPool.heads.splice(i,1);}}}
 function dropAmmo(x,z){
   const k=pick(["bullets","shells","bullets"]);
   items.push({kind:k,x,z,sp:addSprite(ITEMTEX[k],x,z,.55,.55,.5),bob:0});}
@@ -815,8 +815,8 @@ function openExit(){
   exitPos={x:(gx+.5)*CELL,z:(gz+.5)*CELL};
   const pad=new THREE.Mesh(new THREE.BoxGeometry(CELL*1.3,.06,CELL*1.3),
     new THREE.MeshBasicMaterial({color:0x4a6b8a}));
-  pad.position.set(exitPos.x,.03,exitPos.z);scene.add(pad);
-  const gl=new THREE.PointLight(0x4a6b8a,1.1,8);gl.position.set(exitPos.x,1,exitPos.z);scene.add(gl);
+  pad.position.set(exitPos.x,.03,exitPos.z);renderState.scene.add(pad);
+  const gl=new THREE.PointLight(0x4a6b8a,1.1,8);gl.position.set(exitPos.x,1,exitPos.z);renderState.scene.add(gl);
   blip(120,.7,"sine",.09,90,true);growl(70,.4,.2,true);}
 function wakeBoss(e){
   if(!e.dormant)return;
@@ -892,7 +892,7 @@ function fireOrb(e,spreadA,tox){
   if(ot==="manc")m.scale.setScalar(1.6);
   projectiles.orbs.push({m,vx:Math.sin(a)*spd,vz:Math.cos(a)*spd,
     vy:((pyy-.2)-oy)/(dist/spd),dmg,life:3.2,tox,col});
-  scene.add(m);
+  renderState.scene.add(m);
   blip(tox?420:ot==="manc"?180:300,.2,"sawtooth",.08,90);}
 function throwFlesh(e){
   const dx=px-e.x,dz=pz-e.z,dist=Math.hypot(dx,dz);
@@ -903,7 +903,7 @@ function throwFlesh(e){
   const spd=10;
   projectiles.orbs.push({m,vx:Math.sin(a)*spd,vz:Math.cos(a)*spd,
     vy:((pyy-.2)-oy)/(dist/spd)+1.0,dmg:14,life:2.4,flesh:true,spin:rnd(6,12),col:0x8c1e10});
-  scene.add(m);
+  renderState.scene.add(m);
   blood(e.x,oy,e.z,6,1.6);    // it rips the chunk out of its own body
   e.hp-=3;                    // Blood-style self-mutilation
   gurgle(.22,.32);growl(150,.22,.22);}
@@ -1155,7 +1155,7 @@ function priestThink(e,dt,dist,dx,dz){
 const ringMatBase=new THREE.MeshBasicMaterial({color:0x9a4ae0,transparent:true,opacity:.6,side:THREE.DoubleSide});
 function spawnRing(x,z){
   const m=new THREE.Mesh(new THREE.RingGeometry(.1,.45,28),ringMatBase.clone());
-  m.rotation.x=-Math.PI/2;m.position.set(x,.06,z);scene.add(m);
+  m.rotation.x=-Math.PI/2;m.position.set(x,.06,z);renderState.scene.add(m);
   rings.push({m,x,z,r:.3,hitDone:false});
   bang(.3,.5,250);blip(60,.5,"sawtooth",.16,30,true);shake(.2);}
 function ringTick(dt){
@@ -1169,7 +1169,7 @@ function ringTick(dt){
     for(const p of props){if(p.dead)continue;
       if(Math.abs(Math.hypot(p.x-r.x,p.z-r.z)-r.r)<.5)
         p.explosive?explodeBarrel(p):breakProp(p);}
-    if(r.r>9){scene.remove(r.m);rings.splice(i,1);}}}
+    if(r.r>9){renderState.scene.remove(r.m);rings.splice(i,1);}}}
 /* falling debris strikes (priest P3) */
 function spawnStrike(){
   for(let tries=0;tries<16;tries++){
@@ -1178,7 +1178,7 @@ function spawnStrike(){
     if(solidAt(x,z))continue;
     const warn=new THREE.Mesh(new THREE.CircleGeometry(1,10),
       new THREE.MeshBasicMaterial({color:0x150a1e,transparent:true,opacity:.7}));
-    warn.rotation.x=-Math.PI/2;warn.position.set(x,.025,z);scene.add(warn);
+    warn.rotation.x=-Math.PI/2;warn.position.set(x,.025,z);renderState.scene.add(warn);
     strikes.push({x,z,t:.85,warn});
     blip(1200,.4,"sine",.05,300);
     return;}}
@@ -1187,7 +1187,7 @@ function strikeTick(dt){
     s.t-=dt;
     s.warn.material.opacity=.4+Math.sin(performance.now()*.02)*.3;
     if(s.t<=0){
-      scene.remove(s.warn);
+      renderState.scene.remove(s.warn);
       spawnGibs(s.x,WALLH-.4,s.z,5,3,true);
       smoke3d(s.x,1.4,s.z,10);sparks(s.x,1,s.z,6);
       bang(.25,.5,400);shake(.18);
@@ -1215,7 +1215,7 @@ function projTick(dt){
     if(n.reap){ // visual tracer only — damage already applied by hitscan
       if(Math.random()<.6)spawnP(mx,my,mz,0,0,0,.5,.9,.35,.2,3);
       if(n.life<=0||my<0.05||my>WALLH||solidAt(mx,mz)){
-        smoke3d(mx,Math.max(my,.3),mz,4);scene.remove(n.m);projectiles.nails.splice(i,1);}
+        smoke3d(mx,Math.max(my,.3),mz,4);renderState.scene.remove(n.m);projectiles.nails.splice(i,1);}
       continue;}
     let boom=n.life<=0||my<0.05||my>WALLH||solidAt(mx,mz);
     if(!boom)for(const p of props){if(p.dead)continue;
@@ -1224,7 +1224,7 @@ function projTick(dt){
       if(Math.hypot(mx-e.x,mz-e.z)<e.w*.5&&my>0&&my<e.h*1.05){
         weaponRuntime.volleyHit=true;S.hitsLanded++;boom=true;break;}}
     if(boom){crossExplode(mx,Math.max(my,.3),mz);
-      scene.remove(n.m);projectiles.nails.splice(i,1);}}
+      renderState.scene.remove(n.m);projectiles.nails.splice(i,1);}}
   for(let i=projectiles.orbs.length-1;i>=0;i--){const o=projectiles.orbs[i];
     o.life-=dt;
     if(o.flesh){o.vy-=11*dt;o.m.rotation.x+=o.spin*dt;o.m.rotation.z+=o.spin*.7*dt;}
@@ -1243,7 +1243,7 @@ function projTick(dt){
     if(dead){
       if(o.flesh){blood(o.m.position.x,Math.max(.1,o.m.position.y),o.m.position.z,8,1.4);
         addPool(o.m.position.x,o.m.position.z,rnd(.2,.4));gurgle(.16,.25);}
-      scene.remove(o.m);projectiles.orbs.splice(i,1);}}}
+      renderState.scene.remove(o.m);projectiles.orbs.splice(i,1);}}}
 
 /* ============================================================
    PLAYER
@@ -1314,11 +1314,11 @@ function playerTick(dt){
   const sh=screenShake.trauma*screenShake.trauma,t=performance.now();
   const shx=sh*.06*Math.sin(t*.061),shy=sh*.05*Math.sin(t*.083),shr=sh*.05*Math.sin(t*.047);
   weaponRuntime.recoilPitch*=Math.exp(-8*dt);
-  camera.position.set(px+shx,pyy+(grounded?bobSin*.025*Math.min(1,spd/7):0)+shy,pz);
-  camera.rotation.order="YXZ";
-  camera.rotation.y=getYaw();camera.rotation.x=getPitch()+weaponRuntime.recoilPitch;camera.rotation.z=shr;
-  lamp.position.set(px,pyy+.4,pz);
-  if(lampCore)lampCore.position.set(px,pyy+.2,pz);
+  renderState.camera.position.set(px+shx,pyy+(grounded?bobSin*.025*Math.min(1,spd/7):0)+shy,pz);
+  renderState.camera.rotation.order="YXZ";
+  renderState.camera.rotation.y=getYaw();renderState.camera.rotation.x=getPitch()+weaponRuntime.recoilPitch;renderState.camera.rotation.z=shr;
+  renderState.lamp.position.set(px,pyy+.4,pz);
+  if(renderState.lampCore)renderState.lampCore.position.set(px,pyy+.2,pz);
   /* exit pad (level 1) */
   if(exitPos&&Math.hypot(px-exitPos.x,pz-exitPos.z)<1.2){
     const bossLeft=enemies.some(e=>e.boss&&!e.dead);
@@ -1357,7 +1357,7 @@ const WNAMES={w1:"SAWED-OFF SHOTGUN",w2:"COMBAT RIFLE",w3:"TOMMY GUN",w4:"BMG SN
 function interact(){
   if(!game.started||game.inputLock)return;
   if(pianoPos&&Math.hypot(px-pianoPos.x,pz-pianoPos.z)<1.9){openPiano();return;}
-  const dir=new THREE.Vector3();camera.getWorldDirection(dir);
+  const dir=new THREE.Vector3();renderState.camera.getWorldDirection(dir);
   for(let t=.4;t<2.6;t+=.2){
     const wx_=px+dir.x*t,wz_=pz+dir.z*t;
     const gx=wx_/CELL|0,gz=wz_/CELL|0,d=doors[gx+","+gz];
@@ -1401,7 +1401,7 @@ function itemsTick(dt){
           if(it.kind==="w1")say("w2",true);
           if(it.kind==="w4")say("w5",true);
           if(it.kind==="w5")say("w6",true);}}
-      if(ok){it.taken=true;scene.remove(it.sp);blip(330,.14,"sine",.1,210,true);gurgle(.12,.12);}}}
+      if(ok){it.taken=true;renderState.scene.remove(it.sp);blip(330,.14,"sine",.1,210,true);gurgle(.12,.12);}}}
   /* free SMG after enough kills if not yet found */
   if(!S.weapons[3]&&S.totKills>=8){S.weapons[3]=true;S.mag[3]=36;
     showMsg("SCRAP SMG ASSEMBLED FROM THE DEAD",3);blip(330,.12,"square",.08);}}
@@ -1425,14 +1425,14 @@ function torchTick(dt,t){
    ============================================================ */
 function eventTick(dt){
   if(ambienceState.darkT>0){ambienceState.darkT-=dt;
-    if(ambienceState.darkT<=0){ambLight.intensity=ambienceState.savedAmb;
+    if(ambienceState.darkT<=0){renderState.ambLight.intensity=ambienceState.savedAmb;
       for(const tc of torches)tc.L.visible=true;
       showMsg("THE LIGHT RETURNS");}}
   eventT-=dt;if(eventT>0)return;
   eventT=rnd(55,100);
   const r=Math.random();
   if(r<.45){ /* blackout */
-    ambienceState.savedAmb=ambLight.intensity;ambLight.intensity=.12;
+    ambienceState.savedAmb=renderState.ambLight.intensity;renderState.ambLight.intensity=.12;
     for(const tc of torches)tc.L.visible=false;
     ambienceState.darkT=8;say("event_dark",true);
     blip(50,2,"sine",.1,30,true);bang(.4,.1,300);
@@ -1487,7 +1487,7 @@ function openPiano(){
 function closePiano(){
   game.pianoOpen=false;
   document.getElementById("piano").style.display="none";
-  renderer.domElement.requestPointerLock();}
+  renderState.renderer.domElement.requestPointerLock();}
 
 /* ============================================================
    LEVEL END + WIN + HUD
@@ -1518,7 +1518,7 @@ document.getElementById("lebtn").addEventListener("click",()=>{
   document.getElementById("levelend").classList.add("hidden");
   S.won=false;
   loadLevel(S.level+1);
-  renderer.domElement.requestPointerLock();});
+  renderState.renderer.domElement.requestPointerLock();});
 function showWin(){
   if(S.dead)return;S.won=true;
   stopBossMusic();document.exitPointerLock();
@@ -1570,7 +1570,7 @@ function startGame(idx){
   buildTextures();buildSprites();buildItemTex();buildWeaponSprites();buildPiano();
   loadLevel(idx||0);
   S.t0=performance.now();
-  renderer.domElement.requestPointerLock();}
+  renderState.renderer.domElement.requestPointerLock();}
 /* ---- menu navigation ---- */
 function showScreen(id){
   ["intro","chapsel","settings"].forEach(s=>
@@ -1616,7 +1616,7 @@ function loop(t){
     eventTick(dt);ambience(dt);vitalsAudio(dt);
     chatterTick(dt,anyAware);
     tickMessage(dt);}
-  if(scene){
+  if(renderState.scene){
     partTick(dt);gibTick(dt);poolTick(dt);headTick(dt);torchTick(dt,t);
     fxTick(dt,t,weaponRuntime.zoomLerp,
       ()=>drawKickBoot(weaponRuntime.kickAnim),
@@ -1626,5 +1626,5 @@ function loop(t){
         equipT:EQUIP_T,unequipT:UNEQUIP_T,kickAmt:weaponRuntime.kickAmt,kickRot:weaponRuntime.kickRot,swayX:getSwayX(),swayY:getSwayY(),muzzle:weaponRuntime.muzzle,
       },WEAPONS));
     hud();
-    renderer.render(scene,camera);}}
+    renderState.renderer.render(renderState.scene,renderState.camera);}}
 requestAnimationFrame(loop);
