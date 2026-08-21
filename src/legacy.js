@@ -35,6 +35,7 @@ import { keys, setInputHooks, overlayOpen, getYaw, setYaw, getPitch, setPitch,
 import { game } from "./core/Game";
 import { weaponRuntime } from "./weapons/WeaponRuntime";
 import { player } from "./player/PlayerState";
+import { S } from "./core/State";
 
 /* ============================================================
    THE BLACK SILENCE — The Hollow Parish (v3 gothic overhaul)
@@ -42,17 +43,6 @@ import { player } from "./player/PlayerState";
    power kick · destructibles · playable piano · monologues
    ============================================================ */
 const CELL=2, WALLH=3.4, EYE=1.0;
-
-/* ============================================================
-   GLOBAL STATE
-   ============================================================ */
-const S={hp:100,armor:0,key:false,dead:false,won:false,level:0,
-  kills:0,gibs:0,secrets:0,secretsTotal:0,shots:0,hitsLanded:0,propsBroken:0,
-  totKills:0,totGibs:0,totSecrets:0,t0:0,levelT0:0,
-  ammo:{bullets:60,shells:0,slugs:0,crosses:0,nails:0,souls:0},
-  mag:[6,0,0,0,0,0,0,0],weapons:[true,false,false,false,false,false,false,false],cur:0,
-  kickCd:0,pianoNotes:0,ach:{}};
-
 
 /* ============================================================
    THREE CORE
@@ -403,7 +393,7 @@ function spawnEnemy(ch,wx,wz,summoned){
     dormant:!!d.boss,phase:1,tpT:5,atkT:2.5,sumT:6,ringT:4,debT:3,chT:5,charging:0,cdx:0,cdz:0};
   if(elite)e.sp.material.color.setHex(0xd8c878);
   world.enemies.push(e);
-  if(!summoned)S.killsTotal=(S.killsTotal||0)+1;
+  if(!summoned)S.enemiesTotal=(S.enemiesTotal||0)+1;
   if(d.boss)world.bossRef=world.bossRef||e;
   return e;}
 function spawnProp(ch,wx,wz){
@@ -493,7 +483,7 @@ function loadLevel(idx){
   world.eventT=rnd(55,100);world.idleT=rnd(26,40);
   player.spawnGuard=2.0;   // brief invulnerability on entry
   S.kills=0;S.gibs=0;S.secrets=0;S.secretsTotal=0;S.shots=0;S.hitsLanded=0;
-  S.propsBroken=0;S.killsTotal=0;S.key=false;S.levelT0=performance.now();
+  S.propsBroken=0;S.enemiesTotal=0;S.key=false;S.levelT0=performance.now();
   const flesh=Ldef.flesh,hell=Ldef.hell,dungeon=Ldef.dungeon;
   const wallTex=hell?TEX.hellWall:flesh?TEX.fleshWall:(dungeon?TEX.dungeonWall:TEX.churchWall);
   const matWall=new THREE.MeshLambertMaterial({map:wallTex});
@@ -1491,7 +1481,7 @@ function closePiano(){
    ============================================================ */
 function gradeOf(){
   const acc=S.shots>0?S.hitsLanded/S.shots:0;
-  const score=(S.killsTotal?S.kills/S.killsTotal:1)*40+
+  const score=(S.enemiesTotal?S.kills/S.enemiesTotal:1)*40+
     (S.secretsTotal?S.secrets/S.secretsTotal:1)*25+Math.min(1,acc)*25+
     Math.min(1,S.propsBroken/10)*10;
   if(acc>=.7)ach(ACHIEVEMENTS.deadeye,S.ach);
@@ -1499,7 +1489,7 @@ function gradeOf(){
 function statsHtml(){
   const t=((performance.now()-S.levelT0)/1000)|0;
   const acc=S.shots>0?Math.round(100*S.hitsLanded/S.shots):0;
-  return `KILLS <b>${S.kills} / ${S.killsTotal}</b> · GIBBED <b>${S.gibs}</b><br>`+
+  return `KILLS <b>${S.kills} / ${S.enemiesTotal}</b> · GIBBED <b>${S.gibs}</b><br>`+
     `SECRETS <b>${S.secrets} / ${S.secretsTotal}</b> · OBJECTS BROKEN <b>${S.propsBroken}</b><br>`+
     `ACCURACY <b>${acc}%</b> · TIME <b>${(t/60|0)}:${String(t%60).padStart(2,"0")}</b>`;}
 function endLevel(){
