@@ -34,6 +34,7 @@ import { keys, setInputHooks, overlayOpen, getYaw, setYaw, getPitch, setPitch,
   getSwayX, setSwayX, getSwayY, setSwayY, isFiring, setFiring, isZoomOn, setZoomOn } from "./player/Input";
 import { game } from "./core/Game";
 import { weaponRuntime } from "./weapons/WeaponRuntime";
+import { player } from "./player/PlayerState";
 
 /* ============================================================
    THE BLACK SILENCE — The Hollow Parish (v3 gothic overhaul)
@@ -172,7 +173,7 @@ function fire(w){
   if(S.cur===2||S.cur===3)ejectCasing(0);
   if(S.cur===1)setTimeout(()=>{ejectCasing(2);click(.12);},300); // pump
   weaponRuntime.recoilPitch+=(S.cur===1?.04:S.cur===4?.05:S.cur===0?.022:S.cur===5?.03:.006);
-  alertSound(px,pz,18);
+  alertSound(player.px,player.pz,18);
   const dir=new THREE.Vector3();renderState.camera.getWorldDirection(dir);
   weaponRuntime.volleyHit=false;
   for(let i=0;i<w.pellets;i++){
@@ -216,7 +217,7 @@ function doKick(){
     const dir=new THREE.Vector3();renderState.camera.getWorldDirection(dir);
     let hitAny=false;
     for(const e of world.enemies){if(e.dead)continue;
-      const dx=e.x-px,dz=e.z-pz,d=Math.hypot(dx,dz);
+      const dx=e.x-player.px,dz=e.z-player.pz,d=Math.hypot(dx,dz);
       if(d>2.5)continue;
       const dot=(dx*dir.x+dz*dir.z)/d;
       if(dot<.55)continue;
@@ -228,7 +229,7 @@ function doKick(){
       blood(e.x,e.h*.6,e.z,4,2);
       damageEnemy(e,15,{dir:{x:dx/d,z:dz/d},wIdx:-1});}
     for(const p of world.props){if(p.dead)continue;
-      const dx=p.x-px,dz=p.z-pz,d=Math.hypot(dx,dz);
+      const dx=p.x-player.px,dz=p.z-player.pz,d=Math.hypot(dx,dz);
       if(d>2.6)continue;
       const dot=(dx*dir.x+dz*dir.z)/Math.max(.001,d);
       if(dot<.5)continue;
@@ -379,7 +380,6 @@ function vitalsAudio(dt){
 /* ============================================================
    WORLD STATE + LEVEL LOADER
    ============================================================ */
-let px=3,pz=3,vx=0,vy=0,vz=0,pyy=EYE,grounded=true,bobT=0,lastBobSin=0,spawnGuard=0;
 const R=.35;
 function spawnEnemy(ch,wx,wz,summoned){
   const d=EDEF[ch];
@@ -454,7 +454,7 @@ function explodeBarrel(b){
   const sc=new THREE.Mesh(new THREE.CircleGeometry(1.5,10),scorchMat);
   sc.rotation.x=-Math.PI/2;sc.position.set(b.x,.015,b.z);renderState.scene.add(sc);
   boom(1.1);
-  const pd=Math.hypot(px-b.x,pz-b.z);
+  const pd=Math.hypot(player.px-b.x,player.pz-b.z);
   if(pd<5)damagePlayer(60*(1-pd/5));
   for(const e of world.enemies){if(e.dead)continue;
     const dd=Math.hypot(e.x-b.x,e.z-b.z);
@@ -491,7 +491,7 @@ function loadLevel(idx){
   world.exitPos=null;world.pianoPos=null;world.challenge=null;world.bossRef=null;world.cine=null;
   S.dead=false;S.won=false;S.hp=100;
   world.eventT=rnd(55,100);world.idleT=rnd(26,40);
-  spawnGuard=2.0;   // brief invulnerability on entry
+  player.spawnGuard=2.0;   // brief invulnerability on entry
   S.kills=0;S.gibs=0;S.secrets=0;S.secretsTotal=0;S.shots=0;S.hitsLanded=0;
   S.propsBroken=0;S.killsTotal=0;S.key=false;S.levelT0=performance.now();
   const flesh=Ldef.flesh,hell=Ldef.hell,dungeon=Ldef.dungeon;
@@ -568,7 +568,7 @@ function loadLevel(idx){
     const ch=world.grid[z][x];
     if(".#WI+DS".includes(ch))continue;
     const wx=(x+.5)*CELL,wz=(z+.5)*CELL;
-    if(ch==="P"){px=wx;pz=wz;}
+    if(ch==="P"){player.px=wx;player.pz=wz;}
     else if(ch==="X"){world.exitPos={x:wx,z:wz};
       const ph=floorHeightAt(wx,wz);
       const pad=new THREE.Mesh(new THREE.BoxGeometry(CELL*1.3,.06,CELL*1.3),
@@ -609,7 +609,7 @@ function loadLevel(idx){
       const tex=k[0]==="w"?ITEMTEX.gun:ITEMTEX[k];
       world.items.push({kind:k,x:wx,z:wz,sp:addSprite(tex,wx,wz,.55,.55,.5),bob:Math.random()*6});}
     world.grid[z][x]=".";}
-  vx=vy=vz=0;pyy=EYE+floorHeightAt(px,pz);setYaw(Math.PI);setPitch(0);grounded=true;
+  player.vx=player.vy=player.vz=0;player.pyy=EYE+floorHeightAt(player.px,player.pz);setYaw(Math.PI);setPitch(0);player.grounded=true;
   const lt=document.getElementById("lvltitle");
   lt.textContent=Ldef.name;lt.style.opacity=1;
   setTimeout(()=>lt.style.opacity=0,5000);
@@ -625,7 +625,7 @@ function damageEnemy(e,dmg,info){
   /* Hexen Centaur/Slaughtaur shield — blocks most frontal fire */
   if(e.shield&&!info.explosive&&info.dir){
     // facing roughly toward the shot source = blocked
-    const toP=Math.atan2(px-e.x,pz-e.z);
+    const toP=Math.atan2(player.px-e.x,player.pz-e.z);
     const shotDir=Math.atan2(-info.dir.x,-info.dir.z);
     let d=Math.abs(((toP-shotDir+Math.PI)%(2*Math.PI))-Math.PI);
     if(d<1.0){dmg*=0.25;bang(.04,.3,3000,800);sparks(info.hx||e.x,info.hy||e.h*.6,info.hz||e.z,4);}
@@ -692,8 +692,8 @@ function killEnemy(e,finalDmg,info){
   if(e.key==="q"){
     fireP(e.x,e.fy?e.fy+1:1,e.z,26);sparks(e.x,1,e.z,16);boom(.8);
     renderState.boomLight.position.set(e.x,1.2,e.z);renderState.boomLight.intensity=3.5;renderState.boomLight.color.setHex(0xff7830);
-    const pd=Math.hypot(px-e.x,pz-e.z);
-    if(pd<3.5&&Math.abs((e.fy||0)-(pyy-EYE))<2)damagePlayer(28*(1-pd/3.5));
+    const pd=Math.hypot(player.px-e.x,player.pz-e.z);
+    if(pd<3.5&&Math.abs((e.fy||0)-(player.pyy-EYE))<2)damagePlayer(28*(1-pd/3.5));
     for(const o of world.enemies){if(o.dead||o===e)continue;
       if(Math.hypot(o.x-e.x,o.z-e.z)<3)o.hp-=30;}}
   if(info.wIdx===-1){S.kickK=(S.kickK||0)+1;
@@ -759,9 +759,9 @@ function headTick(dt){
         else{h.vy=0;h.vx*=.7;h.vz*=.7;h.spin*=.7;
           if(Math.abs(h.vx)<.2&&Math.abs(h.vz)<.2){h.rest=true;h.spin=0;}}}}
     // player kick: walk into it (or kick action) to punt it
-    const pd=Math.hypot(h.x-px,h.z-pz);
+    const pd=Math.hypot(h.x-player.px,h.z-player.pz);
     if(pd<.7){
-      const a=Math.atan2(h.x-px,h.z-pz);
+      const a=Math.atan2(h.x-player.px,h.z-player.pz);
       const force=weaponRuntime.kickAnim>0?9:3.4;
       h.vx=Math.sin(a)*force;h.vz=Math.cos(a)*force;h.vy=weaponRuntime.kickAnim>0?5:2.2;
       h.spin=rnd(-12,12);h.rest=false;
@@ -833,10 +833,10 @@ function cineTick(dt){
   if(!world.cine)return;
   world.cine.t+=dt;
   const b=world.cine.e;
-  const target=Math.atan2(-(b.x-px),-(b.z-pz));
+  const target=Math.atan2(-(b.x-player.px),-(b.z-player.pz));
   let diff=((target-getYaw()+Math.PI*3)%(Math.PI*2))-Math.PI;
   setYaw(getYaw()+diff*Math.min(1,dt*4));
-  const want=Math.atan2(b.h*.7-pyy,Math.hypot(b.x-px,b.z-pz));
+  const want=Math.atan2(b.h*.7-player.pyy,Math.hypot(b.x-player.px,b.z-player.pz));
   setPitch(getPitch()+(want-getPitch())*Math.min(1,dt*4));
   if(world.cine.t>=world.cine.dur){
     document.getElementById("barTop").style.height="0";
@@ -870,7 +870,7 @@ function moveEnemy(e,sx,sz,spd,dt){
   return true;}
 function fireOrb(e,spreadA,tox){
   e.atkAnim=.22;
-  const dx=px-e.x,dz=pz-e.z,dist=Math.hypot(dx,dz);
+  const dx=player.px-e.x,dz=player.pz-e.z,dist=Math.hypot(dx,dz);
   const a=Math.atan2(dx,dz)+spreadA;
   const ot=e.orb;
   let col=0x9a4ae0,dmg=15,spd=9.5;
@@ -888,18 +888,18 @@ function fireOrb(e,spreadA,tox){
   const m=new THREE.Mesh(orbGeo,mat);m.position.set(e.x,oy,e.z);
   if(ot==="manc")m.scale.setScalar(1.6);
   projectiles.orbs.push({m,vx:Math.sin(a)*spd,vz:Math.cos(a)*spd,
-    vy:((pyy-.2)-oy)/(dist/spd),dmg,life:3.2,tox,col});
+    vy:((player.pyy-.2)-oy)/(dist/spd),dmg,life:3.2,tox,col});
   renderState.scene.add(m);
   blip(tox?420:ot==="manc"?180:300,.2,"sawtooth",.08,90);}
 function throwFlesh(e){
-  const dx=px-e.x,dz=pz-e.z,dist=Math.hypot(dx,dz);
+  const dx=player.px-e.x,dz=player.pz-e.z,dist=Math.hypot(dx,dz);
   const a=Math.atan2(dx,dz)+rnd(-.05,.05);
   const oy=e.fly?(e.flyH||1.5):e.h*.55+(e.fy||0);
   const m=new THREE.Mesh(gibGeo,gibMatsFlesh[0].clone());
   m.position.set(e.x,oy,e.z);m.scale.setScalar(1.9);
   const spd=10;
   projectiles.orbs.push({m,vx:Math.sin(a)*spd,vz:Math.cos(a)*spd,
-    vy:((pyy-.2)-oy)/(dist/spd)+1.0,dmg:14,life:2.4,flesh:true,spin:rnd(6,12),col:0x8c1e10});
+    vy:((player.pyy-.2)-oy)/(dist/spd)+1.0,dmg:14,life:2.4,flesh:true,spin:rnd(6,12),col:0x8c1e10});
   renderState.scene.add(m);
   blood(e.x,oy,e.z,6,1.6);    // it rips the chunk out of its own body
   e.hp-=3;                    // Blood-style self-mutilation
@@ -908,8 +908,8 @@ function priestTeleport(e,far){
   smoke3d(e.x,1.2,e.z,16);blip(700,.25,"sine",.1,140,true);
   for(let tries=0;tries<24;tries++){
     const a=rnd(0,6.28),d=far?rnd(7,11):rnd(4,7);
-    const nx=px+Math.sin(a)*d,nz=pz+Math.cos(a)*d;
-    if(!solidAt(nx,nz)&&los(nx,nz,px,pz)){e.x=nx;e.z=nz;break;}}
+    const nx=player.px+Math.sin(a)*d,nz=player.pz+Math.cos(a)*d;
+    if(!solidAt(nx,nz)&&los(nx,nz,player.px,player.pz)){e.x=nx;e.z=nz;break;}}
   smoke3d(e.x,1.2,e.z,16);fireP(e.x,1,e.z,6);
   blip(140,.25,"sine",.12,700,true);}
 function enemyTick(dt){
@@ -945,8 +945,8 @@ function enemyTick(dt){
         if(!e.boss&&Math.random()<.3)dropAmmo(e.x,e.z);}
       continue;}
     if(e.dormant){
-      const dx0=px-e.x,dz0=pz-e.z,d0=Math.hypot(dx0,dz0);
-      if(d0<(e.priest?13:9)&&los(e.x,e.z,px,pz))wakeBoss(e);
+      const dx0=player.px-e.x,dz0=player.pz-e.z,d0=Math.hypot(dx0,dz0);
+      if(d0<(e.priest?13:9)&&los(e.x,e.z,player.px,player.pz))wakeBoss(e);
       e.sp.position.set(e.x,e.h/2+(e.fy||0),e.z);e.blob.position.set(e.x,(e.fy||0)+.012,e.z);
       continue;}
     if(e.hurt>0){e.hurt-=dt;
@@ -974,12 +974,12 @@ function enemyTick(dt){
       const nx=e.x+e.kx*dt,nz=e.z+e.kz*dt;
       if(!solidAt(nx,e.z))e.x=nx;if(!solidAt(e.x,nz))e.z=nz;
       e.kx*=Math.exp(-6*dt);e.kz*=Math.exp(-6*dt);}
-    const dx=px-e.x,dz=pz-e.z,dist=Math.hypot(dx,dz);
+    const dx=player.px-e.x,dz=player.pz-e.z,dist=Math.hypot(dx,dz);
     if(dist>30){e.sp.position.set(e.x,e.h/2+(e.fy||0),e.z);e.blob.position.set(e.x,(e.fy||0)+.012,e.z);continue;}
     if(e.stun>0){e.stun-=dt;
       e.sp.position.set(e.x+rnd(-.03,.03),e.h/2,e.z+rnd(-.03,.03));
       e.blob.position.set(e.x,.012,e.z);continue;}
-    const seen=los(e.x,e.z,px,pz)&&dist<22;
+    const seen=los(e.x,e.z,player.px,player.pz)&&dist<22;
     e.cool-=dt;e.dodgeT-=dt;e.lungeT-=dt;e.slamT-=dt;e.screamT-=dt;e.flingCD-=dt;
     const injured=e.hp<e.maxhp*.35;
     let spd=e.speed*e.slow*(injured&&!e.boss?1.45:1);
@@ -988,14 +988,14 @@ function enemyTick(dt){
       anyAware=anyAware||dist<16;
       if(!e.aware){e.aware=true;
         say(e.elite?"see_elite":"see_"+e.key);snarl(e.key);}
-      e.alertX=px;e.alertZ=pz;
+      e.alertX=player.px;e.alertZ=player.pz;
       /* ===== BOSS BRAINS ===== */
       if(e.priest){priestThink(e,dt,dist,dx,dz);continue;}
       if(e.key==="E"&&e.charge){
         if(e.charging>0){
           e.charging-=dt;
           if(!moveEnemy(e,e.cdx,e.cdz,13,dt)){e.charging=0;e.stun=1;bang(.2,.5,400);shake(.25);}
-          if(dist<1.6&&e.cool<=0&&Math.abs((e.fy||0)-(pyy-EYE))<1.3){e.cool=1.2;e.atkAnim=.22;damagePlayer(e.mel);}
+          if(dist<1.6&&e.cool<=0&&Math.abs((e.fy||0)-(player.pyy-EYE))<1.3){e.cool=1.2;e.atkAnim=.22;damagePlayer(e.mel);}
           e.sp.position.set(e.x,e.h/2+(e.fy||0),e.z);e.blob.position.set(e.x,(e.fy||0)+.012,e.z);
           continue;}
         e.chT-=dt;
@@ -1008,7 +1008,7 @@ function enemyTick(dt){
         e.screamT=9;e.stun=1.1;
         growl(180,.9,.4,true);blip(500,.7,"sawtooth",.1,180,true);
         for(const o of world.enemies){if(o.dead||o.dormant||o===e)continue;
-          if(Math.hypot(o.x-e.x,o.z-e.z)<16){o.alertX=px;o.alertZ=pz;o.slow=1;
+          if(Math.hypot(o.x-e.x,o.z-e.z)<16){o.alertX=player.px;o.alertZ=player.pz;o.slow=1;
             o.frenzy=5;}}
         showMsg("THE SCREAMER CALLS THE DEAD");
         continue;}
@@ -1035,8 +1035,8 @@ function enemyTick(dt){
         e.slamT=4;e.stun=.5;
         setTimeout(()=>{if(e.dead)return;
           shake(.35);bang(.3,.6,300);smoke3d(e.x,.3,e.z,10);
-          if(Math.hypot(px-e.x,pz-e.z)<3.1){damagePlayer(24);
-            vx+=(px-e.x)*3;vz+=(pz-e.z)*3;}},480);
+          if(Math.hypot(player.px-e.x,player.pz-e.z)<3.1){damagePlayer(24);
+            player.vx+=(player.px-e.x)*3;player.vz+=(player.pz-e.z)*3;}},480);
         blip(80,.4,"sawtooth",.14,40);}
       /* dog lunge */
       if(e.lunge&&dist>2&&dist<4.5&&e.lungeT<=0){
@@ -1057,7 +1057,7 @@ function enemyTick(dt){
       if(dist>1.15){moving=moveEnemy(e,mx,mz,spd,dt);
         if(!moving){moving=moveEnemy(e,dx/dist,dz/dist,spd*.7,dt);
           if(Math.random()<.05)e.flank*=-1;}}
-      if(dist<1.55&&e.cool<=0&&Math.abs((e.fy||0)-(pyy-EYE))<1.3){e.cool=1.0;e.atkAnim=.22;damagePlayer(e.mel);
+      if(dist<1.55&&e.cool<=0&&Math.abs((e.fy||0)-(player.pyy-EYE))<1.3){e.cool=1.0;e.atkAnim=.22;damagePlayer(e.mel);
         blip(140,.12,"sawtooth",.1,60);}
     }else if(e.alertX>=0){
       const ax=e.alertX-e.x,az=e.alertZ-e.z,ad=Math.hypot(ax,az);
@@ -1081,7 +1081,7 @@ function enemyTick(dt){
     if(e.atkAnim>0){e.atkAnim-=dt;lunge=Math.sin(clamp(e.atkAnim/.22,0,1)*Math.PI);}
     const sScale=1+lunge*0.22;
     e.sp.scale.set(e.w*sScale,e.h*sScale,1);
-    const ldx=dist>0.01?(px-e.x)/dist:0,ldz=dist>0.01?(pz-e.z)/dist:0;
+    const ldx=dist>0.01?(player.px-e.x)/dist:0,ldz=dist>0.01?(player.pz-e.z)/dist:0;
     const lx=e.x+ldx*lunge*0.35, lz=e.z+ldz*lunge*0.35;
     if(e.fly){
       const hov=(e.flyH||1.5)+Math.sin(performance.now()/420+e.x)*.18;
@@ -1110,7 +1110,7 @@ function priestThink(e,dt,dist,dx,dz){
     if(e.tpT<=0&&dist>7){e.tpT=6;priestTeleport(e,false);}
     if(e.atkT<=0){e.atkT=3.4;fireOrb(e,rnd(-.03,.03));}
     if(dist>1.6){moving=moveEnemy(e,dx/dist,dz/dist,e.speed,dt);}
-    if(dist<1.8&&e.cool<=0&&Math.abs((e.fy||0)-(pyy-EYE))<1.3){e.cool=1.1;e.atkAnim=.22;damagePlayer(e.mel);}
+    if(dist<1.8&&e.cool<=0&&Math.abs((e.fy||0)-(player.pyy-EYE))<1.3){e.cool=1.1;e.atkAnim=.22;damagePlayer(e.mel);}
   }else if(e.phase===2){
     if(dist<5&&e.tpT<=0){e.tpT=2.6;priestTeleport(e,true);}
     if(e.atkT<=0){e.atkT=2.8;
@@ -1121,10 +1121,10 @@ function priestThink(e,dt,dist,dx,dz){
         for(let n=0;n<2;n++){
           for(let tries=0;tries<20;tries++){
             const a=rnd(0,6.28),d=rnd(3,6);
-            const nx=px+Math.sin(a)*d,nz=pz+Math.cos(a)*d;
+            const nx=player.px+Math.sin(a)*d,nz=player.pz+Math.cos(a)*d;
             if(!solidAt(nx,nz)){
               const ne=spawnEnemy(Math.random()<.6?"z":"f",nx,nz,true);
-              ne.aware=true;ne.alertX=px;ne.alertZ=pz;
+              ne.aware=true;ne.alertX=player.px;ne.alertZ=player.pz;
               smoke3d(nx,.6,nz,10);blood(nx,.3,nz,6,1.5);
               break;}}}
         blip(180,.6,"sawtooth",.12,60,true);
@@ -1136,11 +1136,11 @@ function priestThink(e,dt,dist,dx,dz){
     if(e.sumT<=0){e.sumT=12;
       const alive=world.enemies.filter(o=>o.summoned&&!o.dead).length;
       if(alive<3){const a=rnd(0,6.28);
-        const nx=px+Math.sin(a)*4,nz=pz+Math.cos(a)*4;
+        const nx=player.px+Math.sin(a)*4,nz=player.pz+Math.cos(a)*4;
         if(!solidAt(nx,nz)){const ne=spawnEnemy("f",nx,nz,true);
           ne.aware=true;smoke3d(nx,.6,nz,10);}}}
     if(dist>1.7){moving=moveEnemy(e,dx/dist,dz/dist,e.speed,dt);}
-    if(dist<2&&e.cool<=0&&Math.abs((e.fy||0)-(pyy-EYE))<1.3){e.cool=.95;e.atkAnim=.22;damagePlayer(e.mel);}}
+    if(dist<2&&e.cool<=0&&Math.abs((e.fy||0)-(player.pyy-EYE))<1.3){e.cool=.95;e.atkAnim=.22;damagePlayer(e.mel);}}
   if(moving){e.animT+=dt;
     if(e.animT>.25){e.animT=0;e.frame=1-e.frame;
       const bk=e.key,fk=e.formKey||(e.key+"2");
@@ -1160,9 +1160,9 @@ function ringTick(dt){
     r.r+=6.5*dt;
     r.m.scale.set(r.r/.3,r.r/.3,1);
     r.m.material.opacity=Math.max(0,.6-r.r*.055);
-    const pd=Math.hypot(px-r.x,pz-r.z);
-    if(!r.hitDone&&Math.abs(pd-r.r)<.5&&pyy<EYE+.18){
-      r.hitDone=true;damagePlayer(20);vx+=(px-r.x)/Math.max(pd,.2)*5;vz+=(pz-r.z)/Math.max(pd,.2)*5;}
+    const pd=Math.hypot(player.px-r.x,player.pz-r.z);
+    if(!r.hitDone&&Math.abs(pd-r.r)<.5&&player.pyy<EYE+.18){
+      r.hitDone=true;damagePlayer(20);player.vx+=(player.px-r.x)/Math.max(pd,.2)*5;player.vz+=(player.pz-r.z)/Math.max(pd,.2)*5;}
     for(const p of world.props){if(p.dead)continue;
       if(Math.abs(Math.hypot(p.x-r.x,p.z-r.z)-r.r)<.5)
         p.explosive?explodeBarrel(p):breakProp(p);}
@@ -1171,7 +1171,7 @@ function ringTick(dt){
 function spawnStrike(){
   for(let tries=0;tries<16;tries++){
     const a=rnd(0,6.28),d=rnd(1,5.5);
-    const x=px+Math.sin(a)*d,z=pz+Math.cos(a)*d;
+    const x=player.px+Math.sin(a)*d,z=player.pz+Math.cos(a)*d;
     if(solidAt(x,z))continue;
     const warn=new THREE.Mesh(new THREE.CircleGeometry(1,10),
       new THREE.MeshBasicMaterial({color:0x150a1e,transparent:true,opacity:.7}));
@@ -1188,7 +1188,7 @@ function strikeTick(dt){
       spawnGibs(s.x,WALLH-.4,s.z,5,3,true);
       smoke3d(s.x,1.4,s.z,10);sparks(s.x,1,s.z,6);
       bang(.25,.5,400);shake(.18);
-      if(Math.hypot(px-s.x,pz-s.z)<1.3)damagePlayer(18);
+      if(Math.hypot(player.px-s.x,player.pz-s.z)<1.3)damagePlayer(18);
       for(const p of world.props){if(!p.dead&&Math.hypot(p.x-s.x,p.z-s.z)<1.3)
         p.explosive?explodeBarrel(p):breakProp(p);}
       world.strikes.splice(i,1);}}}
@@ -1196,7 +1196,7 @@ function poisonTick(dt){
   for(let i=world.poisonZones.length-1;i>=0;i--){const zn=world.poisonZones[i];
     zn.t-=dt;
     if(Math.random()<.5)toxicP(zn.x+rnd(-zn.r,zn.r)*.7,.2,zn.z+rnd(-zn.r,zn.r)*.7,1);
-    if(Math.hypot(px-zn.x,pz-zn.z)<zn.r){damagePlayer(6*dt,true);}
+    if(Math.hypot(player.px-zn.x,player.pz-zn.z)<zn.r){damagePlayer(6*dt,true);}
     if(zn.t<=0)world.poisonZones.splice(i,1);}}
 
 /* ============================================================
@@ -1232,10 +1232,10 @@ function projTick(dt){
       const c=o.col||0x9a4ae0,r2=(c>>16&255)/255,g2=(c>>8&255)/255,b2=(c&255)/255;
       spawnP(o.m.position.x,o.m.position.y,o.m.position.z,0,0,0,r2,g2,b2,.25,3);}
     let dead=o.life<=0||solidAt(o.m.position.x,o.m.position.z)||(o.flesh&&o.m.position.y<.1);
-    const hit=Math.hypot(o.m.position.x-px,o.m.position.z-pz)<.55&&
-       Math.abs(o.m.position.y-(pyy-.3))<1;
+    const hit=Math.hypot(o.m.position.x-player.px,o.m.position.z-player.pz)<.55&&
+       Math.abs(o.m.position.y-(player.pyy-.3))<1;
     if(!dead&&hit){damagePlayer(o.dmg);
-      if(o.flesh){blood(px,pyy-.2,pz,10,1.5);gurgle(.2,.35);}
+      if(o.flesh){blood(player.px,player.pyy-.2,player.pz,10,1.5);gurgle(.2,.35);}
       dead=true;}
     if(dead){
       if(o.flesh){blood(o.m.position.x,Math.max(.1,o.m.position.y),o.m.position.z,8,1.4);
@@ -1247,7 +1247,7 @@ function projTick(dt){
    ============================================================ */
 function damagePlayer(d,silent){
   if(S.dead||S.won)return;
-  if(spawnGuard>0)return;   // can't be hurt during spawn protection
+  if(player.spawnGuard>0)return;   // can't be hurt during spawn protection
   let dmg=d;
   if(S.armor>0){const ab=Math.min(S.armor,dmg*.6);S.armor-=ab;dmg-=ab;}
   S.hp-=dmg;
@@ -1260,8 +1260,8 @@ function damagePlayer(d,silent){
     document.getElementById("deadquip").textContent='ADEM: “'+pick(M.dead)+'”';
     document.getElementById("dead").classList.remove("hidden");}}
 function accelerate(wx_,wz_,maxs,acc,dt){
-  const cur=vx*wx_+vz*wz_,add=maxs-cur;if(add<=0)return;
-  let a=acc*maxs*dt;if(a>add)a=add;vx+=wx_*a;vz+=wz_*a;}
+  const cur=player.vx*wx_+player.vz*wz_,add=maxs-cur;if(add<=0)return;
+  let a=acc*maxs*dt;if(a>add)a=add;player.vx+=wx_*a;player.vz+=wz_*a;}
 function collides(x,z){
   for(const[ox,oz]of[[R,R],[R,-R],[-R,R],[-R,-R],[R,0],[-R,0],[0,R],[0,-R]])
     if(solidAt(x+ox,z+oz))return true;
@@ -1276,53 +1276,53 @@ function footstep(sprinting){
   if(marble)blip(rnd(800,1000),.05,"sine",.02);}
 function playerTick(dt){
   if(S.dead||S.won||game.inputLock)return;
-  if(spawnGuard>0)spawnGuard-=dt;
+  if(player.spawnGuard>0)player.spawnGuard-=dt;
   let f=0,s2=0;
   if(keys.KeyW)f++;if(keys.KeyS)f--;if(keys.KeyD)s2++;if(keys.KeyA)s2--;
   const sin=Math.sin(getYaw()),cos=Math.cos(getYaw());
   let wx_=-sin*f+cos*s2,wz_=-cos*f-sin*s2;
   const l=Math.hypot(wx_,wz_);if(l>0){wx_/=l;wz_/=l;}
   const sprint=keys.ShiftLeft||keys.ShiftRight;
-  const fh=floorHeightAt(px,pz);          // ground height under the player
+  const fh=floorHeightAt(player.px,player.pz);          // ground height under the player
   const standY=EYE+fh;
-  if(grounded){
-    const fr=Math.exp(-8*dt);vx*=fr;vz*=fr;
+  if(player.grounded){
+    const fr=Math.exp(-8*dt);player.vx*=fr;player.vz*=fr;
     accelerate(wx_,wz_,sprint?10.5:7,9,dt);
-    if(keys.Space){vy=7.4;grounded=false;blip(140,.06,"sine",.04,90);}
+    if(keys.Space){player.vy=7.4;player.grounded=false;blip(140,.06,"sine",.04,90);}
   }else accelerate(wx_,wz_,1.4,70,dt);
-  vy-=20*dt;pyy+=vy*dt;
-  if(pyy<=standY){if(!grounded){footstep(true);shake(.04);}pyy=standY;vy=0;grounded=true;}
-  let nx=px+vx*dt;
-  if(!collides(nx,pz)&&!(grounded&&floorHeightAt(nx,pz)-fh>1.2)){px=nx;}else vx=0;
-  let nz=pz+vz*dt;
-  if(!collides(px,nz)&&!(grounded&&floorHeightAt(px,nz)-fh>1.2)){pz=nz;}else vz=0;
+  player.vy-=20*dt;player.pyy+=player.vy*dt;
+  if(player.pyy<=standY){if(!player.grounded){footstep(true);shake(.04);}player.pyy=standY;player.vy=0;player.grounded=true;}
+  let nx=player.px+player.vx*dt;
+  if(!collides(nx,player.pz)&&!(player.grounded&&floorHeightAt(nx,player.pz)-fh>1.2)){player.px=nx;}else player.vx=0;
+  let nz=player.pz+player.vz*dt;
+  if(!collides(player.px,nz)&&!(player.grounded&&floorHeightAt(player.px,nz)-fh>1.2)){player.pz=nz;}else player.vz=0;
   // if we walked onto higher ground, snap up; onto lower ground, start falling
-  const nfh=floorHeightAt(px,pz),nStand=EYE+nfh;
-  if(grounded){
-    if(nStand>pyy+0.02){pyy=nStand;}        // step up
-    else if(nStand<pyy-0.02){grounded=false;} // walked off a ledge -> fall
+  const nfh=floorHeightAt(player.px,player.pz),nStand=EYE+nfh;
+  if(player.grounded){
+    if(nStand>player.pyy+0.02){player.pyy=nStand;}        // step up
+    else if(nStand<player.pyy-0.02){player.grounded=false;} // walked off a ledge -> fall
   }
-  const spd=Math.hypot(vx,vz);
-  bobT+=spd*dt*(sprint?1.9:1.6);
-  const bobSin=Math.sin(bobT*4);
-  if(grounded&&spd>1&&lastBobSin<=0&&bobSin>0)footstep(sprint);
-  lastBobSin=bobSin;
+  const spd=Math.hypot(player.vx,player.vz);
+  player.bobT+=spd*dt*(sprint?1.9:1.6);
+  const bobSin=Math.sin(player.bobT*4);
+  if(player.grounded&&spd>1&&player.lastBobSin<=0&&bobSin>0)footstep(sprint);
+  player.lastBobSin=bobSin;
   screenShake.trauma=Math.max(0,screenShake.trauma-dt*1.6);
   const sh=screenShake.trauma*screenShake.trauma,t=performance.now();
   const shx=sh*.06*Math.sin(t*.061),shy=sh*.05*Math.sin(t*.083),shr=sh*.05*Math.sin(t*.047);
   weaponRuntime.recoilPitch*=Math.exp(-8*dt);
-  renderState.camera.position.set(px+shx,pyy+(grounded?bobSin*.025*Math.min(1,spd/7):0)+shy,pz);
+  renderState.camera.position.set(player.px+shx,player.pyy+(player.grounded?bobSin*.025*Math.min(1,spd/7):0)+shy,player.pz);
   renderState.camera.rotation.order="YXZ";
   renderState.camera.rotation.y=getYaw();renderState.camera.rotation.x=getPitch()+weaponRuntime.recoilPitch;renderState.camera.rotation.z=shr;
-  renderState.lamp.position.set(px,pyy+.4,pz);
-  if(renderState.lampCore)renderState.lampCore.position.set(px,pyy+.2,pz);
+  renderState.lamp.position.set(player.px,player.pyy+.4,player.pz);
+  if(renderState.lampCore)renderState.lampCore.position.set(player.px,player.pyy+.2,player.pz);
   /* exit pad (level 1) */
-  if(world.exitPos&&Math.hypot(px-world.exitPos.x,pz-world.exitPos.z)<1.2){
+  if(world.exitPos&&Math.hypot(player.px-world.exitPos.x,player.pz-world.exitPos.z)<1.2){
     const bossLeft=world.enemies.some(e=>e.boss&&!e.dead);
     if(bossLeft)showMsg("SOMETHING STILL BREATHES HERE",1.5);
     else endLevel();}
   /* challenge plate */
-  if(world.challenge&&world.challenge.state===0&&Math.hypot(px-world.challenge.x,pz-world.challenge.z)<1){
+  if(world.challenge&&world.challenge.state===0&&Math.hypot(player.px-world.challenge.x,player.pz-world.challenge.z)<1){
     world.challenge.state=1;say("challenge",true);
     showMsg("THE PLATE HUMS — THEY ARE COMING",3);
     blip(70,1,"sawtooth",.15,40,true);
@@ -1333,9 +1333,9 @@ function playerTick(dt){
       const sxp=world.challenge.x+Math.sin(a)*d,szp=world.challenge.z+Math.cos(a)*d;
       if(!solidAt(sxp,szp)){
         const ne=spawnEnemy(n<3?"f":"z",sxp,szp,true);
-        ne.aware=true;ne.alertX=px;ne.alertZ=pz;
+        ne.aware=true;ne.alertX=player.px;ne.alertZ=player.pz;
         smoke3d(sxp,.6,szp,8);}}
-    alertSound(px,pz,30);}
+    alertSound(player.px,player.pz,30);}
   if(world.challenge&&world.challenge.state===1){
     if(!world.enemies.some(e=>e.summoned&&!e.dead)){
       world.challenge.state=2;say("challenge_done",true);
@@ -1353,10 +1353,10 @@ function playerTick(dt){
 const WNAMES={w1:"SAWED-OFF SHOTGUN",w2:"COMBAT RIFLE",w3:"TOMMY GUN",w4:"BMG SNIPER",w5:"HOLY CROSS LAUNCHER",w6:"NAIL CANNON",w7:"SOUL REAPER"};
 function interact(){
   if(!game.started||game.inputLock)return;
-  if(world.pianoPos&&Math.hypot(px-world.pianoPos.x,pz-world.pianoPos.z)<1.9){openPiano();return;}
+  if(world.pianoPos&&Math.hypot(player.px-world.pianoPos.x,player.pz-world.pianoPos.z)<1.9){openPiano();return;}
   const dir=new THREE.Vector3();renderState.camera.getWorldDirection(dir);
   for(let t=.4;t<2.6;t+=.2){
-    const wx_=px+dir.x*t,wz_=pz+dir.z*t;
+    const wx_=player.px+dir.x*t,wz_=player.pz+dir.z*t;
     const gx=wx_/CELL|0,gz=wz_/CELL|0,d=world.doors[gx+","+gz];
     if(d&&!d.open){
       if(d.locked&&!S.key){showMsg("IT WANTS THE RED KEY",2.2);
@@ -1374,7 +1374,7 @@ function itemsTick(dt){
   for(const it of world.items){
     if(it.taken)continue;
     it.bob+=dt*2.4;it.sp.position.y=.5+Math.sin(it.bob)*.07;
-    if(Math.hypot(px-it.x,pz-it.z)<.95){
+    if(Math.hypot(player.px-it.x,player.pz-it.z)<.95){
       let ok=true;
       switch(it.kind){
         case "health":if(S.hp>=100){ok=false;break;}S.hp=Math.min(100,S.hp+25);showMsg("+25 HEALTH");break;
@@ -1618,8 +1618,8 @@ function loop(t){
     fxTick(dt,t,weaponRuntime.zoomLerp,
       ()=>drawKickBoot(weaponRuntime.kickAnim),
       (fdt,ft)=>drawViewmodel(fdt,ft,{
-        started:game.started,dead:S.dead,pianoOpen:game.pianoOpen,zoomLerp:weaponRuntime.zoomLerp,cur:S.cur,vx,vz,
-        sprintKey:!!(keys.ShiftLeft||keys.ShiftRight),bobT,wstate:weaponRuntime.wstate,wtime:weaponRuntime.wtime,
+        started:game.started,dead:S.dead,pianoOpen:game.pianoOpen,zoomLerp:weaponRuntime.zoomLerp,cur:S.cur,vx:player.vx,vz:player.vz,
+        sprintKey:!!(keys.ShiftLeft||keys.ShiftRight),bobT:player.bobT,wstate:weaponRuntime.wstate,wtime:weaponRuntime.wtime,
         equipT:EQUIP_T,unequipT:UNEQUIP_T,kickAmt:weaponRuntime.kickAmt,kickRot:weaponRuntime.kickRot,swayX:getSwayX(),swayY:getSwayY(),muzzle:weaponRuntime.muzzle,
       },WEAPONS));
     hud();

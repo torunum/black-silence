@@ -2,6 +2,7 @@
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { installDomStubs, loadGameHtml } from "../support/domStubs";
 import { screenShake } from "../../src/fx/ShakeState";
+import { player } from "../../src/player/PlayerState";
 
 /**
  * The seams — KNOWN-9.
@@ -115,6 +116,7 @@ let startedBeforeNewGame: unknown;
 let startedAfterNewGame: unknown;
 let restFrame: Frame;
 let kickFrame: Frame;
+let spawnGuardAtBoot: number;
 
 /** Runs the main loop once and returns everything legacy.js handed the 2D layer during it. */
 function runFrame(t: number): Frame {
@@ -162,6 +164,11 @@ beforeAll(async () => {
   if (!newGame) throw new Error("the NEW GAME menu row is gone — this file drives the game through it");
   (newGame as HTMLElement).click();
   startedAfterNewGame = captured.hooks?.isStarted();
+  // loadLevel sets spawnGuard=2.0 synchronously inside the NEW GAME click
+  // handler, before any frame — and therefore before playerTick's own
+  // `if(spawnGuard>0)spawnGuard-=dt` has run once — so this is the literal
+  // straight off loadLevel, not a decremented descendant of it.
+  spawnGuardAtBoot = player.spawnGuard;
 
   // The loop derives dt as (t - last)/1000 with `last` seeded from the real
   // clock at boot, so frame timestamps have to continue that clock — passing
@@ -342,5 +349,46 @@ describe("screenShake — hit-stop slows and burns down the frame", () => {
     // increases it via Math.max in the same frame, hitStop decreases first,
     // so it should be less than the value at the start of the frame.
     expect(screenShake.hitStop).toBeLessThan(before);
+  });
+});
+
+describe("player.spawnGuard — the brief invulnerability window on level entry", () => {
+  it("is set to loadLevel's 2.0 the moment NEW GAME fires, before any frame can decrement it", () => {
+    // Captured in beforeAll straight off the synchronous NEW GAME click
+    // handler (startGame -> loadLevel), before restFrame/kickFrame or any
+    // other runFrame call has had a chance to run playerTick and subtract
+    // from it — so this is the literal itself, not a decremented descendant.
+    expect(spawnGuardAtBoot).toBe(2.0);
+  });
+
+  it("counts down by the frame's real elapsed time, then stops once it reaches zero", () => {
+    // hitStop scales dt (see the describe block above); keep it out of the
+    // way so this test's dt math is exactly legacy.js's own `Math.min(.05,...)` cap.
+    screenShake.hitStop = 0;
+    // Establish a known `last` first (its own dt/side effects on spawnGuard
+    // don't matter — the value is overwritten right after), then jump the
+    // timestamp far enough ahead each frame to force dt to exactly .05,
+    // deterministically, regardless of real wall-clock time between calls.
+    const t1 = performance.now();
+    runFrame(t1);
+    player.spawnGuard = 0.12;
+
+    const frame1 = runFrame(t1 + 5000);
+    expect(frame1.dt).toBeCloseTo(0.05, 5);
+    expect(player.spawnGuard).toBeCloseTo(0.07, 5); // 0.12 - 0.05
+
+    runFrame(t1 + 10000);
+    expect(player.spawnGuard).toBeCloseTo(0.02, 5); // 0.07 - 0.05
+
+    // This frame's dt (.05) exceeds the remaining 0.02, crossing zero.
+    runFrame(t1 + 15000);
+    expect(player.spawnGuard).toBeLessThanOrEqual(0);
+    const afterCrossing = player.spawnGuard;
+
+    // Once at/below zero, playerTick's own `if(spawnGuard>0)` guard must
+    // stop the decrement — it rests at whatever value it crossed to rather
+    // than drifting further negative frame after frame.
+    runFrame(t1 + 20000);
+    expect(player.spawnGuard).toBe(afterCrossing);
   });
 });
