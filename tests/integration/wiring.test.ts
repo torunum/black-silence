@@ -23,11 +23,15 @@ import { player } from "../../src/player/PlayerState";
  * modules whose wiring is under test replaced by recorders. Two techniques
  * do the work:
  *
- * - **Sentinel accessors.** src/player/Input.ts is mocked so getSwayX() and
- *   getSwayY() (and getYaw/getPitch) return distinct, recognisable numbers.
- *   Whatever legacy.js reads them into is then identifiable by value, so a
- *   transposition is a failed equality rather than two indistinguishable
- *   floats.
+ * - **Sentinel accessors.** src/player/Input.ts is mocked so `input.swayX`
+ *   and `input.swayY` (and `input.yaw`/`input.pitch`) read back distinct,
+ *   recognisable numbers no matter what legacy.js writes to them — see the
+ *   `pin` helper below, which needs a real getter/setter pair rather than a
+ *   plain sentinel value because legacy.js's own sway decay
+ *   (`input.swayX = input.swayX*Math.exp(-7*dt)`) runs every frame, before
+ *   this file's assertions ever see the value. Whatever legacy.js reads them
+ *   into is then identifiable by value, so a transposition is a failed
+ *   equality rather than two indistinguishable floats.
  * - **Cross-checks between two independent readers of the same global.**
  *   The input hooks and the viewmodel frame both report S.cur and both
  *   report zoomLerp; the player always owns the weapon they are holding.
@@ -75,13 +79,24 @@ const SENTINEL = vi.hoisted(() => ({ swayX: 1101.25, swayY: 1102.5, yaw: 1.103, 
 
 vi.mock("../../src/player/Input", async (importOriginal) => {
   const actual = await importOriginal<typeof import("../../src/player/Input")>();
+  // Pin swayX/swayY/yaw/pitch to sentinel reads via real accessor
+  // properties — a plain sentinel *value* would decay away (see the header
+  // comment above) before this file's frame assertions ever ran. `firing`,
+  // `zoomOn` and `locked` are deliberately left as ordinary, live data
+  // properties on this same object: they are not part of this file's four
+  // sentinel seams, and Input.ts's own event handlers keep writing to this
+  // exact object, so anything reading it — legacy.js included — still sees
+  // their real, current values rather than a frozen boot snapshot.
+  const pin = (value: number) => ({ get: () => value, set: () => {}, enumerable: true, configurable: true });
+  Object.defineProperties(actual.input, {
+    swayX: pin(SENTINEL.swayX),
+    swayY: pin(SENTINEL.swayY),
+    yaw: pin(SENTINEL.yaw),
+    pitch: pin(SENTINEL.pitch),
+  });
   return {
     ...actual,
     setInputHooks: (h: Record<string, (...a: never[]) => unknown>) => { captured.hooks = h; },
-    getSwayX: () => SENTINEL.swayX,
-    getSwayY: () => SENTINEL.swayY,
-    getYaw: () => SENTINEL.yaw,
-    getPitch: () => SENTINEL.pitch,
   };
 });
 

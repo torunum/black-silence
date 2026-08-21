@@ -30,8 +30,7 @@ import { ACHIEVEMENTS } from "./content/achievements";
 import { say, tickSubtitles } from "./ui/Subtitles";
 import { ach } from "./ui/Toasts";
 import { showMsg, tickMessage, flashDmg, flashHoly } from "./ui/HudMessages";
-import { keys, setInputHooks, overlayOpen, getYaw, setYaw, getPitch, setPitch,
-  getSwayX, setSwayX, getSwayY, setSwayY, isFiring, setFiring, isZoomOn, setZoomOn } from "./player/Input";
+import { keys, setInputHooks, overlayOpen, input } from "./player/Input";
 import { game } from "./core/Game";
 import { weaponRuntime } from "./weapons/WeaponRuntime";
 import { player } from "./player/PlayerState";
@@ -103,7 +102,7 @@ const WEAPONS = WEAPON_STATS.map((w, i) => ({ ...w, snd: WEAPON_SOUNDS[i] }));
 const EQUIP_T=.24,UNEQUIP_T=.16;
 function requestSwitch(i){
   if(!game.started||!S.weapons[i]||i===S.cur||weaponRuntime.pending===i)return;
-  weaponRuntime.pending=i;setZoomOn(false);
+  weaponRuntime.pending=i;input.zoomOn=false;
   if(weaponRuntime.wstate!=="unequip"){weaponRuntime.wstate="unequip";weaponRuntime.wtime=0;click(.12);}}
 function startReload(){
   if(!game.started||S.dead||game.inputLock)return;
@@ -131,8 +130,8 @@ function weaponTick(dt){
       const take=Math.min(need,S.ammo[w.ammo]);
       S.ammo[w.ammo]-=take;S.mag[S.cur]+=take;
       weaponRuntime.wstate="idle";weaponRuntime.wtime=0;click(.2);}
-    if(isFiring()&&S.mag[S.cur]>0){weaponRuntime.wstate="idle";weaponRuntime.wtime=0;}}
-  if(isFiring()&&(weaponRuntime.wstate==="idle"||weaponRuntime.wstate==="fire")&&weaponRuntime.wCool<=0&&!S.dead&&game.started&&!game.inputLock){
+    if(input.firing&&S.mag[S.cur]>0){weaponRuntime.wstate="idle";weaponRuntime.wtime=0;}}
+  if(input.firing&&(weaponRuntime.wstate==="idle"||weaponRuntime.wstate==="fire")&&weaponRuntime.wCool<=0&&!S.dead&&game.started&&!game.inputLock){
     if(S.mag[S.cur]<=0){
       if(S.ammo[w.ammo]>0)startReload();
       else{click(.1);weaponRuntime.wCool=.3;}}        // dry click, not a beep
@@ -142,9 +141,9 @@ function weaponTick(dt){
   weaponRuntime.muzzle=Math.max(0,weaponRuntime.muzzle-dt*9);
   renderState.muzzleLight.intensity*=Math.exp(-16*dt);
   renderState.boomLight.intensity*=Math.exp(-7*dt);
-  setSwayX(getSwayX()*Math.exp(-7*dt));setSwayY(getSwayY()*Math.exp(-7*dt));
+  input.swayX=input.swayX*Math.exp(-7*dt);input.swayY=input.swayY*Math.exp(-7*dt);
   /* sniper zoom */
-  const zt=(S.cur===4&&isZoomOn())?1:0;
+  const zt=(S.cur===4&&input.zoomOn)?1:0;
   weaponRuntime.zoomLerp+=(zt-weaponRuntime.zoomLerp)*Math.min(1,dt*9);
   renderState.camera.fov=78-46*weaponRuntime.zoomLerp;renderState.camera.updateProjectionMatrix();
   /* kick cooldown */
@@ -308,7 +307,7 @@ function hitscan(dir,dmg,wIdx){
     const ecy0=e.fly?(e.flyH||1.5):e.h*.5;
     const frac=clamp((c.cy-(ecy0-e.h*.5))/e.h,0,1);
     // horizontal: project hit point onto camera-right axis, normalized to half-width
-    const rightX=Math.cos(getYaw()),rightZ=-Math.sin(getYaw());
+    const rightX=Math.cos(input.yaw),rightZ=-Math.sin(input.yaw);
     const hxp=o.x+dir.x*c.t,hzp=o.z+dir.z*c.t;
     const lateral=((hxp-e.x)*rightX+(hzp-e.z)*rightZ)/(e.w*.5); // -1..1
     const head=frac>0.74&&PX[e.key].head>0;
@@ -599,7 +598,7 @@ function loadLevel(idx){
       const tex=k[0]==="w"?ITEMTEX.gun:ITEMTEX[k];
       world.items.push({kind:k,x:wx,z:wz,sp:addSprite(tex,wx,wz,.55,.55,.5),bob:Math.random()*6});}
     world.grid[z][x]=".";}
-  player.vx=player.vy=player.vz=0;player.pyy=EYE+floorHeightAt(player.px,player.pz);setYaw(Math.PI);setPitch(0);player.grounded=true;
+  player.vx=player.vy=player.vz=0;player.pyy=EYE+floorHeightAt(player.px,player.pz);input.yaw=Math.PI;input.pitch=0;player.grounded=true;
   const lt=document.getElementById("lvltitle");
   lt.textContent=Ldef.name;lt.style.opacity=1;
   setTimeout(()=>lt.style.opacity=0,5000);
@@ -809,7 +808,7 @@ function wakeBoss(e){
   if(!e.dormant)return;
   e.dormant=false;
   world.cine={t:0,dur:2.7,e};
-  game.inputLock=true;setFiring(false);
+  game.inputLock=true;input.firing=false;
   document.getElementById("barTop").style.height="11%";
   document.getElementById("barBot").style.height="11%";
   const bt=document.getElementById("bossTitle");
@@ -824,10 +823,10 @@ function cineTick(dt){
   world.cine.t+=dt;
   const b=world.cine.e;
   const target=Math.atan2(-(b.x-player.px),-(b.z-player.pz));
-  let diff=((target-getYaw()+Math.PI*3)%(Math.PI*2))-Math.PI;
-  setYaw(getYaw()+diff*Math.min(1,dt*4));
+  let diff=((target-input.yaw+Math.PI*3)%(Math.PI*2))-Math.PI;
+  input.yaw=input.yaw+diff*Math.min(1,dt*4);
   const want=Math.atan2(b.h*.7-player.pyy,Math.hypot(b.x-player.px,b.z-player.pz));
-  setPitch(getPitch()+(want-getPitch())*Math.min(1,dt*4));
+  input.pitch=input.pitch+(want-input.pitch)*Math.min(1,dt*4);
   if(world.cine.t>=world.cine.dur){
     document.getElementById("barTop").style.height="0";
     document.getElementById("barBot").style.height="0";
@@ -1269,7 +1268,7 @@ function playerTick(dt){
   if(player.spawnGuard>0)player.spawnGuard-=dt;
   let f=0,s2=0;
   if(keys.KeyW)f++;if(keys.KeyS)f--;if(keys.KeyD)s2++;if(keys.KeyA)s2--;
-  const sin=Math.sin(getYaw()),cos=Math.cos(getYaw());
+  const sin=Math.sin(input.yaw),cos=Math.cos(input.yaw);
   let wx_=-sin*f+cos*s2,wz_=-cos*f-sin*s2;
   const l=Math.hypot(wx_,wz_);if(l>0){wx_/=l;wz_/=l;}
   const sprint=keys.ShiftLeft||keys.ShiftRight;
@@ -1303,7 +1302,7 @@ function playerTick(dt){
   weaponRuntime.recoilPitch*=Math.exp(-8*dt);
   renderState.camera.position.set(player.px+shx,player.pyy+(player.grounded?bobSin*.025*Math.min(1,spd/7):0)+shy,player.pz);
   renderState.camera.rotation.order="YXZ";
-  renderState.camera.rotation.y=getYaw();renderState.camera.rotation.x=getPitch()+weaponRuntime.recoilPitch;renderState.camera.rotation.z=shr;
+  renderState.camera.rotation.y=input.yaw;renderState.camera.rotation.x=input.pitch+weaponRuntime.recoilPitch;renderState.camera.rotation.z=shr;
   renderState.lamp.position.set(player.px,player.pyy+.4,player.pz);
   if(renderState.lampCore)renderState.lampCore.position.set(player.px,player.pyy+.2,player.pz);
   /* exit pad (level 1) */
@@ -1467,7 +1466,7 @@ function pressKey(midi){
       sp:addSprite(ITEMTEX.crosses,world.pianoPos.x+1.4,world.pianoPos.z,.55,.55,.5),bob:0});}}
 function pianoKeyDown(code){const m=KEYMAP[code];if(m)pressKey(m);}
 function openPiano(){
-  game.pianoOpen=true;setFiring(false);
+  game.pianoOpen=true;input.firing=false;
   document.getElementById("piano").style.display="flex";
   document.exitPointerLock();
   say("piano",true);}
@@ -1610,7 +1609,7 @@ function loop(t){
       (fdt,ft)=>drawViewmodel(fdt,ft,{
         started:game.started,dead:S.dead,pianoOpen:game.pianoOpen,zoomLerp:weaponRuntime.zoomLerp,cur:S.cur,vx:player.vx,vz:player.vz,
         sprintKey:!!(keys.ShiftLeft||keys.ShiftRight),bobT:player.bobT,wstate:weaponRuntime.wstate,wtime:weaponRuntime.wtime,
-        equipT:EQUIP_T,unequipT:UNEQUIP_T,kickAmt:weaponRuntime.kickAmt,kickRot:weaponRuntime.kickRot,swayX:getSwayX(),swayY:getSwayY(),muzzle:weaponRuntime.muzzle,
+        equipT:EQUIP_T,unequipT:UNEQUIP_T,kickAmt:weaponRuntime.kickAmt,kickRot:weaponRuntime.kickRot,swayX:input.swayX,swayY:input.swayY,muzzle:weaponRuntime.muzzle,
       },WEAPONS));
     hud();
     renderState.renderer.render(renderState.scene,renderState.camera);}}
