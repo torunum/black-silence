@@ -374,12 +374,45 @@ to `renderState.scene`. All three import `renderState` directly.
 `blobTex`/`blobTexC` are module-scope `const`s that `addBlob` needs — move them
 with it.
 
-- [ ] **Step 3: The resize listener**
+- [ ] **Step 3: The resize listener, and an ordering hazard this plan got wrong**
 
-`legacy.js` has `addEventListener("resize",sizeRender);sizeRender();` at module
-scope. Registration must stay at module scope and fire in the same order — this
-is the same rule Plan 0C's input task followed. Moving the listener into
-`RenderCore.ts` is correct; moving it into an init function called later is not.
+`legacy.js` has, in this exact order at module scope:
+
+```js
+renderState.camera=new THREE.PerspectiveCamera(78,4/3,.05,90);
+renderState.renderer=new THREE.WebGLRenderer({canvas:document.getElementById("game"),…});
+…
+function sizeRender(){ renderState.renderer.setSize(…); renderState.camera.aspect=a; … }
+addEventListener("resize",sizeRender);sizeRender();
+```
+
+`sizeRender()` is **called immediately**, and it dereferences
+`renderState.renderer` and `renderState.camera`. An earlier draft of this step
+said "moving the listener into `RenderCore.ts` is correct" — that is wrong on
+its own. `legacy.js` imports `RenderCore.ts`, so RenderCore's module body runs
+**first**; a module-scope `sizeRender()` there would fire while
+`renderState.renderer` is still `null` and throw.
+
+Two ways out. Choose one, and justify it in your report:
+
+1. **Move the camera/renderer construction into `RenderCore.ts` too**, above
+   `sizeRender` and its listener, keeping the same relative order. RenderCore
+   becomes self-contained and the ordering is preserved by construction. This
+   is the recommended option — those five lines are THREE CORE section content
+   and belong with it.
+2. **Export `sizeRender` and leave `addEventListener("resize",sizeRender);sizeRender();`
+   in `legacy.js`** where it is. Preserves order exactly, at the cost of the
+   listener line staying behind for now.
+
+Either way, **do not move the call into an init function invoked later** —
+that changes when the renderer is first sized, which this plan forbids.
+
+Note `src/render/Overlay2D.ts` also registers a `resize` listener (`sizeFx`)
+at its module scope. Two listeners on the same event means their relative
+order is observable in principle; they write disjoint state (one sizes the 2D
+overlay canvas, the other the WebGL renderer), so nothing depends on it today
+— but say which order your change produces, so the next reader knows it was
+considered rather than missed.
 
 - [ ] **Step 4: Run the gate and commit**
 
