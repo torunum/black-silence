@@ -56,31 +56,76 @@ import { MONOLOGUE } from "../../src/content/monologue";
  * and well before the player's hp would otherwise reach 0 a few dozen
  * frames later — this script is lethal in both directions, and a fixture
  * of the player already dead is a worse net than one of them still
- * fighting at 4 hp. `document.exitPointerLock` needed a stub in
- * `gameplayTrace.ts` for this reason: it is called from `damagePlayer`'s
- * death branch, which the zero-enemy prologue trace never reaches.
+ * fighting (the committed fixture ends at `"HEALTH55"`, armour-absorbed
+ * from what would be a much lower number without the seeded armour below).
+ * `document.exitPointerLock` needed a stub in `gameplayTrace.ts` as
+ * insurance against this: it is called from `damagePlayer`'s death branch,
+ * which this trace's committed recording never reaches but a weakened
+ * armour-absorb sabotage against it does (see the task report).
  *
  * ## The four observables, and one more `runTrace` cannot see
  *
  * The brief for this task named four things a degraded run would lose,
- * all asserted below: `hud.hp` drops below `"HEALTH100"`, a frame where
- * `scene.count` decreases, an `hud.subt` frame holding one of the
- * `MONOLOGUE`'s `see_*` sighting lines, and more than one distinct
- * `hud.wname`.
+ * asserted below. **Three are genuinely combat-specific** and cannot be
+ * produced by a script that never meets an enemy: `hud.hp` drops below
+ * `"HEALTH100"`, a frame where `scene.count` decreases, and an `hud.subt`
+ * frame holding one of the `MONOLOGUE`'s `see_*` sighting lines.
  *
- * A fifth is asserted directly against `S.kills` (imported live from
- * `src/core/State`, the same module `legacy.js` mutates) rather than
- * through a `TraceFrame` field. `killEnemy`'s `if(!e.summoned)S.kills++`
- * has no effect on the camera, the scene graph, or any HUD element short
- * of the level-end grade screen (`gradeOf()`), which this trace never
- * reaches — so sabotaging just that increment is invisible to every field
- * `runTrace` records, camera/hud/scene alike, and the fixture diff below
- * would not catch it either (skipping an integer increment changes no
- * timing and consumes no `Math.random()` call, so it perturbs nothing else
- * downstream). Reading `S.kills` directly after the run is what the task
- * brief's "widen what the trace records" instruction meant in practice for
- * this one sabotage — see the task report for the sabotage run that
- * demonstrated the need.
+ * **The fourth — more than one distinct `hud.wname` — is not.** Checked
+ * empirically against the committed `trace-level0.json` (the zero-enemy
+ * prologue fixture): it holds exactly the same two values this file's
+ * fixture does, `"FLARE PISTOL"` and `"FLARE PISTOL — RELOADING"`, because
+ * `trace.test.ts`'s script also holds `KeyR` long enough to complete a
+ * reload. So this assertion is satisfiable by a script that never fights
+ * anything — it is the "`— RELOADING` suffix" failure mode `trace.test.ts`'s
+ * own header now warns about at length, reproduced here rather than
+ * avoided. It is kept anyway, because it still pins that the weapon state
+ * machine actually advances rather than the script silently degrading into
+ * one that only walks (the same reason `trace.test.ts` keeps its own copy
+ * of this check) — just don't read it as evidence of combat. None of the
+ * five sabotages in the task report relied on it; each was caught by the
+ * hp-drop, scene-count-decrease, scene-digest, or `S.kills` checks instead.
+ *
+ * A fifth check, not in the brief's four, is asserted directly against
+ * `S.kills` (imported live from `src/core/State`, the same module
+ * `legacy.js` mutates) rather than through a `TraceFrame` field.
+ * `killEnemy`'s `if(!e.summoned)S.kills++` has no effect on the camera, the
+ * scene graph, or any HUD element short of the level-end grade screen
+ * (`gradeOf()`), which this trace never reaches — so sabotaging just that
+ * increment is invisible to every field `runTrace` records, camera/hud/
+ * scene alike, and the fixture diff below would not catch it either
+ * (skipping an integer increment changes no timing and consumes no
+ * `Math.random()` call, so it perturbs nothing else downstream). Reading
+ * `S.kills` directly after the run is what the task brief's "widen what
+ * the trace records" instruction meant in practice for this one sabotage —
+ * see the task report for the sabotage run that demonstrated the need.
+ *
+ * ## Why the run starts with `S.armor = 50`
+ *
+ * The fixture's very first recorded frame reads `"ARMOR50"` — a state the
+ * game can never organically reach. `S.armor` starts at 0 and nothing in
+ * `loadLevel` ever changes that; the only way a real playthrough raises it
+ * is picking up an armour item, and no level's grid can ever place one:
+ * `loadLevel`'s dispatch checks `EDEF[ch]` (the enemy-key map) before the
+ * item-letter map, and `A` is both the Mancubus's key in `ENEMY_DEFS` and
+ * the armour item's key in that item map, so every `"A"` grid cell spawns
+ * the enemy and the armour branch is unreachable dead code — see
+ * `docs/known-issues.md` KNOWN-11, filed while building this fixture.
+ * `S.armor` is therefore structurally always 0 in real play, for every
+ * level, not just this one.
+ *
+ * Seeding it directly in `beforeAll`, before `runTrace` boots the game, is
+ * what makes `damagePlayer`'s armour-absorb branch (`src/legacy.js:1241`)
+ * reachable at all — without it the branch is dead code in this trace too,
+ * and that is exactly what let the armour-absorb sabotage in the task
+ * report pass unnoticed on the first attempt. This is the same technique
+ * `tests/integration/wiring.test.ts` already uses for `screenShake.hitStop`
+ * and `player.spawnGuard`: directly assigning an exported/live state field
+ * to reach a branch that the harness's own script cannot otherwise put the
+ * player in. It is not a weakening of the net — it does not change what
+ * `runTrace` records or relax any assertion, only the state the fight
+ * starts from, the same way giving a test player a weapon they'd otherwise
+ * have to walk further to find would be.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");
@@ -212,7 +257,12 @@ describe("the recorded run actually fights", () => {
     expect(trace.some((f) => SEE_LINES.some((line) => f.hud.subt.includes(line)))).toBe(true);
   });
 
-  it("the weapon state machine left idle", () => {
+  it("the weapon state machine left idle (NOT combat-specific — see the module doc comment)", () => {
+    // trace-level0.json (the zero-enemy prologue fixture) holds these same
+    // two values, so this only pins that the reload script cue works, not
+    // that anything was fought. Kept for the same reason trace.test.ts
+    // keeps its own copy: it catches the script silently degrading into a
+    // walking tour that never touches the fire/reload state machine.
     const wnames = new Set(trace.map((f) => f.hud.wname));
     expect(wnames.size).toBeGreaterThan(1);
     expect([...wnames].some((w) => w.includes("RELOADING"))).toBe(true);

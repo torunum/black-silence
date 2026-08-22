@@ -265,9 +265,11 @@ export async function runTrace(o: TraceOptions): Promise<TraceFrame[]> {
   (globalThis as Record<string, unknown>).requestAnimationFrame = (cb: FrameRequestCallback) => raf.push(cb);
   (HTMLElement.prototype as unknown as { requestPointerLock: () => void }).requestPointerLock = () => {};
   // jsdom has no pointer-lock implementation at all — legacy.js only ever
-  // calls exitPointerLock() from damagePlayer()'s death branch, which the
-  // zero-enemy prologue never reaches, so this stub was never needed until
-  // a level with enemies (and therefore a possible death) existed.
+  // calls exitPointerLock() from damagePlayer()'s death branch. The
+  // committed combat-level fixture never reaches it either (hp bottoms out
+  // at 55, not 0), but a weakened armour-absorb sabotage against it does
+  // make death reachable, so this stub is real insurance for that case —
+  // and for any future level fixture that plays a run out to a death.
   (document as unknown as { exitPointerLock: () => void }).exitPointerLock = () => {};
 
   const restoreRandom = seedRandom(o.seed);
