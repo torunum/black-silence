@@ -167,6 +167,13 @@ export function installDomStubs(): void {
  * because a timer that schedules another timer is common here (the toast
  * fade does exactly that) and the nested one must fire in the same drain if
  * it is already due.
+ *
+ * That re-scan has a generous but finite cap on how many timers it will
+ * drain in one `advance` call. Nothing in the game schedules anywhere near
+ * it today, so it never fires in practice — it exists only so a timer that
+ * reschedules itself at 0ms (a real bug, not a hypothetical: it is exactly
+ * the shape of an off-by-one in a countdown) throws a clear diagnostic
+ * instead of spinning the suite forever.
  */
 export function installFakeClock(): {
   advance(ms: number): void;
@@ -185,9 +192,15 @@ export function installFakeClock(): {
   };
   (globalThis as Record<string, unknown>).clearTimeout = (id: number) => { timers.delete(id); };
 
+  // A generous cap: real usage here drains well under a hundred timers per
+  // `advance`. This exists to fail loudly on a runaway (a timer that
+  // reschedules itself at 0ms) rather than hang the test suite.
+  const MAX_DRAINED_TIMERS_PER_ADVANCE = 10_000;
+
   return {
     advance(ms: number): void {
       now += ms;
+      let drained = 0;
       for (;;) {
         let nextId = -1, next: { at: number; fn: () => void } | undefined;
         for (const [id, t] of timers) {
@@ -197,6 +210,13 @@ export function installFakeClock(): {
           }
         }
         if (next === undefined) return;
+        if (++drained > MAX_DRAINED_TIMERS_PER_ADVANCE) {
+          throw new Error(
+            `installFakeClock().advance drained more than ${MAX_DRAINED_TIMERS_PER_ADVANCE} timers in a ` +
+            "single call — almost certainly a timer that reschedules itself at (or before) the current " +
+            "time, which would otherwise hang the suite instead of failing it.",
+          );
+        }
         timers.delete(nextId);
         next.fn();
       }

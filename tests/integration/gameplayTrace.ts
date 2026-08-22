@@ -233,6 +233,20 @@ export async function runTrace(o: TraceOptions): Promise<TraceFrame[]> {
   const clock = installFakeClock();
   const capture = captureCamera();
 
+  /**
+   * A minimal rAF queue, drained the way a browser drains it: every
+   * callback pending *as of the start of the tick* runs once, in the order
+   * it was requested, and the queue is cleared before any of them run.
+   *
+   * `loop` is not the only thing that calls `requestAnimationFrame` —
+   * `src/ui/Toasts.ts`'s `ach()` does too, from inside a `loop` call, to
+   * fade an achievement toast in. Taking only the *last* queued callback
+   * (`raf[raf.length-1]`) is wrong the moment more than one is pending: the
+   * toast's callback would get invoked instead of `loop` on the next tick,
+   * nothing would re-request `loop`, and the game loop would stall silently
+   * for the rest of the run. Draining every pending callback each tick, in
+   * FIFO order, is what actually matches a browser and survives that case.
+   */
   const raf: FrameRequestCallback[] = [];
   (globalThis as Record<string, unknown>).requestAnimationFrame = (cb: FrameRequestCallback) => raf.push(cb);
   (HTMLElement.prototype as unknown as { requestPointerLock: () => void }).requestPointerLock = () => {};
@@ -263,7 +277,12 @@ export async function runTrace(o: TraceOptions): Promise<TraceFrame[]> {
       fakeNow = t0 + frame * o.dtMs;
       for (const ev of byFrame.get(frame) ?? []) deliver(ev, canvas);
       if (raf.length === 0) throw new Error(`the main loop stopped requesting frames at frame ${frame}`);
-      raf[raf.length - 1](fakeNow);
+      // Snapshot and clear before invoking: a callback that itself calls
+      // requestAnimationFrame (loop always does; ach()'s toast fade
+      // sometimes does) must be queued for the *next* tick, not appended to
+      // and then re-run within this one.
+      const due = raf.splice(0, raf.length);
+      for (const cb of due) cb(fakeNow);
       clock.advance(o.dtMs);
       if (frame % o.every === 0) {
         const camera = capture.camera();

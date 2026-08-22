@@ -18,13 +18,23 @@
  * Split across modules that would be a real ordering bug, so moving it here
  * removes the hazard rather than preserving it. Its observable behavior is
  * unchanged: it is written before every read at runtime.
+ *
+ * `reloadFlags`'s value type is `unknown`, not `boolean`: `src/legacy.js`
+ * assigns the *number* `1` to its keys (`weaponRuntime.reloadFlags.a=1`),
+ * matching the reference exactly, which does the same. Every read only
+ * ever tests truthiness (`!weaponRuntime.reloadFlags.a`), so `1` behaves
+ * identically to `true` there — but declaring the field `boolean` would be
+ * a typing lie the compiler can't catch (`checkJs` is off for legacy.js).
+ * Do not "fix" the assigned values to real booleans; that would be an
+ * unrequested behavior-adjacent change to a file this migration must leave
+ * inert.
  */
 export const weaponRuntime = {
   wstate: "equip",
   wtime: 0,
   wCool: 0,
   pending: -1,
-  reloadFlags: {} as Record<string, boolean>,
+  reloadFlags: {} as Record<string, unknown>,
   recoilPitch: 0,
   kickAmt: 0,
   kickRot: 0,
