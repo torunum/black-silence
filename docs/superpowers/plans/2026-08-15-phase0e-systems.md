@@ -132,7 +132,7 @@ and it holds here.
 
 | File | Owns | From |
 |---|---|---|
-| `src/core/Context.ts` | the service locator | new |
+| `src/core/Context.ts` | the service locator | Task 5 |
 | `src/world/Collision.ts` | `distToSeg segBlocked segsCrossRay floorHeightAt wallNormal solidAt collides` | Task 3 |
 | `src/render/RenderCore.ts` | `sizeRender addSprite addBlob` | Task 4 |
 | `src/world/LevelLoader.ts` | `loadLevel spawnEnemy spawnProp` | Task 5 |
@@ -263,60 +263,27 @@ note of which sabotages it is proven to catch.
 
 ---
 
-### Task 2: `Context` — the service locator
+### Task 2: *(withdrawn — folded into Task 5)*
 
-**Files:**
-- Create: `src/core/Context.ts`
+**Correction, found before execution (2026-08-15).** This task originally
+created `src/core/Context.ts` on its own, "empty except for what Task 3 needs".
+Task 3 needs nothing from it: Collision imports the state objects directly,
+because state objects are already modules and importing them creates no cycle.
+Task 4 is the same. **`Context`'s first real consumer is Task 5**, where
+`loadLevel` has to call `buildPiano` — code that stays in `legacy.js` for this
+whole plan.
 
-**Interfaces:**
-- Produces: `export const ctx` — a mutable registry object, plus a
-  `registerSystem`-style setter per system as later tasks need one. Start it
-  **empty except for what Task 3 needs**; every later task adds its own field.
-  Do not pre-declare fields for systems that have not moved yet — an
-  interface full of `null`s that nothing reads is the abstraction-with-no-user
-  problem Decision 2 rejects.
+Running this as a standalone task would therefore have shipped a module that
+nothing imports for three tasks running — precisely the abstraction-with-no-user
+that this plan's own Decision 2 rejects when it declines to build `Events.ts`.
+Applying that rule to `Events` but not to `Context` would have been
+inconsistent.
 
-- [ ] **Step 1: Write the module**
-
-```ts
-/**
- * The service locator, and deliberate debt.
- *
- * Plan 0E moves functions, and some of them call each other both ways: enemy
- * AI damages the player and the player queries enemies; the weapon FSM asks
- * collision for a hit and collision asks the weapon table for stats. Direct
- * imports would make those pairs import cycles, which `madge --circular` is a
- * hard gate against.
- *
- * So systems register here and reach each other through this object rather
- * than importing each other. The binding never changes; its fields do — the
- * same property-not-`let` reason every state object in Plan 0D exists.
- *
- * This is NOT the end state. `docs/known-issues.md` KNOWN-2 tracks it: the
- * long-term rule is that systems talk over `core/Events.ts` and never reach
- * into each other, and each phase after this one migrates the systems it
- * touches. By the end of Phase 5 this should hold the renderer and the audio
- * engine and nothing else. It is written down as debt rather than hidden.
- */
-export const ctx: Record<string, unknown> = {};
-```
-
-Give it real field types as systems register — a `Record<string, unknown>` that
-never gains structure is its own smell. The shape at the end of this plan is
-whatever the tasks actually needed; let it grow rather than designing it up
-front.
-
-- [ ] **Step 2: Confirm it changes nothing yet**
-
-Run: `npm test`
-Expected: 357+ tests pass. A module nothing imports cannot change behavior.
-
-- [ ] **Step 3: Commit**
-
-```bash
-git add src/core/Context.ts
-git commit -m "feat: add core/Context.ts, the service locator Plan 0E ports through"
-```
+So `Context` is created in **Task 5**, alongside its first entry. Its design —
+a mutable registry object, fields added by the tasks that need them, typed as
+they are added rather than declared up front — is unchanged and now lives in
+Task 5's Step 3. Task numbering is left alone so that the ledger, the briefs
+and this document keep referring to the same tasks.
 
 ---
 
@@ -452,12 +419,45 @@ AI calls it. Leave it in `legacy.js`; Task 10 takes it into
 `src/enemies/ai/Perception.ts` alongside `los`. Note this in your report so the
 next task's implementer expects it.
 
-- [ ] **Step 3: `loadLevel` calls things that have not moved yet**
+- [ ] **Step 3: Create `Context`, because this is where it earns its keep**
 
-It calls `spawnEnemy`, `buildPiano` (Plan 0F), and FX resets. `buildPiano` stays
-in `legacy.js` this whole plan, so `loadLevel` must reach it through `Context`:
-register a `buildPiano` entry from `legacy.js` and call `ctx.buildPiano()`. This
-is exactly what `Context` is for — a call into code that has not moved.
+`loadLevel` calls `spawnEnemy`, `buildPiano` (Plan 0F) and the FX resets.
+`buildPiano` stays in `legacy.js` for this whole plan, so `loadLevel` cannot
+import it — that is the first call in the plan that needs the service locator.
+Create `src/core/Context.ts` here, with its first entry:
+
+```ts
+/**
+ * The service locator, and deliberate debt.
+ *
+ * Plan 0E moves functions, and some of them call each other both ways: enemy
+ * AI damages the player and the player queries enemies; the weapon FSM asks
+ * collision for a hit and collision asks the weapon table for stats. Direct
+ * imports would make those pairs import cycles, which `madge --circular` is a
+ * hard gate against. It is also how a moved system calls one that has not
+ * moved yet — `loadLevel` reaching `buildPiano`, which stays in legacy.js for
+ * this whole plan.
+ *
+ * Systems register here and reach each other through this object rather than
+ * importing each other. The binding never changes; its fields do — the same
+ * property-not-`let` reason every state object in Plan 0D exists.
+ *
+ * This is NOT the end state. `docs/known-issues.md` KNOWN-2 tracks it: the
+ * long-term rule is that systems talk over `core/Events.ts` and never reach
+ * into each other, and each phase after this one migrates the systems it
+ * touches. By the end of Phase 5 this should hold the renderer and the audio
+ * engine and nothing else. It is written down as debt rather than hidden.
+ */
+export const ctx: { buildPiano?: () => void } = {};
+```
+
+Register from `legacy.js` (`ctx.buildPiano = buildPiano;`) at module scope, and
+call `ctx.buildPiano()` from `loadLevel`. Add fields to that type as later
+tasks need them — do not pre-declare fields for systems that have not moved.
+
+**Never add a `Context` field a task does not need.** Decision 2's rule is that
+an abstraction with no user is a defect; that applies to individual fields as
+much as to whole modules.
 
 - [ ] **Step 4: `setScene` and the SceneRef mirror**
 
