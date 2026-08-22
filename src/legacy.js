@@ -35,13 +35,15 @@ import { game } from "./core/Game";
 import { weaponRuntime } from "./weapons/WeaponRuntime";
 import { player } from "./player/PlayerState";
 import { S } from "./core/State";
+import { CELL, WALLH } from "./world/Grid";
+import { solidAt, segBlocked, segsCrossRay, floorHeightAt, wallNormal, collides } from "./world/Collision";
 
 /* ============================================================
    THE BLACK SILENCE — The Hollow Parish (v3 gothic overhaul)
    2 levels · 9 enemy types + elites · 3 bosses · 6 weapons ·
    power kick · destructibles · playable piano · monologues
    ============================================================ */
-const CELL=2, WALLH=3.4, EYE=1.0;
+const EYE=1.0;
 
 /* ============================================================
    THREE CORE
@@ -229,43 +231,6 @@ function doKick(){
 
 /* ---------- HITSCAN ---------- */
 const orbGeo=new THREE.SphereGeometry(.16,6,6);
-function solidAt(wx,wz){
-  const gx=wx/CELL|0,gz=wz/CELL|0;
-  const row=world.grid[gz];if(!row)return true;
-  const ch=row[gx];if(ch===undefined)return true;
-  if(ch==="#"||ch==="I"||ch==="W")return true;
-  if(ch==="+"||ch==="D"||ch==="S"){const d=world.doors[gx+","+gz];return d&&!d.open;}
-  return false;}
-/* ===== arbitrary (non-orthogonal) wall segments — the Doom/Blood look =====
-   Each seg: {x1,z1,x2,z2}. Rendered as angled wall meshes; collided against
-   with a point-to-segment distance test; line-of-sight blocked by crossing. */
-function distToSeg(px_,pz_,s){
-  const dx=s.x2-s.x1,dz=s.z2-s.z1,L2=dx*dx+dz*dz;
-  let t=L2?((px_-s.x1)*dx+(pz_-s.z1)*dz)/L2:0;t=Math.max(0,Math.min(1,t));
-  const cx=s.x1+t*dx,cz=s.z1+t*dz;
-  return Math.hypot(px_-cx,pz_-cz);}
-function segBlocked(x,z,rad){
-  for(const s of world.wallSegs)if(distToSeg(x,z,s)<rad)return true;
-  return false;}
-function segsCrossRay(ax,az,bx,bz){ // does player->target ray cross any wall segment?
-  for(const s of world.wallSegs){
-    const d1x=bx-ax,d1z=bz-az,d2x=s.x2-s.x1,d2z=s.z2-s.z1;
-    const den=d1x*d2z-d1z*d2x;if(Math.abs(den)<1e-6)continue;
-    const t=((s.x1-ax)*d2z-(s.z1-az)*d2x)/den;
-    const u=((s.x1-ax)*d1z-(s.z1-az)*d1x)/den;
-    if(t>=0&&t<=1&&u>=0&&u<=1)return true;}
-  return false;}
-/* per-cell floor height (0 = base). Lets us build raised galleries,
-   balconies and sunken courtyards you can look/shoot down into. */
-function floorHeightAt(wx,wz){
-  if(!world.heightMap)return 0;
-  const gx=wx/CELL|0,gz=wz/CELL|0;
-  const row=world.heightMap[gz];if(!row)return 0;
-  return row[gx]||0;}
-function wallNormal(x,z,dir){
-  if(!solidAt(x-dir.x*.13,z))return{x:-Math.sign(dir.x),z:0};
-  if(!solidAt(x,z-dir.z*.13))return{x:0,z:-Math.sign(dir.z)};
-  return{x:-dir.x,z:-dir.z};}
 function hitscan(dir,dmg,wIdx){
   const o=renderState.camera.position;
   const cands=[];
@@ -369,7 +334,6 @@ function vitalsAudio(dt){
 /* ============================================================
    WORLD STATE + LEVEL LOADER
    ============================================================ */
-const R=.35;
 function spawnEnemy(ch,wx,wz,summoned){
   const d=EDEF[ch];
   const elite=!d.boss&&!summoned&&Math.random()<.11;
@@ -1251,13 +1215,6 @@ function damagePlayer(d,silent){
 function accelerate(wx_,wz_,maxs,acc,dt){
   const cur=player.vx*wx_+player.vz*wz_,add=maxs-cur;if(add<=0)return;
   let a=acc*maxs*dt;if(a>add)a=add;player.vx+=wx_*a;player.vz+=wz_*a;}
-function collides(x,z){
-  for(const[ox,oz]of[[R,R],[R,-R],[-R,R],[-R,-R],[R,0],[-R,0],[0,R],[0,-R]])
-    if(solidAt(x+ox,z+oz))return true;
-  if(world.wallSegs.length&&segBlocked(x,z,R+.05))return true;
-  for(const p of world.props){if(p.dead)continue;
-    if(Math.hypot(x-p.x,z-p.z)<p.r+R)return true;}
-  return false;}
 function footstep(sprinting){
   if(!ctx())return;
   const marble=S.level===1;
