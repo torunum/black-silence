@@ -18,21 +18,42 @@ import { readFileSync } from "node:fs";
  *   no-op here instead of throwing, and this harness would not notice.
  */
 
-/** A 2D context stub: every method the texture generators call, all no-ops. */
+/**
+ * A 2D context stub. The methods that must return something usable are
+ * enumerated; everything else resolves to a no-op through a Proxy, the same
+ * way makeGlContext handles the WebGL surface.
+ *
+ * The enumerated-only version of this worked while the only caller was the
+ * texture generators. It broke the moment a test ran a real frame of the
+ * game (tests/integration/trace.test.ts), because the viewmodel and overlay
+ * layers call a wider set — setTransform, rect, arcTo — and a missing name
+ * surfaced as `fg.setTransform is not a function` from inside production
+ * code, which reads like a bug in the game rather than a gap here.
+ *
+ * The same caveat as makeGlContext applies: a typo'd method name now
+ * silently no-ops instead of throwing. That is the accepted trade, because
+ * every drawing call in this codebase is separately compared against the
+ * reference by tests/behavior/*, which uses recordingCanvas.ts — a
+ * recorder, not this stub. Nothing relies on this file to catch a bad call.
+ */
 function make2dContext(): Record<string, unknown> {
   const noop = () => {};
-  return {
+  const base: Record<string, unknown> = {
     fillStyle: "#000", strokeStyle: "#000", lineWidth: 1, globalAlpha: 1,
-    fillRect: noop, strokeRect: noop, clearRect: noop,
-    beginPath: noop, closePath: noop, moveTo: noop, lineTo: noop,
-    arc: noop, ellipse: noop, quadraticCurveTo: noop, bezierCurveTo: noop,
-    fill: noop, stroke: noop, clip: noop, save: noop, restore: noop,
-    translate: noop, scale: noop, rotate: noop,
     createLinearGradient: () => ({ addColorStop: noop }),
     createRadialGradient: () => ({ addColorStop: noop }),
+    createPattern: () => null,
     getImageData: () => ({ data: new Uint8ClampedArray(4) }),
-    putImageData: noop, drawImage: noop,
+    measureText: () => ({ width: 0 }),
+    getLineDash: () => [],
   };
+  return new Proxy(base, {
+    get(target, prop) {
+      if (prop in target) return target[prop as string];
+      if (typeof prop !== "string") return undefined;
+      return noop;
+    },
+  }) as unknown as Record<string, unknown>;
 }
 
 /**
@@ -129,6 +150,83 @@ export function installDomStubs(): void {
 
   (globalThis as Record<string, unknown>).requestAnimationFrame = () => 0;
   (globalThis as Record<string, unknown>).cancelAnimationFrame = () => {};
+}
+
+/**
+ * A deterministic `setTimeout` for trace runs: nothing fires on its own.
+ * The caller drains due timers at a frame boundary, so a run replays
+ * identically no matter how fast the machine is or how loaded it is.
+ *
+ * src/legacy.js schedules 17 gameplay effects this way (KNOWN-3) — the kick
+ * hitbox, delayed explosions, boss cues. Under real timers those land
+ * between arbitrary frames and no two runs of the same input produce the
+ * same result, which makes a recorded trace worthless as a characterization
+ * test.
+ *
+ * `advance` re-scans after every callback rather than iterating a snapshot,
+ * because a timer that schedules another timer is common here (the toast
+ * fade does exactly that) and the nested one must fire in the same drain if
+ * it is already due.
+ *
+ * That re-scan has a generous but finite cap on how many timers it will
+ * drain in one `advance` call. Nothing in the game schedules anywhere near
+ * it today, so it never fires in practice — it exists only so a timer that
+ * reschedules itself at 0ms (a real bug, not a hypothetical: it is exactly
+ * the shape of an off-by-one in a countdown) throws a clear diagnostic
+ * instead of spinning the suite forever.
+ */
+export function installFakeClock(): {
+  advance(ms: number): void;
+  restore(): void;
+  pending(): number;
+} {
+  const realSetTimeout = globalThis.setTimeout;
+  const realClearTimeout = globalThis.clearTimeout;
+  let now = 0, seq = 0;
+  const timers = new Map<number, { at: number; fn: () => void }>();
+
+  (globalThis as Record<string, unknown>).setTimeout = (fn: () => void, ms = 0) => {
+    const id = ++seq;
+    timers.set(id, { at: now + ms, fn });
+    return id;
+  };
+  (globalThis as Record<string, unknown>).clearTimeout = (id: number) => { timers.delete(id); };
+
+  // A generous cap: real usage here drains well under a hundred timers per
+  // `advance`. This exists to fail loudly on a runaway (a timer that
+  // reschedules itself at 0ms) rather than hang the test suite.
+  const MAX_DRAINED_TIMERS_PER_ADVANCE = 10_000;
+
+  return {
+    advance(ms: number): void {
+      now += ms;
+      let drained = 0;
+      for (;;) {
+        let nextId = -1, next: { at: number; fn: () => void } | undefined;
+        for (const [id, t] of timers) {
+          // Ties break on insertion order, which is what a real event loop does.
+          if (t.at <= now && (next === undefined || t.at < next.at || (t.at === next.at && id < nextId))) {
+            nextId = id; next = t;
+          }
+        }
+        if (next === undefined) return;
+        if (++drained > MAX_DRAINED_TIMERS_PER_ADVANCE) {
+          throw new Error(
+            `installFakeClock().advance drained more than ${MAX_DRAINED_TIMERS_PER_ADVANCE} timers in a ` +
+            "single call — almost certainly a timer that reschedules itself at (or before) the current " +
+            "time, which would otherwise hang the suite instead of failing it.",
+          );
+        }
+        timers.delete(nextId);
+        next.fn();
+      }
+    },
+    restore(): void {
+      (globalThis as Record<string, unknown>).setTimeout = realSetTimeout;
+      (globalThis as Record<string, unknown>).clearTimeout = realClearTimeout;
+    },
+    pending: () => timers.size,
+  };
 }
 
 /** Install index.html's body markup so every element id the game reads exists. */

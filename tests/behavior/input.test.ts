@@ -169,18 +169,18 @@ function moduleSide(): Side {
     doKick: () => calls.push("doKick"),
   });
   let world = freshWorld();
-  Input.setYaw(Math.PI); Input.setPitch(0);
-  Input.setSwayX(0); Input.setSwayY(0);
-  Input.setFiring(false); Input.setZoomOn(false);
+  Input.input.yaw = Math.PI; Input.input.pitch = 0;
+  Input.input.swayX = 0; Input.input.swayY = 0;
+  Input.input.firing = false; Input.input.zoomOn = false;
   for (const k of Object.keys(Input.keys)) delete Input.keys[k];
   setPointerLockElement(null);
   fire(moduleRegistrations, "document", "pointerlockchange", {});
   return {
     registrations: moduleRegistrations,
     state: () => ({
-      yaw: Input.getYaw(), pitch: Input.getPitch(), locked: Input.isPointerLocked(),
-      swayX: Input.getSwayX(), swayY: Input.getSwayY(),
-      firing: Input.isFiring(), zoomOn: Input.isZoomOn(),
+      yaw: Input.input.yaw, pitch: Input.input.pitch, locked: Input.input.locked,
+      swayX: Input.input.swayX, swayY: Input.input.swayY,
+      firing: Input.input.firing, zoomOn: Input.input.zoomOn,
       keys: { ...Input.keys },
     }),
     setWorld: (w) => { world = w; },
@@ -506,9 +506,9 @@ describe("the listeners are attached to the real window and document", () => {
     expect(Input.keys.KeyW).toBe(false);
 
     window.dispatchEvent(new MouseEvent("mousedown", { button: 0 }));
-    expect(Input.isFiring()).toBe(true);
+    expect(Input.input.firing).toBe(true);
     window.dispatchEvent(new MouseEvent("mouseup", { button: 0 }));
-    expect(Input.isFiring()).toBe(false);
+    expect(Input.input.firing).toBe(false);
 
     // mousemove is registered on document, not window: dispatching on
     // window still reaches it by bubbling, but only because the event
@@ -516,11 +516,11 @@ describe("the listeners are attached to the real window and document", () => {
     // check that matters here.
     setPointerLockElement(canvasEl);
     document.dispatchEvent(new Event("pointerlockchange"));
-    expect(Input.isPointerLocked()).toBe(true);
+    expect(Input.input.locked).toBe(true);
     const move = new MouseEvent("mousemove");
     Object.defineProperty(move, "movementX", { value: 50 });
     Object.defineProperty(move, "movementY", { value: 0 });
     document.dispatchEvent(move);
-    expect(Input.getYaw()).toBeCloseTo(Math.PI - 50 * .0022, 12);
+    expect(Input.input.yaw).toBeCloseTo(Math.PI - 50 * .0022, 12);
   });
 });

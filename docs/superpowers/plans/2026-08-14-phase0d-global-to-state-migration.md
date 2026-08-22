@@ -45,10 +45,40 @@ rather than assumed — 62 declarations across 633 bare call sites in
 | WeaponRuntime | 12 | 92 | `wstate` `wtime` `wCool` `pending` `reloadFlags` `recoilPitch`:105 `kickAmt` `kickRot` `muzzle` `zoomLerp`:106 `volleyHit`:201 `kickAnim`:207 |
 | Renderer | 8 | 123 | `scene` `camera` `renderer` `lamp` `lampCore` `muzzleLight` `boomLight` `ambLight`:48 |
 | WorldState | 13 | 126 | `grid` `GW` `GH` `doors` `enemies` `props` `items` `torches` `candles` `exitPos` `pianoPos`:383 `heightMap`:269 `wallSegs`:250 |
+| WorldState (part 2) | 8 | 68 | `challenge` `bossRef` `poisonZones` `rings` `strikes` `cine` `eventT` `idleT`:384 — **see the correction below** |
 | PlayerState | 10 | 178 | `px` `pz` `vx` `vy` `vz` `pyy` `grounded` `bobT` `lastBobSin` `spawnGuard`:385 |
 
 Regenerate this table at any time — the two scripts that produced it are
 reproduced in Task 1, Step 1.
+
+### Correction, found during Task 8 (2026-08-15)
+
+The starting-state table above originally listed `challenge`, `bossRef`,
+`poisonZones`, `rings`, `strikes`, `cine`, `eventT` and `idleT` as **already
+migrated**, and Task 8's Step 1 doc comment repeated that claim. **They were
+not.** All eight are still bare mutable globals in `src/legacy.js`, declared
+on line 384 — the *continuation* line of the same `let` statement that
+declares Task 8's own 13 fields on line 383:
+
+```js
+let grid,GW,GH,doors,enemies,props,items,torches,candles,exitPos,pianoPos,
+  challenge,bossRef,poisonZones,rings,strikes,cine=null,eventT=40,idleT=28;
+```
+
+Root cause: the `globals.mjs` inventory script in Task 1 Step 1 only reads
+declaration names from lines that *start* with `let`/`const`/`var`. Line 384
+starts with whitespace, so its eight names were never seen, and the script's
+"declared in legacy.js?" test defaulted them to migrated. Anyone re-running
+that script gets the same wrong answer — **fix the script before trusting it
+again**, or cross-check with `grep -n "^\s" ` over multi-line declarations.
+
+Consequence: Plan 0D's Definition of Done ("No mutable cross-module global
+remains declared in `src/legacy.js`") was unmeetable as written. These eight
+are the spec §3 inventory's own `world/WorldState.ts` assignment, so they
+belong to this owner — they are now **Task 8b**, taken as a separate task
+rather than folded into Task 8, because 68 call sites across eight
+semantically distinct values (the cinematic, the boss reference, three
+entity pools, two timers) deserve their own reviewer's gate.
 
 ### Three decisions this plan locks in
 
@@ -521,17 +551,39 @@ grep -n "trauma\|hitStop\|zoomT" src/legacy.js
 
 Every hit must be either `screenShake.` prefixed or `w.trauma`.
 
-- [ ] **Step 4: Run the full gate**
+- [ ] **Step 4: Cover `hitStop`, which the trace cannot reach**
+
+Task 1 measured this: the prologue trace never lands an enemy hit, so
+`hitStop`'s `dt*=.08` in the main loop survives sabotage there. Migrating
+it is what makes it reachable — `screenShake.hitStop` is now an exported
+property a test can assign directly. Add to
+`tests/integration/wiring.test.ts`:
+
+```ts
+it("slows the frame while hit-stop is running, and burns it down", () => {
+  screenShake.hitStop = 0.05;
+  const before = screenShake.hitStop;
+  const frame = runFrame(nextTimestamp());
+  // The loop scales dt to 8% while hit-stop is active, so the dt the 2D
+  // layer receives is a fraction of the wall-clock frame time.
+  expect(frame.dt).toBeLessThan(1 / 60 * 0.5);
+  expect(screenShake.hitStop).toBeLessThan(before);
+});
+```
+
+Then sabotage `dt*=.08` to `dt*=.09` and confirm this test fails. Record it.
+
+- [ ] **Step 5: Run the full gate**
 
 Run: `npm run typecheck && npm test`
 Expected: 349+ tests pass, trace test included. If the trace test fails, a
 call site was rewritten wrong — read the diff it prints; it names the first
 frame that diverged.
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 6: Commit**
 
 ```bash
-git add src/fx/ShakeState.ts src/legacy.js
+git add src/fx/ShakeState.ts src/legacy.js tests/integration/wiring.test.ts
 git commit -m "refactor: move screen shake and hit-stop onto a state object"
 ```
 
@@ -1027,12 +1079,21 @@ cur:S.cur,vx:player.vx,vz:player.vz,
 sprintKey:!!(keys.ShiftLeft||keys.ShiftRight),bobT:player.bobT,
 ```
 
-- [ ] **Step 5: Run the wiring test and the gate, then commit**
+- [ ] **Step 5: Cover `spawnGuard`, which the trace cannot reach**
+
+The other constant Task 1 measured as unreachable: the prologue trace never
+takes damage, so `spawnGuard=2.0` survives sabotage there. Now that
+`player.spawnGuard` is an exported property, a focused test can set it and
+assert the entry-invulnerability window behaves — assign a known value, run
+frames, and confirm it counts down at exactly one second per second and
+stops at zero. Sabotage `2.0` to `2.5` and confirm the new test fails.
+
+- [ ] **Step 6: Run the wiring test and the gate, then commit**
 
 ```bash
 npx vitest run tests/integration/wiring.test.ts
 npm run typecheck && npm test
-git add src/player/PlayerState.ts src/legacy.js
+git add src/player/PlayerState.ts src/legacy.js tests/integration/wiring.test.ts
 git commit -m "refactor: move player position, velocity and gait onto a state object"
 ```
 

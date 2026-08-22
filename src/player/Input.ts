@@ -37,22 +37,25 @@ import { clamp } from "../utils/math";
  * yaw/pitch/swayX/swayY/firing/zoomOn/locked are written here AND, every
  * frame, by gameplay code in legacy.js (the sway decay, the cinematic
  * camera turn, respawn, the piano). They cannot be bare exported `let`
- * bindings — an ES module's `let` export is read-only to importers — so
- * they are private module state behind accessors, the same rule
- * src/audio/AudioEngine.ts and src/render/Overlay2D.ts follow. Plan 0D
- * moves them again, into the state object, and can then delete the
- * accessors.
+ * bindings — an ES module's `let` export is read-only to importers — so,
+ * like every other piece of state in this codebase (`screenShake`, `game`,
+ * `weaponRuntime`, `renderState`, `world`, `player`, `S`, …), they live as
+ * properties on one exported object, `input`, and legacy.js reads and
+ * writes them directly.
  *
- * `keys` is the exception and stays a plain exported const: it is an object
- * that is only ever mutated in place, never reassigned, so its binding
- * crosses the boundary intact and legacy.js's `keys.KeyW` reads work
- * untouched.
+ * `keys` follows the same rule and stays a plain exported const: it is an
+ * object that is only ever mutated in place, never reassigned, so its
+ * binding crosses the boundary intact and legacy.js's `keys.KeyW` reads
+ * work untouched.
  */
 
 /** The live key map: `keys[e.code]` is true while that physical key is held. */
 export const keys: Record<string, boolean> = {};
 
-let yaw = Math.PI, pitch = 0, locked = false, swayX = 0, swayY = 0, firing = false, zoomOn = false;
+export const input = {
+  yaw: Math.PI, pitch: 0, locked: false,
+  swayX: 0, swayY: 0, firing: false, zoomOn: false,
+};
 
 /** What the input handlers need from the gameplay code that still lives in src/legacy.js. */
 export interface InputHooks {
@@ -88,7 +91,7 @@ addEventListener("keydown", e => {
   keys[e.code] = true;
   if (e.code === "KeyE") hooks.interact();
   if (e.code === "KeyR") hooks.startReload();
-  if (e.code === "KeyZ" && hooks.currentWeapon() === 4) zoomOn = !zoomOn;
+  if (e.code === "KeyZ" && hooks.currentWeapon() === 4) input.zoomOn = !input.zoomOn;
   if (/^Digit[1-8]$/.test(e.code)) hooks.requestSwitch(+e.code[5] - 1);
 }, false);
 addEventListener("keyup", e => keys[e.code] = false);
@@ -102,25 +105,25 @@ addEventListener("wheel", e => {
 });
 document.addEventListener("mousemove", e => {
   if (!hooks) return;
-  if (!locked || hooks.isInputLocked()) return;
+  if (!input.locked || hooks.isInputLocked()) return;
   const sens = .0022 * (1 - .68 * hooks.zoomLerp());
-  yaw -= e.movementX * sens; pitch -= e.movementY * sens;
-  pitch = clamp(pitch, -1.45, 1.45);
-  swayX = clamp(swayX + e.movementX * .035, -10, 10);
-  swayY = clamp(swayY + e.movementY * .035, -7, 7);
+  input.yaw -= e.movementX * sens; input.pitch -= e.movementY * sens;
+  input.pitch = clamp(input.pitch, -1.45, 1.45);
+  input.swayX = clamp(input.swayX + e.movementX * .035, -10, 10);
+  input.swayY = clamp(input.swayY + e.movementY * .035, -7, 7);
 });
 document.addEventListener("pointerlockchange", () => {
   if (!hooks) return;
-  locked = document.pointerLockElement === hooks.canvas();
+  input.locked = document.pointerLockElement === hooks.canvas();
 });
 addEventListener("mousedown", e => {
   if (!hooks) return;
   if (hooks.isPianoOpen()) return;
-  if (hooks.isStarted() && !locked && !overlayOpen()) hooks.canvas().requestPointerLock();
-  if (e.button === 0) firing = true;
+  if (hooks.isStarted() && !input.locked && !overlayOpen()) hooks.canvas().requestPointerLock();
+  if (e.button === 0) input.firing = true;
   if (e.button === 2) hooks.doKick();
 });
-addEventListener("mouseup", e => { if (e.button === 0) firing = false; });
+addEventListener("mouseup", e => { if (e.button === 0) input.firing = false; });
 addEventListener("contextmenu", e => e.preventDefault());
 
 /** True while any of the three full-screen overlays — level end, win, death — or the piano is up. */
@@ -129,18 +132,3 @@ export function overlayOpen(): boolean {
     !document.getElementById("win").classList.contains("hidden") ||
     !document.getElementById("dead").classList.contains("hidden") || (hooks ? hooks.isPianoOpen() : false);
 }
-
-export function getYaw(): number { return yaw; }
-export function setYaw(v: number): void { yaw = v; }
-export function getPitch(): number { return pitch; }
-export function setPitch(v: number): void { pitch = v; }
-export function getSwayX(): number { return swayX; }
-export function setSwayX(v: number): void { swayX = v; }
-export function getSwayY(): number { return swayY; }
-export function setSwayY(v: number): void { swayY = v; }
-export function isFiring(): boolean { return firing; }
-export function setFiring(v: boolean): void { firing = v; }
-export function isZoomOn(): boolean { return zoomOn; }
-export function setZoomOn(v: boolean): void { zoomOn = v; }
-/** True while the pointer is locked to the game canvas. */
-export function isPointerLocked(): boolean { return locked; }

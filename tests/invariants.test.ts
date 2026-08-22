@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { WEAPON_STATS } from "../src/weapons/definitions";
 import { ENEMY_DEFS } from "../src/enemies/EnemyDefs";
 import { LEVELS } from "../src/world/levels";
-import { readLegacyConst } from "./support/legacySource";
+import { S } from "../src/core/State";
 
 /**
  * Cheap, high-value cross-module invariants. Both guard a real way for the
@@ -11,15 +11,13 @@ import { readLegacyConst } from "./support/legacySource";
  */
 
 describe("WEAPON_STATS length vs. legacy.js player state", () => {
-  interface PlayerState {
-    mag: number[];
-    weapons: boolean[];
-  }
-  // S.mag and S.weapons are still declared in legacy.js, not yet a module —
-  // read live from source rather than importing legacy.js, which reaches
-  // into `document`/THREE at module scope and cannot run in Node (see
-  // tests/support/legacySource.ts).
-  const S = readLegacyConst<PlayerState>("S");
+  // S.mag and S.weapons used to be declared inline in legacy.js and were
+  // read live from its source text (see tests/support/legacySource.ts)
+  // rather than imported, since importing legacy.js reaches into
+  // `document`/THREE at module scope and cannot run in Node. Plan 0D task 10
+  // moved S itself into src/core/State.ts, a plain data module with no such
+  // side effects, so this now imports it directly — see legacySource.ts's
+  // readLegacyConst doc comment, which anticipated exactly this move.
 
   it("gives WEAPON_STATS exactly one slot per S.mag entry", () => {
     // A ninth weapon added to WEAPON_STATS without extending S.mag would

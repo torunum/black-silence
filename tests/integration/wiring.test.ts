@@ -1,6 +1,8 @@
 // @vitest-environment jsdom
-import { beforeAll, describe, expect, it, vi } from "vitest";
+import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { installDomStubs, loadGameHtml } from "../support/domStubs";
+import { screenShake } from "../../src/fx/ShakeState";
+import { player } from "../../src/player/PlayerState";
 
 /**
  * The seams — KNOWN-9.
@@ -21,11 +23,15 @@ import { installDomStubs, loadGameHtml } from "../support/domStubs";
  * modules whose wiring is under test replaced by recorders. Two techniques
  * do the work:
  *
- * - **Sentinel accessors.** src/player/Input.ts is mocked so getSwayX() and
- *   getSwayY() (and getYaw/getPitch) return distinct, recognisable numbers.
- *   Whatever legacy.js reads them into is then identifiable by value, so a
- *   transposition is a failed equality rather than two indistinguishable
- *   floats.
+ * - **Sentinel accessors.** src/player/Input.ts is mocked so `input.swayX`
+ *   and `input.swayY` (and `input.yaw`/`input.pitch`) read back distinct,
+ *   recognisable numbers no matter what legacy.js writes to them — see the
+ *   `pin` helper below, which needs a real getter/setter pair rather than a
+ *   plain sentinel value because legacy.js's own sway decay
+ *   (`input.swayX = input.swayX*Math.exp(-7*dt)`) runs every frame, before
+ *   this file's assertions ever see the value. Whatever legacy.js reads them
+ *   into is then identifiable by value, so a transposition is a failed
+ *   equality rather than two indistinguishable floats.
  * - **Cross-checks between two independent readers of the same global.**
  *   The input hooks and the viewmodel frame both report S.cur and both
  *   report zoomLerp; the player always owns the weapon they are holding.
@@ -73,13 +79,24 @@ const SENTINEL = vi.hoisted(() => ({ swayX: 1101.25, swayY: 1102.5, yaw: 1.103, 
 
 vi.mock("../../src/player/Input", async (importOriginal) => {
   const actual = await importOriginal<typeof import("../../src/player/Input")>();
+  // Pin swayX/swayY/yaw/pitch to sentinel reads via real accessor
+  // properties — a plain sentinel *value* would decay away (see the header
+  // comment above) before this file's frame assertions ever ran. `firing`,
+  // `zoomOn` and `locked` are deliberately left as ordinary, live data
+  // properties on this same object: they are not part of this file's four
+  // sentinel seams, and Input.ts's own event handlers keep writing to this
+  // exact object, so anything reading it — legacy.js included — still sees
+  // their real, current values rather than a frozen boot snapshot.
+  const pin = (value: number) => ({ get: () => value, set: () => {}, enumerable: true, configurable: true });
+  Object.defineProperties(actual.input, {
+    swayX: pin(SENTINEL.swayX),
+    swayY: pin(SENTINEL.swayY),
+    yaw: pin(SENTINEL.yaw),
+    pitch: pin(SENTINEL.pitch),
+  });
   return {
     ...actual,
     setInputHooks: (h: Record<string, (...a: never[]) => unknown>) => { captured.hooks = h; },
-    getSwayX: () => SENTINEL.swayX,
-    getSwayY: () => SENTINEL.swayY,
-    getYaw: () => SENTINEL.yaw,
-    getPitch: () => SENTINEL.pitch,
   };
 });
 
@@ -114,6 +131,7 @@ let startedBeforeNewGame: unknown;
 let startedAfterNewGame: unknown;
 let restFrame: Frame;
 let kickFrame: Frame;
+let spawnGuardAtBoot: number;
 
 /** Runs the main loop once and returns everything legacy.js handed the 2D layer during it. */
 function runFrame(t: number): Frame {
@@ -161,6 +179,11 @@ beforeAll(async () => {
   if (!newGame) throw new Error("the NEW GAME menu row is gone — this file drives the game through it");
   (newGame as HTMLElement).click();
   startedAfterNewGame = captured.hooks?.isStarted();
+  // loadLevel sets spawnGuard=2.0 synchronously inside the NEW GAME click
+  // handler, before any frame — and therefore before playerTick's own
+  // `if(spawnGuard>0)spawnGuard-=dt` has run once — so this is the literal
+  // straight off loadLevel, not a decremented descendant of it.
+  spawnGuardAtBoot = player.spawnGuard;
 
   // The loop derives dt as (t - last)/1000 with `last` seeded from the real
   // clock at boot, so frame timestamps have to continue that clock — passing
@@ -311,5 +334,79 @@ describe("the ViewmodelFrame legacy.js builds", () => {
       expect(typeof restFrame.vm[field], `frame.${field}`).toBe("boolean");
     }
     expect(typeof restFrame.vm.wstate).toBe("string");
+  });
+});
+
+describe("screenShake — hit-stop slows and burns down the frame", () => {
+  beforeEach(() => {
+    screenShake.trauma = 0;
+    screenShake.hitStop = 0;
+  });
+
+  it("slows the frame while hit-stop is running, and burns it down", () => {
+    // Set hitStop well above the float-noise floor: the capped dt (0.05,
+    // forced by the 5s jump below) gets scaled by hitStop's own `dt*=.08`
+    // multiplier, so the frame's dt should land at 0.05*0.08=0.004.
+    screenShake.hitStop = 0.2;
+    // Establish a known `last` first, then jump the timestamp far enough
+    // ahead (5s) to force legacy.js's own dt cap (Math.min(.05, ...)) to
+    // trigger deterministically — this makes pre-scale dt exactly .05
+    // regardless of how much real wall-clock time the test runner itself
+    // consumed between calls.
+    const t1 = performance.now();
+    runFrame(t1);
+    const before = screenShake.hitStop;
+    const frame = runFrame(t1 + 5000);
+    // dt is capped at .05 before hit-stop scaling, so the real .08
+    // multiplier yields dt === .05*.08 (mod float noise); a .09 sabotage
+    // would yield .05*.09 which fails this check.
+    expect(frame.dt).toBeCloseTo(0.05 * 0.08, 5);
+    // hitStop decreases by dt=0.05 during the frame. Every place legacy.js
+    // raises it back up (Math.max(screenShake.hitStop, ...)) sits inside a
+    // damage path — damagePlayer/damageEnemy and friends — that this
+    // test's plain runFrame() call never reaches, so hitStop is expected to
+    // come out strictly lower than it started, not merely no-higher.
+    expect(screenShake.hitStop).toBeLessThan(before);
+  });
+});
+
+describe("player.spawnGuard — the brief invulnerability window on level entry", () => {
+  it("is set to loadLevel's 2.0 the moment NEW GAME fires, before any frame can decrement it", () => {
+    // Captured in beforeAll straight off the synchronous NEW GAME click
+    // handler (startGame -> loadLevel), before restFrame/kickFrame or any
+    // other runFrame call has had a chance to run playerTick and subtract
+    // from it — so this is the literal itself, not a decremented descendant.
+    expect(spawnGuardAtBoot).toBe(2.0);
+  });
+
+  it("counts down by the frame's real elapsed time, then stops once it reaches zero", () => {
+    // hitStop scales dt (see the describe block above); keep it out of the
+    // way so this test's dt math is exactly legacy.js's own `Math.min(.05,...)` cap.
+    screenShake.hitStop = 0;
+    // Establish a known `last` first (its own dt/side effects on spawnGuard
+    // don't matter — the value is overwritten right after), then jump the
+    // timestamp far enough ahead each frame to force dt to exactly .05,
+    // deterministically, regardless of real wall-clock time between calls.
+    const t1 = performance.now();
+    runFrame(t1);
+    player.spawnGuard = 0.12;
+
+    const frame1 = runFrame(t1 + 5000);
+    expect(frame1.dt).toBeCloseTo(0.05, 5);
+    expect(player.spawnGuard).toBeCloseTo(0.07, 5); // 0.12 - 0.05
+
+    runFrame(t1 + 10000);
+    expect(player.spawnGuard).toBeCloseTo(0.02, 5); // 0.07 - 0.05
+
+    // This frame's dt (.05) exceeds the remaining 0.02, crossing zero.
+    runFrame(t1 + 15000);
+    expect(player.spawnGuard).toBeLessThanOrEqual(0);
+    const afterCrossing = player.spawnGuard;
+
+    // Once at/below zero, playerTick's own `if(spawnGuard>0)` guard must
+    // stop the decrement — it rests at whatever value it crossed to rather
+    // than drifting further negative frame after frame.
+    runFrame(t1 + 20000);
+    expect(player.spawnGuard).toBe(afterCrossing);
   });
 });

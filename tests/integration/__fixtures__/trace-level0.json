@@ -1,0 +1,2342 @@
+[
+ {
+  "frame": 10,
+  "camera": [
+   21,
+   1.015548,
+   47.299902,
+   0,
+   3.141593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "PROLOGUE — OUT OF THE PIT",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 237,
+   "digest": "ca95ae40"
+  }
+ },
+ {
+  "frame": 20,
+  "camera": [
+   20.995433,
+   1.015803,
+   48.365616,
+   0.066,
+   2.877593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "PROLOGUE — OUT OF THE PIT",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 237,
+   "digest": "c6f0964e"
+  }
+ },
+ {
+  "frame": 30,
+  "camera": [
+   20.823792,
+   0.98676,
+   49.527757,
+   0.066,
+   2.877593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "PROLOGUE — OUT OF THE PIT",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 237,
+   "digest": "3958687e"
+  }
+ },
+ {
+  "frame": 40,
+  "camera": [
+   20.542987,
+   0.975696,
+   50.658124,
+   0.066,
+   2.877593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "PROLOGUE — OUT OF THE PIT",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 237,
+   "digest": "5f31580c"
+  }
+ },
+ {
+  "frame": 50,
+  "camera": [
+   19.77162,
+   0.996835,
+   51.538886,
+   0.066,
+   2.877593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "PROLOGUE — OUT OF THE PIT",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 237,
+   "digest": "200f18c1"
+  }
+ },
+ {
+  "frame": 60,
+  "camera": [
+   18.770576,
+   1.003836,
+   51.648002,
+   0.033,
+   3.053593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "PROLOGUE — OUT OF THE PIT",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 237,
+   "digest": "59ef0e6e"
+  }
+ },
+ {
+  "frame": 70,
+  "camera": [
+   17.724504,
+   1.011198,
+   51.648002,
+   0.033,
+   3.053593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "PROLOGUE — OUT OF THE PIT",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 237,
+   "digest": "76434db5"
+  }
+ },
+ {
+  "frame": 80,
+  "camera": [
+   17.175024,
+   0.993718,
+   51.648002,
+   0.033,
+   3.053593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "PROLOGUE — OUT OF THE PIT",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 237,
+   "digest": "71f01104"
+  }
+ },
+ {
+  "frame": 90,
+  "camera": [
+   16.905882,
+   0.999537,
+   51.648002,
+   0.033,
+   3.053593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "PROLOGUE — OUT OF THE PIT",
+   "subt": "ADEM“Hell spat me back out. Rude. I was just getting comfortable.”",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 237,
+   "digest": "137aba54"
+  }
+ },
+ {
+  "frame": 100,
+  "camera": [
+   16.698837,
+   1.004186,
+   51.648002,
+   0.033,
+   3.053593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "PROLOGUE — OUT OF THE PIT",
+   "subt": "ADEM“Hell spat me back out. Rude. I was just getting comfortable.”",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 237,
+   "digest": "e7eb365d"
+  }
+ },
+ {
+  "frame": 110,
+  "camera": [
+   16.508929,
+   1.000922,
+   51.648002,
+   0.033,
+   3.053593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "PROLOGUE — OUT OF THE PIT",
+   "subt": "ADEM“Hell spat me back out. Rude. I was just getting comfortable.”",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 237,
+   "digest": "5b2a888a"
+  }
+ },
+ {
+  "frame": 120,
+  "camera": [
+   16.353038,
+   1.001683,
+   51.648002,
+   0.033,
+   3.053593,
+   0.003732,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "PROLOGUE — OUT OF THE PIT",
+   "subt": "ADEM“Hell spat me back out. Rude. I was just getting comfortable.”",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 237,
+   "digest": "fec0df06"
+  }
+ },
+ {
+  "frame": 130,
+  "camera": [
+   16.22538,
+   0.997275,
+   51.648002,
+   0.033,
+   3.053593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "PROLOGUE — OUT OF THE PIT",
+   "subt": "ADEM“Hell spat me back out. Rude. I was just getting comfortable.”",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 237,
+   "digest": "793c466b"
+  }
+ },
+ {
+  "frame": 140,
+  "camera": [
+   16.100126,
+   0.998153,
+   51.648002,
+   0.033,
+   3.053593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "PROLOGUE — OUT OF THE PIT",
+   "subt": "ADEM“Hell spat me back out. Rude. I was just getting comfortable.”",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 237,
+   "digest": "a5ee873f"
+  }
+ },
+ {
+  "frame": 150,
+  "camera": [
+   15.976376,
+   1.117778,
+   51.648002,
+   0.033,
+   3.053593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "PROLOGUE — OUT OF THE PIT",
+   "subt": "ADEM“Hell spat me back out. Rude. I was just getting comfortable.”",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 237,
+   "digest": "3719d3dd"
+  }
+ },
+ {
+  "frame": 160,
+  "camera": [
+   15.747802,
+   1.99,
+   51.648002,
+   0.033,
+   3.053593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "PROLOGUE — OUT OF THE PIT",
+   "subt": "ADEM“Hell spat me back out. Rude. I was just getting comfortable.”",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 237,
+   "digest": "8e4b3136"
+  }
+ },
+ {
+  "frame": 170,
+  "camera": [
+   15.338196,
+   2.306667,
+   51.648002,
+   0.033,
+   3.053593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "PROLOGUE — OUT OF THE PIT",
+   "subt": "ADEM“Hell spat me back out. Rude. I was just getting comfortable.”",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 237,
+   "digest": "9676c912"
+  }
+ },
+ {
+  "frame": 180,
+  "camera": [
+   14.761065,
+   2.067778,
+   51.648002,
+   0.033,
+   3.053593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "PROLOGUE — OUT OF THE PIT",
+   "subt": "ADEM“Hell spat me back out. Rude. I was just getting comfortable.”",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 237,
+   "digest": "8794556b"
+  }
+ },
+ {
+  "frame": 190,
+  "camera": [
+   14.414673,
+   1.273333,
+   51.648002,
+   0.033,
+   3.053593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "PROLOGUE — OUT OF THE PIT",
+   "subt": "ADEM“Hell spat me back out. Rude. I was just getting comfortable.”",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 237,
+   "digest": "e0e2cfdf"
+  }
+ },
+ {
+  "frame": 200,
+  "camera": [
+   14.89965,
+   1.012554,
+   51.648002,
+   0.033,
+   3.053593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "PROLOGUE — OUT OF THE PIT",
+   "subt": "ADEM“Hell spat me back out. Rude. I was just getting comfortable.”",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 237,
+   "digest": "77688e91"
+  }
+ },
+ {
+  "frame": 210,
+  "camera": [
+   15.672882,
+   0.995575,
+   51.648002,
+   0.033,
+   3.053593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“Hell spat me back out. Rude. I was just getting comfortable.”",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 237,
+   "digest": "81577182"
+  }
+ },
+ {
+  "frame": 220,
+  "camera": [
+   15.982032,
+   1.002076,
+   51.648002,
+   0.033,
+   3.053593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“Hell spat me back out. Rude. I was just getting comfortable.”",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 237,
+   "digest": "806b3463"
+  }
+ },
+ {
+  "frame": 230,
+  "camera": [
+   15.972789,
+   1.001303,
+   51.648002,
+   0.033,
+   3.053593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“Hell spat me back out. Rude. I was just getting comfortable.”",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 237,
+   "digest": "02c064de"
+  }
+ },
+ {
+  "frame": 240,
+  "camera": [
+   15.881157,
+   1.001156,
+   51.648002,
+   0.033,
+   3.053593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“Hell spat me back out. Rude. I was just getting comfortable.”",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 237,
+   "digest": "ec8ae180"
+  }
+ },
+ {
+  "frame": 250,
+  "camera": [
+   15.833402,
+   1.000163,
+   51.648002,
+   0.033,
+   3.053593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“Hell spat me back out. Rude. I was just getting comfortable.”",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 237,
+   "digest": "8752669f"
+  }
+ },
+ {
+  "frame": 260,
+  "camera": [
+   15.820814,
+   1.000032,
+   51.648002,
+   0.0154,
+   2.932593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“Hell spat me back out. Rude. I was just getting comfortable.”",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 237,
+   "digest": "d803d250"
+  }
+ },
+ {
+  "frame": 270,
+  "camera": [
+   15.817496,
+   1.000008,
+   51.648002,
+   0.025285,
+   2.932593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“Hell spat me back out. Rude. I was just getting comfortable.”",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 238,
+   "digest": "a09f3725"
+  }
+ },
+ {
+  "frame": 280,
+  "camera": [
+   15.816622,
+   1.000002,
+   51.648002,
+   0.018006,
+   2.932593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“Hell spat me back out. Rude. I was just getting comfortable.”",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 238,
+   "digest": "90ba24cc"
+  }
+ },
+ {
+  "frame": 290,
+  "camera": [
+   15.816391,
+   1.000001,
+   51.648002,
+   0.029287,
+   2.811593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“Hell spat me back out. Rude. I was just getting comfortable.”",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 238,
+   "digest": "d68ca543"
+  }
+ },
+ {
+  "frame": 300,
+  "camera": [
+   15.81633,
+   1,
+   51.648002,
+   0.038666,
+   2.811593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“Hell spat me back out. Rude. I was just getting comfortable.”",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 239,
+   "digest": "40642eee"
+  }
+ },
+ {
+  "frame": 310,
+  "camera": [
+   15.816314,
+   1,
+   51.648002,
+   0.031253,
+   2.811593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“Hell spat me back out. Rude. I was just getting comfortable.”",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 239,
+   "digest": "78befa43"
+  }
+ },
+ {
+  "frame": 320,
+  "camera": [
+   15.81631,
+   1,
+   51.648002,
+   0.042499,
+   2.690593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“Hell spat me back out. Rude. I was just getting comfortable.”",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 239,
+   "digest": "22bd27eb"
+  }
+ },
+ {
+  "frame": 330,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.05187,
+   2.690593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“Hell spat me back out. Rude. I was just getting comfortable.”",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 240,
+   "digest": "35dae145"
+  }
+ },
+ {
+  "frame": 340,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.044454,
+   2.690593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“Hell spat me back out. Rude. I was just getting comfortable.”",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 240,
+   "digest": "ad213c9a"
+  }
+ },
+ {
+  "frame": 350,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.0557,
+   2.569593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 240,
+   "digest": "1118a32d"
+  }
+ },
+ {
+  "frame": 360,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.06507,
+   2.569593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 241,
+   "digest": "3e985ad6"
+  }
+ },
+ {
+  "frame": 370,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.057654,
+   2.569593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 241,
+   "digest": "a6169252"
+  }
+ },
+ {
+  "frame": 380,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.0381,
+   2.448593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 241,
+   "digest": "77aebd73"
+  }
+ },
+ {
+  "frame": 390,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.04747,
+   2.448593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 242,
+   "digest": "75c68907"
+  }
+ },
+ {
+  "frame": 400,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.040054,
+   2.448593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 242,
+   "digest": "277ce26c"
+  }
+ },
+ {
+  "frame": 410,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.0513,
+   2.327593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 242,
+   "digest": "ee19ace3"
+  }
+ },
+ {
+  "frame": 420,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.06067,
+   2.327593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 243,
+   "digest": "fb58856f"
+  }
+ },
+ {
+  "frame": 430,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.053254,
+   2.327593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 243,
+   "digest": "961a17ee"
+  }
+ },
+ {
+  "frame": 440,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.0645,
+   2.206593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 243,
+   "digest": "4ebde221"
+  }
+ },
+ {
+  "frame": 450,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.063984,
+   2.206593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 243,
+   "digest": "88d44c5a"
+  }
+ },
+ {
+  "frame": 460,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.063849,
+   2.206593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 243,
+   "digest": "987a428b"
+  }
+ },
+ {
+  "frame": 470,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.077013,
+   2.085593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 243,
+   "digest": "900f241a"
+  }
+ },
+ {
+  "frame": 480,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.077003,
+   2.085593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 243,
+   "digest": "0ef046f2"
+  }
+ },
+ {
+  "frame": 490,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.077001,
+   2.085593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 243,
+   "digest": "a8759e21"
+  }
+ },
+ {
+  "frame": 500,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.0594,
+   1.964593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 243,
+   "digest": "9cdb86de"
+  }
+ },
+ {
+  "frame": 510,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.0594,
+   1.964593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 243,
+   "digest": "ba23ab94"
+  }
+ },
+ {
+  "frame": 520,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.0594,
+   1.964593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 243,
+   "digest": "7199e555"
+  }
+ },
+ {
+  "frame": 530,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.0726,
+   1.843593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 243,
+   "digest": "00166023"
+  }
+ },
+ {
+  "frame": 540,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.0726,
+   1.843593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 243,
+   "digest": "75d2779a"
+  }
+ },
+ {
+  "frame": 550,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.0726,
+   1.843593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 243,
+   "digest": "dda63398"
+  }
+ },
+ {
+  "frame": 560,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.0858,
+   1.722593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 243,
+   "digest": "e4877e67"
+  }
+ },
+ {
+  "frame": 570,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.095685,
+   1.722593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 244,
+   "digest": "288272f6"
+  }
+ },
+ {
+  "frame": 580,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.088406,
+   1.722593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 244,
+   "digest": "93cb1c5a"
+  }
+ },
+ {
+  "frame": 590,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.099687,
+   1.601593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 244,
+   "digest": "8d468296"
+  }
+ },
+ {
+  "frame": 600,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.109066,
+   1.601593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 245,
+   "digest": "172ca9d2"
+  }
+ },
+ {
+  "frame": 610,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.101653,
+   1.601593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 245,
+   "digest": "fdcd9a5d"
+  }
+ },
+ {
+  "frame": 620,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.082099,
+   1.480593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 245,
+   "digest": "85839c27"
+  }
+ },
+ {
+  "frame": 630,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.09147,
+   1.480593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 246,
+   "digest": "ee6824d1"
+  }
+ },
+ {
+  "frame": 640,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.084054,
+   1.480593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 246,
+   "digest": "d3551880"
+  }
+ },
+ {
+  "frame": 650,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.0953,
+   1.359593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 246,
+   "digest": "5de14e5b"
+  }
+ },
+ {
+  "frame": 660,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.10467,
+   1.359593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 247,
+   "digest": "e54a2576"
+  }
+ },
+ {
+  "frame": 670,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.097254,
+   1.359593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 247,
+   "digest": "9e33a178"
+  }
+ },
+ {
+  "frame": 680,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.1085,
+   1.238593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 247,
+   "digest": "1b81ed53"
+  }
+ },
+ {
+  "frame": 690,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.11787,
+   1.238593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 248,
+   "digest": "05e0bf1e"
+  }
+ },
+ {
+  "frame": 700,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.110454,
+   1.238593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 248,
+   "digest": "2a5dff63"
+  }
+ },
+ {
+  "frame": 710,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.1217,
+   1.117593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 248,
+   "digest": "88cbe705"
+  }
+ },
+ {
+  "frame": 720,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.13107,
+   1.117593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 249,
+   "digest": "5dccd37f"
+  }
+ },
+ {
+  "frame": 730,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.123654,
+   1.117593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 249,
+   "digest": "6f83ff12"
+  }
+ },
+ {
+  "frame": 740,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.1041,
+   0.996593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 249,
+   "digest": "c4b8f8dc"
+  }
+ },
+ {
+  "frame": 750,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.103584,
+   0.996593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 249,
+   "digest": "60b70ba2"
+  }
+ },
+ {
+  "frame": 760,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.103449,
+   0.996593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 249,
+   "digest": "c20b06d6"
+  }
+ },
+ {
+  "frame": 770,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.116613,
+   0.875593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 249,
+   "digest": "4808232e"
+  }
+ },
+ {
+  "frame": 780,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.116603,
+   0.875593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 249,
+   "digest": "977c5179"
+  }
+ },
+ {
+  "frame": 790,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.116601,
+   0.875593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 249,
+   "digest": "26fbe930"
+  }
+ },
+ {
+  "frame": 800,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.1298,
+   0.754593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 249,
+   "digest": "02425abf"
+  }
+ },
+ {
+  "frame": 810,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.1298,
+   0.754593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 249,
+   "digest": "90dabbce"
+  }
+ },
+ {
+  "frame": 820,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.1298,
+   0.754593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 249,
+   "digest": "c5c85216"
+  }
+ },
+ {
+  "frame": 830,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.143,
+   0.633593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 249,
+   "digest": "054866ec"
+  }
+ },
+ {
+  "frame": 840,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.143,
+   0.633593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 249,
+   "digest": "8868b861"
+  }
+ },
+ {
+  "frame": 850,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.143,
+   0.633593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 249,
+   "digest": "5758bb5c"
+  }
+ },
+ {
+  "frame": 860,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.143,
+   0.633593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 249,
+   "digest": "5a1d144a"
+  }
+ },
+ {
+  "frame": 870,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.143,
+   0.633593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 249,
+   "digest": "93f61985"
+  }
+ },
+ {
+  "frame": 880,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.143,
+   0.633593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 249,
+   "digest": "2a9b3918"
+  }
+ },
+ {
+  "frame": 890,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.143,
+   0.633593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 249,
+   "digest": "80283a70"
+  }
+ },
+ {
+  "frame": 900,
+  "camera": [
+   15.816309,
+   1,
+   51.648002,
+   0.143,
+   0.633593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "PROLOGUE — OUT OF THE PIT",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 249,
+   "digest": "106e9cfd"
+  }
+ }
+]
