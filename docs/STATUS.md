@@ -138,12 +138,22 @@ Three things worth carrying forward:
    whole-branch review were in it. Work done outside the loop still needs the
    loop's gate.
 
-**The immediate next action** is Plan 0E — systems: renderer, level loader,
-weapons, enemies and AI, player, interaction, projectiles, damage. Every one of
-them now has its state already extracted, so 0E moves *functions* only.
-`src/render/SceneRef.ts` disappears there, and the loose
-`Record<string, unknown>` element types in `WorldState`/`Projectiles`/`Heads`
-get their real interfaces.
+**The immediate next action** is Plan 0E, whose plan document now exists at
+`docs/superpowers/plans/2026-08-15-phase0e-systems.md`. It moves *functions*,
+not state — every system's state is already extracted — and its central problem
+is that some of those functions call each other **both ways** (enemy AI damages
+the player; the weapon FSM asks collision for a hit and collision asks the
+weapon table for stats). `madge --circular` is a hard gate, so those cycles get
+broken as the systems move, via the service locator `core/Context.ts` that
+0E Task 2 introduces.
+
+**Start at its Task 1 and do not move any combat code until that fixture
+exists.** KNOWN-10 says the whole combat path is untested because 0D's trace
+plays the prologue, which has zero enemies — and 0E moves 583 lines of exactly
+that code. Task 1 builds a second trace on level 1 (15 enemies), which is only
+possible *because* 0D made `save.maxLevel` a writable exported property.
+Measured enemy counts: prologue 0, level 1 15, level 2 28, levels 3-7 between
+23 and 30.
 
 ## How fidelity is guarded
 
