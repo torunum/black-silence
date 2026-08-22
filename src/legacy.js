@@ -16,7 +16,7 @@ import { renderState } from "./render/Renderer";
 import { buildParticles, spawnP, blood, sparks, smoke3d, fireP, holyP, toxicP, emberP, woodP, partTick } from "./fx/Particles";
 import { splatMat, holeMat, scorchMat, addPool, poolTick, addWallDecal, resetDecals } from "./fx/Decals";
 import { gibGeo, gibMatsFlesh, spawnGibs, gibTick, resetGibs, spawnGibChunk } from "./fx/Gibs";
-import { screenShake } from "./fx/ShakeState";
+import { screenShake, shake } from "./fx/ShakeState";
 import { headPool } from "./fx/Heads";
 import { projectiles } from "./fx/Projectiles";
 import { save } from "./save/SaveGame";
@@ -24,6 +24,7 @@ import { pianoState } from "./ui/PianoState";
 import { ambienceState } from "./world/AmbienceState";
 import { world } from "./world/WorldState";
 import { ejectCasing, screenBlood, fxTick } from "./render/Overlay2D";
+import { addSprite, addBlob } from "./render/RenderCore";
 import { buildWeaponSprites } from "./render/viewmodel/sprites";
 import { drawKickBoot, drawViewmodel } from "./render/viewmodel/draw";
 import { ACHIEVEMENTS } from "./content/achievements";
@@ -44,33 +45,6 @@ import { solidAt, segBlocked, segsCrossRay, floorHeightAt, wallNormal, collides 
    power kick · destructibles · playable piano · monologues
    ============================================================ */
 const EYE=1.0;
-
-/* ============================================================
-   THREE CORE
-   ============================================================ */
-renderState.camera=new THREE.PerspectiveCamera(78,4/3,.05,90);
-renderState.renderer=new THREE.WebGLRenderer({canvas:document.getElementById("game"),antialias:false});
-renderState.renderer.toneMapping=THREE.ACESFilmicToneMapping;
-renderState.renderer.toneMappingExposure=1.15;
-if(THREE.sRGBEncoding!==undefined)renderState.renderer.outputEncoding=THREE.sRGBEncoding;
-function sizeRender(){const a=innerWidth/innerHeight,w=400,h=Math.round(w/a);
-  renderState.renderer.setSize(w,h,false);renderState.camera.aspect=a;renderState.camera.updateProjectionMatrix();
-  const c=renderState.renderer.domElement;c.style.width="100%";c.style.height="100%";}
-addEventListener("resize",sizeRender);sizeRender();
-function shake(a){screenShake.trauma=Math.min(1,screenShake.trauma+a);}
-
-const blobTexC=document.createElement("canvas");blobTexC.width=blobTexC.height=32;
-{const g=blobTexC.getContext("2d");const gr=g.createRadialGradient(16,16,2,16,16,16);
- gr.addColorStop(0,"rgba(0,0,0,.55)");gr.addColorStop(1,"rgba(0,0,0,0)");
- g.fillStyle=gr;g.fillRect(0,0,32,32);}
-const blobTex=new THREE.CanvasTexture(blobTexC);
-function addSprite(tex,wx,wz,sw,sh,y){
-  const m=new THREE.SpriteMaterial({map:tex,transparent:true});
-  const sp=new THREE.Sprite(m);sp.scale.set(sw,sh,1);
-  sp.position.set(wx,y!==undefined?y:sh/2,wz);renderState.scene.add(sp);return sp;}
-function addBlob(wx,wz,s){const m=new THREE.Mesh(new THREE.PlaneGeometry(s,s),
-  new THREE.MeshBasicMaterial({map:blobTex,transparent:true,depthWrite:false}));
-  m.rotation.x=-Math.PI/2;m.position.set(wx,.012,wz);renderState.scene.add(m);return m;}
 
 /* Input lives in src/player/Input.ts; its listeners are already registered
    (at that module's scope, as in the reference). This hands it the gameplay
