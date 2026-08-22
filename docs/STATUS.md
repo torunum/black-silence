@@ -4,8 +4,7 @@ Written to survive session loss. If you are picking this up cold, read this
 file, then `docs/direction.md`, then the current plan under
 `docs/superpowers/plans/`. Trust this file and `git log` over any recollection.
 
-Last updated: 2026-08-14, after Plan 0C merged and KNOWN-9 was closed.
-Plan 0D is next, and nothing blocks it.
+Last updated: 2026-08-15, after Plan 0D merged. Plan 0E is next.
 
 ---
 
@@ -33,7 +32,7 @@ pinned by characterization tests.
 | 0A | Vite + TypeScript scaffold, pure data layers, level tables | **merged** |
 | 0B | Procedural textures, sprite baker, item textures, the whole audio layer | **merged** |
 | 0C | Behavioral oracle, FX layer, weapon viewmodel art, subtitles, input | **merged** |
-| 0D | The global-to-state migration (62 globals, 633 call sites) | planned, not started |
+| 0D | The global-to-state migration (70 globals, ~700 call sites) | **merged** |
 | 0E | Systems: renderer, level loader, weapons, enemy AI, player, interaction | not started |
 | 0F | UI, piano, loop and boot; then hardening — gameplay `setTimeout` removal, dispose registry, `strict: true`, the Three.js upgrade | not started |
 
@@ -46,10 +45,10 @@ printed by `npm test` as the port burn-down. When it reaches zero the port is
 done.
 
 ```
-3759 → 3040 (0A) → 2224 (0B) → 1633 (0C, tasks complete)
+3759 → 3040 (0A) → 2224 (0B) → 1633 (0C) → 1616 (0D)
 ```
 
-Tests: 0 → 114 → 167 → 348.
+Tests: 0 → 114 → 167 → 348 → 357.
 
 ## Plan 0C status
 
@@ -98,16 +97,57 @@ the pattern to copy whenever a later plan parameterises another carve. See
 `docs/known-issues.md` for the two residual seams it documents rather than
 closes.
 
-**The immediate next action** is Plan 0D, whose plan document now exists at
-`docs/superpowers/plans/2026-08-14-phase0d-global-to-state-migration.md`.
-Start at its Task 1 — the gameplay trace oracle — and do not start any
-migration task until Task 1 Step 6 has proved the trace fails on a `px`/`pz`
-transposition. The measured starting point: 62 globals still declared in
-`legacy.js` across 633 call sites.
+## Plan 0D status
+
+Branch `phase-0d-global-to-state`, **merged**. Twelve tasks, each with its own
+implementer and its own scoped review.
+
+Every remaining mutable cross-module global is now a property on an owning
+state object — `player.px`, not `getPx()/setPx()` — because an ES module's
+`let` export is read-only to importers while an object's properties are not.
+Twelve state modules were created (`ShakeState`, `SaveGame`, `Heads`,
+`PianoState`, `Projectiles`, `AmbienceState`, `Game`, `WeaponRuntime`,
+`Renderer`, `WorldState`, `PlayerState`, `State`), and Task 11 converted
+`src/player/Input.ts`'s fourteen getter/setter pairs to the same shape, so the
+codebase has one pattern rather than two. `legacy.js` burned down 1633 → 1616;
+it only drops 17 lines because most of the work was rewriting ~700 call sites,
+not deleting code.
+
+Verified empty at the end: a corrected inventory script reports zero migrated
+globals still declared in `legacy.js`. The 19 remaining top-level declarations
+are all `const`, which the plan deliberately left out of scope — only `let`
+bindings cannot cross a module boundary.
+
+Three things worth carrying forward:
+
+1. **The plan's own inventory script was wrong**, and it took until Task 8 to
+   notice. It only read declaration names from lines *starting* with
+   `let`/`const`/`var`, so the continuation line of a two-line declaration was
+   invisible and its eight globals were reported as already migrated. They
+   were not. That became Task 8b. The plan document carries the full
+   correction; **fix the script before trusting it again.**
+2. **Task 5's implementer worked from a stale copy** and silently reverted
+   Task 4's already-approved migration while believing it was only adding
+   code. The test suite could not see it — a bare `let ambT` and
+   `ambienceState.ambT` behave identically at runtime — and only the scoped
+   diff review caught it. This is why every task gets a review even when the
+   suite is green.
+3. **Commit `8d916ce` (Task 1) was the one commit that never got a scoped
+   review**, because it was written inline before the subagent loop started
+   and Task 2's review range began at it. Both Important findings in the final
+   whole-branch review were in it. Work done outside the loop still needs the
+   loop's gate.
+
+**The immediate next action** is Plan 0E — systems: renderer, level loader,
+weapons, enemies and AI, player, interaction, projectiles, damage. Every one of
+them now has its state already extracted, so 0E moves *functions* only.
+`src/render/SceneRef.ts` disappears there, and the loose
+`Record<string, unknown>` element types in `WorldState`/`Projectiles`/`Heads`
+get their real interfaces.
 
 ## How fidelity is guarded
 
-Four mechanisms, and they are **not** interchangeable:
+Five mechanisms, and they are **not** interchangeable:
 
 - **`tests/behavior/`** — a recorder. Runs the reference's code and the ported
   module's side by side against instrumented canvas and WebAudio stubs, under a
@@ -117,12 +157,23 @@ Four mechanisms, and they are **not** interchangeable:
   **data** only. It was once written as the rule for code too, which was
   incoherent for code the port necessarily annotates.
 - **Ordinary unit tests** — for math over state that draws nothing.
-- **`tests/integration/wiring.test.ts`** — the newest, and the one every
-  other mechanism is blind to. The three above all test a *module* against
-  the reference; none of them tests whether `legacy.js` hands that module the
-  right values, because each supplies its own inputs. This one boots the real
-  `legacy.js`, starts a real level and runs real frames. Add to it whenever a
-  carve is parameterised — that is exactly when a new seam appears.
+- **`tests/integration/wiring.test.ts`** — the one the three above are blind
+  to. They all test a *module* against the reference; none tests whether
+  `legacy.js` hands that module the right values, because each supplies its
+  own inputs. This one boots the real `legacy.js`, starts a real level and
+  runs real frames. Add to it whenever a carve is parameterised — that is
+  exactly when a new seam appears.
+- **`tests/integration/trace.test.ts`** — a characterization recording, added
+  for Plan 0D. It plays 900 scripted frames of the real game and compares the
+  camera, a scene-graph hash and the HUD against a committed fixture. It is
+  what makes a mass call-site rewrite safe: it caught `px`/`pz` and `vx`/`vz`
+  transpositions, `sin`/`cos` in the heading, and constant drift in gravity
+  and shake decay. **Its fixture was recorded before Plan 0D's first
+  migration and must not be regenerated casually** — its whole value is being
+  a pre-migration recording. `WRITE_TRACE=1` exists for deliberate,
+  explained updates only. Note it plays the prologue, which has zero enemies,
+  so the entire combat-resolution path is unexercised by it; the file says so
+  at length.
 
 KNOWN-5 in `docs/known-issues.md` documents the recorder in full, including an
 honest list of what it still cannot reach.
