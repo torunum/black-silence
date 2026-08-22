@@ -1,0 +1,257 @@
+// @vitest-environment jsdom
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
+import { beforeAll, describe, expect, it } from "vitest";
+import { runTrace, type InputEvent, type TraceFrame } from "./gameplayTrace";
+import { S } from "../../src/core/State";
+import { MONOLOGUE } from "../../src/content/monologue";
+
+/**
+ * The combat trace — closes KNOWN-10. `trace.test.ts` plays the prologue,
+ * which loads with zero enemies (see that file's own header), so nothing
+ * on the combat-resolution path — `damagePlayer`, `damageEnemy`,
+ * `killEnemy`, `enemyTick`, `los`, and everything else Plan 0E's DAMAGE/
+ * DEATH and ENEMY AI carves move — is exercised by it at all. This file
+ * plays level 1 instead (`U z×4 f×2 j m×2 t g×2 s A`, 15 enemies), far
+ * enough into it that the player actually meets some of them.
+ *
+ * **This fixture was recorded before Plan 0E moved any system out of
+ * `src/legacy.js`.** Its entire value is being a pre-migration recording —
+ * a later task's refactor is correct only if this file still diverges
+ * nowhere from it. Regenerating it (`WRITE_TRACE=1`) to make a red build
+ * green destroys that value the same way it would for `trace.test.ts`;
+ * see that file's header for the full argument. Don't.
+ *
+ * ## Getting to level 1, and then to a fight
+ *
+ * `runTrace`'s `level` option (see `gameplayTrace.ts`) opens the chapter
+ * select screen and clicks level 1's row instead of `NEW GAME`. From there
+ * the player has to actually walk to the enemies — level 1's start room
+ * only connects to the rest of the level through a single 1-cell-wide
+ * corridor (`src/world/levels/level1.ts`'s `hall(g,9,30,9,24,1)`), gated by
+ * a closed door (`g[27][9]="+"`) that needs `interact()` (`KeyE`, while
+ * facing it within ~2.6 units) to open — nothing in `trace.test.ts`'s
+ * script needed to deal with either, since the prologue has neither. The
+ * script below turns to face the corridor with a movementX magnitude
+ * computed from `Input.ts`'s exact mouse sensitivity (`π/sens`, so the
+ * player ends up within microradians of due north — a residual as small as
+ * a naively-rounded turn amount, ~0.05 rad, is enough to drift the player
+ * into a dead corner over hundreds of frames of holding forward into a
+ * wall), then taps `KeyE` every 20 frames through the whole approach so
+ * the door opens whenever the player happens to be in range and facing it,
+ * without needing to know the exact frame that happens.
+ *
+ * Once through — measured live to land around frame 1400 — the script
+ * stops walking and turns the player into a standing turret: a slow
+ * rotation (computed the same way as the entry turn, in fractions of a
+ * full revolution) while firing on a tight cadence, so the aim sweeps past
+ * whatever bearing an approaching enemy is at, not just a narrow forward
+ * arc. That is what actually produces the fight — a script that only
+ * fires straight ahead while walking, the way `trace.test.ts`'s does,
+ * never lands a hit here, because the pistol's hitscan needs the shot
+ * within roughly half an enemy's width of dead-center (see `hitscan()`),
+ * far narrower than any small look-sweep while advancing.
+ *
+ * The run is cut off (`TOTAL_FRAMES`) shortly after the fight's one kill
+ * and well before the player's hp would otherwise reach 0 a few dozen
+ * frames later — this script is lethal in both directions, and a fixture
+ * of the player already dead is a worse net than one of them still
+ * fighting at 4 hp. `document.exitPointerLock` needed a stub in
+ * `gameplayTrace.ts` for this reason: it is called from `damagePlayer`'s
+ * death branch, which the zero-enemy prologue trace never reaches.
+ *
+ * ## The four observables, and one more `runTrace` cannot see
+ *
+ * The brief for this task named four things a degraded run would lose,
+ * all asserted below: `hud.hp` drops below `"HEALTH100"`, a frame where
+ * `scene.count` decreases, an `hud.subt` frame holding one of the
+ * `MONOLOGUE`'s `see_*` sighting lines, and more than one distinct
+ * `hud.wname`.
+ *
+ * A fifth is asserted directly against `S.kills` (imported live from
+ * `src/core/State`, the same module `legacy.js` mutates) rather than
+ * through a `TraceFrame` field. `killEnemy`'s `if(!e.summoned)S.kills++`
+ * has no effect on the camera, the scene graph, or any HUD element short
+ * of the level-end grade screen (`gradeOf()`), which this trace never
+ * reaches — so sabotaging just that increment is invisible to every field
+ * `runTrace` records, camera/hud/scene alike, and the fixture diff below
+ * would not catch it either (skipping an integer increment changes no
+ * timing and consumes no `Math.random()` call, so it perturbs nothing else
+ * downstream). Reading `S.kills` directly after the run is what the task
+ * brief's "widen what the trace records" instruction meant in practice for
+ * this one sabotage — see the task report for the sabotage run that
+ * demonstrated the need.
+ */
+
+const FIXTURE_DIR = join(__dirname, "__fixtures__");
+const FIXTURE = join(FIXTURE_DIR, "trace-level1.json");
+const WRITE = process.env.WRITE_TRACE === "1";
+
+const SENS = 0.0022; // src/player/Input.ts's mouse sensitivity at zoomLerp=0 (no scope equipped)
+const REV = (2 * Math.PI) / SENS; // one full revolution's worth of movementX
+
+/**
+ * 1420 + 11*22 + 15 (the last sweep shot's resolution), rounded up with a
+ * small margin: past the run's one kill, well short of the frame (~1700)
+ * where the player's hp would otherwise reach 0. See the module doc
+ * comment above for why this run is cut off here rather than played out.
+ */
+const TOTAL_FRAMES = 1680;
+
+function combatScript(): InputEvent[] {
+  const s: InputEvent[] = [
+    { frame: 2, kind: "pointerlock", locked: true },
+  ];
+  // Spawn yaw is PI (facing south, into the start room's own wall) — turn
+  // to face north, toward the corridor, in exactly pi/SENS worth of
+  // movementX so the residual is microradians rather than the ~0.05 rad a
+  // rounder number leaves (see the module doc comment for why that
+  // residual matters over hundreds of frames of holding forward).
+  for (let i = 0; i < 8; i++) {
+    s.push({ frame: 5 + i * 5, kind: "move", movementX: Math.PI / SENS / 8, movementY: 0 });
+  }
+  s.push({ frame: 50, kind: "key", type: "keydown", code: "KeyW" });
+  // A brief strafe toward the corridor's world-x — the start room is wide
+  // enough that walking due north from spawn misses the corridor entirely.
+  s.push({ frame: 52, kind: "key", type: "keydown", code: "KeyD" });
+  s.push({ frame: 100, kind: "key", type: "keyup", code: "KeyD" });
+  // Tap the level's one door every 20 frames through the whole approach —
+  // interact() is a no-op unless a door is within ~2.6 units and roughly
+  // in front, so this is safe to spam rather than timing precisely.
+  for (let f = 150; f <= 1500; f += 20) {
+    s.push({ frame: f, kind: "key", type: "keydown", code: "KeyE" });
+    s.push({ frame: f + 2, kind: "key", type: "keyup", code: "KeyE" });
+  }
+  // Approach-phase fire: this also supplies the small alternating look
+  // (+-60 movementX) that drifts the player sideways into the corridor's
+  // one-cell-wide doorway over the course of the walk — removing it (or
+  // changing its magnitude) changes where the player ends up, not just
+  // whether they fire.
+  for (let i = 0; i < 33; i++) {
+    const f = 400 + i * 30;
+    s.push({ frame: f, kind: "move", movementX: i % 2 === 0 ? 60 : -60, movementY: 0 });
+    s.push({ frame: f + 4, kind: "button", type: "mousedown", button: 0 });
+    s.push({ frame: f + 14, kind: "button", type: "mouseup", button: 0 });
+    if (i % 5 === 4) {
+      s.push({ frame: f + 20, kind: "key", type: "keydown", code: "KeyR" });
+      s.push({ frame: f + 22, kind: "key", type: "keyup", code: "KeyR" });
+    }
+  }
+  // Standing turret phase, from ~frame 1400 (measured live — see the
+  // module doc comment). Only the first 12 of a planned ~2.86-revolution
+  // sweep are actually emitted, since that already lands the run's kill;
+  // the denominator stays 130 rather than being recomputed for a shorter
+  // loop, which would change the per-step angle and retune the whole
+  // encounter's timing.
+  s.push({ frame: 1400, kind: "key", type: "keyup", code: "KeyW" });
+  const SWEEP_START = 1420, SWEEP_STEP = 22, SWEEP_STEPS_DENOM = 130, SWEEP_STEPS_USED = 12;
+  for (let i = 0; i < SWEEP_STEPS_USED; i++) {
+    const f = SWEEP_START + i * SWEEP_STEP;
+    s.push({ frame: f, kind: "move", movementX: (2.86 * REV) / SWEEP_STEPS_DENOM, movementY: 0 });
+    s.push({ frame: f + 3, kind: "button", type: "mousedown", button: 0 });
+    s.push({ frame: f + 15, kind: "button", type: "mouseup", button: 0 });
+    if (i % 6 === 5) {
+      s.push({ frame: f + 18, kind: "key", type: "keydown", code: "KeyR" });
+      s.push({ frame: f + 20, kind: "key", type: "keyup", code: "KeyR" });
+    }
+  }
+  return s;
+}
+
+const INPUT: readonly InputEvent[] = combatScript();
+
+/** Every `see_*` sighting line in the game, flattened — used to detect an
+ * enemy-sighting bark in a recorded `hud.subt` without hard-coding which
+ * enemy the script happens to meet first (that depends on the exact path
+ * taken, which is itself sensitive to the drift described above). */
+const SEE_LINES: string[] = Object.entries(MONOLOGUE)
+  .filter(([id]) => id.startsWith("see_"))
+  .flatMap(([, lines]) => lines);
+
+let trace: TraceFrame[];
+
+beforeAll(async () => {
+  // Level 1's grid cannot place an armour pickup: `EDEF["A"]` (the
+  // Mancubus) is checked before the item-letter map in legacy.js's
+  // loadLevel(), so every "A" cell spawns the enemy, never the +50 armour
+  // item that letter maps to — true of every level, not just this one.
+  // `loadLevel()` never resets `S.armor` either, so setting it here, before
+  // `runTrace` imports and boots `legacy.js`, is what makes `damagePlayer`'s
+  // armour-absorb branch (line 1241 in `src/legacy.js`) reachable at all —
+  // without it `S.armor` stays 0 for the whole run and that branch never
+  // executes, which is exactly what let sabotage 1 in this task's report
+  // pass unnoticed on the first attempt.
+  S.armor = 50;
+  trace = await runTrace({
+    seed: 20260815, frames: TOTAL_FRAMES, dtMs: 1000 / 60, input: INPUT, every: 10, level: 1,
+  });
+  if (WRITE) {
+    mkdirSync(FIXTURE_DIR, { recursive: true });
+    writeFileSync(FIXTURE, JSON.stringify(trace, null, 1) + "\n");
+  }
+}, 90_000);
+
+describe("the recorded run actually fights", () => {
+  it("records the frames it was asked for", () => {
+    expect(trace.length).toBe(TOTAL_FRAMES / 10);
+  });
+
+  it("the player took damage", () => {
+    expect(trace.some((f) => f.hud.hp !== "HEALTH100")).toBe(true);
+  });
+
+  it("something despawned mid-fight", () => {
+    let decreased = false;
+    for (let i = 1; i < trace.length; i++) {
+      if (trace[i].scene.count < trace[i - 1].scene.count) { decreased = true; break; }
+    }
+    expect(decreased).toBe(true);
+  });
+
+  it("an enemy spotted the player", () => {
+    expect(trace.some((f) => SEE_LINES.some((line) => f.hud.subt.includes(line)))).toBe(true);
+  });
+
+  it("the weapon state machine left idle", () => {
+    const wnames = new Set(trace.map((f) => f.hud.wname));
+    expect(wnames.size).toBeGreaterThan(1);
+    expect([...wnames].some((w) => w.includes("RELOADING"))).toBe(true);
+  });
+
+  it("an enemy actually died — not just took damage", () => {
+    // See the module doc comment: this is invisible to every field
+    // `runTrace` records (camera/hud/scene alike), so it is checked
+    // directly against the live state module instead.
+    expect(S.kills).toBeGreaterThan(0);
+  });
+});
+
+describe("the run matches the committed recording", () => {
+  it("diverges from the fixture nowhere", () => {
+    if (WRITE) {
+      expect(existsSync(FIXTURE)).toBe(true);
+      return; // just wrote it; nothing to compare against
+    }
+    expect(
+      existsSync(FIXTURE),
+      `${FIXTURE} is missing — generate it once with WRITE_TRACE=1 and commit it`,
+    ).toBe(true);
+
+    const expected = JSON.parse(readFileSync(FIXTURE, "utf8")) as TraceFrame[];
+    expect(trace.length).toBe(expected.length);
+
+    for (let i = 0; i < expected.length; i++) {
+      const a = trace[i], b = expected[i];
+      if (JSON.stringify(a) === JSON.stringify(b)) continue;
+      const what = a.camera.join() !== b.camera.join() ? "camera"
+        : JSON.stringify(a.hud) !== JSON.stringify(b.hud) ? "hud"
+        : "scene";
+      expect(
+        { frame: a.frame, what, actual: a[what as "camera"], expected: b[what as "camera"] },
+      ).toEqual(
+        { frame: b.frame, what, actual: b[what as "camera"], expected: b[what as "camera"] },
+      );
+    }
+    expect(trace).toEqual(expected);
+  });
+});
