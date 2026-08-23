@@ -1,11 +1,20 @@
 /**
- * Grid geometry constants — how big a map cell is, and how tall a wall is.
+ * Grid geometry constants — how big a map cell is, how tall a wall is, and
+ * the player's eye height above the floor.
  *
  * Split out of `src/legacy.js`'s `const CELL=2, WALLH=3.4, EYE=1.0;`
  * (originally one declaration, line 44; `reference/sonsurum.html` line
- * 213). `EYE` is untouched and stays in `legacy.js` — it is out of this
- * migration's scope (Plan 0E Tasks 7/9/10 read it) and neither constant
- * here is used by anything that reads `EYE`.
+ * 213). Task 3 moved `CELL`/`WALLH` here and left `EYE` behind as its own
+ * `const` in `legacy.js`, reasoning that only later tasks (7/9/10, the
+ * player-movement and enemy-AI code) read it. That reasoning missed a
+ * reader: Task 5's `loadLevel` also reads it, on level entry
+ * (`player.pyy=EYE+floorHeightAt(player.px,player.pz)`), and `loadLevel`
+ * moves to `src/world/LevelLoader.ts` in that same task. A bare `const` in
+ * `legacy.js` would have left `LevelLoader.ts` no way to reach it short of
+ * importing back from `legacy.js` — a cycle, since `legacy.js` already
+ * imports `LevelLoader.ts` for `loadLevel` itself — so `EYE` moves here
+ * too. `legacy.js`'s remaining readers (Tasks 7/9/10) now import it from
+ * here, the same way they already do for `CELL`/`WALLH`.
  *
  * This gets its own module rather than living in `src/world/Collision.ts`,
  * even though Collision is `CELL`'s first mover. Both constants have
@@ -19,3 +28,4 @@
  */
 export const CELL = 2;
 export const WALLH = 3.4;
+export const EYE = 1.0;

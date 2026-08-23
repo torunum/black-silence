@@ -1,0 +1,267 @@
+import * as THREE from "three";
+import { pick, rnd } from "../utils/math";
+import { LEVELS } from "./levels/index";
+import { ENEMY_DEFS as EDEF } from "../enemies/EnemyDefs";
+import { TEX } from "../render/ProcTextures";
+import { PX } from "../enemies/SpriteBaker";
+import { ITEMTEX } from "../render/ItemTextures";
+import { setScene } from "../render/SceneRef";
+import { renderState } from "../render/Renderer";
+import { addSprite, addBlob } from "../render/RenderCore";
+import { buildParticles } from "../fx/Particles";
+import { resetDecals } from "../fx/Decals";
+import { resetGibs } from "../fx/Gibs";
+import { headPool } from "../fx/Heads";
+import { projectiles } from "../fx/Projectiles";
+import { showMsg } from "../ui/HudMessages";
+import { say } from "../ui/Subtitles";
+import { input } from "../player/Input";
+import { player } from "../player/PlayerState";
+import { S } from "../core/State";
+import { CELL, WALLH, EYE } from "./Grid";
+import { floorHeightAt } from "./Collision";
+import { world } from "./WorldState";
+import type { WallSeg } from "./LevelBuilder";
+
+/**
+ * The level loader and its two spawners — `loadLevel` builds a level from
+ * its grid, `spawnEnemy`/`spawnProp` populate it. Moved verbatim from
+ * `src/legacy.js`'s "WORLD STATE + LEVEL LOADER" section (formerly lines
+ * 311-366 and 398-544; `reference/sonsurum.html` lines 2767-2822 and
+ * 2849-2946).
+ *
+ * Split from `src/world/Props.ts` (which holds `breakProp`/`explodeBarrel`,
+ * run during play when a prop takes lethal damage) because the two only
+ * share the `world.props` list as data, never a call: this file never calls
+ * `breakProp`/`explodeBarrel`, and neither of those calls back into this
+ * file. Two files matches how they run (build-time vs. play-time) and keeps
+ * both well under the 400-line gate.
+ *
+ * `alertSound` (formerly grouped with this section) moved early into
+ * `src/enemies/ai/Perception.ts`, ahead of Task 10's schedule, because
+ * `explodeBarrel` (`src/world/Props.ts`) needs it and neither function
+ * needed here calls it. See that file's doc comment.
+ *
+ * `loadLevel` calls `setScene(renderState.scene)` to mirror the new scene
+ * for the FX modules (`src/fx/Particles.ts`, `Decals.ts`, `Gibs.ts`), which
+ * still read it through `getScene()`. That mirror is not retired in this
+ * task — see `src/render/SceneRef.ts`'s doc comment and Plan 0E Task 12.
+ *
+ * `lt.style.opacity` takes strings here where the reference assigns
+ * numbers, the same adjustment `src/ui/HudMessages.ts` and
+ * `src/ui/Toasts.ts` made — `CSSStyleDeclaration` stringifies both to the
+ * same value.
+ *
+ * `world.wallSegs` is typed loosely (`Record<string, unknown>[]`) in
+ * WorldState.ts, per `src/world/Collision.ts`'s doc comment, which left
+ * settling its real element shape to this task. This module writes it
+ * (from `LevelBuilder.ts`'s own `WallSeg[]`) and reads it back in the same
+ * function, so both sides cast through that same `WallSeg` shape rather
+ * than changing WorldState.ts's declared field type, which other Plan 0E
+ * tasks (Collision.ts, and later ones) also read.
+ */
+
+export function spawnEnemy(ch: string, wx: number, wz: number, summoned?: boolean): Record<string, unknown> {
+  const d=EDEF[ch];
+  const elite=!d.boss&&!summoned&&Math.random()<.11;
+  const SZ=1.18;                       // overall sprite presence bump
+  const mul=elite?2:1;
+  const ew=d.w*(elite?1.15:1)*SZ, eh=d.h*(elite?1.15:1)*SZ;
+  const e={key:ch,name:d.name,x:wx,z:wz,hp:d.hp*mul,maxhp:d.hp*mul,
+    speed:d.sp*(elite?1.15:1),mel:d.mel,w:ew,h:eh,
+    pain:d.pain,kbRes:d.kbRes||0,boss:!!d.boss,priest:!!d.priest,stone:!!d.stone,
+    charge:!!d.charge,slam:!!d.slam,lunge:!!d.lunge,dodge:!!d.dodge,
+    scream:!!d.scream,toxic:!!d.toxic,range:d.range||0,plate:d.plate||0,
+    sp:addSprite(PX[ch].a,wx,wz,ew,eh),
+    blob:addBlob(wx,wz,ew*1.25),elite,summoned:!!summoned,
+    cool:0,hurt:0,stun:0,kx:0,kz:0,flung:0,flungT:0,
+    dead:false,gone:false,deathT:0,deathKind:0,deathDir:1,dropped:false,
+    dodgeT:rnd(.6,2),strafe:0,strafeDir:1,flank:(Math.random()<.5?1:-1)*rnd(.3,.6),
+    alertX:-1,alertZ:-1,aware:false,slow:1,animT:0,frame:0,r:d.boss?.8:.45,
+    screamT:0,lungeT:rnd(1,2),slamT:rnd(2,4),flingCD:rnd(3,6),
+    fy:floorHeightAt(wx,wz),
+    dormant:!!d.boss,phase:1,tpT:5,atkT:2.5,sumT:6,ringT:4,debT:3,chT:5,charging:0,cdx:0,cdz:0} as Record<string, unknown> & { sp: THREE.Sprite };
+  if(elite)(e.sp.material as THREE.SpriteMaterial).color.setHex(0xd8c878);
+  (world.enemies as Record<string, unknown>[]).push(e);
+  if(!summoned)S.enemiesTotal=(S.enemiesTotal||0)+1;
+  if(d.boss)world.bossRef=world.bossRef||e;
+  return e;}
+export function spawnProp(ch: string, wx: number, wz: number): void {
+  let m: THREE.Object3D,r,hgt,hp,explosive=false,kind=ch;
+  const wood=new THREE.MeshLambertMaterial({map:TEX.wood});
+  if(ch==="x"){m=new THREE.Mesh(new THREE.BoxGeometry(.85,.85,.85),wood);
+    m.position.set(wx,.43,wz);r=.55;hgt=.9;hp=22;}
+  else if(ch==="T"){m=new THREE.Group();
+    const top=new THREE.Mesh(new THREE.BoxGeometry(1.3,.1,.8),wood);top.position.y=.58;m.add(top);
+    for(const[lx,lz]of[[-.5,-.3],[.5,-.3],[-.5,.3],[.5,.3]]){
+      const leg=new THREE.Mesh(new THREE.BoxGeometry(.1,.58,.1),wood);
+      leg.position.set(lx,.29,lz);m.add(leg);}
+    m.position.set(wx,0,wz);r=.62;hgt=.7;hp=26;}
+  else if(ch==="C"){m=new THREE.Group();
+    const seat=new THREE.Mesh(new THREE.BoxGeometry(.5,.08,.5),wood);seat.position.y=.4;m.add(seat);
+    const back=new THREE.Mesh(new THREE.BoxGeometry(.5,.55,.07),wood);back.position.set(0,.68,-.22);m.add(back);
+    for(const[lx,lz]of[[-.2,-.2],[.2,-.2],[-.2,.2],[.2,.2]]){
+      const leg=new THREE.Mesh(new THREE.BoxGeometry(.07,.4,.07),wood);
+      leg.position.set(lx,.2,lz);m.add(leg);}
+    m.position.set(wx,0,wz);m.rotation.y=rnd(0,6);r=.4;hgt=.9;hp=10;}
+  else if(ch==="F"){m=new THREE.Mesh(new THREE.BoxGeometry(1.1,1.7,.4),wood);
+    m.position.set(wx,.85,wz);r=.6;hgt=1.7;hp=28;}
+  else if(ch==="V"){m=new THREE.Group();
+    const seat=new THREE.Mesh(new THREE.BoxGeometry(1.6,.09,.45),wood);seat.position.y=.42;m.add(seat);
+    const back=new THREE.Mesh(new THREE.BoxGeometry(1.6,.5,.08),wood);back.position.set(0,.7,-.2);m.add(back);
+    const l1=new THREE.Mesh(new THREE.BoxGeometry(.1,.42,.42),wood);l1.position.set(-.7,.21,0);m.add(l1);
+    const l2=new THREE.Mesh(new THREE.BoxGeometry(.1,.42,.42),wood);l2.position.set(.7,.21,0);m.add(l2);
+    m.position.set(wx,0,wz);r=.75;hgt=.95;hp=18;}
+  else{m=new THREE.Mesh(new THREE.CylinderGeometry(.42,.42,1.05,8),
+    new THREE.MeshLambertMaterial({map:TEX.barrel}));
+    m.position.set(wx,.525,wz);r=.48;hgt=1.1;hp=24;explosive=true;addBlob(wx,wz,1.1);}
+  (renderState.scene as THREE.Scene).add(m);
+  (world.props as Record<string, unknown>[]).push({m,x:wx,z:wz,r,hgt,hp,dead:false,explosive,kind,fuse:-1});}
+
+export function loadLevel(idx: number): void {
+  S.level=idx;
+  const Ldef=LEVELS[idx],L=Ldef.build();
+  world.grid=L.g;world.GW=L.W;world.GH=L.H;
+  world.heightMap=L.hmap||null;
+  world.wallSegs=(L.segs||[]) as unknown as Record<string, unknown>[];
+  renderState.scene=new THREE.Scene();
+  setScene(renderState.scene);
+  renderState.scene.background=new THREE.Color(Ldef.fog);
+  renderState.scene.fog=new THREE.FogExp2(Ldef.fog,Ldef.fogD*1.5);
+  renderState.ambLight=new THREE.AmbientLight(Ldef.amb,Ldef.ambI*0.42);renderState.scene.add(renderState.ambLight);
+  renderState.lamp=new THREE.PointLight(0xffb060,1.7,9,1.6);renderState.scene.add(renderState.lamp);
+  // a tighter hot core so the player is always in a warm pool that falls off to black
+  renderState.lampCore=new THREE.PointLight(0xffd890,1.1,4.5,2);renderState.scene.add(renderState.lampCore);
+  renderState.muzzleLight=new THREE.PointLight(0xffc878,0,14,1.4);renderState.scene.add(renderState.muzzleLight);
+  renderState.boomLight=new THREE.PointLight(0xff7830,0,20,1.4);renderState.scene.add(renderState.boomLight);
+  buildParticles();
+  resetDecals();resetGibs();
+  world.doors={};world.enemies=[];world.props=[];world.items=[];world.torches=[];world.candles=[];
+  world.poisonZones=[];world.rings=[];world.strikes=[];projectiles.nails=[];projectiles.orbs=[];headPool.heads=[];
+  world.exitPos=null;world.pianoPos=null;world.challenge=null;world.bossRef=null;world.cine=null;
+  S.dead=false;S.won=false;S.hp=100;
+  world.eventT=rnd(55,100);world.idleT=rnd(26,40);
+  player.spawnGuard=2.0;   // brief invulnerability on entry
+  S.kills=0;S.gibs=0;S.secrets=0;S.secretsTotal=0;S.shots=0;S.hitsLanded=0;
+  S.propsBroken=0;S.enemiesTotal=0;S.key=false;S.levelT0=performance.now();
+  const flesh=Ldef.flesh,hell=Ldef.hell,dungeon=Ldef.dungeon;
+  const wallTex=hell?TEX.hellWall:flesh?TEX.fleshWall:(dungeon?TEX.dungeonWall:TEX.churchWall);
+  const matWall=new THREE.MeshLambertMaterial({map:wallTex});
+  const matWin=new THREE.MeshBasicMaterial({map:TEX.window});
+  const wallGeo=new THREE.BoxGeometry(CELL,WALLH,CELL);
+  const pilGeo=new THREE.CylinderGeometry(.46,.55,WALLH,8);
+  const matPil=new THREE.MeshLambertMaterial({map:TEX.pillar});
+  for(let z=0;z<world.GH;z++)for(let x=0;x<world.GW;x++){
+    const ch=world.grid[z][x],wx=(x+.5)*CELL,wz=(z+.5)*CELL;
+    if(ch==="#"||ch==="W"){
+      let dx0=0,dz0=0,open=false;
+      for(const[dx,dz]of[[1,0],[-1,0],[0,1],[0,-1]]){const r=world.grid[z+dz];
+        if(r&&r[x+dx]&&"#W".indexOf(r[x+dx])<0){open=true;dx0=dx;dz0=dz;break;}}
+      if(!open)continue;
+      const m=new THREE.Mesh(wallGeo,matWall);m.position.set(wx,WALLH/2,wz);renderState.scene.add(m);
+      if(ch==="W"){
+        const gm=new THREE.Mesh(new THREE.PlaneGeometry(1.6,2.6),matWin);
+        gm.position.set(wx+dx0*(CELL/2+.02),WALLH*.56,wz+dz0*(CELL/2+.02));
+        gm.lookAt(wx+dx0*4,WALLH*.56,wz+dz0*4);renderState.scene.add(gm);
+        const col=pick([0x5a3a8e,0x3a5a9e,0x9e3a3a]);
+        const wl=new THREE.PointLight(col,1.1,9,1.5);
+        wl.position.set(wx+dx0*1.7,WALLH*.6,wz+dz0*1.7);renderState.scene.add(wl);
+        const cone=new THREE.Mesh(new THREE.ConeGeometry(1.2,WALLH-.6,8,1,true),
+          new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:.05,
+            side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending}));
+        cone.position.set(wx+dx0*1.7,(WALLH-.6)/2,wz+dz0*1.7);renderState.scene.add(cone);}}
+    else if(ch==="I"){
+      const m=new THREE.Mesh(pilGeo,matPil);m.position.set(wx,WALLH/2,wz);renderState.scene.add(m);}
+    else if(ch==="+"||ch==="D"||ch==="S"){
+      let mat;if(ch==="S"){mat=matWall;S.secretsTotal++;}
+      else mat=new THREE.MeshLambertMaterial({map:ch==="D"?TEX.doorLocked:(flesh?TEX.fleshDoor:TEX.door)});
+      const m=new THREE.Mesh(wallGeo,mat);m.position.set(wx,WALLH/2,wz);renderState.scene.add(m);
+      world.doors[x+","+z]={mesh:m,open:false,locked:ch==="D",secret:ch==="S",flesh:flesh&&ch!=="D"};}}
+  const floorTex=(hell?TEX.hellFloor:flesh?TEX.fleshFloor:(dungeon?TEX.dungeonFloor:TEX.churchFloor)).clone();
+  floorTex.needsUpdate=true;floorTex.repeat.set(world.GW,world.GH);
+  floorTex.wrapS=floorTex.wrapT=THREE.RepeatWrapping;
+  floorTex.magFilter=THREE.NearestFilter;floorTex.minFilter=THREE.NearestFilter;
+  const fm=new THREE.Mesh(new THREE.PlaneGeometry(world.GW*CELL,world.GH*CELL),
+    new THREE.MeshLambertMaterial({map:floorTex}));
+  fm.rotation.x=-Math.PI/2;fm.position.set(world.GW*CELL/2,0,world.GH*CELL/2);renderState.scene.add(fm);
+  const ceilTex=(hell?TEX.hellCeil:flesh?TEX.fleshCeil:TEX.ceil).clone();ceilTex.needsUpdate=true;ceilTex.repeat.set(world.GW,world.GH);
+  ceilTex.wrapS=ceilTex.wrapT=THREE.RepeatWrapping;
+  ceilTex.magFilter=THREE.NearestFilter;ceilTex.minFilter=THREE.NearestFilter;
+  const cm=new THREE.Mesh(new THREE.PlaneGeometry(world.GW*CELL,world.GH*CELL),
+    new THREE.MeshLambertMaterial({map:ceilTex}));
+  cm.rotation.x=Math.PI/2;cm.position.set(world.GW*CELL/2,WALLH,world.GH*CELL/2);renderState.scene.add(cm);
+  /* raised floor platforms (verticality) — a textured block per elevated cell */
+  if(world.heightMap){
+    const platTexTop=(hell?TEX.hellFloor:flesh?TEX.fleshFloor:(dungeon?TEX.dungeonFloor:TEX.churchFloor));
+    const platTexSide=hell?TEX.stair:flesh?TEX.fleshWall:TEX.stair;
+    const topMat=new THREE.MeshLambertMaterial({map:platTexTop});
+    const sideMat=new THREE.MeshLambertMaterial({map:platTexSide});
+    const pmats=[sideMat,sideMat,topMat,sideMat,sideMat,sideMat]; // box face order: +x,-x,+y,-y,+z,-z
+    for(let z=0;z<world.GH;z++)for(let x=0;x<world.GW;x++){
+      const hgt=world.heightMap[z]&&world.heightMap[z][x]||0;
+      if(hgt<=0)continue;
+      const wx=(x+.5)*CELL,wz=(z+.5)*CELL;
+      const bg=new THREE.BoxGeometry(CELL,hgt,CELL);
+      const bm=new THREE.Mesh(bg,pmats);
+      bm.position.set(wx,hgt/2,wz);renderState.scene.add(bm);}}
+  /* angled wall meshes from arbitrary segments — non-orthogonal Doom/Blood walls */
+  if(world.wallSegs.length){
+    const segMat=new THREE.MeshLambertMaterial({map:wallTex});
+    for(const s of world.wallSegs as unknown as WallSeg[]){
+      const len=Math.hypot(s.x2-s.x1,s.z2-s.z1);if(len<.01)continue;
+      const geo=new THREE.BoxGeometry(len,WALLH,0.18);
+      const m=new THREE.Mesh(geo,segMat);
+      m.position.set((s.x1+s.x2)/2,WALLH/2,(s.z1+s.z2)/2);
+      m.rotation.y=-Math.atan2(s.z2-s.z1,s.x2-s.x1);
+      renderState.scene.add(m);}}
+  for(let z=0;z<world.GH;z++)for(let x=0;x<world.GW;x++){
+    const ch=world.grid[z][x];
+    if(".#WI+DS".includes(ch))continue;
+    const wx=(x+.5)*CELL,wz=(z+.5)*CELL;
+    if(ch==="P"){player.px=wx;player.pz=wz;}
+    else if(ch==="X"){world.exitPos={x:wx,z:wz};
+      const ph=floorHeightAt(wx,wz);
+      const pad=new THREE.Mesh(new THREE.BoxGeometry(CELL*1.3,.06,CELL*1.3),
+        new THREE.MeshBasicMaterial({color:0x4a6b8a}));
+      pad.position.set(wx,ph+.04,wz);renderState.scene.add(pad);
+      const gl=new THREE.PointLight(0x4a6b8a,.9,6);gl.position.set(wx,ph+1,wz);renderState.scene.add(gl);}
+    else if(ch==="i"){
+      const pole=new THREE.Mesh(new THREE.CylinderGeometry(.06,.09,1.15,6),
+        new THREE.MeshLambertMaterial({color:0x1a160f}));
+      pole.position.set(wx,.575,wz);renderState.scene.add(pole);
+      const fl=addSprite(ITEMTEX.torch[0] as THREE.CanvasTexture,wx,wz,.45,.6,1.35);
+      const Lt=new THREE.PointLight(0xff9838,1.6,10,1.8);
+      Lt.position.set(wx,1.45,wz);renderState.scene.add(Lt);
+      world.torches.push({L:Lt,sp:fl,x:wx,z:wz,seed:Math.random()*99,fr:0});}
+    else if(ch==="l"){
+      const c2=addSprite(ITEMTEX.candle as THREE.CanvasTexture,wx,wz,.25,.3,.18);
+      world.candles.push({sp:c2,x:wx,z:wz,seed:Math.random()*99});}
+    else if(ch==="p"){world.pianoPos={x:wx,z:wz};
+      const body=new THREE.Mesh(new THREE.BoxGeometry(1.7,1.0,.95),
+        new THREE.MeshLambertMaterial({color:0x14100a}));
+      body.position.set(wx,.5,wz);renderState.scene.add(body);
+      const kb=new THREE.Mesh(new THREE.BoxGeometry(1.35,.06,.3),
+        new THREE.MeshLambertMaterial({color:0xcfc8b8}));
+      kb.position.set(wx,1.02,wz+.42);renderState.scene.add(kb);
+      world.props.push({m:body,x:wx,z:wz,r:.95,hgt:1.2,hp:1e9,dead:false,explosive:false,kind:"piano"});}
+    else if(ch==="Y"){world.challenge={x:wx,z:wz,state:0,spawned:[]};
+      const plate=new THREE.Mesh(new THREE.CircleGeometry(.9,10),
+        new THREE.MeshBasicMaterial({color:0x6a4ab8,transparent:true,opacity:.5}));
+      plate.rotation.x=-Math.PI/2;plate.position.set(wx,.02,wz);renderState.scene.add(plate);
+      const gl=new THREE.PointLight(0x6a4ab8,.7,5);gl.position.set(wx,.8,wz);renderState.scene.add(gl);
+      (world.challenge as Record<string, unknown>).plate=plate;(world.challenge as Record<string, unknown>).light=gl;}
+    else if(EDEF[ch])spawnEnemy(ch,wx,wz);
+    else if("xTCFVO".includes(ch))spawnProp(ch,wx,wz);
+    else{
+      const map2:Record<string,string>={h:"health",A:"armor",a:"bullets",b:"shells",o:"slugs",c:"crosses",K:"key",
+        "2":"w1","3":"w2","4":"w3","5":"w4","6":"w5","7":"w6","8":"w7","9":"nails","0":"souls"};
+      const k=map2[ch];if(!k)continue;
+      const tex=(k[0]==="w"?ITEMTEX.gun:ITEMTEX[k]) as THREE.CanvasTexture;
+      world.items.push({kind:k,x:wx,z:wz,sp:addSprite(tex,wx,wz,.55,.55,.5),bob:Math.random()*6});}
+    world.grid[z][x]=".";}
+  player.vx=player.vy=player.vz=0;player.pyy=EYE+floorHeightAt(player.px,player.pz);input.yaw=Math.PI;input.pitch=0;player.grounded=true;
+  const lt=document.getElementById("lvltitle") as HTMLElement;
+  lt.textContent=Ldef.name;lt.style.opacity="1";
+  setTimeout(()=>lt.style.opacity="0",5000);
+  showMsg(Ldef.name,3.4);
+  setTimeout(()=>say("lvl"+idx,true),1400);}
