@@ -132,7 +132,7 @@ and it holds here.
 
 | File | Owns | From |
 |---|---|---|
-| `src/core/Context.ts` | the service locator | Task 6 |
+| `src/core/Context.ts` | the service locator | Task 5 |
 | `src/world/Collision.ts` | `distToSeg segBlocked segsCrossRay floorHeightAt wallNormal solidAt collides` | Task 3 |
 | `src/render/RenderCore.ts` | `sizeRender addSprite addBlob` | Task 4 |
 | `src/world/LevelLoader.ts` | `loadLevel spawnEnemy spawnProp` | Task 5 |
@@ -145,7 +145,7 @@ and it holds here.
 | `src/enemies/Damage.ts` | `damageEnemy severLimb refreshSeverSprite dropAmmo` | Task 9 |
 | `src/enemies/Death.ts` | `killEnemy spawnHead headTick bossDeath openExit` | Task 9 |
 | `src/enemies/Boss.ts` | `wakeBoss roarFor cineTick priestTeleport priestThink` | Task 10 |
-| `src/enemies/ai/Perception.ts` | `los alertSound` | Task 10 |
+| `src/enemies/ai/Perception.ts` | `alertSound` (Task 5), `los` (Task 10) | Tasks 5, 10 |
 | `src/enemies/ai/Behaviors.ts` | `moveEnemy enemyTick` | Task 10 |
 | `src/enemies/ai/Attacks.ts` | `fireOrb throwFlesh spawnRing ringTick spawnStrike strikeTick poisonTick` | Task 10 |
 | `src/world/RandomEvents.ts` | `eventTick` | Task 11 |
@@ -445,36 +445,81 @@ prop is destroyed. They share the `props` list and nothing else. Two files keeps
 each under the size gate and matches how they are used — but read both before
 splitting and say in your report whether the split holds up.
 
-- [ ] **Step 2: `alertSound` does not belong here**
+- [ ] **Step 2: `alertSound` moves now, into `Perception.ts`, ahead of schedule**
 
-It is grouped with the loader in `legacy.js` but is a perception concern — enemy
-AI calls it. Leave it in `legacy.js`; Task 10 takes it into
-`src/enemies/ai/Perception.ts` alongside `los`. Note this in your report so the
-next task's implementer expects it.
+It is grouped with the loader in `legacy.js` but is a perception concern, and
+this plan originally left it for Task 10 to take into
+`src/enemies/ai/Perception.ts` alongside `los`. Measured before dispatch, that
+is the wrong call: **`explodeBarrel` calls it**, and `explodeBarrel` moves in
+this task. Leaving it behind would mean adding a `Context` entry for it — and
+`alertSound` needs neither the locator nor a cycle-break, because it is a
+four-line zero-dependency leaf that reads `world.enemies` and writes
+`e.alertX`/`e.alertZ` and calls nothing at all.
 
-- [ ] **Step 3: Confirm `loadLevel` has no unmoved dependencies — it does not need `Context`**
+So create `src/enemies/ai/Perception.ts` here with `alertSound` in it, and
+import it directly from `Props.ts`. Task 10 adds `los` to the same file. This
+follows the plan's own rule — never add a `Context` field a task does not
+need — and its leaves-first principle.
 
-An earlier draft of this plan created `src/core/Context.ts` here, on the
-grounds that `loadLevel` calls `buildPiano`, which stays in `legacy.js` all
-plan. **That was wrong, twice.** Measured before dispatch: `loadLevel` never
-calls `buildPiano` — `startGame` does (Plan 0F's territory) — and the only
-things `loadLevel` calls that live outside its own section are `showMsg` and
-`say`, which Plan 0C already made modules (`src/ui/HudMessages.ts`,
-`src/ui/Subtitles.ts`). Everything else it touches (`setScene`,
-`buildParticles`, `resetDecals`, `resetGibs`, `addSprite`) is already a module
-too.
+There are seven `alertSound` call sites across `legacy.js` (in the weapon
+fire path, damage, interaction and this task's own `explodeBarrel`); the ones
+outside this task become imports.
 
-So this task imports directly and creates no service locator. Verify that
-yourself rather than taking it on trust: list every call `loadLevel` makes to
-something outside the six functions you are moving, and confirm each one
-resolves to an existing module. Put the list in your report. If you find one
-that does not, stop and report NEEDS_CONTEXT — that would mean the measurement
-above is stale and `Context` has to be born here after all.
+- [ ] **Step 3: Create `Context` — `explodeBarrel` is what needs it**
 
-**The rule, so this stops being guessed:** `Context` is created by whichever
-task is first to call code that has not moved yet. Measured, that is **Task
-6** — `fire`/`hitscan` call `damageEnemy` (three sites, moves in Task 9) and
-`alertSound` (two sites, moves in Task 10).
+This plan guessed twice about where the service locator is born, and both
+guesses were wrong. It first put it in a standalone Task 2 (withdrawn: nothing
+imported it for three tasks). It then justified creating it here because
+`loadLevel` calls `buildPiano` — **it does not**; `startGame` does, and that
+stays in `legacy.js` for Plan 0F. `loadLevel`'s only calls outside its own
+section are `showMsg` and `say`, both already modules since Plan 0C.
+
+Measured properly, across all six functions this task moves, exactly one has
+unmoved dependencies: **`explodeBarrel`**, which calls `damagePlayer` (moves in
+Task 7) and `damageEnemy` (moves in Task 9). Everything else —
+`spawnEnemy`, `spawnProp`, `breakProp`, `alertSound`, `loadLevel` — calls
+nothing that has not already moved.
+
+So create `src/core/Context.ts` with exactly those two entries:
+
+```ts
+/**
+ * The service locator, and deliberate debt.
+ *
+ * Plan 0E moves functions, and two situations make a direct import
+ * impossible. Some pairs call each other **both ways** — enemy AI damages the
+ * player and the player queries enemies — which `madge --circular` forbids.
+ * And a system that has already moved sometimes has to call one that has not:
+ * this module is born in the level-loader task because `explodeBarrel` calls
+ * `damagePlayer` and `damageEnemy`, neither of which becomes a module until
+ * Tasks 7 and 9.
+ *
+ * Each entry is registered by whoever owns the function *at the time*: today
+ * `legacy.js` registers both, and when Tasks 7 and 9 extract them,
+ * `Player.ts` and `Damage.ts` register them instead — and no call site
+ * changes. That is the property that lets the remaining tasks land in order
+ * without rewriting each other's call sites.
+ *
+ * This is NOT the end state. `docs/known-issues.md` KNOWN-2 tracks it: the
+ * long-term rule is that systems talk over `core/Events.ts` and never reach
+ * into each other, and each phase after this one migrates the systems it
+ * touches. By the end of Phase 5 this should hold the renderer and the audio
+ * engine and nothing else. It is written down as debt rather than hidden.
+ */
+export const ctx: {
+  damagePlayer?: (d: number, silent?: boolean) => void;
+  damageEnemy?: (e: unknown, dmg: number, info?: unknown) => void;
+} = {};
+```
+
+The two real signatures are `damagePlayer(d,silent)` and
+`damageEnemy(e,dmg,info)` — confirm both by reading them before you type the
+type. Register them from `legacy.js` at module scope and call them as
+`ctx.damagePlayer?.(...)` / `ctx.damageEnemy?.(...)` from `Props.ts`.
+
+**Never add a `Context` field a task does not need.** Decision 2's rule — an
+abstraction with no user is a defect — applies to individual fields as much as
+to whole modules. Two entries, no more.
 
 - [ ] **Step 4: `setScene` and the SceneRef mirror**
 
@@ -527,58 +572,18 @@ ignores hit-stop and pause and survives level unload — but that is **Plan 0F's
 hardening step, not this one**. Move the call verbatim. Do not "fix" it here;
 KNOWN-3 already tracks it.
 
-- [ ] **Step 3: Create `Context` — this task is its first real consumer**
+- [ ] **Step 3: Add your own `Context` entries — the module already exists**
 
-Measured before dispatch: your functions call two things that have not moved
-and will not move in this task — `damageEnemy` (three sites, moves in Task 9)
-and `alertSound` (two sites, moves in Task 10). Those are the first calls in
-the whole plan that cross from a moved module into code still sitting in
-`legacy.js`, which is exactly what the service locator exists for. Tasks 3, 4
-and 5 needed none, which is why it is born here and not earlier.
+Task 5 created `src/core/Context.ts` for `explodeBarrel`'s two unmoved calls.
+Your functions need it too: `fire`/`hitscan` call `damageEnemy` (three sites,
+already a `ctx` entry from Task 5 — reuse it, do not add a second) and
+`alertSound` (two sites, which Task 5 moved early into
+`src/enemies/ai/Perception.ts` — **import it directly**, it needs no locator).
 
-Create `src/core/Context.ts`:
-
-```ts
-/**
- * The service locator, and deliberate debt.
- *
- * Plan 0E moves functions, and two situations make a direct import
- * impossible. Some pairs call each other **both ways** — enemy AI damages the
- * player and the player queries enemies — which `madge --circular` forbids as
- * an import cycle. And a system that has already moved sometimes has to call
- * one that has not: this module is created by the weapons task because
- * `hitscan` calls `damageEnemy`, which does not become a module until Task 9.
- *
- * Systems register here and reach each other through this object rather than
- * importing each other. The binding never changes; its fields do — the same
- * property-not-`let` reason every state object in Plan 0D exists.
- *
- * Each entry is registered by whoever owns the function *at the time*: today
- * `legacy.js` registers `damageEnemy`, and when Task 9 extracts it,
- * `Damage.ts` registers it instead — and no call site changes. That is the
- * property that lets the tasks land in any order.
- *
- * This is NOT the end state. `docs/known-issues.md` KNOWN-2 tracks it: the
- * long-term rule is that systems talk over `core/Events.ts` and never reach
- * into each other, and each phase after this one migrates the systems it
- * touches. By the end of Phase 5 this should hold the renderer and the audio
- * engine and nothing else. It is written down as debt rather than hidden.
- */
-export const ctx: {
-  damageEnemy?: (e: unknown, dmg: number, info?: unknown) => void;
-  alertSound?: (x: number, z: number, radius: number) => void;
-} = {};
-```
-
-Register both from `legacy.js` at module scope, and call them as
-`ctx.damageEnemy?.(...)` / `ctx.alertSound?.(...)` from the new modules.
-Confirm the real signatures by reading the two functions before you type the
-type — the ones above are from a quick read and are the thing most likely to
-be slightly wrong.
-
-**Never add a `Context` field a task does not need.** Decision 2's rule — an
-abstraction with no user is a defect — applies to individual fields as much as
-to whole modules.
+So this task likely adds *no* new `Context` fields at all. Verify that by
+listing every call your moved functions make to something still in
+`legacy.js`, and add an entry only for what that list actually contains. If it
+is empty, say so — that is the good outcome, not a missed step.
 
 - [ ] **Step 4: Run the gate and commit**
 
@@ -736,10 +741,11 @@ large. Measure it first; if `Behaviors.ts` would exceed 400 lines, split
 `enemyTick`'s per-archetype branches rather than letting the gate fail at commit
 time.
 
-- [ ] **Step 2: `alertSound` arrives from the level loader section**
+- [ ] **Step 2: `Perception.ts` already exists — add `los` to it**
 
-Task 5 deliberately left it in `legacy.js`. It belongs with `los` in
-`Perception.ts`.
+Task 5 created it early with `alertSound`, because `explodeBarrel` needed it
+and it is a zero-dependency leaf. Add `los` alongside; do not create a second
+file.
 
 - [ ] **Step 3: Move the four files one at a time, testing between each**
 
