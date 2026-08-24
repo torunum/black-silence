@@ -36,7 +36,14 @@ import { world } from "./WorldState";
  * modules that have already moved.
  */
 
-interface Prop {
+/**
+ * Exported so Task 6's `WeaponState.ts` (`doKick`) and `Hitscan.ts`
+ * (`hitscan`, `crossExplode`) can cast `world.props` to a shape that
+ * satisfies `breakProp`/`explodeBarrel`'s parameter, instead of each
+ * defining its own ad hoc prop shape — the same "import it, don't
+ * redefine it" call `src/world/Collision.ts`'s `Seg`/`CollProp` made.
+ */
+export interface Prop {
   m: THREE.Object3D;
   x: number;
   z: number;
