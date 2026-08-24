@@ -43,14 +43,16 @@ import { solidAt, segBlocked, segsCrossRay, floorHeightAt, wallNormal, collides 
 import { loadLevel, spawnEnemy, spawnProp } from "./world/LevelLoader";
 import { breakProp, explodeBarrel } from "./world/Props";
 import { alertSound } from "./enemies/ai/Perception";
+import { damageEnemy } from "./enemies/Damage";
+import { dropAmmo, headTick } from "./enemies/Death";
 import { requestSwitch, startReload, weaponTick, doKick, WEAPONS, EQUIP_T, UNEQUIP_T } from "./weapons/WeaponState";
 import { crossExplode } from "./weapons/Hitscan";
 // Renamed on import: `ctx` is already bound above to AudioEngine's audio-context
 // accessor (`ctx()`, two call sites now that footstep's third moved to
 // Player.ts with Task 7). This is Context.ts's service locator — see its
-// own doc comment — registered below for damageEnemy, endLevel and
-// openPiano, the entries Task 9 and Plan 0F still leave in legacy.js;
-// damagePlayer registers itself from Player.ts instead.
+// own doc comment — registered below for endLevel, openPiano, wakeBoss and
+// showWin, the entries this file still owns; damagePlayer and damageEnemy
+// each register themselves from Player.ts/Damage.ts instead.
 import { ctx as svcCtx } from "./core/Context";
 
 /* ============================================================
@@ -59,18 +61,23 @@ import { ctx as svcCtx } from "./core/Context";
    power kick · destructibles · playable piano · monologues
    ============================================================ */
 
-/* damagePlayer moved to src/player/Player.ts (Task 7), which registers
-   itself into this locator at its own module scope — no call site here
-   changed. damageEnemy still lives in legacy.js; Task 9 moves this half
-   the same way, registering it from Damage.ts instead. endLevel is a new
-   entry: playerTick (moved to Player.ts by Task 7) reaches it through this
-   locator because endLevel itself belongs to Plan 0F, not this plan, and
-   stays here for now. openPiano is Task 8's new entry: interact (moved to
-   src/player/Interact.ts) reaches it through this locator because
-   openPiano itself belongs to Plan 0F's playable piano, not this plan, and
-   stays here for now too. Function declarations hoist, so this can sit at
-   module scope ahead of any of their definitions. */
-svcCtx.damageEnemy=damageEnemy;svcCtx.endLevel=endLevel;svcCtx.openPiano=openPiano;
+/* damagePlayer moved to src/player/Player.ts (Task 7) and damageEnemy moved
+   to src/enemies/Damage.ts (Task 9); each registers itself into this
+   locator at its own module scope — no call site here changed. endLevel is
+   a new entry: playerTick (moved to Player.ts by Task 7) reaches it
+   through this locator because endLevel itself belongs to Plan 0F, not
+   this plan, and stays here for now. openPiano is Task 8's new entry:
+   interact (moved to src/player/Interact.ts) reaches it through this
+   locator because openPiano itself belongs to Plan 0F's playable piano,
+   not this plan, and stays here for now too. wakeBoss and showWin are
+   Task 9's two new entries, registered the other way around from the
+   three above: wakeBoss and showWin themselves still live here (wakeBoss
+   is boss-brain code that moves in Task 10; showWin belongs to Plan 0F's
+   win screen), and damageEnemy (now in Damage.ts) and bossDeath (now in
+   Death.ts) reach them through this locator instead. Function
+   declarations hoist, so this can sit at module scope ahead of any of
+   their definitions. */
+svcCtx.endLevel=endLevel;svcCtx.openPiano=openPiano;svcCtx.wakeBoss=wakeBoss;svcCtx.showWin=showWin;
 
 /* Input lives in src/player/Input.ts; its listeners are already registered
    (at that module's scope, as in the reference). This hands it the gameplay
@@ -111,202 +118,6 @@ function vitalsAudio(dt){
 /* ============================================================
    DAMAGE / DEATH
    ============================================================ */
-function damageEnemy(e,dmg,info){
-  info=info||{};
-  if(e.dead)return;
-  /* Hexen Centaur/Slaughtaur shield — blocks most frontal fire */
-  if(e.shield&&!info.explosive&&info.dir){
-    // facing roughly toward the shot source = blocked
-    const toP=Math.atan2(player.px-e.x,player.pz-e.z);
-    const shotDir=Math.atan2(-info.dir.x,-info.dir.z);
-    let d=Math.abs(((toP-shotDir+Math.PI)%(2*Math.PI))-Math.PI);
-    if(d<1.0){dmg*=0.25;bang(.04,.3,3000,800);sparks(info.hx||e.x,info.hy||e.h*.6,info.hz||e.z,4);}
-  }
-  if(e.plate>0&&!info.explosive){
-    e.plate-=dmg;
-    bang(.05,.32,2800,700);
-    e.stun=Math.max(e.stun,.08);
-    if(e.plate<=0){
-      spawnGibs(e.x,e.h*.7,e.z,4,3.4,true);
-      bang(.15,.35,900);showMsg("ARMOR SHATTERED");
-      e.sp.material.color.setHex(0x8a9650);}
-    return;}
-  e.hp-=dmg;
-  e.hurt=.12;e.sp.material.color.setHex(0xff8866);
-  pain(clamp(e.pain*.35,70,360),.08+Math.random()*.04);
-  const res=1-(e.kbRes||0);
-  const kb=(info.explosive?7:(info.wIdx===1?5:info.wIdx===0?2.4:info.wIdx===4?6:info.wIdx===-1?0:1.1))*res;
-  if(info.dir){e.kx+=info.dir.x*kb;e.kz+=info.dir.z*kb;}
-  e.stun=Math.max(e.stun,(info.explosive?.5:(info.wIdx===1?.35:info.wIdx===4?.45:info.wIdx===0?.2:.08))*res+.02);
-  if(info.leg&&!e.boss)e.slow=Math.min(e.slow,.6);
-  if(e.boss&&e.dormant)wakeBoss(e);
-  /* DISMEMBERMENT while still alive — big hits to a limb tear it off */
-  if(!e.boss&&e.plate<=0&&PX[e.key].regions&&e.hp>0){
-    e.sever=e.sever||{};
-    const heavy=info.wIdx===1||info.wIdx===4||info.wIdx===0||info.explosive; // shotgun/sniper/pistol/boom
-    const big=dmg>=22;
-    if(info.arm&&big&&(heavy||Math.random()<.5)){
-      const side=info.armSide;
-      if(side==="L"&&!e.sever.lArm){e.sever.lArm=true;severLimb(e,"arm",info);}
-      else if(side==="R"&&!e.sever.rArm){e.sever.rArm=true;severLimb(e,"arm",info);}}
-    else if(info.leg&&big&&(heavy||Math.random()<.45)&&!e.sever.legs){
-      e.sever.legs=true;severLimb(e,"legs",info);}
-    refreshSeverSprite(e);}
-  if(e.hp<=0)killEnemy(e,dmg,info);}
-/* pick the right dismembered texture for the enemy's current sever state */
-function refreshSeverSprite(e){
-  const P=PX[e.key],s=e.sever||{};
-  let key=null;
-  if(s.legs)key="noLegs";
-  if(s.lArm)key="noLArm";
-  if(s.rArm)key="noRArm";
-  if(s.lArm&&s.rArm)key="gibbed";
-  if(!key)return;
-  e.severKey=key;
-  e.sp.material.map=P[key]||P.a;e.sp.material.needsUpdate=true;}
-/* spawn a flying chunk for a torn-off limb + a wet sound */
-function severLimb(e,type,info){
-  const y=type==="legs"?e.h*.25:e.h*.55;
-  const n=type==="legs"?5:4;
-  spawnGibs(e.x,y,e.z,n,3.2);
-  blood(e.x,y,e.z,12,2.2);
-  addPool(e.x,e.z,rnd(.3,.5));
-  gurgle(.25,.4);
-  if(info&&info.dir){ // throw a big chunk in the shot direction
-    spawnGibChunk(e.x,y,e.z,info.dir.x,info.dir.z);}
-  showMsg(type==="legs"?"LEGS BLOWN OFF":"LIMB SEVERED");}
-function killEnemy(e,finalDmg,info){
-  e.dead=true;
-  if(!e.summoned)S.kills++;
-  S.totKills++;
-  e.blob.scale.setScalar(1.6);
-  /* Afrit death explosion */
-  if(e.key==="q"){
-    fireP(e.x,e.fy?e.fy+1:1,e.z,26);sparks(e.x,1,e.z,16);boom(.8);
-    renderState.boomLight.position.set(e.x,1.2,e.z);renderState.boomLight.intensity=3.5;renderState.boomLight.color.setHex(0xff7830);
-    const pd=Math.hypot(player.px-e.x,player.pz-e.z);
-    if(pd<3.5&&Math.abs((e.fy||0)-(player.pyy-EYE))<2)damagePlayer(28*(1-pd/3.5));
-    for(const o of world.enemies){if(o.dead||o===e)continue;
-      if(Math.hypot(o.x-e.x,o.z-e.z)<3)o.hp-=30;}}
-  if(info.wIdx===-1){S.kickK=(S.kickK||0)+1;
-    if(S.kickK===3)ach(ACHIEVEMENTS.boot,S.ach);}
-  if(S.totKills===1)ach(ACHIEVEMENTS.first,S.ach);
-  if(S.totKills===60)ach(ACHIEVEMENTS.sixty,S.ach);
-  alertSound(e.x,e.z,10);
-  if(e.toxic){world.poisonZones.push({x:e.x,z:e.z,r:1.8,t:4.5});}
-  if(e.boss){bossDeath(e);return;}
-  const overkill=info.explosive||(-e.hp>22)||(info.wIdx===1&&info.dist<4.5);
-  if(overkill){
-    S.gibs++;S.totGibs++;
-    e.gone=true;renderState.scene.remove(e.sp);renderState.scene.remove(e.blob);
-    spawnGibs(e.x,e.h*.6,e.z,12,4.5);
-    addPool(e.x,e.z,rnd(.8,1.2));
-    shake(.22);screenShake.hitStop=Math.max(screenShake.hitStop,.045);
-    bang(.2,.45,800);gurgle(.45,.5);
-    if(Math.random()<.4)say("gib");
-    if(S.totGibs===10)ach(ACHIEVEMENTS.organ,S.ach);
-    if(Math.random()<.35)dropAmmo(e.x,e.z);
-    return;}
-  deathCry(clamp(e.pain*.3,42,200));
-  e.deathT=0;
-  if(info.head&&PX[e.key].head>0){
-    e.deathKind=2;
-    e.sp.material.map=(PX[e.key].noHead)||PX[e.key].hl;e.sp.material.needsUpdate=true;
-    blood(e.x,e.h,e.z,22,2.8);
-    spawnGibs(e.x,e.h,e.z,3,3.2);
-    spawnHead(e,info);            // <-- the head pops off and can be kicked
-    gurgle(.32,.45);shake(.16);
-    showMsg("DECAPITATED");
-    if(!S.beheads)S.beheads=0;
-    if(++S.beheads===5)ach(ACHIEVEMENTS.behead,S.ach);
-  } else e.deathKind=1;
-  e.deathDir=Math.random()<.7?1:-1;
-  if(info.dir){e.kx+=info.dir.x*2.5;e.kz+=info.dir.z*2.5;}
-  addPool(e.x,e.z,rnd(.6,1));}
-/* a severed head: a small sprite that arcs off the body, lands, and can be kicked */
-function spawnHead(e,info){
-  const tex=PX[e.key].a;
-  const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true}));
-  const sz=Math.max(.34,e.w*.34);
-  sp.scale.set(sz,sz,1);
-  sp.position.set(e.x,e.h*.92,e.z);
-  renderState.scene.add(sp);
-  const dx=info&&info.dir?info.dir.x:rnd(-1,1),dz=info&&info.dir?info.dir.z:rnd(-1,1);
-  headPool.heads.push({sp,x:e.x,y:e.h*.92,z:e.z,
-    vx:dx*rnd(2,4)+rnd(-1,1),vy:rnd(3.5,5.5),vz:dz*rnd(2,4)+rnd(-1,1),
-    spin:rnd(-8,8),rest:false,life:30,sz});}
-function headTick(dt){
-  for(let i=headPool.heads.length-1;i>=0;i--){const h=headPool.heads[i];
-    h.life-=dt;
-    if(!h.rest){
-      h.vy-=15*dt;
-      h.x+=h.vx*dt;h.y+=h.vy*dt;h.z+=h.vz*dt;
-      h.sp.material.rotation+=h.spin*dt;
-      if(solidAt(h.x,h.z)){h.vx*=-.4;h.vz*=-.4;h.x-=h.vx*dt;h.z-=h.vz*dt;}
-      if(h.y<=h.sz*.5){h.y=h.sz*.5;
-        if(Math.abs(h.vy)>1.3){h.vy*=-.42;h.vx*=.6;h.vz*=.6;h.spin*=.6;
-          if(Math.random()<.6)blood(h.x,h.y,h.z,3,1.2);
-          if(Math.random()<.5)addPool(h.x,h.z,rnd(.2,.35));
-          gurgle(.1,.18);}
-        else{h.vy=0;h.vx*=.7;h.vz*=.7;h.spin*=.7;
-          if(Math.abs(h.vx)<.2&&Math.abs(h.vz)<.2){h.rest=true;h.spin=0;}}}}
-    // player kick: walk into it (or kick action) to punt it
-    const pd=Math.hypot(h.x-player.px,h.z-player.pz);
-    if(pd<.7){
-      const a=Math.atan2(h.x-player.px,h.z-player.pz);
-      const force=weaponRuntime.kickAnim>0?9:3.4;
-      h.vx=Math.sin(a)*force;h.vz=Math.cos(a)*force;h.vy=weaponRuntime.kickAnim>0?5:2.2;
-      h.spin=rnd(-12,12);h.rest=false;
-      if(weaponRuntime.kickAnim>0){bang(.08,.3,500);blood(h.x,h.y,h.z,4,1.4);}}
-    h.sp.position.set(h.x,h.y,h.z);
-    if(h.life<=0){renderState.scene.remove(h.sp);headPool.heads.splice(i,1);}}}
-function dropAmmo(x,z){
-  const k=pick(["bullets","shells","bullets"]);
-  world.items.push({kind:k,x,z,sp:addSprite(ITEMTEX[k],x,z,.55,.55,.5),bob:0});}
-function bossDeath(e){
-  stopBossMusic();
-  shake(.7);screenShake.hitStop=Math.max(screenShake.hitStop,.12);
-  bang(.6,.7,400);blip(50,1.4,"sawtooth",.2,28,true);
-  spawnGibs(e.x,e.h*.6,e.z,10,5,e.stone);
-  addPool(e.x,e.z,1.8);
-  e.deathKind=1;e.deathT=0;e.deathDir=Math.random()<.5?1:-1;
-  say("boss_dead",true);
-  if(e.key==="E"){ach(ACHIEVEMENTS.exec,S.ach);
-    showMsg("THE EXECUTIONER FALLS — TAKE THE KEY",4);}
-  if(e.key==="U"){ach(ACHIEVEMENTS.guard,S.ach);
-    showMsg("THE GUARDIAN CRUMBLES",3.5);}
-  if(e.key==="Q"){ach(ACHIEVEMENTS.priest,S.ach);
-    showMsg("THE PRIEST IS SILENCED — A STAIR OPENS DOWNWARD",4.5);
-    openExit();}
-  if(e.key==="Z"){ach(ACHIEVEMENTS.sovereign,S.ach);
-    showMsg("THE SOVEREIGN IS UNMADE — A WAY OPENS",4.5);
-    openExit();}
-  if(e.key==="N"){ach(ACHIEVEMENTS.digger,S.ach);
-    showMsg("THE GRAVEDIGGER LIES STILL — A DRAIN YAWNS OPEN",4.5);
-    openExit();}
-  if(e.key==="H"){ach(ACHIEVEMENTS.leviathan,S.ach);
-    showMsg("THE LEVIATHAN COMES APART — A SERVICE LIFT GRINDS OPEN",4.5);
-    openExit();}
-  if(e.key==="V"){ach(ACHIEVEMENTS.foreman,S.ach);
-    showMsg("THE FOREMAN GOES DARK — A WET TUNNEL OPENS BELOW",4.5);
-    openExit();}
-  if(e.key==="G"){ach(ACHIEVEMENTS.heart,S.ach);
-    showMsg("THE HEART STOPS — AND SO DOES EVERYTHING",4.5);
-    setTimeout(()=>showWin(),2800);}}
-function openExit(){
-  if(world.exitPos)return;
-  // place exit on a guaranteed-open tile in the south processional area
-  const cands=[[16,16],[16,15],[15,16],[17,16],[16,17]];
-  let gx=16,gz=16;
-  for(const[cx,cz] of cands){
-    const wx=(cx+.5)*CELL,wz=(cz+.5)*CELL;
-    if(!solidAt(wx,wz)){gx=cx;gz=cz;break;}}
-  world.exitPos={x:(gx+.5)*CELL,z:(gz+.5)*CELL};
-  const pad=new THREE.Mesh(new THREE.BoxGeometry(CELL*1.3,.06,CELL*1.3),
-    new THREE.MeshBasicMaterial({color:0x4a6b8a}));
-  pad.position.set(world.exitPos.x,.03,world.exitPos.z);renderState.scene.add(pad);
-  const gl=new THREE.PointLight(0x4a6b8a,1.1,8);gl.position.set(world.exitPos.x,1,world.exitPos.z);renderState.scene.add(gl);
-  blip(120,.7,"sine",.09,90,true);growl(70,.4,.2,true);}
 function wakeBoss(e){
   if(!e.dormant)return;
   e.dormant=false;

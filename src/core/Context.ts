@@ -26,4 +26,6 @@ export const ctx: {
   damageEnemy?: (e: unknown, dmg: number, info?: unknown) => void;
   endLevel?: () => void;
   openPiano?: () => void;
+  wakeBoss?: (e: unknown) => void;
+  showWin?: () => void;
 } = {};
