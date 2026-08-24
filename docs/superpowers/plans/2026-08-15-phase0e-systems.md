@@ -143,7 +143,7 @@ and it holds here.
 | `src/player/Interact.ts` | `interact itemsTick doorTick propTick torchTick` | Task 8 |
 | `src/fx/ProjectileTick.ts` | `projTick` | Task 8 |
 | `src/enemies/Damage.ts` | `damageEnemy severLimb refreshSeverSprite` | Task 9 |
-| `src/enemies/Death.ts` | `killEnemy spawnHead headTick bossDeath openExit` | Task 9 |
+| `src/enemies/Death.ts` | `killEnemy spawnHead headTick dropAmmo bossDeath openExit` | Task 9 |
 | `src/enemies/Boss.ts` | `wakeBoss roarFor cineTick priestTeleport priestThink` | Task 10 |
 | `src/enemies/ai/Perception.ts` | `alertSound` (Task 5), `los` (Task 10) | Tasks 5, 10 |
 | `src/enemies/ai/Locomotion.ts` | `moveEnemy` | Task 10 |
