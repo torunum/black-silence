@@ -34,6 +34,7 @@ import { keys, setInputHooks, overlayOpen, input } from "./player/Input";
 import { game } from "./core/Game";
 import { weaponRuntime } from "./weapons/WeaponRuntime";
 import { player } from "./player/PlayerState";
+import { damagePlayer, accelerate, footstep, playerTick } from "./player/Player";
 import { S } from "./core/State";
 import { CELL, WALLH, EYE } from "./world/Grid";
 import { solidAt, segBlocked, segsCrossRay, floorHeightAt, wallNormal, collides } from "./world/Collision";
@@ -43,9 +44,11 @@ import { alertSound } from "./enemies/ai/Perception";
 import { requestSwitch, startReload, weaponTick, doKick, WEAPONS, EQUIP_T, UNEQUIP_T } from "./weapons/WeaponState";
 import { crossExplode } from "./weapons/Hitscan";
 // Renamed on import: `ctx` is already bound above to AudioEngine's audio-context
-// accessor (`ctx()`, three call sites). This is Context.ts's service locator —
-// see its own doc comment — registered below for the two functions Props.ts
-// (`explodeBarrel`) needs to reach before Tasks 7/9 turn them into modules.
+// accessor (`ctx()`, two call sites now that footstep's third moved to
+// Player.ts with Task 7). This is Context.ts's service locator — see its
+// own doc comment — registered below for damageEnemy and endLevel, the
+// entries Task 9 and Plan 0F still leave in legacy.js; damagePlayer
+// registers itself from Player.ts instead.
 import { ctx as svcCtx } from "./core/Context";
 
 /* ============================================================
@@ -54,11 +57,15 @@ import { ctx as svcCtx } from "./core/Context";
    power kick · destructibles · playable piano · monologues
    ============================================================ */
 
-/* Registered here because legacy.js still owns damagePlayer/damageEnemy;
-   Tasks 7 and 9 move this registration to Player.ts/Damage.ts respectively
-   when they extract those functions. Function declarations hoist, so this
-   can sit at module scope ahead of either definition. */
-svcCtx.damagePlayer=damagePlayer;svcCtx.damageEnemy=damageEnemy;
+/* damagePlayer moved to src/player/Player.ts (Task 7), which registers
+   itself into this locator at its own module scope — no call site here
+   changed. damageEnemy still lives in legacy.js; Task 9 moves this half
+   the same way, registering it from Damage.ts instead. endLevel is a new
+   entry: playerTick (moved to Player.ts by Task 7) reaches it through this
+   locator because endLevel itself belongs to Plan 0F, not this plan, and
+   stays here for now. Function declarations hoist, so this can sit at
+   module scope ahead of either definition. */
+svcCtx.damageEnemy=damageEnemy;svcCtx.endLevel=endLevel;
 
 /* Input lives in src/player/Input.ts; its listeners are already registered
    (at that module's scope, as in the reference). This hands it the gameplay
@@ -721,104 +728,6 @@ function projTick(dt){
       if(o.flesh){blood(o.m.position.x,Math.max(.1,o.m.position.y),o.m.position.z,8,1.4);
         addPool(o.m.position.x,o.m.position.z,rnd(.2,.4));gurgle(.16,.25);}
       renderState.scene.remove(o.m);projectiles.orbs.splice(i,1);}}}
-
-/* ============================================================
-   PLAYER
-   ============================================================ */
-function damagePlayer(d,silent){
-  if(S.dead||S.won)return;
-  if(player.spawnGuard>0)return;   // can't be hurt during spawn protection
-  let dmg=d;
-  if(S.armor>0){const ab=Math.min(S.armor,dmg*.6);S.armor-=ab;dmg-=ab;}
-  S.hp-=dmg;
-  if(!silent){flashDmg(.45);shake(.3);screenBlood();
-    bang(.1,.3,700);blip(90,.2,"sawtooth",.12,40);}
-  if(S.hp<35&&Math.random()<.3)say("lowhp");
-  if(S.hp<=0){S.hp=0;S.dead=true;
-    stopBossMusic();
-    document.exitPointerLock();
-    document.getElementById("deadquip").textContent='ADEM: “'+pick(M.dead)+'”';
-    document.getElementById("dead").classList.remove("hidden");}}
-function accelerate(wx_,wz_,maxs,acc,dt){
-  const cur=player.vx*wx_+player.vz*wz_,add=maxs-cur;if(add<=0)return;
-  let a=acc*maxs*dt;if(a>add)a=add;player.vx+=wx_*a;player.vz+=wz_*a;}
-function footstep(sprinting){
-  if(!ctx())return;
-  const marble=S.level===1;
-  bang(.05,sprinting?.09:.06,marble?2400:700,marble?600:0);
-  if(marble)blip(rnd(800,1000),.05,"sine",.02);}
-function playerTick(dt){
-  if(S.dead||S.won||game.inputLock)return;
-  if(player.spawnGuard>0)player.spawnGuard-=dt;
-  let f=0,s2=0;
-  if(keys.KeyW)f++;if(keys.KeyS)f--;if(keys.KeyD)s2++;if(keys.KeyA)s2--;
-  const sin=Math.sin(input.yaw),cos=Math.cos(input.yaw);
-  let wx_=-sin*f+cos*s2,wz_=-cos*f-sin*s2;
-  const l=Math.hypot(wx_,wz_);if(l>0){wx_/=l;wz_/=l;}
-  const sprint=keys.ShiftLeft||keys.ShiftRight;
-  const fh=floorHeightAt(player.px,player.pz);          // ground height under the player
-  const standY=EYE+fh;
-  if(player.grounded){
-    const fr=Math.exp(-8*dt);player.vx*=fr;player.vz*=fr;
-    accelerate(wx_,wz_,sprint?10.5:7,9,dt);
-    if(keys.Space){player.vy=7.4;player.grounded=false;blip(140,.06,"sine",.04,90);}
-  }else accelerate(wx_,wz_,1.4,70,dt);
-  player.vy-=20*dt;player.pyy+=player.vy*dt;
-  if(player.pyy<=standY){if(!player.grounded){footstep(true);shake(.04);}player.pyy=standY;player.vy=0;player.grounded=true;}
-  let nx=player.px+player.vx*dt;
-  if(!collides(nx,player.pz)&&!(player.grounded&&floorHeightAt(nx,player.pz)-fh>1.2)){player.px=nx;}else player.vx=0;
-  let nz=player.pz+player.vz*dt;
-  if(!collides(player.px,nz)&&!(player.grounded&&floorHeightAt(player.px,nz)-fh>1.2)){player.pz=nz;}else player.vz=0;
-  // if we walked onto higher ground, snap up; onto lower ground, start falling
-  const nfh=floorHeightAt(player.px,player.pz),nStand=EYE+nfh;
-  if(player.grounded){
-    if(nStand>player.pyy+0.02){player.pyy=nStand;}        // step up
-    else if(nStand<player.pyy-0.02){player.grounded=false;} // walked off a ledge -> fall
-  }
-  const spd=Math.hypot(player.vx,player.vz);
-  player.bobT+=spd*dt*(sprint?1.9:1.6);
-  const bobSin=Math.sin(player.bobT*4);
-  if(player.grounded&&spd>1&&player.lastBobSin<=0&&bobSin>0)footstep(sprint);
-  player.lastBobSin=bobSin;
-  screenShake.trauma=Math.max(0,screenShake.trauma-dt*1.6);
-  const sh=screenShake.trauma*screenShake.trauma,t=performance.now();
-  const shx=sh*.06*Math.sin(t*.061),shy=sh*.05*Math.sin(t*.083),shr=sh*.05*Math.sin(t*.047);
-  weaponRuntime.recoilPitch*=Math.exp(-8*dt);
-  renderState.camera.position.set(player.px+shx,player.pyy+(player.grounded?bobSin*.025*Math.min(1,spd/7):0)+shy,player.pz);
-  renderState.camera.rotation.order="YXZ";
-  renderState.camera.rotation.y=input.yaw;renderState.camera.rotation.x=input.pitch+weaponRuntime.recoilPitch;renderState.camera.rotation.z=shr;
-  renderState.lamp.position.set(player.px,player.pyy+.4,player.pz);
-  if(renderState.lampCore)renderState.lampCore.position.set(player.px,player.pyy+.2,player.pz);
-  /* exit pad (level 1) */
-  if(world.exitPos&&Math.hypot(player.px-world.exitPos.x,player.pz-world.exitPos.z)<1.2){
-    const bossLeft=world.enemies.some(e=>e.boss&&!e.dead);
-    if(bossLeft)showMsg("SOMETHING STILL BREATHES HERE",1.5);
-    else endLevel();}
-  /* challenge plate */
-  if(world.challenge&&world.challenge.state===0&&Math.hypot(player.px-world.challenge.x,player.pz-world.challenge.z)<1){
-    world.challenge.state=1;say("challenge",true);
-    showMsg("THE PLATE HUMS — THEY ARE COMING",3);
-    blip(70,1,"sawtooth",.15,40,true);
-    world.challenge.plate.material.color.setHex(0xc83a20);
-    world.challenge.light.color.setHex(0xc83a20);
-    for(let n=0;n<5;n++){
-      const a=n/5*6.28,d=rnd(3,5);
-      const sxp=world.challenge.x+Math.sin(a)*d,szp=world.challenge.z+Math.cos(a)*d;
-      if(!solidAt(sxp,szp)){
-        const ne=spawnEnemy(n<3?"f":"z",sxp,szp,true);
-        ne.aware=true;ne.alertX=player.px;ne.alertZ=player.pz;
-        smoke3d(sxp,.6,szp,8);}}
-    alertSound(player.px,player.pz,30);}
-  if(world.challenge&&world.challenge.state===1){
-    if(!world.enemies.some(e=>e.summoned&&!e.dead)){
-      world.challenge.state=2;say("challenge_done",true);
-      ach(ACHIEVEMENTS.gauntlet,S.ach);
-      world.challenge.plate.material.color.setHex(0x4ab86a);
-      world.challenge.light.color.setHex(0x4ab86a);
-      ["armor","crosses","bullets"].forEach((k,i)=>{
-        world.items.push({kind:k,x:world.challenge.x+(i-1)*.8,z:world.challenge.z,
-          sp:addSprite(ITEMTEX[k],world.challenge.x+(i-1)*.8,world.challenge.z,.55,.55,.5),bob:i});});
-      blip(523,.3,"sine",.1,1046,true);}}}
 
 /* ============================================================
    INTERACTION + PICKUPS
