@@ -142,7 +142,7 @@ and it holds here.
 | `src/player/Player.ts` | `damagePlayer accelerate footstep playerTick` | Task 7 |
 | `src/player/Interact.ts` | `interact itemsTick doorTick propTick torchTick` | Task 8 |
 | `src/fx/ProjectileTick.ts` | `projTick` | Task 8 |
-| `src/enemies/Damage.ts` | `damageEnemy severLimb refreshSeverSprite dropAmmo` | Task 9 |
+| `src/enemies/Damage.ts` | `damageEnemy severLimb refreshSeverSprite` | Task 9 |
 | `src/enemies/Death.ts` | `killEnemy spawnHead headTick bossDeath openExit` | Task 9 |
 | `src/enemies/Boss.ts` | `wakeBoss roarFor cineTick priestTeleport priestThink` | Task 10 |
 | `src/enemies/ai/Perception.ts` | `alertSound` (Task 5), `los` (Task 10) | Tasks 5, 10 |
@@ -681,9 +681,17 @@ git commit -m "refactor: extract interaction, pickups and the projectile tick"
 - Modify: `src/legacy.js`
 
 **Interfaces:**
-- Produces: `damageEnemy`, `severLimb`, `refreshSeverSprite`, `dropAmmo` from
-  `Damage.ts`; `killEnemy`, `spawnHead`, `headTick`, `bossDeath`, `openExit`
-  from `Death.ts`.
+- Produces: `damageEnemy`, `severLimb`, `refreshSeverSprite` from
+  `Damage.ts`; `killEnemy`, `spawnHead`, `headTick`, `dropAmmo`, `bossDeath`,
+  `openExit` from `Death.ts`.
+- **CORRECTION (made before Task 9 ran).** `dropAmmo` was originally assigned to
+  `Damage.ts`. That split is circular: `damageEnemy` (Damage) calls `killEnemy`
+  (Death) and `killEnemy` calls `dropAmmo` (`legacy.js:208`), so the two files
+  would import each other and `madge --circular` — a hard gate in `npm test` —
+  would fail. `dropAmmo` moves to `Death.ts` instead, which makes
+  `Damage.ts -> Death.ts` the only cross-file edge. It is also the better
+  grouping on merit: `dropAmmo` is a death drop, and its only other caller
+  (`legacy.js:437`, the AI section) is itself inside a death branch.
 - `wakeBoss`, `roarFor` and `cineTick` are grouped with this section in
   `legacy.js` but are boss-brain concerns — they move in Task 10. Confirm by
   reading them and note it for the next implementer.
