@@ -146,7 +146,8 @@ and it holds here.
 | `src/enemies/Death.ts` | `killEnemy spawnHead headTick bossDeath openExit` | Task 9 |
 | `src/enemies/Boss.ts` | `wakeBoss roarFor cineTick priestTeleport priestThink` | Task 10 |
 | `src/enemies/ai/Perception.ts` | `alertSound` (Task 5), `los` (Task 10) | Tasks 5, 10 |
-| `src/enemies/ai/Behaviors.ts` | `moveEnemy enemyTick` | Task 10 |
+| `src/enemies/ai/Locomotion.ts` | `moveEnemy` | Task 10 |
+| `src/enemies/ai/Behaviors.ts` | `enemyTick` | Task 10 |
 | `src/enemies/ai/Attacks.ts` | `fireOrb throwFlesh spawnRing ringTick spawnStrike strikeTick poisonTick` | Task 10 |
 | `src/world/RandomEvents.ts` | `eventTick` | Task 11 |
 | `src/world/Ambience.ts` | `ambience vitalsAudio` | Task 11 |
@@ -732,15 +733,37 @@ The largest section (352 lines) and the most coupled. Everything it calls is now
 a module or a `Context` entry.
 
 **Files:**
-- Create: `src/enemies/ai/Perception.ts`, `src/enemies/ai/Behaviors.ts`,
+- Create: `src/enemies/ai/Locomotion.ts`, `src/enemies/ai/Behaviors.ts`,
   `src/enemies/ai/Attacks.ts`, `src/enemies/Boss.ts`
-- Modify: `src/legacy.js`
+- Modify: `src/enemies/ai/Perception.ts`, `src/legacy.js`
 
 **Interfaces:**
-- Produces: `los`, `alertSound` from `Perception.ts`; `moveEnemy`, `enemyTick`
-  from `Behaviors.ts`; `fireOrb`, `throwFlesh`, `spawnRing`, `ringTick`,
-  `spawnStrike`, `strikeTick`, `poisonTick` from `Attacks.ts`; `wakeBoss`,
-  `roarFor`, `cineTick`, `priestTeleport`, `priestThink` from `Boss.ts`.
+- Produces: `los`, `alertSound` from `Perception.ts`; `moveEnemy` from
+  `Locomotion.ts`; `enemyTick` from `Behaviors.ts`; `fireOrb`, `throwFlesh`,
+  `spawnRing`, `ringTick`, `spawnStrike`, `strikeTick`, `poisonTick` from
+  `Attacks.ts`; `wakeBoss`, `roarFor`, `cineTick`, `priestTeleport`,
+  `priestThink` from `Boss.ts`.
+
+- **CORRECTION (made before Task 10 ran).** `moveEnemy` was originally grouped
+  with `enemyTick` in `Behaviors.ts`. That split is circular, the same failure
+  as Task 9's: `enemyTick` calls `priestThink`, `wakeBoss` and `roarFor`
+  (`legacy.js:252,296,308`) so `Behaviors -> Boss`, while `priestThink` calls
+  `moveEnemy` (`legacy.js:415,445`) so `Boss -> Behaviors`. `madge --circular`
+  would fail.
+
+  `moveEnemy` moves to its own leaf, `Locomotion.ts`. It earns one: it is a
+  12-line movement primitive whose only calls are to already-migrated modules
+  (`solidAt`, `explodeBarrel`, `breakProp`, `world`), it is shared by two
+  callers in different files, and it is locomotion rather than perception, so
+  folding it into `Perception.ts` would misname it. The alternative — moving
+  the priest brain into `Behaviors.ts` — would break the cycle too but dilute
+  what `Boss.ts` means. The resulting graph is a clean DAG:
+
+  ```
+  Behaviors -> Perception, Locomotion, Attacks, Boss
+  Boss      -> Perception, Locomotion, Attacks
+  Attacks, Locomotion, Perception -> (leaves, w.r.t. AI)
+  ```
 
 - [ ] **Step 1: Check the size gate before you split**
 
@@ -755,11 +778,12 @@ Task 5 created it early with `alertSound`, because `explodeBarrel` needed it
 and it is a zero-dependency leaf. Add `los` alongside; do not create a second
 file.
 
-- [ ] **Step 3: Move the four files one at a time, testing between each**
+- [ ] **Step 3: Move the files one at a time, testing between each**
 
-Order: `Perception.ts` (leaf), `Attacks.ts`, `Boss.ts`, `Behaviors.ts` (calls
-all three). Run `npx vitest run tests/integration/combatTrace.test.ts` after
-each — 352 lines is too much to debug as one red test.
+Order follows the DAG, leaves first: `Perception.ts` (add `los`),
+`Locomotion.ts`, `Attacks.ts`, `Boss.ts`, then `Behaviors.ts` (which calls all
+four). Run `npx vitest run tests/integration/combatTrace.test.ts` after each —
+352 lines is too much to debug as one red test.
 
 - [ ] **Step 4: Retire the `Context` entries this task makes unnecessary**
 
