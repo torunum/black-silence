@@ -25,4 +25,5 @@ export const ctx: {
   damagePlayer?: (d: number, silent?: boolean) => void;
   damageEnemy?: (e: unknown, dmg: number, info?: unknown) => void;
   endLevel?: () => void;
+  openPiano?: () => void;
 } = {};

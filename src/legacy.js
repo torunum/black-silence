@@ -18,6 +18,7 @@ import { gibGeo, gibMatsFlesh, spawnGibs, gibTick, resetGibs, spawnGibChunk } fr
 import { screenShake, shake } from "./fx/ShakeState";
 import { headPool } from "./fx/Heads";
 import { projectiles } from "./fx/Projectiles";
+import { projTick } from "./fx/ProjectileTick";
 import { save } from "./save/SaveGame";
 import { pianoState } from "./ui/PianoState";
 import { ambienceState } from "./world/AmbienceState";
@@ -35,6 +36,7 @@ import { game } from "./core/Game";
 import { weaponRuntime } from "./weapons/WeaponRuntime";
 import { player } from "./player/PlayerState";
 import { damagePlayer, accelerate, footstep, playerTick } from "./player/Player";
+import { interact, itemsTick, doorTick, propTick, torchTick } from "./player/Interact";
 import { S } from "./core/State";
 import { CELL, WALLH, EYE } from "./world/Grid";
 import { solidAt, segBlocked, segsCrossRay, floorHeightAt, wallNormal, collides } from "./world/Collision";
@@ -46,9 +48,9 @@ import { crossExplode } from "./weapons/Hitscan";
 // Renamed on import: `ctx` is already bound above to AudioEngine's audio-context
 // accessor (`ctx()`, two call sites now that footstep's third moved to
 // Player.ts with Task 7). This is Context.ts's service locator — see its
-// own doc comment — registered below for damageEnemy and endLevel, the
-// entries Task 9 and Plan 0F still leave in legacy.js; damagePlayer
-// registers itself from Player.ts instead.
+// own doc comment — registered below for damageEnemy, endLevel and
+// openPiano, the entries Task 9 and Plan 0F still leave in legacy.js;
+// damagePlayer registers itself from Player.ts instead.
 import { ctx as svcCtx } from "./core/Context";
 
 /* ============================================================
@@ -63,9 +65,12 @@ import { ctx as svcCtx } from "./core/Context";
    the same way, registering it from Damage.ts instead. endLevel is a new
    entry: playerTick (moved to Player.ts by Task 7) reaches it through this
    locator because endLevel itself belongs to Plan 0F, not this plan, and
-   stays here for now. Function declarations hoist, so this can sit at
-   module scope ahead of either definition. */
-svcCtx.damageEnemy=damageEnemy;svcCtx.endLevel=endLevel;
+   stays here for now. openPiano is Task 8's new entry: interact (moved to
+   src/player/Interact.ts) reaches it through this locator because
+   openPiano itself belongs to Plan 0F's playable piano, not this plan, and
+   stays here for now too. Function declarations hoist, so this can sit at
+   module scope ahead of any of their definitions. */
+svcCtx.damageEnemy=damageEnemy;svcCtx.endLevel=endLevel;svcCtx.openPiano=openPiano;
 
 /* Input lives in src/player/Input.ts; its listeners are already registered
    (at that module's scope, as in the reference). This hands it the gameplay
@@ -685,119 +690,6 @@ function poisonTick(dt){
     if(Math.random()<.5)toxicP(zn.x+rnd(-zn.r,zn.r)*.7,.2,zn.z+rnd(-zn.r,zn.r)*.7,1);
     if(Math.hypot(player.px-zn.x,player.pz-zn.z)<zn.r){damagePlayer(6*dt,true);}
     if(zn.t<=0)world.poisonZones.splice(i,1);}}
-
-/* ============================================================
-   PROJECTILES (player crosses + enemy orbs)
-   ============================================================ */
-function projTick(dt){
-  for(let i=projectiles.nails.length-1;i>=0;i--){const n=projectiles.nails[i];
-    n.life-=dt;
-    if(!n.reap)n.vy-=5*dt;        // reap flies straight; crosses arc
-    n.m.position.x+=n.vx*dt;n.m.position.y+=n.vy*dt;n.m.position.z+=n.vz*dt;
-    if(n.spin)n.m.rotation.z+=n.spin*dt;
-    const mx=n.m.position.x,my=n.m.position.y,mz=n.m.position.z;
-    if(n.reap){ // visual tracer only — damage already applied by hitscan
-      if(Math.random()<.6)spawnP(mx,my,mz,0,0,0,.5,.9,.35,.2,3);
-      if(n.life<=0||my<0.05||my>WALLH||solidAt(mx,mz)){
-        smoke3d(mx,Math.max(my,.3),mz,4);renderState.scene.remove(n.m);projectiles.nails.splice(i,1);}
-      continue;}
-    let boom=n.life<=0||my<0.05||my>WALLH||solidAt(mx,mz);
-    if(!boom)for(const p of world.props){if(p.dead)continue;
-      if(Math.hypot(mx-p.x,mz-p.z)<p.r+.1&&my<p.hgt){boom=true;break;}}
-    if(!boom)for(const e of world.enemies){if(e.dead||e.dormant)continue;
-      if(Math.hypot(mx-e.x,mz-e.z)<e.w*.5&&my>0&&my<e.h*1.05){
-        weaponRuntime.volleyHit=true;S.hitsLanded++;boom=true;break;}}
-    if(boom){crossExplode(mx,Math.max(my,.3),mz);
-      renderState.scene.remove(n.m);projectiles.nails.splice(i,1);}}
-  for(let i=projectiles.orbs.length-1;i>=0;i--){const o=projectiles.orbs[i];
-    o.life-=dt;
-    if(o.flesh){o.vy-=11*dt;o.m.rotation.x+=o.spin*dt;o.m.rotation.z+=o.spin*.7*dt;}
-    o.m.position.x+=o.vx*dt;o.m.position.y+=o.vy*dt;o.m.position.z+=o.vz*dt;
-    if(o.flesh){
-      if(Math.random()<.7)blood(o.m.position.x,o.m.position.y,o.m.position.z,1,.6);
-    }else if(Math.random()<.4){
-      const c=o.col||0x9a4ae0,r2=(c>>16&255)/255,g2=(c>>8&255)/255,b2=(c&255)/255;
-      spawnP(o.m.position.x,o.m.position.y,o.m.position.z,0,0,0,r2,g2,b2,.25,3);}
-    let dead=o.life<=0||solidAt(o.m.position.x,o.m.position.z)||(o.flesh&&o.m.position.y<.1);
-    const hit=Math.hypot(o.m.position.x-player.px,o.m.position.z-player.pz)<.55&&
-       Math.abs(o.m.position.y-(player.pyy-.3))<1;
-    if(!dead&&hit){damagePlayer(o.dmg);
-      if(o.flesh){blood(player.px,player.pyy-.2,player.pz,10,1.5);gurgle(.2,.35);}
-      dead=true;}
-    if(dead){
-      if(o.flesh){blood(o.m.position.x,Math.max(.1,o.m.position.y),o.m.position.z,8,1.4);
-        addPool(o.m.position.x,o.m.position.z,rnd(.2,.4));gurgle(.16,.25);}
-      renderState.scene.remove(o.m);projectiles.orbs.splice(i,1);}}}
-
-/* ============================================================
-   INTERACTION + PICKUPS
-   ============================================================ */
-const WNAMES={w1:"SAWED-OFF SHOTGUN",w2:"COMBAT RIFLE",w3:"TOMMY GUN",w4:"BMG SNIPER",w5:"HOLY CROSS LAUNCHER",w6:"NAIL CANNON",w7:"SOUL REAPER"};
-function interact(){
-  if(!game.started||game.inputLock)return;
-  if(world.pianoPos&&Math.hypot(player.px-world.pianoPos.x,player.pz-world.pianoPos.z)<1.9){openPiano();return;}
-  const dir=new THREE.Vector3();renderState.camera.getWorldDirection(dir);
-  for(let t=.4;t<2.6;t+=.2){
-    const wx_=player.px+dir.x*t,wz_=player.pz+dir.z*t;
-    const gx=wx_/CELL|0,gz=wz_/CELL|0,d=world.doors[gx+","+gz];
-    if(d&&!d.open){
-      if(d.locked&&!S.key){showMsg("IT WANTS THE RED KEY",2.2);
-        say("locked");growl(80,.3,.25,true);return;}
-      d.open=true;
-      if(d.flesh)wetDoor();else stoneDoor();
-      alertSound(wx_,wz_,8);
-      if(d.secret){S.secrets++;S.totSecrets++;say("secret",true);
-        showMsg("SECRET FOUND — "+S.secrets+"/"+S.secretsTotal,3);
-        if(S.totSecrets===2)ach(ACHIEVEMENTS.curious,S.ach);}
-      else if(d.locked)showMsg("THE GATE ACCEPTS THE KEY",2.4);
-      return;}
-    if(solidAt(wx_,wz_))return;}}
-function itemsTick(dt){
-  for(const it of world.items){
-    if(it.taken)continue;
-    it.bob+=dt*2.4;it.sp.position.y=.5+Math.sin(it.bob)*.07;
-    if(Math.hypot(player.px-it.x,player.pz-it.z)<.95){
-      let ok=true;
-      switch(it.kind){
-        case "health":if(S.hp>=100){ok=false;break;}S.hp=Math.min(100,S.hp+25);showMsg("+25 HEALTH");break;
-        case "armor":S.armor=Math.min(100,S.armor+50);showMsg("+50 ARMOR");break;
-        case "bullets":S.ammo.bullets+=18;showMsg("+18 BULLETS");break;
-        case "shells":S.ammo.shells+=6;showMsg("+6 SHELLS");break;
-        case "slugs":S.ammo.slugs+=4;showMsg("+4 SLUGS");break;
-        case "crosses":S.ammo.crosses+=3;showMsg("+3 BLESSED CROSSES");break;
-        case "nails":S.ammo.nails+=40;showMsg("+40 NAILS");break;
-        case "souls":S.ammo.souls+=3;showMsg("+3 SOULS");break;
-        case "key":S.key=true;say("key",true);showMsg("RED KEY — IT IS WARM",3);break;
-        default:{
-          const wi=+it.kind[1];
-          S.weapons[wi]=true;
-          const w=WEAPONS[wi];
-          const fill=Math.min(w.magSize,4);
-          S.mag[wi]=Math.max(S.mag[wi],fill);
-          S.ammo[w.ammo]+=w.magSize;
-          requestSwitch(wi);
-          showMsg(WNAMES[it.kind]+" ACQUIRED",2.6);
-          if(it.kind==="w1")say("w2",true);
-          if(it.kind==="w4")say("w5",true);
-          if(it.kind==="w5")say("w6",true);}}
-      if(ok){it.taken=true;renderState.scene.remove(it.sp);blip(330,.14,"sine",.1,210,true);gurgle(.12,.12);}}}
-  /* free SMG after enough kills if not yet found */
-  if(!S.weapons[3]&&S.totKills>=8){S.weapons[3]=true;S.mag[3]=36;
-    showMsg("SCRAP SMG ASSEMBLED FROM THE DEAD",3);blip(330,.12,"square",.08);}}
-function doorTick(dt){for(const k in world.doors){const d=world.doors[k];
-  if(d.open&&d.mesh.position.y>-WALLH/2+.1)d.mesh.position.y-=dt*2.6;}}
-function propTick(dt){for(const p of world.props){
-  if(p.dead||p.fuse<0)continue;
-  p.fuse-=dt;if(p.fuse<=0)explodeBarrel(p);}}
-function torchTick(dt,t){
-  for(const tc of world.torches){
-    const n=Math.sin(t*.011+tc.seed*7)*Math.sin(t*.017+tc.seed*3);
-    tc.L.intensity=1.6+n*.45+Math.random()*.18;
-    if(Math.random()<.06){tc.fr=1-tc.fr;
-      tc.sp.material.map=ITEMTEX.torch[tc.fr];tc.sp.material.needsUpdate=true;}
-    if(Math.random()<.04)emberP(tc.x+rnd(-.1,.1),1.4,tc.z+rnd(-.1,.1));}
-  for(const c of world.candles){
-    c.sp.material.opacity=.8+Math.sin(t*.02+c.seed*9)*.2;}}
 
 /* ============================================================
    RANDOM EVENTS
