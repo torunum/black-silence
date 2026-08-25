@@ -39,14 +39,18 @@ import { headTick } from "./enemies/Death";
 import { requestSwitch, startReload, weaponTick, doKick, WEAPONS, EQUIP_T, UNEQUIP_T } from "./weapons/WeaponState";
 import { ambience, vitalsAudio } from "./world/Ambience";
 import { eventTick } from "./world/RandomEvents";
-// Renamed on import: `ctx` is already bound above to AudioEngine's audio-context
-// accessor (`ctx()`, two call sites now that footstep's third moved to
-// Player.ts with Task 7). This is Context.ts's service locator — see its
-// own doc comment — registered below for endLevel, openPiano and showWin,
-// the only entries left: damagePlayer, damageEnemy and wakeBoss were
-// retired from the locator entirely by Task 10's Step 6, once the AI
-// extraction's module split let their callers (Props.ts, Hitscan.ts,
-// WeaponState.ts, Damage.ts) import them directly instead.
+// Context.ts's service locator — see its own doc comment — registered below
+// for endLevel, openPiano and showWin, the only entries left: damagePlayer,
+// damageEnemy and wakeBoss were retired from the locator entirely by Task
+// 10's Step 6, once the AI extraction's module split let their callers
+// (Props.ts, Hitscan.ts, WeaponState.ts, Damage.ts) import them directly.
+//
+// The `as svcCtx` alias is now vestigial. It existed because this file also
+// bound `ctx` to AudioEngine's audio-context accessor, but the last `ctx()`
+// call site left with `ambience`/`vitalsAudio` in Task 11 and the import
+// went with the other 80 dead ones in Task 12. The alias is kept rather
+// than renamed because Plan 0F dismantles this file entirely, and churning
+// every call site here to save one word would be noise in that diff.
 import { ctx as svcCtx } from "./core/Context";
 
 /* ============================================================

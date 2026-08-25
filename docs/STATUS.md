@@ -4,7 +4,8 @@ Written to survive session loss. If you are picking this up cold, read this
 file, then `docs/direction.md`, then the current plan under
 `docs/superpowers/plans/`. Trust this file and `git log` over any recollection.
 
-Last updated: 2026-08-25, mid Plan 0E (Tasks 1 and 3-8 landed; Task 9 in flight).
+Last updated: 2026-08-25, after Plan 0E's whole-branch review. All twelve tasks
+are done and the branch is green; the merge is the only step left.
 
 ---
 
@@ -33,7 +34,7 @@ pinned by characterization tests.
 | 0B | Procedural textures, sprite baker, item textures, the whole audio layer | **merged** |
 | 0C | Behavioral oracle, FX layer, weapon viewmodel art, subtitles, input | **merged** |
 | 0D | The global-to-state migration (70 globals, ~700 call sites) | **merged** |
-| 0E | Systems: renderer, level loader, weapons, enemy AI, player, interaction | **in progress** — branch `phase-0e-systems` |
+| 0E | Systems: renderer, level loader, weapons, enemy AI, player, interaction | **reviewed, ready to merge** — branch `phase-0e-systems` |
 | 0F | UI, piano, loop and boot; then hardening — gameplay `setTimeout` removal, dispose registry, `strict: true`, the Three.js upgrade | not started |
 
 The spec originally sized the remainder as two plans; the real shape is four.
@@ -45,13 +46,17 @@ printed by `npm test` as the port burn-down. When it reaches zero the port is
 done.
 
 ```
-3759 → 3040 (0A) → 2224 (0B) → 1633 (0C) → 1616 (0D) → 901 (0E, through Task 8)
+3759 → 3040 (0A) → 2224 (0B) → 1633 (0C) → 1616 (0D) → 282 (0E)
 ```
 
-Tests: 0 → 114 → 167 → 348 → 357 → 364 (0E Task 1).
+Tests: 0 → 114 → 167 → 348 → 357 → 369.
 
 Within 0E: 1616 → 1573 (T3) → 1547 (T4) → 1322 (T5) → 1100 (T6) → 1009 (T7)
-→ 901 (T8).
+→ 901 (T8) → 712 (T9) → 326 (T10) → 292 (T11) → 278 (T12a, 81 dead imports).
+
+0E removed 1334 lines from `legacy.js`, more than the previous four plans
+combined. What is left is 282 lines holding exactly fourteen functions, all of
+them Plan 0F's.
 
 ## Plan 0C status
 
@@ -143,7 +148,8 @@ Three things worth carrying forward:
 
 ## Plan 0E status
 
-Branch `phase-0e-systems`, **in progress**. Plan document:
+Branch `phase-0e-systems`, **all twelve tasks done, reviewed, ready to merge**.
+Plan document:
 `docs/superpowers/plans/2026-08-15-phase0e-systems.md`. Full task-by-task
 ledger, including every correction and deviation:
 `.superpowers/sdd/2026-08-15-phase0e-systems/progress.md` (gitignored — read it
@@ -165,8 +171,10 @@ move, via the service locator `src/core/Context.ts`.
 | 6 — weapons FSM + hitscan | complete; broke 2 of the 3 cycles |
 | 7 — player | complete |
 | 8 — interaction, pickups, projectiles | complete |
-| 9 — damage and death | in flight |
-| 10-12 — enemy AI, events/ambience, branch review + merge | not started |
+| 9 — damage and death | complete; first dispatch correctly refused a circular split |
+| 10 — enemy AI (largest section) | complete in three commits; recovered from a broken tree |
+| 11 — random events and ambience | complete |
+| 12 — branch review and merge | reviewed; 3 Important findings all closed |
 
 **Task 2 was withdrawn before execution.** It created `Context.ts` with no
 consumer: Tasks 3 and 4 import state objects directly, so the locator's first
@@ -174,9 +182,14 @@ real user is Task 5. Shipping a module nothing imports for three tasks is the
 abstraction-with-no-user the plan's own Decision 2 rejects for `Events.ts`.
 `Context.ts` is now born in Task 5. Task numbering was left alone.
 
-`Context.ts` holds **four** entries as of Task 8 (`damagePlayer`, `damageEnemy`,
-`endLevel`, `openPiano`), rising to six in Task 9. Each is registered by
-whoever owns the function *at the time*, so when a later task extracts that
+`Context.ts` peaked at **six** entries in Task 9 and Task 10's Step 6 was the
+first pass that **shrank** it, to three: `damagePlayer`, `damageEnemy` and
+`wakeBoss` retired to direct imports once the AI extraction's four-way split
+made every remaining cycle edge one-way, each confirmed against
+`madge --circular` before being kept. The three that remain — `endLevel`,
+`openPiano`, `showWin` — are a different kind of entry: they bridge to
+functions that have not been extracted at all, all three belonging to Plan 0F.
+Each is registered by whoever owns the function *at the time*, so when a later task extracts that
 function the registration moves and **no call site changes**. That property is
 what lets the remaining tasks land in order. It is deliberate debt, tracked as
 KNOWN-2, not the end state.
@@ -185,38 +198,64 @@ KNOWN-2, not the end state.
 
 Every one of these is recorded in full in the ledger.
 
-1. **The plan document has been corrected five times mid-flight**, each time
+1. **The plan document was corrected eight times mid-flight**, each time
    because a measurement contradicted it: Task 2's dead module, Task 4's
    resize listener firing against a null renderer, Context's placement (guessed
-   wrong twice before being measured), Task 6's `damageEnemy` callers, and Task
-   9's file split, which was **circular and could not have built**. Measure the
-   code before dispatching each task; do not trust the plan's own dependency
-   claims.
-2. **A brief's line ranges have run long three times.** They are computed as
-   "next function start minus 1", so trailing banners, blank lines and `const`
-   declarations get swept in. Treat every range end as approximate.
+   wrong twice before being measured), Task 6's `damageEnemy` callers, Task 9's
+   and Task 10's file splits — **both circular and neither could have built** —
+   and Task 11's claim that `eventTick` calls the piano, which it does not.
+   Measure the code before dispatching each task; never trust a plan's own
+   dependency claims.
+2. **A brief's line ranges ran long five times.** They are computed as "next
+   function start minus 1", so trailing banners, blank lines and `const`
+   declarations get swept in. Only the START line is reliable.
 3. **The dependency script only scans `function` declarations.** It missed
    shared `const` data twice (`WEAPONS`/`EQUIP_T` in Task 6, and it reported
    in-task calls as one list without marking which target *file* each landed
    in, which is what made Task 9's split look acyclic when it was not).
-4. **Two implementers pushed back and were right** — Task 7's caught a brief
-   that asserted "no naming clash" without checking (`footstep` calls
-   AudioEngine's `ctx()`), and Task 9's first refused to build a circular
-   split and returned NEEDS_CONTEXT with evidence rather than guessing. Briefs
-   should tell implementers to verify inherited claims, not just follow them.
-5. **Task 5 was recovered from a session that died mid-task**, leaving four
-   uncommitted leaf modules with `legacy.js` untouched. The tree was *green* in
-   that state, because nothing imported the new files yet. **A green suite does
-   not mean a task finished** — check `git status` for stranded work before
-   assuming a clean baseline.
+4. **Implementers pushed back four times and were right every time** — Task
+   7's caught a brief asserting "no naming clash" without checking (`footstep`
+   calls AudioEngine's `ctx()`); Task 9's first refused to build a circular
+   split and returned NEEDS_CONTEXT with evidence; Task 10a refused to commit a
+   diff containing another agent's half-finished work; and Task 12a found two
+   real bugs in a throwaway analysis script it had been told to verify rather
+   than trust. **Briefs must tell implementers to verify inherited claims, and
+   must make stopping an acceptable outcome.**
+5. **Two tasks were recovered from sessions that died mid-task.** Task 5's left
+   four uncommitted leaf modules with `legacy.js` untouched, and the tree was
+   *green* in that state because nothing imported the new files yet. Task 10's
+   was worse: it had written `Boss.ts` and added the import but not removed the
+   old definitions, leaving a duplicate-declaration syntax error — **and the
+   suite still reported green**, from a stale vitest transform cache. **A green
+   suite proves nothing about a recovered tree.** Check `git status` for
+   stranded work, parse-check `legacy.js` with esbuild, and re-run with
+   `npx vitest run --no-cache`.
+6. **`checkJs: false` on `legacy.js` hides more than typos.** It also hides
+   dead imports: 81 of its 145 imported names were unused by the end, each one
+   left behind when a later task moved a caller out. Nothing in the toolchain
+   flags them.
 
 ### The next action
 
-Finish Task 9, then Tasks 10-12. Task 10 (enemy AI, ~352 lines) is the largest
-and most coupled section and moves last on purpose, when everything it calls is
-already a module. Its `damageEnemy`/`damagePlayer`/`wakeBoss` edges are already
-wired through `Context` by Tasks 7 and 9, so it should need no new entries —
-verify that rather than assuming it.
+**Merge `phase-0e-systems` into `master`**, then start Plan 0F. Everything else
+in this plan is done: 369 tests pass, typecheck is clean, `madge --circular` is
+clean, no `src/` file exceeds 400 lines, `reference/sonsurum.html` is untouched
+and neither trace fixture was regenerated.
+
+The whole-branch review returned 0 Critical and 3 Important findings, **all
+three now closed**: the `Context` locator's three registrations had zero
+coverage (a wrong registration silently no-ops, and two sabotages of it left
+all 364 tests green) — closed by `tests/integration/contextWiring.test.ts`;
+`damageEnemy`'s `dmg>=22` dismemberment threshold was unpinned — closed by
+`tests/integration/dismembermentThreshold.test.ts`; and this file was stale —
+closed by the revision you are reading.
+
+The one definition-of-done item that **cannot** be checked in this environment
+is "`npm run dev` plays identically to `reference/sonsurum.html`". The browser
+pane throttles `requestAnimationFrame` to zero when it is not displayed, so the
+game loop does not run there — see the environment notes below. The
+characterization traces are the substitute evidence, and they are the reason
+this plan was safe to attempt at all.
 
 ## How fidelity is guarded
 
