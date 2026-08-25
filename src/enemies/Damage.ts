@@ -7,8 +7,8 @@ import { sparks, blood } from "../fx/Particles";
 import { spawnGibs, spawnGibChunk } from "../fx/Gibs";
 import { addPool } from "../fx/Decals";
 import { player } from "../player/PlayerState";
-import { ctx } from "../core/Context";
 import { killEnemy } from "./Death";
+import { wakeBoss } from "./Boss";
 
 /**
  * Enemy damage — hit resolution, dismemberment and the sprite/knockback
@@ -28,24 +28,25 @@ import { killEnemy } from "./Death";
  * instead, which leaves `damageEnemy -> killEnemy` as the only cross-file
  * edge and needs no locator: nothing in `Death.ts` calls back here.
  *
- * `damageEnemy` calls one function that has not moved: `wakeBoss` (boss-brain
- * code, `legacy.js:310`, Task 10's). `if(e.boss&&e.dormant)wakeBoss(e);`
- * routes through `src/core/Context.ts`'s locator and stays that way even
- * after Task 10 moves `wakeBoss` into a module — the AI section calls
- * `damageEnemy`/`damagePlayer` nine times, so a direct `Damage.ts -> AI`
- * import on top of that heavy direction would close a real cycle. The
- * locator is what keeps the pair acyclic for the rest of this plan.
+ * `damageEnemy` calls `wakeBoss` (`src/enemies/Boss.ts`, Task 10) directly —
+ * `if(e.boss&&e.dormant)wakeBoss(e);`. Before Task 10's AI extraction this
+ * routed through `src/core/Context.ts`'s locator, on the reasoning (stated
+ * in the Task 9 brief, treating the AI section as one monolith) that a
+ * direct import would close a cycle against the AI's own calls into
+ * `damageEnemy`/`damagePlayer`. Splitting the AI section into
+ * `ai/Behaviors.ts`/`ai/Locomotion.ts`/`ai/Attacks.ts`/`Boss.ts` changed the
+ * answer: `Boss.ts` never calls `damageEnemy` (that call lives in
+ * `ai/Behaviors.ts`'s `enemyTick`), so `Damage.ts -> Boss.ts` is one-way.
+ * `madge --circular src/` confirmed it stays a DAG (Task 10's Step 6); the
+ * `wakeBoss` entry was removed from `Context.ts` accordingly.
  *
- * None of these three functions call AudioEngine's `ctx()` accessor, so this
- * file imports the locator plainly as `ctx` (matching `Props.ts`/
- * `Hitscan.ts`/`Interact.ts`), not aliased to `svcCtx` the way `legacy.js`
- * and `Player.ts` need for their own separate `ctx()` calls.
- *
- * `damageEnemy` registers itself into `ctx.damageEnemy` below, at module
- * scope — the same pattern `Player.ts` uses for `damagePlayer` (Task 7).
- * `src/world/Props.ts` and `src/weapons/Hitscan.ts` call it via
- * `ctx.damageEnemy?.(...)`, already written that way since Task 5/6; neither
- * needed editing for this move.
+ * `damageEnemy` used to register itself into `src/core/Context.ts`'s
+ * locator at module scope below, the way `Player.ts` still registers
+ * `endLevel`, and `src/world/Props.ts`/`src/weapons/Hitscan.ts`/
+ * `src/weapons/WeaponState.ts` called it via `ctx.damageEnemy?.(...)`. Task
+ * 10's Step 6 retired that entry once `madge --circular src/` confirmed a
+ * direct import from those three callers closes no cycle, so this file no
+ * longer imports the locator at all — `damageEnemy` is a plain export now.
  */
 
 export function damageEnemy(e, dmg, info) {
@@ -76,7 +77,7 @@ export function damageEnemy(e, dmg, info) {
   if(info.dir){e.kx+=info.dir.x*kb;e.kz+=info.dir.z*kb;}
   e.stun=Math.max(e.stun,(info.explosive?.5:(info.wIdx===1?.35:info.wIdx===4?.45:info.wIdx===0?.2:.08))*res+.02);
   if(info.leg&&!e.boss)e.slow=Math.min(e.slow,.6);
-  if(e.boss&&e.dormant)ctx.wakeBoss?.(e);
+  if(e.boss&&e.dormant)wakeBoss(e);
   /* DISMEMBERMENT while still alive — big hits to a limb tear it off */
   if(!e.boss&&e.plate<=0&&PX[e.key].regions&&e.hp>0){
     e.sever=e.sever||{};
@@ -90,7 +91,6 @@ export function damageEnemy(e, dmg, info) {
       e.sever.legs=true;severLimb(e,"legs",info);}
     refreshSeverSprite(e);}
   if(e.hp<=0)killEnemy(e,dmg,info);}
-ctx.damageEnemy=damageEnemy;
 
 /* pick the right dismembered texture for the enemy's current sever state */
 export function refreshSeverSprite(e) {

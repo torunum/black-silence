@@ -55,8 +55,10 @@ import { crossExplode } from "./weapons/Hitscan";
 // accessor (`ctx()`, two call sites now that footstep's third moved to
 // Player.ts with Task 7). This is Context.ts's service locator — see its
 // own doc comment — registered below for endLevel, openPiano and showWin,
-// the entries this file still owns; damagePlayer, damageEnemy and wakeBoss
-// each register themselves from Player.ts/Damage.ts/Boss.ts instead.
+// the only entries left: damagePlayer, damageEnemy and wakeBoss were
+// retired from the locator entirely by Task 10's Step 6, once the AI
+// extraction's module split let their callers (Props.ts, Hitscan.ts,
+// WeaponState.ts, Damage.ts) import them directly instead.
 import { ctx as svcCtx } from "./core/Context";
 
 /* ============================================================
@@ -67,8 +69,14 @@ import { ctx as svcCtx } from "./core/Context";
 
 /* damagePlayer moved to src/player/Player.ts (Task 7), damageEnemy moved to
    src/enemies/Damage.ts (Task 9) and wakeBoss moved to src/enemies/Boss.ts
-   (Task 10); each registers itself into this locator at its own module
-   scope — no call site here changed. endLevel is a new entry: playerTick
+   (Task 10); each registered itself into this locator at its own module
+   scope for a time, but Task 10's Step 6 tested each against
+   `madge --circular src/` once the AI section's module split made every
+   remaining edge one-way, and retired all three — their callers
+   (`src/world/Props.ts`, `src/weapons/Hitscan.ts`,
+   `src/weapons/WeaponState.ts`, `src/enemies/Damage.ts`) import them
+   directly now, and none of the three appears in `Context.ts`'s type
+   anymore. endLevel is a new entry: playerTick
    (moved to Player.ts by Task 7) reaches it through this locator because
    endLevel itself belongs to Plan 0F, not this plan, and stays here for
    now. openPiano is Task 8's new entry: interact (moved to

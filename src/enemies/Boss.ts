@@ -3,7 +3,6 @@ import { player } from "../player/PlayerState";
 import { damagePlayer } from "../player/Player";
 import { input } from "../player/Input";
 import { game } from "../core/Game";
-import { ctx } from "../core/Context";
 import { ENEMY_DEFS as EDEF } from "./EnemyDefs";
 import { PX } from "./SpriteBaker";
 import { blip, bang } from "../audio/Sfx";
@@ -40,13 +39,12 @@ import { fireOrb, spawnRing, spawnStrike } from "./ai/Attacks";
  * (`docs/superpowers/plans/2026-08-15-phase0e-systems.md`'s Task 10
  * correction, and this task's own brief, Step 1).
  *
- * `wakeBoss` registers itself into `src/core/Context.ts`'s locator at
- * module scope below, the same pattern `src/enemies/Damage.ts` uses for
- * `damageEnemy` — `legacy.js`'s own `svcCtx.wakeBoss=wakeBoss;` line is
- * removed with this move. `Damage.ts`'s `damageEnemy` still reaches
- * `wakeBoss` through `ctx.wakeBoss?.(...)` rather than a direct import;
- * Step 6 of this task's brief tests whether that can become a direct
- * import instead, and records the result separately.
+ * `wakeBoss` no longer registers into `src/core/Context.ts`'s locator:
+ * Task 10's Step 6 tested it against `madge --circular src/` and found the
+ * `Damage.ts -> Boss.ts` edge it would add is one-way, so `Damage.ts`'s
+ * `damageEnemy` now imports `wakeBoss` directly instead of going through
+ * `ctx.wakeBoss?.(...)`. See `Context.ts`'s own doc comment for the entries
+ * that remain and why.
  *
  * The enemy parameters these five functions take are left untyped, the
  * same convention `src/enemies/Damage.ts`/`Death.ts` established for that
@@ -79,7 +77,6 @@ export function wakeBoss(e){
   blip(40,1.6,"sawtooth",.2,30,true);bang(.5,.4,300);
   if(e.priest)organChord();
   setTimeout(()=>roarFor(e),500);}
-ctx.wakeBoss=wakeBoss;
 
 export function roarFor(e){growl(rnd(42,60),1.0,.6,true);setTimeout(()=>growl(rnd(50,70),.6,.4,true),200);}
 

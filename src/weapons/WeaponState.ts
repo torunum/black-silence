@@ -17,7 +17,7 @@ import { world } from "../world/WorldState";
 import { input } from "../player/Input";
 import { breakProp, explodeBarrel, type Prop } from "../world/Props";
 import { alertSound } from "../enemies/ai/Perception";
-import { ctx } from "../core/Context";
+import { damageEnemy } from "../enemies/Damage";
 import { hitscan } from "./Hitscan";
 
 /**
@@ -212,7 +212,7 @@ export function doKick(){
       e.stun=Math.max(e.stun,e.boss?.25:.9);
       if(!e.boss&&e.maxhp<=60){e.flung=.9;e.flungT=0;}
       blood(e.x,e.h*.6,e.z,4,2);
-      ctx.damageEnemy?.(e,15,{dir:{x:dx/d,z:dz/d},wIdx:-1});}
+      damageEnemy(e,15,{dir:{x:dx/d,z:dz/d},wIdx:-1});}
     for(const p of world.props as unknown as Prop[]){if(p.dead)continue;
       const dx=p.x-player.px,dz=p.z-player.pz,d=Math.hypot(dx,dz);
       if(d>2.6)continue;

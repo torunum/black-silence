@@ -15,7 +15,7 @@ import { flashHoly } from "../ui/HudMessages";
 import { screenShake, shake } from "../fx/ShakeState";
 import { breakProp, explodeBarrel, type Prop } from "../world/Props";
 import { alertSound } from "../enemies/ai/Perception";
-import { ctx } from "../core/Context";
+import { damageEnemy } from "../enemies/Damage";
 
 /**
  * Hitscan resolution and the holy-cross explosion — the two queries that
@@ -33,11 +33,13 @@ import { ctx } from "../core/Context";
  * hitscan's; hitscan never reads it.
  *
  * `damageEnemy` (three sites: `hitscan` x1, `crossExplode` x1 — plus the
- * one in `WeaponState.ts`'s `doKick`) goes through `src/core/Context.ts`'s
- * existing `ctx.damageEnemy` entry, registered by whichever module owns
- * `damageEnemy` today; this task adds no new entry. `alertSound` (one site,
- * in `crossExplode`) is a direct import — Task 5 already turned it into a
- * standalone leaf module, so it needs no locator.
+ * one in `WeaponState.ts`'s `doKick`) used to go through `src/core/
+ * Context.ts`'s `ctx.damageEnemy` entry; Task 10's Step 6 retired that entry
+ * once `madge --circular src/` confirmed a direct import from all three
+ * call sites closes no cycle, so this file now imports `damageEnemy` from
+ * `src/enemies/Damage.ts` directly, the same way `alertSound` (one site, in
+ * `crossExplode`) always has been — Task 5 already turned it into a
+ * standalone leaf module, so it never needed the locator.
  *
  * `hitscan` reads `WEAPONS[wIdx].pierce` in the original, but this module
  * imports `WEAPON_STATS` (`src/weapons/definitions.ts`) and reads
@@ -132,7 +134,7 @@ export function hitscan(dir,dmg,wIdx){
         if(Math.random()<.5&&e.plate<=0)
           addWallDecal(sx-dir.x*.06,clamp(hy+rnd(-.3,.3),.2,WALLH-.2),sz-dir.z*.06,n.x,n.z,rnd(.2,.45),splatMat);
         break;}}
-    ctx.damageEnemy?.(e,dmg*(head?2:1),{head,leg,arm,armSide,lateral,wIdx,dir:{x:dir.x,z:dir.z},dist:c.t,hx,hy,hz});
+    damageEnemy(e,dmg*(head?2:1),{head,leg,arm,armSide,lateral,wIdx,dir:{x:dir.x,z:dir.z},dist:c.t,hx,hy,hz});
     used++;if(used>=pierce)return;}
   if(wallT<45){
     const n=wallNormal(wx,wz,dir);
@@ -149,7 +151,7 @@ export function crossExplode(x,y,z){
     if(d<3.4){
       const dd=60*(1-d/3.4)+20;
       e.kx+=(e.x-x)/Math.max(.2,d)*6;e.kz+=(e.z-z)/Math.max(.2,d)*6;
-      ctx.damageEnemy?.(e,dd,{explosive:true,dir:{x:(e.x-x)/Math.max(.2,d),z:(e.z-z)/Math.max(.2,d)}});}}
+      damageEnemy(e,dd,{explosive:true,dir:{x:(e.x-x)/Math.max(.2,d),z:(e.z-z)/Math.max(.2,d)}});}}
   for(const p of world.props as unknown as Prop[]){if(p.dead)continue;
     if(Math.hypot(p.x-x,p.z-z)<3){p.explosive?explodeBarrel(p):breakProp(p);}}
   alertSound(x,z,20);}

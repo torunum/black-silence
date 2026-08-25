@@ -12,8 +12,9 @@ import { ACHIEVEMENTS } from "../content/achievements";
 import { ach } from "../ui/Toasts";
 import { player } from "../player/PlayerState";
 import { S } from "../core/State";
-import { ctx } from "../core/Context";
 import { alertSound } from "../enemies/ai/Perception";
+import { damageEnemy } from "../enemies/Damage";
+import { damagePlayer } from "../player/Player";
 import { world } from "./WorldState";
 
 /**
@@ -29,10 +30,11 @@ import { world } from "./WorldState";
  * how they run (build-time vs. play-time) and keeps both well under the
  * 400-line gate.
  *
- * `explodeBarrel` is the one function this task moves that still calls
- * something unmoved: `damagePlayer` (Task 7) and `damageEnemy` (Task 9).
- * Both go through `ctx` (`src/core/Context.ts`), registered from
- * `legacy.js` for now. `breakProp` calls nothing outside this file and
+ * `explodeBarrel` calls `damagePlayer` (`src/player/Player.ts`, Task 7) and
+ * `damageEnemy` (`src/enemies/Damage.ts`, Task 9) directly. Both used to go
+ * through `ctx` (`src/core/Context.ts`); Task 10's Step 6 retired both
+ * entries once `madge --circular src/` confirmed a direct import from this
+ * file closes no cycle. `breakProp` calls nothing outside this file and
  * modules that have already moved.
  */
 
@@ -83,12 +85,12 @@ export function explodeBarrel(b: Prop): void {
   sc.rotation.x=-Math.PI/2;sc.position.set(b.x,.015,b.z);renderState.scene.add(sc);
   boom(1.1);
   const pd=Math.hypot(player.px-b.x,player.pz-b.z);
-  if(pd<5)ctx.damagePlayer?.(60*(1-pd/5));
+  if(pd<5)damagePlayer(60*(1-pd/5));
   for(const e of world.enemies as unknown as DamageableEnemy[]){if(e.dead)continue;
     const dd=Math.hypot(e.x-b.x,e.z-b.z);
     if(dd<5){const f=Math.max(dd,.2);
       e.kx+=(e.x-b.x)/f*9;e.kz+=(e.z-b.z)/f*9;
-      ctx.damageEnemy?.(e,70*(1-dd/5),{explosive:true,dir:{x:(e.x-b.x)/f,z:(e.z-b.z)/f}});}}
+      damageEnemy(e,70*(1-dd/5),{explosive:true,dir:{x:(e.x-b.x)/f,z:(e.z-b.z)/f}});}}
   for(const o of world.props as unknown as Prop[]){if(!o.dead&&o!==b&&Math.hypot(o.x-b.x,o.z-b.z)<4){
     if(o.explosive&&o.fuse<0)o.fuse=rnd(.15,.4);else breakProp(o);}}
   alertSound(b.x,b.z,22);}

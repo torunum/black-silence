@@ -46,11 +46,12 @@ import { dropAmmo } from "../Death";
  * into this one (confirmed with `madge --circular src/`), so every edge
  * here is a direct import; this task's brief was explicit that it adds
  * zero new `src/core/Context.ts` entries, and it doesn't — `wakeBoss` and
- * `damageEnemy` are reached directly rather than through `ctx.wakeBoss?.()`/
- * `ctx.damageEnemy?.()` the way `enemies/Damage.ts` and `world/Props.ts`
- * still do from the other side of those same functions. Whether those two
- * `Context` entries are now retirable is Step 6 of the brief, a deliberately
- * separate later pass — `src/core/Context.ts` is untouched here.
+ * `damageEnemy` were reached directly here from the start, while
+ * `enemies/Damage.ts` and `world/Props.ts` still called them through
+ * `ctx.wakeBoss?.()`/`ctx.damageEnemy?.()` from the other side of those same
+ * functions. Step 6 of the brief later tested and retired both `Context`
+ * entries once this file's split made the direction one-way — see
+ * `Context.ts`'s own doc comment for the result.
  *
  * `world.enemies` is loosely typed (`Array<Record<string, unknown>>`, see
  * `src/world/WorldState.ts`'s own doc comment), so both the outer tick loop

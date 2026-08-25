@@ -40,7 +40,7 @@ import { ctx } from "../core/Context";
  * `legacy.js` — the plan's own coupling table assigns the playable piano to
  * Plan 0F. That is the one new entry this task adds to
  * `src/core/Context.ts`: `openPiano`, registered from `legacy.js` next to
- * `damageEnemy`/`endLevel`, called here as `ctx.openPiano?.()`.
+ * `endLevel`/`showWin`, called here as `ctx.openPiano?.()`.
  *
  * `WNAMES` (the weapon-pickup toast strings) had exactly one reader,
  * `itemsTick`, so it moved here with it instead of staying behind in

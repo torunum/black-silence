@@ -28,9 +28,9 @@ import { world } from "../world/WorldState";
 // audio-context accessor (`ctx()`, called once in footstep, below) — the
 // same clash legacy.js's own top-of-file comment documents, just the other
 // binding of the pair, because footstep (which needs AudioEngine's ctx)
-// moves here while the code that needs the locator's other two entries
-// (damageEnemy, still in legacy.js; endLevel, Plan 0F) does not. See
-// Context.ts's own doc comment for what this locator is and why it exists.
+// moves here while the code that needs the locator's remaining entry
+// (endLevel, Plan 0F) does not. See Context.ts's own doc comment for what
+// this locator is and why it exists.
 import { ctx as svcCtx } from "../core/Context";
 
 /**
@@ -40,12 +40,15 @@ import { ctx as svcCtx } from "../core/Context";
  * `reference/sonsurum.html`'s equivalent section).
  *
  * `playerTick` calls one function that has not moved: `endLevel` (the
- * level-exit pad, `else endLevel();` below). Plan 0E's own coupling table
- * assigns `endLevel` — and the rest of "LEVEL END + WIN + HUD" — to Plan 0F,
- * so it stays in legacy.js and this file reaches it through
- * `src/core/Context.ts`'s locator instead, registered from legacy.js
- * alongside `damageEnemy`. `damagePlayer` registers itself into the same
- * locator, at this module's own scope, below — see the ordering note there.
+ * level-exit pad, `else svcCtx.endLevel?.();` below). Plan 0E's own coupling
+ * table assigns `endLevel` — and the rest of "LEVEL END + WIN + HUD" — to
+ * Plan 0F, so it stays in legacy.js and this file reaches it through
+ * `src/core/Context.ts`'s locator instead, registered from legacy.js — see
+ * the ordering note at the bottom of this file. `damagePlayer` used to
+ * register itself into the same locator; Task 10's Step 6 retired that
+ * entry once `madge --circular src/` confirmed a direct import from its
+ * callers (`Props.ts`, `Boss.ts`, `ai/Behaviors.ts`) closes no cycle, so it
+ * is now a plain export instead.
  *
  * `world.exitPos`/`world.challenge`/`world.enemies` are typed loosely
  * (`src/world/WorldState.ts`'s own doc comment explains why); the local
@@ -90,14 +93,6 @@ function damagePlayer(d: number, silent?: boolean): void {
     document.exitPointerLock();
     document.getElementById("deadquip").textContent='ADEM: “'+pick(M.dead)+'”';
     document.getElementById("dead").classList.remove("hidden");}}
-/* Registered here rather than at module top (contrast legacy.js's own
-   svcCtx.damagePlayer=damagePlayer;svcCtx.damageEnemy=damageEnemy; line,
-   still just above damageEnemy's definition, now that this half moved) —
-   see the ordering note at the bottom of this file for why placement
-   doesn't matter: function declarations hoist, and the registration must
-   only land before playerTick's first runtime call, which it does either
-   way. */
-svcCtx.damagePlayer=damagePlayer;
 
 function accelerate(wx_: number, wz_: number, maxs: number, acc: number, dt: number): void {
   const cur=player.vx*wx_+player.vz*wz_,add=maxs-cur;if(add<=0)return;
@@ -183,32 +178,25 @@ function playerTick(dt: number): void {
 export { damagePlayer, accelerate, footstep, playerTick };
 
 /**
- * Ordering — why `svcCtx.damagePlayer=damagePlayer` above is safe despite
- * running before anything can call it, and why `svcCtx.endLevel?.()` inside
- * playerTick is safe despite running before this file knows whether
- * legacy.js has registered it yet.
+ * Ordering — why `svcCtx.endLevel?.()` inside `playerTick` is safe despite
+ * running before this file knows whether `legacy.js` has registered it yet.
  *
- * `legacy.js` is the only importer of this file (nothing currently imports
- * `Player.ts` — `madge --circular src/` in the gate confirms no cycle), so
- * ES module evaluation order puts this file's body first: `legacy.js`'s
- * `import ... from "./player/Player"` line forces this module to fully
- * evaluate — including the `svcCtx.damagePlayer=damagePlayer;` line above —
- * before evaluation returns to legacy.js and reaches its own module-scope
- * statements, including `svcCtx.damageEnemy=damageEnemy;` and
- * `svcCtx.endLevel=endLevel;` (or wherever that registration lands; Plan 0F
- * owns it, not this task). So by the time legacy.js's module body finishes
- * running, both registrations exist on the same `ctx` object this file and
- * legacy.js both imported — there is only one instance of it, module
- * resolution guarantees that.
+ * `damagePlayer` used to register itself into `src/core/Context.ts`'s
+ * locator here, the way `endLevel` still does from `legacy.js`. Task 10's
+ * Step 6 tested that against `madge --circular src/` and found no cycle, so
+ * `Props.ts`, `Boss.ts` and `ai/Behaviors.ts` now import `damagePlayer`
+ * directly instead of calling `ctx.damagePlayer?.(...)`, and this file no
+ * longer registers it anywhere. This is a plain export now, subject to the
+ * same module-resolution guarantees as any other; no ordering argument is
+ * needed for it.
  *
- * Neither call is reachable before then. `damagePlayer` is only invoked
- * from gameplay code (enemy AI, hitscan, prop explosions, playerTick
- * itself) that only runs once startGame's render loop begins ticking,
- * long after both modules have finished evaluating. `playerTick`'s
- * `svcCtx.endLevel?.()` is the same story from the other side: it only
- * runs inside the render loop, never during module evaluation, so by the
- * time it can possibly execute, legacy.js has already registered
- * `endLevel` — and the `?.()` guard means even a hypothetical call before
- * that registration lands would silently no-op rather than throw, matching
- * how every other Context.ts entry in this codebase is already called.
+ * `endLevel` is different: it bridges to code that stays in `legacy.js` for
+ * Plan 0F, so `playerTick`'s `svcCtx.endLevel?.()` call is still reachable
+ * before `legacy.js` has registered it, in principle. It isn't in practice —
+ * `endLevel` is only invoked from `playerTick` itself, which only runs once
+ * `startGame`'s render loop begins ticking, long after `legacy.js`'s own
+ * module-scope `svcCtx.endLevel=endLevel;` line has run — and the `?.()`
+ * guard means even a hypothetical call before that registration lands would
+ * silently no-op rather than throw, matching how every other `Context.ts`
+ * entry in this codebase is already called.
  */
