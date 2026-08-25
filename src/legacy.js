@@ -51,6 +51,8 @@ import { damageEnemy } from "./enemies/Damage";
 import { dropAmmo, headTick } from "./enemies/Death";
 import { requestSwitch, startReload, weaponTick, doKick, WEAPONS, EQUIP_T, UNEQUIP_T } from "./weapons/WeaponState";
 import { crossExplode } from "./weapons/Hitscan";
+import { ambience, vitalsAudio } from "./world/Ambience";
+import { eventTick } from "./world/RandomEvents";
 // Renamed on import: `ctx` is already bound above to AudioEngine's audio-context
 // accessor (`ctx()`, two call sites now that footstep's third moved to
 // Player.ts with Task 7). This is Context.ts's service locator — see its
@@ -102,50 +104,6 @@ setInputHooks({
   interact:()=>interact(), startReload:()=>startReload(),
   requestSwitch:i=>requestSwitch(i), doKick:()=>doKick(),
 });
-
-/* ============================================================
-   AMBIENT AUDIO + MISSING PARTICLE HELPER
-   (the "missing particle helper", woodP, now lives in src/fx/Particles.ts)
-   ============================================================ */
-function ambience(dt){
-  if(!ctx())return;ambienceState.ambT-=dt;if(ambienceState.ambT>0)return;
-  ambienceState.ambT=rnd(8,18);
-  const r=Math.random();
-  if(r<.28)blip(rnd(480,720),1.4,"sine",.022,rnd(140,200),true);      // distant scream
-  else if(r<.5)for(let i=0;i<3;i++)setTimeout(()=>bang(.08,.05,400),i*rnd(120,260)); // machinery
-  else if(r<.72){bang(.3,.03,6000,1800);setTimeout(()=>bang(.15,.025,6000,1800),200);} // static
-  else blip(rnd(1200,2200),.08,"sine",.03,undefined,true);            // drip
-}
-function vitalsAudio(dt){
-  if(!ctx()||S.dead)return;
-  if(S.hp<35){ambienceState.heartT-=dt;
-    if(ambienceState.heartT<=0){ambienceState.heartT=S.hp<15?.55:.85;
-      blip(52,.1,"sine",.22,40);setTimeout(()=>blip(48,.12,"sine",.18,36),130);}}
-  if(S.hp<50){ambienceState.breathT-=dt;
-    if(ambienceState.breathT<=0){ambienceState.breathT=rnd(2.2,3);bang(.5,.04,900,300);}}}
-
-/* ============================================================
-   RANDOM EVENTS
-   ============================================================ */
-function eventTick(dt){
-  if(ambienceState.darkT>0){ambienceState.darkT-=dt;
-    if(ambienceState.darkT<=0){renderState.ambLight.intensity=ambienceState.savedAmb;
-      for(const tc of world.torches)tc.L.visible=true;
-      showMsg("THE LIGHT RETURNS");}}
-  world.eventT-=dt;if(world.eventT>0)return;
-  world.eventT=rnd(55,100);
-  const r=Math.random();
-  if(r<.45){ /* blackout */
-    ambienceState.savedAmb=renderState.ambLight.intensity;renderState.ambLight.intensity=.12;
-    for(const tc of world.torches)tc.L.visible=false;
-    ambienceState.darkT=8;say("event_dark",true);
-    blip(50,2,"sine",.1,30,true);bang(.4,.1,300);
-  }else if(r<.8&&S.level===1){ /* the bells */
-    bellToll();say("event_bell",true);
-    for(const e of world.enemies){if(!e.dead&&!e.dormant)e.frenzy=7;}
-    showMsg("THE BELLS ARE RINGING",3);
-  }else{ /* whispers */
-    for(let i=0;i<3;i++)setTimeout(()=>blip(rnd(300,500),.7,"sine",.025,rnd(120,200),true),i*600);}}
 
 /* ============================================================
    PLAYABLE PIANO
