@@ -4,8 +4,11 @@ import * as THREE from "three";
  * A thin bridge for `scene`, whose owner is now src/render/Renderer.ts's
  * `renderState.scene` (Plan 0D Task 7). This module is the mirror that the
  * FX modules extracted in Phase 0C Task 2 (src/fx/Particles.ts, Decals.ts,
- * Gibs.ts) read through — Plan 0E deletes it once those modules take the
- * scene as a parameter instead.
+ * Gibs.ts) read through. Plan 0E Task 5 deferred deleting it; Task 12
+ * checked and found all five `getScene()` call sites (two in Decals.ts, two
+ * in Gibs.ts, one in Particles.ts) still live, so it stays. Having those
+ * three modules take the scene as a parameter instead remains a real
+ * option for whichever later task next touches them.
  *
  * `scene` is rebuilt with `new THREE.Scene()` on every level load
  * (legacy.js's loadLevel()), so a `const scene = getScene()` hoisted to any

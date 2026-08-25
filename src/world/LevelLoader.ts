@@ -44,8 +44,12 @@ import type { WallSeg } from "./LevelBuilder";
  *
  * `loadLevel` calls `setScene(renderState.scene)` to mirror the new scene
  * for the FX modules (`src/fx/Particles.ts`, `Decals.ts`, `Gibs.ts`), which
- * still read it through `getScene()`. That mirror is not retired in this
- * task — see `src/render/SceneRef.ts`'s doc comment and Plan 0E Task 12.
+ * still read it through `getScene()`. Plan 0E Task 12 checked all five call
+ * sites (two in `Decals.ts`, two in `Gibs.ts`, one in `Particles.ts`) and
+ * found the mirror still live, so it stays rather than being retired.
+ * Having those three modules take the scene as a parameter instead is a
+ * real future option, but it means editing them, which is out of Task 12's
+ * scope — see `src/render/SceneRef.ts`'s doc comment.
  *
  * `lt.style.opacity` takes strings here where the reference assigns
  * numbers, the same adjustment `src/ui/HudMessages.ts` and
