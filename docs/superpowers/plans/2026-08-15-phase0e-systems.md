@@ -825,10 +825,30 @@ holds the functions that read them. Two files, one subject — the same split as
 `Projectiles.ts`/`ProjectileTick.ts` in Task 8. Do not merge them; the state
 object is imported by other code and moving it is out of scope.
 
-- [ ] **Step 2: `eventTick` calls into the piano**
+- [ ] **Step 2: `eventTick` does NOT call into the piano — this task needs no `Context` work**
 
-The darkness/bell events touch `openPiano` (Plan 0F). Route through `Context`,
-as Task 5 did for `buildPiano`.
+**CORRECTION (measured before Task 11 ran).** This step previously read
+"`eventTick` calls into the piano — the darkness/bell events touch `openPiano`
+(Plan 0F), route through `Context`, as Task 5 did for `buildPiano`". Every part
+of that is wrong:
+
+- `eventTick` contains **no piano reference at all**. Its three branches are the
+  blackout (torch lights + ambient intensity), the bells (`bellToll`, enemy
+  `frenzy`) and the whispers (`blip`). Grep it and see.
+- Task 5 never routed `buildPiano` through `Context` either; that claim was a
+  separate plan error, corrected earlier — `buildPiano` is called by
+  `startGame`, which stays in `legacy.js` for Plan 0F.
+
+All three functions in this task reach only already-migrated modules:
+`bellToll`/`startBossMusic` (`audio/Ambient.ts`), `blip`/`bang`
+(`audio/Sfx.ts`), `showMsg` (`ui/HudMessages.ts`), `say` (`ui/Subtitles.ts`),
+`rnd` (`utils/math.ts`), plus the state objects and `ctx()` from
+`audio/AudioEngine.ts`. **Import everything directly. Add no `Context` entry** —
+the locator shrank to three entries in Task 10 and this task must not grow it.
+
+Note also that `WHITE`, `BLACK` and `KEYMAP` sit immediately after `eventTick`
+in `legacy.js`. They are the **piano's** constants, read by `buildPiano` and
+`pianoKeyDown`, and belong to Plan 0F. They are not part of this task.
 
 - [ ] **Step 3: Run the gate and commit**
 
