@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { ACHIEVEMENTS, ACHIEVEMENT_IDS, type Achievement } from "../../src/content/achievements";
@@ -14,14 +14,20 @@ import { ACHIEVEMENTS, ACHIEVEMENT_IDS, type Achievement } from "../../src/conte
  * instead of by line range.
  *
  * It also checks the other half of the carve, the half that has no
- * reference at all: that every `ach(...)` call site in src/legacy.js names
- * an id this table defines. A typo'd id there is invisible at runtime —
+ * reference at all: that every `ach(...)` call site in the port names an id
+ * this table defines. A typo'd id there is invisible at runtime —
  * `ACHIEVEMENTS.punct` is `undefined`, and the toast would render
  * "✦ undefined" with an empty description rather than throw.
+ *
+ * All 20 call sites lived in src/legacy.js when this test was written
+ * (Plan 0C). Plan 0E moves the functions that contain them out one task at
+ * a time — Task 5 moved `breakProp`'s `ach(ACHIEVEMENTS.redec,...)` to
+ * src/world/Props.ts — so this scans every .ts/.js file under src/, not
+ * just legacy.js, and keeps working as later tasks move the rest.
  */
 
 const REFERENCE_PATH = join(__dirname, "..", "..", "reference", "sonsurum.html");
-const LEGACY_PATH = join(__dirname, "..", "..", "src", "legacy.js");
+const SRC_DIR = join(__dirname, "..", "..", "src");
 
 /** Every `ach("id","TITLE","desc")` literal in the reference, in call-site order. */
 function referenceAchievements(): Achievement[] {
@@ -33,13 +39,27 @@ function referenceAchievements(): Achievement[] {
   return out;
 }
 
-/** Every id passed to ach() in the port, i.e. the `x` in `ach(ACHIEVEMENTS.x,S.ach)`. */
+/** Every .ts/.js file under src/, recursively. */
+function srcFiles(dir: string): string[] {
+  const out: string[] = [];
+  for (const ent of readdirSync(dir, { withFileTypes: true })) {
+    const p = join(dir, ent.name);
+    if (ent.isDirectory()) out.push(...srcFiles(p));
+    else if (/\.(ts|js)$/.test(ent.name)) out.push(p);
+  }
+  return out;
+}
+
+/** Every id passed to ach() anywhere in src/, i.e. the `x` in `ach(ACHIEVEMENTS.x,S.ach)`. */
 function portCallSiteIds(): string[] {
-  const src = readFileSync(LEGACY_PATH, "utf8");
   const out: string[] = [];
   const re = /\bach\(\s*ACHIEVEMENTS\.([A-Za-z0-9_]+)/g;
-  let m: RegExpExecArray | null;
-  while ((m = re.exec(src)) !== null) out.push(m[1]);
+  for (const file of srcFiles(SRC_DIR)) {
+    const src = readFileSync(file, "utf8");
+    let m: RegExpExecArray | null;
+    re.lastIndex = 0;
+    while ((m = re.exec(src)) !== null) out.push(m[1]);
+  }
   return out;
 }
 
@@ -82,7 +102,13 @@ describe("the port's ach() call sites", () => {
     expect([...new Set(callSiteIds)].sort()).toEqual([...ACHIEVEMENT_IDS].sort());
     expect(callSiteIds).toHaveLength(20);
     // The old inline form must be gone, or a call site could still be
-    // passing text the table never sees.
-    expect(readFileSync(LEGACY_PATH, "utf8")).not.toMatch(/\bach\("/);
+    // passing text the table never sees. Block comments are stripped first:
+    // src/content/achievements.ts and src/ui/Toasts.ts each quote one
+    // old-form literal in their own doc comment as an example of what it
+    // replaced, which is prose, not a live call site.
+    for (const file of srcFiles(SRC_DIR)) {
+      const code = readFileSync(file, "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
+      expect(code, file).not.toMatch(/\bach\("/);
+    }
   });
 });

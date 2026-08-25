@@ -132,7 +132,7 @@ and it holds here.
 
 | File | Owns | From |
 |---|---|---|
-| `src/core/Context.ts` | the service locator | new |
+| `src/core/Context.ts` | the service locator | Task 5 |
 | `src/world/Collision.ts` | `distToSeg segBlocked segsCrossRay floorHeightAt wallNormal solidAt collides` | Task 3 |
 | `src/render/RenderCore.ts` | `sizeRender addSprite addBlob` | Task 4 |
 | `src/world/LevelLoader.ts` | `loadLevel spawnEnemy spawnProp` | Task 5 |
@@ -142,11 +142,12 @@ and it holds here.
 | `src/player/Player.ts` | `damagePlayer accelerate footstep playerTick` | Task 7 |
 | `src/player/Interact.ts` | `interact itemsTick doorTick propTick torchTick` | Task 8 |
 | `src/fx/ProjectileTick.ts` | `projTick` | Task 8 |
-| `src/enemies/Damage.ts` | `damageEnemy severLimb refreshSeverSprite dropAmmo` | Task 9 |
-| `src/enemies/Death.ts` | `killEnemy spawnHead headTick bossDeath openExit` | Task 9 |
+| `src/enemies/Damage.ts` | `damageEnemy severLimb refreshSeverSprite` | Task 9 |
+| `src/enemies/Death.ts` | `killEnemy spawnHead headTick dropAmmo bossDeath openExit` | Task 9 |
 | `src/enemies/Boss.ts` | `wakeBoss roarFor cineTick priestTeleport priestThink` | Task 10 |
-| `src/enemies/ai/Perception.ts` | `los alertSound` | Task 10 |
-| `src/enemies/ai/Behaviors.ts` | `moveEnemy enemyTick` | Task 10 |
+| `src/enemies/ai/Perception.ts` | `alertSound` (Task 5), `los` (Task 10) | Tasks 5, 10 |
+| `src/enemies/ai/Locomotion.ts` | `moveEnemy` | Task 10 |
+| `src/enemies/ai/Behaviors.ts` | `enemyTick` | Task 10 |
 | `src/enemies/ai/Attacks.ts` | `fireOrb throwFlesh spawnRing ringTick spawnStrike strikeTick poisonTick` | Task 10 |
 | `src/world/RandomEvents.ts` | `eventTick` | Task 11 |
 | `src/world/Ambience.ts` | `ambience vitalsAudio` | Task 11 |
@@ -263,60 +264,27 @@ note of which sabotages it is proven to catch.
 
 ---
 
-### Task 2: `Context` — the service locator
+### Task 2: *(withdrawn — folded into Task 5)*
 
-**Files:**
-- Create: `src/core/Context.ts`
+**Correction, found before execution (2026-08-15).** This task originally
+created `src/core/Context.ts` on its own, "empty except for what Task 3 needs".
+Task 3 needs nothing from it: Collision imports the state objects directly,
+because state objects are already modules and importing them creates no cycle.
+Task 4 is the same. **`Context`'s first real consumer is Task 5**, where
+`loadLevel` has to call `buildPiano` — code that stays in `legacy.js` for this
+whole plan.
 
-**Interfaces:**
-- Produces: `export const ctx` — a mutable registry object, plus a
-  `registerSystem`-style setter per system as later tasks need one. Start it
-  **empty except for what Task 3 needs**; every later task adds its own field.
-  Do not pre-declare fields for systems that have not moved yet — an
-  interface full of `null`s that nothing reads is the abstraction-with-no-user
-  problem Decision 2 rejects.
+Running this as a standalone task would therefore have shipped a module that
+nothing imports for three tasks running — precisely the abstraction-with-no-user
+that this plan's own Decision 2 rejects when it declines to build `Events.ts`.
+Applying that rule to `Events` but not to `Context` would have been
+inconsistent.
 
-- [ ] **Step 1: Write the module**
-
-```ts
-/**
- * The service locator, and deliberate debt.
- *
- * Plan 0E moves functions, and some of them call each other both ways: enemy
- * AI damages the player and the player queries enemies; the weapon FSM asks
- * collision for a hit and collision asks the weapon table for stats. Direct
- * imports would make those pairs import cycles, which `madge --circular` is a
- * hard gate against.
- *
- * So systems register here and reach each other through this object rather
- * than importing each other. The binding never changes; its fields do — the
- * same property-not-`let` reason every state object in Plan 0D exists.
- *
- * This is NOT the end state. `docs/known-issues.md` KNOWN-2 tracks it: the
- * long-term rule is that systems talk over `core/Events.ts` and never reach
- * into each other, and each phase after this one migrates the systems it
- * touches. By the end of Phase 5 this should hold the renderer and the audio
- * engine and nothing else. It is written down as debt rather than hidden.
- */
-export const ctx: Record<string, unknown> = {};
-```
-
-Give it real field types as systems register — a `Record<string, unknown>` that
-never gains structure is its own smell. The shape at the end of this plan is
-whatever the tasks actually needed; let it grow rather than designing it up
-front.
-
-- [ ] **Step 2: Confirm it changes nothing yet**
-
-Run: `npm test`
-Expected: 357+ tests pass. A module nothing imports cannot change behavior.
-
-- [ ] **Step 3: Commit**
-
-```bash
-git add src/core/Context.ts
-git commit -m "feat: add core/Context.ts, the service locator Plan 0E ports through"
-```
+So `Context` is created in **Task 5**, alongside its first entry. Its design —
+a mutable registry object, fields added by the tasks that need them, typed as
+they are added rather than declared up front — is unchanged and now lives in
+Task 5's Step 3. Task numbering is left alone so that the ledger, the briefs
+and this document keep referring to the same tasks.
 
 ---
 
@@ -407,12 +375,45 @@ to `renderState.scene`. All three import `renderState` directly.
 `blobTex`/`blobTexC` are module-scope `const`s that `addBlob` needs — move them
 with it.
 
-- [ ] **Step 3: The resize listener**
+- [ ] **Step 3: The resize listener, and an ordering hazard this plan got wrong**
 
-`legacy.js` has `addEventListener("resize",sizeRender);sizeRender();` at module
-scope. Registration must stay at module scope and fire in the same order — this
-is the same rule Plan 0C's input task followed. Moving the listener into
-`RenderCore.ts` is correct; moving it into an init function called later is not.
+`legacy.js` has, in this exact order at module scope:
+
+```js
+renderState.camera=new THREE.PerspectiveCamera(78,4/3,.05,90);
+renderState.renderer=new THREE.WebGLRenderer({canvas:document.getElementById("game"),…});
+…
+function sizeRender(){ renderState.renderer.setSize(…); renderState.camera.aspect=a; … }
+addEventListener("resize",sizeRender);sizeRender();
+```
+
+`sizeRender()` is **called immediately**, and it dereferences
+`renderState.renderer` and `renderState.camera`. An earlier draft of this step
+said "moving the listener into `RenderCore.ts` is correct" — that is wrong on
+its own. `legacy.js` imports `RenderCore.ts`, so RenderCore's module body runs
+**first**; a module-scope `sizeRender()` there would fire while
+`renderState.renderer` is still `null` and throw.
+
+Two ways out. Choose one, and justify it in your report:
+
+1. **Move the camera/renderer construction into `RenderCore.ts` too**, above
+   `sizeRender` and its listener, keeping the same relative order. RenderCore
+   becomes self-contained and the ordering is preserved by construction. This
+   is the recommended option — those five lines are THREE CORE section content
+   and belong with it.
+2. **Export `sizeRender` and leave `addEventListener("resize",sizeRender);sizeRender();`
+   in `legacy.js`** where it is. Preserves order exactly, at the cost of the
+   listener line staying behind for now.
+
+Either way, **do not move the call into an init function invoked later** —
+that changes when the renderer is first sized, which this plan forbids.
+
+Note `src/render/Overlay2D.ts` also registers a `resize` listener (`sizeFx`)
+at its module scope. Two listeners on the same event means their relative
+order is observable in principle; they write disjoint state (one sizes the 2D
+overlay canvas, the other the WebGL renderer), so nothing depends on it today
+— but say which order your change produces, so the next reader knows it was
+considered rather than missed.
 
 - [ ] **Step 4: Run the gate and commit**
 
@@ -445,19 +446,81 @@ prop is destroyed. They share the `props` list and nothing else. Two files keeps
 each under the size gate and matches how they are used — but read both before
 splitting and say in your report whether the split holds up.
 
-- [ ] **Step 2: `alertSound` does not belong here**
+- [ ] **Step 2: `alertSound` moves now, into `Perception.ts`, ahead of schedule**
 
-It is grouped with the loader in `legacy.js` but is a perception concern — enemy
-AI calls it. Leave it in `legacy.js`; Task 10 takes it into
-`src/enemies/ai/Perception.ts` alongside `los`. Note this in your report so the
-next task's implementer expects it.
+It is grouped with the loader in `legacy.js` but is a perception concern, and
+this plan originally left it for Task 10 to take into
+`src/enemies/ai/Perception.ts` alongside `los`. Measured before dispatch, that
+is the wrong call: **`explodeBarrel` calls it**, and `explodeBarrel` moves in
+this task. Leaving it behind would mean adding a `Context` entry for it — and
+`alertSound` needs neither the locator nor a cycle-break, because it is a
+four-line zero-dependency leaf that reads `world.enemies` and writes
+`e.alertX`/`e.alertZ` and calls nothing at all.
 
-- [ ] **Step 3: `loadLevel` calls things that have not moved yet**
+So create `src/enemies/ai/Perception.ts` here with `alertSound` in it, and
+import it directly from `Props.ts`. Task 10 adds `los` to the same file. This
+follows the plan's own rule — never add a `Context` field a task does not
+need — and its leaves-first principle.
 
-It calls `spawnEnemy`, `buildPiano` (Plan 0F), and FX resets. `buildPiano` stays
-in `legacy.js` this whole plan, so `loadLevel` must reach it through `Context`:
-register a `buildPiano` entry from `legacy.js` and call `ctx.buildPiano()`. This
-is exactly what `Context` is for — a call into code that has not moved.
+There are seven `alertSound` call sites across `legacy.js` (in the weapon
+fire path, damage, interaction and this task's own `explodeBarrel`); the ones
+outside this task become imports.
+
+- [ ] **Step 3: Create `Context` — `explodeBarrel` is what needs it**
+
+This plan guessed twice about where the service locator is born, and both
+guesses were wrong. It first put it in a standalone Task 2 (withdrawn: nothing
+imported it for three tasks). It then justified creating it here because
+`loadLevel` calls `buildPiano` — **it does not**; `startGame` does, and that
+stays in `legacy.js` for Plan 0F. `loadLevel`'s only calls outside its own
+section are `showMsg` and `say`, both already modules since Plan 0C.
+
+Measured properly, across all six functions this task moves, exactly one has
+unmoved dependencies: **`explodeBarrel`**, which calls `damagePlayer` (moves in
+Task 7) and `damageEnemy` (moves in Task 9). Everything else —
+`spawnEnemy`, `spawnProp`, `breakProp`, `alertSound`, `loadLevel` — calls
+nothing that has not already moved.
+
+So create `src/core/Context.ts` with exactly those two entries:
+
+```ts
+/**
+ * The service locator, and deliberate debt.
+ *
+ * Plan 0E moves functions, and two situations make a direct import
+ * impossible. Some pairs call each other **both ways** — enemy AI damages the
+ * player and the player queries enemies — which `madge --circular` forbids.
+ * And a system that has already moved sometimes has to call one that has not:
+ * this module is born in the level-loader task because `explodeBarrel` calls
+ * `damagePlayer` and `damageEnemy`, neither of which becomes a module until
+ * Tasks 7 and 9.
+ *
+ * Each entry is registered by whoever owns the function *at the time*: today
+ * `legacy.js` registers both, and when Tasks 7 and 9 extract them,
+ * `Player.ts` and `Damage.ts` register them instead — and no call site
+ * changes. That is the property that lets the remaining tasks land in order
+ * without rewriting each other's call sites.
+ *
+ * This is NOT the end state. `docs/known-issues.md` KNOWN-2 tracks it: the
+ * long-term rule is that systems talk over `core/Events.ts` and never reach
+ * into each other, and each phase after this one migrates the systems it
+ * touches. By the end of Phase 5 this should hold the renderer and the audio
+ * engine and nothing else. It is written down as debt rather than hidden.
+ */
+export const ctx: {
+  damagePlayer?: (d: number, silent?: boolean) => void;
+  damageEnemy?: (e: unknown, dmg: number, info?: unknown) => void;
+} = {};
+```
+
+The two real signatures are `damagePlayer(d,silent)` and
+`damageEnemy(e,dmg,info)` — confirm both by reading them before you type the
+type. Register them from `legacy.js` at module scope and call them as
+`ctx.damagePlayer?.(...)` / `ctx.damageEnemy?.(...)` from `Props.ts`.
+
+**Never add a `Context` field a task does not need.** Decision 2's rule — an
+abstraction with no user is a defect — applies to individual fields as much as
+to whole modules. Two entries, no more.
 
 - [ ] **Step 4: `setScene` and the SceneRef mirror**
 
@@ -510,12 +573,18 @@ ignores hit-stop and pause and survives level unload — but that is **Plan 0F's
 hardening step, not this one**. Move the call verbatim. Do not "fix" it here;
 KNOWN-3 already tracks it.
 
-- [ ] **Step 3: `fire` reaches into damage code that has not moved**
+- [ ] **Step 3: Add your own `Context` entries — the module already exists**
 
-`fire`/`hitscan` call `damageEnemy` (Task 9). Register it through `Context` from
-`legacy.js` and call `ctx.damageEnemy(...)`. When Task 9 lands, that entry gets
-registered from `Damage.ts` instead and the call site does not change — which is
-the property that makes this ordering work.
+Task 5 created `src/core/Context.ts` for `explodeBarrel`'s two unmoved calls.
+Your functions need it too: `fire`/`hitscan` call `damageEnemy` (three sites,
+already a `ctx` entry from Task 5 — reuse it, do not add a second) and
+`alertSound` (two sites, which Task 5 moved early into
+`src/enemies/ai/Perception.ts` — **import it directly**, it needs no locator).
+
+So this task likely adds *no* new `Context` fields at all. Verify that by
+listing every call your moved functions make to something still in
+`legacy.js`, and add an entry only for what that list actually contains. If it
+is empty, say so — that is the good outcome, not a missed step.
 
 - [ ] **Step 4: Run the gate and commit**
 
@@ -613,9 +682,17 @@ git commit -m "refactor: extract interaction, pickups and the projectile tick"
 - Modify: `src/legacy.js`
 
 **Interfaces:**
-- Produces: `damageEnemy`, `severLimb`, `refreshSeverSprite`, `dropAmmo` from
-  `Damage.ts`; `killEnemy`, `spawnHead`, `headTick`, `bossDeath`, `openExit`
-  from `Death.ts`.
+- Produces: `damageEnemy`, `severLimb`, `refreshSeverSprite` from
+  `Damage.ts`; `killEnemy`, `spawnHead`, `headTick`, `dropAmmo`, `bossDeath`,
+  `openExit` from `Death.ts`.
+- **CORRECTION (made before Task 9 ran).** `dropAmmo` was originally assigned to
+  `Damage.ts`. That split is circular: `damageEnemy` (Damage) calls `killEnemy`
+  (Death) and `killEnemy` calls `dropAmmo` (`legacy.js:208`), so the two files
+  would import each other and `madge --circular` — a hard gate in `npm test` —
+  would fail. `dropAmmo` moves to `Death.ts` instead, which makes
+  `Damage.ts -> Death.ts` the only cross-file edge. It is also the better
+  grouping on merit: `dropAmmo` is a death drop, and its only other caller
+  (`legacy.js:437`, the AI section) is itself inside a death branch.
 - `wakeBoss`, `roarFor` and `cineTick` are grouped with this section in
   `legacy.js` but are boss-brain concerns — they move in Task 10. Confirm by
   reading them and note it for the next implementer.
@@ -656,15 +733,37 @@ The largest section (352 lines) and the most coupled. Everything it calls is now
 a module or a `Context` entry.
 
 **Files:**
-- Create: `src/enemies/ai/Perception.ts`, `src/enemies/ai/Behaviors.ts`,
+- Create: `src/enemies/ai/Locomotion.ts`, `src/enemies/ai/Behaviors.ts`,
   `src/enemies/ai/Attacks.ts`, `src/enemies/Boss.ts`
-- Modify: `src/legacy.js`
+- Modify: `src/enemies/ai/Perception.ts`, `src/legacy.js`
 
 **Interfaces:**
-- Produces: `los`, `alertSound` from `Perception.ts`; `moveEnemy`, `enemyTick`
-  from `Behaviors.ts`; `fireOrb`, `throwFlesh`, `spawnRing`, `ringTick`,
-  `spawnStrike`, `strikeTick`, `poisonTick` from `Attacks.ts`; `wakeBoss`,
-  `roarFor`, `cineTick`, `priestTeleport`, `priestThink` from `Boss.ts`.
+- Produces: `los`, `alertSound` from `Perception.ts`; `moveEnemy` from
+  `Locomotion.ts`; `enemyTick` from `Behaviors.ts`; `fireOrb`, `throwFlesh`,
+  `spawnRing`, `ringTick`, `spawnStrike`, `strikeTick`, `poisonTick` from
+  `Attacks.ts`; `wakeBoss`, `roarFor`, `cineTick`, `priestTeleport`,
+  `priestThink` from `Boss.ts`.
+
+- **CORRECTION (made before Task 10 ran).** `moveEnemy` was originally grouped
+  with `enemyTick` in `Behaviors.ts`. That split is circular, the same failure
+  as Task 9's: `enemyTick` calls `priestThink`, `wakeBoss` and `roarFor`
+  (`legacy.js:252,296,308`) so `Behaviors -> Boss`, while `priestThink` calls
+  `moveEnemy` (`legacy.js:415,445`) so `Boss -> Behaviors`. `madge --circular`
+  would fail.
+
+  `moveEnemy` moves to its own leaf, `Locomotion.ts`. It earns one: it is a
+  12-line movement primitive whose only calls are to already-migrated modules
+  (`solidAt`, `explodeBarrel`, `breakProp`, `world`), it is shared by two
+  callers in different files, and it is locomotion rather than perception, so
+  folding it into `Perception.ts` would misname it. The alternative — moving
+  the priest brain into `Behaviors.ts` — would break the cycle too but dilute
+  what `Boss.ts` means. The resulting graph is a clean DAG:
+
+  ```
+  Behaviors -> Perception, Locomotion, Attacks, Boss
+  Boss      -> Perception, Locomotion, Attacks
+  Attacks, Locomotion, Perception -> (leaves, w.r.t. AI)
+  ```
 
 - [ ] **Step 1: Check the size gate before you split**
 
@@ -673,16 +772,18 @@ large. Measure it first; if `Behaviors.ts` would exceed 400 lines, split
 `enemyTick`'s per-archetype branches rather than letting the gate fail at commit
 time.
 
-- [ ] **Step 2: `alertSound` arrives from the level loader section**
+- [ ] **Step 2: `Perception.ts` already exists — add `los` to it**
 
-Task 5 deliberately left it in `legacy.js`. It belongs with `los` in
-`Perception.ts`.
+Task 5 created it early with `alertSound`, because `explodeBarrel` needed it
+and it is a zero-dependency leaf. Add `los` alongside; do not create a second
+file.
 
-- [ ] **Step 3: Move the four files one at a time, testing between each**
+- [ ] **Step 3: Move the files one at a time, testing between each**
 
-Order: `Perception.ts` (leaf), `Attacks.ts`, `Boss.ts`, `Behaviors.ts` (calls
-all three). Run `npx vitest run tests/integration/combatTrace.test.ts` after
-each — 352 lines is too much to debug as one red test.
+Order follows the DAG, leaves first: `Perception.ts` (add `los`),
+`Locomotion.ts`, `Attacks.ts`, `Boss.ts`, then `Behaviors.ts` (which calls all
+four). Run `npx vitest run tests/integration/combatTrace.test.ts` after each —
+352 lines is too much to debug as one red test.
 
 - [ ] **Step 4: Retire the `Context` entries this task makes unnecessary**
 
@@ -724,10 +825,30 @@ holds the functions that read them. Two files, one subject — the same split as
 `Projectiles.ts`/`ProjectileTick.ts` in Task 8. Do not merge them; the state
 object is imported by other code and moving it is out of scope.
 
-- [ ] **Step 2: `eventTick` calls into the piano**
+- [ ] **Step 2: `eventTick` does NOT call into the piano — this task needs no `Context` work**
 
-The darkness/bell events touch `openPiano` (Plan 0F). Route through `Context`,
-as Task 5 did for `buildPiano`.
+**CORRECTION (measured before Task 11 ran).** This step previously read
+"`eventTick` calls into the piano — the darkness/bell events touch `openPiano`
+(Plan 0F), route through `Context`, as Task 5 did for `buildPiano`". Every part
+of that is wrong:
+
+- `eventTick` contains **no piano reference at all**. Its three branches are the
+  blackout (torch lights + ambient intensity), the bells (`bellToll`, enemy
+  `frenzy`) and the whispers (`blip`). Grep it and see.
+- Task 5 never routed `buildPiano` through `Context` either; that claim was a
+  separate plan error, corrected earlier — `buildPiano` is called by
+  `startGame`, which stays in `legacy.js` for Plan 0F.
+
+All three functions in this task reach only already-migrated modules:
+`bellToll`/`startBossMusic` (`audio/Ambient.ts`), `blip`/`bang`
+(`audio/Sfx.ts`), `showMsg` (`ui/HudMessages.ts`), `say` (`ui/Subtitles.ts`),
+`rnd` (`utils/math.ts`), plus the state objects and `ctx()` from
+`audio/AudioEngine.ts`. **Import everything directly. Add no `Context` entry** —
+the locator shrank to three entries in Task 10 and this task must not grow it.
+
+Note also that `WHITE`, `BLACK` and `KEYMAP` sit immediately after `eventTick`
+in `legacy.js`. They are the **piano's** constants, read by `buildPiano` and
+`pianoKeyDown`, and belong to Plan 0F. They are not part of this task.
 
 - [ ] **Step 3: Run the gate and commit**
 

@@ -1,0 +1,4370 @@
+[
+ {
+  "frame": 10,
+  "camera": [
+   11,
+   1,
+   63,
+   0,
+   2.356194,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "10f4c760"
+  }
+ },
+ {
+  "frame": 20,
+  "camera": [
+   11,
+   1,
+   63,
+   0,
+   1.570796,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "5c33c876"
+  }
+ },
+ {
+  "frame": 30,
+  "camera": [
+   11,
+   1,
+   63,
+   0,
+   0.785398,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "b4e34a90"
+  }
+ },
+ {
+  "frame": 40,
+  "camera": [
+   11,
+   1,
+   63,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "f70d669a"
+  }
+ },
+ {
+  "frame": 50,
+  "camera": [
+   11,
+   1.000419,
+   62.9825,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "b01c7925"
+  }
+ },
+ {
+  "frame": 60,
+  "camera": [
+   11.406502,
+   0.977584,
+   62.382406,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "5dfa4176"
+  }
+ },
+ {
+  "frame": 70,
+  "camera": [
+   12.198263,
+   0.991483,
+   61.539615,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "35ed1528"
+  }
+ },
+ {
+  "frame": 80,
+  "camera": [
+   13.016495,
+   1.018552,
+   60.707931,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "cb189864"
+  }
+ },
+ {
+  "frame": 90,
+  "camera": [
+   13.83968,
+   1.022524,
+   59.8812,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "subt": "ADEM“A dungeon. Of course it's a dungeon. My therapist is going to love this.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "3c23539d"
+  }
+ },
+ {
+  "frame": 100,
+  "camera": [
+   14.653873,
+   0.998722,
+   59.048573,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "subt": "ADEM“A dungeon. Of course it's a dungeon. My therapist is going to love this.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "7663fab8"
+  }
+ },
+ {
+  "frame": 110,
+  "camera": [
+   15.026509,
+   0.975654,
+   57.936453,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "subt": "ADEM“A dungeon. Of course it's a dungeon. My therapist is going to love this.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "5c568400"
+  }
+ },
+ {
+  "frame": 120,
+  "camera": [
+   15.124734,
+   0.986165,
+   56.769787,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "subt": "ADEM“A dungeon. Of course it's a dungeon. My therapist is going to love this.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "92a943c1"
+  }
+ },
+ {
+  "frame": 130,
+  "camera": [
+   15.150626,
+   1.000239,
+   56.351971,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "subt": "ADEM“A dungeon. Of course it's a dungeon. My therapist is going to love this.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "8cf0077a"
+  }
+ },
+ {
+  "frame": 140,
+  "camera": [
+   15.157451,
+   1.000061,
+   56.351971,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "subt": "ADEM“A dungeon. Of course it's a dungeon. My therapist is going to love this.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "e9f49ee4"
+  }
+ },
+ {
+  "frame": 150,
+  "camera": [
+   15.15925,
+   1.000016,
+   56.351971,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "subt": "ADEM“A dungeon. Of course it's a dungeon. My therapist is going to love this.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "4e0663c7"
+  }
+ },
+ {
+  "frame": 160,
+  "camera": [
+   15.159725,
+   1.000004,
+   56.351971,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "subt": "ADEM“A dungeon. Of course it's a dungeon. My therapist is going to love this.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "7b29742b"
+  }
+ },
+ {
+  "frame": 170,
+  "camera": [
+   15.15985,
+   1.000001,
+   56.351971,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "subt": "ADEM“A dungeon. Of course it's a dungeon. My therapist is going to love this.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "f728400a"
+  }
+ },
+ {
+  "frame": 180,
+  "camera": [
+   15.159883,
+   1,
+   56.351971,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "subt": "ADEM“A dungeon. Of course it's a dungeon. My therapist is going to love this.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "e5f8873d"
+  }
+ },
+ {
+  "frame": 190,
+  "camera": [
+   15.159891,
+   1,
+   56.351971,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "subt": "ADEM“A dungeon. Of course it's a dungeon. My therapist is going to love this.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "5ec7b264"
+  }
+ },
+ {
+  "frame": 200,
+  "camera": [
+   15.159894,
+   1,
+   56.351971,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "subt": "ADEM“A dungeon. Of course it's a dungeon. My therapist is going to love this.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "b4203992"
+  }
+ },
+ {
+  "frame": 210,
+  "camera": [
+   15.159894,
+   1,
+   56.351971,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“A dungeon. Of course it's a dungeon. My therapist is going to love this.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "19e0f151"
+  }
+ },
+ {
+  "frame": 220,
+  "camera": [
+   15.159894,
+   1,
+   56.351971,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“A dungeon. Of course it's a dungeon. My therapist is going to love this.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "72912173"
+  }
+ },
+ {
+  "frame": 230,
+  "camera": [
+   15.159894,
+   1,
+   56.351971,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“A dungeon. Of course it's a dungeon. My therapist is going to love this.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "06196b73"
+  }
+ },
+ {
+  "frame": 240,
+  "camera": [
+   15.159894,
+   1,
+   56.351971,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“A dungeon. Of course it's a dungeon. My therapist is going to love this.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "81305bea"
+  }
+ },
+ {
+  "frame": 250,
+  "camera": [
+   15.159894,
+   1,
+   56.351971,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“A dungeon. Of course it's a dungeon. My therapist is going to love this.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "ada69e4f"
+  }
+ },
+ {
+  "frame": 260,
+  "camera": [
+   15.159894,
+   1,
+   56.351971,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“A dungeon. Of course it's a dungeon. My therapist is going to love this.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "8163fc04"
+  }
+ },
+ {
+  "frame": 270,
+  "camera": [
+   15.159894,
+   1,
+   56.351971,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“A dungeon. Of course it's a dungeon. My therapist is going to love this.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "af5b5f1e"
+  }
+ },
+ {
+  "frame": 280,
+  "camera": [
+   15.159894,
+   1,
+   56.351971,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“A dungeon. Of course it's a dungeon. My therapist is going to love this.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "2e713cbc"
+  }
+ },
+ {
+  "frame": 290,
+  "camera": [
+   15.159894,
+   1,
+   56.351971,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“A dungeon. Of course it's a dungeon. My therapist is going to love this.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "1de41789"
+  }
+ },
+ {
+  "frame": 300,
+  "camera": [
+   15.159894,
+   1,
+   56.351971,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“A dungeon. Of course it's a dungeon. My therapist is going to love this.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "a446e683"
+  }
+ },
+ {
+  "frame": 310,
+  "camera": [
+   15.159894,
+   1,
+   56.351971,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“A dungeon. Of course it's a dungeon. My therapist is going to love this.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "f7820f04"
+  }
+ },
+ {
+  "frame": 320,
+  "camera": [
+   15.159894,
+   1,
+   56.351971,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“A dungeon. Of course it's a dungeon. My therapist is going to love this.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "3fc6d96d"
+  }
+ },
+ {
+  "frame": 330,
+  "camera": [
+   15.159894,
+   1,
+   56.351971,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“A dungeon. Of course it's a dungeon. My therapist is going to love this.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "0daf39a1"
+  }
+ },
+ {
+  "frame": 340,
+  "camera": [
+   15.159894,
+   1,
+   56.351971,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“A dungeon. Of course it's a dungeon. My therapist is going to love this.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "8cae958b"
+  }
+ },
+ {
+  "frame": 350,
+  "camera": [
+   15.159894,
+   1,
+   56.351971,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "6c37b1a6"
+  }
+ },
+ {
+  "frame": 360,
+  "camera": [
+   15.159894,
+   1,
+   56.351971,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "e2fea498"
+  }
+ },
+ {
+  "frame": 370,
+  "camera": [
+   15.159894,
+   1,
+   56.351971,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "1e427dd7"
+  }
+ },
+ {
+  "frame": 380,
+  "camera": [
+   15.159894,
+   1,
+   56.351971,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "52dd60cf"
+  }
+ },
+ {
+  "frame": 390,
+  "camera": [
+   15.159894,
+   1,
+   56.351971,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "7beae5fb"
+  }
+ },
+ {
+  "frame": 400,
+  "camera": [
+   15.162198,
+   1.000395,
+   56.351971,
+   0,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 295,
+   "digest": "0829e01e"
+  }
+ },
+ {
+  "frame": 410,
+  "camera": [
+   15.263342,
+   1.000839,
+   56.351971,
+   0.009885,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 296,
+   "digest": "33faa55b"
+  }
+ },
+ {
+  "frame": 420,
+  "camera": [
+   15.425884,
+   0.99744,
+   56.351971,
+   0.002606,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 296,
+   "digest": "90bce0d6"
+  }
+ },
+ {
+  "frame": 430,
+  "camera": [
+   15.602307,
+   0.996774,
+   56.351971,
+   0.000687,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 296,
+   "digest": "6ab23f44"
+  }
+ },
+ {
+  "frame": 440,
+  "camera": [
+   15.684156,
+   0.999404,
+   56.351971,
+   0.010066,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 297,
+   "digest": "b8e245f2"
+  }
+ },
+ {
+  "frame": 450,
+  "camera": [
+   15.705731,
+   0.999869,
+   56.351971,
+   0.002653,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 297,
+   "digest": "90a25d58"
+  }
+ },
+ {
+  "frame": 460,
+  "camera": [
+   15.713721,
+   0.999715,
+   56.351971,
+   0.000699,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 297,
+   "digest": "6dcd5cfd"
+  }
+ },
+ {
+  "frame": 470,
+  "camera": [
+   15.816364,
+   1.000361,
+   56.351971,
+   0.01007,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 298,
+   "digest": "992a6017"
+  }
+ },
+ {
+  "frame": 480,
+  "camera": [
+   15.979301,
+   1.00341,
+   56.351971,
+   0.002654,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 298,
+   "digest": "467bf205"
+  }
+ },
+ {
+  "frame": 490,
+  "camera": [
+   16.155829,
+   1.002555,
+   56.351971,
+   0.0007,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 298,
+   "digest": "94598496"
+  }
+ },
+ {
+  "frame": 500,
+  "camera": [
+   16.237705,
+   1.000288,
+   56.351971,
+   0.01007,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 299,
+   "digest": "4e6b6d11"
+  }
+ },
+ {
+  "frame": 510,
+  "camera": [
+   16.259287,
+   1.000044,
+   56.351971,
+   0.002654,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 299,
+   "digest": "8317ae19"
+  }
+ },
+ {
+  "frame": 520,
+  "camera": [
+   16.267279,
+   1.000076,
+   56.351971,
+   0.0007,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 299,
+   "digest": "ef4a5c1c"
+  }
+ },
+ {
+  "frame": 530,
+  "camera": [
+   16.369923,
+   0.998482,
+   56.351971,
+   0.01007,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 300,
+   "digest": "779f1e16"
+  }
+ },
+ {
+  "frame": 540,
+  "camera": [
+   16.53286,
+   0.996282,
+   56.351971,
+   0.002654,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 300,
+   "digest": "ebb8a7ce"
+  }
+ },
+ {
+  "frame": 550,
+  "camera": [
+   16.709388,
+   0.998523,
+   56.351971,
+   0.0007,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 300,
+   "digest": "01085dc5"
+  }
+ },
+ {
+  "frame": 560,
+  "camera": [
+   16.791264,
+   1.000067,
+   56.351971,
+   0.01007,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 301,
+   "digest": "e1be5383"
+  }
+ },
+ {
+  "frame": 570,
+  "camera": [
+   16.812846,
+   1.00005,
+   56.351971,
+   0.002654,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 301,
+   "digest": "567edb9b"
+  }
+ },
+ {
+  "frame": 580,
+  "camera": [
+   16.820838,
+   1.000145,
+   56.351971,
+   0.0007,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 301,
+   "digest": "734f6711"
+  }
+ },
+ {
+  "frame": 590,
+  "camera": [
+   16.923482,
+   1.002434,
+   56.351971,
+   0.000184,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 301,
+   "digest": "f4f3f2e9"
+  }
+ },
+ {
+  "frame": 600,
+  "camera": [
+   17.086419,
+   1.003435,
+   56.351971,
+   0.000049,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 301,
+   "digest": "1055bc6e"
+  }
+ },
+ {
+  "frame": 610,
+  "camera": [
+   17.262947,
+   1.000165,
+   56.351971,
+   0.000013,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 301,
+   "digest": "caa15690"
+  }
+ },
+ {
+  "frame": 620,
+  "camera": [
+   17.344823,
+   0.99959,
+   56.351971,
+   0.000003,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 301,
+   "digest": "b01d1f73"
+  }
+ },
+ {
+  "frame": 630,
+  "camera": [
+   17.366405,
+   0.999864,
+   56.351971,
+   0.000001,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 301,
+   "digest": "c7d56597"
+  }
+ },
+ {
+  "frame": 640,
+  "camera": [
+   17.374397,
+   0.999657,
+   56.351971,
+   0,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 301,
+   "digest": "3e1ec9b2"
+  }
+ },
+ {
+  "frame": 650,
+  "camera": [
+   17.477041,
+   0.997036,
+   56.351971,
+   0,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 301,
+   "digest": "6ba13819"
+  }
+ },
+ {
+  "frame": 660,
+  "camera": [
+   17.639978,
+   0.997393,
+   56.351971,
+   0,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 301,
+   "digest": "01768c30"
+  }
+ },
+ {
+  "frame": 670,
+  "camera": [
+   17.816506,
+   1.001174,
+   56.351971,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 301,
+   "digest": "ed4d1052"
+  }
+ },
+ {
+  "frame": 680,
+  "camera": [
+   17.898382,
+   1.000689,
+   56.351971,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 301,
+   "digest": "a3e66939"
+  }
+ },
+ {
+  "frame": 690,
+  "camera": [
+   17.919964,
+   1.000201,
+   56.351971,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 301,
+   "digest": "5cd6001e"
+  }
+ },
+ {
+  "frame": 700,
+  "camera": [
+   17.927956,
+   1.000486,
+   56.351971,
+   0,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 301,
+   "digest": "d0ad7c1c"
+  }
+ },
+ {
+  "frame": 710,
+  "camera": [
+   18.0306,
+   1.003023,
+   56.351971,
+   0.009885,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 302,
+   "digest": "4f189e03"
+  }
+ },
+ {
+  "frame": 720,
+  "camera": [
+   18.193537,
+   1.001365,
+   56.351971,
+   0.002606,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 302,
+   "digest": "ed322eeb"
+  }
+ },
+ {
+  "frame": 730,
+  "camera": [
+   18.370065,
+   0.993762,
+   56.301941,
+   0.000687,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 302,
+   "digest": "b6a1472f"
+  }
+ },
+ {
+  "frame": 740,
+  "camera": [
+   18.451941,
+   0.997514,
+   55.455082,
+   0.010066,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 303,
+   "digest": "2df513c6"
+  }
+ },
+ {
+  "frame": 750,
+  "camera": [
+   18.473523,
+   0.976045,
+   54.28969,
+   0.002653,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 303,
+   "digest": "059850b4"
+  }
+ },
+ {
+  "frame": 760,
+  "camera": [
+   18.48124,
+   0.984423,
+   53.122308,
+   0.000699,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 303,
+   "digest": "c63f54cc"
+  }
+ },
+ {
+  "frame": 770,
+  "camera": [
+   18.567488,
+   1.012535,
+   51.956854,
+   0.01007,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 304,
+   "digest": "2dab8248"
+  }
+ },
+ {
+  "frame": 780,
+  "camera": [
+   18.703299,
+   1.024759,
+   50.797981,
+   0.002654,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 304,
+   "digest": "41122348"
+  }
+ },
+ {
+  "frame": 790,
+  "camera": [
+   18.850259,
+   1.006029,
+   49.639859,
+   0.0007,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 304,
+   "digest": "07927c0e"
+  }
+ },
+ {
+  "frame": 800,
+  "camera": [
+   18.918409,
+   0.9796,
+   48.473192,
+   0.01007,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 305,
+   "digest": "cd779dbe"
+  }
+ },
+ {
+  "frame": 810,
+  "camera": [
+   18.936374,
+   0.999808,
+   48.356526,
+   0.002654,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 305,
+   "digest": "6c900931"
+  }
+ },
+ {
+  "frame": 820,
+  "camera": [
+   18.943412,
+   0.999475,
+   48.356526,
+   0.0007,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 305,
+   "digest": "98f31b50"
+  }
+ },
+ {
+  "frame": 830,
+  "camera": [
+   19.045805,
+   0.998165,
+   48.356526,
+   0.01007,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 306,
+   "digest": "ac807997"
+  }
+ },
+ {
+  "frame": 840,
+  "camera": [
+   19.208676,
+   1.001441,
+   48.356526,
+   0.002654,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 306,
+   "digest": "79187487"
+  }
+ },
+ {
+  "frame": 850,
+  "camera": [
+   19.385186,
+   1.003395,
+   48.356526,
+   0.0007,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 306,
+   "digest": "7b787f74"
+  }
+ },
+ {
+  "frame": 860,
+  "camera": [
+   19.467057,
+   1.000794,
+   48.356526,
+   0.01007,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 307,
+   "digest": "97d8e459"
+  }
+ },
+ {
+  "frame": 870,
+  "camera": [
+   19.488638,
+   1.000192,
+   48.356526,
+   0.002654,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 307,
+   "digest": "94604b16"
+  }
+ },
+ {
+  "frame": 880,
+  "camera": [
+   19.49663,
+   1.000436,
+   48.356526,
+   0.0007,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 307,
+   "digest": "c3b1581b"
+  }
+ },
+ {
+  "frame": 890,
+  "camera": [
+   19.599274,
+   1.000738,
+   48.356526,
+   0.000184,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 307,
+   "digest": "256bb361"
+  }
+ },
+ {
+  "frame": 900,
+  "camera": [
+   19.762211,
+   0.997335,
+   48.356526,
+   0.000049,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 307,
+   "digest": "d229e5dc"
+  }
+ },
+ {
+  "frame": 910,
+  "camera": [
+   19.938738,
+   0.996817,
+   48.356526,
+   0.000013,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 307,
+   "digest": "7c3b1e4a"
+  }
+ },
+ {
+  "frame": 920,
+  "camera": [
+   20.020614,
+   0.999431,
+   48.356526,
+   0.000003,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 307,
+   "digest": "929617c6"
+  }
+ },
+ {
+  "frame": 930,
+  "camera": [
+   20.042197,
+   0.999876,
+   48.356526,
+   0.000001,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 307,
+   "digest": "d8820cc7"
+  }
+ },
+ {
+  "frame": 940,
+  "camera": [
+   20.050189,
+   0.999734,
+   48.356526,
+   0,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 307,
+   "digest": "4fe39d85"
+  }
+ },
+ {
+  "frame": 950,
+  "camera": [
+   20.152833,
+   1.000479,
+   48.356526,
+   0,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 307,
+   "digest": "bb25c52b"
+  }
+ },
+ {
+  "frame": 960,
+  "camera": [
+   20.31577,
+   1.003465,
+   48.356526,
+   0,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 307,
+   "digest": "e7550b1d"
+  }
+ },
+ {
+  "frame": 970,
+  "camera": [
+   20.492297,
+   1.002465,
+   48.356526,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 307,
+   "digest": "18408ad5"
+  }
+ },
+ {
+  "frame": 980,
+  "camera": [
+   20.574173,
+   1.000254,
+   48.356526,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 307,
+   "digest": "468d3d6d"
+  }
+ },
+ {
+  "frame": 990,
+  "camera": [
+   20.595755,
+   1.000035,
+   48.356526,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 307,
+   "digest": "854040e3"
+  }
+ },
+ {
+  "frame": 1000,
+  "camera": [
+   20.603748,
+   1.000055,
+   48.356526,
+   0,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 307,
+   "digest": "36202627"
+  }
+ },
+ {
+  "frame": 1010,
+  "camera": [
+   20.706391,
+   0.998379,
+   48.356526,
+   0.009885,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 308,
+   "digest": "1a80710e"
+  }
+ },
+ {
+  "frame": 1020,
+  "camera": [
+   20.869329,
+   0.996284,
+   48.356526,
+   0.002606,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 308,
+   "digest": "3ecbde2b"
+  }
+ },
+ {
+  "frame": 1030,
+  "camera": [
+   21.045856,
+   0.998644,
+   48.356526,
+   0.000687,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 308,
+   "digest": "1e161efd"
+  }
+ },
+ {
+  "frame": 1040,
+  "camera": [
+   21.127732,
+   1.000102,
+   48.356526,
+   0.010066,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 309,
+   "digest": "1605dfa9"
+  }
+ },
+ {
+  "frame": 1050,
+  "camera": [
+   21.149314,
+   1.000059,
+   48.356526,
+   0.002653,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 309,
+   "digest": "1094848b"
+  }
+ },
+ {
+  "frame": 1060,
+  "camera": [
+   21.157307,
+   1.000166,
+   48.356526,
+   0.000699,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 309,
+   "digest": "b4a51ec8"
+  }
+ },
+ {
+  "frame": 1070,
+  "camera": [
+   21.25995,
+   1.002505,
+   48.356526,
+   0.01007,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 310,
+   "digest": "dc55077d"
+  }
+ },
+ {
+  "frame": 1080,
+  "camera": [
+   21.422888,
+   1.003377,
+   48.356526,
+   0.002654,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 310,
+   "digest": "6e6422c3"
+  }
+ },
+ {
+  "frame": 1090,
+  "camera": [
+   21.599415,
+   1.000031,
+   48.356526,
+   0.0007,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 310,
+   "digest": "8882e57b"
+  }
+ },
+ {
+  "frame": 1100,
+  "camera": [
+   21.681291,
+   0.999559,
+   48.356526,
+   0.01007,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 311,
+   "digest": "8922b55b"
+  }
+ },
+ {
+  "frame": 1110,
+  "camera": [
+   21.702873,
+   0.999857,
+   48.356526,
+   0.002654,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 311,
+   "digest": "8e1b91b1"
+  }
+ },
+ {
+  "frame": 1120,
+  "camera": [
+   21.710866,
+   0.99964,
+   48.356526,
+   0.0007,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 311,
+   "digest": "caa6b43d"
+  }
+ },
+ {
+  "frame": 1130,
+  "camera": [
+   21.813509,
+   0.997009,
+   48.356526,
+   0.01007,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 312,
+   "digest": "0ec804a1"
+  }
+ },
+ {
+  "frame": 1140,
+  "camera": [
+   21.976447,
+   0.997499,
+   48.356526,
+   0.002654,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 312,
+   "digest": "344cb306"
+  }
+ },
+ {
+  "frame": 1150,
+  "camera": [
+   22.152974,
+   1.001298,
+   48.356526,
+   0.0007,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "ADEM“Put the gun down, padre's-helper.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 312,
+   "digest": "4e2a806f"
+  }
+ },
+ {
+  "frame": 1160,
+  "camera": [
+   22.23485,
+   1.00071,
+   48.356526,
+   0.01007,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“Put the gun down, padre's-helper.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 313,
+   "digest": "d9552e20"
+  }
+ },
+ {
+  "frame": 1170,
+  "camera": [
+   22.256432,
+   1.000205,
+   48.356526,
+   0.002654,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“Put the gun down, padre's-helper.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 313,
+   "digest": "056a3f38"
+  }
+ },
+ {
+  "frame": 1180,
+  "camera": [
+   22.264425,
+   1.000497,
+   48.356526,
+   0.0007,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“Put the gun down, padre's-helper.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 313,
+   "digest": "6426be65"
+  }
+ },
+ {
+  "frame": 1190,
+  "camera": [
+   22.367068,
+   1.007066,
+   48.306648,
+   0.000184,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "ADEM“Put the gun down, padre's-helper.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 313,
+   "digest": "1cd33446"
+  }
+ },
+ {
+  "frame": 1200,
+  "camera": [
+   22.530006,
+   1.021966,
+   47.466474,
+   0.000049,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "ADEM“Put the gun down, padre's-helper.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 313,
+   "digest": "93254ccd"
+  }
+ },
+ {
+  "frame": 1210,
+  "camera": [
+   22.694829,
+   1.018061,
+   46.311552,
+   0.000013,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "ADEM“Put the gun down, padre's-helper.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 313,
+   "digest": "d9128f5f"
+  }
+ },
+ {
+  "frame": 1220,
+  "camera": [
+   22.767721,
+   0.990431,
+   45.144886,
+   0.000003,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "ADEM“Put the gun down, padre's-helper.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 313,
+   "digest": "75109d06"
+  }
+ },
+ {
+  "frame": 1230,
+  "camera": [
+   22.786935,
+   0.975001,
+   43.978219,
+   0.000001,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "ADEM“Put the gun down, padre's-helper.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 314,
+   "digest": "759e9821"
+  }
+ },
+ {
+  "frame": 1240,
+  "camera": [
+   22.794029,
+   0.990823,
+   42.810832,
+   0,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "ADEM“Put the gun down, padre's-helper.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 314,
+   "digest": "1a27f977"
+  }
+ },
+ {
+  "frame": 1250,
+  "camera": [
+   22.880114,
+   1.018315,
+   41.645357,
+   0,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "ADEM“Put the gun down, padre's-helper.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 314,
+   "digest": "9a17349b"
+  }
+ },
+ {
+  "frame": 1260,
+  "camera": [
+   23.015883,
+   1.022663,
+   40.486478,
+   0,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "ADEM“Put the gun down, padre's-helper.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 314,
+   "digest": "965053f1"
+  }
+ },
+ {
+  "frame": 1270,
+  "camera": [
+   23.162832,
+   0.998668,
+   39.328355,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH100",
+   "ar": "ARMOR50",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "ADEM“Put the gun down, padre's-helper.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 314,
+   "digest": "5b213787"
+  }
+ },
+ {
+  "frame": 1280,
+  "camera": [
+   23.230316,
+   0.975045,
+   38.161689,
+   0,
+   0,
+   -0.001061,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH94",
+   "ar": "ARMOR41",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "ADEM“Put the gun down, padre's-helper.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 313,
+   "digest": "3f1a8f5f"
+  }
+ },
+ {
+  "frame": 1290,
+  "camera": [
+   23.248943,
+   0.983784,
+   36.995022,
+   0,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH94",
+   "ar": "ARMOR41",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "ADEM“Put the gun down, padre's-helper.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 313,
+   "digest": "cc50051f"
+  }
+ },
+ {
+  "frame": 1300,
+  "camera": [
+   23.255707,
+   1.011601,
+   35.827633,
+   0,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH94",
+   "ar": "ARMOR41",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "ADEM“Put the gun down, padre's-helper.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 313,
+   "digest": "15312317"
+  }
+ },
+ {
+  "frame": 1310,
+  "camera": [
+   23.341707,
+   1.02485,
+   34.662147,
+   0.009885,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH94",
+   "ar": "ARMOR41",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“Put the gun down, padre's-helper.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 314,
+   "digest": "54555f7f"
+  }
+ },
+ {
+  "frame": 1320,
+  "camera": [
+   23.477454,
+   1.006826,
+   33.503265,
+   0.002606,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH94",
+   "ar": "ARMOR41",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“Put the gun down, padre's-helper.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 314,
+   "digest": "3b4474eb"
+  }
+ },
+ {
+  "frame": 1330,
+  "camera": [
+   23.624396,
+   0.980235,
+   32.345141,
+   0.000687,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH94",
+   "ar": "ARMOR41",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“Put the gun down, padre's-helper.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 314,
+   "digest": "e6a76dc0"
+  }
+ },
+ {
+  "frame": 1340,
+  "camera": [
+   23.692542,
+   0.978544,
+   31.178474,
+   0.010066,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH94",
+   "ar": "ARMOR41",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“Put the gun down, padre's-helper.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 315,
+   "digest": "c6415d86"
+  }
+ },
+ {
+  "frame": 1350,
+  "camera": [
+   23.710505,
+   1.003802,
+   30.011808,
+   0.002653,
+   0,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH94",
+   "ar": "ARMOR41",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“Put the gun down, padre's-helper.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 315,
+   "digest": "29369852"
+  }
+ },
+ {
+  "frame": 1360,
+  "camera": [
+   23.71727,
+   1.024343,
+   28.844419,
+   0.000699,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH94",
+   "ar": "ARMOR41",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“Put the gun down, padre's-helper.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 315,
+   "digest": "9f75c96e"
+  }
+ },
+ {
+  "frame": 1370,
+  "camera": [
+   23.80327,
+   1.01417,
+   27.678932,
+   0.01007,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH94",
+   "ar": "ARMOR41",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“Put the gun down, padre's-helper.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 317,
+   "digest": "0f45212d"
+  }
+ },
+ {
+  "frame": 1380,
+  "camera": [
+   23.939016,
+   0.98626,
+   26.520051,
+   0.002654,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH94",
+   "ar": "ARMOR41",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“Put the gun down, padre's-helper.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 317,
+   "digest": "b9701bbb"
+  }
+ },
+ {
+  "frame": 1390,
+  "camera": [
+   24.087875,
+   0.975472,
+   25.36291,
+   0.0007,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH94",
+   "ar": "ARMOR41",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“Put the gun down, padre's-helper.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 317,
+   "digest": "73f10583"
+  }
+ },
+ {
+  "frame": 1400,
+  "camera": [
+   24.238275,
+   0.997141,
+   24.43755,
+   0.000184,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH94",
+   "ar": "ARMOR41",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "ADEM“Put the gun down, padre's-helper.”",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 317,
+   "digest": "6d93cd6e"
+  }
+ },
+ {
+  "frame": 1410,
+  "camera": [
+   24.307332,
+   0.999341,
+   24.43755,
+   0.000049,
+   -0.132,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH94",
+   "ar": "ARMOR41",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 317,
+   "digest": "3776c667"
+  }
+ },
+ {
+  "frame": 1420,
+  "camera": [
+   24.325535,
+   0.999839,
+   24.43755,
+   0.000013,
+   -0.27023,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH94",
+   "ar": "ARMOR41",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 317,
+   "digest": "28d389da"
+  }
+ },
+ {
+  "frame": 1430,
+  "camera": [
+   24.330333,
+   0.999958,
+   24.43755,
+   0.008655,
+   -0.27023,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH94",
+   "ar": "ARMOR41",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 318,
+   "digest": "102a9557"
+  }
+ },
+ {
+  "frame": 1440,
+  "camera": [
+   24.331598,
+   0.999989,
+   24.43755,
+   0.002281,
+   -0.27023,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH94",
+   "ar": "ARMOR41",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 318,
+   "digest": "007a20f3"
+  }
+ },
+ {
+  "frame": 1450,
+  "camera": [
+   24.332333,
+   1.000439,
+   24.43755,
+   0.019855,
+   -0.40846,
+   0.000261,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH94",
+   "ar": "ARMOR41",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 318,
+   "digest": "9f6074a9"
+  }
+ },
+ {
+  "frame": 1460,
+  "camera": [
+   24.332019,
+   0.999999,
+   24.43755,
+   0.005234,
+   -0.40846,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH94",
+   "ar": "ARMOR41",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 318,
+   "digest": "f09a1a9f"
+  }
+ },
+ {
+  "frame": 1470,
+  "camera": [
+   24.332043,
+   1,
+   24.43755,
+   0.00138,
+   -0.54669,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH94",
+   "ar": "ARMOR41",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 318,
+   "digest": "8d96afdd"
+  }
+ },
+ {
+  "frame": 1480,
+  "camera": [
+   24.332041,
+   0.999987,
+   24.43755,
+   0.011659,
+   -0.54669,
+   -0.000013,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH94",
+   "ar": "ARMOR41",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 319,
+   "digest": "2421245c"
+  }
+ },
+ {
+  "frame": 1490,
+  "camera": [
+   24.33205,
+   1,
+   24.43755,
+   0.003073,
+   -0.68492,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH94",
+   "ar": "ARMOR41",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 319,
+   "digest": "c929d5b3"
+  }
+ },
+ {
+  "frame": 1500,
+  "camera": [
+   24.332051,
+   1,
+   24.43755,
+   0.00081,
+   -0.68492,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH94",
+   "ar": "ARMOR41",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 319,
+   "digest": "4617eada"
+  }
+ },
+ {
+  "frame": 1510,
+  "camera": [
+   24.332051,
+   1,
+   24.43755,
+   0.000214,
+   -0.82315,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH94",
+   "ar": "ARMOR41",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 320,
+   "digest": "764dbc5a"
+  }
+ },
+ {
+  "frame": 1520,
+  "camera": [
+   24.333039,
+   0.999912,
+   24.43755,
+   0.000056,
+   -0.82315,
+   -0.001359,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH91",
+   "ar": "ARMOR36",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 320,
+   "digest": "53c8905a"
+  }
+ },
+ {
+  "frame": 1530,
+  "camera": [
+   24.332307,
+   0.998058,
+   24.43755,
+   0.000015,
+   -0.96138,
+   0.000369,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH85",
+   "ar": "ARMOR27",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 319,
+   "digest": "7f8c57c3"
+  }
+ },
+ {
+  "frame": 1540,
+  "camera": [
+   24.329599,
+   0.99859,
+   24.43755,
+   0.000004,
+   -0.96138,
+   0.002685,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH80",
+   "ar": "ARMOR20",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 319,
+   "digest": "7c5e8b7d"
+  }
+ },
+ {
+  "frame": 1550,
+  "camera": [
+   24.332051,
+   1,
+   24.43755,
+   0.000001,
+   -0.96138,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH80",
+   "ar": "ARMOR20",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 319,
+   "digest": "e8e1f02f"
+  }
+ },
+ {
+  "frame": 1560,
+  "camera": [
+   24.332051,
+   1,
+   24.43755,
+   0,
+   -1.099611,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH80",
+   "ar": "ARMOR20",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 319,
+   "digest": "62caeff6"
+  }
+ },
+ {
+  "frame": 1570,
+  "camera": [
+   24.332051,
+   1,
+   24.43755,
+   0,
+   -1.099611,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH80",
+   "ar": "ARMOR20",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 319,
+   "digest": "1a32b6cd"
+  }
+ },
+ {
+  "frame": 1580,
+  "camera": [
+   24.333092,
+   0.998636,
+   24.43755,
+   0,
+   -1.237841,
+   0.001384,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH77",
+   "ar": "ARMOR15",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 319,
+   "digest": "064fd070"
+  }
+ },
+ {
+  "frame": 1590,
+  "camera": [
+   24.332051,
+   1,
+   24.43755,
+   0,
+   -1.237841,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH77",
+   "ar": "ARMOR15",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 319,
+   "digest": "a5f6bacb"
+  }
+ },
+ {
+  "frame": 1600,
+  "camera": [
+   24.333029,
+   1.000685,
+   24.43755,
+   0,
+   -1.376071,
+   -0.000979,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH72",
+   "ar": "ARMOR7",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 319,
+   "digest": "1bcee63a"
+  }
+ },
+ {
+  "frame": 1610,
+  "camera": [
+   24.332051,
+   1,
+   24.43755,
+   0,
+   -1.376071,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH72",
+   "ar": "ARMOR7",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 319,
+   "digest": "2c2bc5cd"
+  }
+ },
+ {
+  "frame": 1620,
+  "camera": [
+   24.332051,
+   1,
+   24.43755,
+   0,
+   -1.514301,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH72",
+   "ar": "ARMOR7",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 319,
+   "digest": "598d6aa6"
+  }
+ },
+ {
+  "frame": 1630,
+  "camera": [
+   24.332051,
+   1,
+   24.43755,
+   0,
+   -1.514301,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH72",
+   "ar": "ARMOR7",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 319,
+   "digest": "aefff73a"
+  }
+ },
+ {
+  "frame": 1640,
+  "camera": [
+   24.329628,
+   0.999059,
+   24.43755,
+   0.006626,
+   -1.652531,
+   -0.002203,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH68",
+   "ar": "ARMOR2",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 320,
+   "digest": "831a491c"
+  }
+ },
+ {
+  "frame": 1650,
+  "camera": [
+   24.332051,
+   1,
+   24.43755,
+   0.001747,
+   -1.652531,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH68",
+   "ar": "ARMOR2",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 320,
+   "digest": "a5c3f7ea"
+  }
+ },
+ {
+  "frame": 1660,
+  "camera": [
+   24.332051,
+   1,
+   24.43755,
+   0.00046,
+   -1.652531,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH55",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 319,
+   "digest": "03c553d4"
+  }
+ },
+ {
+  "frame": 1670,
+  "camera": [
+   24.330283,
+   0.999636,
+   24.43755,
+   0.011417,
+   -1.790761,
+   0.000174,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH55",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 322,
+   "digest": "7e3fcac1"
+  }
+ },
+ {
+  "frame": 1680,
+  "camera": [
+   24.332051,
+   1,
+   24.43755,
+   0.003009,
+   -1.790761,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH55",
+   "ar": "ARMOR0",
+   "wname": "FLARE PISTOL — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 1 — THE GOTHIC DUNGEON",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 322,
+   "digest": "aefb92e0"
+  }
+ }
+]

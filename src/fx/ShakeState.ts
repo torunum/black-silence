@@ -19,3 +19,13 @@ export const screenShake = {
   /** Seconds of hit-stop remaining; while positive the loop scales dt to 8%. */
   hitStop: 0,
 };
+
+/**
+ * Adds `a` trauma, clamped to 1. Moved verbatim from src/legacy.js
+ * (formerly line 60; reference/sonsurum.html line 912) — the only thing it
+ * ever touched was `trauma`, so it belongs beside the state, not in a
+ * render module.
+ */
+export function shake(a: number): void {
+  screenShake.trauma = Math.min(1, screenShake.trauma + a);
+}

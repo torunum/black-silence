@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { installDomStubs, loadGameHtml, installFakeClock } from "../support/domStubs";
 import { seedRandom } from "../support/seededRandom";
 import { getScene } from "../../src/render/SceneRef";
+import { save } from "../../src/save/SaveGame";
 
 /**
  * A deterministic recording of the real game playing itself — the safety
@@ -60,6 +61,19 @@ export interface TraceOptions {
   input: readonly InputEvent[];
   /** Record every Nth frame. Every frame would make a multi-megabyte fixture for no extra signal. */
   every: number;
+  /**
+   * Which level to start. Defaults to 0 (the prologue), taken through
+   * exactly the path `trace.test.ts` has always used — the `NEW GAME` menu
+   * row, which runs `save.maxLevel=0;startGame(0)` — so that fixture stays
+   * bit-for-bit unaffected by this option's existence.
+   *
+   * Any other value opens the chapter-select screen instead (`#mChapter`),
+   * after unlocking it via `save.maxLevel`, and clicks that level's row —
+   * see `src/legacy.js`'s `mChapter` click handler, which builds `#chaplist`
+   * fresh from `LEVELS` in order, so `#chaplist`'s Nth child is always level
+   * N's row without needing to match its text.
+   */
+  level?: number;
 }
 
 export interface TraceFrame {
@@ -250,14 +264,44 @@ export async function runTrace(o: TraceOptions): Promise<TraceFrame[]> {
   const raf: FrameRequestCallback[] = [];
   (globalThis as Record<string, unknown>).requestAnimationFrame = (cb: FrameRequestCallback) => raf.push(cb);
   (HTMLElement.prototype as unknown as { requestPointerLock: () => void }).requestPointerLock = () => {};
+  // jsdom has no pointer-lock implementation at all — legacy.js only ever
+  // calls exitPointerLock() from damagePlayer()'s death branch. The
+  // committed combat-level fixture never reaches it either (hp bottoms out
+  // at 55, not 0), but a weakened armour-absorb sabotage against it does
+  // make death reachable, so this stub is real insurance for that case —
+  // and for any future level fixture that plays a run out to a death.
+  (document as unknown as { exitPointerLock: () => void }).exitPointerLock = () => {};
 
   const restoreRandom = seedRandom(o.seed);
   try {
     await import("../../src/legacy.js");
     const canvas = document.getElementById("game") as HTMLElement;
-    const newGame = [...document.querySelectorAll(".mbtn")].find((b) => b.textContent?.includes("NEW GAME"));
-    if (!newGame) throw new Error("the NEW GAME menu row is gone — the trace drives the game through it");
-    (newGame as HTMLElement).click();
+    const level = o.level ?? 0;
+    if (level === 0) {
+      // Exactly today's path — untouched — so trace.test.ts's committed
+      // fixture never sees a byte of difference from this option existing.
+      const newGame = [...document.querySelectorAll(".mbtn")].find((b) => b.textContent?.includes("NEW GAME"));
+      if (!newGame) throw new Error("the NEW GAME menu row is gone — the trace drives the game through it");
+      (newGame as HTMLElement).click();
+    } else {
+      // Plan 0D made save.maxLevel a writable exported property, which is
+      // what makes any level beyond the prologue reachable from a test at
+      // all. Unlock it, then drive the chapter-select screen the same way a
+      // player would: open it, click the row for this level.
+      save.maxLevel = Math.max(save.maxLevel, level);
+      const chapterBtn = document.getElementById("mChapter") as HTMLElement | null;
+      if (!chapterBtn) throw new Error("the CHAPTER SELECT menu row is gone — the trace drives level selection through it");
+      chapterBtn.click();
+      // Scoped to #chaplist: the main menu's own mNew/mChapter/mSettings
+      // buttons are ALSO .mbtn (index.html), so a bare
+      // `.mbtn` query would risk matching those instead.
+      const row = document.querySelectorAll("#chaplist .mbtn")[level] as HTMLElement | undefined;
+      if (!row) throw new Error(`chapter select has no row for level ${level} — #chaplist didn't build as expected`);
+      if (row.className.includes("locked")) {
+        throw new Error(`level ${level}'s chapter row is locked — save.maxLevel wasn't raised far enough`);
+      }
+      row.click();
+    }
 
     const byFrame = new Map<number, InputEvent[]>();
     for (const ev of o.input) {

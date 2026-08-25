@@ -1,0 +1,71 @@
+import * as THREE from "three";
+import { renderState } from "./Renderer";
+
+/**
+ * RENDER CORE — the camera and WebGL renderer construction, the
+ * window-resize handler that keeps them sized, and the two raw Three.js
+ * object builders (`addSprite`, `addBlob`) most other systems reach for.
+ *
+ * Moved verbatim from src/legacy.js's "THREE CORE" section (formerly lines
+ * 51-59, `reference/sonsurum.html` lines 902-911) and its `addSprite`/
+ * `addBlob` builders (formerly lines 67-73, `reference/sonsurum.html`
+ * lines 1532-1543 — the reference declares `blobTexC`/`blobTex`/`addSprite`/
+ * `addBlob` far from `sizeRender`, next to ITEMTEX; the port had already
+ * pulled them up next to THREE CORE).
+ *
+ * Ordering hazard this module exists to avoid: legacy.js imports this
+ * module, so this module's top-level body runs before legacy.js's own
+ * top-level statements do. `sizeRender()` is called immediately below (not
+ * from an init function called later — that would change when the
+ * renderer is first sized) and dereferences `renderState.camera`/
+ * `.renderer`. If only `sizeRender` moved here while the camera/renderer
+ * construction stayed behind in legacy.js, this module's immediate call
+ * would run first and dereference two still-null fields. So the
+ * construction moved here too, ahead of `sizeRender`, preserving the
+ * original build-then-size-then-listen order by construction rather than
+ * by import placement.
+ *
+ * legacy.js imports this module after ./render/Overlay2D (which registers
+ * its own `resize` listener, `sizeFx`, at its own module scope and calls
+ * it immediately). That import order was already in place before this
+ * module existed — Overlay2D's import preceded the old THREE CORE section
+ * in legacy.js's file order — and is kept, so `sizeFx` still runs before
+ * `sizeRender` on both the initial call and every future resize, exactly
+ * as before. The two write disjoint state (the 2D overlay canvas vs. the
+ * WebGL renderer/camera), so nothing depends on this order today, but it
+ * is preserved deliberately rather than left to import-list accident.
+ */
+
+renderState.camera = new THREE.PerspectiveCamera(78, 4 / 3, 0.05, 90);
+renderState.renderer = new THREE.WebGLRenderer({
+  canvas: document.getElementById("game") as HTMLCanvasElement,
+  antialias: false,
+});
+renderState.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderState.renderer.toneMappingExposure = 1.15;
+if (THREE.sRGBEncoding !== undefined) renderState.renderer.outputEncoding = THREE.sRGBEncoding;
+
+export function sizeRender(): void {
+  const a=innerWidth/innerHeight,w=400,h=Math.round(w/a);
+  renderState.renderer.setSize(w,h,false);renderState.camera.aspect=a;renderState.camera.updateProjectionMatrix();
+  const c=renderState.renderer.domElement;c.style.width="100%";c.style.height="100%";
+}
+addEventListener("resize",sizeRender);sizeRender();
+
+const blobTexC=document.createElement("canvas");blobTexC.width=blobTexC.height=32;
+{const g=blobTexC.getContext("2d") as CanvasRenderingContext2D;const gr=g.createRadialGradient(16,16,2,16,16,16);
+ gr.addColorStop(0,"rgba(0,0,0,.55)");gr.addColorStop(1,"rgba(0,0,0,0)");
+ g.fillStyle=gr;g.fillRect(0,0,32,32);}
+const blobTex=new THREE.CanvasTexture(blobTexC);
+
+export function addSprite(tex: THREE.Texture, wx: number, wz: number, sw: number, sh: number, y?: number): THREE.Sprite {
+  const m=new THREE.SpriteMaterial({map:tex,transparent:true});
+  const sp=new THREE.Sprite(m);sp.scale.set(sw,sh,1);
+  sp.position.set(wx,y!==undefined?y:sh/2,wz);renderState.scene.add(sp);return sp;
+}
+
+export function addBlob(wx: number, wz: number, s: number): THREE.Mesh {
+  const m=new THREE.Mesh(new THREE.PlaneGeometry(s,s),
+    new THREE.MeshBasicMaterial({map:blobTex,transparent:true,depthWrite:false}));
+  m.rotation.x=-Math.PI/2;m.position.set(wx,.012,wz);renderState.scene.add(m);return m;
+}

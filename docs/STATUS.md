@@ -4,7 +4,8 @@ Written to survive session loss. If you are picking this up cold, read this
 file, then `docs/direction.md`, then the current plan under
 `docs/superpowers/plans/`. Trust this file and `git log` over any recollection.
 
-Last updated: 2026-08-15, after Plan 0D merged. Plan 0E is next.
+Last updated: 2026-08-25, after Plan 0E's whole-branch review. All twelve tasks
+are done and the branch is green; the merge is the only step left.
 
 ---
 
@@ -33,7 +34,7 @@ pinned by characterization tests.
 | 0B | Procedural textures, sprite baker, item textures, the whole audio layer | **merged** |
 | 0C | Behavioral oracle, FX layer, weapon viewmodel art, subtitles, input | **merged** |
 | 0D | The global-to-state migration (70 globals, ~700 call sites) | **merged** |
-| 0E | Systems: renderer, level loader, weapons, enemy AI, player, interaction | not started |
+| 0E | Systems: renderer, level loader, weapons, enemy AI, player, interaction | **reviewed, ready to merge** — branch `phase-0e-systems` |
 | 0F | UI, piano, loop and boot; then hardening — gameplay `setTimeout` removal, dispose registry, `strict: true`, the Three.js upgrade | not started |
 
 The spec originally sized the remainder as two plans; the real shape is four.
@@ -45,10 +46,17 @@ printed by `npm test` as the port burn-down. When it reaches zero the port is
 done.
 
 ```
-3759 → 3040 (0A) → 2224 (0B) → 1633 (0C) → 1616 (0D)
+3759 → 3040 (0A) → 2224 (0B) → 1633 (0C) → 1616 (0D) → 282 (0E)
 ```
 
-Tests: 0 → 114 → 167 → 348 → 357.
+Tests: 0 → 114 → 167 → 348 → 357 → 369.
+
+Within 0E: 1616 → 1573 (T3) → 1547 (T4) → 1322 (T5) → 1100 (T6) → 1009 (T7)
+→ 901 (T8) → 712 (T9) → 326 (T10) → 292 (T11) → 278 (T12a, 81 dead imports).
+
+0E removed 1334 lines from `legacy.js`, more than the previous four plans
+combined. What is left is 282 lines holding exactly fourteen functions, all of
+them Plan 0F's.
 
 ## Plan 0C status
 
@@ -138,22 +146,116 @@ Three things worth carrying forward:
    whole-branch review were in it. Work done outside the loop still needs the
    loop's gate.
 
-**The immediate next action** is Plan 0E, whose plan document now exists at
-`docs/superpowers/plans/2026-08-15-phase0e-systems.md`. It moves *functions*,
-not state — every system's state is already extracted — and its central problem
-is that some of those functions call each other **both ways** (enemy AI damages
-the player; the weapon FSM asks collision for a hit and collision asks the
-weapon table for stats). `madge --circular` is a hard gate, so those cycles get
-broken as the systems move, via the service locator `core/Context.ts` that
-0E Task 2 introduces.
+## Plan 0E status
 
-**Start at its Task 1 and do not move any combat code until that fixture
-exists.** KNOWN-10 says the whole combat path is untested because 0D's trace
-plays the prologue, which has zero enemies — and 0E moves 583 lines of exactly
-that code. Task 1 builds a second trace on level 1 (15 enemies), which is only
-possible *because* 0D made `save.maxLevel` a writable exported property.
-Measured enemy counts: prologue 0, level 1 15, level 2 28, levels 3-7 between
-23 and 30.
+Branch `phase-0e-systems`, **all twelve tasks done, reviewed, ready to merge**.
+Plan document:
+`docs/superpowers/plans/2026-08-15-phase0e-systems.md`. Full task-by-task
+ledger, including every correction and deviation:
+`.superpowers/sdd/2026-08-15-phase0e-systems/progress.md` (gitignored — read it
+before dispatching anything).
+
+0E moves *functions*, not state. Its central problem is that some of them call
+each other **both ways** (enemy AI damages the player; the weapon FSM asks
+collision for a hit and collision asks the weapon table for stats).
+`madge --circular` is a hard gate, so those cycles get broken as the systems
+move, via the service locator `src/core/Context.ts`.
+
+| Task | State |
+|---|---|
+| 1 — combat characterization trace | complete; KNOWN-10 closed, 357 → 364 tests |
+| 2 — Context.ts | **withdrawn** (see below) |
+| 3 — collision | complete, reviewed clean |
+| 4 — renderer core | complete, reviewed clean |
+| 5 — level loader + props | complete; recovered from an interrupted session |
+| 6 — weapons FSM + hitscan | complete; broke 2 of the 3 cycles |
+| 7 — player | complete |
+| 8 — interaction, pickups, projectiles | complete |
+| 9 — damage and death | complete; first dispatch correctly refused a circular split |
+| 10 — enemy AI (largest section) | complete in three commits; recovered from a broken tree |
+| 11 — random events and ambience | complete |
+| 12 — branch review and merge | reviewed; 3 Important findings all closed |
+
+**Task 2 was withdrawn before execution.** It created `Context.ts` with no
+consumer: Tasks 3 and 4 import state objects directly, so the locator's first
+real user is Task 5. Shipping a module nothing imports for three tasks is the
+abstraction-with-no-user the plan's own Decision 2 rejects for `Events.ts`.
+`Context.ts` is now born in Task 5. Task numbering was left alone.
+
+`Context.ts` peaked at **six** entries in Task 9 and Task 10's Step 6 was the
+first pass that **shrank** it, to three: `damagePlayer`, `damageEnemy` and
+`wakeBoss` retired to direct imports once the AI extraction's four-way split
+made every remaining cycle edge one-way, each confirmed against
+`madge --circular` before being kept. The three that remain — `endLevel`,
+`openPiano`, `showWin` — are a different kind of entry: they bridge to
+functions that have not been extracted at all, all three belonging to Plan 0F.
+Each is registered by whoever owns the function *at the time*, so when a later task extracts that
+function the registration moves and **no call site changes**. That property is
+what lets the remaining tasks land in order. It is deliberate debt, tracked as
+KNOWN-2, not the end state.
+
+### What has gone wrong in 0E, and what it teaches
+
+Every one of these is recorded in full in the ledger.
+
+1. **The plan document was corrected eight times mid-flight**, each time
+   because a measurement contradicted it: Task 2's dead module, Task 4's
+   resize listener firing against a null renderer, Context's placement (guessed
+   wrong twice before being measured), Task 6's `damageEnemy` callers, Task 9's
+   and Task 10's file splits — **both circular and neither could have built** —
+   and Task 11's claim that `eventTick` calls the piano, which it does not.
+   Measure the code before dispatching each task; never trust a plan's own
+   dependency claims.
+2. **A brief's line ranges ran long five times.** They are computed as "next
+   function start minus 1", so trailing banners, blank lines and `const`
+   declarations get swept in. Only the START line is reliable.
+3. **The dependency script only scans `function` declarations.** It missed
+   shared `const` data twice (`WEAPONS`/`EQUIP_T` in Task 6, and it reported
+   in-task calls as one list without marking which target *file* each landed
+   in, which is what made Task 9's split look acyclic when it was not).
+4. **Implementers pushed back four times and were right every time** — Task
+   7's caught a brief asserting "no naming clash" without checking (`footstep`
+   calls AudioEngine's `ctx()`); Task 9's first refused to build a circular
+   split and returned NEEDS_CONTEXT with evidence; Task 10a refused to commit a
+   diff containing another agent's half-finished work; and Task 12a found two
+   real bugs in a throwaway analysis script it had been told to verify rather
+   than trust. **Briefs must tell implementers to verify inherited claims, and
+   must make stopping an acceptable outcome.**
+5. **Two tasks were recovered from sessions that died mid-task.** Task 5's left
+   four uncommitted leaf modules with `legacy.js` untouched, and the tree was
+   *green* in that state because nothing imported the new files yet. Task 10's
+   was worse: it had written `Boss.ts` and added the import but not removed the
+   old definitions, leaving a duplicate-declaration syntax error — **and the
+   suite still reported green**, from a stale vitest transform cache. **A green
+   suite proves nothing about a recovered tree.** Check `git status` for
+   stranded work, parse-check `legacy.js` with esbuild, and re-run with
+   `npx vitest run --no-cache`.
+6. **`checkJs: false` on `legacy.js` hides more than typos.** It also hides
+   dead imports: 81 of its 145 imported names were unused by the end, each one
+   left behind when a later task moved a caller out. Nothing in the toolchain
+   flags them.
+
+### The next action
+
+**Merge `phase-0e-systems` into `master`**, then start Plan 0F. Everything else
+in this plan is done: 369 tests pass, typecheck is clean, `madge --circular` is
+clean, no `src/` file exceeds 400 lines, `reference/sonsurum.html` is untouched
+and neither trace fixture was regenerated.
+
+The whole-branch review returned 0 Critical and 3 Important findings, **all
+three now closed**: the `Context` locator's three registrations had zero
+coverage (a wrong registration silently no-ops, and two sabotages of it left
+all 364 tests green) — closed by `tests/integration/contextWiring.test.ts`;
+`damageEnemy`'s `dmg>=22` dismemberment threshold was unpinned — closed by
+`tests/integration/dismembermentThreshold.test.ts`; and this file was stale —
+closed by the revision you are reading.
+
+The one definition-of-done item that **cannot** be checked in this environment
+is "`npm run dev` plays identically to `reference/sonsurum.html`". The browser
+pane throttles `requestAnimationFrame` to zero when it is not displayed, so the
+game loop does not run there — see the environment notes below. The
+characterization traces are the substitute evidence, and they are the reason
+this plan was safe to attempt at all.
 
 ## How fidelity is guarded
 
@@ -184,6 +286,17 @@ Five mechanisms, and they are **not** interchangeable:
   explained updates only. Note it plays the prologue, which has zero enemies,
   so the entire combat-resolution path is unexercised by it; the file says so
   at length.
+- **`tests/integration/combatTrace.test.ts`** — the same mechanism aimed at the
+  gap the prologue trace leaves. Added by Plan 0E Task 1 and the reason 0E was
+  allowed to move combat code at all. It plays **level 1** (15 enemies) for 168
+  frames: hp falls 100 → 55 and the scene count drops three times. That was
+  only possible because Plan 0D made `save.maxLevel` a writable exported
+  property a test can assign. Its fixture is a pre-migration recording under
+  the same rule — **never regenerate it to turn a red build green.** Task 1's
+  review independently re-derived why each observable is combat-specific:
+  casings and muzzle flashes live on the 2D overlay rather than the 3D scene,
+  and decals are recycled via `shift()` rather than removed, so the zero-enemy
+  prologue never produces a single scene-count decrease across 900 frames.
 
 KNOWN-5 in `docs/known-issues.md` documents the recorder in full, including an
 honest list of what it still cannot reach.
@@ -231,7 +344,7 @@ Two practices that have mattered most:
   gitignored `THE-BLACK-SILENCE.html` at the repo root is that artifact — it
   loads from `file://` with no network.
 
-## Four bugs a player will actually hit
+## Five bugs a player will actually hit
 
 All predate the port, all are preserved on purpose, all are pinned by tests
 so they cannot change unnoticed. See `docs/known-issues.md`.
@@ -252,3 +365,10 @@ so they cannot change unnoticed. See `docs/known-issues.md`.
 - **KNOWN-8** — The mouse wheel cycles six weapon slots (`%6`) while the game
   has eight. The nail cannon and soul reaper are reachable only with `7` and
   `8`. The reference's own banner still reads "WEAPONS — 6 slots".
+- **KNOWN-11** — **Armour pickups never spawn, from any level.** Found during
+  Plan 0E Task 1 while building the combat trace. `loadLevel` dispatches the
+  enemy table before the item table, and `A` is both a Mancubus and map2's
+  armour key — so `map2.A` is dead code and all 20 `A` tiles spawn a 260 hp
+  Mancubus instead of +50 armour. `S.armor` is provably always 0 in real play.
+  Same structural bug as KNOWN-4 but a different collision class (enemy-vs-item
+  rather than enemy-vs-prop), and identical in the frozen reference.
