@@ -19,6 +19,7 @@ import { world } from "../world/WorldState";
 import { los } from "./ai/Perception";
 import { moveEnemy } from "./ai/Locomotion";
 import { fireOrb, spawnRing, spawnStrike } from "./ai/Attacks";
+import { ctx } from "../core/Context";
 
 /**
  * Boss — the three bosses' brains: waking, the wake-up cinematic, the
@@ -39,12 +40,14 @@ import { fireOrb, spawnRing, spawnStrike } from "./ai/Attacks";
  * (`docs/superpowers/plans/2026-08-15-phase0e-systems.md`'s Task 10
  * correction, and this task's own brief, Step 1).
  *
- * `wakeBoss` no longer registers into `src/core/Context.ts`'s locator:
- * Task 10's Step 6 tested it against `madge --circular src/` and found the
- * `Damage.ts -> Boss.ts` edge it would add is one-way, so `Damage.ts`'s
- * `damageEnemy` now imports `wakeBoss` directly instead of going through
- * `ctx.wakeBoss?.(...)`. See `Context.ts`'s own doc comment for the entries
- * that remain and why.
+ * `wakeBoss` registers itself into `src/core/Context.ts`'s locator at this
+ * module's scope, just below its definition, because `src/enemies/Damage.ts`
+ * cannot import it: that edge closes a four-file cycle
+ * (`Damage.ts -> Boss.ts -> ai/Attacks.ts -> world/Props.ts -> Damage.ts`).
+ * Plan 0E Task 10 retired the entry after a `madge --circular src/` run that
+ * was silently scanning only `src/legacy.js` — madge's default extensions
+ * exclude `.ts` — and Plan 0F Task 1 restored it once the gate was fixed.
+ * See `Damage.ts`'s doc comment for the full account.
  *
  * The enemy parameters these five functions take are left untyped, the
  * same convention `src/enemies/Damage.ts`/`Death.ts` established for that
@@ -77,6 +80,8 @@ export function wakeBoss(e){
   blip(40,1.6,"sawtooth",.2,30,true);bang(.5,.4,300);
   if(e.priest)organChord();
   setTimeout(()=>roarFor(e),500);}
+
+ctx.wakeBoss=wakeBoss;
 
 export function roarFor(e){growl(rnd(42,60),1.0,.6,true);setTimeout(()=>growl(rnd(50,70),.6,.4,true),200);}
 

@@ -40,6 +40,15 @@
  * `damagePlayer`/`damageEnemy` while those still lived here — and no call
  * site changes when that happens.
  *
+ * `wakeBoss` is here for the other reason — a genuine cycle. `Damage.ts`
+ * importing it from `Boss.ts` closes
+ * `Damage.ts -> Boss.ts -> ai/Attacks.ts -> world/Props.ts -> Damage.ts`.
+ * It was wrongly retired in Plan 0E Task 10 against a `madge` invocation
+ * that was scanning only `src/legacy.js` (its default extensions exclude
+ * `.ts`), and restored in Plan 0F Task 1 once that gate was fixed. Unlike
+ * `endLevel` and `showWin`, extracting more code will not make this one
+ * removable; only breaking one of the other three edges would.
+ *
  * This is NOT the end state. `docs/known-issues.md` KNOWN-2 tracks it: the
  * long-term rule is that systems talk over `core/Events.ts` and never reach
  * into each other, and each phase after this one migrates the systems it
@@ -49,4 +58,5 @@
 export const ctx: {
   endLevel?: () => void;
   showWin?: () => void;
+  wakeBoss?: (e: unknown) => void;
 } = {};

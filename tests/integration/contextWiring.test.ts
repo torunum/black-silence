@@ -18,6 +18,15 @@ import { S } from "../../src/core/State";
  * `tests/integration/wiring.test.ts` nor anything else names `endLevel`,
  * `openPiano`, `showWin` or `Context` at all.
  *
+ * Update, Plan 0F Task 1 (b): `wakeBoss` is one of them again. Plan 0E Task
+ * 10 retired it to a direct `Damage.ts -> Boss.ts` import on the strength of
+ * a `madge --circular src/` run that — it turned out — was scanning only
+ * `src/legacy.js`, because madge's default extension list excludes `.ts`.
+ * With `--extensions ts,js` the real graph shows that import closes a
+ * four-file cycle: `Damage.ts -> Boss.ts -> ai/Attacks.ts -> world/Props.ts
+ * -> Damage.ts`. The locator entry is restored, registered by `Boss.ts` at
+ * its own module scope, and the `wakeBoss` block below pins it.
+ *
  * Update, Plan 0F Task 1: `openPiano` is no longer one of them. It moved,
  * with the rest of the playable piano, to `src/ui/Piano.ts`, and
  * `src/player/Interact.ts` now imports it directly instead of reaching it
@@ -88,6 +97,7 @@ function overlayState(): { levelendVisible: boolean; winVisible: boolean; pianoV
 let playerTick: (dt: number) => void;
 let interact: () => void;
 let bossDeath: (e: unknown) => void;
+let damageEnemy: (e: unknown, dmg: number, info?: unknown) => void;
 
 beforeAll(async () => {
   installDomStubs();
@@ -112,6 +122,7 @@ beforeAll(async () => {
   ({ playerTick } = await import("../../src/player/Player"));
   ({ interact } = await import("../../src/player/Interact"));
   ({ bossDeath } = await import("../../src/enemies/Death"));
+  ({ damageEnemy } = await import("../../src/enemies/Damage"));
 
   await import("../../src/legacy.js");
 
@@ -195,5 +206,39 @@ describe("ctx.showWin — src/enemies/Death.ts's bossDeath, key===\"G\"", () => 
     } finally {
       clock.restore();
     }
+  });
+});
+
+describe("ctx.wakeBoss — src/enemies/Damage.ts's damageEnemy, dormant-boss branch", () => {
+  it("wakes a dormant boss and starts the cinematic, without touching the three overlays", () => {
+    // A minimal synthetic boss: the fields damageEnemy reads on its way to
+    // the wakeBoss branch, plus the ones wakeBoss itself reads. Same
+    // technique the showWin test above uses, and the same one Player.ts and
+    // Death.ts's own local cast interfaces already use.
+    const mat = { color: { setHex: () => {} } };
+    const boss = {
+      boss: true, dormant: true, dead: false,
+      hp: 3000, maxhp: 3000, plate: 0, pain: 200, stun: 0, slow: 1,
+      kx: 0, kz: 0, x: 4, z: 4, h: 2, key: "G",
+      name: "THE LIVING HEART", title: "WHAT THE PARISH WAS BUILT AROUND",
+      sp: { material: mat }, blob: { material: mat },
+    };
+
+    const before = overlayState();
+    world.cine = null;
+
+    damageEnemy(boss, 1, {});
+
+    // The registration's own observable: wakeBoss is the ONLY thing that
+    // clears `dormant` and opens `world.cine`. An unregistered entry makes
+    // `ctx.wakeBoss?.(e)` a silent no-op and both stay as they were.
+    expect(boss.dormant, "wakeBoss should have cleared dormant").toBe(false);
+    expect(world.cine, "wakeBoss should have opened the boss cinematic").not.toBeNull();
+    expect((world.cine as unknown as { e: unknown }).e).toBe(boss);
+
+    // ...and the full three-way shape, so a wrong-target registration —
+    // ctx.wakeBoss bound to endLevel or showWin — fails here too rather
+    // than merely leaving dormant set.
+    expect(overlayState()).toEqual(before);
   });
 });

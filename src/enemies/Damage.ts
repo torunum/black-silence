@@ -8,7 +8,7 @@ import { spawnGibs, spawnGibChunk } from "../fx/Gibs";
 import { addPool } from "../fx/Decals";
 import { player } from "../player/PlayerState";
 import { killEnemy } from "./Death";
-import { wakeBoss } from "./Boss";
+import { ctx } from "../core/Context";
 
 /**
  * Enemy damage — hit resolution, dismemberment and the sprite/knockback
@@ -28,17 +28,26 @@ import { wakeBoss } from "./Boss";
  * instead, which leaves `damageEnemy -> killEnemy` as the only cross-file
  * edge and needs no locator: nothing in `Death.ts` calls back here.
  *
- * `damageEnemy` calls `wakeBoss` (`src/enemies/Boss.ts`, Task 10) directly —
- * `if(e.boss&&e.dormant)wakeBoss(e);`. Before Task 10's AI extraction this
- * routed through `src/core/Context.ts`'s locator, on the reasoning (stated
- * in the Task 9 brief, treating the AI section as one monolith) that a
- * direct import would close a cycle against the AI's own calls into
- * `damageEnemy`/`damagePlayer`. Splitting the AI section into
- * `ai/Behaviors.ts`/`ai/Locomotion.ts`/`ai/Attacks.ts`/`Boss.ts` changed the
- * answer: `Boss.ts` never calls `damageEnemy` (that call lives in
- * `ai/Behaviors.ts`'s `enemyTick`), so `Damage.ts -> Boss.ts` is one-way.
- * `madge --circular src/` confirmed it stays a DAG (Task 10's Step 6); the
- * `wakeBoss` entry was removed from `Context.ts` accordingly.
+ * `damageEnemy` reaches `wakeBoss` (`src/enemies/Boss.ts`) through
+ * `src/core/Context.ts`'s locator — `if(e.boss&&e.dormant)ctx.wakeBoss?.(e);`
+ * — and that indirection is load-bearing. A direct import closes a real
+ * four-file cycle:
+ *
+ *     Damage.ts -> Boss.ts -> ai/Attacks.ts -> world/Props.ts -> Damage.ts
+ *
+ * Plan 0E Task 10 briefly retired this entry, on the reasoning that
+ * `Boss.ts` never calls `damageEnemy` itself (true — that call lives in
+ * `ai/Behaviors.ts`'s `enemyTick`) and that `madge --circular src/` had
+ * confirmed a DAG. The first half was right and the second was worthless:
+ * madge's default extension list excludes `.ts`, so that command scanned
+ * only `src/legacy.js` and reported success without ever seeing this graph.
+ * The cycle is transitive, which is exactly the kind a person checking one
+ * edge by eye will miss and a working `madge` catches instantly.
+ *
+ * Plan 0F Task 1 fixed the gate (`--extensions ts,js` in package.json's
+ * test script) and restored this entry. `tests/integration/contextWiring.test.ts`
+ * now pins the registration, verified against two sabotages: removing it,
+ * and pointing it at `roarFor`.
  *
  * `damageEnemy` used to register itself into `src/core/Context.ts`'s
  * locator at module scope below, the way `Player.ts` still registers
@@ -77,7 +86,7 @@ export function damageEnemy(e, dmg, info) {
   if(info.dir){e.kx+=info.dir.x*kb;e.kz+=info.dir.z*kb;}
   e.stun=Math.max(e.stun,(info.explosive?.5:(info.wIdx===1?.35:info.wIdx===4?.45:info.wIdx===0?.2:.08))*res+.02);
   if(info.leg&&!e.boss)e.slow=Math.min(e.slow,.6);
-  if(e.boss&&e.dormant)wakeBoss(e);
+  if(e.boss&&e.dormant)ctx.wakeBoss?.(e);
   /* DISMEMBERMENT while still alive — big hits to a limb tear it off */
   if(!e.boss&&e.plate<=0&&PX[e.key].regions&&e.hp>0){
     e.sever=e.sever||{};
