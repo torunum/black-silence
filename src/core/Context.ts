@@ -20,15 +20,25 @@
  * `.superpowers/sdd/2026-08-15-phase0e-systems/task-10c-report.md` for the
  * `madge` evidence.
  *
- * The three entries left are all the second kind — a bridge to code that
- * stays in `legacy.js` for Plan 0F, so there is nothing yet to import
- * directly: `endLevel` (level-exit pad, `src/player/Player.ts`), `openPiano`
- * (`src/player/Interact.ts`) and `showWin` (`src/enemies/Death.ts`). Each is
- * registered by `legacy.js`, the only place that still owns the function it
- * points at; when Plan 0F extracts them, the module that ends up owning each
- * one registers it instead, the same handoff `Player.ts` and `Damage.ts`
- * used for `damagePlayer`/`damageEnemy` while those still lived here — and
- * no call site changes when that happens.
+ * `openPiano` was a third entry of the same kind — `src/player/Interact.ts`'s
+ * piano-proximity branch reached it through this locator while it still
+ * lived in `legacy.js`. Plan 0F's Task 1 moved it (with the rest of the
+ * playable piano) to `src/ui/Piano.ts` and confirmed with
+ * `madge --circular src/` that `Interact.ts` importing it directly adds no
+ * cycle, so the entry was retired rather than repointed: unlike
+ * `damagePlayer`/`damageEnemy`/`wakeBoss` above, nothing else in the locator
+ * still needed `openPiano`'s indirection, and its call site did change, from
+ * `ctx.openPiano?.()` to a direct `openPiano()`.
+ *
+ * The two entries left are both the second kind — a bridge to code that
+ * stays in `legacy.js` for the rest of Plan 0F, so there is nothing yet to
+ * import directly: `endLevel` (level-exit pad, `src/player/Player.ts`) and
+ * `showWin` (`src/enemies/Death.ts`). Each is registered by `legacy.js`, the
+ * only place that still owns the function it points at; when Plan 0F
+ * extracts them, the module that ends up owning each one registers it
+ * instead, the same handoff `Player.ts` and `Damage.ts` used for
+ * `damagePlayer`/`damageEnemy` while those still lived here — and no call
+ * site changes when that happens.
  *
  * This is NOT the end state. `docs/known-issues.md` KNOWN-2 tracks it: the
  * long-term rule is that systems talk over `core/Events.ts` and never reach
@@ -38,6 +48,5 @@
  */
 export const ctx: {
   endLevel?: () => void;
-  openPiano?: () => void;
   showWin?: () => void;
 } = {};

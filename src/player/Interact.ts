@@ -19,7 +19,7 @@ import { world } from "../world/WorldState";
 import { explodeBarrel, type Prop } from "../world/Props";
 import { alertSound } from "../enemies/ai/Perception";
 import { requestSwitch, WEAPONS } from "../weapons/WeaponState";
-import { ctx } from "../core/Context";
+import { openPiano } from "../ui/Piano";
 
 /**
  * Interaction and pickups — opening doors, the piano-proximity check,
@@ -29,18 +29,15 @@ import { ctx } from "../core/Context";
  * section (formerly lines 736-804; `reference/sonsurum.html`'s equivalent
  * section).
  *
- * None of `interact`/`itemsTick`/`doorTick`/`propTick`/`torchTick` call
- * AudioEngine's `ctx()` — unlike `src/player/Player.ts` (whose `footstep`
- * does, hence its `svcCtx` alias), this file has no name clash, so the
- * locator below binds to the plain name `ctx`, the same choice
- * `src/world/Props.ts` and `src/weapons/Hitscan.ts` made for the same
- * reason.
- *
- * `interact`'s piano-proximity branch calls `openPiano()`, which stays in
- * `legacy.js` — the plan's own coupling table assigns the playable piano to
- * Plan 0F. That is the one new entry this task adds to
- * `src/core/Context.ts`: `openPiano`, registered from `legacy.js` next to
- * `endLevel`/`showWin`, called here as `ctx.openPiano?.()`.
+ * `interact`'s piano-proximity branch calls `openPiano()`, imported
+ * directly from `src/ui/Piano.ts`. It used to reach it through
+ * `src/core/Context.ts`'s locator as `ctx.openPiano?.()`, back when
+ * `openPiano` still lived in `legacy.js`; Plan 0F's Task 1 moved it (with
+ * the rest of the playable piano) to `Piano.ts` and confirmed with
+ * `madge --circular src/` that this file importing it directly adds no
+ * cycle, so the locator entry was retired along with this file's `ctx`
+ * import — none of `interact`/`itemsTick`/`doorTick`/`propTick`/`torchTick`
+ * call AudioEngine's `ctx()` either, so this file uses no `ctx` at all now.
  *
  * `WNAMES` (the weapon-pickup toast strings) had exactly one reader,
  * `itemsTick`, so it moved here with it instead of staying behind in
@@ -91,7 +88,7 @@ interface Candle {
 const WNAMES: Record<string, string> = {w1:"SAWED-OFF SHOTGUN",w2:"COMBAT RIFLE",w3:"TOMMY GUN",w4:"BMG SNIPER",w5:"HOLY CROSS LAUNCHER",w6:"NAIL CANNON",w7:"SOUL REAPER"};
 export function interact(){
   if(!game.started||game.inputLock)return;
-  if(world.pianoPos&&Math.hypot(player.px-(world.pianoPos as unknown as PianoPos).x,player.pz-(world.pianoPos as unknown as PianoPos).z)<1.9){ctx.openPiano?.();return;}
+  if(world.pianoPos&&Math.hypot(player.px-(world.pianoPos as unknown as PianoPos).x,player.pz-(world.pianoPos as unknown as PianoPos).z)<1.9){openPiano();return;}
   const dir=new THREE.Vector3();renderState.camera.getWorldDirection(dir);
   for(let t=.4;t<2.6;t+=.2){
     const wx_=player.px+dir.x*t,wz_=player.pz+dir.z*t;

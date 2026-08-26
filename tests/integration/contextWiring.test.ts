@@ -7,8 +7,8 @@ import { game } from "../../src/core/Game";
 import { S } from "../../src/core/State";
 
 /**
- * `src/core/Context.ts`'s three remaining entries — `endLevel`, `openPiano`,
- * `showWin` — closing Plan 0E Task 12 review finding I1.
+ * `src/core/Context.ts`'s three remaining entries, as of Plan 0E Task 12
+ * review finding I1 — `endLevel`, `openPiano`, `showWin`.
  *
  * Every call site uses `ctx.X?.()` (optional call), so a wrong or missing
  * registration doesn't throw — it silently no-ops. The whole 364-test suite
@@ -17,6 +17,16 @@ import { S } from "../../src/core/State";
  * wrong target) and a 3-way rotation of all three registrations. Neither
  * `tests/integration/wiring.test.ts` nor anything else names `endLevel`,
  * `openPiano`, `showWin` or `Context` at all.
+ *
+ * Update, Plan 0F Task 1: `openPiano` is no longer one of them. It moved,
+ * with the rest of the playable piano, to `src/ui/Piano.ts`, and
+ * `src/player/Interact.ts` now imports it directly instead of reaching it
+ * through `ctx.openPiano?.()` — `madge --circular src/` confirmed that
+ * direct import adds no cycle. `Context.ts` now holds only `endLevel` and
+ * `showWin`. The seam the `openPiano` describe block below covers still
+ * exists — the piano-proximity branch should still open the piano — only
+ * the mechanism changed, so that block now asserts the direct call instead
+ * of a locator registration; it no longer touches `ctx` at all.
  *
  * This is a sibling of `wiring.test.ts`, not an extension of it, for one
  * concrete reason: `src/legacy.js` is a module singleton with side effects
@@ -145,7 +155,7 @@ describe("ctx.endLevel — src/player/Player.ts's exit-pad branch", () => {
   });
 });
 
-describe("ctx.openPiano — src/player/Interact.ts's piano-proximity branch", () => {
+describe("openPiano (src/ui/Piano.ts, imported directly by src/player/Interact.ts) — the piano-proximity branch", () => {
   it("flips #piano to display:flex (not #levelend, not #win) when the player is within range of world.pianoPos", () => {
     // The prologue has no piano tile; placing world.pianoPos at the
     // player's own current position is the same "seed the state the code

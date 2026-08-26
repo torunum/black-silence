@@ -24,6 +24,7 @@ import { ACHIEVEMENTS } from "./content/achievements";
 import { say, tickSubtitles } from "./ui/Subtitles";
 import { ach } from "./ui/Toasts";
 import { tickMessage } from "./ui/HudMessages";
+import { buildPiano, pianoKeyDown, closePiano } from "./ui/Piano";
 import { keys, setInputHooks, overlayOpen, input } from "./player/Input";
 import { game } from "./core/Game";
 import { weaponRuntime } from "./weapons/WeaponRuntime";
@@ -40,7 +41,7 @@ import { requestSwitch, startReload, weaponTick, doKick, WEAPONS, EQUIP_T, UNEQU
 import { ambience, vitalsAudio } from "./world/Ambience";
 import { eventTick } from "./world/RandomEvents";
 // Context.ts's service locator — see its own doc comment — registered below
-// for endLevel, openPiano and showWin, the only entries left: damagePlayer,
+// for endLevel and showWin, the only entries left: damagePlayer,
 // damageEnemy and wakeBoss were retired from the locator entirely by Task
 // 10's Step 6, once the AI extraction's module split let their callers
 // (Props.ts, Hitscan.ts, WeaponState.ts, Damage.ts) import them directly.
@@ -71,16 +72,20 @@ import { ctx as svcCtx } from "./core/Context";
    anymore. endLevel is a new entry: playerTick
    (moved to Player.ts by Task 7) reaches it through this locator because
    endLevel itself belongs to Plan 0F, not this plan, and stays here for
-   now. openPiano is Task 8's new entry: interact (moved to
-   src/player/Interact.ts) reaches it through this locator because
-   openPiano itself belongs to Plan 0F's playable piano, not this plan, and
-   stays here for now too. showWin is Task 9's remaining entry, registered
-   the other way around from the three above: showWin itself still lives
+   now. showWin is Task 9's remaining entry, registered
+   the other way around from the two above: showWin itself still lives
    here (it belongs to Plan 0F's win screen), and bossDeath (now in
-   Death.ts) reaches it through this locator instead. Function
-   declarations hoist, so this can sit at module scope ahead of any of
-   their definitions. */
-svcCtx.endLevel=endLevel;svcCtx.openPiano=openPiano;svcCtx.showWin=showWin;
+   Death.ts) reaches it through this locator instead. openPiano was a
+   third entry of the first kind (interact, in src/player/Interact.ts,
+   reached it through this locator because openPiano itself belonged to
+   Plan 0F's playable piano) until Plan 0F's Task 1 moved buildPiano/
+   pressKey/pianoKeyDown/openPiano/closePiano to src/ui/Piano.ts and
+   confirmed with `madge --circular src/` that Interact.ts importing
+   openPiano directly adds no cycle — so the entry was retired rather than
+   repointed, and Interact.ts now imports it directly instead of going
+   through this locator. Function declarations hoist, so this can sit at
+   module scope ahead of any of their definitions. */
+svcCtx.endLevel=endLevel;svcCtx.showWin=showWin;
 
 /* Input lives in src/player/Input.ts; its listeners are already registered
    (at that module's scope, as in the reference). This hands it the gameplay
@@ -94,52 +99,6 @@ setInputHooks({
   interact:()=>interact(), startReload:()=>startReload(),
   requestSwitch:i=>requestSwitch(i), doKick:()=>doKick(),
 });
-
-/* ============================================================
-   PLAYABLE PIANO
-   ============================================================ */
-const WHITE=[[60,"A"],[62,"S"],[64,"D"],[65,"F"],[67,"G"],[69,"H"],[71,"J"],[72,"K"],[74,"L"],[76,";"]];
-const BLACK=[[61,"W",0],[63,"E",1],[66,"T",3],[68,"Y",4],[70,"U",5],[73,"O",7],[75,"P",8]];
-const KEYMAP={KeyA:60,KeyS:62,KeyD:64,KeyF:65,KeyG:67,KeyH:69,KeyJ:71,KeyK:72,KeyL:74,Semicolon:76,
-  KeyW:61,KeyE:63,KeyT:66,KeyY:68,KeyU:70,KeyO:73,KeyP:75};
-function buildPiano(){
-  const wrap=document.getElementById("pkeys");
-  WHITE.forEach(([midi,label])=>{
-    const k=document.createElement("div");k.className="wk";
-    k.innerHTML="<span>"+label+"</span>";
-    k.addEventListener("mousedown",()=>pressKey(midi));
-    wrap.appendChild(k);pianoState.keyEls[midi]=k;});
-  BLACK.forEach(([midi,label,after])=>{
-    const k=document.createElement("div");k.className="bk";
-    k.style.left=(after*43+43-13)+"px";
-    k.innerHTML="<span>"+label+"</span>";
-    k.addEventListener("mousedown",ev=>{ev.stopPropagation();pressKey(midi);});
-    wrap.appendChild(k);pianoState.keyEls[midi]=k;});}
-function pressKey(midi){
-  pianoNote(midi);
-  S.pianoNotes++;
-  const el=pianoState.keyEls[midi];
-  if(el){el.classList.add("on");setTimeout(()=>el.classList.remove("on"),140);}
-  pianoState.noteHist.push(midi);if(pianoState.noteHist.length>8)pianoState.noteHist.shift();
-  if(S.pianoNotes===12)ach(ACHIEVEMENTS.pianist,S.ach);
-  /* E D C D E E E — recital */
-  const want=[64,62,60,62,64,64,64];
-  if(pianoState.noteHist.length>=7&&want.every((m,i)=>pianoState.noteHist[pianoState.noteHist.length-7+i]===m)){
-    pianoState.noteHist=[];
-    ach(ACHIEVEMENTS.recital,S.ach);
-    say("piano_played",true);organChord();
-    if(world.pianoPos)world.items.push({kind:"crosses",x:world.pianoPos.x+1.4,z:world.pianoPos.z,
-      sp:addSprite(ITEMTEX.crosses,world.pianoPos.x+1.4,world.pianoPos.z,.55,.55,.5),bob:0});}}
-function pianoKeyDown(code){const m=KEYMAP[code];if(m)pressKey(m);}
-function openPiano(){
-  game.pianoOpen=true;input.firing=false;
-  document.getElementById("piano").style.display="flex";
-  document.exitPointerLock();
-  say("piano",true);}
-function closePiano(){
-  game.pianoOpen=false;
-  document.getElementById("piano").style.display="none";
-  renderState.renderer.domElement.requestPointerLock();}
 
 /* ============================================================
    LEVEL END + WIN + HUD
