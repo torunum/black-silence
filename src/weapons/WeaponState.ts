@@ -19,6 +19,7 @@ import { breakProp, explodeBarrel, type Prop } from "../world/Props";
 import { alertSound } from "../enemies/ai/Perception";
 import { damageEnemy } from "../enemies/Damage";
 import { hitscan } from "./Hitscan";
+import { schedule } from "../core/Time";
 
 /**
  * The weapon FSM's *behavior* — the functions that read input and time and
@@ -61,11 +62,14 @@ import { hitscan } from "./Hitscan";
  * (`fire` calls `hitscan`, so this file already imports `Hitscan.ts`).
  * See `Hitscan.ts`'s own header for how it reads `pierce` instead.
  *
- * `doKick`'s `setTimeout(...,110)` moves verbatim, bug and all: the
- * scheduled hit test ignores hit-stop and pause, and survives level
- * unload. `docs/known-issues.md` KNOWN-3 already tracks it; the fix
- * (`Time.schedule()`) is Plan 0F's hardening step, not this port's — Phase
- * 0 is a mechanical move with no behavior change.
+ * `doKick`'s hit test moved verbatim from `setTimeout(...,110)` through
+ * Phase 0's mechanical port, bug and all: the scheduled hit test ignored
+ * hit-stop and pause, and survived level unload. Plan 0F Task 5, the first
+ * task chartered to change behavior, replaced it with
+ * `schedule(...,0.110)` — `Time.ts`'s scaled-clock equivalent, driven from
+ * `Loop.ts`'s gameplay block, so the hit test now respects hit-stop and
+ * pause the way every other per-frame system already did. `docs/known-issues.md`
+ * KNOWN-3 records it as done.
  */
 
 const WEAPON_SOUNDS = [
@@ -198,7 +202,7 @@ export function doKick(){
   if(!game.started||S.dead||game.inputLock||S.kickCd>0||game.pianoOpen)return;
   S.kickCd=15;weaponRuntime.kickAnim=.32;
   shake(.3);bang(.15,.5,900);
-  setTimeout(()=>{
+  schedule(()=>{
     const dir=new THREE.Vector3();renderState.camera.getWorldDirection(dir);
     let hitAny=false;
     for(const e of world.enemies as unknown as KickEnemy[]){if(e.dead)continue;
@@ -221,4 +225,4 @@ export function doKick(){
       hitAny=true;
       if(p.explosive)explodeBarrel(p);else breakProp(p);}
     if(hitAny){bang(.12,.4,500);shake(.15);screenShake.hitStop=Math.max(screenShake.hitStop,.03);}
-  },110);}
+  },0.110);}

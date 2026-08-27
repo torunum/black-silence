@@ -22,6 +22,7 @@ import { fireOrb, throwFlesh } from "./Attacks";
 import { wakeBoss, roarFor, priestThink } from "../Boss";
 import { damageEnemy } from "../Damage";
 import { dropAmmo } from "../Death";
+import { schedule } from "../../core/Time";
 
 /**
  * Behaviors — the per-frame enemy brain: state-machine housekeeping (dead/
@@ -246,9 +247,9 @@ export function enemyTick(dt){
       if(e.range&&dist<e.range&&e.cool<=0&&dist>3){
         e.cool=e.stone?2.6:e.orb==="manc"?2.8:e.burst?2.6:2.3;
         if(e.stone){fireOrb(e,-.14);fireOrb(e,0);fireOrb(e,.14);}
-        else if(e.twin){fireOrb(e,-.1);setTimeout(()=>{if(!e.dead)fireOrb(e,.1);},220);} // mancubus
+        else if(e.twin){fireOrb(e,-.1);schedule(()=>{if(!e.dead)fireOrb(e,.1);},0.220);} // mancubus
         else if(e.orb==="centaur"){ // Slaughtaur: two quick blue bolts
-          fireOrb(e,-.05);setTimeout(()=>{if(!e.dead)fireOrb(e,.05);},180);}
+          fireOrb(e,-.05);schedule(()=>{if(!e.dead)fireOrb(e,.05);},0.180);}
         else if(e.burst){ // Afrit: spread of fireballs
           fireOrb(e,-.12);fireOrb(e,0);fireOrb(e,.12);}
         else fireOrb(e,rnd(-.04,.04),e.toxic);}
@@ -263,10 +264,10 @@ export function enemyTick(dt){
       /* brute slam */
       if(e.slam&&dist<2.9&&e.slamT<=0){
         e.slamT=4;e.stun=.5;
-        setTimeout(()=>{if(e.dead)return;
+        schedule(()=>{if(e.dead)return;
           shake(.35);bang(.3,.6,300);smoke3d(e.x,.3,e.z,10);
           if(Math.hypot(player.px-e.x,player.pz-e.z)<3.1){damagePlayer(24);
-            player.vx+=(player.px-e.x)*3;player.vz+=(player.pz-e.z)*3;}},480);
+            player.vx+=(player.px-e.x)*3;player.vz+=(player.pz-e.z)*3;}},0.480);
         blip(80,.4,"sawtooth",.14,40);}
       /* dog lunge */
       if(e.lunge&&dist>2&&dist<4.5&&e.lungeT<=0){

@@ -1,5 +1,5 @@
 import { game } from "./Game";
-import { time } from "./Time";
+import { time, tickScheduled } from "./Time";
 import { S } from "./State";
 import { screenShake } from "../fx/ShakeState";
 import { overlayOpen, keys, input } from "../player/Input";
@@ -44,8 +44,20 @@ import { hud } from "../ui/Hud";
  *   KNOWN-9 documents and `tests/integration/wiring.test.ts` covers; copied
  *   field by field.
  *
- * `time.dt`/`time.scaledDt` are new writes, not reads — nothing consumes
- * them yet. See `Time.ts`.
+ * `time.dt`/`time.scaledDt` are Task 4 writes; Task 5 adds the first read:
+ * `tickScheduled(dt)` is called **last** in the `!paused&&!S.dead&&!S.won`
+ * block, using `dt` at the point it has already had hit-stop's `*=.08`
+ * applied (line `time.scaledDt=dt` above is the same value). Last, not
+ * first, deliberately: the four callbacks this replaces used to run as
+ * `setTimeout`s the browser drained at a frame boundary, *after* every one
+ * of that frame's own tick functions had already run (confirmed against
+ * `tests/support/domStubs.ts`'s fake clock, which the trace harness drains
+ * the same way — after the frame's rAF callback returns). Calling
+ * `tickScheduled` last reproduces that ordering as closely as a single
+ * synchronous call can: a callback firing this frame sees this frame's
+ * movement, damage and AI already applied, the same as the original. Calling
+ * it first would let a scheduled callback (e.g. the power-kick hit test)
+ * observe stale enemy/player positions a full frame early instead.
  */
 function loop(t){
   requestAnimationFrame(loop);
@@ -64,7 +76,8 @@ function loop(t){
     itemsTick(dt);doorTick(dt);propTick(dt);
     eventTick(dt);ambience(dt);vitalsAudio(dt);
     chatterTick(dt,anyAware);
-    tickMessage(dt);}
+    tickMessage(dt);
+    tickScheduled(dt);}
   if(renderState.scene){
     partTick(dt);gibTick(dt);poolTick(dt);headTick(dt);torchTick(dt,t);
     fxTick(dt,t,weaponRuntime.zoomLerp,
