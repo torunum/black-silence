@@ -17,14 +17,14 @@ function srcFiles(dir: string): string[] {
   return out;
 }
 
-describe("legacy.js boot", () => {
+describe("main.ts boot", () => {
   beforeAll(() => {
     installDomStubs();
     loadGameHtml();
   });
 
   it("imports without throwing", async () => {
-    await expect(import("../src/legacy.js")).resolves.toBeDefined();
+    await expect(import("../src/main")).resolves.toBeDefined();
   });
 
   it("finds every element lookup the port performs against index.html", () => {

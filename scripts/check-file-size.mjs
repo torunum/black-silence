@@ -4,8 +4,13 @@ import { join } from "node:path";
 const LIMIT = 400;
 const ROOT = "src";
 
-/** Exempt while the port is in progress. Its line count is the burn-down metric. */
-const EXEMPT = new Set(["src/legacy.js"]);
+/**
+ * Exempt while the port is in progress; a burn-down prints below for
+ * whatever this holds. Empty since Plan 0F Task 4 deleted `src/legacy.js`,
+ * the last file it ever held — the port is complete, and the 400-line limit
+ * now applies to every file in `src/` with no exceptions.
+ */
+const EXEMPT = new Set([]);
 
 function walk(dir) {
   if (!existsSync(dir)) return [];
@@ -30,8 +35,12 @@ const lineCount = (p) => (readFileSync(p, "utf8").match(/\n/g) ?? []).length;
 const files = walk(ROOT);
 const offenders = files.filter((p) => !EXEMPT.has(p) && lineCount(p) > LIMIT);
 
-for (const p of EXEMPT) {
-  if (existsSync(p)) console.log(`port burn-down: ${p} = ${lineCount(p)} lines remaining`);
+if (EXEMPT.size === 0) {
+  console.log("port burn-down: complete — src/legacy.js is gone, nothing in src/ is exempt");
+} else {
+  for (const p of EXEMPT) {
+    if (existsSync(p)) console.log(`port burn-down: ${p} = ${lineCount(p)} lines remaining`);
+  }
 }
 
 if (offenders.length > 0) {

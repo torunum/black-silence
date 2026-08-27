@@ -137,7 +137,7 @@ beforeAll(async () => {
   ({ bossDeath } = await import("../../src/enemies/Death"));
   ({ damageEnemy } = await import("../../src/enemies/Damage"));
 
-  await import("../../src/legacy.js");
+  await import("../../src/main");
 
   const newGame = [...document.querySelectorAll(".mbtn")].find((b) => b.textContent?.includes("NEW GAME"));
   if (!newGame) throw new Error("the NEW GAME menu row is gone — this file drives the game through it");
