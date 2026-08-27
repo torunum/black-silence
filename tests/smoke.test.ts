@@ -34,8 +34,16 @@ describe("legacy.js boot", () => {
     const calls = [...src.matchAll(/\.(getElementById|querySelector)\("([^"]+)"\)/g)];
 
     // A regression in the regex itself (e.g. legacy.js source changes shape)
-    // should fail loudly rather than silently asserting nothing.
-    expect(calls.length).toBeGreaterThan(30);
+    // should fail loudly rather than silently asserting nothing. The floor
+    // was 30 (31 actual) through Plan 0E and Plan 0F Task 1. Plan 0F Task 2
+    // moved `hud`'s eleven HUD/boss-bar lookups and `endLevel`/`showWin`'s
+    // nine (`gradeOf`/`statsHtml` add none) out of legacy.js into
+    // `src/ui/Hud.ts`/`src/ui/LevelEnd.ts` — a real reduction, not a regex
+    // regression, down to 11 — so the floor comes down with it. legacy.js is
+    // headed to zero of these by Plan 0F Task 4's own stated goal (emptying
+    // the file), so a later task will need to lower this again, and
+    // eventually retire the assertion once nothing is left to scan.
+    expect(calls.length).toBeGreaterThan(5);
 
     for (const [, method, selector] of calls) {
       const found =

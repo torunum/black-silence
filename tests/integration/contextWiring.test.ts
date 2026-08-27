@@ -37,6 +37,19 @@ import { S } from "../../src/core/State";
  * the mechanism changed, so that block now asserts the direct call instead
  * of a locator registration; it no longer touches `ctx` at all.
  *
+ * Update, Plan 0F Task 2: `endLevel` and `showWin` are gone too, the same
+ * way `openPiano` left — both moved to `src/ui/LevelEnd.ts`, and
+ * `src/player/Player.ts`/`src/enemies/Death.ts` now import them directly
+ * instead of reaching them through `ctx.endLevel?.()`/`ctx.showWin?.()`.
+ * Each retirement was confirmed clean one at a time against
+ * `madge --circular --extensions ts,js src/`, so a cycle would have been
+ * attributable to whichever one caused it (neither did). `Context.ts` now
+ * holds exactly one entry, `wakeBoss` — a genuine cycle-break, not a bridge
+ * to code that had not moved yet, so it has no seam here to convert; its
+ * own describe block below is unchanged. The `endLevel`/`showWin` describe
+ * blocks below now assert the direct call the same way the `openPiano`
+ * block already did — neither touches `ctx` any more either.
+ *
  * This is a sibling of `wiring.test.ts`, not an extension of it, for one
  * concrete reason: `src/legacy.js` is a module singleton with side effects
  * at import (it builds a renderer, boots a level, registers listeners) and
@@ -82,7 +95,7 @@ import { S } from "../../src/core/State";
  * `TickEnemy`/`DeathEnemy` cast interfaces already use for "the few fields
  * this code path actually reads") and drains a fake clock instead of
  * waiting 2.8 real seconds. This still exercises the real
- * `setTimeout(()=>ctx.showWin?.(),2800)` line, not a stand-in for it.
+ * `setTimeout(()=>showWin(),2800)` line, not a stand-in for it.
  */
 
 /** The three DOM/state flags each target function's real body flips, and nothing else in this file does. */
@@ -149,7 +162,7 @@ beforeEach(() => {
   S.won = false;
 });
 
-describe("ctx.endLevel — src/player/Player.ts's exit-pad branch", () => {
+describe("endLevel (src/ui/LevelEnd.ts, imported directly by src/player/Player.ts) — the exit-pad branch", () => {
   it("unhides #levelend (not #win, not the piano) when the player stands on the exit pad with no boss alive", () => {
     expect(world.exitPos, "prologue's LevelLoader should have set an exit pad").not.toBeNull();
     const exit = world.exitPos as unknown as { x: number; z: number };
@@ -184,7 +197,7 @@ describe("openPiano (src/ui/Piano.ts, imported directly by src/player/Interact.t
   });
 });
 
-describe("ctx.showWin — src/enemies/Death.ts's bossDeath, key===\"G\"", () => {
+describe("showWin (src/ui/LevelEnd.ts, imported directly by src/enemies/Death.ts) — bossDeath, key===\"G\"", () => {
   it("unhides #win (not #levelend, not the piano) 2.8s after a THE LIVING HEART kill", () => {
     const clock = installFakeClock();
     try {

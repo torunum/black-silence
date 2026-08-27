@@ -7,6 +7,7 @@ import { stopBossMusic } from "../audio/Ambient";
 import { flashDmg, showMsg } from "../ui/HudMessages";
 import { say } from "../ui/Subtitles";
 import { ach } from "../ui/Toasts";
+import { endLevel } from "../ui/LevelEnd";
 import { screenBlood } from "../render/Overlay2D";
 import { addSprite } from "../render/RenderCore";
 import { renderState } from "../render/Renderer";
@@ -24,14 +25,6 @@ import { smoke3d } from "../fx/Particles";
 import { screenShake, shake } from "../fx/ShakeState";
 import { weaponRuntime } from "../weapons/WeaponRuntime";
 import { world } from "../world/WorldState";
-// Renamed on import: `ctx` above is already bound to AudioEngine's
-// audio-context accessor (`ctx()`, called once in footstep, below) — the
-// same clash legacy.js's own top-of-file comment documents, just the other
-// binding of the pair, because footstep (which needs AudioEngine's ctx)
-// moves here while the code that needs the locator's remaining entry
-// (endLevel, Plan 0F) does not. See Context.ts's own doc comment for what
-// this locator is and why it exists.
-import { ctx as svcCtx } from "../core/Context";
 
 /**
  * Player movement, damage and death — the per-frame integrator and the two
@@ -39,16 +32,19 @@ import { ctx as svcCtx } from "../core/Context";
  * from `src/legacy.js`'s "PLAYER" section (formerly lines 728-821;
  * `reference/sonsurum.html`'s equivalent section).
  *
- * `playerTick` calls one function that has not moved: `endLevel` (the
- * level-exit pad, `else svcCtx.endLevel?.();` below). Plan 0E's own coupling
- * table assigns `endLevel` — and the rest of "LEVEL END + WIN + HUD" — to
- * Plan 0F, so it stays in legacy.js and this file reaches it through
- * `src/core/Context.ts`'s locator instead, registered from legacy.js — see
- * the ordering note at the bottom of this file. `damagePlayer` used to
- * register itself into the same locator; Task 10's Step 6 retired that
- * entry once `madge --circular src/` confirmed a direct import from its
- * callers (`Props.ts`, `Boss.ts`, `ai/Behaviors.ts`) closes no cycle, so it
- * is now a plain export instead.
+ * `playerTick` calls `endLevel` (the level-exit pad, `else endLevel();`
+ * below), a direct import from `src/ui/LevelEnd.ts` as of Plan 0F Task 2.
+ * Before that, `endLevel` stayed in `legacy.js` and this file reached it
+ * through `src/core/Context.ts`'s locator instead, imported under a rename
+ * here to avoid a clash with `AudioEngine.ts`'s own `ctx` (still imported
+ * above, still called once in `footstep`, below). `damagePlayer` made the
+ * same locator-to-direct-import transition earlier, in Task 10's Step 6,
+ * once `madge --circular src/` confirmed a direct import from its callers
+ * (`Props.ts`, `Boss.ts`, `ai/Behaviors.ts`) closes no cycle — `endLevel`'s
+ * own retirement followed the same check (`madge`'s output is in
+ * `Context.ts`'s doc comment). `Context.ts` now holds only `wakeBoss`, a
+ * genuine cycle-break rather than a bridge to code that had not moved yet;
+ * see its own doc comment.
  *
  * `world.exitPos`/`world.challenge`/`world.enemies` are typed loosely
  * (`src/world/WorldState.ts`'s own doc comment explains why); the local
@@ -148,7 +144,7 @@ function playerTick(dt: number): void {
   if(world.exitPos&&Math.hypot(player.px-(world.exitPos as unknown as ExitPos).x,player.pz-(world.exitPos as unknown as ExitPos).z)<1.2){
     const bossLeft=(world.enemies as unknown as TickEnemy[]).some(e=>e.boss&&!e.dead);
     if(bossLeft)showMsg("SOMETHING STILL BREATHES HERE",1.5);
-    else svcCtx.endLevel?.();}
+    else endLevel();}
   /* challenge plate */
   if(world.challenge&&(world.challenge as unknown as ChallengeState).state===0&&Math.hypot(player.px-(world.challenge as unknown as ChallengeState).x,player.pz-(world.challenge as unknown as ChallengeState).z)<1){
     (world.challenge as unknown as ChallengeState).state=1;say("challenge",true);
@@ -176,27 +172,3 @@ function playerTick(dt: number): void {
       blip(523,.3,"sine",.1,1046,true);}}}
 
 export { damagePlayer, accelerate, footstep, playerTick };
-
-/**
- * Ordering — why `svcCtx.endLevel?.()` inside `playerTick` is safe despite
- * running before this file knows whether `legacy.js` has registered it yet.
- *
- * `damagePlayer` used to register itself into `src/core/Context.ts`'s
- * locator here, the way `endLevel` still does from `legacy.js`. Task 10's
- * Step 6 tested that against `madge --circular src/` and found no cycle, so
- * `Props.ts`, `Boss.ts` and `ai/Behaviors.ts` now import `damagePlayer`
- * directly instead of calling `ctx.damagePlayer?.(...)`, and this file no
- * longer registers it anywhere. This is a plain export now, subject to the
- * same module-resolution guarantees as any other; no ordering argument is
- * needed for it.
- *
- * `endLevel` is different: it bridges to code that stays in `legacy.js` for
- * Plan 0F, so `playerTick`'s `svcCtx.endLevel?.()` call is still reachable
- * before `legacy.js` has registered it, in principle. It isn't in practice —
- * `endLevel` is only invoked from `playerTick` itself, which only runs once
- * `startGame`'s render loop begins ticking, long after `legacy.js`'s own
- * module-scope `svcCtx.endLevel=endLevel;` line has run — and the `?.()`
- * guard means even a hypothetical call before that registration lands would
- * silently no-op rather than throw, matching how every other `Context.ts`
- * entry in this codebase is already called.
- */

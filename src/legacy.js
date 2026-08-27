@@ -6,7 +6,7 @@ import { buildSprites } from "./enemies/SpriteBaker";
 import { ITEMTEX, buildItemTex } from "./render/ItemTextures";
 import { audioInit, getMasterVolume, setMasterVolume } from "./audio/AudioEngine";
 import { click } from "./audio/Sfx";
-import { organChord, pianoNote, stopBossMusic } from "./audio/Ambient";
+import { organChord, pianoNote } from "./audio/Ambient";
 import { renderState } from "./render/Renderer";
 import { partTick } from "./fx/Particles";
 import { poolTick } from "./fx/Decals";
@@ -20,9 +20,7 @@ import { fxTick } from "./render/Overlay2D";
 import { addSprite } from "./render/RenderCore";
 import { buildWeaponSprites } from "./render/viewmodel/sprites";
 import { drawKickBoot, drawViewmodel } from "./render/viewmodel/draw";
-import { ACHIEVEMENTS } from "./content/achievements";
 import { say, tickSubtitles } from "./ui/Subtitles";
-import { ach } from "./ui/Toasts";
 import { tickMessage } from "./ui/HudMessages";
 import { buildPiano, pianoKeyDown, closePiano } from "./ui/Piano";
 import { keys, setInputHooks, overlayOpen, input } from "./player/Input";
@@ -40,52 +38,13 @@ import { headTick } from "./enemies/Death";
 import { requestSwitch, startReload, weaponTick, doKick, WEAPONS, EQUIP_T, UNEQUIP_T } from "./weapons/WeaponState";
 import { ambience, vitalsAudio } from "./world/Ambience";
 import { eventTick } from "./world/RandomEvents";
-// Context.ts's service locator — see its own doc comment — registered below
-// for endLevel and showWin, the only entries left: damagePlayer,
-// damageEnemy and wakeBoss were retired from the locator entirely by Task
-// 10's Step 6, once the AI extraction's module split let their callers
-// (Props.ts, Hitscan.ts, WeaponState.ts, Damage.ts) import them directly.
-//
-// The `as svcCtx` alias is now vestigial. It existed because this file also
-// bound `ctx` to AudioEngine's audio-context accessor, but the last `ctx()`
-// call site left with `ambience`/`vitalsAudio` in Task 11 and the import
-// went with the other 80 dead ones in Task 12. The alias is kept rather
-// than renamed because Plan 0F dismantles this file entirely, and churning
-// every call site here to save one word would be noise in that diff.
-import { ctx as svcCtx } from "./core/Context";
+import { hud } from "./ui/Hud";
 
 /* ============================================================
    THE BLACK SILENCE — The Hollow Parish (v3 gothic overhaul)
    2 levels · 9 enemy types + elites · 3 bosses · 6 weapons ·
    power kick · destructibles · playable piano · monologues
    ============================================================ */
-
-/* damagePlayer moved to src/player/Player.ts (Task 7), damageEnemy moved to
-   src/enemies/Damage.ts (Task 9) and wakeBoss moved to src/enemies/Boss.ts
-   (Task 10); each registered itself into this locator at its own module
-   scope for a time, but Task 10's Step 6 tested each against
-   `madge --circular src/` once the AI section's module split made every
-   remaining edge one-way, and retired all three — their callers
-   (`src/world/Props.ts`, `src/weapons/Hitscan.ts`,
-   `src/weapons/WeaponState.ts`, `src/enemies/Damage.ts`) import them
-   directly now, and none of the three appears in `Context.ts`'s type
-   anymore. endLevel is a new entry: playerTick
-   (moved to Player.ts by Task 7) reaches it through this locator because
-   endLevel itself belongs to Plan 0F, not this plan, and stays here for
-   now. showWin is Task 9's remaining entry, registered
-   the other way around from the two above: showWin itself still lives
-   here (it belongs to Plan 0F's win screen), and bossDeath (now in
-   Death.ts) reaches it through this locator instead. openPiano was a
-   third entry of the first kind (interact, in src/player/Interact.ts,
-   reached it through this locator because openPiano itself belonged to
-   Plan 0F's playable piano) until Plan 0F's Task 1 moved buildPiano/
-   pressKey/pianoKeyDown/openPiano/closePiano to src/ui/Piano.ts and
-   confirmed with `madge --circular src/` that Interact.ts importing
-   openPiano directly adds no cycle — so the entry was retired rather than
-   repointed, and Interact.ts now imports it directly instead of going
-   through this locator. Function declarations hoist, so this can sit at
-   module scope ahead of any of their definitions. */
-svcCtx.endLevel=endLevel;svcCtx.showWin=showWin;
 
 /* Input lives in src/player/Input.ts; its listeners are already registered
    (at that module's scope, as in the reference). This hands it the gameplay
@@ -99,65 +58,6 @@ setInputHooks({
   interact:()=>interact(), startReload:()=>startReload(),
   requestSwitch:i=>requestSwitch(i), doKick:()=>doKick(),
 });
-
-/* ============================================================
-   LEVEL END + WIN + HUD
-   ============================================================ */
-function gradeOf(){
-  const acc=S.shots>0?S.hitsLanded/S.shots:0;
-  const score=(S.enemiesTotal?S.kills/S.enemiesTotal:1)*40+
-    (S.secretsTotal?S.secrets/S.secretsTotal:1)*25+Math.min(1,acc)*25+
-    Math.min(1,S.propsBroken/10)*10;
-  if(acc>=.7)ach(ACHIEVEMENTS.deadeye,S.ach);
-  return score>=85?"S":score>=70?"A":score>=55?"B":score>=40?"C":"D";}
-function statsHtml(){
-  const t=((performance.now()-S.levelT0)/1000)|0;
-  const acc=S.shots>0?Math.round(100*S.hitsLanded/S.shots):0;
-  return `KILLS <b>${S.kills} / ${S.enemiesTotal}</b> · GIBBED <b>${S.gibs}</b><br>`+
-    `SECRETS <b>${S.secrets} / ${S.secretsTotal}</b> · OBJECTS BROKEN <b>${S.propsBroken}</b><br>`+
-    `ACCURACY <b>${acc}%</b> · TIME <b>${(t/60|0)}:${String(t%60).padStart(2,"0")}</b>`;}
-function endLevel(){
-  if(S.won)return;S.won=true;
-  save.maxLevel=Math.max(save.maxLevel,Math.min(S.level+1,LEVELS.length-1));
-  stopBossMusic();document.exitPointerLock();
-  document.getElementById("legrade").textContent=gradeOf();
-  document.getElementById("lestats").innerHTML=statsHtml();
-  const nextName=LEVELS[S.level+1]?LEVELS[S.level+1].name.replace(/^LEVEL \d+ — /,""):"";
-  document.getElementById("lebtn").textContent="[ DESCEND TO "+nextName+" ]";
-  document.getElementById("levelend").classList.remove("hidden");}
-document.getElementById("lebtn").addEventListener("click",()=>{
-  document.getElementById("levelend").classList.add("hidden");
-  S.won=false;
-  loadLevel(S.level+1);
-  renderState.renderer.domElement.requestPointerLock();});
-function showWin(){
-  if(S.dead)return;S.won=true;
-  stopBossMusic();document.exitPointerLock();
-  document.getElementById("wingrade").textContent=gradeOf();
-  document.getElementById("winstats").innerHTML=statsHtml()+
-    `<br>ACHIEVEMENTS <b>${Object.keys(S.ach).length}</b> · TOTAL KILLS <b>${S.totKills}</b>`;
-  document.getElementById("win").classList.remove("hidden");}
-function hud(){
-  document.querySelector("#hp .num").textContent=Math.max(0,Math.ceil(S.hp));
-  document.querySelector("#ar .num").textContent=Math.ceil(S.armor);
-  const w=WEAPONS[S.cur];
-  document.querySelector("#am .num").innerHTML=
-    S.mag[S.cur]+'<span class="sub2"> | '+S.ammo[w.ammo]+"</span>";
-  document.getElementById("wname").textContent=
-    w.name+(weaponRuntime.wstate==="reload"?" — RELOADING":"");
-  document.getElementById("keys").textContent=S.key?"■ RED KEY":"";
-  const kw=document.getElementById("kickwrap");
-  document.getElementById("kickfill").style.width=(100*(1-S.kickCd/15))+"%";
-  document.getElementById("kicklabel").textContent=
-    S.kickCd>0?("KICK "+Math.ceil(S.kickCd)+"s"):"KICK [RMB]";
-  kw.classList.toggle("ready",S.kickCd<=0);
-  const boss=world.enemies&&world.enemies.find(e=>e.boss&&!e.dead&&!e.dormant);
-  const bb=document.getElementById("bossbar");
-  if(boss&&!world.cine){bb.style.display="block";
-    document.getElementById("bossname").textContent=
-      boss.name+(boss.priest?" — PHASE "+boss.phase:"");
-    document.getElementById("bossfill").style.width=(100*boss.hp/boss.maxhp)+"%";}
-  else bb.style.display="none";}
 
 /* ============================================================
    IDLE QUIPS + SUBTITLE TIMER

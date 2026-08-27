@@ -3,7 +3,7 @@ import { clamp, pick, rnd } from "../utils/math";
 import { PX } from "./SpriteBaker";
 import { alertSound } from "./ai/Perception";
 import { S } from "../core/State";
-import { ctx } from "../core/Context";
+import { showWin } from "../ui/LevelEnd";
 import { renderState } from "../render/Renderer";
 import { addSprite } from "../render/RenderCore";
 import { ITEMTEX } from "../render/ItemTextures";
@@ -53,15 +53,14 @@ import { world } from "../world/WorldState";
  * `Player.ts`'s import graph reaches this file (confirmed with
  * `madge --circular src/`).
  *
- * `bossDeath` calls one function that has not moved: `showWin`
- * (`legacy.js`, Plan 0F's win screen). `setTimeout(()=>showWin(),2800);`
- * routes through `src/core/Context.ts`'s locator instead, because `showWin`
- * stays in `legacy.js` for the rest of this plan.
- *
- * None of these six functions call AudioEngine's `ctx()` accessor, so this
- * file imports the locator plainly as `ctx` (matching `Props.ts`/
- * `Hitscan.ts`/`Interact.ts`), not aliased to `svcCtx` the way `legacy.js`
- * and `Player.ts` need for their own separate `ctx()` calls.
+ * `bossDeath` calls `showWin` (`setTimeout(()=>showWin(),2800);`), a direct
+ * import from `src/ui/LevelEnd.ts` as of Plan 0F Task 2. Before that,
+ * `showWin` stayed in `legacy.js` and this call routed through
+ * `src/core/Context.ts`'s locator instead, registered the other way around
+ * from `endLevel`/`damagePlayer`: `showWin` itself lived in `legacy.js`,
+ * and this file (`Death.ts`) reached it through the locator. `Context.ts`
+ * now holds only `wakeBoss`, a genuine cycle-break rather than a bridge to
+ * code that had not moved yet; see its own doc comment.
  *
  * `world.enemies` and `headPool.heads` are both loosely typed
  * (`Array<Record<string, unknown>>`, see those modules' own doc comments),
@@ -224,7 +223,7 @@ export function bossDeath(e) {
     openExit();}
   if(e.key==="G"){ach(ACHIEVEMENTS.heart,S.ach);
     showMsg("THE HEART STOPS — AND SO DOES EVERYTHING",4.5);
-    setTimeout(()=>ctx.showWin?.(),2800);}}
+    setTimeout(()=>showWin(),2800);}}
 
 export function openExit() {
   if(world.exitPos)return;
