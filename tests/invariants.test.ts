@@ -12,12 +12,13 @@ import { S } from "../src/core/State";
 
 describe("WEAPON_STATS length vs. legacy.js player state", () => {
   // S.mag and S.weapons used to be declared inline in legacy.js and were
-  // read live from its source text (see tests/support/legacySource.ts)
-  // rather than imported, since importing legacy.js reaches into
-  // `document`/THREE at module scope and cannot run in Node. Plan 0D task 10
-  // moved S itself into src/core/State.ts, a plain data module with no such
-  // side effects, so this now imports it directly — see legacySource.ts's
-  // readLegacyConst doc comment, which anticipated exactly this move.
+  // read live from its source text by a helper, tests/support/legacySource.ts,
+  // rather than imported, since importing legacy.js reached into
+  // `document`/THREE at module scope and could not run in Node. Plan 0D task
+  // 10 moved S itself into src/core/State.ts, a plain data module with no such
+  // side effects, so this imports it directly. That left the helper with no
+  // callers, and Plan 0F task 4 deleted src/legacy.js outright, so the helper
+  // was removed too — its own doc comment had predicted exactly this.
 
   it("gives WEAPON_STATS exactly one slot per S.mag entry", () => {
     // A ninth weapon added to WEAPON_STATS without extending S.mag would

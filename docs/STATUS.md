@@ -46,8 +46,13 @@ printed by `npm test` as the port burn-down. When it reaches zero the port is
 done.
 
 ```
-3759 → 3040 (0A) → 2224 (0B) → 1633 (0C) → 1616 (0D) → 282 (0E)
+3759 → 3040 (0A) → 2224 (0B) → 1633 (0C) → 1616 (0D) → 282 (0E) → 0 (0F)
 ```
+
+**The port is complete.** `src/legacy.js` was deleted in Plan 0F Task 4
+(`e56bc2f`); `src/` contains no `.js` file, and `tsconfig.json` no longer needs
+`allowJs`/`checkJs`. Plan 0F's hardening tasks (5-11) are still outstanding —
+see the Plan 0F section below.
 
 Tests: 0 → 114 → 167 → 348 → 357 → 369.
 
