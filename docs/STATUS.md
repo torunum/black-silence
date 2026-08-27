@@ -4,8 +4,9 @@ Written to survive session loss. If you are picking this up cold, read this
 file, then `docs/direction.md`, then the current plan under
 `docs/superpowers/plans/`. Trust this file and `git log` over any recollection.
 
-Last updated: 2026-08-25, after Plan 0E's whole-branch review. All twelve tasks
-are done and the branch is green; the merge is the only step left.
+Last updated: 2026-08-27, mid Plan 0F. **The port is complete** — `src/legacy.js`
+is deleted and the burn-down is zero. Plan 0F's hardening tasks (5-11) remain.
+The per-task ledger is `.superpowers/sdd/2026-08-25-phase0f-ui-loop-and-hardening/progress.md`.
 
 ---
 
@@ -34,8 +35,8 @@ pinned by characterization tests.
 | 0B | Procedural textures, sprite baker, item textures, the whole audio layer | **merged** |
 | 0C | Behavioral oracle, FX layer, weapon viewmodel art, subtitles, input | **merged** |
 | 0D | The global-to-state migration (70 globals, ~700 call sites) | **merged** |
-| 0E | Systems: renderer, level loader, weapons, enemy AI, player, interaction | **reviewed, ready to merge** — branch `phase-0e-systems` |
-| 0F | UI, piano, loop and boot; then hardening — gameplay `setTimeout` removal, dispose registry, `strict: true`, the Three.js upgrade | not started |
+| 0E | Systems: renderer, level loader, weapons, enemy AI, player, interaction | **merged** |
+| 0F | UI, piano, loop and boot; then hardening — gameplay `setTimeout` removal, dispose registry, `strict: true`, the Three.js upgrade | **in progress** — branch `phase-0f-ui-and-hardening`; extraction done (tasks 1-4), hardening outstanding (5-11) |
 
 The spec originally sized the remainder as two plans; the real shape is four.
 
