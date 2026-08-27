@@ -49,13 +49,16 @@ import { ctx } from "../core/Context";
  * now pins the registration, verified against two sabotages: removing it,
  * and pointing it at `roarFor`.
  *
- * `damageEnemy` used to register itself into `src/core/Context.ts`'s
- * locator at module scope below, the way `Player.ts` still registers
- * `endLevel`, and `src/world/Props.ts`/`src/weapons/Hitscan.ts`/
- * `src/weapons/WeaponState.ts` called it via `ctx.damageEnemy?.(...)`. Task
- * 10's Step 6 retired that entry once `madge --circular src/` confirmed a
- * direct import from those three callers closes no cycle, so this file no
- * longer imports the locator at all — `damageEnemy` is a plain export now.
+ * `damageEnemy` itself used to be a locator entry too, registered from this
+ * file's module scope, with `src/world/Props.ts`/`src/weapons/Hitscan.ts`/
+ * `src/weapons/WeaponState.ts` calling it via `ctx.damageEnemy?.(...)`. Plan
+ * 0E Task 10's Step 6 retired it in favour of direct imports from those
+ * three. That retirement was justified by the same broken `madge` run as the
+ * `wakeBoss` one above, so its evidence was worthless at the time — but
+ * unlike `wakeBoss` it happens to have been correct, and the working gate
+ * (`--extensions ts,js`) confirms those three edges close no cycle.
+ * `damageEnemy` is a plain export. This file still imports the locator, for
+ * `wakeBoss` and nothing else.
  */
 
 export function damageEnemy(e, dmg, info) {
