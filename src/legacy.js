@@ -1,10 +1,8 @@
 import * as THREE from "three";
-import { rnd } from "./utils/math";
-import { LEVELS } from "./world/levels/index";
 import { buildTextures } from "./render/ProcTextures";
 import { buildSprites } from "./enemies/SpriteBaker";
 import { buildItemTex } from "./render/ItemTextures";
-import { audioInit, getMasterVolume, setMasterVolume } from "./audio/AudioEngine";
+import { audioInit } from "./audio/AudioEngine";
 import { click } from "./audio/Sfx";
 import { renderState } from "./render/Renderer";
 import { partTick } from "./fx/Particles";
@@ -12,12 +10,9 @@ import { poolTick } from "./fx/Decals";
 import { gibTick } from "./fx/Gibs";
 import { screenShake } from "./fx/ShakeState";
 import { projTick } from "./fx/ProjectileTick";
-import { save } from "./save/SaveGame";
-import { world } from "./world/WorldState";
 import { fxTick } from "./render/Overlay2D";
 import { buildWeaponSprites } from "./render/viewmodel/sprites";
 import { drawKickBoot, drawViewmodel } from "./render/viewmodel/draw";
-import { say, tickSubtitles } from "./ui/Subtitles";
 import { tickMessage } from "./ui/HudMessages";
 import { buildPiano, pianoKeyDown, closePiano } from "./ui/Piano";
 import { keys, setInputHooks, overlayOpen, input } from "./player/Input";
@@ -36,6 +31,8 @@ import { requestSwitch, startReload, weaponTick, doKick, WEAPONS, EQUIP_T, UNEQU
 import { ambience, vitalsAudio } from "./world/Ambience";
 import { eventTick } from "./world/RandomEvents";
 import { hud } from "./ui/Hud";
+import { chatterTick } from "./ui/Chatter";
+import { initMenus } from "./ui/Menus";
 
 /* ============================================================
    THE BLACK SILENCE — The Hollow Parish (v3 gothic overhaul)
@@ -57,15 +54,6 @@ setInputHooks({
 });
 
 /* ============================================================
-   IDLE QUIPS + SUBTITLE TIMER
-   ============================================================ */
-function chatterTick(dt,anyAware){
-  tickSubtitles(dt);
-  if(anyAware){world.idleT=rnd(26,40);return;}
-  world.idleT-=dt;
-  if(world.idleT<=0){world.idleT=rnd(26,40);say("idle");}}
-
-/* ============================================================
    MAIN LOOP + BOOT
    ============================================================ */
 function startGame(idx){
@@ -79,34 +67,7 @@ function startGame(idx){
   loadLevel(idx||0);
   S.t0=performance.now();
   renderState.renderer.domElement.requestPointerLock();}
-/* ---- menu navigation ---- */
-function showScreen(id){
-  ["intro","chapsel","settings"].forEach(s=>
-    document.getElementById(s).classList.toggle("hidden",s!==id));}
-document.getElementById("mNew").addEventListener("click",()=>{save.maxLevel=0;startGame(0);});
-document.getElementById("mSettings").addEventListener("click",()=>showScreen("settings"));
-document.getElementById("setBack").addEventListener("click",()=>showScreen("intro"));
-document.getElementById("chapBack").addEventListener("click",()=>showScreen("intro"));
-document.getElementById("mChapter").addEventListener("click",()=>{
-  const list=document.getElementById("chaplist");
-  list.innerHTML="";
-  LEVELS.forEach((lv,i)=>{
-    const unlocked=i<=save.maxLevel;
-    const row=document.createElement("div");
-    const label=lv.name.replace(/^(LEVEL \d+|PROLOGUE)\s*—\s*/,"");
-    const tag=i===0?"PROLOGUE":"CH "+i;
-    row.className="mbtn"+(unlocked?"":" locked");
-    row.textContent=unlocked?("[ "+tag+" · "+label+" ]"):("[ "+tag+" · LOCKED ]");
-    if(unlocked)row.addEventListener("click",()=>startGame(i));
-    list.appendChild(row);});
-  showScreen("chapsel");});
-/* ---- settings: master volume ---- */
-(function(){
-  const sl=document.getElementById("volSlider"),vv=document.getElementById("volVal");
-  sl.value=Math.round(getMasterVolume()*100);vv.textContent=sl.value;
-  sl.addEventListener("input",()=>{
-    setMasterVolume(sl.value/100);vv.textContent=sl.value;});
-})();
+initMenus(startGame);
 
 function loop(t){
   requestAnimationFrame(loop);
