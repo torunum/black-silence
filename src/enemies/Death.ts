@@ -76,6 +76,17 @@ import { track } from "../render/DisposeRegistry";
  * so `killEnemy`'s blast-radius loop and `headTick`'s per-head loop cast
  * through minimal local interfaces, the same convention `Props.ts`/
  * `Hitscan.ts` established for `world.enemies`/`world.props`.
+ *
+ * `killEnemy`/`spawnHead`/`bossDeath`'s own `e` parameter is typed `unknown`
+ * and cast at the point of use to the local `KillEnemy` shape below, the
+ * same convention `src/enemies/Damage.ts` established: `killEnemy`'s only
+ * caller is `damageEnemy`, which casts its own loosely-typed enemy the same
+ * way. `DamageInfo` — the hit-info bag `killEnemy`/`spawnHead` both read —
+ * is declared here (not in `Damage.ts`, its other consumer) and exported,
+ * because `Damage.ts` already imports `killEnemy` from this file; declaring
+ * it there instead and importing it back would close
+ * `Damage.ts -> Death.ts -> Damage.ts`, the exact two-file cycle this file's
+ * own header explains `dropAmmo` moved here to avoid.
  */
 
 /** world.enemies elements, cast for killEnemy's Afrit blast-radius loop. */
@@ -84,6 +95,47 @@ interface DeathEnemy {
   x: number;
   z: number;
   hp: number;
+}
+
+/** The weapon/explosion hit-info bag passed through damageEnemy -> killEnemy -> spawnHead. */
+export interface DamageInfo {
+  wIdx?: number;
+  head?: boolean;
+  leg?: boolean;
+  arm?: boolean;
+  armSide?: string;
+  lateral?: number;
+  dir?: { x: number; z: number };
+  dist?: number;
+  hx?: number;
+  hy?: number;
+  hz?: number;
+  explosive?: boolean;
+}
+
+/** world.enemies elements, cast for killEnemy/spawnHead/bossDeath's kill resolution. */
+interface KillEnemy {
+  dead?: boolean;
+  summoned?: boolean;
+  blob: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial>;
+  sp: THREE.Sprite;
+  key: string;
+  x: number;
+  z: number;
+  fy?: number;
+  toxic?: boolean;
+  boss?: boolean;
+  hp: number;
+  gone?: boolean;
+  h: number;
+  w: number;
+  pain: number;
+  deathT: number;
+  deathKind?: number;
+  deathDir: number;
+  kx: number;
+  kz: number;
+  stone?: boolean;
 }
 
 /**
@@ -111,7 +163,8 @@ interface Head {
   sz: number;
 }
 
-export function killEnemy(e, finalDmg, info) {
+export function killEnemy(enemy: unknown, finalDmg: number, info: DamageInfo) {
+  const e=enemy as KillEnemy;
   e.dead=true;
   if(!e.summoned)S.kills++;
   S.totKills++;
@@ -161,7 +214,7 @@ export function killEnemy(e, finalDmg, info) {
   addPool(e.x,e.z,rnd(.6,1));}
 
 /* a severed head: a small sprite that arcs off the body, lands, and can be kicked */
-export function spawnHead(e, info) {
+export function spawnHead(e: KillEnemy, info: DamageInfo) {
   const tex=PX[e.key].a;
   const sp=new THREE.Sprite(track(new THREE.SpriteMaterial({map:tex,transparent:true})));
   const sz=Math.max(.34,e.w*.34);
@@ -173,7 +226,7 @@ export function spawnHead(e, info) {
     vx:dx*rnd(2,4)+rnd(-1,1),vy:rnd(3.5,5.5),vz:dz*rnd(2,4)+rnd(-1,1),
     spin:rnd(-8,8),rest:false,life:30,sz});}
 
-export function headTick(dt) {
+export function headTick(dt: number) {
   for(let i=headPool.heads.length-1;i>=0;i--){const h=headPool.heads[i] as unknown as Head;
     h.life-=dt;
     if(!h.rest){
@@ -199,11 +252,11 @@ export function headTick(dt) {
     h.sp.position.set(h.x,h.y,h.z);
     if(h.life<=0){renderState.scene.remove(h.sp);headPool.heads.splice(i,1);}}}
 
-export function dropAmmo(x, z) {
+export function dropAmmo(x: number, z: number) {
   const k=pick(["bullets","shells","bullets"]);
   world.items.push({kind:k,x,z,sp:addSprite(ITEMTEX[k] as THREE.CanvasTexture,x,z,.55,.55,.5),bob:0});}
 
-export function bossDeath(e) {
+export function bossDeath(e: KillEnemy) {
   stopBossMusic();
   shake(.7);screenShake.hitStop=Math.max(screenShake.hitStop,.12);
   bang(.6,.7,400);blip(50,1.4,"sawtooth",.2,28,true);

@@ -70,7 +70,7 @@ export function buildLevel3(): RoomLayout {
      GREAT TOMB spans x:9..23, z:7..17. Raised perimeter ledges with a
      sunken sovereign pit, plus four stepped sarcophagus daises to climb. */
   const hm=Array.from({length:L.H},()=>Array(L.W).fill(0));
-  const sH=(x0,z0,x1,z1,h)=>{for(let z=z0;z<=z1;z++)for(let x=x0;x<=x1;x++)
+  const sH=(x0: number,z0: number,x1: number,z1: number,h: number)=>{for(let z=z0;z<=z1;z++)for(let x=x0;x<=x1;x++)
     if(L.g[z]&&L.g[z][x]&&"#WI".indexOf(L.g[z][x])<0)hm[z][x]=h;};
   sH(9,7,23,17,1.2);            // raised colonnade walk around the tomb
   sH(9,7,23,7,2.3);sH(9,17,23,17,2.3);   // high north/south galleries to snipe from
@@ -81,7 +81,7 @@ export function buildLevel3(): RoomLayout {
   sH(13,10,14,11,0.8);sH(18,10,19,11,0.8);
   sH(13,13,14,14,0.8);sH(18,13,19,14,0.8);
   // ramps from the door thresholds
-  const rmp=(x,z,dx,dz)=>{for(let i=0;i<3;i++){const cx=x+dx*i,cz=z+dz*i;
+  const rmp=(x: number,z: number,dx: number,dz: number)=>{for(let i=0;i<3;i++){const cx=x+dx*i,cz=z+dz*i;
     if(L.g[cz]&&"#WI".indexOf(L.g[cz][cx])<0)hm[cz][cx]=Math.min(hm[cz][cx],i*0.55);}};
   rmp(12,7,0,1);rmp(20,7,0,1);rmp(12,17,0,-1);rmp(20,17,0,-1);
   L.hmap=hm;

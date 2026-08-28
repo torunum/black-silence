@@ -27,10 +27,10 @@ export function texFromPx(px: string[], pal: Record<string, string>, opts?: TexO
   const g=c.getContext("2d");
   if(opts.mirror){g.translate(w*S,0);g.scale(-1,1);}
   const masks=opts.masks||(opts.blankTop?[[0,0,w,opts.blankTop]]:null);
-  const inMask=(x,y)=>{if(!masks)return false;
+  const inMask=(x: number,y: number)=>{if(!masks)return false;
     for(const m of masks)if(x>=m[0]&&x<m[2]&&y>=m[1]&&y<m[3])return true;return false;};
-  const at=(x,y)=>{if(y<0||y>=h||x<0||x>=px[y].length)return " ";const k=px[y][x];return (k===" "||inMask(x,y))?" ":k;};
-  const lit=(hex,f)=>{if(!hex||hex[0]!=="#"||hex.length<7)return hex;
+  const at=(x: number,y: number)=>{if(y<0||y>=h||x<0||x>=px[y].length)return " ";const k=px[y][x];return (k===" "||inMask(x,y))?" ":k;};
+  const lit=(hex: string,f: number)=>{if(!hex||hex[0]!=="#"||hex.length<7)return hex;
     let r=parseInt(hex.slice(1,3),16),gg=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
     r=Math.max(0,Math.min(255,r+f));gg=Math.max(0,Math.min(255,gg+f));b=Math.max(0,Math.min(255,b+f));
     return "rgb("+r+","+gg+","+b+")";};
@@ -91,8 +91,8 @@ export function buildSprites(): void {
     const lArm=[[0,armTop,Math.ceil(W*0.32),armBot]];
     const rArm=[[Math.floor(W*0.68),armTop,W,armBot]];
     const legM=[[0,H-3,W,H]];
-    const mk=(masks,stumps?)=>masks?texFromPx(d.px,d.pal,{masks,stumps:stumps!==false}):null;
-    const mkM=(masks,stumps?)=>masks?texFromPx(d.px,d.pal,{masks,stumps:stumps!==false,mirror:true}):null;
+    const mk=(masks: number[][] | null,stumps?: boolean)=>masks?texFromPx(d.px,d.pal,{masks,stumps:stumps!==false}):null;
+    const mkM=(masks: number[][] | null,stumps?: boolean)=>masks?texFromPx(d.px,d.pal,{masks,stumps:stumps!==false,mirror:true}):null;
     PX[k]={a:texFromPx(d.px,d.pal),b:texFromPx(d.px,d.pal,{mirror:true}),
       hl:texFromPx(d.px,d.pal,{blankTop:head}),
       hlb:texFromPx(d.px,d.pal,{blankTop:head,mirror:true}),head:head,

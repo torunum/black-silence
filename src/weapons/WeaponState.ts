@@ -102,7 +102,7 @@ interface KickEnemy {
   flungT?: number;
 }
 
-export function requestSwitch(i){
+export function requestSwitch(i: number){
   if(!game.started||!S.weapons[i]||i===S.cur||weaponRuntime.pending===i)return;
   weaponRuntime.pending=i;input.zoomOn=false;
   if(weaponRuntime.wstate!=="unequip"){weaponRuntime.wstate="unequip";weaponRuntime.wtime=0;click(.12);}}
@@ -112,7 +112,7 @@ export function startReload(){
   if(weaponRuntime.wstate!=="idle"&&weaponRuntime.wstate!=="fire")return;
   if(S.mag[S.cur]>=w.magSize||S.ammo[w.ammo]<=0)return;
   weaponRuntime.wstate="reload";weaponRuntime.wtime=0;weaponRuntime.reloadFlags={};}
-export function weaponTick(dt){
+export function weaponTick(dt: number){
   weaponRuntime.wtime+=dt;weaponRuntime.wCool-=dt;
   const w=WEAPONS[S.cur];
   if(weaponRuntime.wstate==="unequip"&&weaponRuntime.wtime>=UNEQUIP_T){
@@ -152,7 +152,7 @@ export function weaponTick(dt){
   if(S.kickCd>0){S.kickCd-=dt;
     if(S.kickCd<=0){say("kickready");click(.12);}}
   weaponRuntime.kickAnim=Math.max(0,weaponRuntime.kickAnim-dt);}
-export function fire(w){
+export function fire(w: typeof WEAPONS[number]){
   S.mag[S.cur]--;weaponRuntime.wCool=w.rate;weaponRuntime.wstate="fire";weaponRuntime.wtime=0;
   S.shots++;
   weaponRuntime.kickAmt=w.kick;weaponRuntime.kickRot=(Math.random()-.5)*w.kick*.25;

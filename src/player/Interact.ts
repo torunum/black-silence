@@ -105,7 +105,7 @@ export function interact(){
       else if(d.locked)showMsg("THE GATE ACCEPTS THE KEY",2.4);
       return;}
     if(solidAt(wx_,wz_))return;}}
-export function itemsTick(dt){
+export function itemsTick(dt: number){
   for(const it of world.items as unknown as Item[]){
     if(it.taken)continue;
     it.bob+=dt*2.4;it.sp.position.y=.5+Math.sin(it.bob)*.07;
@@ -137,17 +137,17 @@ export function itemsTick(dt){
   /* free SMG after enough kills if not yet found */
   if(!S.weapons[3]&&S.totKills>=8){S.weapons[3]=true;S.mag[3]=36;
     showMsg("SCRAP SMG ASSEMBLED FROM THE DEAD",3);blip(330,.12,"square",.08);}}
-export function doorTick(dt){for(const k in world.doors){const d=world.doors[k] as unknown as Door;
+export function doorTick(dt: number){for(const k in world.doors){const d=world.doors[k] as unknown as Door;
   if(d.open&&d.mesh.position.y>-WALLH/2+.1)d.mesh.position.y-=dt*2.6;}}
-export function propTick(dt){for(const p of world.props as unknown as Prop[]){
+export function propTick(dt: number){for(const p of world.props as unknown as Prop[]){
   if(p.dead||p.fuse<0)continue;
   p.fuse-=dt;if(p.fuse<=0)explodeBarrel(p);}}
-export function torchTick(dt,t){
+export function torchTick(dt: number,t: number){
   for(const tc of world.torches as unknown as Torch[]){
     const n=Math.sin(t*.011+tc.seed*7)*Math.sin(t*.017+tc.seed*3);
     tc.L.intensity=1.6+n*.45+Math.random()*.18;
     if(Math.random()<.06){tc.fr=1-tc.fr;
-      tc.sp.material.map=ITEMTEX.torch[tc.fr] as THREE.CanvasTexture;tc.sp.material.needsUpdate=true;}
+      tc.sp.material.map=(ITEMTEX.torch as THREE.CanvasTexture[])[tc.fr];tc.sp.material.needsUpdate=true;}
     if(Math.random()<.04)emberP(tc.x+rnd(-.1,.1),1.4,tc.z+rnd(-.1,.1));}
   for(const c of world.candles as unknown as Candle[]){
     c.sp.material.opacity=.8+Math.sin(t*.02+c.seed*9)*.2;}}

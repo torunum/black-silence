@@ -24,7 +24,22 @@
  *     valid JavaScript anywhere except a TS return-type position, so this
  *     can never collide with an object-literal or ternary colon.
  *
- *  3. An optional-parameter marker: an identifier immediately followed by
+ *  3. An arrow function's parameter-list type annotations — e.g.
+ *     `(masks: number[][] | null,stumps?: boolean)=>...` back to
+ *     `(masks,stumps?)=>...`. Structural, not a blind `: Type` regex: it
+ *     only looks inside a parenthesized group that has no nested parens of
+ *     its own AND is immediately followed by `=>` (`\(([^()]*)\)(?=\s*=>)`),
+ *     so it can never match `{masks,stumps:stumps!==false}` two lines later
+ *     in this exact body — that's a `{}` object literal, not a `()` group,
+ *     and is never captured by the outer pattern at all. Within the
+ *     captured parameter list only, each `name` / `name?` immediately
+ *     followed by `: Type` loses the `: Type`, leaving the optional marker
+ *     (if any) for transform 4 below to strip. Added when Plan 0F Task 8
+ *     (`noImplicitAny`) annotated `buildSprites`' own `mk`/`mkM` helpers —
+ *     see that task's brief for why the fix belongs here and not in the
+ *     source.
+ *
+ *  4. An optional-parameter marker: an identifier immediately followed by
  *     `?` immediately followed by `,` or `)` — e.g. `stumps?)`. This is
  *     safe ONLY because in this codebase's source every ternary has a full
  *     expression on its "then" branch (`masks?texFromPx(...):null` — here
@@ -34,7 +49,7 @@
  *     parameter marker. Verified against the current file with
  *     `grep -noE '.\?.' src/enemies/SpriteBaker.ts` before relying on this.
  *
- *  4. A non-null assertion `!`: immediately after a word character, `)` or
+ *  5. A non-null assertion `!`: immediately after a word character, `)` or
  *     `]`, and NOT immediately followed by `=` (which would make it the
  *     real operators `!=`/`!==` — e.g. `stumps!==false` in buildSprites
  *     must NOT be touched, and is not, because its `!` is followed by `=`).
@@ -42,22 +57,14 @@
  *     it is always preceded by `(` or the start of an expression, never a
  *     word character — verified against the current file with
  *     `grep -noE '![^=]' src/enemies/SpriteBaker.ts`.
- *
- * Explicitly NOT handled: a parameter-level type annotation inside an
- * inline arrow function embedded in a data-heavy body, e.g. rewriting
- * `(masks,stumps?)=>...` to `(masks: number[][], stumps?: boolean)=>...`.
- * That `:` cannot be told apart from an object-literal shorthand colon
- * (`{masks,stumps:stumps!==false}` appears two lines later in this exact
- * body) without real parsing. If a future edit adds such an annotation
- * inside texFromPx's or buildSprites' body, the normalized comparison will
- * start failing — that is the intended outcome. Extend this normalizer
- * deliberately with a structural (bracket-depth-aware) pass at that point,
- * do not add a blind `: Type` regex.
  */
 export function normalizeTsSource(src: string): string {
   let out = src;
   out = out.replace(/\bexport\s+(function|const|let|var|class|interface|type|default)\b/g, "$1");
   out = out.replace(/\)\s*:\s*[A-Za-z_$][\w$.<>[\],\s|]*?\s*(?=\{|=>)/g, ")");
+  out = out.replace(/\(([^()]*)\)(?=\s*=>)/g, (_all, params: string) =>
+    "(" + params.replace(/([A-Za-z_$][\w$]*)(\??)\s*:\s*[A-Za-z_$][\w$.<>[\]]*(?:\s*\|\s*[A-Za-z_$][\w$.<>[\]]*)*\s*(?=[,)]|$)/g, "$1$2") + ")",
+  );
   out = out.replace(/(\w)\?(?=[,)])/g, "$1");
   // TypeScript `as` casts are deliberately NOT normalized here: a
   // text-level regex for `as Type` cannot distinguish code from string

@@ -49,7 +49,7 @@ interface CollProp {
 /** Player collision radius. Read only by collides(); moves with it. */
 const R=.35;
 
-export function solidAt(wx,wz){
+export function solidAt(wx: number,wz: number){
   const gx=wx/CELL|0,gz=wz/CELL|0;
   const row=world.grid[gz];if(!row)return true;
   const ch=row[gx];if(ch===undefined)return true;
@@ -81,13 +81,13 @@ export function segsCrossRay(ax: number, az: number, bx: number, bz: number): bo
 
 /* per-cell floor height (0 = base). Lets us build raised galleries,
    balconies and sunken courtyards you can look/shoot down into. */
-export function floorHeightAt(wx,wz){
+export function floorHeightAt(wx: number,wz: number){
   if(!world.heightMap)return 0;
   const gx=wx/CELL|0,gz=wz/CELL|0;
   const row=world.heightMap[gz];if(!row)return 0;
   return row[gx]||0;}
 
-export function wallNormal(x,z,dir){
+export function wallNormal(x: number,z: number,dir: { x: number; z: number }){
   if(!solidAt(x-dir.x*.13,z))return{x:-Math.sign(dir.x),z:0};
   if(!solidAt(x,z-dir.z*.13))return{x:0,z:-Math.sign(dir.z)};
   return{x:-dir.x,z:-dir.z};}

@@ -1,3 +1,4 @@
+import * as THREE from "three";
 import { rnd } from "../utils/math";
 import { after } from "../core/Timers";
 import { player } from "../player/PlayerState";
@@ -50,15 +51,19 @@ import { ctx } from "../core/Context";
  * exclude `.ts` — and Plan 0F Task 1 restored it once the gate was fixed.
  * See `Damage.ts`'s doc comment for the full account.
  *
- * The enemy parameters these five functions take are left untyped, the
+ * The enemy parameters these five functions take are typed `unknown` and
+ * cast at the point of use to the local `BossBrainEnemy` shape below, the
  * same convention `src/enemies/Damage.ts`/`Death.ts` established for that
  * dynamic, not-yet-settled object (see `src/world/WorldState.ts`'s own doc
- * comment). `cineTick` is the one exception: `world.cine` needs a cast to
- * do arithmetic on its fields, so it is read once into a locally typed
- * `cine` alias right after the existing null guard — the same object,
- * just typed — and every read in the function goes through that alias;
- * the final `world.cine=null;` still writes the real field directly, since
- * `cine` is a `const` and cannot be reassigned.
+ * comment) — `wakeBoss`/`priestThink` are each called with differently-shaped
+ * casts from `src/enemies/ai/Behaviors.ts`'s own `Enemy`, so `unknown` is the
+ * honest boundary type. `roarFor` never reads its parameter at all, so it
+ * stays `unknown` with no cast. `cineTick` is the one exception: `world.cine`
+ * needs a cast to do arithmetic on its fields, so it is read once into a
+ * locally typed `cine` alias right after the existing null guard — the same
+ * object, just typed — and every read in the function goes through that
+ * alias; the final `world.cine=null;` still writes the real field directly,
+ * since `cine` is a `const` and cannot be reassigned.
  *
  * `style.opacity` takes strings here where the reference assigns numbers,
  * the same adjustment `src/ui/HudMessages.ts`, `src/ui/Toasts.ts` and
@@ -68,7 +73,40 @@ import { ctx } from "../core/Context";
 
 interface Cine { t: number; dur: number; e: { x: number; z: number; h: number; key: string }; }
 
-export function wakeBoss(e){
+/** world.enemies elements, cast for wakeBoss/priestTeleport/priestThink — the boss brain. */
+interface BossBrainEnemy {
+  x: number;
+  z: number;
+  key: string;
+  name: string;
+  title?: string;
+  dormant?: boolean;
+  priest?: boolean;
+  phase: number;
+  hp: number;
+  maxhp: number;
+  formKey?: string;
+  sp: THREE.Sprite;
+  blob: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial>;
+  w: number;
+  h: number;
+  sovereign?: boolean;
+  speed: number;
+  mel: number;
+  tpT: number;
+  atkT: number;
+  sumT: number;
+  ringT: number;
+  debT: number;
+  cool: number;
+  fy?: number;
+  animT: number;
+  frame: number;
+  atkAnim: number;
+}
+
+export function wakeBoss(enemy: unknown){
+  const e=enemy as BossBrainEnemy;
   if(!e.dormant)return;
   e.dormant=false;
   world.cine={t:0,dur:2.7,e};
@@ -84,9 +122,9 @@ export function wakeBoss(e){
 
 ctx.wakeBoss=wakeBoss;
 
-export function roarFor(e){growl(rnd(42,60),1.0,.6,true);after(()=>growl(rnd(50,70),.6,.4,true),200);}
+export function roarFor(e: unknown){growl(rnd(42,60),1.0,.6,true);after(()=>growl(rnd(50,70),.6,.4,true),200);}
 
-export function cineTick(dt){
+export function cineTick(dt: number){
   if(!world.cine)return;
   const cine=world.cine as unknown as Cine;
   cine.t+=dt;
@@ -105,7 +143,8 @@ export function cineTick(dt){
     startBossMusic();
     world.cine=null;}}
 
-export function priestTeleport(e,far){
+export function priestTeleport(enemy: unknown,far: boolean){
+  const e=enemy as BossBrainEnemy;
   smoke3d(e.x,1.2,e.z,16);blip(700,.25,"sine",.1,140,true);
   for(let tries=0;tries<24;tries++){
     const a=rnd(0,6.28),d=far?rnd(7,11):rnd(4,7);
@@ -114,7 +153,8 @@ export function priestTeleport(e,far){
   smoke3d(e.x,1.2,e.z,16);fireP(e.x,1,e.z,6);
   blip(140,.25,"sine",.12,700,true);}
 
-export function priestThink(e,dt,dist,dx,dz){
+export function priestThink(enemy: unknown,dt: number,dist: number,dx: number,dz: number){
+  const e=enemy as BossBrainEnemy;
   /* phase transitions */
   if(e.phase===1&&e.hp<e.maxhp*.66){e.phase=2;
     say("boss_"+e.key+"2",true);roarFor(e);shake(.3);screenShake.hitStop=Math.max(screenShake.hitStop,.06);

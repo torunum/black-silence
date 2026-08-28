@@ -68,10 +68,10 @@ import { schedule } from "../../core/Time";
  * interfaces use for the same two constructors (`addSprite`/`addBlob`).
  * Every function this file calls with an `Enemy`-typed argument
  * (`moveEnemy`, `fireOrb`, `throwFlesh`, `damageEnemy`, `wakeBoss`,
- * `priestThink`) takes an untyped (implicit-`any`) enemy parameter itself,
- * the same convention `src/enemies/Damage.ts`/`Death.ts`/`Boss.ts`
- * established for that dynamic, not-yet-settled object, so no further cast
- * is needed at any call site.
+ * `priestThink`) takes an `unknown` enemy parameter itself and casts at the
+ * point of use, the same convention `src/enemies/Damage.ts`/`Death.ts`/
+ * `Boss.ts` established for that dynamic, not-yet-settled object — `Enemy`
+ * is assignable to `unknown` with no cast needed at any of these call sites.
  */
 
 interface Enemy {
@@ -143,7 +143,7 @@ interface Enemy {
   flyH?: number;
 }
 
-export function enemyTick(dt){
+export function enemyTick(dt: number){
   let anyAware=false;
   for(const e of world.enemies as unknown as Enemy[]){
     if(e.gone)continue;

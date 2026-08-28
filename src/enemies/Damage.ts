@@ -1,3 +1,4 @@
+import * as THREE from "three";
 import { clamp, rnd } from "../utils/math";
 import { PX } from "./SpriteBaker";
 import { bang } from "../audio/Sfx";
@@ -7,7 +8,7 @@ import { sparks, blood } from "../fx/Particles";
 import { spawnGibs, spawnGibChunk } from "../fx/Gibs";
 import { addPool } from "../fx/Decals";
 import { player } from "../player/PlayerState";
-import { killEnemy } from "./Death";
+import { killEnemy, type DamageInfo } from "./Death";
 import { ctx } from "../core/Context";
 
 /**
@@ -59,9 +60,46 @@ import { ctx } from "../core/Context";
  * (`--extensions ts,js`) confirms those three edges close no cycle.
  * `damageEnemy` is a plain export. This file still imports the locator, for
  * `wakeBoss` and nothing else.
+ *
+ * `damageEnemy`/`refreshSeverSprite`/`severLimb`'s own `e` parameter is
+ * loosely typed too: `damageEnemy` is called from four different files
+ * (`ai/Behaviors.ts`, `weapons/Hitscan.ts`, `weapons/WeaponState.ts`,
+ * `world/Props.ts`), each casting `world.enemies` elements through its own
+ * minimal local interface, so its real shape varies by caller. It takes
+ * `unknown` and casts once, at the top, to the local `DamageEnemy` shape
+ * below — the same convention `src/enemies/Death.ts`/`Boss.ts` follow —
+ * rather than forcing every caller's minimal interface to grow fields it
+ * never otherwise reads. `refreshSeverSprite`/`severLimb` are only ever
+ * called from here with that same already-cast value, so they take
+ * `DamageEnemy` directly.
  */
 
-export function damageEnemy(e, dmg, info) {
+/** world.enemies elements, cast for damageEnemy's hit resolution and severLimb's dismemberment. */
+interface DamageEnemy {
+  dead?: boolean;
+  shield?: boolean;
+  x: number;
+  z: number;
+  h: number;
+  plate: number;
+  sp: THREE.Sprite;
+  hp: number;
+  hurt: number;
+  pain: number;
+  kbRes?: number;
+  kx: number;
+  kz: number;
+  stun: number;
+  slow: number;
+  boss?: boolean;
+  dormant?: boolean;
+  key: string;
+  sever?: { lArm?: boolean; rArm?: boolean; legs?: boolean };
+  severKey?: string;
+}
+
+export function damageEnemy(enemy: unknown, dmg: number, info?: DamageInfo) {
+  const e=enemy as DamageEnemy;
   info=info||{};
   if(e.dead)return;
   /* Hexen Centaur/Slaughtaur shield — blocks most frontal fire */
@@ -105,9 +143,9 @@ export function damageEnemy(e, dmg, info) {
   if(e.hp<=0)killEnemy(e,dmg,info);}
 
 /* pick the right dismembered texture for the enemy's current sever state */
-export function refreshSeverSprite(e) {
+export function refreshSeverSprite(e: DamageEnemy) {
   const P=PX[e.key],s=e.sever||{};
-  let key=null;
+  let key: "noLegs" | "noLArm" | "noRArm" | "gibbed" | null = null;
   if(s.legs)key="noLegs";
   if(s.lArm)key="noLArm";
   if(s.rArm)key="noRArm";
@@ -117,7 +155,7 @@ export function refreshSeverSprite(e) {
   e.sp.material.map=P[key]||P.a;e.sp.material.needsUpdate=true;}
 
 /* spawn a flying chunk for a torn-off limb + a wet sound */
-export function severLimb(e, type, info) {
+export function severLimb(e: DamageEnemy, type: string, info?: DamageInfo) {
   const y=type==="legs"?e.h*.25:e.h*.55;
   const n=type==="legs"?5:4;
   spawnGibs(e.x,y,e.z,n,3.2);

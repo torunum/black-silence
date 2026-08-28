@@ -253,7 +253,7 @@ export function loadLevel(idx: number): void {
       const pole=new THREE.Mesh(track(new THREE.CylinderGeometry(.06,.09,1.15,6)),
         track(new THREE.MeshLambertMaterial({color:0x1a160f})));
       pole.position.set(wx,.575,wz);renderState.scene.add(pole);
-      const fl=addSprite(ITEMTEX.torch[0] as THREE.CanvasTexture,wx,wz,.45,.6,1.35);
+      const fl=addSprite((ITEMTEX.torch as THREE.CanvasTexture[])[0],wx,wz,.45,.6,1.35);
       const Lt=track(new THREE.PointLight(0xff9838,1.6,10,1.8));
       Lt.position.set(wx,1.45,wz);renderState.scene.add(Lt);
       world.torches.push({L:Lt,sp:fl,x:wx,z:wz,seed:Math.random()*99,fr:0});}

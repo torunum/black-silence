@@ -27,16 +27,30 @@ import { world } from "../../world/WorldState";
  * `Perception.ts`: it is locomotion, not perception, and misnaming it would
  * cost more than one extra file does.
  *
- * The enemy parameter (`e`) is left untyped, matching the convention
+ * The enemy parameter (`e`) is typed `unknown` and cast at the point of use
+ * to the local `MoveEnemy` shape below, matching the convention
  * `src/enemies/Damage.ts`/`Death.ts` established for the same dynamic,
- * not-yet-settled object (see `src/world/WorldState.ts`'s own doc comment).
- * `world.props`'s elements need a cast to do arithmetic/pass them to
- * `explodeBarrel`/`breakProp`; reusing `Props.ts`'s exported `Prop` (its own
- * doc comment invites exactly this, and `src/player/Interact.ts` already
- * does the same) avoids inventing a second ad hoc prop shape.
+ * not-yet-settled object (see `src/world/WorldState.ts`'s own doc comment) —
+ * `moveEnemy` is called with differently-shaped casts from `Behaviors.ts`'s
+ * `Enemy` and `Boss.ts`'s own local interface, so `unknown` is the honest
+ * boundary type; `MoveEnemy` only needs the handful of fields this file's
+ * own code reads. `world.props`'s elements need a cast to do arithmetic/pass
+ * them to `explodeBarrel`/`breakProp`; reusing `Props.ts`'s exported `Prop`
+ * (its own doc comment invites exactly this, and `src/player/Interact.ts`
+ * already does the same) avoids inventing a second ad hoc prop shape.
  */
 
-export function moveEnemy(e, sx, sz, spd, dt) {
+/** world.enemies elements, cast for moveEnemy's collision-step/smash check. */
+interface MoveEnemy {
+  boss?: boolean;
+  key: string;
+  x: number;
+  z: number;
+  r: number;
+}
+
+export function moveEnemy(enemy: unknown, sx: number, sz: number, spd: number, dt: number) {
+  const e=enemy as MoveEnemy;
   const smash=e.boss||e.key==="B";
   const nx=e.x+sx*spd*dt,nz=e.z+sz*spd*dt,rr=e.r;
   for(const p of world.props as unknown as Prop[]){if(p.dead||p.kind==="piano")continue;

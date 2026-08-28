@@ -47,8 +47,8 @@ export function pxCanvas(rows: PixelFrame, pal: Record<string, string>): HTMLCan
   const w=rows[0].length,h=rows.length,S=3;        // 3x supersample for detail
   const c=document.createElement("canvas");c.width=w*S;c.height=h*S;
   const g=c.getContext("2d");
-  const at=(x,y)=>{if(y<0||y>=h||x<0||x>=rows[y].length)return " ";return rows[y][x]||" ";};
-  const lit=(hex,f)=>{ // shift a hex color lighter(+)/darker(-)
+  const at=(x: number,y: number)=>{if(y<0||y>=h||x<0||x>=rows[y].length)return " ";return rows[y][x]||" ";};
+  const lit=(hex: string,f: number)=>{ // shift a hex color lighter(+)/darker(-)
     if(!hex||hex[0]!=="#"||hex.length<7)return hex;
     let r=parseInt(hex.slice(1,3),16),gg=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
     r=Math.max(0,Math.min(255,r+f));gg=Math.max(0,Math.min(255,gg+f));b=Math.max(0,Math.min(255,b+f));

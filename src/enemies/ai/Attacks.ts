@@ -42,18 +42,35 @@ import { track } from "../../render/DisposeRegistry";
  * convention `src/world/Props.ts`/`src/enemies/Death.ts` established.
  * `world.props`'s elements reuse `Props.ts`'s exported `Prop` instead of a
  * third ad hoc prop shape, matching `src/enemies/ai/Locomotion.ts`. The
- * enemy parameter (`e`) `fireOrb`/`throwFlesh` take is left untyped, the
- * same convention `src/enemies/Damage.ts`/`Death.ts` established for that
- * dynamic, not-yet-settled object.
+ * enemy parameter (`e`) `fireOrb`/`throwFlesh` take is typed `unknown` and
+ * cast at the point of use to the local `AttackEnemy` shape below, the same
+ * convention `src/enemies/Damage.ts`/`Death.ts` established for that dynamic,
+ * not-yet-settled object — both functions are called with differently-shaped
+ * casts from `Behaviors.ts`'s `Enemy` and `Boss.ts`'s own local interface.
  */
 
 interface Ring { m: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial>; x: number; z: number; r: number; hitDone: boolean; }
 interface Strike { x: number; z: number; t: number; warn: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial>; }
 interface PoisonZone { x: number; z: number; r: number; t: number; }
 
+/** world.enemies elements, cast for fireOrb/throwFlesh's ranged-attack spawns. */
+interface AttackEnemy {
+  x: number;
+  z: number;
+  h: number;
+  hp: number;
+  atkAnim: number;
+  orb?: string;
+  stone?: boolean;
+  fly?: boolean;
+  flyH?: number;
+  fy?: number;
+}
+
 const orbGeo=new THREE.SphereGeometry(.16,6,6);
 
-export function fireOrb(e,spreadA,tox?){
+export function fireOrb(enemy: unknown,spreadA: number,tox?: boolean){
+  const e=enemy as AttackEnemy;
   e.atkAnim=.22;
   const dx=player.px-e.x,dz=player.pz-e.z,dist=Math.hypot(dx,dz);
   const a=Math.atan2(dx,dz)+spreadA;
@@ -76,7 +93,8 @@ export function fireOrb(e,spreadA,tox?){
     vy:((player.pyy-.2)-oy)/(dist/spd),dmg,life:3.2,tox,col});
   renderState.scene.add(m);
   blip(tox?420:ot==="manc"?180:300,.2,"sawtooth",.08,90);}
-export function throwFlesh(e){
+export function throwFlesh(enemy: unknown){
+  const e=enemy as AttackEnemy;
   const dx=player.px-e.x,dz=player.pz-e.z,dist=Math.hypot(dx,dz);
   const a=Math.atan2(dx,dz)+rnd(-.05,.05);
   const oy=e.fly?(e.flyH||1.5):e.h*.55+(e.fy||0);
@@ -91,12 +109,12 @@ export function throwFlesh(e){
   gurgle(.22,.32);growl(150,.22,.22);}
 /* expanding shockwave ring — jump to dodge */
 const ringMatBase=new THREE.MeshBasicMaterial({color:0x9a4ae0,transparent:true,opacity:.6,side:THREE.DoubleSide});
-export function spawnRing(x,z){
+export function spawnRing(x: number,z: number){
   const m=new THREE.Mesh(track(new THREE.RingGeometry(.1,.45,28)),track(ringMatBase.clone()));
   m.rotation.x=-Math.PI/2;m.position.set(x,.06,z);renderState.scene.add(m);
   world.rings.push({m,x,z,r:.3,hitDone:false});
   bang(.3,.5,250);blip(60,.5,"sawtooth",.16,30,true);shake(.2);}
-export function ringTick(dt){
+export function ringTick(dt: number){
   for(let i=world.rings.length-1;i>=0;i--){const r=world.rings[i] as unknown as Ring;
     r.r+=6.5*dt;
     r.m.scale.set(r.r/.3,r.r/.3,1);
@@ -120,7 +138,7 @@ export function spawnStrike(){
     world.strikes.push({x,z,t:.85,warn});
     blip(1200,.4,"sine",.05,300);
     return;}}
-export function strikeTick(dt){
+export function strikeTick(dt: number){
   for(let i=world.strikes.length-1;i>=0;i--){const s=world.strikes[i] as unknown as Strike;
     s.t-=dt;
     s.warn.material.opacity=.4+Math.sin(performance.now()*.02)*.3;
@@ -133,7 +151,7 @@ export function strikeTick(dt){
       for(const p of world.props as unknown as Prop[]){if(!p.dead&&Math.hypot(p.x-s.x,p.z-s.z)<1.3)
         p.explosive?explodeBarrel(p):breakProp(p);}
       world.strikes.splice(i,1);}}}
-export function poisonTick(dt){
+export function poisonTick(dt: number){
   for(let i=world.poisonZones.length-1;i>=0;i--){const zn=world.poisonZones[i] as unknown as PoisonZone;
     zn.t-=dt;
     if(Math.random()<.5)toxicP(zn.x+rnd(-zn.r,zn.r)*.7,.2,zn.z+rnd(-zn.r,zn.r)*.7,1);

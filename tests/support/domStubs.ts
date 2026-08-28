@@ -42,10 +42,10 @@ function make2dContext(): Record<string, unknown> {
     fillStyle: "#000", strokeStyle: "#000", lineWidth: 1, globalAlpha: 1,
     createLinearGradient: () => ({ addColorStop: noop }),
     createRadialGradient: () => ({ addColorStop: noop }),
-    createPattern: () => null,
+    createPattern: (): null => null,
     getImageData: () => ({ data: new Uint8ClampedArray(4) }),
     measureText: () => ({ width: 0 }),
-    getLineDash: () => [],
+    getLineDash: (): number[] => [],
   };
   return new Proxy(base, {
     get(target, prop) {
@@ -80,7 +80,7 @@ function makeGlContext(): unknown {
   const ACTIVE_UNIFORMS = 0x8b86, ACTIVE_ATTRIBUTES = 0x8b89;
   const base: Record<string, unknown> = {
     VERSION, ACTIVE_UNIFORMS, ACTIVE_ATTRIBUTES,
-    getExtension: () => null,
+    getExtension: (): null => null,
     getParameter: (pname: unknown) => (pname === VERSION ? "WebGL 1.0 (Stub)" : 0),
     getShaderPrecisionFormat: () => ({ precision: 1, rangeMin: 1, rangeMax: 1 }),
     getContextAttributes: () => ({}),
@@ -144,7 +144,7 @@ export function installDomStubs(): void {
     createBiquadFilter() { return { type: "", frequency: param(), Q: param(), gain: param(), detune: param(), connect() {}, disconnect() {} }; }
     createOscillator() { return { type: "", frequency: param(), detune: param(), connect() {}, disconnect() {}, start() {}, stop() {} }; }
     createBuffer() { return { getChannelData: () => new Float32Array(1) }; }
-    createBufferSource() { return { buffer: null, playbackRate: param(1), detune: param(), connect() {}, disconnect() {}, start() {}, stop() {} }; }
+    createBufferSource() { return { buffer: null as null, playbackRate: param(1), detune: param(), connect() {}, disconnect() {}, start() {}, stop() {} }; }
     createStereoPanner() { return { pan: param(), connect() {}, disconnect() {} }; }
   };
 

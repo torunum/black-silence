@@ -18,7 +18,7 @@ import { loadLevel } from "../world/LevelLoader";
  * Passed to `src/ui/Menus.ts`'s `initMenus` as a parameter rather than
  * imported there directly, so that module never has to reach into this one.
  */
-export function startGame(idx){
+export function startGame(idx: number){
   if(game.started)return;
   document.getElementById("intro").classList.add("hidden");
   document.getElementById("chapsel").classList.add("hidden");

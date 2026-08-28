@@ -59,7 +59,7 @@ import { hud } from "../ui/Hud";
  * it first would let a scheduled callback (e.g. the power-kick hit test)
  * observe stale enemy/player positions a full frame early instead.
  */
-function loop(t){
+function loop(t: number){
   requestAnimationFrame(loop);
   let dt=Math.min(.05,(t-game.last)/1000);game.last=t;
   time.dt=dt;

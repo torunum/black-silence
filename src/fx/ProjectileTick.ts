@@ -71,7 +71,7 @@ interface Enemy {
   h: number;
 }
 
-export function projTick(dt){
+export function projTick(dt: number){
   const nails=projectiles.nails as unknown as Nail[];
   for(let i=nails.length-1;i>=0;i--){const n=nails[i];
     n.life-=dt;
