@@ -26,6 +26,7 @@ import { weaponRuntime } from "../weapons/WeaponRuntime";
 import { EYE, CELL } from "../world/Grid";
 import { solidAt } from "../world/Collision";
 import { world } from "../world/WorldState";
+import { track } from "../render/DisposeRegistry";
 
 /**
  * Enemy death — kill resolution (gib/decapitate/plain), severed heads,
@@ -162,7 +163,7 @@ export function killEnemy(e, finalDmg, info) {
 /* a severed head: a small sprite that arcs off the body, lands, and can be kicked */
 export function spawnHead(e, info) {
   const tex=PX[e.key].a;
-  const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true}));
+  const sp=new THREE.Sprite(track(new THREE.SpriteMaterial({map:tex,transparent:true})));
   const sz=Math.max(.34,e.w*.34);
   sp.scale.set(sz,sz,1);
   sp.position.set(e.x,e.h*.92,e.z);
@@ -242,8 +243,8 @@ export function openExit() {
     const wx=(cx+.5)*CELL,wz=(cz+.5)*CELL;
     if(!solidAt(wx,wz)){gx=cx;gz=cz;break;}}
   world.exitPos={x:(gx+.5)*CELL,z:(gz+.5)*CELL};
-  const pad=new THREE.Mesh(new THREE.BoxGeometry(CELL*1.3,.06,CELL*1.3),
-    new THREE.MeshBasicMaterial({color:0x4a6b8a}));
+  const pad=new THREE.Mesh(track(new THREE.BoxGeometry(CELL*1.3,.06,CELL*1.3)),
+    track(new THREE.MeshBasicMaterial({color:0x4a6b8a})));
   pad.position.set((world.exitPos as unknown as ExitPos).x,.03,(world.exitPos as unknown as ExitPos).z);renderState.scene.add(pad);
-  const gl=new THREE.PointLight(0x4a6b8a,1.1,8);gl.position.set((world.exitPos as unknown as ExitPos).x,1,(world.exitPos as unknown as ExitPos).z);renderState.scene.add(gl);
+  const gl=track(new THREE.PointLight(0x4a6b8a,1.1,8));gl.position.set((world.exitPos as unknown as ExitPos).x,1,(world.exitPos as unknown as ExitPos).z);renderState.scene.add(gl);
   blip(120,.7,"sine",.09,90,true);growl(70,.4,.2,true);}

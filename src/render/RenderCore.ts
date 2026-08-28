@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { renderState } from "./Renderer";
+import { track } from "./DisposeRegistry";
 
 /**
  * RENDER CORE — the camera and WebGL renderer construction, the
@@ -59,13 +60,20 @@ const blobTexC=document.createElement("canvas");blobTexC.width=blobTexC.height=3
 const blobTex=new THREE.CanvasTexture(blobTexC);
 
 export function addSprite(tex: THREE.Texture, wx: number, wz: number, sw: number, sh: number, y?: number): THREE.Sprite {
-  const m=new THREE.SpriteMaterial({map:tex,transparent:true});
+  // `tex` is always a shared, boot-time-baked texture (PX/ITEMTEX) passed in
+  // by the caller — never owned or disposed here. The SpriteMaterial wrapping
+  // it is created fresh on every call (one per enemy/item/torch/candle, every
+  // level), so it is tracked for loadLevel's disposeAll().
+  const m=track(new THREE.SpriteMaterial({map:tex,transparent:true}));
   const sp=new THREE.Sprite(m);sp.scale.set(sw,sh,1);
   sp.position.set(wx,y!==undefined?y:sh/2,wz);renderState.scene.add(sp);return sp;
 }
 
 export function addBlob(wx: number, wz: number, s: number): THREE.Mesh {
-  const m=new THREE.Mesh(new THREE.PlaneGeometry(s,s),
-    new THREE.MeshBasicMaterial({map:blobTex,transparent:true,depthWrite:false}));
+  // blobTex (above) is the one shared, module-scope texture every blob
+  // reuses — never tracked. The geometry/material pair built for each blob
+  // mesh is per-instance (one per enemy/barrel, every level) and tracked.
+  const m=new THREE.Mesh(track(new THREE.PlaneGeometry(s,s)),
+    track(new THREE.MeshBasicMaterial({map:blobTex,transparent:true,depthWrite:false})));
   m.rotation.x=-Math.PI/2;m.position.set(wx,.012,wz);renderState.scene.add(m);return m;
 }

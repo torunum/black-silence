@@ -21,6 +21,7 @@ import { damageEnemy } from "../enemies/Damage";
 import { after } from "../core/Timers";
 import { hitscan } from "./Hitscan";
 import { schedule } from "../core/Time";
+import { track } from "../render/DisposeRegistry";
 
 /**
  * The weapon FSM's *behavior* — the functions that read input and time and
@@ -175,8 +176,8 @@ export function fire(w){
       hitscan(d,w.dmg,S.cur);
       // green energy bolt + glow tracer
       const grp=new THREE.Group();
-      const core=new THREE.Mesh(new THREE.SphereGeometry(.22,8,8),reapCoreMat);
-      const tail=new THREE.Mesh(new THREE.BoxGeometry(.12,.12,.7),reapTailMat);
+      const core=new THREE.Mesh(track(new THREE.SphereGeometry(.22,8,8)),reapCoreMat);
+      const tail=new THREE.Mesh(track(new THREE.BoxGeometry(.12,.12,.7)),reapTailMat);
       tail.position.z=-.35;grp.add(core);grp.add(tail);
       grp.position.copy(renderState.camera.position);
       projectiles.nails.push({m:grp,vx:d.x*30,vy:d.y*30,vz:d.z*30,dmg:0,life:1.2,reap:true,spin:0});
@@ -184,8 +185,8 @@ export function fire(w){
       renderState.muzzleLight.color.setHex(0x7fe05a);renderState.muzzleLight.intensity=2.4;}
     else if(w.kind==="cross"){
       const grp=new THREE.Group();
-      const m1=new THREE.Mesh(new THREE.BoxGeometry(.09,.5,.09),crossMat);
-      const m2=new THREE.Mesh(new THREE.BoxGeometry(.3,.09,.09),crossMat);
+      const m1=new THREE.Mesh(track(new THREE.BoxGeometry(.09,.5,.09)),crossMat);
+      const m2=new THREE.Mesh(track(new THREE.BoxGeometry(.3,.09,.09)),crossMat);
       m2.position.y=.1;grp.add(m1);grp.add(m2);
       grp.position.copy(renderState.camera.position);grp.position.y-=.1;
       projectiles.nails.push({m:grp,vx:d.x*22,vy:d.y*22,vz:d.z*22,dmg:w.dmg,life:3,cross:true,

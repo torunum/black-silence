@@ -13,6 +13,7 @@ import { solidAt } from "../../world/Collision";
 import { EYE, WALLH } from "../../world/Grid";
 import { explodeBarrel, breakProp, type Prop } from "../../world/Props";
 import { world } from "../../world/WorldState";
+import { track } from "../../render/DisposeRegistry";
 
 /**
  * Attacks — every ranged/area attack the AI section throws at the player:
@@ -67,7 +68,7 @@ export function fireOrb(e,spreadA,tox?){
   else if(ot==="afrit"){col=0xff7020;dmg=13;spd=10;}     // Afrit fireball
   else if(ot==="reiver"){col=0x9fd048;dmg=15;spd=12;}    // Reiver green bolt
   else if(ot==="garg"){col=0x5ab0e0;dmg=14;spd=11;}      // Gargoyle blue energy (Cheogh)
-  const mat=new THREE.MeshBasicMaterial({color:col});
+  const mat=track(new THREE.MeshBasicMaterial({color:col}));
   const oy=e.fly?(e.flyH||1.5):e.h*.6+(e.fy||0);
   const m=new THREE.Mesh(orbGeo,mat);m.position.set(e.x,oy,e.z);
   if(ot==="manc")m.scale.setScalar(1.6);
@@ -79,7 +80,7 @@ export function throwFlesh(e){
   const dx=player.px-e.x,dz=player.pz-e.z,dist=Math.hypot(dx,dz);
   const a=Math.atan2(dx,dz)+rnd(-.05,.05);
   const oy=e.fly?(e.flyH||1.5):e.h*.55+(e.fy||0);
-  const m=new THREE.Mesh(gibGeo,gibMatsFlesh[0].clone());
+  const m=new THREE.Mesh(gibGeo,track(gibMatsFlesh[0].clone()));
   m.position.set(e.x,oy,e.z);m.scale.setScalar(1.9);
   const spd=10;
   projectiles.orbs.push({m,vx:Math.sin(a)*spd,vz:Math.cos(a)*spd,
@@ -91,7 +92,7 @@ export function throwFlesh(e){
 /* expanding shockwave ring — jump to dodge */
 const ringMatBase=new THREE.MeshBasicMaterial({color:0x9a4ae0,transparent:true,opacity:.6,side:THREE.DoubleSide});
 export function spawnRing(x,z){
-  const m=new THREE.Mesh(new THREE.RingGeometry(.1,.45,28),ringMatBase.clone());
+  const m=new THREE.Mesh(track(new THREE.RingGeometry(.1,.45,28)),track(ringMatBase.clone()));
   m.rotation.x=-Math.PI/2;m.position.set(x,.06,z);renderState.scene.add(m);
   world.rings.push({m,x,z,r:.3,hitDone:false});
   bang(.3,.5,250);blip(60,.5,"sawtooth",.16,30,true);shake(.2);}
@@ -113,8 +114,8 @@ export function spawnStrike(){
     const a=rnd(0,6.28),d=rnd(1,5.5);
     const x=player.px+Math.sin(a)*d,z=player.pz+Math.cos(a)*d;
     if(solidAt(x,z))continue;
-    const warn=new THREE.Mesh(new THREE.CircleGeometry(1,10),
-      new THREE.MeshBasicMaterial({color:0x150a1e,transparent:true,opacity:.7}));
+    const warn=new THREE.Mesh(track(new THREE.CircleGeometry(1,10)),
+      track(new THREE.MeshBasicMaterial({color:0x150a1e,transparent:true,opacity:.7})));
     warn.rotation.x=-Math.PI/2;warn.position.set(x,.025,z);renderState.scene.add(warn);
     world.strikes.push({x,z,t:.85,warn});
     blip(1200,.4,"sine",.05,300);
