@@ -776,7 +776,15 @@ git commit -am "types: make the audio graph null-safe under strictNullChecks"
 
 **Files:** `tsconfig.json` plus the remainder.
 
-Roughly 131 errors after Tasks 8-9, dominated by `document.getElementById(...)` returning `HTMLElement | null` and by `renderState.scene` being nullable between levels.
+**171** errors after Tasks 8-9 — and the plan's original guess at their shape was wrong. Measured at `7ae8cc6`, they fall into three root causes, not one:
+
+| Cause | Count | What it is |
+|---|---|---|
+| `renderState.*` | 66 | `scene` 23, `camera` 17, `boomLight` 10, `renderer` 7, `muzzleLight` 6, `ambLight` 3 — all nullable in `src/render/Renderer.ts` because they do not exist until boot and level load |
+| DOM lookups | ~42 | reported as bare `TS2531 Object is possibly 'null'` without naming the expression, which is why a grep for `getElementById` in the error text returns zero |
+| canvas contexts | 22 | `'g' is possibly null` in `src/enemies/SpriteBaker.ts` — `getContext("2d")` returns `CanvasRenderingContext2D \| null` |
+
+The `renderState` group is the largest and was not anticipated at all. It is the same shape as Task 9's audio accessors — state that is genuinely null until initialised, read by code that already runs only after initialisation — so it takes the same kind of boundary fix, not 66 local guards.
 
 - [ ] **Step 1: The DOM lookups**
 
