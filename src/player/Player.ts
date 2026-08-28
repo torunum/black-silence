@@ -11,6 +11,7 @@ import { endLevel } from "../ui/LevelEnd";
 import { screenBlood } from "../render/Overlay2D";
 import { addSprite } from "../render/RenderCore";
 import { renderState } from "../render/Renderer";
+import { el } from "../ui/dom";
 import { ITEMTEX } from "../render/ItemTextures";
 import { ACHIEVEMENTS } from "../content/achievements";
 import { keys, input } from "./Input";
@@ -87,8 +88,8 @@ function damagePlayer(d: number, silent?: boolean): void {
   if(S.hp<=0){S.hp=0;S.dead=true;
     stopBossMusic();
     document.exitPointerLock();
-    document.getElementById("deadquip").textContent='ADEM: “'+pick(M.dead)+'”';
-    document.getElementById("dead").classList.remove("hidden");}}
+    el("deadquip").textContent='ADEM: “'+pick(M.dead)+'”';
+    el("dead").classList.remove("hidden");}}
 
 function accelerate(wx_: number, wz_: number, maxs: number, acc: number, dt: number): void {
   const cur=player.vx*wx_+player.vz*wz_,add=maxs-cur;if(add<=0)return;

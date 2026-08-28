@@ -25,6 +25,7 @@ export function texFromPx(px: string[], pal: Record<string, string>, opts?: TexO
   const w=px[0].length,h=px.length,S=3;
   const c=document.createElement("canvas");c.width=w*S;c.height=h*S;
   const g=c.getContext("2d");
+  if(!g)throw new Error("2d context unavailable");
   if(opts.mirror){g.translate(w*S,0);g.scale(-1,1);}
   const masks=opts.masks||(opts.blankTop?[[0,0,w,opts.blankTop]]:null);
   const inMask=(x: number,y: number)=>{if(!masks)return false;
@@ -98,12 +99,12 @@ export function buildSprites(): void {
       hlb:texFromPx(d.px,d.pal,{blankTop:head,mirror:true}),head:head,
       // dismemberment frames
       noHead: headM?mk(headM):null,    noHeadB: headM?mkM(headM):null,
-      noLArm: mk(lArm),                noLArmB: mkM(lArm),
-      noRArm: mk(rArm),                noRArmB: mkM(rArm),
-      noLegs: mk(legM),               noLegsB: mkM(legM),
+      noLArm: mk(lArm)!,                noLArmB: mkM(lArm)!,
+      noRArm: mk(rArm)!,                noRArmB: mkM(rArm)!,
+      noLegs: mk(legM)!,               noLegsB: mkM(legM)!,
       // fully gibbed combos for overkill
-      gibbed: headM?mk([headM[0],lArm[0],rArm[0]]):mk([lArm[0],rArm[0]]),
-      gibbedB: headM?mkM([headM[0],lArm[0],rArm[0]]):mkM([lArm[0],rArm[0]]),
+      gibbed: headM?mk([headM[0],lArm[0],rArm[0]])!:mk([lArm[0],rArm[0]])!,
+      gibbedB: headM?mkM([headM[0],lArm[0],rArm[0]])!:mkM([lArm[0],rArm[0]])!,
       // attack pose + death collapse frames (only for redesigned enemies that define them)
       atk: d.atk?texFromPx(d.atk,d.pal):null,
       die1: d.die1?texFromPx(d.die1,d.pal):null,

@@ -95,7 +95,7 @@ export function projTick(dt: number){
   const orbs=projectiles.orbs as unknown as Orb[];
   for(let i=orbs.length-1;i>=0;i--){const o=orbs[i];
     o.life-=dt;
-    if(o.flesh){o.vy-=11*dt;o.m.rotation.x+=o.spin*dt;o.m.rotation.z+=o.spin*.7*dt;}
+    if(o.flesh){o.vy-=11*dt;o.m.rotation.x+=o.spin!*dt;o.m.rotation.z+=o.spin!*.7*dt;}
     o.m.position.x+=o.vx*dt;o.m.position.y+=o.vy*dt;o.m.position.z+=o.vz*dt;
     if(o.flesh){
       if(Math.random()<.7)blood(o.m.position.x,o.m.position.y,o.m.position.z,1,.6);

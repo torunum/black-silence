@@ -1,6 +1,7 @@
 import { blip } from "../audio/Sfx";
 import { after } from "../core/Timers";
 import type { Achievement } from "../content/achievements";
+import { el } from "./dom";
 
 /**
  * The achievement toast — the card that slides in at the top-right and
@@ -33,7 +34,7 @@ export function ach(a: Achievement, unlocked: Record<string, UnlockedAchievement
   if (unlocked[a.id]) return; unlocked[a.id] = { title: a.title, desc: a.desc };
   const t = document.createElement("div"); t.className = "toast";
   t.innerHTML = "✦ " + a.title + "<small>" + a.desc + "</small>";
-  document.getElementById("toasts").appendChild(t);
+  el("toasts").appendChild(t);
   requestAnimationFrame(() => t.style.opacity = "1");
   blip(160, .5, "sine", .05, 120, true);
   after(() => { t.style.opacity = "0"; after(() => t.remove(), 500); }, 4200);

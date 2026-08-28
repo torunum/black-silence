@@ -22,6 +22,7 @@ import { los } from "./ai/Perception";
 import { moveEnemy } from "./ai/Locomotion";
 import { fireOrb, spawnRing, spawnStrike } from "./ai/Attacks";
 import { ctx } from "../core/Context";
+import { el } from "../ui/dom";
 
 /**
  * Boss — the three bosses' brains: waking, the wake-up cinematic, the
@@ -111,10 +112,10 @@ export function wakeBoss(enemy: unknown){
   e.dormant=false;
   world.cine={t:0,dur:2.7,e};
   game.inputLock=true;input.firing=false;
-  document.getElementById("barTop").style.height="11%";
-  document.getElementById("barBot").style.height="11%";
-  const bt=document.getElementById("bossTitle");
-  bt.children[0].textContent=e.name;bt.children[1].textContent=e.title||EDEF[e.key].title;
+  el("barTop").style.height="11%";
+  el("barBot").style.height="11%";
+  const bt=el("bossTitle");
+  bt.children[0].textContent=e.name;bt.children[1].textContent=(e.title||EDEF[e.key].title)!;
   bt.style.opacity="1";
   blip(40,1.6,"sawtooth",.2,30,true);bang(.5,.4,300);
   if(e.priest)organChord();
@@ -135,9 +136,9 @@ export function cineTick(dt: number){
   const want=Math.atan2(b.h*.7-player.pyy,Math.hypot(b.x-player.px,b.z-player.pz));
   input.pitch=input.pitch+(want-input.pitch)*Math.min(1,dt*4);
   if(cine.t>=cine.dur){
-    document.getElementById("barTop").style.height="0";
-    document.getElementById("barBot").style.height="0";
-    document.getElementById("bossTitle").style.opacity="0";
+    el("barTop").style.height="0";
+    el("barBot").style.height="0";
+    el("bossTitle").style.opacity="0";
     game.inputLock=false;
     say("boss_"+cine.e.key,true);
     startBossMusic();

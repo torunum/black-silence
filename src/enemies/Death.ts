@@ -184,7 +184,7 @@ export function killEnemy(enemy: unknown, finalDmg: number, info: DamageInfo) {
   alertSound(e.x,e.z,10);
   if(e.toxic){world.poisonZones.push({x:e.x,z:e.z,r:1.8,t:4.5});}
   if(e.boss){bossDeath(e);return;}
-  const overkill=info.explosive||(-e.hp>22)||(info.wIdx===1&&info.dist<4.5);
+  const overkill=info.explosive||(-e.hp>22)||(info.wIdx===1&&typeof info.dist==="number"&&info.dist<4.5);
   if(overkill){
     S.gibs++;S.totGibs++;
     e.gone=true;renderState.scene.remove(e.sp);renderState.scene.remove(e.blob);

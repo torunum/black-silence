@@ -11,6 +11,7 @@ import { input } from "../player/Input";
 import { world } from "../world/WorldState";
 import { renderState } from "../render/Renderer";
 import { after } from "../core/Timers";
+import { el } from "./dom";
 import type * as THREE from "three";
 
 /**
@@ -42,7 +43,7 @@ const KEYMAP: Record<string, number> = {
 };
 
 export function buildPiano(): void {
-  const wrap = document.getElementById("pkeys");
+  const wrap = el("pkeys");
   WHITE.forEach(([midi, label]) => {
     const k = document.createElement("div"); k.className = "wk";
     k.innerHTML = "<span>" + label + "</span>";
@@ -77,12 +78,12 @@ export function pressKey(midi: number): void {
 export function pianoKeyDown(code: string): void { const m = KEYMAP[code]; if (m) pressKey(m); }
 export function openPiano(): void {
   game.pianoOpen = true; input.firing = false;
-  document.getElementById("piano").style.display = "flex";
+  el("piano").style.display = "flex";
   document.exitPointerLock();
   say("piano", true);
 }
 export function closePiano(): void {
   game.pianoOpen = false;
-  document.getElementById("piano").style.display = "none";
+  el("piano").style.display = "none";
   renderState.renderer.domElement.requestPointerLock();
 }

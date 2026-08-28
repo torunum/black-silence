@@ -121,7 +121,11 @@ export function drawViewmodel(dt: number, tNow: number, v: ViewmodelFrame, weapo
   let rdy=0;
   if(rT>=0){ // reload dip/bob
     rdy=Math.sin(clamp(rT,0,1)*Math.PI)*42;}
-  const cv=frameFor(v.cur,rT,v.wstate,v.wtime,weapons);
+  // frameFor is only null when WPX has no entry for v.cur, which never
+  // happens: buildWeaponSprites() populates all 8 slots at boot and v.cur
+  // never leaves that range — see frameFor's own null branch for the one
+  // real case (an unbuilt slot) this asserts past.
+  const cv=frameFor(v.cur,rT,v.wstate,v.wtime,weapons)!;
   const pw=cv.width,ph=cv.height;
   /* upscale: a bit smaller so it doesn't dominate the screen */
   const targetH=VH*0.42;

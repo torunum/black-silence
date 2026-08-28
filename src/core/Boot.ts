@@ -1,6 +1,7 @@
 import { game } from "./Game";
 import { S } from "./State";
 import { renderState } from "../render/Renderer";
+import { el } from "../ui/dom";
 import { audioInit } from "../audio/AudioEngine";
 import { buildTextures } from "../render/ProcTextures";
 import { buildSprites } from "../enemies/SpriteBaker";
@@ -20,9 +21,9 @@ import { loadLevel } from "../world/LevelLoader";
  */
 export function startGame(idx: number){
   if(game.started)return;
-  document.getElementById("intro").classList.add("hidden");
-  document.getElementById("chapsel").classList.add("hidden");
-  document.getElementById("settings").classList.add("hidden");
+  el("intro").classList.add("hidden");
+  el("chapsel").classList.add("hidden");
+  el("settings").classList.add("hidden");
   game.started=true;
   audioInit();
   buildTextures();buildSprites();buildItemTex();buildWeaponSprites();buildPiano();

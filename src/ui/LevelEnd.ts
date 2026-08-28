@@ -6,6 +6,7 @@ import { stopBossMusic } from "../audio/Ambient";
 import { ach } from "./Toasts";
 import { ACHIEVEMENTS } from "../content/achievements";
 import { renderState } from "../render/Renderer";
+import { el } from "./dom";
 
 /**
  * Level end, the win screen, and the two scoring helpers they both call.
@@ -49,20 +50,20 @@ export function endLevel(): void {
   if(S.won)return;S.won=true;
   save.maxLevel=Math.max(save.maxLevel,Math.min(S.level+1,LEVELS.length-1));
   stopBossMusic();document.exitPointerLock();
-  document.getElementById("legrade").textContent=gradeOf();
-  document.getElementById("lestats").innerHTML=statsHtml();
+  el("legrade").textContent=gradeOf();
+  el("lestats").innerHTML=statsHtml();
   const nextName=LEVELS[S.level+1]?LEVELS[S.level+1].name.replace(/^LEVEL \d+ — /,""):"";
-  document.getElementById("lebtn").textContent="[ DESCEND TO "+nextName+" ]";
-  document.getElementById("levelend").classList.remove("hidden");}
-document.getElementById("lebtn").addEventListener("click",()=>{
-  document.getElementById("levelend").classList.add("hidden");
+  el("lebtn").textContent="[ DESCEND TO "+nextName+" ]";
+  el("levelend").classList.remove("hidden");}
+el("lebtn").addEventListener("click",()=>{
+  el("levelend").classList.add("hidden");
   S.won=false;
   loadLevel(S.level+1);
   renderState.renderer.domElement.requestPointerLock();});
 export function showWin(): void {
   if(S.dead)return;S.won=true;
   stopBossMusic();document.exitPointerLock();
-  document.getElementById("wingrade").textContent=gradeOf();
-  document.getElementById("winstats").innerHTML=statsHtml()+
+  el("wingrade").textContent=gradeOf();
+  el("winstats").innerHTML=statsHtml()+
     `<br>ACHIEVEMENTS <b>${Object.keys(S.ach).length}</b> · TOTAL KILLS <b>${S.totKills}</b>`;
-  document.getElementById("win").classList.remove("hidden");}
+  el("win").classList.remove("hidden");}

@@ -1,4 +1,5 @@
 import { clamp } from "../utils/math";
+import { el } from "../ui/dom";
 
 /**
  * Keyboard, mouse look, pointer lock and the mouse wheel — everything the
@@ -128,7 +129,7 @@ addEventListener("contextmenu", e => e.preventDefault());
 
 /** True while any of the three full-screen overlays — level end, win, death — or the piano is up. */
 export function overlayOpen(): boolean {
-  return !document.getElementById("levelend").classList.contains("hidden") ||
-    !document.getElementById("win").classList.contains("hidden") ||
-    !document.getElementById("dead").classList.contains("hidden") || (hooks ? hooks.isPianoOpen() : false);
+  return !el("levelend").classList.contains("hidden") ||
+    !el("win").classList.contains("hidden") ||
+    !el("dead").classList.contains("hidden") || (hooks ? hooks.isPianoOpen() : false);
 }

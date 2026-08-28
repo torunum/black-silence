@@ -93,5 +93,5 @@ export function explodeBarrel(b: Prop): void {
       e.kx+=(e.x-b.x)/f*9;e.kz+=(e.z-b.z)/f*9;
       damageEnemy(e,70*(1-dd/5),{explosive:true,dir:{x:(e.x-b.x)/f,z:(e.z-b.z)/f}});}}
   for(const o of world.props as unknown as Prop[]){if(!o.dead&&o!==b&&Math.hypot(o.x-b.x,o.z-b.z)<4){
-    if(o.explosive&&o.fuse<0)o.fuse=rnd(.15,.4);else breakProp(o);}}
+    if(o.explosive&&o.fuse!<0)o.fuse=rnd(.15,.4);else breakProp(o);}}
   alertSound(b.x,b.z,22);}

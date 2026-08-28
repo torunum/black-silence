@@ -2,6 +2,7 @@ import { S } from "../core/State";
 import { world } from "../world/WorldState";
 import { weaponRuntime } from "../weapons/WeaponRuntime";
 import { WEAPONS } from "../weapons/WeaponState";
+import { el, q } from "./dom";
 
 /**
  * The per-frame HUD painter — health, armour, ammo, weapon name, the key
@@ -24,14 +25,13 @@ import { WEAPONS } from "../weapons/WeaponState";
  * behavior of its own beyond what `hud` already computes each frame, so it
  * stays here.
  *
- * `document.querySelector`/`getElementById` results are read here without
- * a null check, matching every other UI module moved so far —
- * `strictNullChecks` is off until Plan 0F Task 9. `#hp .num`/`#ar .num`'s
- * `.textContent` assignments take `String(...)` where the reference
- * assigns numbers directly; `Node.textContent`'s DOM type is `string |
- * null`, and a plain `HTMLElement` stringifies a number identically, the
- * same reasoning `src/ui/HudMessages.ts`'s `flashDmg`/`flashHoly` already
- * used for `style.opacity`.
+ * `document.querySelector`/`getElementById` results are read here through
+ * `src/ui/dom.ts`'s `q()`/`el()` (Plan 0F Task 10) rather than bare —
+ * `#hp .num`/`#ar .num`'s `.textContent` assignments take `String(...)`
+ * where the reference assigns numbers directly; `Node.textContent`'s DOM
+ * type is `string | null`, and a plain `HTMLElement` stringifies a number
+ * identically, the same reasoning `src/ui/HudMessages.ts`'s
+ * `flashDmg`/`flashHoly` already used for `style.opacity`.
  */
 
 /** world.enemies elements, cast for hud's boss-bar lookup. */
@@ -47,23 +47,23 @@ interface BossEnemy {
 }
 
 export function hud(): void {
-  document.querySelector("#hp .num").textContent=String(Math.max(0,Math.ceil(S.hp)));
-  document.querySelector("#ar .num").textContent=String(Math.ceil(S.armor));
+  q("#hp .num").textContent=String(Math.max(0,Math.ceil(S.hp)));
+  q("#ar .num").textContent=String(Math.ceil(S.armor));
   const w=WEAPONS[S.cur];
-  document.querySelector("#am .num").innerHTML=
+  q("#am .num").innerHTML=
     S.mag[S.cur]+'<span class="sub2"> | '+S.ammo[w.ammo]+"</span>";
-  document.getElementById("wname").textContent=
+  el("wname").textContent=
     w.name+(weaponRuntime.wstate==="reload"?" — RELOADING":"");
-  document.getElementById("keys").textContent=S.key?"■ RED KEY":"";
-  const kw=document.getElementById("kickwrap");
-  document.getElementById("kickfill").style.width=(100*(1-S.kickCd/15))+"%";
-  document.getElementById("kicklabel").textContent=
+  el("keys").textContent=S.key?"■ RED KEY":"";
+  const kw=el("kickwrap");
+  el("kickfill").style.width=(100*(1-S.kickCd/15))+"%";
+  el("kicklabel").textContent=
     S.kickCd>0?("KICK "+Math.ceil(S.kickCd)+"s"):"KICK [RMB]";
   kw.classList.toggle("ready",S.kickCd<=0);
   const boss=world.enemies&&(world.enemies as unknown as BossEnemy[]).find(e=>e.boss&&!e.dead&&!e.dormant);
-  const bb=document.getElementById("bossbar");
+  const bb=el("bossbar");
   if(boss&&!world.cine){bb.style.display="block";
-    document.getElementById("bossname").textContent=
+    el("bossname").textContent=
       boss.name+(boss.priest?" — PHASE "+boss.phase:"");
-    document.getElementById("bossfill").style.width=(100*boss.hp/boss.maxhp)+"%";}
+    el("bossfill").style.width=(100*boss.hp/boss.maxhp)+"%";}
   else bb.style.display="none";}

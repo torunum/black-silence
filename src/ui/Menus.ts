@@ -1,6 +1,7 @@
 import { save } from "../save/SaveGame";
 import { LEVELS } from "../world/levels/index";
 import { getMasterVolume, setMasterVolume } from "../audio/AudioEngine";
+import { el } from "./dom";
 
 /**
  * The menu screens — new game, chapter select, settings — and the wiring
@@ -32,15 +33,15 @@ import { getMasterVolume, setMasterVolume } from "../audio/AudioEngine";
  */
 function showScreen(id: string): void {
   ["intro","chapsel","settings"].forEach(s=>
-    document.getElementById(s).classList.toggle("hidden",s!==id));}
+    el(s).classList.toggle("hidden",s!==id));}
 
 export function initMenus(startGame: (idx: number) => void): void {
-  document.getElementById("mNew").addEventListener("click",()=>{save.maxLevel=0;startGame(0);});
-  document.getElementById("mSettings").addEventListener("click",()=>showScreen("settings"));
-  document.getElementById("setBack").addEventListener("click",()=>showScreen("intro"));
-  document.getElementById("chapBack").addEventListener("click",()=>showScreen("intro"));
-  document.getElementById("mChapter").addEventListener("click",()=>{
-    const list=document.getElementById("chaplist");
+  el("mNew").addEventListener("click",()=>{save.maxLevel=0;startGame(0);});
+  el("mSettings").addEventListener("click",()=>showScreen("settings"));
+  el("setBack").addEventListener("click",()=>showScreen("intro"));
+  el("chapBack").addEventListener("click",()=>showScreen("intro"));
+  el("mChapter").addEventListener("click",()=>{
+    const list=el("chaplist");
     list.innerHTML="";
     LEVELS.forEach((lv,i)=>{
       const unlocked=i<=save.maxLevel;
@@ -54,7 +55,7 @@ export function initMenus(startGame: (idx: number) => void): void {
     showScreen("chapsel");});
   /* ---- settings: master volume ---- */
   (function(){
-    const sl=document.getElementById("volSlider") as HTMLInputElement,vv=document.getElementById("volVal");
+    const sl=document.getElementById("volSlider") as HTMLInputElement,vv=el("volVal");
     sl.value=Math.round(getMasterVolume()*100) as unknown as string;vv.textContent=sl.value;
     sl.addEventListener("input",()=>{
       setMasterVolume((sl.value as unknown as number)/100);vv.textContent=sl.value;});

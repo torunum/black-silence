@@ -45,15 +45,27 @@ describe("main.ts boot", () => {
     // tests/content/achievements.test.ts's call-site scan in Plan 0E Task 5.
     //
     // One call is NOT covered and that's intentional, not an oversight:
-    // `document.getElementById(s)` inside the menu-nav
-    // `["intro","chapsel","settings"].forEach(s=>...)` takes a loop variable,
-    // not a string literal, so the regex can't see it. All three ids it can
-    // resolve to are independently covered by other literal lookups.
+    // `el(s)` inside the menu-nav `["intro","chapsel","settings"].forEach(s=>...)`
+    // (`src/ui/Menus.ts`'s `showScreen`) takes a loop variable, not a string
+    // literal, so the regex can't see it. All three ids it can resolve to
+    // are independently covered by other literal lookups.
+    //
+    // Plan 0F Task 10 (`strict: true`) replaced most literal
+    // `document.getElementById("x")`/`document.querySelector("x")` calls
+    // with `el("x")`/`q("x")` — `src/ui/dom.ts`'s null-throwing wrappers —
+    // so this scan matches both call shapes: the bare DOM methods (still
+    // used at a few sites that immediately cast the result, e.g.
+    // `document.getElementById("game") as HTMLCanvasElement`) and el()/q().
+    // Recognizing only one shape would silently shrink coverage exactly
+    // the way scanning only legacy.js once did.
     const calls: Array<{ file: string; method: string; selector: string }> = [];
     for (const file of srcFiles(SRC_DIR)) {
       const src = readFileSync(file, "utf8");
       for (const m of src.matchAll(/\.(getElementById|querySelector)\("([^"]+)"\)/g)) {
         calls.push({ file, method: m[1], selector: m[2] });
+      }
+      for (const m of src.matchAll(/\b(el|q)\("([^"]+)"\)/g)) {
+        calls.push({ file, method: m[1] === "el" ? "getElementById" : "querySelector", selector: m[2] });
       }
     }
 

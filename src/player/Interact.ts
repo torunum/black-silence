@@ -140,8 +140,8 @@ export function itemsTick(dt: number){
 export function doorTick(dt: number){for(const k in world.doors){const d=world.doors[k] as unknown as Door;
   if(d.open&&d.mesh.position.y>-WALLH/2+.1)d.mesh.position.y-=dt*2.6;}}
 export function propTick(dt: number){for(const p of world.props as unknown as Prop[]){
-  if(p.dead||p.fuse<0)continue;
-  p.fuse-=dt;if(p.fuse<=0)explodeBarrel(p);}}
+  if(p.dead||p.fuse!<0)continue;
+  p.fuse!-=dt;if(p.fuse!<=0)explodeBarrel(p);}}
 export function torchTick(dt: number,t: number){
   for(const tc of world.torches as unknown as Torch[]){
     const n=Math.sin(t*.011+tc.seed*7)*Math.sin(t*.017+tc.seed*3);
