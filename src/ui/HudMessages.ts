@@ -1,3 +1,5 @@
+import { after } from "../core/Timers";
+
 /**
  * The centre-screen HUD line ("YOU NEED THE RED KEY", "SECRET FOUND") and
  * the two full-screen damage flashes.
@@ -35,10 +37,10 @@ export function tickMessage(dt: number): void {
 
 export function flashDmg(a: number): void {
   const d = document.getElementById("dmg"); d.style.opacity = String(a);
-  setTimeout(() => d.style.opacity = "0", 90);
+  after(() => d.style.opacity = "0", 90);
 }
 
 export function flashHoly(a: number): void {
   const d = document.getElementById("holy"); d.style.opacity = String(a);
-  setTimeout(() => d.style.opacity = "0", 80);
+  after(() => d.style.opacity = "0", 80);
 }

@@ -1,4 +1,5 @@
 import { blip } from "../audio/Sfx";
+import { after } from "../core/Timers";
 import type { Achievement } from "../content/achievements";
 
 /**
@@ -35,5 +36,5 @@ export function ach(a: Achievement, unlocked: Record<string, UnlockedAchievement
   document.getElementById("toasts").appendChild(t);
   requestAnimationFrame(() => t.style.opacity = "1");
   blip(160, .5, "sine", .05, 120, true);
-  setTimeout(() => { t.style.opacity = "0"; setTimeout(() => t.remove(), 500); }, 4200);
+  after(() => { t.style.opacity = "0"; after(() => t.remove(), 500); }, 4200);
 }

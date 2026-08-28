@@ -22,6 +22,8 @@ import { CELL, WALLH, EYE } from "./Grid";
 import { floorHeightAt } from "./Collision";
 import { world } from "./WorldState";
 import type { WallSeg } from "./LevelBuilder";
+import { after, clearAllTimers } from "../core/Timers";
+import { clearScheduled } from "../core/Time";
 
 /**
  * The level loader and its two spawners — `loadLevel` builds a level from
@@ -41,6 +43,16 @@ import type { WallSeg } from "./LevelBuilder";
  * `src/enemies/ai/Perception.ts`, ahead of Task 10's schedule, because
  * `explodeBarrel` (`src/world/Props.ts`) needs it and neither function
  * needed here calls it. See that file's doc comment.
+ *
+ * `loadLevel` calls `clearAllTimers()` (`src/core/Timers.ts`) and
+ * `clearScheduled()` (`src/core/Time.ts`) as its very first lines, before
+ * any new state is built (Plan 0F Task 6, KNOWN-3). The scene is replaced
+ * wholesale here, so anything still pending from the level being left
+ * behind — an audio tail, a UI fade, a scheduled boss attack — must not
+ * fire into the level that is about to exist. `LevelLoader.ts`'s own two
+ * timers (`lt`'s title fade, the level-name `say(...)`) are registered
+ * *after* this point, so they survive their own load, which is what makes
+ * the entry banner and subtitle work at all.
  *
  * `loadLevel` calls `setScene(renderState.scene)` to mirror the new scene
  * for the FX modules (`src/fx/Particles.ts`, `Decals.ts`, `Gibs.ts`), which
@@ -123,6 +135,7 @@ export function spawnProp(ch: string, wx: number, wz: number): void {
   (world.props as Record<string, unknown>[]).push({m,x:wx,z:wz,r,hgt,hp,dead:false,explosive,kind,fuse:-1});}
 
 export function loadLevel(idx: number): void {
+  clearAllTimers();clearScheduled();
   S.level=idx;
   const Ldef=LEVELS[idx],L=Ldef.build();
   world.grid=L.g;world.GW=L.W;world.GH=L.H;
@@ -266,6 +279,6 @@ export function loadLevel(idx: number): void {
   player.vx=player.vy=player.vz=0;player.pyy=EYE+floorHeightAt(player.px,player.pz);input.yaw=Math.PI;input.pitch=0;player.grounded=true;
   const lt=document.getElementById("lvltitle") as HTMLElement;
   lt.textContent=Ldef.name;lt.style.opacity="1";
-  setTimeout(()=>lt.style.opacity="0",5000);
+  after(()=>lt.style.opacity="0",5000);
   showMsg(Ldef.name,3.4);
-  setTimeout(()=>say("lvl"+idx,true),1400);}
+  after(()=>say("lvl"+idx,true),1400);}

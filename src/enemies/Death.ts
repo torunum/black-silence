@@ -4,6 +4,7 @@ import { PX } from "./SpriteBaker";
 import { alertSound } from "./ai/Perception";
 import { S } from "../core/State";
 import { showWin } from "../ui/LevelEnd";
+import { after } from "../core/Timers";
 import { renderState } from "../render/Renderer";
 import { addSprite } from "../render/RenderCore";
 import { ITEMTEX } from "../render/ItemTextures";
@@ -53,9 +54,16 @@ import { world } from "../world/WorldState";
  * `Player.ts`'s import graph reaches this file (confirmed with
  * `madge --circular src/`).
  *
- * `bossDeath` calls `showWin` (`setTimeout(()=>showWin(),2800);`), a direct
- * import from `src/ui/LevelEnd.ts` as of Plan 0F Task 2. Before that,
- * `showWin` stayed in `legacy.js` and this call routed through
+ * `bossDeath` calls `showWin` through `src/core/Timers.ts`'s
+ * `after(()=>showWin(),2800)`, a direct import from `src/ui/LevelEnd.ts` as
+ * of Plan 0F Task 2. Routing it through `after` (Task 6) is a deliberate
+ * behavior change, not just a mechanical swap: `loadLevel`'s
+ * `clearAllTimers()` now cancels this 2.8s win-screen delay if a level load
+ * happens inside that window, where a bare `setTimeout` would have shown
+ * the win screen over a level the player already moved on from. That is
+ * the exact bug class this task exists to kill, and a win and a level load
+ * can't both be honoured, so suppressing the stale win screen is correct.
+ * Before this, `showWin` stayed in `legacy.js` and this call routed through
  * `src/core/Context.ts`'s locator instead, registered the other way around
  * from `endLevel`/`damagePlayer`: `showWin` itself lived in `legacy.js`,
  * and this file (`Death.ts`) reached it through the locator. `Context.ts`
@@ -223,7 +231,7 @@ export function bossDeath(e) {
     openExit();}
   if(e.key==="G"){ach(ACHIEVEMENTS.heart,S.ach);
     showMsg("THE HEART STOPS — AND SO DOES EVERYTHING",4.5);
-    setTimeout(()=>showWin(),2800);}}
+    after(()=>showWin(),2800);}}
 
 export function openExit() {
   if(world.exitPos)return;

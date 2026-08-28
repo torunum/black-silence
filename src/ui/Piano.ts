@@ -10,6 +10,7 @@ import { game } from "../core/Game";
 import { input } from "../player/Input";
 import { world } from "../world/WorldState";
 import { renderState } from "../render/Renderer";
+import { after } from "../core/Timers";
 import type * as THREE from "three";
 
 /**
@@ -22,9 +23,9 @@ import type * as THREE from "three";
  *
  * Moved verbatim from `src/legacy.js`'s "PLAYABLE PIANO" section (formerly
  * lines 101-143; `reference/sonsurum.html`'s equivalent section). `pressKey`
- * still clears its key highlight with a bare `setTimeout(...,140)` — that is
- * a deliberately preserved UI fade, not gameplay; Plan 0F's Task 6 converts
- * it along with the game's other raw timers.
+ * clears its key highlight through `src/core/Timers.ts`'s `after(...,140)`
+ * as of Plan 0F Task 6 — a UI fade, not gameplay, so it stays wall-clock and
+ * is now cancelled on level load along with the game's other raw timers.
  */
 
 /** world.pianoPos's actual shape, set by LevelLoader.ts for the "p" tile. */
@@ -60,7 +61,7 @@ export function pressKey(midi: number): void {
   pianoNote(midi);
   S.pianoNotes++;
   const el = pianoState.keyEls[midi];
-  if (el) { el.classList.add("on"); setTimeout(() => el.classList.remove("on"), 140); }
+  if (el) { el.classList.add("on"); after(() => el.classList.remove("on"), 140); }
   pianoState.noteHist.push(midi); if (pianoState.noteHist.length > 8) pianoState.noteHist.shift();
   if (S.pianoNotes === 12) ach(ACHIEVEMENTS.pianist, S.ach);
   /* E D C D E E E — recital */

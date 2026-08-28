@@ -3,6 +3,7 @@ import { blip, bang } from "../audio/Sfx";
 import { rnd } from "../utils/math";
 import { ambienceState } from "./AmbienceState";
 import { S } from "../core/State";
+import { after } from "../core/Timers";
 
 /**
  * `src/world/AmbienceState.ts` (Plan 0D) is the *state* — the ambience/vitals
@@ -24,14 +25,14 @@ export function ambience(dt: number): void {
   ambienceState.ambT=rnd(8,18);
   const r=Math.random();
   if(r<.28)blip(rnd(480,720),1.4,"sine",.022,rnd(140,200),true);      // distant scream
-  else if(r<.5)for(let i=0;i<3;i++)setTimeout(()=>bang(.08,.05,400),i*rnd(120,260)); // machinery
-  else if(r<.72){bang(.3,.03,6000,1800);setTimeout(()=>bang(.15,.025,6000,1800),200);} // static
+  else if(r<.5)for(let i=0;i<3;i++)after(()=>bang(.08,.05,400),i*rnd(120,260)); // machinery
+  else if(r<.72){bang(.3,.03,6000,1800);after(()=>bang(.15,.025,6000,1800),200);} // static
   else blip(rnd(1200,2200),.08,"sine",.03,undefined,true);            // drip
 }
 export function vitalsAudio(dt: number): void {
   if(!ctx()||S.dead)return;
   if(S.hp<35){ambienceState.heartT-=dt;
     if(ambienceState.heartT<=0){ambienceState.heartT=S.hp<15?.55:.85;
-      blip(52,.1,"sine",.22,40);setTimeout(()=>blip(48,.12,"sine",.18,36),130);}}
+      blip(52,.1,"sine",.22,40);after(()=>blip(48,.12,"sine",.18,36),130);}}
   if(S.hp<50){ambienceState.breathT-=dt;
     if(ambienceState.breathT<=0){ambienceState.breathT=rnd(2.2,3);bang(.5,.04,900,300);}}}

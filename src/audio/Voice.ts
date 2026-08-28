@@ -1,5 +1,6 @@
 import { ctx, echoBus, masterBus } from "./AudioEngine";
 import { bang, blip } from "./Sfx";
+import { after } from "../core/Timers";
 
 /**
  * GUTTURAL MONSTER VOICES (Doom/Blood style, not chiptune) — built from
@@ -87,7 +88,7 @@ export function pain(base: number, vol?: number): void {
 export function deathCry(base: number): void {
   if(!ctx())return;
   growl(base,.5,.5,true);
-  setTimeout(()=>gurgle(.4,.4),180);}
+  after(()=>gurgle(.4,.4),180);}
 /* sighting snarl per enemy archetype */
 export function snarl(kind: string): void {
   if(!ctx())return;

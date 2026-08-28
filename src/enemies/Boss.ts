@@ -1,4 +1,5 @@
 import { rnd } from "../utils/math";
+import { after } from "../core/Timers";
 import { player } from "../player/PlayerState";
 import { damagePlayer } from "../player/Player";
 import { input } from "../player/Input";
@@ -79,11 +80,11 @@ export function wakeBoss(e){
   bt.style.opacity="1";
   blip(40,1.6,"sawtooth",.2,30,true);bang(.5,.4,300);
   if(e.priest)organChord();
-  setTimeout(()=>roarFor(e),500);}
+  after(()=>roarFor(e),500);}
 
 ctx.wakeBoss=wakeBoss;
 
-export function roarFor(e){growl(rnd(42,60),1.0,.6,true);setTimeout(()=>growl(rnd(50,70),.6,.4,true),200);}
+export function roarFor(e){growl(rnd(42,60),1.0,.6,true);after(()=>growl(rnd(50,70),.6,.4,true),200);}
 
 export function cineTick(dt){
   if(!world.cine)return;

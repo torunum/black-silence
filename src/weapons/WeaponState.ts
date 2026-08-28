@@ -18,6 +18,7 @@ import { input } from "../player/Input";
 import { breakProp, explodeBarrel, type Prop } from "../world/Props";
 import { alertSound } from "../enemies/ai/Perception";
 import { damageEnemy } from "../enemies/Damage";
+import { after } from "../core/Timers";
 import { hitscan } from "./Hitscan";
 import { schedule } from "../core/Time";
 
@@ -160,7 +161,7 @@ export function fire(w){
   renderState.muzzleLight.color.setHex(S.cur===5?0xfff0b0:0xffc878);
   w.snd();
   if(S.cur===2||S.cur===3)ejectCasing(0);
-  if(S.cur===1)setTimeout(()=>{ejectCasing(2);click(.12);},300); // pump
+  if(S.cur===1)after(()=>{ejectCasing(2);click(.12);},300); // pump
   weaponRuntime.recoilPitch+=(S.cur===1?.04:S.cur===4?.05:S.cur===0?.022:S.cur===5?.03:.006);
   alertSound(player.px,player.pz,18);
   const dir=new THREE.Vector3();renderState.camera.getWorldDirection(dir);

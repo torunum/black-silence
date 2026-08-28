@@ -1,6 +1,7 @@
 import { ctx, echoBus } from "./AudioEngine";
 import { bang, blip } from "./Sfx";
 import { gurgle, noiseBuf } from "./Voice";
+import { after } from "../core/Timers";
 
 /**
  * AMBIENT STINGERS — doors, bells, the piano and the boss music pulse.
@@ -48,7 +49,7 @@ export function wetDoor(): void {
   o.connect(bp);bp.connect(og);og.connect(out);o.start(t0);o.stop(t0+dur);
   out.gain.setValueAtTime(.0001,t0);out.gain.exponentialRampToValueAtTime(.5,t0+.06);
   out.gain.exponentialRampToValueAtTime(.0001,t0+dur);
-  setTimeout(()=>gurgle(.4,.35),260);}
+  after(()=>gurgle(.4,.35),260);}
 /* heavy stone/iron door — deep grind + low thud, no chiptune */
 export function stoneDoor(): void {
   if(!ctx())return;const t0=ctx().currentTime,dur=.9;

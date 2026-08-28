@@ -87,15 +87,19 @@ import { S } from "../../src/core/State";
  * *or* a correct run reaching a later frame) would not.
  *
  * `showWin` only fires from `bossDeath`'s `key==="G"` branch (THE LIVING
- * HEART, level 7, 3000 hp), inside a `setTimeout`. Playing a boss fight to
- * death in a test is disproportionate to what's being pinned here — the
- * registration, not the fight — so that test calls the real, exported
- * `bossDeath` directly with a minimal synthetic boss enemy (the same
- * technique `src/player/Player.ts`'s and `src/enemies/Death.ts`'s own local
+ * HEART, level 7, 3000 hp), inside `src/core/Timers.ts`'s `after` (a bare
+ * `setTimeout` before Plan 0F Task 6). Playing a boss fight to death in a
+ * test is disproportionate to what's being pinned here — the registration,
+ * not the fight — so that test calls the real, exported `bossDeath`
+ * directly with a minimal synthetic boss enemy (the same technique
+ * `src/player/Player.ts`'s and `src/enemies/Death.ts`'s own local
  * `TickEnemy`/`DeathEnemy` cast interfaces already use for "the few fields
  * this code path actually reads") and drains a fake clock instead of
  * waiting 2.8 real seconds. This still exercises the real
- * `setTimeout(()=>showWin(),2800)` line, not a stand-in for it.
+ * `after(()=>showWin(),2800)` line, not a stand-in for it — `installFakeClock`
+ * replaces `globalThis.setTimeout` before `bossDeath` runs, and `after`
+ * calls `setTimeout` dynamically rather than a captured reference, so it
+ * resolves to the fake one exactly as a bare `setTimeout` call would have.
  */
 
 /** The three DOM/state flags each target function's real body flips, and nothing else in this file does. */

@@ -38,5 +38,5 @@ export function tickScheduled(scaledDt: number): void {
   }
 }
 
-/** Drops every pending call unfired. Nothing calls this yet outside tests; Task 6's level-unload cleanup is a natural future caller. */
+/** Drops every pending call unfired. Called from `src/world/LevelLoader.ts`'s `loadLevel`, alongside `src/core/Timers.ts`'s `clearAllTimers`, so a scheduled effect from the level being left behind can't land in the next one (Plan 0F Task 6, KNOWN-3). */
 export function clearScheduled(): void { pending.length = 0; }
