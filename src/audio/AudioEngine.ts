@@ -97,7 +97,14 @@ export function audioInit(): void {
   // unlike ctx()/masterBus()/echoBus() above, `ac` cannot be reassigned, so
   // TypeScript carries its non-null type into the closure honestly.
   const ac=AC;
-  [[33,"sawtooth",.05],[49.5,"sine",.07],[24.7,"triangle",.06],[66,"sine",.025]].forEach(([f,t,g]:[number,OscillatorType,number])=>{
+  // Typed here, as a separate const, rather than an inline tuple annotation
+  // on the callback parameter: strictFunctionTypes (Plan 0F Task 10) checks
+  // an explicitly-annotated callback parameter contravariantly against
+  // forEach's own (wider, string|number[]-inferred) parameter type and
+  // rejects it. Annotating the array instead lets the callback's parameter
+  // type come from plain contextual inference, which needs no such check.
+  const drones: [number, OscillatorType, number][] = [[33,"sawtooth",.05],[49.5,"sine",.07],[24.7,"triangle",.06],[66,"sine",.025]];
+  drones.forEach(([f,t,g])=>{
     const o=ac.createOscillator();o.type=t;o.frequency.value=f;
     const og=ac.createGain();og.gain.value=g;
     const lfo=ac.createOscillator();lfo.frequency.value=.05+Math.random()*.07;

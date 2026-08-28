@@ -490,7 +490,21 @@ describe("AudioEngine/Sfx vs reference", () => {
  * local to this one oracle entry.
  */
 function stripPianoParamAnnotation(src: string): string {
-  return src.replace("([fr,t,v]:[number,OscillatorType,number])", "([fr,t,v])");
+  // Plan 0F Task 10 moved this annotation from the callback parameter onto
+  // the array literal. `strictFunctionTypes` checks an explicitly-annotated
+  // callback parameter *contravariantly* against forEach's own inferred
+  // (string|number)[] parameter and rejects the tuple; annotating the array
+  // instead lets the callback's type come from plain contextual inference,
+  // which needs no such check. Both forms are exact-string replacements
+  // targeting this one known body — not regexes — so `normalizeTsSource`'s
+  // warning about `as` casts (a regex cannot tell code from string content)
+  // does not apply here.
+  return src
+    .replace(
+      '([[f,"triangle",.12],[f*2,"sine",.04],[f*.5,"sine",.03]] as [number,OscillatorType,number][])',
+      '[[f,"triangle",.12],[f*2,"sine",.04],[f*.5,"sine",.03]]',
+    )
+    .replace("([fr,t,v]:[number,OscillatorType,number])", "([fr,t,v])");
 }
 
 describe("Voice/Ambient vs reference", () => {

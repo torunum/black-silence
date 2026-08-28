@@ -138,8 +138,13 @@ beforeAll(async () => {
   // makes this safe.
   ({ playerTick } = await import("../../src/player/Player"));
   ({ interact } = await import("../../src/player/Interact"));
-  ({ bossDeath } = await import("../../src/enemies/Death"));
-  ({ damageEnemy } = await import("../../src/enemies/Damage"));
+  // Not destructured directly: the real functions take a narrower parameter
+  // (bossDeath's KillEnemy, damageEnemy's DamageInfo) than this file's own
+  // deliberately loose `unknown` declarations above, and strictFunctionTypes
+  // (Plan 0F Task 10) checks that contravariantly. The cast is compile-time
+  // only — same functions, same call sites below.
+  bossDeath = (await import("../../src/enemies/Death")).bossDeath as unknown as (e: unknown) => void;
+  damageEnemy = (await import("../../src/enemies/Damage")).damageEnemy as unknown as (e: unknown, dmg: number, info?: unknown) => void;
 
   await import("../../src/main");
 

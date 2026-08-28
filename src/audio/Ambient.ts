@@ -72,7 +72,7 @@ export function organChord(): void {if(!ctx())return;
 export function pianoNote(midi: number): void {
   if(!ctx())return;
   const f=440*Math.pow(2,(midi-69)/12);
-  [[f,"triangle",.12],[f*2,"sine",.04],[f*.5,"sine",.03]].forEach(([fr,t,v]:[number,OscillatorType,number])=>{
+  ([[f,"triangle",.12],[f*2,"sine",.04],[f*.5,"sine",.03]] as [number,OscillatorType,number][]).forEach(([fr,t,v])=>{
     const o=ctx().createOscillator(),g=ctx().createGain();
     o.type=t;o.frequency.value=fr;
     g.gain.setValueAtTime(v,ctx().currentTime);
