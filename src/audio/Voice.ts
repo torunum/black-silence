@@ -48,7 +48,7 @@ export function growl(base: number, dur: number, vol?: number, echo?: boolean): 
   ns.connect(bp);bp.connect(ng);ng.connect(out);ns.start(t0);ns.stop(t0+dur);
   // vocal-cord tremolo
   const lfo=ctx().createOscillator();lfo.type="sine";lfo.frequency.value=22+Math.random()*18;
-  const lg=ctx().createGain();lg.gain.value=vol*.5||.25;lfo.connect(lg);lg.connect(out.gain);
+  const lg=ctx().createGain();lg.gain.value=(vol||0)*.5||.25;lfo.connect(lg);lg.connect(out.gain);
   lfo.start(t0);lfo.stop(t0+dur);
   // amplitude envelope
   out.gain.setValueAtTime(.0001,t0);
