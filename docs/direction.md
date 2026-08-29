@@ -90,12 +90,37 @@ Each phase gets its own spec → plan → implementation cycle.
 | Phase | Scope |
 |---|---|
 | **0** | Modular port. Vite + TypeScript. No behavior change. |
-| **1** | Tier 0 fixes: 8-directional sprites, positional audio + music, resolution setting, save system |
+| **1** | Tier 0 fixes: positional audio + music, resolution setting, save system |
 | **2** | World: shadowed lighting, instanced/merged geometry, variable ceiling height, gothic trim |
-| **3** | Combat: weapon personalities, flow-field pathfinding, enemy redesign |
+| **3** | Combat: weapon personalities, flow-field pathfinding, enemy redesign, **8-directional sprites** |
 | **4** | Levels: five hand-carved maps |
 | **5** | Bosses: three distinct brains |
 | **6** | Polish: menus, settings, achievements, balance, performance |
+
+### Amendment, 2026-08-29 — 8-directional sprites moved from Phase 1 to Phase 3
+
+Approved after measuring the real cost at the end of Phase 0.
+
+The roster today is **31 sprite definitions**, each baked into ~14 canvas
+textures (walk A/B, headless A/B, four dismemberment variants ×2, gibbed ×2) —
+about 434 textures. Eight facings multiplies that to roughly **3,500**, at boot,
+on the CPU.
+
+The size is not the real objection. **Every sprite is generated from a single
+front-facing pixel grid**, so there is no side or back art to bake from: eight
+facings means authoring seven more angles per enemy, by hand. That is not the
+procedural pipeline this project's asset policy is built on — it is the largest
+piece of manual art in the roadmap, hiding inside a line item that reads like a
+rendering fix.
+
+And it would be spent on the wrong roster. This document already commits to
+cutting the enemy count from 25 to 9 plus 3 bosses. Drawing seven new angles for
+31 definitions before that cut means drawing most of them for enemies scheduled
+for deletion.
+
+So it moves to **Phase 3**, where the roster is redesigned anyway and each
+keeper enemy can be authored once, at its final size, with all its facings
+together. Phase 1 keeps the three items that are pure code and unblocked.
 
 ## What the reference already does well — preserve it
 
