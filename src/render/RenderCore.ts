@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { renderState } from "./Renderer";
 import { track } from "./DisposeRegistry";
+import { save } from "../save/SaveGame";
 
 /**
  * RENDER CORE — the camera and WebGL renderer construction, the
@@ -55,11 +56,25 @@ renderState.renderer.toneMappingExposure = 1.15;
 // reason; see docs/known-issues.md KNOWN-14 for the full decision.
 if (THREE.sRGBEncoding !== undefined) renderState.renderer.outputEncoding = THREE.sRGBEncoding;
 
+/** Internal render widths, in pixels. 400 is the reference's hardcoded value and stays the default. */
+export const RENDER_WIDTHS = [320, 400, 512, 640, 800] as const;
+
 export function sizeRender(): void {
-  const a=innerWidth/innerHeight,w=400,h=Math.round(w/a);
+  const a=innerWidth/innerHeight,w=save.renderWidth,h=Math.round(w/a);
   renderState.renderer.setSize(w,h,false);renderState.camera.aspect=a;renderState.camera.updateProjectionMatrix();
   const c=renderState.renderer.domElement;c.style.width="100%";c.style.height="100%";
 }
+// This call runs during module evaluation, before main.ts's body — including
+// its loadSave() — ever runs (main.ts imports this module transitively, and
+// every module in an import graph evaluates before the importing module's
+// own top-level statements do). So this first call always sizes the
+// renderer at save.renderWidth's *module-load default* (400), never a
+// stored value, no matter what's in localStorage. main.ts calls sizeRender()
+// again immediately after loadSave() to apply whatever was actually loaded;
+// see the comment there. Left here unchanged (not deferred into an init
+// function) because the class-level comment above already depends on this
+// call running immediately, before anything can read a still-null
+// renderState.camera/.renderer.
 addEventListener("resize",sizeRender);sizeRender();
 
 const blobTexC=document.createElement("canvas");blobTexC.width=blobTexC.height=32;

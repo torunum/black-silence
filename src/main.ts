@@ -10,6 +10,7 @@ import { startGame } from "./core/Boot";
 import { initMenus } from "./ui/Menus";
 import { startLoop } from "./core/Loop";
 import { loadSave } from "./save/persist";
+import { sizeRender } from "./render/RenderCore";
 
 /**
  * Boot wiring, and nothing else. Moved verbatim from `src/legacy.js`, whose
@@ -44,6 +45,19 @@ import { loadSave } from "./save/persist";
  * slider. Loading first means every reader — `initMenus`'s IIFE, `startLoop`,
  * everything downstream — sees the persisted values, never the defaults,
  * from the moment it first looks.
+ *
+ * `sizeRender()` (Phase 1 Task 2) is called again immediately after
+ * `loadSave()`, for a boot-order reason `initMenus` doesn't share:
+ * `RenderCore.ts` is in this file's own transitive import graph, so its
+ * module-scope `sizeRender()` call already ran — at the *default*
+ * `save.renderWidth` — before this file's body, and therefore before
+ * `loadSave()`, ever executes. Without this second call, a saved width
+ * other than the default would sit in `save.renderWidth` correctly loaded
+ * but never applied to the renderer until the player happened to resize the
+ * window — the setting would "work sometimes." Calling `sizeRender()` again
+ * here, through the same function `initMenus`'s resolution slider calls on
+ * input, re-sizes the renderer from whatever `loadSave()` just populated,
+ * with no second resize path.
  */
 setInputHooks({
   isPianoOpen:()=>game.pianoOpen, isStarted:()=>game.started, isInputLocked:()=>game.inputLock,
@@ -55,5 +69,6 @@ setInputHooks({
 });
 
 loadSave();
+sizeRender();
 initMenus(startGame);
 startLoop();

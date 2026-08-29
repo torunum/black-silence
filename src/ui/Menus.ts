@@ -1,6 +1,8 @@
 import { save } from "../save/SaveGame";
+import { flushSave } from "../save/persist";
 import { LEVELS } from "../world/levels/index";
 import { getMasterVolume, setMasterVolume } from "../audio/AudioEngine";
+import { RENDER_WIDTHS, sizeRender } from "../render/RenderCore";
 import { el } from "./dom";
 
 /**
@@ -30,6 +32,29 @@ import { el } from "./dom";
  * compile-time only — they let the same implicit number/string coercions
  * the reference relied on (an int assigned to `.value`, `.value` divided
  * by 100) satisfy the type checker without changing what runs.
+ *
+ * Phase 1 Task 2 added two things here, both load-bearing for a stored
+ * setting actually taking effect on boot rather than only after the player
+ * touches the control:
+ *
+ * - The volume block now opens with `setMasterVolume(save.masterVolume)`,
+ *   *before* it paints from `getMasterVolume()`. `AudioEngine.ts`'s
+ *   `masterVol` and `save.masterVolume` are two independent slots that
+ *   nothing else bridges — `masterVol` initialises to the reference's
+ *   `0.5` at module scope (before `main.ts`'s `loadSave()` can possibly
+ *   have run, the same ordering hazard `sizeRender` has) and stays there
+ *   until something calls `setMasterVolume`. Without this line, a loaded
+ *   `save.masterVolume` would sit correctly in `save` but never reach
+ *   `masterVol` — and therefore never reach `masterG` when `audioInit()`
+ *   later reads it — no matter how long `loadSave()` ran before this IIFE.
+ *   `main.ts` calling `loadSave()` before `initMenus(startGame)` is what
+ *   makes `save.masterVolume` already correct by the time this line runs;
+ *   it does not, by itself, get that value into the audio graph.
+ * - A second IIFE, in the same shape, wires `#resSlider`/`#resVal` to
+ *   `save.renderWidth` through `RENDER_WIDTHS`. It only ever calls
+ *   `sizeRender()` — never a parallel resize path — on `input`, matching
+ *   how the boot-time value is applied (`main.ts`, right after
+ *   `loadSave()`).
  */
 function showScreen(id: string): void {
   ["intro","chapsel","settings"].forEach(s=>
@@ -71,8 +96,25 @@ export function initMenus(startGame: (idx: number) => void): void {
   /* ---- settings: master volume ---- */
   (function(){
     const sl=document.getElementById("volSlider") as HTMLInputElement,vv=el("volVal");
+    // Bridges save.masterVolume (already loaded — loadSave() runs before
+    // initMenus, see main.ts) into AudioEngine's own masterVol, which
+    // otherwise stays at its module-scope default forever. See the header
+    // comment above.
+    setMasterVolume(save.masterVolume);
     sl.value=Math.round(getMasterVolume()*100) as unknown as string;vv.textContent=sl.value;
     sl.addEventListener("input",()=>{
       setMasterVolume((sl.value as unknown as number)/100);vv.textContent=sl.value;});
+  })();
+  /* ---- settings: resolution ---- */
+  (function(){
+    const sl=document.getElementById("resSlider") as HTMLInputElement,vv=el("resVal");
+    const widths=RENDER_WIDTHS as readonly number[];
+    const idx=widths.indexOf(save.renderWidth);
+    sl.value=(idx<0?widths.indexOf(400):idx) as unknown as string;
+    vv.textContent=String(save.renderWidth);
+    sl.addEventListener("input",()=>{
+      save.renderWidth=RENDER_WIDTHS[sl.value as unknown as number];
+      sizeRender();flushSave();
+      vv.textContent=String(save.renderWidth);});
   })();
 }

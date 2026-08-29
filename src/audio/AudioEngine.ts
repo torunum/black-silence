@@ -20,6 +20,9 @@
  * stale (or null) forever.
  */
 
+import { save } from "../save/SaveGame";
+import { flushSave } from "../save/persist";
+
 declare global {
   interface Window {
     webkitAudioContext?: typeof AudioContext;
@@ -74,10 +77,24 @@ export function getMasterVolume(): number {
   return masterVol;
 }
 
-/** Sets the stored volume and, if the graph already exists, the master gain node's live value. */
+/**
+ * Sets the in-memory volume and, if the graph already exists, the master
+ * gain node's live value — then writes through to `save.masterVolume` and
+ * flushes it to storage, so a change survives a reload.
+ *
+ * This is also the only way a *loaded* volume reaches this module's private
+ * `masterVol` (and, once `audioInit()` runs, `masterG`): `masterVol`
+ * initialises to the reference's `0.5` at module scope, same as every other
+ * module-scope literal in this port, and nothing else in this file ever
+ * reads `save.masterVolume`. `src/ui/Menus.ts`'s volume IIFE calls this with
+ * `save.masterVolume` at registration time (after `loadSave()` has run) for
+ * exactly that reason — see the comment there.
+ */
 export function setMasterVolume(v: number): void {
   masterVol = v;
   if (masterG) masterG.gain.value = masterVol;
+  save.masterVolume = v;
+  flushSave();
 }
 
 /** Build the audio graph and start the ambient drone bed. Call once, on game start. */
