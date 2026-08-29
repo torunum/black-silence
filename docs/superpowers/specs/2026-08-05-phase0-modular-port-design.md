@@ -321,6 +321,6 @@ Recorded here so the next phase inherits an honest list, not a surprise:
 - Levels 2–7 still share one copy-pasted layout
 - Six bosses still share `priestThink`
 - Enemy names still reference Doom/Hexen monsters
-- Save system exists in structure but only persists `maxLevel`
+- Save system exists in structure but persists **nothing** — there is no `localStorage` call in the port or in the reference. (This line originally read "only persists `maxLevel`", which overstated it; corrected after Phase 0 closed, by grep.)
 
 Every one of these is owned by a later phase.
