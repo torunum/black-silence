@@ -38,7 +38,7 @@ import { save } from "../../src/save/SaveGame";
  *
  * ## The one constraint on callers
  *
- * `runTrace` imports `src/legacy.js`, which is a module singleton with side
+ * `runTrace` imports `src/main.ts`, which is a module singleton with side
  * effects at import — it builds a renderer, registers listeners and starts
  * a loop. It can therefore run **once per test file**. A second call in the
  * same file gets the already-booted game and records nonsense, so it
@@ -64,12 +64,12 @@ export interface TraceOptions {
   /**
    * Which level to start. Defaults to 0 (the prologue), taken through
    * exactly the path `trace.test.ts` has always used — the `NEW GAME` menu
-   * row, which runs `save.maxLevel=0;startGame(0)` — so that fixture stays
+   * row, which runs `startGame(0)` — so that fixture stays
    * bit-for-bit unaffected by this option's existence.
    *
    * Any other value opens the chapter-select screen instead (`#mChapter`),
    * after unlocking it via `save.maxLevel`, and clicks that level's row —
-   * see `src/legacy.js`'s `mChapter` click handler, which builds `#chaplist`
+   * see `src/ui/Menus.ts`'s `mChapter` click handler, which builds `#chaplist`
    * fresh from `LEVELS` in order, so `#chaplist`'s Nth child is always level
    * N's row without needing to match its text.
    */
@@ -219,7 +219,7 @@ let alreadyRan = false;
 export async function runTrace(o: TraceOptions): Promise<TraceFrame[]> {
   if (alreadyRan) {
     throw new Error(
-      "runTrace can only be called once per test file: src/legacy.js is a module singleton " +
+      "runTrace can only be called once per test file: src/main.ts is a module singleton " +
       "that boots the game at import, so a second run would record an already-running game.",
     );
   }
