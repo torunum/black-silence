@@ -1,5 +1,6 @@
 import { S } from "../core/State";
 import { save } from "../save/SaveGame";
+import { flushSave } from "../save/persist";
 import { LEVELS } from "../world/levels/index";
 import { loadLevel } from "../world/LevelLoader";
 import { stopBossMusic } from "../audio/Ambient";
@@ -49,6 +50,7 @@ export function statsHtml(): string {
 export function endLevel(): void {
   if(S.won)return;S.won=true;
   save.maxLevel=Math.max(save.maxLevel,Math.min(S.level+1,LEVELS.length-1));
+  flushSave();
   stopBossMusic();document.exitPointerLock();
   el("legrade").textContent=gradeOf();
   el("lestats").innerHTML=statsHtml();

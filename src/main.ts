@@ -9,6 +9,7 @@ import { startReload, requestSwitch, doKick } from "./weapons/WeaponState";
 import { startGame } from "./core/Boot";
 import { initMenus } from "./ui/Menus";
 import { startLoop } from "./core/Loop";
+import { loadSave } from "./save/persist";
 
 /**
  * Boot wiring, and nothing else. Moved verbatim from `src/legacy.js`, whose
@@ -34,6 +35,15 @@ import { startLoop } from "./core/Loop";
  * runs at top level because its volume-slider IIFE reads `getMasterVolume()`
  * at registration time, painting the slider immediately rather than on
  * first open. `startLoop()` runs last, once both are wired.
+ *
+ * `loadSave()` (Phase 1) now runs before all three, for the same
+ * registration-time reason: `initMenus`'s volume-slider IIFE paints from
+ * whatever `save.masterVolume` holds *at that call*, so a load that ran
+ * after `initMenus` would paint the hardcoded default and then clobber
+ * whatever the player had stored on their first interaction with either
+ * slider. Loading first means every reader — `initMenus`'s IIFE, `startLoop`,
+ * everything downstream — sees the persisted values, never the defaults,
+ * from the moment it first looks.
  */
 setInputHooks({
   isPianoOpen:()=>game.pianoOpen, isStarted:()=>game.started, isInputLocked:()=>game.inputLock,
@@ -44,5 +54,6 @@ setInputHooks({
   requestSwitch:i=>requestSwitch(i), doKick:()=>doKick(),
 });
 
+loadSave();
 initMenus(startGame);
 startLoop();

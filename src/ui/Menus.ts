@@ -36,7 +36,22 @@ function showScreen(id: string): void {
     el(s).classList.toggle("hidden",s!==id));}
 
 export function initMenus(startGame: (idx: number) => void): void {
-  el("mNew").addEventListener("click",()=>{save.maxLevel=0;startGame(0);});
+  /**
+   * NEW GAME used to also do `save.maxLevel=0` here — an in-memory reset
+   * that cost nothing because nothing persisted. Now that `persist.ts`
+   * exists, an unlock record survives a reload only if something flushes
+   * it, and this click is reachable by accident from the title screen.
+   * Flushing a reset here would let one misclick permanently erase every
+   * chapter the player had unlocked; resetting only in memory (no flush)
+   * is worse — it silently sets up the *next* legitimate flush (`endLevel`,
+   * on finishing this fresh prologue run) to overwrite the real save with
+   * the reset value, so the loss just happens later and looks like normal
+   * play. NEW GAME therefore leaves `save.maxLevel` — and storage —
+   * untouched and only restarts the run: chapter select still shows every
+   * previously unlocked level throughout the session, and a misclick here
+   * costs the player nothing but their current run's position.
+   */
+  el("mNew").addEventListener("click",()=>{startGame(0);});
   el("mSettings").addEventListener("click",()=>showScreen("settings"));
   el("setBack").addEventListener("click",()=>showScreen("intro"));
   el("chapBack").addEventListener("click",()=>showScreen("intro"));
