@@ -125,6 +125,30 @@ export function emitAt(x: number, y: number, z: number): void {
 }
 
 /**
+ * Emits everything `emit()` produces from one world position, then clears it.
+ *
+ * **This is the form callers should reach for.** `emitAt`/`emitHere` are the
+ * bare primitive and leak if a caller forgets the second half; `at()` cannot,
+ * because the reset is in a `finally`. It also spans an emitter that makes
+ * more than one sound — `snarl("k")` calls both `growl` and `blip`, and under
+ * a consume-on-first-use contract only the growl would have been positioned.
+ *
+ *     at(e.x, e.h * 0.6, e.z, () => snarl(e.key));
+ *
+ * Nested calls are not supported and are not needed: one logical sound has one
+ * position. The inner scope would restore `null` rather than the outer
+ * position, so if a use for nesting ever appears, save and restore instead.
+ */
+export function at<T>(x: number, y: number, z: number, emit: () => T): T {
+  pendingPos = { x, y, z };
+  try {
+    return emit();
+  } finally {
+    pendingPos = null;
+  }
+}
+
+/**
  * Cancels a pending `emitAt()` before it is consumed by a `masterBus()`/
  * `echoBus()` call — the "changed my mind, this one is not positional after
  * all" case. `masterBus()`/`echoBus()` already clear `pendingPos` themselves
@@ -201,7 +225,11 @@ export function emitHere(): void {
 function busFor(target: GainNode): GainNode | PannerNode {
   if (!pendingPos) return target;
   const { x, y, z } = pendingPos;
-  pendingPos = null;
+  // Deliberately NOT cleared here. `snarl` alone calls two emitters for six of
+  // its eleven branches, so a consume-on-first-use contract would position the
+  // growl and leave the blip at the listener — half an enemy bark coming from
+  // inside the player's head. The position lives until `emitHere()` or the end
+  // of an `at()` scope, so every accessor call for one logical sound gets it.
   const p = ctx().createPanner();
   p.panningModel = "HRTF";
   p.distanceModel = "inverse";

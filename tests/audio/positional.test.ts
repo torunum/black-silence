@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it } from "vitest";
 import * as THREE from "three";
 import { recordingAudioContext, type AudioEvent } from "../support/recordingAudio";
 import { expectCallLogEqual } from "../support/expectCallLogEqual";
-import { audioInit, echoBus, emitAt, emitHere, masterBus } from "../../src/audio/AudioEngine";
+import { at, audioInit, echoBus, emitAt, emitHere, masterBus } from "../../src/audio/AudioEngine";
 import { blip } from "../../src/audio/Sfx";
 import { renderState } from "../../src/render/Renderer";
 import { updateListener } from "../../src/audio/Listener";
@@ -159,20 +159,48 @@ describe("masterBus()/echoBus() — emitAt() arms a positional panner", () => {
   });
 });
 
-describe("masterBus()/echoBus() — a position affects exactly one emission", () => {
-  it("a second masterBus() call, with no new emitAt(), gets the plain bus back — not a second panner", () => {
+describe("masterBus()/echoBus() — a position spans one logical sound, not one accessor call", () => {
+  // The original version of this block asserted the opposite: that a position
+  // was consumed by the first accessor call. That contract was wrong for the
+  // emitters this feature exists to position. `snarl` calls TWO emitters for
+  // six of its eleven branches — `snarl("k")` is `growl(...)` then
+  // `blip(...)` — so consume-on-first-use would have positioned the growl and
+  // left the blip at the listener: half an enemy bark coming from inside the
+  // player's head. The position now lives until `emitHere()` or the end of an
+  // `at()` scope.
+  it("every accessor call after one emitAt() gets a panner, not just the first", () => {
     withModuleAudioSession((events) => {
       audioInit();
       emitAt(10, 0, 5);
       const first = masterBus();
-      const second = masterBus(); // no emitAt() in between
+      const second = masterBus(); // same logical sound, second sub-emitter
 
       const panners = events.filter((e) => e.kind === "create" && e.detail.type === "PannerNode");
-      expect(panners).toHaveLength(1);
-
+      expect(panners).toHaveLength(2);
       expect((first as unknown as Record<string, unknown>).positionX).toBeDefined();
-      expect((second as unknown as Record<string, unknown>).positionX).toBeUndefined();
-      expect((second as unknown as Record<string, unknown>).gain).toBeDefined();
+      expect((second as unknown as Record<string, unknown>).positionX).toBeDefined();
+    });
+  });
+
+  it("at() positions a multi-emitter call and clears the position afterwards", () => {
+    withModuleAudioSession((events) => {
+      audioInit();
+      at(10, 0, 5, () => { masterBus(); echoBus(); });
+      const after = masterBus(); // outside the scope — must be plain again
+
+      const panners = events.filter((e) => e.kind === "create" && e.detail.type === "PannerNode");
+      expect(panners, "both sub-emitters inside the scope should be positioned").toHaveLength(2);
+      expect((after as unknown as Record<string, unknown>).positionX).toBeUndefined();
+      expect((after as unknown as Record<string, unknown>).gain).toBeDefined();
+    });
+  });
+
+  it("at() clears the position even when the emitter throws", () => {
+    withModuleAudioSession(() => {
+      audioInit();
+      expect(() => at(1, 2, 3, () => { throw new Error("boom"); })).toThrow("boom");
+      const after = masterBus();
+      expect((after as unknown as Record<string, unknown>).positionX).toBeUndefined();
     });
   });
 
