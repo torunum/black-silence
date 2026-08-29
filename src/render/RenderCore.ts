@@ -44,6 +44,15 @@ renderState.renderer = new THREE.WebGLRenderer({
 });
 renderState.renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderState.renderer.toneMappingExposure = 1.15;
+// The `!== undefined` guard is NOT defensive coding — it is a tripwire, and
+// it currently points the wrong way. On the pinned three@0.128.0
+// `THREE.sRGBEncoding` is 3001 and this line runs. On any modern three it is
+// `undefined` (renamed to `SRGBColorSpace`, and `outputEncoding` renamed to
+// `outputColorSpace`), so the line would silently do nothing and sRGB output
+// encoding would quietly switch off — every colour in the game would shift,
+// with no error, no test failure, and nothing in this repo able to see it.
+// Plan 0F Task 11 evaluated the upgrade and deferred it for exactly that
+// reason; see docs/known-issues.md KNOWN-14 for the full decision.
 if (THREE.sRGBEncoding !== undefined) renderState.renderer.outputEncoding = THREE.sRGBEncoding;
 
 export function sizeRender(): void {
