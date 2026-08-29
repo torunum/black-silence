@@ -10,7 +10,7 @@ export function buildPrologue(): { g: Grid; W: number; H: number; hmap: number[]
   const W=21,H=27;
   const g=Array.from({length:H},()=>Array(W).fill("#"));
   const hm=Array.from({length:H},()=>Array(W).fill(0));
-  const open=(x0,z0,x1,z1)=>{for(let z=z0;z<=z1;z++)for(let x=x0;x<=x1;x++)g[z][x]=".";};
+  const open=(x0: number,z0: number,x1: number,z1: number)=>{for(let z=z0;z<=z1;z++)for(let x=x0;x<=x1;x++)g[z][x]=".";};
   // hell cavern (bottom) — wide irregular hall
   open(2,17,18,25);
   // central corridor leading north to the stairs

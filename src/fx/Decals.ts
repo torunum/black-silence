@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { rnd } from "../utils/math";
 import { getScene } from "../render/SceneRef";
+import { track } from "../render/DisposeRegistry";
 
 /**
  * DECALS — floor blood pools (addPool/poolTick) and wall splatter/bullet
@@ -49,7 +50,7 @@ export function addPool(x: number, z: number, s: number): void {
   const scene = getScene();
   let m: THREE.Mesh;
   if (pools.length >= POOLMAX) { m = pools.shift()!; }
-  else { m = new THREE.Mesh(new THREE.CircleGeometry(1, 8), poolMat); m.rotation.x = -Math.PI / 2; scene.add(m); }
+  else { m = new THREE.Mesh(track(new THREE.CircleGeometry(1, 8)), poolMat); m.rotation.x = -Math.PI / 2; scene.add(m); }
   m.position.set(x, .01 + Math.random() * .004, z); m.scale.set(s * .3, s * .3, 1); m.userData.target = s;
   pools.push(m);
 }
@@ -65,7 +66,7 @@ export function addWallDecal(x: number, y: number, z: number, nx: number, nz: nu
   const scene = getScene();
   let m: THREE.Mesh;
   if (wallDecals.length >= WDMAX) { m = wallDecals.shift()!; m.material = mat; }
-  else { m = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), mat); scene.add(m); }
+  else { m = new THREE.Mesh(track(new THREE.PlaneGeometry(1, 1)), mat); scene.add(m); }
   m.scale.set(s, s * rnd(.7, 1.3), 1);
   m.position.set(x + nx * .012, y, z + nz * .012);
   m.lookAt(x + nx, y, z + nz); m.rotation.z = Math.random() * Math.PI;

@@ -31,14 +31,41 @@ let masterG: GainNode | null = null;
 let echoG: GainNode | null = null;
 let masterVol = 0.5;
 
-export function ctx(): AudioContext | null {
-  return AC;
+/**
+ * TYPE HONESTY NOTE (applies to ctx()/masterBus()/echoBus() below): all three
+ * accessors are declared as returning their node type, never `| null`, even
+ * though AC/masterG/echoG are genuinely null until audioInit() runs — the
+ * declared type is stricter than the runtime guarantee.
+ *
+ * This is deliberate, not an oversight. Every one of the ~85 call sites
+ * across src/audio/Voice.ts, Sfx.ts and Ambient.ts already opens with the
+ * reference's own `if(!ctx())return;` guard, copied verbatim as part of a
+ * dozen function bodies tests/fidelity.test.ts compares byte-for-byte
+ * against reference/sonsurum.html — so those bodies cannot gain a second
+ * narrowing line without breaking that comparison. But TypeScript cannot
+ * narrow across a re-invoked function call: after `if(!ctx())return;`, a
+ * later `ctx().createOscillator()` calls the accessor again and TS has no
+ * way to know it returns the same value. A nullable return type is
+ * therefore unfixable at those call sites without editing every one of
+ * them — which is the `!`-at-85-sites problem in different clothing. Typing
+ * the accessors as non-nullable moves the (real, honored) contract "call
+ * this only after checking readiness" from the type system to the doc
+ * comment: it satisfies every existing call site for free, but it also
+ * means a *new* caller that forgets the guard gets no compile error and
+ * fails at runtime instead — the type is asserting something the runtime
+ * cannot fully guarantee. isReady() (below) is the actual runtime
+ * predicate; check it (or the equivalent `if(!ctx())return;` early exit)
+ * before calling any audio function, because the type of ctx() itself will
+ * not stop you if you don't.
+ */
+export function ctx(): AudioContext {
+  return AC as AudioContext;
 }
-export function masterBus(): GainNode | null {
-  return masterG;
+export function masterBus(): GainNode {
+  return masterG as GainNode;
 }
-export function echoBus(): GainNode | null {
-  return echoG;
+export function echoBus(): GainNode {
+  return echoG as GainNode;
 }
 export function isReady(): boolean {
   return AC !== null;
@@ -62,10 +89,25 @@ export function audioInit(): void {
   echoG=AC.createGain();echoG.gain.value=1;
   echoG.connect(dly);dly.connect(fb);fb.connect(dly);dly.connect(masterG);
   const lp=AC.createBiquadFilter();lp.type="lowpass";lp.frequency.value=170;lp.connect(masterG);
-  [[33,"sawtooth",.05],[49.5,"sine",.07],[24.7,"triangle",.06],[66,"sine",.025]].forEach(([f,t,g]:[number,OscillatorType,number])=>{
-    const o=AC.createOscillator();o.type=t;o.frequency.value=f;
-    const og=AC.createGain();og.gain.value=g;
-    const lfo=AC.createOscillator();lfo.frequency.value=.05+Math.random()*.07;
-    const lg=AC.createGain();lg.gain.value=g*.6;
+  // AC is genuinely non-null here (assigned two statements above, in this
+  // same synchronous call, with nothing in between that could reset it) —
+  // but that narrowing doesn't extend into the forEach callback below since
+  // it's a separate function scope closing over the module-level `let`.
+  // Capturing it into a `const` here is a real (not asserted) narrowing:
+  // unlike ctx()/masterBus()/echoBus() above, `ac` cannot be reassigned, so
+  // TypeScript carries its non-null type into the closure honestly.
+  const ac=AC;
+  // Typed here, as a separate const, rather than an inline tuple annotation
+  // on the callback parameter: strictFunctionTypes (Plan 0F Task 10) checks
+  // an explicitly-annotated callback parameter contravariantly against
+  // forEach's own (wider, string|number[]-inferred) parameter type and
+  // rejects it. Annotating the array instead lets the callback's parameter
+  // type come from plain contextual inference, which needs no such check.
+  const drones: [number, OscillatorType, number][] = [[33,"sawtooth",.05],[49.5,"sine",.07],[24.7,"triangle",.06],[66,"sine",.025]];
+  drones.forEach(([f,t,g])=>{
+    const o=ac.createOscillator();o.type=t;o.frequency.value=f;
+    const og=ac.createGain();og.gain.value=g;
+    const lfo=ac.createOscillator();lfo.frequency.value=.05+Math.random()*.07;
+    const lg=ac.createGain();lg.gain.value=g*.6;
     lfo.connect(lg);lg.connect(og.gain);
     o.connect(og);og.connect(lp);o.start();lfo.start();});}

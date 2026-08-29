@@ -126,6 +126,48 @@ import { MONOLOGUE } from "../../src/content/monologue";
  * `runTrace` records or relax any assertion, only the state the fight
  * starts from, the same way giving a test player a weapon they'd otherwise
  * have to walk further to find would be.
+ *
+ * ## Plan 0F Task 5 left this fixture byte-identical — verified, not assumed
+ *
+ * Task 5 moved four gameplay `setTimeout` calls onto `Time.ts`'s scaled
+ * clock — `WeaponState.ts`'s power-kick hit test and `Behaviors.ts`'s
+ * Mancubus second barrel, Slaughtaur second bolt and brute slam damage —
+ * driven by `tickScheduled(dt)`, called every gameplay frame from the end of
+ * `Loop.ts`'s `!paused&&!S.dead&&!S.won` block. A fixture recording level 1
+ * combat is exactly what should catch that kind of change, and the task's
+ * own brief says a run that comes back unchanged is suspicious, not lucky —
+ * so before trusting the green result below, both functions were
+ * instrumented with call counters for one throwaway run: `tickScheduled`
+ * fires on every one of this trace's 1680 gameplay frames (the scheduler is
+ * genuinely wired in), but `schedule()` itself is called **zero times**.
+ *
+ * That is fully explained by this fixture's own script and this level's own
+ * roster, not by a dead scheduler:
+ *
+ * - The script (`combatScript()` below) never taps the kick key, so
+ *   `doKick` — and the hit test it would schedule — never runs.
+ * - This file's own `S.armor` note above already establishes that the level
+ *   grid's `put1(g,40,25,"A")` — commented "armor" by the level author —
+ *   spawns a Mancubus instead, per KNOWN-11's enemy-vs-item collision.
+ *   That Mancubus is the *only* `twin` (dual-barrel) enemy level 1 has, and
+ *   it sits in the walled-off SECRET ALCOVE (`src/world/levels/level1.ts`'s
+ *   `g[23][40]="S"`), which this script's path (start room -> corridor ->
+ *   great hall -> standing turret) never opens and never gets within
+ *   `los()`'s 22-unit range of. It never reaches `seen`, so its ranged
+ *   branch — and the scheduled second barrel — never runs.
+ * - Level 1's roster (`U z×4 f×2 j m×2 t g×2 s A`, 15 enemies, enumerated in
+ *   `src/world/levels/level1.ts`) has zero `orb==="centaur"` (Slaughtaur,
+ *   key `k`) and zero `e.slam` (Ettin `n` / `B`) enemies at all — those two
+ *   `Behaviors.ts` sites are structurally unreachable by this fixture
+ *   regardless of script, not just unreached by this one.
+ *
+ * So this fixture, despite fighting and killing an enemy, exercises none of
+ * Task 5's four call sites — only `enemyTick`'s generic movement/melee/LOS
+ * paths, which Task 5 did not touch. Nothing was regenerated: there is
+ * nothing to regenerate, since nothing diverged. A future task that adds a
+ * kick, a Slaughtaur, an Ettin, or a script that opens the secret alcove
+ * should expect this fixture to move for the first time and should not be
+ * surprised by it.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

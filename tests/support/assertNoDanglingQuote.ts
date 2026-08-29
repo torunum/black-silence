@@ -1,11 +1,10 @@
 /**
- * A safety net for tests/fidelity.test.ts's `extractFunctionBody` and
- * tests/support/legacySource.ts's `readLegacyConst`: both locate a
- * declaration's closing delimiter by counting braces/brackets character by
+ * A safety net for tests/fidelity.test.ts's `extractFunctionBody`: it locates
+ * a declaration's closing delimiter by counting braces/brackets character by
  * character, blind to string literals — the same blindness documented (and
  * removed, as rule 4) in normalizeTsSource's doc comment. A `}` or `]`
  * sitting inside a string can make that counter stop at the wrong place,
- * silently handing back a truncated prefix instead of the real body — both
+ * silently handing back a truncated prefix instead of the real body — it
  * sides of a comparison truncated identically, so the test stays green
  * while comparing less than it claims to.
  *

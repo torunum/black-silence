@@ -226,7 +226,7 @@ describe("woodP behavioral parity with reference", () => {
     expect(refSnapshots[0].pos).not.toEqual(refSnapshots[2].pos);
 
     for (let i = 0; i < CHECKPOINTS.length; i++) {
-      expect({ frame: CHECKPOINTS[i], ...modSnapshots[i] }).toEqual({ frame: CHECKPOINTS[i], ...refSnapshots[i] });
+      expect({ ...modSnapshots[i], frame: CHECKPOINTS[i] }).toEqual({ ...refSnapshots[i], frame: CHECKPOINTS[i] });
     }
   });
 });

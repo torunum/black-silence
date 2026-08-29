@@ -73,7 +73,12 @@ beforeAll(async () => {
   const { resetDecals } = await import("../../src/fx/Decals");
   const { resetGibs } = await import("../../src/fx/Gibs");
   const { setScene } = await import("../../src/render/SceneRef");
-  ({ damageEnemy } = await import("../../src/enemies/Damage"));
+  // Not destructured directly: damageEnemy's real `info?: DamageInfo`
+  // parameter is narrower than this file's deliberately loose `info: unknown`
+  // declaration above, and strictFunctionTypes (Plan 0F Task 10) checks that
+  // contravariantly. The cast is compile-time only — same function, same
+  // call sites below.
+  damageEnemy = (await import("../../src/enemies/Damage")).damageEnemy as unknown as (e: unknown, dmg: number, info: unknown) => void;
 
   buildSprites(); // populates PX[k].regions for every PXDEF key, including "z"
   const THREE = await import("three");

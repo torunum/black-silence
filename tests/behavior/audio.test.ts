@@ -144,7 +144,12 @@ describe("blip behavioral parity with reference", () => {
     const moduleEvents = withModuleAudioSession(11, (events) => {
       moduleAudioInit();
       const baseline = events.length;
-      run({ blip: moduleBlip });
+      // moduleBlip's real `type?: OscillatorType` is narrower than
+      // RefAudioFns.blip's modeled `type?: string`; strictFunctionTypes
+      // (Plan 0F Task 10) checks that contravariantly. The cast is
+      // compile-time only — run() above only ever calls it with literal
+      // OscillatorType strings ("square"/"sine").
+      run({ blip: moduleBlip as RefAudioFns["blip"] });
       return events.slice(baseline);
     });
 

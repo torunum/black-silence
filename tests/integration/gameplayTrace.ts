@@ -274,7 +274,7 @@ export async function runTrace(o: TraceOptions): Promise<TraceFrame[]> {
 
   const restoreRandom = seedRandom(o.seed);
   try {
-    await import("../../src/legacy.js");
+    await import("../../src/main");
     const canvas = document.getElementById("game") as HTMLElement;
     const level = o.level ?? 0;
     if (level === 0) {

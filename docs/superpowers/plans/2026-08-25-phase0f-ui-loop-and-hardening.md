@@ -16,13 +16,20 @@ Every task's requirements implicitly include this section.
 - **No art changes. No audio changes.** This is the constraint Task 11 is most likely to break, and the reason it may end in a deferral rather than an upgrade.
 - **`reference/sonsurum.html` is never edited.**
 - **No file in `src/` may exceed 400 lines.** Hard gate. `legacy.js`'s exemption ends when the file does, in Task 4.
-- **No import cycles.** Hard gate.
+- **No import cycles.** Hard gate — and it must be run as
+  `madge --circular --extensions ts,js src/`. **Bare `madge --circular src/` is
+  a no-op on this codebase**: madge's default extensions are `js,jsx`, so it
+  scans only `src/legacy.js` and prints "No circular dependency found!" having
+  looked at nothing. That is how a real cycle survived all of Plan 0E. The
+  `npm test` script was corrected in commit `0e1722b`; if you run madge by
+  hand, pass the flag. The "Processed N files" line is the tell — if N is 1,
+  it did not check anything.
 - **Every task ends with a playable game.**
 - **`src/legacy.js` has `checkJs: false`** until it is deleted. TypeScript will not catch a typo'd name there; only tests will. This bit Plans 0D and 0E repeatedly.
 - **Every line number in this plan is advisory.** Ranges below were measured at `617988a` and every task that lands shifts them. Range *ends* are computed as "next declaration minus 1" and swept in trailing banners or `const`s five separate times during Plan 0E — **only the start line is reliable.** Confirm every range by reading its content.
 - **Neither trace fixture may be regenerated.** `tests/integration/__fixtures__/trace-level0.json` and `trace-level1.json` are pre-migration recordings; that is their entire value. `WRITE_TRACE=1` is not a tool for turning a red build green.
 - **Use a cold cache for trace runs:** `npx vitest run --no-cache`. During Plan 0E a stale vitest transform cache reported 364/364 green on a `legacy.js` containing a real duplicate-declaration syntax error.
-- **`npm test`, `npm run typecheck` and `madge --circular src/` must pass before every commit.** Node is not on PATH in a fresh shell: prefix with `export PATH="/c/Program Files/nodejs:$PATH"`.
+- **`npm test` and `npm run typecheck` must pass before every commit** (`npm test` runs the corrected madge).** Node is not on PATH in a fresh shell: prefix with `export PATH="/c/Program Files/nodejs:$PATH"`.
 
 ---
 
@@ -65,11 +72,19 @@ loop          255-282  -> chatterTick, hud
 
 ### Three decisions this plan locks in
 
-**1. `core/Context.ts` dies in Task 2, and that is the point.**
+**1. `core/Context.ts` shrinks to one entry in Task 2, and that entry is permanent for Phase 0.**
 
-The locator holds exactly three entries — `endLevel`, `openPiano`, `showWin` — and all three exist for one reason: they bridge to functions that are still in `legacy.js`. Task 1 moves `openPiano`; Task 2 moves `endLevel` and `showWin`. At that moment the locator has **zero** entries and must be deleted, not left as an empty file.
+*(This decision was rewritten during Task 1. It originally said the locator would reach zero entries and be deleted. That was wrong, for a reason worth reading.)*
 
-This is the trajectory KNOWN-2 has been tracking since Plan 0E: six entries at its peak, three after 0E Task 10's retirement pass, zero here. Deleting the file is what closes it for Phase 0. The spec's long-term rule — systems talk over `core/Events.ts` and never reach into each other — is unaffected; `Events.ts` is still built when Phase 1 has a first real subscriber, exactly as Plan 0E Decision 2 said.
+The locator's entries are two different kinds of thing, and only one kind this plan can remove:
+
+- **Bridges to unextracted code.** `endLevel`, `openPiano` and `showWin` exist only because their targets were still in `legacy.js`. Task 1 moved `openPiano` and retired it; Task 2 moves `endLevel` and `showWin` and retires both. These go away by extraction.
+- **Genuine cycle breaks.** `wakeBoss` is one. `src/enemies/Damage.ts` cannot import it from `Boss.ts`, because that edge closes
+  `Damage.ts -> Boss.ts -> ai/Attacks.ts -> world/Props.ts -> Damage.ts`. No amount of further extraction removes it; only breaking one of the other three edges would, and that is a redesign, not a port task.
+
+Plan 0E Task 10 retired `wakeBoss` anyway, on a `madge` run that was scanning only `legacy.js`. Task 1 of this plan fixed the gate and restored the entry (commit `0e1722b`). **So `Context.ts` ends Phase 0 with exactly one entry, and KNOWN-2 stays open with a named cycle attached rather than being closed.**
+
+The spec's long-term rule — systems talk over `core/Events.ts` and never reach into each other — is unaffected; `Events.ts` is still built when Phase 1 has a first real subscriber, exactly as Plan 0E Decision 2 said. `wakeBoss` is a natural first candidate for it.
 
 **2. `setInputHooks` stays. Do not try to retire it alongside `Context`.**
 
@@ -100,7 +115,7 @@ Nine new modules, one deletion, one file emptied to nothing.
 | `src/core/Loop.ts` | `loop` — the frame orchestrator | Task 4 |
 | `src/core/Boot.ts` | `startGame` | Task 4 |
 | `src/render/DisposeRegistry.ts` | per-level GPU resource tracking | Task 7 |
-| ~~`src/core/Context.ts`~~ | **deleted** — zero entries once Task 2 lands | Task 2 |
+| `src/core/Context.ts` | reduced to one entry, `wakeBoss` — a real cycle break, see Decision 1 | Task 2 |
 | ~~`src/legacy.js`~~ | **deleted** — zero lines once Task 4 lands | Task 4 |
 | `src/main.ts` | boot wiring only: imports, `setInputHooks`, start the loop | Task 4 |
 
@@ -174,12 +189,11 @@ git commit -m "refactor: extract the playable piano"
 
 ---
 
-### Task 2: Level end, the win screen, the HUD — and the death of `Context`
+### Task 2: Level end, the win screen, the HUD — and `Context` down to one entry
 
 **Files:**
 - Create: `src/ui/LevelEnd.ts`, `src/ui/Hud.ts`
-- Delete: `src/core/Context.ts`
-- Modify: `src/legacy.js`, `src/player/Player.ts`, `src/enemies/Death.ts`, `tests/integration/contextWiring.test.ts`
+- Modify: `src/core/Context.ts`, `src/legacy.js`, `src/player/Player.ts`, `src/enemies/Death.ts`, `tests/integration/contextWiring.test.ts`
 
 **Interfaces:**
 - Produces: `gradeOf(): string`, `statsHtml(): string`, `endLevel()`, `showWin()` from `LevelEnd.ts`; `hud()` from `Hud.ts`.
@@ -206,13 +220,13 @@ Replace each with a direct import and a plain call, **one at a time**, running `
 
 Note `Player.ts` imports the locator aliased as `svcCtx` because it also binds `ctx` to AudioEngine's audio-context accessor. Removing the locator import there means the alias goes too — check whether `Player.ts` still uses `ctx()` before deciding what its import line should look like. A brief in Plan 0E asserted "no clash" without checking and was wrong.
 
-- [ ] **Step 3: Delete `src/core/Context.ts`**
+- [ ] **Step 3: Reduce `Context.ts` to its one permanent entry**
 
-If Steps 1-2 of Task 1 and Step 2 here all succeeded, the locator now has **zero** entries. Delete the file, delete `legacy.js`'s `import { ctx as svcCtx } from "./core/Context";` and the whole `svcCtx.*` registration line, and delete the long comment above it.
+After Task 1 and Step 2 here, the locator should hold exactly one field: `wakeBoss`. **Do not delete the file** — see Decision 1. `wakeBoss` breaks a real cycle and no further extraction removes it.
 
-`grep -rn "Context" src/` must return nothing but incidental prose.
+What does go: `legacy.js` no longer registers anything, so delete its `import { ctx as svcCtx } from "./core/Context";`, the whole `svcCtx.*` registration line, and the long comment above it. `Boss.ts` keeps its own `ctx.wakeBoss=wakeBoss;` registration at module scope.
 
-**If any entry survived a cycle check**, do not delete the file. Keep it with exactly the surviving entries, say so prominently in your report, and update KNOWN-2 to describe what is left instead of closing it.
+Verify with `grep -rn "svcCtx" src/` (nothing) and `grep -c "?: (" src/core/Context.ts` (exactly 1).
 
 - [ ] **Step 4: Update `contextWiring.test.ts`**
 
@@ -224,15 +238,14 @@ If a seam genuinely has no observable left after the change, say so explicitly r
 
 - [ ] **Step 5: Update KNOWN-2 and run the gate**
 
-Rewrite KNOWN-2 in `docs/known-issues.md` to record the full arc — six entries at peak, three after Plan 0E Task 10, zero here — and mark it **closed for Phase 0**, noting that the spec's `Events.ts` end state is still Phase 1's to build. Keep the existing row's voice.
+Rewrite KNOWN-2 in `docs/known-issues.md` to record the full arc — six entries at peak, three after Plan 0E Task 10's retirement pass, four again when Plan 0F Task 1 restored `wakeBoss` after finding the madge gate had never scanned TypeScript, and **one** here. It stays **open**, with its one remaining entry and the exact cycle that entry prevents written down. Keep the existing row's voice.
 
 ```bash
 export PATH="/c/Program Files/nodejs:$PATH"
 npx vitest run --no-cache tests/integration/
 npm run typecheck && npm test
 git add src/ui/LevelEnd.ts src/ui/Hud.ts src/legacy.js src/player/Player.ts src/enemies/Death.ts tests/integration/contextWiring.test.ts docs/known-issues.md
-git rm src/core/Context.ts
-git commit -m "refactor: extract level end, the win screen and the HUD; retire Context"
+git commit -m "refactor: extract level end, the win screen and the HUD"
 ```
 
 ---
@@ -763,7 +776,15 @@ git commit -am "types: make the audio graph null-safe under strictNullChecks"
 
 **Files:** `tsconfig.json` plus the remainder.
 
-Roughly 131 errors after Tasks 8-9, dominated by `document.getElementById(...)` returning `HTMLElement | null` and by `renderState.scene` being nullable between levels.
+**171** errors after Tasks 8-9 — and the plan's original guess at their shape was wrong. Measured at `7ae8cc6`, they fall into three root causes, not one:
+
+| Cause | Count | What it is |
+|---|---|---|
+| `renderState.*` | 66 | `scene` 23, `camera` 17, `boomLight` 10, `renderer` 7, `muzzleLight` 6, `ambLight` 3 — all nullable in `src/render/Renderer.ts` because they do not exist until boot and level load |
+| DOM lookups | ~42 | reported as bare `TS2531 Object is possibly 'null'` without naming the expression, which is why a grep for `getElementById` in the error text returns zero |
+| canvas contexts | 22 | `'g' is possibly null` in `src/enemies/SpriteBaker.ts` — `getContext("2d")` returns `CanvasRenderingContext2D \| null` |
+
+The `renderState` group is the largest and was not anticipated at all. It is the same shape as Task 9's audio accessors — state that is genuinely null until initialised, read by code that already runs only after initialisation — so it takes the same kind of boundary fix, not 66 local guards.
 
 - [ ] **Step 1: The DOM lookups**
 
@@ -899,7 +920,7 @@ Then re-run the full gate **on `master`** with a cold cache before calling it do
 ## Definition of done for Plan 0F
 
 - [ ] `src/legacy.js` does not exist; `src/` contains no `.js` file; the port burn-down is zero
-- [ ] `src/core/Context.ts` does not exist, and KNOWN-2 is closed for Phase 0
+- [ ] `src/core/Context.ts` holds exactly one entry, `wakeBoss`, and KNOWN-2 records the cycle it prevents
 - [ ] The four gameplay `setTimeout` calls run on `Time.schedule()` and respect hit-stop and pause
 - [ ] Every remaining timer is cancelled on level load
 - [ ] `loadLevel` frees the previous level's per-level GPU resources, and no shared resource is disposed

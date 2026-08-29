@@ -1,6 +1,7 @@
 import { rnd } from "../utils/math";
 import { ctx } from "../audio/AudioEngine";
 import { blip } from "../audio/Sfx";
+import { after } from "../core/Timers";
 
 /**
  * 2D LAYER — viewmodels, kick boot, casings, smoke, blood. The `fx2d`
@@ -51,7 +52,7 @@ const casings: Casing[] = [], puffs: Puff[] = [], bloodHits: BloodHit[] = [];
 export function ejectCasing(kind: number): void {
   casings.push({x:FW/2+rnd(4,12),y:FH*.62,vx:rnd(20,55),vy:rnd(-70,-30),
     rot:rnd(0,6),vr:rnd(-12,12),kind,life:1.6});
-  if(ctx())setTimeout(()=>blip(rnd(1800,2600),.04,"square",.025),rnd(250,450));
+  if(ctx())after(()=>blip(rnd(1800,2600),.04,"square",.025),rnd(250,450));
 }
 export function screenBlood(): void {
   for(let i=0;i<5;i++)bloodHits.push({x:rnd(0,FW),y:rnd(0,FH),r:rnd(6,22),life:1});

@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { rnd } from "../utils/math";
 import { getScene } from "../render/SceneRef";
 import { addPool } from "./Decals";
+import { track } from "../render/DisposeRegistry";
 
 /**
  * PARTICLES — a single pooled THREE.Points object (a fixed-size PMAX ring
@@ -55,11 +56,15 @@ export function particleCount(): number {
 
 export function buildParticles(): void {
   const scene = getScene();
-  pGeo = new THREE.BufferGeometry();
+  // pGeo/pMat are rebuilt fresh here on every level, not shared across levels
+  // like the module-scope resources in Decals.ts/Gibs.ts/Attacks.ts — track
+  // them so loadLevel's disposeAll() frees the previous level's copies
+  // before this call replaces them with new ones.
+  pGeo = track(new THREE.BufferGeometry());
   pPos = new Float32Array(PMAX * 3); pCol = new Float32Array(PMAX * 3);
   pGeo.setAttribute("position", new THREE.BufferAttribute(pPos, 3));
   pGeo.setAttribute("color", new THREE.BufferAttribute(pCol, 3));
-  const pMat = new THREE.PointsMaterial({ size: .09, vertexColors: true, sizeAttenuation: true });
+  const pMat = track(new THREE.PointsMaterial({ size: .09, vertexColors: true, sizeAttenuation: true }));
   points = new THREE.Points(pGeo, pMat); points.frustumCulled = false; scene.add(points);
   parts = Array.from({ length: PMAX }, () => ({ life: 0 } as Particle));
   pNext = 0;

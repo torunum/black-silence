@@ -1,3 +1,6 @@
+import { after } from "../core/Timers";
+import { el } from "./dom";
+
 /**
  * The centre-screen HUD line ("YOU NEED THE RED KEY", "SECRET FOUND") and
  * the two full-screen damage flashes.
@@ -21,7 +24,7 @@
  * CSSStyleDeclaration stringifies both to the same value.
  */
 
-const msgEl = document.getElementById("msg");
+const msgEl = el("msg");
 let msgT = 0;
 
 export function showMsg(t: string, sec?: number): void {
@@ -34,11 +37,11 @@ export function tickMessage(dt: number): void {
 }
 
 export function flashDmg(a: number): void {
-  const d = document.getElementById("dmg"); d.style.opacity = String(a);
-  setTimeout(() => d.style.opacity = "0", 90);
+  const d = el("dmg"); d.style.opacity = String(a);
+  after(() => d.style.opacity = "0", 90);
 }
 
 export function flashHoly(a: number): void {
-  const d = document.getElementById("holy"); d.style.opacity = String(a);
-  setTimeout(() => d.style.opacity = "0", 80);
+  const d = el("holy"); d.style.opacity = String(a);
+  after(() => d.style.opacity = "0", 80);
 }

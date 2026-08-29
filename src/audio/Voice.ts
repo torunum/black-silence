@@ -1,5 +1,6 @@
 import { ctx, echoBus, masterBus } from "./AudioEngine";
 import { bang, blip } from "./Sfx";
+import { after } from "../core/Timers";
 
 /**
  * GUTTURAL MONSTER VOICES (Doom/Blood style, not chiptune) — built from
@@ -47,7 +48,7 @@ export function growl(base: number, dur: number, vol?: number, echo?: boolean): 
   ns.connect(bp);bp.connect(ng);ng.connect(out);ns.start(t0);ns.stop(t0+dur);
   // vocal-cord tremolo
   const lfo=ctx().createOscillator();lfo.type="sine";lfo.frequency.value=22+Math.random()*18;
-  const lg=ctx().createGain();lg.gain.value=vol*.5||.25;lfo.connect(lg);lg.connect(out.gain);
+  const lg=ctx().createGain();lg.gain.value=(vol||0)*.5||.25;lfo.connect(lg);lg.connect(out.gain);
   lfo.start(t0);lfo.stop(t0+dur);
   // amplitude envelope
   out.gain.setValueAtTime(.0001,t0);
@@ -87,7 +88,7 @@ export function pain(base: number, vol?: number): void {
 export function deathCry(base: number): void {
   if(!ctx())return;
   growl(base,.5,.5,true);
-  setTimeout(()=>gurgle(.4,.4),180);}
+  after(()=>gurgle(.4,.4),180);}
 /* sighting snarl per enemy archetype */
 export function snarl(kind: string): void {
   if(!ctx())return;

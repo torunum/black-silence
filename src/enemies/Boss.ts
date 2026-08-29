@@ -1,4 +1,6 @@
+import * as THREE from "three";
 import { rnd } from "../utils/math";
+import { after } from "../core/Timers";
 import { player } from "../player/PlayerState";
 import { damagePlayer } from "../player/Player";
 import { input } from "../player/Input";
@@ -19,6 +21,8 @@ import { world } from "../world/WorldState";
 import { los } from "./ai/Perception";
 import { moveEnemy } from "./ai/Locomotion";
 import { fireOrb, spawnRing, spawnStrike } from "./ai/Attacks";
+import { ctx } from "../core/Context";
+import { el } from "../ui/dom";
 
 /**
  * Boss — the three bosses' brains: waking, the wake-up cinematic, the
@@ -39,22 +43,28 @@ import { fireOrb, spawnRing, spawnStrike } from "./ai/Attacks";
  * (`docs/superpowers/plans/2026-08-15-phase0e-systems.md`'s Task 10
  * correction, and this task's own brief, Step 1).
  *
- * `wakeBoss` no longer registers into `src/core/Context.ts`'s locator:
- * Task 10's Step 6 tested it against `madge --circular src/` and found the
- * `Damage.ts -> Boss.ts` edge it would add is one-way, so `Damage.ts`'s
- * `damageEnemy` now imports `wakeBoss` directly instead of going through
- * `ctx.wakeBoss?.(...)`. See `Context.ts`'s own doc comment for the entries
- * that remain and why.
+ * `wakeBoss` registers itself into `src/core/Context.ts`'s locator at this
+ * module's scope, just below its definition, because `src/enemies/Damage.ts`
+ * cannot import it: that edge closes a four-file cycle
+ * (`Damage.ts -> Boss.ts -> ai/Attacks.ts -> world/Props.ts -> Damage.ts`).
+ * Plan 0E Task 10 retired the entry after a `madge --circular src/` run that
+ * was silently scanning only `src/legacy.js` — madge's default extensions
+ * exclude `.ts` — and Plan 0F Task 1 restored it once the gate was fixed.
+ * See `Damage.ts`'s doc comment for the full account.
  *
- * The enemy parameters these five functions take are left untyped, the
+ * The enemy parameters these five functions take are typed `unknown` and
+ * cast at the point of use to the local `BossBrainEnemy` shape below, the
  * same convention `src/enemies/Damage.ts`/`Death.ts` established for that
  * dynamic, not-yet-settled object (see `src/world/WorldState.ts`'s own doc
- * comment). `cineTick` is the one exception: `world.cine` needs a cast to
- * do arithmetic on its fields, so it is read once into a locally typed
- * `cine` alias right after the existing null guard — the same object,
- * just typed — and every read in the function goes through that alias;
- * the final `world.cine=null;` still writes the real field directly, since
- * `cine` is a `const` and cannot be reassigned.
+ * comment) — `wakeBoss`/`priestThink` are each called with differently-shaped
+ * casts from `src/enemies/ai/Behaviors.ts`'s own `Enemy`, so `unknown` is the
+ * honest boundary type. `roarFor` never reads its parameter at all, so it
+ * stays `unknown` with no cast. `cineTick` is the one exception: `world.cine`
+ * needs a cast to do arithmetic on its fields, so it is read once into a
+ * locally typed `cine` alias right after the existing null guard — the same
+ * object, just typed — and every read in the function goes through that
+ * alias; the final `world.cine=null;` still writes the real field directly,
+ * since `cine` is a `const` and cannot be reassigned.
  *
  * `style.opacity` takes strings here where the reference assigns numbers,
  * the same adjustment `src/ui/HudMessages.ts`, `src/ui/Toasts.ts` and
@@ -64,23 +74,58 @@ import { fireOrb, spawnRing, spawnStrike } from "./ai/Attacks";
 
 interface Cine { t: number; dur: number; e: { x: number; z: number; h: number; key: string }; }
 
-export function wakeBoss(e){
+/** world.enemies elements, cast for wakeBoss/priestTeleport/priestThink — the boss brain. */
+interface BossBrainEnemy {
+  x: number;
+  z: number;
+  key: string;
+  name: string;
+  title?: string;
+  dormant?: boolean;
+  priest?: boolean;
+  phase: number;
+  hp: number;
+  maxhp: number;
+  formKey?: string;
+  sp: THREE.Sprite;
+  blob: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial>;
+  w: number;
+  h: number;
+  sovereign?: boolean;
+  speed: number;
+  mel: number;
+  tpT: number;
+  atkT: number;
+  sumT: number;
+  ringT: number;
+  debT: number;
+  cool: number;
+  fy?: number;
+  animT: number;
+  frame: number;
+  atkAnim: number;
+}
+
+export function wakeBoss(enemy: unknown){
+  const e=enemy as BossBrainEnemy;
   if(!e.dormant)return;
   e.dormant=false;
   world.cine={t:0,dur:2.7,e};
   game.inputLock=true;input.firing=false;
-  document.getElementById("barTop").style.height="11%";
-  document.getElementById("barBot").style.height="11%";
-  const bt=document.getElementById("bossTitle");
-  bt.children[0].textContent=e.name;bt.children[1].textContent=e.title||EDEF[e.key].title;
+  el("barTop").style.height="11%";
+  el("barBot").style.height="11%";
+  const bt=el("bossTitle");
+  bt.children[0].textContent=e.name;bt.children[1].textContent=(e.title||EDEF[e.key].title)!;
   bt.style.opacity="1";
   blip(40,1.6,"sawtooth",.2,30,true);bang(.5,.4,300);
   if(e.priest)organChord();
-  setTimeout(()=>roarFor(e),500);}
+  after(()=>roarFor(e),500);}
 
-export function roarFor(e){growl(rnd(42,60),1.0,.6,true);setTimeout(()=>growl(rnd(50,70),.6,.4,true),200);}
+ctx.wakeBoss=wakeBoss;
 
-export function cineTick(dt){
+export function roarFor(e: unknown){growl(rnd(42,60),1.0,.6,true);after(()=>growl(rnd(50,70),.6,.4,true),200);}
+
+export function cineTick(dt: number){
   if(!world.cine)return;
   const cine=world.cine as unknown as Cine;
   cine.t+=dt;
@@ -91,15 +136,16 @@ export function cineTick(dt){
   const want=Math.atan2(b.h*.7-player.pyy,Math.hypot(b.x-player.px,b.z-player.pz));
   input.pitch=input.pitch+(want-input.pitch)*Math.min(1,dt*4);
   if(cine.t>=cine.dur){
-    document.getElementById("barTop").style.height="0";
-    document.getElementById("barBot").style.height="0";
-    document.getElementById("bossTitle").style.opacity="0";
+    el("barTop").style.height="0";
+    el("barBot").style.height="0";
+    el("bossTitle").style.opacity="0";
     game.inputLock=false;
     say("boss_"+cine.e.key,true);
     startBossMusic();
     world.cine=null;}}
 
-export function priestTeleport(e,far){
+export function priestTeleport(enemy: unknown,far: boolean){
+  const e=enemy as BossBrainEnemy;
   smoke3d(e.x,1.2,e.z,16);blip(700,.25,"sine",.1,140,true);
   for(let tries=0;tries<24;tries++){
     const a=rnd(0,6.28),d=far?rnd(7,11):rnd(4,7);
@@ -108,7 +154,8 @@ export function priestTeleport(e,far){
   smoke3d(e.x,1.2,e.z,16);fireP(e.x,1,e.z,6);
   blip(140,.25,"sine",.12,700,true);}
 
-export function priestThink(e,dt,dist,dx,dz){
+export function priestThink(enemy: unknown,dt: number,dist: number,dx: number,dz: number){
+  const e=enemy as BossBrainEnemy;
   /* phase transitions */
   if(e.phase===1&&e.hp<e.maxhp*.66){e.phase=2;
     say("boss_"+e.key+"2",true);roarFor(e);shake(.3);screenShake.hitStop=Math.max(screenShake.hitStop,.06);

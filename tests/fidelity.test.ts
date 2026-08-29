@@ -422,21 +422,25 @@ describe("ItemTextures (pickupTex/buildItemTex) vs. reference", () => {
 });
 
 /**
- * Reverses the one mechanical substitution Task 5 makes to blip/bang/boom's
- * bodies: the reference's bare AC/masterG/echoG reads become calls to
- * AudioEngine's ctx()/masterBus()/echoBus() accessors (src/audio/Sfx.ts's
- * doc comment explains why — bare module bindings can't cross a module
- * boundary the way legacy.js's global `let`s could). It's a lossless,
- * one-to-one textual substitution — every occurrence of one becomes exactly
- * the other, nothing else changes — so reversing it should reproduce the
- * reference body exactly. If it doesn't, that's a genuine fidelity break,
- * not a false positive from this transform.
+ * Reverses the two mechanical substitutions this branch makes to bodies
+ * this file still compares byte-for-byte: Task 5's — the reference's bare
+ * AC/masterG/echoG reads become calls to AudioEngine's
+ * ctx()/masterBus()/echoBus() accessors (src/audio/Sfx.ts's doc comment
+ * explains why — bare module bindings can't cross a module boundary the
+ * way legacy.js's global `let`s could) — and Task 6's — a bare
+ * `setTimeout(fn,ms)` becomes `after(fn,ms)`, src/core/Timers.ts's tracked
+ * wrapper, so a level load can cancel it (KNOWN-3). Both are lossless,
+ * one-to-one textual substitutions — every occurrence of one becomes
+ * exactly the other, same arguments, same order — so reversing them should
+ * reproduce the reference body exactly. If it doesn't, that's a genuine
+ * fidelity break, not a false positive from either transform.
  */
 function denormalizeAudioAccessors(src: string): string {
   return src
     .replace(/\bctx\(\)/g, "AC")
     .replace(/\bmasterBus\(\)/g, "masterG")
-    .replace(/\bechoBus\(\)/g, "echoG");
+    .replace(/\bechoBus\(\)/g, "echoG")
+    .replace(/\bafter\(/g, "setTimeout(");
 }
 
 describe("AudioEngine/Sfx vs reference", () => {
@@ -486,7 +490,21 @@ describe("AudioEngine/Sfx vs reference", () => {
  * local to this one oracle entry.
  */
 function stripPianoParamAnnotation(src: string): string {
-  return src.replace("([fr,t,v]:[number,OscillatorType,number])", "([fr,t,v])");
+  // Plan 0F Task 10 moved this annotation from the callback parameter onto
+  // the array literal. `strictFunctionTypes` checks an explicitly-annotated
+  // callback parameter *contravariantly* against forEach's own inferred
+  // (string|number)[] parameter and rejects the tuple; annotating the array
+  // instead lets the callback's type come from plain contextual inference,
+  // which needs no such check. Both forms are exact-string replacements
+  // targeting this one known body — not regexes — so `normalizeTsSource`'s
+  // warning about `as` casts (a regex cannot tell code from string content)
+  // does not apply here.
+  return src
+    .replace(
+      '([[f,"triangle",.12],[f*2,"sine",.04],[f*.5,"sine",.03]] as [number,OscillatorType,number][])',
+      '[[f,"triangle",.12],[f*2,"sine",.04],[f*.5,"sine",.03]]',
+    )
+    .replace("([fr,t,v]:[number,OscillatorType,number])", "([fr,t,v])");
 }
 
 describe("Voice/Ambient vs reference", () => {
@@ -530,7 +548,7 @@ describe("Voice/Ambient vs reference", () => {
     );
   });
 
-  it("deathCry's body matches the reference exactly once accessor calls are reversed — it only calls growl()/gurgle() otherwise, no engine state of its own", () => {
+  it("deathCry's body matches the reference exactly once accessor calls and the after()/setTimeout() timer wrapper are reversed — it only calls growl()/gurgle() otherwise, no engine state of its own", () => {
     const moduleSource = readModuleSource("src/audio/Voice.ts");
     const refChunk = refSource(REF.deathCry);
     expect(denormalizeAudioAccessors(extractFunctionBody(moduleSource, "deathCry"))).toBe(
@@ -538,7 +556,7 @@ describe("Voice/Ambient vs reference", () => {
     );
   });
 
-  it("wetDoor's body matches the reference exactly once accessor calls are reversed", () => {
+  it("wetDoor's body matches the reference exactly once accessor calls and the after()/setTimeout() timer wrapper are reversed", () => {
     const moduleSource = readModuleSource("src/audio/Ambient.ts");
     const refChunk = refSource(REF.wetDoor);
     expect(denormalizeAudioAccessors(extractFunctionBody(moduleSource, "wetDoor"))).toBe(

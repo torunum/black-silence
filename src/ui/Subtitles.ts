@@ -1,5 +1,6 @@
 import { pick } from "../utils/math";
 import { MONOLOGUE as M } from "../content/monologue";
+import { el } from "./dom";
 
 /**
  * ADEM's subtitles — the voice in the player's ear.
@@ -43,7 +44,7 @@ export function say(id: string, force?: boolean): void {
     if (now - lastSayT < 3) return;
   }
   lastSayT = now;
-  document.getElementById("subt").innerHTML = "<b>ADEM</b><br>“" + pick(lines) + "”";
+  el("subt").innerHTML = "<b>ADEM</b><br>“" + pick(lines) + "”";
   subT = 4.3;
 }
 
@@ -51,6 +52,6 @@ export function say(id: string, force?: boolean): void {
 export function tickSubtitles(dt: number): void {
   if (subT > 0) {
     subT -= dt;
-    if (subT <= 0) document.getElementById("subt").innerHTML = "";
+    if (subT <= 0) el("subt").innerHTML = "";
   }
 }

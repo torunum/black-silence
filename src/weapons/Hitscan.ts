@@ -1,3 +1,4 @@
+import type * as THREE from "three";
 import { renderState } from "../render/Renderer";
 import { world } from "../world/WorldState";
 import { clamp, rnd } from "../utils/math";
@@ -60,6 +61,11 @@ import { damageEnemy } from "../enemies/Damage";
  * duplicated — both `hitscan` and `crossExplode` call `breakProp`/
  * `explodeBarrel` with the exact object they cast out of `world.props`, so
  * the cast target has to satisfy that function's real parameter type.
+ *
+ * `cands` (the per-shot candidate list `hitscan` sorts by hit distance) is a
+ * discriminated union, `HitCandidate`, rather than two parallel arrays —
+ * `hitscan` already sorts enemy and prop hits together by `t`, so one typed
+ * array mirrors that.
  */
 
 /** world.enemies elements, cast for hitscan's candidate pass and crossExplode's blast loop. */
@@ -75,11 +81,18 @@ interface HitscanEnemy {
   fy?: number;
   kx: number;
   kz: number;
+  key: string;
+  plate: number;
 }
 
-export function hitscan(dir,dmg,wIdx){
+/** hitscan's per-shot candidate list, sorted by hit distance before resolution. */
+type HitCandidate =
+  | { kind: "e"; t: number; e: HitscanEnemy; cy: number }
+  | { kind: "p"; t: number; p: Prop };
+
+export function hitscan(dir: THREE.Vector3,dmg: number,wIdx: number){
   const o=renderState.camera.position;
-  const cands=[];
+  const cands: HitCandidate[]=[];
   (world.enemies as unknown as HitscanEnemy[]).forEach(e=>{if(e.dead||e.dormant)return;
     const ecy=e.fly?(e.flyH||1.5):e.h*.5+(e.fy||0);   // sprite center height
     const ex=e.x-o.x,ez=e.z-o.z,ey=ecy-o.y;
@@ -141,7 +154,7 @@ export function hitscan(dir,dmg,wIdx){
     sparks(wx-dir.x*.05,clamp(wy,.1,WALLH-.1),wz-dir.z*.05,4);
     addWallDecal(wx,clamp(wy,.15,WALLH-.15),wz,n.x,n.z,.08,holeMat);
     if(Math.random()<.3)bang(.03,.08,4000,800);}}
-export function crossExplode(x,y,z){
+export function crossExplode(x: number,y: number,z: number){
   flashHoly(.35);shake(.35);screenShake.hitStop=Math.max(screenShake.hitStop,.04);
   renderState.boomLight.position.set(x,y,z);renderState.boomLight.intensity=4;renderState.boomLight.color.setHex(0xfff0b0);
   holyP(x,y,z,40);smoke3d(x,y,z,10);

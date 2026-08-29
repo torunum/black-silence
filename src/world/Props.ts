@@ -4,6 +4,7 @@ import { bang, boom } from "../audio/Sfx";
 import { woodP, fireP, smoke3d, sparks } from "../fx/Particles";
 import { spawnGibs } from "../fx/Gibs";
 import { scorchMat } from "../fx/Decals";
+import { track } from "../render/DisposeRegistry";
 import { shake, screenShake } from "../fx/ShakeState";
 import { addSprite } from "../render/RenderCore";
 import { renderState } from "../render/Renderer";
@@ -81,7 +82,7 @@ export function explodeBarrel(b: Prop): void {
   renderState.boomLight.position.set(b.x,1.2,b.z);renderState.boomLight.intensity=4;renderState.boomLight.color.setHex(0xff7830);
   fireP(b.x,.8,b.z,40);smoke3d(b.x,1,b.z,22);sparks(b.x,.8,b.z,18);
   spawnGibs(b.x,.8,b.z,6,5,true);
-  const sc=new THREE.Mesh(new THREE.CircleGeometry(1.5,10),scorchMat);
+  const sc=new THREE.Mesh(track(new THREE.CircleGeometry(1.5,10)),scorchMat);
   sc.rotation.x=-Math.PI/2;sc.position.set(b.x,.015,b.z);renderState.scene.add(sc);
   boom(1.1);
   const pd=Math.hypot(player.px-b.x,player.pz-b.z);
@@ -92,5 +93,5 @@ export function explodeBarrel(b: Prop): void {
       e.kx+=(e.x-b.x)/f*9;e.kz+=(e.z-b.z)/f*9;
       damageEnemy(e,70*(1-dd/5),{explosive:true,dir:{x:(e.x-b.x)/f,z:(e.z-b.z)/f}});}}
   for(const o of world.props as unknown as Prop[]){if(!o.dead&&o!==b&&Math.hypot(o.x-b.x,o.z-b.z)<4){
-    if(o.explosive&&o.fuse<0)o.fuse=rnd(.15,.4);else breakProp(o);}}
+    if(o.explosive&&o.fuse!<0)o.fuse=rnd(.15,.4);else breakProp(o);}}
   alertSound(b.x,b.z,22);}

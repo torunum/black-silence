@@ -33,8 +33,8 @@ describe("expectCallLogEqual", () => {
   });
 
   it("reports a length mismatch at the first divergent index", () => {
-    const a = [{ method: "a", args: [] }];
-    const b = [
+    const a: { method: string; args: number[] }[] = [{ method: "a", args: [] }];
+    const b: { method: string; args: number[] }[] = [
       { method: "a", args: [] },
       { method: "b", args: [] },
     ];

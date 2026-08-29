@@ -18,7 +18,10 @@ import { input } from "../player/Input";
 import { breakProp, explodeBarrel, type Prop } from "../world/Props";
 import { alertSound } from "../enemies/ai/Perception";
 import { damageEnemy } from "../enemies/Damage";
+import { after } from "../core/Timers";
 import { hitscan } from "./Hitscan";
+import { schedule } from "../core/Time";
+import { track } from "../render/DisposeRegistry";
 
 /**
  * The weapon FSM's *behavior* — the functions that read input and time and
@@ -61,11 +64,14 @@ import { hitscan } from "./Hitscan";
  * (`fire` calls `hitscan`, so this file already imports `Hitscan.ts`).
  * See `Hitscan.ts`'s own header for how it reads `pierce` instead.
  *
- * `doKick`'s `setTimeout(...,110)` moves verbatim, bug and all: the
- * scheduled hit test ignores hit-stop and pause, and survives level
- * unload. `docs/known-issues.md` KNOWN-3 already tracks it; the fix
- * (`Time.schedule()`) is Plan 0F's hardening step, not this port's — Phase
- * 0 is a mechanical move with no behavior change.
+ * `doKick`'s hit test moved verbatim from `setTimeout(...,110)` through
+ * Phase 0's mechanical port, bug and all: the scheduled hit test ignored
+ * hit-stop and pause, and survived level unload. Plan 0F Task 5, the first
+ * task chartered to change behavior, replaced it with
+ * `schedule(...,0.110)` — `Time.ts`'s scaled-clock equivalent, driven from
+ * `Loop.ts`'s gameplay block, so the hit test now respects hit-stop and
+ * pause the way every other per-frame system already did. `docs/known-issues.md`
+ * KNOWN-3 records it as done.
  */
 
 const WEAPON_SOUNDS = [
@@ -96,7 +102,7 @@ interface KickEnemy {
   flungT?: number;
 }
 
-export function requestSwitch(i){
+export function requestSwitch(i: number){
   if(!game.started||!S.weapons[i]||i===S.cur||weaponRuntime.pending===i)return;
   weaponRuntime.pending=i;input.zoomOn=false;
   if(weaponRuntime.wstate!=="unequip"){weaponRuntime.wstate="unequip";weaponRuntime.wtime=0;click(.12);}}
@@ -106,7 +112,7 @@ export function startReload(){
   if(weaponRuntime.wstate!=="idle"&&weaponRuntime.wstate!=="fire")return;
   if(S.mag[S.cur]>=w.magSize||S.ammo[w.ammo]<=0)return;
   weaponRuntime.wstate="reload";weaponRuntime.wtime=0;weaponRuntime.reloadFlags={};}
-export function weaponTick(dt){
+export function weaponTick(dt: number){
   weaponRuntime.wtime+=dt;weaponRuntime.wCool-=dt;
   const w=WEAPONS[S.cur];
   if(weaponRuntime.wstate==="unequip"&&weaponRuntime.wtime>=UNEQUIP_T){
@@ -146,7 +152,7 @@ export function weaponTick(dt){
   if(S.kickCd>0){S.kickCd-=dt;
     if(S.kickCd<=0){say("kickready");click(.12);}}
   weaponRuntime.kickAnim=Math.max(0,weaponRuntime.kickAnim-dt);}
-export function fire(w){
+export function fire(w: typeof WEAPONS[number]){
   S.mag[S.cur]--;weaponRuntime.wCool=w.rate;weaponRuntime.wstate="fire";weaponRuntime.wtime=0;
   S.shots++;
   weaponRuntime.kickAmt=w.kick;weaponRuntime.kickRot=(Math.random()-.5)*w.kick*.25;
@@ -156,7 +162,7 @@ export function fire(w){
   renderState.muzzleLight.color.setHex(S.cur===5?0xfff0b0:0xffc878);
   w.snd();
   if(S.cur===2||S.cur===3)ejectCasing(0);
-  if(S.cur===1)setTimeout(()=>{ejectCasing(2);click(.12);},300); // pump
+  if(S.cur===1)after(()=>{ejectCasing(2);click(.12);},300); // pump
   weaponRuntime.recoilPitch+=(S.cur===1?.04:S.cur===4?.05:S.cur===0?.022:S.cur===5?.03:.006);
   alertSound(player.px,player.pz,18);
   const dir=new THREE.Vector3();renderState.camera.getWorldDirection(dir);
@@ -170,8 +176,8 @@ export function fire(w){
       hitscan(d,w.dmg,S.cur);
       // green energy bolt + glow tracer
       const grp=new THREE.Group();
-      const core=new THREE.Mesh(new THREE.SphereGeometry(.22,8,8),reapCoreMat);
-      const tail=new THREE.Mesh(new THREE.BoxGeometry(.12,.12,.7),reapTailMat);
+      const core=new THREE.Mesh(track(new THREE.SphereGeometry(.22,8,8)),reapCoreMat);
+      const tail=new THREE.Mesh(track(new THREE.BoxGeometry(.12,.12,.7)),reapTailMat);
       tail.position.z=-.35;grp.add(core);grp.add(tail);
       grp.position.copy(renderState.camera.position);
       projectiles.nails.push({m:grp,vx:d.x*30,vy:d.y*30,vz:d.z*30,dmg:0,life:1.2,reap:true,spin:0});
@@ -179,8 +185,8 @@ export function fire(w){
       renderState.muzzleLight.color.setHex(0x7fe05a);renderState.muzzleLight.intensity=2.4;}
     else if(w.kind==="cross"){
       const grp=new THREE.Group();
-      const m1=new THREE.Mesh(new THREE.BoxGeometry(.09,.5,.09),crossMat);
-      const m2=new THREE.Mesh(new THREE.BoxGeometry(.3,.09,.09),crossMat);
+      const m1=new THREE.Mesh(track(new THREE.BoxGeometry(.09,.5,.09)),crossMat);
+      const m2=new THREE.Mesh(track(new THREE.BoxGeometry(.3,.09,.09)),crossMat);
       m2.position.y=.1;grp.add(m1);grp.add(m2);
       grp.position.copy(renderState.camera.position);grp.position.y-=.1;
       projectiles.nails.push({m:grp,vx:d.x*22,vy:d.y*22,vz:d.z*22,dmg:w.dmg,life:3,cross:true,
@@ -198,7 +204,7 @@ export function doKick(){
   if(!game.started||S.dead||game.inputLock||S.kickCd>0||game.pianoOpen)return;
   S.kickCd=15;weaponRuntime.kickAnim=.32;
   shake(.3);bang(.15,.5,900);
-  setTimeout(()=>{
+  schedule(()=>{
     const dir=new THREE.Vector3();renderState.camera.getWorldDirection(dir);
     let hitAny=false;
     for(const e of world.enemies as unknown as KickEnemy[]){if(e.dead)continue;
@@ -221,4 +227,4 @@ export function doKick(){
       hitAny=true;
       if(p.explosive)explodeBarrel(p);else breakProp(p);}
     if(hitAny){bang(.12,.4,500);shake(.15);screenShake.hitStop=Math.max(screenShake.hitStop,.03);}
-  },110);}
+  },0.110);}

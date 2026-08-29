@@ -7,8 +7,8 @@ import { game } from "../../src/core/Game";
 import { S } from "../../src/core/State";
 
 /**
- * `src/core/Context.ts`'s three remaining entries — `endLevel`, `openPiano`,
- * `showWin` — closing Plan 0E Task 12 review finding I1.
+ * `src/core/Context.ts`'s three remaining entries, as of Plan 0E Task 12
+ * review finding I1 — `endLevel`, `openPiano`, `showWin`.
  *
  * Every call site uses `ctx.X?.()` (optional call), so a wrong or missing
  * registration doesn't throw — it silently no-ops. The whole 364-test suite
@@ -17,6 +17,38 @@ import { S } from "../../src/core/State";
  * wrong target) and a 3-way rotation of all three registrations. Neither
  * `tests/integration/wiring.test.ts` nor anything else names `endLevel`,
  * `openPiano`, `showWin` or `Context` at all.
+ *
+ * Update, Plan 0F Task 1 (b): `wakeBoss` is one of them again. Plan 0E Task
+ * 10 retired it to a direct `Damage.ts -> Boss.ts` import on the strength of
+ * a `madge --circular src/` run that — it turned out — was scanning only
+ * `src/legacy.js`, because madge's default extension list excludes `.ts`.
+ * With `--extensions ts,js` the real graph shows that import closes a
+ * four-file cycle: `Damage.ts -> Boss.ts -> ai/Attacks.ts -> world/Props.ts
+ * -> Damage.ts`. The locator entry is restored, registered by `Boss.ts` at
+ * its own module scope, and the `wakeBoss` block below pins it.
+ *
+ * Update, Plan 0F Task 1: `openPiano` is no longer one of them. It moved,
+ * with the rest of the playable piano, to `src/ui/Piano.ts`, and
+ * `src/player/Interact.ts` now imports it directly instead of reaching it
+ * through `ctx.openPiano?.()` — `madge --circular src/` confirmed that
+ * direct import adds no cycle. `Context.ts` now holds only `endLevel` and
+ * `showWin`. The seam the `openPiano` describe block below covers still
+ * exists — the piano-proximity branch should still open the piano — only
+ * the mechanism changed, so that block now asserts the direct call instead
+ * of a locator registration; it no longer touches `ctx` at all.
+ *
+ * Update, Plan 0F Task 2: `endLevel` and `showWin` are gone too, the same
+ * way `openPiano` left — both moved to `src/ui/LevelEnd.ts`, and
+ * `src/player/Player.ts`/`src/enemies/Death.ts` now import them directly
+ * instead of reaching them through `ctx.endLevel?.()`/`ctx.showWin?.()`.
+ * Each retirement was confirmed clean one at a time against
+ * `madge --circular --extensions ts,js src/`, so a cycle would have been
+ * attributable to whichever one caused it (neither did). `Context.ts` now
+ * holds exactly one entry, `wakeBoss` — a genuine cycle-break, not a bridge
+ * to code that had not moved yet, so it has no seam here to convert; its
+ * own describe block below is unchanged. The `endLevel`/`showWin` describe
+ * blocks below now assert the direct call the same way the `openPiano`
+ * block already did — neither touches `ctx` any more either.
  *
  * This is a sibling of `wiring.test.ts`, not an extension of it, for one
  * concrete reason: `src/legacy.js` is a module singleton with side effects
@@ -55,15 +87,19 @@ import { S } from "../../src/core/State";
  * *or* a correct run reaching a later frame) would not.
  *
  * `showWin` only fires from `bossDeath`'s `key==="G"` branch (THE LIVING
- * HEART, level 7, 3000 hp), inside a `setTimeout`. Playing a boss fight to
- * death in a test is disproportionate to what's being pinned here — the
- * registration, not the fight — so that test calls the real, exported
- * `bossDeath` directly with a minimal synthetic boss enemy (the same
- * technique `src/player/Player.ts`'s and `src/enemies/Death.ts`'s own local
+ * HEART, level 7, 3000 hp), inside `src/core/Timers.ts`'s `after` (a bare
+ * `setTimeout` before Plan 0F Task 6). Playing a boss fight to death in a
+ * test is disproportionate to what's being pinned here — the registration,
+ * not the fight — so that test calls the real, exported `bossDeath`
+ * directly with a minimal synthetic boss enemy (the same technique
+ * `src/player/Player.ts`'s and `src/enemies/Death.ts`'s own local
  * `TickEnemy`/`DeathEnemy` cast interfaces already use for "the few fields
  * this code path actually reads") and drains a fake clock instead of
  * waiting 2.8 real seconds. This still exercises the real
- * `setTimeout(()=>ctx.showWin?.(),2800)` line, not a stand-in for it.
+ * `after(()=>showWin(),2800)` line, not a stand-in for it — `installFakeClock`
+ * replaces `globalThis.setTimeout` before `bossDeath` runs, and `after`
+ * calls `setTimeout` dynamically rather than a captured reference, so it
+ * resolves to the fake one exactly as a bare `setTimeout` call would have.
  */
 
 /** The three DOM/state flags each target function's real body flips, and nothing else in this file does. */
@@ -78,6 +114,7 @@ function overlayState(): { levelendVisible: boolean; winVisible: boolean; pianoV
 let playerTick: (dt: number) => void;
 let interact: () => void;
 let bossDeath: (e: unknown) => void;
+let damageEnemy: (e: unknown, dmg: number, info?: unknown) => void;
 
 beforeAll(async () => {
   installDomStubs();
@@ -101,9 +138,15 @@ beforeAll(async () => {
   // makes this safe.
   ({ playerTick } = await import("../../src/player/Player"));
   ({ interact } = await import("../../src/player/Interact"));
-  ({ bossDeath } = await import("../../src/enemies/Death"));
+  // Not destructured directly: the real functions take a narrower parameter
+  // (bossDeath's KillEnemy, damageEnemy's DamageInfo) than this file's own
+  // deliberately loose `unknown` declarations above, and strictFunctionTypes
+  // (Plan 0F Task 10) checks that contravariantly. The cast is compile-time
+  // only — same functions, same call sites below.
+  bossDeath = (await import("../../src/enemies/Death")).bossDeath as unknown as (e: unknown) => void;
+  damageEnemy = (await import("../../src/enemies/Damage")).damageEnemy as unknown as (e: unknown, dmg: number, info?: unknown) => void;
 
-  await import("../../src/legacy.js");
+  await import("../../src/main");
 
   const newGame = [...document.querySelectorAll(".mbtn")].find((b) => b.textContent?.includes("NEW GAME"));
   if (!newGame) throw new Error("the NEW GAME menu row is gone — this file drives the game through it");
@@ -128,7 +171,7 @@ beforeEach(() => {
   S.won = false;
 });
 
-describe("ctx.endLevel — src/player/Player.ts's exit-pad branch", () => {
+describe("endLevel (src/ui/LevelEnd.ts, imported directly by src/player/Player.ts) — the exit-pad branch", () => {
   it("unhides #levelend (not #win, not the piano) when the player stands on the exit pad with no boss alive", () => {
     expect(world.exitPos, "prologue's LevelLoader should have set an exit pad").not.toBeNull();
     const exit = world.exitPos as unknown as { x: number; z: number };
@@ -145,7 +188,7 @@ describe("ctx.endLevel — src/player/Player.ts's exit-pad branch", () => {
   });
 });
 
-describe("ctx.openPiano — src/player/Interact.ts's piano-proximity branch", () => {
+describe("openPiano (src/ui/Piano.ts, imported directly by src/player/Interact.ts) — the piano-proximity branch", () => {
   it("flips #piano to display:flex (not #levelend, not #win) when the player is within range of world.pianoPos", () => {
     // The prologue has no piano tile; placing world.pianoPos at the
     // player's own current position is the same "seed the state the code
@@ -163,7 +206,7 @@ describe("ctx.openPiano — src/player/Interact.ts's piano-proximity branch", ()
   });
 });
 
-describe("ctx.showWin — src/enemies/Death.ts's bossDeath, key===\"G\"", () => {
+describe("showWin (src/ui/LevelEnd.ts, imported directly by src/enemies/Death.ts) — bossDeath, key===\"G\"", () => {
   it("unhides #win (not #levelend, not the piano) 2.8s after a THE LIVING HEART kill", () => {
     const clock = installFakeClock();
     try {
@@ -185,5 +228,39 @@ describe("ctx.showWin — src/enemies/Death.ts's bossDeath, key===\"G\"", () => 
     } finally {
       clock.restore();
     }
+  });
+});
+
+describe("ctx.wakeBoss — src/enemies/Damage.ts's damageEnemy, dormant-boss branch", () => {
+  it("wakes a dormant boss and starts the cinematic, without touching the three overlays", () => {
+    // A minimal synthetic boss: the fields damageEnemy reads on its way to
+    // the wakeBoss branch, plus the ones wakeBoss itself reads. Same
+    // technique the showWin test above uses, and the same one Player.ts and
+    // Death.ts's own local cast interfaces already use.
+    const mat = { color: { setHex: () => {} } };
+    const boss = {
+      boss: true, dormant: true, dead: false,
+      hp: 3000, maxhp: 3000, plate: 0, pain: 200, stun: 0, slow: 1,
+      kx: 0, kz: 0, x: 4, z: 4, h: 2, key: "G",
+      name: "THE LIVING HEART", title: "WHAT THE PARISH WAS BUILT AROUND",
+      sp: { material: mat }, blob: { material: mat },
+    };
+
+    const before = overlayState();
+    world.cine = null;
+
+    damageEnemy(boss, 1, {});
+
+    // The registration's own observable: wakeBoss is the ONLY thing that
+    // clears `dormant` and opens `world.cine`. An unregistered entry makes
+    // `ctx.wakeBoss?.(e)` a silent no-op and both stay as they were.
+    expect(boss.dormant, "wakeBoss should have cleared dormant").toBe(false);
+    expect(world.cine, "wakeBoss should have opened the boss cinematic").not.toBeNull();
+    expect((world.cine as unknown as { e: unknown }).e).toBe(boss);
+
+    // ...and the full three-way shape, so a wrong-target registration —
+    // ctx.wakeBoss bound to endLevel or showWin — fails here too rather
+    // than merely leaving dormant set.
+    expect(overlayState()).toEqual(before);
   });
 });

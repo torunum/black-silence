@@ -1,3 +1,4 @@
+import * as THREE from "three";
 import { clamp, rnd } from "../utils/math";
 import { PX } from "./SpriteBaker";
 import { bang } from "../audio/Sfx";
@@ -7,8 +8,8 @@ import { sparks, blood } from "../fx/Particles";
 import { spawnGibs, spawnGibChunk } from "../fx/Gibs";
 import { addPool } from "../fx/Decals";
 import { player } from "../player/PlayerState";
-import { killEnemy } from "./Death";
-import { wakeBoss } from "./Boss";
+import { killEnemy, type DamageInfo } from "./Death";
+import { ctx } from "../core/Context";
 
 /**
  * Enemy damage — hit resolution, dismemberment and the sprite/knockback
@@ -28,28 +29,77 @@ import { wakeBoss } from "./Boss";
  * instead, which leaves `damageEnemy -> killEnemy` as the only cross-file
  * edge and needs no locator: nothing in `Death.ts` calls back here.
  *
- * `damageEnemy` calls `wakeBoss` (`src/enemies/Boss.ts`, Task 10) directly —
- * `if(e.boss&&e.dormant)wakeBoss(e);`. Before Task 10's AI extraction this
- * routed through `src/core/Context.ts`'s locator, on the reasoning (stated
- * in the Task 9 brief, treating the AI section as one monolith) that a
- * direct import would close a cycle against the AI's own calls into
- * `damageEnemy`/`damagePlayer`. Splitting the AI section into
- * `ai/Behaviors.ts`/`ai/Locomotion.ts`/`ai/Attacks.ts`/`Boss.ts` changed the
- * answer: `Boss.ts` never calls `damageEnemy` (that call lives in
- * `ai/Behaviors.ts`'s `enemyTick`), so `Damage.ts -> Boss.ts` is one-way.
- * `madge --circular src/` confirmed it stays a DAG (Task 10's Step 6); the
- * `wakeBoss` entry was removed from `Context.ts` accordingly.
+ * `damageEnemy` reaches `wakeBoss` (`src/enemies/Boss.ts`) through
+ * `src/core/Context.ts`'s locator — `if(e.boss&&e.dormant)ctx.wakeBoss?.(e);`
+ * — and that indirection is load-bearing. A direct import closes a real
+ * four-file cycle:
  *
- * `damageEnemy` used to register itself into `src/core/Context.ts`'s
- * locator at module scope below, the way `Player.ts` still registers
- * `endLevel`, and `src/world/Props.ts`/`src/weapons/Hitscan.ts`/
- * `src/weapons/WeaponState.ts` called it via `ctx.damageEnemy?.(...)`. Task
- * 10's Step 6 retired that entry once `madge --circular src/` confirmed a
- * direct import from those three callers closes no cycle, so this file no
- * longer imports the locator at all — `damageEnemy` is a plain export now.
+ *     Damage.ts -> Boss.ts -> ai/Attacks.ts -> world/Props.ts -> Damage.ts
+ *
+ * Plan 0E Task 10 briefly retired this entry, on the reasoning that
+ * `Boss.ts` never calls `damageEnemy` itself (true — that call lives in
+ * `ai/Behaviors.ts`'s `enemyTick`) and that `madge --circular src/` had
+ * confirmed a DAG. The first half was right and the second was worthless:
+ * madge's default extension list excludes `.ts`, so that command scanned
+ * only `src/legacy.js` and reported success without ever seeing this graph.
+ * The cycle is transitive, which is exactly the kind a person checking one
+ * edge by eye will miss and a working `madge` catches instantly.
+ *
+ * Plan 0F Task 1 fixed the gate (`--extensions ts,js` in package.json's
+ * test script) and restored this entry. `tests/integration/contextWiring.test.ts`
+ * now pins the registration, verified against two sabotages: removing it,
+ * and pointing it at `roarFor`.
+ *
+ * `damageEnemy` itself used to be a locator entry too, registered from this
+ * file's module scope, with `src/world/Props.ts`/`src/weapons/Hitscan.ts`/
+ * `src/weapons/WeaponState.ts` calling it via `ctx.damageEnemy?.(...)`. Plan
+ * 0E Task 10's Step 6 retired it in favour of direct imports from those
+ * three. That retirement was justified by the same broken `madge` run as the
+ * `wakeBoss` one above, so its evidence was worthless at the time — but
+ * unlike `wakeBoss` it happens to have been correct, and the working gate
+ * (`--extensions ts,js`) confirms those three edges close no cycle.
+ * `damageEnemy` is a plain export. This file still imports the locator, for
+ * `wakeBoss` and nothing else.
+ *
+ * `damageEnemy`/`refreshSeverSprite`/`severLimb`'s own `e` parameter is
+ * loosely typed too: `damageEnemy` is called from four different files
+ * (`ai/Behaviors.ts`, `weapons/Hitscan.ts`, `weapons/WeaponState.ts`,
+ * `world/Props.ts`), each casting `world.enemies` elements through its own
+ * minimal local interface, so its real shape varies by caller. It takes
+ * `unknown` and casts once, at the top, to the local `DamageEnemy` shape
+ * below — the same convention `src/enemies/Death.ts`/`Boss.ts` follow —
+ * rather than forcing every caller's minimal interface to grow fields it
+ * never otherwise reads. `refreshSeverSprite`/`severLimb` are only ever
+ * called from here with that same already-cast value, so they take
+ * `DamageEnemy` directly.
  */
 
-export function damageEnemy(e, dmg, info) {
+/** world.enemies elements, cast for damageEnemy's hit resolution and severLimb's dismemberment. */
+interface DamageEnemy {
+  dead?: boolean;
+  shield?: boolean;
+  x: number;
+  z: number;
+  h: number;
+  plate: number;
+  sp: THREE.Sprite;
+  hp: number;
+  hurt: number;
+  pain: number;
+  kbRes?: number;
+  kx: number;
+  kz: number;
+  stun: number;
+  slow: number;
+  boss?: boolean;
+  dormant?: boolean;
+  key: string;
+  sever?: { lArm?: boolean; rArm?: boolean; legs?: boolean };
+  severKey?: string;
+}
+
+export function damageEnemy(enemy: unknown, dmg: number, info?: DamageInfo) {
+  const e=enemy as DamageEnemy;
   info=info||{};
   if(e.dead)return;
   /* Hexen Centaur/Slaughtaur shield — blocks most frontal fire */
@@ -77,7 +127,7 @@ export function damageEnemy(e, dmg, info) {
   if(info.dir){e.kx+=info.dir.x*kb;e.kz+=info.dir.z*kb;}
   e.stun=Math.max(e.stun,(info.explosive?.5:(info.wIdx===1?.35:info.wIdx===4?.45:info.wIdx===0?.2:.08))*res+.02);
   if(info.leg&&!e.boss)e.slow=Math.min(e.slow,.6);
-  if(e.boss&&e.dormant)wakeBoss(e);
+  if(e.boss&&e.dormant)ctx.wakeBoss?.(e);
   /* DISMEMBERMENT while still alive — big hits to a limb tear it off */
   if(!e.boss&&e.plate<=0&&PX[e.key].regions&&e.hp>0){
     e.sever=e.sever||{};
@@ -93,9 +143,9 @@ export function damageEnemy(e, dmg, info) {
   if(e.hp<=0)killEnemy(e,dmg,info);}
 
 /* pick the right dismembered texture for the enemy's current sever state */
-export function refreshSeverSprite(e) {
+export function refreshSeverSprite(e: DamageEnemy) {
   const P=PX[e.key],s=e.sever||{};
-  let key=null;
+  let key: "noLegs" | "noLArm" | "noRArm" | "gibbed" | null = null;
   if(s.legs)key="noLegs";
   if(s.lArm)key="noLArm";
   if(s.rArm)key="noRArm";
@@ -105,7 +155,7 @@ export function refreshSeverSprite(e) {
   e.sp.material.map=P[key]||P.a;e.sp.material.needsUpdate=true;}
 
 /* spawn a flying chunk for a torn-off limb + a wet sound */
-export function severLimb(e, type, info) {
+export function severLimb(e: DamageEnemy, type: string, info?: DamageInfo) {
   const y=type==="legs"?e.h*.25:e.h*.55;
   const n=type==="legs"?5:4;
   spawnGibs(e.x,y,e.z,n,3.2);

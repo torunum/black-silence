@@ -171,7 +171,7 @@ beforeAll(async () => {
   // jsdom implements neither, and startGame calls the first on the canvas.
   (HTMLElement.prototype as unknown as { requestPointerLock: () => void }).requestPointerLock = () => {};
 
-  await import("../../src/legacy.js");
+  await import("../../src/main");
   hooksAtBoot = captured.hooks;
   startedBeforeNewGame = captured.hooks?.isStarted();
 
@@ -196,7 +196,7 @@ beforeAll(async () => {
   kickFrame = runFrame(t0 + 33.4);
 });
 
-describe("legacy.js boots the game far enough to test its wiring", () => {
+describe("main.ts boots the game far enough to test its wiring", () => {
   it("loads a level and reaches the main loop", () => {
     expect(document.getElementById("msg")!.textContent).toBe("PROLOGUE — OUT OF THE PIT");
     expect(rafQueue.length).toBeGreaterThan(1);
@@ -206,7 +206,7 @@ describe("legacy.js boots the game far enough to test its wiring", () => {
   });
 });
 
-describe("the input hooks legacy.js installs", () => {
+describe("the input hooks main.ts installs", () => {
   it("installs exactly the thirteen hooks Input.ts declares, all callable", () => {
     expect(hooksAtBoot).not.toBeNull();
     expect(Object.keys(hooksAtBoot!).sort()).toEqual([
@@ -263,7 +263,7 @@ describe("the input hooks legacy.js installs", () => {
   });
 });
 
-describe("what legacy.js passes to the 2D overlay each frame", () => {
+describe("what main.ts passes to the 2D overlay each frame", () => {
   it("passes dt and t, and a zoomLerp that is neither of them", () => {
     expect(restFrame.dt).toBeGreaterThan(0);
     expect(restFrame.t).toBeGreaterThan(0);
@@ -289,7 +289,7 @@ describe("what legacy.js passes to the 2D overlay each frame", () => {
   });
 });
 
-describe("the ViewmodelFrame legacy.js builds", () => {
+describe("the ViewmodelFrame main.ts builds", () => {
   const EXPECTED_FIELDS = [
     "bobT", "cur", "dead", "equipT", "kickAmt", "kickRot", "muzzle", "pianoOpen",
     "sprintKey", "started", "swayX", "swayY", "unequipT", "vx", "vz", "wstate", "wtime", "zoomLerp",

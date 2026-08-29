@@ -7,6 +7,7 @@ import { say } from "../ui/Subtitles";
 import { bellToll } from "../audio/Ambient";
 import { blip, bang } from "../audio/Sfx";
 import { rnd } from "../utils/math";
+import { after } from "../core/Timers";
 
 /**
  * The three random world events that fire on a rolling timer while a level
@@ -50,4 +51,4 @@ export function eventTick(dt: number): void {
     for(const e of world.enemies as unknown as Enemy[]){if(!e.dead&&!e.dormant)e.frenzy=7;}
     showMsg("THE BELLS ARE RINGING",3);
   }else{ /* whispers */
-    for(let i=0;i<3;i++)setTimeout(()=>blip(rnd(300,500),.7,"sine",.025,rnd(120,200),true),i*600);}}
+    for(let i=0;i<3;i++)after(()=>blip(rnd(300,500),.7,"sine",.025,rnd(120,200),true),i*600);}}
