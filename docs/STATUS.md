@@ -4,9 +4,10 @@ Written to survive session loss. If you are picking this up cold, read this
 file, then `docs/direction.md`, then the current plan under
 `docs/superpowers/plans/`. Trust this file and `git log` over any recollection.
 
-Last updated: 2026-08-27, mid Plan 0F. **The port is complete** — `src/legacy.js`
-is deleted and the burn-down is zero. Plan 0F's hardening tasks (5-11) remain.
-The per-task ledger is `.superpowers/sdd/2026-08-25-phase0f-ui-loop-and-hardening/progress.md`.
+Last updated: 2026-08-29, after Plan 0F merged. **Phase 0 is complete.**
+`src/legacy.js` is deleted, the burn-down is zero, `strict: true` is on, and
+every hardening item the spec listed is either done or recorded with a reason.
+Next up is Phase 1.
 
 ---
 
@@ -36,7 +37,7 @@ pinned by characterization tests.
 | 0C | Behavioral oracle, FX layer, weapon viewmodel art, subtitles, input | **merged** |
 | 0D | The global-to-state migration (70 globals, ~700 call sites) | **merged** |
 | 0E | Systems: renderer, level loader, weapons, enemy AI, player, interaction | **merged** |
-| 0F | UI, piano, loop and boot; then hardening — gameplay `setTimeout` removal, dispose registry, `strict: true`, the Three.js upgrade | **in progress** — branch `phase-0f-ui-and-hardening`; extraction done (tasks 1-4), hardening outstanding (5-11) |
+| 0F | UI, piano, loop and boot; then hardening — gameplay `setTimeout` removal, dispose registry, `strict: true`, the Three.js upgrade | **merged** |
 
 The spec originally sized the remainder as two plans; the real shape is four.
 
@@ -51,11 +52,10 @@ done.
 ```
 
 **The port is complete.** `src/legacy.js` was deleted in Plan 0F Task 4
-(`e56bc2f`); `src/` contains no `.js` file, and `tsconfig.json` no longer needs
-`allowJs`/`checkJs`. Plan 0F's hardening tasks (5-11) are still outstanding —
-see the Plan 0F section below.
+(`e56bc2f`); `src/` contains no `.js` file, and `tsconfig.json` has `strict:
+true` with no `allowJs`/`checkJs`, so every line of the port is type-checked.
 
-Tests: 0 → 114 → 167 → 348 → 357 → 369.
+Tests: 0 → 114 → 167 → 348 → 357 → 369 → 400.
 
 Within 0E: 1616 → 1573 (T3) → 1547 (T4) → 1322 (T5) → 1100 (T6) → 1009 (T7)
 → 901 (T8) → 712 (T9) → 326 (T10) → 292 (T11) → 278 (T12a, 81 dead imports).
@@ -241,27 +241,94 @@ Every one of these is recorded in full in the ledger.
    left behind when a later task moved a caller out. Nothing in the toolchain
    flags them.
 
+## Plan 0F status
+
+Branch `phase-0f-ui-and-hardening`, **merged**. Twelve tasks. Ledger:
+`.superpowers/sdd/2026-08-25-phase0f-ui-loop-and-hardening/progress.md`.
+
+Tasks 1-4 finished the port: the piano, level end/win/HUD, idle quips and
+menus, then the loop, the clock and boot. **`src/legacy.js` was deleted** and
+`allowJs`/`checkJs` went with it, so every line is now type-checked. Tasks 5-11
+then changed behavior deliberately — the first time Phase 0 did — in exactly
+the four ways the spec sanctions:
+
+| Change | Where | Pinned by |
+|---|---|---|
+| four gameplay `setTimeout`s onto a hit-stop-scaled, pausable clock | `core/Time.ts` | `core/time.test.ts`, `integration/schedulerWiring.test.ts`, `core/scheduleDelays.test.ts` |
+| every remaining timer cancellable on level load | `core/Timers.ts` | `core/timers.test.ts`, `integration/timerCancellationWiring.test.ts` |
+| per-level GPU resources freed on level load | `render/DisposeRegistry.ts` | `render/disposeRegistry.test.ts`, `integration/gpuDisposeWiring.test.ts` |
+| `strict: true` | `tsconfig.json` | the compiler |
+
+KNOWN-3 closed. KNOWN-12, KNOWN-13 and KNOWN-14 opened.
+
+**The Three.js upgrade was evaluated and deferred**, which the spec §9
+pre-authorised. Not because it breaks — the port's 34 `THREE.*` APIs all still
+exist — but because it is **unverifiable here**. `RenderCore.ts`'s
+`if (THREE.sRGBEncoding !== undefined)` guard reads as defensive coding and is
+really a tripwire pointing the wrong way: on modern Three that property is
+`undefined`, so the line would silently no-op and sRGB output would switch off,
+shifting every colour with nothing able to see it. Colour management went
+default-on in r152 and light intensities changed meaning in r155. No test here
+samples pixels. See KNOWN-14.
+
+### What Plan 0F found, and what it teaches
+
+The recurring theme of this branch was **guards that kept reporting success
+while covering less**, and it turned up four:
+
+1. **`madge --circular src/` had been scanning one file since Plan 0A.** madge's
+   default extensions exclude `.ts`, so the "no import cycles" hard gate looked
+   at `legacy.js` and nothing else, for five plans. The `Processed 1 file` line
+   said so every run and nobody read it. It was hiding a real cycle
+   (`Damage -> Boss -> ai/Attacks -> world/Props -> Damage`) that Plan 0E had
+   introduced while citing a clean madge run as proof. KNOWN-12.
+2. **`smoke.test.ts` scanned only `legacy.js`** for DOM lookups, so every
+   extraction quietly shrank its reach. Widened to all of `src/`: 11 checked
+   lookups became 55.
+3. **`vitest.config.ts` had `passWithNoTests: true`** — a glob that matched
+   nothing would have exited 0 having run nothing.
+4. **The four migrated delays had no test at their real call sites.** A
+   thousandfold ms-for-seconds error passed 391 tests, because no fixture
+   reaches those sites. This is the subtle one: `time.test.ts` proves the
+   mechanism and `schedulerWiring.test.ts` proves the loop drives it, and
+   neither touches a real call site.
+
+The lesson, stated once: **when a tool prints how much work it did, read that
+number** — and when a task moves code out of a file some test scans by name,
+check that test's scope, not just its result.
+
+Two more worth carrying:
+
+- **A green suite proves nothing about a recovered tree.** Two tasks here were
+  recovered from sessions that died mid-task; the second had left a real
+  duplicate-declaration syntax error in `legacy.js` and the suite *still*
+  reported green, from a stale vitest transform cache. Recovery means
+  `git status`, an esbuild parse check, and `npx vitest run --no-cache`.
+- **Implementers who stop are usually right.** Six did across 0E and 0F, and
+  all six were. One refused a circular file split, one refused to commit
+  another agent's half-finished work, one found two real bugs in a throwaway
+  script it had been told to verify rather than trust, and one stopped rather
+  than guess at a `strictFunctionTypes` fix that would have broken a
+  byte-compared body. Briefs should make stopping an acceptable outcome.
+
 ### The next action
 
-**Merge `phase-0e-systems` into `master`**, then start Plan 0F. Everything else
-in this plan is done: 369 tests pass, typecheck is clean, `madge --circular` is
-clean, no `src/` file exceeds 400 lines, `reference/sonsurum.html` is untouched
-and neither trace fixture was regenerated.
+**Phase 1.** `core/Events.ts` gets built when the first system actually needs a
+subscriber, deliberately not before (Plan 0E Decision 2); `wakeBoss` — the one
+entry left in `Context.ts`, and a genuine cycle break rather than a bridge to
+unmoved code — is its natural first candidate. KNOWN-13's fifteen duplicate
+enemy interfaces are also Phase 1's.
 
-The whole-branch review returned 0 Critical and 3 Important findings, **all
-three now closed**: the `Context` locator's three registrations had zero
-coverage (a wrong registration silently no-ops, and two sabotages of it left
-all 364 tests green) — closed by `tests/integration/contextWiring.test.ts`;
-`damageEnemy`'s `dmg>=22` dismemberment threshold was unpinned — closed by
-`tests/integration/dismembermentThreshold.test.ts`; and this file was stale —
-closed by the revision you are reading.
+Phase 2 owns the deferred Three.js upgrade (KNOWN-14), KNOWN-7 (casings never
+reaching the screen) and KNOWN-8 (the six-slot mouse wheel). Phase 4's level
+rebuild owns KNOWN-4 and KNOWN-11.
 
 The one definition-of-done item that **cannot** be checked in this environment
 is "`npm run dev` plays identically to `reference/sonsurum.html`". The browser
 pane throttles `requestAnimationFrame` to zero when it is not displayed, so the
 game loop does not run there — see the environment notes below. The
 characterization traces are the substitute evidence, and they are the reason
-this plan was safe to attempt at all.
+this phase was safe to attempt at all.
 
 ## How fidelity is guarded
 
