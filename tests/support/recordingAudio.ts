@@ -12,11 +12,12 @@
  * Unlike recordingCanvas's Proxy-over-anything approach, the WebAudio
  * surface this codebase actually calls is small and closed (createGain,
  * createOscillator, createBiquadFilter, createDelay, createBufferSource,
- * createBuffer, plus each node's own connect/start/stop/param methods), so
- * this is hand-written per node type rather than a generic Proxy — clearer
- * for a fixed, known method set, and it lets each AudioParam-shaped
- * property (gain, frequency, Q, delayTime) share one small factory instead
- * of guessing at property semantics from a bare method name.
+ * createBuffer, createPanner, plus each node's own connect/start/stop/param
+ * methods), so this is hand-written per node type rather than a generic
+ * Proxy — clearer for a fixed, known method set, and it lets each
+ * AudioParam-shaped property (gain, frequency, Q, delayTime, positionX/Y/Z)
+ * share one small factory instead of guessing at property semantics from a
+ * bare method name.
  *
  * Every created node/buffer is tagged with a stable, creation-ordered id
  * (e.g. "GainNode#3"). connect() and buffer-assignment log the *id* of
@@ -110,6 +111,29 @@ export function recordingAudioContext(): { ctx: unknown; events: AudioEvent[] } 
     });
   }
 
+  /**
+   * Generalizes attachTypeProp to an arbitrary plain (non-AudioParam)
+   * property — added for PannerNode's panningModel/distanceModel/
+   * refDistance/maxDistance/rolloffFactor, which (like type) are logged as
+   * `{prop, method: "value"}` on assignment rather than modeled with
+   * makeParam's setValueAtTime/exponentialRampToValueAtTime surface,
+   * because the real Web Audio API never schedules them — they are plain
+   * gettable/settable fields, not AudioParams.
+   */
+  function attachPlainProp<T>(node: Record<string, unknown>, id: string, prop: string, initial: T): void {
+    let current = initial;
+    Object.defineProperty(node, prop, {
+      enumerable: true,
+      get() {
+        return current;
+      },
+      set(v: T) {
+        current = v;
+        events.push({ kind: "param", detail: { node: id, prop, method: "value", value: v } });
+      },
+    });
+  }
+
   function attachLifecycle(node: Record<string, unknown>, id: string): void {
     node.connect = (...args: unknown[]) => {
       events.push({ kind: "connect", detail: { from: id, to: idFor(args[0]) } });
@@ -177,6 +201,30 @@ export function recordingAudioContext(): { ctx: unknown; events: AudioEvent[] } 
       const id = recordCreate("DelayNode", args);
       const node: Record<string, unknown> = { delayTime: makeParam(id, "delayTime") };
       idOfNode.set(node, id);
+      attachLifecycle(node, id);
+      return node;
+    },
+
+    // Added for Plan 1 Task 3 (src/audio/AudioEngine.ts's masterBus()/
+    // echoBus() per-emission panner) — positionX/Y/Z modeled as AudioParams
+    // via makeParam (real PannerNode has scheduled them since positionX/Y/Z
+    // shipped, matching what busFor() in AudioEngine.ts writes);
+    // panningModel/distanceModel/refDistance/maxDistance/rolloffFactor are
+    // plain fields via attachPlainProp, matching the real API (the Web Audio
+    // spec never lets those be scheduled).
+    createPanner(...args: unknown[]) {
+      const id = recordCreate("PannerNode", args);
+      const node: Record<string, unknown> = {
+        positionX: makeParam(id, "positionX"),
+        positionY: makeParam(id, "positionY"),
+        positionZ: makeParam(id, "positionZ"),
+      };
+      idOfNode.set(node, id);
+      attachPlainProp(node, id, "panningModel", "equalpower");
+      attachPlainProp(node, id, "distanceModel", "inverse");
+      attachPlainProp(node, id, "refDistance", 1);
+      attachPlainProp(node, id, "maxDistance", 10000);
+      attachPlainProp(node, id, "rolloffFactor", 1);
       attachLifecycle(node, id);
       return node;
     },

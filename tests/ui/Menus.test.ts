@@ -109,7 +109,12 @@ describe("initMenus — master volume", () => {
     // And once the audio graph actually exists (audioInit() runs from
     // startGame, not at boot), it is built from the now-correct value.
     audioInit();
-    expect(masterBus().gain.value).toBe(0.8);
+    // masterBus() is typed GainNode | PannerNode as of Plan 1 Task 3 (it
+    // hands back a per-emission PannerNode when emitAt() armed a position),
+    // but nothing in this test ever calls emitAt(), so it genuinely returns
+    // masterG at runtime — the cast only narrows the static type back to
+    // what this test already knows is true here.
+    expect((masterBus() as GainNode).gain.value).toBe(0.8);
   });
 
   it("moving the volume slider still persists (Task 1's gap this task closes)", () => {

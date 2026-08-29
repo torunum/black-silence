@@ -1,0 +1,351 @@
+[
+ {
+  "kind": "create",
+  "detail": {
+   "node": "OscillatorNode#9",
+   "type": "OscillatorNode",
+   "args": []
+  }
+ },
+ {
+  "kind": "create",
+  "detail": {
+   "node": "GainNode#12",
+   "type": "GainNode",
+   "args": []
+  }
+ },
+ {
+  "kind": "param",
+  "detail": {
+   "node": "OscillatorNode#9",
+   "prop": "type",
+   "method": "value",
+   "value": "square"
+  }
+ },
+ {
+  "kind": "param",
+  "detail": {
+   "node": "OscillatorNode#9",
+   "prop": "frequency",
+   "method": "setValueAtTime",
+   "value": 440,
+   "time": 0
+  }
+ },
+ {
+  "kind": "param",
+  "detail": {
+   "node": "OscillatorNode#9",
+   "prop": "frequency",
+   "method": "exponentialRampToValueAtTime",
+   "value": 900,
+   "time": 0.12
+  }
+ },
+ {
+  "kind": "param",
+  "detail": {
+   "node": "GainNode#12",
+   "prop": "gain",
+   "method": "setValueAtTime",
+   "value": 0.2,
+   "time": 0
+  }
+ },
+ {
+  "kind": "param",
+  "detail": {
+   "node": "GainNode#12",
+   "prop": "gain",
+   "method": "exponentialRampToValueAtTime",
+   "value": 0.001,
+   "time": 0.12
+  }
+ },
+ {
+  "kind": "connect",
+  "detail": {
+   "from": "OscillatorNode#9",
+   "to": "GainNode#12"
+  }
+ },
+ {
+  "kind": "create",
+  "detail": {
+   "node": "BiquadFilterNode#2",
+   "type": "BiquadFilterNode",
+   "args": []
+  }
+ },
+ {
+  "kind": "param",
+  "detail": {
+   "node": "BiquadFilterNode#2",
+   "prop": "type",
+   "method": "value",
+   "value": "lowpass"
+  }
+ },
+ {
+  "kind": "param",
+  "detail": {
+   "node": "BiquadFilterNode#2",
+   "prop": "frequency",
+   "method": "value",
+   "value": 1408
+  }
+ },
+ {
+  "kind": "param",
+  "detail": {
+   "node": "BiquadFilterNode#2",
+   "prop": "Q",
+   "method": "value",
+   "value": 0.6
+  }
+ },
+ {
+  "kind": "connect",
+  "detail": {
+   "from": "GainNode#12",
+   "to": "BiquadFilterNode#2"
+  }
+ },
+ {
+  "kind": "connect",
+  "detail": {
+   "from": "BiquadFilterNode#2",
+   "to": "GainNode#1"
+  }
+ },
+ {
+  "kind": "start",
+  "detail": {
+   "node": "OscillatorNode#9",
+   "args": []
+  }
+ },
+ {
+  "kind": "stop",
+  "detail": {
+   "node": "OscillatorNode#9",
+   "args": [
+    0.12
+   ]
+  }
+ },
+ {
+  "kind": "create",
+  "detail": {
+   "node": "OscillatorNode#10",
+   "type": "OscillatorNode",
+   "args": []
+  }
+ },
+ {
+  "kind": "create",
+  "detail": {
+   "node": "GainNode#13",
+   "type": "GainNode",
+   "args": []
+  }
+ },
+ {
+  "kind": "param",
+  "detail": {
+   "node": "OscillatorNode#10",
+   "prop": "type",
+   "method": "value",
+   "value": "sine"
+  }
+ },
+ {
+  "kind": "param",
+  "detail": {
+   "node": "OscillatorNode#10",
+   "prop": "frequency",
+   "method": "setValueAtTime",
+   "value": 660,
+   "time": 0
+  }
+ },
+ {
+  "kind": "param",
+  "detail": {
+   "node": "GainNode#13",
+   "prop": "gain",
+   "method": "setValueAtTime",
+   "value": 0.15,
+   "time": 0
+  }
+ },
+ {
+  "kind": "param",
+  "detail": {
+   "node": "GainNode#13",
+   "prop": "gain",
+   "method": "exponentialRampToValueAtTime",
+   "value": 0.001,
+   "time": 0.08
+  }
+ },
+ {
+  "kind": "connect",
+  "detail": {
+   "from": "OscillatorNode#10",
+   "to": "GainNode#13"
+  }
+ },
+ {
+  "kind": "connect",
+  "detail": {
+   "from": "GainNode#13",
+   "to": "GainNode#3"
+  }
+ },
+ {
+  "kind": "start",
+  "detail": {
+   "node": "OscillatorNode#10",
+   "args": []
+  }
+ },
+ {
+  "kind": "stop",
+  "detail": {
+   "node": "OscillatorNode#10",
+   "args": [
+    0.08
+   ]
+  }
+ },
+ {
+  "kind": "create",
+  "detail": {
+   "node": "OscillatorNode#11",
+   "type": "OscillatorNode",
+   "args": []
+  }
+ },
+ {
+  "kind": "create",
+  "detail": {
+   "node": "GainNode#14",
+   "type": "GainNode",
+   "args": []
+  }
+ },
+ {
+  "kind": "param",
+  "detail": {
+   "node": "OscillatorNode#11",
+   "prop": "type",
+   "method": "value",
+   "value": "square"
+  }
+ },
+ {
+  "kind": "param",
+  "detail": {
+   "node": "OscillatorNode#11",
+   "prop": "frequency",
+   "method": "setValueAtTime",
+   "value": 300,
+   "time": 0
+  }
+ },
+ {
+  "kind": "param",
+  "detail": {
+   "node": "GainNode#14",
+   "prop": "gain",
+   "method": "setValueAtTime",
+   "value": 0.15,
+   "time": 0
+  }
+ },
+ {
+  "kind": "param",
+  "detail": {
+   "node": "GainNode#14",
+   "prop": "gain",
+   "method": "exponentialRampToValueAtTime",
+   "value": 0.001,
+   "time": 0.05
+  }
+ },
+ {
+  "kind": "connect",
+  "detail": {
+   "from": "OscillatorNode#11",
+   "to": "GainNode#14"
+  }
+ },
+ {
+  "kind": "create",
+  "detail": {
+   "node": "BiquadFilterNode#3",
+   "type": "BiquadFilterNode",
+   "args": []
+  }
+ },
+ {
+  "kind": "param",
+  "detail": {
+   "node": "BiquadFilterNode#3",
+   "prop": "type",
+   "method": "value",
+   "value": "lowpass"
+  }
+ },
+ {
+  "kind": "param",
+  "detail": {
+   "node": "BiquadFilterNode#3",
+   "prop": "frequency",
+   "method": "value",
+   "value": 960
+  }
+ },
+ {
+  "kind": "param",
+  "detail": {
+   "node": "BiquadFilterNode#3",
+   "prop": "Q",
+   "method": "value",
+   "value": 0.6
+  }
+ },
+ {
+  "kind": "connect",
+  "detail": {
+   "from": "GainNode#14",
+   "to": "BiquadFilterNode#3"
+  }
+ },
+ {
+  "kind": "connect",
+  "detail": {
+   "from": "BiquadFilterNode#3",
+   "to": "GainNode#1"
+  }
+ },
+ {
+  "kind": "start",
+  "detail": {
+   "node": "OscillatorNode#11",
+   "args": []
+  }
+ },
+ {
+  "kind": "stop",
+  "detail": {
+   "node": "OscillatorNode#11",
+   "args": [
+    0.05
+   ]
+  }
+ }
+]

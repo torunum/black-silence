@@ -21,6 +21,7 @@ import { headTick } from "../enemies/Death";
 import { fxTick } from "../render/Overlay2D";
 import { drawKickBoot, drawViewmodel } from "../render/viewmodel/draw";
 import { renderState } from "../render/Renderer";
+import { updateListener } from "../audio/Listener";
 import { weaponRuntime } from "../weapons/WeaponRuntime";
 import { player } from "../player/PlayerState";
 import { hud } from "../ui/Hud";
@@ -58,6 +59,16 @@ import { hud } from "../ui/Hud";
  * movement, damage and AI already applied, the same as the original. Calling
  * it first would let a scheduled callback (e.g. the power-kick hit test)
  * observe stale enemy/player positions a full frame early instead.
+ *
+ * `updateListener()` (Plan 1 Task 3) is the one call in the
+ * `if(renderState.scene){...}` block with no reference counterpart — the
+ * reference never had a positional audio listener to keep in sync. It sits
+ * first in the block, alongside the other per-frame camera readers
+ * (`partTick`/`gibTick`/`poolTick`/`headTick`/`torchTick`/`fxTick`), and by
+ * the block's own gate only ever runs after a level has loaded, which is
+ * always after `src/core/Boot.ts`'s `startGame` has already called
+ * `audioInit()` — so it is never the first thing to touch a still-unbuilt
+ * audio graph.
  */
 function loop(t: number){
   requestAnimationFrame(loop);
@@ -79,6 +90,7 @@ function loop(t: number){
     tickMessage(dt);
     tickScheduled(dt);}
   if(renderState.scene){
+    updateListener();
     partTick(dt);gibTick(dt);poolTick(dt);headTick(dt);torchTick(dt,t);
     fxTick(dt,t,weaponRuntime.zoomLerp,
       ()=>drawKickBoot(weaponRuntime.kickAnim),
