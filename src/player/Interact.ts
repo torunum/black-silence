@@ -4,6 +4,7 @@ import { ACHIEVEMENTS } from "../content/achievements";
 import { ach } from "../ui/Toasts";
 import { showMsg } from "../ui/HudMessages";
 import { say } from "../ui/Subtitles";
+import { at } from "../audio/AudioEngine";
 import { growl, gurgle } from "../audio/Voice";
 import { blip } from "../audio/Sfx";
 import { wetDoor, stoneDoor } from "../audio/Ambient";
@@ -95,9 +96,9 @@ export function interact(){
     const gx=wx_/CELL|0,gz=wz_/CELL|0,d=world.doors[gx+","+gz] as unknown as Door;
     if(d&&!d.open){
       if(d.locked&&!S.key){showMsg("IT WANTS THE RED KEY",2.2);
-        say("locked");growl(80,.3,.25,true);return;}
+        say("locked");at(wx_,WALLH/2,wz_,()=>growl(80,.3,.25,true));return;}
       d.open=true;
-      if(d.flesh)wetDoor();else stoneDoor();
+      at(wx_,WALLH/2,wz_,()=>{if(d.flesh)wetDoor();else stoneDoor();});
       alertSound(wx_,wz_,8);
       if(d.secret){S.secrets++;S.totSecrets++;say("secret",true);
         showMsg("SECRET FOUND — "+S.secrets+"/"+S.secretsTotal,3);

@@ -4,6 +4,7 @@ import { player } from "../../player/PlayerState";
 import { damagePlayer } from "../../player/Player";
 import { projectiles } from "../../fx/Projectiles";
 import { renderState } from "../../render/Renderer";
+import { at } from "../../audio/AudioEngine";
 import { blip, bang } from "../../audio/Sfx";
 import { gurgle, growl } from "../../audio/Voice";
 import { gibGeo, gibMatsFlesh, spawnGibs } from "../../fx/Gibs";
@@ -92,7 +93,7 @@ export function fireOrb(enemy: unknown,spreadA: number,tox?: boolean){
   projectiles.orbs.push({m,vx:Math.sin(a)*spd,vz:Math.cos(a)*spd,
     vy:((player.pyy-.2)-oy)/(dist/spd),dmg,life:3.2,tox,col});
   renderState.scene.add(m);
-  blip(tox?420:ot==="manc"?180:300,.2,"sawtooth",.08,90);}
+  at(e.x,oy,e.z,()=>blip(tox?420:ot==="manc"?180:300,.2,"sawtooth",.08,90));}
 export function throwFlesh(enemy: unknown){
   const e=enemy as AttackEnemy;
   const dx=player.px-e.x,dz=player.pz-e.z,dist=Math.hypot(dx,dz);
@@ -106,14 +107,14 @@ export function throwFlesh(enemy: unknown){
   renderState.scene.add(m);
   blood(e.x,oy,e.z,6,1.6);    // it rips the chunk out of its own body
   e.hp-=3;                    // Blood-style self-mutilation
-  gurgle(.22,.32);growl(150,.22,.22);}
+  at(e.x,oy,e.z,()=>{gurgle(.22,.32);growl(150,.22,.22);});}
 /* expanding shockwave ring — jump to dodge */
 const ringMatBase=new THREE.MeshBasicMaterial({color:0x9a4ae0,transparent:true,opacity:.6,side:THREE.DoubleSide});
 export function spawnRing(x: number,z: number){
   const m=new THREE.Mesh(track(new THREE.RingGeometry(.1,.45,28)),track(ringMatBase.clone()));
   m.rotation.x=-Math.PI/2;m.position.set(x,.06,z);renderState.scene.add(m);
   world.rings.push({m,x,z,r:.3,hitDone:false});
-  bang(.3,.5,250);blip(60,.5,"sawtooth",.16,30,true);shake(.2);}
+  at(x,.06,z,()=>{bang(.3,.5,250);blip(60,.5,"sawtooth",.16,30,true);});shake(.2);}
 export function ringTick(dt: number){
   for(let i=world.rings.length-1;i>=0;i--){const r=world.rings[i] as unknown as Ring;
     r.r+=6.5*dt;
@@ -136,7 +137,7 @@ export function spawnStrike(){
       track(new THREE.MeshBasicMaterial({color:0x150a1e,transparent:true,opacity:.7})));
     warn.rotation.x=-Math.PI/2;warn.position.set(x,.025,z);renderState.scene.add(warn);
     world.strikes.push({x,z,t:.85,warn});
-    blip(1200,.4,"sine",.05,300);
+    at(x,.025,z,()=>blip(1200,.4,"sine",.05,300));
     return;}}
 export function strikeTick(dt: number){
   for(let i=world.strikes.length-1;i>=0;i--){const s=world.strikes[i] as unknown as Strike;
@@ -146,7 +147,7 @@ export function strikeTick(dt: number){
       renderState.scene.remove(s.warn);
       spawnGibs(s.x,WALLH-.4,s.z,5,3,true);
       smoke3d(s.x,1.4,s.z,10);sparks(s.x,1,s.z,6);
-      bang(.25,.5,400);shake(.18);
+      at(s.x,WALLH-.4,s.z,()=>bang(.25,.5,400));shake(.18);
       if(Math.hypot(player.px-s.x,player.pz-s.z)<1.3)damagePlayer(18);
       for(const p of world.props as unknown as Prop[]){if(!p.dead&&Math.hypot(p.x-s.x,p.z-s.z)<1.3)
         p.explosive?explodeBarrel(p):breakProp(p);}

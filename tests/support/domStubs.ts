@@ -146,6 +146,20 @@ export function installDomStubs(): void {
     createBuffer() { return { getChannelData: () => new Float32Array(1) }; }
     createBufferSource() { return { buffer: null as null, playbackRate: param(1), detune: param(), connect() {}, disconnect() {}, start() {}, stop() {} }; }
     createStereoPanner() { return { pan: param(), connect() {}, disconnect() {} }; }
+    // Plan 1 Task 4 gave real callers a world position, so AudioEngine.ts's
+    // busFor() now actually reaches ctx().createPanner() through this stub
+    // too (previously unreachable: Task 3 shipped emitAt()/at() to nobody).
+    // panningModel/distanceModel/refDistance/maxDistance/rolloffFactor are
+    // plain fields here, matching busFor()'s plain assignment — same
+    // distinction tests/support/recordingAudio.ts's own createPanner() draws
+    // between those and the scheduled positionX/Y/Z params.
+    createPanner() {
+      return {
+        panningModel: "", distanceModel: "", refDistance: 0, maxDistance: 0, rolloffFactor: 0,
+        positionX: param(), positionY: param(), positionZ: param(),
+        connect() {}, disconnect() {},
+      };
+    }
   };
 
   (globalThis as Record<string, unknown>).requestAnimationFrame = () => 0;

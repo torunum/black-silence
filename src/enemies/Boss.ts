@@ -7,6 +7,7 @@ import { input } from "../player/Input";
 import { game } from "../core/Game";
 import { ENEMY_DEFS as EDEF } from "./EnemyDefs";
 import { PX } from "./SpriteBaker";
+import { at } from "../audio/AudioEngine";
 import { blip, bang } from "../audio/Sfx";
 import { growl } from "../audio/Voice";
 import { organChord, startBossMusic } from "../audio/Ambient";
@@ -58,8 +59,9 @@ import { el } from "../ui/dom";
  * dynamic, not-yet-settled object (see `src/world/WorldState.ts`'s own doc
  * comment) — `wakeBoss`/`priestThink` are each called with differently-shaped
  * casts from `src/enemies/ai/Behaviors.ts`'s own `Enemy`, so `unknown` is the
- * honest boundary type. `roarFor` never reads its parameter at all, so it
- * stays `unknown` with no cast. `cineTick` is the one exception: `world.cine`
+ * honest boundary type. `roarFor` used to never read its parameter at all;
+ * Plan 1 Task 4 gave the roar a position, so it now casts too, the same as
+ * the rest. `cineTick` is the one exception: `world.cine`
  * needs a cast to do arithmetic on its fields, so it is read once into a
  * locally typed `cine` alias right after the existing null guard — the same
  * object, just typed — and every read in the function goes through that
@@ -117,13 +119,16 @@ export function wakeBoss(enemy: unknown){
   const bt=el("bossTitle");
   bt.children[0].textContent=e.name;bt.children[1].textContent=(e.title||EDEF[e.key].title)!;
   bt.style.opacity="1";
-  blip(40,1.6,"sawtooth",.2,30,true);bang(.5,.4,300);
+  at(e.x,e.h*.6+(e.fy||0),e.z,()=>{blip(40,1.6,"sawtooth",.2,30,true);bang(.5,.4,300);});
   if(e.priest)organChord();
   after(()=>roarFor(e),500);}
 
 ctx.wakeBoss=wakeBoss;
 
-export function roarFor(e: unknown){growl(rnd(42,60),1.0,.6,true);after(()=>growl(rnd(50,70),.6,.4,true),200);}
+export function roarFor(enemy: unknown){
+  const e=enemy as BossBrainEnemy;
+  at(e.x,e.h*.6+(e.fy||0),e.z,()=>growl(rnd(42,60),1.0,.6,true));
+  after(()=>{at(e.x,e.h*.6+(e.fy||0),e.z,()=>growl(rnd(50,70),.6,.4,true));},200);}
 
 export function cineTick(dt: number){
   if(!world.cine)return;
@@ -146,13 +151,13 @@ export function cineTick(dt: number){
 
 export function priestTeleport(enemy: unknown,far: boolean){
   const e=enemy as BossBrainEnemy;
-  smoke3d(e.x,1.2,e.z,16);blip(700,.25,"sine",.1,140,true);
+  smoke3d(e.x,1.2,e.z,16);at(e.x,1.2,e.z,()=>blip(700,.25,"sine",.1,140,true));
   for(let tries=0;tries<24;tries++){
     const a=rnd(0,6.28),d=far?rnd(7,11):rnd(4,7);
     const nx=player.px+Math.sin(a)*d,nz=player.pz+Math.cos(a)*d;
     if(!solidAt(nx,nz)&&los(nx,nz,player.px,player.pz)){e.x=nx;e.z=nz;break;}}
   smoke3d(e.x,1.2,e.z,16);fireP(e.x,1,e.z,6);
-  blip(140,.25,"sine",.12,700,true);}
+  at(e.x,1,e.z,()=>blip(140,.25,"sine",.12,700,true));}
 
 export function priestThink(enemy: unknown,dt: number,dist: number,dx: number,dz: number){
   const e=enemy as BossBrainEnemy;
@@ -190,7 +195,7 @@ export function priestThink(enemy: unknown,dt: number,dist: number,dx: number,dz
               ne.aware=true;ne.alertX=player.px;ne.alertZ=player.pz;
               smoke3d(nx,.6,nz,10);blood(nx,.3,nz,6,1.5);
               break;}}}
-        blip(180,.6,"sawtooth",.12,60,true);
+        at(e.x,e.h*.6+(e.fy||0),e.z,()=>blip(180,.6,"sawtooth",.12,60,true));
         showMsg("THE PRIEST CALLS HIS FLOCK");}}
   }else{
     if(e.ringT<=0){e.ringT=4.5;spawnRing(e.x,e.z);}
