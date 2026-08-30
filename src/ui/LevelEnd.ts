@@ -4,6 +4,7 @@ import { flushSave } from "../save/persist";
 import { LEVELS } from "../world/levels/index";
 import { loadLevel } from "../world/LevelLoader";
 import { stopBossMusic } from "../audio/Ambient";
+import { stopMusic } from "../audio/Music";
 import { ach } from "./Toasts";
 import { ACHIEVEMENTS } from "../content/achievements";
 import { renderState } from "../render/Renderer";
@@ -64,7 +65,7 @@ el("lebtn").addEventListener("click",()=>{
   renderState.renderer.domElement.requestPointerLock();});
 export function showWin(): void {
   if(S.dead)return;S.won=true;
-  stopBossMusic();document.exitPointerLock();
+  stopBossMusic();stopMusic();document.exitPointerLock();
   el("wingrade").textContent=gradeOf();
   el("winstats").innerHTML=statsHtml()+
     `<br>ACHIEVEMENTS <b>${Object.keys(S.ach).length}</b> · TOTAL KILLS <b>${S.totKills}</b>`;

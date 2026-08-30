@@ -13,6 +13,7 @@ import { itemsTick, doorTick, propTick, torchTick } from "../player/Interact";
 import { eventTick } from "../world/RandomEvents";
 import { ambience, vitalsAudio } from "../world/Ambience";
 import { chatterTick } from "../ui/Chatter";
+import { musicTick } from "../audio/Music";
 import { tickMessage } from "../ui/HudMessages";
 import { partTick } from "../fx/Particles";
 import { gibTick } from "../fx/Gibs";
@@ -69,6 +70,12 @@ import { hud } from "../ui/Hud";
  * always after `src/core/Boot.ts`'s `startGame` has already called
  * `audioInit()` — so it is never the first thing to touch a still-unbuilt
  * audio graph.
+ *
+ * `musicTick(dt,anyAware)` (Plan 1 Task 5) sits right beside
+ * `chatterTick(dt,anyAware)` — same `anyAware` value `enemyTick` returned
+ * two lines up, same `!paused&&!S.dead&&!S.won` gate, so the adaptive-music
+ * state machine (`src/audio/Music.ts`) pauses with the game and stops
+ * advancing on death/win with no second mechanism, exactly like `chatterTick`.
  */
 function loop(t: number){
   requestAnimationFrame(loop);
@@ -87,6 +94,7 @@ function loop(t: number){
     itemsTick(dt);doorTick(dt);propTick(dt);
     eventTick(dt);ambience(dt);vitalsAudio(dt);
     chatterTick(dt,anyAware);
+    musicTick(dt,anyAware);
     tickMessage(dt);
     tickScheduled(dt);}
   if(renderState.scene){
