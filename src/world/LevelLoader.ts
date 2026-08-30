@@ -24,6 +24,7 @@ import { world } from "./WorldState";
 import type { WallSeg } from "./LevelBuilder";
 import { after, clearAllTimers } from "../core/Timers";
 import { clearScheduled } from "../core/Time";
+import { stopMusic } from "../audio/Music";
 import { track, disposeAll } from "../render/DisposeRegistry";
 
 /**
@@ -46,9 +47,17 @@ import { track, disposeAll } from "../render/DisposeRegistry";
  * needed here calls it. See that file's doc comment.
  *
  * `loadLevel` calls `clearAllTimers()` (`src/core/Timers.ts`),
- * `clearScheduled()` (`src/core/Time.ts`) and `disposeAll()`
- * (`src/render/DisposeRegistry.ts`, Plan 0F Task 7) as its very first lines,
- * before any new state is built (Plan 0F Task 6, KNOWN-3). The scene is
+ * `clearScheduled()` (`src/core/Time.ts`), `disposeAll()`
+ * (`src/render/DisposeRegistry.ts`, Plan 0F Task 7) and `stopMusic()`
+ * (`src/audio/Music.ts`, Plan 1 Task 5) as its very first lines,
+ * before any new state is built (Plan 0F Task 6, KNOWN-3). `stopMusic()`
+ * closes a gap the other three don't: `clearAllTimers()` only tracks
+ * `setTimeout` (`Timers.ts`'s `after()`), and `Ambient.ts`'s boss-music
+ * pulse is the codebase's only `setInterval` — nothing cancelled it here
+ * before Task 5, and it survived only because the game's four pre-existing
+ * `stopBossMusic()` call sites (death, the exit pad, the win screen, a boss
+ * dying) happened to cover every *normal* path. A level load that isn't one
+ * of those — jumping levels mid-fight — did not. The scene is
  * replaced wholesale here, so anything still pending from the level being
  * left behind — an audio tail, a UI fade, a scheduled boss attack, a wall's
  * geometry — must not fire into, or leak past, the level that is about to
@@ -142,7 +151,7 @@ export function spawnProp(ch: string, wx: number, wz: number): void {
   (world.props as Record<string, unknown>[]).push({m,x:wx,z:wz,r,hgt,hp,dead:false,explosive,kind,fuse:-1});}
 
 export function loadLevel(idx: number): void {
-  clearAllTimers();clearScheduled();disposeAll();
+  clearAllTimers();clearScheduled();disposeAll();stopMusic();
   S.level=idx;
   const Ldef=LEVELS[idx],L=Ldef.build();
   world.grid=L.g;world.GW=L.W;world.GH=L.H;

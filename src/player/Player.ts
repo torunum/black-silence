@@ -4,6 +4,7 @@ import { MONOLOGUE as M } from "../content/monologue";
 import { ctx } from "../audio/AudioEngine";
 import { bang, blip } from "../audio/Sfx";
 import { stopBossMusic } from "../audio/Ambient";
+import { stopMusic } from "../audio/Music";
 import { flashDmg, showMsg } from "../ui/HudMessages";
 import { say } from "../ui/Subtitles";
 import { ach } from "../ui/Toasts";
@@ -86,7 +87,7 @@ function damagePlayer(d: number, silent?: boolean): void {
     bang(.1,.3,700);blip(90,.2,"sawtooth",.12,40);}
   if(S.hp<35&&Math.random()<.3)say("lowhp");
   if(S.hp<=0){S.hp=0;S.dead=true;
-    stopBossMusic();
+    stopBossMusic();stopMusic();
     document.exitPointerLock();
     el("deadquip").textContent='ADEM: “'+pick(M.dead)+'”';
     el("dead").classList.remove("hidden");}}

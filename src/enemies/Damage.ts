@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { clamp, rnd } from "../utils/math";
 import { PX } from "./SpriteBaker";
+import { at } from "../audio/AudioEngine";
 import { bang } from "../audio/Sfx";
 import { pain, gurgle } from "../audio/Voice";
 import { showMsg } from "../ui/HudMessages";
@@ -108,20 +109,20 @@ export function damageEnemy(enemy: unknown, dmg: number, info?: DamageInfo) {
     const toP=Math.atan2(player.px-e.x,player.pz-e.z);
     const shotDir=Math.atan2(-info.dir.x,-info.dir.z);
     let d=Math.abs(((toP-shotDir+Math.PI)%(2*Math.PI))-Math.PI);
-    if(d<1.0){dmg*=0.25;bang(.04,.3,3000,800);sparks(info.hx||e.x,info.hy||e.h*.6,info.hz||e.z,4);}
+    if(d<1.0){dmg*=0.25;at(info.hx||e.x,info.hy||e.h*.6,info.hz||e.z,()=>bang(.04,.3,3000,800));sparks(info.hx||e.x,info.hy||e.h*.6,info.hz||e.z,4);}
   }
   if(e.plate>0&&!info.explosive){
     e.plate-=dmg;
-    bang(.05,.32,2800,700);
+    at(info.hx||e.x,info.hy||e.h*.6,info.hz||e.z,()=>bang(.05,.32,2800,700));
     e.stun=Math.max(e.stun,.08);
     if(e.plate<=0){
       spawnGibs(e.x,e.h*.7,e.z,4,3.4,true);
-      bang(.15,.35,900);showMsg("ARMOR SHATTERED");
+      at(info.hx||e.x,info.hy||e.h*.6,info.hz||e.z,()=>bang(.15,.35,900));showMsg("ARMOR SHATTERED");
       e.sp.material.color.setHex(0x8a9650);}
     return;}
   e.hp-=dmg;
   e.hurt=.12;e.sp.material.color.setHex(0xff8866);
-  pain(clamp(e.pain*.35,70,360),.08+Math.random()*.04);
+  at(info.hx||e.x,info.hy||e.h*.6,info.hz||e.z,()=>pain(clamp(e.pain*.35,70,360),.08+Math.random()*.04));
   const res=1-(e.kbRes||0);
   const kb=(info.explosive?7:(info.wIdx===1?5:info.wIdx===0?2.4:info.wIdx===4?6:info.wIdx===-1?0:1.1))*res;
   if(info.dir){e.kx+=info.dir.x*kb;e.kz+=info.dir.z*kb;}
@@ -161,7 +162,7 @@ export function severLimb(e: DamageEnemy, type: string, info?: DamageInfo) {
   spawnGibs(e.x,y,e.z,n,3.2);
   blood(e.x,y,e.z,12,2.2);
   addPool(e.x,e.z,rnd(.3,.5));
-  gurgle(.25,.4);
+  at(e.x,y,e.z,()=>gurgle(.25,.4));
   if(info&&info.dir){ // throw a big chunk in the shot direction
     spawnGibChunk(e.x,y,e.z,info.dir.x,info.dir.z);}
   showMsg(type==="legs"?"LEGS BLOWN OFF":"LIMB SEVERED");}

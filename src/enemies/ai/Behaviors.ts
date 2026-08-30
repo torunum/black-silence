@@ -3,6 +3,7 @@ import { clamp, rnd } from "../../utils/math";
 import { player } from "../../player/PlayerState";
 import { damagePlayer } from "../../player/Player";
 import { PX } from "../SpriteBaker";
+import { at } from "../../audio/AudioEngine";
 import { blip, bang } from "../../audio/Sfx";
 import { growl, snarl } from "../../audio/Voice";
 import { say } from "../../ui/Subtitles";
@@ -193,7 +194,7 @@ export function enemyTick(dt: number){
         const n=wallNormal(nx,nz,d);
         addWallDecal(nx-d.x*.2,rnd(.8,1.6),nz-d.z*.2,n.x,n.z,rnd(.5,.8),splatMat);
         blood(e.x,1,e.z,14,2.5);
-        bang(.18,.5,600);shake(.2);
+        at(nx,e.h*.6+(e.fy||0),nz,()=>bang(.18,.5,600));shake(.2);
         say(Math.random()<.5?"kicksplat":"wallkill",true);
         ach(ACHIEVEMENTS.punt,S.ach);
         e.kx=0;e.kz=0;
@@ -218,14 +219,14 @@ export function enemyTick(dt: number){
     if(seen){
       anyAware=anyAware||dist<16;
       if(!e.aware){e.aware=true;
-        say(e.elite?"see_elite":"see_"+e.key);snarl(e.key);}
+        say(e.elite?"see_elite":"see_"+e.key);at(e.x,e.h*.6+(e.fy||0),e.z,()=>snarl(e.key));}
       e.alertX=player.px;e.alertZ=player.pz;
       /* ===== BOSS BRAINS ===== */
       if(e.priest){priestThink(e,dt,dist,dx,dz);continue;}
       if(e.key==="E"&&e.charge){
         if(e.charging>0){
           e.charging-=dt;
-          if(!moveEnemy(e,e.cdx,e.cdz,13,dt)){e.charging=0;e.stun=1;bang(.2,.5,400);shake(.25);}
+          if(!moveEnemy(e,e.cdx,e.cdz,13,dt)){e.charging=0;e.stun=1;at(e.x,e.h*.6+(e.fy||0),e.z,()=>bang(.2,.5,400));shake(.25);}
           if(dist<1.6&&e.cool<=0&&Math.abs((e.fy||0)-(player.pyy-EYE))<1.3){e.cool=1.2;e.atkAnim=.22;damagePlayer(e.mel);}
           e.sp.position.set(e.x,e.h/2+(e.fy||0),e.z);e.blob.position.set(e.x,(e.fy||0)+.012,e.z);
           continue;}
@@ -237,7 +238,7 @@ export function enemyTick(dt: number){
       /* screamer */
       if(e.scream&&e.screamT<=0&&dist<14){
         e.screamT=9;e.stun=1.1;
-        growl(180,.9,.4,true);blip(500,.7,"sawtooth",.1,180,true);
+        at(e.x,e.h*.6+(e.fy||0),e.z,()=>{growl(180,.9,.4,true);blip(500,.7,"sawtooth",.1,180,true);});
         for(const o of world.enemies as unknown as Enemy[]){if(o.dead||o.dormant||o===e)continue;
           if(Math.hypot(o.x-e.x,o.z-e.z)<16){o.alertX=player.px;o.alertZ=player.pz;o.slow=1;
             o.frenzy=5;}}
@@ -256,7 +257,7 @@ export function enemyTick(dt: number){
       /* lost soul charge — telegraph then dash */
       if(e.charger&&dist>2.5&&dist<13&&e.lungeT<=0){
         e.lungeT=2.4;e.kx=dx/dist*16;e.kz=dz/dist*16;e.stun=0;
-        blip(700,.3,"sawtooth",.12,1400);shake(.08);}
+        at(e.x,e.h*.6+(e.fy||0),e.z,()=>blip(700,.3,"sawtooth",.12,1400));shake(.08);}
       /* flesh fling — tears a chunk from its own body and throws it */
       if(e.fling&&dist>3&&dist<12&&e.flingCD<=0&&Math.random()<.7){
         e.flingCD=rnd(3.5,6);e.stun=.25;
@@ -265,14 +266,14 @@ export function enemyTick(dt: number){
       if(e.slam&&dist<2.9&&e.slamT<=0){
         e.slamT=4;e.stun=.5;
         schedule(()=>{if(e.dead)return;
-          shake(.35);bang(.3,.6,300);smoke3d(e.x,.3,e.z,10);
+          shake(.35);at(e.x,e.h*.6+(e.fy||0),e.z,()=>bang(.3,.6,300));smoke3d(e.x,.3,e.z,10);
           if(Math.hypot(player.px-e.x,player.pz-e.z)<3.1){damagePlayer(24);
             player.vx+=(player.px-e.x)*3;player.vz+=(player.pz-e.z)*3;}},0.480);
-        blip(80,.4,"sawtooth",.14,40);}
+        at(e.x,e.h*.6+(e.fy||0),e.z,()=>blip(80,.4,"sawtooth",.14,40));}
       /* dog lunge */
       if(e.lunge&&dist>2&&dist<4.5&&e.lungeT<=0){
         e.lungeT=2.6;e.kx=dx/dist*9;e.kz=dz/dist*9;
-        blip(500,.2,"sawtooth",.1,260);}
+        at(e.x,e.h*.6+(e.fy||0),e.z,()=>blip(500,.2,"sawtooth",.1,260));}
       /* dodge */
       if(e.dodge&&!injured&&e.dodgeT<=0&&dist<13&&Math.random()<.5){
         e.dodgeT=rnd(1.1,2.4);e.strafe=.32;e.strafeDir=Math.random()<.5?1:-1;}
@@ -289,7 +290,7 @@ export function enemyTick(dt: number){
         if(!moving){moving=moveEnemy(e,dx/dist,dz/dist,spd*.7,dt);
           if(Math.random()<.05)e.flank*=-1;}}
       if(dist<1.55&&e.cool<=0&&Math.abs((e.fy||0)-(player.pyy-EYE))<1.3){e.cool=1.0;e.atkAnim=.22;damagePlayer(e.mel);
-        blip(140,.12,"sawtooth",.1,60);}
+        at(e.x,e.h*.6+(e.fy||0),e.z,()=>blip(140,.12,"sawtooth",.1,60));}
     }else if(e.alertX>=0){
       const ax=e.alertX-e.x,az=e.alertZ-e.z,ad=Math.hypot(ax,az);
       if(ad>1){moving=moveEnemy(e,ax/ad,az/ad,spd*.7,dt);}

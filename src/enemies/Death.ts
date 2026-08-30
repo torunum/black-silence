@@ -13,6 +13,7 @@ import { spawnGibs } from "../fx/Gibs";
 import { addPool } from "../fx/Decals";
 import { screenShake, shake } from "../fx/ShakeState";
 import { headPool } from "../fx/Heads";
+import { at } from "../audio/AudioEngine";
 import { bang, blip, boom } from "../audio/Sfx";
 import { deathCry, growl, gurgle } from "../audio/Voice";
 import { stopBossMusic } from "../audio/Ambient";
@@ -171,7 +172,7 @@ export function killEnemy(enemy: unknown, finalDmg: number, info: DamageInfo) {
   e.blob.scale.setScalar(1.6);
   /* Afrit death explosion */
   if(e.key==="q"){
-    fireP(e.x,e.fy?e.fy+1:1,e.z,26);sparks(e.x,1,e.z,16);boom(.8);
+    fireP(e.x,e.fy?e.fy+1:1,e.z,26);sparks(e.x,1,e.z,16);at(e.x,e.fy?e.fy+1:1,e.z,()=>boom(.8));
     renderState.boomLight.position.set(e.x,1.2,e.z);renderState.boomLight.intensity=3.5;renderState.boomLight.color.setHex(0xff7830);
     const pd=Math.hypot(player.px-e.x,player.pz-e.z);
     if(pd<3.5&&Math.abs((e.fy||0)-(player.pyy-EYE))<2)damagePlayer(28*(1-pd/3.5));
@@ -191,12 +192,12 @@ export function killEnemy(enemy: unknown, finalDmg: number, info: DamageInfo) {
     spawnGibs(e.x,e.h*.6,e.z,12,4.5);
     addPool(e.x,e.z,rnd(.8,1.2));
     shake(.22);screenShake.hitStop=Math.max(screenShake.hitStop,.045);
-    bang(.2,.45,800);gurgle(.45,.5);
+    at(e.x,e.h*.6+(e.fy||0),e.z,()=>{bang(.2,.45,800);gurgle(.45,.5);});
     if(Math.random()<.4)say("gib");
     if(S.totGibs===10)ach(ACHIEVEMENTS.organ,S.ach);
     if(Math.random()<.35)dropAmmo(e.x,e.z);
     return;}
-  deathCry(clamp(e.pain*.3,42,200));
+  at(e.x,e.h*.6+(e.fy||0),e.z,()=>deathCry(clamp(e.pain*.3,42,200)));
   e.deathT=0;
   if(info.head&&PX[e.key].head>0){
     e.deathKind=2;
@@ -204,7 +205,7 @@ export function killEnemy(enemy: unknown, finalDmg: number, info: DamageInfo) {
     blood(e.x,e.h,e.z,22,2.8);
     spawnGibs(e.x,e.h,e.z,3,3.2);
     spawnHead(e,info);            // <-- the head pops off and can be kicked
-    gurgle(.32,.45);shake(.16);
+    at(e.x,e.h*.6+(e.fy||0),e.z,()=>gurgle(.32,.45));shake(.16);
     showMsg("DECAPITATED");
     if(!S.beheads)S.beheads=0;
     if(++S.beheads===5)ach(ACHIEVEMENTS.behead,S.ach);
@@ -238,7 +239,7 @@ export function headTick(dt: number) {
         if(Math.abs(h.vy)>1.3){h.vy*=-.42;h.vx*=.6;h.vz*=.6;h.spin*=.6;
           if(Math.random()<.6)blood(h.x,h.y,h.z,3,1.2);
           if(Math.random()<.5)addPool(h.x,h.z,rnd(.2,.35));
-          gurgle(.1,.18);}
+          at(h.x,h.y,h.z,()=>gurgle(.1,.18));}
         else{h.vy=0;h.vx*=.7;h.vz*=.7;h.spin*=.7;
           if(Math.abs(h.vx)<.2&&Math.abs(h.vz)<.2){h.rest=true;h.spin=0;}}}}
     // player kick: walk into it (or kick action) to punt it
@@ -248,7 +249,7 @@ export function headTick(dt: number) {
       const force=weaponRuntime.kickAnim>0?9:3.4;
       h.vx=Math.sin(a)*force;h.vz=Math.cos(a)*force;h.vy=weaponRuntime.kickAnim>0?5:2.2;
       h.spin=rnd(-12,12);h.rest=false;
-      if(weaponRuntime.kickAnim>0){bang(.08,.3,500);blood(h.x,h.y,h.z,4,1.4);}}
+      if(weaponRuntime.kickAnim>0){at(h.x,h.y,h.z,()=>bang(.08,.3,500));blood(h.x,h.y,h.z,4,1.4);}}
     h.sp.position.set(h.x,h.y,h.z);
     if(h.life<=0){renderState.scene.remove(h.sp);headPool.heads.splice(i,1);}}}
 
@@ -259,7 +260,7 @@ export function dropAmmo(x: number, z: number) {
 export function bossDeath(e: KillEnemy) {
   stopBossMusic();
   shake(.7);screenShake.hitStop=Math.max(screenShake.hitStop,.12);
-  bang(.6,.7,400);blip(50,1.4,"sawtooth",.2,28,true);
+  at(e.x,e.h*.6+(e.fy||0),e.z,()=>{bang(.6,.7,400);blip(50,1.4,"sawtooth",.2,28,true);});
   spawnGibs(e.x,e.h*.6,e.z,10,5,e.stone);
   addPool(e.x,e.z,1.8);
   e.deathKind=1;e.deathT=0;e.deathDir=Math.random()<.5?1:-1;
@@ -300,4 +301,4 @@ export function openExit() {
     track(new THREE.MeshBasicMaterial({color:0x4a6b8a})));
   pad.position.set((world.exitPos as unknown as ExitPos).x,.03,(world.exitPos as unknown as ExitPos).z);renderState.scene.add(pad);
   const gl=track(new THREE.PointLight(0x4a6b8a,1.1,8));gl.position.set((world.exitPos as unknown as ExitPos).x,1,(world.exitPos as unknown as ExitPos).z);renderState.scene.add(gl);
-  blip(120,.7,"sine",.09,90,true);growl(70,.4,.2,true);}
+  at((world.exitPos as unknown as ExitPos).x,1,(world.exitPos as unknown as ExitPos).z,()=>{blip(120,.7,"sine",.09,90,true);growl(70,.4,.2,true);});}

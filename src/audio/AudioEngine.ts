@@ -18,7 +18,23 @@
  * point of use, never hoisted into a cached local — the graph does not
  * exist until audioInit() runs, so a value captured any earlier would be
  * stale (or null) forever.
+ *
+ * Plan 1 Task 3 adds one more piece of live state, `pendingPos`: the
+ * position (if any) `emitAt()` armed for the next `masterBus()`/`echoBus()`
+ * call. Every one of the ~85 call sites into those two accessors already
+ * sits inside a function body, invoked at emission time (verified by
+ * `grep -rn "masterBus()\|echoBus()" src/audio/*.ts`, ten of them outside
+ * this file, none at module scope) — that is what lets a single shared
+ * `pendingPos` turn any emitter positional without editing the emitter.
+ * `pendingPos` starts `null`, same as every other module-scope literal
+ * here, and nothing reads it before `emitAt()` has been called at least
+ * once — there is no boot-ordering hazard the way reading a *loaded* value
+ * at module scope would create (see Phase 1 Task 2's two bugs, both that
+ * shape).
  */
+
+import { save } from "../save/SaveGame";
+import { flushSave } from "../save/persist";
 
 declare global {
   interface Window {
@@ -30,6 +46,8 @@ let AC: AudioContext | null = null;
 let masterG: GainNode | null = null;
 let echoG: GainNode | null = null;
 let masterVol = 0.5;
+/** See the module doc comment's "Plan 1 Task 3" paragraph above. */
+let pendingPos: { x: number; y: number; z: number } | null = null;
 
 /**
  * TYPE HONESTY NOTE (applies to ctx()/masterBus()/echoBus() below): all three
@@ -57,15 +75,28 @@ let masterVol = 0.5;
  * predicate; check it (or the equivalent `if(!ctx())return;` early exit)
  * before calling any audio function, because the type of ctx() itself will
  * not stop you if you don't.
+ *
+ * masterBus()/echoBus() widen to `GainNode | PannerNode` below (Plan 1 Task
+ * 3) — still never `| null`, so the same reasoning applies unchanged: every
+ * existing call site only ever does `.connect(masterBus())`/`echoBus()`,
+ * which accepts either node type identically, so the widening needs no
+ * change at any of the ten call sites either.
  */
 export function ctx(): AudioContext {
   return AC as AudioContext;
 }
-export function masterBus(): GainNode {
-  return masterG as GainNode;
+/**
+ * The node a caller should connect a master-bus-routed sound into: `masterG`
+ * itself when no position is pending, or a fresh `PannerNode` — positioned
+ * there and connected to `masterG` — when `emitAt()` armed one. See
+ * `busFor()` below for the panner's parameters and why each was picked.
+ */
+export function masterBus(): GainNode | PannerNode {
+  return busFor(masterG as GainNode);
 }
-export function echoBus(): GainNode {
-  return echoG as GainNode;
+/** `echoBus()`'s counterpart to `masterBus()` above — same panner, into `echoG` instead. */
+export function echoBus(): GainNode | PannerNode {
+  return busFor(echoG as GainNode);
 }
 export function isReady(): boolean {
   return AC !== null;
@@ -74,10 +105,162 @@ export function getMasterVolume(): number {
   return masterVol;
 }
 
-/** Sets the stored volume and, if the graph already exists, the master gain node's live value. */
+/**
+ * Arms the position the very next `masterBus()`/`echoBus()` call will use —
+ * not the next *emitter function* call. Most emitters (`blip`, `bang`,
+ * `boom`, `growl`, `gurgle`, `pain`, `wetDoor`, `stoneDoor`) call one of the
+ * two accessors exactly once per call, so in practice "next accessor call"
+ * and "next emitter call" coincide. A few (`pianoNote`'s three harmonics,
+ * `bellToll`'s three tones, `organChord`'s four) call `echoBus()`/`blip()`
+ * (which itself calls a bus accessor) more than once per call — for those,
+ * only the first sub-call would be positioned under this contract. Task 3
+ * gives nobody a position, so no caller exercises that edge yet; it is
+ * recorded here for whoever writes Task 4's call sites.
+ *
+ * Not read at module scope, and not persisted — see the module doc
+ * comment's "Plan 1 Task 3" paragraph for why that matters.
+ */
+export function emitAt(x: number, y: number, z: number): void {
+  pendingPos = { x, y, z };
+}
+
+/**
+ * Emits everything `emit()` produces from one world position, then clears it.
+ *
+ * **This is the form callers should reach for.** `emitAt`/`emitHere` are the
+ * bare primitive and leak if a caller forgets the second half; `at()` cannot,
+ * because the reset is in a `finally`. It also spans an emitter that makes
+ * more than one sound — `snarl("k")` calls both `growl` and `blip`, and under
+ * a consume-on-first-use contract only the growl would have been positioned.
+ *
+ *     at(e.x, e.h * 0.6, e.z, () => snarl(e.key));
+ *
+ * Nested calls are not supported and are not needed: one logical sound has one
+ * position. The inner scope would restore `null` rather than the outer
+ * position, so if a use for nesting ever appears, save and restore instead.
+ */
+export function at<T>(x: number, y: number, z: number, emit: () => T): T {
+  pendingPos = { x, y, z };
+  try {
+    return emit();
+  } finally {
+    pendingPos = null;
+  }
+}
+
+/**
+ * Cancels a pending `emitAt()` before it is consumed by a `masterBus()`/
+ * `echoBus()` call — the "changed my mind, this one is not positional after
+ * all" case. `masterBus()`/`echoBus()` already clear `pendingPos` themselves
+ * once they consume it (see `busFor()`), so this reset only matters for the
+ * gap between `emitAt()` and the accessor call it was meant for; without it,
+ * a cancelled position would still be sitting there for whatever the next
+ * accessor call turns out to be.
+ */
+export function emitHere(): void {
+  pendingPos = null;
+}
+
+/**
+ * Shared implementation behind masterBus()/echoBus(): `target` unchanged
+ * when nothing is pending, or a new `PannerNode` — positioned at the
+ * pending coordinates and connected to `target` — when there is. Consumes
+ * (clears) `pendingPos` as soon as it reads it, so the position affects
+ * only this one call and never leaks into whatever calls masterBus()/
+ * echoBus() next.
+ *
+ * A fresh panner every time, never a shared/cached one: these sounds are
+ * short and the node is garbage the moment playback ends, so caching would
+ * only save a cheap allocation while actively breaking simultaneous sounds
+ * at different positions (they would all inherit whichever position was
+ * set last).
+ *
+ * Every panner parameter is picked deliberately, not left at the Web Audio
+ * default, because the default (`panningModel: "equalpower"`,
+ * `distanceModel: "inverse"`, `refDistance: 1`, `maxDistance: 10000`,
+ * `rolloffFactor: 1`) gets two of five right by coincidence and the other
+ * three are wrong for this game's scale:
+ *
+ * - `panningModel: "HRTF"` — head-related transfer function panning, not
+ *   the default `"equalpower"`. Equalpower only varies left/right gain; HRTF
+ *   also filters for front/back and up/down cues, which is what actually
+ *   sells "that gunshot is behind me" rather than just "that gunshot is to
+ *   my right." More expensive per node, but these nodes live for at most a
+ *   couple of seconds each.
+ * - `distanceModel: "inverse"` — matches the plan and how real sound
+ *   pressure falls off (~1/distance), so it reads as physical rather than a
+ *   hand-tuned ramp. This is also the Web Audio default, kept rather than
+ *   changed.
+ * - `refDistance: 1` (world units; `CELL` in `src/world/Grid.ts` is `2`, so
+ *   this is half a grid cell) — the radius inside which a sound is at full
+ *   volume. The "inverse" model clamps distance to at least `refDistance`
+ *   before computing gain, so **a sound at distance 0 — emitted exactly at
+ *   the listener — resolves to gain 1 for any `refDistance > 0`**: this is
+ *   the property the charter's "indistinguishable in level from today"
+ *   requirement actually rests on, not the specific value chosen. `1` still
+ *   matters for anything close-but-not-exactly-at-the-listener (a torch
+ *   crackle a step away should not already be attenuating).
+ * - `maxDistance: 60` (30 cells) — comfortably past the largest level's
+ *   reach without being so large the far end of the "inverse" curve's floor
+ *   collapses distant-but-still-in-level sounds to near silence. The camera
+ *   itself is built with a far plane of `90` (`src/render/RenderCore.ts`),
+ *   so `60` stays inside what the player can ever see.
+ * - `rolloffFactor: 1` — the Web Audio default; a neutral 1/distance
+ *   falloff, neither exaggerated nor flattened. Nothing about this game's
+ *   scale argued for a different rate, so the default stood.
+ *
+ * `coneInnerAngle`/`coneOuterAngle`/`coneOuterGain` are left at their Web
+ * Audio defaults (360/360/0 — omnidirectional). None of this game's sources
+ * face a particular direction the way a real speaker cone or a character's
+ * mouth would, so a directional cone would be inventing a fact the sound
+ * design has no opinion on.
+ *
+ * `positionX`/`positionY`/`positionZ` are used directly, with no
+ * `setPosition()` fallback: unlike `AudioListener` (see `Listener.ts`),
+ * `PannerNode.positionX` has been in every engine this project targets
+ * (evergreen browsers, and this repo's own `recordingAudioContext` test
+ * double) for years, so there is no environment here that needs the
+ * deprecated form for the panner specifically.
+ */
+function busFor(target: GainNode): GainNode | PannerNode {
+  if (!pendingPos) return target;
+  const { x, y, z } = pendingPos;
+  // Deliberately NOT cleared here. `snarl` alone calls two emitters for six of
+  // its eleven branches, so a consume-on-first-use contract would position the
+  // growl and leave the blip at the listener — half an enemy bark coming from
+  // inside the player's head. The position lives until `emitHere()` or the end
+  // of an `at()` scope, so every accessor call for one logical sound gets it.
+  const p = ctx().createPanner();
+  p.panningModel = "HRTF";
+  p.distanceModel = "inverse";
+  p.refDistance = 1;
+  p.maxDistance = 60;
+  p.rolloffFactor = 1;
+  p.positionX.value = x;
+  p.positionY.value = y;
+  p.positionZ.value = z;
+  p.connect(target);
+  return p;
+}
+
+/**
+ * Sets the in-memory volume and, if the graph already exists, the master
+ * gain node's live value — then writes through to `save.masterVolume` and
+ * flushes it to storage, so a change survives a reload.
+ *
+ * This is also the only way a *loaded* volume reaches this module's private
+ * `masterVol` (and, once `audioInit()` runs, `masterG`): `masterVol`
+ * initialises to the reference's `0.5` at module scope, same as every other
+ * module-scope literal in this port, and nothing else in this file ever
+ * reads `save.masterVolume`. `src/ui/Menus.ts`'s volume IIFE calls this with
+ * `save.masterVolume` at registration time (after `loadSave()` has run) for
+ * exactly that reason — see the comment there.
+ */
 export function setMasterVolume(v: number): void {
   masterVol = v;
   if (masterG) masterG.gain.value = masterVol;
+  save.masterVolume = v;
+  flushSave();
 }
 
 /** Build the audio graph and start the ambient drone bed. Call once, on game start. */
