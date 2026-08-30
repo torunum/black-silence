@@ -4,10 +4,9 @@ Written to survive session loss. If you are picking this up cold, read this
 file, then `docs/direction.md`, then the current plan under
 `docs/superpowers/plans/`. Trust this file and `git log` over any recollection.
 
-Last updated: 2026-08-29, after Plan 0F merged. **Phase 0 is complete.**
-`src/legacy.js` is deleted, the burn-down is zero, `strict: true` is on, and
-every hardening item the spec listed is either done or recorded with a reason.
-Next up is Phase 1.
+Last updated: 2026-08-29, after Phase 1 merged. Phase 0 finished the port;
+Phase 1 gave the game positional sound, adaptive music, a resolution setting
+and a save system. Next up is Phase 2 (the world).
 
 ---
 
@@ -55,7 +54,7 @@ done.
 (`e56bc2f`); `src/` contains no `.js` file, and `tsconfig.json` has `strict:
 true` with no `allowJs`/`checkJs`, so every line of the port is type-checked.
 
-Tests: 0 → 114 → 167 → 348 → 357 → 369 → 400.
+Tests: 0 → 114 → 167 → 348 → 357 → 369 → 400 → 449.
 
 Within 0E: 1616 → 1573 (T3) → 1547 (T4) → 1322 (T5) → 1100 (T6) → 1009 (T7)
 → 901 (T8) → 712 (T9) → 326 (T10) → 292 (T11) → 278 (T12a, 81 dead imports).
@@ -329,6 +328,72 @@ pane throttles `requestAnimationFrame` to zero when it is not displayed, so the
 game loop does not run there — see the environment notes below. The
 characterization traces are the substitute evidence, and they are the reason
 this phase was safe to attempt at all.
+
+## Phase 1 status
+
+Branch `phase-1-tier0-fixes`, **merged**. Spec and plan dated 2026-08-29.
+Ledger: `.superpowers/sdd/2026-08-29-phase1-tier0-fixes/progress.md`.
+
+**Phase 1 is the first phase that changed behavior on purpose.** Phase 0
+preserved every bug deliberately; here each change is chartered to exactly one
+task and pinned by a test.
+
+| Task | Delivered |
+|---|---|
+| 1 | Persistence — versioned `localStorage` schema; corrupt, missing and future-version stores all fall back to defaults without throwing |
+| 2 | Resolution setting, and the volume finally persisting |
+| 3 | The panner chain — `at(x,y,z,fn)` and a per-emission `PannerNode` |
+| 4 | 39 of 43 sound call sites emitting from their world positions |
+| 5 | Adaptive music — exploration / combat / boss, 2.5s fade, 4s dwell |
+| 6 | **Outstanding, deliberately** — real `.ogg` files are user-supplied and never blocked the phase |
+| 7 | Whole-branch review; one Important finding, closed |
+
+### The bet this phase was built on
+
+Ten audio functions — `pianoNote`, `gurgle`, `pain`, `deathCry`, `wetDoor`,
+`stoneDoor`, `bellToll`, `organChord`, `click`, `noiseBuf` — have **no
+behavioural-recorder coverage**. Byte-identity comparison against the frozen
+reference is their only guard.
+
+So the positional-audio design was chosen to make sure those bodies never had
+to change: every emitter already called `masterBus()`/`echoBus()` *inside its
+own body, per emission*, so making the accessors return a positioned node made
+all of them positional with **zero emitter edits**. Verified at the end:
+`git diff master...HEAD` on `Sfx.ts`, `Voice.ts` and `Ambient.ts` is empty. The
+bet held.
+
+### What Phase 1 found
+
+- **A contract that was wrong for its own primary use case.** Task 3 shipped
+  `emitAt` consuming the position on first use, and flagged the consequence for
+  Task 4 rather than acting on it. But `snarl` calls two emitters for six of
+  its eleven branches, so positioning an enemy bark would have put the growl at
+  the enemy and left the blip at the listener — half a sound from inside the
+  player's head. **A task that flags a design consequence for the next task has
+  usually found a design bug, not a documentation gap.**
+- **Two boot-order bugs of the same shape**: module-scope initialisation
+  reading state that boot has not loaded yet. A stored resolution would have
+  applied only after the first window resize; a stored volume never applied at
+  all. Phase 1 added persistence, so every module-scope read of a persisted
+  value is now a candidate for this.
+- **`bossPulse` was the only `setInterval` in the codebase** and `loadLevel`
+  never cancelled it — `clearAllTimers()` tracks only `setTimeout`. It survived
+  purely because the four `stopBossMusic()` call sites happened to cover the
+  normal paths. Closed by Task 5.
+- **Coverage that existed only because nothing exercised it**: `domStubs`'s
+  `AudioContext` had no `createPanner()`, which nothing noticed while Task 3
+  positioned nothing. Task 4's real callers crashed three tests immediately —
+  found only because that task ran the full suite rather than the two files its
+  gate named.
+- **Wiring proof does not scale by booting.** Task 4's integration test covers
+  two of ~15 call sites; the review swapped coordinates at a third and the
+  whole suite stayed green. Closed with a structural check that asserts every
+  `at()` call's first argument is an x term and its third a z term — cheap,
+  total, and complementary to the two deep tests rather than a replacement.
+
+Three times this phase an implementer caught a vacuous test **in its own work**
+and rewrote it before committing, unprompted. That is new, and it is the
+habit the briefs have been trying to build.
 
 ## How fidelity is guarded
 
