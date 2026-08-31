@@ -67,10 +67,19 @@ const moduleListeners: Array<[string, EventListenerOrEventListenerObject]> = [];
 const VIEWPORT: readonly [number, number] = [1280, 720];
 
 /**
- * The one aspect ratio at which a spent casing is actually visible — see the
- * "never reaches the screen" test for why 8:1 and not something ordinary.
+ * Used by exactly one test below, the life-expiry pin: a viewport tall
+ * enough (VH=4800) that the `y>VH+10` offscreen cull can never fire within a
+ * casing's 1.6s life, so life expiry — not position — is what removes it.
+ * Every ordinary viewport in this describe culls a casing off-screen in
+ * under 1.2s, well inside its life, which is exactly why `life` stayed
+ * unobservable until KNOWN-7 closed (KNOWN-6's former exception).
+ *
+ * This describe used to also need a deliberately absurd 8000x1000
+ * "WIDE_VIEWPORT" just to reach a casing at all — the fix means every case
+ * below now runs at an ordinary viewport instead, which is itself the
+ * clearest evidence the underlying bug is gone.
  */
-const WIDE_VIEWPORT: readonly [number, number] = [8000, 1000];
+const TALL_VIEWPORT: readonly [number, number] = [200, 3000];
 
 function setViewport([w, h]: readonly [number, number]): void {
   Object.defineProperty(globalThis, "innerWidth", { value: w, configurable: true, writable: true });
@@ -307,7 +316,7 @@ describe("fxTick — the per-frame overlay clear and transform", () => {
 });
 
 describe("screenBlood — the screen blood flash", () => {
-  it("spawns and fades an identical splat set to the reference over 12 frames", () => {
+  it("spawns and fades an identical splat set to the reference over 12 frames, scaled into the 320-space fxTick draws in (Phase 2 divergence closing KNOWN-7: the frozen reference is unchanged and still spawns in 640-space)", () => {
     const referenceCalls = refWindow(21, {}, (api) => {
       api.screenBlood();
       refTicks(api, 12, DT);
@@ -321,7 +330,30 @@ describe("screenBlood — the screen blood flash", () => {
     // per-frame preamble — a log too short to be a real comparison would be
     // caught here.
     expect(referenceCalls.length).toBeGreaterThan(300);
-    expectCallLogEqual(modCalls, referenceCalls, "screenBlood call log");
+
+    // Deliberate Phase 2 divergence (KNOWN-7): the module now spawns blood
+    // at rnd(0,VW)/rnd(0,VH) — the space fxTick actually draws in — while
+    // the frozen reference (Global Constraints: reference/sonsurum.html is
+    // never edited) is unchanged and still spawns at rnd(0,FW)/rnd(0,FH).
+    // Both sides draw the same seeded Math.random() sequence in the same
+    // order, and FW/VW is exactly 640/320=2 always (VH/FH is 180/360=2 too,
+    // at this 16:9 VIEWPORT), so every arc's x and y is exactly half of the
+    // reference's. Radius, call order and fillStyle alpha are untouched by
+    // the fix, so halving the reference's arc x/y and comparing the whole
+    // log through expectCallLogEqual proves both at once: the fix landed,
+    // and nothing else moved — this keeps the reference visible as the
+    // record of what changed, rather than dropping the comparison.
+    const halved = referenceCalls.map((c) =>
+      c.method === "arc"
+        ? { ...c, args: [(c.args as number[])[0] / 2, (c.args as number[])[1] / 2, ...(c.args as number[]).slice(2)] }
+        : c,
+    );
+    expectCallLogEqual(modCalls, halved, "screenBlood call log (module vs halved 640-space reference)");
+    // And explicitly, not only implied by the halving above: the reference
+    // itself still spawns splats outside the 320x180 canvas fxTick draws
+    // into — the bug, unchanged.
+    const refArcsRaw = referenceCalls.filter((c) => c.method === "arc").map((c) => c.args as number[]);
+    expect(refArcsRaw.some(([x, y]) => x >= 320 || y >= 180)).toBe(true);
 
     // The count, radii and fade rate, pinned as values and not only as a
     // diff: KNOWN-6's sabotage list included 5→6 splats, rnd(6,22)→rnd(6,26)
@@ -330,9 +362,16 @@ describe("screenBlood — the screen blood flash", () => {
     const firstFrameArcs = modCalls.slice(0, endOfFirstFrame).filter((c) => c.method === "arc");
     expect(firstFrameArcs.length).toBe(5);
     for (const arc of firstFrameArcs) {
-      const [, , r] = arc.args as number[];
+      const [x, y, r] = arc.args as number[];
       expect(r).toBeGreaterThanOrEqual(6);
       expect(r).toBeLessThan(22);
+      // Pinned directly, not only via the halved-reference comparison
+      // above: every splat now lands inside the 320x180 canvas fxTick
+      // actually draws into (KNOWN-7).
+      expect(x).toBeGreaterThanOrEqual(0);
+      expect(x).toBeLessThan(320);
+      expect(y).toBeGreaterThanOrEqual(0);
+      expect(y).toBeLessThan(180);
     }
     const alphas = modCalls
       .filter((c) => c.method === "set:fillStyle")
@@ -396,22 +435,35 @@ describe("spawnPuff — the muzzle smoke pool", () => {
 });
 
 describe("ejectCasing — the spent shell arc", () => {
-  it.each([0, 1, 2, 3])("kind %i: draws an identical arc, spin and colour sequence to the reference (wide viewport, where casings are on screen)", (kind) => {
+  // Phase 2 divergence (KNOWN-7): the module now spawns a casing at
+  // VW/2+rnd(4,12), VH*.62 — the 320-space fxTick actually culls and draws
+  // in. reference/sonsurum.html is never edited (Global Constraints) and
+  // still spawns at FW/2+rnd(4,12), FH*.62, so at every viewport this
+  // describe uses — all ordinary now, see "now reaches the screen" below for
+  // why WIDE_VIEWPORT is gone — the reference's casing is culled on its own
+  // first tick, before it ever draws. From here on the module's new
+  // behavior and the reference's unchanged behavior are asserted directly,
+  // side by side, each commented as the divergence, rather than feeding a
+  // now-empty reference log into expectCallLogEqual.
+  it.each([0, 1, 2, 3])("kind %i: draws an identical arc, spin and colour sequence to the reference's own formula, now reachable at an ordinary viewport (closes KNOWN-7)", (kind) => {
     const referenceCalls = refWindow(41 + kind, {}, (api) => {
       api.ejectCasing(kind);
       refTicks(api, 40, DT);
-    }, WIDE_VIEWPORT);
+    });
     const modCalls = moduleWindow(41 + kind, () => {
       Overlay2D.ejectCasing(kind);
       moduleTicks(40, DT, 0);
-    }, WIDE_VIEWPORT);
+    });
 
-    expect(referenceCalls.length).toBeGreaterThan(150);
-    expectCallLogEqual(modCalls, referenceCalls, `ejectCasing(${kind}) call log`);
+    // The frozen reference: still culled before its first draw, even at an
+    // ordinary viewport — the bug, unchanged.
+    expect(referenceCalls.filter((c) => c.method === "translate")).toEqual([]);
 
-    // The per-kind art, asserted as values: a colour swap between kinds is
-    // the single most likely regression here, and a pure log diff would
-    // catch it only if the two logs were built from different code.
+    // The per-kind art, asserted as values straight off the module's own
+    // draws (the reference's are empty, so there is nothing to diff against
+    // here): a colour swap between kinds is the single most likely
+    // regression, and a pure log diff would catch it only if the two logs
+    // were built from different code.
     const fills = modCalls.filter((c) => c.method === "set:fillStyle").map((c) => c.args[0]);
     const widths = modCalls.filter((c) => c.method === "fillRect").map((c) => (c.args as number[])[2]);
     if (kind === 2) {
@@ -440,33 +492,35 @@ describe("ejectCasing — the spent shell arc", () => {
     expect(xs[2] - xs[1]).toBeCloseTo(xs[1] - xs[0], 12);
   });
 
-  it("spawns at FW/2+rnd(4,12), FH*.62 with an upward vy — the same seeded values on both sides", () => {
+  it("spawns at VW/2+rnd(4,12), VH*.62 with an upward vy — 320-space, the space fxTick actually culls and draws in (closes KNOWN-7; re-derived from VW/VH, not halved by eye — see the task report)", () => {
     const referenceCalls = refWindow(51, {}, (api) => {
       api.ejectCasing(0);
       refTicks(api, 2, DT);
-    }, WIDE_VIEWPORT);
+    });
     const modCalls = moduleWindow(51, () => {
       Overlay2D.ejectCasing(0);
       moduleTicks(2, DT, 0);
-    }, WIDE_VIEWPORT);
-    expectCallLogEqual(modCalls, referenceCalls, "ejectCasing spawn call log");
+    });
+    // The frozen reference: culled on its first tick at this ordinary
+    // viewport, same as every case in this describe — it never reaches a
+    // translate() call at all.
+    expect(referenceCalls.filter((c) => c.method === "translate")).toEqual([]);
 
-    // FW is 640 at every aspect ratio; FH is 80 at 8:1.
+    // VW is 320 at every aspect ratio; VH is 180 at the 16:9 VIEWPORT
+    // (VH = Math.round(320 / (1280/720)) = 180) — the same relationship the
+    // "sizeFx" describe above pins independently.
     const [x0, y0] = modCalls.find((c) => c.method === "translate")!.args as number[];
-    expect(x0).toBeGreaterThan(640 / 2 + 4);
-    expect(x0).toBeLessThan(640 / 2 + 12 + 55 * DT);
-    expect(y0).toBeLessThan(80 * 0.62); // the first frame moves it UP, so vy started negative
-    expect(y0).toBeGreaterThan(80 * 0.62 - 70 * DT);
+    expect(x0).toBeGreaterThan(320 / 2 + 4);
+    expect(x0).toBeLessThan(320 / 2 + 12 + 55 * DT);
+    expect(y0).toBeLessThan(180 * 0.62); // the first frame moves it UP, so vy started negative
+    expect(y0).toBeGreaterThan(180 * 0.62 - 70 * DT);
     const rotations = modCalls.filter((c) => c.method === "rotate").map((c) => (c.args as number[])[0]);
     expect(rotations[1]).not.toBe(rotations[0]); // vr is non-zero: the shell spins
   });
 
-  it("never reaches the screen at an ordinary aspect ratio — casings are spawned in FW/FH space but culled in VW/VH space (KNOWN-7)", () => {
-    // The bug, exactly: spawn y is FH*.62 but the cull is y>VH+10, and
-    // FH=640/a while VH=320/a, so the casing starts off-screen unless
-    // .62*640/a <= 320/a+10, i.e. a >= 7.68. Both sides agree, which is why
-    // the per-kind cases above have to use an 8:1 viewport to see a casing
-    // at all.
+  it("now reaches the screen at ordinary aspect ratios — casings spawn and are culled in the same VW/VH space (closes KNOWN-7; inverts the test that used to pin the bug)", () => {
+    // Keep the viewport list: it is the proof the fix holds at real aspect
+    // ratios, not just one contrived one.
     for (const viewport of [[1280, 720], [1024, 768], [2560, 1080], [600, 900]] as Array<[number, number]>) {
       const referenceCalls = refWindow(61, {}, (api, session) => {
         api.ejectCasing(1);
@@ -478,12 +532,38 @@ describe("ejectCasing — the spent shell arc", () => {
         moduleTicks(3, DT, 0);
       }, viewport);
 
-      expect(modCalls.filter((c) => c.method === "translate")).toEqual([]);
+      // The module now draws the casing at every one of these four ordinary
+      // aspect ratios — the fix.
+      expect(modCalls.filter((c) => c.method === "translate").length).toBeGreaterThan(0);
+      // The frozen reference is unchanged: still culled before its first
+      // draw, at every one of the same four viewports.
+      expect(referenceCalls.filter((c) => c.method === "translate")).toEqual([]);
       expect(referenceCalls[referenceCalls.length - 1]).toEqual({
         method: "assert:pools", args: [{ casings: 0, puffs: 0, bloodHits: 0 }],
       });
-      expectCallLogEqual(modCalls, referenceCalls.filter((c) => c.method !== "assert:pools"), `culled-casing call log at ${viewport.join("x")}`);
     }
+  });
+
+  it("removes the casing when its life (1.6s) runs out, once it survives long enough for that to matter rather than the y>VH+10 cull (pins KNOWN-6's previously-unobservable literal, closed alongside KNOWN-7)", () => {
+    // TALL_VIEWPORT keeps the casing on-screen (VH=4800) so the offscreen
+    // cull can never fire within 1.6s of flight — see TALL_VIEWPORT's own
+    // comment for why every ordinary viewport above cannot show this. Life
+    // decays at a flat dt per frame regardless of the casing's randomized
+    // velocity, so the frame it dies on is the same for every seed used in
+    // this file: alive through frame 96 (t=1.6s, life just above 0), gone
+    // by frame 97 (t≈1.617s) — verified directly below, not assumed.
+    const modCalls = moduleWindow(66, () => {
+      Overlay2D.ejectCasing(0);
+      moduleTicks(96, DT, 0);
+    }, TALL_VIEWPORT);
+    expect(modCalls.some((c) => c.method === "translate")).toBe(true);
+    const lastY = modCalls.filter((c) => c.method === "translate").map((c) => (c.args as number[])[1]).at(-1)!;
+    // Proves it is life, not position, that is about to remove it.
+    expect(lastY).toBeLessThan(Overlay2D.getVH() + 10);
+
+    const before = moduleCalls.length;
+    moduleTicks(1, DT, 0); // frame 97: life has just crossed 0
+    expect(moduleCalls.slice(before).filter((c) => c.method === "translate")).toEqual([]);
   });
 });
 
