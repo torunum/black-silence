@@ -91,7 +91,7 @@ Each phase gets its own spec → plan → implementation cycle.
 |---|---|
 | **0** | Modular port. Vite + TypeScript. No behavior change. |
 | **1** | Tier 0 fixes: positional audio + music, resolution setting, save system |
-| **2** | World: shadowed lighting, instanced/merged geometry, variable ceiling height, gothic trim |
+| **2** | World: merged geometry, KNOWN-7 casings, KNOWN-8 wheel — then, needing a human at the game, the Three.js upgrade, shadowed lighting, variable ceiling height, gothic trim |
 | **3** | Combat: weapon personalities, flow-field pathfinding, enemy redesign, **8-directional sprites** |
 | **4** | Levels: five hand-carved maps |
 | **5** | Bosses: three distinct brains |
