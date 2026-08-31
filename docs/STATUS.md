@@ -464,13 +464,32 @@ Two practices that have mattered most:
   - Bash: `export PATH="/c/Program Files/nodejs:$PATH"`
   - PowerShell: `$env:PATH = "$env:ProgramFiles\nodejs;$env:PATH"; `
   A restart of the session fixes it properly.
-- **The browser harness only partly drives this game.** Pointer lock is
-  blocked (`requestPointerLock` rejects with `WrongDocumentError`), so mouse
-  look cannot be exercised in the page at all; screenshots fail whenever the
-  Browser pane is not displayed, because a hidden pane composites no frames;
-  and the animation-frame pipeline has frozen entirely on several sessions (a
-  bare `requestAnimationFrame` counter with no game code involved gets zero
-  callbacks). What *does* work, verified in the Task 5 session: menu clicks,
+- **`requestAnimationFrame` never fires in the Browser pane. This is the
+  single most important environment fact on the project.** Measured directly
+  on 2026-08-31, on the real page served by a real `vite` dev server, with the
+  pane open and the page reporting itself visible: over 3.2 seconds a
+  `setTimeout` loop fired **100 times** while a bare `requestAnimationFrame`
+  counter fired **zero**. `document.hidden` was `false` throughout.
+
+  Earlier versions of this note blamed pane visibility — "a hidden pane
+  composites no frames" — and that explanation is **wrong**. Fronting the pane
+  does not help; the starvation is specific to rAF and timers are unaffected.
+  A future session should not spend effort trying to make the pane visible, as
+  one already did.
+
+  The consequence is not subtle: **`src/core/Loop.ts` never runs here, so
+  nothing is ever rendered.** A screenshot shows an unrendered canvas. Any
+  work whose correctness is visual — lighting, geometry, art, and the deferred
+  Three.js upgrade (KNOWN-14) — **cannot be verified in this environment at
+  all** and needs a human running the game.
+
+  This does not affect the test suite. `tests/integration/gameplayTrace.ts`
+  installs its own rAF queue and drains it by hand, which is why 900-frame
+  traces work in vitest while the live page renders nothing.
+
+- **Pointer lock is blocked** (`requestPointerLock` rejects with
+  `WrongDocumentError`), so mouse look cannot be exercised in the page.
+  What *does* work, verified in the Task 5 session: menu clicks,
   level loads, and **synthetic `KeyboardEvent`/`MouseEvent`/`WheelEvent`
   dispatched from `javascript_tool` with a real `code` field** — the earlier
   note that automated key events arrive with an empty `code` did not hold
