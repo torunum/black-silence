@@ -431,29 +431,72 @@ describe("mouse buttons and the wheel", () => {
     expect(pointerLockRequests).toBe(4);
   });
 
+  // Phase 2 (KNOWN-8): the wheel's range is a deliberate divergence from the
+  // reference. The module now scans all eight weapon slots in slot order;
+  // reference/sonsurum.html is never edited (Global Constraints) and still
+  // scans only six, so from here on wheel steps are asserted on each side
+  // directly rather than through expectParity, which would require the two
+  // to agree. Every non-wheel test in this file is untouched and still runs
+  // through expectParity as before.
+
   it("cycles the wheel through owned weapon slots only, in both directions", () => {
-    const snaps = expectParity([
+    const steps: readonly Step[] = [
       ["wheel down from slot 0", (a) => a.wheel(1)],
       ["wheel down again", (a) => a.wheel(1)],
       ["wheel up", (a) => a.wheel(-1)],
       ["before the game starts", (a) => { a.world({ started: false }); a.wheel(1); }],
       ["while the piano is open", (a) => { a.world({ started: true, pianoOpen: true }); a.wheel(1); }],
-    ]);
-    // Owned slots are 0, 1 and 4; slot 2, 3 and 5 must be skipped, and the
-    // scan wraps within the first six slots.
-    expect(snaps[4].calls).toEqual(["requestSwitch(1)", "requestSwitch(1)", "requestSwitch(4)"]);
+    ];
+    const mod = run(moduleSide(), steps);
+    const ref = run(referenceSide(), steps);
+    // Owned slots are 0, 1 and 4; slots 2, 3 and 5 are skipped on both
+    // sides. This particular owned set never probes slots 6/7, so the module
+    // (now scanning eight slots) and the reference (still six) land on the
+    // same switches here — the divergence shows up in the next two tests.
+    expect(mod[4].calls).toEqual(["requestSwitch(1)", "requestSwitch(1)", "requestSwitch(4)"]);
+    expect(ref[4].calls).toEqual(["requestSwitch(1)", "requestSwitch(1)", "requestSwitch(4)"]);
   });
 
-  it("cannot reach the last two weapons with the wheel at all — it cycles six slots while the game has eight (KNOWN-8)", () => {
-    const snaps = expectParity([
-      ["own only the nail cannon and soul reaper, slots 6 and 7", (a) => a.world({ cur: 0, weapons: [false, false, false, false, false, false, true, true] })],
-      ["wheel down", (a) => a.wheel(1)],
-      ["wheel up", (a) => a.wheel(-1)],
+  it("reaches the last two weapons with the wheel now that it cycles all eight slots (closes KNOWN-8)", () => {
+    // cur starts at 7 so the forward scan for slot 6 needs the full seven
+    // hops available under mod 8 — a loop still bounded at 6 would stop one
+    // hop short and never find it (this is what makes the loop-bound
+    // mutation below observable at all; see docs/known-issues.md KNOWN-8).
+    const steps: readonly Step[] = [
+      ["own only the nail cannon and soul reaper, slots 6 and 7, cur at slot 7", (a) => a.world({ cur: 7, weapons: [false, false, false, false, false, false, true, true] })],
+      ["wheel down — needs the full 7-hop range to reach slot 6", (a) => a.wheel(1)],
+      ["back to slot 0, wheel up to reach slot 7", (a) => { a.world({ cur: 0, weapons: [false, false, false, false, false, false, true, true] }); a.wheel(-1); }],
       ["Digit7 still reaches slot 6", (a) => a.keyDown("Digit7")],
       ["Digit8 still reaches slot 7", (a) => a.keyDown("Digit8")],
-    ]);
-    expect(snaps[2].calls).toEqual([]);
-    expect(snaps[4].calls).toEqual(["requestSwitch(6)", "requestSwitch(7)"]);
+    ];
+    const mod = run(moduleSide(), steps);
+    const ref = run(referenceSide(), steps);
+    // Module: the wheel now reaches both slots — this is the bug, inverted.
+    expect(mod[4].calls).toEqual(["requestSwitch(6)", "requestSwitch(7)", "requestSwitch(6)", "requestSwitch(7)"]);
+    // Reference: still cycles six slots, so the wheel never reaches either —
+    // only the digit keys do. Deliberate Phase 2 divergence (KNOWN-8): the
+    // reference is frozen and stays the oracle for everything except this.
+    expect(ref[4].calls).toEqual(["requestSwitch(6)", "requestSwitch(7)"]);
+  });
+
+  it("wheel-up from slot 0 lands on slot 7, the modular predecessor, not slot 5", () => {
+    // Deliberate Phase 2 divergence (KNOWN-8). The backward step must be
+    // n-1 (7 for eight slots), not a leftover literal. Left at 5, scrolling
+    // up from slot 0 would land on slot 5 — three slots backward under mod 8
+    // — and would still "reach every weapon" if only reachability were
+    // tested, which is exactly what the reach test above does not catch and
+    // this test exists to pin.
+    const steps: readonly Step[] = [
+      ["own every weapon", (a) => a.world({ weapons: [true, true, true, true, true, true, true, true] })],
+      ["wheel up from slot 0", (a) => a.wheel(-1)],
+    ];
+    const mod = run(moduleSide(), steps);
+    const ref = run(referenceSide(), steps);
+    expect(mod[1].calls).toEqual(["requestSwitch(7)"]);
+    // The reference still walks backward by a flat 5 under its own mod 6 —
+    // a different-shaped bug that happens to land on the same slot 5 the
+    // fixed module must NOT land on.
+    expect(ref[1].calls).toEqual(["requestSwitch(5)"]);
   });
 
   it("suppresses the browser context menu so right-click can kick", () => {

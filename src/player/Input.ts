@@ -99,8 +99,8 @@ addEventListener("keyup", e => keys[e.code] = false);
 addEventListener("wheel", e => {
   if (!hooks) return;
   if (!hooks.isStarted() || hooks.isPianoOpen()) return;
-  let i = hooks.currentWeapon(); for (let k = 0; k < 6; k++) {
-    i = (i + (e.deltaY > 0 ? 1 : 5)) % 6;
+  let i = hooks.currentWeapon(); for (let k = 0; k < 8; k++) {
+    i = (i + (e.deltaY > 0 ? 1 : 7)) % 8;
     if (hooks.ownsWeapon(i)) { hooks.requestSwitch(i); break; }
   }
 });
