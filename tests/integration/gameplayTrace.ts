@@ -194,14 +194,36 @@ function captureCamera(): { camera: () => Any | null; restore: () => void } {
 function installUuidStub(): () => void {
   const real = Math.random;
   let counter = 0;
+  let intercepted = 0;
   Math.random = (): number => {
     if (new Error().stack?.includes("generateUUID")) {
+      intercepted++;
       counter = (counter + 1) % 0xffffffff;
       return counter / 0xffffffff;
     }
     return real();
   };
-  return () => { Math.random = real; };
+  return () => {
+    Math.random = real;
+    // The whole mechanism rests on a stack frame being named `generateUUID`.
+    // That is true of three's source build today, and it is exactly the kind
+    // of thing that can stop being true silently — a bundled or minified
+    // three, a renamed internal, a different engine's stack format. If the
+    // check ever stops matching, every UUID draw quietly rejoins the gameplay
+    // stream and the fixtures drift with nothing saying why. This project's
+    // signature failure is a guard that reports success while examining
+    // nothing, so the guard gets a guard: loading any level constructs
+    // hundreds of THREE objects, so a run that intercepted ZERO draws means
+    // the sniffing broke, not that the game stopped creating objects.
+    if (intercepted === 0) {
+      throw new Error(
+        "installUuidStub intercepted no Math.random() calls. The `generateUUID` stack-frame " +
+        "check has stopped matching, so three's UUID draws are consuming the seeded gameplay " +
+        "stream again and any fixture recorded now would be wrong. Fix the detection before " +
+        "trusting or regenerating a trace.",
+      );
+    }
+  };
 }
 
 function readCamera(camera: Any): number[] {
