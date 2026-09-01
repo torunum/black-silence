@@ -4,9 +4,11 @@ Written to survive session loss. If you are picking this up cold, read this
 file, then `docs/direction.md`, then the current plan under
 `docs/superpowers/plans/`. Trust this file and `git log` over any recollection.
 
-Last updated: 2026-08-29, after Phase 1 merged. Phase 0 finished the port;
-Phase 1 gave the game positional sound, adaptive music, a resolution setting
-and a save system. Next up is Phase 2 (the world).
+Last updated: 2026-08-31, after Phase 2 Part A merged. Phase 0 finished the
+port, Phase 1 gave the game sound and settings, and Part A fixed the two
+shipped bugs whose correctness is structural and instanced the level geometry.
+**Phase 2 Part B is blocked on a human running the game** — see the browser
+note under Environment gotchas.
 
 ---
 
@@ -54,7 +56,7 @@ done.
 (`e56bc2f`); `src/` contains no `.js` file, and `tsconfig.json` has `strict:
 true` with no `allowJs`/`checkJs`, so every line of the port is type-checked.
 
-Tests: 0 → 114 → 167 → 348 → 357 → 369 → 400 → 449.
+Tests: 0 → 114 → 167 → 348 → 357 → 369 → 400 → 449 → 458.
 
 Within 0E: 1616 → 1573 (T3) → 1547 (T4) → 1322 (T5) → 1100 (T6) → 1009 (T7)
 → 901 (T8) → 712 (T9) → 326 (T10) → 292 (T11) → 278 (T12a, 81 dead imports).
@@ -394,6 +396,59 @@ bet held.
 Three times this phase an implementer caught a vacuous test **in its own work**
 and rewrote it before committing, unprompted. That is new, and it is the
 habit the briefs have been trying to build.
+
+## Phase 2 Part A status
+
+Branch `phase-2a-verifiable-world`, **merged**. Spec and plan dated 2026-08-31.
+Ledger: `.superpowers/sdd/2026-08-31-phase2a-verifiable-world/progress.md`.
+
+Phase 2 was **split by what this environment can verify**, which is the
+decision worth remembering. The game cannot be rendered here — see Environment
+gotchas — so shadowed lighting, variable ceiling height, gothic trim and the
+Three.js upgrade all wait for a human. Part A is the rest.
+
+| Delivered | Evidence |
+|---|---|
+| The mouse wheel reaches all eight weapons (KNOWN-8 closed) | slot order, both directions, direction pinned separately |
+| Casings and blood spawn in the 320-space they are drawn in (KNOWN-7 closed) | the per-`kind` art is reachable at ordinary aspect ratios for the first time |
+| The casing's `life` literal, unobservable for two phases (KNOWN-6's exception removed) | pinned; `1.6`→`1.9` now fails one named test |
+| Level walls, pillars and platforms instanced | prologue **237 → 33** scene children, level 1 **295 → 93** |
+
+### The finding that cost the most, and taught the most
+
+I told the geometry task in writing that the merge was **RNG-safe**, having
+grepped the merge-target lines for `rnd()`/`Math.random()` and found none.
+
+That was wrong. `THREE.MathUtils.generateUUID()` makes **four `Math.random()`
+calls**, and every `Mesh`, `BufferGeometry` and `Material` construction burns
+four generating a UUID **nothing in this codebase ever reads**. Collapsing 202
+objects removed 808 draws from the seeded stream — measured, not inferred:
+`loadLevel(1)` went 1824 → 1016 calls, and 202 × 4 accounts for the difference
+exactly.
+
+So *rendering object count* was silently coupled to *gameplay randomness*.
+Instancing walls changed enemy timing. The implementer proved it and stopped,
+rather than overriding a brief rule that had been built on my false premise —
+which was the right call, because the rule ("a camera divergence is a real
+bug") was unfollowable as written.
+
+**Fixed at the root**: `tests/integration/gameplayTrace.ts` now keeps UUID
+draws out of the seeded stream. The harness seeds a PRNG to make *gameplay*
+deterministic, and a UUID is not gameplay. Left coupled, every future
+rendering change would have silently moved the fixtures — Part B adds shadow
+casters, Phase 3 multiplies enemy textures roughly eightfold, Phase 4 rebuilds
+every level.
+
+Done as **two commits so the second was interpretable**: the stub alone (no
+`src/` change, both fixtures move), then the instancing (camera and HUD
+unchanged in 0/90 and 0/176 frames, scene count and digest only, with constant
+per-frame deltas matching the collapsed object counts). The whole-branch review
+recomputed that diff independently rather than trusting the commit message.
+
+The stub sniffs `Error().stack` for `generateUUID`, because `MathUtils` is
+frozen and unpatchable. That is fragile in a specific way — a bundled or
+minified three would silently stop matching and send UUID draws back into the
+stream — so the teardown now **fails loudly if a run intercepted zero draws**.
 
 ## How fidelity is guarded
 

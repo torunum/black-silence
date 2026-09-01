@@ -50,12 +50,12 @@ interface BloodHit { x: number; y: number; r: number; life: number; }
 const casings: Casing[] = [], puffs: Puff[] = [], bloodHits: BloodHit[] = [];
 
 export function ejectCasing(kind: number): void {
-  casings.push({x:FW/2+rnd(4,12),y:FH*.62,vx:rnd(20,55),vy:rnd(-70,-30),
+  casings.push({x:VW/2+rnd(4,12),y:VH*.62,vx:rnd(20,55),vy:rnd(-70,-30),
     rot:rnd(0,6),vr:rnd(-12,12),kind,life:1.6});
   if(ctx())after(()=>blip(rnd(1800,2600),.04,"square",.025),rnd(250,450));
 }
 export function screenBlood(): void {
-  for(let i=0;i<5;i++)bloodHits.push({x:rnd(0,FW),y:rnd(0,FH),r:rnd(6,22),life:1});
+  for(let i=0;i<5;i++)bloodHits.push({x:rnd(0,VW),y:rnd(0,VH),r:rnd(6,22),life:1});
 }
 
 /** Overlay2D's private 2D context, for src/render/viewmodel/{kit,draw}.ts — call at point of use, never cache. */
