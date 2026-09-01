@@ -91,6 +91,22 @@ import { track, disposeAll } from "../render/DisposeRegistry";
  * function, so both sides cast through that same `WallSeg` shape rather
  * than changing WorldState.ts's declared field type, which other Plan 0E
  * tasks (Collision.ts, and later ones) also read.
+ *
+ * Phase 2 Part A Task 3 collapsed the per-cell wall/pillar/platform `Mesh`
+ * objects below into three `InstancedMesh`es (one per shared geometry+
+ * material group: `wallGeo`+`matWall`, `pilGeo`+`matPil`, and a unit box
+ * with `pmats` for the height-map platforms), cutting the prologue's scene
+ * from 237 to 33 children at load (level 1: 295 to 93) — see
+ * `.superpowers/sdd/2026-08-31-phase2a-verifiable-world/task-3-report.md`.
+ * Doors/secrets (`+`/`D`/`S`) and the angled `wallSegs` meshes deliberately
+ * stayed individual `Mesh` objects: doors because `doorTick`/`interact`
+ * animate one specific mesh per door (an `InstancedMesh` has no
+ * per-instance object to hand them, and doors don't share one material the
+ * way walls do), `wallSegs` because it was outside this task's measured
+ * scope (each segment has a distinct length, and it wasn't in the brief's
+ * instanceable list). `world.grid`/`world.wallSegs` — what
+ * `src/world/Collision.ts` actually reads — are untouched by this change;
+ * only what gets added to `renderState.scene` differs.
  */
 
 export function spawnEnemy(ch: string, wx: number, wz: number, summoned?: boolean): Record<string, unknown> {
@@ -184,6 +200,18 @@ export function loadLevel(idx: number): void {
   const wallGeo=track(new THREE.BoxGeometry(CELL,WALLH,CELL));
   const pilGeo=track(new THREE.CylinderGeometry(.46,.55,WALLH,8));
   const matPil=track(new THREE.MeshLambertMaterial({map:TEX.pillar}));
+  // Plain walls (#/W) and pillars (I) share one geometry and one material
+  // each across the whole level — only their transforms differ — so they
+  // are the clean InstancedMesh targets (Task 3). Collect each cell's
+  // transform here and build the two InstancedMeshes once the scan is
+  // done, rather than adding a Mesh per cell as before.
+  //
+  // Doors/secrets (+/D/S) stay individual Mesh objects: `doorTick`/
+  // `interact` (src/player/Interact.ts) animate the *specific* mesh stored
+  // in `world.doors[x+","+z]`, which an InstancedMesh has no per-instance
+  // object to hand them, and doors don't even share one material the way
+  // walls do (locked/flesh/plain textures, vs. secrets sharing `matWall`).
+  const wallMats:THREE.Matrix4[]=[],pilMats:THREE.Matrix4[]=[];
   for(let z=0;z<world.GH;z++)for(let x=0;x<world.GW;x++){
     const ch=world.grid[z][x],wx=(x+.5)*CELL,wz=(z+.5)*CELL;
     if(ch==="#"||ch==="W"){
@@ -191,7 +219,7 @@ export function loadLevel(idx: number): void {
       for(const[dx,dz]of[[1,0],[-1,0],[0,1],[0,-1]]){const r=world.grid[z+dz];
         if(r&&r[x+dx]&&"#W".indexOf(r[x+dx])<0){open=true;dx0=dx;dz0=dz;break;}}
       if(!open)continue;
-      const m=new THREE.Mesh(wallGeo,matWall);m.position.set(wx,WALLH/2,wz);renderState.scene.add(m);
+      wallMats.push(new THREE.Matrix4().setPosition(wx,WALLH/2,wz));
       if(ch==="W"){
         const gm=new THREE.Mesh(track(new THREE.PlaneGeometry(1.6,2.6)),matWin);
         gm.position.set(wx+dx0*(CELL/2+.02),WALLH*.56,wz+dz0*(CELL/2+.02));
@@ -204,12 +232,20 @@ export function loadLevel(idx: number): void {
             side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending})));
         cone.position.set(wx+dx0*1.7,(WALLH-.6)/2,wz+dz0*1.7);renderState.scene.add(cone);}}
     else if(ch==="I"){
-      const m=new THREE.Mesh(pilGeo,matPil);m.position.set(wx,WALLH/2,wz);renderState.scene.add(m);}
+      pilMats.push(new THREE.Matrix4().setPosition(wx,WALLH/2,wz));}
     else if(ch==="+"||ch==="D"||ch==="S"){
       let mat;if(ch==="S"){mat=matWall;S.secretsTotal++;}
       else mat=track(new THREE.MeshLambertMaterial({map:ch==="D"?TEX.doorLocked:(flesh?TEX.fleshDoor:TEX.door)}));
       const m=new THREE.Mesh(wallGeo,mat);m.position.set(wx,WALLH/2,wz);renderState.scene.add(m);
       world.doors[x+","+z]={mesh:m,open:false,locked:ch==="D",secret:ch==="S",flesh:flesh&&ch!=="D"};}}
+  if(wallMats.length){
+    const wallMesh=new THREE.InstancedMesh(wallGeo,matWall,wallMats.length);
+    wallMats.forEach((mtx,i)=>wallMesh.setMatrixAt(i,mtx));
+    wallMesh.instanceMatrix.needsUpdate=true;renderState.scene.add(wallMesh);}
+  if(pilMats.length){
+    const pilMesh=new THREE.InstancedMesh(pilGeo,matPil,pilMats.length);
+    pilMats.forEach((mtx,i)=>pilMesh.setMatrixAt(i,mtx));
+    pilMesh.instanceMatrix.needsUpdate=true;renderState.scene.add(pilMesh);}
   const floorTex=track((hell?TEX.hellFloor:flesh?TEX.fleshFloor:(dungeon?TEX.dungeonFloor:TEX.churchFloor)).clone());
   floorTex.needsUpdate=true;floorTex.repeat.set(world.GW,world.GH);
   floorTex.wrapS=floorTex.wrapT=THREE.RepeatWrapping;
@@ -223,20 +259,32 @@ export function loadLevel(idx: number): void {
   const cm=new THREE.Mesh(track(new THREE.PlaneGeometry(world.GW*CELL,world.GH*CELL)),
     track(new THREE.MeshLambertMaterial({map:ceilTex})));
   cm.rotation.x=Math.PI/2;cm.position.set(world.GW*CELL/2,WALLH,world.GH*CELL/2);renderState.scene.add(cm);
-  /* raised floor platforms (verticality) — a textured block per elevated cell */
+  /* raised floor platforms (verticality) — a textured block per elevated cell.
+     Each cell's box used to get its own BoxGeometry sized to that cell's
+     height, so nothing was shared. Instanced here as one unit box (shared
+     `pmats` face materials, same 6-group layout as before) scaled per
+     instance to (CELL,hgt,CELL) — three.js's InstancedMesh normal-matrix
+     handling (node_modules/three/src/renderers/shaders/ShaderChunk/
+     defaultnormal_vertex.glsl.js) accounts for exactly this non-uniform
+     per-instance scale, so lighting on the tall faces is unaffected. */
   if(world.heightMap){
     const platTexTop=(hell?TEX.hellFloor:flesh?TEX.fleshFloor:(dungeon?TEX.dungeonFloor:TEX.churchFloor));
     const platTexSide=hell?TEX.stair:flesh?TEX.fleshWall:TEX.stair;
     const topMat=track(new THREE.MeshLambertMaterial({map:platTexTop}));
     const sideMat=track(new THREE.MeshLambertMaterial({map:platTexSide}));
     const pmats=[sideMat,sideMat,topMat,sideMat,sideMat,sideMat]; // box face order: +x,-x,+y,-y,+z,-z
+    const platMats:THREE.Matrix4[]=[];
     for(let z=0;z<world.GH;z++)for(let x=0;x<world.GW;x++){
       const hgt=world.heightMap[z]&&world.heightMap[z][x]||0;
       if(hgt<=0)continue;
       const wx=(x+.5)*CELL,wz=(z+.5)*CELL;
-      const bg=track(new THREE.BoxGeometry(CELL,hgt,CELL));
-      const bm=new THREE.Mesh(bg,pmats);
-      bm.position.set(wx,hgt/2,wz);renderState.scene.add(bm);}}
+      platMats.push(new THREE.Matrix4().compose(
+        new THREE.Vector3(wx,hgt/2,wz),new THREE.Quaternion(),new THREE.Vector3(CELL,hgt,CELL)));}
+    if(platMats.length){
+      const platGeo=track(new THREE.BoxGeometry(1,1,1));
+      const platMesh=new THREE.InstancedMesh(platGeo,pmats,platMats.length);
+      platMats.forEach((mtx,i)=>platMesh.setMatrixAt(i,mtx));
+      platMesh.instanceMatrix.needsUpdate=true;renderState.scene.add(platMesh);}}
   /* angled wall meshes from arbitrary segments — non-orthogonal Doom/Blood walls */
   if(world.wallSegs.length){
     const segMat=track(new THREE.MeshLambertMaterial({map:wallTex}));

@@ -41,8 +41,10 @@ import { runTrace, type InputEvent, type TraceFrame } from "./gameplayTrace";
  * - `hud.subt` only ever holds `""` or the level-opening line — no
  *   `say("see_"+e.key)` enemy-sighting bark ever fires, because no enemy
  *   ever spots the player.
- * - `scene.count` rises monotonically from 237 to 249 with zero frames
- *   where it decreases — nothing is ever removed from the scene.
+ * - `scene.count` rises monotonically (33 to 45 as of Phase 2 Part A Task 3's
+ *   instancing below; 237 to 249 before it — same shape, smaller numbers)
+ *   with zero frames where it decreases — nothing is ever removed from the
+ *   scene.
  *
  * So **`damagePlayer`, `damageEnemy`, `killEnemy`, `severLimb`, `endLevel`
  * and everything else on the combat-resolution path are not exercised by
@@ -65,6 +67,28 @@ import { runTrace, type InputEvent, type TraceFrame } from "./gameplayTrace";
  * assign (see `wiring.test.ts`), and since Task 9 the same is true of
  * `player.spawnGuard`. Those tests own combat's edge behavior; this file
  * does not grow a combat fixture for them.
+ *
+ * ## Phase 2 Part A Task 3 — regenerated twice, for two different reasons
+ *
+ * **First regeneration: `gameplayTrace.ts` stopped letting three.js's own
+ * object bookkeeping consume the seeded gameplay stream.** See
+ * `gameplayTrace.ts`'s `installUuidStub` doc comment for the mechanism.
+ * `src/` was unchanged for that commit; this fixture's zero-enemy script
+ * has nothing for the shifted stream to change *behaviorally* (no enemies
+ * means no `spawnEnemy` random timers to reseed), so — checked frame by
+ * frame, not assumed — camera and hud came back **byte-identical** to the
+ * pre-stub fixture; only `scene.digest` moved (positions/visibility of the
+ * torches' and item's cosmetic timers shifted with the stream, changing
+ * nothing camera/hud reads). combatTrace.test.ts's header has the fuller
+ * story for level 1, where the shift did reach observable behavior.
+ *
+ * **Second regeneration: instancing the level's wall/pillar/platform
+ * geometry** (`src/world/LevelLoader.ts`). With the stub already in place,
+ * this moved only `scene.count`/`scene.digest` (237→33 at frame 10, a
+ * constant 204-object delta at every sampled frame through 249→45 at
+ * frame 900) — `camera` and `hud` were unchanged across all 90 sampled
+ * frames. See that commit's report for the full frame-by-frame
+ * confirmation.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

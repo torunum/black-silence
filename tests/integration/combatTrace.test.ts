@@ -205,8 +205,14 @@ import { MONOLOGUE } from "../../src/content/monologue";
  * **Second regeneration (the following commit): instancing the level's
  * wall/pillar/platform geometry** (`src/world/LevelLoader.ts`). With the
  * stub in place first, this one moved only `scene.count`/`scene.digest`
- * — `camera` and `hud` were unchanged across every sampled frame. See
- * that commit's report for the frame-by-frame confirmation.
+ * — checked frame by frame, not assumed: `camera` and `hud` were
+ * byte-identical to the first-regeneration fixture across all 176 sampled
+ * frames, and `scene.count` moved by a constant 202-object delta at every
+ * one of them (295→93 at frame 10, through 336→134 at frame 1760) — the
+ * exact count of wall/pillar cells this level's `loadLevel` collapsed into
+ * 2 `InstancedMesh` objects. That is the property this task's brief wanted
+ * all along and could not previously assert. See that commit's report for
+ * the full analysis.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");
