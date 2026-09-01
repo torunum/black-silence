@@ -8,7 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run && node scripts/check-file-size.mjs && madge --circular --extensions ts,js src/"
+    "test": "vitest run && node scripts/check-file-size.mjs && madge --circular --extensions ts,js src/",
+    "build:single": "vite build && node scripts/inline-single-file.mjs"
   },
   "dependencies": {
     "three": "0.128.0"

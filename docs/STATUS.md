@@ -552,9 +552,19 @@ Two practices that have mattered most:
   handlers and sets `keys.KeyW`. Combined with dynamically importing the
   live-served module in the running page, that is enough to verify input,
   HUD and subtitle behavior end to end.
-- **`npm run build` plus inlining produces a single playable file.** The
-  gitignored `THE-BLACK-SILENCE.html` at the repo root is that artifact — it
-  loads from `file://` with no network.
+- **`npm run build:single` produces a single playable file.** The gitignored
+  `THE-BLACK-SILENCE.html` at the repo root is that artifact — it loads from
+  `file://` with no network, because three.js is bundled from npm and every
+  texture and sprite is drawn procedurally at boot.
+
+  This step was described here for a long time with no script to do it, so the
+  file at the repo root was built by hand and went stale by five plans.
+  `scripts/inline-single-file.mjs` now does it reproducibly, and **fails loudly
+  rather than shipping a file that silently fetches nothing** — it errors if it
+  inlines no scripts or if any `assets/` reference survives.
+
+  For development, `npm run dev` is the normal path: Vite on port 5173 with hot
+  reload.
 
 ## Five bugs a player will actually hit
 
