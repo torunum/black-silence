@@ -141,6 +141,69 @@ function captureCamera(): { camera: () => Any | null; restore: () => void } {
   };
 }
 
+/**
+ * Decouples three.js's own object bookkeeping from the seeded gameplay
+ * stream `seedRandom` installs, so a trace's recorded run depends only on
+ * `rnd`/`pick` and nothing else that happens to call `Math.random()`.
+ *
+ * Found during Phase 2 Part A Task 3 (instancing the level's wall/pillar/
+ * platform geometry): every `THREE.Object3D`/`BufferGeometry`/`Material`
+ * constructor calls `MathUtils.generateUUID()` (build/three.js:286),
+ * which burns exactly four `Math.random()` calls for a UUID nothing in
+ * this codebase ever reads. Collapsing level 1's 204 individual wall/
+ * pillar `Mesh` objects into 2 `InstancedMesh` objects cut the
+ * `Math.random()` calls made during that level's `loadLevel` from 1824 to
+ * 1016 — a 808-call shift, exactly 202 fewer objects × 4 — and every later
+ * draw in the run shifted with it: `spawnEnemy`'s dodge/flank/scream/
+ * attack timers, which monologue line got picked, then (via different
+ * enemy melee timing) the player's own camera position by fractions of a
+ * unit. None of that is a gameplay bug — `world.grid`/`world.wallSegs`
+ * (what `src/world/Collision.ts` actually reads) are untouched by an
+ * instancing change, and the run still fires, reloads, takes damage and
+ * kills an enemy either way (see this task's report) — but left alone, it
+ * means a fixture's camera track moves on *any* change to how many
+ * rendering objects a level or a frame of play happens to construct,
+ * forever: Phase 2 Part B's shadow casters, Phase 3's ~8x sprite-texture
+ * multiplication for 8-directional enemies, Phase 4's level rebuilds. That
+ * coupling is a bug in this harness, not in the game.
+ *
+ * `MathUtils.generateUUID` itself can't be monkey-patched — three's build
+ * wraps its `MathUtils` re-export in `Object.freeze()` (confirmed live:
+ * assigning `THREE.MathUtils.generateUUID` throws "Cannot assign to read
+ * only property"), and every call site inside `Object3D`/`Material`/
+ * `BufferGeometry` (build/three.js:4987, 6030, 7428) closes over its own
+ * module-local `generateUUID` binding (build/three.js:286), not the
+ * mutable exported one — reassigning `THREE.Object3D` etc. from outside
+ * doesn't reach those call sites either, for the same reason (also
+ * confirmed live: it changes what `new THREE.Object3D()` returns from
+ * *this* module, not what `Mesh`'s `extends Object3D` resolves to inside
+ * three's own closure).
+ *
+ * `Math.random` is the one shared, genuinely mutable primitive both kinds
+ * of draw come through, so this wraps it and uses `Error().stack` to tell
+ * the two callers apart: `generateUUID` calls `Math.random()` four times
+ * synchronously with no application code able to interleave (JS has no
+ * preemption), and its own stack frame names it — confirmed live as `at
+ * generateUUID (…/three/build/three.js:286:…)`, not assumed. A call whose
+ * stack includes that frame is answered from an independent monotonic
+ * counter — not another random source, since nothing ever reads these
+ * UUIDs, so there is nothing for a counter to get "wrong" — instead of the
+ * seeded stream; every other call (`rnd`/`pick`, and anything else)
+ * passes straight through untouched.
+ */
+function installUuidStub(): () => void {
+  const real = Math.random;
+  let counter = 0;
+  Math.random = (): number => {
+    if (new Error().stack?.includes("generateUUID")) {
+      counter = (counter + 1) % 0xffffffff;
+      return counter / 0xffffffff;
+    }
+    return real();
+  };
+  return () => { Math.random = real; };
+}
+
 function readCamera(camera: Any): number[] {
   return [
     r6(camera.position.x), r6(camera.position.y), r6(camera.position.z),
@@ -273,6 +336,10 @@ export async function runTrace(o: TraceOptions): Promise<TraceFrame[]> {
   (document as unknown as { exitPointerLock: () => void }).exitPointerLock = () => {};
 
   const restoreRandom = seedRandom(o.seed);
+  // Installed on top of the seeded generator above (not before it), so its
+  // fallback path — every draw that isn't a three.js UUID — reaches the
+  // seeded stream, the same as if this stub didn't exist.
+  const restoreUuid = installUuidStub();
   try {
     await import("../../src/main");
     const canvas = document.getElementById("game") as HTMLElement;
@@ -346,6 +413,7 @@ export async function runTrace(o: TraceOptions): Promise<TraceFrame[]> {
     }
     return out;
   } finally {
+    restoreUuid();
     restoreRandom();
     clock.restore();
     capture.restore();

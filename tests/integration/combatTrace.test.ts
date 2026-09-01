@@ -56,8 +56,9 @@ import { MONOLOGUE } from "../../src/content/monologue";
  * and well before the player's hp would otherwise reach 0 a few dozen
  * frames later — this script is lethal in both directions, and a fixture
  * of the player already dead is a worse net than one of them still
- * fighting (the committed fixture ends at `"HEALTH55"`, armour-absorbed
- * from what would be a much lower number without the seeded armour below).
+ * fighting (the committed fixture ends at `"HEALTH61"` as of Task 3's stub
+ * retune — `"HEALTH55"` before it, same idea — armour-absorbed from what
+ * would be a much lower number without the seeded armour below).
  * `document.exitPointerLock` needed a stub in `gameplayTrace.ts` as
  * insurance against this: it is called from `damagePlayer`'s death branch,
  * which this trace's committed recording never reaches but a weakened
@@ -138,8 +139,10 @@ import { MONOLOGUE } from "../../src/content/monologue";
  * own brief says a run that comes back unchanged is suspicious, not lucky —
  * so before trusting the green result below, both functions were
  * instrumented with call counters for one throwaway run: `tickScheduled`
- * fires on every one of this trace's 1680 gameplay frames (the scheduler is
- * genuinely wired in), but `schedule()` itself is called **zero times**.
+ * fires on every one of this trace's gameplay frames (1680 at the time this
+ * was measured, 1760 as of Task 3's stub retune below — the scheduler is
+ * genuinely wired in either way), but `schedule()` itself is called **zero
+ * times**.
  *
  * That is fully explained by this fixture's own script and this level's own
  * roster, not by a dead scheduler:
@@ -168,6 +171,42 @@ import { MONOLOGUE } from "../../src/content/monologue";
  * kick, a Slaughtaur, an Ettin, or a script that opens the secret alcove
  * should expect this fixture to move for the first time and should not be
  * surprised by it.
+ *
+ * ## Phase 2 Part A Task 3 — regenerated twice, for two different reasons
+ *
+ * **First regeneration (this commit): `gameplayTrace.ts` stopped letting
+ * three.js's own object bookkeeping consume the seeded gameplay stream.**
+ * Every `THREE.Object3D`/`BufferGeometry`/`Material` constructor calls
+ * `MathUtils.generateUUID()`, which burns four `Math.random()` calls for a
+ * UUID nothing in this codebase ever reads — see `gameplayTrace.ts`'s
+ * `installUuidStub` doc comment for the full mechanism and how it was
+ * confirmed live. That means the number of *rendering* objects a level or
+ * a frame of play happens to construct was silently perturbing *gameplay*
+ * randomness — `spawnEnemy`'s dodge/flank/scream/attack timers among them
+ * — for as long as this fixture has existed. Decoupling it is a harness
+ * fix with `src/` completely unchanged, so it moved this fixture's `hud`/
+ * `scene` fields (the flow of the fight shifted: different frames, a
+ * different `see_*` line first) but must not break what the run *proves*.
+ * It didn't: with the stub the only source change in this commit, all
+ * five of "the recorded run actually fights"'s assertions passed —
+ * including `S.kills > 0` — except that this script's original
+ * `SWEEP_STEPS_USED = 12` / `TOTAL_FRAMES = 1680`, tuned live against the
+ * *old* (entangled) stream, no longer lands its one kill inside that
+ * budget: measured with the stub alone (no instancing), a 24-step sweep
+ * out to `TOTAL_FRAMES = 1760` reproducibly kills exactly one enemy and
+ * leaves the player alive with room to spare (`S.hp` in the 60s, not the
+ * `S.dead` the original's 1680-frame budget hit at 24 steps, and not the
+ * zero kills that 12 steps left even at 2200 frames — this needed more
+ * shots in the sweep, not just more time to resolve the existing ones).
+ * Both constants below were retuned to those measured values for that
+ * reason alone; the sweep's shape, cadence and per-step angle are
+ * unchanged.
+ *
+ * **Second regeneration (the following commit): instancing the level's
+ * wall/pillar/platform geometry** (`src/world/LevelLoader.ts`). With the
+ * stub in place first, this one moved only `scene.count`/`scene.digest`
+ * — `camera` and `hud` were unchanged across every sampled frame. See
+ * that commit's report for the frame-by-frame confirmation.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");
@@ -178,12 +217,14 @@ const SENS = 0.0022; // src/player/Input.ts's mouse sensitivity at zoomLerp=0 (n
 const REV = (2 * Math.PI) / SENS; // one full revolution's worth of movementX
 
 /**
- * 1420 + 11*22 + 15 (the last sweep shot's resolution), rounded up with a
- * small margin: past the run's one kill, well short of the frame (~1700)
- * where the player's hp would otherwise reach 0. See the module doc
- * comment above for why this run is cut off here rather than played out.
+ * Retuned by Phase 2 Part A Task 3 (see the module doc comment's "regenerated
+ * twice" section) from the original 1680 — measured live, under the
+ * `installUuidStub`-corrected RNG stream, as the frame past which the run's
+ * one kill has landed and the player is alive with room to spare (`S.hp` in
+ * the 60s at cutoff, not falling toward the `S.dead` a too-short budget
+ * hits). Still well short of the player dying outright.
  */
-const TOTAL_FRAMES = 1680;
+const TOTAL_FRAMES = 1760;
 
 function combatScript(): InputEvent[] {
   const s: InputEvent[] = [
@@ -225,13 +266,15 @@ function combatScript(): InputEvent[] {
     }
   }
   // Standing turret phase, from ~frame 1400 (measured live — see the
-  // module doc comment). Only the first 12 of a planned ~2.86-revolution
-  // sweep are actually emitted, since that already lands the run's kill;
-  // the denominator stays 130 rather than being recomputed for a shorter
-  // loop, which would change the per-step angle and retune the whole
-  // encounter's timing.
+  // module doc comment). Only the first 24 of a planned ~2.86-revolution
+  // sweep are actually emitted (12 before Task 3's stub retune — see the
+  // module doc comment's "regenerated twice" section for why more shots,
+  // not just more frames, were needed), since that already lands the run's
+  // kill; the denominator stays 130 rather than being recomputed for a
+  // shorter loop, which would change the per-step angle and retune the
+  // whole encounter's timing.
   s.push({ frame: 1400, kind: "key", type: "keyup", code: "KeyW" });
-  const SWEEP_START = 1420, SWEEP_STEP = 22, SWEEP_STEPS_DENOM = 130, SWEEP_STEPS_USED = 12;
+  const SWEEP_START = 1420, SWEEP_STEP = 22, SWEEP_STEPS_DENOM = 130, SWEEP_STEPS_USED = 24;
   for (let i = 0; i < SWEEP_STEPS_USED; i++) {
     const f = SWEEP_START + i * SWEEP_STEP;
     s.push({ frame: f, kind: "move", movementX: (2.86 * REV) / SWEEP_STEPS_DENOM, movementY: 0 });
