@@ -34,8 +34,10 @@ import type * as THREE from "three";
  *      Tightening that is the point of the consolidation.
  *   2. Assigned after spawn — **optional**, each with the site that writes
  *      it. These genuinely are absent on a freshly spawned enemy.
- *   3. The KNOWN-15 nine — **optional**, and always `undefined`. See the
- *      block above them.
+ *   3. The KNOWN-15 nine, plus `title` — **optional**, and always
+ *      `undefined` at runtime. See the block above them. `title` is the one
+ *      exception whose absence is harmless: its sole read
+ *      (`src/enemies/Boss.ts:120`) falls back to `EDEF[e.key].title`.
  *
  * `tests/enemies/enemyShape.test.ts` pins group 1 against the producer by
  * parsing this file and comparing the non-optional names to the own-keys of
@@ -135,14 +137,14 @@ export interface Enemy {
   /** Which limbs have been torn off. Written by `src/enemies/Damage.ts:134-142`. */
   sever?: { lArm?: boolean; rArm?: boolean; legs?: boolean };
   /**
-   * The dismembered sprite currently shown — `"noLegs" | "noLArm" | "noRArm" | "gibbed"`.
-   * Written by `src/enemies/Damage.ts:155` as `e.severKey=key`, so it is a
-   * **`string`**, not a `boolean`. `src/enemies/ai/Behaviors.ts` declared it
-   * `boolean`; both of its reads (`:162`, `:304`) are bare truthiness tests,
-   * which is the only reason the contradiction never showed. Fixing it here
-   * is why this file exists.
+   * The dismembered sprite currently shown. `refreshSeverSprite`
+   * (`src/enemies/Damage.ts:148-155`) is the sole writer and assigns exactly
+   * this union — never a bare `boolean`. `src/enemies/ai/Behaviors.ts`
+   * declared it `boolean`; both of its reads (`:162`, `:304`) are bare
+   * truthiness tests, which is the only reason the contradiction never
+   * showed. Fixing it here is why this file exists.
    */
-  severKey?: string;
+  severKey?: "noLegs" | "noLArm" | "noRArm" | "gibbed";
   /** True while the attack sprite is swapped in. Written by `src/enemies/ai/Behaviors.ts:306-308`. */
   wasAtk?: boolean;
 
@@ -162,7 +164,13 @@ export interface Enemy {
    * so that the interface documents the gap instead of hiding it. Turning
    * any of them on is a combat-balance change that belongs to the roster
    * work. **Do not make `spawnEnemy` copy them, and do not delete the read
-   * sites.** See KNOWN-15 in `docs/known-issues.md` and the table in
+   * sites.**
+   *
+   * `title` below is a tenth field with the identical gap — authored on five
+   * boss defs, never copied by `spawnEnemy` — but it is not a combat field
+   * and its one read already tolerates the gap with a fallback, so it is
+   * listed separately rather than folded into "nine".
+   * See KNOWN-15 in `docs/known-issues.md` and the table in
    * `docs/superpowers/plans/2026-09-08-phase3a-one-enemy-shape.md`.
    */
 
@@ -184,4 +192,13 @@ export interface Enemy {
   shield?: boolean;
   /** Sovereign boss stat block. Read at `enemies/Boss.ts:174`. Always `undefined`. */
   sovereign?: boolean;
+  /**
+   * Boss subtitle line, e.g. "warden of the dungeon". Authored on five boss
+   * `ENEMY_DEFS` entries, but `spawnEnemy`'s literal never copies it — same
+   * gap as the other nine. Read at `src/enemies/Boss.ts:120` as
+   * `e.title||EDEF[e.key].title`; the `||` fallback to the def's own `title`
+   * is why the boss title bar works anyway, and is why this one is harmless
+   * today where the others are silently-dead features.
+   */
+  title?: string;
 }

@@ -102,8 +102,35 @@ function declaredFields(): Declared {
   return { required, optional };
 }
 
-/** A real enemy, straight out of the real `spawnEnemy`. */
+/**
+ * A real enemy, straight out of the real `spawnEnemy`. Deliberately typed
+ * `=> object` here rather than `=> Enemy`: this local exists only so the
+ * assertions below can call it before the dynamic `import()` in `beforeAll`
+ * has resolved, and TypeScript would happily narrow a same-named `=> Enemy`
+ * declaration to match whatever the module actually exports today. Because
+ * of that looseness, nothing that follows from *this* declaration pins
+ * `spawnEnemy`'s real return type — see `_typePinSpawnEnemyReturnsEnemy`
+ * below, which does.
+ */
 let spawnEnemy: (ch: string, wx: number, wz: number, summoned?: boolean) => object;
+
+/**
+ * The actual pin for `spawnEnemy`'s return type. Every assertion above only
+ * ever inspects `Object.keys(...)` of what `spawnEnemy` returns, so if
+ * `src/world/LevelLoader.ts`'s `spawnEnemy` were reverted to return
+ * `Record<string, unknown>` — while its literal stayed annotated
+ * `const e: Enemy = {...}` — every test in this file would still pass; the
+ * shape test would no longer be pinning the producer's declared signature at
+ * all. This function is never called; it exists solely so `npm run
+ * typecheck` rejects that reversion. `real` is typed off the module itself,
+ * not off the `object`-typed local above, so the check cannot be satisfied
+ * by accident.
+ */
+function _typePinSpawnEnemyReturnsEnemy(
+  real: typeof import("../../src/world/LevelLoader").spawnEnemy,
+): Enemy {
+  return real("z", 0.5, 0.5);
+}
 
 beforeAll(async () => {
   installDomStubs();
@@ -174,22 +201,32 @@ describe("the Enemy interface's optional fields", () => {
     expect(optional.filter((f) => required.includes(f))).toEqual([]);
   });
 
-  it("types severKey as the string Damage.ts assigns, not the boolean Behaviors.ts declared", () => {
+  it("types severKey as exactly the union Damage.ts assigns, not the boolean Behaviors.ts declared", () => {
     // `severKey` is KNOWN-13's one outright contradiction rather than a mere
     // looseness: `src/enemies/Damage.ts`'s `refreshSeverSprite` assigns
-    // `e.severKey=key` where `key` is the union below, while
+    // `e.severKey=key` where `key` is exactly `SeverKeyUnion` below, while
     // `src/enemies/ai/Behaviors.ts` declared it `boolean`. Both of that
     // file's reads are bare truthiness tests, which is the only reason the
     // game works.
     //
-    // The real assertion on this line is the **annotation**, checked by
-    // `npm run typecheck`, not the `expect` under it: reverting
-    // `Enemy.severKey` to `boolean` makes this file stop compiling. The
-    // check lives here because Task 1 deliberately leaves the seventeen
+    // The real assertion is the **type**, checked by `npm run typecheck`,
+    // not the `expect` under it — and it must be checked both ways.
+    // `const assigned: Enemy["severKey"] = "gibbed" as SeverKeyUnion` (the
+    // earlier form of this guard) only checks that `SeverKeyUnion` is
+    // assignable *into* `Enemy["severKey"]`, which rejects `boolean` but
+    // says nothing against `Enemy.severKey` being widened back to `string`
+    // (or `string | undefined`) — a plain `string` still accepts a
+    // `SeverKeyUnion` value. `Exactly<A, B>` below is a two-directional
+    // equality check instead, so a widen-to-`string` mutation is caught by
+    // this test too, not only a narrow-to-`boolean` one.
+    //
+    // The check lives here because Task 1 deliberately leaves the seventeen
     // consumer interfaces alone — until Task 2 points `Damage.ts` at
     // `Enemy`, nothing in `src/` reads `Enemy["severKey"]` at all, so
     // nothing in `src/` would notice the type being wrong again.
-    const assigned: Enemy["severKey"] = "gibbed" as "noLegs" | "noLArm" | "noRArm" | "gibbed";
-    expect(assigned).toBe("gibbed");
+    type SeverKeyUnion = "noLegs" | "noLArm" | "noRArm" | "gibbed" | undefined;
+    type Exactly<A, B> = [A] extends [B] ? ([B] extends [A] ? true : false) : false;
+    const isExactlyTheUnion: Exactly<Enemy["severKey"], SeverKeyUnion> = true;
+    expect(isExactlyTheUnion).toBe(true);
   });
 });
