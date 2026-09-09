@@ -1,4 +1,3 @@
-import * as THREE from "three";
 import { rnd } from "../utils/math";
 import { after } from "../core/Timers";
 import { player } from "../player/PlayerState";

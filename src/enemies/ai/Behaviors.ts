@@ -76,7 +76,7 @@ import type { Enemy as EnemyShape } from "../Enemy";
  * is assignable to `unknown` with no cast needed at any of these call sites.
  */
 
-/** world.enemies elements, cast for enemyTick's per-frame AI. The widest of the seventeen. */
+/** world.enemies elements, cast for enemyTick's per-frame AI. The widest of the sixteen. */
 type Enemy = Pick<
   EnemyShape,
   | "gone"
@@ -299,7 +299,7 @@ export function enemyTick(dt: number){
       if(ad>1){moving=moveEnemy(e,ax/ad,az/ad,spd*.7,dt);}
       else e.alertX=-1;}
     /* walk animation */
-    if(moving&&(e.atkAnim??0)<=0){e.animT+=dt;
+    if(moving&&e.atkAnim!==undefined&&e.atkAnim<=0){e.animT+=dt;
       if(e.animT>.22){e.animT=0;e.frame=1-e.frame;
         const set=e.deathKind===2?[PX[e.key].hl,PX[e.key].hlb]:[PX[e.key].a,PX[e.key].b];
         e.sp.material.map=set[e.frame];e.sp.material.needsUpdate=true;}}

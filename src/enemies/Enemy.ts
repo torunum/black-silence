@@ -3,8 +3,8 @@ import type * as THREE from "three";
 /**
  * The one enemy shape.
  *
- * Before this file there were seventeen of them — a local `interface` in
- * each of sixteen consumer files, every one an independently invented cast
+ * Before this file there were sixteen of them — a local `interface` in
+ * each of fifteen consumer files, every one an independently invented cast
  * shape over an object the compiler knew nothing about (KNOWN-13). 84
  * distinct fields, 59 declared in more than one place, and at least one
  * outright contradiction: `severKey` was `string` in `src/enemies/Damage.ts`
@@ -29,7 +29,7 @@ import type * as THREE from "three";
  *      adds or drops a key — so all of them exist at runtime. The count is
  *      deliberately not written down here or in the test; the set
  *      comparison is what keeps it right.
- *      Where the seventeen old declarations said `boss?: boolean`, the
+ *      Where the sixteen old declarations said `boss?: boolean`, the
  *      producer says `boss:!!d.boss` — always present, always a boolean.
  *      Tightening that is the point of the consolidation.
  *   2. Assigned after spawn — **optional**, each with the site that writes
