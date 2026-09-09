@@ -639,26 +639,30 @@ Two practices that have mattered most:
   For development, `npm run dev` is the normal path: Vite on port 5173 with hot
   reload.
 
-## Six bugs a player will actually hit
+## Four bugs a player will actually hit
 
 All predate the port, all are preserved on purpose, all are pinned by tests
 so they cannot change unnoticed. See `docs/known-issues.md`.
 
-- **KNOWN-15** — **The largest of the six by a wide margin.** Ten fields the
+- **KNOWN-15** — **The largest of the four by a wide margin.** Ten fields the
   enemy table authors never reach the spawned enemy: `spawnEnemy` builds its
   object with an explicit literal and simply omits them, and nothing writes
-  them later. So **no enemy fires the projectile it names** (all seven ranged
-  archetypes shoot the same default purple bolt — `fireOrb` is reached, but
-  every one of its per-orb colour/damage/speed branches falls through);
-  **the five flying enemies do not fly**; the Mancubus's second barrel, the
-  Afrit's spread and the Lost Soul's charge never fire; the Ghoul — the
-  commonest enemy in the game — never throws flesh; the Slaughtaur's shield
-  absorbs nothing; and the five sovereign bosses use the non-sovereign stat
-  block. Identical in the frozen reference, so it is faithful, not drift.
-  Found by Phase 3 Part A's enemy-shape consolidation and pinned by
-  `tests/enemies/deadDefFields.test.ts`. **Do not fix it with a spread in
-  `spawnEnemy`**: switching ten behaviors on in one commit is a balance
-  change that needs a human at the game, one field at a time.
+  them later. So **no enemy fires the projectile it names** (nine defs carry
+  a `range`, so nine archetypes fire *something*; seven of those name a
+  projectile via `orb` and all seven shoot the same default purple bolt
+  instead — `fireOrb` is reached, but every one of its per-orb colour/damage/
+  speed branches falls through — while the other two, `U`'s grey stone and
+  `t`'s toxic-green bolt, *are* delivered through `e.stone`/the `tox`
+  argument rather than `orb`); **the five flying enemies do not fly**; the
+  Mancubus's second barrel, the Afrit's spread and the Lost Soul's charge
+  never fire; the Ghoul — the commonest enemy in the game — never throws
+  flesh; the Slaughtaur's shield absorbs nothing; and the five sovereign
+  bosses use the non-sovereign stat block. Identical in the frozen reference,
+  so it is faithful, not drift. Found by Phase 3 Part A's enemy-shape
+  consolidation and pinned by `tests/enemies/deadDefFields.test.ts`. **Do not
+  fix it with a spread in `spawnEnemy`**: switching ten behaviors on in one
+  commit is a balance change that needs a human at the game, one field at a
+  time.
 - **KNOWN-1** — Level 1 has a red key and a miniboss guarding it, but no locked
   door anywhere. The key does nothing.
 - **KNOWN-4** — `loadLevel` checks the enemy table before the prop table, and
@@ -667,14 +671,6 @@ so they cannot change unnoticed. See `docs/known-issues.md`.
   The chair in the priest's chambers is a Cacodemon. Do not "fix" the character
   collision without deciding what Level 2's furniture should be — removing
   eight bosses is a balance change.
-- **KNOWN-7** — Spent shell casings are spawned in `FW`/`FH` coordinates but
-  culled and drawn in `VW`/`VH` space, so every casing is spliced away before
-  its first draw. The whole casing art path is unreachable in a real window.
-  Screen-blood splats share the mix-up without the cull: about three quarters
-  of each flash lands off-canvas.
-- **KNOWN-8** — The mouse wheel cycles six weapon slots (`%6`) while the game
-  has eight. The nail cannon and soul reaper are reachable only with `7` and
-  `8`. The reference's own banner still reads "WEAPONS — 6 slots".
 - **KNOWN-11** — **Armour pickups never spawn, from any level.** Found during
   Plan 0E Task 1 while building the combat trace. `loadLevel` dispatches the
   enemy table before the item table, and `A` is both a Mancubus and map2's
@@ -682,3 +678,10 @@ so they cannot change unnoticed. See `docs/known-issues.md`.
   Mancubus instead of +50 armour. `S.armor` is provably always 0 in real play.
   Same structural bug as KNOWN-4 but a different collision class (enemy-vs-item
   rather than enemy-vs-prop), and identical in the frozen reference.
+
+Two more used to be listed here and are now closed, kept for continuity:
+**KNOWN-7** (spent casings spawned in `FW`/`FH` space but culled and drawn in
+`VW`/`VH` space, so every casing was spliced away before its first draw) —
+**closed by Phase 2 Part A Task 2**; **KNOWN-8** (the mouse wheel cycling only
+six of the game's eight weapon slots) — **closed by Phase 2 Part A Task 1**.
+See `docs/known-issues.md` for both in full.

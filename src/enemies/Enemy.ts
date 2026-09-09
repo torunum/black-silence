@@ -36,7 +36,7 @@ import type * as THREE from "three";
  *      it. These genuinely are absent on a freshly spawned enemy.
  *   3. The KNOWN-15 ten — **optional**, and always `undefined` at runtime.
  *      See the block above them. `title` is the one whose absence is
- *      harmless: its sole read (`src/enemies/Boss.ts:121`) falls back to
+ *      harmless: its sole read (`src/enemies/Boss.ts`) falls back to
  *      `EDEF[e.key].title`.
  *
  * `tests/enemies/enemyShape.test.ts` pins group 1 against the producer by
@@ -140,7 +140,7 @@ export interface Enemy {
    * The dismembered sprite currently shown. `refreshSeverSprite`
    * (`src/enemies/Damage.ts:148-155`) is the sole writer and assigns exactly
    * this union — never a bare `boolean`. `src/enemies/ai/Behaviors.ts`
-   * declared it `boolean`; both of its reads (`:162`, `:304`) are bare
+   * declared it `boolean`; both of its reads there are bare
    * truthiness tests, which is the only reason the contradiction never
    * showed. Fixing it here is why this file exists.
    */
@@ -177,29 +177,29 @@ export interface Enemy {
    * block.** See also KNOWN-15 in `docs/known-issues.md`.
    */
 
-  /** Projectile kind. Read at `ai/Behaviors.ts:249,252`, `ai/Attacks.ts:78`. Always `undefined`. */
+  /** Projectile kind. Read at `ai/Behaviors.ts`, `ai/Attacks.ts`. Always `undefined`. */
   orb?: string;
-  /** Read at `ai/Attacks.ts:90,101`, `ai/Behaviors.ts:153,318`, `weapons/Hitscan.ts:98,132`. Always `undefined`. */
+  /** Read at `ai/Attacks.ts`, `ai/Behaviors.ts`, `weapons/Hitscan.ts`. Always `undefined`. */
   fly?: boolean;
   /** Hover height. Same read sites as `fly`. Always `undefined`. */
   flyH?: number;
-  /** Mancubus second barrel. Read at `ai/Behaviors.ts:251`. Always `undefined`. */
+  /** Mancubus second barrel. Read at `ai/Behaviors.ts`. Always `undefined`. */
   twin?: boolean;
-  /** Afrit spread. Read at `ai/Behaviors.ts:249,254`. Always `undefined`. */
+  /** Afrit spread. Read at `ai/Behaviors.ts`. Always `undefined`. */
   burst?: boolean;
-  /** Charge lunge. Read at `ai/Behaviors.ts:258`. Always `undefined`. */
+  /** Charge lunge. Read at `ai/Behaviors.ts`. Always `undefined`. */
   charger?: boolean;
-  /** Fling attack. Read at `ai/Behaviors.ts:262`. Always `undefined`. */
+  /** Fling attack. Read at `ai/Behaviors.ts`. Always `undefined`. */
   fling?: boolean;
-  /** Directional shield absorption. Read at `enemies/Damage.ts:107`. Always `undefined`. */
+  /** Directional shield absorption. Read at `enemies/Damage.ts`. Always `undefined`. */
   shield?: boolean;
-  /** Sovereign boss stat block. Read at `enemies/Boss.ts:174`. Always `undefined`. */
+  /** Sovereign boss stat block. Read at `enemies/Boss.ts`. Always `undefined`. */
   sovereign?: boolean;
   /**
    * Boss subtitle line, e.g. "warden of the dungeon". Authored on **twelve**
    * `ENEMY_DEFS` entries — 8 boss (`E,U,Q,Z,N,H,V,G`) and 4 non-boss
    * (`k,q,R,y`) — but `spawnEnemy`'s literal never copies it, the same gap
-   * as the other nine. Read at `src/enemies/Boss.ts:121` as
+   * as the other nine. Read at `src/enemies/Boss.ts` as
    * `e.title||EDEF[e.key].title`; the `||` fallback to the def's own `title`
    * is why the boss title bar works anyway, and is why this one is harmless
    * today where the others are silently-dead features. That read site is

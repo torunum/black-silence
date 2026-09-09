@@ -36,7 +36,7 @@ import type { Enemy } from "../enemies/Enemy";
  */
 
 /** What hud's boss-bar lookup reads off a `world.enemies` element. */
-type BossEnemy =Pick<Enemy, "boss" | "dead" | "dormant" | "priest" | "phase" | "name" | "hp" | "maxhp">;
+type BossEnemy = Pick<Enemy, "boss" | "dead" | "dormant" | "priest" | "phase" | "name" | "hp" | "maxhp">;
 
 export function hud(): void {
   q("#hp .num").textContent=String(Math.max(0,Math.ceil(S.hp)));

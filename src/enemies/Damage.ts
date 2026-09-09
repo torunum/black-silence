@@ -65,8 +65,11 @@ import type { Enemy } from "./Enemy";
  * `damageEnemy`/`refreshSeverSprite`/`severLimb`'s own `e` parameter is
  * loosely typed too: `damageEnemy` is called from four different files
  * (`ai/Behaviors.ts`, `weapons/Hitscan.ts`, `weapons/WeaponState.ts`,
- * `world/Props.ts`), each casting `world.enemies` elements through its own
- * minimal local interface, so its real shape varies by caller. It takes
+ * `world/Props.ts`), each reading its `world.enemies` element through its own
+ * minimal `Pick<Enemy, …>` alias — a checked widening, not a cast, since
+ * `world.enemies` is `Enemy[]` (Phase 3 Part A, KNOWN-13) — so the value
+ * `damageEnemy` receives still varies in declared shape by caller even
+ * though the underlying object is always a real `Enemy`. It takes
  * `unknown` and casts once, at the top, to the local `DamageEnemy` shape
  * below — the same convention `src/enemies/Death.ts`/`Boss.ts` follow —
  * rather than forcing every caller's minimal interface to grow fields it

@@ -70,8 +70,8 @@ beforeAll(async () => {
   renderState.scene = scene;
   setScene(scene);
 
-  PX = (await import("../../src/enemies/SpriteBaker")).PX as unknown as typeof PX;
-  world = (await import("../../src/world/WorldState")).world as unknown as typeof world;
+  PX = (await import("../../src/enemies/SpriteBaker")).PX;
+  world = (await import("../../src/world/WorldState")).world;
   player = (await import("../../src/player/PlayerState")).player;
   spawnEnemy = (await import("../../src/world/LevelLoader")).spawnEnemy;
   enemyTick = (await import("../../src/enemies/ai/Behaviors")).enemyTick;
@@ -165,5 +165,43 @@ describe("enemyTick's walk-frame guard treats an unattacked enemy differently fr
     expect(neverMap).not.toBe(attackedMap);
     expect(neverMap).toBe(PX["z"].a);
     expect(attackedMap).toBe(PX["z"].b);
+  });
+});
+
+describe("enemyTick's walk-frame guard also requires `moving` — a stationary enemy must not cycle", () => {
+  /**
+   * A code-review finding on this file's first draft: mutating
+   * `if(moving&&e.atkAnim!==undefined&&e.atkAnim<=0)` down to
+   * `if(e.atkAnim!==undefined&&e.atkAnim<=0)` — dropping the `moving` half —
+   * left every case above green, because every case above drives an enemy
+   * that is actually moving. `digestScene` cannot see this gap either (see
+   * this file's own header), so a stationary enemy animating its walk frames
+   * would have been invisible everywhere in the suite.
+   *
+   * The recipe: an enemy with `alertX===-1` (spawnEnemy's own default — see
+   * `src/world/LevelLoader.ts`, `alertX:-1`) that the player is too far to be
+   * "seen" by (`los(...)&&dist<22`) takes neither the `seen` branch nor the
+   * `else if(e.alertX>=0)` investigate branch in `enemyTick` — those are the
+   * only two places `moving` can become true — so `moving` stays `false` for
+   * the whole tick. Giving it `atkAnim=0` satisfies the rest of the guard,
+   * so only the `moving&&` half stands between it and a frame swap.
+   */
+  function unalertedGhoul(): Enemy {
+    // 25 units out: past the seen threshold (dist<22) but under the dist>30
+    // early continue, so the tick still reaches the walk-animation guard.
+    return spawnEnemy("z", 5, 30, true);
+  }
+
+  it("guard: alertX===-1 and out of sight — moving is false — atkAnim===0 still does not cycle the frame", () => {
+    const e = unalertedGhoul();
+    expect(e.alertX, "spawnEnemy's own default — this enemy has never been alerted").toBe(-1);
+    e.atkAnim = 0;
+
+    const mapBefore = e.sp.material.map;
+    enemyTick(DT);
+
+    expect(e.animT, "animT advanced even though moving stayed false").toBe(0);
+    expect(e.frame, "frame changed even though moving stayed false").toBe(0);
+    expect(e.sp.material.map, "sprite frame swapped even though moving stayed false").toBe(mapBefore);
   });
 });

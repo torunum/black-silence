@@ -49,11 +49,13 @@ import type { Enemy } from "../enemies/Enemy";
  * genuine cycle-break rather than a bridge to code that had not moved yet;
  * see its own doc comment.
  *
- * `world.exitPos`/`world.challenge`/`world.enemies` are typed loosely
+ * `world.exitPos`/`world.challenge` are typed loosely
  * (`src/world/WorldState.ts`'s own doc comment explains why); the local
  * interfaces below describe just the fields this file reads or writes,
  * matching the cast convention `src/world/Props.ts` and
- * `src/weapons/WeaponState.ts` already established for the same arrays.
+ * `src/weapons/WeaponState.ts` already established for those two.
+ * `world.enemies` is `Enemy[]` (Phase 3 Part A, KNOWN-13); `TickEnemy` below
+ * is a `Pick<Enemy, …>` checked widening of it, not a cast.
  */
 
 /** world.exitPos's actual shape, set by LevelLoader.ts for the "X" tile. */
