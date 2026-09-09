@@ -56,19 +56,17 @@ import type { Enemy as EnemyShape } from "../Enemy";
  * entries once this file's split made the direction one-way — see
  * `Context.ts`'s own doc comment for the result.
  *
- * `world.enemies` is loosely typed (`Array<Record<string, unknown>>`, see
- * `src/world/WorldState.ts`'s own doc comment), so both the outer tick loop
- * and the inner alert-radius loop (the screamer's wake-the-dead branch) cast
- * through the same local `Enemy` interface below, the same convention
- * `src/enemies/Death.ts`/`src/weapons/Hitscan.ts`/`src/world/Props.ts`
- * established for this exact array — just with more fields than those
- * files needed, because this is the function that reads and writes nearly
- * all of them. `sp`/`blob` reuse `src/render/RenderCore.ts`'s own return
- * types (`THREE.Sprite`, `THREE.Mesh<THREE.BufferGeometry,
- * THREE.MeshBasicMaterial>`), the same pairing `src/enemies/Death.ts`'s
- * `Head` interface and `src/enemies/ai/Attacks.ts`'s `Ring`/`Strike`
- * interfaces use for the same two constructors (`addSprite`/`addBlob`).
- * Every function this file calls with an `Enemy`-typed argument
+ * `world.enemies` is `Enemy[]` as of Phase 3 Part A Task 3 (see
+ * `src/world/WorldState.ts`'s own doc comment), so the outer tick loop and
+ * the inner alert-radius loop (the screamer's wake-the-dead branch) no
+ * longer cast — each binds the array to a `readonly Enemy[]` local, a
+ * *checked* widening onto the local `Pick<>` below rather than the old
+ * `as unknown as Enemy[]`, which asserted a shape the compiler had nothing
+ * to compare against. The `Pick<>` itself stays, and is the widest of the
+ * sixteen: this is the function that reads and writes nearly every field.
+ * Keeping it narrow is still worth a line, for the reason KNOWN-13 gave —
+ * a file cannot silently start depending on a field it never declared it
+ * reads. Every function this file calls with an `Enemy`-typed argument
  * (`moveEnemy`, `fireOrb`, `throwFlesh`, `damageEnemy`, `wakeBoss`,
  * `priestThink`) takes an `unknown` enemy parameter itself and casts at the
  * point of use, the same convention `src/enemies/Damage.ts`/`Death.ts`/
@@ -76,7 +74,7 @@ import type { Enemy as EnemyShape } from "../Enemy";
  * is assignable to `unknown` with no cast needed at any of these call sites.
  */
 
-/** world.enemies elements, cast for enemyTick's per-frame AI. The widest of the sixteen. */
+/** What enemyTick's per-frame AI reads off a `world.enemies` element. The widest of the sixteen. */
 type Enemy = Pick<
   EnemyShape,
   | "gone"
@@ -149,7 +147,8 @@ type Enemy = Pick<
 
 export function enemyTick(dt: number){
   let anyAware=false;
-  for(const e of world.enemies as unknown as Enemy[]){
+  const enemies: readonly Enemy[] = world.enemies;   // checked widening, not a cast
+  for(const e of enemies){
     if(e.gone)continue;
     /* during a boss cinematic, nothing moves or attacks — just hold position */
     if(world.cine&&!e.dead){
@@ -242,7 +241,11 @@ export function enemyTick(dt: number){
       if(e.scream&&e.screamT<=0&&dist<14){
         e.screamT=9;e.stun=1.1;
         at(e.x,e.h*.6+(e.fy||0),e.z,()=>{growl(180,.9,.4,true);blip(500,.7,"sawtooth",.1,180,true);});
-        for(const o of world.enemies as unknown as Enemy[]){if(o.dead||o.dormant||o===e)continue;
+        // Re-read `world.enemies` here rather than reusing the binding above:
+        // the old cast was evaluated at this point too, and `loadLevel`
+        // *replaces* the array rather than clearing it in place.
+        const others: readonly Enemy[] = world.enemies;   // checked widening, not a cast
+        for(const o of others){if(o.dead||o.dormant||o===e)continue;
           if(Math.hypot(o.x-e.x,o.z-e.z)<16){o.alertX=player.px;o.alertZ=player.pz;o.slow=1;
             o.frenzy=5;}}
         showMsg("THE SCREAMER CALLS THE DEAD");

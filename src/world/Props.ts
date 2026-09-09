@@ -83,7 +83,8 @@ export function explodeBarrel(b: Prop): void {
   at(b.x,1.2,b.z,()=>boom(1.1));
   const pd=Math.hypot(player.px-b.x,player.pz-b.z);
   if(pd<5)damagePlayer(60*(1-pd/5));
-  for(const e of world.enemies as unknown as DamageableEnemy[]){if(e.dead)continue;
+  const enemies: readonly DamageableEnemy[] = world.enemies;   // checked widening, not a cast
+  for(const e of enemies){if(e.dead)continue;
     const dd=Math.hypot(e.x-b.x,e.z-b.z);
     if(dd<5){const f=Math.max(dd,.2);
       e.kx+=(e.x-b.x)/f*9;e.kz+=(e.z-b.z)/f*9;

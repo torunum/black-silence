@@ -73,11 +73,13 @@ import type { Enemy } from "./Enemy";
  * now holds only `wakeBoss`, a genuine cycle-break rather than a bridge to
  * code that had not moved yet; see its own doc comment.
  *
- * `world.enemies` and `headPool.heads` are both loosely typed
- * (`Array<Record<string, unknown>>`, see those modules' own doc comments),
- * so `killEnemy`'s blast-radius loop and `headTick`'s per-head loop cast
- * through minimal local interfaces, the same convention `Props.ts`/
- * `Hitscan.ts` established for `world.enemies`/`world.props`.
+ * `headPool.heads` is still loosely typed (`Array<Record<string, unknown>>`,
+ * see that module's own doc comment), so `headTick`'s per-head loop still
+ * casts through a minimal local interface. `world.enemies` no longer is:
+ * it is `Enemy[]` as of Phase 3 Part A Task 3, so `killEnemy`'s blast-radius
+ * loop binds it to a `readonly DeathEnemy[]` local instead — a checked
+ * widening, which the compiler verifies against the real `Enemy`, where the
+ * old `as unknown as DeathEnemy[]` verified nothing.
  *
  * `killEnemy`/`spawnHead`/`bossDeath`'s own `e` parameter is typed `unknown`
  * and cast at the point of use to the local `KillEnemy` shape below, the
@@ -91,7 +93,7 @@ import type { Enemy } from "./Enemy";
  * own header explains `dropAmmo` moved here to avoid.
  */
 
-/** world.enemies elements, cast for killEnemy's Afrit blast-radius loop. */
+/** What killEnemy's Afrit blast-radius loop reads off a `world.enemies` element. */
 type DeathEnemy = Pick<Enemy, "dead" | "x" | "z" | "hp">;
 
 /** The weapon/explosion hit-info bag passed through damageEnemy -> killEnemy -> spawnHead. */
@@ -173,7 +175,8 @@ export function killEnemy(enemy: unknown, finalDmg: number, info: DamageInfo) {
     renderState.boomLight.position.set(e.x,1.2,e.z);renderState.boomLight.intensity=3.5;renderState.boomLight.color.setHex(0xff7830);
     const pd=Math.hypot(player.px-e.x,player.pz-e.z);
     if(pd<3.5&&Math.abs((e.fy||0)-(player.pyy-EYE))<2)damagePlayer(28*(1-pd/3.5));
-    for(const o of world.enemies as unknown as DeathEnemy[]){if(o.dead||o===e)continue;
+    const nearby: readonly DeathEnemy[] = world.enemies;   // checked widening, not a cast
+    for(const o of nearby){if(o.dead||o===e)continue;
       if(Math.hypot(o.x-e.x,o.z-e.z)<3)o.hp-=30;}}
   if(info.wIdx===-1){S.kickK=(S.kickK||0)+1;
     if(S.kickK===3)ach(ACHIEVEMENTS.boot,S.ach);}

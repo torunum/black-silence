@@ -62,7 +62,7 @@ interface Orb {
   dmg: number;
 }
 
-/** world.enemies elements, cast for the nail-vs-enemy hit check. */
+/** What the nail-vs-enemy hit check reads off a `world.enemies` element. */
 type Enemy = Pick<EnemyShape, "dead" | "dormant" | "x" | "z" | "w" | "h">;
 
 export function projTick(dt: number){
@@ -81,7 +81,8 @@ export function projTick(dt: number){
     let boom=n.life<=0||my<0.05||my>WALLH||solidAt(mx,mz);
     if(!boom)for(const p of world.props as unknown as Prop[]){if(p.dead)continue;
       if(Math.hypot(mx-p.x,mz-p.z)<p.r+.1&&my<p.hgt){boom=true;break;}}
-    if(!boom)for(const e of world.enemies as unknown as Enemy[]){if(e.dead||e.dormant)continue;
+    const enemies: readonly Enemy[] = world.enemies;   // checked widening, not a cast
+    if(!boom)for(const e of enemies){if(e.dead||e.dormant)continue;
       if(Math.hypot(mx-e.x,mz-e.z)<e.w*.5&&my>0&&my<e.h*1.05){
         weaponRuntime.volleyHit=true;S.hitsLanded++;boom=true;break;}}
     if(boom){crossExplode(mx,Math.max(my,.3),mz);

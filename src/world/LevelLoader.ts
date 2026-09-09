@@ -131,15 +131,12 @@ export function spawnEnemy(ch: string, wx: number, wz: number, summoned?: boolea
     fy:floorHeightAt(wx,wz),
     dormant:!!d.boss,phase:1,tpT:5,atkT:2.5,sumT:6,ringT:4,debT:3,chT:5,charging:0,cdx:0,cdz:0};
   if(elite)(e.sp.material as THREE.SpriteMaterial).color.setHex(0xd8c878);
-  // `world.enemies` and `world.bossRef` are still `Record<string, unknown>`;
-  // retyping them to `Enemy` is Task 3, deliberately kept out of this diff.
-  // `Enemy` is an interface, so it has no implicit index signature and is not
-  // assignable to `Record<string, unknown>` without routing through `unknown`.
-  // Same object either way — this is a widening, not a copy.
-  const rec=e as unknown as Record<string, unknown>;
-  (world.enemies as Record<string, unknown>[]).push(rec);
+  // `world.enemies` and `world.bossRef` are `Enemy`-typed as of Phase 3 Part A
+  // Task 3, so the object goes in as itself — no cast, and no separate `rec`
+  // alias that used to exist only to satisfy `Record<string, unknown>`.
+  world.enemies.push(e);
   if(!summoned)S.enemiesTotal=(S.enemiesTotal||0)+1;
-  if(d.boss)world.bossRef=world.bossRef||rec;
+  if(d.boss)world.bossRef=world.bossRef||e;
   return e;}
 export function spawnProp(ch: string, wx: number, wz: number): void {
   let m: THREE.Object3D,r,hgt,hp,explosive=false,kind=ch;

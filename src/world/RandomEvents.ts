@@ -27,7 +27,7 @@ interface Torch {
   L: { visible: boolean };
 }
 
-/** world.enemies elements, cast for the bells branch's frenzy trigger. */
+/** What the bells branch's frenzy trigger touches on a `world.enemies` element. */
 type Enemy = Pick<EnemyShape, "dead" | "dormant" | "frenzy">;
 
 export function eventTick(dt: number): void {
@@ -45,7 +45,8 @@ export function eventTick(dt: number): void {
     blip(50,2,"sine",.1,30,true);bang(.4,.1,300);
   }else if(r<.8&&S.level===1){ /* the bells */
     bellToll();say("event_bell",true);
-    for(const e of world.enemies as unknown as Enemy[]){if(!e.dead&&!e.dormant)e.frenzy=7;}
+    const enemies: readonly Enemy[] = world.enemies;   // checked widening, not a cast
+    for(const e of enemies){if(!e.dead&&!e.dormant)e.frenzy=7;}
     showMsg("THE BELLS ARE RINGING",3);
   }else{ /* whispers */
     for(let i=0;i<3;i++)after(()=>blip(rnd(300,500),.7,"sine",.025,rnd(120,200),true),i*600);}}
