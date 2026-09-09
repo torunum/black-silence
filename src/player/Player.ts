@@ -161,8 +161,8 @@ function playerTick(dt: number): void {
         smoke3d(sxp,.6,szp,8);}}
     alertSound(player.px,player.pz,30);}
   if(world.challenge&&(world.challenge as unknown as ChallengeState).state===1){
-    const summonedLeft: readonly TickEnemy[] = world.enemies;   // checked widening, not a cast
-    if(!summonedLeft.some(e=>e.summoned&&!e.dead)){
+    const enemies: readonly TickEnemy[] = world.enemies;   // checked widening, not a cast
+    if(!enemies.some(e=>e.summoned&&!e.dead)){
       (world.challenge as unknown as ChallengeState).state=2;say("challenge_done",true);
       ach(ACHIEVEMENTS.gauntlet,S.ach);
       (world.challenge as unknown as ChallengeState).plate.material.color.setHex(0x4ab86a);

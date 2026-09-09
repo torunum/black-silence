@@ -16,7 +16,7 @@ import type * as THREE from "three";
  * was nothing for any of them to disagree *with*. That is why this interface
  * is derived from the **producer**, field by field, and why `spawnEnemy` now
  * returns `Enemy`: an interface the producer does not have to satisfy is
- * just an eighteenth unchecked declaration.
+ * just a seventeenth unchecked declaration.
  *
  * The rule that settles every disagreement, now and later: **the spawn
  * literal is the ground truth.** If the literal will not type-check as an
@@ -34,10 +34,10 @@ import type * as THREE from "three";
  *      Tightening that is the point of the consolidation.
  *   2. Assigned after spawn — **optional**, each with the site that writes
  *      it. These genuinely are absent on a freshly spawned enemy.
- *   3. The KNOWN-15 nine, plus `title` — **optional**, and always
- *      `undefined` at runtime. See the block above them. `title` is the one
- *      exception whose absence is harmless: its sole read
- *      (`src/enemies/Boss.ts:120`) falls back to `EDEF[e.key].title`.
+ *   3. The KNOWN-15 ten — **optional**, and always `undefined` at runtime.
+ *      See the block above them. `title` is the one whose absence is
+ *      harmless: its sole read (`src/enemies/Boss.ts:121`) falls back to
+ *      `EDEF[e.key].title`.
  *
  * `tests/enemies/enemyShape.test.ts` pins group 1 against the producer by
  * parsing this file and comparing the non-optional names to the own-keys of
@@ -150,7 +150,7 @@ export interface Enemy {
 
   /* ---- group 3: KNOWN-15 — authored, read, never delivered ------------
    *
-   * These nine are authored on `ENEMY_DEFS` entries (`src/enemies/EnemyDefs.ts`)
+   * These ten are authored on `ENEMY_DEFS` entries (`src/enemies/EnemyDefs.ts`)
    * and read by the AI, but `spawnEnemy`'s literal **never copies them onto
    * the spawned enemy** — no spread, no assignment by name, and no
    * `e.<field> =` anywhere in `src/`. So every read of them at runtime sees
@@ -166,12 +166,15 @@ export interface Enemy {
    * work. **Do not make `spawnEnemy` copy them, and do not delete the read
    * sites.**
    *
-   * `title` below is a tenth field with the identical gap — authored on five
-   * boss defs, never copied by `spawnEnemy` — but it is not a combat field
-   * and its one read already tolerates the gap with a fallback, so it is
-   * listed separately rather than folded into "nine".
-   * See KNOWN-15 in `docs/known-issues.md` and the table in
-   * `docs/superpowers/plans/2026-09-08-phase3a-one-enemy-shape.md`.
+   * `title` below is the tenth, with the identical gap but a harmless
+   * consequence — it is not a combat field and its one read already
+   * tolerates the gap with a fallback — so it is described separately below
+   * rather than counted among the nine combat behaviors.
+   *
+   * `tests/enemies/deadDefFields.test.ts` pins all ten, deriving the
+   * authoring defs from `ENEMY_DEFS` itself so no count here or there can go
+   * stale. **Read that file's header before changing anything in this
+   * block.** See also KNOWN-15 in `docs/known-issues.md`.
    */
 
   /** Projectile kind. Read at `ai/Behaviors.ts:249,252`, `ai/Attacks.ts:78`. Always `undefined`. */
@@ -193,12 +196,15 @@ export interface Enemy {
   /** Sovereign boss stat block. Read at `enemies/Boss.ts:174`. Always `undefined`. */
   sovereign?: boolean;
   /**
-   * Boss subtitle line, e.g. "warden of the dungeon". Authored on five boss
-   * `ENEMY_DEFS` entries, but `spawnEnemy`'s literal never copies it — same
-   * gap as the other nine. Read at `src/enemies/Boss.ts:120` as
+   * Boss subtitle line, e.g. "warden of the dungeon". Authored on **twelve**
+   * `ENEMY_DEFS` entries — 8 boss (`E,U,Q,Z,N,H,V,G`) and 4 non-boss
+   * (`k,q,R,y`) — but `spawnEnemy`'s literal never copies it, the same gap
+   * as the other nine. Read at `src/enemies/Boss.ts:121` as
    * `e.title||EDEF[e.key].title`; the `||` fallback to the def's own `title`
    * is why the boss title bar works anyway, and is why this one is harmless
-   * today where the others are silently-dead features.
+   * today where the others are silently-dead features. That read site is
+   * boss-only, so the four non-boss titles are dead data even if the
+   * mechanism worked.
    */
   title?: string;
 }

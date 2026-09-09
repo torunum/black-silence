@@ -8,7 +8,7 @@ import type { Enemy } from "../../src/enemies/Enemy";
 /**
  * The pin that makes `src/enemies/Enemy.ts` load-bearing.
  *
- * Phase 3A replaced seventeen independently-invented enemy interfaces with
+ * Phase 3A replaced sixteen independently-invented enemy interfaces with
  * one, derived from the producer — `spawnEnemy`'s object literal in
  * `src/world/LevelLoader.ts`. `spawnEnemy` now returns `Enemy`, so the
  * compiler already rejects a literal that fails to *satisfy* the interface.
@@ -37,8 +37,9 @@ import type { Enemy } from "../../src/enemies/Enemy";
  *
  * The optional half is pinned too, by the second `describe`: `Enemy`'s
  * optional fields are exactly the ones that are *not* there at spawn — the
- * six written later by the AI/damage code, and the nine KNOWN-15 fields that
- * are never written at all. If one of them were present on a fresh enemy it
+ * six written later by the AI/damage code, and the ten KNOWN-15 fields that
+ * are never written at all (pinned from the other side by
+ * `tests/enemies/deadDefFields.test.ts`). If one of them were present on a fresh enemy it
  * would belong in group 1, non-optional, and the declaration would be
  * describing the object more loosely than the producer does — the exact
  * looseness this task exists to remove.
@@ -220,7 +221,7 @@ describe("the Enemy interface's optional fields", () => {
     // equality check instead, so a widen-to-`string` mutation is caught by
     // this test too, not only a narrow-to-`boolean` one.
     //
-    // The check lives here because Task 1 deliberately leaves the seventeen
+    // The check lives here because Task 1 deliberately leaves the sixteen
     // consumer interfaces alone — until Task 2 points `Damage.ts` at
     // `Enemy`, nothing in `src/` reads `Enemy["severKey"]` at all, so
     // nothing in `src/` would notice the type being wrong again.

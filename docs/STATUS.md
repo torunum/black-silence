@@ -4,11 +4,14 @@ Written to survive session loss. If you are picking this up cold, read this
 file, then `docs/direction.md`, then the current plan under
 `docs/superpowers/plans/`. Trust this file and `git log` over any recollection.
 
-Last updated: 2026-08-31, after Phase 2 Part A merged. Phase 0 finished the
-port, Phase 1 gave the game sound and settings, and Part A fixed the two
-shipped bugs whose correctness is structural and instanced the level geometry.
+Last updated: 2026-09-09, after Phase 3 Part A. Phase 0 finished the port,
+Phase 1 gave the game sound and settings, Phase 2 Part A fixed the two shipped
+bugs whose correctness is structural and instanced the level geometry, and
+Phase 3 Part A gave the enemy one shape — closing KNOWN-13 and, in doing so,
+finding KNOWN-15, the biggest live bug in the game.
 **Phase 2 Part B is blocked on a human running the game** — see the browser
-note under Environment gotchas.
+note under Environment gotchas. **KNOWN-15 is blocked on the same human**, for
+the same reason: it is a balance change nobody here can look at.
 
 ---
 
@@ -450,6 +453,76 @@ frozen and unpatchable. That is fragile in a specific way — a bundled or
 minified three would silently stop matching and send UUID draws back into the
 stream — so the teardown now **fails loudly if a run intercepted zero draws**.
 
+## Phase 3 Part A status
+
+Branch `phase-3a-one-enemy-shape`. Plan dated 2026-09-08.
+Ledger: `.superpowers/sdd/2026-09-08-phase3a-one-enemy-shape/progress.md`.
+
+**KNOWN-13 is closed.** Sixteen hand-written interfaces across fifteen files
+all described the same runtime object — the untyped record `spawnEnemy` pushed
+into `world.enemies` — and nothing kept them agreeing. They are now
+`Pick<Enemy, …>` aliases of one `src/enemies/Enemy.ts`.
+
+| Delivered | Evidence |
+|---|---|
+| One `Enemy`, derived from the **producer** | 67 non-optional fields = exactly what `spawnEnemy`'s literal builds; the test parses `Enemy.ts` and compares to a real spawn |
+| `spawnEnemy` returns `Enemy`; `world.enemies` is `Enemy[]` | reading an undeclared field off an element is now `tsc` error TS2339 |
+| The fifteen `as unknown as SomeEnemy[]` casts gone | replaced by `readonly SomePick[]` bindings — a *checked* widening |
+| `severKey`'s contradiction resolved | `string` in the writer vs `boolean` in the reader → the real union, guarded both directions |
+| KNOWN-15 found and pinned | `tests/enemies/deadDefFields.test.ts`, four mutations |
+| The walk-frame hole closed | `tests/enemies/walkFrames.test.ts` |
+
+The direction is the finding. Consolidating the *consumers* would have
+produced a seventeenth unchecked declaration; the interface is only load-bearing
+because the producer has to satisfy it. Everything else followed from that —
+including KNOWN-15, which became visible the moment "what the literal builds"
+and "what the defs author" were written down side by side.
+
+### The bug all 463 tests missed
+
+Task 2 rewrote `if(moving&&e.atkAnim<=0)` as `if(moving&&(e.atkAnim??0)<=0)`
+while converting a local interface to a `Pick<>`. It reads like a null-safety
+tidy-up. It **inverts the condition**: `atkAnim` is `undefined` until an enemy's
+first attack, and `undefined<=0` is false while `(undefined??0)<=0` is true. So
+every enemy in the game cycled its walk frames from the moment it spawned,
+where the reference cycles none until the enemy has attacked.
+
+The whole suite stayed green, and the reason is a coverage hole rather than bad
+luck: `digestScene` (`tests/integration/gameplayTrace.ts`) hashes each object's
+type, position and `visible` — **not `material.map`**. Both trace fixtures are
+blind to which texture a sprite is showing, and nothing else in the suite looked
+at enemy sprite-frame selection at all.
+
+It was caught by **reading the diff**, not by running anything. Three lessons,
+in the order they cost something:
+
+- A `??` inserted for tidiness is a behavior change wherever the operand is
+  legitimately `undefined`. Three sibling `??` sites in the same commit were
+  genuinely equivalent, which is what made the fourth easy to wave through.
+- A green suite is evidence about what the suite covers, and nothing else.
+  This is the same shape as KNOWN-12's madge run and KNOWN-6's untested
+  overlay: the gap was invisible precisely because nobody had asked what
+  `digestScene` hashes.
+- The fix now has its own test, and that test was proven by restoring the `??`
+  form and watching two named cases go red. The hole itself — sprite-frame
+  selection having no trace coverage — is still open beyond that one line.
+
+### Counts nobody re-derived, again
+
+Three separate written numbers about the enemy shape were wrong in this phase
+alone: the plan's "69 fields" (really 67), its "seventeen interfaces" (really
+sixteen — the scanner swept in `EnemyDefs.ts`'s `EnemyDef`, the one shape it had
+excluded by name), and a brief's "`title` is on five boss defs" (really twelve
+defs, eight of them bosses). KNOWN-13's own row had said fifteen when there were
+already sixteen.
+
+None of them changed a decision, and that is the point: they were quoted as
+evidence and would have been baked into a doc row that outlives the phase. So
+**every count in the new tests is derived at run time** — `deadDefFields.test.ts`
+reads `ENEMY_DEFS` and spawns every authoring enemy; `enemyShape.test.ts` parses
+`Enemy.ts` and compares sets. Neither asserts a number. The numbers that do
+appear, in `docs/known-issues.md`, are descriptive and dated to a commit.
+
 ## How fidelity is guarded
 
 Five mechanisms, and they are **not** interchangeable:
@@ -566,11 +639,26 @@ Two practices that have mattered most:
   For development, `npm run dev` is the normal path: Vite on port 5173 with hot
   reload.
 
-## Five bugs a player will actually hit
+## Six bugs a player will actually hit
 
 All predate the port, all are preserved on purpose, all are pinned by tests
 so they cannot change unnoticed. See `docs/known-issues.md`.
 
+- **KNOWN-15** — **The largest of the six by a wide margin.** Ten fields the
+  enemy table authors never reach the spawned enemy: `spawnEnemy` builds its
+  object with an explicit literal and simply omits them, and nothing writes
+  them later. So **no enemy fires the projectile it names** (all seven ranged
+  archetypes shoot the same default purple bolt — `fireOrb` is reached, but
+  every one of its per-orb colour/damage/speed branches falls through);
+  **the five flying enemies do not fly**; the Mancubus's second barrel, the
+  Afrit's spread and the Lost Soul's charge never fire; the Ghoul — the
+  commonest enemy in the game — never throws flesh; the Slaughtaur's shield
+  absorbs nothing; and the five sovereign bosses use the non-sovereign stat
+  block. Identical in the frozen reference, so it is faithful, not drift.
+  Found by Phase 3 Part A's enemy-shape consolidation and pinned by
+  `tests/enemies/deadDefFields.test.ts`. **Do not fix it with a spread in
+  `spawnEnemy`**: switching ten behaviors on in one commit is a balance
+  change that needs a human at the game, one field at a time.
 - **KNOWN-1** — Level 1 has a red key and a miniboss guarding it, but no locked
   door anywhere. The key does nothing.
 - **KNOWN-4** — `loadLevel` checks the enemy table before the prop table, and
