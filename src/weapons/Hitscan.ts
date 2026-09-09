@@ -18,6 +18,7 @@ import { screenShake, shake } from "../fx/ShakeState";
 import { breakProp, explodeBarrel, type Prop } from "../world/Props";
 import { alertSound } from "../enemies/ai/Perception";
 import { damageEnemy } from "../enemies/Damage";
+import type { Enemy } from "../enemies/Enemy";
 
 /**
  * Hitscan resolution and the holy-cross explosion — the two queries that
@@ -70,21 +71,10 @@ import { damageEnemy } from "../enemies/Damage";
  */
 
 /** world.enemies elements, cast for hitscan's candidate pass and crossExplode's blast loop. */
-interface HitscanEnemy {
-  dead?: boolean;
-  dormant?: boolean;
-  x: number;
-  z: number;
-  h: number;
-  w: number;
-  fly?: boolean;
-  flyH?: number;
-  fy?: number;
-  kx: number;
-  kz: number;
-  key: string;
-  plate: number;
-}
+type HitscanEnemy = Pick<
+  Enemy,
+  "dead" | "dormant" | "x" | "z" | "h" | "w" | "fly" | "flyH" | "fy" | "kx" | "kz" | "key" | "plate"
+>;
 
 /** hitscan's per-shot candidate list, sorted by hit distance before resolution. */
 type HitCandidate =

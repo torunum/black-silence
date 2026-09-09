@@ -24,6 +24,7 @@ import { wakeBoss, roarFor, priestThink } from "../Boss";
 import { damageEnemy } from "../Damage";
 import { dropAmmo } from "../Death";
 import { schedule } from "../../core/Time";
+import type { Enemy as EnemyShape } from "../Enemy";
 
 /**
  * Behaviors — the per-frame enemy brain: state-machine housekeeping (dead/
@@ -75,74 +76,76 @@ import { schedule } from "../../core/Time";
  * is assignable to `unknown` with no cast needed at any of these call sites.
  */
 
-interface Enemy {
-  gone?: boolean;
-  dead?: boolean;
-  deathT: number;
-  deathKind?: number;
-  deathDir: number;
-  severKey?: boolean;
-  sp: THREE.Sprite;
-  blob: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial>;
-  x: number;
-  z: number;
-  h: number;
-  w: number;
-  key: string;
-  kx: number;
-  kz: number;
-  dropped?: boolean;
-  boss?: boolean;
-  dormant?: boolean;
-  priest?: boolean;
-  fy?: number;
-  hurt: number;
-  elite?: boolean;
-  flung: number;
-  flungT: number;
-  stun: number;
-  hp: number;
-  maxhp: number;
-  speed: number;
-  slow: number;
-  cool: number;
-  dodgeT: number;
-  lungeT: number;
-  slamT: number;
-  screamT: number;
-  flingCD: number;
-  aware?: boolean;
-  alertX: number;
-  alertZ: number;
-  charge?: boolean;
-  charging: number;
-  cdx: number;
-  cdz: number;
-  chT: number;
-  mel: number;
-  scream?: boolean;
-  range?: number;
-  stone?: boolean;
-  twin?: boolean;
-  orb?: string;
-  burst?: boolean;
-  toxic?: boolean;
-  charger?: boolean;
-  fling?: boolean;
-  slam?: boolean;
-  lunge?: boolean;
-  dodge?: boolean;
-  strafe: number;
-  strafeDir: number;
-  flank: number;
-  frenzy: number;
-  atkAnim: number;
-  animT: number;
-  frame: number;
-  wasAtk?: boolean;
-  fly?: boolean;
-  flyH?: number;
-}
+/** world.enemies elements, cast for enemyTick's per-frame AI. The widest of the seventeen. */
+type Enemy = Pick<
+  EnemyShape,
+  | "gone"
+  | "dead"
+  | "deathT"
+  | "deathKind"
+  | "deathDir"
+  | "severKey"
+  | "sp"
+  | "blob"
+  | "x"
+  | "z"
+  | "h"
+  | "w"
+  | "key"
+  | "kx"
+  | "kz"
+  | "dropped"
+  | "boss"
+  | "dormant"
+  | "priest"
+  | "fy"
+  | "hurt"
+  | "elite"
+  | "flung"
+  | "flungT"
+  | "stun"
+  | "hp"
+  | "maxhp"
+  | "speed"
+  | "slow"
+  | "cool"
+  | "dodgeT"
+  | "lungeT"
+  | "slamT"
+  | "screamT"
+  | "flingCD"
+  | "aware"
+  | "alertX"
+  | "alertZ"
+  | "charge"
+  | "charging"
+  | "cdx"
+  | "cdz"
+  | "chT"
+  | "mel"
+  | "scream"
+  | "range"
+  | "stone"
+  | "twin"
+  | "orb"
+  | "burst"
+  | "toxic"
+  | "charger"
+  | "fling"
+  | "slam"
+  | "lunge"
+  | "dodge"
+  | "strafe"
+  | "strafeDir"
+  | "flank"
+  | "frenzy"
+  | "atkAnim"
+  | "animT"
+  | "frame"
+  | "wasAtk"
+  | "fly"
+  | "flyH"
+>;
 
 export function enemyTick(dt: number){
   let anyAware=false;
@@ -285,7 +288,7 @@ export function enemyTick(dt: number){
         const fl=dist>8?e.flank:e.flank*.25;
         const a=Math.atan2(dx,dz)+fl;
         mx=Math.sin(a);mz=Math.cos(a);}
-      if(e.frenzy>0){e.frenzy-=dt;spd*=1.3;}
+      if((e.frenzy??0)>0){e.frenzy=(e.frenzy??0)-dt;spd*=1.3;}
       if(dist>1.15){moving=moveEnemy(e,mx,mz,spd,dt);
         if(!moving){moving=moveEnemy(e,dx/dist,dz/dist,spd*.7,dt);
           if(Math.random()<.05)e.flank*=-1;}}
@@ -296,12 +299,12 @@ export function enemyTick(dt: number){
       if(ad>1){moving=moveEnemy(e,ax/ad,az/ad,spd*.7,dt);}
       else e.alertX=-1;}
     /* walk animation */
-    if(moving&&e.atkAnim<=0){e.animT+=dt;
+    if(moving&&(e.atkAnim??0)<=0){e.animT+=dt;
       if(e.animT>.22){e.animT=0;e.frame=1-e.frame;
         const set=e.deathKind===2?[PX[e.key].hl,PX[e.key].hlb]:[PX[e.key].a,PX[e.key].b];
         e.sp.material.map=set[e.frame];e.sp.material.needsUpdate=true;}}
     /* attack pose: swap to the dedicated attack frame while striking */
-    if(e.atkAnim>0&&PX[e.key].atk&&!e.severKey&&e.deathKind!==2){
+    if((e.atkAnim??0)>0&&PX[e.key].atk&&!e.severKey&&e.deathKind!==2){
       if(e.sp.material.map!==PX[e.key].atk){
         e.sp.material.map=PX[e.key].atk;e.sp.material.needsUpdate=true;e.wasAtk=true;}
     }else if(e.wasAtk){ // attack finished -> back to normal stance
@@ -310,7 +313,7 @@ export function enemyTick(dt: number){
       e.sp.material.map=set[e.frame];e.sp.material.needsUpdate=true;}
     /* attack lunge: brief grow + lean toward player */
     let lunge=0;
-    if(e.atkAnim>0){e.atkAnim-=dt;lunge=Math.sin(clamp(e.atkAnim/.22,0,1)*Math.PI);}
+    if((e.atkAnim??0)>0){e.atkAnim=(e.atkAnim??0)-dt;lunge=Math.sin(clamp((e.atkAnim??0)/.22,0,1)*Math.PI);}
     const sScale=1+lunge*0.22;
     e.sp.scale.set(e.w*sScale,e.h*sScale,1);
     const ldx=dist>0.01?(player.px-e.x)/dist:0,ldz=dist>0.01?(player.pz-e.z)/dist:0;
@@ -318,7 +321,7 @@ export function enemyTick(dt: number){
     if(e.fly){
       const hov=(e.flyH||1.5)+Math.sin(performance.now()/420+e.x)*.18;
       e.sp.position.set(lx,hov,lz);
-      e.blob.position.set(e.x,.012,e.z);e.blob.material.opacity=.3;
+      e.blob.position.set(e.x,.012,e.z);(e.blob.material as THREE.MeshBasicMaterial).opacity=.3;
     }else{
       e.fy=floorHeightAt(e.x,e.z);
       e.sp.position.set(lx,e.h/2+(e.fy||0)+Math.sin(performance.now()/300+e.x)*.03,lz);

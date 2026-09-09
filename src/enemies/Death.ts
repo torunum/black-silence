@@ -28,6 +28,7 @@ import { EYE, CELL } from "../world/Grid";
 import { solidAt } from "../world/Collision";
 import { world } from "../world/WorldState";
 import { track } from "../render/DisposeRegistry";
+import type { Enemy } from "./Enemy";
 
 /**
  * Enemy death — kill resolution (gib/decapitate/plain), severed heads,
@@ -91,12 +92,7 @@ import { track } from "../render/DisposeRegistry";
  */
 
 /** world.enemies elements, cast for killEnemy's Afrit blast-radius loop. */
-interface DeathEnemy {
-  dead?: boolean;
-  x: number;
-  z: number;
-  hp: number;
-}
+type DeathEnemy = Pick<Enemy, "dead" | "x" | "z" | "hp">;
 
 /** The weapon/explosion hit-info bag passed through damageEnemy -> killEnemy -> spawnHead. */
 export interface DamageInfo {
@@ -115,29 +111,30 @@ export interface DamageInfo {
 }
 
 /** world.enemies elements, cast for killEnemy/spawnHead/bossDeath's kill resolution. */
-interface KillEnemy {
-  dead?: boolean;
-  summoned?: boolean;
-  blob: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial>;
-  sp: THREE.Sprite;
-  key: string;
-  x: number;
-  z: number;
-  fy?: number;
-  toxic?: boolean;
-  boss?: boolean;
-  hp: number;
-  gone?: boolean;
-  h: number;
-  w: number;
-  pain: number;
-  deathT: number;
-  deathKind?: number;
-  deathDir: number;
-  kx: number;
-  kz: number;
-  stone?: boolean;
-}
+type KillEnemy = Pick<
+  Enemy,
+  | "dead"
+  | "summoned"
+  | "blob"
+  | "sp"
+  | "key"
+  | "x"
+  | "z"
+  | "fy"
+  | "toxic"
+  | "boss"
+  | "hp"
+  | "gone"
+  | "h"
+  | "w"
+  | "pain"
+  | "deathT"
+  | "deathKind"
+  | "deathDir"
+  | "kx"
+  | "kz"
+  | "stone"
+>;
 
 /**
  * world.exitPos's actual shape, set by LevelLoader.ts for the "X" tile —

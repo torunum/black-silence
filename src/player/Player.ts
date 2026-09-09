@@ -27,6 +27,7 @@ import { smoke3d } from "../fx/Particles";
 import { screenShake, shake } from "../fx/ShakeState";
 import { weaponRuntime } from "../weapons/WeaponRuntime";
 import { world } from "../world/WorldState";
+import type { Enemy } from "../enemies/Enemy";
 
 /**
  * Player movement, damage and death — the per-frame integrator and the two
@@ -71,11 +72,7 @@ interface ChallengeState {
 }
 
 /** Enemies world.enemies elements are cast to for playerTick's boss/summoned checks. */
-interface TickEnemy {
-  boss?: boolean;
-  summoned?: boolean;
-  dead?: boolean;
-}
+type TickEnemy = Pick<Enemy, "boss" | "summoned" | "dead">;
 
 function damagePlayer(d: number, silent?: boolean): void {
   if(S.dead||S.won)return;

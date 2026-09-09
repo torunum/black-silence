@@ -8,6 +8,7 @@ import { bellToll } from "../audio/Ambient";
 import { blip, bang } from "../audio/Sfx";
 import { rnd } from "../utils/math";
 import { after } from "../core/Timers";
+import type { Enemy as EnemyShape } from "../enemies/Enemy";
 
 /**
  * The three random world events that fire on a rolling timer while a level
@@ -27,11 +28,7 @@ interface Torch {
 }
 
 /** world.enemies elements, cast for the bells branch's frenzy trigger. */
-interface Enemy {
-  dead?: boolean;
-  dormant?: boolean;
-  frenzy?: number;
-}
+type Enemy = Pick<EnemyShape, "dead" | "dormant" | "frenzy">;
 
 export function eventTick(dt: number): void {
   if(ambienceState.darkT>0){ambienceState.darkT-=dt;

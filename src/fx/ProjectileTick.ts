@@ -14,6 +14,7 @@ import { weaponRuntime } from "../weapons/WeaponRuntime";
 import { world } from "../world/WorldState";
 import { type Prop } from "../world/Props";
 import { projectiles } from "./Projectiles";
+import type { Enemy as EnemyShape } from "../enemies/Enemy";
 
 /**
  * `src/fx/Projectiles.ts` (Plan 0D) is the *state* — the live `nails`/`orbs`
@@ -62,14 +63,7 @@ interface Orb {
 }
 
 /** world.enemies elements, cast for the nail-vs-enemy hit check. */
-interface Enemy {
-  dead?: boolean;
-  dormant?: boolean;
-  x: number;
-  z: number;
-  w: number;
-  h: number;
-}
+type Enemy = Pick<EnemyShape, "dead" | "dormant" | "x" | "z" | "w" | "h">;
 
 export function projTick(dt: number){
   const nails=projectiles.nails as unknown as Nail[];

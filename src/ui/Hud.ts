@@ -3,6 +3,7 @@ import { world } from "../world/WorldState";
 import { weaponRuntime } from "../weapons/WeaponRuntime";
 import { WEAPONS } from "../weapons/WeaponState";
 import { el, q } from "./dom";
+import type { Enemy } from "../enemies/Enemy";
 
 /**
  * The per-frame HUD painter — health, armour, ammo, weapon name, the key
@@ -35,16 +36,7 @@ import { el, q } from "./dom";
  */
 
 /** world.enemies elements, cast for hud's boss-bar lookup. */
-interface BossEnemy {
-  boss?: boolean;
-  dead?: boolean;
-  dormant?: boolean;
-  priest?: boolean;
-  phase: number;
-  name: string;
-  hp: number;
-  maxhp: number;
-}
+type BossEnemy = Pick<Enemy, "boss" | "dead" | "dormant" | "priest" | "phase" | "name" | "hp" | "maxhp">;
 
 export function hud(): void {
   q("#hp .num").textContent=String(Math.max(0,Math.ceil(S.hp)));

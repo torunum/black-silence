@@ -24,6 +24,7 @@ import { moveEnemy } from "./ai/Locomotion";
 import { fireOrb, spawnRing, spawnStrike } from "./ai/Attacks";
 import { ctx } from "../core/Context";
 import { el } from "../ui/dom";
+import type { Enemy } from "./Enemy";
 
 /**
  * Boss — the three bosses' brains: waking, the wake-up cinematic, the
@@ -77,36 +78,37 @@ import { el } from "../ui/dom";
 interface Cine { t: number; dur: number; e: { x: number; z: number; h: number; key: string }; }
 
 /** world.enemies elements, cast for wakeBoss/priestTeleport/priestThink — the boss brain. */
-interface BossBrainEnemy {
-  x: number;
-  z: number;
-  key: string;
-  name: string;
-  title?: string;
-  dormant?: boolean;
-  priest?: boolean;
-  phase: number;
-  hp: number;
-  maxhp: number;
-  formKey?: string;
-  sp: THREE.Sprite;
-  blob: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial>;
-  w: number;
-  h: number;
-  sovereign?: boolean;
-  speed: number;
-  mel: number;
-  tpT: number;
-  atkT: number;
-  sumT: number;
-  ringT: number;
-  debT: number;
-  cool: number;
-  fy?: number;
-  animT: number;
-  frame: number;
-  atkAnim: number;
-}
+type BossBrainEnemy = Pick<
+  Enemy,
+  | "x"
+  | "z"
+  | "key"
+  | "name"
+  | "title"
+  | "dormant"
+  | "priest"
+  | "phase"
+  | "hp"
+  | "maxhp"
+  | "formKey"
+  | "sp"
+  | "blob"
+  | "w"
+  | "h"
+  | "sovereign"
+  | "speed"
+  | "mel"
+  | "tpT"
+  | "atkT"
+  | "sumT"
+  | "ringT"
+  | "debT"
+  | "cool"
+  | "fy"
+  | "animT"
+  | "frame"
+  | "atkAnim"
+>;
 
 export function wakeBoss(enemy: unknown){
   const e=enemy as BossBrainEnemy;
@@ -117,7 +119,7 @@ export function wakeBoss(enemy: unknown){
   el("barTop").style.height="11%";
   el("barBot").style.height="11%";
   const bt=el("bossTitle");
-  bt.children[0].textContent=e.name;bt.children[1].textContent=(e.title||EDEF[e.key].title)!;
+  bt.children[0].textContent=e.name!;bt.children[1].textContent=(e.title||EDEF[e.key].title)!;
   bt.style.opacity="1";
   at(e.x,e.h*.6+(e.fy||0),e.z,()=>{blip(40,1.6,"sawtooth",.2,30,true);bang(.5,.4,300);});
   if(e.priest)organChord();

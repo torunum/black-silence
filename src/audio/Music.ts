@@ -1,5 +1,6 @@
 import { startBossMusic, stopBossMusic } from "./Ambient";
 import { world } from "../world/WorldState";
+import type { Enemy } from "../enemies/Enemy";
 
 /**
  * ADAPTIVE MUSIC — the layer *controller*. Three conceptual layers,
@@ -107,11 +108,7 @@ export const MUSIC_FADE_SECONDS = 2.5;
 export const MUSIC_DWELL_SECONDS = 4;
 
 /** world.enemies elements, cast for the same boss check src/ui/Hud.ts:63 already uses. */
-interface MusicBossEnemy {
-  boss?: boolean;
-  dead?: boolean;
-  dormant?: boolean;
-}
+type MusicBossEnemy = Pick<Enemy, "boss" | "dead" | "dormant">;
 
 let active: MusicLayer = "exploration";
 let dwellRemaining = 0;

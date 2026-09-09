@@ -18,6 +18,7 @@ import { alertSound } from "../enemies/ai/Perception";
 import { damageEnemy } from "../enemies/Damage";
 import { damagePlayer } from "../player/Player";
 import { world } from "./WorldState";
+import type { Enemy } from "../enemies/Enemy";
 
 /**
  * Prop destruction — breaking furniture and exploding barrels, run during
@@ -60,13 +61,7 @@ export interface Prop {
   fuse?: number;
 }
 
-interface DamageableEnemy {
-  x: number;
-  z: number;
-  dead?: boolean;
-  kx: number;
-  kz: number;
-}
+type DamageableEnemy = Pick<Enemy, "x" | "z" | "dead" | "kx" | "kz">;
 
 export function breakProp(p: Prop): void {
   if(p.dead)return;p.dead=true;renderState.scene.remove(p.m);S.propsBroken++;
