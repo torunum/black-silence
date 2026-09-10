@@ -285,10 +285,15 @@ import { MONOLOGUE } from "../../src/content/monologue";
  *   Requires a decapitating kill; this run's kill is not one, and no
  *   `noHead`/`hl` texture appears in any sampled frame.
  *
- * Both of those were **confirmed by mutation, not inferred**: rewriting
- * `Behaviors.ts`'s `want` to `P.a` and `Death.ts`'s headless assignment to
- * `PX[e.key].a` at the same time leaves both trace files green. They are
- * genuinely unreached, and this file should not be read as covering them.
+ * **Both of the above were confirmed by mutation, not inferred**:
+ * rewriting `Behaviors.ts`'s `want` to `P.a` and `Death.ts`'s headless
+ * assignment to `PX[e.key].a` at the same time leaves both trace files
+ * green. They are genuinely unreached, and this file should not be read as
+ * covering them.
+ *
+ * The remaining two rest on structural argument, not mutation — no script
+ * reaches the branch at all, so there is nothing to mutate:
+ *
  * - `Boss.ts`'s phase-3 form swap and `Boss.ts`'s boss walk cycle. Both sit
  *   inside `priestThink`, which only runs for `e.priest` enemies. Level 1's
  *   only boss is `U`, THE CATHEDRAL GUARDIAN (`EnemyDefs.ts`: `boss:true,

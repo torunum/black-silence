@@ -124,7 +124,7 @@ import { runTrace, type InputEvent, type TraceFrame } from "./gameplayTrace";
  *
  * **This fixture still has zero enemies**, so it gains far less than
  * `combatTrace.test.ts` does. The one `material.map=` assignment site it
- * now covers is the torch flicker (`player/Interact.ts:151`): both
+ * now covers is the torch flicker (`player/Interact.ts`): both
  * `item.torch[0]` and `item.torch[1]` appear in its sampled frames, so a
  * frozen or reversed torch animation is no longer invisible here. Nothing
  * else changed: it records the same camera, the same HUD and the same

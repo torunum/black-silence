@@ -282,7 +282,7 @@ type TexNamer = (t: Any) => string;
  *   number and an object, so the `isTexture` guard skips them.
  * - **`ITEMTEX`** (`src/render/ItemTextures.ts`) — pickups and the two light
  *   props, named `"item.<key>"`. `ITEMTEX.torch` is the one array-valued
- *   entry (the two-frame flicker `Interact.ts:151` swaps between), so its
+ *   entry (the two-frame flicker `Interact.ts` swaps between), so its
  *   frames are `item.torch[0]` and `item.torch[1]`. Indexed rather than
  *   lumped into the fallback, because the torch flicker is one of the nine
  *   `material.map=` assignment sites this task is trying to make visible,
@@ -311,8 +311,18 @@ type TexNamer = (t: Any) => string;
  * is correct rather than lossy. The counter is deterministic because the
  * order textures are first seen is the scene-child order of a deterministic
  * run.
+ *
+ * **Exported for `tests/integration/textureIndex.test.ts`.** Fallback 2's
+ * per-object counter is the one piece of this index with no fixture behind
+ * it — the two committed fixtures happen to exercise it, but nothing pins
+ * that a collapsed fallback (one shared `"unnamed"` string) would fail
+ * anything, since a hash difference from a name collision just gets
+ * regenerated away like any other digest change. That test drives this
+ * function directly against synthetic unnamed textures to pin the one
+ * property a collapse would silently lose: distinct objects get distinct
+ * names, and the same object gets the same name back.
  */
-async function buildTextureIndex(): Promise<TexNamer> {
+export async function buildTextureIndex(): Promise<TexNamer> {
   const { PX } = await import("../../src/enemies/SpriteBaker");
   const { ITEMTEX } = await import("../../src/render/ItemTextures");
   const { TEX } = await import("../../src/render/ProcTextures");
@@ -405,8 +415,8 @@ function hash(s: string): string {
  *
  * **Scale: deliberately left out.** Measured rather than assumed. `scale`
  * is written in eleven places in `src/`; the ones that animate it are
- * `Behaviors.ts:321`'s attack-lunge grow (`1+lunge*0.22`) and
- * `Decals.ts:61`'s blood-pool grow-in. The lunge case carries no
+ * `Behaviors.ts`'s attack-lunge grow (`1+lunge*0.22`) and
+ * `Decals.ts`'s blood-pool grow-in. The lunge case carries no
  * information this digest does not already hold at 1e-6: the same `lunge`
  * value simultaneously offsets `sp.position` by `lunge*0.35` toward the
  * player two lines later, so any change to the lunge curve already moves a
@@ -418,12 +428,16 @@ function hash(s: string): string {
  * later task wants decal grow-in covered, add it then, with its own
  * regeneration and its own analysis.
  *
- * Children with no material (lights, `Group`s) and materials with no map
- * produce **exactly** the string they produced before this task, so the
- * fixture diff at the regeneration is attributable to the sprites and
- * textured meshes and to nothing else. An array-valued `material` (the
- * platform `InstancedMesh`'s six box faces) contributes each of its
- * materials, joined with `+`.
+ * Children with no material at all (lights, `Group`s), and materials with
+ * neither a map nor a colour, produce **exactly** the string they produced
+ * before this task. That is a narrower set than "no map": every material
+ * with a `.color` but no `.map` — the exit pad and torch post in
+ * `LevelLoader.ts`, the blood-pool mesh in `Decals.ts`, among others — now
+ * gains a `:c=` segment of its own, which is the point of adding colour at
+ * all (see above). The fixture diff at the regeneration is attributable to
+ * every material that has a map, a colour, or both, and to nothing else. An
+ * array-valued `material` (the platform `InstancedMesh`'s six box faces)
+ * contributes each of its materials, joined with `+`.
  */
 function digestScene(scene: Any, texName: TexNamer): { count: number; digest: string } {
   const parts = (scene.children as Any[]).map((o) => {
