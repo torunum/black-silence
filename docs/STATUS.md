@@ -323,9 +323,10 @@ entry left in `Context.ts`, and a genuine cycle break rather than a bridge to
 unmoved code — is its natural first candidate. KNOWN-13's fifteen duplicate
 enemy interfaces are also Phase 1's.
 
-Phase 2 owns the deferred Three.js upgrade (KNOWN-14), KNOWN-7 (casings never
-reaching the screen) and KNOWN-8 (the six-slot mouse wheel). Phase 4's level
-rebuild owns KNOWN-4 and KNOWN-11.
+Phase 2 owns the deferred Three.js upgrade (KNOWN-14) — Part A already closed
+KNOWN-7 (casings never reaching the screen) and KNOWN-8 (the six-slot mouse
+wheel); see Phase 2 Part A status below. Phase 4's level rebuild owns KNOWN-4
+and KNOWN-11.
 
 The one definition-of-done item that **cannot** be checked in this environment
 is "`npm run dev` plays identically to `reference/sonsurum.html`". The browser

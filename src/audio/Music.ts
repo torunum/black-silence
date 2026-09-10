@@ -107,7 +107,7 @@ export const MUSIC_FADE_SECONDS = 2.5;
 /** Minimum time a layer holds before another swap is even considered. See the module doc comment. */
 export const MUSIC_DWELL_SECONDS = 4;
 
-/** What this file reads off a `world.enemies` element — the same boss check src/ui/Hud.ts:63 uses. */
+/** What this file reads off a `world.enemies` element — the same boss check `src/ui/Hud.ts` uses. */
 type MusicBossEnemy = Pick<Enemy, "boss" | "dead" | "dormant">;
 
 let active: MusicLayer = "exploration";

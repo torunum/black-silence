@@ -128,24 +128,24 @@ export interface Enemy {
 
   /* ---- group 2: assigned after spawn, so genuinely absent at first ---- */
 
-  /** Attack-animation countdown. Written by `src/enemies/ai/Attacks.ts:75`, `ai/Behaviors.ts`, `Boss.ts`. */
+  /** Attack-animation countdown. Written by `src/enemies/ai/Attacks.ts`, `ai/Behaviors.ts`, `Boss.ts`. */
   atkAnim?: number;
-  /** Second-form sprite key for a transformed boss. Written by `src/enemies/Boss.ts:171`. */
+  /** Second-form sprite key for a transformed boss. Written by `src/enemies/Boss.ts`. */
   formKey?: string;
-  /** Enrage timer. Written by `src/world/RandomEvents.ts:51` and `src/enemies/ai/Behaviors.ts:244`. */
+  /** Enrage timer. Written by `src/world/RandomEvents.ts` and `src/enemies/ai/Behaviors.ts`. */
   frenzy?: number;
-  /** Which limbs have been torn off. Written by `src/enemies/Damage.ts:134-142`. */
+  /** Which limbs have been torn off. Written by `src/enemies/Damage.ts`. */
   sever?: { lArm?: boolean; rArm?: boolean; legs?: boolean };
   /**
    * The dismembered sprite currently shown. `refreshSeverSprite`
-   * (`src/enemies/Damage.ts:148-155`) is the sole writer and assigns exactly
+   * (`src/enemies/Damage.ts`) is the sole writer and assigns exactly
    * this union — never a bare `boolean`. `src/enemies/ai/Behaviors.ts`
    * declared it `boolean`; both of its reads there are bare
    * truthiness tests, which is the only reason the contradiction never
    * showed. Fixing it here is why this file exists.
    */
   severKey?: "noLegs" | "noLArm" | "noRArm" | "gibbed";
-  /** True while the attack sprite is swapped in. Written by `src/enemies/ai/Behaviors.ts:306-308`. */
+  /** True while the attack sprite is swapped in. Written by `src/enemies/ai/Behaviors.ts`. */
   wasAtk?: boolean;
 
   /* ---- group 3: KNOWN-15 — authored, read, never delivered ------------
