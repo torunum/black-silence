@@ -80,7 +80,7 @@ export interface Enemy {
   plate: number;
   sp: THREE.Sprite;
   /** The shadow blob under the sprite. */
-  blob: THREE.Mesh;
+  blob: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial>;
   elite: boolean;
   summoned: boolean;
   cool: number;
