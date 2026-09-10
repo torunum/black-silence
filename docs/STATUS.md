@@ -320,8 +320,7 @@ Two more worth carrying:
 **Phase 1.** `core/Events.ts` gets built when the first system actually needs a
 subscriber, deliberately not before (Plan 0E Decision 2); `wakeBoss` — the one
 entry left in `Context.ts`, and a genuine cycle break rather than a bridge to
-unmoved code — is its natural first candidate. KNOWN-13's fifteen duplicate
-enemy interfaces are also Phase 1's.
+unmoved code — is its natural first candidate. KNOWN-13's duplicate enemy interfaces (sixteen across fifteen files) were consolidated by Phase 3 Part A.
 
 Phase 2 owns the deferred Three.js upgrade (KNOWN-14) — Part A already closed
 KNOWN-7 (casings never reaching the screen) and KNOWN-8 (the six-slot mouse
