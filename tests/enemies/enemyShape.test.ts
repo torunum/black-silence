@@ -126,12 +126,18 @@ let spawnEnemy: (ch: string, wx: number, wz: number, summoned?: boolean) => obje
  * typecheck` rejects that reversion. `real` is typed off the module itself,
  * not off the `object`-typed local above, so the check cannot be satisfied
  * by accident.
+ *
+ * `void`-referenced right below its own declaration: `noUnusedLocals` can't
+ * tell "never called on purpose" from "forgotten", and the whole point of
+ * this function is to be the former. The reference reads the binding without
+ * invoking it, so the pin still never runs.
  */
 function _typePinSpawnEnemyReturnsEnemy(
   real: typeof import("../../src/world/LevelLoader").spawnEnemy,
 ): Enemy {
   return real("z", 0.5, 0.5);
 }
+void _typePinSpawnEnemyReturnsEnemy;
 
 beforeAll(async () => {
   installDomStubs();
