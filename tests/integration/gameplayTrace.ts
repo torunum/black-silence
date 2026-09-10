@@ -265,14 +265,25 @@ type TexNamer = (t: Any) => string;
  *
  * ## Why a name and not `texture.uuid`
  *
- * `THREE.MathUtils.generateUUID()` is four `Math.random()` draws, which is
- * precisely what `installUuidStub` above exists to keep *out* of the seeded
- * gameplay stream. A uuid in the digest would therefore be unstable across
- * runs (the stub answers those draws from a monotonic counter whose value
- * depends on how many THREE objects have been constructed so far), and it
- * would be unreadable to a human dumping the digest parts while bisecting a
- * failure. `"z.a"` / `"z.b"` / `"z.atk"` says which sprite frame a ghoul is
- * showing; a uuid says nothing.
+ * The decisive reason is stability. `THREE.MathUtils.generateUUID()` is four
+ * `Math.random()` draws, which is precisely what `installUuidStub` above
+ * exists to keep *out* of the seeded gameplay stream. A uuid in the digest
+ * would therefore be unstable across runs — the stub answers those draws
+ * from a monotonic counter whose value depends on how many THREE objects
+ * have been constructed so far, so the same frame of the same script could
+ * hash differently between two clean runs, which a fixture cannot tolerate
+ * regardless of how the name is spelled.
+ *
+ * Readability is the second reason, and it is narrower than it sounds:
+ * `digestScene` below folds every part string into one opaque FNV-1a
+ * `digest` field (see that function's doc comment for why), so a real
+ * regression's committed fixture diff shows only `"digest": "007a29fb"` ->
+ * `"ed3e1688"` — a human reading the JSON never sees `"z.a"`, `"z.b"`, or a
+ * uuid either way. The benefit is real but occasional: a developer who
+ * dumps `digestScene`'s pre-hash `parts` for a failing frame while bisecting
+ * sees `"z.a"` / `"z.b"` / `"z.atk"`, which says which sprite frame a ghoul
+ * is showing, where a uuid would say nothing — and, being unstable, would
+ * not even repeat between that dump and a re-run.
  *
  * ## The three sources, and the two fallbacks
  *
