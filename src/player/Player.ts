@@ -27,6 +27,7 @@ import { smoke3d } from "../fx/Particles";
 import { screenShake, shake } from "../fx/ShakeState";
 import { weaponRuntime } from "../weapons/WeaponRuntime";
 import { world } from "../world/WorldState";
+import type { Enemy } from "../enemies/Enemy";
 
 /**
  * Player movement, damage and death — the per-frame integrator and the two
@@ -48,11 +49,13 @@ import { world } from "../world/WorldState";
  * genuine cycle-break rather than a bridge to code that had not moved yet;
  * see its own doc comment.
  *
- * `world.exitPos`/`world.challenge`/`world.enemies` are typed loosely
+ * `world.exitPos`/`world.challenge` are typed loosely
  * (`src/world/WorldState.ts`'s own doc comment explains why); the local
  * interfaces below describe just the fields this file reads or writes,
  * matching the cast convention `src/world/Props.ts` and
- * `src/weapons/WeaponState.ts` already established for the same arrays.
+ * `src/weapons/WeaponState.ts` already established for those two.
+ * `world.enemies` is `Enemy[]` (Phase 3 Part A, KNOWN-13); `TickEnemy` below
+ * is a `Pick<Enemy, …>` checked widening of it, not a cast.
  */
 
 /** world.exitPos's actual shape, set by LevelLoader.ts for the "X" tile. */
@@ -70,12 +73,8 @@ interface ChallengeState {
   light: { color: THREE.Color };
 }
 
-/** Enemies world.enemies elements are cast to for playerTick's boss/summoned checks. */
-interface TickEnemy {
-  boss?: boolean;
-  summoned?: boolean;
-  dead?: boolean;
-}
+/** What playerTick's boss/summoned checks read off a `world.enemies` element. */
+type TickEnemy = Pick<Enemy, "boss" | "summoned" | "dead">;
 
 function damagePlayer(d: number, silent?: boolean): void {
   if(S.dead||S.won)return;
@@ -144,7 +143,8 @@ function playerTick(dt: number): void {
   if(renderState.lampCore)renderState.lampCore.position.set(player.px,player.pyy+.2,player.pz);
   /* exit pad (level 1) */
   if(world.exitPos&&Math.hypot(player.px-(world.exitPos as unknown as ExitPos).x,player.pz-(world.exitPos as unknown as ExitPos).z)<1.2){
-    const bossLeft=(world.enemies as unknown as TickEnemy[]).some(e=>e.boss&&!e.dead);
+    const enemies: readonly TickEnemy[] = world.enemies;   // checked widening, not a cast
+    const bossLeft=enemies.some(e=>e.boss&&!e.dead);
     if(bossLeft)showMsg("SOMETHING STILL BREATHES HERE",1.5);
     else endLevel();}
   /* challenge plate */
@@ -163,7 +163,8 @@ function playerTick(dt: number): void {
         smoke3d(sxp,.6,szp,8);}}
     alertSound(player.px,player.pz,30);}
   if(world.challenge&&(world.challenge as unknown as ChallengeState).state===1){
-    if(!(world.enemies as unknown as TickEnemy[]).some(e=>e.summoned&&!e.dead)){
+    const enemies: readonly TickEnemy[] = world.enemies;   // checked widening, not a cast
+    if(!enemies.some(e=>e.summoned&&!e.dead)){
       (world.challenge as unknown as ChallengeState).state=2;say("challenge_done",true);
       ach(ACHIEVEMENTS.gauntlet,S.ach);
       (world.challenge as unknown as ChallengeState).plate.material.color.setHex(0x4ab86a);

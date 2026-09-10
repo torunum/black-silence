@@ -15,6 +15,7 @@ import { EYE, WALLH } from "../../world/Grid";
 import { explodeBarrel, breakProp, type Prop } from "../../world/Props";
 import { world } from "../../world/WorldState";
 import { track } from "../../render/DisposeRegistry";
+import type { Enemy } from "../Enemy";
 
 /**
  * Attacks — every ranged/area attack the AI section throws at the player:
@@ -55,18 +56,7 @@ interface Strike { x: number; z: number; t: number; warn: THREE.Mesh<THREE.Buffe
 interface PoisonZone { x: number; z: number; r: number; t: number; }
 
 /** world.enemies elements, cast for fireOrb/throwFlesh's ranged-attack spawns. */
-interface AttackEnemy {
-  x: number;
-  z: number;
-  h: number;
-  hp: number;
-  atkAnim: number;
-  orb?: string;
-  stone?: boolean;
-  fly?: boolean;
-  flyH?: number;
-  fy?: number;
-}
+type AttackEnemy = Pick<Enemy, "x" | "z" | "h" | "hp" | "atkAnim" | "orb" | "stone" | "fly" | "flyH" | "fy">;
 
 const orbGeo=new THREE.SphereGeometry(.16,6,6);
 

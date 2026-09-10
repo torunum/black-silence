@@ -1,5 +1,6 @@
 import { world } from "../../world/WorldState";
 import { solidAt, segsCrossRay } from "../../world/Collision";
+import type { Enemy as EnemyShape } from "../Enemy";
 
 /**
  * Perception — how enemies learn where a noise came from, and whether they
@@ -29,17 +30,12 @@ import { solidAt, segsCrossRay } from "../../world/Collision";
  * rather than alongside any one caller.
  */
 
-interface Enemy {
-  x: number;
-  z: number;
-  dead?: boolean;
-  dormant?: boolean;
-  alertX?: number;
-  alertZ?: number;
-}
+/** What alertSound's noise-propagation write touches on a `world.enemies` element. */
+type Enemy = Pick<EnemyShape, "x" | "z" | "dead" | "dormant" | "alertX" | "alertZ">;
 
 export function alertSound(x: number, z: number, radius: number): void {
-  for (const e of world.enemies as unknown as Enemy[]) {
+  const enemies: readonly Enemy[] = world.enemies;   // checked widening, not a cast
+  for (const e of enemies) {
     if (e.dead || e.dormant) continue;
     if (Math.hypot(e.x - x, e.z - z) < radius) { e.alertX = x; e.alertZ = z; }
   }

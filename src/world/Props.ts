@@ -18,6 +18,7 @@ import { alertSound } from "../enemies/ai/Perception";
 import { damageEnemy } from "../enemies/Damage";
 import { damagePlayer } from "../player/Player";
 import { world } from "./WorldState";
+import type { Enemy } from "../enemies/Enemy";
 
 /**
  * Prop destruction — breaking furniture and exploding barrels, run during
@@ -60,13 +61,7 @@ export interface Prop {
   fuse?: number;
 }
 
-interface DamageableEnemy {
-  x: number;
-  z: number;
-  dead?: boolean;
-  kx: number;
-  kz: number;
-}
+type DamageableEnemy = Pick<Enemy, "x" | "z" | "dead" | "kx" | "kz">;
 
 export function breakProp(p: Prop): void {
   if(p.dead)return;p.dead=true;renderState.scene.remove(p.m);S.propsBroken++;
@@ -88,7 +83,8 @@ export function explodeBarrel(b: Prop): void {
   at(b.x,1.2,b.z,()=>boom(1.1));
   const pd=Math.hypot(player.px-b.x,player.pz-b.z);
   if(pd<5)damagePlayer(60*(1-pd/5));
-  for(const e of world.enemies as unknown as DamageableEnemy[]){if(e.dead)continue;
+  const enemies: readonly DamageableEnemy[] = world.enemies;   // checked widening, not a cast
+  for(const e of enemies){if(e.dead)continue;
     const dd=Math.hypot(e.x-b.x,e.z-b.z);
     if(dd<5){const f=Math.max(dd,.2);
       e.kx+=(e.x-b.x)/f*9;e.kz+=(e.z-b.z)/f*9;

@@ -26,6 +26,7 @@ import { after, clearAllTimers } from "../core/Timers";
 import { clearScheduled } from "../core/Time";
 import { stopMusic } from "../audio/Music";
 import { track, disposeAll } from "../render/DisposeRegistry";
+import type { Enemy } from "../enemies/Enemy";
 
 /**
  * The level loader and its two spawners — `loadLevel` builds a level from
@@ -109,13 +110,13 @@ import { track, disposeAll } from "../render/DisposeRegistry";
  * only what gets added to `renderState.scene` differs.
  */
 
-export function spawnEnemy(ch: string, wx: number, wz: number, summoned?: boolean): Record<string, unknown> {
+export function spawnEnemy(ch: string, wx: number, wz: number, summoned?: boolean): Enemy {
   const d=EDEF[ch];
   const elite=!d.boss&&!summoned&&Math.random()<.11;
   const SZ=1.18;                       // overall sprite presence bump
   const mul=elite?2:1;
   const ew=d.w*(elite?1.15:1)*SZ, eh=d.h*(elite?1.15:1)*SZ;
-  const e={key:ch,name:d.name,x:wx,z:wz,hp:d.hp*mul,maxhp:d.hp*mul,
+  const e: Enemy={key:ch,name:d.name,x:wx,z:wz,hp:d.hp*mul,maxhp:d.hp*mul,
     speed:d.sp*(elite?1.15:1),mel:d.mel,w:ew,h:eh,
     pain:d.pain,kbRes:d.kbRes||0,boss:!!d.boss,priest:!!d.priest,stone:!!d.stone,
     charge:!!d.charge,slam:!!d.slam,lunge:!!d.lunge,dodge:!!d.dodge,
@@ -128,9 +129,12 @@ export function spawnEnemy(ch: string, wx: number, wz: number, summoned?: boolea
     alertX:-1,alertZ:-1,aware:false,slow:1,animT:0,frame:0,r:d.boss?.8:.45,
     screamT:0,lungeT:rnd(1,2),slamT:rnd(2,4),flingCD:rnd(3,6),
     fy:floorHeightAt(wx,wz),
-    dormant:!!d.boss,phase:1,tpT:5,atkT:2.5,sumT:6,ringT:4,debT:3,chT:5,charging:0,cdx:0,cdz:0} as Record<string, unknown> & { sp: THREE.Sprite };
+    dormant:!!d.boss,phase:1,tpT:5,atkT:2.5,sumT:6,ringT:4,debT:3,chT:5,charging:0,cdx:0,cdz:0};
   if(elite)(e.sp.material as THREE.SpriteMaterial).color.setHex(0xd8c878);
-  (world.enemies as Record<string, unknown>[]).push(e);
+  // `world.enemies` and `world.bossRef` are `Enemy`-typed as of Phase 3 Part A
+  // Task 3, so the object goes in as itself — no cast, and no separate `rec`
+  // alias that used to exist only to satisfy `Record<string, unknown>`.
+  world.enemies.push(e);
   if(!summoned)S.enemiesTotal=(S.enemiesTotal||0)+1;
   if(d.boss)world.bossRef=world.bossRef||e;
   return e;}

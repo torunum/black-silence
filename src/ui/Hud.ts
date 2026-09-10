@@ -3,6 +3,7 @@ import { world } from "../world/WorldState";
 import { weaponRuntime } from "../weapons/WeaponRuntime";
 import { WEAPONS } from "../weapons/WeaponState";
 import { el, q } from "./dom";
+import type { Enemy } from "../enemies/Enemy";
 
 /**
  * The per-frame HUD painter — health, armour, ammo, weapon name, the key
@@ -34,17 +35,8 @@ import { el, q } from "./dom";
  * `flashDmg`/`flashHoly` already used for `style.opacity`.
  */
 
-/** world.enemies elements, cast for hud's boss-bar lookup. */
-interface BossEnemy {
-  boss?: boolean;
-  dead?: boolean;
-  dormant?: boolean;
-  priest?: boolean;
-  phase: number;
-  name: string;
-  hp: number;
-  maxhp: number;
-}
+/** What hud's boss-bar lookup reads off a `world.enemies` element. */
+type BossEnemy = Pick<Enemy, "boss" | "dead" | "dormant" | "priest" | "phase" | "name" | "hp" | "maxhp">;
 
 export function hud(): void {
   q("#hp .num").textContent=String(Math.max(0,Math.ceil(S.hp)));
@@ -60,7 +52,8 @@ export function hud(): void {
   el("kicklabel").textContent=
     S.kickCd>0?("KICK "+Math.ceil(S.kickCd)+"s"):"KICK [RMB]";
   kw.classList.toggle("ready",S.kickCd<=0);
-  const boss=world.enemies&&(world.enemies as unknown as BossEnemy[]).find(e=>e.boss&&!e.dead&&!e.dormant);
+  const enemies: readonly BossEnemy[] = world.enemies;   // checked widening, not a cast
+  const boss=enemies&&enemies.find(e=>e.boss&&!e.dead&&!e.dormant);
   const bb=el("bossbar");
   if(boss&&!world.cine){bb.style.display="block";
     el("bossname").textContent=

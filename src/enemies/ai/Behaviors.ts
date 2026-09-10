@@ -24,6 +24,7 @@ import { wakeBoss, roarFor, priestThink } from "../Boss";
 import { damageEnemy } from "../Damage";
 import { dropAmmo } from "../Death";
 import { schedule } from "../../core/Time";
+import type { Enemy as EnemyShape } from "../Enemy";
 
 /**
  * Behaviors — the per-frame enemy brain: state-machine housekeeping (dead/
@@ -55,19 +56,17 @@ import { schedule } from "../../core/Time";
  * entries once this file's split made the direction one-way — see
  * `Context.ts`'s own doc comment for the result.
  *
- * `world.enemies` is loosely typed (`Array<Record<string, unknown>>`, see
- * `src/world/WorldState.ts`'s own doc comment), so both the outer tick loop
- * and the inner alert-radius loop (the screamer's wake-the-dead branch) cast
- * through the same local `Enemy` interface below, the same convention
- * `src/enemies/Death.ts`/`src/weapons/Hitscan.ts`/`src/world/Props.ts`
- * established for this exact array — just with more fields than those
- * files needed, because this is the function that reads and writes nearly
- * all of them. `sp`/`blob` reuse `src/render/RenderCore.ts`'s own return
- * types (`THREE.Sprite`, `THREE.Mesh<THREE.BufferGeometry,
- * THREE.MeshBasicMaterial>`), the same pairing `src/enemies/Death.ts`'s
- * `Head` interface and `src/enemies/ai/Attacks.ts`'s `Ring`/`Strike`
- * interfaces use for the same two constructors (`addSprite`/`addBlob`).
- * Every function this file calls with an `Enemy`-typed argument
+ * `world.enemies` is `Enemy[]` as of Phase 3 Part A Task 3 (see
+ * `src/world/WorldState.ts`'s own doc comment), so the outer tick loop and
+ * the inner alert-radius loop (the screamer's wake-the-dead branch) no
+ * longer cast — each binds the array to a `readonly Enemy[]` local, a
+ * *checked* widening onto the local `Pick<>` below rather than the old
+ * `as unknown as Enemy[]`, which asserted a shape the compiler had nothing
+ * to compare against. The `Pick<>` itself stays, and is the widest of the
+ * sixteen: this is the function that reads and writes nearly every field.
+ * Keeping it narrow is still worth a line, for the reason KNOWN-13 gave —
+ * a file cannot silently start depending on a field it never declared it
+ * reads. Every function this file calls with an `Enemy`-typed argument
  * (`moveEnemy`, `fireOrb`, `throwFlesh`, `damageEnemy`, `wakeBoss`,
  * `priestThink`) takes an `unknown` enemy parameter itself and casts at the
  * point of use, the same convention `src/enemies/Damage.ts`/`Death.ts`/
@@ -75,78 +74,81 @@ import { schedule } from "../../core/Time";
  * is assignable to `unknown` with no cast needed at any of these call sites.
  */
 
-interface Enemy {
-  gone?: boolean;
-  dead?: boolean;
-  deathT: number;
-  deathKind?: number;
-  deathDir: number;
-  severKey?: boolean;
-  sp: THREE.Sprite;
-  blob: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial>;
-  x: number;
-  z: number;
-  h: number;
-  w: number;
-  key: string;
-  kx: number;
-  kz: number;
-  dropped?: boolean;
-  boss?: boolean;
-  dormant?: boolean;
-  priest?: boolean;
-  fy?: number;
-  hurt: number;
-  elite?: boolean;
-  flung: number;
-  flungT: number;
-  stun: number;
-  hp: number;
-  maxhp: number;
-  speed: number;
-  slow: number;
-  cool: number;
-  dodgeT: number;
-  lungeT: number;
-  slamT: number;
-  screamT: number;
-  flingCD: number;
-  aware?: boolean;
-  alertX: number;
-  alertZ: number;
-  charge?: boolean;
-  charging: number;
-  cdx: number;
-  cdz: number;
-  chT: number;
-  mel: number;
-  scream?: boolean;
-  range?: number;
-  stone?: boolean;
-  twin?: boolean;
-  orb?: string;
-  burst?: boolean;
-  toxic?: boolean;
-  charger?: boolean;
-  fling?: boolean;
-  slam?: boolean;
-  lunge?: boolean;
-  dodge?: boolean;
-  strafe: number;
-  strafeDir: number;
-  flank: number;
-  frenzy: number;
-  atkAnim: number;
-  animT: number;
-  frame: number;
-  wasAtk?: boolean;
-  fly?: boolean;
-  flyH?: number;
-}
+/** What enemyTick's per-frame AI reads off a `world.enemies` element. The widest of the sixteen. */
+type Enemy = Pick<
+  EnemyShape,
+  | "gone"
+  | "dead"
+  | "deathT"
+  | "deathKind"
+  | "deathDir"
+  | "severKey"
+  | "sp"
+  | "blob"
+  | "x"
+  | "z"
+  | "h"
+  | "w"
+  | "key"
+  | "kx"
+  | "kz"
+  | "dropped"
+  | "boss"
+  | "dormant"
+  | "priest"
+  | "fy"
+  | "hurt"
+  | "elite"
+  | "flung"
+  | "flungT"
+  | "stun"
+  | "hp"
+  | "maxhp"
+  | "speed"
+  | "slow"
+  | "cool"
+  | "dodgeT"
+  | "lungeT"
+  | "slamT"
+  | "screamT"
+  | "flingCD"
+  | "aware"
+  | "alertX"
+  | "alertZ"
+  | "charge"
+  | "charging"
+  | "cdx"
+  | "cdz"
+  | "chT"
+  | "mel"
+  | "scream"
+  | "range"
+  | "stone"
+  | "twin"
+  | "orb"
+  | "burst"
+  | "toxic"
+  | "charger"
+  | "fling"
+  | "slam"
+  | "lunge"
+  | "dodge"
+  | "strafe"
+  | "strafeDir"
+  | "flank"
+  | "frenzy"
+  | "atkAnim"
+  | "animT"
+  | "frame"
+  | "wasAtk"
+  | "fly"
+  | "flyH"
+>;
 
 export function enemyTick(dt: number){
   let anyAware=false;
-  for(const e of world.enemies as unknown as Enemy[]){
+  const enemies: readonly Enemy[] = world.enemies;   // checked widening, not a cast
+  for(const e of enemies){
     if(e.gone)continue;
     /* during a boss cinematic, nothing moves or attacks — just hold position */
     if(world.cine&&!e.dead){
@@ -239,7 +241,11 @@ export function enemyTick(dt: number){
       if(e.scream&&e.screamT<=0&&dist<14){
         e.screamT=9;e.stun=1.1;
         at(e.x,e.h*.6+(e.fy||0),e.z,()=>{growl(180,.9,.4,true);blip(500,.7,"sawtooth",.1,180,true);});
-        for(const o of world.enemies as unknown as Enemy[]){if(o.dead||o.dormant||o===e)continue;
+        // Re-read `world.enemies` here rather than reusing the binding above:
+        // the old cast was evaluated at this point too, and `loadLevel`
+        // *replaces* the array rather than clearing it in place.
+        const others: readonly Enemy[] = world.enemies;   // checked widening, not a cast
+        for(const o of others){if(o.dead||o.dormant||o===e)continue;
           if(Math.hypot(o.x-e.x,o.z-e.z)<16){o.alertX=player.px;o.alertZ=player.pz;o.slow=1;
             o.frenzy=5;}}
         showMsg("THE SCREAMER CALLS THE DEAD");
@@ -285,7 +291,7 @@ export function enemyTick(dt: number){
         const fl=dist>8?e.flank:e.flank*.25;
         const a=Math.atan2(dx,dz)+fl;
         mx=Math.sin(a);mz=Math.cos(a);}
-      if(e.frenzy>0){e.frenzy-=dt;spd*=1.3;}
+      if((e.frenzy??0)>0){e.frenzy=(e.frenzy??0)-dt;spd*=1.3;}
       if(dist>1.15){moving=moveEnemy(e,mx,mz,spd,dt);
         if(!moving){moving=moveEnemy(e,dx/dist,dz/dist,spd*.7,dt);
           if(Math.random()<.05)e.flank*=-1;}}
@@ -296,12 +302,12 @@ export function enemyTick(dt: number){
       if(ad>1){moving=moveEnemy(e,ax/ad,az/ad,spd*.7,dt);}
       else e.alertX=-1;}
     /* walk animation */
-    if(moving&&e.atkAnim<=0){e.animT+=dt;
+    if(moving&&e.atkAnim!==undefined&&e.atkAnim<=0){e.animT+=dt;
       if(e.animT>.22){e.animT=0;e.frame=1-e.frame;
         const set=e.deathKind===2?[PX[e.key].hl,PX[e.key].hlb]:[PX[e.key].a,PX[e.key].b];
         e.sp.material.map=set[e.frame];e.sp.material.needsUpdate=true;}}
     /* attack pose: swap to the dedicated attack frame while striking */
-    if(e.atkAnim>0&&PX[e.key].atk&&!e.severKey&&e.deathKind!==2){
+    if((e.atkAnim??0)>0&&PX[e.key].atk&&!e.severKey&&e.deathKind!==2){
       if(e.sp.material.map!==PX[e.key].atk){
         e.sp.material.map=PX[e.key].atk;e.sp.material.needsUpdate=true;e.wasAtk=true;}
     }else if(e.wasAtk){ // attack finished -> back to normal stance
@@ -310,7 +316,7 @@ export function enemyTick(dt: number){
       e.sp.material.map=set[e.frame];e.sp.material.needsUpdate=true;}
     /* attack lunge: brief grow + lean toward player */
     let lunge=0;
-    if(e.atkAnim>0){e.atkAnim-=dt;lunge=Math.sin(clamp(e.atkAnim/.22,0,1)*Math.PI);}
+    if((e.atkAnim??0)>0){e.atkAnim=(e.atkAnim??0)-dt;lunge=Math.sin(clamp((e.atkAnim??0)/.22,0,1)*Math.PI);}
     const sScale=1+lunge*0.22;
     e.sp.scale.set(e.w*sScale,e.h*sScale,1);
     const ldx=dist>0.01?(player.px-e.x)/dist:0,ldz=dist>0.01?(player.pz-e.z)/dist:0;
@@ -318,7 +324,7 @@ export function enemyTick(dt: number){
     if(e.fly){
       const hov=(e.flyH||1.5)+Math.sin(performance.now()/420+e.x)*.18;
       e.sp.position.set(lx,hov,lz);
-      e.blob.position.set(e.x,.012,e.z);e.blob.material.opacity=.3;
+      e.blob.position.set(e.x,.012,e.z);(e.blob.material as THREE.MeshBasicMaterial).opacity=.3;
     }else{
       e.fy=floorHeightAt(e.x,e.z);
       e.sp.position.set(lx,e.h/2+(e.fy||0)+Math.sin(performance.now()/300+e.x)*.03,lz);

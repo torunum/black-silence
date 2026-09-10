@@ -18,6 +18,7 @@ import { screenShake, shake } from "../fx/ShakeState";
 import { breakProp, explodeBarrel, type Prop } from "../world/Props";
 import { alertSound } from "../enemies/ai/Perception";
 import { damageEnemy } from "../enemies/Damage";
+import type { Enemy } from "../enemies/Enemy";
 
 /**
  * Hitscan resolution and the holy-cross explosion — the two queries that
@@ -69,22 +70,11 @@ import { damageEnemy } from "../enemies/Damage";
  * array mirrors that.
  */
 
-/** world.enemies elements, cast for hitscan's candidate pass and crossExplode's blast loop. */
-interface HitscanEnemy {
-  dead?: boolean;
-  dormant?: boolean;
-  x: number;
-  z: number;
-  h: number;
-  w: number;
-  fly?: boolean;
-  flyH?: number;
-  fy?: number;
-  kx: number;
-  kz: number;
-  key: string;
-  plate: number;
-}
+/** What hitscan's candidate pass and crossExplode's blast loop read off a `world.enemies` element. */
+type HitscanEnemy = Pick<
+  Enemy,
+  "dead" | "dormant" | "x" | "z" | "h" | "w" | "fly" | "flyH" | "fy" | "kx" | "kz" | "key" | "plate"
+>;
 
 /** hitscan's per-shot candidate list, sorted by hit distance before resolution. */
 type HitCandidate =
@@ -94,7 +84,8 @@ type HitCandidate =
 export function hitscan(dir: THREE.Vector3,dmg: number,wIdx: number){
   const o=renderState.camera.position;
   const cands: HitCandidate[]=[];
-  (world.enemies as unknown as HitscanEnemy[]).forEach(e=>{if(e.dead||e.dormant)return;
+  const enemies: readonly HitscanEnemy[] = world.enemies;   // checked widening, not a cast
+  enemies.forEach(e=>{if(e.dead||e.dormant)return;
     const ecy=e.fly?(e.flyH||1.5):e.h*.5+(e.fy||0);   // sprite center height
     const ex=e.x-o.x,ez=e.z-o.z,ey=ecy-o.y;
     const t=ex*dir.x+ez*dir.z+ey*dir.y;if(t<0)return;
@@ -160,7 +151,8 @@ export function crossExplode(x: number,y: number,z: number){
   renderState.boomLight.position.set(x,y,z);renderState.boomLight.intensity=4;renderState.boomLight.color.setHex(0xfff0b0);
   holyP(x,y,z,40);smoke3d(x,y,z,10);
   at(x,y,z,()=>boom(.7));
-  for(const e of world.enemies as unknown as HitscanEnemy[]){if(e.dead)continue;
+  const blastTargets: readonly HitscanEnemy[] = world.enemies;   // checked widening, not a cast
+  for(const e of blastTargets){if(e.dead)continue;
     const d=Math.hypot(e.x-x,e.z-z);
     if(d<3.4){
       const dd=60*(1-d/3.4)+20;

@@ -1,6 +1,7 @@
 import { solidAt } from "../../world/Collision";
 import { explodeBarrel, breakProp, type Prop } from "../../world/Props";
 import { world } from "../../world/WorldState";
+import type { Enemy } from "../Enemy";
 
 /**
  * Locomotion — the single movement primitive enemies use to step toward or
@@ -41,13 +42,7 @@ import { world } from "../../world/WorldState";
  */
 
 /** world.enemies elements, cast for moveEnemy's collision-step/smash check. */
-interface MoveEnemy {
-  boss?: boolean;
-  key: string;
-  x: number;
-  z: number;
-  r: number;
-}
+type MoveEnemy = Pick<Enemy, "boss" | "key" | "x" | "z" | "r">;
 
 export function moveEnemy(enemy: unknown, sx: number, sz: number, spd: number, dt: number) {
   const e=enemy as MoveEnemy;

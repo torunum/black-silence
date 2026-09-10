@@ -8,6 +8,7 @@ import { bellToll } from "../audio/Ambient";
 import { blip, bang } from "../audio/Sfx";
 import { rnd } from "../utils/math";
 import { after } from "../core/Timers";
+import type { Enemy as EnemyShape } from "../enemies/Enemy";
 
 /**
  * The three random world events that fire on a rolling timer while a level
@@ -26,12 +27,8 @@ interface Torch {
   L: { visible: boolean };
 }
 
-/** world.enemies elements, cast for the bells branch's frenzy trigger. */
-interface Enemy {
-  dead?: boolean;
-  dormant?: boolean;
-  frenzy?: number;
-}
+/** What the bells branch's frenzy trigger touches on a `world.enemies` element. */
+type Enemy = Pick<EnemyShape, "dead" | "dormant" | "frenzy">;
 
 export function eventTick(dt: number): void {
   if(ambienceState.darkT>0){ambienceState.darkT-=dt;
@@ -48,7 +45,8 @@ export function eventTick(dt: number): void {
     blip(50,2,"sine",.1,30,true);bang(.4,.1,300);
   }else if(r<.8&&S.level===1){ /* the bells */
     bellToll();say("event_bell",true);
-    for(const e of world.enemies as unknown as Enemy[]){if(!e.dead&&!e.dormant)e.frenzy=7;}
+    const enemies: readonly Enemy[] = world.enemies;   // checked widening, not a cast
+    for(const e of enemies){if(!e.dead&&!e.dormant)e.frenzy=7;}
     showMsg("THE BELLS ARE RINGING",3);
   }else{ /* whispers */
     for(let i=0;i<3;i++)after(()=>blip(rnd(300,500),.7,"sine",.025,rnd(120,200),true),i*600);}}

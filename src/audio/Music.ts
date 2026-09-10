@@ -1,5 +1,6 @@
 import { startBossMusic, stopBossMusic } from "./Ambient";
 import { world } from "../world/WorldState";
+import type { Enemy } from "../enemies/Enemy";
 
 /**
  * ADAPTIVE MUSIC — the layer *controller*. Three conceptual layers,
@@ -106,12 +107,8 @@ export const MUSIC_FADE_SECONDS = 2.5;
 /** Minimum time a layer holds before another swap is even considered. See the module doc comment. */
 export const MUSIC_DWELL_SECONDS = 4;
 
-/** world.enemies elements, cast for the same boss check src/ui/Hud.ts:63 already uses. */
-interface MusicBossEnemy {
-  boss?: boolean;
-  dead?: boolean;
-  dormant?: boolean;
-}
+/** What this file reads off a `world.enemies` element — the same boss check `src/ui/Hud.ts` uses. */
+type MusicBossEnemy = Pick<Enemy, "boss" | "dead" | "dormant">;
 
 let active: MusicLayer = "exploration";
 let dwellRemaining = 0;
@@ -119,7 +116,10 @@ let dwellRemaining = 0;
 let bossFadeOutRemaining = 0;
 
 function liveBossExists(): boolean {
-  return (world.enemies as unknown as MusicBossEnemy[]).some((e) => e.boss && !e.dead && !e.dormant);
+  // A checked widening, not a cast: `world.enemies` is `Enemy[]`, and this
+  // binding narrows the view to the three fields the check below reads.
+  const enemies: readonly MusicBossEnemy[] = world.enemies;
+  return enemies.some((e) => e.boss && !e.dead && !e.dormant);
 }
 
 /** Boss beats combat beats exploration — checked in that order, first match wins. */

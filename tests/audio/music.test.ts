@@ -3,6 +3,7 @@ import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import { installDomStubs } from "../support/domStubs";
 import { audioInit } from "../../src/audio/AudioEngine";
 import { world } from "../../src/world/WorldState";
+import type { Enemy } from "../../src/enemies/Enemy";
 import {
   musicTick,
   stopMusic,
@@ -40,8 +41,20 @@ import {
  * aware and no boss is live" assumption.
  */
 
-function bossEnemy(overrides: { dead?: boolean; dormant?: boolean } = {}): Record<string, unknown> {
-  return { boss: true, dead: false, dormant: false, ...overrides };
+/**
+ * A three-field stand-in for a spawned enemy.
+ *
+ * `world.enemies` is `Enemy[]` as of Phase 3 Part A, and a real `Enemy` has
+ * 67 fields including a live `THREE.Sprite` and `THREE.Mesh` — building one
+ * here would mean booting the renderer for a test that is a pure state
+ * machine over three booleans. So the cast stays, deliberately, and is
+ * confined to this one factory: `liveBossExists()` (`src/audio/Music.ts`)
+ * reads exactly `boss`/`dead`/`dormant` and nothing else, which its
+ * `MusicBossEnemy` `Pick<>` now states in the type system. If that function
+ * ever grows a fourth field, this stub is where it will crash.
+ */
+function bossEnemy(overrides: { dead?: boolean; dormant?: boolean } = {}): Enemy {
+  return { boss: true, dead: false, dormant: false, ...overrides } as unknown as Enemy;
 }
 
 beforeAll(() => {
@@ -101,7 +114,7 @@ describe("musicTick — layer selection (pure state machine, no audio)", () => {
     musicTick(0.1, false); // exploration -> boss
     expect(musicLayer()).toBe("boss");
 
-    (world.enemies[0] as { dead: boolean }).dead = true;
+    world.enemies[0].dead = true;   // `Enemy[]` now — no cast needed to reach `dead`
     musicTick(0.1, false);
     expect(musicLayer()).toBe("exploration");
   });
@@ -170,7 +183,7 @@ describe("musicTick — the boss layer's real audio effect", () => {
     try {
       world.enemies = [bossEnemy()];
       musicTick(0.1, false); // exploration -> boss
-      (world.enemies[0] as { dead: boolean }).dead = true;
+      world.enemies[0].dead = true;   // `Enemy[]` now — no cast needed to reach `dead`
 
       musicTick(0.1, false); // boss -> exploration; schedules the fade-out (which this same
       // tick's dt already nudges once — see musicTick's own fade check running

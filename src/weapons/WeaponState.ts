@@ -22,6 +22,7 @@ import { after } from "../core/Timers";
 import { hitscan } from "./Hitscan";
 import { schedule } from "../core/Time";
 import { track } from "../render/DisposeRegistry";
+import type { Enemy } from "../enemies/Enemy";
 
 /**
  * The weapon FSM's *behavior* — the functions that read input and time and
@@ -87,20 +88,8 @@ const WEAPON_SOUNDS = [
 export const WEAPONS = WEAPON_STATS.map((w, i) => ({ ...w, snd: WEAPON_SOUNDS[i] }));
 export const EQUIP_T=.24,UNEQUIP_T=.16;
 
-/** Enemies world.enemies elements are cast to for doKick's melee sweep. */
-interface KickEnemy {
-  dead?: boolean;
-  x: number;
-  z: number;
-  h: number;
-  boss?: boolean;
-  maxhp: number;
-  kx: number;
-  kz: number;
-  stun: number;
-  flung?: number;
-  flungT?: number;
-}
+/** What doKick's melee sweep reads off a `world.enemies` element. */
+type KickEnemy = Pick<Enemy, "dead" | "x" | "z" | "h" | "boss" | "maxhp" | "kx" | "kz" | "stun" | "flung" | "flungT">;
 
 export function requestSwitch(i: number){
   if(!game.started||!S.weapons[i]||i===S.cur||weaponRuntime.pending===i)return;
@@ -207,7 +196,8 @@ export function doKick(){
   schedule(()=>{
     const dir=new THREE.Vector3();renderState.camera.getWorldDirection(dir);
     let hitAny=false;
-    for(const e of world.enemies as unknown as KickEnemy[]){if(e.dead)continue;
+    const enemies: readonly KickEnemy[] = world.enemies;   // checked widening, not a cast
+    for(const e of enemies){if(e.dead)continue;
       const dx=e.x-player.px,dz=e.z-player.pz,d=Math.hypot(dx,dz);
       if(d>2.5)continue;
       const dot=(dx*dir.x+dz*dir.z)/d;

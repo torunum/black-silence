@@ -155,7 +155,7 @@ beforeAll(async () => {
   // combatTrace.test.ts's own headers) — confirmed again here rather than
   // assumed, since the endLevel test below depends on "no boss alive"
   // being trivially true.
-  if ((world.enemies as unknown[] | null)?.length) {
+  if (world.enemies.length) {   // `Enemy[]` as of Phase 3 Part A — the old defensive cast is gone
     throw new Error("the prologue is expected to load with zero enemies — this file's endLevel setup assumes that");
   }
 });
