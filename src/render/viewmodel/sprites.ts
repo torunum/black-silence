@@ -91,7 +91,6 @@ export function wcv(key: number, frame: string, rows: PixelFrame): void {
 /* frames stored as arrays: idle[], fire[N], reload[N]. Higher-res art (≈30px). */
 export function buildWeaponSprites(): void {
   const reg=(key: number,name: string,frames: PixelFrame[])=>{WPX[key]=WPX[key]||{};WPX[key][name]=frames.map(f=>pxCanvas(f,GP));};
-  const pistolFire1=WEAPON_PIXELS[0].idle[0].map(r=>r); // recoil handled in code; flash drawn separately
   WEAPON_PIXELS.forEach((set,key)=>{
     reg(key,"idle",set.idle);
     reg(key,"fire",set.fire);

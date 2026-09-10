@@ -118,7 +118,6 @@ export function hitscan(dir: THREE.Vector3,dmg: number,wIdx: number){
       used++;if(used>=pierce)return;continue;}
     const e=c.e;
     weaponRuntime.volleyHit=true;
-    const reg=PX[e.key].regions||{H:e.h,head:0};
     // vertical fraction up the sprite (0 feet .. 1 head)
     const ecy0=e.fly?(e.flyH||1.5):e.h*.5;
     const frac=clamp((c.cy-(ecy0-e.h*.5))/e.h,0,1);

@@ -4,11 +4,13 @@ Written to survive session loss. If you are picking this up cold, read this
 file, then `docs/direction.md`, then the current plan under
 `docs/superpowers/plans/`. Trust this file and `git log` over any recollection.
 
-Last updated: 2026-09-09, after Phase 3 Part A. Phase 0 finished the port,
+Last updated: 2026-09-11, after Phase 3 Part B. Phase 0 finished the port,
 Phase 1 gave the game sound and settings, Phase 2 Part A fixed the two shipped
-bugs whose correctness is structural and instanced the level geometry, and
-Phase 3 Part A gave the enemy one shape — closing KNOWN-13 and, in doing so,
-finding KNOWN-15, the biggest live bug in the game.
+bugs whose correctness is structural and instanced the level geometry, Phase 3
+Part A gave the enemy one shape — closing KNOWN-13 and, in doing so, finding
+KNOWN-15, the biggest live bug in the game — and Phase 3 Part B closed the
+coverage hole Part A's own postmortem found: the traces could not see which
+sprite frame an enemy was showing.
 **Phase 2 Part B is blocked on a human running the game** — see the browser
 note under Environment gotchas. **KNOWN-15 is blocked on the same human**, for
 the same reason: it is a balance change nobody here can look at.
@@ -488,10 +490,11 @@ every enemy in the game cycled its walk frames from the moment it spawned,
 where the reference cycles none until the enemy has attacked.
 
 The whole suite stayed green, and the reason is a coverage hole rather than bad
-luck: `digestScene` (`tests/integration/gameplayTrace.ts`) hashes each object's
-type, position and `visible` — **not `material.map`**. Both trace fixtures are
+luck: `digestScene` (`tests/integration/gameplayTrace.ts`) hashed each object's
+type, position and `visible` — **not `material.map`**. Both trace fixtures were
 blind to which texture a sprite is showing, and nothing else in the suite looked
-at enemy sprite-frame selection at all.
+at enemy sprite-frame selection at all. That hole is now closed — see Phase 3
+Part B below.
 
 It was caught by **reading the diff**, not by running anything. Three lessons,
 in the order they cost something:
@@ -505,7 +508,9 @@ in the order they cost something:
   `digestScene` hashes.
 - The fix now has its own test, and that test was proven by restoring the `??`
   form and watching two named cases go red. The hole itself — sprite-frame
-  selection having no trace coverage — is still open beyond that one line.
+  selection having no trace coverage — outlived that one line: it was closed
+  properly by Phase 3 Part B, below, which widened `digestScene` itself
+  rather than adding another test aimed at a single site.
 
 ### Counts nobody re-derived, again
 
@@ -522,6 +527,100 @@ evidence and would have been baked into a doc row that outlives the phase. So
 reads `ENEMY_DEFS` and spawns every authoring enemy; `enemyShape.test.ts` parses
 `Enemy.ts` and compares sets. Neither asserts a number. The numbers that do
 appear, in `docs/known-issues.md`, are descriptive and dated to a commit.
+
+## Phase 3 Part B status
+
+Branch `phase-3b-trace-sees-sprites`. Plan dated 2026-09-10. Ledger:
+`.superpowers/sdd/2026-09-10-phase3b-what-the-trace-cannot-see/progress.md`.
+
+Phase 3 Part A's own postmortem, above, named the hole this phase closes:
+`digestScene` (`tests/integration/gameplayTrace.ts`) hashed each scene child's
+type, position and `visible` and never `material.map`, so the entire enemy
+sprite-frame system — walk cycle, attack pose, hurt/sever frame, the two-stage
+death collapse, the headless corpse, the torch flicker — could be rewired
+without either trace fixture noticing. That is exactly what happened: a change
+chartered as type-only inverted `Behaviors.ts`'s walk-cycle guard, and all 463
+tests passed, because nothing in the suite had ever asked what texture a
+sprite was showing.
+
+| Task | Delivered |
+|---|---|
+| 1 — the trace sees sprite state | `digestScene` now also hashes each material's texture *name* and its colour; both fixtures regenerated |
+| 2 — `noUnusedLocals` | on in `tsconfig.json`; found three existing unused locals |
+| 3 — `addBlob`, `deathBoom`, KNOWN-17 | `addBlob`'s return type precise; `deathBoom` pinned, deliberately not wired; KNOWN-17 closed |
+
+### Task 1, and why it counts as a fixture regeneration in its own right
+
+Naming a texture takes a reverse index (`buildTextureIndex`, built once after
+`startGame`'s boot-time bakers run) from every texture in `PX`/`ITEMTEX`/`TEX`
+to a short name (`z.a`, `item.torch[1]`, `tex.hellWall`), with a `~clone`
+fallback for the level floor/ceiling's shared-canvas clones and a per-object
+`unnamed#N` counter for anything left over — never `texture.uuid`, which is
+four `Math.random()` draws that `installUuidStub` already has to keep out of
+the seeded gameplay stream, for the same reason a uuid would also be unstable
+across runs. `digestScene` appends that name, plus the material's colour, to
+each textured child's part of the hash.
+
+Regenerating a committed trace fixture over a `src/`-unchanged commit is rare
+on purpose — this is only the **second** time this project has sanctioned it,
+the first being Phase 2 Part A's geometry-instancing regeneration above. It
+earned the same bar: both fixtures were compared field by field against their
+pre-widening state, not by trusting a green run. Across all 90 + 176 sampled
+frames of the two fixtures, `camera` (all seven components), every one of the
+eight HUD fields and `scene.count` are byte-identical; only `scene.digest`
+moved, in every sampled frame of both fixtures, which is the expected shape
+rather than an alarming one — every frame of both levels holds textured
+children.
+
+The evidence that the widening was worth doing, not just harmless: restoring
+`Behaviors.ts`'s walk-cycle guard to `(e.atkAnim??0)<=0` — Phase 3 Part A's own
+bug — now reddens the combat-level fixture comparison, with a measured
+footprint of **0** frames differing in `camera`, **0** in `hud`, **0** in
+`scene.count` and **48** of the fixture's 176 sampled frames differing in
+`scene.digest`. That is the old digest's exact blind spot, measured rather
+than assumed: nothing the old digest recorded moved at all.
+
+**The honest gaps.** Nine `material.map=` assignment sites exist in `src/`,
+across `Behaviors.ts` (four), `Boss.ts` (two), `Damage.ts`, `Death.ts` and
+`Interact.ts` (one each). Five are reached by the two committed fixtures; four
+are not, and no amount of re-running changes that:
+
+- `Behaviors.ts`'s two-stage death collapse and `Death.ts`'s headless corpse
+  are each gated behind a kind of kill this run's one enemy death does not
+  produce (it severs a limb instead), confirmed by mutation — rewriting both
+  sites at once leaves both trace files green.
+- Both of `Boss.ts`'s sites live inside `priestThink`, which only runs for an
+  enemy with `priest:true`. Level 1's only boss, `U`, has `boss:true` but no
+  `priest` flag — the six `priest:true` defs are all elsewhere in the roster —
+  so this is a structural gap in both fixtures regardless of script, not
+  something a longer run would fix.
+
+### Task 2 — `noUnusedLocals`
+
+Turned on in `tsconfig.json`, closing the hole where a narrow `Pick<>`
+binding widened to `Enemy[]` could orphan its own narrowed type with no
+warning. It found three unused locals already in the tree: two were dead code
+carried over verbatim from `reference/sonsurum.html` (confirmed unused there
+too) and deleted; the third was a deliberately-uncalled type-only pin in a
+test, which needed a `void`-reference rather than deletion so it keeps typechecking
+without tripping the flag.
+
+### Task 3 — `addBlob`, `deathBoom`, KNOWN-17
+
+`addBlob` (`src/render/RenderCore.ts`) now returns its precise Three.js type
+instead of a bare `Mesh`, so `Enemy.blob` carries that same precise type and
+the cast it had bought back in `Behaviors.ts` is gone. `deathBoom`, the second
+half of KNOWN-16, is pinned rather than fixed: it is authored on exactly one
+enemy def and read nowhere in `src/` at all, a dead *def* field of a different
+class than KNOWN-15's ten (those are read and never delivered; this one is
+never read), and deliberately left that way — deleting it or wiring it up both
+belong with the roster work that owns the def table. KNOWN-17 is closed:
+`musicCancellationWiring.test.ts`'s three `as unknown as` casts are gone, the
+same way `walkFrames.test.ts` closed the identical shape last phase.
+
+`npm test`: **57 files / 477 tests**, all green; `tsc --noEmit` clean; the
+file-size gate reports 90 files checked against the 400-line limit; `madge
+--circular` reports `Processed 90 files` with no circular dependency.
 
 ## How fidelity is guarded
 

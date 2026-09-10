@@ -24,9 +24,13 @@ import { save } from "../../src/save/SaveGame";
  *   yaw/pitch plus recoil, its fov is zoomLerp. Six of the eleven groups
  *   being migrated are visible here, and none of them by name, so the trace
  *   keeps working when `px` becomes `player.px`.
- * - **the scene graph** — every child's position and visibility, which
- *   covers enemies, props, items, doors, gibs, decals and particles moving,
- *   spawning or despawning.
+ * - **the scene graph** — every child's position and visibility, plus (since
+ *   Phase 3 Part B Task 1) the *name* of the texture on each child's
+ *   material and that material's colour, which covers enemies, props,
+ *   items, doors, gibs, decals and particles moving, spawning, despawning,
+ *   changing sprite frame or changing tint. See `buildTextureIndex` and
+ *   `digestScene` below for the naming scheme and why `texture.uuid` is not
+ *   it.
  * - **the HUD** — health, armour, weapon name, level title, messages and
  *   subtitles, which covers `S`.
  *
@@ -81,7 +85,7 @@ export interface TraceFrame {
   /** x,y,z,rx,ry,rz,fov. */
   camera: number[];
   hud: Record<string, string>;
-  /** Child count plus a digest of every child's position and visibility. */
+  /** Child count plus a digest of every child's position, visibility, texture name and colour. */
   scene: { count: number; digest: string };
 }
 
@@ -234,7 +238,156 @@ function readCamera(camera: Any): number[] {
   ];
 }
 
-/** FNV-1a. Any change to any child's type, position or visibility changes the hash. */
+/**
+ * Names a texture object. Returns a short, human-readable, run-stable string
+ * — never a uuid, never `undefined`.
+ */
+type TexNamer = (t: Any) => string;
+
+/**
+ * A reverse index from texture object to a readable name, built **once**,
+ * after `startGame` has run every boot-time baker.
+ *
+ * ## Why this exists
+ *
+ * Until Phase 3 Part B Task 1, `digestScene` recorded type, position and
+ * `visible` and nothing else. Which *texture* a sprite was showing was
+ * invisible to both fixtures, so the entire enemy sprite-frame system —
+ * walk cycle, attack pose, hurt/sever frames, the two-stage death collapse,
+ * the headless corpse, the torch flicker — could be rewired without either
+ * trace noticing. Phase 3 Part A Task 2 did exactly that: a change
+ * chartered as type-only rewrote `Behaviors.ts`'s walk guard from
+ * `e.atkAnim!==undefined&&e.atkAnim<=0` to `(e.atkAnim??0)<=0`, inverting it
+ * for every enemy that had not yet attacked, and all 463 tests passed. It
+ * was caught by reading the diff. `tests/enemies/walkFrames.test.ts` now
+ * pins that one line; this index is what lets the *traces* see the whole
+ * class.
+ *
+ * ## Why a name and not `texture.uuid`
+ *
+ * The decisive reason is stability. `THREE.MathUtils.generateUUID()` is four
+ * `Math.random()` draws, which is precisely what `installUuidStub` above
+ * exists to keep *out* of the seeded gameplay stream. A uuid in the digest
+ * would therefore be unstable across runs — the stub answers those draws
+ * from a monotonic counter whose value depends on how many THREE objects
+ * have been constructed so far, so the same frame of the same script could
+ * hash differently between two clean runs, which a fixture cannot tolerate
+ * regardless of how the name is spelled.
+ *
+ * Readability is the second reason, and it is narrower than it sounds:
+ * `digestScene` below folds every part string into one opaque FNV-1a
+ * `digest` field (see that function's doc comment for why), so a real
+ * regression's committed fixture diff shows only `"digest": "007a29fb"` ->
+ * `"ed3e1688"` — a human reading the JSON never sees `"z.a"`, `"z.b"`, or a
+ * uuid either way. The benefit is real but occasional: a developer who
+ * dumps `digestScene`'s pre-hash `parts` for a failing frame while bisecting
+ * sees `"z.a"` / `"z.b"` / `"z.atk"`, which says which sprite frame a ghoul
+ * is showing, where a uuid would say nothing — and, being unstable, would
+ * not even repeat between that dump and a re-run.
+ *
+ * ## The three sources, and the two fallbacks
+ *
+ * - **`PX`** (`src/enemies/SpriteBaker.ts`) — every enemy texture, named
+ *   `"<enemyKey>.<slot>"`: `z.a`, `z.b`, `z.hl`, `z.atk`, `z.die1`,
+ *   `z.noHead`, … The `head`/`regions` fields of a `BakedSprite` are a
+ *   number and an object, so the `isTexture` guard skips them.
+ * - **`ITEMTEX`** (`src/render/ItemTextures.ts`) — pickups and the two light
+ *   props, named `"item.<key>"`. `ITEMTEX.torch` is the one array-valued
+ *   entry (the two-frame flicker `Interact.ts` swaps between), so its
+ *   frames are `item.torch[0]` and `item.torch[1]`. Indexed rather than
+ *   lumped into the fallback, because the torch flicker is one of the nine
+ *   `material.map=` assignment sites this task is trying to make visible,
+ *   and it is the only one the enemy-less prologue fixture reaches at all.
+ * - **`TEX`** (`src/render/ProcTextures.ts`) — walls, floors, ceilings,
+ *   doors, props, named `"tex.<key>"`.
+ *
+ * **Fallback 1, shared canvas.** `loadLevel` does not put `TEX.churchFloor`
+ * on the floor mesh — it puts `TEX.churchFloor.clone()` on it, so it can set
+ * `repeat` per level without mutating the shared texture (same for the
+ * ceiling). A clone is a different object but three's `Texture.copy()`
+ * assigns `this.image = source.image`, so the clone shares the source's
+ * canvas element. Looking the canvas up gives `tex.churchFloor~clone`,
+ * which is both stable and readable. Two clones of the same source would
+ * share that name; nothing in the game currently makes two.
+ *
+ * **Fallback 2, genuinely unknown.** Anything still unmatched gets
+ * `unnamed#N` from a monotonic counter, assigned on first sight and
+ * remembered per texture object in a `WeakMap`. It must be per-object and
+ * not a single constant: a shared `"unnamed"` for every unnamed texture
+ * would silently re-create the exact blind spot this whole index exists to
+ * close, one level down. Today there is exactly one such texture in the
+ * whole game — `blobTex`, the shared radial-gradient shadow under every
+ * enemy and barrel, a module-private in `src/render/RenderCore.ts` — and it
+ * is genuinely one object shared by every blob, so one name for all of them
+ * is correct rather than lossy. The counter is deterministic because the
+ * order textures are first seen is the scene-child order of a deterministic
+ * run.
+ *
+ * **Exported for `tests/integration/textureIndex.test.ts`.** Fallback 2's
+ * per-object counter is the one piece of this index with no fixture behind
+ * it — the two committed fixtures happen to exercise it, but nothing pins
+ * that a collapsed fallback (one shared `"unnamed"` string) would fail
+ * anything, since a hash difference from a name collision just gets
+ * regenerated away like any other digest change. That test drives this
+ * function directly against synthetic unnamed textures to pin the one
+ * property a collapse would silently lose: distinct objects get distinct
+ * names, and the same object gets the same name back.
+ */
+export async function buildTextureIndex(): Promise<TexNamer> {
+  const { PX } = await import("../../src/enemies/SpriteBaker");
+  const { ITEMTEX } = await import("../../src/render/ItemTextures");
+  const { TEX } = await import("../../src/render/ProcTextures");
+
+  const byTexture = new Map<Any, string>();
+  const byImage = new Map<Any, string>();
+  const put = (t: Any, name: string): void => {
+    if (!t || !t.isTexture) return;
+    if (!byTexture.has(t)) byTexture.set(t, name);
+    const img = t.image ?? t.source?.data;
+    if (img && !byImage.has(img)) byImage.set(img, name);
+  };
+
+  // Sorted so a name is a function of the data, not of key insertion order.
+  for (const key of Object.keys(PX).sort()) {
+    const baked = PX[key] as unknown as Record<string, Any>;
+    for (const slot of Object.keys(baked).sort()) put(baked[slot], `${key}.${slot}`);
+  }
+  for (const key of Object.keys(ITEMTEX).sort()) {
+    const v = ITEMTEX[key] as Any;
+    if (Array.isArray(v)) v.forEach((t: Any, i: number) => put(t, `item.${key}[${i}]`));
+    else put(v, `item.${key}`);
+  }
+  for (const key of Object.keys(TEX).sort()) put(TEX[key], `tex.${key}`);
+
+  if (byTexture.size === 0) {
+    // The same guard-the-guard reflex as installUuidStub's: this index is
+    // built after startGame(), which calls buildTextures/buildSprites/
+    // buildItemTex unconditionally. An empty index means the boot path
+    // changed and every sprite in the digest would silently collapse onto
+    // `unnamed#N` — recording nothing about frame selection while still
+    // looking like it does.
+    throw new Error(
+      "buildTextureIndex found no textures in PX/ITEMTEX/TEX. The boot-time bakers did not run " +
+      "before the index was built, so every texture in the digest would fall back to a placeholder " +
+      "and the trace's sprite-frame coverage would be silently gone.",
+    );
+  }
+
+  let unnamed = 0;
+  const fallback = new WeakMap<Any, string>();
+  return (t: Any): string => {
+    const exact = byTexture.get(t);
+    if (exact !== undefined) return exact;
+    const img = t.image ?? t.source?.data;
+    const fromImage = img ? byImage.get(img) : undefined;
+    if (fromImage !== undefined) return `${fromImage}~clone`;
+    let f = fallback.get(t);
+    if (f === undefined) { f = `unnamed#${++unnamed}`; fallback.set(t, f); }
+    return f;
+  };
+}
+
+/** FNV-1a. Any change to any child's type, position, visibility, texture or colour changes the hash. */
 function hash(s: string): string {
   let h = 0x811c9dc5;
   for (let i = 0; i < s.length; i++) {
@@ -246,19 +399,69 @@ function hash(s: string): string {
 
 /**
  * The scene as a child count plus a hash of every child's type, rounded
- * position and visibility.
+ * position, visibility, material texture name and material colour.
  *
  * Hashed rather than stored raw: a level holds ~240 objects, so the raw
  * digest is ~9KB per recorded frame and turns the fixture into a
  * quarter-megabyte blob. The hash is equally sensitive — any object that
- * moves, spawns, despawns or hides changes it — and a failure still names
- * the exact frame, which is what a developer actually needs to start
- * bisecting.
+ * moves, spawns, despawns, hides, swaps sprite frame or changes tint
+ * changes it — and a failure still names the exact frame, which is what a
+ * developer actually needs to start bisecting.
+ *
+ * ## What Phase 3 Part B Task 1 added, and what it deliberately did not
+ *
+ * **Texture name (`:m=…`).** The nine `material.map=` assignment sites in
+ * `src/` (four in `enemies/ai/Behaviors.ts`, two in `enemies/Boss.ts`, one
+ * each in `enemies/Damage.ts`, `enemies/Death.ts` and `player/Interact.ts`)
+ * were all invisible here. Every one of them writes a texture that
+ * `buildTextureIndex` can name.
+ *
+ * **Material colour (`:c=…`).** `spawnEnemy`'s elite tint
+ * (`color.setHex(0xd8c878)`) and `Damage.ts`'s white hit-flash and its
+ * restore (`e.sp.material.color.setHex(e.elite?0xd8c878:0xffffff)`) are
+ * enemy state with a real bug class behind them — an elite that stops being
+ * tinted, or a hit flash that never clears — and, like the sprite frame,
+ * they move nothing and so were invisible in every field recorded here.
+ * One extra field, one more bug class.
+ *
+ * **Scale: deliberately left out.** Measured rather than assumed. `scale`
+ * is written in eleven places in `src/`; the ones that animate it are
+ * `Behaviors.ts`'s attack-lunge grow (`1+lunge*0.22`) and
+ * `Decals.ts`'s blood-pool grow-in. The lunge case carries no
+ * information this digest does not already hold at 1e-6: the same `lunge`
+ * value simultaneously offsets `sp.position` by `lunge*0.35` toward the
+ * player two lines later, so any change to the lunge curve already moves a
+ * recorded position (the sole exception is a player standing within 0.01
+ * units of the enemy's centre, where `ldx`/`ldz` are forced to 0). The
+ * decal case is real but cosmetic, and every field added here widens the
+ * fixture diff a human has to interpret at the next regeneration. Colour
+ * buys a bug class; scale buys a redundancy and an FX timing tell. If a
+ * later task wants decal grow-in covered, add it then, with its own
+ * regeneration and its own analysis.
+ *
+ * Children with no material at all (lights, `Group`s), and materials with
+ * neither a map nor a colour, produce **exactly** the string they produced
+ * before this task. That is a narrower set than "no map": every material
+ * with a `.color` but no `.map` — the exit pad and torch post in
+ * `LevelLoader.ts`, the blood-pool mesh in `Decals.ts`, among others — now
+ * gains a `:c=` segment of its own, which is the point of adding colour at
+ * all (see above). The fixture diff at the regeneration is attributable to
+ * every material that has a map, a colour, or both, and to nothing else. An
+ * array-valued `material` (the platform `InstancedMesh`'s six box faces)
+ * contributes each of its materials, joined with `+`.
  */
-function digestScene(scene: Any): { count: number; digest: string } {
-  const parts = (scene.children as Any[]).map(
-    (o) => `${o.type}:${r6(o.position.x)},${r6(o.position.y)},${r6(o.position.z)}:${o.visible ? 1 : 0}`,
-  );
+function digestScene(scene: Any, texName: TexNamer): { count: number; digest: string } {
+  const parts = (scene.children as Any[]).map((o) => {
+    let part = `${o.type}:${r6(o.position.x)},${r6(o.position.y)},${r6(o.position.z)}:${o.visible ? 1 : 0}`;
+    if (!o.material) return part;
+    const mats: Any[] = Array.isArray(o.material) ? o.material : [o.material];
+    const maps = mats.filter((m) => m && m.map).map((m) => texName(m.map));
+    if (maps.length) part += `:m=${maps.join("+")}`;
+    const cols = mats.filter((m) => m && m.color)
+      .map((m) => m.color.getHex().toString(16).padStart(6, "0"));
+    if (cols.length) part += `:c=${cols.join("+")}`;
+    return part;
+  });
   return { count: parts.length, digest: hash(parts.join("|")) };
 }
 
@@ -392,6 +595,12 @@ export async function runTrace(o: TraceOptions): Promise<TraceFrame[]> {
       row.click();
     }
 
+    // After the click, never before: both menu paths end in `startGame`
+    // (src/core/Boot.ts), which is where `buildTextures`/`buildSprites`/
+    // `buildItemTex` run. PX, ITEMTEX and TEX are all empty until then, so
+    // an index built any earlier would name nothing.
+    const texName = await buildTextureIndex();
+
     const byFrame = new Map<number, InputEvent[]>();
     for (const ev of o.input) {
       if (!byFrame.has(ev.frame)) byFrame.set(ev.frame, []);
@@ -429,7 +638,7 @@ export async function runTrace(o: TraceOptions): Promise<TraceFrame[]> {
           frame,
           camera: readCamera(camera),
           hud: readHud(),
-          scene: digestScene(getScene()),
+          scene: digestScene(getScene(), texName),
         });
       }
     }

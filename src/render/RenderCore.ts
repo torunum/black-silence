@@ -93,7 +93,7 @@ export function addSprite(tex: THREE.Texture, wx: number, wz: number, sw: number
   sp.position.set(wx,y!==undefined?y:sh/2,wz);renderState.scene.add(sp);return sp;
 }
 
-export function addBlob(wx: number, wz: number, s: number): THREE.Mesh {
+export function addBlob(wx: number, wz: number, s: number): THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial> {
   // blobTex (above) is the one shared, module-scope texture every blob
   // reuses — never tracked. The geometry/material pair built for each blob
   // mesh is per-instance (one per enemy/barrel, every level) and tracked.

@@ -324,7 +324,7 @@ export function enemyTick(dt: number){
     if(e.fly){
       const hov=(e.flyH||1.5)+Math.sin(performance.now()/420+e.x)*.18;
       e.sp.position.set(lx,hov,lz);
-      e.blob.position.set(e.x,.012,e.z);(e.blob.material as THREE.MeshBasicMaterial).opacity=.3;
+      e.blob.position.set(e.x,.012,e.z);e.blob.material.opacity=.3;
     }else{
       e.fy=floorHeightAt(e.x,e.z);
       e.sp.position.set(lx,e.h/2+(e.fy||0)+Math.sin(performance.now()/300+e.x)*.03,lz);

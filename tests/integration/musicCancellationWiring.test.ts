@@ -2,6 +2,7 @@
 import { beforeAll, describe, expect, it, vi } from "vitest";
 import { installDomStubs, loadGameHtml } from "../support/domStubs";
 import { stopMusic, musicTick, musicLayer } from "../../src/audio/Music";
+import type { Enemy } from "../../src/enemies/Enemy";
 
 /**
  * Plan 1 Task 5's version of `timerCancellationWiring.test.ts`: the
@@ -50,7 +51,7 @@ let startBossMusic: () => void;
 let damagePlayer: (d: number, silent?: boolean) => void;
 let S: { dead: boolean; won: boolean; hp: number; armor: number };
 let player: { spawnGuard: number };
-let world: { enemies: Array<Record<string, unknown>> };
+let world: { enemies: Array<Pick<Enemy, "boss" | "dead" | "dormant">> };
 
 beforeAll(async () => {
   installDomStubs();
@@ -69,9 +70,9 @@ beforeAll(async () => {
   ({ loadLevel } = await import("../../src/world/LevelLoader"));
   ({ startBossMusic } = await import("../../src/audio/Ambient"));
   ({ damagePlayer } = await import("../../src/player/Player"));
-  ({ S } = (await import("../../src/core/State")) as unknown as { S: typeof S });
-  ({ player } = (await import("../../src/player/PlayerState")) as unknown as { player: typeof player });
-  ({ world } = (await import("../../src/world/WorldState")) as unknown as { world: typeof world });
+  ({ S } = await import("../../src/core/State"));
+  ({ player } = await import("../../src/player/PlayerState"));
+  ({ world } = await import("../../src/world/WorldState"));
 
   await import("../../src/main");
 
