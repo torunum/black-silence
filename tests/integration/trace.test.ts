@@ -89,6 +89,46 @@ import { runTrace, type InputEvent, type TraceFrame } from "./gameplayTrace";
  * frame 900) — `camera` and `hud` were unchanged across all 90 sampled
  * frames. See that commit's report for the full frame-by-frame
  * confirmation.
+ *
+ * ## Phase 3 Part B Task 1 — third regeneration: the digest now records textures
+ *
+ * `digestScene` (`gameplayTrace.ts`) recorded type, position and `visible`
+ * and nothing else, so which *texture* a sprite was showing was invisible
+ * to this fixture and to `combatTrace.test.ts`'s. Phase 3 Part A Task 2
+ * proved what that costs: a change chartered as type-only inverted
+ * `Behaviors.ts`'s walk-cycle guard and all 463 tests passed. The digest now
+ * also records, for each child that has a material, the **name** of that
+ * material's texture (`z.a`, `item.torch[1]`, `tex.hellWall~clone` — see
+ * `buildTextureIndex`, and note it is deliberately not `texture.uuid`) and
+ * the material's **colour**. `scale` was considered and deliberately left
+ * out; the reasoning, and the measurement behind it, are in `digestScene`'s
+ * doc comment.
+ *
+ * That is a recording change with **no runtime effect**, and the
+ * regeneration was checked against exactly that claim before being
+ * accepted, frame by frame rather than at the first divergence:
+ *
+ * - `camera` — all seven fields, **byte-identical in all 90 sampled
+ *   frames**. Compared field by field, not by whole-object equality.
+ * - `hud` — all eight fields (`hp ar wname msg subt lvltitle bossname
+ *   keys`), **identical in all 90 frames**, each key counted separately.
+ * - `scene.count` — **identical in all 90 frames**, same 33 → 45 shape and
+ *   the same min/max as before.
+ * - `scene.digest` — changed in all 90 frames, which is expected rather
+ *   than alarming: every frame of this level contains textured children
+ *   (walls, floor, ceiling, torches), so every frame's part list gains
+ *   `:m=`/`:c=` fields. First: frame 10, `313756e7` → `c1fe0472` at an
+ *   unchanged count of 33. Last: frame 900, `ba3dd963` → `18e7fa44` at an
+ *   unchanged count of 45. 90 distinct digests before and 90 after — the
+ *   widening lost no resolution.
+ *
+ * **This fixture still has zero enemies**, so it gains far less than
+ * `combatTrace.test.ts` does. The one `material.map=` assignment site it
+ * now covers is the torch flicker (`player/Interact.ts:151`): both
+ * `item.torch[0]` and `item.torch[1]` appear in its sampled frames, so a
+ * frozen or reversed torch animation is no longer invisible here. Nothing
+ * else changed: it records the same camera, the same HUD and the same
+ * object count it always has.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

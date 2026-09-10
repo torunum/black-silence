@@ -213,6 +213,106 @@ import { MONOLOGUE } from "../../src/content/monologue";
  * 2 `InstancedMesh` objects. That is the property this task's brief wanted
  * all along and could not previously assert. See that commit's report for
  * the full analysis.
+ *
+ * ## Phase 3 Part B Task 1 — third regeneration: this fixture can now see sprite frames
+ *
+ * Until this commit `digestScene` (`gameplayTrace.ts`) recorded type,
+ * position and `visible` and nothing else, so **which texture an enemy
+ * sprite was showing was invisible to this fixture**. Phase 3 Part A Task 2
+ * priced that hole: a change chartered as type-only rewrote
+ * `Behaviors.ts`'s walk guard from `e.atkAnim!==undefined&&e.atkAnim<=0` to
+ * `(e.atkAnim??0)<=0` — inverting it, so every enemy cycled its walk frames
+ * from spawn instead of only after its first attack — and all 463 tests
+ * passed. The digest now also records each child's material texture *name*
+ * (`z.a`, `z.atk`, `z.noLArm`, `item.torch[1]`, … — see `buildTextureIndex`
+ * for the scheme and for why it is not `texture.uuid`) and the material's
+ * colour. `scale` was measured and deliberately left out; see
+ * `digestScene`'s doc comment.
+ *
+ * ### The regeneration, checked frame by frame
+ *
+ * A digest widening records more and **must change nothing the game does**.
+ * Compared against the pre-widening fixture across all 176 sampled frames,
+ * field by field rather than stopping at the first divergence:
+ *
+ * - `camera` — all seven fields **byte-identical in all 176 frames**.
+ * - `hud` — each of the eight fields (`hp ar wname msg subt lvltitle
+ *   bossname keys`) counted separately, **identical in all 176 frames**.
+ * - `scene.count` — **identical in all 176 frames**; same 93 → 134 shape,
+ *   same min and max.
+ * - `scene.digest` — changed in all 176 frames, as it must: every frame
+ *   holds textured children, so every part list gains `:m=`/`:c=`. First:
+ *   frame 10, `3fec61e4` → `ec2dc37d` at an unchanged count of 93. Last:
+ *   frame 1760, `fc62cb91` → `df11d51c` at an unchanged count of 134. 176
+ *   distinct digests before, 176 after.
+ *
+ * ### What the new coverage is worth — two mutations, measured
+ *
+ * **1. The bug that motivated the plan.** Restoring `(e.atkAnim??0)<=0` at
+ * `Behaviors.ts`'s walk guard now **fails this file's "diverges from the
+ * fixture nowhere"**, first at frame 780. Its full footprint, measured by
+ * regenerating a throwaway fixture under the mutation and comparing:
+ * `camera` differs in **0** of 176 frames, `hud` in **0**, `scene.count` in
+ * **0**, and `scene.digest` in **48**. That is the direct proof that the
+ * old digest could not have caught it — the mutation moves nothing except
+ * which texture is on a sprite — and that the new one does.
+ * `tests/enemies/walkFrames.test.ts` also catches it, but it was written
+ * *for* that one line; this file catches it as a trace.
+ *
+ * **2. The attack pose** (`Behaviors.ts`'s `e.sp.material.map=PX[e.key].atk`)
+ * — chosen because it had no coverage anywhere in the suite before this
+ * commit (`walkFrames.test.ts` and this harness are the only two places in
+ * `tests/` that read `material.map` at all, and that file only exercises
+ * the `a`/`b` walk pair). Changing that assignment to `PX[e.key].a`, so a
+ * striking enemy never leaves its idle frame, also fails this file, at
+ * frame 1530 with `scene.count` unchanged at 118. Both mutations were
+ * reverted with a targeted edit.
+ *
+ * ### What this still cannot see — the honest list
+ *
+ * Five of the nine `material.map=` sites in `src/` are reached by this
+ * fixture — one of them, the torch flicker, is reached by
+ * `trace.test.ts`'s enemy-less prologue as well.
+ * **The other four remain unreachable by this script and this level**,
+ * and no amount of re-running changes that:
+ *
+ * - `Behaviors.ts`'s two-stage death collapse (`P.die1`/`P.die2`). Its
+ *   branch is skipped outright for a corpse with `e.severKey` set or
+ *   `deathKind===2`, and this run's kill *does* sever a limb — `z.noLArm`
+ *   is what appears in the sampled frames, not `z.die1`/`z.die2`, neither
+ *   of which appears anywhere.
+ * - `Death.ts`'s headless corpse (`PX[e.key].noHead||PX[e.key].hl`).
+ *   Requires a decapitating kill; this run's kill is not one, and no
+ *   `noHead`/`hl` texture appears in any sampled frame.
+ *
+ * Both of those were **confirmed by mutation, not inferred**: rewriting
+ * `Behaviors.ts`'s `want` to `P.a` and `Death.ts`'s headless assignment to
+ * `PX[e.key].a` at the same time leaves both trace files green. They are
+ * genuinely unreached, and this file should not be read as covering them.
+ * - `Boss.ts`'s phase-3 form swap and `Boss.ts`'s boss walk cycle. Both sit
+ *   inside `priestThink`, which only runs for `e.priest` enemies. Level 1's
+ *   only boss is `U`, THE CATHEDRAL GUARDIAN (`EnemyDefs.ts`: `boss:true,
+ *   stone:true`, **no** `priest`), and it spawns dormant at grid (19,3),
+ *   which this script never wakes — `U.a` is the only `U` texture that ever
+ *   appears. These two are unreachable in *both* fixtures regardless of
+ *   script, the same way `Behaviors.ts`'s Slaughtaur and Ettin branches
+ *   are (see the Plan 0F Task 5 section above).
+ *
+ * The nine sites, and what the committed fixtures actually show:
+ * walk cycle **covered** (`j.a`/`j.b` both appear), attack pose **covered**
+ * (`z.atk`, `g.atk`, demonstrated by mutation above), hurt/sever frame in
+ * `Damage.ts` **covered** (`z.noLArm`), torch flicker **covered**
+ * (`item.torch[0]`/`[1]`, in both fixtures), death collapse **not**,
+ * headless corpse **not**, both `Boss.ts` sites **not**.
+ *
+ * The ninth — `Behaviors.ts`'s post-attack stance restore, the `else if
+ * (e.wasAtk)` arm — is **reached but only weakly covered**, and the
+ * distinction is worth keeping straight. It necessarily executes (it is the
+ * only exit from the attack pose, and the attack pose is covered), but it
+ * writes the same `set[e.frame]` texture the walk cycle writes and holds it
+ * for as little as one frame, so whether a mutation there is caught depends
+ * on a sampled frame landing on it. Counted as covered in the five above
+ * only in the sense that it runs; do not lean on it.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");
