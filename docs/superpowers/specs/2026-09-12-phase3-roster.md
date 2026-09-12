@@ -409,8 +409,9 @@ a letter-for-letter substitution — leaving layouts, rooms and `hmap` work
 entirely to Phase 4.
 
 - **Costs:** the substituted placements are provisional by construction. Level
-  3's five flier tiles become five of the same enemy in one room, which is a
-  composition nobody chose. Some of that work is redone in Phase 4.
+  3's five flier tiles become five copies of the same enemy, one to a room
+  across five separate rooms — still a composition nobody chose. Some of that
+  work is redone in Phase 4.
 - **Buys:** the game plays at every commit, the level tables stay honest, and
   the roster's balance consequences become visible to a human immediately.
 
@@ -588,9 +589,10 @@ removed rather than discovered halfway through.
 **Consolidating five fliers into one being read as a rendering change.** It is
 not. Three distinct fliers are placed in the kept levels across six tiles, and
 five of those six are in level 3 — where `y`×3 and `R`×2 become five copies of
-the same enemy in the same space. That is a composition change nobody chose.
-Mitigation: say so in the commit, and treat it as a balance change needing a
-human, not as a deletion.
+the same enemy, one per room, across five of level 3's separate rooms. That is
+still a composition change nobody chose, even spread this wide. Mitigation: say
+so in the commit, and treat it as a balance change needing a human, not as a
+deletion.
 
 **Scope creep into weapons.** `direction.md` gives Phase 3 both the roster and
 weapon personalities plus flow-field pathfinding. This spec covers the roster

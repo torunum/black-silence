@@ -18,8 +18,8 @@ Part A gave the enemy one shape — closing KNOWN-13 and, in doing so, finding
 KNOWN-15, the biggest live bug in the game — Phase 3 Part B closed the
 coverage hole Part A's own postmortem found: the traces could not see which
 sprite frame an enemy was showing — and Phase 3 Part C measured the roster
-cut's real cost against the real level grids, closed KNOWN-18, and wrote the
-Phase 3 spec named above.
+cut's real cost against the real level grids, found and pinned KNOWN-18, and
+wrote the Phase 3 spec named above.
 **Phase 2 Part B is blocked on a human running the game** — see the browser
 note under Environment gotchas. **KNOWN-15 is blocked on the same human**, for
 the same reason: it is a balance change nobody here can look at.
@@ -639,10 +639,11 @@ Branch `phase-3c-roster-ground-truth`. Plan dated 2026-09-12. Ledger:
 Two tasks, neither touching gameplay. Task 1 added `tests/world/rosterReach.test.ts`,
 deriving — by *building* every level module, never by scanning grid rows as
 source text, which undercounts — which `ENEMY_DEFS` letters a level actually
-places and which three call sites summon one by name; **KNOWN-18 closed**:
-`B` and `q` are placed in no level and summoned nowhere, which doubles two
-already-known dead fields (`burst` and `deathBoom`, both authored on `q`
-alone). Task 2 wrote **the Phase 3 spec**,
+places and which three call sites summon one by name; **KNOWN-18 found and
+pinned, not fixed**: `B` and `q` are placed in no level and summoned nowhere,
+which doubles two already-known dead fields (`burst` and `deathBoom`, both
+authored on `q` alone) — deleting or placing either is a roster-composition
+call for the project owner, not made here. Task 2 wrote **the Phase 3 spec**,
 `docs/superpowers/specs/2026-09-12-phase3-roster.md`, turning `direction.md`'s
 approved nine-enemy-plus-three-boss roster into something a plan can build
 from: which letters each of the nine replaces, which of KNOWN-15's ten dead

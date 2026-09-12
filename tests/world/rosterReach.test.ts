@@ -38,12 +38,31 @@ const PLACED = new Set(
  * set, the same convention `tests/world/levels.test.ts` uses for the prop
  * table it cannot yet import.
  *
- * That "only three" claim is not just asserted here — it is re-derived and
- * guarded below (see the "SUMMONED accounts for..." test): a source scan
- * counts every `spawnEnemy(` call site outside this loader and checks every
- * string literal on those lines against this set, so a new call site (like
- * `Boss.ts:209` gaining a fourth reachable letter) cannot silently slip past
- * both this set and KNOWN-18's claim that only `"z"`/`"f"` are ever named.
+ * That "only three" claim is not just asserted here — the "SUMMONED
+ * accounts for..." test below re-derives it from source on every run. What
+ * it actually establishes: every `spawnEnemy(` *call* in `src/` (parsed as
+ * a whole call, not a line — so a call split across lines or wrapped in a
+ * multi-line expression is still seen whole), other than the loader's own
+ * `if(EDEF[ch])spawnEnemy(ch,...)` dispatch (recognized by that exact
+ * shape, not by filename — a second, literal call added anywhere else in
+ * `LevelLoader.ts` is scanned like any other file), numbers exactly three,
+ * and each one's first argument either contains only quoted-string literals
+ * (`"..."`, `'...'`, or a non-interpolated `` `...` ``) that are all members
+ * of `SUMMONED`, or is a bare identifier this file can resolve to one via a
+ * same-file `const`/`let`/`var` lookup. A first argument this scan cannot
+ * turn into a literal — a computed value, an interpolated template literal,
+ * or an identifier with no simple same-file assignment — fails the test
+ * outright rather than being silently skipped.
+ *
+ * The known remaining gap: the same-file identifier lookup is a plain text
+ * search, not scope-aware. If a hoisted letter variable's name were reused
+ * with a different value in another function in the same file, the lookup
+ * could resolve the wrong one — and if that wrong value happened to already
+ * be in `SUMMONED`, the check would pass when it should not. This has never
+ * happened (today nothing hoists a summon letter into a variable at all),
+ * and the fallback for anything it can't resolve is still to fail loudly,
+ * not to pass silently — but this one path is not airtight, and is recorded
+ * here rather than claimed away.
  */
 const SUMMONED = new Set(["z", "f"]);
 
@@ -55,51 +74,210 @@ function srcFiles(dir: string): string[] {
   });
 }
 
+const SRC = join(__dirname, "..", "..", "src");
+const LEVEL_LOADER = join(SRC, "world", "LevelLoader.ts");
+
+/** Strip `/* ... *\/` and `// ...` comments so they can't hide or fake a call. */
+function stripComments(text: string): string {
+  return text.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/[^\n]*/g, "");
+}
+
+/**
+ * Splits a call's argument-list text on top-level commas — i.e. commas that
+ * are not inside `(...)`/`[...]`/`{...}` nesting or inside a string/template
+ * literal. Good enough for real call sites (`a?"x":"y",b,c`, nested calls,
+ * etc.) without a full expression parser.
+ */
+function splitArgs(argsText: string): string[] {
+  const args: string[] = [];
+  let depth = 0;
+  let inStr: string | null = null;
+  let current = "";
+  for (let i = 0; i < argsText.length; i++) {
+    const c = argsText[i];
+    if (inStr) {
+      current += c;
+      if (c === "\\") {
+        current += argsText[++i] ?? "";
+        continue;
+      }
+      if (c === inStr) inStr = null;
+      continue;
+    }
+    if (c === '"' || c === "'" || c === "`") {
+      inStr = c;
+      current += c;
+      continue;
+    }
+    if (c === "(" || c === "[" || c === "{") depth++;
+    if (c === ")" || c === "]" || c === "}") depth--;
+    if (c === "," && depth === 0) {
+      args.push(current);
+      current = "";
+      continue;
+    }
+    current += c;
+  }
+  if (current.trim() !== "" || args.length > 0) args.push(current);
+  return args.map((a) => a.trim());
+}
+
+/** Every quoted-string / template-literal substring found in `text`, flagging interpolation. */
+function literalsIn(text: string): { literal: string; interpolated: boolean }[] {
+  const re = /"((?:[^"\\]|\\.)*)"|'((?:[^'\\]|\\.)*)'|`((?:[^`\\]|\\.)*)`/g;
+  const out: { literal: string; interpolated: boolean }[] = [];
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(text))) {
+    const lit = (m[1] ?? m[2] ?? m[3]) as string;
+    out.push({ literal: lit, interpolated: lit.includes("${") });
+  }
+  return out;
+}
+
+/**
+ * Best-effort resolution of a bare identifier to the string literal it was
+ * assigned, via a same-file `const`/`let`/`var NAME = "…"` lookup. NOT
+ * scope-aware — see the `SUMMONED` comment's "known remaining gap" above.
+ */
+function resolveIdentifier(code: string, name: string): string | null {
+  const re = new RegExp(`\\b(?:const|let|var)\\s+${name}\\s*=\\s*("(?:[^"\\\\]|\\\\.)*"|'(?:[^'\\\\]|\\\\.)*'|\`(?:[^\`\\\\]|\\\\.)*\`)`);
+  const m = re.exec(code);
+  if (!m) return null;
+  const raw = m[1];
+  const inner = raw.slice(1, -1);
+  if (inner.includes("${")) return null; // interpolated — cannot resolve statically
+  return inner;
+}
+
+/**
+ * Is this `spawnEnemy(` occurrence (at `spawnIdx` in `code`) the level
+ * loader's own grid dispatch — `if(EDEF[ch])spawnEnemy(ch,...)` — recognized
+ * by that exact shape (the `if(EDEF[<name>])` immediately before the call,
+ * with the same `<name>` as the call's own first argument), not by which
+ * file it's in? Anything else in `LevelLoader.ts`, including a second call
+ * with this same shape but a different variable, or a literal call, is
+ * scanned like any other call site.
+ */
+function isKnownLevelLoaderDispatch(code: string, spawnIdx: number, arg0: string): boolean {
+  const before = code.slice(Math.max(0, spawnIdx - 60), spawnIdx);
+  const m = /if\s*\(\s*EDEF\[([A-Za-z_$][\w$]*)\]\s*\)\s*$/.exec(before);
+  return !!m && m[1] === arg0;
+}
+
+interface CallSite {
+  file: string;
+  arg0: string;
+  literals: string[];
+  problem?: string;
+}
+
+function analyzeCall(file: string, code: string, argsText: string): CallSite {
+  const args = splitArgs(argsText);
+  const arg0 = (args[0] ?? "").trim();
+  const found = literalsIn(arg0);
+  if (found.some((f) => f.interpolated)) {
+    return {
+      file,
+      arg0,
+      literals: [],
+      problem: `first argument \`${arg0}\` is an interpolated template literal — its value is not fixed at read time and cannot be verified statically`,
+    };
+  }
+  if (found.length > 0) return { file, arg0, literals: found.map((f) => f.literal) };
+  if (/^[A-Za-z_$][\w$]*$/.test(arg0)) {
+    const resolved = resolveIdentifier(code, arg0);
+    if (resolved !== null) return { file, arg0, literals: [resolved] };
+  }
+  return {
+    file,
+    arg0,
+    literals: [],
+    problem: `first argument \`${arg0}\` names no literal this guard can verify (not a quoted literal, and not a same-file const/let/var it can resolve) — a hoisted or computed letter must be re-derived by a human, not assumed safe`,
+  };
+}
+
+/**
+ * Every `spawnEnemy(` call in `src/`, parsed as a whole call (so a call
+ * split across lines, or one whose literal is on a different line than
+ * `spawnEnemy(`, is still captured whole), except the loader's own
+ * `if(EDEF[ch])spawnEnemy(ch,...)` dispatch (see `isKnownLevelLoaderDispatch`).
+ * Function *declarations* (`function spawnEnemy(...)`) are excluded — they
+ * are not call sites.
+ */
+function collectCallSites(): CallSite[] {
+  const sites: CallSite[] = [];
+  for (const f of srcFiles(SRC)) {
+    const code = stripComments(readFileSync(f, "utf8"));
+    const re = /\bspawnEnemy\s*\(/g;
+    let m: RegExpExecArray | null;
+    while ((m = re.exec(code))) {
+      const nameStart = m.index;
+      const openParen = nameStart + m[0].length - 1;
+      const before = code.slice(0, nameStart);
+      if (/\bfunction\s+$/.test(before)) continue; // declaration, not a call
+
+      let depth = 1;
+      let i = openParen + 1;
+      let inStr: string | null = null;
+      for (; i < code.length && depth > 0; i++) {
+        const c = code[i];
+        if (inStr) {
+          if (c === "\\") {
+            i++;
+            continue;
+          }
+          if (c === inStr) inStr = null;
+          continue;
+        }
+        if (c === '"' || c === "'" || c === "`") {
+          inStr = c;
+          continue;
+        }
+        if (c === "(") depth++;
+        else if (c === ")") depth--;
+      }
+      const argsText = code.slice(openParen + 1, i - 1);
+      const arg0 = (splitArgs(argsText)[0] ?? "").trim();
+      if (f === LEVEL_LOADER && isKnownLevelLoaderDispatch(code, nameStart, arg0)) continue;
+      sites.push(analyzeCall(f, code, argsText));
+    }
+  }
+  return sites;
+}
+
 /**
  * Guard for `SUMMONED` itself, closing the gap the review found: a set that
  * is merely copied from a comment, with nothing checking the comment still
  * matches the source, does not catch a new summon site (or a changed one)
- * that names a letter outside `{"z","f"}`. Proven by review: retargeting
- * `Boss.ts:209`'s `spawnEnemy("f",...)` to `spawnEnemy("q",...)` left all
- * three `rosterReach.test.ts` tests green, because `q` landed in neither
- * `PLACED` nor the hand-written `SUMMONED`, and *was* already in
- * `UNREACHABLE` — both directions of the first assertion passed while the
- * row they exist to protect (`q` is unreachable) had become false.
+ * that names a letter outside `{"z","f"}`. Proven by review round 1:
+ * retargeting `Boss.ts:209`'s `spawnEnemy("f",...)` to `spawnEnemy("q",...)`
+ * left all three original `rosterReach.test.ts` tests green.
  *
- * This scans every `.ts` file under `src/` *except* `LevelLoader.ts` itself
- * (which owns the grid dispatch's own, separate `spawnEnemy(ch,...)` call —
- * that one passes a variable, not a literal, and is not part of this claim)
- * for lines containing `spawnEnemy(`, and asserts two things: there are
- * exactly three such lines, and every quoted string literal appearing on any
- * of them is a member of `SUMMONED`.
+ * Round 2 proved the line-based version of this guard (which scanned single
+ * lines for quoted literals and excluded `LevelLoader.ts` by filename) had
+ * three further gaps, all closed by the version below: a backtick literal
+ * (the old regex matched `"` and `'` only), the same call split across two
+ * lines or hoisted into a variable (the literal was no longer on the
+ * `spawnEnemy(` line itself), and a literal `spawnEnemy("q",...)` added
+ * anywhere else in `LevelLoader.ts` (the old guard skipped that whole file).
+ * See the `SUMMONED` comment above for exactly what this version establishes
+ * and the one gap it still has.
  */
-const SRC = join(__dirname, "..", "..", "src");
-const LEVEL_LOADER = join(SRC, "world", "LevelLoader.ts");
+it("SUMMONED accounts for every literal at every spawnEnemy call site outside the loader's own dispatch", () => {
+  const sites = collectCallSites();
 
-function spawnEnemyCallLines(): { file: string; line: string }[] {
-  const hits: { file: string; line: string }[] = [];
-  for (const f of srcFiles(SRC)) {
-    if (f === LEVEL_LOADER) continue; // the loader's own grid dispatch, not a call site
-    const text = readFileSync(f, "utf8");
-    const code = text.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/[^\n]*/g, "");
-    for (const line of code.split("\n")) {
-      if (/\bspawnEnemy\(/.test(line)) hits.push({ file: f, line: line.trim() });
-    }
-  }
-  return hits;
-}
-
-it("SUMMONED accounts for every literal at every spawnEnemy call site outside the loader", () => {
-  const hits = spawnEnemyCallLines();
   expect(
-    hits.map((h) => `${h.file}: ${h.line}`),
-    "expected exactly three spawnEnemy( call sites outside LevelLoader.ts — a call site was added or removed; re-derive SUMMONED and KNOWN-18's count",
+    sites.map((s) => `${s.file}: ${s.arg0}`),
+    "expected exactly three spawnEnemy( call sites outside LevelLoader.ts's own if(EDEF[ch])spawnEnemy(ch,...) dispatch — a call site was added, removed, or the dispatch changed shape enough that this guard no longer recognizes it; re-derive SUMMONED and KNOWN-18's count",
   ).toHaveLength(3);
 
-  for (const { file, line } of hits) {
-    const literals = [...line.matchAll(/"([^"]*)"|'([^']*)'/g)].map((m) => m[1] ?? m[2]);
-    for (const lit of literals) {
-      expect(SUMMONED.has(lit), `${file}: "${line}" names "${lit}", which is not in SUMMONED ${JSON.stringify([...SUMMONED])} — a new/changed summon site may have just made a letter reachable`).toBe(true);
+  for (const site of sites) {
+    expect(site.problem, `${site.file}: first argument \`${site.arg0}\`${site.problem ? " — " + site.problem : ""}`).toBeUndefined();
+    for (const lit of site.literals) {
+      expect(
+        SUMMONED.has(lit),
+        `${site.file}: first argument \`${site.arg0}\` names "${lit}", which is not in SUMMONED ${JSON.stringify([...SUMMONED])} — a new/changed summon site may have just made a letter reachable`,
+      ).toBe(true);
     }
   }
 });
