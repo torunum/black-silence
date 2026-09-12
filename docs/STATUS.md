@@ -3,14 +3,23 @@
 Written to survive session loss. If you are picking this up cold, read this
 file, then `docs/direction.md`, then the current plan under
 `docs/superpowers/plans/`. Trust this file and `git log` over any recollection.
+**Planning Phase 3's implementation itself needs one more stop, off that
+path**: `docs/superpowers/specs/2026-09-12-phase3-roster.md`, the roster-cut
+spec Phase 3 Part C wrote — its measured ground truth (which letters the kept
+levels actually place, which KNOWN-15 fields the new roster needs, the
+level-coupling decision left to the project owner) is what a Phase 3 plan
+should be built from, and nothing on the file→direction.md→plan path above
+names it.
 
-Last updated: 2026-09-11, after Phase 3 Part B. Phase 0 finished the port,
+Last updated: 2026-09-12, after Phase 3 Part C. Phase 0 finished the port,
 Phase 1 gave the game sound and settings, Phase 2 Part A fixed the two shipped
 bugs whose correctness is structural and instanced the level geometry, Phase 3
 Part A gave the enemy one shape — closing KNOWN-13 and, in doing so, finding
-KNOWN-15, the biggest live bug in the game — and Phase 3 Part B closed the
+KNOWN-15, the biggest live bug in the game — Phase 3 Part B closed the
 coverage hole Part A's own postmortem found: the traces could not see which
-sprite frame an enemy was showing.
+sprite frame an enemy was showing — and Phase 3 Part C measured the roster
+cut's real cost against the real level grids, closed KNOWN-18, and wrote the
+Phase 3 spec named above.
 **Phase 2 Part B is blocked on a human running the game** — see the browser
 note under Environment gotchas. **KNOWN-15 is blocked on the same human**, for
 the same reason: it is a balance change nobody here can look at.
@@ -619,6 +628,31 @@ belong with the roster work that owns the def table. KNOWN-17 is closed:
 same way `walkFrames.test.ts` closed the identical shape last phase.
 
 `npm test`: **57 files / 477 tests**, all green; `tsc --noEmit` clean; the
+file-size gate reports 90 files checked against the 400-line limit; `madge
+--circular` reports `Processed 90 files` with no circular dependency.
+
+## Phase 3 Part C status
+
+Branch `phase-3c-roster-ground-truth`. Plan dated 2026-09-12. Ledger:
+`.superpowers/sdd/2026-09-12-phase3c-roster-ground-truth/progress.md`.
+
+Two tasks, neither touching gameplay. Task 1 added `tests/world/rosterReach.test.ts`,
+deriving — by *building* every level module, never by scanning grid rows as
+source text, which undercounts — which `ENEMY_DEFS` letters a level actually
+places and which three call sites summon one by name; **KNOWN-18 closed**:
+`B` and `q` are placed in no level and summoned nowhere, which doubles two
+already-known dead fields (`burst` and `deathBoom`, both authored on `q`
+alone). Task 2 wrote **the Phase 3 spec**,
+`docs/superpowers/specs/2026-09-12-phase3-roster.md`, turning `direction.md`'s
+approved nine-enemy-plus-three-boss roster into something a plan can build
+from: which letters each of the nine replaces, which of KNOWN-15's ten dead
+fields the new roster needs, and what the cut does to the level grids.
+Nineteen of the twenty-five letters are placed in a level the project is
+keeping, so the roster cut and the Phase 4 level rebuild cannot both start
+from an intact map — the spec states four options for that coupling and
+leaves the choice to the project owner, who has not yet played the game.
+
+`npm test`: **58 files / 481 tests**, all green; `tsc --noEmit` clean; the
 file-size gate reports 90 files checked against the 400-line limit; `madge
 --circular` reports `Processed 90 files` with no circular dependency.
 
