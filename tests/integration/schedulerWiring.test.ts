@@ -108,9 +108,19 @@ beforeAll(async () => {
  * kept the pool alive long enough for this file's stray timer to land, and a
  * suite that had been green for five plans reported an error that had nothing
  * to do with the new file. Clearing them here makes it deterministic rather
- * than lucky. The four sibling files that also boot `src/main.ts` on the real
- * clock — `wiring`, `gpuDisposeWiring`, `positionalCallers`,
- * `renderWidthBootWiring` — carry the same latent race; see KNOWN-19.
+ * than lucky.
+ *
+ * **Update, Phase 3 Part D's fix round:** the sibling list below was
+ * originally hand-counted as four and was wrong in both directions — see
+ * KNOWN-19, which now also gives the derivation rather than a fixed count.
+ * `wiring.test.ts`, `gpuDisposeWiring.test.ts`, `positionalCallers.test.ts`,
+ * `contextWiring.test.ts`, `musicCancellationWiring.test.ts` and
+ * `timerCancellationWiring.test.ts` carried the same latent race and now
+ * carry this same `afterAll` fix. `renderWidthBootWiring.test.ts` was on the
+ * original list but never actually had the bug: it only imports
+ * `src/main.ts` and never clicks a menu row or calls `loadLevel`, so
+ * `startGame` — and every `after()` call it would otherwise arm — never
+ * runs there.
  */
 afterAll(() => {
   clearAllTimers();

@@ -1,8 +1,10 @@
 // @vitest-environment jsdom
-import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { installDomStubs, loadGameHtml } from "../support/domStubs";
 import { screenShake } from "../../src/fx/ShakeState";
 import { player } from "../../src/player/PlayerState";
+import { clearAllTimers } from "../../src/core/Timers";
+import { clearScheduled } from "../../src/core/Time";
 
 /**
  * The seams — KNOWN-9.
@@ -194,6 +196,17 @@ beforeAll(async () => {
   // going through the hook is what makes the kick seam observable at all.
   captured.hooks!.doKick();
   kickFrame = runFrame(t0 + 33.4);
+});
+
+// KNOWN-19: this file boots src/main.ts (via the NEW GAME click above) on
+// the real clock, which arms loadLevel's real setTimeout timers (the
+// longest, 1400ms). Nothing in this file installs a fake clock to absorb
+// them, so left alone they survive past this file's own teardown and race
+// jsdom's environment teardown — see tests/integration/schedulerWiring.test.ts's
+// own afterAll, which this is the same fix for.
+afterAll(() => {
+  clearAllTimers();
+  clearScheduled();
 });
 
 describe("main.ts boots the game far enough to test its wiring", () => {

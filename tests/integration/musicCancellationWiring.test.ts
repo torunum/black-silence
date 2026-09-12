@@ -1,8 +1,10 @@
 // @vitest-environment jsdom
-import { beforeAll, describe, expect, it, vi } from "vitest";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { installDomStubs, loadGameHtml } from "../support/domStubs";
 import { stopMusic, musicTick, musicLayer } from "../../src/audio/Music";
 import type { Enemy } from "../../src/enemies/Enemy";
+import { clearAllTimers } from "../../src/core/Timers";
+import { clearScheduled } from "../../src/core/Time";
 
 /**
  * Plan 1 Task 5's version of `timerCancellationWiring.test.ts`: the
@@ -82,6 +84,18 @@ beforeAll(async () => {
   // NEW GAME's own startGame() already called audioInit(), so ctx() is
   // ready and startBossMusic() below will actually create an interval
   // rather than silently no-op'ing.
+});
+
+// KNOWN-19: this file never installs a fake clock at all — the NEW GAME
+// boot above and every loadLevel(1) call below all run on the real clock,
+// each re-arming loadLevel's real setTimeout timers (the longest, 1400ms).
+// Left alone the last one armed survives past this file's own teardown and
+// races jsdom's environment teardown; see
+// tests/integration/schedulerWiring.test.ts's own afterAll, which this is
+// the same fix for.
+afterAll(() => {
+  clearAllTimers();
+  clearScheduled();
 });
 
 describe("loadLevel cancels a live boss-music pulse from the level it replaces", () => {

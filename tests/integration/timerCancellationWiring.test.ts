@@ -1,8 +1,8 @@
 // @vitest-environment jsdom
-import { beforeAll, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { installDomStubs, loadGameHtml, installFakeClock } from "../support/domStubs";
-import { after } from "../../src/core/Timers";
-import { schedule, tickScheduled } from "../../src/core/Time";
+import { after, clearAllTimers } from "../../src/core/Timers";
+import { schedule, tickScheduled, clearScheduled } from "../../src/core/Time";
 
 /**
  * Plan 0F Task 6 — the integration property `tests/core/timers.test.ts`
@@ -64,6 +64,19 @@ beforeAll(async () => {
   // NEW GAME's loadLevel(0) call is what this file's own loadLevel(1) below
   // is a second instance of — establishing that the game is already
   // mid-level (not merely booted) before either test's own load.
+});
+
+// KNOWN-19: the NEW GAME click above boots the prologue on the real clock,
+// arming loadLevel's real setTimeout timers (the longest, 1400ms). Most
+// tests below wrap their own loadLevel(1) call in installFakeClock, but the
+// final describe block's loadLevel(1) call runs with no clock installed at
+// all, re-arming a real timer that nothing here then clears. Left alone
+// either one survives past this file's own teardown and races jsdom's
+// environment teardown; see tests/integration/schedulerWiring.test.ts's own
+// afterAll, which this is the same fix for.
+afterAll(() => {
+  clearAllTimers();
+  clearScheduled();
 });
 
 describe("loadLevel cancels a pending Timers.after callback from the level it replaces", () => {

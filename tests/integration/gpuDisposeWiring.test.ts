@@ -1,9 +1,11 @@
 // @vitest-environment jsdom
-import { beforeAll, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { installDomStubs, loadGameHtml } from "../support/domStubs";
 import { renderState } from "../../src/render/Renderer";
 import { gibGeo } from "../../src/fx/Gibs";
 import { poolMat } from "../../src/fx/Decals";
+import { clearAllTimers } from "../../src/core/Timers";
+import { clearScheduled } from "../../src/core/Time";
 
 /**
  * Plan 0F Task 7 — the integration property `tests/render/disposeRegistry.test.ts`
@@ -90,6 +92,17 @@ beforeAll(async () => {
   (newGame as HTMLElement).click();
   // NEW GAME's loadLevel(0) call puts us mid-level (not merely booted)
   // before any of this file's own loadLevel(...) calls below.
+});
+
+// KNOWN-19: every loadLevel call in this file — the NEW GAME boot above and
+// the ones below — runs on the real clock, arming loadLevel's real
+// setTimeout timers (the longest, 1400ms) with nothing here to absorb them.
+// Left alone they survive past this file's own teardown and race jsdom's
+// environment teardown; see tests/integration/schedulerWiring.test.ts's own
+// afterAll, which this is the same fix for.
+afterAll(() => {
+  clearAllTimers();
+  clearScheduled();
 });
 
 describe("loadLevel frees the previous level's own GPU resources", () => {

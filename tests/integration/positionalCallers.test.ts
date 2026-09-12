@@ -1,8 +1,10 @@
 // @vitest-environment jsdom
-import { beforeAll, afterEach, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, afterEach, describe, expect, it } from "vitest";
 import * as THREE from "three";
 import { installDomStubs, loadGameHtml } from "../support/domStubs";
 import { recordingAudioContext, type AudioEvent } from "../support/recordingAudio";
+import { clearAllTimers } from "../../src/core/Timers";
+import { clearScheduled } from "../../src/core/Time";
 import type { world as World } from "../../src/world/WorldState";
 import type { player as Player } from "../../src/player/PlayerState";
 import type { enemyTick as EnemyTick } from "../../src/enemies/ai/Behaviors";
@@ -120,6 +122,17 @@ beforeAll(async () => {
   world.GH = 30;
   world.heightMap = null;
   world.wallSegs = [];
+});
+
+// KNOWN-19: the NEW GAME click above boots src/main.ts on the real clock,
+// arming loadLevel's real setTimeout timers (the longest, 1400ms) with
+// nothing in this file to absorb them. Left alone they survive past this
+// file's own teardown and race jsdom's environment teardown; see
+// tests/integration/schedulerWiring.test.ts's own afterAll, which this is
+// the same fix for.
+afterAll(() => {
+  clearAllTimers();
+  clearScheduled();
 });
 
 afterEach(() => {

@@ -223,8 +223,8 @@ import { world } from "../../src/world/WorldState";
  * fixtures and left them green, which is the same result that file already
  * recorded — the coverage is new, not a re-reading of theirs.
  *
- * ### The form swap is pinned by exactly one sampled frame — do not
- * ### assume it survives a retune of this script
+ * ### The form swap is pinned by exactly one sampled frame — and that is
+ * ### now a structural guard, not just this paragraph
  *
  * Measured, and the most fragile thing in this file. Regenerating a
  * throwaway fixture under the form-swap mutation and comparing field by
@@ -236,9 +236,30 @@ import { world } from "../../src/world/WorldState";
  * (also a `Q2` texture), so the mutation's whole visible window is the
  * handful of frames between the two. **Any change to `TOTAL_FRAMES`,
  * `EVERY`, the sweep or the seed can move frame 4900 out of that window
- * and silently drop this site's coverage while every test stays green.**
- * Re-run the mutation after any such change rather than assuming; the
- * numbers above are what it should still look like.
+ * and silently drop this site's coverage while every test stays green** —
+ * that was this file's own first-round review finding, because until now
+ * nothing but this paragraph said so.
+ *
+ * **The fix, added in review round 1**: `afterLoad` installs a `configurable`
+ * accessor on the priest's own `sp.material`'s `map` property (once the
+ * priest is found, after the position/hp seeding below) that records, on
+ * every write, the frame index derived the same way `runTrace`'s own loop
+ * derives it (`(performance.now()-t0)/dtMs`, rounded) and `priest.phase` at
+ * that instant. The getter returns exactly what the setter stored, so this
+ * changes nothing about what the game does or renders — confirmed by
+ * re-running the fixture comparison with the accessor installed and
+ * confirming the fixture's digest is byte-identical to the one recorded
+ * before it existed (see "Prove it" below). The named test
+ * `"the phase-3 form swap always lands inside a sampled frame"` then reads
+ * that write log rather than trusting the numbers above: it finds the first
+ * write recorded with `phase===3` (necessarily the form swap itself — the
+ * phase transition and the swap happen in the same `priestThink` call,
+ * before any phase-3 walk-cycle write can exist), the very next write after
+ * it (the walk cycle overwriting it), and asserts some multiple of `EVERY`
+ * falls in that half-open window. A retune that moves the swap's frame (or
+ * widens/narrows `EVERY`) out of alignment with that window now fails this
+ * *named* test — not just the fixture comparison's single frame, and not
+ * only if a future reader remembers to re-run the mutation by hand.
  *
  * `every:20` rather than `combatTrace`'s `every:10`: this run is 3.1x
  * longer than that one, and the sampling rate is the only thing standing
@@ -329,6 +350,14 @@ const INPUT: readonly InputEvent[] = bossScript();
 let trace: TraceFrame[];
 /** The Corrupted Priest itself, captured in `afterLoad` and read after the run. */
 let priest: (typeof world.enemies)[number];
+/**
+ * Every write to the priest's `sp.material.map`, in chronological order —
+ * the structural guard for the phase-3 form swap (review round 1, Important
+ * 1). Installed by the accessor in `afterLoad` below; see this file's
+ * module doc comment, "The form swap is pinned by exactly one sampled
+ * frame", for what it proves and why.
+ */
+let mapWrites: Array<{ frame: number; phase: number }>;
 
 beforeAll(async () => {
   // Pre-boot seeding, the `combatTrace` way: loadLevel never touches the
@@ -367,8 +396,47 @@ beforeAll(async () => {
       player.px = START_X;
       player.pz = START_Z;
       S.hp = 5000;
+
+      // The structural guard itself (review round 1, Important 1). A
+      // `configurable` accessor on the priest's own material — not a
+      // `src/` change, and not a new stub: `sp.material.map` is a plain,
+      // writable, configurable instance property (three's `SpriteMaterial`
+      // assigns it directly in its constructor), so redefining it here with
+      // a getter/setter that stores-and-forwards is safe. The getter always
+      // returns exactly what the setter last stored, so nothing that reads
+      // `material.map` afterward — three's own renderer included — can tell
+      // the difference; this was confirmed, not assumed (see the module
+      // doc comment's "Prove it" section).
+      //
+      // `performance.now()` here is `runTrace`'s own faked clock, read at
+      // the same instant (`fakeNow===t0`, before frame 1) its frame loop
+      // will start counting from — so `(performance.now()-t0)/dtMs`, at any
+      // later write, reproduces the exact frame index `runTrace` itself
+      // would assign that tick.
+      mapWrites = [];
+      const dtMs = 1000 / 60;
+      const t0 = performance.now();
+      const material = priest.sp.material as unknown as { map: unknown };
+      let currentMap: unknown = material.map;
+      Object.defineProperty(material, "map", {
+        configurable: true,
+        get(): unknown { return currentMap; },
+        set(v: unknown): void {
+          currentMap = v;
+          mapWrites.push({ frame: Math.round((performance.now() - t0) / dtMs), phase: priest.phase });
+        },
+      });
     },
   });
+  // Written here, in beforeAll right after runTrace, matching the model
+  // trace.test.ts/combatTrace.test.ts both use — review round 1, Minor: an
+  // earlier version of this file wrote the fixture from inside the
+  // comparison test instead, which means a filtered regeneration run
+  // (vitest -t "some other test name") would silently write nothing.
+  if (WRITE) {
+    mkdirSync(FIXTURE_DIR, { recursive: true });
+    writeFileSync(FIXTURE, JSON.stringify(trace, null, 1) + "\n");
+  }
 }, 600_000);
 
 describe("the recorded run actually fights a priest boss", () => {
@@ -405,6 +473,41 @@ describe("the recorded run actually fights a priest boss", () => {
     expect(priest.formKey).toBe("Q2");
   });
 
+  it("the phase-3 form swap always lands inside a sampled frame — structural guard, review round 1", () => {
+    // See the module doc comment's "The form swap is pinned by exactly one
+    // sampled frame" section. `mapWrites` is every write to the priest's
+    // material.map, in order; the first one recorded with phase===3 is
+    // necessarily the form swap itself (`Boss.ts`'s phase transition sets
+    // `e.phase=3` and performs the swap in the same call, before any
+    // phase-3 walk-cycle write can exist), and the very next write after it
+    // is the walk cycle overwriting it. Whatever that half-open window is,
+    // a sampled frame (a multiple of EVERY) has to fall inside it, or this
+    // site's coverage is gone regardless of what the fixture comparison says.
+    const phase3Writes = mapWrites.filter((w) => w.phase === 3);
+    expect(phase3Writes.length, "the priest never reached phase 3 — nothing to check the window against").toBeGreaterThan(0);
+
+    const swap = phase3Writes[0]!;
+    const swapIdx = mapWrites.indexOf(swap);
+    const overwrite = mapWrites[swapIdx + 1];
+    expect(
+      overwrite,
+      "nothing ever overwrote the phase-3 form swap's material.map — the window is open-ended, " +
+      "which this test cannot check a sample against",
+    ).toBeDefined();
+
+    const lo = swap.frame, hi = overwrite!.frame;
+    let sampledFrameInWindow = -1;
+    for (let f = EVERY; f <= TOTAL_FRAMES; f += EVERY) {
+      if (f >= lo && f < hi) { sampledFrameInWindow = f; break; }
+    }
+    expect(
+      sampledFrameInWindow,
+      `the form swap's visible window is [${lo},${hi}) and no multiple of EVERY(${EVERY}) falls in ` +
+      "it — a retune of TOTAL_FRAMES/EVERY/the sweep/the seed has silently moved this site's " +
+      "coverage out of the sampled frames",
+    ).toBeGreaterThan(0);
+  });
+
   it("the weapon state machine left idle (NOT boss-specific — see the module doc comment)", () => {
     const wnames = new Set(trace.map((f) => f.hud.wname));
     expect(wnames.size).toBeGreaterThan(1);
@@ -415,8 +518,10 @@ describe("the recorded run actually fights a priest boss", () => {
 describe("the run matches the committed recording", () => {
   it("diverges from the fixture nowhere", () => {
     if (WRITE) {
-      mkdirSync(FIXTURE_DIR, { recursive: true });
-      writeFileSync(FIXTURE, JSON.stringify(trace, null, 1) + "\n");
+      // The write itself already happened in beforeAll, right after
+      // runTrace — see this file's Minor fix (review round 1) and
+      // combatTrace.test.ts's own model. Nothing left to do here but
+      // confirm it landed.
       expect(existsSync(FIXTURE)).toBe(true);
       return; // just wrote it; nothing to compare against
     }
