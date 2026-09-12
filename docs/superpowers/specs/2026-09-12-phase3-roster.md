@@ -211,8 +211,8 @@ not mean a rename.
 
 | direction.md | Forced behavior | Derives from | Also absorbs | What changes |
 |---|---|---|---|---|
-| **The Flock** | Crowd control — shotgun fodder | `z` (50 hp, the commonest letter: 13 of 73 non-boss tiles in kept levels) | — | Sprite and name; already named by literal at all three `spawnEnemy` summon call sites (the priest's flock summon and the challenge-plate event) alongside `f` — see §8, neither letter is a single-system dependency |
-| **The Fleet** | Target prioritization | `f` (35 hp, `dodge`, sp 5.2 — second only to `g`'s 6.0 among ground units) | — | Sprite and name — but also named by literal at the same three summon call sites as `z` (§8); a rename must repoint all three or the summon silently spawns nothing. No dead field is authored on it |
+| **The Flock** | Crowd control — shotgun fodder | `z` (50 hp, the commonest letter: 13 of 73 non-boss tiles in kept levels) | — | Sprite and name; named by literal at two of the three `spawnEnemy` summon call sites (the priest's phase-2 flock summon and the challenge-plate event) — the priest's phase-3 summon is an unconditional `f`, not a `z`/`f` choice — see §8, neither letter is a single-system dependency |
+| **The Fleet** | Target prioritization | `f` (35 hp, `dodge`, sp 5.2 — second only to `g`'s 6.0 among ground units) | — | Sprite and name — but also named by literal at all three `spawnEnemy` summon call sites, including the priest's phase-3 summon, where it is the unconditional fallback rather than a `z`/`f` choice (§8); a rename must repoint all three or the summon silently spawns nothing. No dead field is authored on it |
 | **The Hound** | Aim down | `g` (30 hp, `lunge`, wide-and-short at 1.25×0.8) | — | Sprite and name only |
 | **The Penitent** | Flank it or kick it | `m` (`plate:45`) | `k` (`shield`) | The two answers merge; see §7, this is the one merge that needs a dead field turned on |
 | **The Censer** | Keep moving — area denial | `t` (`toxic`, `range:12`) | — | Already the only enemy that leaves a lingering zone. The censer swing is new art over an existing mechanic |
@@ -396,11 +396,9 @@ Phase 3 ships the nine, and keeps the deleted letters alive as aliases pointing
 at their successor (`y`, `R`, `L`, `q` → The Suspended; `k` → The Penitent), so
 the existing grids still load.
 
-- **Costs:** a translation layer that exists only to be deleted, and which makes
-  the level tables lie about what they contain for a whole phase. It also hides
-  the balance change instead of surfacing it: five distinct fliers silently
-  becoming five copies of one flier is a real difference in how level 3 plays,
-  and an alias makes it invisible.
+- **Costs:** a translation layer that exists only to be deleted, leaving the
+  level tables naming types they no longer contain. Five fliers becoming one
+  is a real change in how level 3 plays, and the alias does not surface it.
 - **Buys:** the game is playable at every commit, and the two phases stay
   independently reviewable.
 
