@@ -54,7 +54,7 @@ const PLACED = new Set(
  * or an identifier with no simple same-file assignment — fails the test
  * outright rather than being silently skipped.
  *
- * The known remaining gap: the same-file identifier lookup is a plain text
+ * The known remaining gaps: the same-file identifier lookup is a plain text
  * search, not scope-aware. If a hoisted letter variable's name were reused
  * with a different value in another function in the same file, the lookup
  * could resolve the wrong one — and if that wrong value happened to already
@@ -62,7 +62,10 @@ const PLACED = new Set(
  * happened (today nothing hoists a summon letter into a variable at all),
  * and the fallback for anything it can't resolve is still to fail loudly,
  * not to pass silently — but this one path is not airtight, and is recorded
- * here rather than claimed away.
+ * here rather than claimed away. A second gap: `spawnEnemy` called through
+ * an alias (e.g., `const se = spawnEnemy; se(...)` or `obj["spawnEnemy"](...)`)
+ * is invisible to the scan, which matches only the literal substring `spawnEnemy(`.
+ * Today nothing in `src/` does this, but the scan cannot establish it never will.
  */
 const SUMMONED = new Set(["z", "f"]);
 
