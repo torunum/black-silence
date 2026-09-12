@@ -303,6 +303,22 @@ import { MONOLOGUE } from "../../src/content/monologue";
  *   script, the same way `Behaviors.ts`'s Slaughtaur and Ettin branches
  *   are (see the Plan 0F Task 5 section above).
  *
+ * ### Correction, Phase 3 Part D: all four of the above are now covered —
+ * ### by a third fixture, not by this one
+ *
+ * Everything in the two lists above is still true *of this file*, and this
+ * file should still not be read as covering any of the four. But the
+ * parenthetical claim that the `Boss.ts` pair is unreachable "in *both*
+ * fixtures regardless of script" was too strong: it was a statement about
+ * the two fixtures that existed, dressed as a statement about the game.
+ * Level 2 has a `priest` boss, and `tests/integration/bossTrace.test.ts`
+ * now fights it through all three phases. That fixture reaches **all four**
+ * of the sites listed above, each confirmed by mutation rather than
+ * argument — including `Behaviors.ts`'s death collapse and `Death.ts`'s
+ * headless corpse, which that run's kills do produce where this run's one
+ * kill does not. Every `material.map=` site in `src/` is covered by at
+ * least one committed trace as of that commit.
+ *
  * The nine sites, and what the committed fixtures actually show:
  * walk cycle **covered** (`j.a`/`j.b` both appear), attack pose **covered**
  * (`z.atk`, `g.atk`, demonstrated by mutation above), hurt/sever frame in

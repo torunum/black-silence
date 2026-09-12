@@ -78,6 +78,44 @@ export interface TraceOptions {
    * N's row without needing to match its text.
    */
   level?: number;
+  /**
+   * Run once after the level has loaded and before frame 1, to seed state
+   * that `loadLevel` itself writes.
+   *
+   * ## Why this exists, and why `beforeAll` is not enough
+   *
+   * `tests/integration/combatTrace.test.ts` establishes the seeding
+   * technique this option extends: assign a live exported state field in
+   * `beforeAll`, before `runTrace` boots the game, to reach a branch the
+   * harness's own scripted input cannot otherwise produce (there,
+   * `S.armor=50`, which makes `damagePlayer`'s armour-absorb arm reachable
+   * at all). That works for `S.armor` for one specific reason —
+   * **`loadLevel` never touches it.** `S.ammo`, `S.weapons`, `S.mag` and
+   * `S.cur` are in the same position and can still be seeded that way.
+   *
+   * `player.px`/`player.pz` are **not**. `loadLevel`
+   * (`src/world/LevelLoader.ts`) writes them from the grid's `"P"` cell
+   * during its scan — `if(ch==="P"){player.px=wx;player.pz=wz;}` — and
+   * `loadLevel` runs *inside* `runTrace`, after the chapter-select click
+   * below. A `beforeAll` assignment to the player's position is therefore
+   * overwritten before frame 1 and has no effect; measured, not assumed
+   * (see `tests/integration/bossTrace.test.ts`'s header for the
+   * measurement). The same is true of anything else `loadLevel` resets
+   * (`S.hp`, `player.vx/vy/vz`, `input.yaw`) and of everything that does not
+   * exist until `loadLevel` has run at all — `world.enemies`,
+   * `world.bossRef`.
+   *
+   * So this hook is the *post-load* half of the same technique, not a new
+   * one, and it is deliberately a plain callback rather than a set of
+   * named knobs: the harness should not grow an opinion about which state a
+   * fixture wants to seed.
+   *
+   * **Default `undefined` — nothing is called, and nothing about a run that
+   * does not pass it changes.** `trace.test.ts` and `combatTrace.test.ts`
+   * both omit it, which is why adding this option left both of their
+   * committed fixtures byte-identical (verified, not assumed).
+   */
+  afterLoad?: () => void;
 }
 
 export interface TraceFrame {
@@ -594,6 +632,12 @@ export async function runTrace(o: TraceOptions): Promise<TraceFrame[]> {
       }
       row.click();
     }
+
+    // After the click — so `loadLevel` has already run, `world.enemies` is
+    // populated and nothing this seeds will be overwritten — and before the
+    // first frame, so the run starts from the seeded state. See
+    // `TraceOptions.afterLoad`.
+    o.afterLoad?.();
 
     // After the click, never before: both menu paths end in `startGame`
     // (src/core/Boot.ts), which is where `buildTextures`/`buildSprites`/
