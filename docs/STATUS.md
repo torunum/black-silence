@@ -11,15 +11,17 @@ level-coupling decision left to the project owner) is what a Phase 3 plan
 should be built from, and nothing on the file→direction.md→plan path above
 names it.
 
-Last updated: 2026-09-12, after Phase 3 Part C. Phase 0 finished the port,
+Last updated: 2026-09-13, after Phase 3 Part D. Phase 0 finished the port,
 Phase 1 gave the game sound and settings, Phase 2 Part A fixed the two shipped
 bugs whose correctness is structural and instanced the level geometry, Phase 3
 Part A gave the enemy one shape — closing KNOWN-13 and, in doing so, finding
 KNOWN-15, the biggest live bug in the game — Phase 3 Part B closed the
 coverage hole Part A's own postmortem found: the traces could not see which
-sprite frame an enemy was showing — and Phase 3 Part C measured the roster
+sprite frame an enemy was showing — Phase 3 Part C measured the roster
 cut's real cost against the real level grids, found and pinned KNOWN-18, and
-wrote the Phase 3 spec named above.
+wrote the Phase 3 spec named above, and Phase 3 Part D recorded the priest
+boss fight before three brains replace it, closing the last four of Part B's
+honest-gaps list.
 **Phase 2 Part B is blocked on a human running the game** — see the browser
 note under Environment gotchas. **KNOWN-15 is blocked on the same human**, for
 the same reason: it is a balance change nobody here can look at.
@@ -589,20 +591,30 @@ footprint of **0** frames differing in `camera`, **0** in `hud`, **0** in
 `scene.digest`. That is the old digest's exact blind spot, measured rather
 than assumed: nothing the old digest recorded moved at all.
 
-**The honest gaps.** Nine `material.map=` assignment sites exist in `src/`,
-across `Behaviors.ts` (four), `Boss.ts` (two), `Damage.ts`, `Death.ts` and
-`Interact.ts` (one each). Five are reached by the two committed fixtures; four
-are not, and no amount of re-running changes that:
+**The honest gaps — all four closed by Phase 3 Part D.** Nine `material.map=`
+assignment sites exist in `src/`, across `Behaviors.ts` (four), `Boss.ts`
+(two), `Damage.ts`, `Death.ts` and `Interact.ts` (one each). Five were reached
+by the two committed fixtures when Part B shipped. The four listed here as
+unreachable were:
 
-- `Behaviors.ts`'s two-stage death collapse and `Death.ts`'s headless corpse
-  are each gated behind a kind of kill this run's one enemy death does not
-  produce (it severs a limb instead), confirmed by mutation — rewriting both
-  sites at once leaves both trace files green.
-- Both of `Boss.ts`'s sites live inside `priestThink`, which only runs for an
+- `Behaviors.ts`'s two-stage death collapse and `Death.ts`'s headless corpse,
+  each gated behind a kind of kill level 1's one enemy death does not produce
+  (it severs a limb instead), confirmed by mutation — rewriting both sites at
+  once left both trace files green.
+- Both of `Boss.ts`'s sites, inside `priestThink`, which only runs for an
   enemy with `priest:true`. Level 1's only boss, `U`, has `boss:true` but no
-  `priest` flag — the six `priest:true` defs are all elsewhere in the roster —
-  so this is a structural gap in both fixtures regardless of script, not
-  something a longer run would fix.
+  `priest` flag.
+
+**All four are now reached**, by the third fixture Phase 3 Part D added
+(`tests/integration/bossTrace.test.ts`, level 2, THE CORRUPTED PRIEST) — each
+confirmed by mutation against that fixture, not by argument. The two claims
+above that were about the *fixtures* rather than the code were therefore
+correct when written and are now superseded; only the narrower reading — that
+level 1 and that script cannot reach them — still holds. Part B's own wording
+was too strong in one place: a structural gap in the two fixtures that existed
+is not a structural gap "regardless of script", since a different level has a
+priest. Every `material.map=` site in `src/` is now covered by at least one
+committed trace.
 
 ### Task 2 — `noUnusedLocals`
 
@@ -657,6 +669,65 @@ leaves the choice to the project owner, who has not yet played the game.
 file-size gate reports 90 files checked against the 400-line limit; `madge
 --circular` reports `Processed 90 files` with no circular dependency.
 
+## Phase 3 Part D status
+
+Branch `phase-3d-boss-trace`. Plan dated 2026-09-13. Ledger:
+`.superpowers/sdd/2026-09-13-phase3d-boss-trace/progress.md`.
+
+One task: record `priestThink` before Phase 3 replaces it. `priestThink`
+(`src/enemies/Boss.ts`) was the least-observed code in the game — the prologue
+trace has no enemies and level 1's only boss carries `boss:true` without
+`priest`, so **neither committed fixture ran a single line of it**, which is
+why Part B's honest-gaps list named two of its `material.map=` sites as
+unreachable. `tests/integration/bossTrace.test.ts` plays level 2 and fights
+THE CORRUPTED PRIEST through all three phases: 5400 frames, 270 recorded, a
+third committed fixture (`trace-level2-boss.json`).
+
+Reaching a priest boss took seeding, and the seeding took one harness change.
+`combatTrace`'s `beforeAll` technique works for the nail cannon this run is
+given (`loadLevel` never touches the inventory) but **cannot** place the
+player: `loadLevel` writes `player.px`/`player.pz` from the grid's `"P"` cell,
+and it runs *inside* `runTrace` — measured, a `beforeAll` assignment of
+(43,43) reads back as (25,5). `runTrace` therefore grew an optional
+`afterLoad` callback, defaulted off, which is what the boss trace uses to put
+the player beside the priest and deepen `S.hp`. Both existing fixtures are
+byte-identical (checksummed, not assumed). No `src/` change.
+
+What the new fixture bought, all by mutation rather than argument: **all four**
+of Part B's remaining blind `material.map=` sites are now covered — `Boss.ts`'s
+phase-3 form swap (frame 4900) and boss walk cycle (20 of 270 frames, both the
+`Q` and `Q2` forms), plus `Behaviors.ts`'s two-stage death collapse (frame 800)
+and `Death.ts`'s headless corpse (frame 240), the last two because this run's
+kills include kinds level 1's single kill does not produce. Every
+`material.map=` site in `src/` is now reached by at least one committed trace.
+The form swap is the fragile one and the file says so at length: its mutation
+moves exactly **one** sampled frame, because the walk cycle overwrites the same
+`material.map` within 15 frames. Review round 1 turned that from a paragraph
+into a structural guard: a `configurable` accessor records every write to the
+priest's `material.map`, and a named test asserts a sampled frame always falls
+between the form swap's write and the walk cycle's next one, so a retune that
+drifts the two out of alignment now fails that named test rather than relying
+on someone re-running the mutation by hand.
+
+The fixture was regenerated three times and byte-compared: identical
+(`md5 dc856a82…`) on all three, plus a fourth comparison run.
+
+Also found: **KNOWN-19**, a latent race in seven integration files that boot
+the real game on the real clock and leave `loadLevel`'s 1400ms timer armed past
+teardown. The new file is long enough to keep the worker pool alive for it, so
+a suite green for five plans reported an unhandled error once and not the next
+run. All seven — `schedulerWiring.test.ts`, `wiring.test.ts`,
+`gpuDisposeWiring.test.ts`, `positionalCallers.test.ts`, `contextWiring.test.ts`,
+`musicCancellationWiring.test.ts` and `timerCancellationWiring.test.ts` — are
+fixed, and `docs/known-issues.md` marks the row **closed**.
+`renderWidthBootWiring.test.ts` was on the original hand-counted list (which
+said five) but is a verified false positive: it imports `src/main` but never
+calls `loadLevel`/`startGame`/a menu click, so `startGame` never runs there.
+
+`npm test`: **59 files / 488 tests**, all green; `tsc --noEmit` clean; the
+file-size gate reports 90 files checked against the 400-line limit; `madge
+--circular` reports `Processed 90 files` with no circular dependency.
+
 ## How fidelity is guarded
 
 Five mechanisms, and they are **not** interchangeable:
@@ -697,6 +768,20 @@ Five mechanisms, and they are **not** interchangeable:
   casings and muzzle flashes live on the 2D overlay rather than the 3D scene,
   and decals are recycled via `shift()` rather than removed, so the zero-enemy
   prologue never produces a single scene-count decrease across 900 frames.
+- **`tests/integration/bossTrace.test.ts`** — the third recording, added by
+  Phase 3 Part D for the gap the other two leave: neither runs `priestThink`
+  (`src/enemies/Boss.ts`) at all, because the prologue has no enemies and level
+  1's only boss carries `boss:true` without `priest`. It plays **level 2** and
+  fights THE CORRUPTED PRIEST through all three of its phases over 5400 frames
+  (270 recorded), and it is what closed the last four of Phase 3 Part B's
+  honest-gaps list. Its fixture is a **pre-rewrite** recording under the same
+  rule as the other two, with one difference that is the whole point of it:
+  **Phase 3 replacing `priestThink` with three distinct boss brains is expected
+  to move it**, and that regeneration — done properly, with a field-by-field
+  account of the diff — is the reason it exists. The file's header carries that
+  instruction in full, along with what it seeds (a nail cannon, the player's
+  position beside the boss, a deep health pool) and what a seeded start
+  therefore does and does not prove.
 
 KNOWN-5 in `docs/known-issues.md` documents the recorder in full, including an
 honest list of what it still cannot reach.

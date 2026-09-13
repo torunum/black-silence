@@ -1,0 +1,7022 @@
+[
+ {
+  "frame": 20,
+  "camera": [
+   43,
+   1,
+   43,
+   0,
+   3.141593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH5000",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "LEVEL 2 — THE ABANDONED CHURCH",
+   "subt": "ADEM“Oh good, this one screams. Everybody needs a hobby.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 163,
+   "digest": "5c655041"
+  }
+ },
+ {
+  "frame": 40,
+  "camera": [
+   43,
+   1,
+   43,
+   0,
+   3.141593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH5000",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "LEVEL 2 — THE ABANDONED CHURCH",
+   "subt": "ADEM“Oh good, this one screams. Everybody needs a hobby.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 163,
+   "digest": "4ac720f6"
+  }
+ },
+ {
+  "frame": 60,
+  "camera": [
+   43,
+   1,
+   43,
+   0,
+   3.141593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH5000",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "LEVEL 2 — THE ABANDONED CHURCH",
+   "subt": "ADEM“Oh good, this one screams. Everybody needs a hobby.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 163,
+   "digest": "8a5d9588"
+  }
+ },
+ {
+  "frame": 80,
+  "camera": [
+   43,
+   1,
+   43,
+   0,
+   3.141593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH5000",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "LEVEL 2 — THE ABANDONED CHURCH",
+   "subt": "ADEM“Oh good, this one screams. Everybody needs a hobby.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 163,
+   "digest": "6b34ba16"
+  }
+ },
+ {
+  "frame": 100,
+  "camera": [
+   43,
+   1,
+   43,
+   0,
+   3.141593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH5000",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "LEVEL 2 — THE ABANDONED CHURCH",
+   "subt": "ADEM“A church. Great. I'm sure everyone inside is super normal.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 163,
+   "digest": "4962eea6"
+  }
+ },
+ {
+  "frame": 120,
+  "camera": [
+   43,
+   1,
+   43,
+   0,
+   3.141593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH5000",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "LEVEL 2 — THE ABANDONED CHURCH",
+   "subt": "ADEM“A church. Great. I'm sure everyone inside is super normal.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 163,
+   "digest": "a780b148"
+  }
+ },
+ {
+  "frame": 140,
+  "camera": [
+   43,
+   1,
+   43,
+   0,
+   3.141593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH5000",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "LEVEL 2 — THE ABANDONED CHURCH",
+   "subt": "ADEM“A church. Great. I'm sure everyone inside is super normal.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 163,
+   "digest": "e00fa660"
+  }
+ },
+ {
+  "frame": 160,
+  "camera": [
+   43,
+   1,
+   43,
+   0,
+   3.141593,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH5000",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "LEVEL 2 — THE ABANDONED CHURCH",
+   "subt": "ADEM“A church. Great. I'm sure everyone inside is super normal.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "",
+   "keys": ""
+  },
+  "scene": {
+   "count": 163,
+   "digest": "efdeb394"
+  }
+ },
+ {
+  "frame": 180,
+  "camera": [
+   43,
+   1,
+   43,
+   0.112058,
+   1.373426,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH5000",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "ADEM“This priest definitely took his Sunday sermons too seriously.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 1",
+   "keys": ""
+  },
+  "scene": {
+   "count": 163,
+   "digest": "00d78091"
+  }
+ },
+ {
+  "frame": 200,
+  "camera": [
+   43,
+   1,
+   43,
+   0.112058,
+   1.373426,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH5000",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "ADEM“This priest definitely took his Sunday sermons too seriously.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 1",
+   "keys": ""
+  },
+  "scene": {
+   "count": 163,
+   "digest": "f2e5a22b"
+  }
+ },
+ {
+  "frame": 220,
+  "camera": [
+   43,
+   1,
+   43,
+   0.112058,
+   1.373426,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH5000",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "ADEM“This priest definitely took his Sunday sermons too seriously.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 1",
+   "keys": ""
+  },
+  "scene": {
+   "count": 163,
+   "digest": "d6ad0c42"
+  }
+ },
+ {
+  "frame": 240,
+  "camera": [
+   43.000939,
+   0.999237,
+   43,
+   0.12515,
+   1.373426,
+   0.000768,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH5000",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "DECAPITATED",
+   "subt": "ADEM“This priest definitely took his Sunday sermons too seriously.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 1",
+   "keys": ""
+  },
+  "scene": {
+   "count": 168,
+   "digest": "38b65f52"
+  }
+ },
+ {
+  "frame": 260,
+  "camera": [
+   42.999996,
+   1.000016,
+   43,
+   0.127927,
+   1.373426,
+   -0.000026,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH5000",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "DECAPITATED",
+   "subt": "ADEM“This priest definitely took his Sunday sermons too seriously.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 1",
+   "keys": ""
+  },
+  "scene": {
+   "count": 170,
+   "digest": "7bbe8b30"
+  }
+ },
+ {
+  "frame": 280,
+  "camera": [
+   43,
+   1,
+   43,
+   0.124254,
+   1.373426,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH5000",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "DECAPITATED",
+   "subt": "ADEM“This priest definitely took his Sunday sermons too seriously.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 1",
+   "keys": ""
+  },
+  "scene": {
+   "count": 184,
+   "digest": "b935a87c"
+  }
+ },
+ {
+  "frame": 300,
+  "camera": [
+   43,
+   1,
+   43,
+   0.125998,
+   1.373426,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH5000",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "DECAPITATED",
+   "subt": "ADEM“This priest definitely took his Sunday sermons too seriously.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 1",
+   "keys": ""
+  },
+  "scene": {
+   "count": 194,
+   "digest": "c621c7e8"
+  }
+ },
+ {
+  "frame": 320,
+  "camera": [
+   43.006223,
+   1.004825,
+   43,
+   0.127986,
+   1.373426,
+   0.004689,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4986",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "DECAPITATED",
+   "subt": "ADEM“This priest definitely took his Sunday sermons too seriously.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 1",
+   "keys": ""
+  },
+  "scene": {
+   "count": 198,
+   "digest": "1125d023"
+  }
+ },
+ {
+  "frame": 340,
+  "camera": [
+   43.000103,
+   0.999604,
+   43,
+   0.124258,
+   1.373426,
+   -0.000356,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4986",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "DECAPITATED",
+   "subt": "ADEM“This priest definitely took his Sunday sermons too seriously.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 1",
+   "keys": ""
+  },
+  "scene": {
+   "count": 201,
+   "digest": "f18ddaa1"
+  }
+ },
+ {
+  "frame": 360,
+  "camera": [
+   43,
+   1,
+   43,
+   0.125998,
+   1.373426,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4986",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "DECAPITATED",
+   "subt": "ADEM“This priest definitely took his Sunday sermons too seriously.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 1",
+   "keys": ""
+  },
+  "scene": {
+   "count": 204,
+   "digest": "5acdf003"
+  }
+ },
+ {
+  "frame": 380,
+  "camera": [
+   42.998308,
+   0.999468,
+   43,
+   0.115274,
+   1.373426,
+   -0.003122,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4972",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "ADEM“This priest definitely took his Sunday sermons too seriously.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 1",
+   "keys": ""
+  },
+  "scene": {
+   "count": 206,
+   "digest": "b764fbef"
+  }
+ },
+ {
+  "frame": 400,
+  "camera": [
+   43,
+   1,
+   43,
+   0.112282,
+   1.373426,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4972",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "ADEM“This priest definitely took his Sunday sermons too seriously.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 1",
+   "keys": ""
+  },
+  "scene": {
+   "count": 211,
+   "digest": "4794af50"
+  }
+ },
+ {
+  "frame": 420,
+  "camera": [
+   43,
+   1,
+   43,
+   0.112074,
+   1.373426,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4972",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 1",
+   "keys": ""
+  },
+  "scene": {
+   "count": 213,
+   "digest": "1a3750fc"
+  }
+ },
+ {
+  "frame": 440,
+  "camera": [
+   42.996426,
+   0.996287,
+   43,
+   0.11206,
+   1.373426,
+   0.002844,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4943",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 1",
+   "keys": ""
+  },
+  "scene": {
+   "count": 212,
+   "digest": "60c8b7a1"
+  }
+ },
+ {
+  "frame": 460,
+  "camera": [
+   42.999936,
+   1.00006,
+   43,
+   0.112059,
+   1.373426,
+   -0.000059,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4917",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 1",
+   "keys": ""
+  },
+  "scene": {
+   "count": 212,
+   "digest": "40d10eb9"
+  }
+ },
+ {
+  "frame": 480,
+  "camera": [
+   43,
+   1,
+   43,
+   0.112058,
+   1.373426,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4917",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 1",
+   "keys": ""
+  },
+  "scene": {
+   "count": 212,
+   "digest": "e00c74a1"
+  }
+ },
+ {
+  "frame": 500,
+  "camera": [
+   43.004949,
+   0.998151,
+   43,
+   0.12477,
+   1.373426,
+   -0.00353,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4903",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 1",
+   "keys": ""
+  },
+  "scene": {
+   "count": 212,
+   "digest": "85f810bf"
+  }
+ },
+ {
+  "frame": 520,
+  "camera": [
+   42.999736,
+   1.000334,
+   43,
+   0.124034,
+   1.373426,
+   0.000261,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4903",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 1",
+   "keys": ""
+  },
+  "scene": {
+   "count": 212,
+   "digest": "5cb744ed"
+  }
+ },
+ {
+  "frame": 540,
+  "camera": [
+   42.997777,
+   0.997903,
+   43,
+   0.124642,
+   1.373426,
+   -0.001284,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4903",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "ADEM“Teleporting now? That's just rude.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 219,
+   "digest": "f5f99086"
+  }
+ },
+ {
+  "frame": 560,
+  "camera": [
+   43.000013,
+   1.000022,
+   43,
+   0.127892,
+   1.373426,
+   0.000016,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4903",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "ADEM“Teleporting now? That's just rude.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 231,
+   "digest": "7d3a4053"
+  }
+ },
+ {
+  "frame": 580,
+  "camera": [
+   43.000822,
+   0.999754,
+   43,
+   0.124251,
+   1.373426,
+   -0.000392,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4889",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "ADEM“Teleporting now? That's just rude.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 238,
+   "digest": "e40005e6"
+  }
+ },
+ {
+  "frame": 600,
+  "camera": [
+   43,
+   1,
+   43,
+   0.125997,
+   1.373426,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4889",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "ADEM“Teleporting now? That's just rude.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 244,
+   "digest": "4c7971d4"
+  }
+ },
+ {
+  "frame": 620,
+  "camera": [
+   42.999968,
+   1.000021,
+   43,
+   0.127986,
+   1.326883,
+   -0.000013,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4889",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "ADEM“Teleporting now? That's just rude.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 251,
+   "digest": "615dd5b3"
+  }
+ },
+ {
+  "frame": 640,
+  "camera": [
+   43.000045,
+   0.999283,
+   43,
+   0.124258,
+   1.094173,
+   0.000315,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4875",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "ADEM“Teleporting now? That's just rude.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 267,
+   "digest": "3fd68ae6"
+  }
+ },
+ {
+  "frame": 660,
+  "camera": [
+   43,
+   1,
+   43,
+   0.113945,
+   0.861462,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4875",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "ADEM“Teleporting now? That's just rude.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 270,
+   "digest": "2290ae82"
+  }
+ },
+ {
+  "frame": 680,
+  "camera": [
+   43.000443,
+   0.99867,
+   43,
+   0.11219,
+   0.628752,
+   0.0011,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4860",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "ADEM“Teleporting now? That's just rude.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 270,
+   "digest": "8f79ad72"
+  }
+ },
+ {
+  "frame": 700,
+  "camera": [
+   42.994237,
+   0.999242,
+   43,
+   0.112068,
+   0.396041,
+   -0.001584,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4834",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "ADEM“Teleporting now? That's just rude.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 270,
+   "digest": "10a055e7"
+  }
+ },
+ {
+  "frame": 720,
+  "camera": [
+   42.999888,
+   1.000221,
+   43,
+   0.112059,
+   0.163331,
+   0.000091,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4822",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "ADEM“Teleporting now? That's just rude.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 266,
+   "digest": "37ec150e"
+  }
+ },
+ {
+  "frame": 740,
+  "camera": [
+   43,
+   1,
+   43,
+   0.112058,
+   -0.06938,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4822",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "ADEM“Teleporting now? That's just rude.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 266,
+   "digest": "d7be16b0"
+  }
+ },
+ {
+  "frame": 760,
+  "camera": [
+   43.000584,
+   1.000988,
+   43,
+   0.112058,
+   -0.302091,
+   0.000219,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4796",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "ADEM“Teleporting now? That's just rude.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 266,
+   "digest": "a971ef37"
+  }
+ },
+ {
+  "frame": 780,
+  "camera": [
+   42.998641,
+   0.999296,
+   43,
+   0.124111,
+   -0.534801,
+   -0.000217,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4784",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "ADEM“Teleporting now? That's just rude.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 271,
+   "digest": "029b7515"
+  }
+ },
+ {
+  "frame": 800,
+  "camera": [
+   42.99998,
+   0.999999,
+   43,
+   0.127855,
+   -0.767512,
+   0.000003,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4784",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 279,
+   "digest": "32e3bcf4"
+  }
+ },
+ {
+  "frame": 820,
+  "camera": [
+   43.000643,
+   1.000441,
+   43,
+   0.124249,
+   -1.000222,
+   -0.000058,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4770",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 296,
+   "digest": "057772d2"
+  }
+ },
+ {
+  "frame": 840,
+  "camera": [
+   43,
+   1,
+   43,
+   0.125997,
+   -1.232933,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4770",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 305,
+   "digest": "6e53dd22"
+  }
+ },
+ {
+  "frame": 860,
+  "camera": [
+   42.998843,
+   1.001489,
+   43,
+   0.127986,
+   -1.465643,
+   0.000003,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4755",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 311,
+   "digest": "0e20bd6c"
+  }
+ },
+ {
+  "frame": 880,
+  "camera": [
+   42.997026,
+   0.998187,
+   43,
+   0.124258,
+   -1.698354,
+   -0.000128,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4741",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 314,
+   "digest": "77cca8b8"
+  }
+ },
+ {
+  "frame": 900,
+  "camera": [
+   43.000102,
+   1.000009,
+   43,
+   0.125998,
+   -1.931065,
+   0.000015,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4741",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "ARMOR SHATTERED",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 316,
+   "digest": "f56eeeb5"
+  }
+ },
+ {
+  "frame": 920,
+  "camera": [
+   43,
+   1,
+   43,
+   0.119215,
+   -2.163775,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4741",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "ARMOR SHATTERED",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 321,
+   "digest": "cdc65463"
+  }
+ },
+ {
+  "frame": 940,
+  "camera": [
+   43,
+   1,
+   43,
+   0.112556,
+   -2.396486,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4741",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "ARMOR SHATTERED",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 325,
+   "digest": "881264fe"
+  }
+ },
+ {
+  "frame": 960,
+  "camera": [
+   43,
+   1,
+   43,
+   0.112093,
+   -2.629196,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4741",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "ARMOR SHATTERED",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 325,
+   "digest": "43321647"
+  }
+ },
+ {
+  "frame": 980,
+  "camera": [
+   43,
+   1,
+   43,
+   0.112061,
+   -2.861907,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4741",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "ARMOR SHATTERED",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 330,
+   "digest": "13e4c646"
+  }
+ },
+ {
+  "frame": 1000,
+  "camera": [
+   43,
+   1,
+   43,
+   0.112059,
+   -3.094617,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4741",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "ARMOR SHATTERED",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 330,
+   "digest": "f3a5dbc8"
+  }
+ },
+ {
+  "frame": 1020,
+  "camera": [
+   43.000035,
+   1.000429,
+   43,
+   0.112058,
+   -3.327328,
+   0.00032,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4726",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 329,
+   "digest": "357fe9b7"
+  }
+ },
+ {
+  "frame": 1040,
+  "camera": [
+   42.999968,
+   0.999976,
+   43,
+   0.120829,
+   -3.560039,
+   -0.00001,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4726",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 331,
+   "digest": "3ca386d8"
+  }
+ },
+ {
+  "frame": 1060,
+  "camera": [
+   43,
+   1,
+   43,
+   0.123761,
+   -3.792749,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4726",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 334,
+   "digest": "307fda8e"
+  }
+ },
+ {
+  "frame": 1080,
+  "camera": [
+   43,
+   1,
+   43,
+   0.125963,
+   -4.02546,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4726",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 340,
+   "digest": "0c92cd98"
+  }
+ },
+ {
+  "frame": 1100,
+  "camera": [
+   43.000012,
+   1.000007,
+   43,
+   0.127984,
+   -4.25817,
+   0.000013,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4726",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 347,
+   "digest": "1c783864"
+  }
+ },
+ {
+  "frame": 1120,
+  "camera": [
+   43,
+   1,
+   43,
+   0.124258,
+   -4.490881,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4726",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 352,
+   "digest": "ecf320cd"
+  }
+ },
+ {
+  "frame": 1140,
+  "camera": [
+   43,
+   1,
+   43,
+   0.125998,
+   -4.723591,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4726",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 362,
+   "digest": "ddad20a2"
+  }
+ },
+ {
+  "frame": 1160,
+  "camera": [
+   43.000732,
+   1.000761,
+   43,
+   0.127986,
+   -4.956302,
+   -0.000443,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4726",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "DECAPITATED",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 380,
+   "digest": "952012ad"
+  }
+ },
+ {
+  "frame": 1180,
+  "camera": [
+   43.0001,
+   0.999897,
+   43,
+   0.124258,
+   -5.189012,
+   0.000077,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4726",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "DECAPITATED",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 391,
+   "digest": "52c67f79"
+  }
+ },
+ {
+  "frame": 1200,
+  "camera": [
+   42.998855,
+   1.000491,
+   43,
+   0.113945,
+   -5.421723,
+   -0.000899,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4711",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "DECAPITATED",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 411,
+   "digest": "83f57b41"
+  }
+ },
+ {
+  "frame": 1220,
+  "camera": [
+   43,
+   1,
+   43,
+   0.11219,
+   -5.654434,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4711",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "DECAPITATED",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 419,
+   "digest": "509164cf"
+  }
+ },
+ {
+  "frame": 1240,
+  "camera": [
+   43,
+   1,
+   43,
+   0.112068,
+   -5.887144,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4711",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "DECAPITATED",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 416,
+   "digest": "73413027"
+  }
+ },
+ {
+  "frame": 1260,
+  "camera": [
+   43,
+   1,
+   43,
+   0.112059,
+   -6.119855,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4711",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "DECAPITATED",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 417,
+   "digest": "50d15369"
+  }
+ },
+ {
+  "frame": 1280,
+  "camera": [
+   43,
+   1,
+   43,
+   0.112058,
+   -6.352565,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4711",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "DECAPITATED",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 417,
+   "digest": "464d4140"
+  }
+ },
+ {
+  "frame": 1300,
+  "camera": [
+   43,
+   1,
+   43,
+   0.112058,
+   -6.585276,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4711",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 417,
+   "digest": "d07f4731"
+  }
+ },
+ {
+  "frame": 1320,
+  "camera": [
+   43,
+   1,
+   43,
+   0.124111,
+   -6.817986,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4711",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 427,
+   "digest": "60bd4c5a"
+  }
+ },
+ {
+  "frame": 1340,
+  "camera": [
+   43.000032,
+   0.999981,
+   43,
+   0.127855,
+   -7.050697,
+   0.000023,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4711",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 434,
+   "digest": "b563f2d9"
+  }
+ },
+ {
+  "frame": 1360,
+  "camera": [
+   43,
+   1,
+   43,
+   0.124249,
+   -7.283408,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4711",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 441,
+   "digest": "b6f7a385"
+  }
+ },
+ {
+  "frame": 1380,
+  "camera": [
+   42.99871,
+   0.999007,
+   43,
+   0.125997,
+   -7.516118,
+   0.000946,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4696",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 446,
+   "digest": "9a23c353"
+  }
+ },
+ {
+  "frame": 1400,
+  "camera": [
+   42.999996,
+   1.000015,
+   43,
+   0.127986,
+   -7.748829,
+   -0.000024,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4696",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 451,
+   "digest": "46b5aa72"
+  }
+ },
+ {
+  "frame": 1420,
+  "camera": [
+   43,
+   1,
+   43,
+   0.124258,
+   -7.981539,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4696",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 456,
+   "digest": "1faa0b9d"
+  }
+ },
+ {
+  "frame": 1440,
+  "camera": [
+   43,
+   1,
+   43,
+   0.125998,
+   -8.21425,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4696",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 462,
+   "digest": "ad87e1d4"
+  }
+ },
+ {
+  "frame": 1460,
+  "camera": [
+   43,
+   1,
+   43,
+   0.119215,
+   -8.44696,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4696",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 467,
+   "digest": "1df9eb43"
+  }
+ },
+ {
+  "frame": 1480,
+  "camera": [
+   43,
+   1,
+   43,
+   0.112556,
+   -8.679671,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4696",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 467,
+   "digest": "e58564ec"
+  }
+ },
+ {
+  "frame": 1500,
+  "camera": [
+   43,
+   1,
+   43,
+   0.112093,
+   -8.912382,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4696",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 472,
+   "digest": "c6b712c7"
+  }
+ },
+ {
+  "frame": 1520,
+  "camera": [
+   43,
+   1,
+   43,
+   0.112061,
+   -9.145092,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4696",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 472,
+   "digest": "53617edf"
+  }
+ },
+ {
+  "frame": 1540,
+  "camera": [
+   42.999838,
+   0.999907,
+   43,
+   0.112059,
+   -9.377803,
+   0.000178,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4681",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 471,
+   "digest": "bcdf8caa"
+  }
+ },
+ {
+  "frame": 1560,
+  "camera": [
+   43,
+   1,
+   43,
+   0.112058,
+   -9.610513,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4681",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 471,
+   "digest": "08fc4cf8"
+  }
+ },
+ {
+  "frame": 1580,
+  "camera": [
+   43.00002,
+   0.999973,
+   43,
+   0.120829,
+   -9.843224,
+   0.000027,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4681",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 469,
+   "digest": "be1e5659"
+  }
+ },
+ {
+  "frame": 1600,
+  "camera": [
+   43,
+   1,
+   43,
+   0.123761,
+   -10.075934,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4681",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 476,
+   "digest": "9e3113a2"
+  }
+ },
+ {
+  "frame": 1620,
+  "camera": [
+   43,
+   1,
+   43,
+   0.125963,
+   -10.308645,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4681",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 486,
+   "digest": "2875f536"
+  }
+ },
+ {
+  "frame": 1640,
+  "camera": [
+   42.99997,
+   0.999988,
+   43,
+   0.127984,
+   -10.541356,
+   -0.000027,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4681",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 496,
+   "digest": "e9971fd7"
+  }
+ },
+ {
+  "frame": 1660,
+  "camera": [
+   43.002227,
+   1.00501,
+   43,
+   0.124258,
+   -10.774066,
+   0.00576,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4669",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "DECAPITATED",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 503,
+   "digest": "a8b018f8"
+  }
+ },
+ {
+  "frame": 1680,
+  "camera": [
+   43.001431,
+   0.998777,
+   43,
+   0.125998,
+   -11.006777,
+   -0.001218,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4669",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "DECAPITATED",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 514,
+   "digest": "22b86dbf"
+  }
+ },
+ {
+  "frame": 1700,
+  "camera": [
+   42.999995,
+   1.000021,
+   43,
+   0.127986,
+   -11.239487,
+   0.000027,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4669",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "DECAPITATED",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 522,
+   "digest": "0c4c0a69"
+  }
+ },
+ {
+  "frame": 1720,
+  "camera": [
+   42.986014,
+   0.996887,
+   43,
+   0.124258,
+   -11.472198,
+   -0.011432,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4642",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "DECAPITATED",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 522,
+   "digest": "f4ad8cbd"
+  }
+ },
+ {
+  "frame": 1740,
+  "camera": [
+   42.999997,
+   0.999959,
+   43,
+   0.113945,
+   -11.704908,
+   0.000121,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4642",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "DECAPITATED",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 523,
+   "digest": "41ced814"
+  }
+ },
+ {
+  "frame": 1760,
+  "camera": [
+   43,
+   1,
+   43,
+   0.11219,
+   -11.937619,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4642",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "DECAPITATED",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 519,
+   "digest": "a8c3a2c9"
+  }
+ },
+ {
+  "frame": 1780,
+  "camera": [
+   43.000435,
+   0.998131,
+   43,
+   0.112068,
+   -12.170329,
+   0.001768,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4630",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 519,
+   "digest": "2f1351d0"
+  }
+ },
+ {
+  "frame": 1800,
+  "camera": [
+   43,
+   1,
+   43,
+   0.112059,
+   -12.40304,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4630",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 519,
+   "digest": "3b2e56fa"
+  }
+ },
+ {
+  "frame": 1820,
+  "camera": [
+   43,
+   1,
+   43,
+   0.112058,
+   -12.635751,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4630",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 519,
+   "digest": "470d3f57"
+  }
+ },
+ {
+  "frame": 1840,
+  "camera": [
+   43.002013,
+   0.999566,
+   43,
+   0.112058,
+   -12.868461,
+   -0.001679,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4618",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 524,
+   "digest": "05d51332"
+  }
+ },
+ {
+  "frame": 1860,
+  "camera": [
+   43,
+   1,
+   43,
+   0.124111,
+   -13.101172,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4618",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 524,
+   "digest": "ae569ff0"
+  }
+ },
+ {
+  "frame": 1880,
+  "camera": [
+   42.995734,
+   0.995632,
+   43,
+   0.127855,
+   -13.333882,
+   -0.003781,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4603",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 523,
+   "digest": "11406f6a"
+  }
+ },
+ {
+  "frame": 1900,
+  "camera": [
+   42.994793,
+   1.005834,
+   43,
+   0.124249,
+   -13.566593,
+   0.005527,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4591",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 523,
+   "digest": "f066326c"
+  }
+ },
+ {
+  "frame": 1920,
+  "camera": [
+   43.001348,
+   0.999257,
+   43,
+   0.125997,
+   -13.799303,
+   -0.001319,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4591",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 519,
+   "digest": "9a2ff784"
+  }
+ },
+ {
+  "frame": 1940,
+  "camera": [
+   43.000025,
+   0.999996,
+   43,
+   0.127986,
+   -14.032014,
+   0.000021,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4591",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 519,
+   "digest": "17726722"
+  }
+ },
+ {
+  "frame": 1960,
+  "camera": [
+   42.998016,
+   1.001994,
+   43,
+   0.124258,
+   -14.264725,
+   -0.00226,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4579",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 519,
+   "digest": "4cb1944f"
+  }
+ },
+ {
+  "frame": 1980,
+  "camera": [
+   42.999811,
+   0.999825,
+   43,
+   0.125998,
+   -14.497435,
+   0.000132,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4579",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 519,
+   "digest": "628efcdf"
+  }
+ },
+ {
+  "frame": 2000,
+  "camera": [
+   43,
+   1,
+   43,
+   0.119215,
+   -14.730146,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4579",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 519,
+   "digest": "0e24455e"
+  }
+ },
+ {
+  "frame": 2020,
+  "camera": [
+   43.002121,
+   0.998976,
+   43,
+   0.112556,
+   -14.962856,
+   0.001266,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4567",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 524,
+   "digest": "26c0936d"
+  }
+ },
+ {
+  "frame": 2040,
+  "camera": [
+   43,
+   1,
+   43,
+   0.112093,
+   -15.195567,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4567",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 523,
+   "digest": "d8127e7a"
+  }
+ },
+ {
+  "frame": 2060,
+  "camera": [
+   43,
+   1,
+   43,
+   0.112061,
+   -15.428277,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4552",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 522,
+   "digest": "93bfed39"
+  }
+ },
+ {
+  "frame": 2080,
+  "camera": [
+   43.000157,
+   0.99823,
+   43,
+   0.112059,
+   -15.660988,
+   -0.001087,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4540",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 520,
+   "digest": "4a4e8230"
+  }
+ },
+ {
+  "frame": 2100,
+  "camera": [
+   43,
+   1,
+   43,
+   0.112058,
+   -15.893699,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4540",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 518,
+   "digest": "e3e3bc1a"
+  }
+ },
+ {
+  "frame": 2120,
+  "camera": [
+   43.000003,
+   0.999983,
+   43,
+   0.120829,
+   -16.126409,
+   -0.000014,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4540",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 523,
+   "digest": "cfe31786"
+  }
+ },
+ {
+  "frame": 2140,
+  "camera": [
+   42.996512,
+   1.000222,
+   43,
+   0.123761,
+   -16.35912,
+   0.001411,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4528",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 523,
+   "digest": "812eb97b"
+  }
+ },
+ {
+  "frame": 2160,
+  "camera": [
+   42.997867,
+   1.00329,
+   43,
+   0.125963,
+   -16.59183,
+   -0.00285,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4518",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 523,
+   "digest": "19447e46"
+  }
+ },
+ {
+  "frame": 2180,
+  "camera": [
+   43.001749,
+   0.998582,
+   43,
+   0.127984,
+   -16.824541,
+   0.000628,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4518",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 528,
+   "digest": "3f0ffe5f"
+  }
+ },
+ {
+  "frame": 2200,
+  "camera": [
+   43.001551,
+   1.002914,
+   43,
+   0.124258,
+   -17.057251,
+   -0.001078,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4506",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 528,
+   "digest": "58b0ee33"
+  }
+ },
+ {
+  "frame": 2220,
+  "camera": [
+   42.977568,
+   0.984589,
+   43,
+   0.125998,
+   -17.289962,
+   0.00709,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4481",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 529,
+   "digest": "a7ad2faf"
+  }
+ },
+ {
+  "frame": 2240,
+  "camera": [
+   42.992014,
+   1.002016,
+   43,
+   0.127986,
+   -17.522673,
+   -0.003252,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4481",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 532,
+   "digest": "0ac12020"
+  }
+ },
+ {
+  "frame": 2260,
+  "camera": [
+   43.013399,
+   1.006143,
+   43,
+   0.124258,
+   -17.755383,
+   0.003637,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4469",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 529,
+   "digest": "29d38d7c"
+  }
+ },
+ {
+  "frame": 2280,
+  "camera": [
+   43.007235,
+   0.992765,
+   43,
+   0.113945,
+   -17.988094,
+   -0.001733,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4459",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 529,
+   "digest": "b9cc00ff"
+  }
+ },
+ {
+  "frame": 2300,
+  "camera": [
+   43,
+   1,
+   43,
+   0.11219,
+   -18.220804,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4459",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 529,
+   "digest": "7522b7ea"
+  }
+ },
+ {
+  "frame": 2320,
+  "camera": [
+   42.998145,
+   0.998549,
+   43,
+   0.112068,
+   -18.453515,
+   -0.000233,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4447",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 529,
+   "digest": "8fcb9770"
+  }
+ },
+ {
+  "frame": 2340,
+  "camera": [
+   43,
+   1,
+   43,
+   0.112059,
+   -18.686225,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4437",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 529,
+   "digest": "6ff8a8d3"
+  }
+ },
+ {
+  "frame": 2360,
+  "camera": [
+   43,
+   1,
+   43,
+   0.112058,
+   -18.918936,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4437",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 534,
+   "digest": "223f363e"
+  }
+ },
+ {
+  "frame": 2380,
+  "camera": [
+   42.999261,
+   0.998498,
+   43,
+   0.112058,
+   -19.151646,
+   0.000002,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4425",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 534,
+   "digest": "2a7c19da"
+  }
+ },
+ {
+  "frame": 2400,
+  "camera": [
+   42.984874,
+   1.012999,
+   43,
+   0.124111,
+   -19.384357,
+   0.000521,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4400",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 533,
+   "digest": "88eed4ef"
+  }
+ },
+ {
+  "frame": 2420,
+  "camera": [
+   43.001031,
+   0.995532,
+   43,
+   0.127855,
+   -19.617068,
+   -0.000434,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4400",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 533,
+   "digest": "1cf36987"
+  }
+ },
+ {
+  "frame": 2440,
+  "camera": [
+   43.009257,
+   1.002905,
+   43,
+   0.124249,
+   -19.849778,
+   0.000947,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4388",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 529,
+   "digest": "e2a001f4"
+  }
+ },
+ {
+  "frame": 2460,
+  "camera": [
+   43.000192,
+   1.002873,
+   43,
+   0.125997,
+   -20.082489,
+   -0.002123,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4378",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 529,
+   "digest": "bd0bb830"
+  }
+ },
+ {
+  "frame": 2480,
+  "camera": [
+   42.985859,
+   0.991258,
+   43,
+   0.127986,
+   -20.315199,
+   0.002414,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4378",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "SCRAP SMG ASSEMBLED FROM THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 534,
+   "digest": "91dedf85"
+  }
+ },
+ {
+  "frame": 2500,
+  "camera": [
+   42.996596,
+   1.015174,
+   43,
+   0.124258,
+   -20.54791,
+   -0.003737,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4366",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "SCRAP SMG ASSEMBLED FROM THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 538,
+   "digest": "4db28eed"
+  }
+ },
+ {
+  "frame": 2520,
+  "camera": [
+   43.025934,
+   0.980039,
+   43,
+   0.125998,
+   -20.78062,
+   0.006373,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4356",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "SCRAP SMG ASSEMBLED FROM THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 551,
+   "digest": "7788a83a"
+  }
+ },
+ {
+  "frame": 2540,
+  "camera": [
+   43.003163,
+   1.003506,
+   43,
+   0.119215,
+   -21.013331,
+   -0.002417,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4356",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "SCRAP SMG ASSEMBLED FROM THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 554,
+   "digest": "23f02b79"
+  }
+ },
+ {
+  "frame": 2560,
+  "camera": [
+   42.997978,
+   1.000223,
+   43,
+   0.112556,
+   -21.246042,
+   0.000677,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4344",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "SCRAP SMG ASSEMBLED FROM THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 554,
+   "digest": "5e81db0a"
+  }
+ },
+ {
+  "frame": 2580,
+  "camera": [
+   42.997934,
+   0.997753,
+   43,
+   0.112093,
+   -21.478752,
+   -0.001353,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4319",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "SCRAP SMG ASSEMBLED FROM THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 553,
+   "digest": "5db380bd"
+  }
+ },
+ {
+  "frame": 2600,
+  "camera": [
+   43,
+   1,
+   43,
+   0.112061,
+   -21.711463,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4319",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 555,
+   "digest": "2008c508"
+  }
+ },
+ {
+  "frame": 2620,
+  "camera": [
+   43.001459,
+   0.998259,
+   43,
+   0.112059,
+   -21.944173,
+   -0.000887,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4307",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 554,
+   "digest": "b5ecc680"
+  }
+ },
+ {
+  "frame": 2640,
+  "camera": [
+   42.997161,
+   1.001885,
+   43,
+   0.112058,
+   -22.176884,
+   0.001725,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4287",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 555,
+   "digest": "b7e116f1"
+  }
+ },
+ {
+  "frame": 2660,
+  "camera": [
+   42.999975,
+   1,
+   43,
+   0.120829,
+   -22.409594,
+   -0.000015,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4287",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 555,
+   "digest": "ffc2cd90"
+  }
+ },
+ {
+  "frame": 2680,
+  "camera": [
+   43.011418,
+   0.990174,
+   43,
+   0.123761,
+   -22.642305,
+   0.009749,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4265",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "DECAPITATED",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 560,
+   "digest": "504b64d0"
+  }
+ },
+ {
+  "frame": 2700,
+  "camera": [
+   43.025354,
+   1.022884,
+   43,
+   0.125963,
+   -22.875016,
+   -0.01487,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4255",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "DECAPITATED",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 568,
+   "digest": "4505e8be"
+  }
+ },
+ {
+  "frame": 2720,
+  "camera": [
+   42.993449,
+   0.987296,
+   43,
+   0.127984,
+   -23.107726,
+   0.008496,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4255",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "DECAPITATED",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 568,
+   "digest": "bb441f33"
+  }
+ },
+ {
+  "frame": 2740,
+  "camera": [
+   42.952127,
+   1.027091,
+   43,
+   0.124258,
+   -23.340437,
+   -0.028603,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4218",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "DECAPITATED",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 567,
+   "digest": "cf78e51e"
+  }
+ },
+ {
+  "frame": 2760,
+  "camera": [
+   43.010189,
+   0.997054,
+   43,
+   0.125998,
+   -23.573147,
+   0.02392,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4208",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "DECAPITATED",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 567,
+   "digest": "4ab1df93"
+  }
+ },
+ {
+  "frame": 2780,
+  "camera": [
+   43.024237,
+   0.989812,
+   43,
+   0.127986,
+   -23.805858,
+   -0.01504,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4208",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "DECAPITATED",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 563,
+   "digest": "4dd74eff"
+  }
+ },
+ {
+  "frame": 2800,
+  "camera": [
+   42.995984,
+   1.038244,
+   43,
+   0.124258,
+   -24.038568,
+   0.032238,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4186",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 563,
+   "digest": "634bd52a"
+  }
+ },
+ {
+  "frame": 2820,
+  "camera": [
+   42.980278,
+   0.983788,
+   43,
+   0.113945,
+   -24.271279,
+   -0.012949,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4176",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 563,
+   "digest": "bede1d00"
+  }
+ },
+ {
+  "frame": 2840,
+  "camera": [
+   42.999991,
+   1.000057,
+   43,
+   0.11219,
+   -24.50399,
+   0.000065,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4176",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 563,
+   "digest": "5b0b16e0"
+  }
+ },
+ {
+  "frame": 2860,
+  "camera": [
+   43.002206,
+   0.999647,
+   43,
+   0.112068,
+   -24.7367,
+   -0.001562,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4154",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 563,
+   "digest": "cdef71b6"
+  }
+ },
+ {
+  "frame": 2880,
+  "camera": [
+   43,
+   1,
+   43,
+   0.112059,
+   -24.969411,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4144",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 568,
+   "digest": "6ad04704"
+  }
+ },
+ {
+  "frame": 2900,
+  "camera": [
+   43,
+   1,
+   43,
+   0.112058,
+   -25.202121,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4144",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 568,
+   "digest": "5107b570"
+  }
+ },
+ {
+  "frame": 2920,
+  "camera": [
+   42.994238,
+   0.988819,
+   43,
+   0.112058,
+   -25.434832,
+   0.010053,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4107",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 567,
+   "digest": "8a398b9e"
+  }
+ },
+ {
+  "frame": 2940,
+  "camera": [
+   43.01243,
+   1.009413,
+   43,
+   0.124111,
+   -25.667542,
+   -0.010983,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4097",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 567,
+   "digest": "3d164e7d"
+  }
+ },
+ {
+  "frame": 2960,
+  "camera": [
+   43.003265,
+   0.998639,
+   43,
+   0.127855,
+   -25.900253,
+   0.004376,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4097",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 562,
+   "digest": "a46c683d"
+  }
+ },
+ {
+  "frame": 2980,
+  "camera": [
+   42.979265,
+   0.992995,
+   43,
+   0.124249,
+   -26.132963,
+   -0.021423,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4075",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 561,
+   "digest": "68390add"
+  }
+ },
+ {
+  "frame": 3000,
+  "camera": [
+   42.973373,
+   1.024861,
+   43,
+   0.125997,
+   -26.365674,
+   0.029886,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4065",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 561,
+   "digest": "2ee94b9e"
+  }
+ },
+ {
+  "frame": 3020,
+  "camera": [
+   43.022523,
+   0.970636,
+   43,
+   0.127986,
+   -26.598385,
+   -0.028472,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4065",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "DECAPITATED",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 565,
+   "digest": "6eb0bd35"
+  }
+ },
+ {
+  "frame": 3040,
+  "camera": [
+   43.034253,
+   1.029301,
+   43,
+   0.124258,
+   -26.831095,
+   0.033965,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4053",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "DECAPITATED",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 570,
+   "digest": "3658a552"
+  }
+ },
+ {
+  "frame": 3060,
+  "camera": [
+   42.979672,
+   0.986795,
+   43,
+   0.125998,
+   -27.063806,
+   -0.033688,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4043",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "DECAPITATED",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 570,
+   "digest": "89d27ebc"
+  }
+ },
+ {
+  "frame": 3080,
+  "camera": [
+   42.983912,
+   0.99691,
+   43,
+   0.119215,
+   -27.296516,
+   0.014642,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4043",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "DECAPITATED",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 570,
+   "digest": "a4d38bf7"
+  }
+ },
+ {
+  "frame": 3100,
+  "camera": [
+   43.007544,
+   1.013585,
+   43,
+   0.112556,
+   -27.529227,
+   -0.018537,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4016",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 573,
+   "digest": "e1653860"
+  }
+ },
+ {
+  "frame": 3120,
+  "camera": [
+   43.008232,
+   0.99298,
+   43,
+   0.112093,
+   -27.761937,
+   0.007087,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH4006",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 571,
+   "digest": "17f191e9"
+  }
+ },
+ {
+  "frame": 3140,
+  "camera": [
+   42.999791,
+   1.000919,
+   43,
+   0.112061,
+   -27.994648,
+   -0.001027,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3996",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 569,
+   "digest": "44c9b72b"
+  }
+ },
+ {
+  "frame": 3160,
+  "camera": [
+   42.997765,
+   0.999104,
+   43,
+   0.112059,
+   -28.227359,
+   0.001867,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3984",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 569,
+   "digest": "b9849b7d"
+  }
+ },
+ {
+  "frame": 3180,
+  "camera": [
+   42.999985,
+   0.999599,
+   43,
+   0.112058,
+   -28.460069,
+   -0.003724,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3962",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 569,
+   "digest": "e0edd3db"
+  }
+ },
+ {
+  "frame": 3200,
+  "camera": [
+   43.003442,
+   1.001889,
+   43,
+   0.120829,
+   -28.69278,
+   0.002859,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3952",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 569,
+   "digest": "2d5d0761"
+  }
+ },
+ {
+  "frame": 3220,
+  "camera": [
+   43.000996,
+   0.995441,
+   43,
+   0.123761,
+   -28.92549,
+   -0.00464,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3940",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 574,
+   "digest": "2645d40a"
+  }
+ },
+ {
+  "frame": 3240,
+  "camera": [
+   42.989621,
+   1.008387,
+   43,
+   0.125963,
+   -29.158201,
+   0.008775,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3930",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 574,
+   "digest": "57ede5d5"
+  }
+ },
+ {
+  "frame": 3260,
+  "camera": [
+   42.985425,
+   0.979983,
+   43,
+   0.127984,
+   -29.390911,
+   -0.034226,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3905",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 574,
+   "digest": "b204450e"
+  }
+ },
+ {
+  "frame": 3280,
+  "camera": [
+   43.044656,
+   0.999821,
+   43,
+   0.124258,
+   -29.623622,
+   0.039429,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3893",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 574,
+   "digest": "d1b78430"
+  }
+ },
+ {
+  "frame": 3300,
+  "camera": [
+   43.020569,
+   1.019631,
+   43,
+   0.125998,
+   -29.856333,
+   -0.032351,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3883",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 570,
+   "digest": "1e442200"
+  }
+ },
+ {
+  "frame": 3320,
+  "camera": [
+   42.956622,
+   0.958515,
+   43,
+   0.127986,
+   -30.089043,
+   0.041207,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3873",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 570,
+   "digest": "930d3f37"
+  }
+ },
+ {
+  "frame": 3340,
+  "camera": [
+   42.967302,
+   1.040935,
+   43,
+   0.124258,
+   -30.321754,
+   -0.038808,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3861",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 570,
+   "digest": "12c8d8fc"
+  }
+ },
+ {
+  "frame": 3360,
+  "camera": [
+   43.015256,
+   0.988314,
+   43,
+   0.113945,
+   -30.554464,
+   0.016196,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3851",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 570,
+   "digest": "19e92fe0"
+  }
+ },
+ {
+  "frame": 3380,
+  "camera": [
+   43.006184,
+   1.000664,
+   43,
+   0.11219,
+   -30.787175,
+   -0.005922,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3841",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 570,
+   "digest": "80f9ad36"
+  }
+ },
+ {
+  "frame": 3400,
+  "camera": [
+   42.998715,
+   1.00091,
+   43,
+   0.112068,
+   -31.019885,
+   0.001609,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3829",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 575,
+   "digest": "5ff5097b"
+  }
+ },
+ {
+  "frame": 3420,
+  "camera": [
+   43,
+   1,
+   43,
+   0.112059,
+   -31.252596,
+   0,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3819",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 575,
+   "digest": "6499cb7c"
+  }
+ },
+ {
+  "frame": 3440,
+  "camera": [
+   43.00379,
+   1.007388,
+   43,
+   0.112058,
+   -31.485307,
+   0.006098,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3794",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 574,
+   "digest": "205c3450"
+  }
+ },
+ {
+  "frame": 3460,
+  "camera": [
+   43.002107,
+   0.998647,
+   43,
+   0.112058,
+   -31.718017,
+   -0.001479,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3782",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 573,
+   "digest": "a1c29949"
+  }
+ },
+ {
+  "frame": 3480,
+  "camera": [
+   42.999314,
+   1.000443,
+   43,
+   0.124111,
+   -31.950728,
+   0.001687,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3772",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 569,
+   "digest": "0df64693"
+  }
+ },
+ {
+  "frame": 3500,
+  "camera": [
+   42.997941,
+   1.000687,
+   43,
+   0.127855,
+   -32.183438,
+   -0.001286,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3772",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "DECAPITATED",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 573,
+   "digest": "d5640032"
+  }
+ },
+ {
+  "frame": 3520,
+  "camera": [
+   43.000339,
+   0.997277,
+   43,
+   0.124249,
+   -32.416149,
+   0.002277,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3760",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "DECAPITATED",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 573,
+   "digest": "d362149e"
+  }
+ },
+ {
+  "frame": 3540,
+  "camera": [
+   43.008214,
+   1.006836,
+   43,
+   0.125997,
+   -32.648859,
+   -0.004654,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3750",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "DECAPITATED",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 573,
+   "digest": "36707d7e"
+  }
+ },
+ {
+  "frame": 3560,
+  "camera": [
+   43.000179,
+   0.998621,
+   43,
+   0.127986,
+   -32.88157,
+   0.001131,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3750",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "DECAPITATED",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 578,
+   "digest": "ea58f334"
+  }
+ },
+ {
+  "frame": 3580,
+  "camera": [
+   42.996207,
+   1.000965,
+   43,
+   0.124258,
+   -33.114281,
+   -0.00198,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3738",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "DECAPITATED",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 578,
+   "digest": "f8ebf695"
+  }
+ },
+ {
+  "frame": 3600,
+  "camera": [
+   42.997888,
+   1.002038,
+   43,
+   0.125998,
+   -33.346991,
+   0.003998,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3713",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 581,
+   "digest": "3a7392ea"
+  }
+ },
+ {
+  "frame": 3620,
+  "camera": [
+   43.026604,
+   0.981388,
+   43,
+   0.119215,
+   -33.579702,
+   -0.012967,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3703",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 581,
+   "digest": "1a0777f2"
+  }
+ },
+ {
+  "frame": 3640,
+  "camera": [
+   43.014319,
+   1.028335,
+   43,
+   0.112556,
+   -33.812412,
+   0.014616,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3679",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 578,
+   "digest": "48a242e2"
+  }
+ },
+ {
+  "frame": 3660,
+  "camera": [
+   42.985929,
+   0.988506,
+   43,
+   0.112093,
+   -34.045123,
+   -0.00648,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3669",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 577,
+   "digest": "0d079e8e"
+  }
+ },
+ {
+  "frame": 3680,
+  "camera": [
+   42.997183,
+   1.001633,
+   43,
+   0.112061,
+   -34.277833,
+   0.001819,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3659",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 577,
+   "digest": "3b0ca890"
+  }
+ },
+ {
+  "frame": 3700,
+  "camera": [
+   43.010035,
+   1.002153,
+   43,
+   0.112059,
+   -34.510544,
+   -0.004412,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3635",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 577,
+   "digest": "f6d03fce"
+  }
+ },
+ {
+  "frame": 3720,
+  "camera": [
+   43.002302,
+   0.998035,
+   43,
+   0.112058,
+   -34.743254,
+   0.000999,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3625",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 577,
+   "digest": "6a74dca1"
+  }
+ },
+ {
+  "frame": 3740,
+  "camera": [
+   42.998237,
+   1.002248,
+   43,
+   0.120829,
+   -34.975965,
+   -0.000747,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3615",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 582,
+   "digest": "3885d362"
+  }
+ },
+ {
+  "frame": 3760,
+  "camera": [
+   42.996157,
+   0.996472,
+   43,
+   0.123761,
+   -35.208676,
+   0.001133,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3603",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 582,
+   "digest": "fc537736"
+  }
+ },
+ {
+  "frame": 3780,
+  "camera": [
+   43.014662,
+   1.011887,
+   43,
+   0.125963,
+   -35.441386,
+   -0.006052,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3578",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 582,
+   "digest": "641f1ab9"
+  }
+ },
+ {
+  "frame": 3800,
+  "camera": [
+   43.0359,
+   1.003162,
+   43,
+   0.127984,
+   -35.674097,
+   0.006919,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3568",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 582,
+   "digest": "1fd9804c"
+  }
+ },
+ {
+  "frame": 3820,
+  "camera": [
+   42.983911,
+   0.974955,
+   43,
+   0.124258,
+   -35.906807,
+   -0.006529,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3556",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 578,
+   "digest": "ae5a3298"
+  }
+ },
+ {
+  "frame": 3840,
+  "camera": [
+   42.960446,
+   1.033023,
+   43,
+   0.125998,
+   -36.139518,
+   0.004366,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3546",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 578,
+   "digest": "937eeb5f"
+  }
+ },
+ {
+  "frame": 3860,
+  "camera": [
+   43.008939,
+   0.960791,
+   43,
+   0.127986,
+   -36.372228,
+   -0.003618,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3536",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 578,
+   "digest": "dfd1697f"
+  }
+ },
+ {
+  "frame": 3880,
+  "camera": [
+   43.050567,
+   1.024423,
+   43,
+   0.124258,
+   -36.604939,
+   0.001927,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3524",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 578,
+   "digest": "4292c4a2"
+  }
+ },
+ {
+  "frame": 3900,
+  "camera": [
+   42.999881,
+   0.999865,
+   43,
+   0.113945,
+   -36.83765,
+   -0.000077,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3514",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 578,
+   "digest": "f77ad047"
+  }
+ },
+ {
+  "frame": 3920,
+  "camera": [
+   42.99196,
+   0.996203,
+   43,
+   0.11219,
+   -37.07036,
+   -0.000249,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3504",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 583,
+   "digest": "871523f8"
+  }
+ },
+ {
+  "frame": 3940,
+  "camera": [
+   42.999624,
+   1.001747,
+   43,
+   0.112068,
+   -37.303071,
+   0.000146,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3492",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 583,
+   "digest": "834e7068"
+  }
+ },
+ {
+  "frame": 3960,
+  "camera": [
+   43.003924,
+   0.996721,
+   43,
+   0.112059,
+   -37.535781,
+   -0.000403,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3467",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 582,
+   "digest": "facdcbf1"
+  }
+ },
+ {
+  "frame": 3980,
+  "camera": [
+   43.000259,
+   1.000423,
+   43,
+   0.112058,
+   -37.768492,
+   0.000103,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3457",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 582,
+   "digest": "05aacb47"
+  }
+ },
+ {
+  "frame": 4000,
+  "camera": [
+   42.997961,
+   0.999793,
+   43,
+   0.112058,
+   -38.001202,
+   -0.000375,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3445",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 578,
+   "digest": "78113fc9"
+  }
+ },
+ {
+  "frame": 4020,
+  "camera": [
+   42.998693,
+   0.998949,
+   43,
+   0.124111,
+   -38.233913,
+   0.000532,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3435",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 578,
+   "digest": "3abd669c"
+  }
+ },
+ {
+  "frame": 4040,
+  "camera": [
+   43.005271,
+   1.004766,
+   43,
+   0.127855,
+   -38.466624,
+   -0.001499,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3425",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 578,
+   "digest": "21efde88"
+  }
+ },
+ {
+  "frame": 4060,
+  "camera": [
+   43.005913,
+   0.992342,
+   43,
+   0.124249,
+   -38.699334,
+   0.002478,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3413",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 578,
+   "digest": "207b3b0f"
+  }
+ },
+ {
+  "frame": 4080,
+  "camera": [
+   42.98888,
+   1.009523,
+   43,
+   0.125997,
+   -38.932045,
+   -0.004671,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3403",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "ADEM“Who turned off the... oh no.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 583,
+   "digest": "10f0b709"
+  }
+ },
+ {
+  "frame": 4100,
+  "camera": [
+   42.971748,
+   0.993428,
+   43,
+   0.127986,
+   -39.164755,
+   0.012297,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3393",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "DECAPITATED",
+   "subt": "ADEM“Who turned off the... oh no.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 591,
+   "digest": "c19b04aa"
+  }
+ },
+ {
+  "frame": 4120,
+  "camera": [
+   43.025354,
+   0.986035,
+   43,
+   0.124258,
+   -39.397466,
+   -0.015837,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3381",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "DECAPITATED",
+   "subt": "ADEM“Who turned off the... oh no.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 591,
+   "digest": "e06c1ec5"
+  }
+ },
+ {
+  "frame": 4140,
+  "camera": [
+   43.035334,
+   1.028776,
+   43,
+   0.125998,
+   -39.630176,
+   0.01612,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3344",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "DECAPITATED",
+   "subt": "ADEM“Who turned off the... oh no.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 590,
+   "digest": "acc3f775"
+  }
+ },
+ {
+  "frame": 4160,
+  "camera": [
+   42.982912,
+   0.966949,
+   43,
+   0.119215,
+   -39.862887,
+   -0.016795,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3334",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "DECAPITATED",
+   "subt": "ADEM“Who turned off the... oh no.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 588,
+   "digest": "6ac4a30b"
+  }
+ },
+ {
+  "frame": 4180,
+  "camera": [
+   42.981096,
+   1.013432,
+   43,
+   0.112556,
+   -40.095598,
+   0.009132,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3322",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "DECAPITATED",
+   "subt": "ADEM“Who turned off the... oh no.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 586,
+   "digest": "6e04d593"
+  }
+ },
+ {
+  "frame": 4200,
+  "camera": [
+   43.006308,
+   0.993874,
+   43,
+   0.112093,
+   -40.328308,
+   -0.011332,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3300",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "DECAPITATED",
+   "subt": "ADEM“Who turned off the... oh no.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 586,
+   "digest": "48000ac0"
+  }
+ },
+ {
+  "frame": 4220,
+  "camera": [
+   43.009126,
+   0.997785,
+   43,
+   0.112061,
+   -40.561019,
+   0.004721,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3290",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "DECAPITATED",
+   "subt": "ADEM“Who turned off the... oh no.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 586,
+   "digest": "e2350489"
+  }
+ },
+ {
+  "frame": 4240,
+  "camera": [
+   42.999783,
+   1.001462,
+   43,
+   0.112059,
+   -40.793729,
+   -0.001201,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3278",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "ADEM“Who turned off the... oh no.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 586,
+   "digest": "e917b117"
+  }
+ },
+ {
+  "frame": 4260,
+  "camera": [
+   42.995944,
+   0.996627,
+   43,
+   0.112058,
+   -41.02644,
+   0.002277,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3256",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "ADEM“Who turned off the... oh no.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 591,
+   "digest": "5e54c538"
+  }
+ },
+ {
+  "frame": 4280,
+  "camera": [
+   42.99979,
+   1.001949,
+   43,
+   0.120829,
+   -41.25915,
+   -0.001601,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3246",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "ADEM“Who turned off the... oh no.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 590,
+   "digest": "b8163b62"
+  }
+ },
+ {
+  "frame": 4300,
+  "camera": [
+   43.019913,
+   0.993133,
+   43,
+   0.123761,
+   -41.491861,
+   0.012317,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3219",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "ADEM“Who turned off the... oh no.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 589,
+   "digest": "3aa4af14"
+  }
+ },
+ {
+  "frame": 4320,
+  "camera": [
+   43.010187,
+   0.993643,
+   43,
+   0.125963,
+   -41.724571,
+   -0.025961,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3197",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "ADEM“Who turned off the... oh no.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 589,
+   "digest": "fc80b0d1"
+  }
+ },
+ {
+  "frame": 4340,
+  "camera": [
+   42.952783,
+   1.029769,
+   43,
+   0.127984,
+   -41.957282,
+   0.032782,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3187",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 585,
+   "digest": "0c8611fe"
+  }
+ },
+ {
+  "frame": 4360,
+  "camera": [
+   42.979055,
+   0.958278,
+   43,
+   0.124258,
+   -42.189993,
+   -0.034314,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3175",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 585,
+   "digest": "4fb3a3e3"
+  }
+ },
+ {
+  "frame": 4380,
+  "camera": [
+   43.035742,
+   1.030924,
+   43,
+   0.125998,
+   -42.422703,
+   0.028507,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3165",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 585,
+   "digest": "96c28e25"
+  }
+ },
+ {
+  "frame": 4400,
+  "camera": [
+   43.028226,
+   0.979139,
+   43,
+   0.127986,
+   -42.655414,
+   -0.035718,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3155",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 585,
+   "digest": "3f220b47"
+  }
+ },
+ {
+  "frame": 4420,
+  "camera": [
+   42.96071,
+   0.996454,
+   43,
+   0.124258,
+   -42.888124,
+   0.037112,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3143",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 585,
+   "digest": "5efffdff"
+  }
+ },
+ {
+  "frame": 4440,
+  "camera": [
+   42.984914,
+   1.011479,
+   43,
+   0.113945,
+   -43.120835,
+   -0.016129,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3133",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 590,
+   "digest": "61a031b7"
+  }
+ },
+ {
+  "frame": 4460,
+  "camera": [
+   43.005262,
+   0.993524,
+   43,
+   0.11219,
+   -43.353545,
+   0.006141,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3123",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 590,
+   "digest": "a6d18c24"
+  }
+ },
+ {
+  "frame": 4480,
+  "camera": [
+   43.00943,
+   1.009138,
+   43,
+   0.112068,
+   -43.586256,
+   -0.008999,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3096",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 588,
+   "digest": "87e0b7b7"
+  }
+ },
+ {
+  "frame": 4500,
+  "camera": [
+   42.99869,
+   0.998747,
+   43,
+   0.112059,
+   -43.818967,
+   0.002016,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3086",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 588,
+   "digest": "8a9dbc87"
+  }
+ },
+ {
+  "frame": 4520,
+  "camera": [
+   42.999306,
+   1.000012,
+   43,
+   0.112058,
+   -44.051677,
+   -0.000615,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3076",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 584,
+   "digest": "c0407f12"
+  }
+ },
+ {
+  "frame": 4540,
+  "camera": [
+   43.000795,
+   1.001037,
+   43,
+   0.112058,
+   -44.284388,
+   0.001809,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3064",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 584,
+   "digest": "dbc9b0bd"
+  }
+ },
+ {
+  "frame": 4560,
+  "camera": [
+   43.002546,
+   0.997948,
+   43,
+   0.124111,
+   -44.517098,
+   -0.002156,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3054",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE LIGHT RETURNS",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 584,
+   "digest": "2e7fe383"
+  }
+ },
+ {
+  "frame": 4580,
+  "camera": [
+   42.9988,
+   1.005192,
+   43,
+   0.127855,
+   -44.749809,
+   0.005258,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3044",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 588,
+   "digest": "c8f270bd"
+  }
+ },
+ {
+  "frame": 4600,
+  "camera": [
+   42.990765,
+   0.99484,
+   43,
+   0.124249,
+   -44.982519,
+   -0.007671,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3032",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 593,
+   "digest": "8ce5549d"
+  }
+ },
+ {
+  "frame": 4620,
+  "camera": [
+   43.000225,
+   1.001591,
+   43,
+   0.125997,
+   -45.21523,
+   0.012954,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3022",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 593,
+   "digest": "4cac8990"
+  }
+ },
+ {
+  "frame": 4640,
+  "camera": [
+   43.023501,
+   1.009155,
+   43,
+   0.127986,
+   -45.447941,
+   -0.019614,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH3012",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 593,
+   "digest": "e8d8ed6b"
+  }
+ },
+ {
+  "frame": 4660,
+  "camera": [
+   43.008071,
+   0.962425,
+   43,
+   0.124258,
+   -45.680651,
+   0.042319,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2961",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 592,
+   "digest": "19806ff1"
+  }
+ },
+ {
+  "frame": 4680,
+  "camera": [
+   42.960238,
+   1.033882,
+   43,
+   0.125998,
+   -45.913362,
+   -0.034147,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2951",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 590,
+   "digest": "92b8eeab"
+  }
+ },
+ {
+  "frame": 4700,
+  "camera": [
+   42.987002,
+   0.975513,
+   43,
+   0.119215,
+   -46.146072,
+   0.032978,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2941",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE PRIEST CALLS HIS FLOCK",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 589,
+   "digest": "0bc91f92"
+  }
+ },
+ {
+  "frame": 4720,
+  "camera": [
+   43.042413,
+   1.008672,
+   43,
+   0.112556,
+   -46.378783,
+   -0.03845,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2917",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 589,
+   "digest": "4741f07b"
+  }
+ },
+ {
+  "frame": 4740,
+  "camera": [
+   43.010501,
+   1.006706,
+   43,
+   0.112093,
+   -46.611493,
+   0.017772,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2907",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 589,
+   "digest": "0d9b7f2b"
+  }
+ },
+ {
+  "frame": 4760,
+  "camera": [
+   42.993318,
+   0.994382,
+   43,
+   0.112061,
+   -46.844204,
+   -0.006587,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2897",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 589,
+   "digest": "d017d563"
+  }
+ },
+ {
+  "frame": 4780,
+  "camera": [
+   42.990798,
+   1.012165,
+   43,
+   0.112059,
+   -47.076915,
+   0.011814,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2873",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 594,
+   "digest": "1c8d1e13"
+  }
+ },
+ {
+  "frame": 4800,
+  "camera": [
+   43.002915,
+   0.997277,
+   43,
+   0.112058,
+   -47.309625,
+   -0.003245,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2863",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 594,
+   "digest": "4f7d5bcd"
+  }
+ },
+ {
+  "frame": 4820,
+  "camera": [
+   43.008507,
+   1.003035,
+   43,
+   0.120829,
+   -47.542336,
+   0.008899,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2838",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 592,
+   "digest": "8ca54993"
+  }
+ },
+ {
+  "frame": 4840,
+  "camera": [
+   42.991187,
+   1.003437,
+   43,
+   0.123761,
+   -47.775046,
+   -0.011673,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2826",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 592,
+   "digest": "72331a39"
+  }
+ },
+ {
+  "frame": 4860,
+  "camera": [
+   42.980442,
+   0.985271,
+   43,
+   0.125963,
+   -48.007757,
+   0.017459,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2816",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 589,
+   "digest": "a41554aa"
+  }
+ },
+ {
+  "frame": 4880,
+  "camera": [
+   43.01415,
+   1.026809,
+   43,
+   0.127984,
+   -48.240467,
+   -0.02423,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2806",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 2",
+   "keys": ""
+  },
+  "scene": {
+   "count": 589,
+   "digest": "5e7e88d4"
+  }
+ },
+ {
+  "frame": 4900,
+  "camera": [
+   43.055767,
+   0.957062,
+   43,
+   0.12585,
+   -48.473178,
+   0.043934,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2794",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "ADEM“I've seen ugly before, but this thing is winning.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 3",
+   "keys": ""
+  },
+  "scene": {
+   "count": 591,
+   "digest": "ffcc24f2"
+  }
+ },
+ {
+  "frame": 4920,
+  "camera": [
+   42.986967,
+   1.016473,
+   43,
+   0.125881,
+   -48.705888,
+   -0.033895,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2784",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "ADEM“I've seen ugly before, but this thing is winning.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 3",
+   "keys": ""
+  },
+  "scene": {
+   "count": 591,
+   "digest": "e0f8bb5a"
+  }
+ },
+ {
+  "frame": 4940,
+  "camera": [
+   42.944212,
+   1.00826,
+   43,
+   0.127978,
+   -48.938599,
+   0.039819,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2774",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "ADEM“I've seen ugly before, but this thing is winning.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 3",
+   "keys": ""
+  },
+  "scene": {
+   "count": 591,
+   "digest": "085a755a"
+  }
+ },
+ {
+  "frame": 4960,
+  "camera": [
+   43.005329,
+   0.970365,
+   43,
+   0.124257,
+   -49.17131,
+   -0.034348,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2774",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "ADEM“I've seen ugly before, but this thing is winning.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 3",
+   "keys": ""
+  },
+  "scene": {
+   "count": 598,
+   "digest": "a76339d7"
+  }
+ },
+ {
+  "frame": 4980,
+  "camera": [
+   43.457728,
+   1.029491,
+   42.848236,
+   0.116257,
+   -49.40402,
+   0.022904,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2732",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "ADEM“I've seen ugly before, but this thing is winning.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 3",
+   "keys": ""
+  },
+  "scene": {
+   "count": 598,
+   "digest": "0cc733ad"
+  }
+ },
+ {
+  "frame": 5000,
+  "camera": [
+   43.543923,
+   0.968759,
+   42.805889,
+   0.11235,
+   -49.636731,
+   -0.026216,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2707",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "ADEM“I've seen ugly before, but this thing is winning.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 3",
+   "keys": ""
+  },
+  "scene": {
+   "count": 596,
+   "digest": "66a03345"
+  }
+ },
+ {
+  "frame": 5020,
+  "camera": [
+   43.528466,
+   1.008973,
+   42.802946,
+   0.112079,
+   -49.869441,
+   0.013028,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2673",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "ADEM“I've seen ugly before, but this thing is winning.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 3",
+   "keys": ""
+  },
+  "scene": {
+   "count": 595,
+   "digest": "21e6d010"
+  }
+ },
+ {
+  "frame": 5040,
+  "camera": [
+   43.543637,
+   1.001566,
+   42.802742,
+   0.11206,
+   -50.102152,
+   -0.015501,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2651",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "ADEM“I've seen ugly before, but this thing is winning.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 3",
+   "keys": ""
+  },
+  "scene": {
+   "count": 594,
+   "digest": "09fc9161"
+  }
+ },
+ {
+  "frame": 5060,
+  "camera": [
+   43.56028,
+   0.994279,
+   42.802728,
+   0.112059,
+   -50.334862,
+   0.006209,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2641",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "ADEM“I've seen ugly before, but this thing is winning.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 3",
+   "keys": ""
+  },
+  "scene": {
+   "count": 594,
+   "digest": "2d25d160"
+  }
+ },
+ {
+  "frame": 5080,
+  "camera": [
+   43.550854,
+   1.001794,
+   42.802727,
+   0.112058,
+   -50.567573,
+   -0.001217,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2607",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "ADEM“I've seen ugly before, but this thing is winning.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 3",
+   "keys": ""
+  },
+  "scene": {
+   "count": 594,
+   "digest": "88e6ef06"
+  }
+ },
+ {
+  "frame": 5100,
+  "camera": [
+   43.541111,
+   0.992033,
+   42.802727,
+   0.121799,
+   -50.800284,
+   0.005207,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2585",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "ADEM“I've seen ugly before, but this thing is winning.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 3",
+   "keys": ""
+  },
+  "scene": {
+   "count": 595,
+   "digest": "cde9474c"
+  }
+ },
+ {
+  "frame": 5120,
+  "camera": [
+   43.540684,
+   1.00827,
+   42.802727,
+   0.127694,
+   -51.032994,
+   -0.008134,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2575",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "ADEM“I've seen ugly before, but this thing is winning.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 3",
+   "keys": ""
+  },
+  "scene": {
+   "count": 595,
+   "digest": "7617b38e"
+  }
+ },
+ {
+  "frame": 5140,
+  "camera": [
+   43.57791,
+   0.999066,
+   42.802727,
+   0.124238,
+   -51.265705,
+   0.016523,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2541",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "ADEM“I've seen ugly before, but this thing is winning.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 3",
+   "keys": ""
+  },
+  "scene": {
+   "count": 599,
+   "digest": "d6ea1a86"
+  }
+ },
+ {
+  "frame": 5160,
+  "camera": [
+   43.58259,
+   0.978576,
+   42.802727,
+   0.125997,
+   -51.498415,
+   -0.02035,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2519",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "THE SCREAMER CALLS THE DEAD",
+   "subt": "ADEM“I've seen ugly before, but this thing is winning.”",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 3",
+   "keys": ""
+  },
+  "scene": {
+   "count": 599,
+   "digest": "5b6875d2"
+  }
+ },
+ {
+  "frame": 5180,
+  "camera": [
+   43.512488,
+   1.043871,
+   42.802727,
+   0.127986,
+   -51.731126,
+   0.022829,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2464",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 3",
+   "keys": ""
+  },
+  "scene": {
+   "count": 600,
+   "digest": "98a8df48"
+  }
+ },
+ {
+  "frame": 5200,
+  "camera": [
+   44.001419,
+   0.967838,
+   42.628819,
+   0.124258,
+   -51.963836,
+   -0.01534,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2410",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 3",
+   "keys": ""
+  },
+  "scene": {
+   "count": 600,
+   "digest": "8315e338"
+  }
+ },
+ {
+  "frame": 5220,
+  "camera": [
+   44.119841,
+   1.026704,
+   42.607077,
+   0.125998,
+   -52.196547,
+   0.016038,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2388",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 3",
+   "keys": ""
+  },
+  "scene": {
+   "count": 600,
+   "digest": "be3dd152"
+  }
+ },
+ {
+  "frame": 5240,
+  "camera": [
+   44.150553,
+   0.993657,
+   42.605566,
+   0.127986,
+   -52.429258,
+   -0.017525,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2378",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 3",
+   "keys": ""
+  },
+  "scene": {
+   "count": 600,
+   "digest": "823296d3"
+  }
+ },
+ {
+  "frame": 5260,
+  "camera": [
+   44.092033,
+   0.991798,
+   42.605461,
+   0.113165,
+   -52.661968,
+   0.005963,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2344",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 3",
+   "keys": ""
+  },
+  "scene": {
+   "count": 599,
+   "digest": "f4d0fc25"
+  }
+ },
+ {
+  "frame": 5280,
+  "camera": [
+   44.074297,
+   1.019608,
+   42.605454,
+   0.112135,
+   -52.894679,
+   -0.00649,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2322",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 3",
+   "keys": ""
+  },
+  "scene": {
+   "count": 600,
+   "digest": "da3acb5d"
+  }
+ },
+ {
+  "frame": 5300,
+  "camera": [
+   44.102103,
+   0.990676,
+   42.605453,
+   0.112064,
+   -53.127389,
+   0.002369,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2312",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 3",
+   "keys": ""
+  },
+  "scene": {
+   "count": 599,
+   "digest": "d1b9fd13"
+  }
+ },
+ {
+  "frame": 5320,
+  "camera": [
+   44.108505,
+   1.005402,
+   42.605453,
+   0.112059,
+   -53.3601,
+   -0.001532,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2278",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 3",
+   "keys": ""
+  },
+  "scene": {
+   "count": 603,
+   "digest": "bf49e30c"
+  }
+ },
+ {
+  "frame": 5340,
+  "camera": [
+   44.099615,
+   0.99765,
+   42.605453,
+   0.112058,
+   -53.59281,
+   0.001712,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2256",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 3",
+   "keys": ""
+  },
+  "scene": {
+   "count": 603,
+   "digest": "56c141a5"
+  }
+ },
+ {
+  "frame": 5360,
+  "camera": [
+   44.080211,
+   0.994058,
+   42.605453,
+   0.112058,
+   -53.825521,
+   -0.00215,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2212",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON — RELOADING",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 3",
+   "keys": ""
+  },
+  "scene": {
+   "count": 603,
+   "digest": "178299ae"
+  }
+ },
+ {
+  "frame": 5380,
+  "camera": [
+   44.098853,
+   1.004792,
+   42.605453,
+   0.123151,
+   -54.058232,
+   0.000519,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2212",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 3",
+   "keys": ""
+  },
+  "scene": {
+   "count": 603,
+   "digest": "0cba7837"
+  }
+ },
+ {
+  "frame": 5400,
+  "camera": [
+   44.112055,
+   0.989574,
+   42.605453,
+   0.125921,
+   -54.290942,
+   -0.000507,
+   78
+  ],
+  "hud": {
+   "hp": "HEALTH2202",
+   "ar": "ARMOR0",
+   "wname": "NAIL CANNON",
+   "msg": "",
+   "subt": "",
+   "lvltitle": "LEVEL 2 — THE ABANDONED CHURCH",
+   "bossname": "THE CORRUPTED PRIEST — PHASE 3",
+   "keys": ""
+  },
+  "scene": {
+   "count": 603,
+   "digest": "c25074a5"
+  }
+ }
+]

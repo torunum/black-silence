@@ -1,10 +1,12 @@
 // @vitest-environment jsdom
-import { beforeAll, beforeEach, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { installDomStubs, loadGameHtml, installFakeClock } from "../support/domStubs";
 import { world } from "../../src/world/WorldState";
 import { player } from "../../src/player/PlayerState";
 import { game } from "../../src/core/Game";
 import { S } from "../../src/core/State";
+import { clearAllTimers } from "../../src/core/Timers";
+import { clearScheduled } from "../../src/core/Time";
 
 /**
  * `src/core/Context.ts`'s three remaining entries, as of Plan 0E Task 12
@@ -158,6 +160,19 @@ beforeAll(async () => {
   if (world.enemies.length) {   // `Enemy[]` as of Phase 3 Part A — the old defensive cast is gone
     throw new Error("the prologue is expected to load with zero enemies — this file's endLevel setup assumes that");
   }
+});
+
+// KNOWN-19: the NEW GAME click above boots the prologue on the real clock,
+// arming loadLevel's real setTimeout timers (the longest, 1400ms). The
+// `showWin` test below installs its own fake clock, but only for its own
+// duration (restored in its `finally`) — it does nothing for the boot's
+// own timer. Left alone that timer survives past this file's teardown and
+// races jsdom's environment teardown; see
+// tests/integration/schedulerWiring.test.ts's own afterAll, which this is
+// the same fix for.
+afterAll(() => {
+  clearAllTimers();
+  clearScheduled();
 });
 
 beforeEach(() => {

@@ -1,7 +1,8 @@
 // @vitest-environment jsdom
-import { beforeAll, beforeEach, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { installDomStubs, loadGameHtml } from "../support/domStubs";
 import { schedule, clearScheduled } from "../../src/core/Time";
+import { clearAllTimers } from "../../src/core/Timers";
 import { screenShake } from "../../src/fx/ShakeState";
 import { game } from "../../src/core/Game";
 import { S } from "../../src/core/State";
@@ -90,6 +91,40 @@ beforeAll(async () => {
   const newGame = [...document.querySelectorAll(".mbtn")].find((b) => b.textContent?.includes("NEW GAME"));
   if (!newGame) throw new Error("the NEW GAME menu row is gone — this file drives the game through it");
   (newGame as HTMLElement).click();
+});
+
+/**
+ * This file boots the real game on the **real** clock — unlike the trace
+ * harness, it installs no fake `setTimeout` — and `startGame`'s `loadLevel`
+ * arms real timers through `src/core/Timers.ts`'s `after()`, the longest of
+ * them the 1400ms `after(()=>say("lvl"+idx,true),1400)` at the end of
+ * `loadLevel`. Those outlive this file's tests, which finish in about 1.5s,
+ * and whether they fire before or after Vitest tears the jsdom environment
+ * down is a race against how long the rest of the suite keeps the worker
+ * alive. Losing that race throws `missing element #lvltitle` out of `say`
+ * with no test attached to it, which Vitest reports as an unhandled error.
+ *
+ * Found when Phase 3 Part D added `bossTrace.test.ts`: a 75-second test file
+ * kept the pool alive long enough for this file's stray timer to land, and a
+ * suite that had been green for five plans reported an error that had nothing
+ * to do with the new file. Clearing them here makes it deterministic rather
+ * than lucky.
+ *
+ * **Update, Phase 3 Part D's fix round:** the sibling list below was
+ * originally hand-counted as four and was wrong in both directions — see
+ * KNOWN-19, which now also gives the derivation rather than a fixed count.
+ * `wiring.test.ts`, `gpuDisposeWiring.test.ts`, `positionalCallers.test.ts`,
+ * `contextWiring.test.ts`, `musicCancellationWiring.test.ts` and
+ * `timerCancellationWiring.test.ts` carried the same latent race and now
+ * carry this same `afterAll` fix. `renderWidthBootWiring.test.ts` was on the
+ * original list but never actually had the bug: it only imports
+ * `src/main.ts` and never clicks a menu row or calls `loadLevel`, so
+ * `startGame` — and every `after()` call it would otherwise arm — never
+ * runs there.
+ */
+afterAll(() => {
+  clearAllTimers();
+  clearScheduled();
 });
 
 beforeEach(() => {
