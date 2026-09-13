@@ -235,10 +235,10 @@ import { world } from "../../src/world/WorldState";
  * three lines below overwrites the same `material.map` with `set[e.frame]`
  * (also a `Q2` texture), so the mutation's whole visible window is the
  * handful of frames between the two. **Any change to `TOTAL_FRAMES`,
- * `EVERY`, the sweep or the seed can move frame 4900 out of that window
- * and silently drop this site's coverage while every test stays green** —
- * that was this file's own first-round review finding, because until now
- * nothing but this paragraph said so.
+ * `EVERY`, `dtMs`, the sweep or the seed can move frame 4900 out of that
+ * window and silently drop this site's coverage while every test stays
+ * green** — that was this file's own first-round review finding, because
+ * until now nothing but this paragraph said so.
  *
  * **The fix, added in review round 1**: `afterLoad` installs a `configurable`
  * accessor on the priest's own `sp.material`'s `map` property (once the
@@ -249,7 +249,10 @@ import { world } from "../../src/world/WorldState";
  * changes nothing about what the game does or renders — confirmed by
  * re-running the fixture comparison with the accessor installed and
  * confirming the fixture's digest is byte-identical to the one recorded
- * before it existed (see "Prove it" below). The named test
+ * before it existed: the accessor is now installed unconditionally in
+ * `beforeAll` below, so the "the run matches the committed recording" test
+ * at the bottom of this file *is* that comparison, on every run. The named
+ * test
  * `"the phase-3 form swap always lands inside a sampled frame"` then reads
  * that write log rather than trusting the numbers above: it finds the first
  * write recorded with `phase===3` (necessarily the form swap itself — the
@@ -262,11 +265,13 @@ import { world } from "../../src/world/WorldState";
  * only if a future reader remembers to re-run the mutation by hand.
  *
  * `every:20` rather than `combatTrace`'s `every:10`: this run is 3.1x
- * longer than that one, and the sampling rate is the only thing standing
- * between that and a fixture larger than both existing ones put together.
- * 20 frames is a third of a second, still finer than the boss walk cycle's
- * 0.25s flip, and — per the paragraph above — the form swap was confirmed
- * caught at this rate by mutation rather than by argument.
+ * longer than that one, and even at this coarser sampling rate the
+ * committed fixture (117,826 bytes) is already 5.6% larger than the other
+ * two combined (37,710 + 73,873 = 111,583 bytes) — `every:10` would roughly
+ * double that, to somewhere around 235 KB. 20 frames is a third of a
+ * second, still finer than the boss walk cycle's 0.25s flip, and — per the
+ * paragraph above — the form swap was confirmed caught at this rate by
+ * mutation rather than by argument.
  *
  * ## Level 2 spawns eight *other* priest bosses, and that is KNOWN-4
  *
@@ -320,6 +325,15 @@ const REV = (2 * Math.PI) / SENS;
  */
 const TOTAL_FRAMES = 5400;
 const EVERY = 20;
+/**
+ * The fifth knob the structural guard depends on, alongside `TOTAL_FRAMES`
+ * and `EVERY`: `runTrace`'s own frame clock and the guard's write-log frame
+ * math (`afterLoad` below) both have to derive frame indices the same way,
+ * or the guard silently desyncs from the harness it is checking. Hoisted to
+ * one constant, used in both places, instead of the two independent
+ * `1000 / 60` literals an earlier version of this file carried.
+ */
+const DT_MS = 1000 / 60;
 
 /** Where the priest is placed by `putAbs(L,16,20,"Q")`, in world units. */
 const PRIEST_X = 33, PRIEST_Z = 41;
@@ -370,7 +384,7 @@ beforeAll(async () => {
   trace = await runTrace({
     seed: 20260913,
     frames: TOTAL_FRAMES,
-    dtMs: 1000 / 60,
+    dtMs: DT_MS,
     input: INPUT,
     every: EVERY,
     level: 2,
@@ -405,16 +419,19 @@ beforeAll(async () => {
       // a getter/setter that stores-and-forwards is safe. The getter always
       // returns exactly what the setter last stored, so nothing that reads
       // `material.map` afterward — three's own renderer included — can tell
-      // the difference; this was confirmed, not assumed (see the module
-      // doc comment's "Prove it" section).
+      // the difference; this was confirmed, not assumed — the accessor is
+      // installed on every run (not toggled), so the "the run matches the
+      // committed recording" test below re-proves it every time: an
+      // accessor that perturbed the run would have moved the fixture.
       //
       // `performance.now()` here is `runTrace`'s own faked clock, read at
       // the same instant (`fakeNow===t0`, before frame 1) its frame loop
-      // will start counting from — so `(performance.now()-t0)/dtMs`, at any
+      // will start counting from — so `(performance.now()-t0)/DT_MS`, at any
       // later write, reproduces the exact frame index `runTrace` itself
-      // would assign that tick.
+      // would assign that tick. `DT_MS` is the same module constant passed
+      // to `runTrace` as `dtMs` above — one knob, not two independent
+      // literals that could silently drift apart.
       mapWrites = [];
-      const dtMs = 1000 / 60;
       const t0 = performance.now();
       const material = priest.sp.material as unknown as { map: unknown };
       let currentMap: unknown = material.map;
@@ -423,7 +440,7 @@ beforeAll(async () => {
         get(): unknown { return currentMap; },
         set(v: unknown): void {
           currentMap = v;
-          mapWrites.push({ frame: Math.round((performance.now() - t0) / dtMs), phase: priest.phase });
+          mapWrites.push({ frame: Math.round((performance.now() - t0) / DT_MS), phase: priest.phase });
         },
       });
     },
@@ -503,7 +520,7 @@ describe("the recorded run actually fights a priest boss", () => {
     expect(
       sampledFrameInWindow,
       `the form swap's visible window is [${lo},${hi}) and no multiple of EVERY(${EVERY}) falls in ` +
-      "it — a retune of TOTAL_FRAMES/EVERY/the sweep/the seed has silently moved this site's " +
+      "it — a retune of TOTAL_FRAMES/EVERY/DT_MS/the sweep/the seed has silently moved this site's " +
       "coverage out of the sampled frames",
     ).toBeGreaterThan(0);
   });

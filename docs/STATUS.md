@@ -702,19 +702,29 @@ kills include kinds level 1's single kill does not produce. Every
 `material.map=` site in `src/` is now reached by at least one committed trace.
 The form swap is the fragile one and the file says so at length: its mutation
 moves exactly **one** sampled frame, because the walk cycle overwrites the same
-`material.map` within 15 frames, so any retune of that script must re-run the
-mutation instead of assuming.
+`material.map` within 15 frames. Review round 1 turned that from a paragraph
+into a structural guard: a `configurable` accessor records every write to the
+priest's `material.map`, and a named test asserts a sampled frame always falls
+between the form swap's write and the walk cycle's next one, so a retune that
+drifts the two out of alignment now fails that named test rather than relying
+on someone re-running the mutation by hand.
 
 The fixture was regenerated three times and byte-compared: identical
 (`md5 dc856a82…`) on all three, plus a fourth comparison run.
 
-Also found: **KNOWN-19**, a latent race in five integration files that boot the
-real game on the real clock and leave `loadLevel`'s 1400ms timer armed past
+Also found: **KNOWN-19**, a latent race in seven integration files that boot
+the real game on the real clock and leave `loadLevel`'s 1400ms timer armed past
 teardown. The new file is long enough to keep the worker pool alive for it, so
 a suite green for five plans reported an unhandled error once and not the next
-run. `schedulerWiring.test.ts` is fixed; the other four are filed, not fixed.
+run. All seven — `schedulerWiring.test.ts`, `wiring.test.ts`,
+`gpuDisposeWiring.test.ts`, `positionalCallers.test.ts`, `contextWiring.test.ts`,
+`musicCancellationWiring.test.ts` and `timerCancellationWiring.test.ts` — are
+fixed, and `docs/known-issues.md` marks the row **closed**.
+`renderWidthBootWiring.test.ts` was on the original hand-counted list (which
+said five) but is a verified false positive: it imports `src/main` but never
+calls `loadLevel`/`startGame`/a menu click, so `startGame` never runs there.
 
-`npm test`: **59 files / 487 tests**, all green; `tsc --noEmit` clean; the
+`npm test`: **59 files / 488 tests**, all green; `tsc --noEmit` clean; the
 file-size gate reports 90 files checked against the 400-line limit; `madge
 --circular` reports `Processed 90 files` with no circular dependency.
 
