@@ -1,4 +1,7 @@
 import * as THREE from "three";
+// Side-effect import: this module builds four coloured materials at module
+// scope, so THREE.ColorManagement has to be settled before its body runs.
+import "../render/ColorPolicy";
 import { rnd } from "../utils/math";
 import { getScene } from "../render/SceneRef";
 import { track } from "../render/DisposeRegistry";

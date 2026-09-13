@@ -1,4 +1,7 @@
 import * as THREE from "three";
+// Side-effect import. Must precede anything that constructs a THREE.Color —
+// see ColorPolicy.ts for why it is a module and not a line in this file.
+import "./ColorPolicy";
 import { renderState } from "./Renderer";
 import { track } from "./DisposeRegistry";
 import { save } from "../save/SaveGame";
@@ -43,18 +46,52 @@ renderState.renderer = new THREE.WebGLRenderer({
   canvas: document.getElementById("game") as HTMLCanvasElement,
   antialias: false,
 });
+// Tone mapping, unchanged from the reference (`reference/sonsurum.html:904`).
+// The ACES fit itself is byte-identical between three@0.128.0 and
+// three@0.186.0 — the two `ACESFilmicToneMapping( vec3 color )` shader
+// functions were diffed and match character for character, matrices, the
+// `toneMappingExposure / 0.6` prescale and all — so nothing about this
+// operator changed in the upgrade. **What changed is its input.** Modern
+// three dropped the `irradiance *= PI` that r128 applied whenever
+// `physicallyCorrectLights` was false (which was its default), so every
+// diffuse contribution now arrives at this curve pi times smaller, and point
+// lights additionally arrive through a different falloff shape. ACES is
+// nearly linear in the toe and only rolls off near the shoulder, so the
+// expected result is a picture that is roughly pi times darker **and**
+// visibly flatter — most of the filmic highlight compression this exposure
+// was tuned for no longer gets reached — except immediately next to a point
+// light, where the new inverse-power falloff spikes and ACES will clip
+// toward white. Neither the operator nor the 1.15 exposure is retuned here;
+// that is a decision for the human who can actually see the two builds.
 renderState.renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderState.renderer.toneMappingExposure = 1.15;
-// The `!== undefined` guard is NOT defensive coding — it is a tripwire, and
-// it currently points the wrong way. On the pinned three@0.128.0
-// `THREE.sRGBEncoding` is 3001 and this line runs. On any modern three it is
-// `undefined` (renamed to `SRGBColorSpace`, and `outputEncoding` renamed to
-// `outputColorSpace`), so the line would silently do nothing and sRGB output
-// encoding would quietly switch off — every colour in the game would shift,
-// with no error, no test failure, and nothing in this repo able to see it.
-// Plan 0F Task 11 evaluated the upgrade and deferred it for exactly that
-// reason; see docs/known-issues.md KNOWN-14 for the full decision.
-if (THREE.sRGBEncoding !== undefined) renderState.renderer.outputEncoding = THREE.sRGBEncoding;
+// sRGB output encoding. **Unconditional, deliberately.** Until the Phase 2B
+// upgrade this line read `if (THREE.sRGBEncoding !== undefined)
+// renderState.renderer.outputEncoding = THREE.sRGBEncoding;` — a tripwire for
+// the upgrade, because on three@0.128.0 `sRGBEncoding` is 3001 and the line
+// ran, while on any modern three it is `undefined`, so the guard would have
+// made the line a silent no-op and switched sRGB output off with no error and
+// no failing test (docs/known-issues.md KNOWN-14).
+//
+// It is written without a guard now for the same reason the guard was wrong:
+// a conditional that quietly does nothing is exactly the failure this line
+// has to stop being capable of. If a future three renames or removes
+// `SRGBColorSpace`, `tsc --noEmit` fails here and the upgrade is a decision
+// again rather than an accident.
+//
+// `SRGBColorSpace` is also the modern default for `outputColorSpace`, so this
+// assignment is a no-op on r186 in the same sense the old one was a real
+// change on r128. It stays written out because the value is a deliberate
+// choice, and because a default that changes underneath a silent reliance is
+// how this row was created in the first place.
+//
+// Equivalence to the old line was checked in three's own source rather than
+// assumed: `getEncodingComponents` (build/three.module.js) emits
+// `sRGBTransferOETF` for `SRGBColorSpace` and is **not** gated on
+// `ColorManagement.enabled`, so the shader-side encode this performs is the
+// same one r128's `outputEncoding = sRGBEncoding` performed, independently of
+// the `ColorPolicy.ts` decision above.
+renderState.renderer.outputColorSpace = THREE.SRGBColorSpace;
 
 /** Internal render widths, in pixels. 400 is the reference's hardcoded value and stays the default. */
 export const RENDER_WIDTHS = [320, 400, 512, 640, 800] as const;

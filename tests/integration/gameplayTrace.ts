@@ -190,7 +190,11 @@ function captureCamera(): { camera: () => Any | null; restore: () => void } {
  *
  * Found during Phase 2 Part A Task 3 (instancing the level's wall/pillar/
  * platform geometry): every `THREE.Object3D`/`BufferGeometry`/`Material`
- * constructor calls `MathUtils.generateUUID()` (build/three.js:286),
+ * constructor calls `MathUtils.generateUUID()` (three@0.186.0
+ * build/three.core.js:2317 — it was build/three.js:286 on the r128 this
+ * comment was written against; the Phase 2B upgrade moved three's internals
+ * into a second build file and every coordinate below was re-derived against
+ * the installed 0.186.0 rather than adjusted by guess),
  * which burns exactly four `Math.random()` calls for a UUID nothing in
  * this codebase ever reads. Collapsing level 1's 204 individual wall/
  * pillar `Mesh` objects into 2 `InstancedMesh` objects cut the
@@ -213,8 +217,8 @@ function captureCamera(): { camera: () => Any | null; restore: () => void } {
  * wraps its `MathUtils` re-export in `Object.freeze()` (confirmed live:
  * assigning `THREE.MathUtils.generateUUID` throws "Cannot assign to read
  * only property"), and every call site inside `Object3D`/`Material`/
- * `BufferGeometry` (build/three.js:4987, 6030, 7428) closes over its own
- * module-local `generateUUID` binding (build/three.js:286), not the
+ * `BufferGeometry` (build/three.core.js:11988, 21110, 18442) closes over its
+ * own module-local `generateUUID` binding (build/three.core.js:2317), not the
  * mutable exported one — reassigning `THREE.Object3D` etc. from outside
  * doesn't reach those call sites either, for the same reason (also
  * confirmed live: it changes what `new THREE.Object3D()` returns from
@@ -226,7 +230,10 @@ function captureCamera(): { camera: () => Any | null; restore: () => void } {
  * the two callers apart: `generateUUID` calls `Math.random()` four times
  * synchronously with no application code able to interleave (JS has no
  * preemption), and its own stack frame names it — confirmed live as `at
- * generateUUID (…/three/build/three.js:286:…)`, not assumed. A call whose
+ * generateUUID (…/three/build/three.core.js:2317:…)` on 0.186.0, not assumed
+ * — and the `intercepted === 0` guard in the teardown below is what proves
+ * the frame name survived the r128 -> r186 upgrade: the three trace files
+ * passed rather than throwing. A call whose
  * stack includes that frame is answered from an independent monotonic
  * counter — not another random source, since nothing ever reads these
  * UUIDs, so there is nothing for a counter to get "wrong" — instead of the

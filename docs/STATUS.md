@@ -53,10 +53,17 @@ sprite frame an enemy was showing — Phase 3 Part C measured the roster
 cut's real cost against the real level grids, found and pinned KNOWN-18, and
 wrote the Phase 3 spec named above, and Phase 3 Part D recorded the priest
 boss fight before three brains replace it, closing the last four of Part B's
-honest-gaps list.
+honest-gaps list, and Phase 2B Part A finally performed the Three.js upgrade
+KNOWN-14 had deferred twice — on branch `phase-2b-threejs-evaluated`,
+**unmerged**, because its deliverable is a decision a human has to make with
+the game in front of them.
 **Phase 2 Part B is blocked on a human running the game** — see the browser
 note under Environment gotchas. **KNOWN-15 is blocked on the same human**, for
-the same reason: it is a balance change nobody here can look at.
+the same reason: it is a balance change nobody here can look at. **So is the
+Three.js upgrade on `phase-2b-threejs-evaluated`**: it is done, the suite is
+green and all three trace fixtures are byte-identical, and none of that is
+evidence about what the game looks like — see the Phase 2B Part A status
+section and KNOWN-14.
 
 ---
 
@@ -320,6 +327,16 @@ shifting every colour with nothing able to see it. Colour management went
 default-on in r152 and light intensities changed meaning in r155. No test here
 samples pixels. See KNOWN-14.
 
+**Superseded by Phase 2B Part A**, which performed the upgrade on branch
+`phase-2b-threejs-evaluated` (three pinned at 0.186.0). Two things this
+paragraph says are worth correcting rather than leaving to be re-derived: the
+API count is 38, not 34 (and not the 41 the Phase 2B plan quoted — a comment
+in `src/audio/Listener.ts` naming two APIs the code does *not* use inflates
+any naive grep), and "light intensities changed meaning in r155" is a
+thinner description than what actually happens — the real mechanism is that
+r128 multiplied every diffuse contribution by pi and modern three does not.
+KNOWN-14 carries the measured version.
+
 ### What Plan 0F found, and what it teaches
 
 The recurring theme of this branch was **guards that kept reporting success
@@ -367,9 +384,10 @@ subscriber, deliberately not before (Plan 0E Decision 2); `wakeBoss` — the one
 entry left in `Context.ts`, and a genuine cycle break rather than a bridge to
 unmoved code — is its natural first candidate. KNOWN-13's duplicate enemy interfaces (sixteen across fifteen files) were consolidated by Phase 3 Part A.
 
-Phase 2 owns the deferred Three.js upgrade (KNOWN-14) — Part A already closed
+Phase 2 owns the Three.js upgrade (KNOWN-14) — Part A already closed
 KNOWN-7 (casings never reaching the screen) and KNOWN-8 (the six-slot mouse
-wheel); see Phase 2 Part A status below. Phase 4's level rebuild owns KNOWN-4
+wheel), and Phase 2B Part A has now done the upgrade itself on an unmerged
+branch; see Phase 2 Part A status and Phase 2B Part A status below. Phase 4's level rebuild owns KNOWN-4
 and KNOWN-11.
 
 The one definition-of-done item that **cannot** be checked in this environment
@@ -499,6 +517,40 @@ The stub sniffs `Error().stack` for `generateUUID`, because `MathUtils` is
 frozen and unpatchable. That is fragile in a specific way — a bundled or
 minified three would silently stop matching and send UUID draws back into the
 stream — so the teardown now **fails loudly if a run intercepted zero draws**.
+That guard earned its keep at the Phase 2B upgrade: three 0.186.0 moved
+`generateUUID` from `build/three.js:286` to `build/three.core.js:2317`, a file
+that did not exist at r128. The frame name survived, the guard did not fire,
+and `gameplayTrace.ts`'s coordinates were re-derived against the installed
+0.186.0 rather than left dangling.
+
+## Phase 2B Part A status
+
+Branch `phase-2b-threejs-evaluated`, **not merged and not to be merged before
+a human compares the two builds**. Plan and report:
+`.superpowers/sdd/2026-09-14-phase2b-threejs-evaluated/`.
+
+`three` and `@types/three` pinned at **0.186.0** (from 0.128.0). `tsc --noEmit`
+passes with no change to any call site; all **38** `THREE.*` APIs `src/` used
+at r128 still exist (39 now, after swapping `sRGBEncoding` for
+`SRGBColorSpace` and gaining `ColorManagement`). Both earlier counts for this
+were wrong — KNOWN-14 said 34, the plan said 41 — because a comment in
+`src/audio/Listener.ts` naming two APIs the code deliberately does *not* use
+inflates any naive grep. 38 is derived from comment-stripped source. `npm test` is green — 61 files / 493 tests — and **all three trace
+fixtures are byte-identical**, none regenerated. Single-file build: 668 kB ->
+698 kB.
+
+**None of that is evidence about how the game looks, and this section exists
+so nobody quotes it as if it were.** The digest's colour field cannot see a
+colour-space change at all — `Color.getHex()` re-encodes to sRGB, so the round
+trip is exact both ways (all 2^24 hex values, zero mismatches), and flipping
+colour management on and re-running all three traces left every fixture
+untouched. What the upgrade actually changes is the lighting model, which no
+test here reaches: every diffuse contribution is now pi times smaller, point
+lights use a different falloff *shape*, and `MeshLambertMaterial` shades per
+fragment instead of per vertex. Nothing was retuned to compensate; that is the
+human's call. KNOWN-14 carries the four decisions, the evidence behind each,
+and the prediction the side-by-side is supposed to falsify. KNOWN-20 is a bug
+the upgrade surfaced on the way past.
 
 The identical finding recurred with audio: `src/audio/`'s synthesis draws
 from the same seeded `Math.random()` at six sites, an `installAudioStub()`
@@ -764,9 +816,12 @@ fixed, and `docs/known-issues.md` marks the row **closed**.
 said five) but is a verified false positive: it imports `src/main` but never
 calls `loadLevel`/`startGame`/a menu click, so `startGame` never runs there.
 
-`npm test`: **59 files / 488 tests**, all green; `tsc --noEmit` clean; the
-file-size gate reports 90 files checked against the 400-line limit; `madge
---circular` reports `Processed 90 files` with no circular dependency.
+`npm test` at the Phase 3 Part D merge: **59 files / 488 tests**, all green;
+`tsc --noEmit` clean; the file-size gate reports 90 files checked against the
+400-line limit; `madge --circular` reports `Processed 90 files` with no
+circular dependency. On the unmerged `phase-2b-threejs-evaluated` branch it is
+**61 files / 493 tests**, 91 files at both gates — `src/render/ColorPolicy.ts`
+plus `tests/render/colorPolicy.test.ts` and `tests/render/outputColorSpace.test.ts`.
 
 ## How fidelity is guarded
 
@@ -861,25 +916,21 @@ Two practices that have mattered most:
   frames** — torch-lit walls, the weapon viewmodel, the HUD — from two
   different levels and two different Three.js revisions.
 
-  So the previous claim, that `src/core/Loop.ts` never runs here and a
-  screenshot shows an unrendered canvas, is **false**. Visual work — lighting,
-  geometry, art, the Three.js upgrade — **can** be compared here. Phase 2B
-  Part A did exactly that: two dev servers on two ports, one per revision,
-  matched frames from each.
-
-  **What is NOT established, and matters:** rAF is not reliably *sustained*.
-  A later probe with the pane hidden timed out with zero callbacks, and one
-  taken with the tab explicitly fronted still saw none within 8 seconds. What
-  is dependable is that **taking a screenshot produces a rendered frame**.
-  So: screenshots for visual comparison, yes. Loop-driven measurement over
-  many frames (`gl.readPixels` sampled across a run, frame-rate timing) —
-  do not rely on it.
-
-  Why the 2026-08-31 measurement got zero is not known. The environment may
-  have changed, or that run may have been taken while the pane was not
-  compositing. **Re-measure before trusting either version of this note**: a
-  two-line rAF counter in `javascript_tool` settles it in seconds, and this
-  note has now been confidently wrong twice.
+  The consequence is not subtle: **`src/core/Loop.ts` never runs here, so
+  nothing is ever rendered.** A screenshot shows an unrendered canvas. Any
+  work whose correctness is visual — lighting, geometry, art, and the
+  Three.js upgrade (KNOWN-14, now performed but unmerged) — **cannot be
+  verified in this environment at all** and needs a human running the game.
+  Phase 2B Part A re-measured this directly rather than trusting the note,
+  on three@0.186.0: a `requestAnimationFrame` counter run against
+  `npm run dev` in the pane recorded **0 frames in 1.2 seconds**, with
+  `document.hidden === true`, and fronting the tab changed neither number.
+  The pane also refuses to open the built `THE-BLACK-SILENCE.html` over
+  `file://` at all, so even a static look at the single-file build is not
+  available here. What the pane *did* show is worth recording as the one
+  thing it can still prove: the upgraded build boots in a real browser
+  against a real WebGL2 context with an empty console — no exceptions, no
+  three warnings — so the upgrade is not broken, only unseen.
 
   This does not affect the test suite. `tests/integration/gameplayTrace.ts`
   installs its own rAF queue and drains it by hand, which is why 900-frame

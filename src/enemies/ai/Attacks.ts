@@ -1,4 +1,8 @@
 import * as THREE from "three";
+// Side-effect import: this module builds `ringMatBase` (a coloured material)
+// at module scope, so THREE.ColorManagement has to be settled before its
+// body runs.
+import "../../render/ColorPolicy";
 import { rnd } from "../../utils/math";
 import { player } from "../../player/PlayerState";
 import { damagePlayer } from "../../player/Player";

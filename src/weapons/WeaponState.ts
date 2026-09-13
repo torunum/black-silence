@@ -1,4 +1,8 @@
 import * as THREE from "three";
+// Side-effect import: this module builds three coloured viewmodel materials
+// at module scope, so THREE.ColorManagement has to be settled before its
+// body runs.
+import "../render/ColorPolicy";
 import { rnd } from "../utils/math";
 import { WEAPON_STATS } from "./definitions";
 import { weaponRuntime } from "./WeaponRuntime";
