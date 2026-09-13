@@ -9,7 +9,7 @@ import * as THREE from "three";
  * Three.js r152 turned `ColorManagement` on by default. With it on,
  * `Color.setHex(0xffb060)` no longer stores `(1.0, 0.690, 0.376)`; it treats
  * the hex as sRGB and decodes it into the linear-sRGB working space, storing
- * `(1.0, 0.418, 0.117)`. Every authored colour constant in this game — the
+ * `(1.0, 0.434, 0.117)`. Every authored colour constant in this game — the
  * ten hand-tuned light colours, the fog and background colours, the gib and
  * decal materials, the elite tint — would silently change meaning, while
  * reading exactly the same on the way back out (`Color.getHex()` re-encodes

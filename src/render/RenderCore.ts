@@ -51,11 +51,16 @@ renderState.renderer = new THREE.WebGLRenderer({
 // three@0.186.0 — the two `ACESFilmicToneMapping( vec3 color )` shader
 // functions were diffed and match character for character, matrices, the
 // `toneMappingExposure / 0.6` prescale and all — so nothing about this
-// operator changed in the upgrade. **What changed is its input.** Modern
-// three dropped the `irradiance *= PI` that r128 applied whenever
-// `physicallyCorrectLights` was false (which was its default), so every
-// diffuse contribution now arrives at this curve pi times smaller, and point
-// lights additionally arrive through a different falloff shape. ACES is
+// operator changed in the upgrade. **What changed is its input.** For this
+// game's MeshLambertMaterial, r128's lights_lambert_vertex applied
+// `directLightColor_Diffuse = PI * directLight.color` unconditionally for
+// every point/spot/directional light (not the `#ifndef
+// PHYSICALLY_CORRECT_LIGHTS`-guarded `irradiance *= PI` in
+// getAmbientLightIrradiance, which only ever covered the ambient/hemi path).
+// r186 has no such multiply anywhere in the direct-light path either, so
+// every diffuse contribution now arrives at this curve pi times smaller —
+// ambient included — and point lights additionally arrive through a
+// different falloff shape. ACES is
 // nearly linear in the toe and only rolls off near the shoulder, so the
 // expected result is a picture that is roughly pi times darker **and**
 // visibly flatter — most of the filmic highlight compression this exposure

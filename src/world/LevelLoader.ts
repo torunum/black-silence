@@ -319,7 +319,9 @@ export function loadLevel(idx: number): void {
       const pad=new THREE.Mesh(track(new THREE.BoxGeometry(CELL*1.3,.06,CELL*1.3)),
         track(new THREE.MeshBasicMaterial({color:0x4a6b8a})));
       pad.position.set(wx,ph+.04,wz);renderState.scene.add(pad);
-      const gl=track(new THREE.PointLight(0x4a6b8a,.9,6));gl.position.set(wx,ph+1,wz);renderState.scene.add(gl);}
+      // decay:1 explicit — restores r128's PointLight default (r186 moved it to
+      // 2); reference/sonsurum.html:2909 omits it the same way. See KNOWN-14.
+      const gl=track(new THREE.PointLight(0x4a6b8a,.9,6,1));gl.position.set(wx,ph+1,wz);renderState.scene.add(gl);}
     else if(ch==="i"){
       const pole=new THREE.Mesh(track(new THREE.CylinderGeometry(.06,.09,1.15,6)),
         track(new THREE.MeshLambertMaterial({color:0x1a160f})));
@@ -343,7 +345,8 @@ export function loadLevel(idx: number): void {
       const plate=new THREE.Mesh(track(new THREE.CircleGeometry(.9,10)),
         track(new THREE.MeshBasicMaterial({color:0x6a4ab8,transparent:true,opacity:.5})));
       plate.rotation.x=-Math.PI/2;plate.position.set(wx,.02,wz);renderState.scene.add(plate);
-      const gl=track(new THREE.PointLight(0x6a4ab8,.7,5));gl.position.set(wx,.8,wz);renderState.scene.add(gl);
+      // decay:1 explicit — same restoration, reference/sonsurum.html:2933.
+      const gl=track(new THREE.PointLight(0x6a4ab8,.7,5,1));gl.position.set(wx,.8,wz);renderState.scene.add(gl);
       (world.challenge as Record<string, unknown>).plate=plate;(world.challenge as Record<string, unknown>).light=gl;}
     else if(EDEF[ch])spawnEnemy(ch,wx,wz);
     // KNOWN-4 lives on this line and the one above it: `C` and `V` are in both

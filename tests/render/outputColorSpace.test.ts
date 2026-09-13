@@ -25,14 +25,20 @@ import { renderState } from "../../src/render/Renderer";
  *
  * Two assertions, deliberately at two different levels:
  *
- * 1. **The value on the live renderer, after a real boot.** This is the one
- *    that matters: it survives any refactor that keeps the behaviour, and
- *    fails for any that loses it, wherever the assignment ends up living.
+ * 1. **The value on the live renderer, after a real boot.** A future guard,
+ *    not today's tripwire: `SRGBColorSpace` is `outputColorSpace`'s own
+ *    default at 0.186.0, so this assertion cannot fail *today* — deleting the
+ *    assignment outright leaves it green (verified, then reverted). It earns
+ *    its place for the version after this one, whichever way the default
+ *    next moves: it survives any refactor that keeps the behaviour and fails
+ *    for any that loses it, wherever the assignment ends up living.
  * 2. **That the assignment is unconditional in the source.** Narrow and
- *    textual on purpose. Assertion 1 alone would still pass if someone
- *    re-introduced a `!== undefined` guard around a constant that happens to
- *    be defined today — which is precisely the shape that produced KNOWN-14,
- *    and which would go quiet again at the next rename.
+ *    textual on purpose, and the one that actually bites today: assertion 1
+ *    alone would still pass if someone re-introduced a `!== undefined` guard
+ *    around a constant that happens to be defined today — which is precisely
+ *    the shape that produced KNOWN-14 — but deleting the assignment's source
+ *    text (leaving the renderer's own default in effect) turns only this one
+ *    red, which is why both assertions exist rather than just the live one.
  */
 
 beforeAll(() => {

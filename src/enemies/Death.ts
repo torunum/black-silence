@@ -300,5 +300,8 @@ export function openExit() {
   const pad=new THREE.Mesh(track(new THREE.BoxGeometry(CELL*1.3,.06,CELL*1.3)),
     track(new THREE.MeshBasicMaterial({color:0x4a6b8a})));
   pad.position.set((world.exitPos as unknown as ExitPos).x,.03,(world.exitPos as unknown as ExitPos).z);renderState.scene.add(pad);
-  const gl=track(new THREE.PointLight(0x4a6b8a,1.1,8));gl.position.set((world.exitPos as unknown as ExitPos).x,1,(world.exitPos as unknown as ExitPos).z);renderState.scene.add(gl);
+  // decay:1 explicit — r128's PointLight default before r186 moved it to 2;
+  // this light (and reference/sonsurum.html:3155, which omits it the same
+  // way) was tuned against the old default, not the new one. See KNOWN-14.
+  const gl=track(new THREE.PointLight(0x4a6b8a,1.1,8,1));gl.position.set((world.exitPos as unknown as ExitPos).x,1,(world.exitPos as unknown as ExitPos).z);renderState.scene.add(gl);
   at((world.exitPos as unknown as ExitPos).x,1,(world.exitPos as unknown as ExitPos).z,()=>{blip(120,.7,"sine",.09,90,true);growl(70,.4,.2,true);});}

@@ -539,6 +539,13 @@ inflates any naive grep. 38 is derived from comment-stripped source. `npm test` 
 fixtures are byte-identical**, none regenerated. Single-file build: 668 kB ->
 698 kB.
 
+The r128 baseline this whole comparison is measured against is **not
+committed anywhere** — it only ever existed as a copy in this session's
+scratchpad, which does not survive. To rebuild it: `git checkout d173b4b`
+(the commit immediately before the upgrade), then `npm run build:single`,
+then return to `phase-2b-threejs-evaluated` (or later). Do this before
+setting up the human side-by-side if the scratchpad copy is gone.
+
 **None of that is evidence about how the game looks, and this section exists
 so nobody quotes it as if it were.** The digest's colour field cannot see a
 colour-space change at all — `Color.getHex()` re-encodes to sRGB, so the round
@@ -924,7 +931,12 @@ Two practices that have mattered most:
   Phase 2B Part A re-measured this directly rather than trusting the note,
   on three@0.186.0: a `requestAnimationFrame` counter run against
   `npm run dev` in the pane recorded **0 frames in 1.2 seconds**, with
-  `document.hidden === true`, and fronting the tab changed neither number.
+  `document.hidden === true`, and fronting the tab changed neither number —
+  the `false`-vs-`true` difference from the 2026-08-31 run above is just the
+  pane's backgrounding state at each measurement's own moment, not a
+  reinstatement of the visibility theory the paragraph above already ruled
+  out: both runs held fronting/backgrounding fixed as their own control and
+  rAF fired zero times regardless of which value `document.hidden` read.
   The pane also refuses to open the built `THE-BLACK-SILENCE.html` over
   `file://` at all, so even a static look at the single-file build is not
   available here. What the pane *did* show is worth recording as the one

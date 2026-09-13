@@ -55,6 +55,53 @@ function srgbToLinear(c: number): number {
   return c < 0.04045 ? c * 0.0773993808 : Math.pow(c * 0.9478672986 + 0.0521327014, 2.4);
 }
 
+/**
+ * Reassembles a source file into its top-level (column-0) `const`/`let`/
+ * `var` statements, each as one string regardless of how many lines it
+ * spans — so a multi-line array/object literal at module scope (e.g.
+ * `export const gibMatsFlesh = [\n  new THREE.MeshLambertMaterial(...),\n  ...\n];`)
+ * is scanned whole instead of line by line, which is the miss this test
+ * exists to fix (see the comment at this function's one call site).
+ *
+ * A statement starts only at a line with no leading whitespace, matching
+ * this codebase's own convention that top-level declarations are unindented
+ * and function bodies are not — so a `const` inside a function body (always
+ * indented here) never starts a statement, and that function's body is
+ * never folded into "module scope".
+ */
+function moduleScopeStatements(src: string): string[] {
+  const lines = src.split("\n");
+  const statements: string[] = [];
+  let i = 0;
+  while (i < lines.length) {
+    if (/^(?:export\s+)?(?:const|let|var)\s/.test(lines[i])) {
+      let depth = bracketDelta(lines[i]);
+      const parts = [lines[i]];
+      let j = i;
+      while (depth > 0 && j + 1 < lines.length) {
+        j++;
+        parts.push(lines[j]);
+        depth += bracketDelta(lines[j]);
+      }
+      statements.push(parts.join("\n"));
+      i = j + 1;
+    } else {
+      i++;
+    }
+  }
+  return statements;
+}
+
+/** Net change in `(`/`{`/`[` nesting depth across one line. */
+function bracketDelta(line: string): number {
+  let d = 0;
+  for (const ch of line) {
+    if (ch === "(" || ch === "{" || ch === "[") d++;
+    else if (ch === ")" || ch === "}" || ch === "]") d--;
+  }
+  return d;
+}
+
 function srcFiles(dir: string): string[] {
   const out: string[] = [];
   for (const name of readdirSync(dir)) {
@@ -110,24 +157,50 @@ describe("colour policy", () => {
   });
 
   it("every module that builds a coloured material at module scope imports ColorPolicy", () => {
-    // Derived, not listed: find the files whose module-scope body (a line
-    // with no leading whitespace, so not inside a function) constructs a
-    // THREE material or Color carrying a colour, and require the side-effect
-    // import on each. A new such module added without the import would be a
-    // silent half-colour-managed game.
+    // Derived, not listed: find the files whose module-scope body constructs
+    // a THREE material or Color carrying a colour, and require the
+    // side-effect import on each. A new such module added without the import
+    // would be a silent half-colour-managed game.
+    //
+    // A single-line regex over each line in isolation (this test's original
+    // form) misses a module-scope declaration whose `new THREE.Material(...)`
+    // calls sit inside a *multi-line* literal — src/fx/Gibs.ts's
+    // `gibMatsFlesh`/`gibMatsWood` arrays are exactly that shape, six
+    // materials spread across eight lines. Proven: deleting Gibs.ts's own
+    // `import "../render/ColorPolicy"` left all three tests in this file
+    // green under the old single-line scan, because it never "checked"
+    // Gibs.ts in the first place — checked stayed 3 either way.
+    //
+    // Fixed by reassembling each top-level (column-0) `const`/`let`/`var`
+    // statement across however many lines it spans, tracking `(`/`{`/`[`
+    // depth so the statement's full text — including a multi-line array
+    // literal — is scanned as one unit, then applying the same
+    // Material/Color-with-a-colour test to that whole statement. A line
+    // indented inside a function body never starts a statement here (the
+    // codebase's own convention: top-level declarations are unindented,
+    // function bodies are not), so this does not pull function-body
+    // construction sites into "module scope" — verified against every file
+    // this scan's own `new THREE\.(\w*Material|Color)\(` sweep finds
+    // (Death.ts, LevelLoader.ts, RenderCore.ts, Particles.ts all construct
+    // materials only inside indented function bodies, and none of them are
+    // "checked" here, before and after this fix).
     const offenders: string[] = [];
     let checked = 0;
     for (const f of srcFiles("src")) {
       const src = readModuleSource(f);
-      const buildsColourAtModuleScope = src
-        .split("\n")
-        .some((l) => /^(?:export\s+)?const\s.*new THREE\.(?:\w*Material|Color)\b/.test(l) && /color\s*:|new THREE\.Color/.test(l));
+      const buildsColourAtModuleScope = moduleScopeStatements(src).some(
+        (s) => /new THREE\.(?:\w*Material|Color)\b/.test(s) && /color\s*:|new THREE\.Color/.test(s),
+      );
       if (!buildsColourAtModuleScope) continue;
       checked++;
       if (!/import ["'][^"']*render\/ColorPolicy["']/.test(src)) offenders.push(f);
     }
-    // Guard: if the scan stops finding anything, it is broken, not clean.
-    expect(checked).toBeGreaterThanOrEqual(3);
+    // Guard: the four files this scan actually has today —
+    // src/fx/Decals.ts, src/fx/Gibs.ts, src/weapons/WeaponState.ts,
+    // src/enemies/ai/Attacks.ts — derived independently by hand, not copied
+    // from whatever the scan happens to return (that circularity is exactly
+    // what let the multi-line miss above go unnoticed).
+    expect(checked).toBe(4);
     expect(offenders).toEqual([]);
   });
 
