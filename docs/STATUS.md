@@ -343,7 +343,8 @@ and KNOWN-11.
 The one definition-of-done item that **cannot** be checked in this environment
 is "`npm run dev` plays identically to `reference/sonsurum.html`". The browser
 pane throttles `requestAnimationFrame` to zero when it is not displayed, so the
-game loop does not run there — see the environment notes below. The
+game loop does not run there **(this was measured wrong — the game does
+render here; see Environment gotchas)** — see the environment notes below. The
 characterization traces are the substitute evidence, and they are the reason
 this phase was safe to attempt at all.
 
@@ -419,7 +420,8 @@ Branch `phase-2a-verifiable-world`, **merged**. Spec and plan dated 2026-08-31.
 Ledger: `.superpowers/sdd/2026-08-31-phase2a-verifiable-world/progress.md`.
 
 Phase 2 was **split by what this environment can verify**, which is the
-decision worth remembering. The game cannot be rendered here — see Environment
+decision worth remembering. The game was believed unrenderable here — a
+belief corrected on 2026-09-14; see Environment
 gotchas — so shadowed lighting, variable ceiling height, gothic trim and the
 Three.js upgrade all wait for a human. Part A is the rest.
 
@@ -811,28 +813,39 @@ Two practices that have mattered most:
   - Bash: `export PATH="/c/Program Files/nodejs:$PATH"`
   - PowerShell: `$env:PATH = "$env:ProgramFiles\nodejs;$env:PATH"; `
   A restart of the session fixes it properly.
-- **`requestAnimationFrame` never fires in the Browser pane. This is the
-  single most important environment fact on the project.** Measured directly
-  on 2026-08-31, on the real page served by a real `vite` dev server, with the
-  pane open and the page reporting itself visible: over 3.2 seconds a
-  `setTimeout` loop fired **100 times** while a bare `requestAnimationFrame`
-  counter fired **zero**. `document.hidden` was `false` throughout.
+- **The game DOES render in the Browser pane, and this note has now been
+  wrong in both directions.** Corrected 2026-09-14 by direct measurement.
 
-  Earlier versions of this note blamed pane visibility — "a hidden pane
-  composites no frames" — and that explanation is **wrong**. Fronting the pane
-  does not help; the starvation is specific to rAF and timers are unaffected.
-  A future session should not spend effort trying to make the pane visible, as
-  one already did.
+  What was measured this time, on the real page served by a real `vite` dev
+  server: a bare `requestAnimationFrame` counter fired **363 times in 2
+  seconds** (`document.hidden === false`), the menu responded to a click, the
+  game started, and `computer{action:"screenshot"}` returned **fully rendered
+  frames** — torch-lit walls, the weapon viewmodel, the HUD — from two
+  different levels and two different Three.js revisions.
 
-  The consequence is not subtle: **`src/core/Loop.ts` never runs here, so
-  nothing is ever rendered.** A screenshot shows an unrendered canvas. Any
-  work whose correctness is visual — lighting, geometry, art, and the deferred
-  Three.js upgrade (KNOWN-14) — **cannot be verified in this environment at
-  all** and needs a human running the game.
+  So the previous claim, that `src/core/Loop.ts` never runs here and a
+  screenshot shows an unrendered canvas, is **false**. Visual work — lighting,
+  geometry, art, the Three.js upgrade — **can** be compared here. Phase 2B
+  Part A did exactly that: two dev servers on two ports, one per revision,
+  matched frames from each.
+
+  **What is NOT established, and matters:** rAF is not reliably *sustained*.
+  A later probe with the pane hidden timed out with zero callbacks, and one
+  taken with the tab explicitly fronted still saw none within 8 seconds. What
+  is dependable is that **taking a screenshot produces a rendered frame**.
+  So: screenshots for visual comparison, yes. Loop-driven measurement over
+  many frames (`gl.readPixels` sampled across a run, frame-rate timing) —
+  do not rely on it.
+
+  Why the 2026-08-31 measurement got zero is not known. The environment may
+  have changed, or that run may have been taken while the pane was not
+  compositing. **Re-measure before trusting either version of this note**: a
+  two-line rAF counter in `javascript_tool` settles it in seconds, and this
+  note has now been confidently wrong twice.
 
   This does not affect the test suite. `tests/integration/gameplayTrace.ts`
   installs its own rAF queue and drains it by hand, which is why 900-frame
-  traces work in vitest while the live page renders nothing.
+  traces are deterministic in vitest regardless of what the pane does.
 
 - **Pointer lock is blocked** (`requestPointerLock` rejects with
   `WrongDocumentError`), so mouse look cannot be exercised in the page.
