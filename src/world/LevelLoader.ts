@@ -20,6 +20,7 @@ import { player } from "../player/PlayerState";
 import { S } from "../core/State";
 import { CELL, WALLH, EYE } from "./Grid";
 import { floorHeightAt } from "./Collision";
+import { buildCeiling } from "./Ceiling";
 import { world } from "./WorldState";
 import type { WallSeg } from "./LevelBuilder";
 import { after, clearAllTimers } from "../core/Timers";
@@ -108,6 +109,11 @@ import type { Enemy } from "../enemies/Enemy";
  * instanceable list). `world.grid`/`world.wallSegs` — what
  * `src/world/Collision.ts` actually reads — are untouched by this change;
  * only what gets added to `renderState.scene` differs.
+ *
+ * Phase 2 Part B Task 1 moved the ceiling to `src/world/Ceiling.ts` — see
+ * that file's own header for the two shapes and the lighting rule that
+ * comes with opting a level into `BuiltLevel.cmap`. Nothing here reads the
+ * ceiling back; `buildCeiling` is called once, below, and owns it entirely.
  */
 
 export function spawnEnemy(ch: string, wx: number, wz: number, summoned?: boolean): Enemy {
@@ -176,6 +182,7 @@ export function loadLevel(idx: number): void {
   const Ldef=LEVELS[idx],L=Ldef.build();
   world.grid=L.g;world.GW=L.W;world.GH=L.H;
   world.heightMap=L.hmap||null;
+  world.ceilMap=L.cmap||null;
   world.wallSegs=(L.segs||[]) as unknown as Record<string, unknown>[];
   renderState.scene=new THREE.Scene();
   setScene(renderState.scene);
@@ -257,12 +264,7 @@ export function loadLevel(idx: number): void {
   const fm=new THREE.Mesh(track(new THREE.PlaneGeometry(world.GW*CELL,world.GH*CELL)),
     track(new THREE.MeshLambertMaterial({map:floorTex})));
   fm.rotation.x=-Math.PI/2;fm.position.set(world.GW*CELL/2,0,world.GH*CELL/2);renderState.scene.add(fm);
-  const ceilTex=track((hell?TEX.hellCeil:flesh?TEX.fleshCeil:TEX.ceil).clone());ceilTex.needsUpdate=true;ceilTex.repeat.set(world.GW,world.GH);
-  ceilTex.wrapS=ceilTex.wrapT=THREE.RepeatWrapping;
-  ceilTex.magFilter=THREE.NearestFilter;ceilTex.minFilter=THREE.NearestFilter;
-  const cm=new THREE.Mesh(track(new THREE.PlaneGeometry(world.GW*CELL,world.GH*CELL)),
-    track(new THREE.MeshLambertMaterial({map:ceilTex})));
-  cm.rotation.x=Math.PI/2;cm.position.set(world.GW*CELL/2,WALLH,world.GH*CELL/2);renderState.scene.add(cm);
+  buildCeiling(renderState.scene as THREE.Scene,(hell?TEX.hellCeil:flesh?TEX.fleshCeil:TEX.ceil),wallTex);
   /* raised floor platforms (verticality) — a textured block per elevated cell.
      Each cell's box used to get its own BoxGeometry sized to that cell's
      height, so nothing was shared. Instanced here as one unit box (shared

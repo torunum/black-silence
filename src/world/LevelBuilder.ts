@@ -13,12 +13,32 @@ export type Grid = string[][];
 
 export interface WallSeg { x1: number; z1: number; x2: number; z2: number; }
 
-/** What every buildX() function returns. Some carry a height map or wall segments. */
+/**
+ * What every buildX() function returns. Some carry a height map, a ceiling
+ * map or wall segments.
+ *
+ * `hmap` and `cmap` are deliberate siblings — both `number[][]` indexed
+ * `[z][x]`, both optional, both carried onto `world` by `loadLevel`
+ * (`world.heightMap` / `world.ceilMap`), both read through a `…HeightAt`
+ * query in `src/world/Collision.ts`. Both hold an **absolute world-y
+ * height**, not an offset: `hmap`'s cell is the floor's y and `cmap`'s cell
+ * is the ceiling's y, so `ceilHeightAt(x,z) - floorHeightAt(x,z)` is the
+ * headroom at a point and both numbers are directly comparable to a
+ * projectile's `m.position.y`. An offset would have made `cmap` the one map
+ * in the pair whose numbers are not world-y, which is the kind of quiet
+ * asymmetry this project keeps paying for.
+ *
+ * In both maps a **falsy cell means "the value this level already had"** —
+ * 0 for the floor, `WALLH` for the ceiling — so `Array(W).fill(0)` is the
+ * neutral base an author raises parts of, and an absent map, an absent row
+ * and an absent cell all agree.
+ */
 export interface BuiltLevel {
   g: Grid;
   W: number;
   H: number;
   hmap?: number[][];
+  cmap?: number[][];
   segs?: WallSeg[];
 }
 

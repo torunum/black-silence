@@ -10,8 +10,8 @@ import { gurgle, growl } from "../../audio/Voice";
 import { gibGeo, gibMatsFlesh, spawnGibs } from "../../fx/Gibs";
 import { blood, smoke3d, sparks, toxicP } from "../../fx/Particles";
 import { shake } from "../../fx/ShakeState";
-import { solidAt } from "../../world/Collision";
-import { EYE, WALLH } from "../../world/Grid";
+import { ceilHeightAt, solidAt } from "../../world/Collision";
+import { EYE } from "../../world/Grid";
 import { explodeBarrel, breakProp, type Prop } from "../../world/Props";
 import { world } from "../../world/WorldState";
 import { track } from "../../render/DisposeRegistry";
@@ -135,9 +135,15 @@ export function strikeTick(dt: number){
     s.warn.material.opacity=.4+Math.sin(performance.now()*.02)*.3;
     if(s.t<=0){
       renderState.scene.remove(s.warn);
-      spawnGibs(s.x,WALLH-.4,s.z,5,3,true);
+      // The strike is debris falling *from the ceiling* onto the warning
+      // circle, so its spawn height and its bang's position are "the ceiling
+      // above this point", not the wall height — under level 3's raised
+      // vault the constant would drop rubble out of thin air halfway up the
+      // room. `ceilHeightAt` is `WALLH` on every level without a ceilMap.
+      const sCeil=ceilHeightAt(s.x,s.z);
+      spawnGibs(s.x,sCeil-.4,s.z,5,3,true);
       smoke3d(s.x,1.4,s.z,10);sparks(s.x,1,s.z,6);
-      at(s.x,WALLH-.4,s.z,()=>bang(.25,.5,400));shake(.18);
+      at(s.x,sCeil-.4,s.z,()=>bang(.25,.5,400));shake(.18);
       if(Math.hypot(player.px-s.x,player.pz-s.z)<1.3)damagePlayer(18);
       for(const p of world.props as unknown as Prop[]){if(!p.dead&&Math.hypot(p.x-s.x,p.z-s.z)<1.3)
         p.explosive?explodeBarrel(p):breakProp(p);}
