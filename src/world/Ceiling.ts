@@ -30,13 +30,60 @@ import { track } from "../render/DisposeRegistry";
  * `GW*GH` of them straight back — 825 on level 3 alone, more than the whole
  * pre-instancing level.
  *
+ * `ceilingCells` always instances `GW*GH` quads — one per grid cell,
+ * including solid cells whose ceiling is never seen and cells left at the
+ * default height. The cost of opting a level in is therefore `GW*GH`
+ * regardless of how little of it is actually raised: level 3 pays 825
+ * quads for 152 raised cells; a level that raises one 3x3 corner still
+ * pays for every cell in the map. Deliberate — Step 5's geometry test wants
+ * a built quad at *every* cell so it can assert the map cell-for-cell, and
+ * a builder that skipped default-height cells would make that assertion a
+ * statement about which cells it bothered to draw instead of about the
+ * map — but Phase 4 should budget by map size, not by how much ceiling is
+ * actually raised.
+ *
  * - `ceilingCells` — one shared `PlaneGeometry(CELL,CELL)`, baked
  *   `rotateX(PI/2)` so it faces down exactly as the single plane does, with
  *   one translation-only instance per cell. The texture is cloned with
  *   `repeat(1,1)` instead of `repeat(GW,GH)`: the big plane tiles the
  *   texture once per cell across its whole span, and a per-cell quad with
- *   the default repeat shows that same one tile, so the two branches look
- *   identical where the heights are.
+ *   the default repeat shows that same one tile — the *texture* is
+ *   identical between the two branches wherever the height matches.
+ *
+ *   The *lighting* is not, and this is the more important of the two.
+ *   `MeshLambertMaterial` on three 0.128 computes lighting per **vertex**
+ *   (`lights_lambert_vertex.glsl.js` calls `getPointDirectLightIrradiance`
+ *   in the vertex shader, not the fragment shader), and a point light's
+ *   distance falloff (`bsdfs.glsl.js`'s
+ *   `punctualLightIntensityToIrradianceFactor`) hard-clamps to *exactly*
+ *   zero once a vertex is farther than the light's own `distance` — there
+ *   is no soft tail past the cutoff. The old single plane has exactly four
+ *   vertices, sitting at the level's own four corners; the player's lamp
+ *   (`renderState.lamp`, `distance:9`) is never within 9 units of a level
+ *   corner, so that ceiling is not merely dim, it is *provably*
+ *   ambient-only — confirmed against level 3's real geometry: a lamp near
+ *   the level's centre is ~41 units from every corner, and the formula
+ *   above returns exactly 0 at that distance, not a small number. Once a
+ *   level opts in, `ceilingCells` gives every cell its own four vertices a
+ *   couple of units from whatever light passes under it — the same lamp
+ *   ~2 units from a cell's own vertex returns an irradiance factor of
+ *   ~0.65 — so the lamp genuinely pools on the ceiling the way a Doom-like
+ *   wants it to.
+ *
+ *   **This is not a local change.** It relights *every* cell the instanced
+ *   branch draws, including the cells left at the default height — level
+ *   3's 673 default-height quads light up exactly like its 152 raised
+ *   ones, because both are the same instanced geometry with the same
+ *   four-vertex-per-cell shading. Opting a level into `ceilMap` therefore
+ *   changes how that level's *entire* ceiling reads, not just the part an
+ *   author touched: when Phase 4 raises one corner of level 2, the whole
+ *   cathedral's ceiling lighting changes with it, corridors included. This
+ *   is not a bug — arguably an improvement, since a Doom-like wants the
+ *   lamp on the ceiling — and it is not fixed here; it is a fact the next
+ *   author opting in a level needs before they do it. It also means the
+ *   byte-identical no-`cmap` branch above is load-bearing beyond its own
+ *   test: it is the only thing keeping levels 0, 1 and 2 on the old,
+ *   dimmer, whole-plane ceiling lighting today.
  * - `ceilingRisers` — the part that makes it read as a room. Where two
  *   adjacent cells differ, the vertical gap between them is a **hole in the
  *   roof** with the scene background showing through, and a green suite

@@ -871,6 +871,35 @@ Two practices that have mattered most:
   For development, `npm run dev` is the normal path: Vite on port 5173 with hot
   reload.
 
+- **`renderer.domElement.height` reads `0` in the pane**, while
+  `gl.drawingBufferWidth`/`drawingBufferHeight` are live and correct (e.g.
+  400x225) and rendering itself is fine. Because `canvas.toDataURL()` reads
+  the DOM element's own dimensions, it returns the literal string `"data:,"`
+  here — frames cannot be dumped to disk from the page this way. Found in
+  Phase 2B Task 1, confirmed again in that task's fix round. Read pixels back
+  with `gl.readPixels` against `drawingBufferWidth`/`Height` instead, or fall
+  back to `computer{action:"screenshot"}` for a visual look.
+- **The stale-module hazard is the dangerous one, not the cosmetic one
+  above.** `await import('/src/…')` (or a bare `import('three')`) from
+  `javascript_tool` can resolve to a *different* module instance than the
+  one the running page's own bundle graph is using, especially after Vite
+  has HMR-stamped anything — and the two instances can be live in the same
+  expression with no error to flag it. Phase 2B Task 1's fix round hit this
+  three times in one session: `WorldState.ts` imported fresh read `GW:0,
+  ceilMap:null` while `ceilHeightAt(31,23)` called through the *live*
+  instance returned `8.6` in the same statement; a bare `import('three')`
+  threw inside `Sprite.raycast` because it resolved to a dependency instance
+  the running page wasn't using; and cross-checking two such imports against
+  each other is meaningless precisely because either one, independently, can
+  be the stale one. **The reliable probe is `renderState.scene` (from
+  `src/render/Renderer.ts`) and functions reached through it** — reading
+  `import('/src/world/LevelLoader.ts')`'s `loadLevel` and then inspecting
+  the *scene graph* it produced, rather than reading a separately-imported
+  module's own state, held up every time this was tried. **The reliable
+  reset is a full page reload** before probing, not an HMR-updated tab. A
+  future session that measures the wrong object here would not know it —
+  there is no error, just a different number.
+
 ## Four bugs a player will actually hit
 
 All predate the port, all are preserved on purpose, all are pinned by tests

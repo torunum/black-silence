@@ -110,14 +110,10 @@ import type { Enemy } from "../enemies/Enemy";
  * `src/world/Collision.ts` actually reads — are untouched by this change;
  * only what gets added to `renderState.scene` differs.
  *
- * Phase 2 Part B Task 1 moved the ceiling out to `src/world/Ceiling.ts`.
- * The six lines it replaced built one `PlaneGeometry` at `y=WALLH`; a level
- * that opts into `BuiltLevel.cmap` now gets instanced per-cell quads and
- * riser strips instead. This file was 352 lines against the 400-line gate
- * before that task, so the branch had to land somewhere else regardless,
- * and the seam is clean: nothing here reads the ceiling back.
- * `world.ceilMap` is carried from `L.cmap` exactly as `world.heightMap` is
- * carried from `L.hmap`, one line apart.
+ * Phase 2 Part B Task 1 moved the ceiling to `src/world/Ceiling.ts` — see
+ * that file's own header for the two shapes and the lighting rule that
+ * comes with opting a level into `BuiltLevel.cmap`. Nothing here reads the
+ * ceiling back; `buildCeiling` is called once, below, and owns it entirely.
  */
 
 export function spawnEnemy(ch: string, wx: number, wz: number, summoned?: boolean): Enemy {
