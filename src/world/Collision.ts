@@ -1,5 +1,5 @@
 import { world } from "./WorldState";
-import { CELL } from "./Grid";
+import { CELL, WALLH } from "./Grid";
 
 /**
  * Collision and geometry queries — the seven functions every other system
@@ -86,6 +86,28 @@ export function floorHeightAt(wx: number,wz: number){
   const gx=wx/CELL|0,gz=wz/CELL|0;
   const row=world.heightMap[gz];if(!row)return 0;
   return row[gx]||0;}
+
+/* per-cell ceiling height (WALLH = the height every level had before
+   `world.ceilMap` existed). The sibling of floorHeightAt above, and the
+   *single* home of the "a falsy cell means the default" rule — the ceiling
+   geometry builder (`src/world/Ceiling.ts`) reads cells through
+   `ceilHeightAtCell` rather than indexing `world.ceilMap` itself, so what is
+   drawn and what things that fly are clamped against cannot drift apart.
+
+   This is deliberately NOT a replacement for `WALLH` everywhere. `WALLH` is
+   two questions wearing one constant: "how tall is the wall/door/pillar
+   here" — which this task does not change — and "where is the ceiling above
+   this point", which is this. Doors are the sharp case: `doorTick` sinks a
+   door by its own mesh height, so coupling that to the ceiling would break
+   doors under any raised vault. See this task's report for the per-site
+   decision. */
+export function ceilHeightAtCell(gx: number,gz: number){
+  if(!world.ceilMap)return WALLH;
+  const row=world.ceilMap[gz];if(!row)return WALLH;
+  return row[gx]||WALLH;}
+
+export function ceilHeightAt(wx: number,wz: number){
+  return ceilHeightAtCell(wx/CELL|0,wz/CELL|0);}
 
 export function wallNormal(x: number,z: number,dir: { x: number; z: number }){
   if(!solidAt(x-dir.x*.13,z))return{x:-Math.sign(dir.x),z:0};

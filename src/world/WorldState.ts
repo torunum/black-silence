@@ -34,6 +34,15 @@ export const world = {
   GW: 0,
   GH: 0,
   heightMap: null as number[][] | null,
+  /**
+   * Per-cell ceiling height, `[z][x]`, absolute world-y — `heightMap`'s
+   * sibling and carried the same way (`BuiltLevel.cmap` -> here, by
+   * `loadLevel`). `null` means the level never opted in and its ceiling is
+   * the single `WALLH` plane it has always been. Read through
+   * `ceilHeightAt`/`ceilHeightAtCell` in `src/world/Collision.ts`, never
+   * directly, so the "falsy cell means WALLH" rule lives in one place.
+   */
+  ceilMap: null as number[][] | null,
   wallSegs: [] as Array<Record<string, unknown>>,
   doors: {} as Record<string, Record<string, unknown>>,
   enemies: [] as Enemy[],

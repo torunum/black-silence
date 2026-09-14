@@ -7,8 +7,7 @@ import { renderState } from "../render/Renderer";
 import { player } from "../player/PlayerState";
 import { damagePlayer } from "../player/Player";
 import { S } from "../core/State";
-import { WALLH } from "../world/Grid";
-import { solidAt } from "../world/Collision";
+import { ceilHeightAt, solidAt } from "../world/Collision";
 import { crossExplode } from "../weapons/Hitscan";
 import { weaponRuntime } from "../weapons/WeaponRuntime";
 import { world } from "../world/WorldState";
@@ -33,9 +32,18 @@ import type { Enemy as EnemyShape } from "../enemies/Enemy";
  * module, so the edge is one-way and adds no cycle. Every other call
  * `projTick` makes already resolves to a module (`crossExplode`, `solidAt`,
  * `spawnP`/`smoke3d`/`blood`, `addPool`, `gurgle`, `rnd`) or a state object
- * (`projectiles`, `world`, `player`, `S`, `weaponRuntime`, `renderState`,
- * `WALLH`), so this file needs no `ctx` locator at all — it neither calls
+ * (`projectiles`, `world`, `player`, `S`, `weaponRuntime`, `renderState`),
+ * so this file needs no `ctx` locator at all — it neither calls
  * `ctx()` (AudioEngine) nor reaches through `Context.ts`.
+ *
+ * Both flight loops used to end a projectile at the constant `WALLH`. Phase
+ * 2 Part B Task 1 made the ceiling per-cell, and this is the clearest of the
+ * sites where `WALLH` meant "the ceiling above this point" rather than "how
+ * tall is the wall": left alone, a cross fired inside level 3's raised vault
+ * would detonate in mid-air at 3.4 with eight units of open air above it,
+ * and no geometry assertion would have noticed. `ceilHeightAt` returns
+ * `WALLH` for every level without a `ceilMap`, so this is a no-op on the
+ * three committed trace fixtures — checked, not assumed.
  */
 
 /** projectiles.nails elements, cast for the nail/reap/cross flight loop. */
@@ -75,10 +83,10 @@ export function projTick(dt: number){
     const mx=n.m.position.x,my=n.m.position.y,mz=n.m.position.z;
     if(n.reap){ // visual tracer only — damage already applied by hitscan
       if(Math.random()<.6)spawnP(mx,my,mz,0,0,0,.5,.9,.35,.2,3);
-      if(n.life<=0||my<0.05||my>WALLH||solidAt(mx,mz)){
+      if(n.life<=0||my<0.05||my>ceilHeightAt(mx,mz)||solidAt(mx,mz)){
         smoke3d(mx,Math.max(my,.3),mz,4);renderState.scene.remove(n.m);nails.splice(i,1);}
       continue;}
-    let boom=n.life<=0||my<0.05||my>WALLH||solidAt(mx,mz);
+    let boom=n.life<=0||my<0.05||my>ceilHeightAt(mx,mz)||solidAt(mx,mz);
     if(!boom)for(const p of world.props as unknown as Prop[]){if(p.dead)continue;
       if(Math.hypot(mx-p.x,mz-p.z)<p.r+.1&&my<p.hgt){boom=true;break;}}
     const enemies: readonly Enemy[] = world.enemies;   // checked widening, not a cast

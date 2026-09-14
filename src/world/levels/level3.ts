@@ -85,5 +85,27 @@ export function buildLevel3(): RoomLayout {
     if(L.g[cz]&&"#WI".indexOf(L.g[cz][cx])<0)hm[cz][cx]=Math.min(hm[cz][cx],i*0.55);}};
   rmp(12,7,0,1);rmp(20,7,0,1);rmp(12,17,0,-1);rmp(20,17,0,-1);
   L.hmap=hm;
+  /* ===== VAULTED CEILING over the GREAT TOMB =====
+     The inverse of the tiering above: where the floor sinks into the
+     sovereign pit the vault climbs, so the tomb reads as one tall chamber
+     stepping down to the 3.4 corridors around it, instead of the whole
+     necropolis sharing one flat lid. Three tiers, deliberately modest —
+     this is the mechanism's demonstration, not Phase 4's hand-carved shape.
+
+     Cells are absolute world-y, and a 0 means "whatever this level already
+     had" (WALLH), exactly as a 0 in `hm` above means the base floor.
+
+     Solid cells are skipped, and that is load-bearing rather than tidy: a
+     wall, pillar or door mesh is WALLH tall, so raising the ceiling over one
+     would open a gap above it that you could see the sky through. Left at
+     the default, the riser strip between such a cell and its raised
+     neighbour becomes the clerestory wall above the tomb's arcade. */
+  const cmp=Array.from({length:L.H},()=>Array(L.W).fill(0));
+  const sC=(x0: number,z0: number,x1: number,z1: number,h: number)=>{for(let z=z0;z<=z1;z++)for(let x=x0;x<=x1;x++)
+    if(L.g[z]&&L.g[z][x]&&"#WI+DS".indexOf(L.g[z][x])<0)cmp[z][x]=h;};
+  sC(9,7,23,17,5.2);            // the arcade walk and its north/south galleries
+  sC(11,9,21,15,7.0);           // over the pit's rim, where the floor drops away
+  sC(13,10,19,14,8.6);          // the vault's crown, directly over the sovereign
+  L.cmap=cmp;
   return L;
 }
