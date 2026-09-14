@@ -46,6 +46,23 @@ renderState.renderer = new THREE.WebGLRenderer({
   canvas: document.getElementById("game") as HTMLCanvasElement,
   antialias: false,
 });
+// Restores r128's light model. Without it the game renders almost unlit —
+// verified by eye, not predicted: matched frames of the prologue and of
+// level 1 were captured on r128, on r186, and on this build, and r186's
+// torch-lit walls go nearly black in both scenes. `useLegacyLights` brings
+// back the pi intensity scale and the old point-light falloff branch, and
+// the two scenes come back to the r128 look.
+//
+// The residual difference is `MeshLambertMaterial` shading per fragment
+// instead of per vertex, which r164 already does and the flag does not
+// undo. It reads as slightly smoother and slightly brighter than r128 —
+// most visible on the dungeon ceiling, which r128 left dark.
+//
+// THE COST, stated plainly: this flag was deleted in r165, so taking it
+// pins the project at 0.164.1 until someone retunes the ten lights for the
+// modern model with a human at the game. The alternative is r186 plus that
+// retune, now, which is real art work and not a mechanical change.
+(renderState.renderer as unknown as { useLegacyLights: boolean }).useLegacyLights = true;
 // Tone mapping, unchanged from the reference (`reference/sonsurum.html:904`).
 // The ACES fit itself is byte-identical between three@0.128.0 and
 // three@0.186.0 — the two `ACESFilmicToneMapping( vec3 color )` shader

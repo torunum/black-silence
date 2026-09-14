@@ -12,11 +12,11 @@
     "build:single": "vite build && node scripts/inline-single-file.mjs"
   },
   "dependencies": {
-    "three": "0.186.0"
+    "three": "^0.164.1"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",
-    "@types/three": "0.186.0",
+    "@types/three": "^0.164.1",
     "jsdom": "^30.0.1",
     "madge": "^8.0.0",
     "typescript": "^5.7.0",
