@@ -45,7 +45,10 @@ describe("every level-grid character resolves to a known tile", () => {
   // level load instead. Either way, an unaccounted-for character is a bug.
   const SKIP_CHARS = ".#WI+DS";
   const NAMED_CHARS = "PXilpY";
-  const PROP_CHARS = "xTCFVO";
+  // `v` (prop-only pew) joined this set in player-feedback round 1, task 1 —
+  // see KNOWN-4. It is deliberately NOT in ENEMY_DEFS, which is the whole
+  // point of it; if it ever is, tests/world/levels.test.ts fails first.
+  const PROP_CHARS = "xTCFVOv";
   const PICKUP_CHARS = ["h", "A", "a", "b", "o", "c", "K", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
   const KNOWN_NON_ENEMY = new Set([...SKIP_CHARS, ...NAMED_CHARS, ...PROP_CHARS, ...PICKUP_CHARS]);
 

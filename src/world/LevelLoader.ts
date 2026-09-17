@@ -164,7 +164,15 @@ export function spawnProp(ch: string, wx: number, wz: number): void {
     m.position.set(wx,0,wz);m.rotation.y=rnd(0,6);r=.4;hgt=.9;hp=10;}
   else if(ch==="F"){m=new THREE.Mesh(track(new THREE.BoxGeometry(1.1,1.7,.4)),wood);
     m.position.set(wx,.85,wz);r=.6;hgt=1.7;hp=28;}
-  else if(ch==="V"){m=new THREE.Group();
+  // `V` and `v` build the same pew. `V` is also THE FACTORY FOREMAN in
+  // `ENEMY_DEFS`, and `loadLevel` checks the enemy table first, so a `V` in a
+  // grid never reaches this branch — that is KNOWN-4, and the mechanism is
+  // deliberately left alone here (see the dispatch below). `v` is the
+  // unambiguous spelling: it is in no other table, so a level that wants
+  // furniture can ask for furniture. `V` is kept because deleting it would
+  // change what `spawnProp("V",…)` does for any future caller that reaches it
+  // directly, which is not this task's decision to make.
+  else if(ch==="V"||ch==="v"){m=new THREE.Group();
     const seat=new THREE.Mesh(track(new THREE.BoxGeometry(1.6,.09,.45)),wood);seat.position.y=.42;m.add(seat);
     const back=new THREE.Mesh(track(new THREE.BoxGeometry(1.6,.5,.08)),wood);back.position.set(0,.7,-.2);m.add(back);
     const l1=new THREE.Mesh(track(new THREE.BoxGeometry(.1,.42,.42)),wood);l1.position.set(-.7,.21,0);m.add(l1);
@@ -338,7 +346,12 @@ export function loadLevel(idx: number): void {
       const gl=track(new THREE.PointLight(0x6a4ab8,.7,5));gl.position.set(wx,.8,wz);renderState.scene.add(gl);
       (world.challenge as Record<string, unknown>).plate=plate;(world.challenge as Record<string, unknown>).light=gl;}
     else if(EDEF[ch])spawnEnemy(ch,wx,wz);
-    else if("xTCFVO".includes(ch))spawnProp(ch,wx,wz);
+    // KNOWN-4 lives on this line and the one above it: `C` and `V` are in both
+    // `EDEF` and this set, so they always spawn the enemy. The order is NOT
+    // changed here — `C` is an intentional Cacodemon in levels 6 and 7, so
+    // flipping the two arms would trade one collision for the other. `v` is
+    // added instead: a prop-only pew, claimed by no enemy def.
+    else if("xTCFVOv".includes(ch))spawnProp(ch,wx,wz);
     else{
       const map2:Record<string,string>={h:"health",A:"armor",a:"bullets",b:"shells",o:"slugs",c:"crosses",K:"key",
         "2":"w1","3":"w2","4":"w3","5":"w4","6":"w5","7":"w6","8":"w7","9":"nails","0":"souls"};

@@ -927,11 +927,15 @@ so they cannot change unnoticed. See `docs/known-issues.md`.
 - **KNOWN-1** — Level 1 has a red key and a miniboss guarding it, but no locked
   door anywhere. The key does nothing.
 - **KNOWN-4** — `loadLevel` checks the enemy table before the prop table, and
-  `C` and `V` are in both. Level 2's eight `V` tiles, written under a comment
-  reading "nave pews", spawn **eight Factory Foreman bosses** (2600 hp each).
-  The chair in the priest's chambers is a Cacodemon. Do not "fix" the character
-  collision without deciding what Level 2's furniture should be — removing
-  eight bosses is a balance change.
+  `C` and `V` are in both. **Still open — the mechanism is untouched.** What
+  changed (player feedback round 1, task 1): level 2's eight `V` tiles, written
+  under a comment reading "nave pews", used to spawn **eight Factory Foreman
+  bosses** (2600 hp each) in front of the level's authored boss. The project
+  owner played the game and reported it, so all eight are now `v`, a prop-only
+  pew spelling; level 2 has no Foreman. The dispatch order was deliberately
+  **not** flipped — `C` is an intentional Cacodemon in levels 6 and 7 — so the
+  tables still overlap, and **the chair in the priest's chambers is still a
+  Cacodemon**. The next level that writes a chair or a pew hits this again.
 - **KNOWN-11** — **Armour pickups never spawn, from any level.** Found during
   Plan 0E Task 1 while building the combat trace. `loadLevel` dispatches the
   enemy table before the item table, and `A` is both a Mancubus and map2's
