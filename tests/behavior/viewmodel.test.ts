@@ -270,17 +270,78 @@ const POSES: Array<[string, (cur: number) => Scenario, number]> = [
   ["sprint", sprintScenario, 305],
 ];
 
+describe("sprint/walk weapon-bob amplitude constants", () => {
+  it("pins the exact tuned values (player feedback round 1, task 3, 2026-09-17), not just their ratio", () => {
+    // The sprint-pose call-log comparison below derives its expected offset
+    // FROM Draw.SPRINT_BOB_AMT, so it stays green under any value of that
+    // constant — it pins the *formula*, not the *number*. This pins the
+    // number: sabotaged locally (0.38->0.40) while writing this test, and
+    // confirmed the call-log comparison alone stayed green, which is why
+    // this exists as a separate assertion.
+    expect(Draw.WALK_BOB_AMT).toBe(0.28);
+    expect(Draw.SPRINT_BOB_AMT).toBe(0.38);
+  });
+});
+
 describe("drawViewmodel behavioral parity with reference, per weapon slot and animation frame", () => {
   WEAPON_STATS.forEach((weapon, cur) => {
     describe(`weapon ${cur} (${weapon.name})`, () => {
       for (const [label, makeScenario, seed] of POSES) {
-        it(`${label}: draws an identical ordered sequence of canvas calls as the reference`, () => {
+        it(`${label}: draws an identical ordered sequence of canvas calls as the reference${label === "sprint" ? " (offset by the Phase-feedback sprint-bob divergence — see below)" : ""}`, () => {
           const scenario = makeScenario(cur);
           const referenceCalls = refKitAndDrawWindow(seed * 100 + cur, toRefGlobals(scenario), (fns) => fns.drawViewmodel(0.016, 1234.5));
           const modCalls = moduleWindow(seed * 100 + cur, () => Draw.drawViewmodel(0.016, 1234.5, toViewmodelFrame(scenario), WEAPON_STATS));
 
           expect(referenceCalls.length).toBeGreaterThan(3);
-          expectCallLogEqual(modCalls, referenceCalls, `drawViewmodel weapon ${cur} (${weapon.name}) ${label} call log`);
+
+          if (label === "sprint") {
+            // Deliberate divergence (player feedback round 1, task 3,
+            // 2026-09-17): the module's sprint weapon-bob amplitude dropped
+            // from 0.55 to Draw.SPRINT_BOB_AMT (see draw.ts's doc comment),
+            // while the frozen reference (Global Constraints:
+            // reference/sonsurum.html is never edited) still swings at the
+            // original 0.55. bobAmt is a pure multiplier on bx/by
+            // (bx=sin(bobT*4)*2.4*bobAmt, by=|cos(bobT*4)|*1.8*bobAmt), and
+            // moveAmt=1 at this scenario's speed, so the two sides' only
+            // difference is a fixed additive offset on the ONE translate()
+            // call sprintScenario reaches (muzzle=0, so the muzzle-flash
+            // translate never fires here) — expressed below from bobT=2.1
+            // (shared by every weapon's sprint scenario) rather than as a
+            // second copy of the magic 0.38, so this test tracks
+            // SPRINT_BOB_AMT if it's tuned again.
+            const bobT = scenario.bobT;
+            const deltaAmt = Draw.SPRINT_BOB_AMT - 0.55;
+            const dx = Math.sin(bobT * 4) * 2.4 * deltaAmt;
+            const dy = Math.abs(Math.cos(bobT * 4)) * 1.8 * deltaAmt;
+            expect(dx).not.toBe(0); // otherwise this whole branch would be a no-op silently passing
+
+            // Same length and same method/arg-count shape as the reference,
+            // checked structurally first so a real call-order or call-count
+            // regression still fails loudly here rather than being masked
+            // by the per-call tolerance below.
+            expect(modCalls.map((c) => c.method)).toEqual(referenceCalls.map((c) => c.method));
+            referenceCalls.forEach((refCall, idx) => {
+              const modCall = modCalls[idx];
+              if (refCall.method !== "translate") {
+                expect(modCall).toEqual(refCall);
+                return;
+              }
+              // toEqual (used everywhere else in this file) demands bit-exact
+              // numbers; reconstructing "the reference's x/y plus the bob
+              // delta" by addition is not bit-exact against the module's own
+              // sin(bobT*4)*2.4*bobAmt (float addition/subtraction is not
+              // perfectly associative), so this one call compares to ~1e-9,
+              // far tighter than the ~0.15-0.35 unit shift the amplitude
+              // change actually produces and far looser than the ~1e-13
+              // rounding noise this reconstruction introduces.
+              const [refX, refY] = refCall.args as number[];
+              const [modX, modY] = modCall.args as number[];
+              expect(modX).toBeCloseTo(refX + dx, 9);
+              expect(modY).toBeCloseTo(refY + dy, 9);
+            });
+          } else {
+            expectCallLogEqual(modCalls, referenceCalls, `drawViewmodel weapon ${cur} (${weapon.name}) ${label} call log`);
+          }
         });
       }
     });

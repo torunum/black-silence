@@ -91,6 +91,28 @@ function damagePlayer(d: number, silent?: boolean): void {
     el("deadquip").textContent='ADEM: “'+pick(M.dead)+'”';
     el("dead").classList.remove("hidden");}}
 
+/**
+ * `player.bobT`'s per-frame rate, `spd*dt*rate` — drives both the footstep
+ * zero-crossing test below (`sin(bobT*4)`) and, once per frame, the weapon
+ * viewmodel's bob offset (`src/render/viewmodel/draw.ts`'s `bx`/`by`, fed
+ * the same `bobT`). Was `1.6`/`1.9` (walk/sprint): sprinting's own top speed
+ * (10.5 vs 7, `accelerate` above) already made footsteps land faster while
+ * running, and the `1.9` on top of that compounded it further — sprint
+ * cadence was walk's speed ratio (1.5x) *times* an extra 1.1875x. The
+ * project owner played the game and reported running's footsteps as "far
+ * too much noise" — player feedback round 1, task 3, 2026-09-17 — so
+ * `SPRINT_BOB_RATE` now equals `WALK_BOB_RATE`: sprinting still steps
+ * faster than walking (it moves 1.5x as fast, and bobT scales with actual
+ * speed), but only by that speed ratio, not by speed times an added bump.
+ * Walking is untouched. **Next tuning step if footsteps are still too
+ * frequent while sprinting**: current speed itself (`10.5` above) is the
+ * next lever, not this rate — dropping it further would also slow the
+ * player, so that trade needs the player's call, not a guess. Exported so
+ * `tests/player/Player.test.ts` can pin the tuned values directly, the same
+ * reason `src/render/viewmodel/draw.ts` exports its own
+ * `WALK_BOB_AMT`/`SPRINT_BOB_AMT`.
+ */
+export const WALK_BOB_RATE=1.6, SPRINT_BOB_RATE=1.6;
 function accelerate(wx_: number, wz_: number, maxs: number, acc: number, dt: number): void {
   const cur=player.vx*wx_+player.vz*wz_,add=maxs-cur;if(add<=0)return;
   let a=acc*maxs*dt;if(a>add)a=add;player.vx+=wx_*a;player.vz+=wz_*a;}
@@ -128,7 +150,7 @@ function playerTick(dt: number): void {
     else if(nStand<player.pyy-0.02){player.grounded=false;} // walked off a ledge -> fall
   }
   const spd=Math.hypot(player.vx,player.vz);
-  player.bobT+=spd*dt*(sprint?1.9:1.6);
+  player.bobT+=spd*dt*(sprint?SPRINT_BOB_RATE:WALK_BOB_RATE);
   const bobSin=Math.sin(player.bobT*4);
   if(player.grounded&&spd>1&&player.lastBobSin<=0&&bobSin>0)footstep(sprint);
   player.lastBobSin=bobSin;

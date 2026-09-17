@@ -53,6 +53,24 @@ export interface ViewmodelFrame {
   muzzle: number;
 }
 
+/**
+ * Sprint/walk weapon-bob amplitude, multiplied into `bobAmt` below. Was
+ * `sprint?0.55:0.28` — sprint swung the weapon almost 2x walk's amplitude.
+ * The project owner reported the sprint sway as "far too much" (player
+ * feedback round 1, task 3, 2026-09-17); `SPRINT_BOB_AMT` drops to `0.38`,
+ * about a third less than `0.55`, landing at roughly 1.36x `WALK_BOB_AMT`
+ * instead of ~2x — sprinting still swings visibly more than walking (it is
+ * still running), just not doubled. `WALK_BOB_AMT` is untouched: the
+ * complaint was about running, and zeroing either value would flatten the
+ * motion that sells movement, which the brief says not to do. **Next step
+ * if still too much**: drop `SPRINT_BOB_AMT` further (0.30-0.32 would bring
+ * it under 1.15x walk) rather than touching walk. Exported (module-level,
+ * not local to `drawViewmodel`) so `tests/behavior/viewmodel.test.ts`'s
+ * sprint-pose case can compute the exact offset from the frozen reference's
+ * unchanged `0.55` instead of duplicating a second magic number.
+ */
+export const WALK_BOB_AMT=0.28, SPRINT_BOB_AMT=0.38;
+
 /* time-based frame selection: animates fire & reload */
 export function frameFor(idx: number, rT: number, wstate: string, wtime: number, weapons: readonly WeaponStats[]): HTMLCanvasElement | null {
   const set=WPX[idx];if(!set)return null;
@@ -108,7 +126,7 @@ export function drawViewmodel(dt: number, tNow: number, v: ViewmodelFrame, weapo
   const sprint=v.sprintKey&&spd>7;
   /* bob only scales in once you're actually moving; near-zero when still */
   const moveAmt=clamp((spd-0.6)/6.4,0,1);          // 0 when standing
-  const bobAmt=moveAmt*(sprint?0.55:0.28);         // subtle walk, slightly more sprint (Doom-like)
+  const bobAmt=moveAmt*(sprint?SPRINT_BOB_AMT:WALK_BOB_AMT);
   const bx=Math.sin(v.bobT*4)*2.4*bobAmt;
   const by=Math.abs(Math.cos(v.bobT*4))*1.8*bobAmt;
   let oy=0,rot=0;
