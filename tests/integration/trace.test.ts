@@ -129,6 +129,70 @@ import { runTrace, type InputEvent, type TraceFrame } from "./gameplayTrace";
  * frozen or reversed torch animation is no longer invisible here. Nothing
  * else changed: it records the same camera, the same HUD and the same
  * object count it always has.
+ *
+ * ## Player feedback round 1, fix round — fourth regeneration: two causes, kept separate
+ *
+ * Two of this round's player-requested changes reach this fixture, for two
+ * different reasons, and `installAudioStub` (see `gameplayTrace.ts`, KNOWN-20)
+ * was deliberately **not** wired in to remove either — that ruling costs three
+ * fixtures and a boss-script retune, paid for in a future plan, not this one.
+ * Both causes were isolated by temporarily reverting one constant at a time
+ * (`KICK_CD` back to `15`, then `SPRINT_BOB_RATE` back to `1.9`), regenerating
+ * against each in turn, and restoring `src/` afterward — `git diff --stat --
+ * src/` empty before this commit. All frame numbers below are the 90 sampled
+ * frames (every 10th of 900); "the fixture" means this commit's regeneration
+ * against the pre-round (`010ddae`) committed copy.
+ *
+ * **Cause 1 — the sprint camera bob (`Player.ts`'s `SPRINT_BOB_RATE`,
+ * `1.9`→`1.6`, task 3).** Isolated by regenerating with `KICK_CD` held at the
+ * old `15` (so no kick-audio draw can fire inside the window) and the new bob
+ * rate in place, diffed against the pre-round fixture:
+ * - `camera` — index 1 (`py`) only, in 18 of 90 frames, first at **frame
+ *   80** (the frame the script presses `ShiftLeft`), largest at **frame
+ *   200** (`-0.009355`). `px`, `pz`, and all three rotation/`fov` fields are
+ *   identical in every one of the 90 frames — the signature of a vertical
+ *   head bob and nothing else, matching `Player.ts:161`'s `bobSin*.025`
+ *   term exactly. This is a real motion change the trace exists to record.
+ * - `scene.digest` — also moves, starting **frame 100**, 20 frames before
+ *   the kick is even pressed (frame 120). Cause: `footstep()` (`Player.ts`)
+ *   calls `bang()` (`src/audio/Sfx.ts`) on every `bobT` zero-crossing while
+ *   grounded, so retuning the sprint bob *rate* also retimes when a
+ *   sprint-phase footstep sound fires (script sprints frames 80-110); each
+ *   shifted footstep is one draw earlier or later against the shared seeded
+ *   `Math.random()` stream (see KNOWN-20), which is what actually moves the
+ *   digest, not the bob itself. `hud` and `scene.count` are untouched in
+ *   all 90 frames of this isolated run.
+ *
+ * **Cause 2 — the kick's ready-click (`WeaponState.ts`'s `KICK_CD`,
+ * `15`→`1`, task 2).** Isolated by regenerating with the new `KICK_CD=1` and
+ * the bob rate held at the old `1.9`, diffed against the pre-round fixture:
+ * - `camera` — **zero frames differ.** The kick contributes no motion.
+ * - `hud` and `scene.count` — **zero frames differ.**
+ * - `scene.digest` — moves starting **frame 190** (kicked at frame 120;
+ *   `KICK_CD=1`s later resolves under this fixture's 60fps clock right
+ *   around there — under the old `KICK_CD=15` this could never happen
+ *   inside a 900-frame/15s trace at all, see the task 2 report), through
+ *   frame 900. The ready branch's `click(.12)`→`bang()` fills a noise
+ *   buffer; in this harness `domStubs.ts`'s `createBuffer()` returns a
+ *   1-sample `Float32Array` regardless of requested length, so the fill is
+ *   **one** `Math.random()` draw, not the ~1100 a real browser's sample
+ *   rate would produce (corrected in the task 2/3 report; the mechanism is
+ *   the same, only the earlier magnitude claim was wrong). One draw is
+ *   still enough to re-index every later draw in the shared stream.
+ *
+ * **Combined (this fixture, both changes live, stub not wired):** `camera`
+ * diverges in exactly the same 18 frames as Cause 1 alone (Cause 2
+ * contributes none) — confirms the two causes don't interact on `camera`.
+ * `scene.digest` diverges in all 81 frames from **frame 100** onward (9
+ * unaffected frames at the start, 10-90) and none before — Cause 1's
+ * earlier onset (100) swallows Cause 2's later one (190) in the union, so
+ * the combined fixture's first divergence is Cause 1's, not Cause 2's, even
+ * though Cause 2 is the one this task set out to test. `hud` and
+ * `scene.count` are identical in all 90 frames, for both causes and
+ * combined — the `"kickready"` bark is real (see the task 2 report: it
+ * loses `say`'s 3-second throttle race against the level-opening line and
+ * is spent silently, never reaching the DOM), so nothing about it shows up
+ * in `hud`.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

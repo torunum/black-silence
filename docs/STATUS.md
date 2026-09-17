@@ -468,6 +468,12 @@ frozen and unpatchable. That is fragile in a specific way — a bundled or
 minified three would silently stop matching and send UUID draws back into the
 stream — so the teardown now **fails loudly if a run intercepted zero draws**.
 
+The identical finding recurred with audio: `src/audio/`'s synthesis draws
+from the same seeded `Math.random()` at six sites, an `installAudioStub()`
+was built the same way (stack-sniffed, same fail-loudly-on-zero guard), and
+it is *still not wired in* — see `docs/known-issues.md`'s KNOWN-20 for why
+(measured per-level draw counts, and the real cost of turning it on).
+
 ## Phase 3 Part A status
 
 Branch `phase-3a-one-enemy-shape`. Plan dated 2026-09-08.
