@@ -87,6 +87,17 @@ const WEAPON_SOUNDS = [
 ];
 export const WEAPONS = WEAPON_STATS.map((w, i) => ({ ...w, snd: WEAPON_SOUNDS[i] }));
 export const EQUIP_T=.24,UNEQUIP_T=.16;
+/**
+ * Power-kick cooldown, in seconds. Was `15` (a player-week-scale number that
+ * nobody chose on purpose); the project owner played the game and reported
+ * it as "too long" — player feedback round 1, task 2, 2026-09-17 — and gave
+ * an exact replacement, one second. `doKick` sets `S.kickCd` to this value;
+ * `weaponTick` counts it down; `src/ui/Hud.ts`'s fill-bar width read the
+ * other literal `15` (its countdown label was already derived from
+ * `S.kickCd` directly, no separate literal to duplicate) — so the two
+ * previously-independent copies of `15` can never disagree again.
+ */
+export const KICK_CD=1;
 
 /** What doKick's melee sweep reads off a `world.enemies` element. */
 type KickEnemy = Pick<Enemy, "dead" | "x" | "z" | "h" | "boss" | "maxhp" | "kx" | "kz" | "stun" | "flung" | "flungT">;
@@ -191,7 +202,7 @@ const reapTailMat=new THREE.MeshBasicMaterial({color:0x4fa030,transparent:true,o
 /* ---------- POWER KICK ---------- */
 export function doKick(){
   if(!game.started||S.dead||game.inputLock||S.kickCd>0||game.pianoOpen)return;
-  S.kickCd=15;weaponRuntime.kickAnim=.32;
+  S.kickCd=KICK_CD;weaponRuntime.kickAnim=.32;
   shake(.3);bang(.15,.5,900);
   schedule(()=>{
     const dir=new THREE.Vector3();renderState.camera.getWorldDirection(dir);

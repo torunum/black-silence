@@ -1,7 +1,7 @@
 import { S } from "../core/State";
 import { world } from "../world/WorldState";
 import { weaponRuntime } from "../weapons/WeaponRuntime";
-import { WEAPONS } from "../weapons/WeaponState";
+import { WEAPONS, KICK_CD } from "../weapons/WeaponState";
 import { el, q } from "./dom";
 import type { Enemy } from "../enemies/Enemy";
 
@@ -48,7 +48,7 @@ export function hud(): void {
     w.name+(weaponRuntime.wstate==="reload"?" — RELOADING":"");
   el("keys").textContent=S.key?"■ RED KEY":"";
   const kw=el("kickwrap");
-  el("kickfill").style.width=(100*(1-S.kickCd/15))+"%";
+  el("kickfill").style.width=(100*(1-S.kickCd/KICK_CD))+"%";
   el("kicklabel").textContent=
     S.kickCd>0?("KICK "+Math.ceil(S.kickCd)+"s"):"KICK [RMB]";
   kw.classList.toggle("ready",S.kickCd<=0);
