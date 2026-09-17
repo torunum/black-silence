@@ -148,9 +148,27 @@ import { world } from "../../src/world/WorldState";
  * - A blind sweep's expected damage rate is (damage rate) x (target's
  *   angular width / 2pi) — **independent of how fast the sweep turns**,
  *   because turning slower buys proportionally more dwell per pass and
- *   proportionally fewer passes. The priest is `w=2.71` wide, so hitscan's
- *   `dd<e.w*.45+.1` test gives it a 1.32-unit half-width: at the 9.8 units
- *   it now stands off it subtends ~0.27 rad, about 4.3% of a revolution.
+ *   proportionally fewer passes. In phase 2 the priest is **`w=2.006`**
+ *   wide — `EnemyDefs.ts`'s `Q.w=1.7` times `spawnEnemy`'s `SZ=1.18`
+ *   sprite-presence bump, with the elite bump skipped because `d.boss` is
+ *   true — so hitscan's `dd<e.w*.45+.1` test gives it a **1.00-unit**
+ *   half-width: at the 9.8 units it now stands off it subtends ~0.205 rad
+ *   (2 x 1.0027 / 9.8; the exact `2·atan` form gives 0.204, same to two
+ *   figures), about **3.3% of a revolution**.
+ *
+ *   `w=2.71` and `h=3.53` are the priest's **phase-3** numbers and do not
+ *   belong in this passage: `Boss.ts`'s phase-3 arm runs `e.w*=1.35;
+ *   e.h*=1.15` **at** the transition, so 2.006 x 1.35 = 2.708 and 3.068 x
+ *   1.15 = 3.528 are what the boss becomes *after* phase 2 is over. Review
+ *   round 1 of the player-feedback plan caught them substituted in here and
+ *   they are re-derived above rather than copied back — the same failure
+ *   KNOWN-12 and KNOWN-13 exist to warn about. The numbers matter to the
+ *   argument, not just to the prose: at 7.8 units the same formula gave
+ *   ~0.256 rad, so the single phase-2 teleport out to 9.8 units **shrinks**
+ *   the target (0.256 -> 0.205 rad), which is what the "the sweep should be
+ *   slower, so why did phase 2 get shorter?" paragraph further down sets
+ *   out to explain. The phase-3 figure (0.27 rad) is *larger* than 0.256
+ *   and would have made that paragraph argue against itself.
  *   Phase 2 costs 605 hp, measured, and takes **1691 frames (28.2s)** — 38
  *   landed hits at ~15.9 damage each, over ~3.1 revolutions of the sweep.
  *
@@ -371,7 +389,9 @@ import { world } from "../../src/world/WorldState";
  *   once by the wake cinematic, while the boss is still 1.6 units away, and
  *   never changes afterwards; `hitscan` then requires the ray's height at
  *   closest approach to fall inside the sprite's band (`cy>ecy-e.h*.55 &&
- *   cy<ecy+e.h*.55`, `h=3.53`), and that vertical intercept depends on how
+ *   cy<ecy+e.h*.55`, `h=3.068` in phase 2 — `Q.h=2.6` x `SZ=1.18`, the
+ *   x1.15 phase-3 stretch not yet applied), and that vertical intercept
+ *   depends on how
  *   far away the boss ends up. The old teleport left the aim near the edge of
  *   that band and lost roughly half its potential nails per pass; the new one
  *   leaves it centred. Either way it is downstream of the same seeded stream.
@@ -487,6 +507,20 @@ let trace: TraceFrame[];
 /** The Corrupted Priest itself, captured in `afterLoad` and read after the run. */
 let priest: (typeof world.enemies)[number];
 /**
+ * The priest's hitbox as it spawned — i.e. its phase-1/phase-2 size, read
+ * before `Boss.ts`'s phase-3 arm stretches it. Captured because `priest` is
+ * a live reference: by the time the tests run it holds the phase-3 numbers,
+ * and the two are exactly what review round 1 found confused in this
+ * file's header.
+ */
+let spawnW = 0, spawnH = 0;
+/**
+ * The physical shape of every `kind:"v"` prop level 2 built, captured in
+ * `afterLoad` — see the "level 2's pews really are pews" test below for why
+ * a named check exists at all when the fixture already covers it.
+ */
+let pewShapes: Array<Record<string, unknown>> = [];
+/**
  * Every write to the priest's `sp.material.map`, in chronological order —
  * the structural guard for the phase-3 form swap (review round 1, Important
  * 1). Installed by the accessor in `afterLoad` below; see this file's
@@ -522,6 +556,15 @@ beforeAll(async () => {
         );
       }
       priest = found;
+      spawnW = found.w;
+      spawnH = found.h;
+      // Read here rather than in the test body: `world.props` is live and
+      // play mutates it (`breakProp` sets `dead`, `explodeBarrel` removes
+      // entries), so only a pre-frame-1 read is a reading of what
+      // `loadLevel` actually built.
+      pewShapes = world.props
+        .filter((p) => p.kind === "v")
+        .map((p) => ({ r: p.r, hgt: p.hgt, hp: p.hp, explosive: p.explosive }));
       if (found.x !== PRIEST_X || found.z !== PRIEST_Z) {
         throw new Error(
           `the priest spawned at (${found.x},${found.z}), not (${PRIEST_X},${PRIEST_Z}) — the ` +
@@ -590,6 +633,58 @@ describe("the recorded run actually fights a priest boss", () => {
     expect([...names]).toContain("THE CORRUPTED PRIEST — PHASE 1");
     expect([...names]).toContain("THE CORRUPTED PRIEST — PHASE 2");
     expect([...names]).toContain("THE CORRUPTED PRIEST — PHASE 3");
+  });
+
+  it("is the size this file's header does its sweep arithmetic with — phase 2, not phase 3", () => {
+    // Review round 1, Important 1: the header's phase-2 passages had been
+    // given the priest's PHASE-3 dimensions (w=2.71, h=3.53), which made
+    // the file argue against itself — the angular width it computed from
+    // them was *larger* than the pre-teleport figure, while the paragraph
+    // two screens down explains why the sweep got a *smaller* target. The
+    // numbers are re-derived in the header; this pins them, so the next
+    // person to quote a dimension there has a test that disagrees rather
+    // than prose that quietly doesn't.
+    //
+    // Derivation, independent of the header: `EnemyDefs.ts` has `Q.w=1.7,
+    // Q.h=2.6`; `spawnEnemy` (`src/world/LevelLoader.ts`) multiplies by
+    // `SZ=1.18` and skips the x1.15 elite bump because `d.boss` is true.
+    expect(spawnW).toBeCloseTo(1.7 * 1.18, 10);
+    expect(spawnH).toBeCloseTo(2.6 * 1.18, 10);
+    expect(spawnW).toBeCloseTo(2.006, 3);
+    expect(spawnH).toBeCloseTo(3.068, 3);
+    // hitscan's half-width for that w — the number the sweep arithmetic
+    // actually uses (`src/weapons/Hitscan.ts`: `dd<e.w*.45+.1`).
+    expect(spawnW * 0.45 + 0.1).toBeCloseTo(1.0027, 4);
+
+    // And where 2.71/3.53 really come from: `Boss.ts`'s phase-3 arm runs
+    // `e.w*=1.35; e.h*=1.15` AT the transition, so they describe the boss
+    // only after phase 2 is over. The run ends in phase 3, so the live
+    // object carries them now.
+    expect(priest.phase).toBe(3);
+    expect(priest.w).toBeCloseTo(spawnW * 1.35, 10);
+    expect(priest.h).toBeCloseTo(spawnH * 1.15, 10);
+    expect(priest.w).toBeCloseTo(2.708, 3);
+    expect(priest.h).toBeCloseTo(3.528, 3);
+  });
+
+  it("level 2's pews really are pews, not explosive barrels — review round 1, Minor 2", () => {
+    // Task 1 turned level 2's eight `V` tiles into `v`, a prop-only pew.
+    // Until this test, the only thing standing between `spawnProp`'s
+    // `ch==="V"||ch==="v"` branch and silence was the fixture's digest at
+    // frame 18: break the branch and all eight tiles fall through to the
+    // **explosive barrel** `else`, and the failure reads as a hash that
+    // doesn't match. That is a real regression reported illegibly. This
+    // says what it is instead.
+    //
+    // The numbers are `spawnProp`'s pew arm (`src/world/LevelLoader.ts`):
+    // `r=.75; hgt=.95; hp=18;` with `explosive` left false. The barrel
+    // `else` it must not have fallen into is `r=.48; hgt=1.1; hp=24;
+    // explosive=true` — every field differs, so this cannot pass by
+    // accident on a partial fall-through either.
+    expect(pewShapes).toHaveLength(8);
+    for (const p of pewShapes) {
+      expect(p).toEqual({ r: 0.75, hgt: 0.95, hp: 18, explosive: false });
+    }
   });
 
   it("the priest summoned its flock", () => {

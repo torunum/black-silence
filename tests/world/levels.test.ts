@@ -19,7 +19,19 @@ const EXIT_CANDIDATES: ReadonlyArray<readonly [number, number]> = [
   [16, 16], [16, 15], [15, 16], [17, 16], [16, 17],
 ];
 
-/** Bosses whose death calls openExit(). */
+/**
+ * Bosses whose death calls openExit().
+ *
+ * **Hand-written here, mirroring `src/enemies/Death.ts`'s `bossDeath` — not
+ * derived from it.** Accurate as of this commit: `bossDeath` has exactly
+ * five `openExit()` arms (`e.key==="Q"|"Z"|"N"|"H"|"V"`), checked against
+ * the source, and `G` deliberately has none because level 7's boss calls
+ * `showWin()` instead. Nothing enforces the mirror, so a new boss key given
+ * an `openExit()` arm would pass every test in this file while being
+ * invisible to the two checks below — **re-check this list whenever
+ * `Death.ts`'s `bossDeath` changes.** Same convention as
+ * `EXIT_CANDIDATES` above, which is copied from `openExit` the same way.
+ */
 const EXIT_OPENING_BOSSES = ["Q", "Z", "N", "H", "V"];
 
 /** The finale boss, which calls showWin() instead of opening an exit. */
@@ -217,8 +229,12 @@ it("level 2's pews are props, not enemies, and `v` is claimed by no enemy def (K
  * And the consequence the level design turns on. `bossDeath`'s `V` arm calls
  * `openExit()` — the same call the Corrupted Priest's death makes — so any
  * Foreman in level 2 would open the level's exit and let the player walk past
- * `Q`. Whatever those tiles were, they were not that. Derived from
- * `src/enemies/Death.ts`, which is where the list lives.
+ * `Q`. Whatever those tiles were, they were not that.
+ *
+ * The keys come from `EXIT_OPENING_BOSSES` above, which **mirrors**
+ * `src/enemies/Death.ts` by hand rather than deriving anything from it —
+ * see that constant's own comment for what that costs and when to re-check
+ * it. (Review round 1, Minor 1: this said "derived", which it is not.)
  */
 it("no level contains an exit-opening boss other than its own (KNOWN-4)", () => {
   const perLevel = Object.fromEntries(
