@@ -3,4 +3,9 @@ dist/
 .DS_Store
 *.log
 .claude/launch.json
-THE-BLACK-SILENCE.html
+.claude/
+.superpowers/
+.release-work/
+# THE-BLACK-SILENCE.html is NOT ignored. It is the point of the project -- one
+# file a player opens with no install -- so the README links to it directly and
+# it is committed. Regenerate with `npm run build:single` before releasing.

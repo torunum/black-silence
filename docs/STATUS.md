@@ -1,5 +1,29 @@
 # Where this project stands
 
+## Publication checkpoint - 2026-09-18
+
+The project owner requested a public GitHub release with promotional media.
+Repository: https://github.com/torunum/black-silence (public, created).
+Planned playable URL: https://torunum.github.io/black-silence/.
+The release workflow in `.github/workflows/pages.yml` checks the game before
+deploying it. Deployment confirmation belongs in the next checkpoint.
+
+Prepared: English/Turkish README and press kit, a 1280x720 trailer with actual
+game audio, gameplay GIF, cover and screenshots. See `docs/media/README.md`
+for the footage's staged positions/loadouts and filming protection.
+No gameplay source was changed for publication. The previously staged armour
+plan remains a plan, not an implemented fix.
+
+Fresh verification: 569 tests in 65 files passed; strict typecheck, 91-file
+size gate and circular-import check passed. The current standalone build
+was opened from file:// in Chromium: no network requests, no page errors,
+and changing rendered gameplay frames after movement. Full Three.js license
+is now embedded by the build script and documented in THIRD-PARTY-NOTICES.md.
+No license grant has been assigned to the original game code/artwork.
+
+The dated phase notes below are historical; use this checkpoint and git log
+for the latest publication work.
+
 Written to survive session loss. If you are picking this up cold, read this
 file, then `docs/direction.md`, then the current plan under
 `docs/superpowers/plans/`. Trust this file and `git log` over any recollection.

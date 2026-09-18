@@ -14,7 +14,7 @@
  *
  *     npm run build && node scripts/inline-single-file.mjs
  *
- * The output is gitignored — it is a build artifact, not source.
+ * The output is committed as the downloadable release artifact.
  */
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
@@ -59,12 +59,16 @@ if (inlined === 0) {
   console.error("Inlined no scripts — the build output's shape changed and this script did not notice.");
   process.exit(1);
 }
-const leftover = html.match(/\b(?:src|href)="\/?assets\//g);
+const leftover = html.match(/\b(?:src|href)=["'](?:\.\/|\/)?assets\//g);
 if (leftover) {
   console.error(`Still references ${leftover.length} external asset(s) after inlining:`, leftover);
   process.exit(1);
 }
 
+// The standalone download must carry the bundled dependency's full notice.
+const threeLicense = readFileSync("node_modules/three/LICENSE", "utf8");
+html = html.replace(/<head>/i, () => `<head>\n<!-- Bundled dependency: three.js\n${threeLicense.replace(/-->/g, "-- >")}\n-->`);
+html = html.replace(/\r\n/g, "\n");
 writeFileSync(OUT, html);
 const kb = (Buffer.byteLength(html) / 1024).toFixed(0);
-console.log(`${OUT} — ${kb} kB, ${inlined} script(s) and ${inlinedCss} stylesheet(s) inlined, no external references.`);
+console.log(`${OUT} — ${kb} kB, ${inlined} script(s) and ${inlinedCss} stylesheet(s) inlined, no remaining assets/ HTML attributes.`);
