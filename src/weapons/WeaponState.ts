@@ -82,8 +82,8 @@ import type { Enemy } from "../enemies/Enemy";
  * `gunshot()` doc comment carries the full argument; the short version is
  * that each of these used to be one fixed-lowpass noise burst with a
  * polynomial fade (no content above its own corner, so no transient; still
- * -12 dB at half its length, so too long a decay) plus, on five of the six,
- * a pitched square/sawtooth sweep — three of those through the echo bus,
+ * -12 dB at half its length, so too long a decay) plus, on four of the six,
+ * a pitched square/sawtooth sweep — two of those through the echo bus,
  * which is the buzz.
  *
  * `split` is each weapon's OLD `bang` lowpass corner, unchanged: the crack

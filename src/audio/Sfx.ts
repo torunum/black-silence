@@ -80,16 +80,17 @@ export function boom(power?: number): void {
  * WHAT THE OLD REPORT WAS, STRUCTURALLY. Every weapon's `snd` closure was
  * one `bang(dur,vol,low)` — `sampleRate*dur` samples of white noise scaled
  * in the buffer by `(1-i/N)^2`, pushed through a single fixed `lowpass` at
- * `low`, into a gain node with a CONSTANT `gain.value` — plus, on five of
+ * `low`, into a gain node with a CONSTANT `gain.value` — plus, on four of
  * the six, one `blip(...,"square"|"sawtooth",...)`: a pitched tone swept
- * downward, three of them through the echo bus. Three consequences:
+ * downward, two of them through the echo bus. Three consequences:
  *
  * 1. NO TRANSIENT. The lowpass corner was 1400-3200 Hz depending on the
  *    weapon, and it was the only filter in the chain. Nothing in any weapon
  *    report had any energy above its own corner, ever. A firearm report is
  *    a broadband shock front — a crack that reaches well past 10 kHz in its
- *    first couple of milliseconds. That content was not attenuated here; it
- *    was absent by construction.
+ *    first couple of milliseconds. That content was heavily attenuated here;
+ *    a biquad lowpass rolls off at roughly 12 dB/octave, so it does not
+ *    produce zero energy at any frequency, but the result was inaudibly quiet.
  * 2. DECAY TOO LONG, AND THE WRONG LAW. `(1-t/T)^2` is a polynomial fade:
  *    at half the duration the amplitude is still 0.25 (-12 dB), and it
  *    stays audible until it hits the buffer's end. Over the pistol's 130 ms
