@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { rnd } from "../utils/math";
 import { WEAPON_STATS } from "./definitions";
 import { weaponRuntime } from "./WeaponRuntime";
-import { bang, blip, click } from "../audio/Sfx";
+import { bang, blip, click, gunshot, type GunshotProfile } from "../audio/Sfx";
 import { growl } from "../audio/Voice";
 import { renderState } from "../render/Renderer";
 import { blood, smoke3d } from "../fx/Particles";
@@ -75,18 +75,87 @@ import type { Enemy } from "../enemies/Enemy";
  * KNOWN-3 records it as done.
  */
 
+/**
+ * The six BALLISTIC weapons' reports — every `kind:"hit"` slot. Rebuilt for
+ * player feedback round 1 task 4 (2026-09-17): the project owner played the
+ * game and said the gun firing sound was bad. `src/audio/Sfx.ts`'s
+ * `gunshot()` doc comment carries the full argument; the short version is
+ * that each of these used to be one fixed-lowpass noise burst with a
+ * polynomial fade (no content above its own corner, so no transient; still
+ * -12 dB at half its length, so too long a decay) plus, on four of the six,
+ * a pitched square/sawtooth sweep — two of those through the echo bus,
+ * which is the buzz.
+ *
+ * `split` is each weapon's OLD `bang` lowpass corner, unchanged: the crack
+ * now occupies the band above it and the body the band below, so the one
+ * number that used to end the sound is now where its two halves meet.
+ * `crack + body + punch` is each weapon's OLD summed peak gain, exactly, so
+ * nothing moved relative to the sounds this task did not touch.
+ *
+ * Slots 5 (HOLY CROSS LAUNCHER, `kind:"cross"`) and 7 (SOUL REAPER,
+ * `kind:"reap"`) are DELIBERATELY UNCHANGED and still byte-for-byte the
+ * reference's. Neither is a firearm; their rising pitched sweeps are the
+ * character of a holy relic and a soul-eater, and "a firearm report is a
+ * broadband transient followed by a fast-decaying body" is an argument that
+ * does not apply to either. Changing them would be a sound-design decision
+ * nobody asked for, in a round about one reported bug.
+ *
+ * NONE OF THIS HAS BEEN HEARD. It is argued entirely from the shape of the
+ * synthesis. The real fix is Phase 1 Task 6's user-supplied CC0 `.ogg`
+ * files — see `docs/assets.md`.
+ */
+const REPORTS: Record<number, GunshotProfile> = {
+  // FLARE PISTOL — old: bang(.13,.42,2400) + blip(180,.08,"square",.1,60,echo)
+  0: { split:2400, crack:.16, body:.20, bodyDur:.09, bodyEndHz:380, punch:.16, punchHz:150, punchEndHz:48, punchDur:.07 },
+  // SAWED-OFF SHOTGUN — old: bang(.24,.65,1400) + bang(.1,.3,500). The second
+  // bang was already a crude body layer; it is the punch now, done as a real
+  // low thump instead of 100 ms of 500 Hz-lowpassed noise. Longest body and
+  // the heaviest punch share of the six, which is the shotgun's whole point.
+  1: { split:1400, crack:.25, body:.34, bodyDur:.17, bodyEndHz:240, punch:.36, punchHz:120, punchEndHz:36, punchDur:.12 },
+  // COMBAT RIFLE — old: bang(.07,.34,2600) + blip(140,.05,"square",.06,70)
+  2: { split:2600, crack:.13, body:.16, bodyDur:.05, bodyEndHz:420, punch:.11, punchHz:165, punchEndHz:55, punchDur:.04 },
+  // TOMMY GUN — old: bang(.055,.26,3000), and nothing else at all: no second
+  // layer of any kind. Gets both a crack and a punch here. Fires every 65 ms,
+  // so it is the profile that most needs a decay that ends before the next
+  // round starts; .04 body against a .065 rate now clears.
+  3: { split:3000, crack:.09, body:.10, bodyDur:.04, bodyEndHz:520, punch:.07, punchHz:180, punchEndHz:62, punchDur:.03 },
+  // BMG SNIPER — old: bang(.3,.6,1900) + blip(90,.3,"sawtooth",.12,40,echo).
+  // Longest decay and the lowest punch: a .50 calibre rifle is the one weapon
+  // here whose body legitimately runs past 200 ms.
+  4: { split:1900, crack:.22, body:.26, bodyDur:.21, bodyEndHz:210, punch:.24, punchHz:110, punchEndHz:33, punchDur:.15 },
+  // NAIL CANNON — old: bang(.04,.22,3200) + blip(260,.04,"square",.05,120).
+  // Pneumatic, not a powder charge: brightest split, shortest body, and the
+  // smallest punch share of the six — most of its energy is the crack.
+  6: { split:3200, crack:.12, body:.10, bodyDur:.03, bodyEndHz:750, punch:.05, punchHz:220, punchEndHz:88, punchDur:.022 },
+};
+
 const WEAPON_SOUNDS = [
-  () => { bang(.13,.42,2400); blip(180,.08,"square",.1,60,true); },
-  () => { bang(.24,.65,1400); bang(.1,.3,500); },
-  () => { bang(.07,.34,2600); blip(140,.05,"square",.06,70); },
-  () => { bang(.055,.26,3000); },
-  () => { bang(.3,.6,1900); blip(90,.3,"sawtooth",.12,40,true); },
+  () => { gunshot(REPORTS[0]); },
+  () => { gunshot(REPORTS[1]); },
+  () => { gunshot(REPORTS[2]); },
+  () => { gunshot(REPORTS[3]); },
+  () => { gunshot(REPORTS[4]); },
   () => { blip(520,.3,"sine",.12,780,true); bang(.1,.2,800); },
-  () => { bang(.04,.22,3200); blip(260,.04,"square",.05,120); },
+  () => { gunshot(REPORTS[6]); },
   () => { blip(70,.5,"sawtooth",.16,360,true); bang(.28,.45,500); growl(90,.4,.3,true); },
 ];
+/** The ballistic slots `REPORTS` covers — exported so tests can derive the divergence set rather than hardcode it. */
+export const REBUILT_REPORT_SLOTS = Object.keys(REPORTS).map(Number);
+/** The profiles themselves, exported for the same reason. */
+export const WEAPON_REPORTS: Readonly<Record<number, GunshotProfile>> = REPORTS;
 export const WEAPONS = WEAPON_STATS.map((w, i) => ({ ...w, snd: WEAPON_SOUNDS[i] }));
 export const EQUIP_T=.24,UNEQUIP_T=.16;
+/**
+ * Power-kick cooldown, in seconds. Was `15` (a player-week-scale number that
+ * nobody chose on purpose); the project owner played the game and reported
+ * it as "too long" — player feedback round 1, task 2, 2026-09-17 — and gave
+ * an exact replacement, one second. `doKick` sets `S.kickCd` to this value;
+ * `weaponTick` counts it down; `src/ui/Hud.ts`'s fill-bar width read the
+ * other literal `15` (its countdown label was already derived from
+ * `S.kickCd` directly, no separate literal to duplicate) — so the two
+ * previously-independent copies of `15` can never disagree again.
+ */
+export const KICK_CD=1;
 
 /** What doKick's melee sweep reads off a `world.enemies` element. */
 type KickEnemy = Pick<Enemy, "dead" | "x" | "z" | "h" | "boss" | "maxhp" | "kx" | "kz" | "stun" | "flung" | "flungT">;
@@ -191,7 +260,7 @@ const reapTailMat=new THREE.MeshBasicMaterial({color:0x4fa030,transparent:true,o
 /* ---------- POWER KICK ---------- */
 export function doKick(){
   if(!game.started||S.dead||game.inputLock||S.kickCd>0||game.pianoOpen)return;
-  S.kickCd=15;weaponRuntime.kickAnim=.32;
+  S.kickCd=KICK_CD;weaponRuntime.kickAnim=.32;
   shake(.3);bang(.15,.5,900);
   schedule(()=>{
     const dir=new THREE.Vector3();renderState.camera.getWorldDirection(dir);

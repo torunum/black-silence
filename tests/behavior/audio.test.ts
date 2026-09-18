@@ -50,6 +50,14 @@ import { growl as moduleGrowl, snarl as moduleSnarl } from "../../src/audio/Voic
  * exception between session start and the manual restore call (a real bug
  * in the audio code under test, not just a failed assertion) would leak
  * the seeded Math.random into every test that runs afterward in this file.
+ *
+ * Everything in this file is FULL PARITY against the frozen reference and
+ * is meant to stay that way. Player feedback round 1 task 4 (2026-09-17)
+ * rebuilt the weapon report and deliberately did NOT touch bang/blip/boom —
+ * `bang` is also every footstep, impact, ricochet and UI click — so nothing
+ * here diverged or was weakened. The new synthesis is `gunshot()` in
+ * `src/audio/Sfx.ts` and its oracle, including the reference side kept as
+ * the record of what changed, is `tests/behavior/weaponReport.test.ts`.
  */
 
 const AUDIO_CHUNKS = [

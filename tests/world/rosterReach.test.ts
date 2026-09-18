@@ -344,7 +344,9 @@ const STRUCTURAL_CHARS = new Set([
   ".", "#", "W", "I", "+", "D", "S", // LevelLoader.ts:304 skip string
   "P", "X", "i", "l", "p", "Y", // LevelLoader.ts:306-337 special-cased placements
 ]);
-const PROP_CHARS = new Set(["x", "T", "C", "F", "V", "O"]); // LevelLoader.ts:339
+// `v` — the prop-only pew added in player-feedback round 1, task 1 (KNOWN-4).
+// It is in this table and in no other, which is the entire reason it exists.
+const PROP_CHARS = new Set(["x", "T", "C", "F", "V", "O", "v"]); // LevelLoader.ts spawnProp dispatch
 const ITEM_CHARS = new Set([
   "h", "A", "a", "b", "o", "c", "K", // LevelLoader.ts:341 map2
   "2", "3", "4", "5", "6", "7", "8", "9", "0", // LevelLoader.ts:342 map2

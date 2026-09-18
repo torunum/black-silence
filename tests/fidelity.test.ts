@@ -104,6 +104,37 @@ const LEVEL_CHUNKS = [
 ];
 const refLevels = evalReference<RefLevelDef[]>(LEVEL_CHUNKS, "LEVELS");
 
+/**
+ * Level 2's deliberate divergence from the frozen master (player feedback
+ * round 1, task 1). The reference spells this level's church furniture `V`,
+ * which `ENEMY_DEFS` also claims as THE FACTORY FOREMAN, so all eight tiles
+ * spawned a 2600 hp boss — KNOWN-4, reported by the project owner after
+ * playing. The port now spells them `v`, a prop-only pew.
+ *
+ * This is kept as a *diff*, not as a hole: the grid comparison below is still
+ * total, and the reference side is still the authority everywhere else. Only
+ * these eight cells may differ, only in this direction, and only in level 2.
+ * Adding a ninth divergence — or letting one of these drift back to `V`, or
+ * appear in another level — fails the same assertion.
+ */
+const LEVEL2_PEW_CELLS: ReadonlyArray<readonly [number, number]> = [
+  [21, 4],   // (2,0) chapel
+  [5, 8],    // (0,1) side aisle
+  [12, 8], [20, 8], [12, 10], [20, 10], [12, 13], [20, 13],  // the six nave pews
+];
+
+/** Every cell where two grids disagree, as `x,z ref->ours` strings. */
+function gridDiff(ours: string[][], ref: string[][]): string[] {
+  const out: string[] = [];
+  for (let z = 0; z < Math.max(ours.length, ref.length); z++) {
+    const a = ours[z] ?? [], b = ref[z] ?? [];
+    for (let x = 0; x < Math.max(a.length, b.length); x++) {
+      if (a[x] !== b[x]) out.push(`${x},${z} ${b[x]}->${a[x]}`);
+    }
+  }
+  return out.sort();
+}
+
 describe("LEVELS vs. reference", () => {
   it("declares the same eight levels, in order, with identical metadata", () => {
     const meta = (defs: ReadonlyArray<{ build: unknown }>) =>
@@ -112,11 +143,14 @@ describe("LEVELS vs. reference", () => {
   });
 
   it.each(LEVELS.map((def, i) => [def.name, def, refLevels[i]] as const))(
-    "%s builds the identical grid (plus hmap/segs where present)",
-    (_name, def, refDef) => {
+    "%s builds the reference grid, cell for cell, apart from level 2's eight pews",
+    (name, def, refDef) => {
       const built = def.build();
       const refBuilt = refDef.build();
-      expect(built.g).toEqual(refBuilt.g);
+      const expected = name === "LEVEL 2 — THE ABANDONED CHURCH"
+        ? LEVEL2_PEW_CELLS.map(([x, z]) => `${x},${z} V->v`).sort()
+        : [];
+      expect(gridDiff(built.g, refBuilt.g)).toEqual(expected);
       expect(built.hmap).toEqual(refBuilt.hmap);
       expect(built.segs).toEqual(refBuilt.segs);
     },

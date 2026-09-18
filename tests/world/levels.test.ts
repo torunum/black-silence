@@ -19,7 +19,19 @@ const EXIT_CANDIDATES: ReadonlyArray<readonly [number, number]> = [
   [16, 16], [16, 15], [15, 16], [17, 16], [16, 17],
 ];
 
-/** Bosses whose death calls openExit(). */
+/**
+ * Bosses whose death calls openExit().
+ *
+ * **Hand-written here, mirroring `src/enemies/Death.ts`'s `bossDeath` — not
+ * derived from it.** Accurate as of this commit: `bossDeath` has exactly
+ * five `openExit()` arms (`e.key==="Q"|"Z"|"N"|"H"|"V"`), checked against
+ * the source, and `G` deliberately has none because level 7's boss calls
+ * `showWin()` instead. Nothing enforces the mirror, so a new boss key given
+ * an `openExit()` arm would pass every test in this file while being
+ * invisible to the two checks below — **re-check this list whenever
+ * `Death.ts`'s `bossDeath` changes.** Same convention as
+ * `EXIT_CANDIDATES` above, which is copied from `openExit` the same way.
+ */
 const EXIT_OPENING_BOSSES = ["Q", "Z", "N", "H", "V"];
 
 /** The finale boss, which calls showWin() instead of opening an exit. */
@@ -125,26 +137,41 @@ it("records levels that place a key with no locked door (KNOWN-1)", () => {
 });
 
 /**
- * Characterization test for KNOWN-4. `loadLevel` in legacy.js dispatches a
- * grid character to an enemy spawn (`EDEF[ch]`) before it ever checks the
- * prop set (`"xTCFVO".includes(ch)`, legacy.js:2011) — so any character
- * present in BOTH rosters always spawns the enemy, never the prop. The prop
- * set is not extracted yet (Phase 0A only carves data, not this dispatch),
- * so it is copied here as a literal — kept in sync by this test failing
- * the moment either roster or any level grid changes under it. The enemy
- * side is derived programmatically from ENEMY_DEFS rather than duplicated.
+ * KNOWN-4, rewritten — **not deleted**. It used to pin the bug; it now pins
+ * the half of the bug that was fixed and the half that is still armed.
  *
- * This does not just pin an abstract overlap — it pins the concrete blast
- * radius: Level 2 alone carries 8 `V` tiles (intended as pews) and 1 `C`
- * tile (intended as a chair), which the collision turns into eight Factory
- * Foreman bosses and a Cacodemon. See docs/known-issues.md KNOWN-4.
+ * The mechanism is unchanged and deliberately so. `loadLevel` dispatches a
+ * grid character to an enemy spawn (`EDEF[ch]`) before it ever checks the
+ * prop set (`"xTCFVOv".includes(ch)`, `src/world/LevelLoader.ts`), so any
+ * character in BOTH rosters still always spawns the enemy and never the
+ * prop. The prop set is still a literal in that file rather than an export,
+ * so it is still copied here — kept honest by these tests failing the moment
+ * either roster or any level grid changes under it. The enemy side is
+ * derived from `ENEMY_DEFS` rather than duplicated.
+ *
+ * What changed: the project owner played the game and reported level 2's
+ * first boss as much too hard. It was eight of them. Level 2's eight `V`
+ * tiles, written under a "nave pews" comment, each spawned THE FACTORY
+ * FOREMAN (2600 hp, `boss`, `priest`, `sovereign`) — 20,800 hp of church
+ * furniture in front of the level's actual boss, the Corrupted Priest. All
+ * eight are now `v`, a prop-only pew added to `spawnProp`; see
+ * `src/world/levels/level2.ts`'s header for why the chapel and side-aisle
+ * tiles were judged furniture too, and why level 2 has no Foreman at all.
+ *
+ * What did NOT change: `C` and `V` are still both an enemy and a prop, and
+ * the `C` in level 2's priest chambers is still a Cacodemon rather than the
+ * chair it was written as. The dispatch order was **not** flipped, because
+ * `C` is an intentional Cacodemon in levels 6 and 7 — flipping it would
+ * trade this collision for that one.
  */
-const PROP_CHARS = "xTCFVO"; // legacy.js:2011 — spawnProp()'s dispatch string, not yet an export
+const PROP_CHARS = "xTCFVOv"; // src/world/LevelLoader.ts — spawnProp()'s dispatch string, not an export
 const AMBIGUOUS_CHARS = Object.keys(ENEMY_DEFS)
   .filter((ch) => PROP_CHARS.includes(ch))
   .sort();
 
-it("pins which grid characters are claimed by both an enemy and a prop (KNOWN-4)", () => {
+it("pins which grid characters are still claimed by both an enemy and a prop (KNOWN-4)", () => {
+  // Still two. Adding `v` deliberately did not shrink this set — it gave the
+  // pew an unambiguous spelling without disarming the trap underneath.
   expect(AMBIGUOUS_CHARS).toEqual(["C", "V"]);
 });
 
@@ -157,13 +184,74 @@ it("pins how many ambiguous tiles each level grid contains (KNOWN-4)", () => {
   );
   expect(counts).toEqual({
     "PROLOGUE — OUT OF THE PIT": { C: 0, V: 0 },
+    // Was `{ C: 1, V: 8 }`. The eight are gone; the one `C` — the chair in
+    // the priest's chambers, still a Cacodemon — is the part of KNOWN-4 that
+    // stays open, and this row is where it stays visible.
     "LEVEL 1 — THE GOTHIC DUNGEON": { C: 0, V: 0 },
-    "LEVEL 2 — THE ABANDONED CHURCH": { C: 1, V: 8 },
+    "LEVEL 2 — THE ABANDONED CHURCH": { C: 1, V: 0 },
     "LEVEL 3 — THE NECROPOLIS": { C: 0, V: 0 },
     "LEVEL 4 — THE GRAVEYARD": { C: 0, V: 0 },
     "LEVEL 5 — THE SEWERS": { C: 0, V: 0 },
+    // Level 6 is THE FACTORY: its single `V` is the Foreman, its own boss,
+    // and is meant to be an enemy. This is why the fix is in level 2's grid
+    // and not in the dispatch.
     "LEVEL 6 — THE FACTORY": { C: 3, V: 1 },
     "LEVEL 7 — THE WOMB": { C: 2, V: 0 },
+  });
+});
+
+/**
+ * The positive half of the same change: the furniture actually reaches the
+ * prop table. `v` must stay out of `ENEMY_DEFS` — the moment a def claims
+ * it, level 2's pews become bosses again in exactly the way KNOWN-4
+ * describes, and nothing else in the suite would say so.
+ */
+it("level 2's pews are props, not enemies, and `v` is claimed by no enemy def (KNOWN-4)", () => {
+  expect(Object.keys(ENEMY_DEFS)).not.toContain("v");
+  expect(PROP_CHARS).toContain("v");
+
+  const counts = Object.fromEntries(
+    built.map(({ name, grid }) => [name, findAll(grid, "v").length]),
+  );
+  expect(counts).toEqual({
+    "PROLOGUE — OUT OF THE PIT": 0,
+    "LEVEL 1 — THE GOTHIC DUNGEON": 0,
+    "LEVEL 2 — THE ABANDONED CHURCH": 8,
+    "LEVEL 3 — THE NECROPOLIS": 0,
+    "LEVEL 4 — THE GRAVEYARD": 0,
+    "LEVEL 5 — THE SEWERS": 0,
+    "LEVEL 6 — THE FACTORY": 0,
+    "LEVEL 7 — THE WOMB": 0,
+  });
+});
+
+/**
+ * And the consequence the level design turns on. `bossDeath`'s `V` arm calls
+ * `openExit()` — the same call the Corrupted Priest's death makes — so any
+ * Foreman in level 2 would open the level's exit and let the player walk past
+ * `Q`. Whatever those tiles were, they were not that.
+ *
+ * The keys come from `EXIT_OPENING_BOSSES` above, which **mirrors**
+ * `src/enemies/Death.ts` by hand rather than deriving anything from it —
+ * see that constant's own comment for what that costs and when to re-check
+ * it. (Review round 1, Minor 1: this said "derived", which it is not.)
+ */
+it("no level contains an exit-opening boss other than its own (KNOWN-4)", () => {
+  const perLevel = Object.fromEntries(
+    built.map(({ name, grid }) => [
+      name,
+      EXIT_OPENING_BOSSES.filter((b) => findAll(grid, b).length > 0).sort(),
+    ]),
+  );
+  expect(perLevel).toEqual({
+    "PROLOGUE — OUT OF THE PIT": [],
+    "LEVEL 1 — THE GOTHIC DUNGEON": [],
+    "LEVEL 2 — THE ABANDONED CHURCH": ["Q"],   // was ["Q","V"] — eight stray exits
+    "LEVEL 3 — THE NECROPOLIS": ["Z"],
+    "LEVEL 4 — THE GRAVEYARD": ["N"],
+    "LEVEL 5 — THE SEWERS": ["H"],
+    "LEVEL 6 — THE FACTORY": ["V"],
+    "LEVEL 7 — THE WOMB": [],
   });
 });
 

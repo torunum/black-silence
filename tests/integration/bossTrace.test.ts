@@ -84,17 +84,18 @@ import { world } from "../../src/world/WorldState";
  *   13-unit wake radius, so the boss wakes on the first gameplay frame.
  * - **`afterLoad` — `S.hp=5000`.** `loadLevel` sets `S.hp=100`, so this too
  *   has to be post-load. It is the price of the sweep below: the recorded
- *   fight runs 90 seconds of game time, during which a phase-2 priest
+ *   fight runs 45 seconds of game time, during which a phase-2 priest
  *   volleys five 15-damage orbs every 2.8s and its summons close in. The
- *   run drains 2798 points of it, and an earlier tuning of this same
- *   script that seeded only 3000 still had the player dead before frame
- *   5500 — and a fixture of a corpse watching a frozen scene records
- *   nothing (`Loop.ts` stops ticking
- *   gameplay on `S.dead`). The committed run ends with the player at
- *   `"HEALTH2202"`, i.e. having taken 2798 real points of damage through
- *   the real `damagePlayer`; nothing about the damage path is stubbed or
- *   softened, only the pool it draws down. No armour is seeded here —
- *   `combatTrace` already covers `damagePlayer`'s absorb arm.
+ *   committed run ends with the player at `"HEALTH3847"`, i.e. having taken
+ *   1153 real points of damage through the real `damagePlayer`; nothing
+ *   about the damage path is stubbed or softened, only the pool it draws
+ *   down. The pool is kept at 5000 rather than trimmed to fit: when this
+ *   script ran 5400 frames it drained 2798, an earlier tuning that seeded
+ *   only 3000 had the player dead before frame 5500, and a fixture of a
+ *   corpse watching a frozen scene records nothing (`Loop.ts` stops ticking
+ *   gameplay on `S.dead`) — the headroom is what keeps a retune of the run's
+ *   length from turning into a silent recording of nothing. No armour is
+ *   seeded here — `combatTrace` already covers `damagePlayer`'s absorb arm.
  *
  * **This is a seeded start, and it is not a played approach.** What the
  * trace proves is what `priestThink` does once a priest boss is awake, in
@@ -139,15 +140,37 @@ import { world } from "../../src/world/WorldState";
  * - The phase-2 branch has **no `moveEnemy` call at all** and teleports
  *   again only `if(dist<5&&e.tpT<=0)`. A stationary player never triggers
  *   that, so the boss stands still for the whole phase. Measured: in the
- *   committed run the priest teleports **exactly once**, from (41.5,42.7)
- *   to (35.6,45.6), and stays there from frame ~530 to frame ~4900.
+ *   committed run the priest teleports **exactly once**, on frame 546, from
+ *   (41.5,42.7) to (33.3,41.6), and stays there until phase 3 at frame 2244.
+ *   (Before level 2's pews stopped being bosses it was the same single
+ *   teleport, to (35.6,45.6), from frame ~530 to frame ~4900 — see the
+ *   KNOWN-4 section.)
  * - A blind sweep's expected damage rate is (damage rate) x (target's
  *   angular width / 2pi) — **independent of how fast the sweep turns**,
  *   because turning slower buys proportionally more dwell per pass and
- *   proportionally fewer passes. At 7.8 units a 2.0-unit-wide priest
- *   subtends ~0.26 rad, so 220/s on target is ~9/s blind. Phase 2's 594 hp
- *   therefore costs ~70 seconds no matter what the sweep does, and
- *   measured it costs 4360 frames (72.7s).
+ *   proportionally fewer passes. In phase 2 the priest is **`w=2.006`**
+ *   wide — `EnemyDefs.ts`'s `Q.w=1.7` times `spawnEnemy`'s `SZ=1.18`
+ *   sprite-presence bump, with the elite bump skipped because `d.boss` is
+ *   true — so hitscan's `dd<e.w*.45+.1` test gives it a **1.00-unit**
+ *   half-width: at the 9.8 units it now stands off it subtends ~0.205 rad
+ *   (2 x 1.0027 / 9.8; the exact `2·atan` form gives 0.204, same to two
+ *   figures), about **3.3% of a revolution**.
+ *
+ *   `w=2.71` and `h=3.53` are the priest's **phase-3** numbers and do not
+ *   belong in this passage: `Boss.ts`'s phase-3 arm runs `e.w*=1.35;
+ *   e.h*=1.15` **at** the transition, so 2.006 x 1.35 = 2.708 and 3.068 x
+ *   1.15 = 3.528 are what the boss becomes *after* phase 2 is over. Review
+ *   round 1 of the player-feedback plan caught them substituted in here and
+ *   they are re-derived above rather than copied back — the same failure
+ *   KNOWN-12 and KNOWN-13 exist to warn about. The numbers matter to the
+ *   argument, not just to the prose: at 7.8 units the same formula gave
+ *   ~0.256 rad, so the single phase-2 teleport out to 9.8 units **shrinks**
+ *   the target (0.256 -> 0.205 rad), which is what the "the sweep should be
+ *   slower, so why did phase 2 get shorter?" paragraph further down sets
+ *   out to explain. The phase-3 figure (0.27 rad) is *larger* than 0.256
+ *   and would have made that paragraph argue against itself.
+ *   Phase 2 costs 605 hp, measured, and takes **1691 frames (28.2s)** — 38
+ *   landed hits at ~15.9 damage each, over ~3.1 revolutions of the sweep.
  *
  * A narrower sweep aimed at where the boss *happened* to teleport would cut
  * that by 5x, and was rejected: it would be tuned to this seed's one
@@ -205,16 +228,27 @@ import { world } from "../../src/world/WorldState";
  * mutation — changed, the fixture's digest moved, `"diverges from the
  * fixture nowhere"` went red, reverted with a targeted edit:
  *
+ * All four were **re-run against the regenerated fixture** when level 2's
+ * pews stopped being bosses (see the KNOWN-4 section) — the old frame
+ * numbers were measured against the old recording and would otherwise have
+ * become quietly false. Every one of the four is still covered, three of
+ * them with a wider margin than before. Measured over the 150 sampled
+ * frames, each mutation moving `scene.digest` only (camera, hud and
+ * scene.count all differ in **0** frames in all four cases):
+ *
  * - **`Boss.ts`'s phase-3 form swap** (`e.sp.material.map=PX[e.formKey].a`),
- *   rewritten to `PX[e.key].a`: red at frame **4900**.
+ *   rewritten to `PX[e.key].a`: red in exactly **1** frame, **2250** — the
+ *   single sample inside the measured window [2244,2258), which is the
+ *   window the `EVERY` constant was retuned to hit. Still the fragile one;
+ *   still guarded by the named test below rather than by this paragraph.
  * - **`Boss.ts`'s boss walk cycle** (`e.sp.material.map=set[e.frame]`),
- *   pinned to `set[0]`: red at frame **180**, and in **20** of the 270
- *   sampled frames — eight in 180-440 (the phase-1 `Q` walk-in) and twelve
- *   in 4920-5180 (the phase-3 `Q2` walk-in), so both forms are covered.
+ *   pinned to `set[0]`: red in **30** of 150 frames — eight in 180-432 (the
+ *   phase-1 `Q` walk-in) and twenty-two in 2268-2700 (the phase-3 `Q2`
+ *   walk-in), so both forms are still covered. Was 20 of 270.
  * - **`Behaviors.ts`'s two-stage death collapse** (`P.die1`/`P.die2`),
- *   rewritten to `P.a`/`P.b`: red at frame **800**.
+ *   rewritten to `P.a`/`P.b`: red in **137** of 150 frames, from 252 on.
  * - **`Death.ts`'s headless corpse** (`PX[e.key].noHead||PX[e.key].hl`),
- *   rewritten to `PX[e.key].a`: red at frame **240**.
+ *   rewritten to `PX[e.key].a`: red in **117** of 150 frames, from 612 on.
  *
  * The last two are the ones `combatTrace`'s header reports as genuinely
  * unreached there: level 1's single kill severs a limb rather than
@@ -228,17 +262,25 @@ import { world } from "../../src/world/WorldState";
  *
  * Measured, and the most fragile thing in this file. Regenerating a
  * throwaway fixture under the form-swap mutation and comparing field by
- * field: `camera` differs in **0** of 270 frames, `hud` in **0**,
- * `scene.count` in **0**, and `scene.digest` in exactly **1** — frame 4900.
+ * field: `camera` differs in **0** of 150 frames, `hud` in **0**,
+ * `scene.count` in **0**, and `scene.digest` in exactly **1** — frame 2250.
  * That is not sampling bad luck, it is the shape of the site: the swap
  * writes `PX[formKey].a` once, and within at most 15 frames the walk cycle
  * three lines below overwrites the same `material.map` with `set[e.frame]`
  * (also a `Q2` texture), so the mutation's whole visible window is the
- * handful of frames between the two. **Any change to `TOTAL_FRAMES`,
- * `EVERY`, `dtMs`, the sweep or the seed can move frame 4900 out of that
- * window and silently drop this site's coverage while every test stays
- * green** — that was this file's own first-round review finding, because
- * until now nothing but this paragraph said so.
+ * handful of frames between the two — measured here as **[2244,2258)**.
+ * **Any change to `TOTAL_FRAMES`, `EVERY`, `dtMs`, the sweep or the seed can
+ * move that one frame out of the window and silently drop this site's
+ * coverage while every test stays green** — that was this file's own
+ * first-round review finding.
+ *
+ * **It then happened, on the guard's first real occasion.** Level 2's pews
+ * ceasing to be bosses moved the swap from frame ~4900 to 2244, and no
+ * multiple of the old `EVERY`(20) fell in the new window. The fixture
+ * comparison alone would have gone green after a regeneration with this
+ * site's coverage silently gone; the named test below went red instead and
+ * forced `EVERY` to 18. The guard is the reason the number above is 1 and
+ * not 0.
  *
  * **The fix, added in review round 1**: `afterLoad` installs a `configurable`
  * accessor on the priest's own `sp.material`'s `map` property (once the
@@ -264,28 +306,108 @@ import { world } from "../../src/world/WorldState";
  * *named* test — not just the fixture comparison's single frame, and not
  * only if a future reader remembers to re-run the mutation by hand.
  *
- * `every:20` rather than `combatTrace`'s `every:10`: this run is 3.1x
- * longer than that one, and even at this coarser sampling rate the
- * committed fixture (117,826 bytes) is already 5.6% larger than the other
- * two combined (37,710 + 73,873 = 111,583 bytes) — `every:10` would roughly
- * double that, to somewhere around 235 KB. 20 frames is a third of a
- * second, still finer than the boss walk cycle's 0.25s flip, and — per the
- * paragraph above — the form swap was confirmed caught at this rate by
- * mutation rather than by argument.
+ * `every:18` rather than `combatTrace`'s `every:10`: sampling this run as
+ * finely as that one would make the fixture several times the size of the
+ * other two put together, for a run whose interesting events (a 0.25s boss
+ * walk flip, a phase transition, a summon) are all coarser than that. The
+ * exact value 18 is not free, though — see the `EVERY` constant's own
+ * comment below: it is the coarsest small divisor that puts a sampled frame
+ * inside the form swap's measured visible window, and the named guard test
+ * at the bottom of this file is what enforces that rather than this
+ * paragraph.
  *
- * ## Level 2 spawns eight *other* priest bosses, and that is KNOWN-4
+ * ## Level 2 used to spawn eight *other* priest bosses — that was KNOWN-4,
+ * ## and this fixture was regenerated when it was fixed
  *
- * Worth knowing before reading this fixture's `scene.count`: level 2's
- * eight `"V"` cells, written under a "nave pews" comment, each spawn THE
- * FACTORY FOREMAN (2600 hp, `priest:true`) rather than a pew, because
- * `loadLevel` checks `EDEF[ch]` before the prop set `"xTCFVO"`. That is
- * KNOWN-4, already filed, and this run confirms it live: nine `priest`
- * enemies load, `V@43,9 V@11,17 V@25,17 V@41,17 V@25,21 V@41,21 V@25,27
- * V@41,27` and `Q@33,41`. All eight stay dormant for this whole run: the
- * player never moves, and the nearest of them (`V@41,27`) is a constant
- * 16.1 units away against a 13-unit priest wake radius — which is why
- * `hud.bossname` unambiguously names the Corrupted Priest throughout.
- * A future task that fixes KNOWN-4 should expect this fixture to move.
+ * **This is the regeneration the section above anticipated**, and the second
+ * one this fixture has had a reason for. Until player-feedback round 1 task
+ * 1 (2026-09-17), level 2's eight `"V"` cells, written under a "nave pews"
+ * comment, each spawned THE FACTORY FOREMAN (2600 hp, `boss`, `priest`,
+ * `sovereign`) rather than a pew, because `loadLevel` checks `EDEF[ch]`
+ * before the prop set. That was KNOWN-4, and this run had confirmed it
+ * live: nine `priest` enemies loaded — `V@43,9 V@11,17 V@25,17 V@41,17
+ * V@25,21 V@41,21 V@25,27 V@41,27` and `Q@33,41`. All eight stayed dormant
+ * for the whole run (the player never moves, and the nearest, `V@41,27`, is
+ * a constant 16.1 units away against a 13-unit priest wake radius), which
+ * is why `hud.bossname` named the Corrupted Priest unambiguously throughout
+ * — and still does.
+ *
+ * The project owner played the game and reported that boss as much too
+ * hard. All eight cells are now `v`, a prop-only pew. **One `priest` enemy
+ * loads now, `Q@33,41`.**
+ *
+ * ### What moved in the fixture, and why each field had to
+ *
+ * This file's "Regenerating this fixture" rule below asks for a field-by-field
+ * account, and the sampling constants changed in the same commit (see
+ * `TOTAL_FRAMES`/`EVERY`), which would make a naive old-vs-new comparison
+ * meaningless — different frame numbers, different frame count. So the diff
+ * below was taken against a **throwaway run of the new content at the old
+ * sampling** (5400/20), so that the only variable is the level's contents.
+ * All 270 sampled frames, measured not argued:
+ *
+ * - **`scene.count`: differs in 268 of 270 frames**, and the load-time delta
+ *   is exactly **−8** — frame 20 moves **163 → 155**, and −8 is the most
+ *   common delta in the run (13 frames). That number is derivable and was
+ *   confirmed rather than assumed: an enemy contributes **2** scene children
+ *   (`spawnEnemy`'s `sp` sprite and its `blob` shadow); a pew contributes
+ *   **1** (the `THREE.Group` `spawnProp` adds, whose four boxes are the
+ *   group's children rather than the scene's), and the pew branch calls no
+ *   `addBlob`. 8 × 2 − 8 × 1 = 8 fewer children. The delta does not stay at
+ *   −8 because the rest of the run diverges too — see `camera`/`hud` below —
+ *   and later frames range roughly ±50 as particles, gibs and summons land
+ *   differently.
+ * - **`scene.digest`: differs in all 270 frames**, necessarily: it hashes
+ *   every child's type, position, visibility, texture name and colour, and
+ *   sixteen children were replaced by eight different ones at load.
+ * - **`camera`: differs in 236 of 270 frames; `hud` in 264** (by field:
+ *   `hp` 249, `msg` 150, `bossname` 133, `subt` 63, `wname` 18). This is the
+ *   part worth being explicit about, because "removing eight *dormant*
+ *   enemies the player never approaches" sounds like it should change nothing
+ *   the player sees. It changes the **seeded RNG stream**. `spawnEnemy` draws
+ *   six values per enemy (`dodgeT`, `flank`'s sign and its magnitude,
+ *   `lungeT`, `slamT`, `flingCD`) plus the elite roll; `spawnProp`'s pew
+ *   branch draws **none** — the `rnd(0,6)` rotation belongs to the `C` chair,
+ *   not the pew. The harness seeds one PRNG for the whole run precisely so
+ *   gameplay is deterministic, so removing ~50 draws at load time shifts
+ *   every later draw: the priest's attack cadence, its teleport target, its
+ *   summons, every particle and gib. The visible consequence is that **the
+ *   whole fight compresses** — phase 3 now begins at frame **2244** instead
+ *   of ~4900, and over a like-for-like 5400-frame run the player takes 1685
+ *   damage instead of 2798.
+ *
+ *   The compression is worth one more sentence, because the obvious reading
+ *   of it is wrong and was checked rather than assumed. It is **not** that
+ *   the boss teleported closer: measured, the single phase-2 teleport moved
+ *   from (35.6,45.6) to (33.3,41.6), i.e. from 7.8 units away to **9.8**,
+ *   which by the angular-width argument above should make the sweep *slower*.
+ *   What actually changed is the hit rate per pass. Phase 2 needs about the
+ *   same number of landed hits either way (37 before, 38 now, ~15.9 damage
+ *   each), but it now collects them in ~3.1 revolutions of the sweep instead
+ *   of ~8 — roughly 12 hits per pass against 4.6. The best-supported reading,
+ *   and it is a reading rather than a proof: the run's aim *pitch* is set
+ *   once by the wake cinematic, while the boss is still 1.6 units away, and
+ *   never changes afterwards; `hitscan` then requires the ray's height at
+ *   closest approach to fall inside the sprite's band (`cy>ecy-e.h*.55 &&
+ *   cy<ecy+e.h*.55`, `h=3.068` in phase 2 — `Q.h=2.6` x `SZ=1.18`, the
+ *   x1.15 phase-3 stretch not yet applied), and that vertical intercept
+ *   depends on how
+ *   far away the boss ends up. The old teleport left the aim near the edge of
+ *   that band and lost roughly half its potential nails per pass; the new one
+ *   leaves it centred. Either way it is downstream of the same seeded stream.
+ *   This is the same coupling Phase 2 Part A measured when instancing
+ *   geometry changed enemy timing, and it is why that phase took UUID draws
+ *   *out* of the stream: what is left coupled is real gameplay randomness,
+ *   which a change to a level's contents is entitled to move.
+ * - **Nothing this fixture exists to record changed.** `hud.bossname` takes
+ *   the identical four values across the run, in the same order; all five
+ *   named tests below still pass; the priest still wakes, reaches all three
+ *   phases, calls its flock, and ends awake/hurt/`Q2`/alive; the phase-3 form
+ *   swap still lands inside a sampled frame — after `EVERY` was retuned for
+ *   it, which is itself recorded at that constant.
+ * - **The other two committed fixtures did not move.** `trace-level0.json`
+ *   (`e3a56b3d…`) and `trace-level1.json` (`97bd7c67…`) are byte-identical
+ *   before and after — checksummed, not assumed. Neither plays level 2.
  *
  * ## Regenerating this fixture
  *
@@ -315,16 +437,36 @@ const SENS = 0.0022;
 const REV = (2 * Math.PI) / SENS;
 
 /**
- * Measured, not chosen: the phase-3 transition lands at frame ~4900 (see
- * the module doc comment's sweep section for why phase 2 costs 4360 of
- * those frames), and this leaves 500 frames — 25 recorded ones — of phase 3
- * after it, during which the priest walks back into melee range. Long
- * enough to record the phase-3 walk cycle and a ring/debris cadence;
- * short enough that the boss is still alive at the cutoff (491 of 1800 hp)
- * and the player still has most of the seeded pool left.
+ * Measured, not chosen — and **re-measured after level 2's pews stopped
+ * being bosses** (player-feedback round 1 task 1; see the KNOWN-4 section of
+ * the module doc comment). Both numbers moved, and the reason each had to is
+ * worth keeping:
+ *
+ * - **`TOTAL_FRAMES` 5400 → 2700.** The phase-3 transition used to land at
+ *   frame ~4900; it now lands at **2244**. Phase 2 used to cost 4360 frames
+ *   because the priest's one teleport put it 7.8 units away and a blind
+ *   sweep's damage rate scales with the target's angular width; the new
+ *   seeded RNG stream teleports it closer, so phase 2 costs ~1830 frames
+ *   instead. At the old 5400 the priest was **dead** by the cutoff (measured:
+ *   `hp=-4` at frame 5400), which would have turned 2500 of the recorded
+ *   frames into a corpse and broken the "awake, hurt, transformed and still
+ *   alive" check below. 2700 keeps the original design intent — a few hundred
+ *   frames of live phase 3 after the swap, here 456 of them (7.6s), with the
+ *   boss still alive at the cutoff.
+ * - **`EVERY` 20 → 18.** Not a style choice: the form-swap guard below
+ *   *demands* it. The swap's visible window is the half-open interval between
+ *   the phase-3 `material.map` write and the walk cycle's next one, measured
+ *   here as **[2244,2258)**, and no multiple of 20 falls inside it (2240 and
+ *   2260 straddle it). 18 does: 18 x 125 = 2250. This is the guard added in
+ *   review round 1 doing exactly the job it was added for, on its first real
+ *   occasion — the paragraph it replaced predicted that a retune could
+ *   silently drop this site's coverage, and a retune just did.
+ *
+ * 2700/18 = 150 recorded frames, down from 270, so the fixture shrinks too.
+ * 18 frames is 0.3s, slightly finer than the 20 it replaces.
  */
-const TOTAL_FRAMES = 5400;
-const EVERY = 20;
+const TOTAL_FRAMES = 2700;
+const EVERY = 18;
 /**
  * The fifth knob the structural guard depends on, alongside `TOTAL_FRAMES`
  * and `EVERY`: `runTrace`'s own frame clock and the guard's write-log frame
@@ -365,6 +507,20 @@ let trace: TraceFrame[];
 /** The Corrupted Priest itself, captured in `afterLoad` and read after the run. */
 let priest: (typeof world.enemies)[number];
 /**
+ * The priest's hitbox as it spawned — i.e. its phase-1/phase-2 size, read
+ * before `Boss.ts`'s phase-3 arm stretches it. Captured because `priest` is
+ * a live reference: by the time the tests run it holds the phase-3 numbers,
+ * and the two are exactly what review round 1 found confused in this
+ * file's header.
+ */
+let spawnW = 0, spawnH = 0;
+/**
+ * The physical shape of every `kind:"v"` prop level 2 built, captured in
+ * `afterLoad` — see the "level 2's pews really are pews" test below for why
+ * a named check exists at all when the fixture already covers it.
+ */
+let pewShapes: Array<Record<string, unknown>> = [];
+/**
  * Every write to the priest's `sp.material.map`, in chronological order —
  * the structural guard for the phase-3 form swap (review round 1, Important
  * 1). Installed by the accessor in `afterLoad` below; see this file's
@@ -400,6 +556,15 @@ beforeAll(async () => {
         );
       }
       priest = found;
+      spawnW = found.w;
+      spawnH = found.h;
+      // Read here rather than in the test body: `world.props` is live and
+      // play mutates it (`breakProp` sets `dead`, `explodeBarrel` removes
+      // entries), so only a pre-frame-1 read is a reading of what
+      // `loadLevel` actually built.
+      pewShapes = world.props
+        .filter((p) => p.kind === "v")
+        .map((p) => ({ r: p.r, hgt: p.hgt, hp: p.hp, explosive: p.explosive }));
       if (found.x !== PRIEST_X || found.z !== PRIEST_Z) {
         throw new Error(
           `the priest spawned at (${found.x},${found.z}), not (${PRIEST_X},${PRIEST_Z}) — the ` +
@@ -468,6 +633,58 @@ describe("the recorded run actually fights a priest boss", () => {
     expect([...names]).toContain("THE CORRUPTED PRIEST — PHASE 1");
     expect([...names]).toContain("THE CORRUPTED PRIEST — PHASE 2");
     expect([...names]).toContain("THE CORRUPTED PRIEST — PHASE 3");
+  });
+
+  it("is the size this file's header does its sweep arithmetic with — phase 2, not phase 3", () => {
+    // Review round 1, Important 1: the header's phase-2 passages had been
+    // given the priest's PHASE-3 dimensions (w=2.71, h=3.53), which made
+    // the file argue against itself — the angular width it computed from
+    // them was *larger* than the pre-teleport figure, while the paragraph
+    // two screens down explains why the sweep got a *smaller* target. The
+    // numbers are re-derived in the header; this pins them, so the next
+    // person to quote a dimension there has a test that disagrees rather
+    // than prose that quietly doesn't.
+    //
+    // Derivation, independent of the header: `EnemyDefs.ts` has `Q.w=1.7,
+    // Q.h=2.6`; `spawnEnemy` (`src/world/LevelLoader.ts`) multiplies by
+    // `SZ=1.18` and skips the x1.15 elite bump because `d.boss` is true.
+    expect(spawnW).toBeCloseTo(1.7 * 1.18, 10);
+    expect(spawnH).toBeCloseTo(2.6 * 1.18, 10);
+    expect(spawnW).toBeCloseTo(2.006, 3);
+    expect(spawnH).toBeCloseTo(3.068, 3);
+    // hitscan's half-width for that w — the number the sweep arithmetic
+    // actually uses (`src/weapons/Hitscan.ts`: `dd<e.w*.45+.1`).
+    expect(spawnW * 0.45 + 0.1).toBeCloseTo(1.0027, 4);
+
+    // And where 2.71/3.53 really come from: `Boss.ts`'s phase-3 arm runs
+    // `e.w*=1.35; e.h*=1.15` AT the transition, so they describe the boss
+    // only after phase 2 is over. The run ends in phase 3, so the live
+    // object carries them now.
+    expect(priest.phase).toBe(3);
+    expect(priest.w).toBeCloseTo(spawnW * 1.35, 10);
+    expect(priest.h).toBeCloseTo(spawnH * 1.15, 10);
+    expect(priest.w).toBeCloseTo(2.708, 3);
+    expect(priest.h).toBeCloseTo(3.528, 3);
+  });
+
+  it("level 2's pews really are pews, not explosive barrels — review round 1, Minor 2", () => {
+    // Task 1 turned level 2's eight `V` tiles into `v`, a prop-only pew.
+    // Until this test, the only thing standing between `spawnProp`'s
+    // `ch==="V"||ch==="v"` branch and silence was the fixture's digest at
+    // frame 18: break the branch and all eight tiles fall through to the
+    // **explosive barrel** `else`, and the failure reads as a hash that
+    // doesn't match. That is a real regression reported illegibly. This
+    // says what it is instead.
+    //
+    // The numbers are `spawnProp`'s pew arm (`src/world/LevelLoader.ts`):
+    // `r=.75; hgt=.95; hp=18;` with `explosive` left false. The barrel
+    // `else` it must not have fallen into is `r=.48; hgt=1.1; hp=24;
+    // explosive=true` — every field differs, so this cannot pass by
+    // accident on a partial fall-through either.
+    expect(pewShapes).toHaveLength(8);
+    for (const p of pewShapes) {
+      expect(p).toEqual({ r: 0.75, hgt: 0.95, hp: 18, explosive: false });
+    }
   });
 
   it("the priest summoned its flock", () => {

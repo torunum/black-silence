@@ -268,6 +268,173 @@ function installUuidStub(): () => void {
   };
 }
 
+/**
+ * The audio synthesis equivalent of `installUuidStub` above: keeps the
+ * noise-buffer fills and per-call jitter in `src/audio/*` out of the seeded
+ * gameplay stream, so a trace's recorded run depends on what the *game*
+ * draws and not on which sounds happened to fire.
+ *
+ * ## Why this is a harness bug and not a game bug
+ *
+ * `src/audio/Sfx.ts`'s `bang`/`boom` and `src/audio/Voice.ts`'s `noiseBuf`
+ * fill a whole `AudioBuffer` with `Math.random()*2-1`, one draw per sample
+ * — thousands of draws per sound in a browser at 44.1kHz. On top of that,
+ * `AudioEngine.ts`'s ambience LFO, `Voice.ts`'s `growl` tremolo, its
+ * `gurgle` pitch wobble and its `snarl` pitch pick each jitter with a bare
+ * `Math.random()`. None of those values is ever read back by anything the
+ * game simulates: they are sample data and oscillator settings, and no
+ * gameplay state, no camera position and nothing in any trace's digest
+ * depends on them.
+ *
+ * But `seedRandom` seeds the one global `Math.random`, so before this stub
+ * every sound that fired *consumed the gameplay stream* and shifted every
+ * later draw the run made — torch flicker, ambience timers, enemy dodge and
+ * flank rolls, monologue picks. Player-feedback round 1 measured that
+ * directly: dropping the kick cooldown from 15s to 1s let the "ready" click
+ * fire inside the 15-second trace window for the first time, its `bang()`
+ * consumed the stream, and `trace-level0.json`'s `scene.digest` moved from
+ * frame 190 onward with no gameplay change behind it. A seed exists to make
+ * *gameplay* deterministic; a noise buffer is not gameplay. Left coupled,
+ * every future audio edit moves fixtures — and the very next task in that
+ * plan rebuilds the gun sound.
+ *
+ * ## How an audio draw is told apart from a gameplay draw
+ *
+ * By the **immediate caller's file**, not by function name and not by
+ * "anywhere in the stack": the first stack frame below this wrapper must
+ * live under `src/audio/`. That is deliberately the narrowest test that
+ * covers the whole of audio and nothing else:
+ *
+ * - "anywhere in the stack" would be wrong, because audio is always called
+ *   *from* gameplay (`Death.ts` -> `deathCry`, `WeaponState.ts` -> `click`),
+ *   so a gameplay draw made on a path that later reaches audio could be
+ *   caught by it. Only the top frame is the file that actually drew.
+ * - matching function names (`bang`, `growl`, …) would break silently on a
+ *   rename and would capture any same-named function elsewhere.
+ * - every `Math.random()` in `src/audio/` is jitter or sample data; none of
+ *   the six sites calls out to `rnd`/`pick` (checked with
+ *   `grep -n "Math.random\|rnd(\|pick(" src/audio/*.ts`), so a draw made by
+ *   `src/utils/math.ts` on audio's behalf — which would show `math.ts` as
+ *   its top frame and correctly pass through to gameplay's stream — does
+ *   not exist today and would not be intercepted if it appeared.
+ *
+ * Audio's draws are answered from an independent `mulberry32`, not from a
+ * counter like the UUID stub's: these values are *heard*, and a monotonic
+ * ramp in a noise buffer is a sawtooth rather than noise. Nothing in a
+ * trace reads them, so nothing here can be "wrong" — but a generator keeps
+ * the synthesis doing what it does in a browser rather than quietly feeding
+ * it a ramp, which is what a counter would be. The fixed seed keeps a run
+ * reproducible.
+ *
+ * ## The guard-the-guard
+ *
+ * Same reasoning as `installUuidStub`'s, and the same failure mode: a
+ * stack-sniffing check can stop matching (a different stack format, a
+ * moved directory, an inlined frame) and then every audio draw quietly
+ * rejoins the gameplay stream with nothing saying why. Every trace in this
+ * repo fires sounds — level 0 shoots and reloads, levels 1 and 2 fight —
+ * so a run that intercepted ZERO draws means the detection broke, not that
+ * the game went quiet.
+ *
+ * ## NOT WIRED INTO `runTrace` YET — read this before wiring it
+ *
+ * One line in `runTrace` installs it (`const restoreAudio =
+ * installAudioStub();` next to `installUuidStub`, plus its `restore` in the
+ * `finally`). It is left out on purpose, because removing audio's draws
+ * from a *shared* stream necessarily reshuffles that stream for **every**
+ * trace that plays a sound, and all three do. Measured, with the stub
+ * installed and `src/` otherwise untouched (player-feedback round 1):
+ *
+ * - **level 0** (`trace.test.ts`) — 38 draws intercepted. Camera, HUD and
+ *   `scene.count` come back byte-identical in all 90 sampled frames; only
+ *   `scene.digest` moves, in all 90. Exactly the shape of the UUID stub's
+ *   own first regeneration, and harmless for the same reason: no enemies,
+ *   so the shift reaches only cosmetic timers.
+ * - **level 1** (`combatTrace.test.ts`) — 137 draws. Camera moves in 12 of
+ *   176 frames (≤0.005 units), `scene.count` in 15, and the HUD in 50: a
+ *   different monologue line gets picked. Behavioral, but nothing the
+ *   file's own assertions rest on.
+ * - **level 2** (`bossTrace.test.ts`) — 1041 draws, and this is the one
+ *   that matters. Camera moves in 104 of 150 frames, by up to 0.58 units;
+ *   the fight itself comes out differently and **the priest never reaches
+ *   phase 3** (ends at 942 hp against a threshold of 594). Three of that
+ *   file's behavioral assertions go red — including Phase 3 Part D's
+ *   form-swap structural guard — and regenerating the fixture cannot fix
+ *   any of them, because they assert what the run *does*, not what it
+ *   recorded. Restoring that coverage means retuning the boss script.
+ *
+ * So wiring this in is not "regenerate one fixture": it is three fixtures
+ * plus a retuned boss script, against the genuine benefit that audio edits
+ * (Task 4 rebuilds the gun sound) stop moving fixtures forever. That trade
+ * is a call for whoever owns the plan. Until it is made, the mechanism sits
+ * here, tested and ready, and the traces keep the coupling they have.
+ *
+ * **Exported for `tests/integration/audioStub.test.ts`**, the same way
+ * `buildTextureIndex` is exported for `textureIndex.test.ts`. A fixture can
+ * only ever say "something changed"; that test drives this function
+ * directly and pins the three properties the fixtures cannot name — that a
+ * real sound leaves the seeded stream untouched, that a non-audio draw
+ * still consumes it, and that the zero-intercept guard throws.
+ */
+export function installAudioStub(): () => void {
+  const real = Math.random;
+  // mulberry32, the same generator `tests/support/seededRandom.ts` uses —
+  // duplicated rather than imported so this stub's stream can never be
+  // confused with, or accidentally re-seeded by, the gameplay one.
+  let a = 0x9e3779b9;
+  const audioRandom = (): number => {
+    a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+  let intercepted = 0;
+  Math.random = (): number => {
+    if (topFrameIsAudio(new Error().stack)) {
+      intercepted++;
+      return audioRandom();
+    }
+    return real();
+  };
+  return () => {
+    Math.random = real;
+    if (intercepted === 0) {
+      throw new Error(
+        "installAudioStub intercepted no Math.random() calls. The `src/audio/` caller-frame check " +
+        "has stopped matching, so audio synthesis is consuming the seeded gameplay stream again and " +
+        "any fixture recorded now would move on the next sound-design change. Fix the detection " +
+        "before trusting or regenerating a trace.",
+      );
+    }
+  };
+}
+
+/**
+ * True when the first stack frame below `installAudioStub`'s wrapper — the
+ * function that actually called `Math.random()` — is in `src/audio/`.
+ *
+ * Frames naming this harness file are skipped, not counted as the caller:
+ * the wrapper itself is one, and inside `runTrace` the UUID stub installed
+ * above it is a second — its `real()` call is what reaches this wrapper, so
+ * it sits between the wrapper and the code that actually drew.
+ */
+function topFrameIsAudio(stack: string | undefined): boolean {
+  if (!stack) return false;
+  const lines = stack.split("\n");
+  for (let i = 1; i < lines.length; i++) {
+    const line = lines[i];
+    if (line.includes("gameplayTrace")) continue;
+    // Both separators, and the second is not speculative: dumped live on
+    // this machine, vitest's frames carry the native path — `at bang
+    // (C:\…\uygulamatesti\src\audio\Sfx.ts:39:41)` — so on Windows only the
+    // backslash form matches (checked by breaking each form in turn: with
+    // only the forward-slash form live, `audioStub.test.ts` goes red). A
+    // POSIX run gives the forward-slash form, so both stay.
+    return line.includes("/src/audio/") || line.includes("\\src\\audio\\");
+  }
+  return false;
+}
+
 function readCamera(camera: Any): number[] {
   return [
     r6(camera.position.x), r6(camera.position.y), r6(camera.position.z),
@@ -602,6 +769,10 @@ export async function runTrace(o: TraceOptions): Promise<TraceFrame[]> {
   // Installed on top of the seeded generator above (not before it), so its
   // fallback path — every draw that isn't a three.js UUID — reaches the
   // seeded stream, the same as if this stub didn't exist.
+  //
+  // `installAudioStub` is deliberately NOT installed here — see its doc
+  // comment for what wiring it costs and why that is a ruling, not a call
+  // this harness makes on its own.
   const restoreUuid = installUuidStub();
   try {
     await import("../../src/main");
