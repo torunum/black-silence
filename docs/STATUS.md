@@ -4,9 +4,17 @@
 
 The project owner requested a public GitHub release with promotional media.
 Repository: https://github.com/torunum/black-silence (public, created).
-Planned playable URL: https://torunum.github.io/black-silence/.
+Live playable URL: https://torunum.github.io/black-silence/.
 The release workflow in `.github/workflows/pages.yml` checks the game before
-deploying it. Deployment confirmation belongs in the next checkpoint.
+deploying it. First deployment succeeded in Actions run `35374911344`:
+https://github.com/torunum/black-silence/actions/runs/35374911344.
+Live Chromium check passed: New Game starts, movement changes rendered
+frames, and no page errors were reported. The hosted MP4 responds HTTP 200.
+Release: https://github.com/torunum/black-silence/releases/tag/preview-2026-09-18.
+Both the HTML and the 25.76-second, 720p trailer are attached. The downloaded
+release HTML matches the local artifact byte-for-byte (SHA-256
+`2a2ab0add8389260b01d466cb436634d7f730eab805eabf12c52730cea947474`).
+Publication commit: `5c8b49f`; pending armour plan saved separately in `a05b838`.
 
 Prepared: English/Turkish README and press kit, a 1280x720 trailer with actual
 game audio, gameplay GIF, cover and screenshots. See `docs/media/README.md`

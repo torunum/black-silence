@@ -12,7 +12,7 @@ open it in your desktop browser, and descend.
 
 **[Play in your browser](https://torunum.github.io/black-silence/)** ·
 **[Download the game](https://github.com/torunum/black-silence/releases/download/preview-2026-09-18/THE-BLACK-SILENCE.html)** ·
-**[Watch the trailer](docs/media/black-silence-trailer.mp4)** ·
+**[Watch the trailer](https://torunum.github.io/black-silence/media/black-silence-trailer.mp4)** ·
 **[Press kit / Basın kiti](docs/PRESS-KIT.md)**
 
 ## Enter the Parish
@@ -107,7 +107,7 @@ bekliyor.
 [Tarayıcıda oyna](https://torunum.github.io/black-silence/) veya
 [tek HTML dosyasını indir](https://github.com/torunum/black-silence/releases/download/preview-2026-09-18/THE-BLACK-SILENCE.html), masaüstü tarayıcında aç
 ve klavye-fare ile oyna. İndirdikten sonra internet bağlantısı veya kurulum
-gerektirmez. [Tanıtım videosu](docs/media/black-silence-trailer.mp4) ·
+gerektirmez. [Tanıtım videosu](https://torunum.github.io/black-silence/media/black-silence-trailer.mp4) ·
 [Basın kiti](docs/PRESS-KIT.md)
 
 ## Credits
