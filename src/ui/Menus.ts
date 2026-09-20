@@ -3,6 +3,7 @@ import { flushSave } from "../save/persist";
 import { LEVELS } from "../world/levels/index";
 import { getMasterVolume, setMasterVolume } from "../audio/AudioEngine";
 import { RENDER_WIDTHS, sizeRender } from "../render/RenderCore";
+import { applyShadowSetting } from "../render/Shadows";
 import { el } from "./dom";
 
 /**
@@ -55,6 +56,17 @@ import { el } from "./dom";
  *   `sizeRender()` — never a parallel resize path — on `input`, matching
  *   how the boot-time value is applied (`main.ts`, right after
  *   `loadSave()`).
+ *
+ * Phase 2B (shadowed lighting) added a third IIFE in the same shape, for
+ * `#shadowSlider`/`#shadowVal`. It exists because that setting's cost —
+ * six extra depth passes a frame for the player's lamp — is the one thing
+ * about this feature that **cannot be measured anywhere in this project's
+ * development environment**: `requestAnimationFrame` does not run
+ * sustained in the browser pane, so there is no frame rate here to read.
+ * The only person who can judge it is the player, and the player cannot
+ * edit `src/render/Shadows.ts`, so the judgement needs a control. It is a
+ * two-position range rather than a checkbox purely so it inherits the
+ * existing `.setrow` styling with no new CSS.
  */
 function showScreen(id: string): void {
   ["intro","chapsel","settings"].forEach(s=>
@@ -116,5 +128,14 @@ export function initMenus(startGame: (idx: number) => void): void {
       save.renderWidth=RENDER_WIDTHS[sl.value as unknown as number];
       sizeRender();flushSave();
       vv.textContent=String(save.renderWidth);});
+  })();
+  /* ---- settings: shadows ---- */
+  (function(){
+    const sl=document.getElementById("shadowSlider") as HTMLInputElement,vv=el("shadowVal");
+    const paint=():void=>{vv.textContent=save.shadows?"ON":"OFF";};
+    sl.value=(save.shadows?1:0) as unknown as string;paint();
+    sl.addEventListener("input",()=>{
+      save.shadows=sl.value!=="0";
+      applyShadowSetting();flushSave();paint();});
   })();
 }

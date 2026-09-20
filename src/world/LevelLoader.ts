@@ -8,6 +8,7 @@ import { ITEMTEX } from "../render/ItemTextures";
 import { setScene } from "../render/SceneRef";
 import { renderState } from "../render/Renderer";
 import { addSprite, addBlob } from "../render/RenderCore";
+import { applyShadowFlags, configureLampShadow } from "../render/Shadows";
 import { buildParticles } from "../fx/Particles";
 import { resetDecals } from "../fx/Decals";
 import { resetGibs } from "../fx/Gibs";
@@ -181,6 +182,9 @@ export function spawnProp(ch: string, wx: number, wz: number): void {
   else{m=new THREE.Mesh(track(new THREE.CylinderGeometry(.42,.42,1.05,8)),
     track(new THREE.MeshLambertMaterial({map:TEX.barrel})));
     m.position.set(wx,.525,wz);r=.48;hgt=1.1;hp=24;explosive=true;addBlob(wx,wz,1.1);}
+  // `applyShadowFlags` (src/render/Shadows.ts) dispatches on this name and
+  // walks the subtree — a flag on the `Group` branches above reaches nothing.
+  m.name="prop";
   (renderState.scene as THREE.Scene).add(m);
   (world.props as Record<string, unknown>[]).push({m,x:wx,z:wz,r,hgt,hp,dead:false,explosive,kind,fuse:-1});}
 
@@ -198,6 +202,7 @@ export function loadLevel(idx: number): void {
   renderState.scene.fog=new THREE.FogExp2(Ldef.fog,Ldef.fogD*1.5);
   renderState.ambLight=track(new THREE.AmbientLight(Ldef.amb,Ldef.ambI*0.42));renderState.scene.add(renderState.ambLight);
   renderState.lamp=track(new THREE.PointLight(0xffb060,1.7,9,1.6));renderState.scene.add(renderState.lamp);
+  configureLampShadow(renderState.lamp);   // the game's one shadow caster — src/render/Shadows.ts
   // a tighter hot core so the player is always in a warm pool that falls off to black
   renderState.lampCore=track(new THREE.PointLight(0xffd890,1.1,4.5,2));renderState.scene.add(renderState.lampCore);
   renderState.muzzleLight=track(new THREE.PointLight(0xffc878,0,14,1.4));renderState.scene.add(renderState.muzzleLight);
@@ -255,15 +260,17 @@ export function loadLevel(idx: number): void {
     else if(ch==="+"||ch==="D"||ch==="S"){
       let mat;if(ch==="S"){mat=matWall;S.secretsTotal++;}
       else mat=track(new THREE.MeshLambertMaterial({map:ch==="D"?TEX.doorLocked:(flesh?TEX.fleshDoor:TEX.door)}));
-      const m=new THREE.Mesh(wallGeo,mat);m.position.set(wx,WALLH/2,wz);renderState.scene.add(m);
+      const m=new THREE.Mesh(wallGeo,mat);m.name="door";m.position.set(wx,WALLH/2,wz);renderState.scene.add(m);
       world.doors[x+","+z]={mesh:m,open:false,locked:ch==="D",secret:ch==="S",flesh:flesh&&ch!=="D"};}}
   if(wallMats.length){
     const wallMesh=new THREE.InstancedMesh(wallGeo,matWall,wallMats.length);
     wallMats.forEach((mtx,i)=>wallMesh.setMatrixAt(i,mtx));
+    wallMesh.name="wall";
     wallMesh.instanceMatrix.needsUpdate=true;renderState.scene.add(wallMesh);}
   if(pilMats.length){
     const pilMesh=new THREE.InstancedMesh(pilGeo,matPil,pilMats.length);
     pilMats.forEach((mtx,i)=>pilMesh.setMatrixAt(i,mtx));
+    pilMesh.name="pillar";
     pilMesh.instanceMatrix.needsUpdate=true;renderState.scene.add(pilMesh);}
   const floorTex=track((hell?TEX.hellFloor:flesh?TEX.fleshFloor:(dungeon?TEX.dungeonFloor:TEX.churchFloor)).clone());
   floorTex.needsUpdate=true;floorTex.repeat.set(world.GW,world.GH);
@@ -271,6 +278,7 @@ export function loadLevel(idx: number): void {
   floorTex.magFilter=THREE.NearestFilter;floorTex.minFilter=THREE.NearestFilter;
   const fm=new THREE.Mesh(track(new THREE.PlaneGeometry(world.GW*CELL,world.GH*CELL)),
     track(new THREE.MeshLambertMaterial({map:floorTex})));
+  fm.name="floor";
   fm.rotation.x=-Math.PI/2;fm.position.set(world.GW*CELL/2,0,world.GH*CELL/2);renderState.scene.add(fm);
   buildCeiling(renderState.scene as THREE.Scene,(hell?TEX.hellCeil:flesh?TEX.fleshCeil:TEX.ceil),wallTex);
   /* raised floor platforms (verticality) — a textured block per elevated cell.
@@ -298,6 +306,7 @@ export function loadLevel(idx: number): void {
       const platGeo=track(new THREE.BoxGeometry(1,1,1));
       const platMesh=new THREE.InstancedMesh(platGeo,pmats,platMats.length);
       platMats.forEach((mtx,i)=>platMesh.setMatrixAt(i,mtx));
+      platMesh.name="platform";
       platMesh.instanceMatrix.needsUpdate=true;renderState.scene.add(platMesh);}}
   /* angled wall meshes from arbitrary segments — non-orthogonal Doom/Blood walls */
   if(world.wallSegs.length){
@@ -305,7 +314,7 @@ export function loadLevel(idx: number): void {
     for(const s of world.wallSegs as unknown as WallSeg[]){
       const len=Math.hypot(s.x2-s.x1,s.z2-s.z1);if(len<.01)continue;
       const geo=track(new THREE.BoxGeometry(len,WALLH,0.18));
-      const m=new THREE.Mesh(geo,segMat);
+      const m=new THREE.Mesh(geo,segMat);m.name="wallSeg";
       m.position.set((s.x1+s.x2)/2,WALLH/2,(s.z1+s.z2)/2);
       m.rotation.y=-Math.atan2(s.z2-s.z1,s.x2-s.x1);
       renderState.scene.add(m);}}
@@ -325,7 +334,7 @@ export function loadLevel(idx: number): void {
     else if(ch==="i"){
       const pole=new THREE.Mesh(track(new THREE.CylinderGeometry(.06,.09,1.15,6)),
         track(new THREE.MeshLambertMaterial({color:0x1a160f})));
-      pole.position.set(wx,.575,wz);renderState.scene.add(pole);
+      pole.name="torchPost";pole.position.set(wx,.575,wz);renderState.scene.add(pole);
       const fl=addSprite((ITEMTEX.torch as THREE.CanvasTexture[])[0],wx,wz,.45,.6,1.35);
       const Lt=track(new THREE.PointLight(0xff9838,1.6,10,1.8));
       Lt.position.set(wx,1.45,wz);renderState.scene.add(Lt);
@@ -336,10 +345,10 @@ export function loadLevel(idx: number): void {
     else if(ch==="p"){world.pianoPos={x:wx,z:wz};
       const body=new THREE.Mesh(track(new THREE.BoxGeometry(1.7,1.0,.95)),
         track(new THREE.MeshLambertMaterial({color:0x14100a})));
-      body.position.set(wx,.5,wz);renderState.scene.add(body);
+      body.name="prop";body.position.set(wx,.5,wz);renderState.scene.add(body);
       const kb=new THREE.Mesh(track(new THREE.BoxGeometry(1.35,.06,.3)),
         track(new THREE.MeshLambertMaterial({color:0xcfc8b8})));
-      kb.position.set(wx,1.02,wz+.42);renderState.scene.add(kb);
+      kb.name="prop";kb.position.set(wx,1.02,wz+.42);renderState.scene.add(kb);
       world.props.push({m:body,x:wx,z:wz,r:.95,hgt:1.2,hp:1e9,dead:false,explosive:false,kind:"piano"});}
     else if(ch==="Y"){world.challenge={x:wx,z:wz,state:0,spawned:[]};
       const plate=new THREE.Mesh(track(new THREE.CircleGeometry(.9,10)),
@@ -376,6 +385,11 @@ export function loadLevel(idx: number): void {
       const tex=(k[0]==="w"?ITEMTEX.gun:ITEMTEX[k]) as THREE.CanvasTexture;
       world.items.push({kind:k,x:wx,z:wz,sp:addSprite(tex,wx,wz,.55,.55,.5),bob:Math.random()*6});}
     world.grid[z][x]=".";}
+  // Every builder has added its children by here, so one pass applies the
+  // whole cast/receive policy. At the end rather than per-site because the
+  // policy is one decision living in one file (src/render/Shadows.ts); a
+  // scene child whose name is not in `SHADOW_POLICY` keeps three's defaults.
+  applyShadowFlags(renderState.scene);
   player.vx=player.vy=player.vz=0;player.pyy=EYE+floorHeightAt(player.px,player.pz);input.yaw=Math.PI;input.pitch=0;player.grounded=true;
   const lt=document.getElementById("lvltitle") as HTMLElement;
   lt.textContent=Ldef.name;lt.style.opacity="1";

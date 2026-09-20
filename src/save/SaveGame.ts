@@ -14,6 +14,14 @@
  * changes them. Wiring those two fields to the audio and render code is a
  * later task's job; this object only holds them.
  *
+ * `shadows` (Phase 2B, shadowed lighting) defaults to `true` — shadows on,
+ * which is the look the phase shipped — and exists because the cost of the
+ * player's lamp casting is six extra depth passes a frame that **no test
+ * and no development environment here can measure**. The person who can
+ * judge it is the player, and the player cannot edit the code, so the
+ * decision needs a control in the settings screen rather than a constant.
+ * See `src/render/Shadows.ts`.
+ *
  * One property of this object is load-bearing for the test suite and must
  * survive whatever this phase does: it is a plain mutable object rather
  * than an exported `let`, a getter, or a proxy, so a test can assign
@@ -23,4 +31,4 @@
  * all — `loadSave`/`flushSave` must never turn this into anything other
  * than a plain object a caller can read and write directly.
  */
-export const save = { maxLevel: 0, masterVolume: 0.5, renderWidth: 400 };
+export const save = { maxLevel: 0, masterVolume: 0.5, renderWidth: 400, shadows: true };

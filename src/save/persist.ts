@@ -51,6 +51,15 @@ export function loadSave(): void {
     if (typeof data.maxLevel === "number") save.maxLevel = data.maxLevel;
     if (typeof data.masterVolume === "number") save.masterVolume = data.masterVolume;
     if (typeof data.renderWidth === "number") save.renderWidth = data.renderWidth;
+    // `shadows` (Phase 2B) was added without bumping SAVE_VERSION, and that
+    // is deliberate. The version guard above is a *refusal*, not a
+    // migration: bumping it would make every existing save unreadable and
+    // silently reset the player's unlocked chapters, volume and resolution
+    // to defaults, to gain nothing — a v1 store simply has no `shadows`
+    // key, the check below fails, and `save.shadows` keeps its default of
+    // `true`, which is exactly the intended fallback. A bump is for a field
+    // whose *meaning* changed, not for one that was added.
+    if (typeof data.shadows === "boolean") save.shadows = data.shadows;
   } catch {
     /* corrupt JSON, a blocked store, or storage throwing on access —
        defaults (or whatever save already held) stand. */
