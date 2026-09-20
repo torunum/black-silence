@@ -184,3 +184,68 @@ describe("armour exists: a level's own grid puts armour on the floor and the pla
     expect(inAlcove.map((e) => e.key)).toEqual([]);
   });
 });
+
+/**
+ * ============ Two behaviours KNOWN-11 made reachable — DO NOT "FIX" ========
+ *
+ * Turning `S.armor` on surfaced two things that were structurally impossible
+ * to observe before this task, because `S.armor` could never leave 0.
+ * `reference/sonsurum.html` has both, byte-identical, so they are faithful
+ * port behaviour and not drift — pinned here on purpose, exactly the way
+ * `tests/enemies/deadDefFields.test.ts` (KNOWN-15) pins its ten fields: a
+ * green run means the surprising behaviour is still exactly as surprising as
+ * it was when found. **Do not add an at-cap guard to the armour case, and do
+ * not make `loadLevel` reset `S.armor`, to make either test below pass in a
+ * "better" way — that is a balance decision for a human at the game, not a
+ * side effect of a test going red.** See KNOWN-11's closing note in
+ * `docs/known-issues.md` for both.
+ */
+describe("KNOWN-11's two adjacent, newly-reachable behaviours (pinned, not fixed)", () => {
+  it("armour at 100 still consumes the pickup and shows +50 ARMOR for nothing", () => {
+    // src/player/Interact.ts's "armor" case in itemsTick has no at-cap guard
+    // where "health" has one one line above
+    // (`if(S.hp>=100){ok=false;break;}`) — so unlike a medkit at full health,
+    // an armour pickup at S.armor===100 is still taken off the floor and
+    // still shows its toast, for a +50 that goes nowhere.
+    // Mutation that would catch a "fix": adding
+    // `if(S.armor>=100){ok=false;break;}` to that case turns `taken` false
+    // and this test red.
+    loadLevel(1);
+    const items = world.items as unknown as Array<{ kind: string; x: number; z: number; taken?: boolean }>;
+    const armour = items.find((i) => i.kind === "armor");
+    expect(armour, "level 1's secret alcove has no armour item").toBeDefined();
+
+    S.armor = 100;
+    document.getElementById("msg")!.textContent = "";
+    player.px = (armour as { x: number }).x;
+    player.pz = (armour as { z: number }).z;
+    itemsTick(1 / 60);
+
+    expect(armour!.taken, "a full-armour player should still pick the item up, faithfully wastefully").toBe(true);
+    expect(S.armor).toBe(100);
+    expect(document.getElementById("msg")!.textContent).toBe("+50 ARMOR");
+  });
+
+  it("armour carries across loadLevel, unlike hp and key", () => {
+    // src/world/LevelLoader.ts's loadLevel resets S.dead, S.won, S.hp and
+    // S.key every time it runs, but never S.armor — so armour is the one
+    // defensive resource that survives a level transition while health
+    // refills to 100. Consistent with how ammo and weapons already carry;
+    // never observable before this task because S.armor could not become
+    // nonzero in the first place.
+    // Mutation that would catch a "fix": adding `S.armor=0;` beside
+    // loadLevel's `S.hp=100;` line turns the final assertion here red.
+    loadLevel(0);
+    S.hp = 47;
+    S.key = true;
+    S.armor = 73;
+
+    loadLevel(1);
+
+    expect(S.hp).toBe(100);
+    expect(S.key).toBe(false);
+    expect(S.armor).toBe(73);
+
+    S.armor = 0; // leave clean for later tests in this file
+  });
+});

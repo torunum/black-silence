@@ -301,15 +301,20 @@ const UNREACHABLE: Record<string, string> = {
   // arm of `loadLevel`'s dispatch won, so all twenty `A` tiles the level
   // authors wrote as armour spawned a 260 hp enemy. Retagging them `r`
   // removes the Mancubus from the game, which is stated as the decision it
-  // is: nobody ever placed one deliberately (every `A` sits in an item
-  // cluster under an item comment), `docs/direction.md` cuts Mancubus from
-  // the roster for IP reasons anyway, and its two signature behaviours
-  // (`twin`, `orb`) are KNOWN-15 fields that never reach a spawned enemy,
-  // so what actually left the game is a 260 hp melee sponge. The def is
-  // **kept** rather than deleted, the same call KNOWN-18 made for `B`/`q`:
-  // deleting an `ENEMY_DEFS` row is a roster-composition decision that
-  // belongs to the project owner. This entry is what fails if a tile drifts
-  // back to `A`.
+  // is: nineteen of the twenty sit in an item cluster under an item comment,
+  // but level 7's (3,0) room does not — its comment,
+  // `/* (3,0) gland — mancubus + slugs */` (`reference/sonsurum.html:735`),
+  // names the Mancubus outright, so that one tile *was* placed deliberately
+  // as an enemy (checked: level 6's structurally identical (3,0) room, same
+  // six glyphs, carries no such comment — level 7 is the only exception).
+  // It converts anyway, because `docs/direction.md` cuts Mancubus from the
+  // roster for IP reasons regardless of any one tile's authorial intent, and
+  // its two signature behaviours (`twin`, `orb`) are KNOWN-15 fields that
+  // never reach a spawned enemy, so what actually left the game is a 260 hp
+  // melee sponge. The def is **kept** rather than deleted, the same call
+  // KNOWN-18 made for `B`/`q`: deleting an `ENEMY_DEFS` row is a
+  // roster-composition decision that belongs to the project owner. This
+  // entry is what fails if a tile drifts back to `A`.
   A: "MANCUBUS — declared in ENEMY_DEFS, placed in no level grid since KNOWN-11's fix (all twenty `A` tiles are now `r`, the item-only armour glyph), summoned nowhere by name",
 };
 

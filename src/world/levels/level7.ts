@@ -9,6 +9,15 @@ import type { RoomLayout } from "../LevelBuilder";
  * `level3.ts`'s header for the mechanism. Level 7 has no Mancubus; its two
  * `C` tiles are still Cacodemons, deliberately (KNOWN-4).
  *
+ * One of those four is the exception to KNOWN-11's "no author placed a
+ * Mancubus deliberately" reasoning: the (3,0) room below carried
+ * `// (3,0) gland — mancubus + slugs`, naming the `A` this file now writes
+ * as `r`, verbatim from `reference/sonsurum.html:735`. The room comment
+ * has been corrected below to stop advertising an enemy the room no longer
+ * has — see KNOWN-11's fix-round-2 note for why the tile is retagged
+ * anyway (the Mancubus is cut from the roster regardless of authorial
+ * intent) and why the enemy is not restored.
+ *
  * Parked to `episode2` per `docs/direction.md`, and fixed anyway — see
  * `level5.ts`'s header.
  */
@@ -46,7 +55,9 @@ export function buildLevel7(): RoomLayout {
   put(L,1,0,2,2,"t");put(L,1,0,5,1,"w");put(L,1,0,1,4,"l");put(L,1,0,6,4,"h");put(L,1,0,4,3,"t");
   /* (2,0) bile junction — cacodemons drift */
   put(L,2,0,2,2,"C");put(L,2,0,5,1,"z");put(L,2,0,1,4,"a");put(L,2,0,4,3,"L");
-  /* (3,0) gland — mancubus + slugs */
+  /* (3,0) gland — armor cache + slugs (was "mancubus + slugs" — the `A`
+     here was the Mancubus in the frozen master; KNOWN-11 retags it `r`,
+     so the room keeps its slugs and its armour cache but not its enemy) */
   put(L,3,0,3,2,"o");put(L,3,0,1,1,"r");put(L,3,0,5,1,"m");put(L,3,0,1,4,"h");put(L,3,0,0,0,"l");
   /* (0,1) artery hall — sprinters */
   put(L,0,1,2,2,"f");put(L,0,1,5,3,"f");put(L,0,1,1,4,"l");put(L,0,1,0,0,"i");
