@@ -3,7 +3,10 @@ import type { RoomLayout } from "../LevelBuilder";
 
 /**
  * LEVEL 4 — THE GRAVEYARD.
- * Copied verbatim from reference/sonsurum.html lines 520-578.
+ * Copied from reference/sonsurum.html lines 520-578, with one deliberate
+ * divergence from the frozen master (player feedback round 2, KNOWN-11):
+ * the **three** tiles the author wrote as armour are `r`, not `A`. See
+ * `level3.ts`'s header for the mechanism. Level 4 has no Mancubus.
  */
 export function buildLevel4(): RoomLayout {
   const L=emptyGrid(4,4,7,5);
@@ -51,15 +54,15 @@ export function buildLevel4(): RoomLayout {
   /* (0,2) sunken graves */
   put(L,0,2,2,1,"w");put(L,0,2,4,3,"w");put(L,0,2,1,4,"z");put(L,0,2,6,0,"h");put(L,0,2,0,0,"i");
   /* (0,3) pauper trench */
-  put(L,0,3,3,2,"A");put(L,0,3,1,1,"l");put(L,0,3,5,1,"a");put(L,0,3,3,4,"b");put(L,0,3,5,3,"f");
+  put(L,0,3,3,2,"r");put(L,0,3,1,1,"l");put(L,0,3,5,1,"a");put(L,0,3,3,4,"b");put(L,0,3,5,3,"f");
   /* (1,3) funeral path */
   put(L,1,3,2,2,"s");put(L,1,3,5,1,"z");put(L,1,3,1,1,"l");put(L,1,3,5,4,"l");put(L,1,3,3,3,"b");
   /* (2,3) cenotaph */
-  put(L,2,3,2,1,"m");put(L,2,3,5,3,"m");put(L,2,3,3,2,"A");put(L,2,3,0,4,"i");put(L,2,3,6,0,"a");
+  put(L,2,3,2,1,"m");put(L,2,3,5,3,"m");put(L,2,3,3,2,"r");put(L,2,3,0,4,"i");put(L,2,3,6,0,"a");
   /* (3,2) crypt mouth — EXECUTIONER miniboss */
   put(L,3,2,3,2,"E");put(L,3,2,1,1,"x");put(L,3,2,1,4,"x");put(L,3,2,6,3,"b");put(L,3,2,0,0,"i");
   /* (3,3) SECRET mausoleum reliquary */
-  put(L,3,3,3,2,"7");put(L,3,3,1,1,"9");put(L,3,3,5,1,"A");put(L,3,3,3,4,"h");put(L,3,3,1,3,"9");
+  put(L,3,3,3,2,"7");put(L,3,3,1,1,"9");put(L,3,3,5,1,"r");put(L,3,3,3,4,"h");put(L,3,3,1,3,"9");
   /* outer iron-fence gaps as windows */
   [[11,0],[16,0],[21,0],[11,24],[21,24]].forEach(([x,z])=>putAbs(L,x,z,"W"));
   return L;

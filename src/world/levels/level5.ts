@@ -3,7 +3,14 @@ import type { RoomLayout } from "../LevelBuilder";
 
 /**
  * LEVEL 5 — THE SEWERS.
- * Copied verbatim from reference/sonsurum.html lines 579-639.
+ * Copied from reference/sonsurum.html lines 579-639, with one deliberate
+ * divergence from the frozen master (player feedback round 2, KNOWN-11):
+ * the **three** tiles the author wrote as armour are `r`, not `A`. See
+ * `level3.ts`'s header for the mechanism. Level 5 has no Mancubus.
+ *
+ * This level is parked to `episode2` per `docs/direction.md`, but it still
+ * builds and is still tested, so it is fixed with the kept levels rather
+ * than left holding a bug a future session would have to rediscover.
  */
 export function buildLevel5(): RoomLayout {
   const L=emptyGrid(4,4,7,5);
@@ -53,15 +60,15 @@ export function buildLevel5(): RoomLayout {
   /* (0,2) drowned passage */
   put(L,0,2,2,1,"w");put(L,0,2,4,3,"t");put(L,0,2,1,4,"z");put(L,0,2,6,0,"h");put(L,0,2,0,0,"i");
   /* (0,3) SECRET maintenance reliquary */
-  put(L,0,3,3,2,"6");put(L,0,3,1,1,"c");put(L,0,3,5,1,"A");put(L,0,3,3,4,"h");put(L,0,3,1,3,"l");
+  put(L,0,3,3,2,"6");put(L,0,3,1,1,"c");put(L,0,3,5,1,"r");put(L,0,3,3,4,"h");put(L,0,3,1,3,"l");
   /* (1,3) lower main */
   put(L,1,3,2,2,"s");put(L,1,3,5,1,"t");put(L,1,3,1,1,"l");put(L,1,3,5,4,"l");put(L,1,3,3,3,"b");
   /* (2,3) sump */
-  put(L,2,3,2,1,"t");put(L,2,3,5,3,"w");put(L,2,3,3,2,"A");put(L,2,3,0,4,"i");put(L,2,3,6,0,"a");
+  put(L,2,3,2,1,"t");put(L,2,3,5,3,"w");put(L,2,3,3,2,"r");put(L,2,3,0,4,"i");put(L,2,3,6,0,"a");
   /* (3,2) sludge gallery — EXECUTIONER miniboss */
   put(L,3,2,3,2,"E");put(L,3,2,1,1,"O");put(L,3,2,1,4,"x");put(L,3,2,6,3,"b");put(L,3,2,0,0,"i");
   /* (3,3) outfall */
-  put(L,3,3,3,2,"o");put(L,3,3,1,1,"x");put(L,3,3,5,1,"A");put(L,3,3,3,4,"h");put(L,3,3,5,3,"t");
+  put(L,3,3,3,2,"o");put(L,3,3,1,1,"x");put(L,3,3,5,1,"r");put(L,3,3,3,4,"h");put(L,3,3,5,3,"t");
   /* grates as windows along outer walls */
   [[9,7],[9,15],[23,7],[23,15]].forEach(([x,z])=>putAbs(L,x,z,"W"));
   return L;

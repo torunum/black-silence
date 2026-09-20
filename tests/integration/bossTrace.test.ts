@@ -13,7 +13,7 @@ import { world } from "../../src/world/WorldState";
  * one shared priest brain with three distinct boss brains.
  *
  * `trace.test.ts` plays the prologue, which loads with zero enemies.
- * `combatTrace.test.ts` plays level 1, which has fifteen — but level 1's
+ * `combatTrace.test.ts` plays level 1, which has fourteen — but level 1's
  * only boss is `U`, THE CATHEDRAL GUARDIAN (`EnemyDefs.ts`: `boss:true,
  * stone:true`, **no** `priest`), so `priestThink` never runs in either.
  * That is why `combatTrace.test.ts`'s honest-gaps list names `Boss.ts`'s two
@@ -84,12 +84,16 @@ import { world } from "../../src/world/WorldState";
  *   13-unit wake radius, so the boss wakes on the first gameplay frame.
  * - **`afterLoad` — `S.hp=5000`.** `loadLevel` sets `S.hp=100`, so this too
  *   has to be post-load. It is the price of the sweep below: the recorded
- *   fight runs 45 seconds of game time, during which a phase-2 priest
+ *   fight runs 100 seconds of game time, during which a phase-2 priest
  *   volleys five 15-damage orbs every 2.8s and its summons close in. The
- *   committed run ends with the player at `"HEALTH3847"`, i.e. having taken
- *   1153 real points of damage through the real `damagePlayer`; nothing
+ *   committed run ends with the player at `"HEALTH2876"`, i.e. having taken
+ *   2124 real points of damage through the real `damagePlayer`; nothing
  *   about the damage path is stubbed or softened, only the pool it draws
- *   down. The pool is kept at 5000 rather than trimmed to fit: when this
+ *   down. **That figure is the clearest illustration of why the pool has
+ *   headroom**: it was 1153 one regeneration ago, at 2700 frames, and the
+ *   run is now more than twice as long because KNOWN-11's two fewer
+ *   Mancubi lengthened phase 2 (see that section). The pool is kept at
+ *   5000 rather than trimmed to fit: when this
  *   script ran 5400 frames it drained 2798, an earlier tuning that seeded
  *   only 3000 had the player dead before frame 5500, and a fixture of a
  *   corpse watching a frozen scene records nothing (`Loop.ts` stops ticking
@@ -228,27 +232,33 @@ import { world } from "../../src/world/WorldState";
  * mutation — changed, the fixture's digest moved, `"diverges from the
  * fixture nowhere"` went red, reverted with a targeted edit:
  *
- * All four were **re-run against the regenerated fixture** when level 2's
- * pews stopped being bosses (see the KNOWN-4 section) — the old frame
- * numbers were measured against the old recording and would otherwise have
- * become quietly false. Every one of the four is still covered, three of
- * them with a wider margin than before. Measured over the 150 sampled
- * frames, each mutation moving `scene.digest` only (camera, hud and
- * scene.count all differ in **0** frames in all four cases):
+ * All four are **re-run against the regenerated fixture every time this
+ * fixture moves** — the frame numbers are measured against one specific
+ * recording and would otherwise become quietly false. They were re-run
+ * when level 2's pews stopped being bosses (KNOWN-4 section), and again
+ * when its two Mancubi became armour (KNOWN-11 section). The numbers below
+ * are the **current** ones, over the 334 sampled frames of the present
+ * fixture; each mutation moves `scene.digest` only (`camera`, every `hud`
+ * field and `scene.count` differ in **0** frames in all four cases, which
+ * is also the measurement that says the old digest could not have caught
+ * any of them):
  *
  * - **`Boss.ts`'s phase-3 form swap** (`e.sp.material.map=PX[e.formKey].a`),
- *   rewritten to `PX[e.key].a`: red in exactly **1** frame, **2250** — the
- *   single sample inside the measured window [2244,2258), which is the
- *   window the `EVERY` constant was retuned to hit. Still the fragile one;
+ *   rewritten to `PX[e.key].a`: red in exactly **1** frame, **5472** — the
+ *   single sample inside the measured window [5460,5475), which is the
+ *   window `TOTAL_FRAMES`/`EVERY` are pinned to hit. Still the fragile one;
  *   still guarded by the named test below rather than by this paragraph.
+ *   (Was 1 frame at 2250, window [2244,2258).)
  * - **`Boss.ts`'s boss walk cycle** (`e.sp.material.map=set[e.frame]`),
- *   pinned to `set[0]`: red in **30** of 150 frames — eight in 180-432 (the
- *   phase-1 `Q` walk-in) and twenty-two in 2268-2700 (the phase-3 `Q2`
- *   walk-in), so both forms are still covered. Was 20 of 270.
+ *   pinned to `set[0]`: red in **27** of 334 frames — nine in 180-432 (the
+ *   phase-1 `Q` walk-in) and eighteen in 5490-6012 (the phase-3 `Q2`
+ *   walk-in), so both forms are still covered. (Was 30 of 150.)
  * - **`Behaviors.ts`'s two-stage death collapse** (`P.die1`/`P.die2`),
- *   rewritten to `P.a`/`P.b`: red in **137** of 150 frames, from 252 on.
+ *   rewritten to `P.a`/`P.b`: red in **322** of 334 frames, every sample
+ *   from 234 on. (Was 137 of 150, from 252.)
  * - **`Death.ts`'s headless corpse** (`PX[e.key].noHead||PX[e.key].hl`),
- *   rewritten to `PX[e.key].a`: red in **117** of 150 frames, from 612 on.
+ *   rewritten to `PX[e.key].a`: red in **307** of 334 frames, every sample
+ *   from 504 on. (Was 117 of 150, from 612.)
  *
  * The last two are the ones `combatTrace`'s header reports as genuinely
  * unreached there: level 1's single kill severs a limb rather than
@@ -262,25 +272,30 @@ import { world } from "../../src/world/WorldState";
  *
  * Measured, and the most fragile thing in this file. Regenerating a
  * throwaway fixture under the form-swap mutation and comparing field by
- * field: `camera` differs in **0** of 150 frames, `hud` in **0**,
- * `scene.count` in **0**, and `scene.digest` in exactly **1** — frame 2250.
+ * field: `camera` differs in **0** of 334 frames, `hud` in **0**,
+ * `scene.count` in **0**, and `scene.digest` in exactly **1** — frame 5472.
  * That is not sampling bad luck, it is the shape of the site: the swap
  * writes `PX[formKey].a` once, and within at most 15 frames the walk cycle
  * three lines below overwrites the same `material.map` with `set[e.frame]`
  * (also a `Q2` texture), so the mutation's whole visible window is the
- * handful of frames between the two — measured here as **[2244,2258)**.
+ * handful of frames between the two — measured here as **[5460,5475)**,
+ * and as [2244,2258) in the recording before this one.
  * **Any change to `TOTAL_FRAMES`, `EVERY`, `dtMs`, the sweep or the seed can
  * move that one frame out of the window and silently drop this site's
  * coverage while every test stays green** — that was this file's own
  * first-round review finding.
  *
- * **It then happened, on the guard's first real occasion.** Level 2's pews
- * ceasing to be bosses moved the swap from frame ~4900 to 2244, and no
- * multiple of the old `EVERY`(20) fell in the new window. The fixture
- * comparison alone would have gone green after a regeneration with this
- * site's coverage silently gone; the named test below went red instead and
- * forced `EVERY` to 18. The guard is the reason the number above is 1 and
- * not 0.
+ * **It then happened, on the guard's first real occasion, and again on its
+ * second.** Level 2's pews ceasing to be bosses moved the swap from frame
+ * ~4900 to 2244, and no multiple of the old `EVERY`(20) fell in the new
+ * window; the fixture comparison alone would have gone green after a
+ * regeneration with this site's coverage silently gone, and the named test
+ * below went red instead and forced `EVERY` to 18. Level 2's Mancubi
+ * becoming armour then moved the swap the other way, to 5460 — past the
+ * old `TOTAL_FRAMES` of 2700 entirely, so the priest never reached phase 3
+ * at all — and the guard said so in those words while three sibling tests
+ * failed alongside it. The guard is the reason the number above is 1 and
+ * not 0, twice over.
  *
  * **The fix, added in review round 1**: `afterLoad` installs a `configurable`
  * accessor on the priest's own `sp.material`'s `map` property (once the
@@ -409,6 +424,63 @@ import { world } from "../../src/world/WorldState";
  *   (`e3a56b3d…`) and `trace-level1.json` (`97bd7c67…`) are byte-identical
  *   before and after — checksummed, not assumed. Neither plays level 2.
  *
+ * ## Level 2's two armour tiles were two Mancubi — that was KNOWN-11,
+ * ## and this is the third regeneration
+ *
+ * The same collision one table over, and the third reason this fixture has
+ * had to move. Until player-feedback round 2, level 2's two `"A"` cells —
+ * the sacristy's (grid 28,9) and the secret reliquary's (grid 4,23), both
+ * written among items, under item comments — each spawned a 260 hp
+ * MANCUBUS rather than the +50 armour the letter maps to, because
+ * `loadLevel` checks `EDEF[ch]` before its item map. That was KNOWN-11,
+ * and `S.armor` was structurally 0 in every level for the whole life of
+ * the game. Both cells are now `r`, an item-only armour glyph; level 2
+ * loads **two armour pickups and no Mancubus**.
+ *
+ * ### What moved in the fixture, and why each field had to
+ *
+ * `EVERY` is unchanged at 18 and the script is identical for every frame
+ * at or below 2700 (the sweep loop's bound is the only place
+ * `TOTAL_FRAMES` enters it, and it only adds events *after* the old
+ * cutoff). So unlike the round-1 regeneration, no throwaway run was
+ * needed: the new fixture's first 150 frames carry the same frame numbers,
+ * from the same inputs, at the same sampling, as the whole of the old one.
+ * All 150 compared field by field:
+ *
+ * - **`scene.count`: differs in 146 of 150**, first at frame 18,
+ *   `155 → 153`. The load-time delta is exactly **−2**, derived rather
+ *   than assumed: an enemy contributes 2 scene children (`spawnEnemy`'s
+ *   `sp` sprite and its `blob`), an item 1 (`addSprite`), so
+ *   2 x 2 − 2 x 1 = 2 fewer. Later frames range far wider (deltas from −20
+ *   to +29) because the fight itself diverges — see `hud` below.
+ * - **`scene.digest`: differs in all 150**, necessarily: four children were
+ *   replaced by two different ones at load.
+ * - **`hud.hp`: differs in 125**, first at frame 432
+ *   (`HEALTH4945 → HEALTH4957`); **`camera` in 112**, first at the same
+ *   frame 432 and only in `x`, `y` and `rz` (`43.005334 → 43.000053`,
+ *   `0.999003 → 0.99999`, `0.004289 → 0.000043`) — that is `shake`
+ *   decaying, i.e. damage landing on different frames. **`hud.msg` in 72**
+ *   (first at 504, `"" → "DECAPITATED"`), **`hud.bossname` in 27** (first
+ *   at 540: phase 2 arrives 18 frames earlier), **`hud.subt` in 20** (first
+ *   at frame 18 — a different `pick()` from the same `see_*` array),
+ *   **`hud.wname` in 4**. **`hud.ar`, `hud.lvltitle` and `hud.keys`:
+ *   identical in all 150** — `ar` because this script never reaches either
+ *   armour pickup, which is worth stating plainly: the fixture moved
+ *   because two *enemies* left, not because the player gained armour.
+ * - **Nothing this fixture exists to record was lost.** The priest still
+ *   wakes, still reaches all three phases, still calls its flock, and
+ *   still ends the run awake / hurt / `Q2` / alive (`hp = 271` of 1800 at
+ *   frame 6012). Phase 3's first sampled frame is **5472**, which is the
+ *   form swap's own window sample — the structural guard's job, done.
+ * - **The full new run**: 334 frames, 18 → 6012, `scene.count` 153 → 614,
+ *   334 distinct digests, last sampled frame `HEALTH2876` /
+ *   `"THE CORRUPTED PRIEST — PHASE 3"`.
+ * - **The other committed fixtures**: `trace-level0.json` is byte-identical
+ *   (md5 `421ef646…`, checksummed before and after — the prologue places no
+ *   armour tile). `trace-level1.json` **did** move, in the same commit and
+ *   for the same reason: level 1 has an armour tile too. Its own header
+ *   carries that field-by-field account.
+ *
  * ## Regenerating this fixture
  *
  * Same rule as the other two, for the same reason. `WRITE_TRACE=1` exists
@@ -464,8 +536,59 @@ const REV = (2 * Math.PI) / SENS;
  *
  * 2700/18 = 150 recorded frames, down from 270, so the fixture shrinks too.
  * 18 frames is 0.3s, slightly finer than the 20 it replaces.
+ *
+ * ### Re-measured again, player feedback round 2 — and the guard fired again
+ *
+ * KNOWN-11's fix retags level 2's two `A` tiles (the sacristy's and the
+ * secret reliquary's) to `r`, so each is the +50 armour the author wrote
+ * rather than a 260 hp Mancubus. Two fewer `spawnEnemy` calls at load is
+ * twelve fewer `Math.random()` draws (seven per enemy, one per item), and
+ * every later draw in the seeded stream shifts by twelve — which is the
+ * whole mechanism behind the numbers below. The priest itself is
+ * untouched: it still spawns at (33,41) with 1800 hp.
+ *
+ * The phase structure moved a long way, in the opposite direction from
+ * last time:
+ *
+ * | | before round 2 | after |
+ * |---|---|---|
+ * | phase 1 first sampled | 180 | 180 |
+ * | phase 2 first sampled | 558 | 540 |
+ * | phase-3 `material.map` write | 2244 | **5460** |
+ * | swap's visible window | [2244,2258) | **[5460,5475)** |
+ * | phase 3 first sampled | 2250 | **5472** |
+ *
+ * Phase 2 costs ~4900 frames instead of ~1690. The reason is the one the
+ * round-1 note already named — the priest's teleport distance is drawn
+ * from this stream, and a blind sweep's damage rate scales with the
+ * target's angular width — only this time the shifted stream puts it
+ * *further* away rather than nearer. At the old `TOTAL_FRAMES = 2700` the
+ * run simply never reached phase 3: measured, the priest ended the run in
+ * phase 2 with `hp = 942`, and **four** named tests said so rather than
+ * one (the phase-3 bossname check, the phase-3 size check, the
+ * "awake, hurt, transformed and still alive" check, and the structural
+ * guard, which reported "the priest never reached phase 3" — exactly the
+ * failure it was written for, for the second regeneration running).
+ *
+ * - **`TOTAL_FRAMES` 2700 → 6012.** The design intent is unchanged: a few
+ *   hundred frames of live phase 3 after the swap, boss still alive at the
+ *   cutoff. 6012 - 5460 = **552** frames (9.2s) of phase 3, against the
+ *   456 the round-1 retune left. Measured at that cutoff: `phase = 3`,
+ *   `dead = false`, `hp = 271` of 1800 (15%, so the `< 33%` check has
+ *   room), `formKey = "Q2"`.
+ * - **`EVERY` stays 18.** The guard's window is [5460,5475) and
+ *   18 x 304 = **5472** falls inside it, three frames short of the walk
+ *   cycle's overwrite. 6012 is the smallest multiple of 18 at or above
+ *   6000, and that is the only reason the cutoff is not the round number:
+ *   `TOTAL_FRAMES / EVERY` has to be an integer for the "records the
+ *   frames it was asked for" check, and 6000 is not divisible by 18.
+ *   Keeping `EVERY` fixed also keeps the sampling density at 0.3s, so the
+ *   fixture's resolution is comparable to the one it replaces.
+ *
+ * 6012/18 = 334 recorded frames, up from 150, so the fixture grows to
+ * roughly the size it was two regenerations ago.
  */
-const TOTAL_FRAMES = 2700;
+const TOTAL_FRAMES = 6012;
 const EVERY = 18;
 /**
  * The fifth knob the structural guard depends on, alongside `TOTAL_FRAMES`

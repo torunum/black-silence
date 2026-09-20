@@ -123,6 +123,32 @@ const LEVEL2_PEW_CELLS: ReadonlyArray<readonly [number, number]> = [
   [12, 8], [20, 8], [12, 10], [20, 10], [12, 13], [20, 13],  // the six nave pews
 ];
 
+/**
+ * The second deliberate divergence (player feedback round 2, KNOWN-11), the
+ * same shape as the pews one table over: the reference spells the armour
+ * pickup `A`, which `ENEMY_DEFS` also claims as the Mancubus, so every one
+ * of these cells spawned a 260 hp enemy and `loadLevel`'s `A:"armor"` entry
+ * was unreachable dead code. The port spells them `r`.
+ *
+ * **All twenty**, in every level, not only the five the project is keeping —
+ * levels 5-7 are parked to `episode2` but still build and are still tested,
+ * and a half-fix would leave eleven armed behind a doc row claiming the bug
+ * is closed. Cells are listed rather than counted so that a tile drifting
+ * back to `A`, moving, or appearing in a new place fails this assertion;
+ * they were derived by *building* every level and scanning the grid, never
+ * by reading the `put()` calls as source text (the undercounting trap
+ * `tests/world/rosterReach.test.ts`'s `PLACED` comment documents).
+ */
+const ARMOUR_CELLS: Readonly<Record<string, ReadonlyArray<readonly [number, number]>>> = {
+  "LEVEL 1 — THE GOTHIC DUNGEON": [[40, 25]],
+  "LEVEL 2 — THE ABANDONED CHURCH": [[28, 9], [4, 23]],
+  "LEVEL 3 — THE NECROPOLIS": [[30, 20], [4, 21], [20, 21]],
+  "LEVEL 4 — THE GRAVEYARD": [[30, 20], [4, 21], [20, 21]],
+  "LEVEL 5 — THE SEWERS": [[6, 20], [30, 20], [20, 21]],
+  "LEVEL 6 — THE FACTORY": [[26, 2], [6, 20], [19, 20], [30, 22]],
+  "LEVEL 7 — THE WOMB": [[26, 2], [6, 20], [26, 20], [20, 21]],
+};
+
 /** Every cell where two grids disagree, as `x,z ref->ours` strings. */
 function gridDiff(ours: string[][], ref: string[][]): string[] {
   const out: string[] = [];
@@ -143,13 +169,15 @@ describe("LEVELS vs. reference", () => {
   });
 
   it.each(LEVELS.map((def, i) => [def.name, def, refLevels[i]] as const))(
-    "%s builds the reference grid, cell for cell, apart from level 2's eight pews",
+    "%s builds the reference grid, cell for cell, apart from level 2's eight pews and the twenty armour tiles",
     (name, def, refDef) => {
       const built = def.build();
       const refBuilt = refDef.build();
-      const expected = name === "LEVEL 2 — THE ABANDONED CHURCH"
-        ? LEVEL2_PEW_CELLS.map(([x, z]) => `${x},${z} V->v`).sort()
+      const pews = name === "LEVEL 2 — THE ABANDONED CHURCH"
+        ? LEVEL2_PEW_CELLS.map(([x, z]) => `${x},${z} V->v`)
         : [];
+      const armour = (ARMOUR_CELLS[name] ?? []).map(([x, z]) => `${x},${z} A->r`);
+      const expected = [...pews, ...armour].sort();
       expect(gridDiff(built.g, refBuilt.g)).toEqual(expected);
       expect(built.hmap).toEqual(refBuilt.hmap);
       expect(built.segs).toEqual(refBuilt.segs);

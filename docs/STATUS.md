@@ -1006,6 +1006,18 @@ Two practices that have mattered most:
 All predate the port, all are preserved on purpose, all are pinned by tests
 so they cannot change unnoticed. See `docs/known-issues.md`.
 
+**Re-derived 2026-09-20, after KNOWN-11 closed — and the count did not move,
+which is the point of re-deriving it rather than decrementing it.** Walking
+every open row of `docs/known-issues.md` and asking "would a player see
+this": KNOWN-1, KNOWN-4, KNOWN-15 and **KNOWN-20** qualify; KNOWN-2 (a
+service locator), KNOWN-16's remaining half (a dead *def* field whose
+behaviour happens anyway) and KNOWN-18 (three roster letters no level
+places) do not. KNOWN-11 left the list, and KNOWN-20 — `9` (nails) and `0`
+(souls) building pickups with `map: undefined`, so they draw as flat
+untextured colour — turns out to have belonged on it since it was filed and
+was simply never added. A decrement would have written "three" and kept the
+omission.
+
 - **KNOWN-15** — **The largest of the four by a wide margin.** Ten fields the
   enemy table authors never reach the spawned enemy: `spawnEnemy` builds its
   object with an explicit literal and simply omits them, and nothing writes
@@ -1037,17 +1049,31 @@ so they cannot change unnoticed. See `docs/known-issues.md`.
   **not** flipped — `C` is an intentional Cacodemon in levels 6 and 7 — so the
   tables still overlap, and **the chair in the priest's chambers is still a
   Cacodemon**. The next level that writes a chair or a pew hits this again.
-- **KNOWN-11** — **Armour pickups never spawn, from any level.** Found during
-  Plan 0E Task 1 while building the combat trace. `loadLevel` dispatches the
-  enemy table before the item table, and `A` is both a Mancubus and map2's
-  armour key — so `map2.A` is dead code and all 20 `A` tiles spawn a 260 hp
-  Mancubus instead of +50 armour. `S.armor` is provably always 0 in real play.
-  Same structural bug as KNOWN-4 but a different collision class (enemy-vs-item
-  rather than enemy-vs-prop), and identical in the frozen reference.
+  KNOWN-11, below, was the same mechanism against the *item* table and is now
+  closed the same way, which changes nothing about this row.
+- **KNOWN-20** — `loadLevel`'s item map names sixteen `ITEMTEX` keys and
+  `src/render/ItemTextures.ts` builds ten, so the `9` (nails) and `0` (souls)
+  pickups are constructed with `map: undefined` and draw as a flat untextured
+  colour instead of an item icon. They still work; they just do not look like
+  anything. Faithful to the frozen reference, which builds the same ten.
+  **Added to this list 2026-09-20** — it had been filed since the Three.js
+  upgrade surfaced it and was never listed here, which is what re-deriving
+  the count found.
 
-Two more used to be listed here and are now closed, kept for continuity:
+**KNOWN-11 was the fourth entry here and is now closed** (player feedback
+round 2, 2026-09-20). All twenty `A` tiles the level authors wrote as armour
+are now `r`, an item-only glyph, so armour appears on the floor for the first
+time in the game's life and `S.armor` stops being structurally 0 —
+`tests/integration/armourPickup.test.ts` proves it reaches 50 through the real
+pickup path, in every level that authors one, with nothing seeded. The
+Mancubus leaves the game with it (`A` was its only glyph); its def is kept and
+recorded UNREACHABLE beside KNOWN-18's `B` and `q`. The *mechanism* is
+untouched, exactly as in KNOWN-4 above.
+
+Three more used to be listed here and are now closed, kept for continuity:
 **KNOWN-7** (spent casings spawned in `FW`/`FH` space but culled and drawn in
 `VW`/`VH` space, so every casing was spliced away before its first draw) —
 **closed by Phase 2 Part A Task 2**; **KNOWN-8** (the mouse wheel cycling only
-six of the game's eight weapon slots) — **closed by Phase 2 Part A Task 1**.
-See `docs/known-issues.md` for both in full.
+six of the game's eight weapon slots) — **closed by Phase 2 Part A Task 1**;
+and **KNOWN-11**, described just above. See `docs/known-issues.md` for all
+three in full.
