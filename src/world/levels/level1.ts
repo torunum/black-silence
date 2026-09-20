@@ -47,7 +47,10 @@ export function buildLevel1(): { g: Grid; W: number; H: number } {
   // --- SECRET ALCOVE (hidden behind a secret door off the east wing) ---
   carve(g,38,24,42,27);
   g[23][40]="S";                          // secret door
-  put1(g,40,25,"A");put1(g,41,26,"c");put1(g,39,26,"2");  // armor, cross, shotgun
+  // `r`, not `A`: `A` is also the Mancubus in ENEMY_DEFS and loadLevel checks
+  // the enemy table first, so this reward cache spawned a 260 hp enemy for the
+  // whole life of the game. KNOWN-11.
+  put1(g,40,25,"r");put1(g,41,26,"c");put1(g,39,26,"2");  // armor, cross, shotgun
 
   // --- SOUTH HALL to the EXIT (long, narrow, opposite corner from start) ---
   hall(g,30,26,30,31,1);

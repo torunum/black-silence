@@ -356,7 +356,21 @@ export function loadLevel(idx: number): void {
     // added instead: a prop-only pew, claimed by no enemy def.
     else if("xTCFVOv".includes(ch))spawnProp(ch,wx,wz);
     else{
-      const map2:Record<string,string>={h:"health",A:"armor",a:"bullets",b:"shells",o:"slugs",c:"crosses",K:"key",
+      // KNOWN-11 — the item-table half of KNOWN-4's collision. `A` is in
+      // this map *and* in `EDEF` (the Mancubus); the enemy arm above wins,
+      // so `A:"armor"` was dead code and `S.armor` was structurally 0 for
+      // the whole game. Fixed the pew way, not by reordering: `r` is the
+      // unambiguous armour spelling, claimed by this map and by none of
+      // `EDEF`, the prop string, the skip string or the P/X/i/l/p/Y arms.
+      // All twenty `A` tiles in all seven levels are now `r`, so no grid
+      // places `A` — pinned by tests/world/levels.test.ts, with the
+      // Mancubus recorded UNREACHABLE in tests/world/rosterReach.test.ts.
+      // `A:"armor"` is kept, still unreachable, for the reason `spawnProp`
+      // kept `V`: the overlap itself is deliberately still open. Residual:
+      // `R` is the REIVER, so `r`/`R` is a live case-pair like `v`/`V` —
+      // every glyph free in all five tables has such a twin. See
+      // docs/known-issues.md KNOWN-11 for the full glyph derivation.
+      const map2:Record<string,string>={h:"health",A:"armor",r:"armor",a:"bullets",b:"shells",o:"slugs",c:"crosses",K:"key",
         "2":"w1","3":"w2","4":"w3","5":"w4","6":"w5","7":"w6","8":"w7","9":"nails","0":"souls"};
       const k=map2[ch];if(!k)continue;
       const tex=(k[0]==="w"?ITEMTEX.gun:ITEMTEX[k]) as THREE.CanvasTexture;

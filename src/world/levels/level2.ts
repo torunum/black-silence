@@ -36,6 +36,14 @@ import type { RoomLayout } from "../LevelBuilder";
  *
  * `v` is a new prop-only spelling of the same pew geometry, added in
  * `spawnProp`. The dispatch order is untouched — see the comment on it.
+ *
+ * ## The two `A` tiles are now two `r` tiles
+ *
+ * The same collision, one table over (KNOWN-11, player feedback round 2):
+ * `A` is the armour pickup in `loadLevel`'s item map *and* the Mancubus in
+ * `ENEMY_DEFS`, so the sacristy's armour and the secret reliquary's armour
+ * were each a 260 hp enemy. `r` is the unambiguous armour spelling. Level 2
+ * therefore also has no Mancubus; nothing in it was authored as one.
  */
 export function buildLevel2(): RoomLayout {
   const L=emptyGrid(4,4,7,5);
@@ -76,7 +84,7 @@ export function buildLevel2(): RoomLayout {
   /* (3,0) priest chambers — PIANO */
   put(L,3,0,3,2,"p");put(L,3,0,1,1,"T");put(L,3,0,5,1,"C");put(L,3,0,6,3,"F");put(L,3,0,1,4,"h");put(L,3,0,0,0,"l");
   /* (3,1) sacristy */
-  put(L,3,1,3,2,"A");put(L,3,1,1,1,"a");put(L,3,1,5,1,"f");put(L,3,1,1,3,"f");put(L,3,1,5,4,"F");
+  put(L,3,1,3,2,"r");put(L,3,1,1,1,"a");put(L,3,1,5,1,"f");put(L,3,1,1,3,"f");put(L,3,1,5,4,"F");
   /* (3,2) catacombs east — GUARDIAN + red key */
   put(L,3,2,3,2,"U");put(L,3,2,6,4,"K");put(L,3,2,1,1,"g");put(L,3,2,1,4,"g");put(L,3,2,0,0,"i");
   /* (3,3) ossuary */
@@ -90,7 +98,7 @@ export function buildLevel2(): RoomLayout {
   /* (0,2) catacombs west */
   put(L,0,2,2,1,"w");put(L,0,2,4,3,"w");put(L,0,2,1,4,"z");put(L,0,2,6,0,"h");put(L,0,2,0,0,"i");
   /* (0,3) SECRET reliquary */
-  put(L,0,3,3,2,"4");put(L,0,3,1,1,"c");put(L,0,3,5,1,"c");put(L,0,3,3,4,"A");put(L,0,3,1,3,"l");put(L,0,3,5,3,"l");
+  put(L,0,3,3,2,"4");put(L,0,3,1,1,"c");put(L,0,3,5,1,"c");put(L,0,3,3,4,"r");put(L,0,3,1,3,"l");put(L,0,3,5,3,"l");
   /* stained glass windows on nave walls + outer church walls */
   [[9,7],[9,11],[9,15],[23,7],[23,11],[23,15]].forEach(([x,z])=>putAbs(L,x,z,"W"));
   [[11,0],[16,0],[21,0]].forEach(([x,z])=>putAbs(L,x,z,"W"));

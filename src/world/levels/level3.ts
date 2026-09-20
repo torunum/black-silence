@@ -3,7 +3,13 @@ import type { RoomLayout } from "../LevelBuilder";
 
 /**
  * LEVEL 3 — THE NECROPOLIS.
- * Copied verbatim from reference/sonsurum.html lines 437-518.
+ * Copied from reference/sonsurum.html lines 437-518, with one deliberate
+ * divergence from the frozen master (player feedback round 2, KNOWN-11):
+ * the **three** tiles the author wrote as armour are `r`, not `A`. `A` is
+ * the armour key in `loadLevel`'s item map *and* the Mancubus in
+ * `ENEMY_DEFS`, and the enemy arm is checked first, so each of them spawned
+ * a 260 hp enemy instead of +50 armour. Level 3 therefore has no Mancubus —
+ * none was ever authored here, or anywhere.
  */
 export function buildLevel3(): RoomLayout {
   const L=emptyGrid(4,4,7,5);
@@ -52,15 +58,15 @@ export function buildLevel3(): RoomLayout {
   /* (0,2) crypt of ash */
   put(L,0,2,2,1,"w");put(L,0,2,4,3,"w");put(L,0,2,1,4,"y");put(L,0,2,6,0,"h");put(L,0,2,0,0,"i");
   /* (0,3) lower vault */
-  put(L,0,3,3,2,"A");put(L,0,3,1,1,"l");put(L,0,3,5,1,"a");put(L,0,3,3,4,"b");put(L,0,3,5,3,"f");
+  put(L,0,3,3,2,"r");put(L,0,3,1,1,"l");put(L,0,3,5,1,"a");put(L,0,3,3,4,"b");put(L,0,3,5,3,"f");
   /* (1,3) processional way */
   put(L,1,3,2,2,"k");put(L,1,3,5,1,"z");put(L,1,3,1,1,"l");put(L,1,3,5,4,"l");put(L,1,3,3,3,"b");
   /* (2,3) reliquary stair */
-  put(L,2,3,2,1,"m");put(L,2,3,5,3,"y");put(L,2,3,3,2,"A");put(L,2,3,0,4,"i");put(L,2,3,6,0,"a");
+  put(L,2,3,2,1,"m");put(L,2,3,5,3,"y");put(L,2,3,3,2,"r");put(L,2,3,0,4,"i");put(L,2,3,6,0,"a");
   /* (3,2) catacomb deep — MINIBOSS executioner returns */
   put(L,3,2,3,2,"E");put(L,3,2,1,1,"x");put(L,3,2,1,4,"x");put(L,3,2,6,3,"b");put(L,3,2,0,0,"i");
   /* (3,3) SECRET charnel reliquary */
-  put(L,3,3,3,2,"c");put(L,3,3,1,1,"c");put(L,3,3,5,1,"A");put(L,3,3,3,4,"h");put(L,3,3,1,3,"o");put(L,3,3,5,3,"l");
+  put(L,3,3,3,2,"c");put(L,3,3,1,1,"c");put(L,3,3,5,1,"r");put(L,3,3,3,4,"h");put(L,3,3,1,3,"o");put(L,3,3,5,3,"l");
   /* (1,2) merged tomb — single barrel */
   put(L,1,2,6,0,"O");
   /* bone-lattice windows on tomb walls + outer */

@@ -3,7 +3,15 @@ import type { RoomLayout } from "../LevelBuilder";
 
 /**
  * LEVEL 6 — THE FACTORY.
- * Copied verbatim from reference/sonsurum.html lines 640-700.
+ * Copied from reference/sonsurum.html lines 640-700, with one deliberate
+ * divergence from the frozen master (player feedback round 2, KNOWN-11):
+ * the **four** tiles the author wrote as armour are `r`, not `A`. See
+ * `level3.ts`'s header for the mechanism. Level 6 has no Mancubus; its
+ * three `C` tiles are still Cacodemons, deliberately — that is the other
+ * half of KNOWN-4 and the reason the dispatch order was not flipped.
+ *
+ * Parked to `episode2` per `docs/direction.md`, and fixed anyway — see
+ * `level5.ts`'s header.
  */
 export function buildLevel6(): RoomLayout {
   const L=emptyGrid(4,4,7,5);
@@ -41,7 +49,7 @@ export function buildLevel6(): RoomLayout {
   /* (2,0) press room */
   put(L,2,0,2,2,"j");put(L,2,0,5,1,"j");put(L,2,0,1,4,"a");put(L,2,0,4,3,"x");
   /* (3,0) furnace control */
-  put(L,3,0,3,2,"o");put(L,3,0,1,1,"A");put(L,3,0,5,1,"m");put(L,3,0,6,3,"O");put(L,3,0,1,4,"h");put(L,3,0,0,0,"l");
+  put(L,3,0,3,2,"o");put(L,3,0,1,1,"r");put(L,3,0,5,1,"m");put(L,3,0,6,3,"O");put(L,3,0,1,4,"h");put(L,3,0,0,0,"l");
   /* (0,1) pipe gallery — LOST SOULS */
   put(L,0,1,2,2,"L");put(L,0,1,5,3,"L");put(L,0,1,1,4,"l");put(L,0,1,0,0,"i");
   /* (2,1) assembly */
@@ -51,17 +59,17 @@ export function buildLevel6(): RoomLayout {
   /* (0,2) coolant pit */
   put(L,0,2,2,1,"n");put(L,0,2,4,3,"j");put(L,0,2,1,4,"C");put(L,0,2,6,0,"h");put(L,0,2,0,0,"i");
   /* (0,3) SECRET maintenance cache */
-  put(L,0,3,3,2,"6");put(L,0,3,1,1,"c");put(L,0,3,5,1,"A");
+  put(L,0,3,3,2,"6");put(L,0,3,1,1,"c");put(L,0,3,5,1,"r");
   put(L,0,3,3,4,"h");put(L,0,3,1,3,"l");
   /* (1,3) lower assembly */
   put(L,1,3,2,2,"n");put(L,1,3,5,1,"j");put(L,1,3,1,1,"l");put(L,1,3,5,4,"l");put(L,1,3,3,3,"b");
   /* (2,3) slag sump */
-  put(L,2,3,2,1,"A");put(L,2,3,5,3,"C");put(L,2,3,3,2,"h");
+  put(L,2,3,2,1,"r");put(L,2,3,5,3,"C");put(L,2,3,3,2,"h");
   put(L,2,3,0,4,"i");put(L,2,3,6,0,"a");
   /* (3,2) smelter — EXECUTIONER miniboss */
   put(L,3,2,3,2,"E");put(L,3,2,1,1,"O");put(L,3,2,1,4,"O");put(L,3,2,6,3,"b");put(L,3,2,0,0,"i");
   /* (3,3) overseer reliquary (secret) */
-  put(L,3,3,3,2,"8");put(L,3,3,1,1,"0");put(L,3,3,5,1,"0");put(L,3,3,3,4,"h");put(L,3,3,5,3,"A");
+  put(L,3,3,3,2,"8");put(L,3,3,1,1,"0");put(L,3,3,5,1,"0");put(L,3,3,3,4,"h");put(L,3,3,5,3,"r");
   /* grated windows */
   [[9,7],[9,15],[23,7],[23,15],[16,0]].forEach(([x,z])=>putAbs(L,x,z,"W"));
   return L;

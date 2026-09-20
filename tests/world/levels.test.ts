@@ -226,6 +226,59 @@ it("level 2's pews are props, not enemies, and `v` is claimed by no enemy def (K
 });
 
 /**
+ * KNOWN-11 — the item-table half of the same collision, closed the same way
+ * and in the same round. `A` is the armour pickup's key in `loadLevel`'s
+ * item map *and* the Mancubus in `ENEMY_DEFS`; the enemy arm is checked
+ * first, so all **twenty** `A` tiles across seven levels spawned a 260 hp
+ * enemy, `map2.A` was unreachable dead code, and `S.armor` was structurally
+ * 0 for the entire life of the game — the HUD's armour slot could only ever
+ * read `0`. All twenty are now `r`, an item-only glyph.
+ *
+ * All twenty, not only the nine in the five kept levels: levels 5-7 are
+ * parked to `episode2` but still build and are still covered by every test
+ * in this file, and a partial fix would leave eleven armed behind a
+ * known-issues row saying the bug is closed.
+ *
+ * The two tests below are what makes the mutation "revert one tile to `A`"
+ * go red; `tests/world/rosterReach.test.ts`'s `UNREACHABLE` entry for `A`
+ * is the third, from the roster side, and `tests/fidelity.test.ts`'s
+ * `ARMOUR_CELLS` is the fourth, from the frozen master's side.
+ *
+ * What did NOT change, exactly as with KNOWN-4: `A` is still in the item
+ * map and still unreachable there, the dispatch order is still
+ * enemy-before-item, and the tables still overlap.
+ */
+it("no level places `A`, so the Mancubus is out of the game (KNOWN-11)", () => {
+  const placed = built
+    .map(({ name, grid }) => [name, findAll(grid, "A").length] as const)
+    .filter(([, n]) => n > 0);
+  expect(placed).toEqual([]);
+});
+
+it("every armour tile the authors wrote reaches the item table (KNOWN-11)", () => {
+  // `r` must stay out of both other rosters — the moment an enemy def or the
+  // prop string claims it, every armour pickup in the game turns back into
+  // something else and nothing but this line would say so.
+  expect(Object.keys(ENEMY_DEFS)).not.toContain("r");
+  expect(PROP_CHARS).not.toContain("r");
+
+  const counts = Object.fromEntries(
+    built.map(({ name, grid }) => [name, findAll(grid, "r").length]),
+  );
+  expect(counts).toEqual({
+    "PROLOGUE — OUT OF THE PIT": 0,          // the prologue authors none
+    "LEVEL 1 — THE GOTHIC DUNGEON": 1,       // the secret alcove's reward cache
+    "LEVEL 2 — THE ABANDONED CHURCH": 2,
+    "LEVEL 3 — THE NECROPOLIS": 3,
+    "LEVEL 4 — THE GRAVEYARD": 3,
+    "LEVEL 5 — THE SEWERS": 3,
+    "LEVEL 6 — THE FACTORY": 4,
+    "LEVEL 7 — THE WOMB": 4,
+  });
+  expect(Object.values(counts).reduce((a, b) => a + b, 0)).toBe(20);
+});
+
+/**
  * And the consequence the level design turns on. `bossDeath`'s `V` arm calls
  * `openExit()` — the same call the Corrupted Priest's death makes — so any
  * Foreman in level 2 would open the level's exit and let the player walk past

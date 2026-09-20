@@ -49,7 +49,11 @@ describe("every level-grid character resolves to a known tile", () => {
   // see KNOWN-4. It is deliberately NOT in ENEMY_DEFS, which is the whole
   // point of it; if it ever is, tests/world/levels.test.ts fails first.
   const PROP_CHARS = "xTCFVOv";
-  const PICKUP_CHARS = ["h", "A", "a", "b", "o", "c", "K", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
+  // `r` (item-only armour) joined this set in player-feedback round 2 — see
+  // KNOWN-11. Like `v` above it is deliberately NOT in ENEMY_DEFS, which is
+  // the whole point of it. `A` stays listed because `loadLevel`'s item map
+  // still holds it, unreachably; no level places it any more.
+  const PICKUP_CHARS = ["h", "A", "r", "a", "b", "o", "c", "K", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
   const KNOWN_NON_ENEMY = new Set([...SKIP_CHARS, ...NAMED_CHARS, ...PROP_CHARS, ...PICKUP_CHARS]);
 
   const built = LEVELS.map((def) => [def.name, def.build().g] as const);

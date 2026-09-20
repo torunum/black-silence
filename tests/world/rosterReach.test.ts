@@ -295,6 +295,27 @@ it("SUMMONED accounts for every literal at every spawnEnemy call site outside th
 const UNREACHABLE: Record<string, string> = {
   B: "230hp slam attacker — declared in ENEMY_DEFS, placed in no level grid, summoned nowhere by name",
   q: "AFRIT (fly/burst/deathBoom) — declared in ENEMY_DEFS, placed in no level grid, summoned nowhere by name",
+  // Third entry, and the only one of the three that arrived by decision
+  // rather than by discovery — player-feedback round 2, KNOWN-11. `A` was
+  // the Mancubus's only glyph and also the armour pickup's, and the enemy
+  // arm of `loadLevel`'s dispatch won, so all twenty `A` tiles the level
+  // authors wrote as armour spawned a 260 hp enemy. Retagging them `r`
+  // removes the Mancubus from the game, which is stated as the decision it
+  // is: nineteen of the twenty sit in an item cluster under an item comment,
+  // but level 7's (3,0) room does not — its comment,
+  // `/* (3,0) gland — mancubus + slugs */` (`reference/sonsurum.html:735`),
+  // names the Mancubus outright, so that one tile *was* placed deliberately
+  // as an enemy (checked: level 6's structurally identical (3,0) room, same
+  // six glyphs, carries no such comment — level 7 is the only exception).
+  // It converts anyway, because `docs/direction.md` cuts Mancubus from the
+  // roster for IP reasons regardless of any one tile's authorial intent, and
+  // its two signature behaviours (`twin`, `orb`) are KNOWN-15 fields that
+  // never reach a spawned enemy, so what actually left the game is a 260 hp
+  // melee sponge. The def is **kept** rather than deleted, the same call
+  // KNOWN-18 made for `B`/`q`: deleting an `ENEMY_DEFS` row is a
+  // roster-composition decision that belongs to the project owner. This
+  // entry is what fails if a tile drifts back to `A`.
+  A: "MANCUBUS — declared in ENEMY_DEFS, placed in no level grid since KNOWN-11's fix (all twenty `A` tiles are now `r`, the item-only armour glyph), summoned nowhere by name",
 };
 
 it("every ENEMY_DEFS letter is placed, summoned, or recorded as UNREACHABLE", () => {
@@ -347,8 +368,24 @@ const STRUCTURAL_CHARS = new Set([
 // `v` — the prop-only pew added in player-feedback round 1, task 1 (KNOWN-4).
 // It is in this table and in no other, which is the entire reason it exists.
 const PROP_CHARS = new Set(["x", "T", "C", "F", "V", "O", "v"]); // LevelLoader.ts spawnProp dispatch
+// `r` — the item-only armour glyph added in player-feedback round 2
+// (KNOWN-11). It is in this table and in no other, which is the entire
+// reason it exists, exactly as `v` is for the pews. `A` is still in `map2`
+// too, and still unreachable there, because the dispatch order is unchanged.
+//
+// **Measured, and worth stating rather than leaving to be rediscovered:**
+// deleting `r:"armor"` from `loadLevel`'s `map2` leaves every test in this
+// file green. That is not a new hole — it is exactly the one-directional
+// weakness the comment above predicts ("if the dispatch *loses* a glyph,
+// this copy stays too broad and silently stops catching that glyph"), now
+// with a worked example. What catches it is
+// `tests/integration/armourPickup.test.ts`, which derives each level's
+// armour count from the built grid and then asserts the real `loadLevel`
+// produced that many real pickups: that mutation reddens ten of its named
+// tests. If a future glyph needs the same protection, give it a test of
+// that shape rather than trusting this literal.
 const ITEM_CHARS = new Set([
-  "h", "A", "a", "b", "o", "c", "K", // LevelLoader.ts:341 map2
+  "h", "A", "r", "a", "b", "o", "c", "K", // LevelLoader.ts:341 map2
   "2", "3", "4", "5", "6", "7", "8", "9", "0", // LevelLoader.ts:342 map2
 ]);
 const ENEMY_CHARS = new Set(Object.keys(ENEMY_DEFS));

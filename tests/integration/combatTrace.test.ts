@@ -12,8 +12,14 @@ import { MONOLOGUE } from "../../src/content/monologue";
  * on the combat-resolution path — `damagePlayer`, `damageEnemy`,
  * `killEnemy`, `enemyTick`, `los`, and everything else Plan 0E's DAMAGE/
  * DEATH and ENEMY AI carves move — is exercised by it at all. This file
- * plays level 1 instead (`U z×4 f×2 j m×2 t g×2 s A`, 15 enemies), far
+ * plays level 1 instead (`U z×4 f×2 j m×2 t g×2 s`, **14** enemies), far
  * enough into it that the player actually meets some of them.
+ *
+ * The roster used to read `… s A`, 15 enemies. The fifteenth was the `A`
+ * in the secret alcove — an armour pickup the level author wrote, turned
+ * into a 260 hp Mancubus by KNOWN-11's enemy-before-item dispatch. It is
+ * armour now, and the sections below marked "player feedback round 2" are
+ * the ones that changed because of it.
  *
  * **This fixture was recorded before Plan 0E moved any system out of
  * `src/legacy.js`.** Its entire value is being a pre-migration recording —
@@ -103,17 +109,27 @@ import { MONOLOGUE } from "../../src/content/monologue";
  *
  * ## Why the run starts with `S.armor = 50`
  *
- * The fixture's very first recorded frame reads `"ARMOR50"` — a state the
- * game can never organically reach. `S.armor` starts at 0 and nothing in
- * `loadLevel` ever changes that; the only way a real playthrough raises it
- * is picking up an armour item, and no level's grid can ever place one:
- * `loadLevel`'s dispatch checks `EDEF[ch]` (the enemy-key map) before the
- * item-letter map, and `A` is both the Mancubus's key in `ENEMY_DEFS` and
- * the armour item's key in that item map, so every `"A"` grid cell spawns
- * the enemy and the armour branch is unreachable dead code — see
- * `docs/known-issues.md` KNOWN-11, filed while building this fixture.
- * `S.armor` is therefore structurally always 0 in real play, for every
- * level, not just this one.
+ * **Rewritten, player feedback round 2 — the reason changed, the seed did
+ * not.** This section used to say the fixture's first recorded frame,
+ * `"ARMOR50"`, was a state the game could never organically reach, because
+ * `loadLevel`'s dispatch checks `EDEF[ch]` before its item map and `A` is
+ * both the Mancubus and the armour key, so every armour tile any level
+ * author ever wrote spawned the enemy and the pickup arm was unreachable
+ * dead code. That was true, it was KNOWN-11 — filed while building this
+ * fixture — and it is **fixed**: all twenty `A` tiles are now `r`, an
+ * item-only glyph, and `tests/integration/armourPickup.test.ts` proves
+ * `S.armor` goes 0 → 50 through the real `itemsTick` in every level that
+ * has one, with nothing seeded.
+ *
+ * The seed below stays anyway, and the distinction is worth keeping
+ * straight: it is now about **reach**, not impossibility. Level 1's one
+ * armour tile is in the SECRET ALCOVE behind `g[23][40]="S"`, which this
+ * script never opens (see the Plan 0F Task 5 section below, which relies
+ * on the same fact for a different reason). A run that did not seed
+ * `S.armor` would therefore still hold 0 for all 1760 frames, and
+ * `damagePlayer`'s armour-absorb branch — which this fixture is the only
+ * committed recording of — would go dark. Removing the seed would cost
+ * coverage and buy nothing.
  *
  * Seeding it directly in `beforeAll`, before `runTrace` boots the game, is
  * what makes `damagePlayer`'s armour-absorb branch (`src/legacy.js:1241`)
@@ -149,15 +165,19 @@ import { MONOLOGUE } from "../../src/content/monologue";
  *
  * - The script (`combatScript()` below) never taps the kick key, so
  *   `doKick` — and the hit test it would schedule — never runs.
- * - This file's own `S.armor` note above already establishes that the level
- *   grid's `put1(g,40,25,"A")` — commented "armor" by the level author —
- *   spawns a Mancubus instead, per KNOWN-11's enemy-vs-item collision.
- *   That Mancubus is the *only* `twin` (dual-barrel) enemy level 1 has, and
- *   it sits in the walled-off SECRET ALCOVE (`src/world/levels/level1.ts`'s
- *   `g[23][40]="S"`), which this script's path (start room -> corridor ->
- *   great hall -> standing turret) never opens and never gets within
- *   `los()`'s 22-unit range of. It never reaches `seen`, so its ranged
- *   branch — and the scheduled second barrel — never runs.
+ * - The Mancubus's scheduled second barrel. **Corrected, player feedback
+ *   round 2**: this bullet used to say that the level grid's
+ *   `put1(g,40,25,"A")` — commented "armor" by the author — spawned level
+ *   1's only `twin` (dual-barrel) enemy into the walled-off SECRET ALCOVE
+ *   (`src/world/levels/level1.ts`'s `g[23][40]="S"`), which this script
+ *   never opens and never gets within `los()`'s 22-unit range of, so it
+ *   never reached `seen` and its ranged branch never ran. That was an
+ *   argument about *this script*. It is now an argument about the game:
+ *   the tile is `r`, the armour the author wrote, so level 1 contains **no
+ *   `twin` enemy at all** and this site is structurally unreachable here,
+ *   in the same class as the Slaughtaur and Ettin bullets below rather
+ *   than merely unreached. The alcove itself is still shut, which is why
+ *   the `S.armor` seed above is still needed.
  * - Level 1's roster (`U z×4 f×2 j m×2 t g×2 s A`, 15 enemies, enumerated in
  *   `src/world/levels/level1.ts`) has zero `orb==="centaur"` (Slaughtaur,
  *   key `k`) and zero `e.slam` (Ettin `n` / `B`) enemies at all — those two
@@ -334,6 +354,65 @@ import { MONOLOGUE } from "../../src/content/monologue";
  * for as little as one frame, so whether a mutation there is caught depends
  * on a sampled frame landing on it. Counted as covered in the five above
  * only in the sense that it runs; do not lean on it.
+ *
+ * ## Player feedback round 2 — fourth regeneration: level 1 has one fewer enemy
+ *
+ * KNOWN-11's fix retags level 1's `put1(g,40,25,"A")` to `"r"`, so the
+ * secret alcove holds the +50 armour the author wrote instead of a 260 hp
+ * Mancubus. This is a **deliberate content change**, not a harness change
+ * and not a refactor, so unlike the three regenerations above it is
+ * *expected* to move the fight — a fixture that came back byte-identical
+ * would have meant the fix had not reached the level.
+ *
+ * The mechanism for the divergence is entirely the seeded `Math.random()`
+ * stream, and it is arithmetic rather than inference: `spawnEnemy`
+ * (`src/world/LevelLoader.ts`) draws **seven** values per enemy (the elite
+ * roll, `dodgeT`, `flank`'s sign and magnitude, `lungeT`, `slamT`,
+ * `flingCD`) and adds **two** scene children (`addSprite` + `addBlob`); the
+ * item branch draws **one** (`bob`) and adds **one** (`addSprite`). So that
+ * single cell now consumes six fewer draws at load and contributes one
+ * fewer child, and every `Math.random()` in the rest of the run is shifted
+ * by six. `installUuidStub` already keeps three.js's own UUID draws out of
+ * this stream (Phase 2 Part A), so six is the whole of it.
+ *
+ * Compared field by field against the pre-fix fixture, all 176 sampled
+ * frames, rather than stopping at the first divergence:
+ *
+ * - `scene.count` — differs in **174** of 176 frames, first at frame 10,
+ *   `93 → 92`. The delta is **-1 in 158 frames**, which is exactly
+ *   `2 - 1` (the Mancubus's sprite and blob leaving, the armour sprite
+ *   arriving) and is the load-time floor of the whole run; the other 16
+ *   (-2 x15, -4 x1) are frames where the fight's own transient children —
+ *   gibs, particles, decals — land a frame or two differently under the
+ *   shifted stream. Range `93..134` → `92..134`; the last sampled frame is
+ *   134 in both, because by then the run's transients dominate the
+ *   one-object floor.
+ * - `scene.digest` — differs in **all 176**, as it must once the child list
+ *   changes at frame 10. 176 distinct digests before, 176 after.
+ * - `hud.subt` — differs in **52** frames, first at frame 90:
+ *   `"A dungeon. Of course it's a dungeon…"` → `"Stone walls, chains,
+ *   screaming in the distance…"`. Both are `MONOLOGUE.lvl1` lines; this is
+ *   `pick()` reading a shifted stream, not a different event.
+ * - `hud.hp` / `hud.ar` — differ in **24** frames each, first at frame
+ *   1530 (`HEALTH91 → HEALTH94`, `ARMOR36 → ARMOR41`). The player takes
+ *   *less* damage in the new run and ends at `HEALTH68`/`ARMOR2` instead
+ *   of `HEALTH61`/`ARMOR0`. Not because an enemy left — the Mancubus was
+ *   dormant behind a shut secret door and never fought — but because the
+ *   shifted stream moves enemy attack cadence. Both are still far from
+ *   death, which is what the cutoff below is tuned for.
+ * - `hud.wname`, `hud.msg`, `hud.lvltitle`, `hud.bossname`, `hud.keys` —
+ *   **identical in all 176 frames**.
+ * - `camera` — differs in **8** of 176 frames, first at 1540, and only in
+ *   `y` and `rz` (`0.999774 → 1`, `0.00043 → 0`): screen shake from damage
+ *   landing on different frames, decaying to nothing. The player's `x`/`z`
+ *   path is untouched, which is the expected shape — the script is
+ *   open-loop and the alcove is nowhere near it.
+ *
+ * All five of "the recorded run actually fights"'s assertions still pass
+ * unchanged, `S.kills > 0` included; nothing about the script, the seed,
+ * `TOTAL_FRAMES` or `every` was retuned. `trace-level0.json` (the prologue)
+ * is byte-identical — checksummed, not assumed — because the prologue
+ * places no armour tile.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");
@@ -428,16 +507,17 @@ const SEE_LINES: string[] = Object.entries(MONOLOGUE)
 let trace: TraceFrame[];
 
 beforeAll(async () => {
-  // Level 1's grid cannot place an armour pickup: `EDEF["A"]` (the
-  // Mancubus) is checked before the item-letter map in legacy.js's
-  // loadLevel(), so every "A" cell spawns the enemy, never the +50 armour
-  // item that letter maps to — true of every level, not just this one.
-  // `loadLevel()` never resets `S.armor` either, so setting it here, before
-  // `runTrace` imports and boots `legacy.js`, is what makes `damagePlayer`'s
-  // armour-absorb branch (line 1241 in `src/legacy.js`) reachable at all —
-  // without it `S.armor` stays 0 for the whole run and that branch never
-  // executes, which is exactly what let sabotage 1 in this task's report
-  // pass unnoticed on the first attempt.
+  // Level 1 *can* place an armour pickup now — KNOWN-11 is fixed and the
+  // alcove's tile is `r` — but this script never opens the secret door
+  // that leads to it, so a run without this line still holds `S.armor = 0`
+  // for all 1760 frames and `damagePlayer`'s armour-absorb branch goes
+  // dark. `loadLevel()` never resets `S.armor`, so setting it here, before
+  // `runTrace` boots the game, is what keeps that branch reachable — which
+  // is exactly what let sabotage 1 in the Plan 0E Task 1 report pass
+  // unnoticed on the first attempt. See the module doc comment's rewritten
+  // "Why the run starts with `S.armor = 50`" section, and
+  // `tests/integration/armourPickup.test.ts` for the unseeded proof that a
+  // player can now reach armour at all.
   S.armor = 50;
   trace = await runTrace({
     seed: 20260815, frames: TOTAL_FRAMES, dtMs: 1000 / 60, input: INPUT, every: 10, level: 1,
