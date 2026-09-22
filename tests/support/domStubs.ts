@@ -94,6 +94,17 @@ function makeGlContext(): unknown {
     getShaderSource: () => "",
     createTexture: () => ({}), createBuffer: () => ({}),
     createProgram: () => ({}), createShader: () => ({}),
+    // Render targets. Phase 2B (shadowed lighting) turned
+    // `renderer.shadowMap.enabled` on, so a real frame now goes through
+    // `WebGLShadowMap.render` -> `setRenderTarget(shadow.map)` for the first
+    // time in this project's life. Three keys a `WeakMap` on the framebuffer
+    // object, so the Proxy's generic no-op — which returns `undefined` —
+    // made every integration test that renders a frame die with "Invalid
+    // value used as weak map key" from inside three. These four return real
+    // objects/values for the same reason `createTexture` does: object
+    // identity is what three stores, not what it inspects.
+    createFramebuffer: () => ({}), createRenderbuffer: () => ({}),
+    createVertexArray: () => ({}), fenceSync: () => ({}),
     getProgramParameter: (_p: unknown, pname: unknown) =>
       pname === ACTIVE_UNIFORMS || pname === ACTIVE_ATTRIBUTES ? 0 : true,
     getShaderParameter: () => true,

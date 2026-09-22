@@ -4,6 +4,7 @@ import * as THREE from "three";
 import "./ColorPolicy";
 import { renderState } from "./Renderer";
 import { track } from "./DisposeRegistry";
+import { initShadowMap } from "./Shadows";
 import { save } from "../save/SaveGame";
 
 /**
@@ -114,6 +115,14 @@ renderState.renderer.toneMappingExposure = 1.15;
 // same one r128's `outputEncoding = sRGBEncoding` performed, independently of
 // the `ColorPolicy.ts` decision above.
 renderState.renderer.outputColorSpace = THREE.SRGBColorSpace;
+// Shadow map on/off and type. Everything about the decision — which single
+// light casts, why `BasicShadowMap` and not the smoother default, and the
+// per-mesh cast/receive policy — lives in `src/render/Shadows.ts`. This
+// call reads `save.shadows` at its *module-load default*, for the same
+// boot-order reason `sizeRender()` below reads the default `renderWidth`;
+// `main.ts` calls `applyShadowSetting()` after `loadSave()` to apply what
+// was actually stored.
+initShadowMap(renderState.renderer);
 
 /** Internal render widths, in pixels. 400 is the reference's hardcoded value and stays the default. */
 export const RENDER_WIDTHS = [320, 400, 512, 640, 800] as const;

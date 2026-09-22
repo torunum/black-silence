@@ -11,6 +11,7 @@ import { initMenus } from "./ui/Menus";
 import { startLoop } from "./core/Loop";
 import { loadSave } from "./save/persist";
 import { sizeRender } from "./render/RenderCore";
+import { applyShadowSetting } from "./render/Shadows";
 
 /**
  * Boot wiring, and nothing else. Moved verbatim from `src/legacy.js`, whose
@@ -58,6 +59,15 @@ import { sizeRender } from "./render/RenderCore";
  * here, through the same function `initMenus`'s resolution slider calls on
  * input, re-sizes the renderer from whatever `loadSave()` just populated,
  * with no second resize path.
+ *
+ * `applyShadowSetting()` (Phase 2B, shadowed lighting) is called for
+ * exactly the same reason and in exactly the same slot.
+ * `src/render/RenderCore.ts`'s module body already ran `initShadowMap()`
+ * against `save.shadows`'s module-load default, before `loadSave()`
+ * existed to change it, so a player who had turned shadows off would boot
+ * with them on until they touched the control. This second call re-applies
+ * whatever `loadSave()` populated, through the same function the settings
+ * toggle calls.
  */
 setInputHooks({
   isPianoOpen:()=>game.pianoOpen, isStarted:()=>game.started, isInputLocked:()=>game.inputLock,
@@ -70,5 +80,6 @@ setInputHooks({
 
 loadSave();
 sizeRender();
+applyShadowSetting();
 initMenus(startGame);
 startLoop();
