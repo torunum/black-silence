@@ -57,8 +57,8 @@ export function loadSave(): void {
     // silently reset the player's unlocked chapters, volume and resolution
     // to defaults, to gain nothing — a v1 store simply has no `shadows`
     // key, the check below fails, and `save.shadows` keeps its default of
-    // `true`, which is exactly the intended fallback. A bump is for a field
-    // whose *meaning* changed, not for one that was added.
+    // `false`, which is exactly the intended fallback. A bump is for a
+    // field whose *meaning* changed, not for one that was added.
     if (typeof data.shadows === "boolean") save.shadows = data.shadows;
   } catch {
     /* corrupt JSON, a blocked store, or storage throwing on access —

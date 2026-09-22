@@ -26,12 +26,15 @@ import { SHADOW_MAP_SIZE, SHADOW_POLICY, applyShadowSetting, initShadowMap } fro
  * because `tests/enemies/walkFrames.test.ts` set the precedent of saying so.
  *
  * **It establishes** that the flags and settings the decision depends on are
- * actually set on the actually-built scene: that the shadow map is on, that
- * the type is `BasicShadowMap` and not the smoother default, that the map is
- * 256, that **exactly one** light in a live level casts — the cost invariant,
- * and the one assertion here with real teeth, since a future task that turns
- * on the torches reddens it immediately — and that every named piece of level
- * geometry has a deliberate policy rather than an accidental default.
+ * actually set on the actually-built scene: that the shadow map defaults off
+ * (review round 1 flipped it from the phase's original on, once the cost was
+ * actually measured — see below) and the toggle in `SETTINGS` moves it both
+ * ways, that the type is `BasicShadowMap` and not the smoother default, that
+ * the map is 256, that **exactly one** light in a live level is configured to
+ * cast whenever shadows are on — the cost invariant, and the one assertion
+ * here with real teeth, since a future task that turns on the torches
+ * reddens it immediately — and that every named piece of level geometry has
+ * a deliberate policy rather than an accidental default.
  *
  * **It does not establish that anything looks right.** No test in this
  * project samples a pixel. A shadow that is inverted, acne-ridden, offset by
@@ -81,11 +84,22 @@ beforeAll(async () => {
 });
 
 describe("the renderer's shadow settings", () => {
-  it("has the shadow map enabled after boot", () => {
-    // MUTATION TARGET 1a of 3: `applyShadowSetting` is the writer that
-    // actually decides this at boot — `main.ts` calls it right after
-    // `loadSave()`. Hardcode its assignment to `false` and this case goes red.
-    expect(renderState.renderer.shadowMap.enabled).toBe(true);
+  it("has the shadow map disabled after boot — the default flipped in review round 1", () => {
+    // `save.shadows` defaults to `false` as of review round 1 of this task:
+    // the reviewer measured +12 draw calls and +16,608 triangles on level 1
+    // (`renderer.info`, `autoReset = false`, read after the shadow pass —
+    // about 6.8x the beauty pass's own triangle load) against a shadow that
+    // the same review's own six-panel board measured as a black difference
+    // panel at the shipped camera angles. Measured cost beside measured zero
+    // benefit moved the default off; the toggle in SETTINGS stays on.
+    //
+    // This boot assertion alone is a weak mutation catch now that `false` is
+    // also what a *wrong*, hardcoded-false writer would produce — hardcoding
+    // `applyShadowSetting`'s assignment to a constant is caught instead by
+    // "the SHADOWS setting > turns the shadow map off and back on" below,
+    // which flips `save.shadows` both directions post-boot and asserts the
+    // renderer follows it. This case only pins the shipped default itself.
+    expect(renderState.renderer.shadowMap.enabled).toBe(false);
   });
 
   it("initShadowMap turns the map on from the save and pins the type", () => {

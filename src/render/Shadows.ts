@@ -9,9 +9,15 @@ import { save } from "../save/SaveGame";
  *
  * This file exists rather than a dozen flag assignments scattered through
  * `src/world/LevelLoader.ts` for two reasons. The mechanical one is that
- * `LevelLoader.ts` was at 384 of the 400-line gate before this task. The
- * real one is that "which objects cast" is a single decision with a single
- * rationale, and reading it should not mean reading a level loader.
+ * `LevelLoader.ts` was at 384 of the 400-line gate before this task, and
+ * this task's own additions to it — `configureLampShadow`/
+ * `applyShadowFlags` calls plus ten `name` assignments — left it at
+ * **398 of 400**. Two lines of headroom, not a hundred: the next task that
+ * touches `LevelLoader.ts` should plan on extracting before adding, the way
+ * this task extracted the shadow policy, rather than assuming there is room
+ * to grow it in place. The real reason for this file, independent of the
+ * line count, is that "which objects cast" is a single decision with a
+ * single rationale, and reading it should not mean reading a level loader.
  *
  * ## Why exactly one light casts
  *
@@ -70,10 +76,28 @@ import { save } from "../save/SaveGame";
  *   level-load frame, which is already the worst frame in the game.
  *   (2) Each shadow-casting point light adds one entry to
  *   `uniform sampler2D pointShadowMap[ NUM_POINT_LIGHT_SHADOWS ]` in
- *   *every* lit material's fragment shader. WebGL2 only guarantees 16
- *   fragment texture units; ten torches plus the lamp plus the material's
- *   own map is twelve, with no margin, and overrunning it is a shader link
- *   failure — a black screen, not a slow frame. (3) Memory: at
+ *   *every* lit material's fragment shader, and WebGL2 only guarantees 16
+ *   fragment texture units. **Corrected after a live test, round 1 of
+ *   review**: the cliff is real but sits at 17 casters, not at 10 — tested
+ *   live in this browser, `MAX_TEXTURE_IMAGE_UNITS` is 16 here, 11 casters
+ *   is clean, 14 is clean (level 1's 13 torch/window/exit lights plus the
+ *   lamp — that is this game's single busiest level if every one of its
+ *   decorative lights cast), and 17 is where
+ *   `THREE.WebGLProgram: Shader Error` /
+ *   `FRAGMENT shader texture image units count exceeds
+ *   MAX_TEXTURE_IMAGE_UNITS(16)` actually fires. Level 4's ten torches, the
+ *   most of any level, plus its four window lights plus the lamp is 15 —
+ *   in the untested gap between the confirmed-clean 14 and the
+ *   confirmed-broken 17, not a confirmed break. Re-deriving every level's
+ *   torch+window+exit count from `Shadows.ts`'s own header table and
+ *   adding the lamp: level 2 (8+8+0+1=17) and level 3 (9+8+0+1=18) are the
+ *   two that actually reach or cross the line; every other level (6, 14,
+ *   13, 15, 13, 14, 14 for 0/1/4/5/6/7) sits at or below the tested-clean
+ *   boundary or, for level 4 alone, in the untested gap. And at 17 casters
+ *   the reviewer's frame still rendered — 215,916 of 216,800 pixels
+ *   non-black — so "a black screen, not a slow frame" overstates a real
+ *   but survivable shader-compile error, not a wall that hides all output.
+ *   (3) Memory: at
  *   `mapSize 256` a point shadow's render target is 1024x512 (the 4x2
  *   atlas), so eleven of them is ~23 MB of RGBA per level. (4) A bake is
  *   only sound if no caster moves, and doors do — `doorTick` animates a
