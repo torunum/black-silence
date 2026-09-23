@@ -193,6 +193,33 @@ import { runTrace, type InputEvent, type TraceFrame } from "./gameplayTrace";
  * loses `say`'s 3-second throttle race against the level-opening line and
  * is spent silently, never reaching the DOM), so nothing about it shows up
  * in `hud`.
+ *
+ * ## Phase 2B gothic trim — fifth regeneration: one more scene child
+ *
+ * `src/world/Trim.ts` adds pillar bases/capitals and wall courses as at most
+ * two `InstancedMesh` scene children per level. The prologue has no pillars,
+ * so it gains exactly one (`wallCourse`). A purely visual change: no
+ * `Math.random()` draw (the module draws none, and `installUuidStub` keeps
+ * three's own UUID draws out of the stream), and nothing reads the scene
+ * back for gameplay. Compared field by field against the pre-trim fixture,
+ * all 90 sampled frames:
+ *
+ * - `camera` — all seven components **identical in all 90 frames**.
+ * - `hud` — all eight fields **identical in all 90 frames**.
+ * - `scene.count` — **+1 in every one of the 90 frames**, no other delta
+ *   (33..45 → 34..46).
+ * - `scene.digest` — differs in all 90, necessarily, since the child list
+ *   gained a member. First: frame 10, `c1fe0472` → `037ed69c`. Last: frame
+ *   900, `455ad8bc` → `8d4e01de`. 90 distinct digests before and after.
+ *
+ * That the digest moved *only* because of the added child was checked
+ * directly rather than inferred: with `digestScene` temporarily filtering out
+ * children named `wallCourse`/`pillarTrim`, this run reproduced the
+ * **pre-trim fixture byte for byte** (and so did the other two fixtures).
+ * The filter was then removed; `gameplayTrace.ts` is unchanged by this
+ * commit. Worth knowing: the digest records an `InstancedMesh` by its own
+ * position and material, never by its instance matrices, so *where* the trim
+ * sits is invisible to every trace — `tests/world/trim.test.ts` owns that.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

@@ -413,6 +413,32 @@ import { MONOLOGUE } from "../../src/content/monologue";
  * `TOTAL_FRAMES` or `every` was retuned. `trace-level0.json` (the prologue)
  * is byte-identical — checksummed, not assumed — because the prologue
  * places no armour tile.
+ *
+ * ## Phase 2B gothic trim — fifth regeneration: two more scene children
+ *
+ * `src/world/Trim.ts` adds the level's trim as at most two `InstancedMesh`
+ * scene children; level 1 has pillars, so it gets both (`wallCourse`,
+ * `pillarTrim`), plus a `secretCourse` *child of the secret door's mesh*,
+ * which the digest does not see (it reads top-level children only). The
+ * module draws no `Math.random()` and `installUuidStub` keeps three's UUID
+ * draws out of the seeded stream, so unlike the fourth regeneration above,
+ * the fight itself must not move. Compared field by field against the
+ * pre-trim fixture, all 176 sampled frames:
+ *
+ * - `camera` — all seven components **identical in all 176 frames**.
+ * - `hud` — all eight fields **identical in all 176 frames**; the run still
+ *   ends `HEALTH68`/`ARMOR2`, `"LIMB SEVERED"`.
+ * - `scene.count` — **+2 in every one of the 176 frames**, no other delta
+ *   (92..134 → 94..136).
+ * - `scene.digest` — differs in all 176. First: frame 10, `f872e283` →
+ *   `039f37df`. Last: frame 1760, `43c0921f` → `1ca8357d`. 176 distinct
+ *   digests before and after.
+ *
+ * Confirmed rather than inferred: with `digestScene` temporarily filtering
+ * out the two trim children, this run reproduced the pre-trim fixture byte
+ * for byte. `gameplayTrace.ts` is unchanged by this commit. Where the trim
+ * sits is invisible to this fixture (instance matrices are not hashed);
+ * `tests/world/trim.test.ts` owns placement.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

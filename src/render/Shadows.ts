@@ -209,6 +209,14 @@ export const SHADOW_POLICY: Readonly<Record<string, ShadowRule>> = {
   pillar: { cast: true, receive: true },
   platform: { cast: true, receive: true },
   wallSeg: { cast: true, receive: true },
+  /* Gothic trim (`src/world/Trim.ts`) takes the policy of what it decorates:
+     the wall courses a wall's, the pillar bases and capitals a pillar's. A
+     base that did not cast would leave a notch of light in the pillar's
+     shadow exactly where it meets the floor. The courses on secret doors
+     are children of the door mesh, so they get the door's rule below
+     through `applyShadowFlags`'s subtree walk and need no entry here. */
+  wallCourse: { cast: true, receive: true },
+  pillarTrim: { cast: true, receive: true },
   /* Doors are the one caster that moves. They are also the reason the
      lamp's shadow map can never be baked — but the lamp re-renders every
      frame regardless, since the lamp itself moves, so a moving door costs
