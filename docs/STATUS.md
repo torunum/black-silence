@@ -830,6 +830,30 @@ circular dependency. On the unmerged `phase-2b-threejs-evaluated` branch it is
 **61 files / 493 tests**, 91 files at both gates — `src/render/ColorPolicy.ts`
 plus `tests/render/colorPolicy.test.ts` and `tests/render/outputColorSpace.test.ts`.
 
+## Phase 2 Part B — the world, finished
+
+All four Part B items are done, and three of them were settled by looking at
+the game rather than by argument, because the game turned out to render in the
+browser pane after all (see Environment gotchas).
+
+| Item | Outcome |
+|---|---|
+| Three.js upgrade (KNOWN-14) | three **0.164.1** with `useLegacyLights`. 0.186.0 was compared on screen and renders the game nearly black; 0.164.1 restores the r128 look. Pinned there until the ten lights are retuned for the modern model. |
+| Variable ceiling height | Opt-in per-cell ceiling map, instanced, demonstrated on level 3. Opting a level in relights its whole ceiling (Gouraud on many vertices instead of four). |
+| Shadowed lighting | One caster, the player's lamp — and it is **measured invisible**, because a light at the eye casts shadows the eye cannot see. It costs +12 draw calls and +16,608 triangles on level 1, so it ships **off**, behind SETTINGS → SHADOWS. Raising or offsetting the lamp would make it mean something; that is an art decision. |
+| Gothic trim | Pillar bases and capitals, and wall plinth and cornice courses, instanced (at most 2 scene children a level). A clear improvement on pillars and lit corridors; busy on the prologue's hell walls and near-invisible on the flesh level, because the courses reuse the wall texture — a plain stone band per theme is the follow-up. |
+
+**Before the next task touches `src/world/LevelLoader.ts`, move something out
+of it first.** It is at **399 of the 400-line hard gate** — the trim hook was
+put on the same line as the ceiling hook to fit. Any net addition fails the
+gate. The door building or the platform instancing are the natural candidates
+to extract, following `src/world/Ceiling.ts`, `src/render/Shadows.ts` and
+`src/world/Trim.ts`.
+
+Pointed arches over doorways are the natural next piece of trim and were left
+out on purpose: doors sink into the floor when they open, so an arch has to sit
+on the wall above the doorway rather than on the door.
+
 ## How fidelity is guarded
 
 Five mechanisms, and they are **not** interchangeable:
