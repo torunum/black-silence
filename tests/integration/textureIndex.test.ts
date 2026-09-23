@@ -4,6 +4,7 @@ import { installDomStubs } from "../support/domStubs";
 import { buildSprites } from "../../src/enemies/SpriteBaker";
 import { buildItemTex } from "../../src/render/ItemTextures";
 import { buildTextures } from "../../src/render/ProcTextures";
+import { BANDTEX, buildBandTextures } from "../../src/render/BandTextures";
 import { buildTextureIndex } from "./gameplayTrace";
 
 /**
@@ -27,11 +28,17 @@ import { buildTextureIndex } from "./gameplayTrace";
  * the real index. `buildTextures`/`buildSprites`/`buildItemTex` are still
  * run first so the guard-the-guard check (`buildTextureIndex` throws if it
  * indexes zero textures) does not fire.
+ *
+ * It also pins the fourth source the index gained with the trim bands
+ * (`BANDTEX`, `src/render/BandTextures.ts`): each band is named
+ * `band.<theme>`, and naming them leaves the `unnamed#N` counter where it
+ * was — the reason they were put in a named registry at all.
  */
 describe("buildTextureIndex — the unnamed# fallback", () => {
   beforeAll(() => {
     installDomStubs();
     buildTextures();
+    buildBandTextures();
     buildSprites();
     buildItemTex();
   });
@@ -62,5 +69,19 @@ describe("buildTextureIndex — the unnamed# fallback", () => {
     expect(texName(a)).toBe(nameA);
     expect(texName(b)).toBe(nameB);
     expect(texName(c)).toBe(nameC);
+  });
+
+  it("names the trim bands from their own registry, band.<theme>, never unnamed#N", async () => {
+    // MUTATION TARGET: drop BANDTEX from buildTextureIndex and every band
+    // falls through to unnamed#N — which also renumbers every genuinely
+    // unnamed texture seen after a course (blobTex today), so a fixture
+    // regenerated then would be unreadable in a way no hash diff shows.
+    const texName = await buildTextureIndex();
+    const themes = Object.keys(BANDTEX);
+    expect(themes.length).toBeGreaterThan(0);
+    for (const theme of themes) expect(texName(BANDTEX[theme as keyof typeof BANDTEX])).toBe(`band.${theme}`);
+    // And the counter is untouched by them: the first unknown object after
+    // naming every band is still unnamed#1.
+    expect(texName({ isTexture: true })).toBe("unnamed#1");
   });
 });

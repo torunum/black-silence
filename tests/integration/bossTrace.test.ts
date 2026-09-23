@@ -529,6 +529,34 @@ import { world } from "../../src/world/WorldState";
  * Confirmed rather than inferred: with `digestScene` temporarily filtering
  * out the two trim children, this run reproduced the pre-trim fixture byte
  * for byte. `gameplayTrace.ts` is unchanged by this commit.
+ *
+ * ## Trim bands — the fifth regeneration: the course changes texture
+ *
+ * The wall courses wear the theme's stone band instead of the wall texture
+ * (`src/render/BandTextures.ts`; here `tex.churchWall` -> `band.church`),
+ * built at boot from an integer hash rather than `Math.random`. Field by
+ * field against the pre-band fixture, all 334 sampled frames:
+ *
+ * - `camera` — all seven components **identical in all 334 frames**.
+ * - `hud` — all eight fields **identical in all 334 frames**; the run still
+ *   ends `HEALTH2876`, `"THE CORRUPTED PRIEST — PHASE 3"`.
+ * - `scene.count` — **identical in all 334 frames** (155..616).
+ * - `scene.digest` — differs in all 334: `wallCourse` is a scene child in
+ *   every frame and its part string carries the texture name. First: frame
+ *   18, `d27b0a9b` -> `0dbcc94f`. Last: frame 6012, `97593af0` ->
+ *   `5b9d934e`. 334 distinct digests before and after.
+ * - **The structural guard stayed green**, as it did for the trim: a change
+ *   that draws nothing from the stream cannot shift the form swap.
+ *
+ * Confirmed rather than inferred, and with a stronger test than the trim
+ * regeneration's filter: with `loadLevel` temporarily handing `buildTrim`
+ * the wall texture again — the four bands still built at boot by
+ * `startGame`, still indexed as `band.*` — this run and both other traces
+ * reproduced the pre-band fixtures byte for byte. So building the bands
+ * took nothing from the seeded stream, adding `BANDTEX` to
+ * `buildTextureIndex` renamed nothing, and that one argument is the whole
+ * of this diff. `gameplayTrace.ts` changed in this commit only by indexing
+ * `BANDTEX` as a fourth source.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

@@ -3,6 +3,7 @@ import { pick, rnd } from "../utils/math";
 import { LEVELS } from "./levels/index";
 import { ENEMY_DEFS as EDEF } from "../enemies/EnemyDefs";
 import { TEX } from "../render/ProcTextures";
+import { bandFor } from "../render/BandTextures";
 import { PX } from "../enemies/SpriteBaker";
 import { ITEMTEX } from "../render/ItemTextures";
 import { setScene } from "../render/SceneRef";
@@ -249,7 +250,7 @@ export function loadLevel(idx: number): void {
     track(new THREE.MeshLambertMaterial({map:floorTex})));
   fm.name="floor";
   fm.rotation.x=-Math.PI/2;fm.position.set(world.GW*CELL/2,0,world.GH*CELL/2);renderState.scene.add(fm);
-  buildCeiling(renderState.scene as THREE.Scene,(hell?TEX.hellCeil:flesh?TEX.fleshCeil:TEX.ceil),wallTex);buildTrim(renderState.scene as THREE.Scene,wallTex);
+  buildCeiling(renderState.scene as THREE.Scene,(hell?TEX.hellCeil:flesh?TEX.fleshCeil:TEX.ceil),wallTex);buildTrim(renderState.scene as THREE.Scene,bandFor(Ldef));
   /* raised floor platforms (verticality) — a textured block per elevated cell.
      Each cell's box used to get its own BoxGeometry sized to that cell's
      height, so nothing was shared. Instanced here as one unit box (shared

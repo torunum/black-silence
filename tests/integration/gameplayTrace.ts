@@ -497,7 +497,7 @@ type TexNamer = (t: Any) => string;
  * is showing, where a uuid would say nothing — and, being unstable, would
  * not even repeat between that dump and a re-run.
  *
- * ## The three sources, and the two fallbacks
+ * ## The four sources, and the two fallbacks
  *
  * - **`PX`** (`src/enemies/SpriteBaker.ts`) — every enemy texture, named
  *   `"<enemyKey>.<slot>"`: `z.a`, `z.b`, `z.hl`, `z.atk`, `z.die1`,
@@ -512,6 +512,13 @@ type TexNamer = (t: Any) => string;
  *   and it is the only one the enemy-less prologue fixture reaches at all.
  * - **`TEX`** (`src/render/ProcTextures.ts`) — walls, floors, ceilings,
  *   doors, props, named `"tex.<key>"`.
+ * - **`BANDTEX`** (`src/render/BandTextures.ts`) — the four trim bands the
+ *   wall courses wear, named `"band.<theme>"` (`band.hell`, `band.flesh`,
+ *   `band.dungeon`, `band.church`). A fourth source rather than entries in
+ *   `TEX`, because `TEX`'s key set is held equal to the frozen reference's
+ *   (`tests/fidelity.test.ts`). Indexed *after* the other three, so adding
+ *   it renamed nothing they already named; and named at all so the course
+ *   texture is not an `unnamed#N` that would renumber `blobTex` below.
  *
  * **Fallback 1, shared canvas.** `loadLevel` does not put `TEX.churchFloor`
  * on the floor mesh — it puts `TEX.churchFloor.clone()` on it, so it can set
@@ -549,6 +556,7 @@ export async function buildTextureIndex(): Promise<TexNamer> {
   const { PX } = await import("../../src/enemies/SpriteBaker");
   const { ITEMTEX } = await import("../../src/render/ItemTextures");
   const { TEX } = await import("../../src/render/ProcTextures");
+  const { BANDTEX } = await import("../../src/render/BandTextures");
 
   const byTexture = new Map<Any, string>();
   const byImage = new Map<Any, string>();
@@ -570,6 +578,7 @@ export async function buildTextureIndex(): Promise<TexNamer> {
     else put(v, `item.${key}`);
   }
   for (const key of Object.keys(TEX).sort()) put(TEX[key], `tex.${key}`);
+  for (const key of Object.keys(BANDTEX).sort()) put(BANDTEX[key as keyof typeof BANDTEX], `band.${key}`);
 
   if (byTexture.size === 0) {
     // The same guard-the-guard reflex as installUuidStub's: this index is
