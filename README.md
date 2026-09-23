@@ -67,7 +67,7 @@ still have known issues; see [project status](docs/STATUS.md) and
 
 The game is written in TypeScript with Three.js and Vite. Its tests include
 behavior comparisons against the frozen original and scripted gameplay traces.
-Use Node.js 24.15 or later within Node 24. The publication build passes  tests.
+Use Node.js 24.15 or later within Node 24. The publication build passes 620 tests.
 
 ```sh
 npm ci
