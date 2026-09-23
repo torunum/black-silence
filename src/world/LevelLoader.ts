@@ -22,6 +22,7 @@ import { S } from "../core/State";
 import { CELL, WALLH, EYE } from "./Grid";
 import { floorHeightAt } from "./Collision";
 import { buildCeiling } from "./Ceiling";
+import { buildTrim } from "./Trim";
 import { world } from "./WorldState";
 import type { WallSeg } from "./LevelBuilder";
 import { after, clearAllTimers } from "../core/Timers";
@@ -280,7 +281,7 @@ export function loadLevel(idx: number): void {
     track(new THREE.MeshLambertMaterial({map:floorTex})));
   fm.name="floor";
   fm.rotation.x=-Math.PI/2;fm.position.set(world.GW*CELL/2,0,world.GH*CELL/2);renderState.scene.add(fm);
-  buildCeiling(renderState.scene as THREE.Scene,(hell?TEX.hellCeil:flesh?TEX.fleshCeil:TEX.ceil),wallTex);
+  buildCeiling(renderState.scene as THREE.Scene,(hell?TEX.hellCeil:flesh?TEX.fleshCeil:TEX.ceil),wallTex);buildTrim(renderState.scene as THREE.Scene,wallTex);
   /* raised floor platforms (verticality) — a textured block per elevated cell.
      Each cell's box used to get its own BoxGeometry sized to that cell's
      height, so nothing was shared. Instanced here as one unit box (shared

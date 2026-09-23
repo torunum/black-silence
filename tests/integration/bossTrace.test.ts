@@ -497,6 +497,38 @@ import { world } from "../../src/world/WorldState";
  * and write down which of `camera`/`hud`/`scene.count`/`scene.digest` moved
  * in how many frames and why each one had to. A regeneration that cannot
  * account for its own diff is not a regeneration; it is a deletion.
+ *
+ * ## Phase 2B gothic trim — the fourth regeneration, and the one that did
+ * ## not move the fight
+ *
+ * `src/world/Trim.ts` adds pillar bases/capitals and wall courses as at most
+ * two `InstancedMesh` scene children per level; level 2 has pillars, so it
+ * gets both, plus a `secretCourse` child on its secret door's own mesh that
+ * the digest cannot see. The module draws no `Math.random()` and
+ * `installUuidStub` keeps three's UUID draws out of the stream, so unlike
+ * the KNOWN-4 and KNOWN-11 regenerations above, nothing about the priest
+ * fight had a mechanism to move — and nothing did. All 334 sampled frames,
+ * field by field against the pre-trim fixture:
+ *
+ * - `camera` — all seven components **identical in all 334 frames**.
+ * - `hud` — all eight fields **identical in all 334 frames**; the run still
+ *   ends `HEALTH2876`, `"THE CORRUPTED PRIEST — PHASE 3"`.
+ * - `scene.count` — **+2 in every one of the 334 frames**, no other delta
+ *   (153..614 → 155..616).
+ * - `scene.digest` — differs in all 334. First: frame 18, `4c87e804` →
+ *   `d27b0a9b`. Last: frame 6012, `dd0385b1` → `97593af0`. 334 distinct
+ *   digests before and after.
+ * - **The structural guard stayed green**, for the first regeneration in
+ *   three. That is the expected result here, not a guard that stopped
+ *   looking: the guard fires when the seeded stream shifts the phase-3 form
+ *   swap out of its sampled window, and a change with no draws cannot shift
+ *   it. (The guard's window was not re-measured separately; the filtered
+ *   byte-identical run below is the stronger statement that the fight,
+ *   swap included, is frame-for-frame the one recorded before.)
+ *
+ * Confirmed rather than inferred: with `digestScene` temporarily filtering
+ * out the two trim children, this run reproduced the pre-trim fixture byte
+ * for byte. `gameplayTrace.ts` is unchanged by this commit.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");
