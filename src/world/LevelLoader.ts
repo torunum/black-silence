@@ -23,6 +23,7 @@ import { CELL, WALLH, EYE } from "./Grid";
 import { floorHeightAt } from "./Collision";
 import { buildCeiling } from "./Ceiling";
 import { buildTrim } from "./Trim";
+import { spawnProp } from "./PropSpawn";
 import { world } from "./WorldState";
 import type { WallSeg } from "./LevelBuilder";
 import { after, clearAllTimers } from "../core/Timers";
@@ -32,11 +33,14 @@ import { track, disposeAll } from "../render/DisposeRegistry";
 import type { Enemy } from "../enemies/Enemy";
 
 /**
- * The level loader and its two spawners — `loadLevel` builds a level from
- * its grid, `spawnEnemy`/`spawnProp` populate it. Moved verbatim from
- * `src/legacy.js`'s "WORLD STATE + LEVEL LOADER" section (formerly lines
- * 311-366 and 398-544; `reference/sonsurum.html` lines 2767-2822 and
- * 2849-2946).
+ * The level loader and its enemy spawner — `loadLevel` builds a level from
+ * its grid, `spawnEnemy` populates it with enemies. Prop spawning
+ * (`spawnProp`, called from `loadLevel`'s dispatch below) lives in
+ * `src/world/PropSpawn.ts` as of Task 1 of the 2026-09-24 plan — see that
+ * file's header for why it is a third file rather than folded into
+ * `Props.ts`. Moved verbatim from `src/legacy.js`'s "WORLD STATE + LEVEL
+ * LOADER" section (formerly lines 311-366 and 398-544; `reference/
+ * sonsurum.html` lines 2767-2822 and 2849-2946).
  *
  * Split from `src/world/Props.ts` (which holds `breakProp`/`explodeBarrel`,
  * run during play when a prop takes lethal damage) because the two only
@@ -116,6 +120,12 @@ import type { Enemy } from "../enemies/Enemy";
  * that file's own header for the two shapes and the lighting rule that
  * comes with opting a level into `BuiltLevel.cmap`. Nothing here reads the
  * ceiling back; `buildCeiling` is called once, below, and owns it entirely.
+ *
+ * Task 1 of the 2026-09-24 plan moved `spawnProp` out to
+ * `src/world/PropSpawn.ts`, the same way: nothing here reads a prop back
+ * either, `spawnProp` is called from the dispatch below and owns the rest
+ * entirely, and the move freed the headroom that plan's other two tasks
+ * (a themed trim band, then pointed arches) needed.
  */
 
 export function spawnEnemy(ch: string, wx: number, wz: number, summoned?: boolean): Enemy {
@@ -146,48 +156,6 @@ export function spawnEnemy(ch: string, wx: number, wz: number, summoned?: boolea
   if(!summoned)S.enemiesTotal=(S.enemiesTotal||0)+1;
   if(d.boss)world.bossRef=world.bossRef||e;
   return e;}
-export function spawnProp(ch: string, wx: number, wz: number): void {
-  let m: THREE.Object3D,r,hgt,hp,explosive=false,kind=ch;
-  const wood=track(new THREE.MeshLambertMaterial({map:TEX.wood}));
-  if(ch==="x"){m=new THREE.Mesh(track(new THREE.BoxGeometry(.85,.85,.85)),wood);
-    m.position.set(wx,.43,wz);r=.55;hgt=.9;hp=22;}
-  else if(ch==="T"){m=new THREE.Group();
-    const top=new THREE.Mesh(track(new THREE.BoxGeometry(1.3,.1,.8)),wood);top.position.y=.58;m.add(top);
-    for(const[lx,lz]of[[-.5,-.3],[.5,-.3],[-.5,.3],[.5,.3]]){
-      const leg=new THREE.Mesh(track(new THREE.BoxGeometry(.1,.58,.1)),wood);
-      leg.position.set(lx,.29,lz);m.add(leg);}
-    m.position.set(wx,0,wz);r=.62;hgt=.7;hp=26;}
-  else if(ch==="C"){m=new THREE.Group();
-    const seat=new THREE.Mesh(track(new THREE.BoxGeometry(.5,.08,.5)),wood);seat.position.y=.4;m.add(seat);
-    const back=new THREE.Mesh(track(new THREE.BoxGeometry(.5,.55,.07)),wood);back.position.set(0,.68,-.22);m.add(back);
-    for(const[lx,lz]of[[-.2,-.2],[.2,-.2],[-.2,.2],[.2,.2]]){
-      const leg=new THREE.Mesh(track(new THREE.BoxGeometry(.07,.4,.07)),wood);
-      leg.position.set(lx,.2,lz);m.add(leg);}
-    m.position.set(wx,0,wz);m.rotation.y=rnd(0,6);r=.4;hgt=.9;hp=10;}
-  else if(ch==="F"){m=new THREE.Mesh(track(new THREE.BoxGeometry(1.1,1.7,.4)),wood);
-    m.position.set(wx,.85,wz);r=.6;hgt=1.7;hp=28;}
-  // `V` and `v` build the same pew. `V` is also THE FACTORY FOREMAN in
-  // `ENEMY_DEFS`, and `loadLevel` checks the enemy table first, so a `V` in a
-  // grid never reaches this branch — that is KNOWN-4, and the mechanism is
-  // deliberately left alone here (see the dispatch below). `v` is the
-  // unambiguous spelling: it is in no other table, so a level that wants
-  // furniture can ask for furniture. `V` is kept because deleting it would
-  // change what `spawnProp("V",…)` does for any future caller that reaches it
-  // directly, which is not this task's decision to make.
-  else if(ch==="V"||ch==="v"){m=new THREE.Group();
-    const seat=new THREE.Mesh(track(new THREE.BoxGeometry(1.6,.09,.45)),wood);seat.position.y=.42;m.add(seat);
-    const back=new THREE.Mesh(track(new THREE.BoxGeometry(1.6,.5,.08)),wood);back.position.set(0,.7,-.2);m.add(back);
-    const l1=new THREE.Mesh(track(new THREE.BoxGeometry(.1,.42,.42)),wood);l1.position.set(-.7,.21,0);m.add(l1);
-    const l2=new THREE.Mesh(track(new THREE.BoxGeometry(.1,.42,.42)),wood);l2.position.set(.7,.21,0);m.add(l2);
-    m.position.set(wx,0,wz);r=.75;hgt=.95;hp=18;}
-  else{m=new THREE.Mesh(track(new THREE.CylinderGeometry(.42,.42,1.05,8)),
-    track(new THREE.MeshLambertMaterial({map:TEX.barrel})));
-    m.position.set(wx,.525,wz);r=.48;hgt=1.1;hp=24;explosive=true;addBlob(wx,wz,1.1);}
-  // `applyShadowFlags` (src/render/Shadows.ts) dispatches on this name and
-  // walks the subtree — a flag on the `Group` branches above reaches nothing.
-  m.name="prop";
-  (renderState.scene as THREE.Scene).add(m);
-  (world.props as Record<string, unknown>[]).push({m,x:wx,z:wz,r,hgt,hp,dead:false,explosive,kind,fuse:-1});}
 
 export function loadLevel(idx: number): void {
   clearAllTimers();clearScheduled();disposeAll();stopMusic();
