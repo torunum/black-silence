@@ -1,5 +1,7 @@
 // @vitest-environment jsdom
 import { beforeAll, describe, expect, it } from "vitest";
+import { readdirSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 import * as THREE from "three";
 import * as Builder from "../src/world/LevelBuilder";
 import { LEVELS } from "../src/world/levels";
@@ -11,7 +13,8 @@ import { PXDEF } from "../src/enemies/pixels";
 import { PX, buildSprites } from "../src/enemies/SpriteBaker";
 import { ITEMTEX, buildItemTex } from "../src/render/ItemTextures";
 import { getMasterVolume } from "../src/audio/AudioEngine";
-import { GP, WEAPON_PIXELS } from "../src/render/viewmodel/sprites";
+import { WEAPON_ART } from "../src/render/viewmodel/arts";
+import { MATERIALS } from "../src/render/viewmodel/palette";
 import { loadGameHtml } from "./support/domStubs";
 import type * as ViewmodelKit from "../src/render/viewmodel/kit";
 import { evalReference, REF, refSource } from "./support/reference";
@@ -690,18 +693,27 @@ describe("Voice/Ambient vs reference", () => {
   });
 });
 
-describe("WEAPON_PIXELS vs. reference", () => {
-  // Pure data literal — src/render/viewmodel/sprites.ts hoists each
-  // weapon's row-array literals (the reference's own local pistolIdle/
-  // sgIdle/.../srIdle consts, declared inline inside buildWeaponSprites)
-  // out to src/render/viewmodel/pixels/{weapons0,weapons1}.ts, the same
-  // "data lives apart from the code that consumes it" shape as PXDEF above.
-  // Extracted here by running the reference's own buildWeaponSprites() with
-  // pxCanvas faked to the identity function, so reg()'s
-  // frames.map(f=>pxCanvas(f,GP)) hands back the raw row arrays instead of
-  // a baked (and therefore byte-incomparable) canvas — see
-  // tests/behavior/viewmodel.test.ts's referenceWeaponFrames, which uses
-  // the identical technique for its per-weapon sabotage-proof coverage.
+/** Every .ts/.js file under `dir`, recursively. */
+function listSourceFiles(dir: string): string[] {
+  return readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
+    const p = join(dir, e.name);
+    return e.isDirectory() ? listSourceFiles(p) : /\.(ts|js)$/.test(e.name) ? [p] : [];
+  });
+}
+
+describe("weapon viewmodel art vs. reference — a deliberate divergence", () => {
+  // This block used to prove src/render/viewmodel/pixels/{weapons0,weapons1}.ts
+  // and the GP palette were the reference's weapon art, row for row. Player
+  // feedback round 2 replaced that art on purpose: the project owner played
+  // the game and said to fix the weapon designs, and laid side by side the
+  // baked grids did not read as weapons. See
+  // docs/superpowers/plans/2026-09-24-player-feedback-2-hands.md, Task 1.
+  // The weapons are now drawn per frame from a pose (src/render/viewmodel/
+  // weapons/*.ts), so the pixel data files, pxCanvas, GP and
+  // buildWeaponSprites were deleted — nothing read them any more. What this
+  // block pins now: the baseline really was the reference's baked art, the
+  // replacement is total (no reference row survives in src/), and the new
+  // art keeps the reference's eight slots in the same order.
   const refWPX: Record<number, { idle: string[][]; fire: string[][]; reload: string[][] }> = {};
   evalReference(
     [refSource(REF.viewmodelBuildWeaponSprites)],
@@ -710,25 +722,39 @@ describe("WEAPON_PIXELS vs. reference", () => {
   );
   const refWeaponPixels = Object.keys(refWPX).map(Number).sort((a, b) => a - b).map((k) => refWPX[k]);
 
-  it("has the identical 8 weapon slots, in order", () => {
-    expect(WEAPON_PIXELS.length).toBe(8);
+  it("the baseline: the reference bakes 8 weapon slots, each with idle, fire and reload frames", () => {
     expect(refWeaponPixels.length).toBe(8);
+    for (const set of refWeaponPixels) {
+      expect(set.idle.length).toBeGreaterThan(0);
+      expect(set.fire.length).toBeGreaterThan(0);
+      expect(set.reload.length).toBeGreaterThan(0);
+    }
   });
 
-  it("matches every row of every idle/fire/reload frame, slot for slot — the largest single body of art this task moved", () => {
-    expect(WEAPON_PIXELS).toEqual(refWeaponPixels);
-  });
-});
-
-describe("GP (weapon sprite palette) vs. reference", () => {
-  const refGP = evalReference<Record<string, string>>([refSource(REF.viewmodelSprites)], "GP");
-
-  it("has the identical key set", () => {
-    expect(Object.keys(GP).sort()).toEqual(Object.keys(refGP).sort());
+  it("no row of the reference's weapon pixel art survives anywhere in src/ — the replacement is total", () => {
+    const srcText = listSourceFiles("src").map((f) => readFileSync(f, "utf8")).join("\n");
+    // Rows distinctive enough to mean something: at least 12 non-space characters.
+    const rows = new Set(refWeaponPixels.flatMap((set) => [...set.idle, ...set.fire, ...set.reload].flat())
+      .filter((row) => row.replace(/ /g, "").length >= 12));
+    expect(rows.size).toBeGreaterThan(50);
+    const survivors = [...rows].filter((row) => srcText.includes(row));
+    expect(survivors).toEqual([]);
   });
 
-  it("matches every palette entry", () => {
-    expect(GP).toEqual(refGP);
+  it("the new art keeps the reference's eight slots, in slot order, each named after its weapon", () => {
+    expect(WEAPON_ART.map((a) => a.name)).toEqual(WEAPON_STATS.map((w) => w.name));
+  });
+
+  it("the new palette (replacing GP) is hard-toned: every ramp is 1-8 opaque #rrggbb tones, and every material*8+tone index fits a byte", () => {
+    const ids = Object.keys(MATERIALS).map(Number);
+    expect(ids.length).toBeGreaterThan(10);
+    for (const id of ids) {
+      expect(id * 8 + 7).toBeLessThan(256);
+      const ramp = MATERIALS[id].ramp;
+      expect(ramp.length).toBeGreaterThanOrEqual(1);
+      expect(ramp.length).toBeLessThanOrEqual(8);
+      for (const hex of ramp) expect(hex).toMatch(/^#[0-9a-f]{6}$/);
+    }
   });
 });
 

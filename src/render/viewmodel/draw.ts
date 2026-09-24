@@ -1,35 +1,46 @@
 import { getFx, getVW, getVH, spawnPuff } from "../Overlay2D";
 import { vRect, vGrad, VM, SLEEVE, BOOT, MUZ } from "./kit";
-import { WPX } from "./sprites";
-import { clamp, rnd } from "../../utils/math";
+import { rnd } from "../../utils/math";
 import type { WeaponStats } from "../../weapons/definitions";
+import { Animator } from "./animate";
+import { WEAPON_ART } from "./arts";
+import { Raster, RW, RH, toRGBA } from "./raster";
+import { renderWeapon } from "./rig";
+import type { Pose } from "./pose";
+
+export { WALK_BOB_AMT, SPRINT_BOB_AMT } from "./animate";
 
 /**
- * frameFor, drawKickBoot and drawViewmodel — the per-frame draw path for
- * the hand-pixeled weapon viewmodel and the kick-boot animation. Copied
- * verbatim from reference/sonsurum.html lines 2510-2646 (see
- * tests/support/reference.ts's REF.viewmodelDraw) — every coordinate,
- * colour and gradient stop is art.
+ * drawViewmodel — the weapon in the player's hands, drawn every frame onto
+ * the 2D overlay — and drawKickBoot, the kick.
  *
- * fg/VW/VH are src/render/Overlay2D.ts's private state, fetched at each
- * function's point of use via getFx()/getVW()/getVH() rather than a cached
- * module-scoped reference — same rule as src/render/viewmodel/kit.ts.
- * spawnPuff() is Overlay2D.ts's accessor for the one place this file
- * mutates its private `puffs` pool (the muzzle-flash branch below).
+ * **Deliberate divergence from the reference** (player feedback round 2,
+ * Task 1, docs/superpowers/plans/2026-09-24-player-feedback-2-hands.md):
+ * the reference drew eight baked ~25x21 pixel grids, seen from directly
+ * behind, and animated them by picking one of two or three frames plus a
+ * dip below the screen for reload. The project owner said the weapons did
+ * not read as weapons. Each weapon is now a draw function of a Pose
+ * (./pose.ts), built in 3D from boxes and prisms (./builder.ts) and
+ * rasterized into a fixed 320x200 indexed-colour buffer (./raster.ts) at
+ * one buffer pixel per overlay unit, then copied to an offscreen canvas and
+ * drawn nearest-neighbour onto the overlay. Its mechanism — hammer, pump,
+ * bolt, drum, spin, break-open — moves because the pose says so.
  *
- * The player/weapon runtime state this block reads (started, S.dead/cur,
- * pianoOpen, zoomLerp, vx/vz, the sprint key, bobT, wstate/wtime,
- * EQUIP_T/UNEQUIP_T, kickAmt/kickRot, swayX/swayY, muzzle, WEAPONS) is not
- * owned by this module — it still lives in src/legacy.js, not yet carved by
- * any task in this plan — so unlike fg/VW/VH it is not something this file
- * can reach through an accessor of its own; it is genuine external input,
- * modeled the same way texFromPx takes its px/pal/opts: as explicit
- * parameters (ViewmodelFrame, plus the weapons table) that legacy.js's one
- * call site (inside its main loop, via Overlay2D.ts's fxTick) builds fresh
- * every frame from its own live bindings.
+ * What is kept from the reference: this function's outer contract
+ * (ViewmodelFrame, the call in src/core/Loop.ts), the early returns (not
+ * started, dead, piano open, sniper scoped in), the walk bob / sway /
+ * breathing formulas and their constants (./animate.ts), the flash's shape
+ * and colours, and — exactly — its Math.random draws: one for the flash
+ * radius and one for the puff chance (plus rnd's three when a puff spawns),
+ * per frame with the flash up, in the same order. Those are per-frame
+ * visual noise the reference already drew (KNOWN-20), and keeping their
+ * count keeps every gameplay draw after them where the trace fixtures
+ * expect it. Rendering the weapon itself draws nothing from Math.random.
+ *
+ * drawKickBoot is still the reference's, byte for byte — Task 3 replaces it.
  */
 
-/** Per-frame player/weapon state drawViewmodel needs, read (never written) from src/legacy.js's own live bindings. */
+/** Per-frame player/weapon state drawViewmodel needs, read (never written) from the live runtime. */
 export interface ViewmodelFrame {
   started: boolean;
   dead: boolean;
@@ -51,40 +62,6 @@ export interface ViewmodelFrame {
   swayX: number;
   swayY: number;
   muzzle: number;
-}
-
-/**
- * Sprint/walk weapon-bob amplitude, multiplied into `bobAmt` below. Was
- * `sprint?0.55:0.28` — sprint swung the weapon almost 2x walk's amplitude.
- * The project owner reported the sprint sway as "far too much" (player
- * feedback round 1, task 3, 2026-09-17); `SPRINT_BOB_AMT` drops to `0.38`,
- * about a third less than `0.55`, landing at roughly 1.36x `WALK_BOB_AMT`
- * instead of ~2x — sprinting still swings visibly more than walking (it is
- * still running), just not doubled. `WALK_BOB_AMT` is untouched: the
- * complaint was about running, and zeroing either value would flatten the
- * motion that sells movement, which the brief says not to do. **Next step
- * if still too much**: drop `SPRINT_BOB_AMT` further (0.30-0.32 would bring
- * it under 1.15x walk) rather than touching walk. Exported (module-level,
- * not local to `drawViewmodel`) so `tests/behavior/viewmodel.test.ts`'s
- * sprint-pose case can compute the exact offset from the frozen reference's
- * unchanged `0.55` instead of duplicating a second magic number.
- */
-export const WALK_BOB_AMT=0.28, SPRINT_BOB_AMT=0.38;
-
-/* time-based frame selection: animates fire & reload */
-export function frameFor(idx: number, rT: number, wstate: string, wtime: number, weapons: readonly WeaponStats[]): HTMLCanvasElement | null {
-  const set=WPX[idx];if(!set)return null;
-  if(rT>=0){ // reload: spread frames across the reload duration
-    const fr=set.reload||[set.idle[0]];
-    const k=Math.min(fr.length-1,Math.floor(rT*fr.length));
-    return fr[k];}
-  if(wstate==="fire"&&set.fire){
-    const w=weapons[idx];
-    const ft=1-(wtime/Math.max(.001,w.rate)); // 0..1 through the shot
-    const fr=set.fire;
-    const k=Math.min(fr.length-1,Math.floor(ft*fr.length));
-    return fr[k]||set.idle[0];}
-  return set.idle[0];
 }
 
 export function drawKickBoot(kickAnim: number): void {
@@ -117,60 +94,84 @@ export function drawKickBoot(kickAnim: number): void {
   fg.restore();
 }
 
+/** Everything the viewmodel keeps between frames: the animator's spin, the raster, the canvas it is copied to, and what was last rendered. */
+const vm = {
+  animator: new Animator(),
+  raster: new Raster(),
+  canvas: null as HTMLCanvasElement | null,
+  ctx: null as CanvasRenderingContext2D | null,
+  image: null as ImageData | null,
+  lastKey: "",
+  anchors: {} as Record<string, [number, number]>,
+  prevBox: { x0: 0, y0: 0, x1: RW, y1: RH },
+};
+
+/** A pose's rasterized terms, rounded — equal keys render equal pixels, so an unchanged pose is not re-rendered. */
+function poseKey(cur: number, p: Pose, cy: number): string {
+  const r = (n: number) => Math.round(n * 1e4);
+  return [cur, cy, r(p.x), r(p.y), r(p.z), r(p.pitch), r(p.yaw), r(p.roll), r(p.recoil), r(p.action), r(p.spin), r(p.reload), r(p.heat)].join(",");
+}
+
+/**
+ * Renders the pose into the shared raster (only when the pose changed) and
+ * copies it to the offscreen canvas. Returns false when there is no usable
+ * 2D context (tests' stubs), in which case nothing is blitted — the flash
+ * below still runs, so Math.random is drawn the same either way.
+ */
+function paint(cur: number, pose: Pose, cy: number): boolean {
+  if (!vm.canvas) {
+    vm.canvas = document.createElement("canvas");
+    vm.canvas.width = RW; vm.canvas.height = RH;
+    vm.ctx = vm.canvas.getContext("2d");
+    const img = vm.ctx?.createImageData(RW, RH);
+    vm.image = img && img.data && img.data.length === RW * RH * 4 ? img : null;
+  }
+  // No real 2D context (the test harness's stub): nothing could be shown, so render nothing.
+  if (!vm.image || !vm.ctx) return false;
+  const key = poseKey(cur, pose, cy);
+  if (key !== vm.lastKey) {
+    vm.lastKey = key;
+    const prev = { x0: vm.raster.x0, y0: vm.raster.y0, x1: vm.raster.x1, y1: vm.raster.y1 };
+    vm.anchors = renderWeapon(vm.raster, WEAPON_ART[cur], pose, RW / 2, cy);
+    toRGBA(vm.raster, vm.image.data, prev);
+    vm.ctx.putImageData(vm.image, 0, 0);
+  }
+  return true;
+}
+
+/** Where the last rendered frame's anchors are, in raster pixels — for tests and for Tasks 2-4. */
+export function lastAnchors(): Readonly<Record<string, [number, number]>> {
+  return vm.anchors;
+}
+
 export function drawViewmodel(dt: number, tNow: number, v: ViewmodelFrame, weapons: readonly WeaponStats[]): void {
   if(!v.started||v.dead||v.pianoOpen)return;
   if(v.zoomLerp>=.85&&v.cur===4)return; // scoped: hide rifle
   const fg=getFx(),VW=getVW(),VH=getVH();
   const w=weapons[v.cur];
-  const spd=Math.hypot(v.vx,v.vz);
-  const sprint=v.sprintKey&&spd>7;
-  /* bob only scales in once you're actually moving; near-zero when still */
-  const moveAmt=clamp((spd-0.6)/6.4,0,1);          // 0 when standing
-  const bobAmt=moveAmt*(sprint?SPRINT_BOB_AMT:WALK_BOB_AMT);
-  const bx=Math.sin(v.bobT*4)*2.4*bobAmt;
-  const by=Math.abs(Math.cos(v.bobT*4))*1.8*bobAmt;
-  let oy=0,rot=0;
-  if(v.wstate==="equip"){const p=1-v.wtime/v.equipT;oy=p*p*120;rot=p*.4;}
-  if(v.wstate==="unequip"){const p=v.wtime/v.unequipT;oy=p*p*120;rot=p*.4;}
-  /* idle breathing: tiny, and fades out entirely while moving */
-  const idleB=Math.sin(tNow*.0011)*0.7*(1-moveAmt);
-  const ky=v.kickAmt*1.3;
-  const rT=v.wstate==="reload"?v.wtime/w.reload:-1;
-  let rdy=0;
-  if(rT>=0){ // reload dip/bob
-    rdy=Math.sin(clamp(rT,0,1)*Math.PI)*42;}
-  // frameFor is only null when WPX has no entry for v.cur, which never
-  // happens: buildWeaponSprites() populates all 8 slots at boot and v.cur
-  // never leaves that range — see frameFor's own null branch for the one
-  // real case (an unbuilt slot) this asserts past.
-  const cv=frameFor(v.cur,rT,v.wstate,v.wtime,weapons)!;
-  const pw=cv.width,ph=cv.height;
-  /* upscale: a bit smaller so it doesn't dominate the screen */
-  const targetH=VH*0.42;
-  const sc=targetH/ph;
-  const drawW=pw*sc,drawH=ph*sc;
-  const cx=VW/2+bx+v.swayX*.25;
-  const cyTop=VH-drawH+12+by+idleB+v.swayY*.2+ky+oy+rdy; // bottom-anchored
-  fg.save();
-  fg.translate(cx,cyTop+drawH/2);
-  fg.rotate((rot+v.kickRot*.013+v.swayX*.0008));
-  fg.imageSmoothingEnabled=false;
-  // recoil: sharp kick back/down then settle, scaled per shot progress
-  let punch=0,punchX=0;
-  if(v.wstate==="fire"){
-    const w=weapons[v.cur];
-    const ft=clamp(1-(v.wtime/Math.max(.001,w.rate)),0,1);
-    const env=Math.sin(Math.min(1,ft*3)*Math.PI); // fast rise, settle
-    punch=env*(8+w.kick*0.7);
-    punchX=Math.sin(ft*22)*env*2.2;
+  const pose=vm.animator.step(dt,tNow,v,w,WEAPON_ART[v.cur]);
+  // 1:1 on a 16:9 overlay (VH 180); a shorter overlay shrinks the image to keep it on screen
+  const s=Math.min(1,VH/180);
+  const left=(VW-RW*s)/2+pose.sx, top=VH-RH*s+pose.sy;
+  const cy=Math.round((VH/2-(VH-RH*s))/s);  // the crosshair's row in the raster: the model aims there
+  if(paint(v.cur,pose,cy)){
+    fg.save();
+    fg.imageSmoothingEnabled=false;
+    fg.drawImage(vm.canvas!,Math.round(left*2)/2,Math.round(top*2)/2,RW*s,RH*s);
+    fg.restore();
   }
-  fg.drawImage(cv,-drawW/2+punchX,-drawH/2+punch,drawW,drawH);
-  fg.restore();
-  /* muzzle flash anchored to the sprite's top-center barrel */
+  const glow=vm.anchors.glow;
+  if(glow){ // the soul core's light spilling past its cage
+    const gx=left+glow[0]*s, gy=top+glow[1]*s, gr=(14+10*pose.heat)*s;
+    const g=fg.createRadialGradient(gx,gy,1,gx,gy,gr);
+    g.addColorStop(0,`rgba(150,240,110,${.35+.4*pose.heat})`);g.addColorStop(1,"rgba(60,160,40,0)");
+    fg.fillStyle=g;fg.beginPath();fg.arc(gx,gy,gr,0,7);fg.fill();}
+  /* muzzle flash, anchored to this weapon's barrel tip */
   if(v.muzzle>0){
-    const my=cyTop+drawH*0.04; // near the barrel tip
-    const r=(10+Math.random()*10)*(MUZ[v.cur].r);
-    const col=v.cur===5?["255,250,220","235,210,140","220,180,90"]:["255,240,190","255,170,80","255,120,40"];
+    const m=vm.anchors.muzzle??[RW/2,RH/2];
+    const cx=left+m[0]*s, my=top+m[1]*s;
+    const r=(10+Math.random()*10)*(MUZ[v.cur].r)*s;
+    const col=v.cur===5?["255,250,220","235,210,140","220,180,90"]:v.cur===7?["230,255,200","150,240,110","60,160,40"]:["255,240,190","255,170,80","255,120,40"];
     fg.save();fg.translate(cx,my);
     fg.fillStyle=`rgba(${col[0]},${Math.min(1,v.muzzle*2.2)})`;
     fg.beginPath();
