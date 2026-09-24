@@ -884,7 +884,7 @@ describe("the recorded run actually fights a priest boss", () => {
     // doesn't match. That is a real regression reported illegibly. This
     // says what it is instead.
     //
-    // The numbers are `spawnProp`'s pew arm (`src/world/LevelLoader.ts`):
+    // The numbers are `spawnProp`'s pew arm (`src/world/PropSpawn.ts`):
     // `r=.75; hgt=.95; hp=18;` with `explosive` left false. The barrel
     // `else` it must not have fallen into is `r=.48; hgt=1.1; hp=24;
     // explosive=true` — every field differs, so this cannot pass by

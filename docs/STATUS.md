@@ -841,18 +841,11 @@ browser pane after all (see Environment gotchas).
 | Three.js upgrade (KNOWN-14) | three **0.164.1** with `useLegacyLights`. 0.186.0 was compared on screen and renders the game nearly black; 0.164.1 restores the r128 look. Pinned there until the ten lights are retuned for the modern model. |
 | Variable ceiling height | Opt-in per-cell ceiling map, instanced, demonstrated on level 3. Opting a level in relights its whole ceiling (Gouraud on many vertices instead of four). |
 | Shadowed lighting | One caster, the player's lamp — and it is **measured invisible**, because a light at the eye casts shadows the eye cannot see. It costs +12 draw calls and +16,608 triangles on level 1, so it ships **off**, behind SETTINGS → SHADOWS. Raising or offsetting the lamp would make it mean something; that is an art decision. |
-| Gothic trim | Pillar bases and capitals, and wall plinth and cornice courses, instanced (at most 2 scene children a level). A clear improvement on pillars and lit corridors; busy on the prologue's hell walls and near-invisible on the flesh level, because the courses reuse the wall texture — a plain stone band per theme is the follow-up. |
+| Gothic trim | Pillar bases and capitals, and wall plinth and cornice courses, instanced (at most 2 scene children a level). A clear improvement on pillars and lit corridors; first shipped busy on the prologue's hell walls and near-invisible on the flesh level, because the courses reused the wall texture. **Finished on branch `trim-finished`:** the courses now carry a dressed-stone band of their own per theme (`src/render/BandTextures.ts`, deterministic integer-hash grain, built outside `buildTextures`, named registry `BANDTEX`). |
+| Pointed arches | `src/world/Arches.ts`, branch `trim-finished`. There is no wall above a door — a door is a full-cell box that sinks into the floor — so the arch head is built *inside* the door cell, inset 0.04 from the passage faces, and the closed door hides it by depth test alone (0 bytes differed arch on/off across 94 closed-door views on levels 1 and 2). Plain and locked doors only; secret doors get none, since an arch would mark the secret. One `InstancedMesh` a level; collision untouched. Shots pass through the arch stone as they already pass through the ceiling — only an upward shot notices. Honest negatives: the spandrel stone is one plain slab, and no moulding frames the arch. |
 
-**Before the next task touches `src/world/LevelLoader.ts`, move something out
-of it first.** It is at **399 of the 400-line hard gate** — the trim hook was
-put on the same line as the ceiling hook to fit. Any net addition fails the
-gate. The door building or the platform instancing are the natural candidates
-to extract, following `src/world/Ceiling.ts`, `src/render/Shadows.ts` and
-`src/world/Trim.ts`.
-
-Pointed arches over doorways are the natural next piece of trim and were left
-out on purpose: doors sink into the floor when they open, so an arch has to sit
-on the wall above the doorway rather than on the door.
+`src/world/LevelLoader.ts` has headroom again: `spawnProp` moved verbatim to
+`src/world/PropSpawn.ts`, and the loader is at about 370 of its 400-line gate.
 
 ## How fidelity is guarded
 

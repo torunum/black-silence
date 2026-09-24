@@ -17,8 +17,9 @@ import { loadLevel } from "../world/LevelLoader";
  * `src/legacy.js`'s `startGame` — it calls `audioInit`, the five builders
  * and `loadLevel`, all of which were already modules before this task.
  * `buildBandTextures` (the trim bands, `src/render/BandTextures.ts`) was
- * added later, beside `buildTextures` rather than inside it; it draws
- * nothing from `Math.random`, so it moves no seeded draw after it.
+ * added later, beside `buildTextures` rather than inside it. Its grain is
+ * an integer hash, not `Math.random`; the only draws are three.js's own
+ * texture UUIDs, which the trace harness stubs out of the seeded stream.
  *
  * Passed to `src/ui/Menus.ts`'s `initMenus` as a parameter rather than
  * imported there directly, so that module never has to reach into this one.

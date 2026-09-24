@@ -97,7 +97,7 @@ export const ARCH_R = .75 * CELL;
 export const ARCH_APEX = WALLH - COURSE_H;
 /** How far the arch's two faces stand inside the door box's passage faces. Never zero: coplanar faces flicker. */
 export const ARCH_INSET = .04;
-/** Segments per arc. At ~35 pixels a unit (four units away) eight keep every facet under three pixels. */
+/** Segments per arc. Eight keep each chord within ~0.004 units of the true arc — about a sixth of a pixel at ~35 pixels a unit (four units away). */
 export const ARCH_SEGS = 8;
 /** Real walls a door must have either side to spring an arch from. */
 export const JAMB_CELLS = "#W";
