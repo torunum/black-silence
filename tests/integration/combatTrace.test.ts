@@ -479,6 +479,32 @@ import { MONOLOGUE } from "../../src/content/monologue";
  * prologue's `hud.subt` moved in 26 of its 90. A texture moved the fight.
  * `tests/render/bandTextures.test.ts` now fails by name on exactly that
  * mutation, before any fixture has to.
+ *
+ * ## Door arches — seventh regeneration: one more scene child
+ *
+ * `src/world/Arches.ts` puts a pointed arch head in every plain and locked
+ * doorway with a wall either side, as one `InstancedMesh` scene child named
+ * `doorArch`. Level 1 has one such door, (9,27); its other two plain doors
+ * (one free-standing, one walled in) and its secret door get none. The
+ * module draws nothing from `Math.random`, shares nothing with gameplay and
+ * is read back by nothing. Field by field against the pre-arch fixture, all
+ * 176 sampled frames:
+ *
+ * - `camera` — all seven components **identical in all 176 frames**.
+ * - `hud` — all eight fields **identical in all 176 frames**; the run still
+ *   ends `HEALTH68`/`ARMOR2`.
+ * - `scene.count` — **+1 in every one of the 176 frames**, no other delta
+ *   (94..136 -> 95..137).
+ * - `scene.digest` — differs in all 176, necessarily, since the child list
+ *   gained a member. First: frame 10, `5f395ae7` -> `7f17b36c`. Last: frame
+ *   1760, `ab06551b` -> `e48c0502`. 176 distinct digests before and after.
+ *
+ * Confirmed rather than inferred, the same way the bands were: with only
+ * the one `buildArches(...)` call taken out of `loadLevel` — the module, its
+ * import and its shadow-policy entry all still in place — a `WRITE_TRACE=1`
+ * run reproduced all three pre-arch fixtures **byte for byte** (md5 equal).
+ * So that call is the whole of this diff. The prologue fixture did not move
+ * at all: the prologue has no doors.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

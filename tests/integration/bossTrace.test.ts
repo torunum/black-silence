@@ -557,6 +557,31 @@ import { world } from "../../src/world/WorldState";
  * `buildTextureIndex` renamed nothing, and that one argument is the whole
  * of this diff. `gameplayTrace.ts` changed in this commit only by indexing
  * `BANDTEX` as a fourth source.
+ *
+ * ## Door arches — the sixth regeneration: one more scene child
+ *
+ * `src/world/Arches.ts` puts a pointed arch head in every plain and locked
+ * doorway with a wall either side, as one `InstancedMesh` scene child named
+ * `doorArch`; level 2 has eleven such doors, and its one secret door gets
+ * none. The module draws nothing from `Math.random` and nothing reads it
+ * back. Field by field against the pre-arch fixture, all 334 sampled frames:
+ *
+ * - `camera` — all seven components **identical in all 334 frames**.
+ * - `hud` — all eight fields **identical in all 334 frames**; the run still
+ *   ends `HEALTH2876`, `"THE CORRUPTED PRIEST — PHASE 3"`.
+ * - `scene.count` — **+1 in every one of the 334 frames**, no other delta
+ *   (155..616 -> 156..617).
+ * - `scene.digest` — differs in all 334, necessarily. First: frame 18,
+ *   `0dbcc94f` -> `d842dfe7`. Last: frame 6012, `5b9d934e` -> `e596d5b6`.
+ *   334 distinct digests before and after.
+ * - **The structural guard stayed green**: a change that draws nothing from
+ *   the stream cannot shift the form swap.
+ *
+ * Confirmed rather than inferred: with only the one `buildArches(...)` call
+ * taken out of `loadLevel` — the module, its import and its shadow-policy
+ * entry still in place — a `WRITE_TRACE=1` run reproduced all three
+ * pre-arch fixtures **byte for byte** (md5 equal). That call is the whole
+ * of this diff.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

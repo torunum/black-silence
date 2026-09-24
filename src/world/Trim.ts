@@ -113,9 +113,11 @@ import { track } from "../render/DisposeRegistry";
  * places one, and a segment of arbitrary length and angle is a different
  * geometry problem.
  *
- * Not in this module, on purpose: pointed arches over doorways. A door
- * sinks, so an arch cannot hang off it; it has to sit on the wall above the
- * opening, which is its own placement question — the next step after this.
+ * Not in this module: the pointed arches over plain and locked doorways,
+ * which are `src/world/Arches.ts`. There is no wall above a door to carry
+ * one — the door is the whole cell — so an arch is a head filling the top
+ * of the door cell itself, and that file's header measures it against the
+ * cell and the door's sink.
  */
 
 /** Total height of a plinth or cornice, its vertical face, and how far it stands out from the wall. */

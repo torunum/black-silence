@@ -217,6 +217,14 @@ export const SHADOW_POLICY: Readonly<Record<string, ShadowRule>> = {
      through `applyShadowFlags`'s subtree walk and need no entry here. */
   wallCourse: { cast: true, receive: true },
   pillarTrim: { cast: true, receive: true },
+  /* The door arches (`src/world/Arches.ts`) are stone in the wall's line
+     and take the wall's rule. Shut inside a closed door they change no
+     pixel the player can see: the lamp is always on the player's side of
+     the door, and from there a closed door's frame renders byte-identical
+     with the arch and without it, shadows on or off (measured at level 1's
+     arched door and all eleven of level 2's — Task 3's report of the
+     trim-finished plan). */
+  doorArch: { cast: true, receive: true },
   /* Doors are the one caster that moves. They are also the reason the
      lamp's shadow map can never be baked — but the lamp re-renders every
      frame regardless, since the lamp itself moves, so a moving door costs

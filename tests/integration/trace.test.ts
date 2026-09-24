@@ -249,6 +249,13 @@ import { runTrace, type InputEvent, type TraceFrame } from "./gameplayTrace";
  * `buildTextureIndex` renamed nothing, and that one argument is the whole
  * of this diff. `gameplayTrace.ts` changed in this commit only by indexing
  * `BANDTEX` as a fourth source.
+ *
+ * ## Door arches — not regenerated
+ *
+ * `src/world/Arches.ts` adds a `doorArch` scene child on levels with
+ * archable doors. The prologue has no doors, so it gains nothing, and this
+ * fixture is byte-identical before and after (md5 checked); the level 1 and
+ * level 2 fixtures moved, and their headers carry the account.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");
