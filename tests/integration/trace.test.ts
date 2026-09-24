@@ -220,6 +220,42 @@ import { runTrace, type InputEvent, type TraceFrame } from "./gameplayTrace";
  * commit. Worth knowing: the digest records an `InstancedMesh` by its own
  * position and material, never by its instance matrices, so *where* the trim
  * sits is invisible to every trace — `tests/world/trim.test.ts` owns that.
+ *
+ * ## Trim bands — sixth regeneration: the course changes texture
+ *
+ * The wall courses stopped wearing the level's wall texture and wear the
+ * theme's stone band instead (`src/render/BandTextures.ts`; on this level
+ * `tex.hellWall` -> `band.hell`). The bands are built at boot from an
+ * integer hash, not `Math.random`, and `installUuidStub` keeps three's
+ * texture UUIDs out of the stream, so nothing had a mechanism to move but
+ * the course's texture name. Field by field against the pre-band fixture,
+ * all 90 sampled frames:
+ *
+ * - `camera` — all seven components **identical in all 90 frames**.
+ * - `hud` — all eight fields **identical in all 90 frames**.
+ * - `scene.count` — **identical in all 90 frames** (34..46).
+ * - `scene.digest` — differs in all 90, necessarily: `wallCourse` is a
+ *   scene child from the first frame to the last, and its part string
+ *   carries the texture name. First: frame 10, `037ed69c` -> `fd28e136`.
+ *   Last: frame 900, `8d4e01de` -> `c482baf4`. 90 distinct digests before
+ *   and after.
+ *
+ * Confirmed rather than inferred, and with a stronger test than the trim
+ * regeneration's filter: with `loadLevel` temporarily handing `buildTrim`
+ * the wall texture again — the four bands still built at boot by
+ * `startGame`, still indexed as `band.*` — this run and both other traces
+ * reproduced the pre-band fixtures byte for byte. So building the bands
+ * took nothing from the seeded stream, adding `BANDTEX` to
+ * `buildTextureIndex` renamed nothing, and that one argument is the whole
+ * of this diff. `gameplayTrace.ts` changed in this commit only by indexing
+ * `BANDTEX` as a fourth source.
+ *
+ * ## Door arches — not regenerated
+ *
+ * `src/world/Arches.ts` adds a `doorArch` scene child on levels with
+ * archable doors. The prologue has no doors, so it gains nothing, and this
+ * fixture is byte-identical before and after (md5 checked); the level 1 and
+ * level 2 fixtures moved, and their headers carry the account.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

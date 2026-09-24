@@ -4,6 +4,7 @@ import { renderState } from "../render/Renderer";
 import { el } from "../ui/dom";
 import { audioInit } from "../audio/AudioEngine";
 import { buildTextures } from "../render/ProcTextures";
+import { buildBandTextures } from "../render/BandTextures";
 import { buildSprites } from "../enemies/SpriteBaker";
 import { buildItemTex } from "../render/ItemTextures";
 import { buildWeaponSprites } from "../render/viewmodel/sprites";
@@ -15,6 +16,10 @@ import { loadLevel } from "../world/LevelLoader";
  * sprite sheet, loads the level and takes pointer lock. Moved verbatim from
  * `src/legacy.js`'s `startGame` — it calls `audioInit`, the five builders
  * and `loadLevel`, all of which were already modules before this task.
+ * `buildBandTextures` (the trim bands, `src/render/BandTextures.ts`) was
+ * added later, beside `buildTextures` rather than inside it. Its grain is
+ * an integer hash, not `Math.random`; the only draws are three.js's own
+ * texture UUIDs, which the trace harness stubs out of the seeded stream.
  *
  * Passed to `src/ui/Menus.ts`'s `initMenus` as a parameter rather than
  * imported there directly, so that module never has to reach into this one.
@@ -26,7 +31,7 @@ export function startGame(idx: number){
   el("settings").classList.add("hidden");
   game.started=true;
   audioInit();
-  buildTextures();buildSprites();buildItemTex();buildWeaponSprites();buildPiano();
+  buildTextures();buildBandTextures();buildSprites();buildItemTex();buildWeaponSprites();buildPiano();
   loadLevel(idx||0);
   S.t0=performance.now();
   renderState.renderer.domElement.requestPointerLock();}

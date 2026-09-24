@@ -9,7 +9,7 @@ import { track } from "../render/DisposeRegistry";
  * GOTHIC TRIM — pillar bases and capitals, and the two wall courses (a
  * plinth where a wall meets the floor, a cornice where it meets the
  * ceiling). Phase 2 Part B's last item. Procedural, per the asset policy:
- * two hand-built geometries and the level's own wall and pillar textures.
+ * two hand-built geometries, the pillar texture and a stone band per theme.
  *
  * Its own module for the reason `Ceiling.ts` and `render/Shadows.ts` are:
  * `LevelLoader.ts` was at 398 of the 400-line gate, and this is one
@@ -50,8 +50,12 @@ import { track } from "../render/DisposeRegistry";
  *   the shaft's exactly (a half-turn maps the octagon's angles onto
  *   themselves).
  *
- * Both reuse the textures the thing they decorate already has, remapped to
- * the **same texel density** as the wall and shaft (64 texels per WALLH):
+ * The pillar pieces reuse the pillar's own texture. The courses wear the
+ * theme's **trim band** (`src/render/BandTextures.ts`, passed in by
+ * `loadLevel`), not the wall's: Phase 2B's matched frames found the wall
+ * texture made the course busy on the prologue's veined hell walls and all
+ * but invisible on the flesh level. Both are mapped at the **same texel
+ * density** as the wall and shaft (64 texels per WALLH):
  * a default box or cylinder UV would squash all 64 rows of a texture into a
  * 0.2-unit band, ~300 texels per unit, and under `NearestFilter` that is
  * noise that crawls every frame. Nothing here draws from `Math.random`.
@@ -109,9 +113,11 @@ import { track } from "../render/DisposeRegistry";
  * places one, and a segment of arbitrary length and angle is a different
  * geometry problem.
  *
- * Not in this module, on purpose: pointed arches over doorways. A door
- * sinks, so an arch cannot hang off it; it has to sit on the wall above the
- * opening, which is its own placement question — the next step after this.
+ * Not in this module: the pointed arches over plain and locked doorways,
+ * which are `src/world/Arches.ts`. There is no wall above a door to carry
+ * one — the door is the whole cell — so an arch is a head filling the top
+ * of the door cell itself, and that file's header measures it against the
+ * cell and the door's sink.
  */
 
 /** Total height of a plinth or cornice, its vertical face, and how far it stands out from the wall. */
@@ -249,11 +255,13 @@ function instanced(geo: THREE.BufferGeometry, mat: THREE.Material, mats: THREE.M
  * pillars and faces the level has (`wallCourse`, `pillarTrim`), plus one
  * `secretCourse` child on each secret door's own mesh. Called once by
  * `loadLevel`, after the walls, doors and ceiling exist and before
- * `applyShadowFlags` walks the scene.
+ * `applyShadowFlags` walks the scene. `bandTex` is the level's trim band,
+ * shared by every course, secret doors' included — a secret's course has to
+ * match the courses either side of it or it points straight at the secret.
  */
-export function buildTrim(scene: THREE.Scene, wallTex: THREE.Texture): void {
+export function buildTrim(scene: THREE.Scene, bandTex: THREE.Texture): void {
   const courseGeo = track(courseGeometry());
-  const courseMat = track(new THREE.MeshLambertMaterial({ map: wallTex }));
+  const courseMat = track(new THREE.MeshLambertMaterial({ map: bandTex }));
   const courses = exposedFaces("#W").flatMap(courseMatrices);
   if (courses.length) scene.add(instanced(courseGeo, courseMat, courses, "wallCourse"));
   const piers: THREE.Matrix4[] = [];

@@ -439,6 +439,72 @@ import { MONOLOGUE } from "../../src/content/monologue";
  * for byte. `gameplayTrace.ts` is unchanged by this commit. Where the trim
  * sits is invisible to this fixture (instance matrices are not hashed);
  * `tests/world/trim.test.ts` owns placement.
+ *
+ * ## Trim bands — sixth regeneration: the course changes texture
+ *
+ * The wall courses wear the theme's stone band instead of the wall texture
+ * (`src/render/BandTextures.ts`; here `tex.dungeonWall` -> `band.dungeon`).
+ * The bands are built at boot from an integer hash, not `Math.random`, so
+ * the fight had no mechanism to move. Field by field against the pre-band
+ * fixture, all 176 sampled frames:
+ *
+ * - `camera` — all seven components **identical in all 176 frames**.
+ * - `hud` — all eight fields **identical in all 176 frames**; the run still
+ *   ends `HEALTH68`/`ARMOR2`, `"LIMB SEVERED"`.
+ * - `scene.count` — **identical in all 176 frames** (94..136).
+ * - `scene.digest` — differs in all 176: `wallCourse` is a scene child in
+ *   every frame and its part string carries the texture name. (The
+ *   `secretCourse` on the secret door's mesh wears the same band, but the
+ *   digest reads top-level children only.) First: frame 10, `039f37df` ->
+ *   `5f395ae7`. Last: frame 1760, `1ca8357d` -> `ab06551b`. 176 distinct
+ *   digests before and after.
+ *
+ * Confirmed rather than inferred, and with a stronger test than the trim
+ * regeneration's filter: with `loadLevel` temporarily handing `buildTrim`
+ * the wall texture again — the four bands still built at boot by
+ * `startGame`, still indexed as `band.*` — this run and both other traces
+ * reproduced the pre-band fixtures byte for byte. So building the bands
+ * took nothing from the seeded stream, adding `BANDTEX` to
+ * `buildTextureIndex` renamed nothing, and that one argument is the whole
+ * of this diff. `gameplayTrace.ts` changed in this commit only by indexing
+ * `BANDTEX` as a fourth source.
+ *
+ * **What the trap this avoided would have cost, measured on this fixture.**
+ * With the band's grain drawn from `Math.random()` instead of the hash — one
+ * draw per texel, at boot, inside the seeded window — a throwaway
+ * regeneration differed from this one in `camera` in **12** of 176 frames
+ * (x, height and roll — the three components screen shake writes), in
+ * `hud` in **76** (the run ended `HEALTH61`/`ARMOR0` instead of
+ * `HEALTH68`/`ARMOR2`) and in `scene.count` in **17**; the
+ * prologue's `hud.subt` moved in 26 of its 90. A texture moved the fight.
+ * `tests/render/bandTextures.test.ts` now fails by name on exactly that
+ * mutation, before any fixture has to.
+ *
+ * ## Door arches — seventh regeneration: one more scene child
+ *
+ * `src/world/Arches.ts` puts a pointed arch head in every plain and locked
+ * doorway with a wall either side, as one `InstancedMesh` scene child named
+ * `doorArch`. Level 1 has one such door, (9,27); its other two plain doors
+ * (one free-standing, one walled in) and its secret door get none. The
+ * module draws nothing from `Math.random`, shares nothing with gameplay and
+ * is read back by nothing. Field by field against the pre-arch fixture, all
+ * 176 sampled frames:
+ *
+ * - `camera` — all seven components **identical in all 176 frames**.
+ * - `hud` — all eight fields **identical in all 176 frames**; the run still
+ *   ends `HEALTH68`/`ARMOR2`.
+ * - `scene.count` — **+1 in every one of the 176 frames**, no other delta
+ *   (94..136 -> 95..137).
+ * - `scene.digest` — differs in all 176, necessarily, since the child list
+ *   gained a member. First: frame 10, `5f395ae7` -> `7f17b36c`. Last: frame
+ *   1760, `ab06551b` -> `e48c0502`. 176 distinct digests before and after.
+ *
+ * Confirmed rather than inferred, the same way the bands were: with only
+ * the one `buildArches(...)` call taken out of `loadLevel` — the module, its
+ * import and its shadow-policy entry all still in place — a `WRITE_TRACE=1`
+ * run reproduced all three pre-arch fixtures **byte for byte** (md5 equal).
+ * So that call is the whole of this diff. The prologue fixture did not move
+ * at all: the prologue has no doors.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

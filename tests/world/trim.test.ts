@@ -10,6 +10,7 @@ import { CELL, WALLH } from "../../src/world/Grid";
 import { ceilHeightAtCell, solidAt } from "../../src/world/Collision";
 import { LEVELS } from "../../src/world/levels/index";
 import { SHADOW_POLICY } from "../../src/render/Shadows";
+import { BANDTEX, type BandTheme } from "../../src/render/BandTextures";
 
 /**
  * Phase 2 Part B — gothic trim (`src/world/Trim.ts`): pillar bases and
@@ -298,6 +299,36 @@ describe("collision is untouched — trim is visual", () => {
       buildTrim(new THREE.Scene(), TEX.churchWall);
       expect(snapshot(), `level ${i}`).toBe(before);
     }
+  });
+});
+
+describe("the courses wear the theme's stone band", () => {
+  it("every course, secret doors' included, wears its level's band and never the wall texture", () => {
+    // MUTATION TARGET: pass `wallTex` to `buildTrim` again (the pre-band
+    // behaviour), or give a level another theme's band, and this goes red.
+    // The theme is re-derived from the level flags, in loadLevel's order.
+    const WALL: Record<BandTheme, string> = { hell: "hellWall", flesh: "fleshWall", dungeon: "dungeonWall", church: "churchWall" };
+    const themes = new Set<BandTheme>();
+    let secrets = 0;
+    for (let i = 0; i < LEVELS.length; i++) {
+      loadLevel(i);
+      const d = LEVELS[i];
+      const theme: BandTheme = d.hell ? "hell" : d.flesh ? "flesh" : d.dungeon ? "dungeon" : "church";
+      themes.add(theme);
+      const band = BANDTEX[theme];
+      expect(band, `level ${i}: the ${theme} band was built at boot`).toBeDefined();
+      const course = child("wallCourse")!;
+      const map = (course.material as THREE.MeshLambertMaterial).map;
+      expect(map, `level ${i} wallCourse`).toBe(band);
+      expect(map, `level ${i} wallCourse`).not.toBe(TEX[WALL[theme]]);
+      for (const door of Object.values(world.doors)) {
+        const sc = (door.mesh as THREE.Object3D | undefined)?.children.find((c) => c.name === "secretCourse") as THREE.Mesh | undefined;
+        // Same material as the courses either side, or the course points at the secret.
+        if (sc) { secrets++; expect(sc.material, `level ${i} secretCourse`).toBe(course.material); }
+      }
+    }
+    expect(themes.size, "all four themes loaded").toBe(4);
+    expect(secrets, "no secret course was checked").toBeGreaterThan(0);
   });
 });
 
