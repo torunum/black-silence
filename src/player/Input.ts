@@ -1,5 +1,6 @@
 import { clamp } from "../utils/math";
 import { el } from "../ui/dom";
+import { animCues } from "../core/AnimCues";
 
 /**
  * Keyboard, mouse look, pointer lock and the mouse wheel — everything the
@@ -87,6 +88,7 @@ export function setInputHooks(h: InputHooks): void {
 }
 
 addEventListener("keydown", e => {
+  animCues.input++;
   if (!hooks) return;
   if (hooks.isPianoOpen()) { hooks.pianoKeyDown(e.code); if (e.code === "KeyE") hooks.closePiano(); return; }
   keys[e.code] = true;
@@ -97,6 +99,7 @@ addEventListener("keydown", e => {
 }, false);
 addEventListener("keyup", e => keys[e.code] = false);
 addEventListener("wheel", e => {
+  animCues.input++;
   if (!hooks) return;
   if (!hooks.isStarted() || hooks.isPianoOpen()) return;
   let i = hooks.currentWeapon(); for (let k = 0; k < 8; k++) {
@@ -105,6 +108,7 @@ addEventListener("wheel", e => {
   }
 });
 document.addEventListener("mousemove", e => {
+  animCues.input++; // any input cancels the hands' idle fidget (animation only, round 2 Task 4)
   if (!hooks) return;
   if (!input.locked || hooks.isInputLocked()) return;
   const sens = .0022 * (1 - .68 * hooks.zoomLerp());
@@ -118,6 +122,7 @@ document.addEventListener("pointerlockchange", () => {
   input.locked = document.pointerLockElement === hooks.canvas();
 });
 addEventListener("mousedown", e => {
+  animCues.input++;
   if (!hooks) return;
   if (hooks.isPianoOpen()) return;
   if (hooks.isStarted() && !input.locked && !overlayOpen()) hooks.canvas().requestPointerLock();

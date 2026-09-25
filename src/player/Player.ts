@@ -28,6 +28,7 @@ import { screenShake, shake } from "../fx/ShakeState";
 import { weaponRuntime } from "../weapons/WeaponRuntime";
 import { world } from "../world/WorldState";
 import type { Enemy } from "../enemies/Enemy";
+import { animCues } from "../core/AnimCues";
 
 /**
  * Player movement, damage and death — the per-frame integrator and the two
@@ -82,7 +83,7 @@ function damagePlayer(d: number, silent?: boolean): void {
   let dmg=d;
   if(S.armor>0){const ab=Math.min(S.armor,dmg*.6);S.armor-=ab;dmg-=ab;}
   S.hp-=dmg;
-  if(!silent){flashDmg(.45);shake(.3);screenBlood();
+  if(!silent){flashDmg(.45);shake(.3);screenBlood();animCues.hurt++;animCues.hurtAmt=dmg; // (the cue: the hands flinch — animation only, round 2 Task 4)
     bang(.1,.3,700);blip(90,.2,"sawtooth",.12,40);}
   if(S.hp<35&&Math.random()<.3)say("lowhp");
   if(S.hp<=0){S.hp=0;S.dead=true;

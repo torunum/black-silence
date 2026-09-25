@@ -5,6 +5,7 @@ import { screenShake } from "../../src/fx/ShakeState";
 import { player } from "../../src/player/PlayerState";
 import { clearAllTimers } from "../../src/core/Timers";
 import { clearScheduled } from "../../src/core/Time";
+import { animCues } from "../../src/core/AnimCues";
 
 /**
  * The seams — KNOWN-9.
@@ -310,19 +311,32 @@ describe("what main.ts passes to the 2D overlay each frame", () => {
 
 describe("the ViewmodelFrame main.ts builds", () => {
   // vy, grounded and yaw were added by player feedback round 2, Task 2 (the viewmodel's jump,
-  // landing and strafe motion), kickAnim by Task 3 (the leg is drawn with the weapon) —
+  // landing and strafe motion), kickAnim by Task 3 (the leg is drawn with the weapon), the five
+  // cue* counters by Task 4 (src/core/AnimCues.ts: what the hands react to) —
   // docs/superpowers/plans/2026-09-24-player-feedback-2-hands.md.
   const EXPECTED_FIELDS = [
-    "bobT", "cur", "dead", "equipT", "grounded", "kickAmt", "kickAnim", "kickRot", "muzzle", "pianoOpen",
+    "bobT", "cueDryFire", "cueHurt", "cueHurtAmt", "cueInput", "cuePickup",
+    "cur", "dead", "equipT", "grounded", "kickAmt", "kickAnim", "kickRot", "muzzle", "pianoOpen",
     "sprintKey", "started", "swayX", "swayY", "unequipT", "vx", "vy", "vz", "wstate", "wtime", "yaw", "zoomLerp",
   ];
 
-  it("carries exactly the twenty-two fields ViewmodelFrame declares — no more, no fewer", () => {
+  it("carries exactly the twenty-seven fields ViewmodelFrame declares — no more, no fewer", () => {
     // draw.ts reads `v.foo` for each; a dropped field is silently undefined
     // there, which is how a missing one would otherwise reach the screen.
     expect(Object.keys(restFrame.vm).sort()).toEqual(EXPECTED_FIELDS);
     for (const field of EXPECTED_FIELDS) {
       expect(restFrame.vm[field], `frame.${field}`).toBeDefined();
+    }
+  });
+
+  it("maps each of the five cue fields to its own AnimCues counter (round 2, Task 4)", () => {
+    const saved = { ...animCues };
+    try {
+      Object.assign(animCues, { hurt: 11, hurtAmt: 12.5, pickup: 13, dryFire: 14, input: 15 });
+      const f = runFrame(performance.now());
+      expect([f.vm.cueHurt, f.vm.cueHurtAmt, f.vm.cuePickup, f.vm.cueDryFire, f.vm.cueInput]).toEqual([11, 12.5, 13, 14, 15]);
+    } finally {
+      Object.assign(animCues, saved);
     }
   });
 
@@ -367,7 +381,7 @@ describe("the ViewmodelFrame main.ts builds", () => {
   });
 
   it("gives every numeric field a number and every flag a boolean", () => {
-    for (const field of ["bobT", "cur", "equipT", "kickAmt", "kickAnim", "kickRot", "muzzle", "swayX", "swayY", "unequipT", "vx", "vy", "vz", "wtime", "yaw", "zoomLerp"]) {
+    for (const field of ["bobT", "cueDryFire", "cueHurt", "cueHurtAmt", "cueInput", "cuePickup", "cur", "equipT", "kickAmt", "kickAnim", "kickRot", "muzzle", "swayX", "swayY", "unequipT", "vx", "vy", "vz", "wtime", "yaw", "zoomLerp"]) {
       expect(typeof restFrame.vm[field], `frame.${field}`).toBe("number");
       expect(Number.isNaN(restFrame.vm[field]), `frame.${field} is NaN`).toBe(false);
     }

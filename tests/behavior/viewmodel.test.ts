@@ -253,6 +253,7 @@ function toViewmodelFrame(s: Scenario): DrawModule.ViewmodelFrame {
     started: true, dead: false, pianoOpen: false, zoomLerp: s.zoomLerp, cur: s.cur,
     vx: s.vx, vz: s.vz, vy: 0, grounded: true, yaw: 0, sprintKey: s.sprintKey, bobT: s.bobT, wstate: s.wstate, wtime: s.wtime,
     equipT: 0.24, unequipT: 0.16, kickAmt: s.kickAmt, kickRot: s.kickRot, kickAnim: 0, swayX: s.swayX, swayY: s.swayY, muzzle: s.muzzle,
+    cueHurt: 0, cueHurtAmt: 0, cuePickup: 0, cueDryFire: 0, cueInput: 0,
   };
 }
 function toRefGlobals(s: Scenario): Record<string, unknown> {
@@ -536,7 +537,9 @@ describe("the weapon stays out of the player's line of fire (Task 1 fix round)",
             if (top < line - 0.5) breaches.push(`${stats.name} ${name}: top ${top.toFixed(1)} above the line ${line.toFixed(1)}`);
             return top;
           };
-          const settle = () => { for (let i = 0; i < 120; i++) Draw.drawViewmodel(0.05, 0, still, WEAPON_STATS); };
+          // (settling with input coming in, cueInput changing, as a player would: left alone for six seconds the
+          // hands would start an idle fidget — round 2 Task 4 — and "rest" here means the aim, not a fidget)
+          const settle = () => { for (let i = 0; i < 120; i++) Draw.drawViewmodel(0.05, 0, { ...still, cueInput: i + 1 }, WEAPON_STATS); };
           settle();
           const restTop = check("rest", still);
           // sprint: straight ahead at sprint speed, the stride running, into the full sprint pose
@@ -568,6 +571,61 @@ describe("the weapon stays out of the player's line of fire (Task 1 fix round)",
     });
   }
 
+  // Task 4 (the hands react): a hurt flinch at the hardest hit's strength, both sides; the dry-fire jerk
+  // and cant, held down; the pickup nod; both idle fidgets, played through; and the switch, down and
+  // up its whole arc. Every frame, every weapon, every aspect, under the same line.
+  for (const [label, w, h] of ASPECTS) {
+    it(`${label}: flinching, dry-firing, nodding at a pickup, fidgeting and switching, every weapon stays 15% below the crosshair`, () => {
+      const saved = [window.innerWidth, window.innerHeight];
+      setScreen(w, h);
+      try {
+        const vh = Overlay2D.getVH(), line = vh / 2 + Rig.CLEAR_BELOW * vh;
+        const breaches: string[] = [];
+        WEAPON_STATS.forEach((stats, slot) => {
+          let n = 0;
+          const still = toViewmodelFrame(stillScenario(slot));
+          const cues = { cueHurt: 0, cueHurtAmt: 0, cuePickup: 0, cueDryFire: 0, cueInput: 0 };
+          const check = (name: string, over: Partial<DrawModule.ViewmodelFrame> = {}, dt = 1 / 60) => {
+            const frame = { ...still, ...cues, ...over };
+            const calls = moduleWindow(900, () => Draw.drawViewmodel(dt, 0, frame, WEAPON_STATS));
+            n++;
+            const blit = calls.filter((c) => c.method === "drawImage").at(-1);
+            if (!blit || !lastPut) { breaches.push(`${stats.name} ${name}: nothing blitted`); return; }
+            const [, , y, , hh] = blit.args as number[];
+            for (let row = 0; row < RasterM.RH; row++) {
+              let hit = false;
+              for (let x = 0; x < RasterM.RW && !hit; x++) hit = !!lastPut.data[(row * RasterM.RW + x) * 4 + 3];
+              if (hit) { const top = y + row * (hh / RasterM.RH); if (top < line - 0.5) breaches.push(`${stats.name} ${name}: top ${top.toFixed(1)} above ${line.toFixed(1)}`); break; }
+            }
+          };
+          const settle = () => { for (let i = 0; i < 30; i++) { cues.cueInput++; check("settle"); } };
+          settle();
+          for (let k = 0; k < 2; k++) {                               // two hits: one each side
+            cues.cueHurt++; cues.cueHurtAmt = 60;
+            for (let i = 0; i < 30; i++) check(`flinch ${k} frame ${i}`);
+          }
+          for (let i = 0; i < 60; i++) { if (i % 18 === 0) cues.cueDryFire++; check(`dry fire held, frame ${i}`); }
+          for (let i = 0; i < 40; i++) check(`dry fire released, frame ${i}`);
+          cues.cuePickup++;
+          for (let i = 0; i < 30; i++) check(`pickup frame ${i}`);
+          settle();
+          for (let f = 0; f < 2; f++) {                               // idle into a fidget, and through it; twice, one of each
+            for (let i = 0; i < 118; i++) check(`idle ${f}`, {}, 0.05);
+            for (let i = 0; i < 130; i++) check(`fidget ${f} frame ${i}`);
+          }
+          settle();
+          for (let k = 0; k <= 20; k++) check(`unequip ${k / 20}`, { wstate: "unequip", wtime: still.unequipT * k / 20 });
+          for (let k = 0; k <= 20; k++) check(`equip ${k / 20}`, { wstate: "equip", wtime: still.equipT * k / 20 });
+          settle();
+          if (n < 500) breaches.push(`${stats.name}: only ${n} frames checked`);
+        });
+        expect(breaches).toEqual([]);
+      } finally {
+        setScreen(saved[0], saved[1]);
+      }
+    });
+  }
+
   it("draw.ts's ceiling: however far screen-space motion tries to lift the weapon, its top stops at the line — and it never pushes a weapon down", () => {
     // The real inputs above never need the ceiling (the lag's largest lift is
     // ~1.5 units); this drives the mouse lag far past anything Input.ts's
@@ -576,13 +634,13 @@ describe("the weapon stays out of the player's line of fire (Task 1 fix round)",
     const breaches: string[] = [];
     WEAPON_STATS.forEach((stats, slot) => {
       const still = toViewmodelFrame(stillScenario(slot));
-      for (let i = 0; i < 120; i++) Draw.drawViewmodel(0.05, 0, still, WEAPON_STATS);
+      for (let i = 0; i < 120; i++) Draw.drawViewmodel(0.05, 0, { ...still, cueInput: i + 1 }, WEAPON_STATS);
       const rest = topRow(still);
       let top = Infinity;
       for (let i = 0; i < 40; i++) top = Math.min(top, topRow({ ...still, swayY: 400 }));
       if (top < line - 0.5) breaches.push(`${stats.name}: top ${top.toFixed(1)} above the line ${line.toFixed(1)}`);
       if (!(top < rest - 1)) breaches.push(`${stats.name}: did not rise toward the line at all (${top.toFixed(1)} vs rest ${rest.toFixed(1)})`);
-      for (let i = 0; i < 200; i++) Draw.drawViewmodel(0.05, 0, still, WEAPON_STATS);
+      for (let i = 0; i < 200; i++) Draw.drawViewmodel(0.05, 0, { ...still, cueInput: i + 1 }, WEAPON_STATS);
       if (topRow(still) !== rest) breaches.push(`${stats.name}: not back at rest after the lift`);
     });
     expect(breaches).toEqual([]);

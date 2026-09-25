@@ -27,6 +27,7 @@ import { updateListener } from "../audio/Listener";
 import { weaponRuntime } from "../weapons/WeaponRuntime";
 import { player } from "../player/PlayerState";
 import { hud } from "../ui/Hud";
+import { animCues } from "./AnimCues";
 
 /**
  * The frame orchestrator. Moved verbatim from `src/legacy.js`'s `loop`
@@ -49,6 +50,8 @@ import { hud } from "../ui/Hud";
  *   original eighteen (`vy`, `grounded`, `yaw`) for the viewmodel's jump,
  *   landing and strafe motion — read here, never written by the animation.
  *   Task 3 added `kickAnim`: the kicking leg is drawn with the weapon now.
+ *   Task 4 added the five `cue*` fields, copied from `./AnimCues.ts`: counters
+ *   gameplay bumps (hit, pickup, dry click, input) for the hands to react to.
  * - `renderer.render` runs inside `withKickLean` (round 2, Task 3): the view
  *   leans into a kick for the render only, and the camera is restored exactly
  *   afterwards, so gameplay, the listener and the trace fixtures never see it.
@@ -113,6 +116,7 @@ function loop(t: number){
         started:game.started,dead:S.dead,pianoOpen:game.pianoOpen,zoomLerp:weaponRuntime.zoomLerp,cur:S.cur,vx:player.vx,vz:player.vz,vy:player.vy,grounded:player.grounded,yaw:input.yaw,
         sprintKey:!!(keys.ShiftLeft||keys.ShiftRight),bobT:player.bobT,wstate:weaponRuntime.wstate,wtime:weaponRuntime.wtime,
         equipT:EQUIP_T,unequipT:UNEQUIP_T,kickAmt:weaponRuntime.kickAmt,kickRot:weaponRuntime.kickRot,kickAnim:weaponRuntime.kickAnim,swayX:input.swayX,swayY:input.swayY,muzzle:weaponRuntime.muzzle,
+        cueHurt:animCues.hurt,cueHurtAmt:animCues.hurtAmt,cuePickup:animCues.pickup,cueDryFire:animCues.dryFire,cueInput:animCues.input,
       },WEAPONS));
     hud();
     withKickLean(renderState.camera,weaponRuntime.kickAnim,()=>renderState.renderer.render(renderState.scene,renderState.camera));}}

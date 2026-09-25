@@ -45,6 +45,7 @@ function animated(slot: number, kickAnims: number[]): Pose[] {
   const base: AnimInput = {
     cur: slot, vx: 0, vz: 0, vy: 0, grounded: true, yaw: 0, sprintKey: false, bobT: 0, wstate: "idle", wtime: 1,
     equipT: 0.24, unequipT: 0.16, kickAmt: 0, kickRot: 0, kickAnim: 0, swayX: 0, swayY: 0, muzzle: 0,
+    cueHurt: 0, cueHurtAmt: 0, cuePickup: 0, cueDryFire: 0, cueInput: 0,
   };
   for (let i = 0; i < 30; i++) a.step(DT, 0, base, WEAPON_STATS[slot], WEAPON_ART[slot]);
   return kickAnims.map((k) => a.step(DT, 0, { ...base, kickAnim: k }, WEAPON_STATS[slot], WEAPON_ART[slot]));

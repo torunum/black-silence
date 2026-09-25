@@ -3,6 +3,7 @@ import type { WeaponStats } from "../../weapons/definitions";
 import { restPose, type Pose, type WeaponArt } from "./pose";
 import { Body } from "./motion";
 import { ASIDE, aside, kickElapsed } from "./kick";
+import { Reactions } from "./react";
 
 /**
  * Turns the weapon runtime into a Pose, once per frame. It only ever READS
@@ -35,6 +36,8 @@ export interface AnimInput {
   kickAmt: number; kickRot: number;
   /** weaponRuntime.kickAnim — the power kick's countdown (./kick.ts). */
   kickAnim: number;
+  /** src/core/AnimCues.ts's counters (hit, its damage, pickup, dry click, any input) — read to react, never written. */
+  cueHurt: number; cueHurtAmt: number; cuePickup: number; cueDryFire: number; cueInput: number;
   swayX: number; swayY: number;
   muzzle: number;
 }
@@ -51,6 +54,13 @@ export interface AnimInput {
  */
 export const WALK_BOB_AMT = 0.28, SPRINT_BOB_AMT = 0.38;
 
+/**
+ * Switching weapons, at full travel (e=1, the weapon gone): out to the right (x, leading on sin e·π/2),
+ * down (y, on e²), muzzle dropped, turned in and rolled onto its side. The reference only slid it down
+ * (y -e²·.2, pitch -e·.55, roll e·.4); round 2 Task 4 asked for a rotation and an arc.
+ */
+export const SWITCH = { x: 0.075, y: -0.2, pitch: -0.6, yaw: 0.4, roll: 1.0 };
+
 /** How long the fire state lasts — WeaponState.ts's weaponTick leaves "fire" at min(.35, rate). */
 export function fireWindow(w: WeaponStats): number {
   return Math.min(0.35, w.rate);
@@ -62,6 +72,8 @@ export class Animator {
   private lastCur = -1;
   /** The body carrying the weapon: stride, sprint pose, weight, jumps and landings (./motion.ts). */
   readonly body = new Body();
+  /** The hands' reactions: flinch, dry fire, pickup nod, idle fidget (./react.ts). */
+  readonly react = new Reactions();
 
   /** Builds this frame's pose. `tNow` is the loop's millisecond timestamp (for breathing). */
   step(dt: number, tNow: number, v: AnimInput, w: WeaponStats, art: WeaponArt): Pose {
@@ -80,20 +92,28 @@ export class Animator {
     p.sx = c.sx;
     p.sy = c.sy + idleB;
 
-    // equip / unequip: the weapon swings up from below the frame, or down out of it
+    // equip / unequip (Task 4): the weapon goes down out of the frame on an arc — out to the right first
+    // (x leads, sin), then down (y follows, e²) — turning over onto its side as it goes; the new one comes
+    // up the same arc, righting itself
     let e = 0;
     if (v.wstate === "equip") e = 1 - clamp(v.wtime / v.equipT, 0, 1);
     if (v.wstate === "unequip") e = clamp(v.wtime / v.unequipT, 0, 1);
+    const arc = Math.sin(e * Math.PI / 2);
     // the power kick (./kick.ts): the weapon swings out of the leg's way and back; the leg is drawn from p.kick
     p.kick = kickElapsed(v.kickAnim);
     const a = aside(p.kick);
-    p.x = ASIDE.x * a;
-    p.y = -e * e * 0.2 + c.y + ASIDE.y * a;
-    p.pitch = -e * 0.55 + c.pitch + ASIDE.pitch * a;
-    p.yaw = c.yaw + ASIDE.yaw * a;
+    // the hands' reactions (./react.ts): flinch, dry fire, pickup nod, idle fidget
+    const r = this.react.step(dt, {
+      hurt: v.cueHurt, hurtAmt: v.cueHurtAmt, pickup: v.cuePickup, dryFire: v.cueDryFire, input: v.cueInput,
+      busy: spd > 0.3 || v.wstate !== "idle" || p.kick >= 0 || !v.grounded,
+    });
+    p.x = SWITCH.x * arc + ASIDE.x * a + r.x;
+    p.y = SWITCH.y * e * e + c.y + ASIDE.y * a + r.y;
+    p.pitch = SWITCH.pitch * e + c.pitch + ASIDE.pitch * a + r.pitch;
+    p.yaw = SWITCH.yaw * arc + c.yaw + ASIDE.yaw * a + r.yaw;
     // (the reference also rolled the sprite by swayX*.0008 — a sliver of a degree; dropped, because a
     // term that changes with every mouse movement would re-rasterize the model every frame for nothing)
-    p.roll = e * 0.4 + v.kickRot * 0.013 + c.roll + ASIDE.roll * a;
+    p.roll = SWITCH.roll * e + v.kickRot * 0.013 + c.roll + ASIDE.roll * a + r.roll;
 
     // firing: recoil from the runtime's own decaying kick; the mechanism from progress through the fire state
     p.recoil = w.kick > 0 ? clamp(v.kickAmt / w.kick, 0, 1) : 0;

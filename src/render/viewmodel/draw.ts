@@ -55,6 +55,12 @@ export { WALK_BOB_AMT, SPRINT_BOB_AMT } from "./animate";
  * same raster as the weapon — see drawKickBoot below for what that callback
  * still draws. The kick is exempt from the line-of-fire rule: a boot driven
  * into the centre of the screen is the point of it.
+ *
+ * Task 4 made the hands react (./react.ts): a flinch on a hit, a jerk and a
+ * cant on a dry click, a nod at a pickup, an idle fidget any input cancels,
+ * and a switch that arcs and turns over (./animate.ts). The events arrive
+ * as src/core/AnimCues.ts counters in the frame; all of it stays under the
+ * line of fire.
  */
 
 /** Per-frame player/weapon state drawViewmodel needs, read (never written) from the live runtime. */
@@ -84,6 +90,8 @@ export interface ViewmodelFrame {
   kickRot: number;
   /** weaponRuntime.kickAnim — the power kick's countdown: the leg is drawn with the weapon (./kick.ts). */
   kickAnim: number;
+  /** src/core/AnimCues.ts's counters (hit, its damage, pickup, dry click, any input): the hands react to their changes (./react.ts). */
+  cueHurt: number; cueHurtAmt: number; cuePickup: number; cueDryFire: number; cueInput: number;
   swayX: number;
   swayY: number;
   muzzle: number;
