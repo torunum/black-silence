@@ -70,8 +70,12 @@ export function stride(bobT: number, amt: number): { x: number; y: number } {
  * onto its left side (roll) — the carry that says running, not aiming.
  * Chosen from contact sheets of all eight weapons; a deeper drop took the
  * long guns (sniper, cross launcher) almost off the bottom of the screen.
+ * The controller then softened it (it was y -.015, pitch -.16,
+ * yaw -.38, roll -.5): at full strength the cross launcher still showed only
+ * its cross and the rifle only its top edge, so the carry read as "gone"
+ * rather than "running".
  */
-export const SPRINT_POSE = { y: -0.015, pitch: -0.16, yaw: -0.38, roll: -0.5 };
+export const SPRINT_POSE = { y: -0.012, pitch: -0.12, yaw: -0.23, roll: -0.32 };
 /** Seconds to ease into the sprint pose, and back out of it (out is quicker: you want to aim). */
 export const SPRINT_IN = 0.3, SPRINT_OUT = 0.2;
 /** After a shot the weapon stays up at the aim this long before a held sprint lowers it again. */
