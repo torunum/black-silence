@@ -1,6 +1,7 @@
 import { clamp } from "../../utils/math";
 import type { WeaponStats } from "../../weapons/definitions";
 import { restPose, type Pose, type WeaponArt } from "./pose";
+import { Body } from "./motion";
 
 /**
  * Turns the weapon runtime into a Pose, once per frame. It only ever READS
@@ -8,18 +9,24 @@ import { restPose, type Pose, type WeaponArt } from "./pose";
  * never writes gameplay state, so fire rate, reload time and every trace
  * fixture are untouched by anything here.
  *
- * The one thing it keeps between frames is purely visual: the spin of a
- * rotating part (the nail cannon's barrels spin up while firing and wind
- * down after; a baked frame could not carry that momentum). Tasks 2-4 of
- * docs/superpowers/plans/2026-09-24-player-feedback-2-hands.md (sprint
- * pose, inertia, landing, kick, flinch, fidget, switch arcs) hang their own
- * eased state here, adding to the Pose's rig terms.
+ * What it keeps between frames is purely visual: the spin of a rotating
+ * part (the nail cannon's barrels spin up while firing and wind down after;
+ * a baked frame could not carry that momentum), and the body carrying the
+ * weapon — Task 2 of docs/superpowers/plans/2026-09-24-player-feedback-2-hands.md,
+ * the stride, sprint pose, weight and landings, in ./motion.ts. Tasks 3-4
+ * (kick, flinch, fidget, switch arcs) hang their own eased state here,
+ * adding to the Pose's rig terms.
  */
 
 /** Per-frame inputs — the subset of draw.ts's ViewmodelFrame this reads. */
 export interface AnimInput {
   cur: number;
   vx: number; vz: number;
+  /** player.vy and player.grounded — jumps and landings. */
+  vy: number;
+  grounded: boolean;
+  /** input.yaw — facing, so the strafe can be taken out of the velocity. */
+  yaw: number;
   sprintKey: boolean;
   bobT: number;
   wstate: string; wtime: number;
@@ -34,7 +41,10 @@ export interface AnimInput {
  * Was `sprint?0.55:0.28` in the reference; the project owner reported the
  * sprint sway as "far too much" (player feedback round 1, task 3,
  * 2026-09-17) and `SPRINT_BOB_AMT` dropped to 0.38, about 1.36x walk.
- * Moved here unchanged from draw.ts with the rest of the pose maths.
+ * Moved here unchanged from draw.ts with the rest of the pose maths. Since
+ * round 2 Task 2 they scale ./motion.ts's figure-eight stride, and the
+ * amount is blended from walk to sprint with the eased sprint pose rather
+ * than switched.
  */
 export const WALK_BOB_AMT = 0.28, SPRINT_BOB_AMT = 0.38;
 
@@ -47,30 +57,36 @@ export class Animator {
   private spin = 0;
   private spinVel = 0;
   private lastCur = -1;
+  /** The body carrying the weapon: stride, sprint pose, weight, jumps and landings (./motion.ts). */
+  readonly body = new Body();
 
   /** Builds this frame's pose. `tNow` is the loop's millisecond timestamp (for breathing). */
   step(dt: number, tNow: number, v: AnimInput, w: WeaponStats, art: WeaponArt): Pose {
     const p = restPose();
     if (v.cur !== this.lastCur) { this.lastCur = v.cur; this.spinVel = 0; }
 
-    // screen-space: walk bob, breathing, mouse sway (the reference's formulas, same constants)
+    // the body: stride, sprint pose, lag, jump and land (./motion.ts); breathing when standing
+    // (the reference's walk/sprint bob amounts and breathing formula, same constants)
     const spd = Math.hypot(v.vx, v.vz);
-    const sprint = v.sprintKey && spd > 7;
     const moveAmt = clamp((spd - 0.6) / 6.4, 0, 1);
-    const bobAmt = moveAmt * (sprint ? SPRINT_BOB_AMT : WALK_BOB_AMT);
     const idleB = Math.sin(tNow * 0.0011) * 0.7 * (1 - moveAmt);
-    p.sx = Math.sin(v.bobT * 4) * 2.4 * bobAmt + v.swayX * 0.25;
-    p.sy = Math.abs(Math.cos(v.bobT * 4)) * 1.8 * bobAmt + idleB + v.swayY * 0.2;
+    const c = this.body.step(dt, {
+      vx: v.vx, vz: v.vz, vy: v.vy, grounded: v.grounded, yaw: v.yaw, bobT: v.bobT, swayX: v.swayX, swayY: v.swayY,
+      sprinting: v.sprintKey && spd > 7, walkAmt: moveAmt * WALK_BOB_AMT, sprintAmt: moveAmt * SPRINT_BOB_AMT, wstate: v.wstate,
+    });
+    p.sx = c.sx;
+    p.sy = c.sy + idleB;
 
     // equip / unequip: the weapon swings up from below the frame, or down out of it
     let e = 0;
     if (v.wstate === "equip") e = 1 - clamp(v.wtime / v.equipT, 0, 1);
     if (v.wstate === "unequip") e = clamp(v.wtime / v.unequipT, 0, 1);
-    p.y = -e * e * 0.2;
-    p.pitch = -e * 0.55;
+    p.y = -e * e * 0.2 + c.y;
+    p.pitch = -e * 0.55 + c.pitch;
+    p.yaw = c.yaw;
     // (the reference also rolled the sprite by swayX*.0008 — a sliver of a degree; dropped, because a
     // term that changes with every mouse movement would re-rasterize the model every frame for nothing)
-    p.roll = e * 0.4 + v.kickRot * 0.013;
+    p.roll = e * 0.4 + v.kickRot * 0.013 + c.roll;
 
     // firing: recoil from the runtime's own decaying kick; the mechanism from progress through the fire state
     p.recoil = w.kick > 0 ? clamp(v.kickAmt / w.kick, 0, 1) : 0;

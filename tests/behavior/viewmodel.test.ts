@@ -39,6 +39,10 @@ import type * as AnimateModule from "../../src/render/viewmodel/animate";
  *   and ends exactly on the idle pose; rendering is deterministic and
  *   never touches Math.random; the frame it reads is never written.
  *
+ * Task 2 of the same plan (the running animation) added the body's motion —
+ * stride, sprint pose, lag, jump and landing (./viewmodelMotion.test.ts
+ * pins its shape) — and this file holds all of it to the same line of fire.
+ *
  * Overlay2D grabs the fx2d context at import, so the viewmodel modules are
  * imported dynamically in beforeAll, after loadGameHtml() made `#fx2d` and
  * after getContext was patched: fx2d gets a recorder (so drawImage and the
@@ -216,7 +220,7 @@ interface Scenario {
 function toViewmodelFrame(s: Scenario): DrawModule.ViewmodelFrame {
   return {
     started: true, dead: false, pianoOpen: false, zoomLerp: s.zoomLerp, cur: s.cur,
-    vx: s.vx, vz: s.vz, sprintKey: s.sprintKey, bobT: s.bobT, wstate: s.wstate, wtime: s.wtime,
+    vx: s.vx, vz: s.vz, vy: 0, grounded: true, yaw: 0, sprintKey: s.sprintKey, bobT: s.bobT, wstate: s.wstate, wtime: s.wtime,
     equipT: 0.24, unequipT: 0.16, kickAmt: s.kickAmt, kickRot: s.kickRot, swayX: s.swayX, swayY: s.swayY, muzzle: s.muzzle,
   };
 }
@@ -462,6 +466,79 @@ describe("the weapon stays out of the player's line of fire (Task 1 fix round)",
       }
     });
   }
+
+  // Task 2 (the running animation) added motion on top of every pose above:
+  // the sprint pose, the stride, the lag behind the mouse and the strafe, the
+  // take-off lift and the landing dip. Each is driven here to its extreme,
+  // frame by frame through the real (stateful) drawViewmodel, and every frame
+  // is held to the same line — including the worst stack: full recoil while
+  // the mouse lag lifts the weapon, which only draw.ts's ceiling keeps down.
+  for (const [label, w, h] of ASPECTS) {
+    it(`${label}: sprinting, striding, trailing the mouse and a strafe, jumping and landing, every weapon stays 15% below the crosshair`, () => {
+      const saved = [window.innerWidth, window.innerHeight];
+      setScreen(w, h);
+      try {
+        const vh = Overlay2D.getVH(), line = vh / 2 + Rig.CLEAR_BELOW * vh;
+        const breaches: string[] = [];
+        WEAPON_STATS.forEach((stats, slot) => {
+          let sprintTop = Infinity;
+          const still = toViewmodelFrame(stillScenario(slot));
+          const check = (name: string, frame: DrawModule.ViewmodelFrame) => {
+            const top = topRow(frame);
+            if (top < line - 0.5) breaches.push(`${stats.name} ${name}: top ${top.toFixed(1)} above the line ${line.toFixed(1)}`);
+            return top;
+          };
+          const settle = () => { for (let i = 0; i < 120; i++) Draw.drawViewmodel(0.05, 0, still, WEAPON_STATS); };
+          settle();
+          const restTop = check("rest", still);
+          // sprint: straight ahead at sprint speed, the stride running, into the full sprint pose
+          let bobT = 0;
+          for (let i = 0; i < 45; i++) {
+            bobT += 10.5 * 0.016 * 1.6;
+            sprintTop = check(`sprint frame ${i}`, { ...still, vz: -10.5, sprintKey: true, bobT });
+          }
+          if (!(sprintTop > restTop + 0.01 * vh)) breaches.push(`${stats.name}: the sprint pose is not lowered (top ${sprintTop.toFixed(1)} vs rest ${restTop.toFixed(1)})`);
+          // a jump off the sprint, the lift, and the hardest landing the dip allows
+          let vy = 7.4;
+          for (let i = 0; i < 40; i++) { vy -= 20 * 0.016; check(`air frame ${i}`, { ...still, grounded: false, vy }); }
+          check("air, falling fast", { ...still, grounded: false, vy: -40 });
+          for (let i = 0; i < 30; i++) check(`landing frame ${i}`, still);
+          settle();
+          // the mouse flung right and down (the lag lifts the weapon) while strafing right at sprint speed
+          for (let i = 0; i < 30; i++) check(`lag frame ${i}`, { ...still, yaw: Math.PI / 2, vz: -10.5, swayX: 10, swayY: 7 });
+          for (let i = 0; i < 30; i++) check(`lag frame ${i}, left`, { ...still, yaw: Math.PI / 2, vz: 10.5, swayX: -10, swayY: 7 });
+          // and firing at full recoil on top of the upward lag
+          for (let i = 0; i < 20; i++) {
+            check(`recoil + lag frame ${i}`, { ...still, swayY: 7, wstate: "fire", wtime: Animate.fireWindow(stats) * 0.3, kickAmt: stats.kick, kickRot: stats.kick * 0.125 });
+          }
+          settle();
+        });
+        expect(breaches).toEqual([]);
+      } finally {
+        setScreen(saved[0], saved[1]);
+      }
+    });
+  }
+
+  it("draw.ts's ceiling: however far screen-space motion tries to lift the weapon, its top stops at the line — and it never pushes a weapon down", () => {
+    // The real inputs above never need the ceiling (the lag's largest lift is
+    // ~1.5 units); this drives the mouse lag far past anything Input.ts's
+    // clamp allows, to prove the guarantee holds by construction.
+    const vh = Overlay2D.getVH(), line = vh / 2 + Rig.CLEAR_BELOW * vh;
+    const breaches: string[] = [];
+    WEAPON_STATS.forEach((stats, slot) => {
+      const still = toViewmodelFrame(stillScenario(slot));
+      for (let i = 0; i < 120; i++) Draw.drawViewmodel(0.05, 0, still, WEAPON_STATS);
+      const rest = topRow(still);
+      let top = Infinity;
+      for (let i = 0; i < 40; i++) top = Math.min(top, topRow({ ...still, swayY: 400 }));
+      if (top < line - 0.5) breaches.push(`${stats.name}: top ${top.toFixed(1)} above the line ${line.toFixed(1)}`);
+      if (!(top < rest - 1)) breaches.push(`${stats.name}: did not rise toward the line at all (${top.toFixed(1)} vs rest ${rest.toFixed(1)})`);
+      for (let i = 0; i < 200; i++) Draw.drawViewmodel(0.05, 0, still, WEAPON_STATS);
+      if (topRow(still) !== rest) breaches.push(`${stats.name}: not back at rest after the lift`);
+    });
+    expect(breaches).toEqual([]);
+  });
 });
 
 describe("drawViewmodel with the new art", () => {

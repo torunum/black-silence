@@ -303,12 +303,14 @@ describe("what main.ts passes to the 2D overlay each frame", () => {
 });
 
 describe("the ViewmodelFrame main.ts builds", () => {
+  // vy, grounded and yaw were added by player feedback round 2, Task 2 (the viewmodel's jump,
+  // landing and strafe motion) — docs/superpowers/plans/2026-09-24-player-feedback-2-hands.md.
   const EXPECTED_FIELDS = [
-    "bobT", "cur", "dead", "equipT", "kickAmt", "kickRot", "muzzle", "pianoOpen",
-    "sprintKey", "started", "swayX", "swayY", "unequipT", "vx", "vz", "wstate", "wtime", "zoomLerp",
+    "bobT", "cur", "dead", "equipT", "grounded", "kickAmt", "kickRot", "muzzle", "pianoOpen",
+    "sprintKey", "started", "swayX", "swayY", "unequipT", "vx", "vy", "vz", "wstate", "wtime", "yaw", "zoomLerp",
   ];
 
-  it("carries exactly the eighteen fields ViewmodelFrame declares — no more, no fewer", () => {
+  it("carries exactly the twenty-one fields ViewmodelFrame declares — no more, no fewer", () => {
     // draw.ts reads `v.foo` for each; a dropped field is silently undefined
     // there, which is how a missing one would otherwise reach the screen.
     expect(Object.keys(restFrame.vm).sort()).toEqual(EXPECTED_FIELDS);
@@ -320,6 +322,25 @@ describe("the ViewmodelFrame main.ts builds", () => {
   it("maps swayX and swayY to their own accessors, not to each other", () => {
     expect(restFrame.vm.swayX).toBe(SENTINEL.swayX);
     expect(restFrame.vm.swayY).toBe(SENTINEL.swayY);
+  });
+
+  it("maps yaw to the facing (input.yaw), and vy/grounded to the player's own", () => {
+    expect(restFrame.vm.yaw).toBe(SENTINEL.yaw);
+    expect(restFrame.vm.vy).toBe(player.vy);
+    expect(restFrame.vm.grounded).toBe(player.grounded);
+  });
+
+  it("passes the player's live vy and grounded mid-air (at rest both are 0/true, which a hard-coded literal would also pass)", () => {
+    const saved = { pyy: player.pyy, vy: player.vy, grounded: player.grounded };
+    try {
+      player.pyy += 6; player.vy = 3.25; player.grounded = false;
+      const air = runFrame(performance.now());
+      expect(air.vm.vy).toBe(player.vy);
+      expect(air.vm.vy).not.toBe(0);
+      expect(air.vm.grounded).toBe(false);
+    } finally {
+      Object.assign(player, saved);
+    }
   });
 
   it("maps started, dead and pianoOpen to the right three flags", () => {
@@ -339,11 +360,11 @@ describe("the ViewmodelFrame main.ts builds", () => {
   });
 
   it("gives every numeric field a number and every flag a boolean", () => {
-    for (const field of ["bobT", "cur", "equipT", "kickAmt", "kickRot", "muzzle", "swayX", "swayY", "unequipT", "vx", "vz", "wtime", "zoomLerp"]) {
+    for (const field of ["bobT", "cur", "equipT", "kickAmt", "kickRot", "muzzle", "swayX", "swayY", "unequipT", "vx", "vy", "vz", "wtime", "yaw", "zoomLerp"]) {
       expect(typeof restFrame.vm[field], `frame.${field}`).toBe("number");
       expect(Number.isNaN(restFrame.vm[field]), `frame.${field} is NaN`).toBe(false);
     }
-    for (const field of ["dead", "pianoOpen", "sprintKey", "started"]) {
+    for (const field of ["dead", "grounded", "pianoOpen", "sprintKey", "started"]) {
       expect(typeof restFrame.vm[field], `frame.${field}`).toBe("boolean");
     }
     expect(typeof restFrame.vm.wstate).toBe("string");

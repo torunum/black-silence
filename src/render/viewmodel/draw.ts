@@ -8,7 +8,7 @@ import { Raster, RW, RH, toRGBA } from "./raster";
 
 /** The overlay height (a 16:9 screen's) at which one raster pixel is one overlay unit. */
 export const VIEW_H = 180;
-import { renderWeapon } from "./rig";
+import { renderWeapon, CLEAR_BELOW } from "./rig";
 import type { Pose } from "./pose";
 
 export { WALK_BOB_AMT, SPRINT_BOB_AMT } from "./animate";
@@ -31,14 +31,22 @@ export { WALK_BOB_AMT, SPRINT_BOB_AMT } from "./animate";
  *
  * What is kept from the reference: this function's outer contract
  * (ViewmodelFrame, the call in src/core/Loop.ts), the early returns (not
- * started, dead, piano open, sniper scoped in), the walk bob / sway /
- * breathing formulas and their constants (./animate.ts), the flash's shape
+ * started, dead, piano open, sniper scoped in), the walk/sprint bob amounts
+ * and the breathing formula (./animate.ts), the flash's shape
  * and colours, and — exactly — its Math.random draws: one for the flash
  * radius and one for the puff chance (plus rnd's three when a puff spawns),
  * per frame with the flash up, in the same order. Those are per-frame
  * visual noise the reference already drew (KNOWN-20), and keeping their
  * count keeps every gameplay draw after them where the trace fixtures
  * expect it. Rendering the weapon itself draws nothing from Math.random.
+ *
+ * Task 2 of the same plan gave the weapon a body to ride on (./motion.ts):
+ * a figure-eight stride locked to the footsteps, a sprint pose, weight
+ * against turns and strafes, a lift on take-off and a dip on landing. The
+ * reference's two independent bob sines and its sway, which led the mouse
+ * rather than trailing it, are gone. Screen-space motion is held under a
+ * ceiling here (see drawViewmodel): it may lower the weapon freely but
+ * never lift its top pixel above rig.ts's CLEAR_BELOW line.
  *
  * drawKickBoot is still the reference's, byte for byte — Task 3 replaces it.
  */
@@ -53,6 +61,12 @@ export interface ViewmodelFrame {
   cur: number;
   vx: number;
   vz: number;
+  /** player.vy — vertical velocity, for the take-off lift and the landing dip (by fall speed). */
+  vy: number;
+  /** player.grounded. */
+  grounded: boolean;
+  /** input.yaw — the facing, so the weapon can trail a strafe (velocity relative to facing). */
+  yaw: number;
   /** keys.ShiftLeft || keys.ShiftRight. */
   sprintKey: boolean;
   bobT: number;
@@ -106,6 +120,8 @@ const vm = {
   image: null as ImageData | null,
   lastKey: "",
   anchors: {} as Record<string, [number, number]>,
+  /** The last rendered image's topmost opaque row, raster pixels (RH when empty). */
+  topRow: RH,
   prevBox: { x0: 0, y0: 0, x1: RW, y1: RH },
 };
 
@@ -136,10 +152,19 @@ function paint(cur: number, pose: Pose, cy: number): boolean {
     vm.lastKey = key;
     const prev = { x0: vm.raster.x0, y0: vm.raster.y0, x1: vm.raster.x1, y1: vm.raster.y1 };
     vm.anchors = renderWeapon(vm.raster, WEAPON_ART[cur], pose, RW / 2, cy);
+    vm.topRow = topOpaqueRow(vm.raster);
     toRGBA(vm.raster, vm.image.data, prev);
     vm.ctx.putImageData(vm.image, 0, 0);
   }
   return true;
+}
+
+/** The first row of the raster's dirty box holding an opaque pixel. */
+function topOpaqueRow(r: Raster): number {
+  for (let y = r.y0; y < r.y1; y++) {
+    for (let x = r.x0, i = y * r.w + x; x < r.x1; x++, i++) if (r.col[i]) return y;
+  }
+  return RH;
 }
 
 /** Where the last rendered frame's anchors are, in raster pixels — for tests and for Tasks 2-4. */
@@ -157,9 +182,15 @@ export function drawViewmodel(dt: number, tNow: number, v: ViewmodelFrame, weapo
   // screen, larger on a taller one, so the weapon is always the same share of the height and its
   // clearance below the crosshair (rig.ts's CLEAR_BELOW) holds at every aspect ratio.
   const s=VH/VIEW_H;
-  const left=(VW-RW*s)/2+pose.sx, top=VH-RH*s+pose.sy;
-  const cy=Math.round((VH/2-(VH-RH*s))/s);  // the crosshair's row in the raster: the model aims there
-  if(paint(v.cur,pose,cy)){
+  const top0=VH-RH*s;
+  const cy=Math.round((VH/2-top0)/s);  // the crosshair's row in the raster: the model aims there
+  const painted=paint(v.cur,pose,cy);
+  // The ceiling: screen-space motion (stride, lag, take-off, breathing) may lower the weapon freely,
+  // but may lift it only as far as leaves its top pixel CLEAR_BELOW under the crosshair.
+  let sy=pose.sy;
+  if(painted&&sy<0)sy=Math.max(sy,Math.min(0,VH/2+CLEAR_BELOW*VH-(top0+vm.topRow*s)));
+  const left=(VW-RW*s)/2+pose.sx, top=top0+sy;
+  if(painted){
     fg.save();
     fg.imageSmoothingEnabled=false;
     fg.drawImage(vm.canvas!,Math.round(left*2)/2,Math.round(top*2)/2,RW*s,RH*s);

@@ -42,9 +42,11 @@ import { hud } from "../ui/Hud";
  *   redundant (`&&` binds tighter, so it reduces to
  *   `pianoOpen||overlayOpen()`) but is left as-is; Phase 0 moves code
  *   verbatim.
- * - The `fxTick` call's 18-field `ViewmodelFrame` literal is the seam
- *   KNOWN-9 documents and `tests/integration/wiring.test.ts` covers; copied
- *   field by field.
+ * - The `fxTick` call's `ViewmodelFrame` literal is the seam KNOWN-9
+ *   documents and `tests/integration/wiring.test.ts` covers; copied field
+ *   by field. Player feedback round 2, Task 2 added three fields to the
+ *   original eighteen (`vy`, `grounded`, `yaw`) for the viewmodel's jump,
+ *   landing and strafe motion — read here, never written by the animation.
  *
  * `time.dt`/`time.scaledDt` are Task 4 writes; Task 5 adds the first read:
  * `tickScheduled(dt)` is called **last** in the `!paused&&!S.dead&&!S.won`
@@ -103,7 +105,7 @@ function loop(t: number){
     fxTick(dt,t,weaponRuntime.zoomLerp,
       ()=>drawKickBoot(weaponRuntime.kickAnim),
       (fdt,ft)=>drawViewmodel(fdt,ft,{
-        started:game.started,dead:S.dead,pianoOpen:game.pianoOpen,zoomLerp:weaponRuntime.zoomLerp,cur:S.cur,vx:player.vx,vz:player.vz,
+        started:game.started,dead:S.dead,pianoOpen:game.pianoOpen,zoomLerp:weaponRuntime.zoomLerp,cur:S.cur,vx:player.vx,vz:player.vz,vy:player.vy,grounded:player.grounded,yaw:input.yaw,
         sprintKey:!!(keys.ShiftLeft||keys.ShiftRight),bobT:player.bobT,wstate:weaponRuntime.wstate,wtime:weaponRuntime.wtime,
         equipT:EQUIP_T,unequipT:UNEQUIP_T,kickAmt:weaponRuntime.kickAmt,kickRot:weaponRuntime.kickRot,swayX:input.swayX,swayY:input.swayY,muzzle:weaponRuntime.muzzle,
       },WEAPONS));
