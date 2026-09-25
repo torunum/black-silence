@@ -1,6 +1,7 @@
 import { Builder } from "./builder";
 import { finish, type Raster } from "./raster";
 import type { Pose, WeaponArt } from "./pose";
+import { drawLeg, legPose } from "./kick";
 
 /**
  * Renders one weapon, hands and sleeves for one pose into a Raster and
@@ -26,18 +27,30 @@ export const AIM_DX = 14, AIM_DY = 38;
 /** How far below the crosshair, as a fraction of screen height, the weapon's topmost pixel must stay. */
 export const CLEAR_BELOW = 0.15;
 
-export function renderWeapon(r: Raster, art: WeaponArt, pose: Pose, cx: number, cy: number): Record<string, [number, number]> {
+export function renderWeapon(r: Raster, art: WeaponArt | null, pose: Pose, cx: number, cy: number): Record<string, [number, number]> {
   r.clear();
   const b = new Builder(r, FOCAL, cx + AIM_DX, cy + AIM_DY);
-  const h = art.hold;
-  b.translate(h.x + pose.x, h.y + pose.y, h.z + pose.z);
-  b.yaw(h.yaw + pose.yaw);
-  b.pitch(h.pitch + pose.pitch);
-  b.roll(h.roll + pose.roll);
-  // recoil: straight back into the hand, muzzle rising about the grip
-  b.translate(0, 0, -pose.recoil * art.kick.back);
-  b.pitch(pose.recoil * art.kick.lift);
-  art.draw(b, pose);
+  if (art) { // null: the scoped-in sniper, hidden, while a kick still shows the leg
+    const h = art.hold;
+    b.translate(h.x + pose.x, h.y + pose.y, h.z + pose.z);
+    b.yaw(h.yaw + pose.yaw);
+    b.pitch(h.pitch + pose.pitch);
+    b.roll(h.roll + pose.roll);
+    // recoil: straight back into the hand, muzzle rising about the grip
+    b.translate(0, 0, -pose.recoil * art.kick.back);
+    b.pitch(pose.recoil * art.kick.lift);
+    art.draw(b, pose);
+  }
+  // the kicking leg (./kick.ts): same raster, depth buffer and light, but projected from the true eye
+  // (no AIM shift) — the kick is aimed at the crosshair, which the weapons deliberately are not
+  const leg = legPose(pose.kick);
+  if (leg) {
+    const lb = new Builder(r, FOCAL, cx, cy, LEG_PART);
+    drawLeg(lb, leg);
+    Object.assign(b.anchors, lb.anchors);
+  }
   finish(r);
   return b.anchors;
 }
+/** The leg's primitives are numbered from here, clear of any weapon's. */
+const LEG_PART = 4000;

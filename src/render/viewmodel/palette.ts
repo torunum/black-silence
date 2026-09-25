@@ -33,6 +33,7 @@ export const MAT = {
   NONE: 0, OUT: 1, IRON: 2, BLUED: 3, BRASS: 4, WOOD: 5, GLOVE: 6, COAT: 7,
   CUFF: 8, ORANGE: 9, RED: 10, GOLD: 11, BONE: 12, SOUL: 13, LENS: 14,
   COPPER: 15, BLACK: 16, FLAME: 17, SILVER: 18, SKIN: 19, DEADSOUL: 20,
+  TROUSER: 21, BOOT: 22,
 } as const;
 export type MatId = typeof MAT[keyof typeof MAT];
 
@@ -57,6 +58,9 @@ export const MATERIALS: Record<number, Material> = {
   [MAT.SILVER]: { ramp: ["#23262b", "#3b4047", "#5a616b", "#818a95", "#adb6bf", "#d8dee4", "#f6f8fa"], amb: .25, spec: .9, rim: true },
   [MAT.SKIN]:   { ramp: ["#2c1812", "#4a2a1e", "#6c4130", "#8e5a42", "#ad7458"], amb: .3 },
   [MAT.DEADSOUL]: { ramp: ["#0c100c", "#162016", "#223022", "#2f4230", "#3e563f"], amb: .3, spec: .5 },
+  // the kicking leg (Task 3): heavy dark-brown canvas trousers, and an oiled black-brown leather boot
+  [MAT.TROUSER]: { ramp: ["#100e0c", "#1a1714", "#25211c", "#322c25", "#413930", "#52483c"], amb: .24 },
+  [MAT.BOOT]:   { ramp: ["#0a0706", "#120c08", "#1b130d", "#271b12", "#35251a", "#473224", "#5e4431"], amb: .18, spec: .45, rim: true },
 };
 
 /** Tones in a material's ramp. */

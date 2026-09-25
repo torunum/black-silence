@@ -1,5 +1,7 @@
 import { getFx, getVW, getVH, spawnPuff } from "../Overlay2D";
-import { vRect, vGrad, VM, SLEEVE, BOOT, MUZ } from "./kit";
+import { MUZ } from "./kit";
+import { kickElapsed, KICK_CHAMBER, KICK_HOLD } from "./kick";
+import { KICK_HIT_T } from "../../weapons/WeaponRuntime";
 import { rnd } from "../../utils/math";
 import type { WeaponStats } from "../../weapons/definitions";
 import { Animator } from "./animate";
@@ -48,7 +50,11 @@ export { WALK_BOB_AMT, SPRINT_BOB_AMT } from "./animate";
  * ceiling here (see drawViewmodel): it may lower the weapon freely but
  * never lift its top pixel above rig.ts's CLEAR_BELOW line.
  *
- * drawKickBoot is still the reference's, byte for byte — Task 3 replaces it.
+ * Task 3 replaced the reference's kick boot (a few canvas rectangles sliding
+ * up from the bottom edge) with a modelled leg, drawn by ./kick.ts into the
+ * same raster as the weapon — see drawKickBoot below for what that callback
+ * still draws. The kick is exempt from the line-of-fire rule: a boot driven
+ * into the centre of the screen is the point of it.
  */
 
 /** Per-frame player/weapon state drawViewmodel needs, read (never written) from the live runtime. */
@@ -76,39 +82,38 @@ export interface ViewmodelFrame {
   unequipT: number;
   kickAmt: number;
   kickRot: number;
+  /** weaponRuntime.kickAnim — the power kick's countdown: the leg is drawn with the weapon (./kick.ts). */
+  kickAnim: number;
   swayX: number;
   swayY: number;
   muzzle: number;
 }
 
+/**
+ * The kick's callback slot in fxTick (drawn just before drawViewmodel). The
+ * leg itself is no longer drawn here: it is modelled and rasterized with the
+ * weapon by drawViewmodel (./kick.ts, ./rig.ts). What is left here is the
+ * reference's one flourish, the motion streaks, now trailing the real foot
+ * — from where the last frame drew it, back down toward the hip it came
+ * from — and only while the leg is being driven out. Like the reference's
+ * boot, it draws nothing from Math.random.
+ */
 export function drawKickBoot(kickAnim: number): void {
-  if(kickAnim<=0)return;
-  const fg=getFx(),VW=getVW(),VH=getVH();
-  const p=1-kickAnim/.32;
-  const ext=Math.sin(p*Math.PI);
+  const k=streaks(kickElapsed(kickAnim));
+  const foot=vm.footAt;
+  if(k<=0||!foot)return;
+  const fg=getFx(),s=getVH()/VIEW_H;
   fg.save();
-  /* motion streaks */
-  if(ext>.3){fg.strokeStyle="rgba(180,178,166,"+(ext*.25)+")";fg.lineWidth=2;
-    for(let i=0;i<3;i++){fg.beginPath();
-      fg.moveTo(VW/2+44+i*9,VH-ext*VH*.3+i*14);
-      fg.lineTo(VW/2+10+i*9,VH-ext*VH*.55+i*14);fg.stroke();}}
-  fg.translate(VW/2+30-ext*26,VH+40-ext*(VH*.62));
-  fg.rotate(-.5+ext*.25);
-  const s=VH/200*1.4;fg.scale(s,s);
-  vGrad(-10,18,24,60,SLEEVE,"#1e2026");                 // trouser leg
-  fg.fillStyle="rgba(0,0,0,.3)";fg.fillRect(-10,30,24,3); // crease
-  vGrad(-16,-8,36,30,"#32281c",BOOT);                   // boot leather
-  fg.fillStyle="rgba(140,120,90,.25)";fg.fillRect(-16,-8,36,3); // top sheen
-  vRect(-16,16,36,8,"#0e0b07");                          // sole
-  fg.fillStyle="#1c1610";                                // tread
-  for(let i=0;i<5;i++)fg.fillRect(-14+i*7,22,4,3);
-  fg.strokeStyle="#0a0806";fg.lineWidth=1.4;             // laces
+  fg.strokeStyle=`rgba(180,178,166,${(.32*k).toFixed(3)})`;fg.lineWidth=1.5*s;
   for(let i=0;i<3;i++){fg.beginPath();
-    fg.moveTo(-10,-4+i*6);fg.lineTo(4,0+i*6);fg.stroke();
-    fg.beginPath();fg.moveTo(4,-4+i*6);fg.lineTo(-10,0+i*6);fg.stroke();}
-  vRect(8,-4,8,6,VM.B1);                                 // buckle
-  fg.fillStyle=VM.B3;fg.fillRect(10,-2,4,2);
+    fg.moveTo(foot[0]+(i*10-4)*s,foot[1]+(10+i*5)*s);
+    fg.lineTo(foot[0]+(i*10+10)*s,foot[1]+(10+i*5+44*k)*s);fg.stroke();}
   fg.restore();
+}
+/** 0..1: the streaks show while the foot is travelling — the strike's drive — and fade as it plants. */
+function streaks(t: number): number {
+  if(t<KICK_CHAMBER||t>=KICK_HOLD)return 0;
+  return t<KICK_HIT_T?(t-KICK_CHAMBER)/(KICK_HIT_T-KICK_CHAMBER):1-(t-KICK_HIT_T)/(KICK_HOLD-KICK_HIT_T);
 }
 
 /** Everything the viewmodel keeps between frames: the animator's spin, the raster, the canvas it is copied to, and what was last rendered. */
@@ -123,12 +128,14 @@ const vm = {
   /** The last rendered image's topmost opaque row, raster pixels (RH when empty). */
   topRow: RH,
   prevBox: { x0: 0, y0: 0, x1: RW, y1: RH },
+  /** Where the last frame drew the kicking foot, overlay units — drawKickBoot's streaks trail from it; null with no leg on screen. */
+  footAt: null as [number, number] | null,
 };
 
 /** A pose's rasterized terms, rounded — equal keys render equal pixels, so an unchanged pose is not re-rendered. */
 function poseKey(cur: number, p: Pose, cy: number): string {
   const r = (n: number) => Math.round(n * 1e4);
-  return [cur, cy, r(p.x), r(p.y), r(p.z), r(p.pitch), r(p.yaw), r(p.roll), r(p.recoil), r(p.action), r(p.spin), r(p.reload), r(p.heat)].join(",");
+  return [cur, cy, r(p.x), r(p.y), r(p.z), r(p.pitch), r(p.yaw), r(p.roll), r(p.recoil), r(p.action), r(p.spin), r(p.reload), r(p.heat), r(p.kick)].join(",");
 }
 
 /**
@@ -151,7 +158,7 @@ function paint(cur: number, pose: Pose, cy: number): boolean {
   if (key !== vm.lastKey) {
     vm.lastKey = key;
     const prev = { x0: vm.raster.x0, y0: vm.raster.y0, x1: vm.raster.x1, y1: vm.raster.y1 };
-    vm.anchors = renderWeapon(vm.raster, WEAPON_ART[cur], pose, RW / 2, cy);
+    vm.anchors = renderWeapon(vm.raster, WEAPON_ART[cur] ?? null, pose, RW / 2, cy);
     vm.topRow = topOpaqueRow(vm.raster);
     toRGBA(vm.raster, vm.image.data, prev);
     vm.ctx.putImageData(vm.image, 0, 0);
@@ -174,7 +181,8 @@ export function lastAnchors(): Readonly<Record<string, [number, number]>> {
 
 export function drawViewmodel(dt: number, tNow: number, v: ViewmodelFrame, weapons: readonly WeaponStats[]): void {
   if(!v.started||v.dead||v.pianoOpen)return;
-  if(v.zoomLerp>=.85&&v.cur===4)return; // scoped: hide rifle
+  const scoped=v.zoomLerp>=.85&&v.cur===4;
+  if(scoped&&!(v.kickAnim>0)){vm.footAt=null;return;} // scoped: hide rifle (a kick still shows its leg, below)
   const fg=getFx(),VW=getVW(),VH=getVH();
   const w=weapons[v.cur];
   const pose=vm.animator.step(dt,tNow,v,w,WEAPON_ART[v.cur]);
@@ -184,7 +192,7 @@ export function drawViewmodel(dt: number, tNow: number, v: ViewmodelFrame, weapo
   const s=VH/VIEW_H;
   const top0=VH-RH*s;
   const cy=Math.round((VH/2-top0)/s);  // the crosshair's row in the raster: the model aims there
-  const painted=paint(v.cur,pose,cy);
+  const painted=paint(scoped?-1:v.cur,pose,cy);
   // The ceiling: screen-space motion (stride, lag, take-off, breathing) may lower the weapon freely,
   // but may lift it only as far as leaves its top pixel CLEAR_BELOW under the crosshair.
   let sy=pose.sy;
@@ -196,6 +204,11 @@ export function drawViewmodel(dt: number, tNow: number, v: ViewmodelFrame, weapo
     fg.drawImage(vm.canvas!,Math.round(left*2)/2,Math.round(top*2)/2,RW*s,RH*s);
     fg.restore();
   }
+  const foot=painted?vm.anchors.foot:undefined;
+  vm.footAt=foot?[left+foot[0]*s,top+foot[1]*s]:null;
+  // Scoped in, only the leg was drawn: no glow and no flash — the reference drew nothing at all here,
+  // so nothing may draw from Math.random either (the flash below does).
+  if(scoped)return;
   const glow=vm.anchors.glow;
   if(glow){ // the soul core's light spilling past its cage
     const gx=left+glow[0]*s, gy=top+glow[1]*s, gr=(14+10*pose.heat)*s;

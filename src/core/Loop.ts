@@ -21,6 +21,7 @@ import { poolTick } from "../fx/Decals";
 import { headTick } from "../enemies/Death";
 import { fxTick } from "../render/Overlay2D";
 import { drawKickBoot, drawViewmodel } from "../render/viewmodel/draw";
+import { withKickLean } from "../render/viewmodel/kick";
 import { renderState } from "../render/Renderer";
 import { updateListener } from "../audio/Listener";
 import { weaponRuntime } from "../weapons/WeaponRuntime";
@@ -47,6 +48,10 @@ import { hud } from "../ui/Hud";
  *   by field. Player feedback round 2, Task 2 added three fields to the
  *   original eighteen (`vy`, `grounded`, `yaw`) for the viewmodel's jump,
  *   landing and strafe motion — read here, never written by the animation.
+ *   Task 3 added `kickAnim`: the kicking leg is drawn with the weapon now.
+ * - `renderer.render` runs inside `withKickLean` (round 2, Task 3): the view
+ *   leans into a kick for the render only, and the camera is restored exactly
+ *   afterwards, so gameplay, the listener and the trace fixtures never see it.
  *
  * `time.dt`/`time.scaledDt` are Task 4 writes; Task 5 adds the first read:
  * `tickScheduled(dt)` is called **last** in the `!paused&&!S.dead&&!S.won`
@@ -107,10 +112,10 @@ function loop(t: number){
       (fdt,ft)=>drawViewmodel(fdt,ft,{
         started:game.started,dead:S.dead,pianoOpen:game.pianoOpen,zoomLerp:weaponRuntime.zoomLerp,cur:S.cur,vx:player.vx,vz:player.vz,vy:player.vy,grounded:player.grounded,yaw:input.yaw,
         sprintKey:!!(keys.ShiftLeft||keys.ShiftRight),bobT:player.bobT,wstate:weaponRuntime.wstate,wtime:weaponRuntime.wtime,
-        equipT:EQUIP_T,unequipT:UNEQUIP_T,kickAmt:weaponRuntime.kickAmt,kickRot:weaponRuntime.kickRot,swayX:input.swayX,swayY:input.swayY,muzzle:weaponRuntime.muzzle,
+        equipT:EQUIP_T,unequipT:UNEQUIP_T,kickAmt:weaponRuntime.kickAmt,kickRot:weaponRuntime.kickRot,kickAnim:weaponRuntime.kickAnim,swayX:input.swayX,swayY:input.swayY,muzzle:weaponRuntime.muzzle,
       },WEAPONS));
     hud();
-    renderState.renderer.render(renderState.scene,renderState.camera);}}
+    withKickLean(renderState.camera,weaponRuntime.kickAnim,()=>renderState.renderer.render(renderState.scene,renderState.camera));}}
 
 /** Kicks off the frame loop. Called once, from `main.ts`, at boot. */
 export function startLoop(): void { requestAnimationFrame(loop); }

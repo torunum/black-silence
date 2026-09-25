@@ -265,6 +265,12 @@ describe("the input hooks main.ts installs", () => {
     expect(kickFrame.kickAnim).toBeGreaterThan(0);
   });
 
+  it("hands the viewmodel the same kickAnim as the kick callback — the leg is drawn from it (round 2, Task 3)", () => {
+    expect(restFrame.vm.kickAnim).toBe(0);
+    expect(kickFrame.vm.kickAnim).toBe(kickFrame.kickAnim);
+    expect(kickFrame.vm.kickAnim).toBeGreaterThan(0);
+  });
+
   it("wires the remaining gameplay callbacks to real functions", () => {
     // Each is a distinct legacy function; calling them mid-level must not
     // throw, which is what an unbound or misspelled target would do.
@@ -304,13 +310,14 @@ describe("what main.ts passes to the 2D overlay each frame", () => {
 
 describe("the ViewmodelFrame main.ts builds", () => {
   // vy, grounded and yaw were added by player feedback round 2, Task 2 (the viewmodel's jump,
-  // landing and strafe motion) — docs/superpowers/plans/2026-09-24-player-feedback-2-hands.md.
+  // landing and strafe motion), kickAnim by Task 3 (the leg is drawn with the weapon) —
+  // docs/superpowers/plans/2026-09-24-player-feedback-2-hands.md.
   const EXPECTED_FIELDS = [
-    "bobT", "cur", "dead", "equipT", "grounded", "kickAmt", "kickRot", "muzzle", "pianoOpen",
+    "bobT", "cur", "dead", "equipT", "grounded", "kickAmt", "kickAnim", "kickRot", "muzzle", "pianoOpen",
     "sprintKey", "started", "swayX", "swayY", "unequipT", "vx", "vy", "vz", "wstate", "wtime", "yaw", "zoomLerp",
   ];
 
-  it("carries exactly the twenty-one fields ViewmodelFrame declares — no more, no fewer", () => {
+  it("carries exactly the twenty-two fields ViewmodelFrame declares — no more, no fewer", () => {
     // draw.ts reads `v.foo` for each; a dropped field is silently undefined
     // there, which is how a missing one would otherwise reach the screen.
     expect(Object.keys(restFrame.vm).sort()).toEqual(EXPECTED_FIELDS);
@@ -360,7 +367,7 @@ describe("the ViewmodelFrame main.ts builds", () => {
   });
 
   it("gives every numeric field a number and every flag a boolean", () => {
-    for (const field of ["bobT", "cur", "equipT", "kickAmt", "kickRot", "muzzle", "swayX", "swayY", "unequipT", "vx", "vy", "vz", "wtime", "yaw", "zoomLerp"]) {
+    for (const field of ["bobT", "cur", "equipT", "kickAmt", "kickAnim", "kickRot", "muzzle", "swayX", "swayY", "unequipT", "vx", "vy", "vz", "wtime", "yaw", "zoomLerp"]) {
       expect(typeof restFrame.vm[field], `frame.${field}`).toBe("number");
       expect(Number.isNaN(restFrame.vm[field]), `frame.${field} is NaN`).toBe(false);
     }

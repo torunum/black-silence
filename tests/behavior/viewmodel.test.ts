@@ -27,7 +27,8 @@ import type * as AnimateModule from "../../src/render/viewmodel/animate";
  * says tests pinning the reference's art are rewritten, not deleted, so:
  *
  * - What is still the reference's is still compared against it, call for
- *   call: the art-kit helpers, drawKickBoot (Task 3 replaces it), the
+ *   call: the art-kit helpers, drawKickBoot's early return (Task 3 replaced
+ *   its boot; the divergence is recorded at its describe block), the
  *   scoped-sniper hide, and — the one that protects the trace fixtures —
  *   **how many Math.random values drawViewmodel draws per frame**, per
  *   weapon, firing and not (KNOWN-20: every visual draw shifts every
@@ -196,11 +197,41 @@ describe("viewmodel art kit (vRect/vFlat/vGrad/vBarrel/vTube/vWood/vScrew/vHole/
   });
 });
 
-describe("drawKickBoot behavioral parity with reference (Task 3 of the plan replaces it)", () => {
-  it.each([0.05, 0.2, 0.31])("draws an identical ordered sequence of canvas calls as the reference at kickAnim=%s", (kickAnim) => {
+// drawKickBoot used to be compared call for call with the reference's boot here. The owner said
+// "fix the kick animation" (player feedback round 2, Task 3 — docs/superpowers/plans/
+// 2026-09-24-player-feedback-2-hands.md): the rectangle boot is replaced, deliberately, by a
+// modelled leg drawn with the weapon (src/render/viewmodel/kick.ts; viewmodelKick.test.ts pins it).
+// What is still compared against the reference: the early return, and that neither side draws
+// from Math.random. What is pinned instead of the boot: what the callback draws now — the
+// reference's motion streaks, trailing the real foot, and only while the leg is driven out.
+describe("drawKickBoot: the reference's boot is replaced — a deliberate divergence (round 2, Task 3)", () => {
+  it.each([0.05, 0.2, 0.31])("at kickAnim=%s the reference drew its rectangle boot; the module draws no boot and, like the reference, no Math.random", (kickAnim) => {
     const referenceCalls = refKitAndDrawWindow(202, { kickAnim, VW, VH }, (fns) => fns.drawKickBoot());
     const modCalls = moduleWindow(202, () => Draw.drawKickBoot(kickAnim));
-    expectCallLogEqual(modCalls, referenceCalls, `drawKickBoot(${kickAnim}) call log`);
+    expect(referenceCalls.filter((c) => c.method === "fillRect").length).toBeGreaterThan(5); // the reference's boot, really drawn
+    expect(modCalls.filter((c) => ["fillRect", "strokeRect", "createLinearGradient", "rotate"].includes(c.method))).toEqual([]);
+    expect(refDraws).toBe(0);
+    expect(moduleDraws).toBe(0);
+  });
+
+  it("draws streaks trailing the foot only while the leg is being driven out — none in the wind-up or the recovery", () => {
+    const frame = (kickAnim: number) => ({ ...toViewmodelFrame(stillScenario(2)), kickAnim });
+    const streaksAt = (t: number) => {
+      Draw.drawViewmodel(0.016, 0, frame(0.32 - t), WEAPON_STATS);            // renders the leg, so the foot's place is known
+      const foot = Draw.lastAnchors().foot;
+      const calls = moduleWindow(204, () => Draw.drawKickBoot(0.32 - t));
+      expect(moduleDraws, `drawKickBoot at ${t}s draws no Math.random`).toBe(0);
+      return { foot, strokes: calls.filter((c) => c.method === "stroke").length, moves: calls.filter((c) => c.method === "moveTo") };
+    };
+    expect(streaksAt(0.03).strokes).toBe(0);    // wind-up
+    const drive = streaksAt(0.09);
+    expect(drive.strokes).toBe(3);
+    expect(drive.foot).toBeDefined();
+    const s = VH / Draw.VIEW_H, left = (VW - RasterM.RW * s) / 2, top = VH - RasterM.RH * s;
+    const [fx, fy] = [left + drive.foot[0] * s, top + drive.foot[1] * s];
+    for (const m of drive.moves) expect(Math.hypot((m.args[0] as number) - fx, (m.args[1] as number) - fy)).toBeLessThan(30 * s);
+    expect(streaksAt(0.2).strokes).toBe(0);     // recovery
+    Draw.drawViewmodel(0.016, 0, frame(0), WEAPON_STATS);
   });
 
   it("draws nothing when kickAnim<=0 (both sides agree on the early return)", () => {
@@ -221,7 +252,7 @@ function toViewmodelFrame(s: Scenario): DrawModule.ViewmodelFrame {
   return {
     started: true, dead: false, pianoOpen: false, zoomLerp: s.zoomLerp, cur: s.cur,
     vx: s.vx, vz: s.vz, vy: 0, grounded: true, yaw: 0, sprintKey: s.sprintKey, bobT: s.bobT, wstate: s.wstate, wtime: s.wtime,
-    equipT: 0.24, unequipT: 0.16, kickAmt: s.kickAmt, kickRot: s.kickRot, swayX: s.swayX, swayY: s.swayY, muzzle: s.muzzle,
+    equipT: 0.24, unequipT: 0.16, kickAmt: s.kickAmt, kickRot: s.kickRot, kickAnim: 0, swayX: s.swayX, swayY: s.swayY, muzzle: s.muzzle,
   };
 }
 function toRefGlobals(s: Scenario): Record<string, unknown> {
@@ -264,6 +295,12 @@ describe("drawViewmodel keeps the reference's Math.random draw count, per weapon
         expect(moduleDraws, `${label}: module vs reference Math.random draws`).toBe(refDraws);
         if (label === "fire") expect(refDraws).toBeGreaterThan(0); // the flash's draws were really exercised
         else expect(refDraws).toBe(0);
+        // a kick in progress (Task 3) draws the leg with the weapon, and adds no draw: the reference's
+        // boot drew none either
+        for (const kickAnim of [0.25, 0.2, 0.1]) {
+          moduleWindow(seed, () => Draw.drawViewmodel(0.016, 1234.5, { ...toViewmodelFrame(scenario), kickAnim }, WEAPON_STATS));
+          expect(moduleDraws, `${label} while kicking (kickAnim ${kickAnim}): module vs reference Math.random draws`).toBe(refDraws);
+        }
       }
     });
   });
@@ -280,6 +317,17 @@ describe("drawViewmodel: scoped-in sniper", () => {
     const modCalls = moduleWindow(399, () => Draw.drawViewmodel(0.016, 1234.5, toViewmodelFrame(scenario), WEAPON_STATS));
     expect(referenceCalls).toEqual([]);
     expectCallLogEqual(modCalls, referenceCalls, "drawViewmodel weapon 4 scoped-in call log");
+  });
+
+  it("kicking while scoped in shows the leg but not the rifle, and still draws no flash and no Math.random (round 2, Task 3)", () => {
+    // firing too, so a flash would be due if the scoped path fell through to it
+    const scenario: Scenario = { ...fireScenario(4), zoomLerp: 0.9 };
+    const calls = moduleWindow(398, () => Draw.drawViewmodel(0.016, 1234.5, { ...toViewmodelFrame(scenario), kickAnim: 0.32 - 0.13 }, WEAPON_STATS));
+    expect(moduleDraws).toBe(0);
+    expect(calls.filter((c) => c.method === "drawImage").length).toBe(1);
+    expect(calls.some((c) => c.method === "translate")).toBe(false);          // no flash
+    expect(Draw.lastAnchors().foot).toBeDefined();
+    expect(Draw.lastAnchors().muzzle).toBeUndefined();                        // the rifle was not drawn
   });
 });
 

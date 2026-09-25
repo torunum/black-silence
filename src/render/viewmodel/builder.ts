@@ -27,10 +27,11 @@ export class Builder {
   /** Current model->camera transform, row-major 3x4. */
   private m: Float64Array = new Float64Array([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0]);
   private stack: Float64Array[] = [];
-  private nextPart = 1;
+  private nextPart: number;
   readonly anchors: Record<string, [number, number]> = {};
 
-  constructor(readonly r: Raster, readonly F: number, readonly cx: number, readonly cy: number) {}
+  /** `firstPart` numbers this builder's primitives from there: a second builder drawing into the same raster (the kicking leg) must not reuse the weapon's part ids, or the contour between them is lost. */
+  constructor(readonly r: Raster, readonly F: number, readonly cx: number, readonly cy: number, firstPart = 1) { this.nextPart = firstPart; }
 
   push(): void { this.stack.push(this.m.slice()); }
   pop(): void { const m = this.stack.pop(); if (m) this.m = m; }

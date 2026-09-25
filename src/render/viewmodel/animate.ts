@@ -2,6 +2,7 @@ import { clamp } from "../../utils/math";
 import type { WeaponStats } from "../../weapons/definitions";
 import { restPose, type Pose, type WeaponArt } from "./pose";
 import { Body } from "./motion";
+import { ASIDE, aside, kickElapsed } from "./kick";
 
 /**
  * Turns the weapon runtime into a Pose, once per frame. It only ever READS
@@ -32,6 +33,8 @@ export interface AnimInput {
   wstate: string; wtime: number;
   equipT: number; unequipT: number;
   kickAmt: number; kickRot: number;
+  /** weaponRuntime.kickAnim — the power kick's countdown (./kick.ts). */
+  kickAnim: number;
   swayX: number; swayY: number;
   muzzle: number;
 }
@@ -81,12 +84,16 @@ export class Animator {
     let e = 0;
     if (v.wstate === "equip") e = 1 - clamp(v.wtime / v.equipT, 0, 1);
     if (v.wstate === "unequip") e = clamp(v.wtime / v.unequipT, 0, 1);
-    p.y = -e * e * 0.2 + c.y;
-    p.pitch = -e * 0.55 + c.pitch;
-    p.yaw = c.yaw;
+    // the power kick (./kick.ts): the weapon swings out of the leg's way and back; the leg is drawn from p.kick
+    p.kick = kickElapsed(v.kickAnim);
+    const a = aside(p.kick);
+    p.x = ASIDE.x * a;
+    p.y = -e * e * 0.2 + c.y + ASIDE.y * a;
+    p.pitch = -e * 0.55 + c.pitch + ASIDE.pitch * a;
+    p.yaw = c.yaw + ASIDE.yaw * a;
     // (the reference also rolled the sprite by swayX*.0008 — a sliver of a degree; dropped, because a
     // term that changes with every mouse movement would re-rasterize the model every frame for nothing)
-    p.roll = e * 0.4 + v.kickRot * 0.013 + c.roll;
+    p.roll = e * 0.4 + v.kickRot * 0.013 + c.roll + ASIDE.roll * a;
 
     // firing: recoil from the runtime's own decaying kick; the mechanism from progress through the fire state
     p.recoil = w.kick > 0 ? clamp(v.kickAmt / w.kick, 0, 1) : 0;
