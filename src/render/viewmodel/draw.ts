@@ -5,6 +5,9 @@ import type { WeaponStats } from "../../weapons/definitions";
 import { Animator } from "./animate";
 import { WEAPON_ART } from "./arts";
 import { Raster, RW, RH, toRGBA } from "./raster";
+
+/** The overlay height (a 16:9 screen's) at which one raster pixel is one overlay unit. */
+export const VIEW_H = 180;
 import { renderWeapon } from "./rig";
 import type { Pose } from "./pose";
 
@@ -150,8 +153,10 @@ export function drawViewmodel(dt: number, tNow: number, v: ViewmodelFrame, weapo
   const fg=getFx(),VW=getVW(),VH=getVH();
   const w=weapons[v.cur];
   const pose=vm.animator.step(dt,tNow,v,w,WEAPON_ART[v.cur]);
-  // 1:1 on a 16:9 overlay (VH 180); a shorter overlay shrinks the image to keep it on screen
-  const s=Math.min(1,VH/180);
+  // Scaled with the screen's height: exactly 1:1 on a 16:9 overlay (VH 180), smaller on a wider
+  // screen, larger on a taller one, so the weapon is always the same share of the height and its
+  // clearance below the crosshair (rig.ts's CLEAR_BELOW) holds at every aspect ratio.
+  const s=VH/VIEW_H;
   const left=(VW-RW*s)/2+pose.sx, top=VH-RH*s+pose.sy;
   const cy=Math.round((VH/2-(VH-RH*s))/s);  // the crosshair's row in the raster: the model aims there
   if(paint(v.cur,pose,cy)){

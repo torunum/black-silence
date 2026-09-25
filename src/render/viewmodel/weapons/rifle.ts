@@ -28,13 +28,13 @@ function magazine(b: Builder): void {
 
 export const combatRifle: WeaponArt = {
   name: "COMBAT RIFLE",
-  hold: { x: 0.13, y: -0.112, z: 0.32, pitch: -0.03, yaw: -0.2, roll: 0.06 },
+  hold: { x: 0.13, y: -0.097, z: 0.32, pitch: -0.03, yaw: -0.2, roll: 0.06 },
   kick: { back: 0.025, lift: 0.08 },
   action: (p) => hump(p, 0.0, 0.9, 0.3),
   draw(b: Builder, pose: Pose) {
     const r = pose.reload;
     const tilt = r < 0 ? 0 : hump(r, 0.0, 0.98, 0.14);
-    b.roll(0.35 * tilt); b.pitch(0.1 * tilt); b.yaw(-0.06 * tilt);
+    b.translate(0, -0.01 * tilt, 0); b.roll(0.35 * tilt); b.pitch(-0.04 * tilt); b.yaw(-0.06 * tilt);
 
     // receiver, carry handle, rear sight
     b.cbox(-0.02, 0.0, -0.09, 0.02, 0.05, 0.14, 0.006, MAT.IRON);

@@ -33,13 +33,13 @@ function drum(b: Builder): void {
 
 export const tommyGun: WeaponArt = {
   name: "TOMMY GUN",
-  hold: { x: 0.1, y: -0.105, z: 0.33, pitch: -0.02, yaw: -0.1, roll: 0.26 },
+  hold: { x: 0.1, y: -0.07, z: 0.33, pitch: -0.02, yaw: -0.1, roll: 0.26 },
   kick: { back: 0.016, lift: 0.05 },
   action: (p) => hump(p, 0.0, 1.0, 0.45),
   draw(b: Builder, pose: Pose) {
     const r = pose.reload;
     const tilt = r < 0 ? 0 : hump(r, 0.0, 0.98, 0.14);
-    b.roll(0.3 * tilt); b.pitch(0.12 * tilt);
+    b.translate(0, -0.01 * tilt, 0); b.roll(0.3 * tilt); b.pitch(-0.04 * tilt);
 
     // receiver with the knob slot, rear sight, stock
     b.cbox(-0.022, 0.0, -0.08, 0.022, 0.05, 0.13, 0.006, MAT.IRON);

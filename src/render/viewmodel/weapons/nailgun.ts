@@ -41,7 +41,7 @@ export const nailCannon: WeaponArt = {
   draw(b: Builder, pose: Pose) {
     const r = pose.reload;
     const tilt = r < 0 ? 0 : hump(r, 0.0, 0.98, 0.14);
-    b.translate(0, 0.02 * tilt, 0); b.roll(0.3 * tilt); b.pitch(0.1 * tilt);
+    b.translate(0, -0.02 * tilt, 0); b.roll(0.3 * tilt); b.pitch(-0.08 * tilt);
 
     // motor drum, carry handle
     b.cyl(0, AXIS_Y, -0.04, 0.08, 0.036, 0.036, 12, MAT.COPPER, { tex: (x, y, z) => rivetTex(x, y - AXIS_Y, z) });
@@ -67,7 +67,7 @@ export const nailCannon: WeaponArt = {
     const lift = r < 0 ? 0 : hump(r, 0.12, 0.66, 0.12);
     {
       b.push();
-      b.translate(-0.056 - 0.03 * lift, AXIS_Y - 0.03 + 0.12 * lift, -0.02 + 0.14 * lift);
+      b.translate(-0.056 - 0.08 * lift, AXIS_Y - 0.03 + 0.03 * lift, -0.02 + 0.1 * lift);
       b.roll(-0.6 * lift);
       hopper(b);
       b.pop();
@@ -84,7 +84,7 @@ export const nailCannon: WeaponArt = {
       b.pop();
     } else {
       b.push();
-      b.translate(-0.07 - 0.03 * lift, AXIS_Y - 0.05 + 0.12 * lift, 0.02 + 0.14 * lift);
+      b.translate(-0.07 - 0.08 * lift, AXIS_Y - 0.05 + 0.03 * lift, 0.02 + 0.1 * lift);
       b.roll(-0.5); b.pitch(0.3);
       fist(b, -1, { w: 0.02, fingers: 3 });
       forearm(b, -0.01, -0.05, -0.045, [-0.3, -1, -0.2], 0.03);

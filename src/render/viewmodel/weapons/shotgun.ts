@@ -30,8 +30,8 @@ function hull(b: Builder, x: number, y: number, z: number): void {
 
 export const sawedOff: WeaponArt = {
   name: "SAWED-OFF SHOTGUN",
-  hold: { x: 0.04, y: -0.15, z: 0.3, pitch: 0.2, yaw: -0.03, roll: 0.0 },
-  kick: { back: 0.06, lift: 0.34 },
+  hold: { x: 0.08, y: -0.132, z: 0.29, pitch: 0.12, yaw: -0.2, roll: 0.14 },
+  kick: { back: 0.08, lift: 0.08 },
   // p runs over the 0.35 s fire window; the pump's back end sits at p≈0.86 (0.30 s)
   action: (p) => hump(p, 0.45, 1.0, 0.38),
   draw(b: Builder, pose: Pose) {
@@ -39,7 +39,7 @@ export const sawedOff: WeaponArt = {
     b.pitch(-0.06 * pose.action); // the gun dips as the pump is racked
     const open = r < 0 ? 0 : hump(r, 0.08, 0.86, 0.1);
     const tilt = r < 0 ? 0 : hump(r, 0.0, 0.98, 0.14);
-    b.roll(-0.2 * tilt); b.pitch(0.12 * tilt); b.yaw(0.12 * tilt);
+    b.translate(0, -0.02 * tilt, 0); b.roll(-0.2 * tilt); b.pitch(-0.1 * tilt); b.yaw(0.12 * tilt);
 
     // action body, side plates, hammers
     b.cbox(-0.026, 0.008, -0.07, 0.026, 0.048, 0.045, 0.006, MAT.IRON);

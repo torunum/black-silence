@@ -38,13 +38,13 @@ function pinnacle(b: Builder, x: number, y: number, z: number): void {
 
 export const crossLauncher: WeaponArt = {
   name: "HOLY CROSS LAUNCHER",
-  hold: { x: 0.125, y: -0.112, z: 0.33, pitch: -0.03, yaw: -0.2, roll: 0.04 },
-  kick: { back: 0.05, lift: 0.2 },
+  hold: { x: 0.125, y: -0.158, z: 0.33, pitch: -0.03, yaw: -0.2, roll: 0.04 },
+  kick: { back: 0.07, lift: 0.05 },
   action: (p) => p,
   draw(b: Builder, pose: Pose) {
     const r = pose.reload;
     const tilt = r < 0 ? 0 : hump(r, 0.0, 0.98, 0.14);
-    b.translate(0, 0.03 * tilt, 0); b.roll(-0.35 * tilt); b.pitch(0.14 * tilt);
+    b.translate(0, -0.02 * tilt, 0); b.roll(-0.35 * tilt); b.pitch(-0.1 * tilt);
     const lid = r < 0 ? 0 : hump(r, 0.1, 0.86, 0.12);
 
     // housing: walls, then the roof (hinged on its left eave for the reload)

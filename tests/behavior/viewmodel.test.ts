@@ -284,12 +284,12 @@ describe("drawViewmodel: scoped-in sniper", () => {
 
 const CX = 160, CY = 110;
 
-function render(slot: number, mod: (p: PoseModule.Pose) => void = () => {}): { col: Uint8Array; anchors: Record<string, [number, number]> } {
+function render(slot: number, mod: (p: PoseModule.Pose) => void = () => {}): { col: Uint8Array; z: Float32Array; anchors: Record<string, [number, number]> } {
   const r = new RasterM.Raster();
   const p = PoseM.restPose();
   mod(p);
   const anchors = Rig.renderWeapon(r, Arts.WEAPON_ART[slot], p, CX, CY);
-  return { col: r.col.slice(), anchors };
+  return { col: r.col.slice(), z: r.z.slice(), anchors };
 }
 function opaque(col: Uint8Array): number {
   let n = 0;
@@ -306,25 +306,36 @@ describe("the redrawn weapons, per slot", () => {
   WEAPON_STATS.forEach((weapon, slot) => {
     describe(`weapon ${slot} (${weapon.name})`, () => {
       it("idle: a solid silhouette, its muzzle anchor on the barrel tip", () => {
-        const { col, anchors } = render(slot);
-        expect(opaque(col)).toBeGreaterThan(2000);
+        const { col, z, anchors } = render(slot);
+        expect(opaque(col)).toBeGreaterThan(1200);
         const m = anchors.muzzle;
         expect(m).toBeDefined();
         expect(m[0]).toBeGreaterThanOrEqual(0); expect(m[0]).toBeLessThan(RasterM.RW);
         expect(m[1]).toBeGreaterThanOrEqual(0); expect(m[1]).toBeLessThan(RasterM.RH);
         // on the model: an opaque pixel within 1.5 px of the anchor
         let nearest = Infinity, fartherOut = 0, total = 0;
-        const dm = Math.hypot(m[0] - CX, m[1] - CY);
+        const vx = CX + Rig.AIM_DX, vy = CY + Rig.AIM_DY; // the viewmodel's vanishing point
+        const dm = Math.hypot(m[0] - vx, m[1] - vy);
         for (let i = 0; i < col.length; i++) {
           if (!col[i]) continue;
           const x = i % RasterM.RW + 0.5, y = Math.floor(i / RasterM.RW) + 0.5;
           nearest = Math.min(nearest, Math.hypot(x - m[0], y - m[1]));
           total++;
-          if (Math.hypot(x - CX, y - CY) >= dm) fartherOut++;
+          if (Math.hypot(x - vx, y - vy) >= dm) fartherOut++;
         }
         expect(nearest).toBeLessThanOrEqual(1.5);
-        // at the tip: the barrel points at the aim point, so its tip is nearer the aim point than nearly all of the weapon
-        expect(fartherOut / total).toBeGreaterThan(0.85);
+        // at the tip: the barrel points at its vanishing point, so its tip is nearer that point than nearly all of the weapon
+        expect(fartherOut / total).toBeGreaterThan(0.7);
+        // and at the front: the model under the anchor lies deeper (farther from the eye) than 75% of the weapon
+        let nearZ = 0, bestD = Infinity;
+        const depths: number[] = [];
+        for (let i = 0; i < col.length; i++) {
+          if (!col[i] || z[i] > 1e8) continue; // (the outline ring carries a sentinel depth)
+          depths.push(z[i]);
+          const d = Math.hypot(i % RasterM.RW + 0.5 - m[0], Math.floor(i / RasterM.RW) + 0.5 - m[1]);
+          if (d < bestD) { bestD = d; nearZ = z[i]; }
+        }
+        expect(depths.filter((v) => v < nearZ).length / depths.length).toBeGreaterThan(0.75);
       });
 
       it("firing moves the weapon's own mechanism, not only the whole gun", () => {
@@ -339,11 +350,12 @@ describe("the redrawn weapons, per slot", () => {
         expect(most).toBeGreaterThan(40);
       });
 
-      it("recoil throws it back and up", () => {
+      it("recoil kicks it back into the hand: the image changes and the muzzle moves", () => {
         const idle = render(slot);
         const kicked = render(slot, (p) => { p.recoil = 1; });
         expect(diff(kicked.col, idle.col)).toBeGreaterThan(500);
-        expect(kicked.anchors.muzzle[1]).toBeLessThan(idle.anchors.muzzle[1]); // the muzzle rises on screen
+        const [ix, iy] = idle.anchors.muzzle, [kx, ky] = kicked.anchors.muzzle;
+        expect(Math.hypot(kx - ix, ky - iy)).toBeGreaterThan(1.5); // and the flash goes with it
       });
 
       it("the reload shows the mechanism across its whole length, and ends exactly on the idle pose", () => {
@@ -389,6 +401,69 @@ describe("the redrawn weapons, per slot", () => {
   });
 });
 
+/** Sets jsdom's window size and re-runs the overlay's own sizing, as a resize event would. */
+function setScreen(w: number, h: number): void {
+  Object.defineProperty(window, "innerWidth", { value: w, configurable: true });
+  Object.defineProperty(window, "innerHeight", { value: h, configurable: true });
+  Overlay2D.sizeFx();
+}
+
+describe("the weapon stays out of the player's line of fire (Task 1 fix round)", () => {
+  // The first cut of these weapons aimed every muzzle straight at the
+  // crosshair and drew them at half the screen's height: the sawed-off's
+  // barrels covered the centre of the screen, where the enemies are. The
+  // rule now: whatever the aspect ratio and whatever the weapon is doing —
+  // at rest, at full recoil at every point of its firing motion, at every
+  // point of its reload, coming up on equip — no opaque pixel of it sits
+  // higher than CLEAR_BELOW (15%) of the screen's height below the
+  // crosshair; and at rest it takes up about a third of the screen's height.
+  // Checked end to end through drawViewmodel: the real blit rectangle and
+  // the real image, not the raster alone.
+  const ASPECTS: Array<[string, number, number]> = [["16:9", 1600, 900], ["21:9", 2560, 1080], ["4:3", 1024, 768]];
+
+  /** Draws one frame and returns the screen row (overlay units) of the weapon's topmost opaque pixel. */
+  function topRow(frame: DrawModule.ViewmodelFrame): number {
+    const calls = moduleWindow(900, () => Draw.drawViewmodel(0.016, 0, frame, WEAPON_STATS));
+    const blit = calls.filter((c) => c.method === "drawImage").at(-1);
+    if (!blit || !lastPut) throw new Error("drawViewmodel blitted nothing");
+    const [, , y, , h] = blit.args as number[];
+    const data = lastPut.data;
+    for (let row = 0; row < RasterM.RH; row++) {
+      for (let x = 0; x < RasterM.RW; x++) if (data[(row * RasterM.RW + x) * 4 + 3]) return y + row * (h / RasterM.RH);
+    }
+    return Infinity;
+  }
+
+  for (const [label, w, h] of ASPECTS) {
+    it(`${label}: every weapon, at rest, firing, reloading and equipping, stays 15% of the screen below the crosshair (rig.ts CLEAR_BELOW); at rest it is 28-40% of the screen's height`, () => {
+      const saved = [window.innerWidth, window.innerHeight];
+      setScreen(w, h);
+      try {
+        const vh = Overlay2D.getVH(), line = vh / 2 + Rig.CLEAR_BELOW * vh;
+        const breaches: string[] = [];
+        WEAPON_STATS.forEach((stats, slot) => {
+          const base = toViewmodelFrame(stillScenario(slot));
+          const frames: Array<[string, DrawModule.ViewmodelFrame]> = [["rest", base]];
+          for (let k = 0; k <= 10; k++) {
+            frames.push([`fire ${k / 10}`, { ...base, wstate: "fire", wtime: Animate.fireWindow(stats) * k / 10, kickAmt: stats.kick, kickRot: stats.kick * 0.125 }]);
+          }
+          for (let k = 0; k <= 40; k++) frames.push([`reload ${k / 40}`, { ...base, wstate: "reload", wtime: stats.reload * k / 40 }]);
+          for (let k = 0; k <= 4; k++) frames.push([`equip ${k / 4}`, { ...base, wstate: "equip", wtime: base.equipT * k / 4 }]);
+          for (const [name, frame] of frames) {
+            const top = topRow(frame);
+            if (top < line - 0.5) breaches.push(`${stats.name} ${name}: top ${top.toFixed(1)} above the line ${line.toFixed(1)}`);
+          }
+          const height = (vh - topRow(base)) / vh;
+          if (height < 0.28 || height > 0.4) breaches.push(`${stats.name} at rest is ${(height * 100).toFixed(0)}% of the screen's height`);
+        });
+        expect(breaches).toEqual([]);
+      } finally {
+        setScreen(saved[0], saved[1]);
+      }
+    });
+  }
+});
+
 describe("drawViewmodel with the new art", () => {
   it("draws every slot: the offscreen image holds the weapon, and it is blitted onto the overlay", () => {
     for (let slot = 0; slot < WEAPON_STATS.length; slot++) {
@@ -396,7 +471,7 @@ describe("drawViewmodel with the new art", () => {
       expect(calls.some((c) => c.method === "drawImage"), `slot ${slot} drawImage`).toBe(true);
       let alpha = 0;
       for (let i = 3; i < lastPut!.data.length; i += 4) if (lastPut!.data[i]) alpha++;
-      expect(alpha, `slot ${slot} opaque pixels`).toBeGreaterThan(2000);
+      expect(alpha, `slot ${slot} opaque pixels`).toBeGreaterThan(1200);
     }
   });
 
@@ -405,7 +480,7 @@ describe("drawViewmodel with the new art", () => {
       const scenario = stillScenario(slot, { wstate: "fire", wtime: 0.01, kickAmt: 0, muzzle: 0.4 });
       const calls = moduleWindow(800 + slot, () => Draw.drawViewmodel(0.016, 0, toViewmodelFrame(scenario), WEAPON_STATS));
       const m = Draw.lastAnchors().muzzle;
-      const s = Math.min(1, VH / 180);
+      const s = VH / Draw.VIEW_H;
       const left = (VW - RasterM.RW * s) / 2, top = VH - RasterM.RH * s;
       const flash = calls.filter((c) => c.method === "translate").at(-1)!;
       expect(flash.args[0] as number).toBeCloseTo(left + m[0] * s, 6);

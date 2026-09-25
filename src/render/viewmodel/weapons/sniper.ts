@@ -32,13 +32,13 @@ function bolt(b: Builder, lift: number, back: number): void {
 
 export const bmgSniper: WeaponArt = {
   name: "BMG SNIPER",
-  hold: { x: 0.13, y: -0.112, z: 0.32, pitch: -0.03, yaw: -0.2, roll: 0.04 },
-  kick: { back: 0.07, lift: 0.22 },
+  hold: { x: 0.13, y: -0.125, z: 0.32, pitch: -0.03, yaw: -0.2, roll: 0.04 },
+  kick: { back: 0.09, lift: 0.06 },
   action: (p) => p,
   draw(b: Builder, pose: Pose) {
     const r = pose.reload;
     const tilt = r < 0 ? 0 : hump(r, 0.0, 0.98, 0.12);
-    b.translate(0, 0.03 * tilt, 0); b.roll(0.3 * tilt); b.pitch(0.1 * tilt);
+    b.translate(0, -0.015 * tilt, 0); b.roll(0.3 * tilt); b.pitch(-0.05 * tilt);
 
     // bolt cycle: 0..0.2 nothing (kick), lift, back, forward, down
     const a = pose.action;
