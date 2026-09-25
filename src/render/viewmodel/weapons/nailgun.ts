@@ -27,14 +27,14 @@ const hopperTex = (x: number, y: number): number =>
 const AXIS_Y = 0.058;
 
 function hopper(b: Builder): void {
-  b.cyl(0, 0, 0.0, 0.13, 0.026, 0.026, 10, MAT.BRASS, { tex: (x, y) => hopperTex(x, y) });
-  b.cyl(0, 0, 0.13, 0.142, 0.029, 0.029, 10, MAT.IRON);
-  b.cyl(0, 0, -0.01, 0.002, 0.029, 0.029, 10, MAT.IRON);
+  b.cyl(0, 0, 0.0, 0.12, 0.021, 0.021, 10, MAT.BRASS, { tex: (x, y) => hopperTex(x, y) });
+  b.cyl(0, 0, 0.12, 0.13, 0.024, 0.024, 10, MAT.IRON);
+  b.cyl(0, 0, -0.01, 0.002, 0.024, 0.024, 10, MAT.IRON);
 }
 
 export const nailCannon: WeaponArt = {
   name: "NAIL CANNON",
-  hold: { x: 0.11, y: -0.135, z: 0.4, pitch: 0.02, yaw: -0.5, roll: 0.1 },
+  hold: { x: 0.13, y: -0.112, z: 0.32, pitch: -0.03, yaw: -0.2, roll: 0.1 },
   kick: { back: 0.012, lift: 0.03 },
   action: (p) => p,
   spinRate: 26,
@@ -44,8 +44,8 @@ export const nailCannon: WeaponArt = {
     b.translate(0, 0.02 * tilt, 0); b.roll(0.3 * tilt); b.pitch(0.1 * tilt);
 
     // motor drum, carry handle
-    b.cyl(0, AXIS_Y, -0.06, 0.08, 0.042, 0.042, 12, MAT.COPPER, { tex: (x, y, z) => rivetTex(x, y - AXIS_Y, z) });
-    b.cyl(0, AXIS_Y, -0.07, -0.06, 0.034, 0.034, 12, MAT.IRON);
+    b.cyl(0, AXIS_Y, -0.04, 0.08, 0.036, 0.036, 12, MAT.COPPER, { tex: (x, y, z) => rivetTex(x, y - AXIS_Y, z) });
+    b.cyl(0, AXIS_Y, -0.05, -0.04, 0.028, 0.028, 12, MAT.IRON);
     b.cyl(0, AXIS_Y, 0.08, 0.1, 0.046, 0.046, 12, MAT.IRON);
     b.cbox(-0.006, AXIS_Y + 0.05, -0.05, 0.006, AXIS_Y + 0.058, 0.07, 0.002, MAT.IRON);
     b.box(-0.005, AXIS_Y + 0.036, -0.05, 0.005, AXIS_Y + 0.058, -0.038, MAT.IRON);
@@ -67,7 +67,7 @@ export const nailCannon: WeaponArt = {
     const lift = r < 0 ? 0 : hump(r, 0.12, 0.66, 0.12);
     {
       b.push();
-      b.translate(-0.07 - 0.1 * lift, AXIS_Y - 0.01 + 0.08 * lift, -0.05 + 0.06 * lift);
+      b.translate(-0.056 - 0.03 * lift, AXIS_Y - 0.03 + 0.12 * lift, -0.02 + 0.14 * lift);
       b.roll(-0.6 * lift);
       hopper(b);
       b.pop();
@@ -84,10 +84,10 @@ export const nailCannon: WeaponArt = {
       b.pop();
     } else {
       b.push();
-      b.translate(-0.1 - 0.1 * lift, AXIS_Y - 0.03 + 0.08 * lift, 0.0 + 0.06 * lift);
+      b.translate(-0.07 - 0.03 * lift, AXIS_Y - 0.05 + 0.12 * lift, 0.02 + 0.14 * lift);
       b.roll(-0.5); b.pitch(0.3);
       fist(b, -1, { w: 0.02, fingers: 3 });
-      forearm(b, -0.01, -0.05, -0.045, [-0.45, -0.85, -0.5], 0.03);
+      forearm(b, -0.01, -0.05, -0.045, [-0.3, -1, -0.2], 0.03);
       b.pop();
     }
 

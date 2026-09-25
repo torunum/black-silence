@@ -12,7 +12,7 @@ import type { Pose, WeaponArt } from "./pose";
  * vertically over the 200-row raster), the usual viewmodel trick that
  * keeps a gun held at arm's length from stretching like a fisheye.
  */
-export const FOCAL = 160;
+export const FOCAL = 200;
 
 export function renderWeapon(r: Raster, art: WeaponArt, pose: Pose, cx: number, cy: number): Record<string, [number, number]> {
   r.clear();

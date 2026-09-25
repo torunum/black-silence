@@ -371,7 +371,7 @@ describe("the redrawn weapons, per slot", () => {
     });
   });
 
-  it("every weapon's silhouette differs from every other's by at least 15% of their combined outline", () => {
+  it("every weapon's silhouette differs from every other's by at least 20% of their combined outline", () => {
     const masks = WEAPON_STATS.map((_, slot) => render(slot).col);
     const tooClose: string[] = [];
     for (let i = 0; i < masks.length; i++) {
@@ -382,7 +382,7 @@ describe("the redrawn weapons, per slot", () => {
           if (a !== b) xor++;
           if (a || b) union++;
         }
-        if (xor / union < 0.15) tooClose.push(`${WEAPON_STATS[i].name} vs ${WEAPON_STATS[j].name}: ${(xor / union).toFixed(3)}`);
+        if (xor / union < 0.2) tooClose.push(`${WEAPON_STATS[i].name} vs ${WEAPON_STATS[j].name}: ${(xor / union).toFixed(3)}`);
       }
     }
     expect(tooClose).toEqual([]);

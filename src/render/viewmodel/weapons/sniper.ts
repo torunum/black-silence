@@ -32,7 +32,7 @@ function bolt(b: Builder, lift: number, back: number): void {
 
 export const bmgSniper: WeaponArt = {
   name: "BMG SNIPER",
-  hold: { x: 0.11, y: -0.135, z: 0.4, pitch: 0.02, yaw: -0.26, roll: 0.04 },
+  hold: { x: 0.13, y: -0.112, z: 0.32, pitch: -0.03, yaw: -0.2, roll: 0.04 },
   kick: { back: 0.07, lift: 0.22 },
   action: (p) => p,
   draw(b: Builder, pose: Pose) {

@@ -38,7 +38,7 @@ function pinnacle(b: Builder, x: number, y: number, z: number): void {
 
 export const crossLauncher: WeaponArt = {
   name: "HOLY CROSS LAUNCHER",
-  hold: { x: 0.11, y: -0.135, z: 0.4, pitch: 0.02, yaw: -0.26, roll: 0.04 },
+  hold: { x: 0.125, y: -0.112, z: 0.33, pitch: -0.03, yaw: -0.2, roll: 0.04 },
   kick: { back: 0.05, lift: 0.2 },
   action: (p) => p,
   draw(b: Builder, pose: Pose) {
@@ -49,15 +49,15 @@ export const crossLauncher: WeaponArt = {
 
     // housing: walls, then the roof (hinged on its left eave for the reload)
     b.push(); b.translate(0, 0.0, 0.0);
-    b.prz(ARCH.filter(([, y]) => y <= ROOF_SPLIT), -0.13, 0.22, MAT.BONE, { tex: ivoryTex });
+    b.prz(ARCH.filter(([, y]) => y <= ROOF_SPLIT), -0.06, 0.22, MAT.BONE, { tex: ivoryTex });
     b.push(); b.translate(-0.032, ROOF_SPLIT, 0); b.roll(-1.4 * lid); b.translate(0.032, -ROOF_SPLIT, 0);
-    b.prz(ARCH.filter(([, y]) => y >= ROOF_SPLIT), -0.13, 0.22, MAT.BONE);
-    for (const z of [-0.13, 0.04, 0.2]) b.prz(ARCH.filter(([, y]) => y >= ROOF_SPLIT).map(([x, y]) => [x * 1.12, (y - ROOF_SPLIT) * 1.12 + ROOF_SPLIT]), z, z + 0.018, MAT.GOLD);
+    b.prz(ARCH.filter(([, y]) => y >= ROOF_SPLIT), -0.06, 0.22, MAT.BONE);
+    for (const z of [-0.06, 0.07, 0.2]) b.prz(ARCH.filter(([, y]) => y >= ROOF_SPLIT).map(([x, y]) => [x * 1.12, (y - ROOF_SPLIT) * 1.12 + ROOF_SPLIT]), z, z + 0.018, MAT.GOLD);
     b.pop();
-    for (const z of [-0.13, 0.04, 0.2]) b.prz([[-0.035, -0.004], [0.035, -0.004], [0.035, ROOF_SPLIT], [-0.035, ROOF_SPLIT]], z, z + 0.018, MAT.GOLD);
-    b.cyl(0, 0.04, -0.134, -0.13, 0.022, 0.022, 10, MAT.GOLD);                    // rose window frame
-    b.cyl(0, 0.04, -0.136, -0.133, 0.016, 0.016, 10, MAT.RED);                    // its red glass
-    for (const [x, z] of [[-0.034, -0.13], [0.034, -0.13], [-0.034, 0.2], [0.034, 0.2]]) pinnacle(b, x, ROOF_SPLIT, z);
+    for (const z of [-0.06, 0.07, 0.2]) b.prz([[-0.035, -0.004], [0.035, -0.004], [0.035, ROOF_SPLIT], [-0.035, ROOF_SPLIT]], z, z + 0.018, MAT.GOLD);
+    b.cyl(0, 0.04, -0.064, -0.06, 0.022, 0.022, 10, MAT.GOLD);                    // rose window frame
+    b.cyl(0, 0.04, -0.066, -0.063, 0.016, 0.016, 10, MAT.RED);                    // its red glass
+    for (const [x, z] of [[-0.034, -0.06], [0.034, -0.06], [-0.034, 0.2], [0.034, 0.2]]) pinnacle(b, x, ROOF_SPLIT, z);
     b.cbox(-0.02, 0.004, 0.22, 0.02, 0.05, 0.25, 0.006, MAT.GOLD);                 // the mouth
     b.cbox(-0.012, 0.012, 0.25, 0.012, 0.042, 0.252, 0.004, MAT.BLACK);
     b.pop();

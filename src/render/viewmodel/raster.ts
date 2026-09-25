@@ -86,7 +86,7 @@ export interface Face {
   tex?: TexFn; inv?: Float64Array;
 }
 
-/** Fills one convex-or-concave projected polygon with plane depth, a flat tone and a 2x2 dither only near a tone boundary. */
+/** Fills one convex-or-concave projected polygon with plane depth and a flat tone (a shader may vary it per pixel, dithered only on a tone boundary). */
 export function fillFace(r: Raster, f: Face, F: number, cx: number, cy: number): void {
   const n = f.sx.length, sx = f.sx, sy = f.sy;
   let minY = Infinity, maxY = -Infinity;
@@ -96,14 +96,16 @@ export function fillFace(r: Raster, f: Face, F: number, cx: number, cy: number):
   const W = r.w, zb = r.z, cb = r.col, pb = r.part, part = f.part, k = f.k, nx = f.nx;
   const top = toneCount(f.mat) - 1, low = MATERIALS[f.mat]?.emissive ? 1 : 0, base = f.mat * 8;
   const tex = f.tex, m = f.inv;
-  // Without a shader the tone is the same everywhere on the face: settle it (and its dither) once.
+  // A shaded pixel's tone; a 2x2 dither only where a shader's value sits right on a tone boundary.
   const pick = (t: number, odd: number): number => {
     let tone = Math.floor(t);
     const frac = t - tone;
     if (frac > 0.56 || (frac > 0.44 && odd)) tone++;
     return base + (tone < low ? low : tone > top ? top : tone);
   };
-  const flatEven = pick(f.tone, 0), flatOdd = pick(f.tone, 1);
+  // Without a shader the tone is one flat colour over the whole face, rounded: dithering a big
+  // flat face reads as a screen door once it is upscaled, so flat faces never dither.
+  const flat = pick(Math.round(f.tone), 0);
   const invF = 1 / F, stepDen = nx * invF;
   const xs = XS;
   let bx0 = W, bx1 = 0, by0 = -1, by1 = -1;
@@ -133,7 +135,7 @@ export function fillFace(r: Raster, f: Face, F: number, cx: number, cy: number):
             m[0] * px + m[1] * py + m[2] * z + m[3],
             m[4] * px + m[5] * py + m[6] * z + m[7],
             m[8] * px + m[9] * py + m[10] * z + m[11]), (x ^ y) & 1);
-        } else ci = (x ^ y) & 1 ? flatOdd : flatEven;
+        } else ci = flat;
         zb[i] = z; cb[i] = ci; pb[i] = part;
         if (x < bx0) bx0 = x;
         if (x >= bx1) bx1 = x + 1;

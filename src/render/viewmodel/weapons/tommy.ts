@@ -33,7 +33,7 @@ function drum(b: Builder): void {
 
 export const tommyGun: WeaponArt = {
   name: "TOMMY GUN",
-  hold: { x: 0.11, y: -0.135, z: 0.4, pitch: 0.02, yaw: -0.3, roll: 0.16 },
+  hold: { x: 0.1, y: -0.105, z: 0.33, pitch: -0.02, yaw: -0.1, roll: 0.26 },
   kick: { back: 0.016, lift: 0.05 },
   action: (p) => hump(p, 0.0, 1.0, 0.45),
   draw(b: Builder, pose: Pose) {
@@ -45,7 +45,7 @@ export const tommyGun: WeaponArt = {
     b.cbox(-0.022, 0.0, -0.08, 0.022, 0.05, 0.13, 0.006, MAT.IRON);
     b.box(-0.004, 0.049, -0.06, 0.004, 0.051, 0.06, MAT.BLACK);
     const knob = Math.max(pose.action, r < 0 ? 0 : hump(r, 0.78, 0.97, 0.06));
-    b.ball(0, 0.06, 0.05 - 0.08 * knob, 0.011, MAT.SILVER, 6);
+    b.ball(0, 0.06, 0.05 - 0.08 * knob, 0.011, MAT.IRON, 6);
     b.cbox(-0.009, 0.05, -0.075, 0.009, 0.068, -0.058, 0.003, MAT.IRON);                 // ladder sight
     b.ext([[-0.08, 0.04], [-0.08, -0.02], [-0.1, -0.06], [-0.12, 0.03]], -0.02, 0.02, MAT.WOOD, { tex: woodTex });
 
@@ -62,7 +62,7 @@ export const tommyGun: WeaponArt = {
 
     // vertical foregrip with the left hand on it
     const handAway = r < 0 ? 0 : hump(r, 0.12, 0.86, 0.1);
-    b.push(); b.translate(0, 0.0, 0.25);
+    b.push(); b.translate(0, 0.0, 0.28);
     b.ext([[-0.018, 0.012], [0.018, 0.012], [0.02, -0.06], [0.012, -0.09], [-0.014, -0.09], [-0.02, -0.06]], -0.017, 0.017, MAT.WOOD, { tex: woodTex });
     b.cbox(-0.02, 0.0, -0.03, 0.02, 0.014, 0.03, 0.004, MAT.IRON);
     if (handAway < 0.05) {
@@ -74,10 +74,10 @@ export const tommyGun: WeaponArt = {
 
     // the drum: in, out and dropping, the fresh one swung in by hand
     const out = r < 0 ? 0 : ramp(r, 0.08, 0.24), seat = r < 0 ? 1 : ramp(r, 0.4, 0.6);
-    if (r < 0 || r >= 0.6) { b.push(); b.translate(0, 0.0, 0.1); drum(b); b.pop(); }
-    else if (r < 0.32) { b.push(); b.translate(-0.12 * out, -0.25 * out * out, 0.1); b.roll(-0.6 * out); drum(b); b.pop(); }
+    if (r < 0 || r >= 0.6) { b.push(); b.translate(0, 0.0, 0.14); drum(b); b.pop(); }
+    else if (r < 0.32) { b.push(); b.translate(-0.12 * out, -0.25 * out * out, 0.14); b.roll(-0.6 * out); drum(b); b.pop(); }
     else {
-      b.push(); b.translate(-0.13 * (1 - seat), -0.08 * (1 - seat), 0.1); b.roll(-0.5 * (1 - seat));
+      b.push(); b.translate(-0.13 * (1 - seat), -0.08 * (1 - seat), 0.14); b.roll(-0.5 * (1 - seat));
       drum(b);
       b.translate(-0.05, -0.07, -0.01); b.roll(-1.3);
       fist(b, -1, { w: 0.012, fingers: 3 });

@@ -5,8 +5,9 @@ import { after } from "../core/Timers";
 
 /**
  * 2D LAYER — viewmodels, kick boot, casings, smoke, blood. The `fx2d`
- * overlay canvas that the hand-pixeled weapon viewmodel
- * (src/render/viewmodel/{kit,sprites,draw}.ts) is drawn onto every frame,
+ * overlay canvas that the weapon viewmodel (src/render/viewmodel/draw.ts,
+ * rasterized per frame from a pose since player feedback round 2) and the
+ * kick boot (src/render/viewmodel/{kit,draw}.ts) are drawn onto every frame,
  * plus the three lightweight particle-ish effect pools (spent shell
  * casings, smoke puffs, screen blood hits) that live entirely in 2D screen
  * space rather than the 3D scene.

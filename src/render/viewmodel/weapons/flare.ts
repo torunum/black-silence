@@ -29,7 +29,7 @@ function shell(b: Builder, z0: number): void {
 
 export const flarePistol: WeaponArt = {
   name: "FLARE PISTOL",
-  hold: { x: 0.09, y: -0.1, z: 0.34, pitch: 0.12, yaw: -0.42, roll: 0.12 },
+  hold: { x: 0.082, y: -0.086, z: 0.36, pitch: 0.02, yaw: -0.4, roll: 0.12 },
   kick: { back: 0.035, lift: 0.42 },
   action: (p) => 1 - ramp(p, 0.5, 0.9),
   draw(b: Builder, pose: Pose) {
