@@ -27,7 +27,9 @@ import type * as AudioEngineModule from "../../src/audio/AudioEngine";
  * changed a dozen sounds the player did not name. The rebuild is a NEW
  * function plus a rewiring of the weapon sound table.
  *
- * And that table — `WEAPON_SOUNDS` in `src/weapons/WeaponState.ts` — had NO
+ * And that table — `WEAPON_SOUNDS` in `src/weapons/WeaponState.ts` (since
+ * player feedback round 2 Task 1, `WEAPON_FIRE_SOUNDS` in
+ * `src/audio/sounds/weapons.ts`) — had NO
  * oracle of any kind before this file. `tests/fidelity.test.ts`'s
  * "WEAPON_STATS vs. reference" case compares "every field except snd, slot
  * for slot", by name: the eight `snd` closures were the one part of the

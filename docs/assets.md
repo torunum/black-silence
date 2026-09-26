@@ -41,9 +41,9 @@ recorded a source URL for is unshippable.
 
 ### What the code change looks like
 
-Small, by design. `src/weapons/WeaponState.ts`'s `WEAPON_SOUNDS` table maps
-each slot to one closure. A real file replaces the synthesis inside that
-closure with an `AudioBufferSourceNode`, and **connects to the same
+Small, by design. `src/audio/sounds/weapons.ts`'s `WEAPON_FIRE_SOUNDS` maps
+each slot to one named function (`shotgunFire`, …). A real file replaces the
+synthesis inside that function with an `AudioBufferSourceNode`, and **connects to the same
 `masterBus()` accessor** — so it inherits positional audio for free, which is
 the entire point of the shape Phase 1 Task 3 built. Nothing else moves:
 

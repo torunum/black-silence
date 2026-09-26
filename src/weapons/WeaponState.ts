@@ -7,8 +7,11 @@ import { rnd } from "../utils/math";
 import { WEAPON_STATS } from "./definitions";
 import { weaponRuntime } from "./WeaponRuntime";
 import { animCues } from "../core/AnimCues";
-import { bang, blip, click, gunshot, type GunshotProfile } from "../audio/Sfx";
-import { growl } from "../audio/Voice";
+import {
+  WEAPON_FIRE_SOUNDS, weaponLower, weaponRaise, reloadOut, reloadIn, reloadDone, dryFire,
+  shotgunPump, kickSwing, kickImpact,
+} from "../audio/sounds/weapons";
+import { kickReady } from "../audio/sounds/ui";
 import { renderState } from "../render/Renderer";
 import { blood, smoke3d } from "../fx/Particles";
 import { screenShake, shake } from "../fx/ShakeState";
@@ -49,8 +52,10 @@ import type { Enemy } from "../enemies/Enemy";
  * what breaks the `WEAPONS <-> COLLISION` cycle (Collision.ts's own header
  * has the other half of that story).
  *
- * `WEAPON_SOUNDS` and `WEAPONS` (`WEAPON_STATS` merged with each weapon's
- * sound closure) move here too, with `EQUIP_T`/`UNEQUIP_T` (formerly
+ * `WEAPONS` (`WEAPON_STATS` merged with each weapon's firing sound — since
+ * player feedback round 2 Task 1 those sounds are the named functions in
+ * `src/audio/sounds/weapons.ts`'s `WEAPON_FIRE_SOUNDS`, formerly this file's
+ * `WEAPON_SOUNDS` closures) moves here too, with `EQUIP_T`/`UNEQUIP_T` (formerly
  * legacy.js lines 80-91, immediately above the seven functions), even
  * though none of the five named exports below is one of them. They cannot
  * stay behind in legacy.js: `startReload`/`weaponTick` both read
@@ -80,75 +85,9 @@ import type { Enemy } from "../enemies/Enemy";
  * KNOWN-3 records it as done.
  */
 
-/**
- * The six BALLISTIC weapons' reports — every `kind:"hit"` slot. Rebuilt for
- * player feedback round 1 task 4 (2026-09-17): the project owner played the
- * game and said the gun firing sound was bad. `src/audio/Sfx.ts`'s
- * `gunshot()` doc comment carries the full argument; the short version is
- * that each of these used to be one fixed-lowpass noise burst with a
- * polynomial fade (no content above its own corner, so no transient; still
- * -12 dB at half its length, so too long a decay) plus, on four of the six,
- * a pitched square/sawtooth sweep — two of those through the echo bus,
- * which is the buzz.
- *
- * `split` is each weapon's OLD `bang` lowpass corner, unchanged: the crack
- * now occupies the band above it and the body the band below, so the one
- * number that used to end the sound is now where its two halves meet.
- * `crack + body + punch` is each weapon's OLD summed peak gain, exactly, so
- * nothing moved relative to the sounds this task did not touch.
- *
- * Slots 5 (HOLY CROSS LAUNCHER, `kind:"cross"`) and 7 (SOUL REAPER,
- * `kind:"reap"`) are DELIBERATELY UNCHANGED and still byte-for-byte the
- * reference's. Neither is a firearm; their rising pitched sweeps are the
- * character of a holy relic and a soul-eater, and "a firearm report is a
- * broadband transient followed by a fast-decaying body" is an argument that
- * does not apply to either. Changing them would be a sound-design decision
- * nobody asked for, in a round about one reported bug.
- *
- * NONE OF THIS HAS BEEN HEARD. It is argued entirely from the shape of the
- * synthesis. The real fix is Phase 1 Task 6's user-supplied CC0 `.ogg`
- * files — see `docs/assets.md`.
- */
-const REPORTS: Record<number, GunshotProfile> = {
-  // FLARE PISTOL — old: bang(.13,.42,2400) + blip(180,.08,"square",.1,60,echo)
-  0: { split:2400, crack:.16, body:.20, bodyDur:.09, bodyEndHz:380, punch:.16, punchHz:150, punchEndHz:48, punchDur:.07 },
-  // SAWED-OFF SHOTGUN — old: bang(.24,.65,1400) + bang(.1,.3,500). The second
-  // bang was already a crude body layer; it is the punch now, done as a real
-  // low thump instead of 100 ms of 500 Hz-lowpassed noise. Longest body and
-  // the heaviest punch share of the six, which is the shotgun's whole point.
-  1: { split:1400, crack:.25, body:.34, bodyDur:.17, bodyEndHz:240, punch:.36, punchHz:120, punchEndHz:36, punchDur:.12 },
-  // COMBAT RIFLE — old: bang(.07,.34,2600) + blip(140,.05,"square",.06,70)
-  2: { split:2600, crack:.13, body:.16, bodyDur:.05, bodyEndHz:420, punch:.11, punchHz:165, punchEndHz:55, punchDur:.04 },
-  // TOMMY GUN — old: bang(.055,.26,3000), and nothing else at all: no second
-  // layer of any kind. Gets both a crack and a punch here. Fires every 65 ms,
-  // so it is the profile that most needs a decay that ends before the next
-  // round starts; .04 body against a .065 rate now clears.
-  3: { split:3000, crack:.09, body:.10, bodyDur:.04, bodyEndHz:520, punch:.07, punchHz:180, punchEndHz:62, punchDur:.03 },
-  // BMG SNIPER — old: bang(.3,.6,1900) + blip(90,.3,"sawtooth",.12,40,echo).
-  // Longest decay and the lowest punch: a .50 calibre rifle is the one weapon
-  // here whose body legitimately runs past 200 ms.
-  4: { split:1900, crack:.22, body:.26, bodyDur:.21, bodyEndHz:210, punch:.24, punchHz:110, punchEndHz:33, punchDur:.15 },
-  // NAIL CANNON — old: bang(.04,.22,3200) + blip(260,.04,"square",.05,120).
-  // Pneumatic, not a powder charge: brightest split, shortest body, and the
-  // smallest punch share of the six — most of its energy is the crack.
-  6: { split:3200, crack:.12, body:.10, bodyDur:.03, bodyEndHz:750, punch:.05, punchHz:220, punchEndHz:88, punchDur:.022 },
-};
-
-const WEAPON_SOUNDS = [
-  () => { gunshot(REPORTS[0]); },
-  () => { gunshot(REPORTS[1]); },
-  () => { gunshot(REPORTS[2]); },
-  () => { gunshot(REPORTS[3]); },
-  () => { gunshot(REPORTS[4]); },
-  () => { blip(520,.3,"sine",.12,780,true); bang(.1,.2,800); },
-  () => { gunshot(REPORTS[6]); },
-  () => { blip(70,.5,"sawtooth",.16,360,true); bang(.28,.45,500); growl(90,.4,.3,true); },
-];
-/** The ballistic slots `REPORTS` covers — exported so tests can derive the divergence set rather than hardcode it. */
-export const REBUILT_REPORT_SLOTS = Object.keys(REPORTS).map(Number);
-/** The profiles themselves, exported for the same reason. */
-export const WEAPON_REPORTS: Readonly<Record<number, GunshotProfile>> = REPORTS;
-export const WEAPONS = WEAPON_STATS.map((w, i) => ({ ...w, snd: WEAPON_SOUNDS[i] }));
+/** Moved to the sound catalogue with the firing sounds; re-exported here for the tests that read them off this module. */
+export { REBUILT_REPORT_SLOTS, WEAPON_REPORTS } from "../audio/sounds/weapons";
+export const WEAPONS = WEAPON_STATS.map((w, i) => ({ ...w, snd: WEAPON_FIRE_SOUNDS[i] }));
 export const EQUIP_T=.24,UNEQUIP_T=.16;
 /**
  * Power-kick cooldown, in seconds. Was `15` (a player-week-scale number that
@@ -168,7 +107,7 @@ type KickEnemy = Pick<Enemy, "dead" | "x" | "z" | "h" | "boss" | "maxhp" | "kx" 
 export function requestSwitch(i: number){
   if(!game.started||!S.weapons[i]||i===S.cur||weaponRuntime.pending===i)return;
   weaponRuntime.pending=i;input.zoomOn=false;
-  if(weaponRuntime.wstate!=="unequip"){weaponRuntime.wstate="unequip";weaponRuntime.wtime=0;click(.12);}}
+  if(weaponRuntime.wstate!=="unequip"){weaponRuntime.wstate="unequip";weaponRuntime.wtime=0;weaponLower();}}
 export function startReload(){
   if(!game.started||S.dead||game.inputLock)return;
   const w=WEAPONS[S.cur];
@@ -180,26 +119,26 @@ export function weaponTick(dt: number){
   const w=WEAPONS[S.cur];
   if(weaponRuntime.wstate==="unequip"&&weaponRuntime.wtime>=UNEQUIP_T){
     if(weaponRuntime.pending>=0){S.cur=weaponRuntime.pending;weaponRuntime.pending=-1;}
-    weaponRuntime.wstate="equip";weaponRuntime.wtime=0;click(.16);}
+    weaponRuntime.wstate="equip";weaponRuntime.wtime=0;weaponRaise();}
   else if(weaponRuntime.wstate==="equip"&&weaponRuntime.wtime>=EQUIP_T){weaponRuntime.wstate="idle";weaponRuntime.wtime=0;}
   else if(weaponRuntime.wstate==="fire"&&weaponRuntime.wtime>=Math.min(.35,w.rate)){weaponRuntime.wstate="idle";weaponRuntime.wtime=0;}
   else if(weaponRuntime.wstate==="reload"){
     const rt=weaponRuntime.wtime/w.reload;
-    if(rt>.18&&!weaponRuntime.reloadFlags.a){weaponRuntime.reloadFlags.a=1;click(.16);
+    if(rt>.18&&!weaponRuntime.reloadFlags.a){weaponRuntime.reloadFlags.a=1;reloadOut();
       if(S.cur===0)for(let i=0;i<6;i++)ejectCasing(1);
       if(S.cur===1){ejectCasing(2);ejectCasing(2);}
       if(S.cur===4)ejectCasing(3);}
-    if(rt>.62&&!weaponRuntime.reloadFlags.b){weaponRuntime.reloadFlags.b=1;click(.14);}
+    if(rt>.62&&!weaponRuntime.reloadFlags.b){weaponRuntime.reloadFlags.b=1;reloadIn();}
     if(rt>=1){
       const need=w.magSize-S.mag[S.cur];
       const take=Math.min(need,S.ammo[w.ammo]);
       S.ammo[w.ammo]-=take;S.mag[S.cur]+=take;
-      weaponRuntime.wstate="idle";weaponRuntime.wtime=0;click(.2);}
+      weaponRuntime.wstate="idle";weaponRuntime.wtime=0;reloadDone();}
     if(input.firing&&S.mag[S.cur]>0){weaponRuntime.wstate="idle";weaponRuntime.wtime=0;}}
   if(input.firing&&(weaponRuntime.wstate==="idle"||weaponRuntime.wstate==="fire")&&weaponRuntime.wCool<=0&&!S.dead&&game.started&&!game.inputLock){
     if(S.mag[S.cur]<=0){
       if(S.ammo[w.ammo]>0)startReload();
-      else{click(.1);weaponRuntime.wCool=.3;animCues.dryFire++;}}        // dry click, not a beep (the cue is animation only, round 2 Task 4)
+      else{dryFire();weaponRuntime.wCool=.3;animCues.dryFire++;}}        // dry click, not a beep (the cue is animation only, round 2 Task 4)
     else fire(w);}
   if(weaponRuntime.wstate==="idle"&&S.mag[S.cur]===0&&S.ammo[w.ammo]>0&&weaponRuntime.wtime>.4)startReload();
   weaponRuntime.kickAmt*=Math.exp(-10*dt);weaponRuntime.kickRot*=Math.exp(-9*dt);
@@ -213,7 +152,7 @@ export function weaponTick(dt: number){
   renderState.camera.fov=78-46*weaponRuntime.zoomLerp;renderState.camera.updateProjectionMatrix();
   /* kick cooldown */
   if(S.kickCd>0){S.kickCd-=dt;
-    if(S.kickCd<=0){say("kickready");click(.12);}}
+    if(S.kickCd<=0){say("kickready");kickReady();}}
   weaponRuntime.kickAnim=Math.max(0,weaponRuntime.kickAnim-dt);}
 export function fire(w: typeof WEAPONS[number]){
   S.mag[S.cur]--;weaponRuntime.wCool=w.rate;weaponRuntime.wstate="fire";weaponRuntime.wtime=0;
@@ -225,7 +164,7 @@ export function fire(w: typeof WEAPONS[number]){
   renderState.muzzleLight.color.setHex(S.cur===5?0xfff0b0:0xffc878);
   w.snd();
   if(S.cur===2||S.cur===3)ejectCasing(0);
-  if(S.cur===1)after(()=>{ejectCasing(2);click(.12);},300); // pump
+  if(S.cur===1)after(()=>{ejectCasing(2);shotgunPump();},300); // pump
   weaponRuntime.recoilPitch+=(S.cur===1?.04:S.cur===4?.05:S.cur===0?.022:S.cur===5?.03:.006);
   alertSound(player.px,player.pz,18);
   const dir=new THREE.Vector3();renderState.camera.getWorldDirection(dir);
@@ -266,7 +205,7 @@ const reapTailMat=new THREE.MeshBasicMaterial({color:0x4fa030,transparent:true,o
 export function doKick(){
   if(!game.started||S.dead||game.inputLock||S.kickCd>0||game.pianoOpen)return;
   S.kickCd=KICK_CD;weaponRuntime.kickAnim=.32;
-  shake(.3);bang(.15,.5,900);
+  shake(.3);kickSwing();
   schedule(()=>{
     const dir=new THREE.Vector3();renderState.camera.getWorldDirection(dir);
     let hitAny=false;
@@ -290,5 +229,5 @@ export function doKick(){
       if(dot<.5)continue;
       hitAny=true;
       if(p.explosive)explodeBarrel(p);else breakProp(p);}
-    if(hitAny){bang(.12,.4,500);shake(.15);screenShake.hitStop=Math.max(screenShake.hitStop,.03);}
+    if(hitAny){kickImpact();shake(.15);screenShake.hitStop=Math.max(screenShake.hitStop,.03);}
   },0.110);}

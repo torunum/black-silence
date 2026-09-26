@@ -7,8 +7,7 @@ import { game } from "../core/Game";
 import { ENEMY_DEFS as EDEF } from "./EnemyDefs";
 import { PX } from "./SpriteBaker";
 import { at } from "../audio/AudioEngine";
-import { blip, bang } from "../audio/Sfx";
-import { growl } from "../audio/Voice";
+import { bossWakes, bossRoar, priestVanish, priestAppear, priestSummons } from "../audio/sounds/monsters";
 import { organChord, startBossMusic } from "../audio/Ambient";
 import { say } from "../ui/Subtitles";
 import { showMsg, flashHoly } from "../ui/HudMessages";
@@ -120,7 +119,7 @@ export function wakeBoss(enemy: unknown){
   const bt=el("bossTitle");
   bt.children[0].textContent=e.name!;bt.children[1].textContent=(e.title||EDEF[e.key].title)!;
   bt.style.opacity="1";
-  at(e.x,e.h*.6+(e.fy||0),e.z,()=>{blip(40,1.6,"sawtooth",.2,30,true);bang(.5,.4,300);});
+  at(e.x,e.h*.6+(e.fy||0),e.z,()=>bossWakes());
   if(e.priest)organChord();
   after(()=>roarFor(e),500);}
 
@@ -128,8 +127,7 @@ ctx.wakeBoss=wakeBoss;
 
 export function roarFor(enemy: unknown){
   const e=enemy as BossBrainEnemy;
-  at(e.x,e.h*.6+(e.fy||0),e.z,()=>growl(rnd(42,60),1.0,.6,true));
-  after(()=>{at(e.x,e.h*.6+(e.fy||0),e.z,()=>growl(rnd(50,70),.6,.4,true));},200);}
+  bossRoar(emit=>at(e.x,e.h*.6+(e.fy||0),e.z,emit));}
 
 export function cineTick(dt: number){
   if(!world.cine)return;
@@ -152,13 +150,13 @@ export function cineTick(dt: number){
 
 export function priestTeleport(enemy: unknown,far: boolean){
   const e=enemy as BossBrainEnemy;
-  smoke3d(e.x,1.2,e.z,16);at(e.x,1.2,e.z,()=>blip(700,.25,"sine",.1,140,true));
+  smoke3d(e.x,1.2,e.z,16);at(e.x,1.2,e.z,()=>priestVanish());
   for(let tries=0;tries<24;tries++){
     const a=rnd(0,6.28),d=far?rnd(7,11):rnd(4,7);
     const nx=player.px+Math.sin(a)*d,nz=player.pz+Math.cos(a)*d;
     if(!solidAt(nx,nz)&&los(nx,nz,player.px,player.pz)){e.x=nx;e.z=nz;break;}}
   smoke3d(e.x,1.2,e.z,16);fireP(e.x,1,e.z,6);
-  at(e.x,1,e.z,()=>blip(140,.25,"sine",.12,700,true));}
+  at(e.x,1,e.z,()=>priestAppear());}
 
 export function priestThink(enemy: unknown,dt: number,dist: number,dx: number,dz: number){
   const e=enemy as BossBrainEnemy;
@@ -196,7 +194,7 @@ export function priestThink(enemy: unknown,dt: number,dist: number,dx: number,dz
               ne.aware=true;ne.alertX=player.px;ne.alertZ=player.pz;
               smoke3d(nx,.6,nz,10);blood(nx,.3,nz,6,1.5);
               break;}}}
-        at(e.x,e.h*.6+(e.fy||0),e.z,()=>blip(180,.6,"sawtooth",.12,60,true));
+        at(e.x,e.h*.6+(e.fy||0),e.z,()=>priestSummons());
         showMsg("THE PRIEST CALLS HIS FLOCK");}}
   }else{
     if(e.ringT<=0){e.ringT=4.5;spawnRing(e.x,e.z);}

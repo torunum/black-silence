@@ -1,4 +1,4 @@
-import { blip } from "../audio/Sfx";
+import { achievementChime } from "../audio/sounds/ui";
 import { after } from "../core/Timers";
 import type { Achievement } from "../content/achievements";
 import { el } from "./dom";
@@ -36,6 +36,6 @@ export function ach(a: Achievement, unlocked: Record<string, UnlockedAchievement
   t.innerHTML = "✦ " + a.title + "<small>" + a.desc + "</small>";
   el("toasts").appendChild(t);
   requestAnimationFrame(() => t.style.opacity = "1");
-  blip(160, .5, "sine", .05, 120, true);
+  achievementChime();
   after(() => { t.style.opacity = "0"; after(() => t.remove(), 500); }, 4200);
 }
