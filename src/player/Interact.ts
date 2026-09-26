@@ -5,9 +5,8 @@ import { ach } from "../ui/Toasts";
 import { showMsg } from "../ui/HudMessages";
 import { say } from "../ui/Subtitles";
 import { at } from "../audio/AudioEngine";
-import { lockedDoor, itemPickup } from "../audio/sounds/world";
+import { lockedDoor, itemPickup, doorOpens } from "../audio/sounds/world";
 import { scrapSmgAssembled } from "../audio/sounds/ui";
-import { wetDoor, stoneDoor } from "../audio/Ambient";
 import { emberP } from "../fx/Particles";
 import { renderState } from "../render/Renderer";
 import { ITEMTEX } from "../render/ItemTextures";
@@ -99,7 +98,7 @@ export function interact(){
       if(d.locked&&!S.key){showMsg("IT WANTS THE RED KEY",2.2);
         say("locked");at(wx_,WALLH/2,wz_,()=>lockedDoor());return;}
       d.open=true;
-      at(wx_,WALLH/2,wz_,()=>{if(d.flesh)wetDoor();else stoneDoor();});
+      at(wx_,WALLH/2,wz_,()=>doorOpens(!!d.flesh));
       alertSound(wx_,wz_,8);
       if(d.secret){S.secrets++;S.totSecrets++;say("secret",true);
         showMsg("SECRET FOUND — "+S.secrets+"/"+S.secretsTotal,3);

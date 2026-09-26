@@ -1,15 +1,13 @@
 /**
- * THE AUDIO ENGINE — builds the WebAudio graph: the master gain bus, the
- * echo/delay feedback loop that distant or reverberant effects route
- * through, the ambience lowpass, and the four detuned drone oscillators
- * (each with its own slow LFO modulating its gain) that make up the game's
- * ambient bed. audioInit()'s body is copied verbatim from
- * reference/sonsurum.html lines 1650-1664 (see tests/support/reference.ts's
- * REF.audioInit) — every frequency, waveform, gain and LFO rate range is sound
- * design and must never change.
+ * THE AUDIO ENGINE — builds the WebAudio graph: the mix every sound goes
+ * into (`./Mix.ts`, since player feedback round 2 Task 2), the ambience
+ * lowpass, and the four detuned drone oscillators (each with its own slow
+ * LFO on its gain) that make up the game's ambient bed. The drone bed is the
+ * reference's (reference/sonsurum.html 1650-1664, REF.audioInit) — every
+ * frequency, waveform, gain and LFO rate range is sound design.
  *
  * This is the first module in the port that owns live mutable state: AC,
- * masterG, echoG and masterVol are assigned after construction (by
+ * the mix and masterVol are assigned after construction (by
  * audioInit, below) and read from several places across the game, including
  * the settings volume slider in legacy.js. ES module bindings are immutable
  * across module boundaries, so bare exported `let`s cannot work here — the
@@ -35,11 +33,27 @@
  * The four LFO rates are drawn from `soundRandom()` (`./SoundRandom.ts`),
  * not `Math.random()`: player feedback round 2 Task 1 (KNOWN-22) took all
  * sound off the game's generator. Same ranges, different dice.
+ *
+ * PLAYER FEEDBACK ROUND 2 TASK 2 — THE MIX. The graph after a sound is no
+ * longer built here: `audioInit` asks a `MixFactory` (`./Mix.ts`'s
+ * `newMix` unless told otherwise) for it — a room, a glue compressor, a
+ * limiter, a soft clip, the master volume. The reference's masterG/echoG
+ * graph survives only on the sound board, as "Old mix"
+ * (`src/soundboard/previous/mix.ts`), which is also what the tests that
+ * compare sound bodies with the reference run on. Two more pieces of live
+ * state come with it: the room the current level asked for (`setRoom`,
+ * called by `loadLevel`), and `pendingLevel`, the level of the sound being
+ * emitted (`voiced`, used by `./Levels.ts`) — a dynamic scope exactly like
+ * `pendingPos`, carried into the sound's own delayed halves through
+ * `src/core/Timers.ts`'s `carryIntoTimers`.
  */
 
 import { save } from "../save/SaveGame";
 import { flushSave } from "../save/persist";
+import { carryIntoTimers } from "../core/Timers";
 import { soundRandom } from "./SoundRandom";
+import { DRY_SEND, ECHO_SEND, newMix, type Mix, type MixFactory } from "./Mix";
+import type { RoomName } from "./Room";
 
 declare global {
   interface Window {
@@ -48,60 +62,87 @@ declare global {
 }
 
 let AC: AudioContext | null = null;
-let masterG: GainNode | null = null;
-let echoG: GainNode | null = null;
+let mix: Mix | null = null;
 let masterVol = 0.5;
 /** See the module doc comment's "Plan 1 Task 3" paragraph above. */
 let pendingPos: { x: number; y: number; z: number } | null = null;
+/** The room the current level sounds in — kept here so a level loaded before audioInit() still gets it. */
+let room: RoomName = "hall";
 
 /**
- * TYPE HONESTY NOTE (applies to ctx()/masterBus()/echoBus() below): all three
- * accessors are declared as returning their node type, never `| null`, even
- * though AC/masterG/echoG are genuinely null until audioInit() runs — the
- * declared type is stricter than the runtime guarantee.
- *
- * This is deliberate, not an oversight. Every one of the ~85 call sites
- * across src/audio/Voice.ts, Sfx.ts and Ambient.ts already opens with the
- * reference's own `if(!ctx())return;` guard, copied verbatim as part of a
- * dozen function bodies tests/fidelity.test.ts compares byte-for-byte
- * against reference/sonsurum.html — so those bodies cannot gain a second
- * narrowing line without breaking that comparison. But TypeScript cannot
- * narrow across a re-invoked function call: after `if(!ctx())return;`, a
- * later `ctx().createOscillator()` calls the accessor again and TS has no
- * way to know it returns the same value. A nullable return type is
- * therefore unfixable at those call sites without editing every one of
- * them — which is the `!`-at-85-sites problem in different clothing. Typing
- * the accessors as non-nullable moves the (real, honored) contract "call
- * this only after checking readiness" from the type system to the doc
- * comment: it satisfies every existing call site for free, but it also
- * means a *new* caller that forgets the guard gets no compile error and
- * fails at runtime instead — the type is asserting something the runtime
- * cannot fully guarantee. isReady() (below) is the actual runtime
- * predicate; check it (or the equivalent `if(!ctx())return;` early exit)
- * before calling any audio function, because the type of ctx() itself will
- * not stop you if you don't.
- *
- * masterBus()/echoBus() widen to `GainNode | PannerNode` below (Plan 1 Task
- * 3) — still never `| null`, so the same reasoning applies unchanged: every
- * existing call site only ever does `.connect(masterBus())`/`echoBus()`,
- * which accepts either node type identically, so the widening needs no
- * change at any of the ten call sites either.
+ * A sound's level: its trim (linear gain) and how much more or less of it
+ * goes to the room than its `echo` flag alone would send. `./Levels.ts`
+ * resolves these from the loudness table.
+ */
+export interface Level {
+  gain: number;
+  room: number;
+}
+/** The level of the sound being emitted right now (see `voiced`), or null outside any. */
+let pendingLevel: Level | null = null;
+/** How many bus connections were made outside any level — see `unscopedConnections`. */
+let unscoped = 0;
+
+/**
+ * Runs `emit` with every sound it makes at `level`. Nested scopes restore
+ * the outer one on the way out (unlike `at()`, whose one position per
+ * logical sound makes nesting meaningless): a catalogue sound that plays
+ * another catalogue sound hands it over, then takes its own level back.
+ * Carried into `after()` timers the sound schedules, below.
+ */
+export function voiced<T>(level: Level, emit: () => T): T {
+  const outer = pendingLevel;
+  pendingLevel = level;
+  try {
+    return emit();
+  } finally {
+    pendingLevel = outer;
+  }
+}
+
+carryIntoTimers(() => {
+  const level = pendingLevel;
+  return level ? (fn) => voiced(level, fn) : null;
+});
+
+/**
+ * Bus connections made with no level in scope, ever. Every sound the game
+ * plays goes through a level (`./Levels.ts`) except the boss music pulse,
+ * whose beats fire from a `setInterval` inside a body pinned byte-for-byte
+ * to the reference — `tests/audio/mix.test.ts` holds that line.
+ */
+export function unscopedConnections(): number {
+  return unscoped;
+}
+
+/**
+ * TYPE HONESTY NOTE (ctx()/masterBus()/echoBus() below): declared
+ * non-null, though AC and the mix are null until audioInit() runs. Every
+ * call site in Voice.ts, Sfx.ts and Ambient.ts opens with the reference's
+ * own `if(!ctx())return;`, inside bodies tests/fidelity.test.ts compares
+ * byte-for-byte, and TypeScript cannot narrow across a re-invoked accessor,
+ * so a nullable type would need a `!` at ~85 sites. The contract "check
+ * isReady() (or `if(!ctx())return;`) first" lives in this comment, not the
+ * type: a new caller that forgets it compiles and fails at runtime.
+ * masterBus()/echoBus() return `GainNode | PannerNode` (Plan 1 Task 3);
+ * every caller only `.connect()`s into them, which takes either.
  */
 export function ctx(): AudioContext {
   return AC as AudioContext;
 }
 /**
- * The node a caller should connect a master-bus-routed sound into: `masterG`
- * itself when no position is pending, or a fresh `PannerNode` — positioned
- * there and connected to `masterG` — when `emitAt()` armed one. See
- * `busFor()` below for the panner's parameters and why each was picked.
+ * The node a caller should connect a master-bus-routed sound into: the
+ * mix's strip for the current level at `DRY_SEND` when no position is
+ * pending, or a fresh `PannerNode` — positioned there and connected to that
+ * strip — when `emitAt()` armed one. See `busFor()` below for the panner's
+ * parameters and why each was picked.
  */
 export function masterBus(): GainNode | PannerNode {
-  return busFor(masterG as GainNode);
+  return busFor(false);
 }
-/** `echoBus()`'s counterpart to `masterBus()` above — same panner, into `echoG` instead. */
+/** `echoBus()`'s counterpart to `masterBus()` above — the same, at `ECHO_SEND`: more of it in the room. */
 export function echoBus(): GainNode | PannerNode {
-  return busFor(echoG as GainNode);
+  return busFor(true);
 }
 export function isReady(): boolean {
   return AC !== null;
@@ -227,7 +268,14 @@ export function emitHere(): void {
  * double) for years, so there is no environment here that needs the
  * deprecated form for the panner specifically.
  */
-function busFor(target: GainNode): GainNode | PannerNode {
+function busFor(echo: boolean): GainNode | PannerNode {
+  const level = pendingLevel;
+  if (!level) unscoped++;
+  const target = (mix as Mix).route({
+    echo,
+    send: (echo ? ECHO_SEND : DRY_SEND) * (level ? level.room : 1),
+    gain: level ? level.gain : 1,
+  });
   if (!pendingPos) return target;
   const { x, y, z } = pendingPos;
   // Deliberately NOT cleared here. `snarl` alone calls two emitters for six of
@@ -254,7 +302,7 @@ function busFor(target: GainNode): GainNode | PannerNode {
  * flushes it to storage, so a change survives a reload.
  *
  * This is also the only way a *loaded* volume reaches this module's private
- * `masterVol` (and, once `audioInit()` runs, `masterG`): `masterVol`
+ * `masterVol` (and, once `audioInit()` runs, the mix's output stage): `masterVol`
  * initialises to the reference's `0.5` at module scope, same as every other
  * module-scope literal in this port, and nothing else in this file ever
  * reads `save.masterVolume`. `src/ui/Menus.ts`'s volume IIFE calls this with
@@ -263,9 +311,30 @@ function busFor(target: GainNode): GainNode | PannerNode {
  */
 export function setMasterVolume(v: number): void {
   masterVol = v;
-  if (masterG) masterG.gain.value = masterVol;
+  if (mix) mix.setVolume(masterVol);
   save.masterVolume = v;
   flushSave();
+}
+
+/** The master volume the live graph's output stage is actually at, or null before `audioInit()`. */
+export function liveVolume(): number | null {
+  return mix ? mix.volume() : null;
+}
+
+/**
+ * The room the current level sounds in (`./Room.ts`'s `roomFor`, called by
+ * `src/world/LevelLoader.ts`'s `loadLevel`). Before `audioInit()` it is
+ * remembered for the graph to come; after, the mix builds that room's
+ * impulse response now — at the level load, not at the level's first shot.
+ */
+export function setRoom(r: RoomName): void {
+  room = r;
+  if (mix) mix.setRoom(r);
+}
+
+/** The room asked for last (`setRoom`), and the one the live graph has built, if any. */
+export function currentRoom(): { wanted: RoomName; built: RoomName | null } {
+  return { wanted: room, built: mix ? mix.room() : null };
 }
 
 /**
@@ -286,31 +355,23 @@ export interface AudioInitOptions {
    * `BaseAudioContext`, which is why the cast below is honest in practice.
    */
   context?: BaseAudioContext;
+  /**
+   * The mix to build (`./Mix.ts`). Default `newMix`, the game's. The board
+   * passes `src/soundboard/previous/mix.ts` to hear the pre-Task-2 mix; the
+   * tests that compare sound bodies with the reference pass it too.
+   */
+  mix?: MixFactory;
 }
 
 /** Build the audio graph and start the ambient drone bed. Call once, on game start. */
 export function audioInit(opts: AudioInitOptions = {}): void {
   AC=(opts.context as AudioContext|undefined)??new (window.AudioContext||window.webkitAudioContext)();
-  masterG=AC.createGain();masterG.gain.value=masterVol;masterG.connect(AC.destination);
-  const dly=AC.createDelay(1);dly.delayTime.value=.34;
-  const fb=AC.createGain();fb.gain.value=.42;
-  echoG=AC.createGain();echoG.gain.value=1;
-  echoG.connect(dly);dly.connect(fb);fb.connect(dly);dly.connect(masterG);
-  const lp=AC.createBiquadFilter();lp.type="lowpass";lp.frequency.value=170;lp.connect(masterG);
-  // AC is genuinely non-null here (assigned two statements above, in this
-  // same synchronous call, with nothing in between that could reset it) —
-  // but that narrowing doesn't extend into the forEach callback below since
-  // it's a separate function scope closing over the module-level `let`.
-  // Capturing it into a `const` here is a real (not asserted) narrowing:
-  // unlike ctx()/masterBus()/echoBus() above, `ac` cannot be reassigned, so
-  // TypeScript carries its non-null type into the closure honestly.
+  mix=(opts.mix??newMix)(AC,masterVol,room);
+  const lp=AC.createBiquadFilter();lp.type="lowpass";lp.frequency.value=170;lp.connect(mix.bed);
+  // `ac`: a const, so its non-null type reaches the forEach closure below
+  // (the module-level `let` would not narrow there). The drone table is
+  // typed on the array, not the callback parameter, for strictFunctionTypes.
   const ac=AC;
-  // Typed here, as a separate const, rather than an inline tuple annotation
-  // on the callback parameter: strictFunctionTypes (Plan 0F Task 10) checks
-  // an explicitly-annotated callback parameter contravariantly against
-  // forEach's own (wider, string|number[]-inferred) parameter type and
-  // rejects it. Annotating the array instead lets the callback's parameter
-  // type come from plain contextual inference, which needs no such check.
   if(opts.drones===false)return;
   const drones: [number, OscillatorType, number][] = [[33,"sawtooth",.05],[49.5,"sine",.07],[24.7,"triangle",.06],[66,"sine",.025]];
   drones.forEach(([f,t,g])=>{

@@ -61,6 +61,26 @@ describe("every sound the game plays has a name", () => {
     expect(hits).toEqual([]);
   });
 
+  /**
+   * Player feedback round 2 Task 2: every sound plays at a level
+   * (`src/audio/Levels.ts`), and the catalogue is where levels are set. The
+   * engine's already-named sounds are reached through catalogue wrappers
+   * (`monsterAlert`, `doorOpens`, `churchBells`, `organSting`, `pianoKey`);
+   * calling one directly from the game would play it untrimmed. The boss
+   * pulse (`startBossMusic`) is the documented exception.
+   */
+  it("calls no engine-named sound outside src/audio either — the catalogue gives each its level", () => {
+    const NAMED = /(?<![.\w$])(snarl|wetDoor|stoneDoor|bellToll|organChord|pianoNote)\(/g;
+    const hits: string[] = [];
+    for (const f of outside) {
+      if (rel(f).startsWith("soundboard/previous/")) continue;
+      for (const m of code(f).matchAll(NAMED)) hits.push(`${rel(f)}: ${m[0]}`);
+    }
+    expect(hits).toEqual([]);
+    const inside = srcFiles(join(SRC, "audio", "sounds")).reduce((n, f) => n + [...code(f).matchAll(NAMED)].length, 0);
+    expect(inside, "the same pattern finds them in the catalogue, once each").toBe(6);
+  });
+
   it("is not vacuous — the same pattern finds the raw calls inside the catalogue", () => {
     const inside = srcFiles(join(SRC, "audio", "sounds"));
     const n = inside.reduce((sum, f) => sum + [...code(f).matchAll(RAW)].length, 0);

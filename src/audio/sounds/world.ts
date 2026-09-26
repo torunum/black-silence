@@ -1,7 +1,9 @@
 import { bang, blip } from "../Sfx";
 import { growl, gurgle } from "../Voice";
+import { bellToll, organChord, pianoNote, stoneDoor, wetDoor } from "../Ambient";
 import { after } from "../../core/Timers";
 import { soundRandom, soundRnd } from "../SoundRandom";
+import { lv } from "../Levels";
 
 /**
  * THE SOUND CATALOGUE — WORLD. The player's own body, doors, pickups,
@@ -16,43 +18,58 @@ import { soundRandom, soundRnd } from "../SoundRandom";
  * level 1, whose marble floor adds a faint random-pitched ring; running is
  * louder.
  */
-export function footstep(sprinting: boolean, marble: boolean): void {
+export function footstep(sprinting: boolean, marble: boolean): void { lv("footstep", () => {
   bang(.05,sprinting?.09:.06,marble?2400:700,marble?600:0);
-  if(marble)blip(soundRnd(800,1000),.05,"sine",.02);}
+  if(marble)blip(soundRnd(800,1000),.05,"sine",.02); }); }
+/**
+ * A door opens (`interact`): flesh doors tear, the rest grind. The game
+ * calls this, not `wetDoor`/`stoneDoor` (`../Ambient.ts`), so each has a
+ * level — player feedback round 2 Task 2. Likewise the bells, the organ and
+ * the piano below.
+ */
+export function doorOpens(flesh: boolean): void {
+  if (flesh) lv("doorFlesh", () => { wetDoor(); });
+  else lv("doorStone", () => { stoneDoor(); }); }
+/** The random-event church bells (`eventTick`). */
+export function churchBells(): void { lv("churchBells", () => { bellToll(); }); }
+/** The organ chord: the priest's phase changes (`Boss.ts`), and the piano recital's end (`Piano.ts`). */
+export function organSting(): void { lv("organSting", () => { organChord(); }); }
+/** One piano key (`Piano.ts`). */
+export function pianoKey(midi: number): void { lv("pianoKey", () => { pianoNote(midi); }); }
 /** The player jumps. */
-export function jump(): void { blip(140,.06,"sine",.04,90); }
+export function jump(): void { lv("jump", () => { blip(140,.06,"sine",.04,90); }); }
 /** The player is hit (`damagePlayer`). */
-export function playerHurt(): void { bang(.1,.3,700);blip(90,.2,"sawtooth",.12,40); }
+export function playerHurt(): void { lv("playerHurt", () => { bang(.1,.3,700);blip(90,.2,"sawtooth",.12,40); }); }
 /** A locked door the player has no key for (`interact`). */
-export function lockedDoor(): void { growl(80,.3,.25,true); }
+export function lockedDoor(): void { lv("lockedDoor", () => { growl(80,.3,.25,true); }); }
 /** Any pickup — health, ammo, armour, a key, a weapon (`itemsTick`). */
-export function itemPickup(): void { blip(330,.14,"sine",.1,210,true);gurgle(.12,.12); }
+export function itemPickup(): void { lv("itemPickup", () => { blip(330,.14,"sine",.1,210,true);gurgle(.12,.12); }); }
 /** The level's exit opens once its boss is dead (`openExit`). */
-export function exitOpens(): void { blip(120,.7,"sine",.09,90,true);growl(70,.4,.2,true); }
+export function exitOpens(): void { lv("exitOpens", () => { blip(120,.7,"sine",.09,90,true);growl(70,.4,.2,true); }); }
 /** The gauntlet plate is stepped on and the dead come (`playerTick`). */
-export function gauntletBegins(): void { blip(70,1,"sawtooth",.15,40,true); }
+export function gauntletBegins(): void { lv("gauntletBegins", () => { blip(70,1,"sawtooth",.15,40,true); }); }
 /** The gauntlet is cleared. */
-export function gauntletCleared(): void { blip(523,.3,"sine",.1,1046,true); }
+export function gauntletCleared(): void { lv("gauntletCleared", () => { blip(523,.3,"sine",.1,1046,true); }); }
 /** A bullet strikes a breakable prop (`hitscan`). */
-export function bulletHitsProp(): void { bang(.04,.12,1500,300); }
+export function bulletHitsProp(): void { lv("bulletHitsProp", () => { bang(.04,.12,1500,300); }); }
 /** Whether a bullet that hit a wall ricochets audibly — three times in ten (`hitscan`). */
 export function ricochetRoll(): boolean { return soundRandom()<.3; }
 /** The ricochet itself. */
-export function bulletRicochet(): void { bang(.03,.08,4000,800); }
+export function bulletRicochet(): void { lv("bulletRicochet", () => { bang(.03,.08,4000,800); }); }
 /** A crate, pew or chair breaks (`breakProp`). */
-export function propBreaks(): void { bang(.12,.32,1200);bang(.08,.2,500); }
+export function propBreaks(): void { lv("propBreaks", () => { bang(.12,.32,1200);bang(.08,.2,500); }); }
 /** The random-event blackout: the torches die (`eventTick`). */
-export function blackout(): void { blip(50,2,"sine",.1,30,true);bang(.4,.1,300); }
+export function blackout(): void { lv("blackout", () => { blip(50,2,"sine",.1,30,true);bang(.4,.1,300); }); }
 /** The random-event whispers: three faint voices, 0.6 s apart (`eventTick`). */
-export function whispers(): void { for(let i=0;i<3;i++)after(()=>blip(soundRnd(300,500),.7,"sine",.025,soundRnd(120,200),true),i*600); }
+export function whispers(): void { lv("whispers", () => { for(let i=0;i<3;i++)after(()=>blip(soundRnd(300,500),.7,"sine",.025,soundRnd(120,200),true),i*600); }); }
 /** Ambient stinger: a distant scream. */
-export function distantScream(): void { blip(soundRnd(480,720),1.4,"sine",.022,soundRnd(140,200),true); }
+export function distantScream(): void { lv("distantScream", () => { blip(soundRnd(480,720),1.4,"sine",.022,soundRnd(140,200),true); }); }
 /** Ambient stinger: machinery — three low knocks at random spacing. */
-export function machinery(): void { for(let i=0;i<3;i++)after(()=>bang(.08,.05,400),i*soundRnd(120,260)); }
+export function machinery(): void { lv("machinery", () => { for(let i=0;i<3;i++)after(()=>bang(.08,.05,400),i*soundRnd(120,260)); }); }
 /** Ambient stinger: a burst of static, then a shorter one. */
-export function staticCrackle(): void { bang(.3,.03,6000,1800);after(()=>bang(.15,.025,6000,1800),200); }
+export function staticCrackle(): void { lv("staticCrackle", () => { bang(.3,.03,6000,1800);after(()=>bang(.15,.025,6000,1800),200); }); }
 /** Ambient stinger: a drip. */
-export function drip(): void { blip(soundRnd(1200,2200),.08,"sine",.03,undefined,true); }
+export function drip(): void { lv("drip", () => { blip(soundRnd(1200,2200),.08,"sine",.03,undefined,true); }); }
 /** One of the four ambient stingers at random, weighted as the reference weighted them (`ambience`). */
 export function ambientStinger(): void {
   const r=soundRandom();
@@ -61,6 +78,6 @@ export function ambientStinger(): void {
   else if(r<.72)staticCrackle();
   else drip();}
 /** Low health: one heartbeat, lub then dub (`vitalsAudio`). */
-export function heartbeat(): void { blip(52,.1,"sine",.22,40);after(()=>blip(48,.12,"sine",.18,36),130); }
+export function heartbeat(): void { lv("heartbeat", () => { blip(52,.1,"sine",.22,40);after(()=>blip(48,.12,"sine",.18,36),130); }); }
 /** Low health: one ragged breath (`vitalsAudio`). */
-export function breath(): void { bang(.5,.04,900,300); }
+export function breath(): void { lv("breath", () => { bang(.5,.04,900,300); }); }

@@ -239,6 +239,56 @@ export function recordingAudioContext(): { ctx: unknown; events: AudioEvent[] } 
       return node;
     },
 
+    // Player feedback round 2 Task 2 (src/audio/Mix.ts): the reverb, the
+    // two compressors and the soft clip. A convolver's buffer logs by id, a
+    // wave shaper's curve as a summary (length and extremes) rather than
+    // four thousand numbers.
+    createConvolver(...args: unknown[]) {
+      const id = recordCreate("ConvolverNode", args);
+      const node: Record<string, unknown> = {};
+      let bufferValue: unknown = null;
+      Object.defineProperty(node, "buffer", {
+        enumerable: true,
+        get() { return bufferValue; },
+        set(v: unknown) {
+          bufferValue = v;
+          events.push({ kind: "param", detail: { node: id, prop: "buffer", method: "value", value: idFor(v) } });
+        },
+      });
+      attachPlainProp(node, id, "normalize", true);
+      idOfNode.set(node, id);
+      attachLifecycle(node, id);
+      return node;
+    },
+
+    createDynamicsCompressor(...args: unknown[]) {
+      const id = recordCreate("DynamicsCompressorNode", args);
+      const node: Record<string, unknown> = {};
+      for (const p of ["threshold", "knee", "ratio", "attack", "release"]) node[p] = makeParam(id, p);
+      idOfNode.set(node, id);
+      attachLifecycle(node, id);
+      return node;
+    },
+
+    createWaveShaper(...args: unknown[]) {
+      const id = recordCreate("WaveShaperNode", args);
+      const node: Record<string, unknown> = {};
+      let curve: Float32Array | null = null;
+      Object.defineProperty(node, "curve", {
+        enumerable: true,
+        get() { return curve; },
+        set(v: Float32Array | null) {
+          curve = v;
+          const summary = v ? { length: v.length, min: Math.min(...v), max: Math.max(...v) } : null;
+          events.push({ kind: "param", detail: { node: id, prop: "curve", method: "value", value: summary } });
+        },
+      });
+      attachPlainProp(node, id, "oversample", "none");
+      idOfNode.set(node, id);
+      attachLifecycle(node, id);
+      return node;
+    },
+
     createBufferSource(...args: unknown[]) {
       const id = recordCreate("AudioBufferSourceNode", args);
       const node: Record<string, unknown> = {};

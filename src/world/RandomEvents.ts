@@ -4,8 +4,7 @@ import { world } from "./WorldState";
 import { S } from "../core/State";
 import { showMsg } from "../ui/HudMessages";
 import { say } from "../ui/Subtitles";
-import { bellToll } from "../audio/Ambient";
-import { blackout, whispers } from "../audio/sounds/world";
+import { blackout, whispers, churchBells } from "../audio/sounds/world";
 import { rnd } from "../utils/math";
 import type { Enemy as EnemyShape } from "../enemies/Enemy";
 
@@ -43,7 +42,7 @@ export function eventTick(dt: number): void {
     ambienceState.darkT=8;say("event_dark",true);
     blackout();
   }else if(r<.8&&S.level===1){ /* the bells */
-    bellToll();say("event_bell",true);
+    churchBells();say("event_bell",true);
     const enemies: readonly Enemy[] = world.enemies;   // checked widening, not a cast
     for(const e of enemies){if(!e.dead&&!e.dormant)e.frenzy=7;}
     showMsg("THE BELLS ARE RINGING",3);

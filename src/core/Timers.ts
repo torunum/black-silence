@@ -26,9 +26,30 @@
 
 const live = new Set<ReturnType<typeof setTimeout>>();
 
+/**
+ * A scope that should survive into a delayed callback: called when `after`
+ * schedules, it returns a wrapper that re-enters the scope around `fn` when
+ * the timer fires, or null when no scope is active. Player feedback round 2
+ * Task 2: a sound's level (`src/audio/AudioEngine.ts`'s `voiced`) is a
+ * dynamic scope, and several sounds finish in a timer — a death cry's
+ * gurgle 180 ms later, the wet door's, a boss roar's second growl, the
+ * heartbeat's second beat — whose bodies are frozen against the reference
+ * and cannot be edited to carry it. The audio engine registers the one
+ * carrier; this module knows nothing about audio.
+ */
+export type TimerCarrier = () => ((fn: () => void) => void) | null;
+let carrier: TimerCarrier | null = null;
+
+/** Registers the scope carrier (see `TimerCarrier`). One at a time; null removes it. */
+export function carryIntoTimers(c: TimerCarrier | null): void {
+  carrier = c;
+}
+
 /** setTimeout that a level load can cancel via clearAllTimers. Wall-clock, unlike Time.schedule. */
 export function after(fn: () => void, ms: number): void {
-  const id = setTimeout(() => { live.delete(id); fn(); }, ms);
+  const wrap = carrier ? carrier() : null;
+  const run = wrap ? () => wrap(fn) : fn;
+  const id = setTimeout(() => { live.delete(id); run(); }, ms);
   live.add(id);
 }
 

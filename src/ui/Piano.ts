@@ -1,5 +1,5 @@
 import { pianoState } from "./PianoState";
-import { pianoNote, organChord } from "../audio/Ambient";
+import { pianoKey, organSting } from "../audio/sounds/world";
 import { say } from "./Subtitles";
 import { ach } from "./Toasts";
 import { ACHIEVEMENTS } from "../content/achievements";
@@ -59,7 +59,7 @@ export function buildPiano(): void {
   });
 }
 export function pressKey(midi: number): void {
-  pianoNote(midi);
+  pianoKey(midi);
   S.pianoNotes++;
   const el = pianoState.keyEls[midi];
   if (el) { el.classList.add("on"); after(() => el.classList.remove("on"), 140); }
@@ -70,7 +70,7 @@ export function pressKey(midi: number): void {
   if (pianoState.noteHist.length >= 7 && want.every((m, i) => pianoState.noteHist[pianoState.noteHist.length - 7 + i] === m)) {
     pianoState.noteHist = [];
     ach(ACHIEVEMENTS.recital, S.ach);
-    say("piano_played", true); organChord();
+    say("piano_played", true); organSting();
     if (world.pianoPos) world.items.push({ kind: "crosses", x: (world.pianoPos as unknown as PianoPos).x + 1.4, z: (world.pianoPos as unknown as PianoPos).z,
       sp: addSprite(ITEMTEX.crosses as THREE.CanvasTexture, (world.pianoPos as unknown as PianoPos).x + 1.4, (world.pianoPos as unknown as PianoPos).z, .55, .55, .5), bob: 0 });
   }

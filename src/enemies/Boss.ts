@@ -8,7 +8,8 @@ import { ENEMY_DEFS as EDEF } from "./EnemyDefs";
 import { PX } from "./SpriteBaker";
 import { at } from "../audio/AudioEngine";
 import { bossWakes, bossRoar, priestVanish, priestAppear, priestSummons } from "../audio/sounds/monsters";
-import { organChord, startBossMusic } from "../audio/Ambient";
+import { startBossMusic } from "../audio/Ambient";
+import { organSting } from "../audio/sounds/world";
 import { say } from "../ui/Subtitles";
 import { showMsg, flashHoly } from "../ui/HudMessages";
 import { shake, screenShake } from "../fx/ShakeState";
@@ -120,7 +121,7 @@ export function wakeBoss(enemy: unknown){
   bt.children[0].textContent=e.name!;bt.children[1].textContent=(e.title||EDEF[e.key].title)!;
   bt.style.opacity="1";
   at(e.x,e.h*.6+(e.fy||0),e.z,()=>bossWakes());
-  if(e.priest)organChord();
+  if(e.priest)organSting();
   after(()=>roarFor(e),500);}
 
 ctx.wakeBoss=wakeBoss;
@@ -170,7 +171,7 @@ export function priestThink(enemy: unknown,dt: number,dist: number,dx: number,dz
     e.formKey=e.key+"2";
     e.sp.material.map=PX[e.formKey].a;e.sp.material.needsUpdate=true;
     e.w*=1.35;e.h*=1.15;e.sp.scale.set(e.w,e.h,1);
-    e.speed=e.sovereign?3.8:3.5;e.mel=e.sovereign?40:34;organChord();}
+    e.speed=e.sovereign?3.8:3.5;e.mel=e.sovereign?40:34;organSting();}
   e.tpT-=dt;e.atkT-=dt;e.sumT-=dt;e.ringT-=dt;e.debT-=dt;
   let moving=false;
   if(e.phase===1){

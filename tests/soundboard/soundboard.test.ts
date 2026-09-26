@@ -79,10 +79,18 @@ describe("it lists every sound in the game", () => {
     expect(missing).toEqual([]);
   });
 
-  it("…and so is every sound the engine already had a name for", () => {
-    for (const name of ["snarl", "wetDoor", "stoneDoor", "bellToll", "organChord", "pianoNote", "startBossMusic"]) {
-      expect(registrySource, name).toMatch(new RegExp(`\\b${name}\\b`));
+  // Player feedback round 2 Task 2: the engine's already-named sounds are
+  // now reached through catalogue functions that give them a level
+  // (`monsterAlert`, `doorOpens`, `churchBells`, `organSting`, `pianoKey`),
+  // so the board plays those — which the test above already requires — and
+  // the catalogue plays the engine's. The boss pulse alone is still played
+  // by name (see src/audio/Levels.ts on why it has no level).
+  it("…and so is every sound the engine already had a name for, through the catalogue", () => {
+    const catalogue = ["monsters", "world"].map((f) => code(join(SRC, "audio", "sounds", `${f}.ts`))).join("\n");
+    for (const name of ["snarl", "wetDoor", "stoneDoor", "bellToll", "organChord", "pianoNote"]) {
+      expect(catalogue, name).toMatch(new RegExp(`\\b${name}\\(`));
     }
+    expect(registrySource).toMatch(/\bstartBossMusic\(\)/);
   });
 
   it("covers every monster alert: the ten kinds with their own bark, and the moan everyone else makes", () => {

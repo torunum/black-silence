@@ -2,6 +2,7 @@ import { bang, blip, click, gunshot, type GunshotProfile } from "../Sfx";
 import { growl } from "../Voice";
 import { after } from "../../core/Timers";
 import { soundRnd } from "../SoundRandom";
+import { lv } from "../Levels";
 
 /**
  * THE SOUND CATALOGUE — WEAPONS. Every sound the player's weapons make, as a
@@ -81,16 +82,16 @@ export const REBUILT_REPORT_SLOTS = Object.keys(REPORTS).map(Number);
 /** The profiles themselves, exported for the same reason. */
 export const WEAPON_REPORTS: Readonly<Record<number, GunshotProfile>> = REPORTS;
 
-export function flarePistolFire(): void { gunshot(REPORTS[0]); }
-export function shotgunFire(): void { gunshot(REPORTS[1]); }
-export function combatRifleFire(): void { gunshot(REPORTS[2]); }
-export function tommyGunFire(): void { gunshot(REPORTS[3]); }
-export function sniperFire(): void { gunshot(REPORTS[4]); }
+export function flarePistolFire(): void { lv("flarePistolFire", () => { gunshot(REPORTS[0]); }); }
+export function shotgunFire(): void { lv("shotgunFire", () => { gunshot(REPORTS[1]); }); }
+export function combatRifleFire(): void { lv("combatRifleFire", () => { gunshot(REPORTS[2]); }); }
+export function tommyGunFire(): void { lv("tommyGunFire", () => { gunshot(REPORTS[3]); }); }
+export function sniperFire(): void { lv("sniperFire", () => { gunshot(REPORTS[4]); }); }
 /** Not a firearm: a relic's rising chime plus a soft burst. Deliberately left as the reference had it (round 1 task 4). */
-export function crossLauncherFire(): void { blip(520,.3,"sine",.12,780,true); bang(.1,.2,800); }
-export function nailCannonFire(): void { gunshot(REPORTS[6]); }
+export function crossLauncherFire(): void { lv("crossLauncherFire", () => { blip(520,.3,"sine",.12,780,true); bang(.1,.2,800); }); }
+export function nailCannonFire(): void { lv("nailCannonFire", () => { gunshot(REPORTS[6]); }); }
 /** Not a firearm: a soul-eater's rising sawtooth, a burst and a growl. Deliberately left as the reference had it (round 1 task 4). */
-export function soulReaperFire(): void { blip(70,.5,"sawtooth",.16,360,true); bang(.28,.45,500); growl(90,.4,.3,true); }
+export function soulReaperFire(): void { lv("soulReaperFire", () => { blip(70,.5,"sawtooth",.16,360,true); bang(.28,.45,500); growl(90,.4,.3,true); }); }
 
 /** Each weapon slot's firing sound, in `WEAPON_STATS` order — what `WEAPONS[i].snd` is. */
 export const WEAPON_FIRE_SOUNDS: readonly (() => void)[] = [
@@ -99,25 +100,25 @@ export const WEAPON_FIRE_SOUNDS: readonly (() => void)[] = [
 ];
 
 /** Lowering the current weapon to switch (`requestSwitch`). */
-export function weaponLower(): void { click(.12); }
+export function weaponLower(): void { lv("weaponLower", () => { click(.12); }); }
 /** The next weapon comes up (`weaponTick`, unequip -> equip). */
-export function weaponRaise(): void { click(.16); }
+export function weaponRaise(): void { lv("weaponRaise", () => { click(.16); }); }
 /** Reload, first step — the magazine/shells come out (`weaponTick`, 18% through). */
-export function reloadOut(): void { click(.16); }
+export function reloadOut(): void { lv("reloadOut", () => { click(.16); }); }
 /** Reload, second step — the new rounds go in (62% through). */
-export function reloadIn(): void { click(.14); }
+export function reloadIn(): void { lv("reloadIn", () => { click(.14); }); }
 /** Reload done — the weapon is ready again. */
-export function reloadDone(): void { click(.2); }
+export function reloadDone(): void { lv("reloadDone", () => { click(.2); }); }
 /** Pulling the trigger on an empty weapon with no ammo left. */
-export function dryFire(): void { click(.1); }
+export function dryFire(): void { lv("dryFire", () => { click(.1); }); }
 /** The sawed-off's pump, 300 ms after each shot. */
-export function shotgunPump(): void { click(.12); }
+export function shotgunPump(): void { lv("shotgunPump", () => { click(.12); }); }
 /** The power kick's swing (`doKick`), whether or not it lands. */
-export function kickSwing(): void { bang(.15,.5,900); }
+export function kickSwing(): void { lv("kickSwing", () => { bang(.15,.5,900); }); }
 /** The power kick landing on an enemy or a prop, 110 ms later. */
-export function kickImpact(): void { bang(.12,.4,500); }
+export function kickImpact(): void { lv("kickImpact", () => { bang(.12,.4,500); }); }
 /**
  * A spent shell hitting the floor (`ejectCasing`): a short high tick at a
  * random pitch, a random 250-450 ms after the casing leaves the gun.
  */
-export function casingTinkle(): void { after(()=>blip(soundRnd(1800,2600),.04,"square",.025),soundRnd(250,450)); }
+export function casingTinkle(): void { lv("casingTinkle", () => { after(()=>blip(soundRnd(1800,2600),.04,"square",.025),soundRnd(250,450)); }); }

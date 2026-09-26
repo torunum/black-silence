@@ -4,9 +4,9 @@ import { player } from "../../player/PlayerState";
 import { damagePlayer } from "../../player/Player";
 import { PX } from "../SpriteBaker";
 import { at } from "../../audio/AudioEngine";
-import { snarl } from "../../audio/Voice";
 import {
   wallSplat, chargeCrash, screamerCall, lostSoulCharge, slamImpact, slamWindup, houndLunge, monsterClaw,
+  monsterAlert,
 } from "../../audio/sounds/monsters";
 import { say } from "../../ui/Subtitles";
 import { ach } from "../../ui/Toasts";
@@ -223,7 +223,7 @@ export function enemyTick(dt: number){
     if(seen){
       anyAware=anyAware||dist<16;
       if(!e.aware){e.aware=true;
-        say(e.elite?"see_elite":"see_"+e.key);at(e.x,e.h*.6+(e.fy||0),e.z,()=>snarl(e.key));}
+        say(e.elite?"see_elite":"see_"+e.key);at(e.x,e.h*.6+(e.fy||0),e.z,()=>monsterAlert(e.key));}
       e.alertX=player.px;e.alertZ=player.pz;
       /* ===== BOSS BRAINS ===== */
       if(e.priest){priestThink(e,dt,dist,dx,dz);continue;}

@@ -9,6 +9,7 @@ import { fadeCurve } from "../../src/audio/Noise";
 import { audioInit as moduleAudioInit } from "../../src/audio/AudioEngine";
 import { bang as moduleBang, blip as moduleBlip, boom as moduleBoom } from "../../src/audio/Sfx";
 import { growl as moduleGrowl, snarl as moduleSnarl } from "../../src/audio/Voice";
+import { previousMix } from "../../src/soundboard/previous/mix";
 
 /**
  * The audio half of the behavioral oracle (see tests/behavior/textures.test.ts's
@@ -80,6 +81,16 @@ import { growl as moduleGrowl, snarl as moduleSnarl } from "../../src/audio/Voic
  * reference, rolling the same dice, would have drawn — which pins the port
  * to drawing them at the same points, in the same order.
  *
+ * ## And the mix (round 2, Task 2)
+ *
+ * The port's graph after a sound is no longer the reference's: Task 2 gave
+ * the game a room, a master chain and level trims (`src/audio/Mix.ts`).
+ * The reference's graph lives on as the sound board's "Old mix"
+ * (`src/soundboard/previous/mix.ts`), and the first describe below proves it
+ * *is* the reference's graph, call for call. Every other comparison here
+ * builds the port on that mix, so it compares synthesis with synthesis;
+ * the new mix is pinned in `tests/audio/mix.test.ts`.
+ *
  * What the new code does that the reference did not is pinned positively
  * below ("the noise itself" describe): the fade `bang` and `boom` used to
  * bake into their samples is a gain curve of exactly the old shape.
@@ -145,14 +156,14 @@ function withModuleAudioSession<T>(seed: number, run: (events: AudioEvent[]) => 
   }
 }
 
-describe("audioInit behavioral parity with reference", () => {
-  it("builds an identical WebAudio graph for the echo loop, ambience lowpass and four-oscillator drone bed", () => {
+describe("audioInit behavioral parity with reference — on the board's Old mix (round 2, Task 2)", () => {
+  it("the Old mix builds an identical WebAudio graph for the echo loop, ambience lowpass and four-oscillator drone bed", () => {
     const referenceEvents = withReferenceAudioSession(10, (fns, events) => {
       fns.audioInit();
       return [...events];
     });
     const moduleEvents = withModuleAudioSession(10, (events) => {
-      moduleAudioInit();
+      moduleAudioInit({ mix: previousMix });
       return [...events];
     });
 
@@ -177,7 +188,7 @@ describe("blip behavioral parity with reference", () => {
       return events.slice(baseline);
     });
     const moduleEvents = withModuleAudioSession(11, (events) => {
-      moduleAudioInit();
+      moduleAudioInit({ mix: previousMix });
       const baseline = events.length;
       // moduleBlip's real `type?: OscillatorType` is narrower than
       // RefAudioFns.blip's modeled `type?: string`; strictFunctionTypes
@@ -207,7 +218,7 @@ describe("bang behavioral parity with reference", () => {
       return events.slice(baseline);
     });
     const moduleEvents = withModuleAudioSession(12, (events) => {
-      moduleAudioInit();
+      moduleAudioInit({ mix: previousMix });
       const baseline = events.length;
       run({ bang: moduleBang });
       return events.slice(baseline);
@@ -232,7 +243,7 @@ describe("boom behavioral parity with reference", () => {
       return events.slice(baseline);
     });
     const moduleEvents = withModuleAudioSession(13, (events) => {
-      moduleAudioInit();
+      moduleAudioInit({ mix: previousMix });
       const baseline = events.length;
       run({ boom: moduleBoom });
       return events.slice(baseline);
@@ -257,7 +268,7 @@ describe("growl behavioral parity with reference", () => {
       return events.slice(baseline);
     });
     const moduleEvents = withModuleAudioSession(14, (events) => {
-      moduleAudioInit();
+      moduleAudioInit({ mix: previousMix });
       const baseline = events.length;
       run({ growl: moduleGrowl });
       return events.slice(baseline);
@@ -283,7 +294,7 @@ describe("snarl behavioral parity with reference", () => {
       return events.slice(baseline);
     });
     const moduleEvents = withModuleAudioSession(15, (events) => {
-      moduleAudioInit();
+      moduleAudioInit({ mix: previousMix });
       const baseline = events.length;
       for (const kind of kinds) moduleSnarl(kind);
       return events.slice(baseline);
@@ -298,7 +309,7 @@ describe("the noise itself — what the port does that the reference did not (ro
   /** The events of one module sound, after audioInit. */
   const record = (seed: number, play: () => void): AudioEvent[] =>
     withModuleAudioSession(seed, (events) => {
-      moduleAudioInit();
+      moduleAudioInit({ mix: previousMix });
       const baseline = events.length;
       play();
       return events.slice(baseline);

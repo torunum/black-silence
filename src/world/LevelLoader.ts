@@ -31,6 +31,8 @@ import type { WallSeg } from "./LevelBuilder";
 import { after, clearAllTimers } from "../core/Timers";
 import { clearScheduled } from "../core/Time";
 import { stopMusic } from "../audio/Music";
+import { setRoom } from "../audio/AudioEngine";
+import { roomFor } from "../audio/Room";
 import { track, disposeAll } from "../render/DisposeRegistry";
 import type { Enemy } from "../enemies/Enemy";
 
@@ -163,6 +165,7 @@ export function loadLevel(idx: number): void {
   clearAllTimers();clearScheduled();disposeAll();stopMusic();
   S.level=idx;
   const Ldef=LEVELS[idx],L=Ldef.build();
+  setRoom(roomFor(Ldef));   // the level's reverb (src/audio/Room.ts) — player feedback round 2 Task 2
   world.grid=L.g;world.GW=L.W;world.GH=L.H;
   world.heightMap=L.hmap||null;
   world.ceilMap=L.cmap||null;

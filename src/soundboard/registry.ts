@@ -3,8 +3,7 @@ import * as M from "../audio/sounds/monsters";
 import * as WO from "../audio/sounds/world";
 import * as UI from "../audio/sounds/ui";
 import * as X from "../audio/sounds/explosions";
-import { snarl } from "../audio/Voice";
-import { bellToll, organChord, pianoNote, startBossMusic, stopBossMusic, stoneDoor, wetDoor } from "../audio/Ambient";
+import { startBossMusic, stopBossMusic } from "../audio/Ambient";
 import { after } from "../core/Timers";
 import { ENEMY_DEFS } from "../enemies/EnemyDefs";
 import { WEAPON_STATS } from "../weapons/definitions";
@@ -17,8 +16,11 @@ import { PREVIOUS } from "./previous";
  *
  * **Every row plays the game's own sound code**, never a copy: each `play`
  * calls a function from `src/audio/sounds/` (the catalogue the game's call
- * sites call) or one of the engine's already-named sounds (`snarl`, the
- * doors, bells, organ, piano, boss pulse). `tests/soundboard/soundboard.test.ts`
+ * sites call) or, for the boss pulse alone, the engine's own
+ * `startBossMusic`. (Since player feedback round 2 Task 2 the monster
+ * alerts, doors, bells, organ and piano are catalogue functions too —
+ * `monsterAlert`, `doorOpens`, … — so each plays at its level.)
+ * `tests/soundboard/soundboard.test.ts`
  * checks that every catalogue function appears in a row, and that this
  * folder makes no WebAudio call of its own.
  *
@@ -125,9 +127,9 @@ const ENTRIES: Entry[] = [
   { id: "kick-impact", name: "Kick: connects", category: "Weapons", play: W.kickImpact },
 
   // ---- Monsters
-  ...ALERT_KINDS.map((k): Entry => ({ id: `monster-alert-${k}`, name: `${monsterName(k)} alert`, category: "Monsters", detail: "when it first sees you", play: () => snarl(k) })),
+  ...ALERT_KINDS.map((k): Entry => ({ id: `monster-alert-${k}`, name: `${monsterName(k)} alert`, category: "Monsters", detail: "when it first sees you", play: () => M.monsterAlert(k) })),
   {
-    id: "monster-alert-other", name: "Monster moan (alert)", category: "Monsters", play: () => snarl("z"),
+    id: "monster-alert-other", name: "Monster moan (alert)", category: "Monsters", play: () => M.monsterAlert("z"),
     detail: `every other monster: ${ROSTER.filter((k) => !ALERT_KINDS.includes(k) && !ENEMY_DEFS[k].boss).map(monsterName).join(", ")}, and the bosses`,
   },
   ...byPitch("pain", M.painPitch, M.monsterPain),
@@ -174,8 +176,8 @@ const ENTRIES: Entry[] = [
   { id: "heartbeat", name: "Heartbeat (low health)", category: "World", play: WO.heartbeat },
   { id: "breath", name: "Breathing (low health)", category: "World", play: WO.breath },
   { id: "pickup", name: "Pickup (health, ammo, armour, key, weapon)", category: "World", play: WO.itemPickup },
-  { id: "door-stone", name: "Stone door opens", category: "World", play: stoneDoor },
-  { id: "door-flesh", name: "Flesh door opens", category: "World", play: wetDoor },
+  { id: "door-stone", name: "Stone door opens", category: "World", play: () => WO.doorOpens(false) },
+  { id: "door-flesh", name: "Flesh door opens", category: "World", play: () => WO.doorOpens(true) },
   { id: "door-locked", name: "Locked door (needs the red key)", category: "World", play: WO.lockedDoor },
   { id: "exit-opens", name: "Exit opens", category: "World", play: WO.exitOpens },
   { id: "bullet-prop", name: "Bullet hits a crate or pew", category: "World", play: WO.bulletHitsProp },
@@ -187,10 +189,10 @@ const ENTRIES: Entry[] = [
   { id: "stinger-drip", name: "Ambience: drip", category: "World", play: WO.drip },
   { id: "stinger-random", name: "Ambience: one of the four, at random", category: "World", detail: "what the game does every 8-18 seconds", play: WO.ambientStinger },
   { id: "event-blackout", name: "Event: blackout", category: "World", play: WO.blackout },
-  { id: "event-bells", name: "Event: church bells", category: "World", play: bellToll },
+  { id: "event-bells", name: "Event: church bells", category: "World", play: WO.churchBells },
   { id: "event-whispers", name: "Event: whispers", category: "World", play: WO.whispers },
-  { id: "organ", name: "Organ chord", category: "World", detail: "the priest's phase change, and the piano's recital", play: organChord },
-  { id: "piano", name: "Piano key (middle C)", category: "World", play: () => pianoNote(60) },
+  { id: "organ", name: "Organ chord", category: "World", detail: "the priest's phase change, and the piano's recital", play: WO.organSting },
+  { id: "piano", name: "Piano key (middle C)", category: "World", play: () => WO.pianoKey(60) },
   { id: "boss-music", name: "Boss music (4 seconds of it)", category: "World", play: () => { startBossMusic(); after(stopBossMusic, 4000); } },
   { id: "gauntlet-begins", name: "Gauntlet plate: the dead come", category: "World", detail: "not placed in any level yet", play: WO.gauntletBegins },
   { id: "gauntlet-cleared", name: "Gauntlet cleared", category: "World", detail: "not placed in any level yet", play: WO.gauntletCleared },

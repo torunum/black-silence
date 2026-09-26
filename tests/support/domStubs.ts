@@ -160,6 +160,11 @@ export function installDomStubs(): void {
     createBuffer() { return { getChannelData: () => new Float32Array(1) }; }
     createBufferSource() { return { buffer: null as null, playbackRate: param(1), detune: param(), connect() {}, disconnect() {}, start() {}, stop() {} }; }
     createStereoPanner() { return { pan: param(), connect() {}, disconnect() {} }; }
+    // Player feedback round 2 Task 2: the mix (src/audio/Mix.ts) — a
+    // reverb, a glue compressor, a limiter and a soft clip.
+    createConvolver() { return { buffer: null as unknown, normalize: true, connect() {}, disconnect() {} }; }
+    createDynamicsCompressor() { return { threshold: param(), knee: param(), ratio: param(), attack: param(), release: param(), reduction: 0, connect() {}, disconnect() {} }; }
+    createWaveShaper() { return { curve: null as unknown, oversample: "none", connect() {}, disconnect() {} }; }
     // Plan 1 Task 4 gave real callers a world position, so AudioEngine.ts's
     // busFor() now actually reaches ctx().createPanner() through this stub
     // too (previously unreachable: Task 3 shipped emitAt()/at() to nobody).

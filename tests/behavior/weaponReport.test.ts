@@ -8,6 +8,7 @@ import { installDomStubs, loadGameHtml } from "../support/domStubs";
 import { WEAPON_STATS } from "../../src/weapons/definitions";
 import type * as WeaponStateModule from "../../src/weapons/WeaponState";
 import type * as AudioEngineModule from "../../src/audio/AudioEngine";
+import { previousMix } from "../../src/soundboard/previous/mix";
 
 /**
  * THE WEAPON REPORT — player feedback round 1, task 4, 2026-09-17.
@@ -138,7 +139,9 @@ function recordModule(slot: number, wrap?: (emit: () => void) => void): AudioEve
   const restoreRandom = seedRandom(900 + slot);
   resetSoundDice(900 + slot);
   try {
-    AudioEngine.audioInit();
+    // On the board's "Old mix" — the reference's graph (round 2 Task 2; see
+    // tests/support/soundOracle.ts's "The mix is set aside too").
+    AudioEngine.audioInit({ mix: previousMix });
     const baseline = events.length;
     const emit = () => WeaponState.WEAPONS[slot].snd();
     if (wrap) wrap(emit);

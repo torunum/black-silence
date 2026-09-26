@@ -8,6 +8,7 @@ import { expectCallLogEqual } from "./expectCallLogEqual";
 import { audioInit } from "../../src/audio/AudioEngine";
 import { mulberry32, reseedSoundRandom } from "../../src/audio/SoundRandom";
 import { NOISE_SECONDS, resetNoiseOffsets } from "../../src/audio/Noise";
+import { previousMix } from "../../src/soundboard/previous/mix";
 
 /**
  * THE SOUND ORACLE — plays one sound through the frozen reference's own code
@@ -46,6 +47,20 @@ import { NOISE_SECONDS, resetNoiseOffsets } from "../../src/audio/Noise";
  *    when the reference's fresh buffer would have run out — and only then
  *    set aside. Everything else — every oscillator, filter, gain, envelope,
  *    connection and timer — must match event for event.
+ *
+ * ## The mix is set aside too (round 2, Task 2)
+ *
+ * Task 2 put a room, a compressor, a limiter and a per-sound level trim
+ * after every sound (`src/audio/Mix.ts`, `src/audio/Levels.ts`). That is
+ * routing, not synthesis, and it is not the reference's — so the port's
+ * side of every comparison here builds the **pre-Task-2 mix**
+ * (`src/soundboard/previous/mix.ts`, the sound board's "Old mix"), which
+ * `tests/behavior/audio.test.ts` proves is the reference's own graph call
+ * for call. On it a sound's level scope changes nothing and a bus call
+ * lands on masterG/echoG exactly as before, so these oracles still compare
+ * every oscillator, filter, gain and envelope a sound makes. The new mix,
+ * and the level each catalogue sound plays at, are pinned on their own in
+ * `tests/audio/mix.test.ts` and `tests/audio/levels.test.ts`.
  *
  * ## Quoting the reference
  *
@@ -155,7 +170,8 @@ export function recordReferenceSnippet(snippet: string, vars: Record<string, unk
 }
 
 /**
- * The port's side: the real `audioInit()`, then `run` — a catalogue function
+ * The port's side: the real `audioInit()` on the pre-Task-2 mix (see the
+ * module doc comment), then `run` — a catalogue function
  * called the way its call site calls it. The gameplay `Math.random` is
  * seeded and **counted**: a sound that drew from it fails here, whatever
  * its log says.
@@ -171,7 +187,7 @@ export function recordModuleSound(run: () => void, seed: number): AudioEvent[] {
   resetSoundDice(seed);
   vi.useFakeTimers();
   try {
-    audioInit();
+    audioInit({ mix: previousMix });
     const baseline = events.length;
     run();
     vi.runAllTimers();
