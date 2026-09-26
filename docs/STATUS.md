@@ -559,11 +559,14 @@ human's call. KNOWN-14 carries the four decisions, the evidence behind each,
 and the prediction the side-by-side is supposed to falsify. KNOWN-20 is a bug
 the upgrade surfaced on the way past.
 
-The identical finding recurred with audio: `src/audio/`'s synthesis draws
-from the same seeded `Math.random()` at six sites, an `installAudioStub()`
-was built the same way (stack-sniffed, same fail-loudly-on-zero guard), and
-it is *still not wired in* — see `docs/known-issues.md`'s KNOWN-20 for why
-(measured per-level draw counts, and the real cost of turning it on).
+The identical finding recurred with audio: `src/audio/`'s synthesis drew
+from the same seeded `Math.random()`, and an `installAudioStub()` was built
+the same way and never wired in. **Fixed at the cause in player feedback
+round 2 Task 1** (`docs/known-issues.md` KNOWN-22, which is that audio row
+restored — the KNOWN-20 above is a different, later row that reused the
+number): sound has its own generator and shared noise buffers and draws
+nothing from the game's dice; the stub is gone and every trace now fails if
+a sound ever draws again.
 
 ## Phase 3 Part A status
 
@@ -869,6 +872,22 @@ here changes gameplay, and no trace fixture moved.
 - Nobody has felt any of it at 60 fps with a real mouse. The browser pane cannot run rAF, so the owner has to play it.
 
 **Next:** the sound plan, then the prologue plan (the grave → hell opening).
+
+## Player feedback round 2 — the sound
+
+Branch `feedback-2-sound`, plan
+`docs/superpowers/plans/2026-09-26-player-feedback-2-sound.md`. The owner:
+"The sounds are still very bad." Five tasks; Task 1 is done.
+
+| Task 1 | Outcome |
+|---|---|
+| Every sound has a name | Each inline `blip`/`bang`/`click` at a call site is a named function in `src/audio/sounds/` (weapons, monsters, world, ui, explosions). A pure refactor: `tests/behavior/soundCatalogue.test.ts` runs each one against the reference's own call-site text; the three traces' full audio logs (82,401 events) came out byte-identical. |
+| Sound draws no dice (KNOWN-22) | `src/audio/SoundRandom.ts` and `src/audio/Noise.ts`. The trace fixtures moved once — 79 / 264 / 3,433 draws removed — proven to be only that; the boss trace's cutoff went 6012 -> 2808. Every trace now fails if a sound draws from `Math.random()`. |
+| The sound board | `soundboard.html`, 111 sounds in five groups (Weapons 18, Monsters 58, World 29, UI 3, Explosions 3), each playing the game's own code; old/new pairs from Task 2 on (`src/soundboard/previous.ts`). Built separately (`vite.soundboard.config.ts`) into `dist/`, so it is on the published site at `/soundboard.html`; the game bundle does not contain it. `window.soundboard.render(id)` renders a sound offline and reports its peak, RMS, length, clipping and DC offset. |
+
+**For Tasks 2-5:** no fixture may move. Register the old version of a sound
+in `src/soundboard/previous.ts` *before* changing it. Measure with
+`soundboard.render(...)` in the Browser pane — it renders; rAF does not.
 
 ## How fidelity is guarded
 

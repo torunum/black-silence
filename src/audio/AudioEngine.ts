@@ -268,9 +268,29 @@ export function setMasterVolume(v: number): void {
   flushSave();
 }
 
+/**
+ * The two things the sound board (`soundboard.html`, `src/soundboard/`) needs
+ * that the game does not — player feedback round 2 Task 1. Both default to
+ * exactly what the game has always done, and the game passes neither.
+ */
+export interface AudioInitOptions {
+  /**
+   * Start the four-oscillator ambient drone bed. Default `true`. The board
+   * turns it off so a sound can be judged on its own, not over a hum.
+   */
+  drones?: boolean;
+  /**
+   * Build the graph on this context instead of a new `AudioContext` — an
+   * `OfflineAudioContext` renders a sound to samples that can be measured.
+   * Every node this engine and its sounds create exists on
+   * `BaseAudioContext`, which is why the cast below is honest in practice.
+   */
+  context?: BaseAudioContext;
+}
+
 /** Build the audio graph and start the ambient drone bed. Call once, on game start. */
-export function audioInit(): void {
-  AC=new (window.AudioContext||window.webkitAudioContext)();
+export function audioInit(opts: AudioInitOptions = {}): void {
+  AC=(opts.context as AudioContext|undefined)??new (window.AudioContext||window.webkitAudioContext)();
   masterG=AC.createGain();masterG.gain.value=masterVol;masterG.connect(AC.destination);
   const dly=AC.createDelay(1);dly.delayTime.value=.34;
   const fb=AC.createGain();fb.gain.value=.42;
@@ -291,6 +311,7 @@ export function audioInit(): void {
   // forEach's own (wider, string|number[]-inferred) parameter type and
   // rejects it. Annotating the array instead lets the callback's parameter
   // type come from plain contextual inference, which needs no such check.
+  if(opts.drones===false)return;
   const drones: [number, OscillatorType, number][] = [[33,"sawtooth",.05],[49.5,"sine",.07],[24.7,"triangle",.06],[66,"sine",.025]];
   drones.forEach(([f,t,g])=>{
     const o=ac.createOscillator();o.type=t;o.frequency.value=f;

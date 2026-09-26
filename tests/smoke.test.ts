@@ -59,7 +59,11 @@ describe("main.ts boot", () => {
     // Recognizing only one shape would silently shrink coverage exactly
     // the way scanning only legacy.js once did.
     const calls: Array<{ file: string; method: string; selector: string }> = [];
-    for (const file of srcFiles(SRC_DIR)) {
+    // src/soundboard/ is the one folder that is not the game: it runs in
+    // soundboard.html, never in index.html (player feedback round 2 Task 1),
+    // so its lookups are checked against that page by
+    // tests/soundboard/soundboard.test.ts instead.
+    for (const file of srcFiles(SRC_DIR).filter((f) => !/[\\/]soundboard[\\/]/.test(f))) {
       const src = readFileSync(file, "utf8");
       for (const m of src.matchAll(/\.(getElementById|querySelector)\("([^"]+)"\)/g)) {
         calls.push({ file, method: m[1], selector: m[2] });

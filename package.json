@@ -5,11 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && vite build --config vite.soundboard.config.ts",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "test": "tsc --noEmit && vitest run && node scripts/check-file-size.mjs && madge --circular --extensions ts,js src/",
-    "build:single": "vite build && node scripts/inline-single-file.mjs"
+    "build:single": "npm run build && node scripts/inline-single-file.mjs"
   },
   "dependencies": {
     "three": "0.164.1"
