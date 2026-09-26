@@ -6,6 +6,7 @@ import "../render/ColorPolicy";
 import { rnd } from "../utils/math";
 import { WEAPON_STATS } from "./definitions";
 import { weaponRuntime } from "./WeaponRuntime";
+import { animCues } from "../core/AnimCues";
 import { bang, blip, click, gunshot, type GunshotProfile } from "../audio/Sfx";
 import { growl } from "../audio/Voice";
 import { renderState } from "../render/Renderer";
@@ -198,7 +199,7 @@ export function weaponTick(dt: number){
   if(input.firing&&(weaponRuntime.wstate==="idle"||weaponRuntime.wstate==="fire")&&weaponRuntime.wCool<=0&&!S.dead&&game.started&&!game.inputLock){
     if(S.mag[S.cur]<=0){
       if(S.ammo[w.ammo]>0)startReload();
-      else{click(.1);weaponRuntime.wCool=.3;}}        // dry click, not a beep
+      else{click(.1);weaponRuntime.wCool=.3;animCues.dryFire++;}}        // dry click, not a beep (the cue is animation only, round 2 Task 4)
     else fire(w);}
   if(weaponRuntime.wstate==="idle"&&S.mag[S.cur]===0&&S.ammo[w.ammo]>0&&weaponRuntime.wtime>.4)startReload();
   weaponRuntime.kickAmt*=Math.exp(-10*dt);weaponRuntime.kickRot*=Math.exp(-9*dt);

@@ -43,3 +43,17 @@ export const weaponRuntime = {
   kickAnim: 0,
   volleyHit: false,
 };
+
+/**
+ * The power kick's two timings, as the viewmodel reads them: `doKick`
+ * (src/weapons/WeaponState.ts) sets `kickAnim` to `.32` and schedules the
+ * kick's hit test `0.110` seconds of scaled time later. doKick keeps its
+ * own literals, untouched — tests/core/scheduleDelays.test.ts reads that
+ * `0.110` straight out of the source against the reference's `110` ms — so
+ * these are copies, and tests/behavior/viewmodelKick.test.ts proves they
+ * equal what the real doKick does (kickAnim right after the call, and the
+ * frame on which its scheduled hit lands). The viewmodel's kick
+ * (src/render/viewmodel/kick.ts, player feedback round 2, Task 3) puts the
+ * strike's full extension exactly on KICK_HIT_T.
+ */
+export const KICK_ANIM = 0.32, KICK_HIT_T = 0.110;

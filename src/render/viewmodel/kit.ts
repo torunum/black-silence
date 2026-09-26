@@ -1,17 +1,23 @@
 import { getFx } from "../Overlay2D";
 
 /**
- * VIEWMODEL ART KIT — consistent palette + shading helpers for the
- * hand-pixeled weapon viewmodel and the kick-boot animation (see
- * src/render/viewmodel/draw.ts). Copied verbatim from
+ * VIEWMODEL ART KIT — the reference's palette + shading helpers for its
+ * hand-pixeled weapon viewmodel and its kick-boot animation. Copied verbatim from
  * reference/sonsurum.html lines 2213-2263 (see tests/support/reference.ts's
  * REF.viewmodelKit) — every colour and coordinate is art.
  *
- * SKIN, DARK, MID, LIT, RUST, WOOD, GLOW, HOLY, vFlat, vBarrel, vTube,
- * vWood, vScrew, vHole and vTrigger are unused by the current game — dead
- * code in the reference too — and are preserved verbatim rather than
- * pruned, per this port's no-gameplay-change constraint. (wcv, the same
- * kind of dead code, lives in src/render/viewmodel/sprites.ts.)
+ * Since player feedback round 2 the game uses one thing here: MUZ's `r`,
+ * the per-weapon muzzle-flash size, read by ./draw.ts. The weapons are
+ * drawn from ./palette.ts's ramps by ./raster.ts (Task 1), and the kick
+ * boot that drew with vRect, vGrad, VM, SLEEVE and BOOT is now a modelled
+ * leg (./kick.ts, Task 3); MUZ's `y` (the old sprites' barrel-tip offset)
+ * is no longer read either, the flash sits on each weapon's own muzzle
+ * anchor. Everything else — the colours, VM, the v* helpers — is unused by
+ * the game, as SKIN, DARK, MID, LIT, RUST, WOOD, GLOW, HOLY, vFlat,
+ * vBarrel, vTube, vWood, vScrew, vHole and vTrigger already were in the
+ * reference. It stays, verbatim, because tests still compare it with the
+ * reference: tests/fidelity.test.ts pins the data, and
+ * tests/behavior/viewmodel.test.ts's art-kit case calls every helper.
  *
  * fg is src/render/Overlay2D.ts's private 2D context; every helper below
  * fetches it at its point of use via getFx() into a local `const fg`

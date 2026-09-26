@@ -21,6 +21,7 @@ import { explodeBarrel, type Prop } from "../world/Props";
 import { alertSound } from "../enemies/ai/Perception";
 import { requestSwitch, WEAPONS } from "../weapons/WeaponState";
 import { openPiano } from "../ui/Piano";
+import { animCues } from "../core/AnimCues";
 
 /**
  * Interaction and pickups — opening doors, the piano-proximity check,
@@ -134,10 +135,11 @@ export function itemsTick(dt: number){
           if(it.kind==="w1")say("w2",true);
           if(it.kind==="w4")say("w5",true);
           if(it.kind==="w5")say("w6",true);}}
-      if(ok){it.taken=true;renderState.scene.remove(it.sp);blip(330,.14,"sine",.1,210,true);gurgle(.12,.12);}}}
+      if(ok){it.taken=true;renderState.scene.remove(it.sp);blip(330,.14,"sine",.1,210,true);gurgle(.12,.12);
+        if(it.kind!=="health"&&it.kind!=="armor"&&it.kind!=="key")animCues.pickup++;}}} // the hands nod at a weapon or ammo (animation only, round 2 Task 4)
   /* free SMG after enough kills if not yet found */
   if(!S.weapons[3]&&S.totKills>=8){S.weapons[3]=true;S.mag[3]=36;
-    showMsg("SCRAP SMG ASSEMBLED FROM THE DEAD",3);blip(330,.12,"square",.08);}}
+    showMsg("SCRAP SMG ASSEMBLED FROM THE DEAD",3);blip(330,.12,"square",.08);animCues.pickup++;}}
 export function doorTick(dt: number){for(const k in world.doors){const d=world.doors[k] as unknown as Door;
   if(d.open&&d.mesh.position.y>-WALLH/2+.1)d.mesh.position.y-=dt*2.6;}}
 export function propTick(dt: number){for(const p of world.props as unknown as Prop[]){
