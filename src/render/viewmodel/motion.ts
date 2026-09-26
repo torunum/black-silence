@@ -128,6 +128,12 @@ export class Body {
   /** Jump and landing, overlay units, down-positive. */
   readonly air = new Spring(13, 0.42);
 
+  /** Starts over on the next step: its grounded state and fall speed are read afresh (no landing), and any jump or landing still ringing is dropped. */
+  resync(): void {
+    this.started = false;
+    this.air.x = 0; this.air.v = 0;
+  }
+
   step(dt: number, v: CarryInput): Carry {
     if (!this.started) { this.started = true; this.wasGrounded = v.grounded; this.lastVy = v.vy; }
 

@@ -12,8 +12,9 @@
  * back — only src/core/Loop.ts, which copies it into the ViewmodelFrame,
  * and src/render/viewmodel/react.ts, which compares each counter with the
  * value it saw last frame. A counter (rather than a flag something would
- * have to clear) means no reader ever writes here, and two events in one
- * frame are still two events.
+ * have to clear) means no reader ever writes here. The reader only asks
+ * whether a counter changed, so two events of one kind in the same frame
+ * merge into one reaction.
  *
  * Nothing here draws from Math.random, and no trace fixture records it.
  */

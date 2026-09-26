@@ -2,20 +2,22 @@ import { getFx } from "../Overlay2D";
 
 /**
  * VIEWMODEL ART KIT — the reference's palette + shading helpers for its
- * hand-pixeled weapon viewmodel and the kick-boot animation (see
- * src/render/viewmodel/draw.ts). Copied verbatim from
+ * hand-pixeled weapon viewmodel and its kick-boot animation. Copied verbatim from
  * reference/sonsurum.html lines 2213-2263 (see tests/support/reference.ts's
  * REF.viewmodelKit) — every colour and coordinate is art.
  *
- * Since player feedback round 2 (Task 1) the weapons no longer use this
- * kit — they are drawn from ./palette.ts's ramps by ./raster.ts — so what
- * is still live here is what drawKickBoot draws with (vRect, vGrad, VM,
- * SLEEVE, BOOT) and MUZ's `r`, the per-weapon muzzle-flash size; MUZ's `y`
- * (the old sprites' barrel-tip offset) is no longer read, the flash now sits
- * on each weapon's own muzzle anchor. SKIN, DARK, MID, LIT, RUST, WOOD,
- * GLOW, HOLY, vFlat, vBarrel, vTube, vWood, vScrew, vHole and vTrigger were
- * unused by the game already — dead code in the reference too — and stay
- * verbatim, pinned against the reference by tests/fidelity.test.ts.
+ * Since player feedback round 2 the game uses one thing here: MUZ's `r`,
+ * the per-weapon muzzle-flash size, read by ./draw.ts. The weapons are
+ * drawn from ./palette.ts's ramps by ./raster.ts (Task 1), and the kick
+ * boot that drew with vRect, vGrad, VM, SLEEVE and BOOT is now a modelled
+ * leg (./kick.ts, Task 3); MUZ's `y` (the old sprites' barrel-tip offset)
+ * is no longer read either, the flash sits on each weapon's own muzzle
+ * anchor. Everything else — the colours, VM, the v* helpers — is unused by
+ * the game, as SKIN, DARK, MID, LIT, RUST, WOOD, GLOW, HOLY, vFlat,
+ * vBarrel, vTube, vWood, vScrew, vHole and vTrigger already were in the
+ * reference. It stays, verbatim, because tests still compare it with the
+ * reference: tests/fidelity.test.ts pins the data, and
+ * tests/behavior/viewmodel.test.ts's art-kit case calls every helper.
  *
  * fg is src/render/Overlay2D.ts's private 2D context; every helper below
  * fetches it at its point of use via getFx() into a local `const fg`

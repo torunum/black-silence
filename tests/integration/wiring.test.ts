@@ -6,6 +6,10 @@ import { player } from "../../src/player/PlayerState";
 import { clearAllTimers } from "../../src/core/Timers";
 import { clearScheduled } from "../../src/core/Time";
 import { animCues } from "../../src/core/AnimCues";
+import { S } from "../../src/core/State";
+import { renderState } from "../../src/render/Renderer";
+import { weaponRuntime, KICK_HIT_T } from "../../src/weapons/WeaponRuntime";
+import { leanAmount, kickElapsed, LEAN } from "../../src/render/viewmodel/kick";
 
 /**
  * The seams — KNOWN-9.
@@ -112,7 +116,7 @@ vi.mock("../../src/render/viewmodel/draw", async (importOriginal) => {
   const actual = await importOriginal<typeof import("../../src/render/viewmodel/draw")>();
   return {
     ...actual,
-    drawKickBoot: (...args: unknown[]) => { captured.kick.push(args); },
+    drawKickStreaks: (...args: unknown[]) => { captured.kick.push(args); },
     drawViewmodel: (...args: unknown[]) => { captured.viewmodel.push(args); },
   };
 });
@@ -120,7 +124,7 @@ vi.mock("../../src/render/viewmodel/draw", async (importOriginal) => {
 /** One recorded fxTick call, with its two callbacks already invoked so their arguments are recorded too. */
 interface Frame {
   dt: number; t: number; zoomLerp: number;
-  /** The kickAnim value legacy.js closed over for drawKickBoot. */
+  /** The kickAnim value the loop closed over for drawKickStreaks. */
   kickAnim: unknown;
   /** The ViewmodelFrame legacy.js built, and the weapon table it passed alongside. */
   vm: Record<string, unknown>;
@@ -153,7 +157,7 @@ function runFrame(t: number): Frame {
   const kickArgs = captured.kick.slice(beforeKick);
   const vmArgs = captured.viewmodel.slice(beforeVm);
   if (kickArgs.length !== 1 || vmArgs.length !== 1) {
-    throw new Error(`expected 1 drawKickBoot and 1 drawViewmodel, got ${kickArgs.length} and ${vmArgs.length}`);
+    throw new Error(`expected 1 drawKickStreaks and 1 drawViewmodel, got ${kickArgs.length} and ${vmArgs.length}`);
   }
   return {
     dt, t: tArg, zoomLerp,
@@ -312,15 +316,16 @@ describe("what main.ts passes to the 2D overlay each frame", () => {
 describe("the ViewmodelFrame main.ts builds", () => {
   // vy, grounded and yaw were added by player feedback round 2, Task 2 (the viewmodel's jump,
   // landing and strafe motion), kickAnim by Task 3 (the leg is drawn with the weapon), the five
-  // cue* counters by Task 4 (src/core/AnimCues.ts: what the hands react to) —
+  // cue* counters by Task 4 (src/core/AnimCues.ts: what the hands react to), and paused by the
+  // branch's review (no idle fidget behind an overlay) —
   // docs/superpowers/plans/2026-09-24-player-feedback-2-hands.md.
   const EXPECTED_FIELDS = [
     "bobT", "cueDryFire", "cueHurt", "cueHurtAmt", "cueInput", "cuePickup",
-    "cur", "dead", "equipT", "grounded", "kickAmt", "kickAnim", "kickRot", "muzzle", "pianoOpen",
+    "cur", "dead", "equipT", "grounded", "kickAmt", "kickAnim", "kickRot", "muzzle", "paused", "pianoOpen",
     "sprintKey", "started", "swayX", "swayY", "unequipT", "vx", "vy", "vz", "wstate", "wtime", "yaw", "zoomLerp",
   ];
 
-  it("carries exactly the twenty-seven fields ViewmodelFrame declares — no more, no fewer", () => {
+  it("carries exactly the twenty-eight fields ViewmodelFrame declares — no more, no fewer", () => {
     // draw.ts reads `v.foo` for each; a dropped field is silently undefined
     // there, which is how a missing one would otherwise reach the screen.
     expect(Object.keys(restFrame.vm).sort()).toEqual(EXPECTED_FIELDS);
@@ -364,6 +369,18 @@ describe("the ViewmodelFrame main.ts builds", () => {
     }
   });
 
+  it("maps paused to the loop's own paused — true while an overlay is up (no idle fidget behind it)", () => {
+    expect(restFrame.vm.paused).toBe(false);
+    const levelEnd = document.getElementById("levelend")!;
+    levelEnd.classList.remove("hidden");
+    try {
+      expect(runFrame(performance.now()).vm.paused).toBe(true);
+    } finally {
+      levelEnd.classList.add("hidden");
+    }
+    expect(runFrame(performance.now()).vm.paused).toBe(false);
+  });
+
   it("maps started, dead and pianoOpen to the right three flags", () => {
     expect(restFrame.vm.started).toBe(true);   // NEW GAME was clicked
     expect(restFrame.vm.dead).toBe(false);
@@ -385,10 +402,72 @@ describe("the ViewmodelFrame main.ts builds", () => {
       expect(typeof restFrame.vm[field], `frame.${field}`).toBe("number");
       expect(Number.isNaN(restFrame.vm[field]), `frame.${field} is NaN`).toBe(false);
     }
-    for (const field of ["dead", "grounded", "pianoOpen", "sprintKey", "started"]) {
+    for (const field of ["dead", "grounded", "paused", "pianoOpen", "sprintKey", "started"]) {
       expect(typeof restFrame.vm[field], `frame.${field}`).toBe("boolean");
     }
     expect(typeof restFrame.vm.wstate).toBe("string");
+  });
+});
+
+describe("the kick's lean, as the world is rendered (round 2, Task 3)", () => {
+  interface Cam { rx: number; ry: number; rz: number; px: number; py: number; pz: number }
+  const cam = (): Cam => {
+    const c = renderState.camera;
+    return { rx: c.rotation.x, ry: c.rotation.y, rz: c.rotation.z, px: c.position.x, py: c.position.y, pz: c.position.z };
+  };
+  /** Runs a frame starting at `kickAnim`, recording the camera as renderer.render saw it and as the frame left it. */
+  function renderedFrame(kickAnim: number): { during: Cam; after: Cam; kickAnim: number; frame: Frame } {
+    const r = renderState.renderer, original = r.render;
+    let during: Cam | null = null, seen = NaN;
+    r.render = function (this: typeof r, ...args: Parameters<typeof original>) {
+      during = cam(); seen = weaponRuntime.kickAnim;
+      return original.apply(this, args);
+    };
+    screenShake.hitStop = 0;
+    weaponRuntime.kickAnim = kickAnim;
+    try {
+      const frame = runFrame(performance.now());
+      if (!during) throw new Error("the frame never rendered the world");
+      return { during, after: cam(), kickAnim: seen, frame };
+    } finally {
+      r.render = original;
+    }
+  }
+
+  it("renders a mid-kick frame with the camera leaned into the kick, and puts the camera back after", () => {
+    try {
+      const { during, after, kickAnim } = renderedFrame(0.32 - KICK_HIT_T);   // the strike's hit
+      const k = leanAmount(kickElapsed(kickAnim));
+      expect(k).toBeGreaterThan(0.9);
+      expect(during.rx).toBeCloseTo(after.rx + LEAN.pitch * k, 9);
+      expect(during.rz).toBeCloseTo(after.rz + LEAN.roll * k, 9);
+      expect(during.py).toBeCloseTo(after.py - LEAN.drop * k, 9);
+      expect(Math.hypot(during.px - after.px, during.pz - after.pz)).toBeCloseTo(LEAN.fwd * k, 9);
+      expect(during.ry).toBe(after.ry);
+    } finally {
+      weaponRuntime.kickAnim = 0;
+    }
+  });
+
+  it("does not lean at rest", () => {
+    const { during, after } = renderedFrame(0);
+    expect(during).toEqual(after);
+  });
+
+  it.each(["dead", "won"] as const)("shows no lean and no leg while the player is %s — kickAnim is frozen then (the branch review)", (flag) => {
+    const was = S[flag];
+    try {
+      S[flag] = true;
+      const { during, after, kickAnim, frame } = renderedFrame(0.32 - KICK_HIT_T);
+      expect(kickAnim).toBe(0.32 - KICK_HIT_T);            // frozen: gameplay does not tick, and its kickAnim is untouched
+      expect(during).toEqual(after);
+      expect(frame.kickAnim).toBe(0);                      // the streaks
+      expect(frame.vm.kickAnim).toBe(0);                   // the leg
+    } finally {
+      S[flag] = was;
+      weaponRuntime.kickAnim = 0;
+      runFrame(performance.now());
+    }
   });
 });
 

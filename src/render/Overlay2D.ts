@@ -4,10 +4,11 @@ import { blip } from "../audio/Sfx";
 import { after } from "../core/Timers";
 
 /**
- * 2D LAYER — viewmodels, kick boot, casings, smoke, blood. The `fx2d`
+ * 2D LAYER — viewmodels, kick, casings, smoke, blood. The `fx2d`
  * overlay canvas that the weapon viewmodel (src/render/viewmodel/draw.ts,
  * rasterized per frame from a pose since player feedback round 2) and the
- * kick boot (src/render/viewmodel/{kit,draw}.ts) are drawn onto every frame,
+ * kick (the leg, src/render/viewmodel/kick.ts, rasterized with the weapon;
+ * its streaks, draw.ts's drawKickStreaks) are drawn onto every frame,
  * plus the three lightweight particle-ish effect pools (spent shell
  * casings, smoke puffs, screen blood hits) that live entirely in 2D screen
  * space rather than the 3D scene.
@@ -24,14 +25,15 @@ import { after } from "../core/Timers";
  * src/render/viewmodel/{kit,draw}.ts.
  *
  * fxTick's own body (reference lines 2524-2557) calls drawKickBoot() and
- * drawViewmodel(dt,t) at its end — both live in
- * src/render/viewmodel/draw.ts. Rather than importing that module here
+ * drawViewmodel(dt,t) at its end — here drawKickStreaks (the boot became a
+ * modelled leg in player feedback round 2; the streaks are what is left of
+ * the callback) and drawViewmodel, both in src/render/viewmodel/draw.ts. Rather than importing that module here
  * (which would import back from this one for getFx()/getVW()/getVH(),
  * an import cycle `madge --circular` forbids), fxTick takes them — and the
  * zoomLerp value its sniper-scope vignette needs, which, like the weapon
  * state draw.ts needs, still lives in src/legacy.js — as parameters.
- * legacy.js's one fxTick call site (in its main loop) supplies the real
- * drawKickBoot/drawViewmodel from src/render/viewmodel/draw.ts.
+ * legacy.js's one fxTick call site (in its main loop, now src/core/Loop.ts)
+ * supplies the real drawKickStreaks/drawViewmodel.
  */
 
 const fx = document.getElementById("fx2d") as HTMLCanvasElement;

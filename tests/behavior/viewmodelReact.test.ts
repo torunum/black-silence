@@ -150,6 +150,27 @@ describe("idle fidget", () => {
     for (let i = 0; i < 900; i++) expect(typing.step(DT, { ...QUIET, input: Math.floor(i / 60) }).fidget).toBe(0); // one input a second
   });
 
+  it("never plays behind an overlay: while the game is paused (Loop.ts's `paused`) the idle wait does not run", () => {
+    const a = new Animator();
+    const frame: AnimInput = {
+      cur: 2, vx: 0, vz: 0, vy: 0, grounded: true, yaw: 0, sprintKey: false, bobT: 0, wstate: "idle", wtime: 0,
+      equipT: 0.24, unequipT: 0.16, kickAmt: 0, kickRot: 0, kickAnim: 0, swayX: 0, swayY: 0, muzzle: 0,
+      cueHurt: 0, cueHurtAmt: 0, cuePickup: 0, cueDryFire: 0, cueInput: 0, paused: true,
+    };
+    /** The most the hands turn over `secs` seconds of no input at all. */
+    const most = (paused: boolean, secs: number) => {
+      let m = 0;
+      for (let i = 0; i < secs / DT; i++) {
+        const p = a.step(DT, 0, { ...frame, paused }, WEAPON_STATS[2], WEAPON_ART[2]);
+        m = Math.max(m, Math.abs(p.roll) + Math.abs(p.yaw));
+      }
+      return m;
+    };
+    expect(most(true, FIDGET_AFTER * 2 + FIDGET_LEN)).toBe(0);
+    expect(most(false, FIDGET_AFTER - 0.5)).toBe(0);                     // unpaused, it waits the whole six seconds again
+    expect(most(false, FIDGET_LEN + 1)).toBeGreaterThan(0.2);            // and then plays
+  });
+
   it("alternates between two different fidgets — deterministic, no Math.random", () => {
     const original = Math.random;
     let draws = 0;
@@ -175,7 +196,7 @@ describe("switching weapons: a rotation and an arc, not a slide", () => {
   const base: AnimInput = {
     cur: 2, vx: 0, vz: 0, vy: 0, grounded: true, yaw: 0, sprintKey: false, bobT: 0, wstate: "idle", wtime: 1,
     equipT: 0.24, unequipT: 0.16, kickAmt: 0, kickRot: 0, kickAnim: 0, swayX: 0, swayY: 0, muzzle: 0,
-    cueHurt: 0, cueHurtAmt: 0, cuePickup: 0, cueDryFire: 0, cueInput: 0,
+    cueHurt: 0, cueHurtAmt: 0, cuePickup: 0, cueDryFire: 0, cueInput: 0, paused: false,
   };
   it("going down it rolls over onto its side and turns, and its muzzle travels a curve — out to the side first, then down", () => {
     for (const slot of [0, 2, 3, 5]) {

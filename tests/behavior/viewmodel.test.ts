@@ -27,8 +27,9 @@ import type * as AnimateModule from "../../src/render/viewmodel/animate";
  * says tests pinning the reference's art are rewritten, not deleted, so:
  *
  * - What is still the reference's is still compared against it, call for
- *   call: the art-kit helpers, drawKickBoot's early return (Task 3 replaced
- *   its boot; the divergence is recorded at its describe block), the
+ *   call: the art-kit helpers, drawKickBoot's early return (the module's
+ *   drawKickStreaks now: Task 3 replaced its boot; the divergence is
+ *   recorded at its describe block), the
  *   scoped-sniper hide, and — the one that protects the trace fixtures —
  *   **how many Math.random values drawViewmodel draws per frame**, per
  *   weapon, firing and not (KNOWN-20: every visual draw shifts every
@@ -204,10 +205,10 @@ describe("viewmodel art kit (vRect/vFlat/vGrad/vBarrel/vTube/vWood/vScrew/vHole/
 // What is still compared against the reference: the early return, and that neither side draws
 // from Math.random. What is pinned instead of the boot: what the callback draws now — the
 // reference's motion streaks, trailing the real foot, and only while the leg is driven out.
-describe("drawKickBoot: the reference's boot is replaced — a deliberate divergence (round 2, Task 3)", () => {
+describe("drawKickStreaks (the reference's drawKickBoot): the reference's boot is replaced — a deliberate divergence (round 2, Task 3)", () => {
   it.each([0.05, 0.2, 0.31])("at kickAnim=%s the reference drew its rectangle boot; the module draws no boot and, like the reference, no Math.random", (kickAnim) => {
     const referenceCalls = refKitAndDrawWindow(202, { kickAnim, VW, VH }, (fns) => fns.drawKickBoot());
-    const modCalls = moduleWindow(202, () => Draw.drawKickBoot(kickAnim));
+    const modCalls = moduleWindow(202, () => Draw.drawKickStreaks(kickAnim));
     expect(referenceCalls.filter((c) => c.method === "fillRect").length).toBeGreaterThan(5); // the reference's boot, really drawn
     expect(modCalls.filter((c) => ["fillRect", "strokeRect", "createLinearGradient", "rotate"].includes(c.method))).toEqual([]);
     expect(refDraws).toBe(0);
@@ -219,8 +220,8 @@ describe("drawKickBoot: the reference's boot is replaced — a deliberate diverg
     const streaksAt = (t: number) => {
       Draw.drawViewmodel(0.016, 0, frame(0.32 - t), WEAPON_STATS);            // renders the leg, so the foot's place is known
       const foot = Draw.lastAnchors().foot;
-      const calls = moduleWindow(204, () => Draw.drawKickBoot(0.32 - t));
-      expect(moduleDraws, `drawKickBoot at ${t}s draws no Math.random`).toBe(0);
+      const calls = moduleWindow(204, () => Draw.drawKickStreaks(0.32 - t));
+      expect(moduleDraws, `drawKickStreaks at ${t}s draws no Math.random`).toBe(0);
       return { foot, strokes: calls.filter((c) => c.method === "stroke").length, moves: calls.filter((c) => c.method === "moveTo") };
     };
     expect(streaksAt(0.03).strokes).toBe(0);    // wind-up
@@ -236,9 +237,9 @@ describe("drawKickBoot: the reference's boot is replaced — a deliberate diverg
 
   it("draws nothing when kickAnim<=0 (both sides agree on the early return)", () => {
     const referenceCalls = refKitAndDrawWindow(203, { kickAnim: 0, VW, VH }, (fns) => fns.drawKickBoot());
-    const modCalls = moduleWindow(203, () => Draw.drawKickBoot(0));
+    const modCalls = moduleWindow(203, () => Draw.drawKickStreaks(0));
     expect(referenceCalls).toEqual([]);
-    expectCallLogEqual(modCalls, referenceCalls, "drawKickBoot(0) call log");
+    expectCallLogEqual(modCalls, referenceCalls, "drawKickStreaks(0) vs drawKickBoot(0) call log");
   });
 });
 
@@ -253,7 +254,7 @@ function toViewmodelFrame(s: Scenario): DrawModule.ViewmodelFrame {
     started: true, dead: false, pianoOpen: false, zoomLerp: s.zoomLerp, cur: s.cur,
     vx: s.vx, vz: s.vz, vy: 0, grounded: true, yaw: 0, sprintKey: s.sprintKey, bobT: s.bobT, wstate: s.wstate, wtime: s.wtime,
     equipT: 0.24, unequipT: 0.16, kickAmt: s.kickAmt, kickRot: s.kickRot, kickAnim: 0, swayX: s.swayX, swayY: s.swayY, muzzle: s.muzzle,
-    cueHurt: 0, cueHurtAmt: 0, cuePickup: 0, cueDryFire: 0, cueInput: 0,
+    cueHurt: 0, cueHurtAmt: 0, cuePickup: 0, cueDryFire: 0, cueInput: 0, paused: false,
   };
 }
 function toRefGlobals(s: Scenario): Record<string, unknown> {

@@ -57,13 +57,6 @@ export class Raster {
     if (y < this.y0) this.y0 = y;
     if (y + 1 > this.y1) this.y1 = y + 1;
   }
-
-  /** Number of non-empty pixels. */
-  count(): number {
-    let n = 0;
-    for (let i = 0; i < this.col.length; i++) if (this.col[i]) n++;
-    return n;
-  }
 }
 
 /**

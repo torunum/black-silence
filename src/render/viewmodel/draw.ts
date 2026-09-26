@@ -7,17 +7,17 @@ import type { WeaponStats } from "../../weapons/definitions";
 import { Animator } from "./animate";
 import { WEAPON_ART } from "./arts";
 import { Raster, RW, RH, toRGBA } from "./raster";
-
-/** The overlay height (a 16:9 screen's) at which one raster pixel is one overlay unit. */
-export const VIEW_H = 180;
 import { renderWeapon, CLEAR_BELOW } from "./rig";
 import type { Pose } from "./pose";
 
 export { WALK_BOB_AMT, SPRINT_BOB_AMT } from "./animate";
 
+/** The overlay height (a 16:9 screen's) at which one raster pixel is one overlay unit. */
+export const VIEW_H = 180;
+
 /**
  * drawViewmodel — the weapon in the player's hands, drawn every frame onto
- * the 2D overlay — and drawKickBoot, the kick.
+ * the 2D overlay — and drawKickStreaks, the kick's motion streaks.
  *
  * **Deliberate divergence from the reference** (player feedback round 2,
  * Task 1, docs/superpowers/plans/2026-09-24-player-feedback-2-hands.md):
@@ -52,9 +52,10 @@ export { WALK_BOB_AMT, SPRINT_BOB_AMT } from "./animate";
  *
  * Task 3 replaced the reference's kick boot (a few canvas rectangles sliding
  * up from the bottom edge) with a modelled leg, drawn by ./kick.ts into the
- * same raster as the weapon — see drawKickBoot below for what that callback
- * still draws. The kick is exempt from the line-of-fire rule: a boot driven
- * into the centre of the screen is the point of it.
+ * same raster as the weapon; the fxTick callback that drew the boot is now
+ * drawKickStreaks, below, and draws only the streaks. The kick is exempt
+ * from the line-of-fire rule: a boot driven into the centre of the screen
+ * is the point of it.
  *
  * Task 4 made the hands react (./react.ts): a flinch on a hit, a jerk and a
  * cant on a dry click, a nod at a pickup, an idle fidget any input cancels,
@@ -92,6 +93,8 @@ export interface ViewmodelFrame {
   kickAnim: number;
   /** src/core/AnimCues.ts's counters (hit, its damage, pickup, dry click, any input): the hands react to their changes (./react.ts). */
   cueHurt: number; cueHurtAmt: number; cuePickup: number; cueDryFire: number; cueInput: number;
+  /** Loop.ts's `paused` — an overlay (level end, win, death) or the piano is up: no idle fidget behind it. */
+  paused: boolean;
   swayX: number;
   swayY: number;
   muzzle: number;
@@ -106,7 +109,7 @@ export interface ViewmodelFrame {
  * from — and only while the leg is being driven out. Like the reference's
  * boot, it draws nothing from Math.random.
  */
-export function drawKickBoot(kickAnim: number): void {
+export function drawKickStreaks(kickAnim: number): void {
   const k=streaks(kickElapsed(kickAnim));
   const foot=vm.footAt;
   if(k<=0||!foot)return;
@@ -136,12 +139,20 @@ const vm = {
   /** The last rendered image's topmost opaque row, raster pixels (RH when empty). */
   topRow: RH,
   prevBox: { x0: 0, y0: 0, x1: RW, y1: RH },
-  /** Where the last frame drew the kicking foot, overlay units — drawKickBoot's streaks trail from it; null with no leg on screen. */
+  /** Where the last frame drew the kicking foot, overlay units — drawKickStreaks trails from it; null with no leg on screen. */
   footAt: null as [number, number] | null,
+  /** A frame went by without the animator stepping (dead, not started, piano, scoped in): resync it before the next step. */
+  skipped: false,
 };
 
-/** A pose's rasterized terms, rounded — equal keys render equal pixels, so an unchanged pose is not re-rendered. */
-function poseKey(cur: number, p: Pose, cy: number): string {
+/**
+ * A pose's rasterized terms, rounded — equal keys render equal pixels, so an
+ * unchanged pose is not re-rendered. Every Pose field is in it except the
+ * screen terms `sx`/`sy`, which move the finished image and are never
+ * rasterized (tests/behavior/viewmodelCache.test.ts checks that against
+ * the Pose's own keys, so a new field cannot be left out).
+ */
+export function poseKey(cur: number, p: Pose, cy: number): string {
   const r = (n: number) => Math.round(n * 1e4);
   return [cur, cy, r(p.x), r(p.y), r(p.z), r(p.pitch), r(p.yaw), r(p.roll), r(p.recoil), r(p.action), r(p.spin), r(p.reload), r(p.heat), r(p.kick)].join(",");
 }
@@ -188,11 +199,13 @@ export function lastAnchors(): Readonly<Record<string, [number, number]>> {
 }
 
 export function drawViewmodel(dt: number, tNow: number, v: ViewmodelFrame, weapons: readonly WeaponStats[]): void {
-  if(!v.started||v.dead||v.pianoOpen)return;
+  if(!v.started||v.dead||v.pianoOpen){vm.skipped=true;return;}
   const scoped=v.zoomLerp>=.85&&v.cur===4;
-  if(scoped&&!(v.kickAnim>0)){vm.footAt=null;return;} // scoped: hide rifle (a kick still shows its leg, below)
+  if(scoped&&!(v.kickAnim>0)){vm.footAt=null;vm.skipped=true;return;} // scoped: hide rifle (a kick still shows its leg, below)
   const fg=getFx(),VW=getVW(),VH=getVH();
   const w=weapons[v.cur];
+  // not drawn last frame: what happened meanwhile (the killing blow, a fall) is not replayed now
+  if(vm.skipped){vm.skipped=false;vm.animator.resync();}
   const pose=vm.animator.step(dt,tNow,v,w,WEAPON_ART[v.cur]);
   // Scaled with the screen's height: exactly 1:1 on a 16:9 overlay (VH 180), smaller on a wider
   // screen, larger on a taller one, so the weapon is always the same share of the height and its

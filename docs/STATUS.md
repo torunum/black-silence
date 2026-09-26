@@ -847,6 +847,29 @@ browser pane after all (see Environment gotchas).
 `src/world/LevelLoader.ts` has headroom again: `spawnProp` moved verbatim to
 `src/world/PropSpawn.ts`, and the loader is at about 370 of its 400-line gate.
 
+## Player feedback round 2 — the hands
+
+Branch `feedback-2-hands`, plan
+`docs/superpowers/plans/2026-09-24-player-feedback-2-hands.md`. The owner said
+the weapons did not read as weapons and asked for more animation. Nothing
+here changes gameplay, and no trace fixture moved.
+
+| Item | Outcome |
+|---|---|
+| Parametric weapons | The eight baked pixel grids are gone. Each weapon is a draw function of a pose, built in 3D from boxes and prisms and rasterized into a 320x200 indexed buffer (`src/render/viewmodel/`). Hammers, pumps, bolts, drums and break-opens move because the pose says so, and each reload is choreographed with the left hand. The model is re-rendered only when the pose changes. At rest only the reaper's rune ring redraws, on about an eighth of the frames. |
+| Running | Sprint pose, figure-eight stride locked to the footsteps, weight against turns and strafes, a lift on take-off and a dip on landing (`motion.ts`). Screen-space motion may lower the weapon but never lift it into the line of fire. |
+| The kick | A modelled leg in trousers and a hobnailed boot with a wind-up, a strike and a recovery (`kick.ts`). Full extension lands on the frame the game resolves the hit. The view leans into it for the render only, and the camera is restored straight after, so gameplay never sees the lean. A kick frozen by death or a win is not shown. |
+| Reactions | A flinch on a hit, a jerk and cant on a dry click, a nod at a pickup, an idle fidget that any input cancels (and none behind an overlay), and a switch that arcs and turns over (`react.ts`, cues in `src/core/AnimCues.ts`). |
+
+**Open points, honestly:**
+
+- The small mechanisms (hammers, bolts, the rune ring) are hard to see with the weapon at about 30% of the screen height.
+- The HUD's weapon label overlaps the lowered weapons.
+- The boot is large at the moment of impact, deliberately. The knob is `BK` in `kick.ts`.
+- Nobody has felt any of it at 60 fps with a real mouse. The browser pane cannot run rAF, so the owner has to play it.
+
+**Next:** the sound plan, then the prologue plan (the grave → hell opening).
+
 ## How fidelity is guarded
 
 Five mechanisms, and they are **not** interchangeable:

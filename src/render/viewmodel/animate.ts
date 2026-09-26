@@ -38,9 +38,23 @@ export interface AnimInput {
   kickAnim: number;
   /** src/core/AnimCues.ts's counters (hit, its damage, pickup, dry click, any input) — read to react, never written. */
   cueHurt: number; cueHurtAmt: number; cuePickup: number; cueDryFire: number; cueInput: number;
+  /** The game is paused — an overlay (level end, win, death) or the piano is up: the hands do not fidget behind it. */
+  paused: boolean;
   swayX: number; swayY: number;
   muzzle: number;
 }
+
+/**
+ * The spin is drawn in steps of 2π/SPIN_STEPS, not continuously. The spin is a
+ * rasterized term, so every change to it re-renders the model (~0.6 ms). A
+ * fast spin moves several steps a frame, so the steps do not show. A slow one
+ * crosses a step only now and then: the reaper's rune ring idles round at
+ * .7 rad/s, which is about 7 steps a second, a sixth of the frames at 60 fps.
+ * Without the steps it re-rendered every frame at rest. The nail cannon's
+ * wind-down likewise stops costing anything once the barrels are nearly still.
+ */
+export const SPIN_STEPS = 64;
+const SPIN_STEP = (Math.PI * 2) / SPIN_STEPS;
 
 /**
  * Sprint/walk weapon-bob amplitude, multiplied into the screen-space bob.
@@ -105,7 +119,7 @@ export class Animator {
     // the hands' reactions (./react.ts): flinch, dry fire, pickup nod, idle fidget
     const r = this.react.step(dt, {
       hurt: v.cueHurt, hurtAmt: v.cueHurtAmt, pickup: v.cuePickup, dryFire: v.cueDryFire, input: v.cueInput,
-      busy: spd > 0.3 || v.wstate !== "idle" || p.kick >= 0 || !v.grounded,
+      busy: spd > 0.3 || v.wstate !== "idle" || p.kick >= 0 || !v.grounded || v.paused,
     });
     p.x = SWITCH.x * arc + ASIDE.x * a + r.x;
     p.y = SWITCH.y * e * e + c.y + ASIDE.y * a + r.y;
@@ -125,8 +139,21 @@ export class Animator {
     const rate = art.spinRate ?? 0;
     const target = v.wstate === "fire" ? rate : (art.idleSpin ?? 0);
     this.spinVel += (target - this.spinVel) * Math.min(1, dt * (target > this.spinVel ? 9 : 1.6));
+    if (Math.abs(target - this.spinVel) < 1e-3) this.spinVel = target; // a wind-down ends, exactly
     this.spin = (this.spin + this.spinVel * dt) % (Math.PI * 2);
-    p.spin = this.spin;
+    p.spin = (Math.round(this.spin / SPIN_STEP) % SPIN_STEPS) * SPIN_STEP;
     return p;
+  }
+
+  /**
+   * Forget what happened while the viewmodel was not drawn (dead, not
+   * started, the piano, the sniper scoped in): cue counters bumped meanwhile
+   * are not events, and a fall in progress is not a landing. Without this
+   * the killing blow's flinch, or a mid-fall death's landing dip, would play
+   * on the first frame the weapon is drawn again.
+   */
+  resync(): void {
+    this.react.resync();
+    this.body.resync();
   }
 }

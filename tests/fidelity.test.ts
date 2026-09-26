@@ -761,11 +761,12 @@ describe("weapon viewmodel art vs. reference — a deliberate divergence", () =>
 describe("viewmodel kit (SKIN/SLEEVE/.../HOLY, VM, MUZ) vs. reference", () => {
   // src/render/viewmodel/kit.ts — SKIN, DARK, MID, LIT, RUST, WOOD, GLOW and
   // HOLY are unused by the current game (dead code in the reference too,
-  // preserved verbatim rather than pruned); SLEEVE and BOOT feed
-  // drawKickBoot's vGrad calls, already covered behaviorally by
-  // tests/behavior/viewmodel.test.ts's drawKickBoot suite. This is the data
-  // fidelity claim for all ten, plus VM and MUZ, independent of whether
-  // anything currently calls the functions that read them.
+  // preserved verbatim rather than pruned); SLEEVE, BOOT and VM fed the
+  // reference's kick boot, which player feedback round 2 (Task 3) replaced
+  // with a modelled leg, so nothing in the game reads them now either. Of
+  // MUZ only `r` is still read (the muzzle-flash size in draw.ts). This is
+  // the data fidelity claim for all ten, plus VM and MUZ, independent of
+  // whether anything currently calls the functions that read them.
   //
   // kit.ts imports src/render/Overlay2D.ts's getFx(), and Overlay2D.ts
   // grabs the real fx2d 2D context eagerly at its own module top level (see

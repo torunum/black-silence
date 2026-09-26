@@ -73,7 +73,8 @@ reference** for everything drawn in the player's hands.
   material, silhouettes that read at the size they are actually drawn.
 - No `src/` file over 400 lines. No import cycles:
   `npx madge --circular --extensions ts,js src/`, read the "Processed N files"
-  line (~97). The bare form scans zero files and still reports success.
+  line (114 at the end of this plan). The bare form scans zero files and still
+  reports success.
 - `npm test` before every commit — capture the exit code
   (`npm test > log 2>&1; echo EXIT=$?`); never pipe it through `tail`.
 - Node is not on PATH: `export PATH="/c/Program Files/nodejs:$PATH"`.

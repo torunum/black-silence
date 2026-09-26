@@ -27,7 +27,7 @@
 /** Counters from src/core/AnimCues.ts, plus what the frame says about activity. */
 export interface CueInput {
   hurt: number; hurtAmt: number; pickup: number; dryFire: number; input: number;
-  /** The player is moving, or the weapon is doing anything but idling (firing, reloading, switching, kicking). */
+  /** The player is moving, or the weapon is doing anything but idling (firing, reloading, switching, kicking), or the game is paused. */
   busy: boolean;
 }
 /** Rig terms to add to the pose. `fidget` (0..1, the fidget's weight) is for tests. */
@@ -72,6 +72,13 @@ export class Reactions {
   private tDry = Infinity; private cant = 0;
   private tNod = Infinity;
   private idle = 0; private fidgetT = -1; private fidgetW = 0; private fidgetN = 0; private cancelling = false;
+
+  /** Starts over: the next step's counters are a baseline, not events, and nothing is playing. See Animator.resync. */
+  resync(): void {
+    this.seen = null;
+    this.tHurt = this.tDry = this.tNod = Infinity; this.cant = 0;
+    this.idle = 0; this.fidgetT = -1; this.fidgetW = 0; this.cancelling = false;
+  }
 
   step(dt: number, c: CueInput): Reaction {
     const s = this.seen ?? c; // the first frame sees nothing new: counters that were already up are not events

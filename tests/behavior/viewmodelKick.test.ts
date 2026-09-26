@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import * as THREE from "three";
 import {
-  extension, kickElapsed, legPose, aside, leanAmount, withKickLean, LEAN, ASIDE,
+  extension, kickElapsed, legPose, aside, leanAmount, withKickLean, LEAN, ASIDE, KickShown,
   KICK_CHAMBER, KICK_HOLD, KICK_RECHAMBER,
 } from "../../src/render/viewmodel/kick";
 import { KICK_ANIM, KICK_HIT_T } from "../../src/weapons/WeaponRuntime";
@@ -45,7 +45,7 @@ function animated(slot: number, kickAnims: number[]): Pose[] {
   const base: AnimInput = {
     cur: slot, vx: 0, vz: 0, vy: 0, grounded: true, yaw: 0, sprintKey: false, bobT: 0, wstate: "idle", wtime: 1,
     equipT: 0.24, unequipT: 0.16, kickAmt: 0, kickRot: 0, kickAnim: 0, swayX: 0, swayY: 0, muzzle: 0,
-    cueHurt: 0, cueHurtAmt: 0, cuePickup: 0, cueDryFire: 0, cueInput: 0,
+    cueHurt: 0, cueHurtAmt: 0, cuePickup: 0, cueDryFire: 0, cueInput: 0, paused: false,
   };
   for (let i = 0; i < 30; i++) a.step(DT, 0, base, WEAPON_STATS[slot], WEAPON_ART[slot]);
   return kickAnims.map((k) => a.step(DT, 0, { ...base, kickAnim: k }, WEAPON_STATS[slot], WEAPON_ART[slot]));
@@ -255,5 +255,46 @@ describe("the view leans into the kick — at render time only", () => {
     expect(leanAmount(KICK_HOLD)).toBe(1);
     expect(leanAmount(0.3)).toBeLessThan(0.05);
     expect(leanAmount(KICK_ANIM)).toBe(0);
+  });
+});
+
+describe("KickShown: a kick frozen by death or a win, or carried into a new level, is not shown", () => {
+  // kickAnim only counts down in the gameplay tick, which stops on death and on a win; the leg and
+  // the lean must not hang on screen behind those screens, nor finish on arrival in the next level.
+  // Presentation only: kickAnim itself is never written (src/enemies/Death.ts reads it).
+  const L1 = {}, L2 = {};
+  it("passes a live kick through unchanged, and 0 when there is none", () => {
+    const k = new KickShown();
+    expect(k.shown(0, false, L1)).toBe(0);
+    for (const a of [0.32, 0.25, 0.1, 0.01]) expect(k.shown(a, false, L1)).toBe(a);
+    expect(k.shown(0, false, L1)).toBe(0);
+  });
+
+  it("hides a kick from the frame the player dies or wins, and keeps it hidden until kickAnim runs out", () => {
+    for (const over of ["dead", "won"]) {
+      const k = new KickShown();
+      k.shown(0, false, L1);
+      expect(k.shown(0.25, false, L1)).toBe(0.25);
+      expect(k.shown(0.2, true, L1), over).toBe(0);         // frozen at .2 behind the screen
+      expect(k.shown(0.2, true, L1), over).toBe(0);
+      expect(k.shown(0.2, false, L2), over).toBe(0);        // next level: the same frozen kick resumes, unseen
+      expect(k.shown(0.1, false, L2), over).toBe(0);
+      expect(k.shown(0, false, L2), over).toBe(0);
+      expect(k.shown(0.32, false, L2), over).toBe(0.32);    // a new kick is seen again
+    }
+  });
+
+  it("hides a kick running when a new level loads, even with no death or win (a load from a menu)", () => {
+    const k = new KickShown();
+    k.shown(0, false, L1);
+    expect(k.shown(0.3, false, L1)).toBe(0.3);
+    expect(k.shown(0.28, false, L2)).toBe(0);
+    expect(k.shown(0.1, false, L2)).toBe(0);
+    expect(k.shown(0, false, L2)).toBe(0);
+    expect(k.shown(0.32, false, L2)).toBe(0.32);
+  });
+
+  it("a kick on the first frame of the first level is shown (there was no earlier level to carry it from)", () => {
+    expect(new KickShown().shown(0.32, false, L1)).toBe(0.32);
   });
 });

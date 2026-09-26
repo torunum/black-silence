@@ -173,6 +173,36 @@ export function withKickLean(cam: LeanCamera, kickAnim: number, render: () => vo
   }
 }
 
+/**
+ * The kick the player is shown: kickAnim, or 0 for a kick that must not be
+ * seen. src/core/Loop.ts passes this, not kickAnim, to the leg, the streaks
+ * and the lean.
+ *
+ * kickAnim only counts down in the gameplay tick, which stops on death and
+ * on winning. A kick in progress at that moment would freeze: the world
+ * would stay leaned behind the death or level-end screen, and the rest of
+ * the kick would play on arrival in the next level. So a kick is hidden from
+ * the first frame the player is dead or has won, or a new level has loaded
+ * (`level` is anything that changes identity on a load, e.g. the scene),
+ * and stays hidden until kickAnim reaches 0. A new kick cannot start before
+ * then: doKick needs the cooldown (KICK_CD, 1 s) gone, and that counts down
+ * alongside kickAnim's .32 s.
+ *
+ * Presentation only: kickAnim itself is never written, and gameplay
+ * (src/enemies/Death.ts's kick knockback) still reads the real one.
+ */
+export class KickShown {
+  private hidden = false;
+  private level: unknown = null;
+
+  shown(kickAnim: number, over: boolean, level: unknown): number {
+    if (kickAnim > 0 && (over || (this.level !== null && level !== this.level))) this.hidden = true;
+    this.level = level;
+    if (!(kickAnim > 0)) { this.hidden = false; return 0; }
+    return this.hidden ? 0 : kickAnim;
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Drawing the leg, in the same rig, raster and light as the weapons.
 
