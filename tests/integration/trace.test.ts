@@ -133,7 +133,7 @@ import { runTrace, type InputEvent, type TraceFrame } from "./gameplayTrace";
  * ## Player feedback round 1, fix round — fourth regeneration: two causes, kept separate
  *
  * Two of this round's player-requested changes reach this fixture, for two
- * different reasons, and `installAudioStub` (see `gameplayTrace.ts`, KNOWN-20)
+ * different reasons, and `installAudioStub` (see `gameplayTrace.ts`, KNOWN-22)
  * was deliberately **not** wired in to remove either — that ruling costs three
  * fixtures and a boss-script retune, paid for in a future plan, not this one.
  * Both causes were isolated by temporarily reverting one constant at a time
@@ -159,7 +159,7 @@ import { runTrace, type InputEvent, type TraceFrame } from "./gameplayTrace";
  *   grounded, so retuning the sprint bob *rate* also retimes when a
  *   sprint-phase footstep sound fires (script sprints frames 80-110); each
  *   shifted footstep is one draw earlier or later against the shared seeded
- *   `Math.random()` stream (see KNOWN-20), which is what actually moves the
+ *   `Math.random()` stream (see KNOWN-22), which is what actually moves the
  *   digest, not the bob itself. `hud` and `scene.count` are untouched in
  *   all 90 frames of this isolated run.
  *
@@ -256,6 +256,57 @@ import { runTrace, type InputEvent, type TraceFrame } from "./gameplayTrace";
  * archable doors. The prologue has no doors, so it gains nothing, and this
  * fixture is byte-identical before and after (md5 checked); the level 1 and
  * level 2 fixtures moved, and their headers carry the account.
+ *
+ * ## Player feedback round 2 Task 1 — seventh regeneration: sound stopped rolling the game's dice
+ *
+ * `docs/superpowers/plans/2026-09-26-player-feedback-2-sound.md` Task 1,
+ * closing `docs/known-issues.md` KNOWN-22 (filed as KNOWN-20 in the round-1
+ * fix round and renumbered — see that row). Until this commit every sound
+ * drew from the same `Math.random()` this harness seeds for gameplay: each
+ * noise sound filled a fresh buffer from it (one draw here, since
+ * `domStubs.ts`'s `createBuffer()` hands back a 1-sample buffer), a dozen
+ * sounds took pitch jitter from it, the drone bed's four LFO rates came from
+ * it, and the ambient layer timed its stingers and breathing with it. Sound
+ * now draws from its own generator (`src/audio/SoundRandom.ts`) and plays
+ * shared noise at an offset (`src/audio/Noise.ts`), so all of those draws
+ * left the gameplay stream at once, and every gameplay draw after the first
+ * one of them re-indexed. That is the sanctioned move, and the only one:
+ *
+ * - **79 sound draws** left this run's stream (53 sample/pitch/rate values,
+ *   26 that decide whether or when a later sound plays — the ricochet roll,
+ *   the stinger choice and its timers, the breathing timer, the casing
+ *   clink's delay). Counted by instrumenting every sound draw site.
+ * - `camera` — all seven components **identical in all 90 frames**.
+ * - `hud` — all eight fields **identical in all 90 frames**.
+ * - `scene.count` — **identical in all 90 frames** (34..46).
+ * - `scene.digest` — differs in **all 90**, first at frame 10
+ *   (`fd28e136` -> `ba716fe7`), last at frame 900 (`c482baf4` ->
+ *   `35e44eb6`); 90 distinct digests before and after. The same shape the
+ *   round-1 note predicted for this level: no enemies, so the re-indexed
+ *   stream reaches only cosmetic timers (torch flicker, particle jitter).
+ *
+ * **The proof that it is only that**, done in a throwaway worktree of the
+ * commit before (the sound catalogue extraction, itself proven to leave all
+ * three fixtures and the full 82,401-event audio call log of the three runs
+ * byte-identical), with every sound draw site routed through one probe:
+ *
+ * 1. Probe returning `Math.random()` — the old code exactly — reproduced
+ *    all three old fixtures byte for byte (the instrumentation is faithful).
+ * 2. Probe making **the same draw at the same point but throwing its value
+ *    away** (0.5 instead) for every sample/pitch/rate draw, and keeping the
+ *    value only for the 26 draws that decide whether or when a later sound
+ *    draw happens (without those, the *count* itself would change):
+ *    **all three old fixtures reproduced byte for byte.** What sound drew
+ *    never reached gameplay; only how many draws it took, and where.
+ * 3. Probe **making no draw at all**, answered from a local generator:
+ *    identical fixtures under two different local seeds (7 and 99), and
+ *    **byte-identical to this commit's regenerated fixtures** — all three.
+ *    So the new code is exactly the old code with sound's draws removed.
+ *
+ * From this commit on `runTrace` runs under `installAudioDrawGuard`
+ * (`gameplayTrace.ts`), which fails the run if any `Math.random()` call
+ * comes from `src/audio/` — so the next sound change cannot move this
+ * fixture silently, and Tasks 2-5 of that plan are required to move none.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

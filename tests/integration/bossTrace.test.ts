@@ -84,15 +84,17 @@ import { world } from "../../src/world/WorldState";
  *   13-unit wake radius, so the boss wakes on the first gameplay frame.
  * - **`afterLoad` — `S.hp=5000`.** `loadLevel` sets `S.hp=100`, so this too
  *   has to be post-load. It is the price of the sweep below: the recorded
- *   fight runs 100 seconds of game time, during which a phase-2 priest
+ *   fight runs 47 seconds of game time, during which a phase-2 priest
  *   volleys five 15-damage orbs every 2.8s and its summons close in. The
- *   committed run ends with the player at `"HEALTH2876"`, i.e. having taken
- *   2124 real points of damage through the real `damagePlayer`; nothing
+ *   committed run ends with the player at `"HEALTH3835"`, i.e. having taken
+ *   1165 real points of damage through the real `damagePlayer`; nothing
  *   about the damage path is stubbed or softened, only the pool it draws
- *   down. **That figure is the clearest illustration of why the pool has
- *   headroom**: it was 1153 one regeneration ago, at 2700 frames, and the
- *   run is now more than twice as long because KNOWN-11's two fewer
- *   Mancubi lengthened phase 2 (see that section). The pool is kept at
+ *   down. **The history of that figure is the clearest illustration of why
+ *   the pool has headroom**: 1153 at 2700 frames, then 2124 at 6012 once
+ *   KNOWN-11's two fewer Mancubi lengthened phase 2, and back to 1165 at
+ *   2808 once sound stopped drawing from the stream (the round-2 Task 1
+ *   section) — the run's length is at the mercy of the seeded stream, and
+ *   the pool has to survive the longest of them. The pool is kept at
  *   5000 rather than trimmed to fit: when this
  *   script ran 5400 frames it drained 2798, an earlier tuning that seeded
  *   only 3000 had the player dead before frame 5500, and a fixture of a
@@ -235,51 +237,56 @@ import { world } from "../../src/world/WorldState";
  * All four are **re-run against the regenerated fixture every time this
  * fixture moves** — the frame numbers are measured against one specific
  * recording and would otherwise become quietly false. They were re-run
- * when level 2's pews stopped being bosses (KNOWN-4 section), and again
- * when its two Mancubi became armour (KNOWN-11 section). The numbers below
- * are the **current** ones, over the 334 sampled frames of the present
- * fixture; each mutation moves `scene.digest` only (`camera`, every `hud`
- * field and `scene.count` differ in **0** frames in all four cases, which
- * is also the measurement that says the old digest could not have caught
- * any of them):
+ * when level 2's pews stopped being bosses (KNOWN-4 section), again when
+ * its two Mancubi became armour (KNOWN-11 section), and again when sound
+ * stopped rolling the game's dice (player feedback round 2 Task 1, the
+ * last section of this header). The numbers below are the **current**
+ * ones, over the 156 sampled frames of the present fixture; each mutation
+ * moves `scene.digest` only (`camera`, every `hud` field and `scene.count`
+ * differ in **0** frames in all four cases, which is also the measurement
+ * that says the old digest could not have caught any of them):
  *
  * - **`Boss.ts`'s phase-3 form swap** (`e.sp.material.map=PX[e.formKey].a`),
- *   rewritten to `PX[e.key].a`: red in exactly **1** frame, **5472** — the
- *   single sample inside the measured window [5460,5475), which is the
+ *   rewritten to `PX[e.key].a`: red in exactly **1** frame, **2250** — the
+ *   single sample inside the measured window [2241,2255), which is the
  *   window `TOTAL_FRAMES`/`EVERY` are pinned to hit. Still the fragile one;
  *   still guarded by the named test below rather than by this paragraph.
- *   (Was 1 frame at 2250, window [2244,2258).)
+ *   (Was 1 frame at 5472, window [5460,5475); before that 2250, [2244,2258).)
  * - **`Boss.ts`'s boss walk cycle** (`e.sp.material.map=set[e.frame]`),
- *   pinned to `set[0]`: red in **27** of 334 frames — nine in 180-432 (the
- *   phase-1 `Q` walk-in) and eighteen in 5490-6012 (the phase-3 `Q2`
- *   walk-in), so both forms are still covered. (Was 30 of 150.)
+ *   pinned to `set[0]`: red in **11** of 156 frames — eight in 180-432 (the
+ *   phase-1 `Q` walk-in) and three in 2268-2358 (the phase-3 `Q2`
+ *   walk-in), so both forms are still covered. (Was 27 of 334.)
  * - **`Behaviors.ts`'s two-stage death collapse** (`P.die1`/`P.die2`),
- *   rewritten to `P.a`/`P.b`: red in **322** of 334 frames, every sample
- *   from 234 on. (Was 137 of 150, from 252.)
+ *   rewritten to `P.a`/`P.b`: red in **113** of 156 frames, every sample
+ *   from 792 on. (Was 322 of 334, from 234.)
  * - **`Death.ts`'s headless corpse** (`PX[e.key].noHead||PX[e.key].hl`),
- *   rewritten to `PX[e.key].a`: red in **307** of 334 frames, every sample
- *   from 504 on. (Was 117 of 150, from 612.)
+ *   rewritten to `PX[e.key].a`: red in **144** of 156 frames, every sample
+ *   from 234 on. (Was 307 of 334, from 504.)
  *
- * The last two are the ones `combatTrace`'s header reports as genuinely
- * unreached there: level 1's single kill severs a limb rather than
- * decapitating, while this run's nail cannon produces both kinds of kill
- * among its many. Both mutations were also re-run against the other two
- * fixtures and left them green, which is the same result that file already
- * recorded — the coverage is new, not a re-reading of theirs.
+ * The last two are the ones `combatTrace`'s header reported as genuinely
+ * unreached there, while this run's nail cannon produces both kinds of kill
+ * among its many. Since round 2 Task 1 that is true of the headless corpse
+ * only: level 1's one kill now collapses whole instead of severing a limb,
+ * so the death-collapse mutation turns `trace-level1.json` red too (10
+ * frames from 1670), and the sever frame it used to show is covered by
+ * neither trace — `combatTrace.test.ts`'s round-2 section has the account
+ * and the direct test that now covers it. The headless-corpse mutation was
+ * re-run against the other two fixtures and left them green.
  *
  * ### The form swap is pinned by exactly one sampled frame — and that is
  * ### now a structural guard, not just this paragraph
  *
  * Measured, and the most fragile thing in this file. Regenerating a
  * throwaway fixture under the form-swap mutation and comparing field by
- * field: `camera` differs in **0** of 334 frames, `hud` in **0**,
- * `scene.count` in **0**, and `scene.digest` in exactly **1** — frame 5472.
+ * field: `camera` differs in **0** of 156 frames, `hud` in **0**,
+ * `scene.count` in **0**, and `scene.digest` in exactly **1** — frame 2250.
  * That is not sampling bad luck, it is the shape of the site: the swap
  * writes `PX[formKey].a` once, and within at most 15 frames the walk cycle
  * three lines below overwrites the same `material.map` with `set[e.frame]`
  * (also a `Q2` texture), so the mutation's whole visible window is the
- * handful of frames between the two — measured here as **[5460,5475)**,
- * and as [2244,2258) in the recording before this one.
+ * handful of frames between the two — measured here as **[2241,2255)**,
+ * as [5460,5475) in the recording before this one, and as [2244,2258)
+ * before that.
  * **Any change to `TOTAL_FRAMES`, `EVERY`, `dtMs`, the sweep or the seed can
  * move that one frame out of the window and silently drop this site's
  * coverage while every test stays green** — that was this file's own
@@ -582,6 +589,96 @@ import { world } from "../../src/world/WorldState";
  * entry still in place — a `WRITE_TRACE=1` run reproduced all three
  * pre-arch fixtures **byte for byte** (md5 equal). That call is the whole
  * of this diff.
+ *
+ * ## Player feedback round 2 Task 1 — the seventh regeneration: sound
+ * ## stopped rolling the game's dice, and the fight moved back
+ *
+ * `docs/superpowers/plans/2026-09-26-player-feedback-2-sound.md` Task 1,
+ * closing `docs/known-issues.md` KNOWN-22 — the coupling this file's
+ * round-1 retune already met once without a name for it. Every sound used
+ * to draw from the `Math.random()` this harness seeds for gameplay (a fill
+ * per noise sound, pitch jitter, LFO rates, ambient timers). Sound now has
+ * its own generator and shared noise, so this run's **3,433 sound draws**
+ * (2,554 sample/pitch/rate values, 879 that decide whether or when a later
+ * sound plays) left the stream, and every later gameplay draw — the
+ * priest's teleports, its summons, every flank and dodge — re-indexed.
+ * `trace.test.ts`'s section of the same name has the three-step proof that
+ * this is the only change; it held here byte for byte, at the old 6012
+ * frames: old code with sound's draws made but ignored reproduced the old
+ * fixture exactly, and old code with them removed equalled the new code's
+ * run exactly.
+ *
+ * ### Like for like first: the new code at the old 6012 frames
+ *
+ * Against the pre-change fixture, all 334 sampled frames: `camera` differs
+ * in 299 (first 234), `hud.hp` in 311, `hud.msg` in 190, `hud.bossname` in
+ * 180, `hud.subt` in 65, `hud.wname` in 26, `scene.count` in 314 and
+ * `scene.digest` in all 334; `hud.ar`, `lvltitle` and `keys` in none. The
+ * fight came out very differently, and it is the phase table that says how:
+ *
+ * | | before | after |
+ * |---|---|---|
+ * | phase 1 first sampled | 180 | 180 |
+ * | phase 2 first sampled | 540 | **522** |
+ * | phase-3 `material.map` write | 5460 | **2241** |
+ * | swap's visible window | [5460,5475) | **[2241,2255)** |
+ * | phase 3 first sampled | 5472 | **2250** |
+ *
+ * — almost exactly where round 1 left it (2244) before KNOWN-11 pushed it
+ * to 5460: phase 2 costs ~1720 frames again, not ~4900, because the one
+ * phase-2 teleport distance is drawn from this stream and the angular-width
+ * argument above does the rest. **The structural guard stayed green** —
+ * 18 x 125 = 2250 falls inside the new window — which is the guard reading
+ * the moved fight correctly, not failing to look: it is the one assertion
+ * that is about sampling rather than the fight. **One behavioural assertion
+ * went red, and it was the right one to**: "the priest ends the run awake,
+ * hurt, transformed and still alive" failed because the priest was
+ * **dead** at frame 6012 (`hp = -4`) — 3,771 frames of phase 3 is far more
+ * nail cannon than 1,800 hp survives. Regenerating could not have fixed
+ * that; the cutoff had to move.
+ *
+ * ### The retune: `TOTAL_FRAMES` 6012 -> 2808, `EVERY` unchanged
+ *
+ * The same design intent as both earlier retunes — a few hundred frames of
+ * live phase 3 after the swap, the boss alive at the cutoff. 2808 - 2241 =
+ * **567** frames (9.5 s) of phase 3, against 552 before; measured at 2808:
+ * `phase = 3`, `dead = false`, `hp = 194` of 1800 (10.8%, under the `< 33%`
+ * check), `formKey = "Q2"`. 2808 = 18 x 156, the multiple of `EVERY` nearest
+ * that intent. Nothing before the cutoff can differ from the 6012 run: the
+ * script's only dependence on `TOTAL_FRAMES` is the sweep loop's upper
+ * bound — and it was checked, not argued: **the committed 156-frame fixture
+ * is byte for byte the first 156 frames of the like-for-like 6012 run.**
+ *
+ * ### What moved in the committed fixture, field by field
+ *
+ * Against the first 156 frames of the pre-change fixture (the same frame
+ * numbers — `EVERY` is unchanged):
+ *
+ * - `camera` — **121** frames, first at **234**: `x` in 121 (up to 1.21),
+ *   `y` in 116, `rz` in 113 (shake), `z` in 28 and `rx` in 29 (the player
+ *   is shoved by summons and slams from phase 2 on). The player never
+ *   walks; every camera move is something hitting it.
+ * - `hud.hp` — **133**, first at **378** (`HEALTH4972` -> `HEALTH4986`).
+ * - `hud.msg` — **92**, first at **234** (`"THE SCREAMER CALLS THE DEAD"` ->
+ *   `"DECAPITATED"`): the same kinds of event, on different frames.
+ * - `hud.bossname` — **33**, first at **522**: phase 2 arrives 18 frames
+ *   earlier, phase 3 from 2250 instead of never (within this span).
+ * - `hud.subt` — **22**, first at **90**: a different `pick()` from the
+ *   same `MONOLOGUE` array. `hud.wname` — **5**, first at 2268.
+ * - `hud.ar`, `hud.lvltitle`, `hud.keys` — **identical in all 156**.
+ * - `scene.count` — **144**, first at 234 (`157` -> `161`), range
+ *   `156..566` -> `156..559`.
+ * - `scene.digest` — **all 156**, first at 18 (`d842dfe7` -> `8f6c6807`),
+ *   last at 2808 (`70bb80d4` -> `6b044e58`); 156 distinct before and after.
+ * - **Nothing this fixture exists to record was lost.** The priest still
+ *   wakes, reaches all three phases, calls its flock, ends awake / hurt /
+ *   `Q2` / alive; the form swap is sampled at 2250; all four `material.map`
+ *   mutations above still turn it red (re-measured, numbers above). The last
+ *   sampled frame reads `HEALTH3835` / `"THE CORRUPTED PRIEST — PHASE 3"`.
+ *
+ * From this commit on `runTrace` fails any run in which a `Math.random()`
+ * call comes from `src/audio/` (`installAudioDrawGuard`, `gameplayTrace.ts`),
+ * so a sound change cannot move this fight again.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");
@@ -672,8 +769,18 @@ const REV = (2 * Math.PI) / SENS;
  *
  * 6012/18 = 334 recorded frames, up from 150, so the fixture grows to
  * roughly the size it was two regenerations ago.
+ *
+ * ### Re-measured a third time, player feedback round 2 Task 1 — 6012 -> 2808
+ *
+ * Sound stopped drawing from the gameplay stream, and 3,433 draws leaving
+ * it moved the fight back close to where round 1 had it: phase-3 swap at
+ * **2241**, window **[2241,2255)**, sampled at 18 x 125 = **2250**. At the
+ * old 6012 cutoff the priest was dead (`hp = -4`), so **`TOTAL_FRAMES` =
+ * 2808** (567 frames of live phase 3, priest at 194 hp) and **`EVERY` stays
+ * 18**. 2808/18 = 156 recorded frames. The module doc comment's last
+ * section has the measurement and the field-by-field account.
  */
-const TOTAL_FRAMES = 6012;
+const TOTAL_FRAMES = 2808;
 const EVERY = 18;
 /**
  * The fifth knob the structural guard depends on, alongside `TOTAL_FRAMES`

@@ -13,7 +13,7 @@
  * Player feedback round 2, Task 1 (docs/superpowers/plans/
  * 2026-09-24-player-feedback-2-hands.md): this replaces the reference's
  * baked pixel grids and their `GP` palette. Built at module load from
- * literals only — no `Math.random`, nothing drawn (KNOWN-20).
+ * literals only — no `Math.random`, nothing drawn (KNOWN-22).
  */
 
 export interface Material {

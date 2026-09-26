@@ -1,7 +1,7 @@
 import { bang, blip } from "../Sfx";
 import { growl, gurgle } from "../Voice";
 import { after } from "../../core/Timers";
-import { rnd } from "../../utils/math";
+import { soundRandom, soundRnd } from "../SoundRandom";
 
 /**
  * THE SOUND CATALOGUE — WORLD. The player's own body, doors, pickups,
@@ -18,7 +18,7 @@ import { rnd } from "../../utils/math";
  */
 export function footstep(sprinting: boolean, marble: boolean): void {
   bang(.05,sprinting?.09:.06,marble?2400:700,marble?600:0);
-  if(marble)blip(rnd(800,1000),.05,"sine",.02);}
+  if(marble)blip(soundRnd(800,1000),.05,"sine",.02);}
 /** The player jumps. */
 export function jump(): void { blip(140,.06,"sine",.04,90); }
 /** The player is hit (`damagePlayer`). */
@@ -36,7 +36,7 @@ export function gauntletCleared(): void { blip(523,.3,"sine",.1,1046,true); }
 /** A bullet strikes a breakable prop (`hitscan`). */
 export function bulletHitsProp(): void { bang(.04,.12,1500,300); }
 /** Whether a bullet that hit a wall ricochets audibly — three times in ten (`hitscan`). */
-export function ricochetRoll(): boolean { return Math.random()<.3; }
+export function ricochetRoll(): boolean { return soundRandom()<.3; }
 /** The ricochet itself. */
 export function bulletRicochet(): void { bang(.03,.08,4000,800); }
 /** A crate, pew or chair breaks (`breakProp`). */
@@ -44,18 +44,18 @@ export function propBreaks(): void { bang(.12,.32,1200);bang(.08,.2,500); }
 /** The random-event blackout: the torches die (`eventTick`). */
 export function blackout(): void { blip(50,2,"sine",.1,30,true);bang(.4,.1,300); }
 /** The random-event whispers: three faint voices, 0.6 s apart (`eventTick`). */
-export function whispers(): void { for(let i=0;i<3;i++)after(()=>blip(rnd(300,500),.7,"sine",.025,rnd(120,200),true),i*600); }
+export function whispers(): void { for(let i=0;i<3;i++)after(()=>blip(soundRnd(300,500),.7,"sine",.025,soundRnd(120,200),true),i*600); }
 /** Ambient stinger: a distant scream. */
-export function distantScream(): void { blip(rnd(480,720),1.4,"sine",.022,rnd(140,200),true); }
+export function distantScream(): void { blip(soundRnd(480,720),1.4,"sine",.022,soundRnd(140,200),true); }
 /** Ambient stinger: machinery — three low knocks at random spacing. */
-export function machinery(): void { for(let i=0;i<3;i++)after(()=>bang(.08,.05,400),i*rnd(120,260)); }
+export function machinery(): void { for(let i=0;i<3;i++)after(()=>bang(.08,.05,400),i*soundRnd(120,260)); }
 /** Ambient stinger: a burst of static, then a shorter one. */
 export function staticCrackle(): void { bang(.3,.03,6000,1800);after(()=>bang(.15,.025,6000,1800),200); }
 /** Ambient stinger: a drip. */
-export function drip(): void { blip(rnd(1200,2200),.08,"sine",.03,undefined,true); }
+export function drip(): void { blip(soundRnd(1200,2200),.08,"sine",.03,undefined,true); }
 /** One of the four ambient stingers at random, weighted as the reference weighted them (`ambience`). */
 export function ambientStinger(): void {
-  const r=Math.random();
+  const r=soundRandom();
   if(r<.28)distantScream();
   else if(r<.5)machinery();
   else if(r<.72)staticCrackle();

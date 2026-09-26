@@ -4,6 +4,8 @@ import { evalReference, REF, refSource } from "../support/reference";
 import { recordingAudioContext, type AudioEvent } from "../support/recordingAudio";
 import { seedRandom } from "../support/seededRandom";
 import { expectCallLogEqual } from "../support/expectCallLogEqual";
+import { compareSoundLogs, resetSoundDice, soundDiceChunks, soundDiceGlobals } from "../support/soundOracle";
+import { fadeCurve } from "../../src/audio/Noise";
 import { audioInit as moduleAudioInit } from "../../src/audio/AudioEngine";
 import { bang as moduleBang, blip as moduleBlip, boom as moduleBoom } from "../../src/audio/Sfx";
 import { growl as moduleGrowl, snarl as moduleSnarl } from "../../src/audio/Voice";
@@ -51,16 +53,39 @@ import { growl as moduleGrowl, snarl as moduleSnarl } from "../../src/audio/Voic
  * in the audio code under test, not just a failed assertion) would leak
  * the seeded Math.random into every test that runs afterward in this file.
  *
- * Everything in this file is FULL PARITY against the frozen reference and
- * is meant to stay that way. Player feedback round 1 task 4 (2026-09-17)
- * rebuilt the weapon report and deliberately did NOT touch bang/blip/boom —
- * `bang` is also every footstep, impact, ricochet and UI click — so nothing
- * here diverged or was weakened. The new synthesis is `gunshot()` in
- * `src/audio/Sfx.ts` and its oracle, including the reference side kept as
- * the record of what changed, is `tests/behavior/weaponReport.test.ts`.
+ * Everything in this file was FULL PARITY against the frozen reference
+ * until player feedback round 2 Task 1, and still is for everything but one
+ * deliberate change. Player feedback round 1 task 4 (2026-09-17) rebuilt the
+ * weapon report and did NOT touch bang/blip/boom — `bang` is also every
+ * footstep, impact, ricochet and UI click; its oracle is
+ * `tests/behavior/weaponReport.test.ts`.
+ *
+ * ## The deliberate divergence: sound draws no dice (round 2, Task 1)
+ *
+ * `docs/superpowers/plans/2026-09-26-player-feedback-2-sound.md` took sound
+ * off the game's random generator (`docs/known-issues.md` KNOWN-22). The
+ * reference fills a fresh buffer from `Math.random()` for every `bang`,
+ * `boom` and growl, and draws `audioInit`'s four LFO rates, `growl`'s
+ * tremolo rate and `snarl`'s generic moan pitch from it; the port plays one
+ * shared noise buffer at an offset and draws all of that jitter from its own
+ * generator. So this file compares **with the port's dice in the
+ * reference's hand**: the reference sandbox gets the port's jitter generator
+ * as its `Math.random` and its three sample-fill loops draw from elsewhere
+ * (`soundDiceChunks`/`soundDiceGlobals`), and the noise source itself is
+ * checked against a positive contract and then set aside
+ * (`compareSoundLogs`) — see `tests/support/soundOracle.ts`'s header for
+ * both. Every oscillator, filter, gain, envelope and connection is still
+ * compared event for event, and the four LFO rates in `audioInit` and the
+ * jitter in `growl`/`snarl` still have to land on exactly the values the
+ * reference, rolling the same dice, would have drawn — which pins the port
+ * to drawing them at the same points, in the same order.
+ *
+ * What the new code does that the reference did not is pinned positively
+ * below ("the noise itself" describe): the fade `bang` and `boom` used to
+ * bake into their samples is a gain curve of exactly the old shape.
  */
 
-const AUDIO_CHUNKS = [
+const AUDIO_CHUNKS = soundDiceChunks([
   refSource(REF.audioState),
   refSource(REF.audioInit),
   refSource(REF.blip),
@@ -69,7 +94,7 @@ const AUDIO_CHUNKS = [
   refSource(REF.noiseBuf),
   refSource(REF.growl),
   refSource(REF.snarl),
-];
+]);
 const AUDIO_EXPR = "({audioInit,blip,bang,boom,growl,snarl})";
 
 interface RefAudioFns {
@@ -94,9 +119,10 @@ function withReferenceAudioSession<T>(seed: number, run: (fns: RefAudioFns, even
   const { ctx, events } = recordingAudioContext();
   const restoreRandom = seedRandom(seed);
   try {
+    // The port's sound dice in the reference's hand — see the module doc comment.
     const fns = evalReference<RefAudioFns>(AUDIO_CHUNKS, AUDIO_EXPR, {
       window: { AudioContext: constructorReturning(ctx) },
-      Math,
+      ...soundDiceGlobals(seed),
     });
     return run(fns, events);
   } finally {
@@ -110,6 +136,7 @@ function withModuleAudioSession<T>(seed: number, run: (events: AudioEvent[]) => 
   const previous = (globalThis as unknown as { AudioContext?: unknown }).AudioContext;
   (globalThis as unknown as { AudioContext: unknown }).AudioContext = constructorReturning(ctx);
   const restoreRandom = seedRandom(seed);
+  resetSoundDice(seed);
   try {
     return run(events);
   } finally {
@@ -187,7 +214,7 @@ describe("bang behavioral parity with reference", () => {
     });
 
     expect(referenceEvents.length).toBeGreaterThan(10);
-    expectCallLogEqual(moduleEvents, referenceEvents, "bang call log");
+    compareSoundLogs(moduleEvents, referenceEvents, "bang call log");
   });
 });
 
@@ -212,7 +239,7 @@ describe("boom behavioral parity with reference", () => {
     });
 
     expect(referenceEvents.length).toBeGreaterThan(10);
-    expectCallLogEqual(moduleEvents, referenceEvents, "boom call log");
+    compareSoundLogs(moduleEvents, referenceEvents, "boom call log");
   });
 });
 
@@ -237,7 +264,7 @@ describe("growl behavioral parity with reference", () => {
     });
 
     expect(referenceEvents.length).toBeGreaterThan(10);
-    expectCallLogEqual(moduleEvents, referenceEvents, "growl call log");
+    compareSoundLogs(moduleEvents, referenceEvents, "growl call log");
   });
 });
 
@@ -263,6 +290,48 @@ describe("snarl behavioral parity with reference", () => {
     });
 
     expect(referenceEvents.length).toBeGreaterThan(10);
-    expectCallLogEqual(moduleEvents, referenceEvents, "snarl call log");
+    compareSoundLogs(moduleEvents, referenceEvents, "snarl call log");
+  });
+});
+
+describe("the noise itself — what the port does that the reference did not (round 2, Task 1)", () => {
+  /** The events of one module sound, after audioInit. */
+  const record = (seed: number, play: () => void): AudioEvent[] =>
+    withModuleAudioSession(seed, (events) => {
+      moduleAudioInit();
+      const baseline = events.length;
+      play();
+      return events.slice(baseline);
+    });
+  const curves = (events: AudioEvent[]) =>
+    events.filter((e) => e.kind === "param" && e.detail.method === "setValueCurveAtTime").map((e) => e.detail);
+
+  it("bang shapes its noise with the (1-t)^2 fade the reference baked into each buffer", () => {
+    const [c] = curves(record(16, () => moduleBang(0.2, 0.3, 1000)));
+    expect(c.value).toEqual(Array.from(fadeCurve(2)));
+    expect(c.duration).toBe(0.2);
+    // The fade the reference computed per sample, sampled at the curve's points.
+    const n = (c.value as number[]).length;
+    for (const i of [0, 64, 128, 200, n - 1]) expect((c.value as number[])[i]).toBeCloseTo(Math.pow(1 - i / (n - 1), 2), 6);
+  });
+
+  it("boom shapes its noise tail with the reference's (1-t)^1.6 fade", () => {
+    const [c] = curves(record(17, () => moduleBoom(1)));
+    expect(c.value).toEqual(Array.from(fadeCurve(1.6)));
+    expect(c.duration).toBe(0.7);
+  });
+
+  it("successive noise plays read different stretches of the one shared buffer", () => {
+    const events = record(18, () => { for (let i = 0; i < 8; i++) moduleBang(0.05); });
+    const buffers = events.filter((e) => e.kind === "create" && e.detail.type === "AudioBuffer");
+    expect(buffers).toHaveLength(1); // the bank, built once, on first use
+    const offsets = events
+      .filter((e) => e.kind === "start")
+      .map((e) => (e.detail.args as number[])[1]);
+    expect(offsets).toHaveLength(8);
+    expect(new Set(offsets).size).toBe(8);
+    // No two within 50 ms of each other: the golden-ratio step spreads them.
+    const sorted = [...offsets].sort((a, b) => a - b);
+    for (let i = 1; i < sorted.length; i++) expect(sorted[i] - sorted[i - 1]).toBeGreaterThan(0.05);
   });
 });

@@ -298,9 +298,10 @@ import { MONOLOGUE } from "../../src/content/monologue";
  *
  * - `Behaviors.ts`'s two-stage death collapse (`P.die1`/`P.die2`). Its
  *   branch is skipped outright for a corpse with `e.severKey` set or
- *   `deathKind===2`, and this run's kill *does* sever a limb — `z.noLArm`
- *   is what appears in the sampled frames, not `z.die1`/`z.die2`, neither
- *   of which appears anywhere.
+ *   `deathKind===2`, and this run's kill *did* sever a limb — `z.noLArm`
+ *   was what appeared in the sampled frames, not `z.die1`/`z.die2`, neither
+ *   of which appeared anywhere. (Until player feedback round 2 Task 1; the
+ *   kill now collapses whole — see that section.)
  * - `Death.ts`'s headless corpse (`PX[e.key].noHead||PX[e.key].hl`).
  *   Requires a decapitating kill; this run's kill is not one, and no
  *   `noHead`/`hl` texture appears in any sampled frame.
@@ -339,7 +340,9 @@ import { MONOLOGUE } from "../../src/content/monologue";
  * kill does not. Every `material.map=` site in `src/` is covered by at
  * least one committed trace as of that commit.
  *
- * The nine sites, and what the committed fixtures actually show:
+ * The nine sites, and what the committed fixtures actually showed **until
+ * player feedback round 2 Task 1** (its section at the end of this header
+ * has the current state — the sever frame and the death collapse swapped):
  * walk cycle **covered** (`j.a`/`j.b` both appear), attack pose **covered**
  * (`z.atk`, `g.atk`, demonstrated by mutation above), hurt/sever frame in
  * `Damage.ts` **covered** (`z.noLArm`), torch flicker **covered**
@@ -505,6 +508,72 @@ import { MONOLOGUE } from "../../src/content/monologue";
  * run reproduced all three pre-arch fixtures **byte for byte** (md5 equal).
  * So that call is the whole of this diff. The prologue fixture did not move
  * at all: the prologue has no doors.
+ *
+ * ## Player feedback round 2 Task 1 — eighth regeneration: sound stopped rolling the game's dice
+ *
+ * `docs/superpowers/plans/2026-09-26-player-feedback-2-sound.md` Task 1,
+ * closing `docs/known-issues.md` KNOWN-22. Every sound used to draw from the
+ * `Math.random()` this harness seeds for gameplay; sound now has its own
+ * generator and shared noise, so this run's **264 sound draws** (207
+ * sample/pitch/rate values, 57 that decide whether or when a later sound
+ * plays) left the stream and every later gameplay draw re-indexed.
+ * `trace.test.ts`'s section of the same name carries the three-step proof
+ * that this is the *only* change — old code with sound's draws made but
+ * ignored reproduces the old fixture byte for byte; old code with them
+ * removed equals this fixture byte for byte — and it held for this fixture
+ * exactly as for the other two. Field by field against the pre-change
+ * fixture, all 176 sampled frames:
+ *
+ * - `camera` — **11 frames**, first at **1560**, only `x`, `y` and `rz`
+ *   (largest deltas 0.0058, 0.0094, 0.0109): screen shake from hits landing
+ *   on different frames. The walk and the turret sweep are open-loop and
+ *   untouched; `ry`/`rx`/`fov` and `z` identical everywhere.
+ * - `hud.subt` — **52 frames**, first at **90**: `pick()` choosing a
+ *   different `MONOLOGUE.lvl1` line from a re-indexed stream (`"Stone
+ *   walls, chains…"` -> `"A dungeon. Of course it's a dungeon…"`).
+ * - `hud.hp` / `hud.ar` — **4 frames** each, first at **1560**
+ *   (`HEALTH94`/`ARMOR41` -> `HEALTH90`/`ARMOR34`): one hit lands 20 frames
+ *   earlier. The run still ends **`HEALTH68`/`ARMOR2`**, the same as before.
+ * - `hud.msg` — **10 frames**, first at **1670**: `"LIMB SEVERED"` -> `""`.
+ *   **The run's one kill no longer severs a limb; the zombie now dies whole
+ *   and collapses.** Whether a heavy hit severs is a roll
+ *   (`heavy||Math.random()<.5`), and the roll moved. See the coverage note
+ *   below — this is the one change here with a consequence.
+ * - `hud.wname`, `lvltitle`, `bossname`, `keys` — **identical in all 176**.
+ * - `scene.count` — **13 frames**, first at **1640** (`121` -> `120`),
+ *   every delta negative (-1 to -14): no severed arm, so no flying chunk,
+ *   no stump gibs and less blood. Range `95..137` -> `95..123`.
+ * - `scene.digest` — **all 176**, first at frame 10 (`7f17b36c` ->
+ *   `c4a21a3a`), last at 1760 (`e48c0502` -> `a327c77b`); 176 distinct
+ *   digests before and after.
+ *
+ * All six "the recorded run actually fights" assertions pass unchanged
+ * (`S.kills > 0` included); nothing about the script, the seed,
+ * `TOTAL_FRAMES` or `every` was retuned.
+ *
+ * ### Coverage, re-measured against this fixture
+ *
+ * The `material.map=` mutations this header describes were re-run against
+ * the regenerated fixture, each by regenerating a throwaway copy under the
+ * mutation and comparing all 176 frames (`camera`, `hud` and `scene.count`
+ * differ in 0 frames in every case; only the digest moves):
+ *
+ * - the walk-guard inversion (`(e.atkAnim??0)<=0`) — red in **55** frames,
+ *   first at **780**, as before;
+ * - the attack pose rewritten to `PX[e.key].a` — red in **5** frames, first
+ *   at **1560** (was 1530);
+ * - **the two-stage death collapse (`P.die1`/`P.die2` -> `P.a`/`P.b`) is now
+ *   reached by this fixture** — red in **10** frames, 1670-1760 — because
+ *   the kill now collapses. The "honest list" above said this run could not
+ *   reach it; that was true of the fixture before this regeneration;
+ * - **`Damage.ts`'s sever frame (`refreshSeverSprite`, `P[key]||P.a` ->
+ *   `P.a`) is reached by no committed trace any more** — red in 0 frames of
+ *   all three. The coverage summary above credits this fixture with it
+ *   (`z.noLArm`); that is no longer true. It is covered instead by a direct
+ *   assertion added to `tests/integration/dismembermentThreshold.test.ts`
+ *   (the severed ghoul's sprite is `PX.z.noLArm`), which the same mutation
+ *   turns red. The headless corpse stays unreached here, as before; the
+ *   boss trace covers it.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

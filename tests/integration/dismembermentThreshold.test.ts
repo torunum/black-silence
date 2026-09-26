@@ -95,7 +95,7 @@ beforeAll(async () => {
 });
 
 describe("damageEnemy's dismemberment threshold (dmg>=22)", () => {
-  it("severs an arm on a heavy 34-damage hit — 22<=34<44, so a dmg>=44 mutation must not sever it", () => {
+  it("severs an arm on a heavy 34-damage hit — 22<=34<44, so a dmg>=44 mutation must not sever it", async () => {
     const ghoul = makeGhoul();
     // wIdx:0 (pistol) is "heavy" in damageEnemy's own
     // `heavy=wIdx===1||wIdx===4||wIdx===0||explosive` check, so this branch
@@ -108,6 +108,15 @@ describe("damageEnemy's dismemberment threshold (dmg>=22)", () => {
     // they are identical whether or not the sever fires, which is why this
     // constant needs its own direct test at all.
     expect(ghoul.hp).toBe(66);
+    // And the sprite shows the one-armed frame: `refreshSeverSprite`'s
+    // `material.map=` site (`Damage.ts`). Player feedback round 2 Task 1's
+    // fixture regeneration left no committed trace reaching it — level 1's
+    // one kill used to sever an arm (`z.noLArm`) and now collapses whole —
+    // so this is the assertion that covers it. See combatTrace.test.ts's
+    // round-2 section.
+    const { PX } = await import("../../src/enemies/SpriteBaker");
+    expect((ghoul.sp as { material: { map: unknown } }).material.map).toBe(PX.z.noLArm);
+    expect(PX.z.noLArm).toBeTruthy();
   });
 
   it("does not sever on a 21-damage hit — the threshold's own boundary, the other direction", () => {

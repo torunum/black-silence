@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { describe, expect, it } from "vitest";
 import { expectCallLogEqual } from "../support/expectCallLogEqual";
-import { recordModuleSound, recordReferenceSnippet, referenceSite } from "../support/soundOracle";
+import { compareSoundLogs, recordModuleSound, recordReferenceSnippet, referenceSite } from "../support/soundOracle";
 import * as W from "../../src/audio/sounds/weapons";
 import * as M from "../../src/audio/sounds/monsters";
 import * as WO from "../../src/audio/sounds/world";
@@ -25,9 +25,19 @@ import { gunshot } from "../../src/audio/Sfx";
  * The snippet is run through the reference's own audio engine, the
  * catalogue function through the port's, both against the same recording
  * WebAudio surface and the same seed, and the two call logs must match
- * event for event — including every `Math.random()` draw the sound makes,
- * which shows up in the logged frequencies, and every timer, which is
- * drained.
+ * event for event — including every random pitch or delay the sound draws,
+ * which shows up in the logged frequencies and timings, and every timer,
+ * which is drained.
+ *
+ * The second half of Task 1 took sound off the game's dice (KNOWN-22): the
+ * port draws its jitter from `src/audio/SoundRandom.ts` and plays shared
+ * noise at an offset (`src/audio/Noise.ts`) instead of drawing
+ * `Math.random()` and filling fresh buffers. `tests/support/soundOracle.ts`
+ * hands the reference the port's jitter generator and checks the noise
+ * source against a positive contract before setting it aside — see its
+ * header. So these cases still prove "the same calls, the same arguments,
+ * the same order", and now also that every catalogue sound draws nothing
+ * from the gameplay generator (`recordModuleSound` counts).
  *
  * Six of the eight weapon reports have no reference counterpart: player
  * feedback round 1 rebuilt them on purpose (`gunshot()`), and
@@ -153,7 +163,7 @@ describe("every catalogue sound makes exactly the calls its reference call site 
       const ref = recordReferenceSnippet(snippet, c.vars ?? {}, seed);
       const mod = recordModuleSound(c.module, seed);
       longest = Math.max(longest, ref.length);
-      expectCallLogEqual(mod, ref, `${c.name} (seed ${seed})`);
+      compareSoundLogs(mod, ref, `${c.name} (seed ${seed})`);
     }
     expect(longest, "a snippet that records nothing proves nothing").toBeGreaterThan(3);
   });
@@ -164,7 +174,7 @@ describe("every catalogue sound makes exactly the calls its reference call site 
     for (const seed of SEEDS) {
       const ref = recordReferenceSnippet(STINGER_SITE, {}, seed);
       const mod = recordModuleSound(WO.ambientStinger, seed);
-      expectCallLogEqual(mod, ref, `ambientStinger (seed ${seed})`);
+      compareSoundLogs(mod, ref, `ambientStinger (seed ${seed})`);
       // The node types plus every stop time: the scream and the drip are both a lone sine blip, and only their lengths tell them apart.
       firstEvents.add(JSON.stringify(ref.filter((e) => e.kind === "create" || e.kind === "stop").map((e) => e.detail.type ?? e.detail.args)));
     }

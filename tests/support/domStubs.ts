@@ -144,6 +144,9 @@ export function installDomStubs(): void {
     exponentialRampToValueAtTime() { return this; },
     linearRampToValueAtTime() { return this; },
     setTargetAtTime() { return this; },
+    // Player feedback round 2 Task 1: bang()/boom() shape the shared noise
+    // with the fade their per-play buffers used to have baked in.
+    setValueCurveAtTime() { return this; },
     cancelScheduledValues() { return this; },
   });
   (globalThis as Record<string, unknown>).AudioContext = class {

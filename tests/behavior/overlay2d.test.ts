@@ -7,6 +7,8 @@ import { seedRandom } from "../support/seededRandom";
 import { expectCallLogEqual } from "../support/expectCallLogEqual";
 import { recordingAudioContext } from "../support/recordingAudio";
 import { audioInit as moduleAudioInit } from "../../src/audio/AudioEngine";
+import { mulberry32 } from "../../src/audio/SoundRandom";
+import { resetSoundDice } from "../support/soundOracle";
 import type * as Overlay2DModule from "../../src/render/Overlay2D";
 
 /**
@@ -611,8 +613,10 @@ describe("the sniper scope vignette", () => {
 /**
  * LAST, and deliberately so: audioInit() flips src/audio/AudioEngine.ts's
  * module-private AC for the rest of the process, which turns on
- * ejectCasing's `if(ctx())` branch and its two extra rnd() draws — every
- * comparison above assumes that branch is off on both sides.
+ * ejectCasing's `if(ctx())` branch — in the reference, two extra rnd()
+ * draws; in the port since round 2 Task 1, two draws from sound's own
+ * generator — and every comparison above assumes that branch is off on
+ * both sides.
  */
 describe("ejectCasing's delayed casing-clink (the audio branch)", () => {
   /** `new Ctor()` always hands back `target` — how audioInit's `new AudioContext()` gets a recording context. */
@@ -631,7 +635,20 @@ describe("ejectCasing's delayed casing-clink (the audio branch)", () => {
     }
   });
 
-  it("after audioInit, schedules one blip at the same rnd(250,450) delay the reference does, with the same rnd(1800,2600) tone", () => {
+  /**
+   * Rewritten for player feedback round 2 Task 1 — sound draws no dice
+   * (`docs/known-issues.md` KNOWN-22). The reference drew the clink's delay
+   * and tone from the game's own `Math.random()`, straight after the five
+   * draws that place the casing; the port draws them from sound's own
+   * generator (`src/audio/SoundRandom.ts`, via the catalogue's
+   * `casingTinkle`). So the two sides no longer agree on the numbers, by
+   * design, and this pins what is true of each instead: the reference spent
+   * gameplay draws six and seven on the sound; the port spends only the
+   * casing's five, and its delay and tone are the sound generator's first
+   * two values mapped onto the same ranges.
+   */
+  it("after audioInit, schedules one blip at a 250-450 ms delay with an 1800-2600 Hz tone — drawn from sound's own dice, not the game's", () => {
+    const SOUND_SEED = 4242;
     const { ctx } = recordingAudioContext();
     const previousAudioCtor = (globalThis as { AudioContext?: unknown }).AudioContext;
     (globalThis as { AudioContext?: unknown }).AudioContext = constructorReturning(ctx);
@@ -640,13 +657,14 @@ describe("ejectCasing's delayed casing-clink (the audio branch)", () => {
     let moduleNextRandom: number | undefined;
     try {
       moduleAudioInit();
+      resetSoundDice(SOUND_SEED);
       blipCalls.length = 0;
       const spy = vi.spyOn(globalThis, "setTimeout");
       moduleWindow(91, () => {
         Overlay2D.ejectCasing(2);
         moduleDelay = spy.mock.calls[0]?.[1] as number;
         vi.runAllTimers();
-        moduleNextRandom = Math.random(); // proves the fired callback consumed exactly one draw
+        moduleNextRandom = Math.random();
       });
       spy.mockRestore();
     } finally {
@@ -655,7 +673,7 @@ describe("ejectCasing's delayed casing-clink (the audio branch)", () => {
     }
 
     // The reference side runs the same branch with AC truthy and its own
-    // blip/setTimeout stubs, off the same seed.
+    // blip/setTimeout stubs, off the same gameplay seed.
     let refDelay: number | undefined;
     let refBlipArgs: unknown[] | undefined;
     let refNextRandom: number | undefined;
@@ -668,15 +686,19 @@ describe("ejectCasing's delayed casing-clink (the audio branch)", () => {
       refNextRandom = Math.random();
     });
 
-    expect(moduleDelay).toBe(refDelay);
-    expect(moduleDelay).toBeGreaterThanOrEqual(250);
-    expect(moduleDelay).toBeLessThan(450);
+    const game = mulberry32(91), g = Array.from({ length: 8 }, () => game());
+    const sound = mulberry32(SOUND_SEED), j = [sound(), sound()];
+
+    // The reference: the casing took draws 1-5, the clink took 6 and 7.
+    expect(refDelay).toBe(250 + g[5] * 200);
+    expect(refBlipArgs).toEqual([1800 + g[6] * 800, 0.04, "square", 0.025]);
+    expect(refNextRandom).toBe(g[7]);
+    // The port: the casing took draws 1-5 and the clink took none of the
+    // game's — its next draw is the sixth — and the clink's delay and tone
+    // are sound's first two values, on the reference's ranges.
+    expect(moduleNextRandom).toBe(g[5]);
+    expect(moduleDelay).toBe(250 + j[0] * 200);
     expect(blipCalls.length).toBe(1);
-    expect(blipCalls[0]).toEqual(refBlipArgs);
-    expect(blipCalls[0].slice(1)).toEqual([0.04, "square", 0.025]);
-    expect(blipCalls[0][0] as number).toBeGreaterThanOrEqual(1800);
-    expect(blipCalls[0][0] as number).toBeLessThan(2600);
-    // Both sides drew the same number of values from the seeded sequence.
-    expect(moduleNextRandom).toBe(refNextRandom);
+    expect(blipCalls[0]).toEqual([1800 + j[1] * 800, 0.04, "square", 0.025]);
   });
 });

@@ -56,13 +56,12 @@ the entire point of the shape Phase 1 Task 3 built. Nothing else moves:
   describes synthesis; retire that slot's cases and replace them with a check
   that the buffer is wired to the bus, rather than loosening the ones that
   remain.
-- `docs/known-issues.md` KNOWN-20 matters here: every `Math.random()` draw in
-  `src/audio/` comes out of the same seeded stream the trace fixtures use. A
-  `.ogg` makes **no** draws where the synthesis made one, so swapping any
-  weapon that a committed trace fires (the pistol, in `trace.test.ts` and
-  `combatTrace.test.ts`; the nail cannon, in `bossTrace.test.ts`) will
-  re-index the stream and move that fixture. Expect it, analyse it, and write
-  the analysis into the fixture's own header.
+- `docs/known-issues.md` KNOWN-22 (closed) used to matter here: sound drew
+  from the same seeded `Math.random()` the trace fixtures use, so replacing
+  synthesis with a file would have moved fixtures. Since player feedback
+  round 2 Task 1 no sound draws from it (`src/audio/SoundRandom.ts`,
+  `src/audio/Noise.ts`), so swapping a weapon to a `.ogg` moves no trace
+  fixture — and every trace fails if a sound ever draws from it again.
 
 ### The one unresolved constraint: the single-file build
 

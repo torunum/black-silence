@@ -1,4 +1,5 @@
 import { ctx, echoBus, masterBus } from "./AudioEngine";
+import { fadeCurve, noise, noiseOffset } from "./Noise";
 
 /**
  * ONE-SHOT SOUND EFFECTS — blip (the general-purpose tone/sweep used for
@@ -19,6 +20,15 @@ import { ctx, echoBus, masterBus } from "./AudioEngine";
  * `gunshot()` at the bottom of this file is the one exception to all of the
  * above: it is NOT ported from the reference, it is new synthesis written
  * for player-feedback round 1 task 4 (2026-09-17). See its own doc comment.
+ *
+ * PLAYER FEEDBACK ROUND 2 TASK 1 — SOUND DRAWS NO DICE (KNOWN-22). The one
+ * deliberate departure from the reference in this file: where the
+ * reference drew from `Math.random()` — the game's own generator — this
+ * draws from `soundRandom()` (`./SoundRandom.ts`), and where it filled a
+ * fresh buffer with random samples per sound it plays `./Noise.ts`'s
+ * shared noise at an offset. Nothing else about the synthesis changed; the
+ * oracles in `tests/behavior/` and `tests/fidelity.test.ts` check exactly
+ * that, with the substitution reversed.
  */
 
 export function blip(freq: number, dur: number, type?: OscillatorType, vol?: number, slide?: number, echo?: boolean): void {
@@ -38,15 +48,16 @@ export function blip(freq: number, dur: number, type?: OscillatorType, vol?: num
   o.start();o.stop(ctx().currentTime+dur);}
 export function bang(dur: number, vol?: number, low?: number, hi?: number): void {
   if(!ctx())return;
-  const n=ctx().createBufferSource(),buf=ctx().createBuffer(1,ctx().sampleRate*dur,ctx().sampleRate);
-  const d=buf.getChannelData(0);
-  for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,2);
-  n.buffer=buf;
+  const t0=ctx().currentTime;
+  // The shared noise at a fresh offset, and the (1-t)^2 fade that used to be
+  // baked into a fresh Math.random() buffer as a gain curve — see Noise.ts.
+  const n=ctx().createBufferSource();n.buffer=noise();
+  const env=ctx().createGain();env.gain.setValueCurveAtTime(fadeCurve(2),t0,dur);
   const f=ctx().createBiquadFilter();f.type="lowpass";f.frequency.value=low||1800;
   let node=f;
   if(hi){const h=ctx().createBiquadFilter();h.type="highpass";h.frequency.value=hi;f.connect(h);node=h;}
   const g=ctx().createGain();g.gain.value=vol||.4;
-  n.connect(f);node.connect(g);g.connect(masterBus());n.start();}
+  n.connect(env);env.connect(f);node.connect(g);g.connect(masterBus());n.start(t0,noiseOffset(dur));n.stop(t0+dur);}
 export function click(vol?: number): void {bang(.025,vol||.18,4000,600);}
 /* one clean, deep explosion — low body thud + soft noise tail, no chiptune, no stacking */
 export function boom(power?: number): void {
@@ -58,14 +69,13 @@ export function boom(power?: number): void {
   const og=ctx().createGain();og.gain.setValueAtTime(.9,t0);og.gain.exponentialRampToValueAtTime(.001,t0+.5);
   o.connect(og);og.connect(out);o.start(t0);o.stop(t0+.5);
   // low rumble noise, lowpassed, fading
-  const dur=.7;const ns=ctx().createBufferSource();
-  const buf=ctx().createBuffer(1,ctx().sampleRate*dur,ctx().sampleRate);const d=buf.getChannelData(0);
-  for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,1.6);
-  ns.buffer=buf;
+  // (the shared noise and its once-baked (1-t)^1.6 fade — see bang() and Noise.ts)
+  const dur=.7;const ns=ctx().createBufferSource();ns.buffer=noise();
+  const env=ctx().createGain();env.gain.setValueCurveAtTime(fadeCurve(1.6),t0,dur);
   const lp=ctx().createBiquadFilter();lp.type="lowpass";
   lp.frequency.setValueAtTime(900,t0);lp.frequency.exponentialRampToValueAtTime(120,t0+dur);
   const ng=ctx().createGain();ng.gain.setValueAtTime(.6,t0);ng.gain.exponentialRampToValueAtTime(.001,t0+dur);
-  ns.connect(lp);lp.connect(ng);ng.connect(out);ns.start(t0);ns.stop(t0+dur);}
+  ns.connect(env);env.connect(lp);lp.connect(ng);ng.connect(out);ns.start(t0,noiseOffset(dur));ns.stop(t0+dur);}
 
 /**
  * THE WEAPON REPORT — new synthesis, not a port. The project owner played
@@ -189,19 +199,13 @@ export function gunshot(p: GunshotProfile): void {
   // Unity sum bus. Deliberately no gain assignment — see the doc comment.
   const out=ctx().createGain();out.connect(masterBus());
   // One noise source for both paths: a report's crack and body are the same
-  // event seen through two filters, not two independent noises. It also
-  // keeps this function to a single Math.random() fill loop, the same count
-  // the old single `bang` made — see docs/known-issues.md KNOWN-20 for why
-  // that number is load-bearing for the trace fixtures.
-  const n=ctx().createBufferSource();
-  const buf=ctx().createBuffer(1,Math.ceil(ctx().sampleRate*p.bodyDur),ctx().sampleRate);
-  const d=buf.getChannelData(0);
-  // Flat fill: every envelope below is on an AudioParam, not baked into the
-  // samples. That is audibly the point (the shape is now a real exponential)
-  // and it is also the only way the recorder can see it — a buffer fill is a
-  // typed-array write, invisible to a call-log oracle (KNOWN-5 item 3).
-  for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;
-  n.buffer=buf;
+  // event seen through two filters, not two independent noises. Flat noise
+  // — every envelope below is on an AudioParam, not baked into the samples,
+  // which is audibly the point (the shape is a real exponential) and the only
+  // way the recorder can see it (KNOWN-5 item 3). Since player feedback round
+  // 2 Task 1 it is the shared white noise at a fresh offset (Noise.ts), not a
+  // fresh buffer filled from Math.random() — see docs/known-issues.md KNOWN-22.
+  const n=ctx().createBufferSource();n.buffer=noise();
   // CRACK — broadband, above the old corner, gone in 4 ms.
   const hp=ctx().createBiquadFilter();hp.type="highpass";
   hp.frequency.value=p.split;hp.Q.value=FLAT_Q;
@@ -215,7 +219,7 @@ export function gunshot(p: GunshotProfile): void {
   const bg=ctx().createGain();
   bg.gain.setValueAtTime(p.body,t0);bg.gain.exponentialRampToValueAtTime(.001,t0+p.bodyDur);
   n.connect(lp);lp.connect(bg);bg.connect(out);
-  n.start(t0);n.stop(t0+p.bodyDur);
+  n.start(t0,noiseOffset(p.bodyDur));n.stop(t0+p.bodyDur);
   // PUNCH — sine, dry, under 90 Hz by the end.
   const o=ctx().createOscillator();o.type="sine";
   o.frequency.setValueAtTime(p.punchHz,t0);

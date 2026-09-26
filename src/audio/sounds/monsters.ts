@@ -1,7 +1,8 @@
 import { bang, blip } from "../Sfx";
 import { deathCry, growl, gurgle, pain } from "../Voice";
 import { after } from "../../core/Timers";
-import { clamp, rnd } from "../../utils/math";
+import { clamp } from "../../utils/math";
+import { soundRandom, soundRnd } from "../SoundRandom";
 
 /**
  * THE SOUND CATALOGUE — MONSTERS. Every sound an enemy or a boss makes, bar
@@ -56,8 +57,8 @@ export function bossWakes(): void { blip(40,1.6,"sawtooth",.2,30,true);bang(.5,.
  * nothing and hears both at the listener.
  */
 export function bossRoar(place: (emit: () => void) => void = (emit) => emit()): void {
-  place(()=>growl(rnd(42,60),1.0,.6,true));
-  after(()=>{place(()=>growl(rnd(50,70),.6,.4,true));},200);}
+  place(()=>growl(soundRnd(42,60),1.0,.6,true));
+  after(()=>{place(()=>growl(soundRnd(50,70),.6,.4,true));},200);}
 /** A priest boss vanishes (`priestTeleport`, first half). */
 export function priestVanish(): void { blip(700,.25,"sine",.1,140,true); }
 /** …and reappears somewhere else (second half). */
@@ -73,7 +74,7 @@ export function armourShatter(): void { bang(.15,.35,900); }
 /** The pitch a monster's pain cry is voiced at, from its `EnemyDefs.ts` `pain` stat. */
 export function painPitch(painStat: number): number { return clamp(painStat*.35,70,360); }
 /** A monster is hurt (`damageEnemy`). `painStat` is its `EnemyDefs.ts` `pain` value. */
-export function monsterPain(painStat: number): void { pain(painPitch(painStat),.08+Math.random()*.04); }
+export function monsterPain(painStat: number): void { pain(painPitch(painStat),.08+soundRandom()*.04); }
 /** A limb is torn off (`severLimb`). */
 export function limbTorn(): void { gurgle(.25,.4); }
 /** A body bursts into gibs (`killEnemy`'s overkill branch). */

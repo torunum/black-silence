@@ -1,6 +1,6 @@
 import { ctx } from "../audio/AudioEngine";
 import { ambientStinger, heartbeat, breath } from "../audio/sounds/world";
-import { rnd } from "../utils/math";
+import { soundRnd } from "../audio/SoundRandom";
 import { ambienceState } from "./AmbienceState";
 import { S } from "../core/State";
 
@@ -21,7 +21,7 @@ import { S } from "../core/State";
 
 export function ambience(dt: number): void {
   if(!ctx())return;ambienceState.ambT-=dt;if(ambienceState.ambT>0)return;
-  ambienceState.ambT=rnd(8,18);
+  ambienceState.ambT=soundRnd(8,18);
   ambientStinger();
 }
 export function vitalsAudio(dt: number): void {
@@ -30,4 +30,4 @@ export function vitalsAudio(dt: number): void {
     if(ambienceState.heartT<=0){ambienceState.heartT=S.hp<15?.55:.85;
       heartbeat();}}
   if(S.hp<50){ambienceState.breathT-=dt;
-    if(ambienceState.breathT<=0){ambienceState.breathT=rnd(2.2,3);breath();}}}
+    if(ambienceState.breathT<=0){ambienceState.breathT=soundRnd(2.2,3);breath();}}}

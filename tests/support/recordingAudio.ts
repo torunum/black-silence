@@ -84,6 +84,16 @@ export function recordingAudioContext(): { ctx: unknown; events: AudioEvent[] } 
         events.push({ kind: "param", detail: { node: nodeId, prop, method: "linearRampToValueAtTime", value, time } });
         return this;
       },
+      // Player feedback round 2 Task 1: bang()/boom() apply the fade their
+      // per-play noise buffers used to have baked in as a gain curve. The
+      // curve is logged as a plain array so two logs compare with toEqual.
+      setValueCurveAtTime(values: ArrayLike<number>, time: unknown, duration: unknown) {
+        events.push({
+          kind: "param",
+          detail: { node: nodeId, prop, method: "setValueCurveAtTime", value: Array.from(values), time, duration },
+        });
+        return this;
+      },
     };
     // AudioParams (gain, frequency, Q, delayTime) are themselves legal
     // connect() targets in this codebase — audioInit connects an LFO

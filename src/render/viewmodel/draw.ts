@@ -38,7 +38,7 @@ export const VIEW_H = 180;
  * and colours, and — exactly — its Math.random draws: one for the flash
  * radius and one for the puff chance (plus rnd's three when a puff spawns),
  * per frame with the flash up, in the same order. Those are per-frame
- * visual noise the reference already drew (KNOWN-20), and keeping their
+ * visual noise the reference already drew (KNOWN-22), and keeping their
  * count keeps every gameplay draw after them where the trace fixtures
  * expect it. Rendering the weapon itself draws nothing from Math.random.
  *

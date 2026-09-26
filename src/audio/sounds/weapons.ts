@@ -1,7 +1,7 @@
 import { bang, blip, click, gunshot, type GunshotProfile } from "../Sfx";
 import { growl } from "../Voice";
 import { after } from "../../core/Timers";
-import { rnd } from "../../utils/math";
+import { soundRnd } from "../SoundRandom";
 
 /**
  * THE SOUND CATALOGUE — WEAPONS. Every sound the player's weapons make, as a
@@ -120,4 +120,4 @@ export function kickImpact(): void { bang(.12,.4,500); }
  * A spent shell hitting the floor (`ejectCasing`): a short high tick at a
  * random pitch, a random 250-450 ms after the casing leaves the gun.
  */
-export function casingTinkle(): void { after(()=>blip(rnd(1800,2600),.04,"square",.025),rnd(250,450)); }
+export function casingTinkle(): void { after(()=>blip(soundRnd(1800,2600),.04,"square",.025),soundRnd(250,450)); }

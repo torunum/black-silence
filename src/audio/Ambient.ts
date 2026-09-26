@@ -1,6 +1,7 @@
 import { ctx, echoBus } from "./AudioEngine";
 import { bang, blip } from "./Sfx";
-import { gurgle, noiseBuf } from "./Voice";
+import { gurgle } from "./Voice";
+import { noise, noiseOffset } from "./Noise";
 import { after } from "../core/Timers";
 
 /**
@@ -11,8 +12,11 @@ import { after } from "../core/Timers";
  * AC/masterG/echoG references replaced one-for-one by calls to
  * AudioEngine's ctx()/masterBus()/echoBus() accessors — every frequency,
  * filter Q, envelope time and gain is otherwise untouched. wetDoor and
- * stoneDoor share Voice.ts's noiseBuf/gurgle, the same "wet, organic, not
- * chiptune" synthesis docs/direction.md calls out for the monster voices.
+ * stoneDoor share the monster voices' noise and Voice.ts's gurgle, the same
+ * "wet, organic, not chiptune" synthesis docs/direction.md calls out for the
+ * monster voices. Since player feedback round 2 Task 1 (KNOWN-22) that noise
+ * is `./Noise.ts`'s shared buffer played at an offset, not a fresh
+ * Math.random() buffer per door — the one change from the reference here.
  *
  * Every function keeps the reference's `if (!AC) return;` early exit (as
  * `if (!ctx()) return;`): the game calls these on paths that can run before
@@ -36,11 +40,11 @@ export function wetDoor(): void {
   if(!ctx())return;const t0=ctx().currentTime,dur=1.1;
   const out=ctx().createGain();out.gain.value=.5;out.connect(echoBus());
   // squelch: lowpassed noise sweeping down (suction/tearing)
-  const ns=ctx().createBufferSource();ns.buffer=noiseBuf(dur);
+  const ns=ctx().createBufferSource();ns.buffer=noise();
   const lp=ctx().createBiquadFilter();lp.type="lowpass";
   lp.frequency.setValueAtTime(1400,t0);lp.frequency.exponentialRampToValueAtTime(180,t0+dur);
   const ng=ctx().createGain();ng.gain.value=.6;
-  ns.connect(lp);lp.connect(ng);ng.connect(out);ns.start(t0);ns.stop(t0+dur);
+  ns.connect(lp);lp.connect(ng);ng.connect(out);ns.start(t0,noiseOffset(dur));ns.stop(t0+dur);
   // low organic groan underneath
   const o=ctx().createOscillator();o.type="sawtooth";
   o.frequency.setValueAtTime(60,t0);o.frequency.linearRampToValueAtTime(38,t0+dur);
@@ -54,11 +58,11 @@ export function wetDoor(): void {
 export function stoneDoor(): void {
   if(!ctx())return;const t0=ctx().currentTime,dur=.9;
   const out=ctx().createGain();out.gain.value=.45;out.connect(echoBus());
-  const ns=ctx().createBufferSource();ns.buffer=noiseBuf(dur);
+  const ns=ctx().createBufferSource();ns.buffer=noise();
   const bp=ctx().createBiquadFilter();bp.type="bandpass";bp.Q.value=2;
   bp.frequency.setValueAtTime(300,t0);bp.frequency.linearRampToValueAtTime(90,t0+dur);
   const ng=ctx().createGain();ng.gain.value=.5;
-  ns.connect(bp);bp.connect(ng);ng.connect(out);ns.start(t0);ns.stop(t0+dur);
+  ns.connect(bp);bp.connect(ng);ng.connect(out);ns.start(t0,noiseOffset(dur));ns.stop(t0+dur);
   const o=ctx().createOscillator();o.type="square";
   o.frequency.setValueAtTime(44,t0);o.frequency.linearRampToValueAtTime(30,t0+dur);
   const og=ctx().createGain();og.gain.value=.3;o.connect(og);og.connect(out);

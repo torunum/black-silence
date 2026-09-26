@@ -30,7 +30,7 @@ import { makeTex } from "./ProcTextures";
  * Textures are built at boot, and the trace harness seeds `Math.random`, so
  * every draw a boot-time texture takes shifts every gameplay draw after it
  * — enemy timing, elite rolls, everything (the same coupling as
- * `docs/known-issues.md`'s KNOWN-20 and Phase 2A's `generateUUID` finding).
+ * `docs/known-issues.md`'s KNOWN-22 and Phase 2A's `generateUUID` finding).
  * The grain and the block tones come from `grain`, an integer hash of the
  * texel's coordinates and the theme's seed: the same texture every boot,
  * and not one draw from the shared stream. `tests/render/bandTextures.test.ts`

@@ -5,7 +5,7 @@
  * (each with its own slow LFO modulating its gain) that make up the game's
  * ambient bed. audioInit()'s body is copied verbatim from
  * reference/sonsurum.html lines 1650-1664 (see tests/support/reference.ts's
- * REF.audioInit) — every frequency, waveform, gain and LFO rate is sound
+ * REF.audioInit) — every frequency, waveform, gain and LFO rate range is sound
  * design and must never change.
  *
  * This is the first module in the port that owns live mutable state: AC,
@@ -31,10 +31,15 @@
  * once — there is no boot-ordering hazard the way reading a *loaded* value
  * at module scope would create (see Phase 1 Task 2's two bugs, both that
  * shape).
+ *
+ * The four LFO rates are drawn from `soundRandom()` (`./SoundRandom.ts`),
+ * not `Math.random()`: player feedback round 2 Task 1 (KNOWN-22) took all
+ * sound off the game's generator. Same ranges, different dice.
  */
 
 import { save } from "../save/SaveGame";
 import { flushSave } from "../save/persist";
+import { soundRandom } from "./SoundRandom";
 
 declare global {
   interface Window {
@@ -290,7 +295,7 @@ export function audioInit(): void {
   drones.forEach(([f,t,g])=>{
     const o=ac.createOscillator();o.type=t;o.frequency.value=f;
     const og=ac.createGain();og.gain.value=g;
-    const lfo=ac.createOscillator();lfo.frequency.value=.05+Math.random()*.07;
+    const lfo=ac.createOscillator();lfo.frequency.value=.05+soundRandom()*.07;
     const lg=ac.createGain();lg.gain.value=g*.6;
     lfo.connect(lg);lg.connect(og.gain);
     o.connect(og);og.connect(lp);o.start();lfo.start();});}
