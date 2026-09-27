@@ -13,6 +13,7 @@ import * as M from "../../src/audio/sounds/monsters";
 import * as WO from "../../src/audio/sounds/world";
 import * as UI from "../../src/audio/sounds/ui";
 import * as X from "../../src/audio/sounds/explosions";
+import { VOICES } from "../../src/audio/VoiceTable";
 
 /**
  * THE LOUDNESS TABLE — player feedback round 2, Task 2. `src/audio/Levels.ts`
@@ -148,5 +149,18 @@ describe("docs/sound-levels.md is the table the code plays", () => {
       expect(rows.get(name), name).toEqual({ category: l.category, trim: l.trim });
     }
     expect(rows.size).toBe(Object.keys(SOUND_LEVELS).length);
+  });
+
+  // Player feedback round 2 Task 4: a voice's `gain` is measured too, and written by the same script.
+  it("lists every monster voice with exactly the gain src/audio/VoiceTable.ts has, and each voice settled (offset within 0.5 dB)", () => {
+    const text = readFileSync(doc, "utf8");
+    const section = text.slice(text.indexOf("## The monsters' voices"), text.indexOf("## Every sound, before and after"));
+    const rows = new Map<string, { gain: number; offset: number }>();
+    for (const m of section.matchAll(/^\| (\w) \| ([-+]?\d+(?:\.\d+)?) \| [^|]+ \| ([-+]?\d+(?:\.\d+)?) \|/gm)) rows.set(m[1], { gain: Number(m[2]), offset: Number(m[3]) });
+    for (const [k, v] of Object.entries(VOICES)) {
+      expect(rows.get(k)?.gain, k).toBe(v.gain ?? 0);
+      expect(Math.abs(rows.get(k)!.offset), k).toBeLessThanOrEqual(0.5);
+    }
+    expect(rows.size).toBe(Object.keys(VOICES).length);
   });
 });

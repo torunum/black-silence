@@ -15,7 +15,7 @@ import { voicePlan, type VocalEvent, type VoicePlan } from "./VoiceTable";
  *                                                            [extra layers: a gurgle, a rake, a whoosh — ./Layers.ts] ────┘
  * ```
  *
- * About 20 nodes (22 with a boss's sub-octave), plus the one `PannerNode`
+ * 19 nodes (21 with a boss's sub-octave; about 7 more per extra layer), plus the one `PannerNode`
  * a positioned sound gets: everything reaches the bus through a single
  * `masterBus()`/`echoBus()` call, so `at(x,y,z, ...)` places the whole voice,
  * extra layers included. `tests/audio/monsterVoices.test.ts` measures the

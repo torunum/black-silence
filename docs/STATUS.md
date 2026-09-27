@@ -877,7 +877,7 @@ here changes gameplay, and no trace fixture moved.
 
 Branch `feedback-2-sound`, plan
 `docs/superpowers/plans/2026-09-26-player-feedback-2-sound.md`. The owner:
-"The sounds are still very bad." Five tasks; Tasks 1-3 are done.
+"The sounds are still very bad." Five tasks; Tasks 1-4 are done.
 
 | Task 1 | Outcome |
 |---|---|
@@ -897,6 +897,13 @@ Branch `feedback-2-sound`, plan
 | The weapons | All eight reports rebuilt as layered sounds (`src/audio/Layers.ts`, `src/audio/sounds/weapons.ts`): a saturated transient, a body with each weapon's character, a thump, a mechanical tail, the whole report saturated together, and a bigger send to the room. The automatic weapons jitter pitch and filters every shot from sound's own dice and end each shot inside one period. All eight measure -14.0 LK (the automatic ones as a one-second burst) at -2.0 to -6.6 dBFS peak — the loudest category, where round 1's reports were peak-bound at -17 to -20. |
 | The mechanisms | 38 foley sounds (`src/audio/sounds/foley.ts`): break-opens, shells, magazines, bolts, the drum, the knob, the hopper, the reliquary's roof, the reaper's soul, the switch, the dry click, and the nail cannon's motor (`src/audio/Spin.ts`, following the animation's spin law). They replace the generic 18% / 62% / 100% reload clicks. `weaponTick` plays each at the phase the viewmodel draws it (`src/weapons/Foley.ts`, reading `src/render/viewmodel/phases.ts`, which the art now draws from) — no timer, so a reload cut short by a switch or by firing leaves nothing pending. No reload or fire timing changed; no fixture moved. |
 | Old / new | Every replaced sound is on the board as Old (`src/soundboard/previous/weapons.ts`: round 1's `gunshot()`, the reference's cross and reaper, the clicks), at the level it had; each weapon's whole reload is a row too. |
+
+| Task 4 | Outcome |
+|---|---|
+| The voices | Every enemy's alert, pain, attack and death — and the lunge, the charge, the wind-up, the scream, the orbs' bark, the flesh throw, a boss's waking, roar, summons and death — is the monster's own voice (`src/audio/VoiceTable.ts`, built by `src/audio/Speak.ts`): a saw or square cord plus seeded-noise breath, WaveShaper grit, three formant bandpasses gliding between two vowels, a 30-80 Hz amplitude growl, a jittered pitch walk and vibrato, an envelope from silence to -80 dB. Five families by type (skitter, moan, bellow, hiss, titan), the fundamental falling with sprite size from 420 Hz (lost soul) to 36 Hz (the Living Heart). Bosses add a second voice an octave down and speak through `echoBus()` (more room). 19 nodes a voice, 21 for a boss, about 7 more for a layer under it (a gurgle, a rake, a crash); one panner. |
+| Same moments | The enemy call sites changed only the sound call's arguments (the enemy's letter; for pain and orbs, the enemy itself as the "throat", so eight pellets make one yelp but a blast through three zombies makes three). No fixture moved. |
+| Levels | Each vocal event has one trim at the monster target (-21 LK); each voice has a measured `gain` that `scripts/sound-levels.mjs --apply` writes into the voice table (2 dB louder per doubling of size, by design). Weapons stay the loudest. Ten alerts at once cost 99.5 ms per second of audio offline against 80.3 for the old barks and 20.4 for the mix alone. |
+| Old / new | 128 monster rows now have Old and New: one per enemy per event (plus the orbs, the lunge, the charge, the scream), each with the sound that enemy made before as Old (`src/soundboard/previous/monsters.ts`). |
 
 **For Tasks 4-5:** no fixture may move. Register the old version of a sound
 in `src/soundboard/previous.ts` *before* changing it. Every new catalogue
