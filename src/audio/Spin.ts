@@ -41,6 +41,8 @@ interface Voice {
   /** Whether it is being driven up, and when it last was. */
   up: boolean;
   lastUp: number;
+  /** Whether the fast "put away" wind-down has already been scheduled — so the game's every-frame `gone` call does not keep restarting the STOP_AFTER clock. */
+  gone: boolean;
 }
 let v: Voice | null = null;
 
@@ -64,7 +66,7 @@ function build(): Voice {
   lp.connect(am); lfo.connect(lfoG); lfoG.connect(am.gain);
   am.connect(gain); gain.connect(masterBus());
   saw.start(t); oct.start(t); lfo.start(t);
-  return { ac, saw, oct, lfo, gain, up: false, lastUp: t };
+  return { ac, saw, oct, lfo, gain, up: false, lastUp: t, gone: false };
 }
 
 /** Sets every parameter toward spin level `s` (0..1) with time constant `tau`, from `t`. */
@@ -97,13 +99,18 @@ export function spin(on: boolean, up: number, down: number, gone = false): void 
     toward(v, 1, t, 1 / up);
     toward(v, 0, t + HOLD, 1 / down);
     v.up = true;
+    v.gone = false;
     v.lastUp = t;
     return;
   }
-  if (v.up || gone) {
+  // Only a change starts a wind-down: the game calls `spin(false, …, true)`
+  // every frame another weapon is out, and re-arming here each time would
+  // hold the STOP_AFTER clock at zero forever.
+  if (v.up || (gone && !v.gone)) {
     cancel(v, t);
     toward(v, 0, t, gone ? 0.04 : 1 / down);
     v.up = false;
+    v.gone = gone;
     v.lastUp = t;
   }
   if (t - v.lastUp > STOP_AFTER) {

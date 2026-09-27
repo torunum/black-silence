@@ -177,4 +177,17 @@ describe("the nail cannon's motor", () => {
     spin(false, SPIN.up, SPIN.down);
     expect(events.filter((e) => e.kind === "stop")).toHaveLength(3);
   });
+
+  it("put away, it stops even though the game says `gone` every frame (branch review: it used to whine silently forever)", () => {
+    const { events, ctx } = session();
+    spin(true, SPIN.up, SPIN.down);
+    // another weapon is out: the game calls spin(false, …, true) once per frame
+    for (let f = 1; f <= 600; f++) {
+      ctx.currentTime = f / 60;
+      spin(false, SPIN.up, SPIN.down, true);
+    }
+    expect(events.filter((e) => e.kind === "stop")).toHaveLength(3);
+    // and the fast wind-down was scheduled once, not re-scheduled every frame
+    expect(targets(events).filter((d) => d.timeConstant === 0.04)).toHaveLength(4);
+  });
 });

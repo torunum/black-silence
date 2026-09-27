@@ -113,6 +113,9 @@ export function play(layers: readonly Layer[], glue?: Glue): void {
 const curves = new Map<number, Float32Array<ArrayBuffer>>();
 /** tanh(k·x)/tanh(k): unity at full scale, the steeper the harder it squashes. */
 export function saturationCurve(k: number): Float32Array<ArrayBuffer> {
+  // Keyed to 0.05 steps: a drive that follows a continuous value (the
+  // landing's fall speed) would otherwise add a new 4 KB curve per call.
+  k = Math.round(k * 20) / 20;
   let c = curves.get(k);
   if (!c) {
     c = new Float32Array(1025);

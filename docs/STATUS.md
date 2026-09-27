@@ -871,7 +871,7 @@ here changes gameplay, and no trace fixture moved.
 - The boot is large at the moment of impact, deliberately. The knob is `BK` in `kick.ts`.
 - Nobody has felt any of it at 60 fps with a real mouse. The browser pane cannot run rAF, so the owner has to play it.
 
-**Next:** the sound plan, then the prologue plan (the grave → hell opening).
+**Next:** the sound plan (done — see below), then the prologue plan (the grave → hell opening).
 
 ## Player feedback round 2 — the sound
 
@@ -890,13 +890,13 @@ board's Old mix / New mix switch and room picker apply to all of them.
 |---|---|
 | Every sound has a name | Each inline `blip`/`bang`/`click` at a call site is a named function in `src/audio/sounds/` (weapons, monsters, world, ui, explosions). A pure refactor: `tests/behavior/soundCatalogue.test.ts` runs each one against the reference's own call-site text; the three traces' full audio logs (82,401 events) came out byte-identical. |
 | Sound draws no dice (KNOWN-22) | `src/audio/SoundRandom.ts` and `src/audio/Noise.ts`. The trace fixtures moved once — 79 / 264 / 3,433 draws removed — proven to be only that; the boss trace's cutoff went 6012 -> 2808. Every trace now fails if a sound draws from `Math.random()`. |
-| The sound board | `soundboard.html`, 111 sounds in five groups (Weapons 18, Monsters 58, World 29, UI 3, Explosions 3), each playing the game's own code; old/new pairs from Task 2 on (`src/soundboard/previous.ts`). Built separately (`vite.soundboard.config.ts`) into `dist/`, so it is on the published site at `/soundboard.html`; the game bundle does not contain it. `window.soundboard.render(id)` renders a sound offline and reports its peak, RMS, length, clipping and DC offset. |
+| The sound board | `soundboard.html`, 111 sounds in five groups at Task 1 (Weapons 18, Monsters 58, World 29, UI 3, Explosions 3; 270 rows by Task 5), each playing the game's own code; old/new pairs from Task 2 on (`src/soundboard/previous.ts`). Built separately (`vite.soundboard.config.ts`) into `dist/`, so it is on the published site at `/soundboard.html`; the game bundle does not contain it. `window.soundboard.render(id)` renders a sound offline and reports its peak, RMS, length, clipping and DC offset. |
 
 | Task 2 | Outcome |
 |---|---|
 | A room per level | `src/audio/Room.ts`: a convolution reverb whose impulse response is built from seeded noise (never `Math.random`) — pre-delay, a damped exponential tail, early reflections, unit energy, two channels. Six rooms: stone hall (dungeon, church, necropolis), hell, flesh, graveyard, sewer, factory; `loadLevel` picks one from the level's theme. The old "echo bus" (a 340 ms feedback delay with no dry path — an echo sound was heard only as its repeats) is gone; sounds send to the room by an amount. |
 | A master chain | `src/audio/Mix.ts`: glue compressor, limiter, a soft clip that cannot exceed -0.3 dBFS, then the master volume clamped to 0-1. The worst case measured (three explosions, three shotguns, a sniper, a boss death and eight monsters at once, volume 1) peaks at -0.6 dBFS, 0 clipped samples; the old mix put 945 samples past full scale. |
-| Planned levels | `src/audio/Levels.ts`: every catalogue sound plays at a category target and a trim; `scripts/sound-levels.mjs` measures (headless Chrome) and writes `docs/sound-levels.md`. The weapons are peak-bound at -17 to -20 LK against a -14 target — too short-bodied to get louder without the limiter crushing them; Task 3's redesign is what can lift them. |
+| Planned levels | `src/audio/Levels.ts`: every catalogue sound plays at a category target and a trim; `scripts/sound-levels.mjs` measures (headless Chrome) and writes `docs/sound-levels.md`. At Task 2 the weapons were peak-bound at -17 to -20 LK against a -14 target; Task 3's redesign lifted all eight to -14. |
 | Old mix / New mix | The board plays every row through the pre-Task-2 graph (`src/soundboard/previous/mix.ts`) or the game's — Task 2 changed no sound's synthesis, so it is one switch, not 111 rows. The tests that compare sound bodies with the reference run on that old mix. |
 
 | Task 3 | Outcome |
