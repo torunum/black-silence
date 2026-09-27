@@ -877,7 +877,7 @@ here changes gameplay, and no trace fixture moved.
 
 Branch `feedback-2-sound`, plan
 `docs/superpowers/plans/2026-09-26-player-feedback-2-sound.md`. The owner:
-"The sounds are still very bad." Five tasks; Task 1 is done.
+"The sounds are still very bad." Five tasks; Tasks 1 and 2 are done.
 
 | Task 1 | Outcome |
 |---|---|
@@ -885,9 +885,20 @@ Branch `feedback-2-sound`, plan
 | Sound draws no dice (KNOWN-22) | `src/audio/SoundRandom.ts` and `src/audio/Noise.ts`. The trace fixtures moved once — 79 / 264 / 3,433 draws removed — proven to be only that; the boss trace's cutoff went 6012 -> 2808. Every trace now fails if a sound draws from `Math.random()`. |
 | The sound board | `soundboard.html`, 111 sounds in five groups (Weapons 18, Monsters 58, World 29, UI 3, Explosions 3), each playing the game's own code; old/new pairs from Task 2 on (`src/soundboard/previous.ts`). Built separately (`vite.soundboard.config.ts`) into `dist/`, so it is on the published site at `/soundboard.html`; the game bundle does not contain it. `window.soundboard.render(id)` renders a sound offline and reports its peak, RMS, length, clipping and DC offset. |
 
-**For Tasks 2-5:** no fixture may move. Register the old version of a sound
-in `src/soundboard/previous.ts` *before* changing it. Measure with
-`soundboard.render(...)` in the Browser pane — it renders; rAF does not.
+| Task 2 | Outcome |
+|---|---|
+| A room per level | `src/audio/Room.ts`: a convolution reverb whose impulse response is built from seeded noise (never `Math.random`) — pre-delay, a damped exponential tail, early reflections, unit energy, two channels. Six rooms: stone hall (dungeon, church, necropolis), hell, flesh, graveyard, sewer, factory; `loadLevel` picks one from the level's theme. The old "echo bus" (a 340 ms feedback delay with no dry path — an echo sound was heard only as its repeats) is gone; sounds send to the room by an amount. |
+| A master chain | `src/audio/Mix.ts`: glue compressor, limiter, a soft clip that cannot exceed -0.3 dBFS, then the master volume clamped to 0-1. The worst case measured (three explosions, three shotguns, a sniper, a boss death and eight monsters at once, volume 1) peaks at -0.6 dBFS, 0 clipped samples; the old mix put 945 samples past full scale. |
+| Planned levels | `src/audio/Levels.ts`: every catalogue sound plays at a category target and a trim; `scripts/sound-levels.mjs` measures (headless Chrome) and writes `docs/sound-levels.md`. The weapons are peak-bound at -17 to -20 LK against a -14 target — too short-bodied to get louder without the limiter crushing them; Task 3's redesign is what can lift them. |
+| Old mix / New mix | The board plays every row through the pre-Task-2 graph (`src/soundboard/previous/mix.ts`) or the game's — Task 2 changed no sound's synthesis, so it is one switch, not 111 rows. The tests that compare sound bodies with the reference run on that old mix. |
+
+**For Tasks 3-5:** no fixture may move. Register the old version of a sound
+in `src/soundboard/previous.ts` *before* changing it. Every new catalogue
+sound goes inside `lv(...)` with an entry in `src/audio/Levels.ts`
+(`tests/audio/levels.test.ts` fails otherwise); re-run
+`node scripts/sound-levels.mjs --apply` until it changes nothing, then once
+more without `--apply`. Measure a single sound with `soundboard.render(...)`
+in the Browser pane — it renders; rAF does not.
 
 ## How fidelity is guarded
 
@@ -1007,6 +1018,17 @@ Two practices that have mattered most:
   installs its own rAF queue and drains it by hand, which is why 900-frame
   traces are deterministic in vitest regardless of what the pane does.
 
+- **Chrome's `DynamicsCompressorNode` is not transparent at the start of an
+  offline render.** A sound played at frame 0 of an `OfflineAudioContext`
+  comes out 11-14 dB down even through a ratio-1 compressor (the shotgun:
+  -6.8 dBFS without one, -20.8 with); played 1 s in, it is untouched.
+  `src/soundboard/offline.ts` renders 0.5 s of silence first for that
+  reason. Found in player feedback round 2 Task 2, where it first made the
+  new mix look 15 dB quieter than the old.
+- **Headless Chrome works for audio measurement.** `scripts/sound-levels.mjs`
+  starts Vite, launches Chrome (or Edge) with `--headless=new
+  --remote-debugging-port=0`, and drives the sound board over the DevTools
+  protocol with Node 24's built-in `WebSocket` — no dependency. ~25 s a run.
 - **Pointer lock is blocked** (`requestPointerLock` rejects with
   `WrongDocumentError`), so mouse look cannot be exercised in the page.
   What *does* work, verified in the Task 5 session: menu clicks,

@@ -137,10 +137,12 @@ describe("the room", () => {
       const a = buildImpulse(ctx as unknown as BaseAudioContext, "hall");
       const b = buildImpulse(ctx as unknown as BaseAudioContext, "hall");
       const c = buildImpulse(ctx as unknown as BaseAudioContext, "hell");
-      expect(Array.from(a.getChannelData(0))).toEqual(Array.from(b.getChannelData(0)));
-      expect(Array.from(a.getChannelData(1))).toEqual(Array.from(b.getChannelData(1)));
+      // Compared by a loop, not toEqual: a failing deep diff of 115,200 floats takes minutes.
+      const differ = (x: Float32Array, y: Float32Array): number => { let n = x.length === y.length ? 0 : 1; for (let i = 0; i < x.length; i++) if (x[i] !== y[i]) n++; return n; };
+      expect(differ(a.getChannelData(0), b.getChannelData(0)), "samples that differ, channel 0").toBe(0);
+      expect(differ(a.getChannelData(1), b.getChannelData(1)), "samples that differ, channel 1").toBe(0);
       expect(a.getChannelData(0)[2000]).not.toBe(a.getChannelData(1)[2000]); // two channels, decorrelated
-      expect(a.getChannelData(0).slice(0, 5000)).not.toEqual(c.getChannelData(0).slice(0, 5000));
+      expect(differ(a.getChannelData(0).slice(0, 5000), c.getChannelData(0).slice(0, 5000))).toBeGreaterThan(4000);
     } finally {
       Math.random = real;
     }

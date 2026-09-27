@@ -85,11 +85,15 @@ npm run build:single
 **The sound board** lists every sound in the game by name, grouped into
 weapons, monsters, world, UI and explosions, with a play button for each. It
 plays the game's own sound code, and where a sound has been redesigned it
-shows the old and the new version side by side. Open it at
+shows the old and the new version side by side; a switch at the top plays
+everything through the old mix or the new one (rooms, master chain, planned
+levels), and picks the room. Open it at
 [`/soundboard.html`](https://torunum.github.io/black-silence/soundboard.html)
 on the published site, or at `http://localhost:5173/soundboard.html` while
 `npm run dev` is running. `npm run build` builds it into `dist/` next to the
 game; it is a separate page, and the game does not load it.
+`node scripts/sound-levels.mjs` measures every sound on it in a headless
+Chrome and rewrites [`docs/sound-levels.md`](docs/sound-levels.md).
 
 The standalone file has been smoke-tested offline. The build script checks
 for leftover asset references in HTML attributes; this check alone is not

@@ -229,6 +229,31 @@ describe("the page", () => {
     expect(constructed()).toBe(1);
   });
 
+  // Player feedback round 2 Task 2: the whole board plays through the old
+  // mix or the new one — the old/new of a task that changed the mix, not
+  // any one sound.
+  it("Old mix / New mix: the switch plays every row through the pre-Task-2 graph or the game's", async () => {
+    const { events } = await mount();
+    const mix = document.querySelector("select.mix") as HTMLSelectElement;
+    const created = (type: string) => events.filter((e) => e.kind === "create" && e.detail.type === type).length;
+    expect(mix.value).toBe("new");
+    (document.querySelector('li[data-id="weapon-fire-1"] button.play') as HTMLButtonElement).click();
+    expect(created("DynamicsCompressorNode")).toBe(2);
+    expect(created("ConvolverNode")).toBe(1);
+    expect(created("DelayNode")).toBe(0);
+    mix.value = "old";
+    mix.dispatchEvent(new Event("change"));
+    expect(created("DelayNode"), "the old mix's echo").toBe(1);
+    const before = events.length;
+    (document.querySelector('li[data-id="weapon-fire-1"] button.play') as HTMLButtonElement).click();
+    const after = events.slice(before);
+    expect(after.some((e) => e.kind === "create" && e.detail.type === "AudioBufferSourceNode")).toBe(true);
+    expect(after.some((e) => e.kind === "create" && (e.detail.type === "ConvolverNode" || e.detail.type === "DynamicsCompressorNode"))).toBe(false);
+    // …and the room picker lists every room.
+    const rooms = [...(document.querySelector("select.room") as HTMLSelectElement).options].map((o) => o.value);
+    expect(rooms.sort()).toEqual(["factory", "flesh", "graveyard", "hall", "hell", "sewer"]);
+  });
+
   it("finds a sound by typing", async () => {
     await mount();
     const search = document.querySelector("input.search") as HTMLInputElement;
