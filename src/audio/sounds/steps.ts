@@ -44,6 +44,8 @@ const WALK: Weight = { d: 1, f: 1, heel: 1, thud: 1, grit: 1 };
 const RUN: Weight = { d: 1.3, f: 0.88, heel: 1.2, thud: 1.6, grit: 1.35 };
 
 let foot = 0;
+/** Starts the feet again on the right. For tests, alongside `reseedSoundRandom()`; the game never calls it. */
+export function resetStride(): void { foot = 0; }
 /** A fresh stride: pitch ±6% (the left foot 2% under the right), filters ±12%, the toe 22-44 ms after the heel, grit ×0.7-1.3. */
 export function stride(): Stride {
   foot ^= 1;
