@@ -877,7 +877,14 @@ here changes gameplay, and no trace fixture moved.
 
 Branch `feedback-2-sound`, plan
 `docs/superpowers/plans/2026-09-26-player-feedback-2-sound.md`. The owner:
-"The sounds are still very bad." Five tasks; Tasks 1-4 are done.
+"The sounds are still very bad." Five tasks; **all five are done** — nobody
+here has heard any of it, and the owner is the judge. **The sound board is
+where to judge it:** `soundboard.html` beside `index.html` —
+`http://localhost:5173/soundboard.html` under `npm run dev`, and
+`https://torunum.github.io/black-silence/soundboard.html` once the branch
+reaches master (Pages deploys `dist/`, which `npm run build` fills with both
+pages). 270 rows; every rebuilt sound has **Old** and **New** buttons, and the
+board's Old mix / New mix switch and room picker apply to all of them.
 
 | Task 1 | Outcome |
 |---|---|
@@ -905,7 +912,21 @@ Branch `feedback-2-sound`, plan
 | Levels | Each vocal event has one trim at the monster target (-21 LK); each voice has a measured `gain` that `scripts/sound-levels.mjs --apply` writes into the voice table (2 dB louder per doubling of size, by design). Weapons stay the loudest. Ten alerts at once cost 99.5 ms per second of audio offline against 80.3 for the old barks and 20.4 for the mix alone. |
 | Old / new | 128 monster rows now have Old and New: one per enemy per event (plus the orbs, the lunge, the charge, the scream), each with the sound that enemy made before as Old (`src/soundboard/previous/monsters.ts`). |
 
-**For Tasks 4-5:** no fixture may move. Register the old version of a sound
+| Task 5 | Outcome |
+|---|---|
+| Footsteps | A step is a heel, the body's weight (a falling sine), the toe 22-44 ms later, and what is underfoot — seven floors by the level's theme (`src/audio/Surface.ts`, read through the room `loadLevel` already sets): ash in the prologue's hell, marble on level 1, stone in the church and necropolis, dirt and grass in the graveyard, water in the sewers, metal grating in the factory, flesh in the womb. Every step draws its own stride from sound's dice (pitch, filters, heel-to-toe gap, grit; the feet alternate). Running is heavier — a lower, stronger thud, 2.4-4.3 dB louder (measured) — on the same cadence. Each floor has its own entry, so the floors sit at one level (Task 2's 9 dB stone/marble gap is gone). |
+| Landing | Its own sound where a running footstep used to play (`playerTick`, same frame), scaled by the fall: -33 LK stepping off a ledge, -29 from a jump, -25 from a 12 m/s drop, lower and longer the harder. |
+| The kick | A whoosh as the leg goes out; on the frame `doKick`'s 110 ms check resolves, a meaty thud and wet slap in a monster, a sole on stone with grit for a prop **or a wall** (the check now looks a boot's length ahead with `solidAt`, a read), nothing more into the air. |
+| Bullets | A wall hit is heard at its spark: stone cracks and chips, the factory's metal rings, the womb's flesh slaps. A monster hit is a wet thwack at the blood (one per monster per 30 ms: eight pellets are one thwack). A crate knocks like wood. The ricochet (3 in 10, sound's dice) is a falling whine. Wall hits are capped at three per 20 ms. A prop breaking cracks, thuds hollow, and its splinters land for a third of a second. |
+| Doors | A stone door grinds for exactly `DOOR_SINK_SECONDS` (`src/world/Grid.ts`, 1.27 s — the real `doorTick` is checked against it) and settles with a thud as it stops; a secret door breaks free and grinds heavier; the red-key gate unbolts first; a locked door rattles three times and a low muted tone says no. The flesh doors keep their wet tear. The exit opens with a 1.6 s grind and a low chord. |
+| Pickups | Each family its own short sound: a vial's clink and a warm fifth (health), straps and a plate (armour), a box of rounds, two shells, one slug, gold crosses with a thread of bell, nails pouring, a breath of souls (ammo, balanced to one level), an iron key and a warm hum, a weapon lifted and settled. All in the UI category, the quietest. |
+| Explosions | Layered and saturated together: a crack, a body whose corner collapses from 4 kHz, an FM sub, gravel and stones landing for most of a second, and a brown-noise tail rolling over two seconds, with 2.2x the room send. Worst cases at volume 1, including an explosion + three monsters + a shotgun + running footsteps: -1.0, -0.6 and -0.9 dBFS peak, 0 clipped samples. |
+| UI and menus | A felt brush on hovering a menu row and a low thock with a faint bell on choosing one (the menus had no sound; on the title screen there is no audio until the click that starts the game). The achievement is a small bell, kick-ready a boot set down, the scrap SMG parts clacking together. |
+| Music and ambience | Judged, not assumed: the drone bed is a sub-bass hum through a 170 Hz lowpass and stays. The organ chord was four square waves — the most chiptune sound in the game — and is now detuned saws and octave sines through a lowpass, with a tremulant, wind and a slow swell. The bells are a bell peal (the cross launcher's partials). The boss pulse keeps its 300 ms interval, guard and bar (`src/audio/Music.ts` untouched) but each beat is a drum — kick, off-beat knock, a filtered detuned bass on the fourth — at a level of its own: nothing the game plays is outside a level any more. |
+| Same moments | Gameplay files changed only sound calls: `footstep(true)` → `land(-player.vy)` on the landing frame; `kickImpact()` → `kickImpact(kickTarget(...))` on the same scheduled frame; `itemPickup()` → `itemPickup(it.kind)`; `doorOpens(!!d.flesh)` → the door's kind; a wall and a flesh impact added at the spark and the blood; the menus' hover/select. No fixture moved. |
+| Old / new | `src/soundboard/previous/world.ts` holds every replaced sound as it was at `e34815c`, at its old trim, including the reference's boss pulse body (which `tests/fidelity.test.ts` now pins there). |
+
+**For later rounds:** no fixture may move. Register the old version of a sound
 in `src/soundboard/previous.ts` *before* changing it. Every new catalogue
 sound goes inside `lv(...)` with an entry in `src/audio/Levels.ts`
 (`tests/audio/levels.test.ts` fails otherwise); re-run
