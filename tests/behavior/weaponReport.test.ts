@@ -9,6 +9,7 @@ import { WEAPON_STATS } from "../../src/weapons/definitions";
 import type * as WeaponStateModule from "../../src/weapons/WeaponState";
 import type * as AudioEngineModule from "../../src/audio/AudioEngine";
 import { previousMix } from "../../src/soundboard/previous/mix";
+import { OLD_FIRE, OLD_REPORTS } from "../../src/soundboard/previous/weapons";
 
 /**
  * THE WEAPON REPORT — player feedback round 1, task 4, 2026-09-17.
@@ -59,6 +60,20 @@ import { previousMix } from "../../src/soundboard/previous/mix";
  * it — `tests/support/soundOracle.ts`'s header says exactly what that
  * means. The one assertion that read per-play buffer lengths now reads
  * per-play noise durations instead; it asserts the same claim.
+ *
+ * PLAYER FEEDBACK ROUND 2, TASK 3 — THE GAME NO LONGER PLAYS THIS REPORT.
+ * Task 3 (`docs/superpowers/plans/2026-09-26-player-feedback-2-sound.md`)
+ * replaced all eight weapon reports with layered designs
+ * (`src/audio/sounds/weapons.ts`, pinned by
+ * `tests/audio/weaponSounds.test.ts`), a deliberate divergence from both
+ * the reference and round 1. Round 1's report survives as the sound board's
+ * "old" button for each gun (`src/soundboard/previous/weapons.ts`:
+ * `gunshot()`, `OLD_REPORTS`, and `OLD_FIRE`, the eight firing sounds as
+ * the game played them at `f9a1ac0`). This file still holds round 1's
+ * claims — now about that "old" version, which is what the owner hears
+ * when they compare — so the record of what round 1 changed, and the
+ * reference's own shape, stay pinned — and one case checks the game's
+ * weapon table really plays the new ones.
  *
  * WHAT THIS FILE CANNOT DO, stated plainly. It is a call-log comparison,
  * exactly like every other oracle in `tests/behavior/` (KNOWN-5 item 5): it
@@ -143,7 +158,7 @@ function recordModule(slot: number, wrap?: (emit: () => void) => void): AudioEve
     // tests/support/soundOracle.ts's "The mix is set aside too").
     AudioEngine.audioInit({ mix: previousMix });
     const baseline = events.length;
-    const emit = () => WeaponState.WEAPONS[slot].snd();
+    const emit = () => OLD_FIRE[slot]();
     if (wrap) wrap(emit);
     else emit();
     return events.slice(baseline);
@@ -250,7 +265,15 @@ describe("which weapon reports diverge from the reference at all", () => {
       return JSON.stringify(mod) !== JSON.stringify(ref);
     });
     expect(diverged).toEqual(BALLISTIC.map((w) => w.i));
-    expect(diverged).toEqual(WeaponState.REBUILT_REPORT_SLOTS);
+    expect(diverged).toEqual(Object.keys(OLD_REPORTS).map(Number));
+  });
+
+  it("round 2 Task 3: the game no longer plays any of these — every slot's snd is its new catalogue report", async () => {
+    const W = await import("../../src/audio/sounds/weapons");
+    for (let slot = 0; slot < WEAPON_STATS.length; slot++) {
+      expect(WeaponState.WEAPONS[slot].snd, `slot ${slot}`).toBe(W.WEAPON_FIRE_SOUNDS[slot]);
+      expect(WeaponState.WEAPONS[slot].snd, `slot ${slot}`).not.toBe(OLD_FIRE[slot]);
+    }
   });
 
   it("guard: the reference really does define all eight snd closures, so the loop above cannot be vacuous", () => {
@@ -275,7 +298,7 @@ describe.each(UNCHANGED)("$name (slot $i) — NOT a firearm, deliberately untouc
 });
 
 describe.each(BALLISTIC)("$name (slot $i) — the rebuilt report", ({ i }) => {
-  const profile = () => WeaponState.WEAPON_REPORTS[i];
+  const profile = () => OLD_REPORTS[i];
 
   it("REFERENCE (unchanged, the record of what changed): had no highpass anywhere — no transient band at all", () => {
     // Claim 1 of the rebuild. The old closure's only filter on the noise was
@@ -336,7 +359,7 @@ describe.each(BALLISTIC)("$name (slot $i) — the rebuilt report", ({ i }) => {
     const refSeconds = bufferLengths(ref).map((n) => n / 44100);
     expect(noisePlaySeconds(mod)).toHaveLength(1);
     expect(refSeconds.length).toBeGreaterThanOrEqual(1);
-    expect(noisePlaySeconds(mod)[0]).toBeCloseTo(WeaponState.WEAPON_REPORTS[i].bodyDur, 10);
+    expect(noisePlaySeconds(mod)[0]).toBeCloseTo(OLD_REPORTS[i].bodyDur, 10);
     expect(noisePlaySeconds(mod)[0]).toBeLessThan(Math.max(...refSeconds));
   });
 

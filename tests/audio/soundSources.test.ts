@@ -47,7 +47,11 @@ describe("every sound the game plays has a name", () => {
    */
   const RAW = /(?<![.\w$])(blip|bang|boom|click|gunshot|growl|gurgle|pain|deathCry|noiseBuf)\(/g;
 
-  const outside = srcFiles(SRC).filter((f) => !rel(f).startsWith("audio/"));
+  // src/soundboard/previous/ is the sound board's record of sounds a task
+  // replaced (player feedback round 2 Task 3 put the old weapons there):
+  // copies of old catalogue bodies, raw voices and all, which the game never
+  // imports (tests/soundboard/soundboard.test.ts holds that line).
+  const outside = srcFiles(SRC).filter((f) => !rel(f).startsWith("audio/") && !rel(f).startsWith("soundboard/previous/"));
 
   it("scans the game's files at all", () => {
     expect(outside.length).toBeGreaterThan(80);
@@ -126,6 +130,7 @@ describe("no sound draws from Math.random() — the game's own dice (KNOWN-22)",
     const amb = await import("../../src/audio/Ambient");
     const sounds = [
       await import("../../src/audio/sounds/weapons"),
+      await import("../../src/audio/sounds/foley"),
       await import("../../src/audio/sounds/monsters"),
       await import("../../src/audio/sounds/world"),
       await import("../../src/audio/sounds/ui"),

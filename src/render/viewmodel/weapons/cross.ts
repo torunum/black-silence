@@ -2,6 +2,7 @@ import type { Builder } from "../builder";
 import { MAT } from "../palette";
 import { cup, fist, forearm } from "../hands";
 import { hump, ramp, type Pose, type WeaponArt } from "../pose";
+import { CROSS } from "../phases";
 
 /**
  * Slot 5, HOLY CROSS LAUNCHER — a reliquary made into a weapon: an ivory
@@ -45,7 +46,7 @@ export const crossLauncher: WeaponArt = {
     const r = pose.reload;
     const tilt = r < 0 ? 0 : hump(r, 0.0, 0.98, 0.14);
     b.translate(0, -0.02 * tilt, 0); b.roll(-0.35 * tilt); b.pitch(-0.1 * tilt);
-    const lid = r < 0 ? 0 : hump(r, 0.1, 0.86, 0.12);
+    const lid = r < 0 ? 0 : hump(r, ...CROSS.lid);
 
     // housing: walls, then the roof (hinged on its left eave for the reload)
     b.push(); b.translate(0, 0.0, 0.0);
@@ -64,7 +65,7 @@ export const crossLauncher: WeaponArt = {
 
     // the cross bolt: flies, then the next rises from the roof slot
     const a = r >= 0 ? 1 : pose.action;
-    const loaded = r >= 0 ? ramp(r, 0.5, 0.62) : 1;
+    const loaded = r >= 0 ? ramp(r, ...CROSS.loaded) : 1;
     if (r >= 0) {
       // the cross still riding the ridge as the reload starts, and the new one laid in and settled as it ends
       if (r < 0.1 || loaded > 0) { b.push(); b.translate(0, 0.09 - 0.02 * Math.min(1, lid * 2), 0.12); crossBolt(b); b.pop(); }
@@ -80,7 +81,7 @@ export const crossLauncher: WeaponArt = {
     } else if (a < 0.2) {
       b.push(); b.translate(0, 0.09, 0.12 + 2.5 * a * a); crossBolt(b); b.pop();
     } else if (a > 0.5) {
-      const up = ramp(a, 0.5, 0.95);
+      const up = ramp(a, ...CROSS.rise);
       b.push(); b.translate(0, 0.02 + 0.07 * up, 0.12); crossBolt(b); b.pop();
     }
     b.anchor("muzzle", 0, 0.03, 0.26);

@@ -8,6 +8,7 @@ import { audioInit, unscopedConnections } from "../../src/audio/AudioEngine";
 import { startBossMusic, stopBossMusic } from "../../src/audio/Ambient";
 import { SOUND_LEVELS, TARGETS, type SoundLevel, type SoundName } from "../../src/audio/Levels";
 import * as W from "../../src/audio/sounds/weapons";
+import * as F from "../../src/audio/sounds/foley";
 import * as M from "../../src/audio/sounds/monsters";
 import * as WO from "../../src/audio/sounds/world";
 import * as UI from "../../src/audio/sounds/ui";
@@ -37,7 +38,7 @@ function constructorReturning(target: unknown): new () => unknown {
 /** Every catalogue sound with the table entries it may play at, and how to play it. */
 const PLAYS: Array<{ name: string; entries: SoundName[]; play: () => void }> = [];
 const NOT_SOUNDS = new Set(["painPitch", "deathPitch", "ricochetRoll", "ambientStinger"]);
-for (const mod of [W, M, WO, UI, X] as Array<Record<string, unknown>>) {
+for (const mod of [W, F, M, WO, UI, X] as Array<Record<string, unknown>>) {
   for (const [name, fn] of Object.entries(mod)) {
     if (typeof fn !== "function" || NOT_SOUNDS.has(name)) continue;
     const f = fn as (...a: unknown[]) => void;

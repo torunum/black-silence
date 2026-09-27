@@ -2,6 +2,7 @@ import type { Builder } from "../builder";
 import { MAT } from "../palette";
 import { fist, forearm } from "../hands";
 import { hump, ramp, type Pose, type WeaponArt } from "../pose";
+import { FLARE } from "../phases";
 
 /**
  * Slot 0, FLARE PISTOL — a wide-bore signal pistol held in one hand: a fat
@@ -32,10 +33,10 @@ export const flarePistol: WeaponArt = {
   name: "FLARE PISTOL",
   hold: { x: 0.1, y: -0.075, z: 0.45, pitch: 0.0, yaw: -0.55, roll: 0.2 },
   kick: { back: 0.06, lift: 0.1 },
-  action: (p) => 1 - ramp(p, 0.5, 0.9),
+  action: (p) => 1 - ramp(p, ...FLARE.cock),
   draw(b: Builder, pose: Pose) {
     const r = pose.reload;
-    const open = r < 0 ? 0 : hump(r, 0.08, 0.88, 0.1);    // breech angle 0..1
+    const open = r < 0 ? 0 : hump(r, ...FLARE.open);    // breech angle 0..1
     const tilt = r < 0 ? 0 : hump(r, 0.0, 0.98, 0.14);    // whole gun canted and dipped to show the breech
     b.translate(0, -0.03 * tilt, 0); b.roll(-0.35 * tilt); b.pitch(-0.25 * tilt); b.yaw(0.2 * tilt);
 
@@ -88,7 +89,7 @@ export const flarePistol: WeaponArt = {
 
     // left hand: comes up from below with a fresh shell and pushes it into the breech
     if (r >= 0) {
-      const inn = hump(r, 0.3, 0.78, 0.16), push = ramp(r, 0.48, 0.6);
+      const inn = hump(r, 0.3, 0.78, 0.16), push = ramp(r, ...FLARE.push);
       if (inn > 0 && r < 0.62) {
         b.push();
         b.translate(-0.01 + 0.01 * inn, -0.12 + 0.15 * inn, -0.1 + 0.03 * inn + 0.03 * push);

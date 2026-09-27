@@ -32,7 +32,8 @@ type Sfx = typeof import("../../src/audio/Sfx");
 type Voice = typeof import("../../src/audio/Voice");
 type Ambient = typeof import("../../src/audio/Ambient");
 type Engine = typeof import("../../src/audio/AudioEngine");
-let sfx: Sfx, voice: Voice, ambient: Ambient, engine: Engine;
+type Weapons = typeof import("../../src/audio/sounds/weapons");
+let sfx: Sfx, voice: Voice, ambient: Ambient, engine: Engine, weapons: Weapons;
 let events: AudioEvent[];
 
 const SEED = 20260926;
@@ -48,6 +49,7 @@ beforeAll(async () => {
   sfx = await import("../../src/audio/Sfx");
   voice = await import("../../src/audio/Voice");
   ambient = await import("../../src/audio/Ambient");
+  weapons = await import("../../src/audio/sounds/weapons");
 });
 
 function seededDraws(n: number): number[] {
@@ -64,7 +66,8 @@ function playEverySortOfSound(): void {
   sfx.bang(0.05, 0.3, 1200, 300);
   sfx.boom(1);
   sfx.click();
-  sfx.gunshot({ split: 2400, crack: .16, body: .2, bodyDur: .09, bodyEndHz: 380, punch: .16, punchHz: 150, punchEndHz: 48, punchDur: .07 });
+  // A layered weapon report (player feedback round 2 Task 3): its per-shot jitter is sound's own dice.
+  for (const fire of weapons.WEAPON_FIRE_SOUNDS) fire();
   voice.growl(120, 0.3);
   voice.gurgle(0.2, 0.3);
   voice.pain(200, 0.1);

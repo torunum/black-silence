@@ -7,10 +7,9 @@ import { rnd } from "../utils/math";
 import { WEAPON_STATS } from "./definitions";
 import { weaponRuntime } from "./WeaponRuntime";
 import { animCues } from "../core/AnimCues";
-import {
-  WEAPON_FIRE_SOUNDS, weaponLower, weaponRaise, reloadOut, reloadIn, reloadDone, dryFire,
-  shotgunPump, kickSwing, kickImpact,
-} from "../audio/sounds/weapons";
+import { WEAPON_FIRE_SOUNDS, kickSwing, kickImpact } from "../audio/sounds/weapons";
+import { weaponLower, weaponRaise, dryFire, shotgunPump } from "../audio/sounds/foley";
+import { cross, EQUIP_CUES, FIRE_CUES, motorFoley, RELOAD_CUES } from "./Foley";
 import { kickReady } from "../audio/sounds/ui";
 import { renderState } from "../render/Renderer";
 import { blood, smoke3d } from "../fx/Particles";
@@ -85,8 +84,6 @@ import type { Enemy } from "../enemies/Enemy";
  * KNOWN-3 records it as done.
  */
 
-/** Moved to the sound catalogue with the firing sounds; re-exported here for the tests that read them off this module. */
-export { REBUILT_REPORT_SLOTS, WEAPON_REPORTS } from "../audio/sounds/weapons";
 export const WEAPONS = WEAPON_STATS.map((w, i) => ({ ...w, snd: WEAPON_FIRE_SOUNDS[i] }));
 export const EQUIP_T=.24,UNEQUIP_T=.16;
 /**
@@ -117,23 +114,27 @@ export function startReload(){
 export function weaponTick(dt: number){
   weaponRuntime.wtime+=dt;weaponRuntime.wCool-=dt;
   const w=WEAPONS[S.cur];
+  // the mechanisms the animation shows after a shot and at the end of a raise, heard as it reaches them (./Foley.ts)
+  if(weaponRuntime.wstate==="fire")cross(FIRE_CUES[S.cur],(weaponRuntime.wtime-dt)/Math.min(.35,w.rate),weaponRuntime.wtime/Math.min(.35,w.rate));
+  else if(weaponRuntime.wstate==="equip")cross(EQUIP_CUES,(weaponRuntime.wtime-dt)/EQUIP_T,weaponRuntime.wtime/EQUIP_T);
   if(weaponRuntime.wstate==="unequip"&&weaponRuntime.wtime>=UNEQUIP_T){
     if(weaponRuntime.pending>=0){S.cur=weaponRuntime.pending;weaponRuntime.pending=-1;}
     weaponRuntime.wstate="equip";weaponRuntime.wtime=0;weaponRaise();}
   else if(weaponRuntime.wstate==="equip"&&weaponRuntime.wtime>=EQUIP_T){weaponRuntime.wstate="idle";weaponRuntime.wtime=0;}
   else if(weaponRuntime.wstate==="fire"&&weaponRuntime.wtime>=Math.min(.35,w.rate)){weaponRuntime.wstate="idle";weaponRuntime.wtime=0;}
   else if(weaponRuntime.wstate==="reload"){
-    const rt=weaponRuntime.wtime/w.reload;
-    if(rt>.18&&!weaponRuntime.reloadFlags.a){weaponRuntime.reloadFlags.a=1;reloadOut();
+    const rt=weaponRuntime.wtime/w.reload,prevRt=(weaponRuntime.wtime-dt)/w.reload;
+    if(rt>.18&&!weaponRuntime.reloadFlags.a){weaponRuntime.reloadFlags.a=1;
       if(S.cur===0)for(let i=0;i<6;i++)ejectCasing(1);
       if(S.cur===1){ejectCasing(2);ejectCasing(2);}
       if(S.cur===4)ejectCasing(3);}
-    if(rt>.62&&!weaponRuntime.reloadFlags.b){weaponRuntime.reloadFlags.b=1;reloadIn();}
     if(rt>=1){
       const need=w.magSize-S.mag[S.cur];
       const take=Math.min(need,S.ammo[w.ammo]);
       S.ammo[w.ammo]-=take;S.mag[S.cur]+=take;
-      weaponRuntime.wstate="idle";weaponRuntime.wtime=0;reloadDone();}
+      weaponRuntime.wstate="idle";weaponRuntime.wtime=0;}
+    // the reload's mechanism, heard as the animation reaches each part of it (./Foley.ts) — unless firing just cut it short
+    if(rt>=1||!(input.firing&&S.mag[S.cur]>0))cross(RELOAD_CUES[S.cur],prevRt,rt);
     if(input.firing&&S.mag[S.cur]>0){weaponRuntime.wstate="idle";weaponRuntime.wtime=0;}}
   if(input.firing&&(weaponRuntime.wstate==="idle"||weaponRuntime.wstate==="fire")&&weaponRuntime.wCool<=0&&!S.dead&&game.started&&!game.inputLock){
     if(S.mag[S.cur]<=0){
@@ -153,7 +154,8 @@ export function weaponTick(dt: number){
   /* kick cooldown */
   if(S.kickCd>0){S.kickCd-=dt;
     if(S.kickCd<=0){say("kickready");kickReady();}}
-  weaponRuntime.kickAnim=Math.max(0,weaponRuntime.kickAnim-dt);}
+  weaponRuntime.kickAnim=Math.max(0,weaponRuntime.kickAnim-dt);
+  motorFoley(S.cur,weaponRuntime.wstate);}
 export function fire(w: typeof WEAPONS[number]){
   S.mag[S.cur]--;weaponRuntime.wCool=w.rate;weaponRuntime.wstate="fire";weaponRuntime.wtime=0;
   S.shots++;

@@ -1,10 +1,12 @@
+import { OLD_FIRE, oldDryFire, oldReload, oldShotgunPump, oldWeaponLower, oldWeaponRaise } from "./previous/weapons";
+
 /**
  * THE OLD VERSIONS — the sound board's "old" button for every sound a task
  * has replaced. Player feedback round 2 (`docs/superpowers/plans/2026-09-26-
  * player-feedback-2-sound.md`): the owner judges by ear, so each rebuilt
  * sound is heard beside the one it replaced.
  *
- * **Empty after Tasks 1 and 2.** Task 1 replaced no sound. Task 2 changed
+ * **Task 3 registered the weapons** (below). Task 1 replaced no sound. Task 2 changed
  * how *every* sound comes out — the room, the master chain, the level trims
  * — without touching any sound's own synthesis, so its "old" is one global
  * switch rather than 111 rows: the board's **Old mix / New mix** toggle
@@ -27,4 +29,13 @@
  * `tests/soundboard/soundboard.test.ts` fails if it does — so old versions
  * cost the game nothing and can be kept as long as they are useful.
  */
-export const PREVIOUS: Readonly<Record<string, () => void>> = {};
+export const PREVIOUS: Readonly<Record<string, () => void>> = {
+  // Task 3 — the weapons (./previous/weapons.ts): all eight reports, the
+  // switch, the dry click, the pump, and each weapon's reload as it was.
+  ...Object.fromEntries(OLD_FIRE.map((play, slot) => [`weapon-fire-${slot}`, play])),
+  "weapon-lower": oldWeaponLower,
+  "weapon-raise": oldWeaponRaise,
+  "dry-fire": oldDryFire,
+  "shotgun-pump": oldShotgunPump,
+  ...Object.fromEntries(OLD_FIRE.map((_p, slot) => [`reload-${slot}`, () => oldReload(slot)])),
+};

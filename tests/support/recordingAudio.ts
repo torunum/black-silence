@@ -84,6 +84,17 @@ export function recordingAudioContext(): { ctx: unknown; events: AudioEvent[] } 
         events.push({ kind: "param", detail: { node: nodeId, prop, method: "linearRampToValueAtTime", value, time } });
         return this;
       },
+      // Player feedback round 2 Task 3: the nail cannon's motor
+      // (src/audio/Spin.ts) follows the spin with first-order lags, and
+      // re-aims them every frame it is driven.
+      setTargetAtTime(value: unknown, time: unknown, timeConstant: unknown) {
+        events.push({ kind: "param", detail: { node: nodeId, prop, method: "setTargetAtTime", value, time, timeConstant } });
+        return this;
+      },
+      cancelScheduledValues(time: unknown) {
+        events.push({ kind: "param", detail: { node: nodeId, prop, method: "cancelScheduledValues", time } });
+        return this;
+      },
       // Player feedback round 2 Task 1: bang()/boom() apply the fade their
       // per-play noise buffers used to have baked in as a gain curve. The
       // curve is logged as a plain array so two logs compare with toEqual.

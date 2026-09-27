@@ -4,6 +4,7 @@ import { restPose, type Pose, type WeaponArt } from "./pose";
 import { Body } from "./motion";
 import { ASIDE, aside, kickElapsed } from "./kick";
 import { Reactions } from "./react";
+import { SPIN } from "./phases";
 
 /**
  * Turns the weapon runtime into a Pose, once per frame. It only ever READS
@@ -138,7 +139,7 @@ export class Animator {
     // rotating parts: spin up while firing, wind down after
     const rate = art.spinRate ?? 0;
     const target = v.wstate === "fire" ? rate : (art.idleSpin ?? 0);
-    this.spinVel += (target - this.spinVel) * Math.min(1, dt * (target > this.spinVel ? 9 : 1.6));
+    this.spinVel += (target - this.spinVel) * Math.min(1, dt * (target > this.spinVel ? SPIN.up : SPIN.down));
     if (Math.abs(target - this.spinVel) < 1e-3) this.spinVel = target; // a wind-down ends, exactly
     this.spin = (this.spin + this.spinVel * dt) % (Math.PI * 2);
     p.spin = (Math.round(this.spin / SPIN_STEP) % SPIN_STEPS) * SPIN_STEP;

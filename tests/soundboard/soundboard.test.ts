@@ -59,6 +59,7 @@ describe("it lists every sound in the game", () => {
     const W = await import("../../src/audio/sounds/weapons");
     const modules: Array<[string, Record<string, unknown>]> = [
       ["W", W],
+      ["F", await import("../../src/audio/sounds/foley")],
       ["M", await import("../../src/audio/sounds/monsters")],
       ["WO", await import("../../src/audio/sounds/world")],
       ["UI", await import("../../src/audio/sounds/ui")],
@@ -212,7 +213,8 @@ describe("the page", () => {
     expect(headings.map((h) => h!.replace(/ \(\d+\)$/, ""))).toEqual(["Weapons", "Monsters", "World", "UI", "Explosions"]);
     const total = headings.reduce((n, h) => n + Number(/\((\d+)\)$/.exec(h!)![1]), 0);
     expect(total).toBe(rows.length);
-    expect(document.querySelectorAll("button.play")).toHaveLength(rows.length);
+    // one play button per version: one on most rows, Old and New on a row a task replaced
+    expect(document.querySelectorAll("button.play")).toHaveLength(rows.reduce((n, r) => n + r.versions.length, 0));
     expect(document.querySelector("button.power")?.textContent).toBe("Turn sound on");
   });
 
@@ -260,15 +262,25 @@ describe("the page", () => {
     search.value = "shotgun";
     search.dispatchEvent(new Event("input"));
     const shown = [...document.querySelectorAll("li.row")].filter((li) => !(li as HTMLElement).hidden);
-    expect(shown.map((li) => (li as HTMLElement).dataset.id).sort()).toEqual(["shotgun-pump", "weapon-fire-1"]);
+    // (player feedback round 2 Task 3 gave the shotgun's mechanism rows of their own, and its whole reload)
+    expect(shown.map((li) => (li as HTMLElement).dataset.id).sort()).toEqual([
+      "reload-1", "shotgun-hulls", "shotgun-open", "shotgun-pump", "shotgun-shells-in", "shotgun-shut", "weapon-fire-1",
+    ]);
     const visibleSections = [...document.querySelectorAll("section")].filter((s) => !(s as HTMLElement).hidden);
     expect(visibleSections).toHaveLength(1);
   });
 });
 
 describe("old and new, ready for Task 2", () => {
-  it("in Task 1 every row has exactly one version, \"current\"", () => {
-    for (const r of rows) expect(r.versions.map((v) => v.label), r.id).toEqual(["current"]);
+  // Task 1 left every row with exactly one version, "current". Task 3
+  // (the weapons) registered the first old versions: every report, every
+  // weapon's whole reload, the switch, the dry fire and the pump.
+  it("a row has Old and New exactly when a task replaced its sound; every other row has one version, \"current\"", () => {
+    const replaced = [
+      ...Array.from({ length: 8 }, (_, i) => `weapon-fire-${i}`), ...Array.from({ length: 8 }, (_, i) => `reload-${i}`),
+      "weapon-lower", "weapon-raise", "dry-fire", "shotgun-pump",
+    ];
+    for (const r of rows) expect(r.versions.map((v) => v.label), r.id).toEqual(replaced.includes(r.id) ? ["old", "new"] : ["current"]);
   });
 
   it("a registered old version turns a row into Old and New, New being the game's own sound", async () => {

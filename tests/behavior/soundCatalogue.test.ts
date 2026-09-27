@@ -7,7 +7,7 @@ import * as M from "../../src/audio/sounds/monsters";
 import * as WO from "../../src/audio/sounds/world";
 import * as UI from "../../src/audio/sounds/ui";
 import * as X from "../../src/audio/sounds/explosions";
-import { gunshot } from "../../src/audio/Sfx";
+import * as P from "../../src/soundboard/previous/weapons";
 
 /**
  * THE SOUND CATALOGUE IS THE CALL SITES, MOVED — player feedback round 2,
@@ -39,10 +39,20 @@ import { gunshot } from "../../src/audio/Sfx";
  * the same order", and now also that every catalogue sound draws nothing
  * from the gameplay generator (`recordModuleSound` counts).
  *
- * Six of the eight weapon reports have no reference counterpart: player
- * feedback round 1 rebuilt them on purpose (`gunshot()`), and
- * `tests/behavior/weaponReport.test.ts` is their oracle. For those this file
- * checks only that the catalogue function is `gunshot(WEAPON_REPORTS[i])`.
+ * PLAYER FEEDBACK ROUND 2 TASK 3 — A DELIBERATE DIVERGENCE. Task 3
+ * (`docs/superpowers/plans/2026-09-26-player-feedback-2-sound.md`) rebuilt
+ * every weapon report and replaced the generic clicks of the reload, the
+ * switch, the pump and the dry fire with mechanism foley
+ * (`src/audio/sounds/foley.ts`), so those catalogue functions no longer
+ * match any reference call site, on purpose. Their cases below are not
+ * deleted: they now run the sound board's "old" versions
+ * (`src/soundboard/previous/weapons.ts`, the catalogue functions as they
+ * stood at `f9a1ac0`) against the same reference sites — which is what
+ * keeps the board's "old" button honest: it is the reference's sound. The
+ * new sounds are pinned by `tests/audio/weaponSounds.test.ts` and
+ * `tests/weapons/foley.test.ts`. Likewise round 1's six `gunshot()`
+ * reports, whose oracle is `tests/behavior/weaponReport.test.ts`, are
+ * checked here as the board's old ones.
  */
 
 interface Case {
@@ -57,15 +67,16 @@ interface Case {
 
 const CASES: Case[] = [
   // ---- weapons
-  { name: "crossLauncherFire", site: 'blip(520,.3,"sine",.12,780,true);bang(.1,.2,800);', module: W.crossLauncherFire },
-  { name: "soulReaperFire", site: 'blip(70,.5,"sawtooth",.16,360,true);bang(.28,.45,500);growl(90,.4,.3,true);', module: W.soulReaperFire },
-  { name: "weaponLower", site: 'wstate="unequip";wtime=0;click(.12);', snippet: "click(.12)", module: W.weaponLower },
-  { name: "weaponRaise", site: 'wstate="equip";wtime=0;click(.16);', snippet: "click(.16)", module: W.weaponRaise },
-  { name: "reloadOut", site: "reloadFlags.a=1;click(.16);", snippet: "click(.16)", module: W.reloadOut },
-  { name: "reloadIn", site: "reloadFlags.b=1;click(.14);", snippet: "click(.14)", module: W.reloadIn },
-  { name: "reloadDone", site: 'wstate="idle";wtime=0;click(.2);', snippet: "click(.2)", module: W.reloadDone },
-  { name: "dryFire", site: "click(.1);wCool=.3;", snippet: "click(.1)", module: W.dryFire },
-  { name: "shotgunPump", site: "ejectCasing(2);click(.12);", snippet: "click(.12)", module: W.shotgunPump },
+  // (the old ones — see "A DELIBERATE DIVERGENCE" above)
+  { name: "old crossLauncherFire", site: 'blip(520,.3,"sine",.12,780,true);bang(.1,.2,800);', module: P.OLD_FIRE[5] },
+  { name: "old soulReaperFire", site: 'blip(70,.5,"sawtooth",.16,360,true);bang(.28,.45,500);growl(90,.4,.3,true);', module: P.OLD_FIRE[7] },
+  { name: "old weaponLower", site: 'wstate="unequip";wtime=0;click(.12);', snippet: "click(.12)", module: P.oldWeaponLower },
+  { name: "old weaponRaise", site: 'wstate="equip";wtime=0;click(.16);', snippet: "click(.16)", module: P.oldWeaponRaise },
+  { name: "old reloadOut", site: "reloadFlags.a=1;click(.16);", snippet: "click(.16)", module: P.oldReloadOut },
+  { name: "old reloadIn", site: "reloadFlags.b=1;click(.14);", snippet: "click(.14)", module: P.oldReloadIn },
+  { name: "old reloadDone", site: 'wstate="idle";wtime=0;click(.2);', snippet: "click(.2)", module: P.oldReloadDone },
+  { name: "old dryFire", site: "click(.1);wCool=.3;", snippet: "click(.1)", module: P.oldDryFire },
+  { name: "old shotgunPump", site: "ejectCasing(2);click(.12);", snippet: "click(.12)", module: P.oldShotgunPump },
   { name: "kickSwing", site: "shake(.3);bang(.15,.5,900);", snippet: "bang(.15,.5,900)", module: W.kickSwing },
   { name: "kickImpact", site: "if(hitAny){bang(.12,.4,500);", snippet: "bang(.12,.4,500)", module: W.kickImpact },
   { name: "casingTinkle", site: 'setTimeout(()=>blip(rnd(1800,2600),.04,"square",.025),rnd(250,450));', module: W.casingTinkle },
@@ -188,17 +199,14 @@ describe("every catalogue sound makes exactly the calls its reference call site 
   });
 });
 
-describe("the six rebuilt firearm reports are gunshot() at their profile", () => {
-  const fire = [W.flarePistolFire, W.shotgunFire, W.combatRifleFire, W.tommyGunFire, W.sniperFire, undefined, W.nailCannonFire];
-  it.each(W.REBUILT_REPORT_SLOTS)("slot %i", (slot) => {
-    const f = fire[slot]!;
-    expect(W.WEAPON_FIRE_SOUNDS[slot]).toBe(f);
-    expectCallLogEqual(recordModuleSound(f, 7), recordModuleSound(() => gunshot(W.WEAPON_REPORTS[slot]), 7), `slot ${slot}`);
+describe("round 1's six firearm reports (the board's old ones) are gunshot() at their profile", () => {
+  it.each([0, 1, 2, 3, 4, 6])("slot %i", (slot) => {
+    expectCallLogEqual(recordModuleSound(P.OLD_FIRE[slot], 7), recordModuleSound(() => P.gunshot(P.OLD_REPORTS[slot]), 7), `slot ${slot}`);
   });
 
-  it("slots 5 and 7 are the two unrebuilt closures, in slot order", () => {
-    expect(W.WEAPON_FIRE_SOUNDS[5]).toBe(W.crossLauncherFire);
-    expect(W.WEAPON_FIRE_SOUNDS[7]).toBe(W.soulReaperFire);
-    expect(W.WEAPON_FIRE_SOUNDS).toHaveLength(8);
+  it("the game's slots are the eight catalogue reports, in slot order", () => {
+    expect(W.WEAPON_FIRE_SOUNDS).toEqual([
+      W.flarePistolFire, W.shotgunFire, W.combatRifleFire, W.tommyGunFire, W.sniperFire, W.crossLauncherFire, W.nailCannonFire, W.soulReaperFire,
+    ]);
   });
 });

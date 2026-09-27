@@ -1,4 +1,5 @@
 import * as W from "../audio/sounds/weapons";
+import * as F from "../audio/sounds/foley";
 import * as M from "../audio/sounds/monsters";
 import * as WO from "../audio/sounds/world";
 import * as UI from "../audio/sounds/ui";
@@ -8,6 +9,7 @@ import { after } from "../core/Timers";
 import { ENEMY_DEFS } from "../enemies/EnemyDefs";
 import { WEAPON_STATS } from "../weapons/definitions";
 import { PREVIOUS } from "./previous";
+import { playReload } from "../weapons/Foley";
 
 /**
  * THE SOUND BOARD'S LIST — every distinct sound in the game, by a human
@@ -76,6 +78,18 @@ function monsterName(k: string): string {
 }
 const title = (s: string): string => (s.charAt(0) + s.slice(1).toLowerCase()).replace(/^Bmg /, "BMG ");
 
+/** What each report is made of (player feedback round 2 Task 3, src/audio/sounds/weapons.ts), in slot order. */
+const FIRE_DETAIL = [
+  "hollow pop, a fizz of the flare catching",
+  "two barrels, a wide low chesty boom",
+  "supersonic crack, tight body, the bolt cycling",
+  "rattly .45 thump, fifteen a second",
+  "enormous crack, a long rolling tail",
+  "launch whoosh and a bell",
+  "pneumatic thwack, twenty a second",
+  "crackling discharge and a choir sliding down",
+];
+
 /** The `snarl` kinds with a sound of their own (`src/audio/Voice.ts`); every other monster gets the generic moan. */
 const ALERT_KINDS = ["C", "A", "L", "j", "n", "k", "q", "R", "y", "s"];
 
@@ -113,15 +127,54 @@ const ENTRIES: Entry[] = [
   // ---- Weapons
   ...W.WEAPON_FIRE_SOUNDS.map((play, i): Entry => ({
     id: `weapon-fire-${i}`, name: `${title(WEAPON_STATS[i].name)} fires`, category: "Weapons", play,
-    detail: W.REBUILT_REPORT_SLOTS.includes(i) ? "rebuilt in feedback round 1: crack, body, thump" : "unchanged from the original game",
+    detail: `${FIRE_DETAIL[i]} — rebuilt in feedback round 2`,
   })),
-  { id: "weapon-lower", name: "Weapon lowered (switching)", category: "Weapons", play: W.weaponLower },
-  { id: "weapon-raise", name: "Weapon raised", category: "Weapons", play: W.weaponRaise },
-  { id: "reload-out", name: "Reload: rounds out", category: "Weapons", play: W.reloadOut },
-  { id: "reload-in", name: "Reload: rounds in", category: "Weapons", play: W.reloadIn },
-  { id: "reload-done", name: "Reload: ready", category: "Weapons", play: W.reloadDone },
-  { id: "dry-fire", name: "Dry fire (out of ammo)", category: "Weapons", play: W.dryFire },
-  { id: "shotgun-pump", name: "Shotgun pump", category: "Weapons", detail: "300 ms after each shotgun blast", play: W.shotgunPump },
+  ...WEAPON_STATS.map((w, i): Entry => ({
+    id: `reload-${i}`, name: `${title(w.name)} reloads (the whole ${w.reload} s)`, category: "Weapons",
+    detail: "every mechanism sound at the moment the animation shows it; old: the same three clicks for every weapon",
+    play: () => playReload(i, w.reload),
+  })),
+  { id: "weapon-lower", name: "Weapon lowered (switching)", category: "Weapons", play: F.weaponLower },
+  { id: "weapon-raise", name: "Weapon raised", category: "Weapons", play: F.weaponRaise },
+  { id: "weapon-ready", name: "Weapon arrives in the hands", category: "Weapons", detail: "at the end of the raise", play: F.weaponReady },
+  { id: "dry-fire", name: "Dry fire (out of ammo)", category: "Weapons", play: F.dryFire },
+  { id: "shotgun-pump", name: "Shotgun pump", category: "Weapons", detail: "300 ms after each shotgun blast: back, and home", play: F.shotgunPump },
+  { id: "flare-cock", name: "Flare pistol: hammer thumbed back", category: "Weapons", detail: "after each shot", play: F.flareHammerCock },
+  { id: "flare-open", name: "Flare pistol: barrel breaks open", category: "Weapons", play: F.flareOpen },
+  { id: "flare-shell-in", name: "Flare pistol: shell pushed in", category: "Weapons", play: F.flareShellIn },
+  { id: "flare-shut", name: "Flare pistol: snapped shut", category: "Weapons", play: F.flareShut },
+  { id: "shotgun-open", name: "Shotgun: barrels break open", category: "Weapons", play: F.shotgunOpen },
+  { id: "shotgun-hulls", name: "Shotgun: spent hulls kicked out", category: "Weapons", play: F.shotgunHullsOut },
+  { id: "shotgun-shells-in", name: "Shotgun: two shells in", category: "Weapons", play: F.shotgunShellsIn },
+  { id: "shotgun-shut", name: "Shotgun: snapped shut", category: "Weapons", play: F.shotgunShut },
+  { id: "rifle-mag-out", name: "Combat rifle: magazine out", category: "Weapons", play: F.rifleMagOut },
+  { id: "rifle-mag-in", name: "Combat rifle: magazine in", category: "Weapons", play: F.rifleMagIn },
+  { id: "rifle-charge-back", name: "Combat rifle: charging handle back", category: "Weapons", play: F.rifleChargeBack },
+  { id: "rifle-charge-forward", name: "Combat rifle: charging handle let fly", category: "Weapons", play: F.rifleChargeForward },
+  { id: "tommy-drum-out", name: "Tommy gun: drum out", category: "Weapons", play: F.tommyDrumOut },
+  { id: "tommy-drum-in", name: "Tommy gun: drum in", category: "Weapons", play: F.tommyDrumIn },
+  { id: "tommy-knob-back", name: "Tommy gun: cocking knob back", category: "Weapons", play: F.tommyKnobBack },
+  { id: "tommy-knob-forward", name: "Tommy gun: cocking knob released", category: "Weapons", play: F.tommyKnobForward },
+  { id: "sniper-bolt-lift", name: "BMG sniper: bolt handle up", category: "Weapons", detail: "after each shot, and in the reload", play: F.sniperBoltLift },
+  { id: "sniper-bolt-back", name: "BMG sniper: bolt drawn back", category: "Weapons", detail: "after each shot, and in the reload", play: F.sniperBoltBack },
+  { id: "sniper-bolt-forward", name: "BMG sniper: bolt run forward", category: "Weapons", detail: "after each shot, and in the reload", play: F.sniperBoltForward },
+  { id: "sniper-bolt-lock", name: "BMG sniper: bolt locked", category: "Weapons", detail: "after each shot, and in the reload", play: F.sniperBoltLock },
+  { id: "sniper-mag-out", name: "BMG sniper: magazine out", category: "Weapons", play: F.sniperMagOut },
+  { id: "sniper-mag-in", name: "BMG sniper: magazine in", category: "Weapons", play: F.sniperMagIn },
+  { id: "cross-rises", name: "Cross launcher: next cross rises", category: "Weapons", detail: "after each shot", play: F.crossRises },
+  { id: "cross-lid-open", name: "Cross launcher: roof opens", category: "Weapons", play: F.crossLidOpen },
+  { id: "cross-laid-in", name: "Cross launcher: cross laid in", category: "Weapons", play: F.crossLaidIn },
+  { id: "cross-lid-shut", name: "Cross launcher: roof closes", category: "Weapons", play: F.crossLidShut },
+  {
+    id: "nail-spin", name: "Nail cannon: motor spins up and down", category: "Weapons", detail: "1.5 s of the trigger held, then released",
+    play: () => { for (let t = 0; t <= 1500; t += 50) after(() => F.nailCannonSpin(true), t); after(() => F.nailCannonSpin(false), 1550); },
+  },
+  { id: "nail-hopper-off", name: "Nail cannon: empty hopper off", category: "Weapons", play: F.nailHopperOff },
+  { id: "nail-hopper-on", name: "Nail cannon: full hopper on", category: "Weapons", play: F.nailHopperOn },
+  { id: "reaper-gutter", name: "Soul reaper: spent core gutters out", category: "Weapons", play: F.reaperGutter },
+  { id: "reaper-pluck", name: "Soul reaper: husk plucked out", category: "Weapons", play: F.reaperPluck },
+  { id: "reaper-charge", name: "Soul reaper: charge", category: "Weapons", detail: "as the core re-forms after each shot, and as a fresh soul goes in", play: F.reaperCharge },
+  { id: "reaper-claws", name: "Soul reaper: claws close", category: "Weapons", play: F.reaperClawsClose },
   { id: "casing", name: "Shell casing lands", category: "Weapons", detail: "comes 0.25-0.45 s after the click", play: W.casingTinkle },
   { id: "kick-swing", name: "Kick: swing", category: "Weapons", play: W.kickSwing },
   { id: "kick-impact", name: "Kick: connects", category: "Weapons", play: W.kickImpact },

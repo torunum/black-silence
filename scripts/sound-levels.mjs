@@ -147,7 +147,7 @@ function applyTrims(entries) {
   let changed = 0;
   for (const e of entries) {
     const key = /^[A-Za-z_$][\w$]*$/.test(e.name) ? e.name : `"${e.name}"`;
-    const re = new RegExp(`^(  ${key.replace(/[.$]/g, "\\$&")}: \\{ category: "\\w+", trim: )(-?\\d+(?:\\.\\d+)?)( )`, "m");
+    const re = new RegExp(`^(  ${key.replace(/[.$]/g, "\\$&")}: \\{ category: "\\w+", trim: )(-?\\d+(?:\\.\\d+)?)([ ,])`, "m");
     if (!re.test(src)) throw new Error(`could not find ${e.name}'s line in Levels.ts`);
     src = src.replace(re, (_m, a, old, b) => { if (Number(old) !== e.suggested) changed++; return `${a}${e.suggested}${b}`; });
   }
