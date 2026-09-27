@@ -58,6 +58,14 @@ const AMMO_DESIGN: Readonly<Record<string, (p: number) => Layer[]>> = {
   ],
 };
 
+/**
+ * The six kinds share one entry in `../Levels.ts`, so they must sit at one
+ * level among themselves (the footstep lesson of Task 2): measured
+ * (`docs/sound-levels.md`, first pass) the slug's single heavy clack came
+ * out 9 dB over the crosses' faint clink. These bring each to the six's mean.
+ */
+const AMMO_GAIN: Readonly<Record<string, number>> = { bullets: 1, shells: 0.75, slugs: 0.54, crosses: 1.53, nails: 1.41, souls: 1.1 };
+
 /** A pickup's design — exported so tests can read it without playing it. */
 export function pickupDesign(kind: string, p = 1): Layer[] {
   switch (pickupFamily(kind)) {
@@ -70,7 +78,7 @@ export function pickupDesign(kind: string, p = 1): Layer[] {
     case "armour":
       return [slide(0, 700 * p, 420 * p, 0.12, 0.45, 1.2), ...clack(0.05, [900 * p, 1450 * p, 2250 * p], 0.1, 0.45), thud(0.05, 180 * p, 0.07, 0.5)];
     case "ammo":
-      return (AMMO_DESIGN[kind] ?? AMMO_DESIGN.bullets)(p);
+      return (AMMO_DESIGN[kind] ?? AMMO_DESIGN.bullets)(p).map((l): Layer => ({ ...l, level: (l.level ?? 1) * (AMMO_GAIN[kind] ?? 1) }));
     case "key":
       return [
         ...clack(0, [1850 * p, 2780 * p, 4150 * p], 0.2, 0.3), ...clack(0.06, [2150 * p, 3200 * p], 0.15, 0.22),

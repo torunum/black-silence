@@ -46,8 +46,8 @@ export type KickTarget = "flesh" | "stone" | "air";
 /** A kick landing in a body: a meaty thud, a wet slap, the boot's leather snapping. */
 function kickFlesh(p: number): Layer[] {
   return [
-    { tone: "sine", f: 125 * p, to: 55, over: 0.06, env: { a: 0.001, h: 0.012, d: 0.14 }, drive: 2.5, level: 1 },
-    { noise: "white", filters: [{ type: "lowpass", f: 1500 * p, q: 0.9, to: 300, over: 0.08 }], env: { a: 0.001, h: 0.01, d: 0.1 }, drive: 2, level: 0.8 },
+    { tone: "sine", f: 125 * p, to: 55, over: 0.06, env: { a: 0.001, h: 0.012, d: 0.14 }, drive: 2.5, level: 0.6 },
+    { noise: "white", filters: [{ type: "lowpass", f: 1800 * p, q: 0.9, to: 350, over: 0.08 }], env: { a: 0.001, h: 0.01, d: 0.1 }, drive: 2, level: 1.1 },
     { at: 0.01, noise: "pink", filters: [{ type: "bandpass", f: 480 * p, q: 1.5 }], env: { a: 0.004, h: 0.015, d: 0.12 }, am: { rate: 30, depth: 0.35 }, level: 0.45 },
     tick(0, 2800, 1.2, 0.012, 0.25, 2),
   ];
@@ -55,8 +55,8 @@ function kickFlesh(p: number): Layer[] {
 /** A kick landing on stone or a prop: a boot sole striking, grit, a little dust coming down. */
 function kickStone(p: number): Layer[] {
   return [
-    { tone: "sine", f: 96 * p, to: 44, over: 0.07, env: { a: 0.001, h: 0.008, d: 0.12 }, drive: 1.8, level: 0.85 },
-    tick(0, 820 * p, 1.3, 0.06, 0.75, 2),
+    { tone: "sine", f: 96 * p, to: 44, over: 0.07, env: { a: 0.001, h: 0.008, d: 0.12 }, drive: 1.8, level: 0.55 },
+    tick(0, 820 * p, 1.3, 0.06, 1, 2),
     grit(0.002, 2600 * p, 70, 0.08, 0.25),
     { at: 0.02, noise: "pink", filters: [{ type: "lowpass", f: 650 }], env: { a: 0.02, h: 0.03, d: 0.22 }, level: 0.22 },
   ];

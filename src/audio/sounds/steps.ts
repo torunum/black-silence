@@ -52,9 +52,17 @@ export function stride(): Stride {
   return { p: jit(0.06) * (foot ? 1.02 : 0.98), q: jit(0.12), gap: 0.022 + soundRandom() * 0.022, g: 0.7 + soundRandom() * 0.6 };
 }
 
+/**
+ * How loud the weight is against the rest of a step. The first renders had
+ * every floor's 40-200 Hz band 15 dB over its 0.5-4 kHz band: a muffled
+ * thump, with the floor's own character — the grit, the splash, the ring —
+ * buried under it and the hall answering in a low rumble. At 0.45 the thud
+ * is still the heaviest part of a step, by about 8 dB, and the floor is heard.
+ */
+const THUD = 0.45;
 /** A sine thud dropping about an octave: the body's weight. */
 function weight(f: number, d: number, level: number, drive = 1.3): Layer {
-  return { tone: "sine", f, to: f * 0.52, over: d * 0.55, env: { a: 0.0025, h: 0.005, d }, drive, level };
+  return { tone: "sine", f, to: f * 0.52, over: d * 0.55, env: { a: 0.0025, h: 0.005, d }, drive, level: level * THUD };
 }
 
 /** What a step on each floor is made of. */

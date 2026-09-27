@@ -107,7 +107,7 @@ export const SOUND_LEVELS = {
   dryFire: { category: "foley", trim: -3.6 },
   casingTinkle: { category: "foley", trim: 13.8 },
   kickSwing: { category: "foley", trim: -5.4 },
-  jump: { category: "foley", trim: -7 },
+  jump: { category: "foley", trim: -2.3 },
   // weapon foley: the mechanisms (player feedback round 2 Task 3, ./sounds/foley.ts)
   flareHammerCock: { category: "foley", trim: -4.4 },
   flareOpen: { category: "foley", trim: -8.7 },
@@ -169,8 +169,8 @@ export const SOUND_LEVELS = {
   debrisWarning: { category: "monster", trim: 8.1 },
   // impacts
   // (player feedback round 2 Task 5: the kick lands in a monster or on stone — in the air it makes no sound of its own)
-  kickImpactFlesh: { category: "impact", trim: -17.5 },
-  kickImpactStone: { category: "impact", trim: -13.5 },
+  kickImpactFlesh: { category: "impact", trim: -14.7 },
+  kickImpactStone: { category: "impact", trim: -9.9 },
   wallSplat: { category: "impact", trim: 3.8 },
   chargeCrash: { category: "impact", trim: 4.9 },
   slamImpact: { category: "impact", trim: 3.4 },
@@ -195,14 +195,14 @@ export const SOUND_LEVELS = {
   // footsteps
   // (player feedback round 2 Task 5: one entry per floor, each levelled from its walk and its run together, so every
   // floor steps at one level and the run stays above the walk; the landing is levelled over three falls)
-  footstepStone: { category: "footstep", trim: -18.2 },
-  footstepMarble: { category: "footstep", trim: -16.4 },
-  footstepAsh: { category: "footstep", trim: -17.6 },
-  footstepFlesh: { category: "footstep", trim: -15.6 },
-  footstepMetal: { category: "footstep", trim: -16.7 },
-  footstepWater: { category: "footstep", trim: -15.9 },
-  footstepDirt: { category: "footstep", trim: -19.3 },
-  landing: { category: "footstep", trim: -24.1 },
+  footstepStone: { category: "footstep", trim: -12.1 },
+  footstepMarble: { category: "footstep", trim: -10.9 },
+  footstepAsh: { category: "footstep", trim: -12.1 },
+  footstepFlesh: { category: "footstep", trim: -11.1 },
+  footstepMetal: { category: "footstep", trim: -11.7 },
+  footstepWater: { category: "footstep", trim: -13.9 },
+  footstepDirt: { category: "footstep", trim: -12.8 },
+  landing: { category: "footstep", trim: -22.4 },
   // world events (the doors, the exit, the organ and the bells ring in the room: each sends 2.5-2.7 times a plain sound's share)
   doorStone: { category: "event", trim: -17.1, room: 2.5 },
   doorSecret: { category: "event", trim: -18.8, room: 2.5 },
@@ -230,7 +230,7 @@ export const SOUND_LEVELS = {
   achievementChime: { category: "ui", trim: -19.8, room: 2 },
   kickReady: { category: "ui", trim: -10.8 },
   scrapSmgAssembled: { category: "ui", trim: -17.7 },
-  uiHover: { category: "ui", trim: 1 },
+  uiHover: { category: "ui", trim: -0.1 },
   uiSelect: { category: "ui", trim: -17.1, room: 1.2 },
   // (player feedback round 2 Task 5: every pickup used to be one sound; each family now has its own)
   pickupHealth: { category: "ui", trim: -15 },

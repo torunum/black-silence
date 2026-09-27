@@ -23,7 +23,8 @@ import { bell, clack, rattle, slide, thud, tick } from "../Material";
 
 /** The pointer comes onto a menu row. */
 export function uiHover(): void {
-  lv("uiHover", () => { play([tick(0, 1900, 3, 0.03, 0.5, 1), { tone: "sine", f: 220, env: { a: 0.002, d: 0.03 }, level: 0.1 }]); });
+  // soft-edged on purpose: a 30 ms click measured 20 dB of crest (peak -11 dBFS for a -31 LK cue) — a felt brush is subtler
+  lv("uiHover", () => { play([{ noise: "pink", filters: [{ type: "bandpass", f: 1600, q: 1.5 }], env: { a: 0.006, h: 0.01, d: 0.05 }, level: 0.5 }, { tone: "sine", f: 330, env: { a: 0.004, d: 0.06 }, level: 0.08 }]); });
 }
 /** A menu row is chosen. */
 export function uiSelect(): void {
