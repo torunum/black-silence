@@ -1,6 +1,5 @@
 import { bang, blip } from "../Sfx";
-import { growl, gurgle } from "../Voice";
-import { bellToll, organChord, pianoNote, stoneDoor, wetDoor } from "../Ambient";
+import { pianoNote } from "../Ambient";
 import { after } from "../../core/Timers";
 import { soundRandom, soundRnd } from "../SoundRandom";
 import { lv } from "../Levels";
@@ -9,55 +8,31 @@ import { lv } from "../Levels";
  * THE SOUND CATALOGUE — WORLD. The player's own body, doors, pickups,
  * impacts on the level, and the ambient layer. See `./weapons.ts`'s header
  * for what this catalogue is and how the extraction is proven to be a pure
- * refactor. The doors, the bells, the organ, the piano and the boss pulse
- * were already named functions and stay where they are (`../Ambient.ts`).
+ * refactor.
+ *
+ * Player feedback round 2 Task 5 rebuilt most of it, each family in a file
+ * of its own, re-exported from here so the game's call sites import from
+ * where they always did: the footsteps, the landing and the jump
+ * (`./steps.ts`), bullets and props (`./impacts.ts`), the doors and the exit
+ * (`./doors.ts`), the pickups (`./pickups.ts`), the organ and the bells
+ * (`./music.ts`). What they replaced is on the sound board as "old"
+ * (`src/soundboard/previous/world.ts`). What is still here is as it was.
  */
 
-/**
- * One footstep (`footstep` in `src/player/Player.ts`). Stone everywhere but
- * level 1, whose marble floor adds a faint random-pitched ring; running is
- * louder.
- */
-export function footstep(sprinting: boolean, marble: boolean): void { lv("footstep", () => {
-  bang(.05,sprinting?.09:.06,marble?2400:700,marble?600:0);
-  if(marble)blip(soundRnd(800,1000),.05,"sine",.02); }); }
-/**
- * A door opens (`interact`): flesh doors tear, the rest grind. The game
- * calls this, not `wetDoor`/`stoneDoor` (`../Ambient.ts`), so each has a
- * level — player feedback round 2 Task 2. Likewise the bells, the organ and
- * the piano below.
- */
-export function doorOpens(flesh: boolean): void {
-  if (flesh) lv("doorFlesh", () => { wetDoor(); });
-  else lv("doorStone", () => { stoneDoor(); }); }
-/** The random-event church bells (`eventTick`). */
-export function churchBells(): void { lv("churchBells", () => { bellToll(); }); }
-/** The organ chord: the priest's phase changes (`Boss.ts`), and the piano recital's end (`Piano.ts`). */
-export function organSting(): void { lv("organSting", () => { organChord(); }); }
+export { footstep, landing, jump } from "./steps";
+export { bulletHitsWall, bulletHitsFlesh, bulletHitsProp, ricochetRoll, bulletRicochet, propBreaks } from "./impacts";
+export { doorOpens, lockedDoor, exitOpens } from "./doors";
+export { itemPickup } from "./pickups";
+export { organSting, churchBells, bossBeat } from "./music";
+
 /** One piano key (`Piano.ts`). */
 export function pianoKey(midi: number): void { lv("pianoKey", () => { pianoNote(midi); }); }
-/** The player jumps. */
-export function jump(): void { lv("jump", () => { blip(140,.06,"sine",.04,90); }); }
 /** The player is hit (`damagePlayer`). */
 export function playerHurt(): void { lv("playerHurt", () => { bang(.1,.3,700);blip(90,.2,"sawtooth",.12,40); }); }
-/** A locked door the player has no key for (`interact`). */
-export function lockedDoor(): void { lv("lockedDoor", () => { growl(80,.3,.25,true); }); }
-/** Any pickup — health, ammo, armour, a key, a weapon (`itemsTick`). */
-export function itemPickup(): void { lv("itemPickup", () => { blip(330,.14,"sine",.1,210,true);gurgle(.12,.12); }); }
-/** The level's exit opens once its boss is dead (`openExit`). */
-export function exitOpens(): void { lv("exitOpens", () => { blip(120,.7,"sine",.09,90,true);growl(70,.4,.2,true); }); }
 /** The gauntlet plate is stepped on and the dead come (`playerTick`). */
 export function gauntletBegins(): void { lv("gauntletBegins", () => { blip(70,1,"sawtooth",.15,40,true); }); }
 /** The gauntlet is cleared. */
 export function gauntletCleared(): void { lv("gauntletCleared", () => { blip(523,.3,"sine",.1,1046,true); }); }
-/** A bullet strikes a breakable prop (`hitscan`). */
-export function bulletHitsProp(): void { lv("bulletHitsProp", () => { bang(.04,.12,1500,300); }); }
-/** Whether a bullet that hit a wall ricochets audibly — three times in ten (`hitscan`). */
-export function ricochetRoll(): boolean { return soundRandom()<.3; }
-/** The ricochet itself. */
-export function bulletRicochet(): void { lv("bulletRicochet", () => { bang(.03,.08,4000,800); }); }
-/** A crate, pew or chair breaks (`breakProp`). */
-export function propBreaks(): void { lv("propBreaks", () => { bang(.12,.32,1200);bang(.08,.2,500); }); }
 /** The random-event blackout: the torches die (`eventTick`). */
 export function blackout(): void { lv("blackout", () => { blip(50,2,"sine",.1,30,true);bang(.4,.1,300); }); }
 /** The random-event whispers: three faint voices, 0.6 s apart (`eventTick`). */

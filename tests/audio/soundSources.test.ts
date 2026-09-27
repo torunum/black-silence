@@ -85,14 +85,21 @@ describe("every sound the game plays has a name", () => {
     // Five, not six, since player feedback round 2 Task 4: `snarl`, the monsters' old first-sighting
     // bark, is no longer the game's (each monster has a voice, src/audio/VoiceTable.ts); only the sound
     // board's record of the old sounds calls it now (src/soundboard/previous/monsters.ts).
-    expect(inside, "the same pattern finds them in the catalogue, once each").toBe(5);
+    // Two, not five, since Task 5: the stone door, the bells and the organ were rebuilt
+    // (src/audio/sounds/doors.ts, music.ts), and `stoneDoor`, `bellToll` and `organChord` are called
+    // only by the board's record of the old ones (src/soundboard/previous/world.ts). The flesh door
+    // (`wetDoor`) and the piano (`pianoNote`) are still the engine's.
+    expect(inside, "the same pattern finds them in the catalogue, once each").toBe(2);
+    const board = code(join(SRC, "soundboard", "previous", "world.ts"));
+    for (const name of ["stoneDoor", "bellToll", "organChord"]) expect(board, name).toMatch(new RegExp(`\\b${name}\\(`));
   });
 
   it("is not vacuous — the same pattern finds the raw calls inside the catalogue", () => {
     const inside = srcFiles(join(SRC, "audio", "sounds"));
     const n = inside.reduce((sum, f) => sum + [...code(f).matchAll(RAW)].length, 0);
-    // (over 60 until player feedback round 2 Task 4 turned the monsters' blips and growls into voices, src/audio/Speak.ts)
-    expect(n).toBeGreaterThan(40);
+    // (over 60 until player feedback round 2 Task 4 turned the monsters' blips and growls into voices, src/audio/Speak.ts;
+    // over 40 until Task 5 rebuilt the world's — its steps, impacts, doors, pickups, explosions and UI, src/audio/Layers.ts)
+    expect(n).toBeGreaterThan(25);
   });
 });
 
@@ -163,7 +170,11 @@ describe("no sound draws from Math.random() — the game's own dice (KNOWN-22)",
           if (typeof fn !== "function") continue;
           const f = fn as (...a: unknown[]) => unknown;
           if (name === "orbLaunch") for (const k of ["toxic", "heavy", "normal"]) f(k, "C");
-          else if (name === "footstep") for (const a of [false, true]) for (const b of [false, true]) f(a, b);
+          else if (name === "footstep") { for (const a of [false, true]) for (const b of [false, true]) f(a, b); for (const s of ["stone", "marble", "ash", "flesh", "metal", "water", "dirt"]) f(true, false, s); }
+          else if (name === "bulletHitsWall") for (const m of ["stone", "metal", "flesh"]) f(m);
+          else if (name === "kickImpact") for (const k of ["flesh", "stone", "air"]) f(k);
+          else if (name === "doorOpens") for (const k of ["stone", "secret", "gate", "flesh"]) f(k);
+          else if (name === "itemPickup") for (const k of ["health", "armor", "bullets", "shells", "slugs", "crosses", "nails", "souls", "key", "w5"]) f(k);
           else if (f.length > 0) { f(200); for (const k of ["z", "E", "L"]) f(k); } // a number for the rest; a monster's letter for its voice
           else f();
           played++;

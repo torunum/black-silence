@@ -1,5 +1,6 @@
 import { lv } from "../Levels";
 import { play, type Layer } from "../Layers";
+import { clack, rattle, slide, thud } from "../Material";
 import { spin, spinning } from "../Spin";
 import { SPIN } from "../../render/viewmodel/phases";
 
@@ -31,25 +32,7 @@ import { SPIN } from "../../render/viewmodel/phases";
  * `../Levels.ts`, measured and trimmed like the rest.
  */
 
-/** Metal on metal at `at` s: a noise tick and partials `f` (Hz) ringing for `d` s. */
-function clack(at: number, f: readonly number[], d: number, level: number): Layer[] {
-  return [
-    { at, noise: "white", filters: [{ type: "bandpass", f: f[0] * 1.4, q: 1.4 }], env: { a: 0.0003, d: 0.012 }, drive: 2, level: level * 0.9 },
-    { at, tone: "sine", f: [...f], env: { a: 0.0004, d }, level },
-  ];
-}
-/** Mass arriving at `at` s: a sine falling from `f` to half, for `d` s. */
-function thud(at: number, f: number, d: number, level: number): Layer {
-  return { at, tone: "sine", f, to: f * 0.5, over: d * 0.6, env: { a: 0.001, h: 0.004, d }, drive: 1.4, level };
-}
-/** Friction from `at` s for `dur` s: a band of noise moving from `from` to `to` Hz. */
-function slide(at: number, from: number, to: number, dur: number, level: number, q = 2): Layer {
-  return { at, noise: "pink", filters: [{ type: "bandpass", f: from, q, to, over: dur }], env: { a: dur * 0.3, h: dur * 0.2, d: dur * 0.6 }, level };
-}
-/** Loose rounds or nails shaken: a band of noise chattering at `rate` Hz. */
-function rattle(at: number, f: number, rate: number, d: number, level: number): Layer {
-  return { at, noise: "white", filters: [{ type: "bandpass", f, q: 3 }], env: { a: 0.004, h: d * 0.3, d }, am: { rate, depth: 0.5, type: "square" }, level };
-}
+// (the primitives — clack, thud, slide, rattle — live in ../Material.ts since Task 5, which builds the world from them too)
 
 // ---- every weapon
 

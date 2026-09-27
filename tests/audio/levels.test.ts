@@ -14,6 +14,8 @@ import * as WO from "../../src/audio/sounds/world";
 import * as UI from "../../src/audio/sounds/ui";
 import * as X from "../../src/audio/sounds/explosions";
 import { VOICES } from "../../src/audio/VoiceTable";
+import { SURFACES } from "../../src/audio/Surface";
+import { STEP_ENTRY } from "../../src/audio/sounds/steps";
 
 /**
  * THE LOUDNESS TABLE — player feedback round 2, Task 2. `src/audio/Levels.ts`
@@ -49,10 +51,16 @@ for (const mod of [W, F, M, WO, UI, X] as Array<Record<string, unknown>>) {
       // player feedback round 2 Task 4: a monster's voice takes its kind — one monster, and one boss, each at the entry
       for (const k of ["z", "E"]) PLAYS.push({ name: `${name}(${k})`, entries: [name as SoundName], play: () => f(k) });
     } else if (name === "doorOpens") {
-      PLAYS.push({ name: "doorOpens(true)", entries: ["doorFlesh"], play: () => f(true) });
-      PLAYS.push({ name: "doorOpens(false)", entries: ["doorStone"], play: () => f(false) });
+      // player feedback round 2 Task 5: a door says what kind it is, and each kind has its entry
+      for (const [k, e] of [["flesh", "doorFlesh"], ["stone", "doorStone"], ["secret", "doorSecret"], ["gate", "doorGate"]] as const) PLAYS.push({ name: `doorOpens(${k})`, entries: [e], play: () => f(k) });
+    } else if (name === "kickImpact") {
+      for (const [k, e] of [["flesh", "kickImpactFlesh"], ["stone", "kickImpactStone"]] as const) PLAYS.push({ name: `kickImpact(${k})`, entries: [e], play: () => f(k) });
+    } else if (name === "itemPickup") {
+      for (const [k, e] of [["health", "pickupHealth"], ["armor", "pickupArmour"], ["nails", "pickupAmmo"], ["key", "pickupKey"], ["w3", "pickupWeapon"]] as const) PLAYS.push({ name: `itemPickup(${k})`, entries: [e], play: () => f(k) });
+    } else if (name === "bossBeat") {
+      for (const b of [0, 1, 3]) PLAYS.push({ name: `bossBeat(${b})`, entries: ["bossPulse"], play: () => f(b) });
     } else if (name === "orbLaunch") PLAYS.push({ name, entries: ["orbLaunch"], play: () => f("heavy", "A") });
-    else if (name === "footstep") PLAYS.push({ name, entries: ["footstep"], play: () => f(true, true) });
+    else if (name === "footstep") for (const s of SURFACES) PLAYS.push({ name: `footstep(${s})`, entries: [STEP_ENTRY[s]], play: () => f(true, false, s) });
     else if (name === "pianoKey") PLAYS.push({ name, entries: ["pianoKey"], play: () => f(60) });
     else if (f.length > 0) PLAYS.push({ name, entries: [name as SoundName], play: () => f(200) });
     else PLAYS.push({ name, entries: [name as SoundName], play: () => f() });
@@ -118,10 +126,14 @@ describe("every catalogue sound plays at its own entry of the table", () => {
     expect(Object.keys(SOUND_LEVELS).filter((n) => !used.has(n as SoundName))).toEqual([]);
   });
 
-  it("the boss pulse is the one sound that plays outside any level (its beats come from a frozen setInterval)", () => {
+  // Until player feedback round 2 Task 5 the boss pulse was the one sound that played outside any level: its beats
+  // came from a setInterval pinned to the reference. Task 5 made each beat `bossBeat`, which has its own entry.
+  it("the boss pulse plays at its own level too, every beat of it: nothing the game plays is outside one", () => {
     installDomStubs();
-    const { unscoped } = stripGainsOf(() => { startBossMusic(); vi.advanceTimersByTime(1300); stopBossMusic(); });
-    expect(unscoped).toBeGreaterThan(0);
+    const byGain = uniqueTrims();
+    const { gains, unscoped } = stripGainsOf(() => { startBossMusic(); vi.advanceTimersByTime(1300); stopBossMusic(); });
+    expect(unscoped).toBe(0);
+    expect([...new Set(gains.map((g) => byGain.get(g)))]).toEqual(["bossPulse"]);
   });
 });
 

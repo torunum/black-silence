@@ -693,8 +693,18 @@ describe("Voice/Ambient vs reference", () => {
     ).toBe(extractFunctionBody(refChunk, "pianoNote"));
   });
 
-  it("startBossMusic's body matches the reference exactly once accessor calls are reversed, including the bossPulse guard that stops a second call from stacking a second interval", () => {
-    const moduleSource = readModuleSource("src/audio/Ambient.ts");
+  // PLAYER FEEDBACK ROUND 2 TASK 5 — A DELIBERATE DIVERGENCE
+  // (docs/superpowers/plans/2026-09-26-player-feedback-2-sound.md). The game's
+  // startBossMusic keeps the reference's guard and 300 ms interval, but each
+  // beat is now `bossBeat` (src/audio/sounds/music.ts), a drum at a level of
+  // its own, instead of the reference's bang/bang/blip. The reference's body
+  // lives on, verbatim, as the sound board's "old" boss music
+  // (src/soundboard/previous/world.ts), and this pins that copy, so "old" on
+  // the board is the reference's pulse. The game's guard is pinned by
+  // tests/audio/Voice.test.ts's "boss music" block, its timing by
+  // tests/audio/worldSounds.test.ts.
+  it("the board's old startBossMusic body matches the reference exactly once accessor calls are reversed, including the bossPulse guard that stops a second call from stacking a second interval", () => {
+    const moduleSource = readModuleSource("src/soundboard/previous/world.ts");
     const refChunk = refSource(REF.startBossMusic);
     expect(denormalizeAudioAccessors(extractFunctionBody(moduleSource, "startBossMusic"))).toBe(
       extractFunctionBody(refChunk, "startBossMusic"),

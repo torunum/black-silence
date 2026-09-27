@@ -1,8 +1,9 @@
-import { bang, blip } from "../Sfx";
+import { blip } from "../Sfx";
 import { after } from "../../core/Timers";
 import { soundRandom, soundRnd } from "../SoundRandom";
 import { lv } from "../Levels";
 import { jit, play, type Glue, type Layer } from "../Layers";
+import { bell } from "../Material";
 
 /**
  * THE SOUND CATALOGUE — WEAPONS. What the player's weapons sound like when
@@ -119,8 +120,7 @@ function sniper(): Layer[] {
 
 /** The notes the cross launcher's bell rings: D, F and A — a minor chord over three shots. */
 const BELL_NOTES = [587.33, 698.46, 880];
-/** A church bell's partials (hum, prime, minor third, fifth, nominal, …) and how long each rings. */
-const BELL = [[0.5, 1.8, 0.35], [1, 1.5, 0.5], [1.183, 1.1, 0.3], [1.506, 0.9, 0.2], [2, 0.8, 0.22], [2.514, 0.55, 0.1], [3.011, 0.4, 0.07]] as const;
+// (a church bell's partials — hum, prime, minor third, fifth, nominal, … — are ../Material.ts's `bell`)
 
 /** Slot 5 — a launch whoosh and a bell: a relic thrown, not a round fired. */
 function cross(): Layer[] {
@@ -132,7 +132,7 @@ function cross(): Layer[] {
     // the whoosh as it leaves, rising and gone
     { noise: "pink", filters: [{ type: "bandpass", f: 480, q: 2.5, to: 2600, over: 0.35 }], env: { a: 0.05, h: 0.06, d: 0.36 }, level: 0.9 },
     // the bell
-    ...BELL.map(([ratio, d, level]): Layer => ({ at: 0.015, tone: "sine", f: f0 * ratio, env: { a: 0.002, d }, level: level * 0.8 })),
+    ...bell(0.015, f0, 0.8),
   ];
 }
 
@@ -189,10 +189,9 @@ export const WEAPON_FIRE_SOUNDS: readonly (() => void)[] = [
   sniperFire, crossLauncherFire, nailCannonFire, soulReaperFire,
 ];
 
-/** The power kick's swing (`doKick`), whether or not it lands. */
-export function kickSwing(): void { lv("kickSwing", () => { bang(.15,.5,900); }); }
-/** The power kick landing on an enemy or a prop, 110 ms later. */
-export function kickImpact(): void { lv("kickImpact", () => { bang(.12,.4,500); }); }
+// The power kick's swing and impact are world sounds since player feedback round 2 Task 5
+// (`./impacts.ts`); re-exported here, where `doKick`'s file has always found them.
+export { kickSwing, kickImpact } from "./impacts";
 /**
  * A spent shell hitting the floor (`ejectCasing`): a short high tick at a
  * random pitch, a random 250-450 ms after the casing leaves the gun.

@@ -29,3 +29,17 @@
 export const CELL = 2;
 export const WALLH = 3.4;
 export const EYE = 1.0;
+
+/**
+ * How fast an opened door sinks into the floor, units per second of game
+ * time (`src/player/Interact.ts`'s `doorTick`), and so how long it takes:
+ * from its rest at `WALLH/2` until its centre is within 0.1 of `-WALLH/2`.
+ * Written down here (player feedback round 2 Task 5) so the stone door's
+ * grind (`src/audio/sounds/doors.ts`) lasts exactly as long as the door
+ * moves — this file imports nothing, so the audio can read it without a
+ * cycle. `doorTick` keeps its own literal (the task changed no gameplay
+ * line); `tests/world/doorGrind.test.ts` runs the real `doorTick` and fails
+ * if the two ever disagree.
+ */
+export const DOOR_SINK_SPEED = 2.6;
+export const DOOR_SINK_SECONDS = (WALLH - 0.1) / DOOR_SINK_SPEED;

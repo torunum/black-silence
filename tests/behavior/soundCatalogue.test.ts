@@ -5,8 +5,7 @@ import { compareSoundLogs, recordModuleSound, recordReferenceSnippet, referenceS
 import * as W from "../../src/audio/sounds/weapons";
 import * as M from "../../src/audio/sounds/monsters";
 import * as WO from "../../src/audio/sounds/world";
-import * as UI from "../../src/audio/sounds/ui";
-import * as X from "../../src/audio/sounds/explosions";
+import * as OW from "../../src/soundboard/previous/world";
 import * as P from "../../src/soundboard/previous/weapons";
 import * as OM from "../../src/soundboard/previous/monsters";
 
@@ -65,6 +64,17 @@ import * as OM from "../../src/soundboard/previous/monsters";
  * catalogue functions as they stood at `f198dea`) against the same
  * reference sites. The voices are pinned by
  * `tests/audio/monsterVoices.test.ts`.
+ *
+ * PLAYER FEEDBACK ROUND 2 TASK 5 — THE SAME, FOR THE WORLD. Task 5 rebuilt
+ * the footstep (now one per floor) and the landing, the jump, the kick's
+ * swing and impact, the bullet on a crate and the ricochet, a prop
+ * breaking, the doors, the locked door, the pickups, the exit, the three
+ * explosions and the UI cues, so those catalogue functions no longer match
+ * any reference call site, on purpose. Their cases below run the board's
+ * "old" versions (`src/soundboard/previous/world.ts`, the catalogue
+ * functions as they stood at `e34815c`) against the same reference sites.
+ * The new sounds are pinned by `tests/audio/worldSounds.test.ts` and
+ * `tests/integration/worldSoundWiring.test.ts`.
  */
 
 interface Case {
@@ -89,17 +99,17 @@ const CASES: Case[] = [
   { name: "old reloadDone", site: 'wstate="idle";wtime=0;click(.2);', snippet: "click(.2)", module: P.oldReloadDone },
   { name: "old dryFire", site: "click(.1);wCool=.3;", snippet: "click(.1)", module: P.oldDryFire },
   { name: "old shotgunPump", site: "ejectCasing(2);click(.12);", snippet: "click(.12)", module: P.oldShotgunPump },
-  { name: "kickSwing", site: "shake(.3);bang(.15,.5,900);", snippet: "bang(.15,.5,900)", module: W.kickSwing },
-  { name: "kickImpact", site: "if(hitAny){bang(.12,.4,500);", snippet: "bang(.12,.4,500)", module: W.kickImpact },
+  { name: "old kickSwing", site: "shake(.3);bang(.15,.5,900);", snippet: "bang(.15,.5,900)", module: OW.oldKickSwing },
+  { name: "old kickImpact", site: "if(hitAny){bang(.12,.4,500);", snippet: "bang(.12,.4,500)", module: OW.oldKickImpact },
   { name: "casingTinkle", site: 'setTimeout(()=>blip(rnd(1800,2600),.04,"square",.025),rnd(250,450));', module: W.casingTinkle },
   // ---- UI
-  { name: "achievementChime", site: 'blip(160,.5,"sine",.05,120,true);', module: UI.achievementChime },
-  { name: "kickReady", site: 'say("kickready");click(.12);', snippet: "click(.12)", module: UI.kickReady },
-  { name: "scrapSmgAssembled", site: 'showMsg("SCRAP SMG ASSEMBLED FROM THE DEAD",3);blip(330,.12,"square",.08);', snippet: 'blip(330,.12,"square",.08);', module: UI.scrapSmgAssembled },
+  { name: "old achievementChime", site: 'blip(160,.5,"sine",.05,120,true);', module: OW.oldAchievementChime },
+  { name: "old kickReady", site: 'say("kickready");click(.12);', snippet: "click(.12)", module: OW.oldKickReady },
+  { name: "old scrapSmgAssembled", site: 'showMsg("SCRAP SMG ASSEMBLED FROM THE DEAD",3);blip(330,.12,"square",.08);', snippet: 'blip(330,.12,"square",.08);', module: OW.oldScrapSmgAssembled },
   // ---- explosions
-  { name: "barrelExplosion", site: "boom(1.1)", module: X.barrelExplosion },
-  { name: "holyCrossExplosion", site: "boom(.7)", module: X.holyCrossExplosion },
-  { name: "afritDeathExplosion", site: "boom(.8)", module: X.afritDeathExplosion },
+  { name: "old barrelExplosion", site: "boom(1.1)", module: OW.oldBarrelExplosion },
+  { name: "old holyCrossExplosion", site: "boom(.7)", module: OW.oldHolyCrossExplosion },
+  { name: "old afritDeathExplosion", site: "boom(.8)", module: OW.oldAfritDeathExplosion },
   // ---- monsters
   { name: 'old orbLaunch("toxic")', site: 'blip(tox?420:ot==="manc"?180:300,.2,"sawtooth",.08,90)', vars: { tox: true, ot: "cult" }, module: () => OM.oldOrbLaunch("toxic") },
   { name: 'old orbLaunch("heavy")', site: 'blip(tox?420:ot==="manc"?180:300,.2,"sawtooth",.08,90)', vars: { tox: false, ot: "manc" }, module: () => OM.oldOrbLaunch("heavy") },
@@ -139,21 +149,21 @@ const CASES: Case[] = [
   { name: "old bossDies", site: 'bang(.6,.7,400);blip(50,1.4,"sawtooth",.2,28,true);', module: OM.oldBossDies },
   // ---- world
   ...[[false, false], [true, false], [false, true], [true, true]].map(([sprinting, marble]): Case => ({
-    name: `footstep(${sprinting},${marble})`,
+    name: `old footstep(${sprinting},${marble})`,
     site: 'bang(.05,sprinting?.09:.06,marble?2400:700,marble?600:0);\n  if(marble)blip(rnd(800,1000),.05,"sine",.02);',
     vars: { sprinting, marble },
-    module: () => WO.footstep(sprinting, marble),
+    module: () => OW.oldFootstep(sprinting, marble),
   })),
-  { name: "jump", site: 'blip(140,.06,"sine",.04,90)', module: WO.jump },
+  { name: "old jump", site: 'blip(140,.06,"sine",.04,90)', module: OW.oldJump },
   { name: "playerHurt", site: 'bang(.1,.3,700);blip(90,.2,"sawtooth",.12,40);', module: WO.playerHurt },
-  { name: "lockedDoor", site: "growl(80,.3,.25,true)", module: WO.lockedDoor },
-  { name: "itemPickup", site: 'blip(330,.14,"sine",.1,210,true);gurgle(.12,.12);', module: WO.itemPickup },
-  { name: "exitOpens", site: 'blip(120,.7,"sine",.09,90,true);growl(70,.4,.2,true);', module: WO.exitOpens },
+  { name: "old lockedDoor", site: "growl(80,.3,.25,true)", module: OW.oldLockedDoor },
+  { name: "old itemPickup", site: 'blip(330,.14,"sine",.1,210,true);gurgle(.12,.12);', module: OW.oldItemPickup },
+  { name: "old exitOpens", site: 'blip(120,.7,"sine",.09,90,true);growl(70,.4,.2,true);', module: OW.oldExitOpens },
   { name: "gauntletBegins", site: 'blip(70,1,"sawtooth",.15,40,true);', module: WO.gauntletBegins },
   { name: "gauntletCleared", site: 'blip(523,.3,"sine",.1,1046,true);', module: WO.gauntletCleared },
-  { name: "bulletHitsProp", site: "bang(.04,.12,1500,300)", module: WO.bulletHitsProp },
-  { name: "ricochetRoll + bulletRicochet", site: "if(Math.random()<.3)bang(.03,.08,4000,800);", module: () => { if (WO.ricochetRoll()) WO.bulletRicochet(); }, maySkip: true },
-  { name: "propBreaks", site: "bang(.12,.32,1200);bang(.08,.2,500);", module: WO.propBreaks },
+  { name: "old bulletHitsProp", site: "bang(.04,.12,1500,300)", module: OW.oldBulletHitsProp },
+  { name: "ricochetRoll + old bulletRicochet", site: "if(Math.random()<.3)bang(.03,.08,4000,800);", module: () => { if (WO.ricochetRoll()) OW.oldBulletRicochet(); }, maySkip: true },
+  { name: "old propBreaks", site: "bang(.12,.32,1200);bang(.08,.2,500);", module: OW.oldPropBreaks },
   { name: "blackout", site: 'blip(50,2,"sine",.1,30,true);bang(.4,.1,300);', module: WO.blackout },
   { name: "whispers", site: 'for(let i=0;i<3;i++)setTimeout(()=>blip(rnd(300,500),.7,"sine",.025,rnd(120,200),true),i*600);', module: WO.whispers },
   { name: "distantScream", site: 'blip(rnd(480,720),1.4,"sine",.022,rnd(140,200),true);', module: WO.distantScream },
@@ -208,7 +218,7 @@ describe("every catalogue sound makes exactly the calls its reference call site 
   });
 
   it("the ricochet case saw both outcomes of its roll across the seeds", () => {
-    const outcomes = new Set(SEEDS.map((seed) => recordModuleSound(() => { if (WO.ricochetRoll()) WO.bulletRicochet(); }, seed).length > 0));
+    const outcomes = new Set(SEEDS.map((seed) => recordModuleSound(() => { if (WO.ricochetRoll()) OW.oldBulletRicochet(); }, seed).length > 0));
     expect([...outcomes].sort()).toEqual([false, true]);
   });
 });

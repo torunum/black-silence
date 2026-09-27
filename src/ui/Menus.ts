@@ -2,6 +2,7 @@ import { save } from "../save/SaveGame";
 import { flushSave } from "../save/persist";
 import { LEVELS } from "../world/levels/index";
 import { getMasterVolume, setMasterVolume } from "../audio/AudioEngine";
+import { uiHover, uiSelect } from "../audio/sounds/ui";
 import { RENDER_WIDTHS, sizeRender } from "../render/RenderCore";
 import { applyShadowSetting } from "../render/Shadows";
 import { el } from "./dom";
@@ -88,6 +89,23 @@ export function initMenus(startGame: (idx: number) => void): void {
    * previously unlocked level throughout the session, and a misclick here
    * costs the player nothing but their current run's position.
    */
+  /**
+   * The menus are heard (player feedback round 2 Task 5): a soft tick as the
+   * pointer comes onto a row, a low thock when one is chosen
+   * (`src/audio/sounds/ui.ts`) — for every menu row and every "[ … ]"
+   * prompt, delegated from the document so the chapter rows built below are
+   * covered too. Before the game starts there is no audio yet (a browser
+   * allows it only from the click that starts the game, `startGame`'s
+   * `audioInit`), so on the title screen these are silent until that click —
+   * which, bubbling here after the row's own handler, is heard as a select.
+   */
+  const ROW=".mbtn,.start";
+  document.addEventListener("mouseover",ev=>{
+    const row=(ev.target as Element|null)?.closest?.(ROW),from=(ev.relatedTarget as Element|null)?.closest?.(ROW);
+    if(row&&row!==from&&!row.classList.contains("locked"))uiHover();});
+  document.addEventListener("click",ev=>{
+    const row=(ev.target as Element|null)?.closest?.(ROW);
+    if(row&&!row.classList.contains("locked"))uiSelect();});
   el("mNew").addEventListener("click",()=>{startGame(0);});
   el("mSettings").addEventListener("click",()=>showScreen("settings"));
   el("setBack").addEventListener("click",()=>showScreen("intro"));

@@ -2,7 +2,7 @@ import type * as THREE from "three";
 import { pick, rnd } from "../utils/math";
 import { MONOLOGUE as M } from "../content/monologue";
 import { ctx } from "../audio/AudioEngine";
-import { playerHurt, footstep as footstepSound, jump, gauntletBegins, gauntletCleared } from "../audio/sounds/world";
+import { playerHurt, footstep as footstepSound, landing as landingSound, jump, gauntletBegins, gauntletCleared } from "../audio/sounds/world";
 import { stopBossMusic } from "../audio/Ambient";
 import { stopMusic } from "../audio/Music";
 import { flashDmg, showMsg } from "../ui/HudMessages";
@@ -121,6 +121,16 @@ function footstep(sprinting: boolean): void {
   if(!ctx())return;
   const marble=S.level===1;
   footstepSound(sprinting,marble);}
+/**
+ * The frame the player touches the ground, falling at `speed` m/s — where a
+ * running `footstep(true)` used to play. Player feedback round 2 Task 5: the
+ * landing is its own sound now, and scales with the fall
+ * (`src/audio/sounds/steps.ts`). Same moment, same guard, and it reads
+ * `player.vy` before the line that zeroes it; nothing else changed.
+ */
+function land(speed: number): void {
+  if(!ctx())return;
+  landingSound(speed,S.level===1);}
 function playerTick(dt: number): void {
   if(S.dead||S.won||game.inputLock)return;
   if(player.spawnGuard>0)player.spawnGuard-=dt;
@@ -138,7 +148,7 @@ function playerTick(dt: number): void {
     if(keys.Space){player.vy=7.4;player.grounded=false;jump();}
   }else accelerate(wx_,wz_,1.4,70,dt);
   player.vy-=20*dt;player.pyy+=player.vy*dt;
-  if(player.pyy<=standY){if(!player.grounded){footstep(true);shake(.04);}player.pyy=standY;player.vy=0;player.grounded=true;}
+  if(player.pyy<=standY){if(!player.grounded){land(-player.vy);shake(.04);}player.pyy=standY;player.vy=0;player.grounded=true;}
   let nx=player.px+player.vx*dt;
   if(!collides(nx,player.pz)&&!(player.grounded&&floorHeightAt(nx,player.pz)-fh>1.2)){player.px=nx;}else player.vx=0;
   let nz=player.pz+player.vz*dt;

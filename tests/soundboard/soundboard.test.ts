@@ -87,12 +87,15 @@ describe("it lists every sound in the game", () => {
   // the catalogue plays the engine's. The boss pulse alone is still played
   // by name (see src/audio/Levels.ts on why it has no level).
   it("…and so is every sound the engine already had a name for, through the catalogue", () => {
-    const catalogue = ["monsters", "world"].map((f) => code(join(SRC, "audio", "sounds", `${f}.ts`))).join("\n");
-    for (const name of ["wetDoor", "stoneDoor", "bellToll", "organChord", "pianoNote"]) {
+    const catalogue = ["monsters", "world", "doors"].map((f) => code(join(SRC, "audio", "sounds", `${f}.ts`))).join("\n");
+    for (const name of ["wetDoor", "pianoNote"]) {
       expect(catalogue, name).toMatch(new RegExp(`\\b${name}\\(`));
     }
-    // `snarl`, the old first-sighting bark, is the board's "old" alert since player feedback round 2 Task 4
+    // `snarl`, the old first-sighting bark, is the board's "old" alert since player feedback round 2 Task 4;
+    // the stone door, the bells, the organ and the old boss pulse are the board's "old" ones since Task 5
     expect(code(join(SRC, "soundboard", "previous", "monsters.ts"))).toMatch(/\bsnarl\(/);
+    const oldWorld = code(join(SRC, "soundboard", "previous", "world.ts"));
+    for (const name of ["stoneDoor", "bellToll", "organChord"]) expect(oldWorld, name).toMatch(new RegExp(`\\b${name}\\(`));
     expect(registrySource).toMatch(/\bstartBossMusic\(\)/);
   });
 
@@ -287,8 +290,16 @@ describe("old and new, ready for Task 2", () => {
       "weapon-lower", "weapon-raise", "dry-fire", "shotgun-pump",
       ...rows.map((r) => r.id).filter((id) => VOICE_ROW.test(id)),
       "orb-normal", "orb-heavy", "orb-toxic", "screamer", "lost-soul-charge", "hound-lunge",
+      // Task 5 (the world): every floor's walk and run, the landings, the jump, the kick, the crate, the ricochet,
+      // a prop breaking, the stone, secret and gate doors, the locked door, the exit, every pickup, the three
+      // explosions, the UI cues, and the music the ambience check rebuilt. (The wall and flesh hits and the menu
+      // sounds are new — there was nothing before them — so they are "current".)
+      ...rows.map((r) => r.id).filter((id) => /^(step|landing|pickup)-/.test(id)),
+      "jump", "kick-swing", "kick-impact", "kick-impact-stone", "bullet-prop", "ricochet", "prop-breaks",
+      "door-stone", "door-secret", "door-gate", "door-locked", "exit-opens", "boom-barrel", "boom-cross", "boom-afrit",
+      "achievement", "kick-ready", "smg-assembled", "organ", "event-bells", "boss-music", "boss-beat",
     ];
-    expect(replaced.length).toBeGreaterThan(20 + 100);
+    expect(replaced.length).toBeGreaterThan(20 + 100 + 50);
     for (const r of rows) expect(r.versions.map((v) => v.label), r.id).toEqual(replaced.includes(r.id) ? ["old", "new"] : ["current"]);
   });
 

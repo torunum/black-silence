@@ -1,6 +1,10 @@
 import { OLD_FIRE, oldDryFire, oldReload, oldShotgunPump, oldWeaponLower, oldWeaponRaise } from "./previous/weapons";
 import * as OM from "./previous/monsters";
 import { ENEMY_DEFS } from "../enemies/EnemyDefs";
+import * as OW from "./previous/world";
+import { SURFACES } from "../audio/Surface";
+import { after } from "../core/Timers";
+import { PICKUPS } from "../audio/sounds/pickups";
 
 /**
  * THE OLD VERSIONS — the sound board's "old" button for every sound a task
@@ -63,4 +67,35 @@ export const PREVIOUS: Readonly<Record<string, () => void>> = {
   "screamer": OM.oldScreamerCall,
   "lost-soul-charge": OM.oldLostSoulCharge,
   "hound-lunge": OM.oldHoundLunge,
+  // Task 5 — the world (./previous/world.ts): every floor used to step the
+  // same stone step (level 1 adding its marble ring), and the landing was a
+  // running one; the kick, the bullet on a crate, the ricochet, a prop
+  // breaking; every non-flesh door the one grind; the locked door's growl;
+  // one pickup sound for everything; the exit; the three booms; the UI
+  // cues; and the music the ambience check rebuilt.
+  ...Object.fromEntries(SURFACES.flatMap((s) => [false, true].map((run) => [`step-${s}${run ? "-run" : ""}`, () => OW.oldFootstep(run, s === "marble")]))),
+  ...Object.fromEntries(["soft", "jump", "fall"].map((id) => [`landing-${id}`, () => OW.oldFootstep(true, false)])),
+  "jump": OW.oldJump,
+  "kick-swing": OW.oldKickSwing,
+  "kick-impact": OW.oldKickImpact,
+  "kick-impact-stone": OW.oldKickImpact,
+  "bullet-prop": OW.oldBulletHitsProp,
+  "ricochet": OW.oldBulletRicochet,
+  "prop-breaks": OW.oldPropBreaks,
+  "door-stone": OW.oldStoneDoor,
+  "door-secret": OW.oldStoneDoor,
+  "door-gate": OW.oldStoneDoor,
+  "door-locked": OW.oldLockedDoor,
+  "exit-opens": OW.oldExitOpens,
+  ...Object.fromEntries(PICKUPS.map(([kind]) => [`pickup-${kind}`, OW.oldItemPickup])),
+  "boom-barrel": OW.oldBarrelExplosion,
+  "boom-cross": OW.oldHolyCrossExplosion,
+  "boom-afrit": OW.oldAfritDeathExplosion,
+  "achievement": OW.oldAchievementChime,
+  "kick-ready": OW.oldKickReady,
+  "smg-assembled": OW.oldScrapSmgAssembled,
+  "organ": OW.oldOrganSting,
+  "event-bells": OW.oldChurchBells,
+  "boss-music": () => { OW.startBossMusic(); after(OW.stopBossMusic, 4000); },
+  "boss-beat": () => { OW.startBossMusic(); after(OW.stopBossMusic, 1200); },
 };

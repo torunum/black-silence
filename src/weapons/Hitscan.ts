@@ -12,7 +12,7 @@ import { sparks, blood, holyP, smoke3d } from "../fx/Particles";
 import { spawnGibs } from "../fx/Gibs";
 import { splatMat, holeMat, addWallDecal } from "../fx/Decals";
 import { at } from "../audio/AudioEngine";
-import { bulletHitsProp, ricochetRoll, bulletRicochet } from "../audio/sounds/world";
+import { bulletHitsProp, bulletHitsWall, bulletHitsFlesh, ricochetRoll, bulletRicochet } from "../audio/sounds/world";
 import { holyCrossExplosion } from "../audio/sounds/explosions";
 import { flashHoly } from "../ui/HudMessages";
 import { screenShake, shake } from "../fx/ShakeState";
@@ -132,7 +132,7 @@ export function hitscan(dir: THREE.Vector3,dmg: number,wIdx: number){
     const armSide=lateral<0?"L":"R"; // screen-space side
     const hx=hxp,hy=o.y+dir.y*c.t,hz=hzp;
     if(e.plate>0){sparks(hx,hy,hz,6);}
-    else blood(hx,hy,hz,head?10:5,head?2.6:1.8);
+    else{blood(hx,hy,hz,head?10:5,head?2.6:1.8);at(hx,hy,hz,()=>bulletHitsFlesh(e));}   // Task 5: and the flesh, at the blood
     for(let t2=c.t;t2<c.t+6;t2+=.2){
       const sx=o.x+dir.x*t2,sz=o.z+dir.z*t2;
       if(solidAt(sx,sz)){const n=wallNormal(sx,sz,dir);
@@ -145,6 +145,7 @@ export function hitscan(dir: THREE.Vector3,dmg: number,wIdx: number){
     const n=wallNormal(wx,wz,dir);
     sparks(wx-dir.x*.05,clamp(wy,.1,WALLH-.1),wz-dir.z*.05,4);
     addWallDecal(wx,clamp(wy,.15,WALLH-.15),wz,n.x,n.z,.08,holeMat);
+    at(wx,clamp(wy,.1,WALLH-.1),wz,()=>bulletHitsWall());   // player feedback round 2 Task 5: the wall is heard, at the spark
     if(ricochetRoll())at(wx,clamp(wy,.1,WALLH-.1),wz,()=>bulletRicochet());}}
 export function crossExplode(x: number,y: number,z: number){
   flashHoly(.35);shake(.35);screenShake.hitStop=Math.max(screenShake.hitStop,.04);

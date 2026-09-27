@@ -1,8 +1,9 @@
 import { ctx, echoBus } from "./AudioEngine";
-import { bang, blip } from "./Sfx";
+import { blip } from "./Sfx";
 import { gurgle } from "./Voice";
 import { noise, noiseOffset } from "./Noise";
 import { after } from "../core/Timers";
+import { bossBeat } from "./sounds/music";
 
 /**
  * AMBIENT STINGERS — doors, bells, the piano and the boss music pulse.
@@ -82,11 +83,18 @@ export function pianoNote(midi: number): void {
     g.gain.setValueAtTime(v,ctx().currentTime);
     g.gain.exponentialRampToValueAtTime(.001,ctx().currentTime+1.4);
     o.connect(g);g.connect(echoBus());o.start();o.stop(ctx().currentTime+1.4);});}
+/**
+ * The boss music pulse: one beat every 300 ms, from the first call until
+ * `stopBossMusic`. The guard and the interval are the reference's; since
+ * player feedback round 2 Task 5 each beat is `bossBeat` (`./sounds/music.ts`:
+ * a drum and a bass note, at a level of its own) instead of the
+ * reference's bare noise thumps and 49 Hz saw — which are on the sound
+ * board as "old" (`src/soundboard/previous/world.ts`, where
+ * `tests/fidelity.test.ts` still compares them with the reference).
+ */
 export function startBossMusic(): void {if(!ctx()||bossPulse)return;
   let beat=0;
   bossPulse=setInterval(()=>{
-    bang(.09,.22,140);
-    if(beat%2===1)bang(.05,.1,900,300);
-    if(beat%4===3)blip(49,.25,"sawtooth",.07,46);
+    bossBeat(beat);
     beat++;},300);}
 export function stopBossMusic(): void {if(bossPulse){clearInterval(bossPulse);bossPulse=null;}}

@@ -48,15 +48,16 @@ import { voiced } from "./AudioEngine";
  * walking and running) has one trim, the mean of its variants' errors, so
  * the variants keep their relation to each other.
  *
- * ## The one sound without a level
+ * ## No sound without a level
  *
- * The boss music pulse (`startBossMusic`, `../Ambient.ts`) plays its beats
- * from a `setInterval` inside a body `tests/fidelity.test.ts` pins
- * byte-for-byte to the reference, so no scope reaches them: they play at
- * the neutral level (trim 0 dB, room 1). It is measured with the rest in
- * `docs/sound-levels.md`. `AudioEngine.ts`'s `unscopedConnections()` counts
- * such plays, and `tests/audio/levels.test.ts` fails if any other sound
- * makes one.
+ * Until player feedback round 2 Task 5 the boss music pulse
+ * (`startBossMusic`, `../Ambient.ts`) played its beats from a `setInterval`
+ * inside a body pinned byte-for-byte to the reference, so no scope reached
+ * them and they played at 0 dB. Task 5 rebuilt each beat as `bossBeat`
+ * (`./sounds/music.ts`), which has its entry below like everything else;
+ * the old pulse is on the sound board as "old". `AudioEngine.ts`'s
+ * `unscopedConnections()` counts plays outside any level, and
+ * `tests/audio/levels.test.ts` fails if the game makes one.
  *
  * `room` scales how much of a sound goes to the reverb, relative to what its
  * `echo` flag sends (`./Mix.ts`'s `DRY_SEND`/`ECHO_SEND`). 1 unless a sound
@@ -105,8 +106,8 @@ export const SOUND_LEVELS = {
   weaponReady: { category: "foley", trim: -6.6 },
   dryFire: { category: "foley", trim: -3.6 },
   casingTinkle: { category: "foley", trim: 13.8 },
-  kickSwing: { category: "foley", trim: -1.3 },
-  jump: { category: "foley", trim: 14.5 },
+  kickSwing: { category: "foley", trim: -5.4 },
+  jump: { category: "foley", trim: -7 },
   // weapon foley: the mechanisms (player feedback round 2 Task 3, ./sounds/foley.ts)
   flareHammerCock: { category: "foley", trim: -4.4 },
   flareOpen: { category: "foley", trim: -8.7 },
@@ -143,9 +144,10 @@ export const SOUND_LEVELS = {
   reaperCharge: { category: "foley", trim: -11.6 },
   reaperClawsClose: { category: "foley", trim: -9.1 },
   // explosions
-  barrelExplosion: { category: "explosion", trim: -7 },
-  holyCrossExplosion: { category: "explosion", trim: -3 },
-  afritDeathExplosion: { category: "explosion", trim: -4.2 },
+  // (player feedback round 2 Task 5: layered, with a long tail — and 2.2 times a plain sound's share of the room)
+  barrelExplosion: { category: "explosion", trim: -18.6, room: 2.2 },
+  holyCrossExplosion: { category: "explosion", trim: -17.8, room: 2.2 },
+  afritDeathExplosion: { category: "explosion", trim: -18.1, room: 2.2 },
   bossDies: { category: "explosion", trim: -11.9 },
   // monster voices and attacks (player feedback round 2 Task 4: every vocal one is the monster's own voice, ./VoiceTable.ts;
   // bosses speak through echoBus(), so their voices send more to the room without a factor here)
@@ -166,7 +168,9 @@ export const SOUND_LEVELS = {
   priestSummons: { category: "monster", trim: 1.5 },
   debrisWarning: { category: "monster", trim: 8.1 },
   // impacts
-  kickImpact: { category: "impact", trim: 7.2 },
+  // (player feedback round 2 Task 5: the kick lands in a monster or on stone — in the air it makes no sound of its own)
+  kickImpactFlesh: { category: "impact", trim: -17.5 },
+  kickImpactStone: { category: "impact", trim: -13.5 },
   wallSplat: { category: "impact", trim: 3.8 },
   chargeCrash: { category: "impact", trim: 4.9 },
   slamImpact: { category: "impact", trim: 3.4 },
@@ -182,22 +186,35 @@ export const SOUND_LEVELS = {
   headKicked: { category: "impact", trim: 10.4 },
   fleshHitsPlayer: { category: "impact", trim: 7.7 },
   fleshSplat: { category: "impact", trim: 10.4 },
-  bulletHitsProp: { category: "impact", trim: 17.8 },
-  bulletRicochet: { category: "impact", trim: 15.8 },
-  propBreaks: { category: "impact", trim: 4.4 },
+  bulletHitsWall: { category: "impact", trim: -4.7 },
+  bulletHitsFlesh: { category: "impact", trim: -9.1 },
+  bulletHitsProp: { category: "impact", trim: 0.8 },
+  bulletRicochet: { category: "impact", trim: -5 },
+  propBreaks: { category: "impact", trim: -16.8 },
   playerHurt: { category: "impact", trim: 4.4 },
   // footsteps
-  footstep: { category: "footstep", trim: 14.4 },
-  // world events
-  doorStone: { category: "event", trim: 1 },
+  // (player feedback round 2 Task 5: one entry per floor, each levelled from its walk and its run together, so every
+  // floor steps at one level and the run stays above the walk; the landing is levelled over three falls)
+  footstepStone: { category: "footstep", trim: -18.2 },
+  footstepMarble: { category: "footstep", trim: -16.4 },
+  footstepAsh: { category: "footstep", trim: -17.6 },
+  footstepFlesh: { category: "footstep", trim: -15.6 },
+  footstepMetal: { category: "footstep", trim: -16.7 },
+  footstepWater: { category: "footstep", trim: -15.9 },
+  footstepDirt: { category: "footstep", trim: -19.3 },
+  landing: { category: "footstep", trim: -24.1 },
+  // world events (the doors, the exit, the organ and the bells ring in the room: each sends 2.5-2.7 times a plain sound's share)
+  doorStone: { category: "event", trim: -17.1, room: 2.5 },
+  doorSecret: { category: "event", trim: -18.8, room: 2.5 },
+  doorGate: { category: "event", trim: -17.1, room: 2.5 },
   doorFlesh: { category: "event", trim: 2.8 },
-  lockedDoor: { category: "event", trim: -3.4 },
-  exitOpens: { category: "event", trim: -2.8 },
+  lockedDoor: { category: "event", trim: -8.7, room: 1.5 },
+  exitOpens: { category: "event", trim: -18, room: 2.5 },
   gauntletBegins: { category: "event", trim: 0.8 },
   gauntletCleared: { category: "event", trim: 3 },
   blackout: { category: "event", trim: 2.4 },
-  churchBells: { category: "event", trim: 2.6 },
-  organSting: { category: "event", trim: 9.8 },
+  churchBells: { category: "event", trim: -14.2, room: 2.7 },
+  organSting: { category: "event", trim: -15.6, room: 2.7 },
   pianoKey: { category: "event", trim: -3 },
   // ambience
   distantScream: { category: "ambience", trim: 3.5 },
@@ -207,11 +224,20 @@ export const SOUND_LEVELS = {
   whispers: { category: "ambience", trim: 3.6 },
   heartbeat: { category: "ambience", trim: -1.2 },
   breath: { category: "ambience", trim: 12.2 },
+  // the boss pulse (player feedback round 2 Task 5: rebuilt as a drum, and given a level at last)
+  bossPulse: { category: "ambience", trim: -27.8, room: 1.5 },
   // UI
-  achievementChime: { category: "ui", trim: -1.4 },
-  kickReady: { category: "ui", trim: 5.2 },
-  scrapSmgAssembled: { category: "ui", trim: -1.4 },
-  itemPickup: { category: "ui", trim: -2.6 },
+  achievementChime: { category: "ui", trim: -19.8, room: 2 },
+  kickReady: { category: "ui", trim: -10.8 },
+  scrapSmgAssembled: { category: "ui", trim: -17.7 },
+  uiHover: { category: "ui", trim: 1 },
+  uiSelect: { category: "ui", trim: -17.1, room: 1.2 },
+  // (player feedback round 2 Task 5: every pickup used to be one sound; each family now has its own)
+  pickupHealth: { category: "ui", trim: -15 },
+  pickupArmour: { category: "ui", trim: -17.3 },
+  pickupAmmo: { category: "ui", trim: -12.6 },
+  pickupKey: { category: "ui", trim: -17.1 },
+  pickupWeapon: { category: "ui", trim: -19.1 },
 } satisfies Record<string, SoundLevel>;
 
 export type SoundName = keyof typeof SOUND_LEVELS;

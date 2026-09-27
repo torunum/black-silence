@@ -98,7 +98,7 @@ export function interact(){
       if(d.locked&&!S.key){showMsg("IT WANTS THE RED KEY",2.2);
         say("locked");at(wx_,WALLH/2,wz_,()=>lockedDoor());return;}
       d.open=true;
-      at(wx_,WALLH/2,wz_,()=>doorOpens(!!d.flesh));
+      at(wx_,WALLH/2,wz_,()=>doorOpens(d.flesh?"flesh":d.secret?"secret":d.locked?"gate":"stone"));
       alertSound(wx_,wz_,8);
       if(d.secret){S.secrets++;S.totSecrets++;say("secret",true);
         showMsg("SECRET FOUND — "+S.secrets+"/"+S.secretsTotal,3);
@@ -134,7 +134,7 @@ export function itemsTick(dt: number){
           if(it.kind==="w1")say("w2",true);
           if(it.kind==="w4")say("w5",true);
           if(it.kind==="w5")say("w6",true);}}
-      if(ok){it.taken=true;renderState.scene.remove(it.sp);itemPickup();
+      if(ok){it.taken=true;renderState.scene.remove(it.sp);itemPickup(it.kind);
         if(it.kind!=="health"&&it.kind!=="armor"&&it.kind!=="key")animCues.pickup++;}}} // the hands nod at a weapon or ammo (animation only, round 2 Task 4)
   /* free SMG after enough kills if not yet found */
   if(!S.weapons[3]&&S.totKills>=8){S.weapons[3]=true;S.mag[3]=36;

@@ -8,6 +8,8 @@ import { WEAPON_STATS } from "./definitions";
 import { weaponRuntime } from "./WeaponRuntime";
 import { animCues } from "../core/AnimCues";
 import { WEAPON_FIRE_SOUNDS, kickSwing, kickImpact } from "../audio/sounds/weapons";
+import type { KickTarget } from "../audio/sounds/impacts";
+import { solidAt } from "../world/Collision";
 import { weaponLower, weaponRaise, dryFire, shotgunPump } from "../audio/sounds/foley";
 import { cross, EQUIP_CUES, FIRE_CUES, motorFoley, RELOAD_CUES } from "./Foley";
 import { kickReady } from "../audio/sounds/ui";
@@ -210,14 +212,14 @@ export function doKick(){
   shake(.3);kickSwing();
   schedule(()=>{
     const dir=new THREE.Vector3();renderState.camera.getWorldDirection(dir);
-    let hitAny=false;
+    let hitAny=false,hitFoe=false;
     const enemies: readonly KickEnemy[] = world.enemies;   // checked widening, not a cast
     for(const e of enemies){if(e.dead)continue;
       const dx=e.x-player.px,dz=e.z-player.pz,d=Math.hypot(dx,dz);
       if(d>2.5)continue;
       const dot=(dx*dir.x+dz*dir.z)/d;
       if(dot<.55)continue;
-      hitAny=true;
+      hitAny=true;hitFoe=true;
       const kb=e.boss?3:16;
       e.kx+=dx/d*kb;e.kz+=dz/d*kb;
       e.stun=Math.max(e.stun,e.boss?.25:.9);
@@ -231,5 +233,20 @@ export function doKick(){
       if(dot<.5)continue;
       hitAny=true;
       if(p.explosive)explodeBarrel(p);else breakProp(p);}
-    if(hitAny){kickImpact();shake(.15);screenShake.hitStop=Math.max(screenShake.hitStop,.03);}
+    // Player feedback round 2 Task 5: what the boot met decides the sound — a monster, a prop or a wall,
+    // or the air (which is the swing alone). The wall is only looked at, never changed; nothing else moved.
+    kickImpact(kickTarget(hitFoe,hitAny,dir));
+    if(hitAny){shake(.15);screenShake.hitStop=Math.max(screenShake.hitStop,.03);}
   },0.110);}
+/**
+ * What a kick resolving now struck, for its sound (`kickImpact`): a monster
+ * ("flesh") before a prop, a prop before a wall ("stone" either way), and
+ * otherwise the air. The wall is a boot's length ahead of the player
+ * (`KICK_WALL_REACH`), looked up with the same `solidAt` the hitscan and the
+ * collision use — a read, no state.
+ */
+export const KICK_WALL_REACH=1.1;
+export function kickTarget(hitFoe: boolean,hitAny: boolean,dir: { x: number; z: number }): KickTarget {
+  if(hitFoe)return"flesh";
+  if(hitAny||solidAt(player.px+dir.x*KICK_WALL_REACH,player.pz+dir.z*KICK_WALL_REACH))return"stone";
+  return"air";}

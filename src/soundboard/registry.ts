@@ -11,6 +11,8 @@ import { WEAPON_STATS } from "../weapons/definitions";
 import { PREVIOUS } from "./previous";
 import { playReload } from "../weapons/Foley";
 import { voiceOf } from "../audio/VoiceTable";
+import { SURFACES, WALL_MATERIALS, type Surface } from "../audio/Surface";
+import { PICKUPS } from "../audio/sounds/pickups";
 
 /**
  * THE SOUND BOARD'S LIST — every distinct sound in the game, by a human
@@ -77,6 +79,14 @@ function monsterName(k: string): string {
   const n = ENEMY_DEFS[k].name ?? k;
   return n.toLowerCase().replace(/(^|\s)\S/g, (c) => c.toUpperCase());
 }
+/** How the board names each floor, and where it is (player feedback round 2 Task 5, `src/audio/Surface.ts`). */
+const FLOOR_NAME: Readonly<Record<Surface, string>> = {
+  stone: "stone", marble: "marble", ash: "ash", flesh: "flesh", metal: "metal grating", water: "water", dirt: "dirt and grass",
+};
+const FLOOR_WHERE: Readonly<Record<Surface, string>> = {
+  stone: "the church, the necropolis", marble: "level 1, the dungeon", ash: "the prologue, in hell", flesh: "the womb",
+  metal: "the factory", water: "the sewers", dirt: "the graveyard",
+};
 const title = (s: string): string => (s.charAt(0) + s.slice(1).toLowerCase()).replace(/^Bmg /, "BMG ");
 
 /** What each report is made of (player feedback round 2 Task 3, src/audio/sounds/weapons.ts), in slot order. */
@@ -173,8 +183,9 @@ const ENTRIES: Entry[] = [
   { id: "reaper-charge", name: "Soul reaper: charge", category: "Weapons", detail: "as the core re-forms after each shot, and as a fresh soul goes in", play: F.reaperCharge },
   { id: "reaper-claws", name: "Soul reaper: claws close", category: "Weapons", play: F.reaperClawsClose },
   { id: "casing", name: "Shell casing lands", category: "Weapons", detail: "comes 0.25-0.45 s after the click", play: W.casingTinkle },
-  { id: "kick-swing", name: "Kick: swing", category: "Weapons", play: W.kickSwing },
-  { id: "kick-impact", name: "Kick: connects", category: "Weapons", play: W.kickImpact },
+  { id: "kick-swing", name: "Kick: swing", category: "Weapons", detail: "the whoosh — all a kick into the air makes", play: W.kickSwing },
+  { id: "kick-impact", name: "Kick: connects with a monster", category: "Weapons", detail: "110 ms after the swing, as the game resolves it", play: () => W.kickImpact("flesh") },
+  { id: "kick-impact-stone", name: "Kick: connects with a wall or a prop", category: "Weapons", detail: "old: the same sound as a monster, and a wall made none", play: () => W.kickImpact("stone") },
 
   // ---- Monsters
   ...voiceRows(),
@@ -204,19 +215,31 @@ const ENTRIES: Entry[] = [
   { id: "debris-impact", name: "Falling debris: impact", category: "Monsters", play: M.debrisImpact },
 
   // ---- World
-  { id: "step-stone", name: "Footstep (stone)", category: "World", play: () => WO.footstep(false, false) },
-  { id: "step-stone-run", name: "Footstep (stone, running)", category: "World", play: () => WO.footstep(true, false) },
-  { id: "step-marble", name: "Footstep (marble, level 1)", category: "World", play: () => WO.footstep(false, true) },
-  { id: "step-marble-run", name: "Footstep (marble, running)", category: "World", play: () => WO.footstep(true, true) },
+  ...SURFACES.flatMap((s): Entry[] => [false, true].map((run): Entry => ({
+    id: `step-${s}${run ? "-run" : ""}`, name: `Footstep (${FLOOR_NAME[s]}${run ? ", running" : ""})`, category: "World",
+    detail: `${FLOOR_WHERE[s]} — every step varies; old: the one stone step${s === "marble" ? " with its ring" : ""}`,
+    play: () => WO.footstep(run, s === "marble", s),
+  }))),
+  ...([[4, "stepping off a ledge", "soft"], [7.4, "from a jump", "jump"], [12, "from a gallery (12 m/s)", "fall"]] as const).map(([v, how, id]): Entry => ({
+    id: `landing-${id}`, name: `Landing, ${how}`, category: "World", detail: "scaled by the fall; old: a running footstep", play: () => WO.landing(v, false, "stone"),
+  })),
   { id: "jump", name: "Jump", category: "World", play: WO.jump },
   { id: "player-hurt", name: "You are hit", category: "World", play: WO.playerHurt },
   { id: "heartbeat", name: "Heartbeat (low health)", category: "World", play: WO.heartbeat },
   { id: "breath", name: "Breathing (low health)", category: "World", play: WO.breath },
-  { id: "pickup", name: "Pickup (health, ammo, armour, key, weapon)", category: "World", play: WO.itemPickup },
-  { id: "door-stone", name: "Stone door opens", category: "World", play: () => WO.doorOpens(false) },
-  { id: "door-flesh", name: "Flesh door opens", category: "World", play: () => WO.doorOpens(true) },
-  { id: "door-locked", name: "Locked door (needs the red key)", category: "World", play: WO.lockedDoor },
+  ...PICKUPS.map(([kind, what]): Entry => ({
+    id: `pickup-${kind}`, name: `Pickup: ${what}`, category: "World", detail: "old: one sound for every pickup", play: () => WO.itemPickup(kind),
+  })),
+  { id: "door-stone", name: "Stone door opens", category: "World", detail: "grinds as long as the door sinks, then settles", play: () => WO.doorOpens("stone") },
+  { id: "door-secret", name: "Secret door opens", category: "World", detail: "a piece of the wall: breaks free, grinds heavier", play: () => WO.doorOpens("secret") },
+  { id: "door-gate", name: "Red-key gate opens", category: "World", detail: "unbolted, then sinks", play: () => WO.doorOpens("gate") },
+  { id: "door-flesh", name: "Flesh door opens", category: "World", play: () => WO.doorOpens("flesh") },
+  { id: "door-locked", name: "Locked door (needs the red key)", category: "World", detail: "rattled, and a tone that says no", play: WO.lockedDoor },
   { id: "exit-opens", name: "Exit opens", category: "World", play: WO.exitOpens },
+  ...WALL_MATERIALS.map((m): Entry => ({
+    id: `bullet-wall-${m}`, name: `Bullet hits a ${m} wall`, category: "World", detail: `${m === "stone" ? "every level but two" : m === "metal" ? "the factory" : "the womb"} — new: a wall hit made no sound but the ricochet`, play: () => WO.bulletHitsWall(m),
+  })),
+  { id: "bullet-flesh", name: "Bullet hits a monster", category: "World", detail: "new: one thwack per monster per shot, however many pellets", play: () => WO.bulletHitsFlesh() },
   { id: "bullet-prop", name: "Bullet hits a crate or pew", category: "World", play: WO.bulletHitsProp },
   { id: "ricochet", name: "Bullet ricochet", category: "World", detail: "3 in 10 wall hits", play: WO.bulletRicochet },
   { id: "prop-breaks", name: "Crate, pew or chair breaks", category: "World", play: WO.propBreaks },
@@ -230,7 +253,8 @@ const ENTRIES: Entry[] = [
   { id: "event-whispers", name: "Event: whispers", category: "World", play: WO.whispers },
   { id: "organ", name: "Organ chord", category: "World", detail: "the priest's phase change, and the piano's recital", play: WO.organSting },
   { id: "piano", name: "Piano key (middle C)", category: "World", play: () => WO.pianoKey(60) },
-  { id: "boss-music", name: "Boss music (4 seconds of it)", category: "World", play: () => { startBossMusic(); after(stopBossMusic, 4000); } },
+  { id: "boss-music", name: "Boss music (4 seconds of it)", category: "World", detail: "a beat every 300 ms, as always", play: () => { startBossMusic(); after(stopBossMusic, 4000); } },
+  { id: "boss-beat", name: "Boss music: one bar, beat by beat", category: "World", detail: "the kick, the off-beat knock, the bass note on the fourth", play: () => { for (let b = 0; b < 4; b++) after(() => WO.bossBeat(b), b * 300); } },
   { id: "gauntlet-begins", name: "Gauntlet plate: the dead come", category: "World", detail: "not placed in any level yet", play: WO.gauntletBegins },
   { id: "gauntlet-cleared", name: "Gauntlet cleared", category: "World", detail: "not placed in any level yet", play: WO.gauntletCleared },
 
@@ -238,6 +262,8 @@ const ENTRIES: Entry[] = [
   { id: "achievement", name: "Achievement unlocked", category: "UI", play: UI.achievementChime },
   { id: "kick-ready", name: "Kick ready", category: "UI", play: UI.kickReady },
   { id: "smg-assembled", name: "Scrap SMG assembled", category: "UI", play: UI.scrapSmgAssembled },
+  { id: "ui-hover", name: "Menu: pointer on a row", category: "UI", detail: "new — the menus had no sound", play: UI.uiHover },
+  { id: "ui-select", name: "Menu: a row chosen", category: "UI", detail: "new — the menus had no sound", play: UI.uiSelect },
 
   // ---- Explosions
   { id: "boom-barrel", name: "Barrel explodes", category: "Explosions", play: X.barrelExplosion },

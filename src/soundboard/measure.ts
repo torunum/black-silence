@@ -1,6 +1,7 @@
 import * as W from "../audio/sounds/weapons";
 import * as M from "../audio/sounds/monsters";
 import * as X from "../audio/sounds/explosions";
+import * as WO from "../audio/sounds/world";
 import { newMix, CLIP, DRY_SEND, ECHO_SEND, GLUE, LIMIT } from "../audio/Mix";
 import { buildImpulse, ROOM_NAMES, ROOMS, type RoomName } from "../audio/Room";
 import { clearLastSoundLevel, lastSoundLevel, SOUND_LEVELS, TARGETS, type SoundLevel } from "../audio/Levels";
@@ -86,7 +87,8 @@ const AUTOMATIC: ReadonlyArray<readonly [string, () => void, number]> = W.WEAPON
 
 /** How long to render a row: long enough for its longest part and the hell room's tail. */
 function secondsFor(id: string): number {
-  if (id === "organ" || id === "boss-music") return 6;
+  if (id === "organ" || id === "boss-music" || id === "event-bells") return 6;
+  if (id.startsWith("boom-") || id === "exit-opens") return 5;
   if (id.startsWith("event-") || id === "door-flesh" || id === "stinger-scream" || id.startsWith("boss-dies") || id.startsWith("boss-wakes")) return 5;
   return 4;
 }
@@ -126,6 +128,14 @@ const WORST: Array<{ name: string; play: () => void }> = [
     play: () => {
       X.barrelExplosion(); X.barrelExplosion(); X.afritDeathExplosion(); W.shotgunFire(); W.shotgunFire(); W.shotgunFire(); W.sniperFire(); M.bossDies("G");
       for (const k of ["A", "C", "n", "k", "y", "s", "q", "R"]) M.monsterAlert(k);
+    },
+  },
+  {
+    // player feedback round 2 Task 5's: the layered explosion over a fight, with the player running through it
+    name: "barrel explosion + three monsters + shotgun + running footsteps (0, 0.3, 0.6 s)",
+    play: () => {
+      X.barrelExplosion(); M.monsterAlert("z"); M.monsterPain("A"); M.monsterDeath("C"); W.shotgunFire();
+      for (const t of [0, 300, 600]) setTimeout(() => WO.footstep(true, false, "stone"), t);
     },
   },
 ];
