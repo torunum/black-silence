@@ -82,13 +82,17 @@ describe("every sound the game plays has a name", () => {
     }
     expect(hits).toEqual([]);
     const inside = srcFiles(join(SRC, "audio", "sounds")).reduce((n, f) => n + [...code(f).matchAll(NAMED)].length, 0);
-    expect(inside, "the same pattern finds them in the catalogue, once each").toBe(6);
+    // Five, not six, since player feedback round 2 Task 4: `snarl`, the monsters' old first-sighting
+    // bark, is no longer the game's (each monster has a voice, src/audio/VoiceTable.ts); only the sound
+    // board's record of the old sounds calls it now (src/soundboard/previous/monsters.ts).
+    expect(inside, "the same pattern finds them in the catalogue, once each").toBe(5);
   });
 
   it("is not vacuous — the same pattern finds the raw calls inside the catalogue", () => {
     const inside = srcFiles(join(SRC, "audio", "sounds"));
     const n = inside.reduce((sum, f) => sum + [...code(f).matchAll(RAW)].length, 0);
-    expect(n).toBeGreaterThan(60);
+    // (over 60 until player feedback round 2 Task 4 turned the monsters' blips and growls into voices, src/audio/Speak.ts)
+    expect(n).toBeGreaterThan(40);
   });
 });
 
@@ -158,9 +162,9 @@ describe("no sound draws from Math.random() — the game's own dice (KNOWN-22)",
         for (const [name, fn] of Object.entries(mod)) {
           if (typeof fn !== "function") continue;
           const f = fn as (...a: unknown[]) => unknown;
-          if (name === "orbLaunch") for (const k of ["toxic", "heavy", "normal"]) f(k);
+          if (name === "orbLaunch") for (const k of ["toxic", "heavy", "normal"]) f(k, "C");
           else if (name === "footstep") for (const a of [false, true]) for (const b of [false, true]) f(a, b);
-          else if (f.length > 0) f(200);
+          else if (f.length > 0) { f(200); for (const k of ["z", "E", "L"]) f(k); } // a number for the rest; a monster's letter for its voice
           else f();
           played++;
         }

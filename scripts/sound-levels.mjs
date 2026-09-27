@@ -25,6 +25,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const APPLY = process.argv.includes("--apply");
 const DOC = join(ROOT, "docs", "sound-levels.md");
 const LEVELS = join(ROOT, "src", "audio", "Levels.ts");
+const VOICE_TABLE = join(ROOT, "src", "audio", "VoiceTable.ts");
 
 function findBrowser() {
   const candidates = [
@@ -121,6 +122,14 @@ function markdown(r, version) {
   L.push("|---|---|");
   for (const x of r.cost) L.push(`| ${x.what} | ${x.msPerSecond.toFixed(2)} |`);
   L.push("");
+  L.push("### Ten monsters at once");
+  L.push("");
+  L.push("Ten monsters seeing the player in the same instant, each at its own place (its own HRTF panner, as in the game), 2 s through the new mix in the stone hall; the median of three offline renders. Player feedback round 2 Task 4: a voice is about 20 nodes, and a room of monsters can all speak at once.");
+  L.push("");
+  L.push("| Render | ms per second of audio | Peak | Clipped samples |");
+  L.push("|---|---|---|---|");
+  for (const x of r.crowd) L.push(`| ${x.what} | ${x.msPerSecond.toFixed(2)} | ${f1(x.peakDb)} dBFS | ${x.clipped} |`);
+  L.push("");
   L.push("## Targets and trims");
   L.push("");
   L.push("Weapons loudest, then explosions, monsters, impacts, footsteps, UI quietest (the owner's order); world events sit with the monsters, weapon foley between impacts and footsteps, ambience just above the UI. A sound with several rows (a pain cry at six pitches, a footstep walking and running) has one trim, set from the mean of its rows, so its variants keep their relation. The automatic weapons (combat rifle, tommy gun, nail cannon) are levelled by one second of fire at their own rate — \"(burst)\" — because that is how a player hears them.");
@@ -131,6 +140,14 @@ function markdown(r, version) {
   L.push("|---|---|---|---|---|---|---|---|---|");
   for (const e of r.entries) L.push(`| \`${e.name}\` | ${e.category} | ${e.trim} | ${e.target} | ${f1(e.lk)}${e.burst ? " (burst)" : ""} | ${f1(e.peak)} | ${signed(e.error)} | ${e.bound === "peak" ? "peak-bound" : e.bound === "cap" ? "trim cap" : "—"} | ${e.suggested} |`);
   L.push("");
+  L.push("## The monsters' voices");
+  L.push("");
+  L.push("Player feedback round 2 Task 4. Every enemy speaks in its own voice (`src/audio/VoiceTable.ts`), and each vocal event — alert, pain, attack, death — has one trim above. A voice's `gain` (dB, in the voice table) corrects how loud its alert, pain, attack and death come out against the other voices at the same entries: each voice has a **tilt**, 2 dB per doubling of the creature's size within ±4 dB, so a bigger creature is a little louder by design; the **offset** is the mean of its rows' distance from their entry's mean, less its tilt's distance from the mean tilt of those rows — how far it is from where its size puts it — and the suggested gain removes it.");
+  L.push("");
+  L.push("| Voice | Gain (dB) | Tilt | Offset now | Rows | Suggested gain |");
+  L.push("|---|---|---|---|---|---|");
+  for (const v of r.voices) L.push(`| ${v.kind} | ${v.gain} | ${signed(v.tilt)} | ${signed(v.offset)} | ${v.rows} | ${v.suggested} |`);
+  L.push("");
   L.push("## Every sound, before and after");
   L.push("");
   L.push("| Sound | Entry | Peak before | Peak after | RMS before | RMS after | LK before | LK after | Target | Change |");
@@ -140,6 +157,18 @@ function markdown(r, version) {
   }
   L.push("");
   return L.join("\n");
+}
+
+function applyVoiceGains(voices) {
+  let src = readFileSync(VOICE_TABLE, "utf8");
+  let changed = 0;
+  for (const v of voices) {
+    const re = new RegExp(`^(  ${v.kind}: \\{ family: "\\w+", f0: [\\d.]+.*gain: )(-?\\d+(?:\\.\\d+)?)( \\},)`, "m");
+    if (!re.test(src)) throw new Error(`could not find ${v.kind}'s line in VoiceTable.ts`);
+    src = src.replace(re, (_m, a, old, b) => { if (Number(old) !== v.suggested) changed++; return `${a}${v.suggested}${b}`; });
+  }
+  writeFileSync(VOICE_TABLE, src);
+  return changed;
 }
 
 function applyTrims(entries) {
@@ -168,7 +197,7 @@ try {
   console.log(`wrote ${DOC}`);
   const worst = Math.max(...report.entries.map((e) => Math.abs(e.error)));
   console.log(`largest distance from target: ${worst.toFixed(1)} dB; worst-case peaks: ${report.worst.map((w) => w.newPeakDb.toFixed(2)).join(", ")} dBFS`);
-  if (APPLY) console.log(`--apply: ${applyTrims(report.entries)} trims changed in src/audio/Levels.ts — run again to measure them`);
+  if (APPLY) console.log(`--apply: ${applyTrims(report.entries)} trims changed in src/audio/Levels.ts, ${applyVoiceGains(report.voices)} voice gains in src/audio/VoiceTable.ts — run again to measure them`);
 } finally {
   browser.close();
   await server.close();

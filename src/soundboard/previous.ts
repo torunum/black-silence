@@ -1,4 +1,6 @@
 import { OLD_FIRE, oldDryFire, oldReload, oldShotgunPump, oldWeaponLower, oldWeaponRaise } from "./previous/weapons";
+import * as OM from "./previous/monsters";
+import { ENEMY_DEFS } from "../enemies/EnemyDefs";
 
 /**
  * THE OLD VERSIONS — the sound board's "old" button for every sound a task
@@ -6,7 +8,7 @@ import { OLD_FIRE, oldDryFire, oldReload, oldShotgunPump, oldWeaponLower, oldWea
  * player-feedback-2-sound.md`): the owner judges by ear, so each rebuilt
  * sound is heard beside the one it replaced.
  *
- * **Task 3 registered the weapons** (below). Task 1 replaced no sound. Task 2 changed
+ * **Task 3 registered the weapons, Task 4 the monsters' voices** (below). Task 1 replaced no sound. Task 2 changed
  * how *every* sound comes out — the room, the master chain, the level trims
  * — without touching any sound's own synthesis, so its "old" is one global
  * switch rather than 111 rows: the board's **Old mix / New mix** toggle
@@ -38,4 +40,27 @@ export const PREVIOUS: Readonly<Record<string, () => void>> = {
   "dry-fire": oldDryFire,
   "shotgun-pump": oldShotgunPump,
   ...Object.fromEntries(OLD_FIRE.map((_p, slot) => [`reload-${slot}`, () => oldReload(slot)])),
+  // Task 4 — the monsters (./previous/monsters.ts): per enemy, what it used to
+  // make — its snarl or the generic moan, the yelp and death cry pitched from
+  // its pain stat, the claw's sawtooth blip — and the swept blips and growls
+  // of the lunge, the charge, the wind-up, the scream, the orbs and the bosses.
+  ...Object.fromEntries(Object.entries(ENEMY_DEFS).flatMap(([k, d]) => {
+    const rows: Array<[string, () => void]> = [
+      [`monster-alert-${k}`, () => OM.oldMonsterAlert(k)],
+      [`monster-pain-${k}`, () => OM.oldMonsterPain(d.pain)],
+      d.boss ? [`boss-dies-${k}`, OM.oldBossDies] : [`monster-death-${k}`, () => OM.oldMonsterDeath(d.pain)],
+    ];
+    if (!d.priest) rows.push([`monster-attack-${k}`, OM.oldMonsterClaw]);
+    if (d.fling) rows.push([`flesh-throw-${k}`, OM.oldFleshThrow]);
+    if (d.slam) rows.push([`slam-windup-${k}`, OM.oldSlamWindup]);
+    if (d.boss) rows.push([`boss-wakes-${k}`, OM.oldBossWakes], [`boss-roar-${k}`, OM.oldBossRoar]);
+    if (d.priest) rows.push([`priest-summons-${k}`, OM.oldPriestSummons]);
+    return rows;
+  })),
+  "orb-normal": () => OM.oldOrbLaunch("normal"),
+  "orb-heavy": () => OM.oldOrbLaunch("heavy"),
+  "orb-toxic": () => OM.oldOrbLaunch("toxic"),
+  "screamer": OM.oldScreamerCall,
+  "lost-soul-charge": OM.oldLostSoulCharge,
+  "hound-lunge": OM.oldHoundLunge,
 };

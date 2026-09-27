@@ -59,7 +59,7 @@ interface Strike { x: number; z: number; t: number; warn: THREE.Mesh<THREE.Buffe
 interface PoisonZone { x: number; z: number; r: number; t: number; }
 
 /** world.enemies elements, cast for fireOrb/throwFlesh's ranged-attack spawns. */
-type AttackEnemy = Pick<Enemy, "x" | "z" | "h" | "hp" | "atkAnim" | "orb" | "stone" | "fly" | "flyH" | "fy">;
+type AttackEnemy = Pick<Enemy, "key" | "x" | "z" | "h" | "hp" | "atkAnim" | "orb" | "stone" | "fly" | "flyH" | "fy">;
 
 const orbGeo=new THREE.SphereGeometry(.16,6,6);
 
@@ -86,7 +86,7 @@ export function fireOrb(enemy: unknown,spreadA: number,tox?: boolean){
   projectiles.orbs.push({m,vx:Math.sin(a)*spd,vz:Math.cos(a)*spd,
     vy:((player.pyy-.2)-oy)/(dist/spd),dmg,life:3.2,tox,col});
   renderState.scene.add(m);
-  at(e.x,oy,e.z,()=>orbLaunch(tox?"toxic":ot==="manc"?"heavy":"normal"));}
+  at(e.x,oy,e.z,()=>orbLaunch(tox?"toxic":ot==="manc"?"heavy":"normal",e.key,e));}
 export function throwFlesh(enemy: unknown){
   const e=enemy as AttackEnemy;
   const dx=player.px-e.x,dz=player.pz-e.z,dist=Math.hypot(dx,dz);
@@ -100,7 +100,7 @@ export function throwFlesh(enemy: unknown){
   renderState.scene.add(m);
   blood(e.x,oy,e.z,6,1.6);    // it rips the chunk out of its own body
   e.hp-=3;                    // Blood-style self-mutilation
-  at(e.x,oy,e.z,()=>fleshThrow());}
+  at(e.x,oy,e.z,()=>fleshThrow(e.key));}
 /* expanding shockwave ring — jump to dodge */
 const ringMatBase=new THREE.MeshBasicMaterial({color:0x9a4ae0,transparent:true,opacity:.6,side:THREE.DoubleSide});
 export function spawnRing(x: number,z: number){

@@ -5,8 +5,12 @@ import { newMix, CLIP, DRY_SEND, ECHO_SEND, GLUE, LIMIT } from "../audio/Mix";
 import { buildImpulse, ROOM_NAMES, ROOMS, type RoomName } from "../audio/Room";
 import { clearLastSoundLevel, lastSoundLevel, SOUND_LEVELS, TARGETS, type SoundLevel } from "../audio/Levels";
 import { previousMix } from "./previous/mix";
+import { oldMonsterAlert } from "./previous/monsters";
+import { at } from "../audio/AudioEngine";
 import { renderOffline, type Rendered } from "./offline";
 import { SOUND_ROWS } from "./registry";
+import { VOICES } from "../audio/VoiceTable";
+import { ENEMY_DEFS } from "../enemies/EnemyDefs";
 import { WEAPON_STATS } from "../weapons/definitions";
 
 /**
@@ -83,7 +87,7 @@ const AUTOMATIC: ReadonlyArray<readonly [string, () => void, number]> = W.WEAPON
 /** How long to render a row: long enough for its longest part and the hell room's tail. */
 function secondsFor(id: string): number {
   if (id === "organ" || id === "boss-music") return 6;
-  if (id.startsWith("event-") || id === "door-flesh" || id === "stinger-scream" || id === "boss-dies" || id === "boss-wakes") return 5;
+  if (id.startsWith("event-") || id === "door-flesh" || id === "stinger-scream" || id.startsWith("boss-dies") || id.startsWith("boss-wakes")) return 5;
   return 4;
 }
 
@@ -104,6 +108,8 @@ export interface LevelReport {
   worst: Array<{ name: string; oldPeakDb: number; newPeakDb: number; newClipped: number; oldClipped: number }>;
   rooms: Array<{ room: RoomName; label: string; seconds: number; rt60: number; predelay: number; wet: number; buildMs: number; reverbDb: number }>;
   cost: Array<{ what: string; msPerSecond: number }>;
+  crowd: Array<{ what: string; msPerSecond: number; peakDb: number; clipped: number }>;
+  voices: VoiceCalibration[];
   chain: { glue: typeof GLUE; limit: typeof LIMIT; clip: typeof CLIP; drySend: number; echoSend: number };
   peakCeiling: number;
   maxTrim: number;
@@ -113,12 +119,12 @@ export interface LevelReport {
 const WORST: Array<{ name: string; play: () => void }> = [
   {
     name: "barrel explosion + shotgun + 5 monsters (alerts, a death, a pain cry, a boss roar)",
-    play: () => { X.barrelExplosion(); W.shotgunFire(); M.monsterAlert("A"); M.monsterAlert("C"); M.monsterDeath(240); M.monsterPain(300); M.bossRoar(); },
+    play: () => { X.barrelExplosion(); W.shotgunFire(); M.monsterAlert("A"); M.monsterAlert("C"); M.monsterDeath("n"); M.monsterPain("z"); M.bossRoar("E"); },
   },
   {
     name: "three explosions + three shotgun blasts + a sniper + boss death + 8 monsters, all in the same instant",
     play: () => {
-      X.barrelExplosion(); X.barrelExplosion(); X.afritDeathExplosion(); W.shotgunFire(); W.shotgunFire(); W.shotgunFire(); W.sniperFire(); M.bossDies();
+      X.barrelExplosion(); X.barrelExplosion(); X.afritDeathExplosion(); W.shotgunFire(); W.shotgunFire(); W.shotgunFire(); W.sniperFire(); M.bossDies("G");
       for (const k of ["A", "C", "n", "k", "y", "s", "q", "R"]) M.monsterAlert(k);
     },
   },
@@ -183,7 +189,7 @@ export async function measureLevels(onProgress?: (done: number, total: number) =
   }
   // Render cost: 20 s of the drone bed plus the boss pulse, through each mix.
   const cost = [];
-  const busy = (): void => { M.bossRoar(); };
+  const busy = (): void => { M.bossRoar("E"); };
   for (const [what, opts] of [
     ["old mix (delay echo, no chain)", { mix: previousMix }],
     ["new mix, stone hall (2.4 s stereo IR)", { mix: newMix, room: "hall" as RoomName }],
@@ -192,5 +198,75 @@ export async function measureLevels(onProgress?: (done: number, total: number) =
     const r = await renderOffline(busy, { ...opts, volume: 1, seconds: 20, drones: true });
     cost.push({ what, msPerSecond: r.renderMs / 20 });
   }
-  return { rows, entries, worst, rooms, cost, chain: { glue: GLUE, limit: LIMIT, clip: CLIP, drySend: DRY_SEND, echoSend: ECHO_SEND }, peakCeiling: PEAK_CEILING, maxTrim: MAX_TRIM };
+  const crowd = await measureCrowd();
+  return { rows, entries, worst, rooms, cost, crowd, voices: calibrateVoices(rows), chain: { glue: GLUE, limit: LIMIT, clip: CLIP, drySend: DRY_SEND, echoSend: ECHO_SEND }, peakCeiling: PEAK_CEILING, maxTrim: MAX_TRIM };
+}
+
+/**
+ * A room of ten monsters seeing the player in the same instant (player
+ * feedback round 2 Task 4): ten alerts, each at its own place (so each has
+ * its own HRTF panner, as in the game), through the new mix in the stone
+ * hall. The render cost — offline, one thread, the median of three — of
+ * the new voices, the old barks, and the same render with nothing in it.
+ */
+const CROWD = ["z", "z", "f", "m", "t", "j", "s", "g", "w", "C"];
+export async function measureCrowd(): Promise<LevelReport["crowd"]> {
+  const out: LevelReport["crowd"] = [];
+  const cases: Array<[string, () => void]> = [
+    ["nothing (the mix alone)", () => {}],
+    ["ten alerts, old (snarl / moan)", () => CROWD.forEach((k, i) => { const x = i - 4.5, z = 4 + (i % 3); at(x, 1, z, () => oldMonsterAlert(k)); })],
+    ["ten alerts, new voices", () => CROWD.forEach((k, i) => { const x = i - 4.5, z = 4 + (i % 3); at(x, 1, z, () => M.monsterAlert(k)); })],
+  ];
+  for (const [what, play] of cases) {
+    const runs = [];
+    for (let n = 0; n < 3; n++) runs.push(await renderOffline(play, { mix: newMix, room: "hall", volume: 1, seconds: 2 }));
+    runs.sort((a, b) => a.renderMs - b.renderMs);
+    out.push({ what, msPerSecond: runs[1].renderMs / 2, peakDb: runs[1].peakDb, clipped: runs[1].clipped });
+  }
+  return out;
+}
+
+/**
+ * How much louder than average a voice is meant to be, dB: 2 dB per doubling
+ * of the creature's size (sprite `w`·`h`, against a zombie's 1.4), within
+ * ±4 dB — a lost soul's shriek a little under the crowd, a boss a little
+ * over it. Player feedback round 2 Task 4: the loudness of a voice follows
+ * the creature, by design, not by how its formants happen to meet its cords.
+ */
+export function VOICE_TILT(kind: string): number {
+  const d = ENEMY_DEFS[kind];
+  return Math.max(-4, Math.min(4, 2 * Math.log2((d.w * d.h) / 1.4)));
+}
+
+export interface VoiceCalibration { kind: string; gain: number; tilt: number; offset: number; rows: number; suggested: number }
+
+/**
+ * Each voice's `gain` (`src/audio/VoiceTable.ts`): its alert, pain, attack
+ * and death rows are compared with the mean of the rows at the same table
+ * entry, less the difference between its tilt and theirs; the voice's
+ * offset is the mean of those, and the suggestion removes it. (Weighted by
+ * rows, so the corrections at an entry sum to nothing and the gains do
+ * not drift against the trims.) Like the
+ * trims, it takes a pass or two to settle, because each entry's mean moves
+ * with the voices in it.
+ */
+function calibrateVoices(rows: RowLevel[]): VoiceCalibration[] {
+  const ROW = /^monster-(alert|pain|death|attack)-(\w)$/;
+  const kindOf = (r: RowLevel): string => ROW.exec(r.id)![2];
+  const voiced = rows.filter((r) => ROW.test(r.id) && r.entry && Number.isFinite(r.after.lk));
+  const mean = (x: number[]): number => x.reduce((s, v) => s + v, 0) / Math.max(1, x.length);
+  // Per entry: the mean level of its rows, and the mean tilt of the voices in them (weighted as the rows are).
+  const entryMean = new Map<string, { lk: number; tilt: number }>();
+  for (const e of new Set(voiced.map((r) => r.entry!))) {
+    const mine = voiced.filter((r) => r.entry === e);
+    entryMean.set(e, { lk: mean(mine.map((r) => r.after.lk)), tilt: mean(mine.map((r) => VOICE_TILT(kindOf(r)))) });
+  }
+  return Object.keys(VOICES).map((kind) => {
+    const tilt = VOICE_TILT(kind);
+    const mine = voiced.filter((r) => kindOf(r) === kind);
+    // how far its rows sit from where the tilt wants them, relative to their entry's rows
+    const offset = mean(mine.map((r) => { const m = entryMean.get(r.entry!)!; return r.after.lk - m.lk - (tilt - m.tilt); }));
+    const gain = VOICES[kind].gain ?? 0;
+    return { kind, gain, tilt, offset, rows: mine.length, suggested: Math.round((gain - offset) * 10) / 10 };
+  });
 }

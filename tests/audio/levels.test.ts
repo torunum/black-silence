@@ -37,18 +37,20 @@ function constructorReturning(target: unknown): new () => unknown {
 
 /** Every catalogue sound with the table entries it may play at, and how to play it. */
 const PLAYS: Array<{ name: string; entries: SoundName[]; play: () => void }> = [];
-const NOT_SOUNDS = new Set(["painPitch", "deathPitch", "ricochetRoll", "ambientStinger"]);
+const NOT_SOUNDS = new Set(["ricochetRoll", "ambientStinger"]);
+/** The catalogue sounds spoken in a monster's voice (`src/audio/VoiceTable.ts`): each takes the monster's letter. */
+const VOICED = new Set(["monsterAlert", "monsterPain", "monsterDeath", "monsterClaw", "fleshThrow", "slamWindup", "bossWakes", "bossRoar", "bossDies", "priestSummons"]);
 for (const mod of [W, F, M, WO, UI, X] as Array<Record<string, unknown>>) {
   for (const [name, fn] of Object.entries(mod)) {
     if (typeof fn !== "function" || NOT_SOUNDS.has(name)) continue;
     const f = fn as (...a: unknown[]) => void;
-    if (name === "monsterAlert") {
-      for (const k of ["C", "A", "L", "j", "n", "k", "q", "R", "y", "s"]) PLAYS.push({ name: `monsterAlert(${k})`, entries: [`monsterAlert.${k}` as SoundName], play: () => f(k) });
-      PLAYS.push({ name: "monsterAlert(z)", entries: ["monsterAlert.other"], play: () => f("z") });
+    if (VOICED.has(name)) {
+      // player feedback round 2 Task 4: a monster's voice takes its kind — one monster, and one boss, each at the entry
+      for (const k of ["z", "E"]) PLAYS.push({ name: `${name}(${k})`, entries: [name as SoundName], play: () => f(k) });
     } else if (name === "doorOpens") {
       PLAYS.push({ name: "doorOpens(true)", entries: ["doorFlesh"], play: () => f(true) });
       PLAYS.push({ name: "doorOpens(false)", entries: ["doorStone"], play: () => f(false) });
-    } else if (name === "orbLaunch") PLAYS.push({ name, entries: ["orbLaunch"], play: () => f("heavy") });
+    } else if (name === "orbLaunch") PLAYS.push({ name, entries: ["orbLaunch"], play: () => f("heavy", "A") });
     else if (name === "footstep") PLAYS.push({ name, entries: ["footstep"], play: () => f(true, true) });
     else if (name === "pianoKey") PLAYS.push({ name, entries: ["pianoKey"], play: () => f(60) });
     else if (f.length > 0) PLAYS.push({ name, entries: [name as SoundName], play: () => f(200) });

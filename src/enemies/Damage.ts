@@ -125,7 +125,7 @@ export function damageEnemy(enemy: unknown, dmg: number, info?: DamageInfo) {
     return;}
   e.hp-=dmg;
   e.hurt=.12;e.sp.material.color.setHex(0xff8866);
-  at(info.hx||e.x,info.hy||e.h*.6,info.hz||e.z,()=>monsterPain(e.pain));
+  at(info.hx||e.x,info.hy||e.h*.6,info.hz||e.z,()=>monsterPain(e.key,e));
   const res=1-(e.kbRes||0);
   const kb=(info.explosive?7:(info.wIdx===1?5:info.wIdx===0?2.4:info.wIdx===4?6:info.wIdx===-1?0:1.1))*res;
   if(info.dir){e.kx+=info.dir.x*kb;e.kz+=info.dir.z*kb;}

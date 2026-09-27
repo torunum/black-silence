@@ -10,6 +10,7 @@ import { ENEMY_DEFS } from "../enemies/EnemyDefs";
 import { WEAPON_STATS } from "../weapons/definitions";
 import { PREVIOUS } from "./previous";
 import { playReload } from "../weapons/Foley";
+import { voiceOf } from "../audio/VoiceTable";
 
 /**
  * THE SOUND BOARD'S LIST — every distinct sound in the game, by a human
@@ -90,37 +91,33 @@ const FIRE_DETAIL = [
   "crackling discharge and a choir sliding down",
 ];
 
-/** The `snarl` kinds with a sound of their own (`src/audio/Voice.ts`); every other monster gets the generic moan. */
-const ALERT_KINDS = ["C", "A", "L", "j", "n", "k", "q", "R", "y", "s"];
-
 /**
- * Rows for a sound whose pitch comes from a monster's `pain` stat: one row
- * per distinct pitch, named after the first monster in roster order that
- * makes it, with every other monster that makes the identical sound listed
- * underneath — so the list holds each distinct sound once.
+ * Every enemy's voice (player feedback round 2 Task 4, `src/audio/VoiceTable.ts`),
+ * one row per enemy per vocal event, in roster order, so the owner can say
+ * "the zombie is wrong": its alert, its pain, its death, and its attack (the
+ * melee bark with the claw's rake — the priests have none, they strike in
+ * silence). Each row's "old" is what that enemy used to make
+ * (`./previous.ts`).
  */
-function byPitch(kind: "pain" | "death", pitchOf: (p: number) => number, play: (p: number) => void): Entry[] {
-  const groups = new Map<number, string[]>();
+function voiceRows(): Entry[] {
+  const rows: Entry[] = [];
+  const voiced = (k: string): string => { const v = voiceOf(k); return `${v.family} voice, ${v.f0} Hz`; };
   for (const k of ROSTER) {
-    const pitch = pitchOf(ENEMY_DEFS[k].pain);
-    groups.set(pitch, [...(groups.get(pitch) ?? []), k]);
+    const d = ENEMY_DEFS[k], n = monsterName(k), who = voiced(k);
+    rows.push({ id: `monster-alert-${k}`, name: `${n} alert`, category: "Monsters", detail: `when it first sees you — ${who}`, play: () => M.monsterAlert(k) });
+    rows.push({ id: `monster-pain-${k}`, name: `${n} hurt`, category: "Monsters", detail: who, play: () => M.monsterPain(k) });
+    if (d.boss) rows.push({ id: `boss-dies-${k}`, name: `${n} dies`, category: "Monsters", detail: `${who}, and the crash`, play: () => M.bossDies(k) });
+    else rows.push({ id: `monster-death-${k}`, name: `${n} dies`, category: "Monsters", detail: who, play: () => M.monsterDeath(k) });
+    if (!d.priest) rows.push({ id: `monster-attack-${k}`, name: `${n} claws you`, category: "Monsters", detail: `its attack bark, and the rake — ${who}`, play: () => M.monsterClaw(k) });
+    if (d.fling) rows.push({ id: `flesh-throw-${k}`, name: `${n} tears off its flesh and throws it`, category: "Monsters", play: () => M.fleshThrow(k) });
+    if (d.slam) rows.push({ id: `slam-windup-${k}`, name: `${n} slam: wind-up`, category: "Monsters", play: () => M.slamWindup(k) });
+    if (d.boss) {
+      rows.push({ id: `boss-wakes-${k}`, name: `${n} awakens`, category: "Monsters", detail: "the cinematic's first sound", play: () => M.bossWakes(k) });
+      rows.push({ id: `boss-roar-${k}`, name: `${n} roars`, category: "Monsters", detail: "a roar, and a shorter one 0.2 s later", play: () => M.bossRoar(k) });
+    }
+    if (d.priest) rows.push({ id: `priest-summons-${k}`, name: `${n} calls his flock`, category: "Monsters", detail: "phase 2", play: () => M.priestSummons(k) });
   }
-  return [...groups.entries()].map(([pitch, keys]): Entry => {
-    const rest = keys.slice(1);
-    const bosses = rest.filter((k) => ENEMY_DEFS[k].boss);
-    const allBosses = ROSTER.filter((k) => ENEMY_DEFS[k].boss);
-    const shared = [
-      ...rest.filter((k) => !ENEMY_DEFS[k].boss).map(monsterName),
-      ...(bosses.length === allBosses.length ? ["every boss"] : bosses.map(monsterName)),
-    ];
-    return {
-      id: `monster-${kind}-${keys[0]}`,
-      name: `${monsterName(keys[0])} ${kind === "pain" ? "hurt" : "dies"}`,
-      category: "Monsters",
-      detail: `${Math.round(pitch)} Hz voice${shared.length ? ` — same sound: ${shared.join(", ")}` : ""}`,
-      play: () => play(ENEMY_DEFS[keys[0]].pain),
-    };
-  });
+  return rows;
 }
 
 const ENTRIES: Entry[] = [
@@ -180,24 +177,15 @@ const ENTRIES: Entry[] = [
   { id: "kick-impact", name: "Kick: connects", category: "Weapons", play: W.kickImpact },
 
   // ---- Monsters
-  ...ALERT_KINDS.map((k): Entry => ({ id: `monster-alert-${k}`, name: `${monsterName(k)} alert`, category: "Monsters", detail: "when it first sees you", play: () => M.monsterAlert(k) })),
-  {
-    id: "monster-alert-other", name: "Monster moan (alert)", category: "Monsters", play: () => M.monsterAlert("z"),
-    detail: `every other monster: ${ROSTER.filter((k) => !ALERT_KINDS.includes(k) && !ENEMY_DEFS[k].boss).map(monsterName).join(", ")}, and the bosses`,
-  },
-  ...byPitch("pain", M.painPitch, M.monsterPain),
-  ...byPitch("death", M.deathPitch, M.monsterDeath),
-  { id: "monster-claw", name: "Monster claws you", category: "Monsters", play: M.monsterClaw },
-  { id: "orb-normal", name: "Monster fireball launched", category: "Monsters", detail: "Cacodemon, Cultist, Slaughtaur, Afrit, Reiver, Gargoyle, bosses", play: () => M.orbLaunch("normal") },
-  { id: "orb-heavy", name: "Mancubus fireball launched", category: "Monsters", play: () => M.orbLaunch("heavy") },
-  { id: "orb-toxic", name: "Toxic spit launched", category: "Monsters", play: () => M.orbLaunch("toxic") },
-  { id: "flesh-throw", name: "Flesh torn off and thrown", category: "Monsters", play: M.fleshThrow },
+  ...voiceRows(),
+  { id: "orb-normal", name: "Monster fireball launched", category: "Monsters", detail: "the whoosh, and the Cacodemon's bark (every thrower barks in its own voice)", play: () => M.orbLaunch("normal", "C") },
+  { id: "orb-heavy", name: "Mancubus fireball launched", category: "Monsters", play: () => M.orbLaunch("heavy", "A") },
+  { id: "orb-toxic", name: "Toxic spit launched", category: "Monsters", detail: "the toxic zombie", play: () => M.orbLaunch("toxic", "t") },
   { id: "flesh-hit", name: "Thrown flesh hits you", category: "Monsters", play: M.fleshHitsPlayer },
   { id: "flesh-splat", name: "Thrown flesh splatters", category: "Monsters", play: M.fleshSplat },
   { id: "screamer", name: "Wailer screams (wakes the dead)", category: "Monsters", play: M.screamerCall },
   { id: "lost-soul-charge", name: "Lost soul charges", category: "Monsters", play: M.lostSoulCharge },
   { id: "hound-lunge", name: "Zombie dog lunges", category: "Monsters", play: M.houndLunge },
-  { id: "slam-windup", name: "Brute slam: wind-up", category: "Monsters", play: M.slamWindup },
   { id: "slam-impact", name: "Brute slam: impact", category: "Monsters", play: M.slamImpact },
   { id: "charge-crash", name: "Executioner's charge hits a wall", category: "Monsters", play: M.chargeCrash },
   { id: "wall-splat", name: "Kicked monster hits a wall", category: "Monsters", play: M.wallSplat },
@@ -209,12 +197,8 @@ const ENTRIES: Entry[] = [
   { id: "head-bounce", name: "Severed head bounces", category: "Monsters", play: M.headBounce },
   { id: "head-kicked", name: "Severed head kicked", category: "Monsters", play: M.headKicked },
   { id: "gib-burst", name: "Body bursts into gibs", category: "Monsters", play: M.gibBurst },
-  { id: "boss-wakes", name: "Boss awakens", category: "Monsters", play: M.bossWakes },
-  { id: "boss-roar", name: "Boss roars", category: "Monsters", detail: "two growls, 0.2 s apart", play: () => M.bossRoar() },
-  { id: "boss-dies", name: "Boss dies", category: "Monsters", play: M.bossDies },
   { id: "priest-vanish", name: "Priest vanishes (teleport out)", category: "Monsters", play: M.priestVanish },
   { id: "priest-appear", name: "Priest appears (teleport in)", category: "Monsters", play: M.priestAppear },
-  { id: "priest-summons", name: "Priest calls his flock", category: "Monsters", play: M.priestSummons },
   { id: "shockwave", name: "Shockwave ring", category: "Monsters", play: M.shockwaveRing },
   { id: "debris-warning", name: "Falling debris: warning", category: "Monsters", play: M.debrisWarning },
   { id: "debris-impact", name: "Falling debris: impact", category: "Monsters", play: M.debrisImpact },

@@ -120,7 +120,7 @@ export function wakeBoss(enemy: unknown){
   const bt=el("bossTitle");
   bt.children[0].textContent=e.name!;bt.children[1].textContent=(e.title||EDEF[e.key].title)!;
   bt.style.opacity="1";
-  at(e.x,e.h*.6+(e.fy||0),e.z,()=>bossWakes());
+  at(e.x,e.h*.6+(e.fy||0),e.z,()=>bossWakes(e.key));
   if(e.priest)organSting();
   after(()=>roarFor(e),500);}
 
@@ -128,7 +128,7 @@ ctx.wakeBoss=wakeBoss;
 
 export function roarFor(enemy: unknown){
   const e=enemy as BossBrainEnemy;
-  bossRoar(emit=>at(e.x,e.h*.6+(e.fy||0),e.z,emit));}
+  bossRoar(e.key,emit=>at(e.x,e.h*.6+(e.fy||0),e.z,emit));}
 
 export function cineTick(dt: number){
   if(!world.cine)return;
@@ -195,7 +195,7 @@ export function priestThink(enemy: unknown,dt: number,dist: number,dx: number,dz
               ne.aware=true;ne.alertX=player.px;ne.alertZ=player.pz;
               smoke3d(nx,.6,nz,10);blood(nx,.3,nz,6,1.5);
               break;}}}
-        at(e.x,e.h*.6+(e.fy||0),e.z,()=>priestSummons());
+        at(e.x,e.h*.6+(e.fy||0),e.z,()=>priestSummons(e.key));
         showMsg("THE PRIEST CALLS HIS FLOCK");}}
   }else{
     if(e.ringT<=0){e.ringT=4.5;spawnRing(e.x,e.z);}

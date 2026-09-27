@@ -53,7 +53,7 @@ afterEach(() => vi.useRealTimers());
 
 describe("it lists every sound in the game", () => {
   /** Pure helpers the catalogue exports alongside its sounds: a pitch formula and a roll. They make no sound. */
-  const NOT_SOUNDS = new Set(["painPitch", "deathPitch", "ricochetRoll"]);
+  const NOT_SOUNDS = new Set(["ricochetRoll"]);
 
   it("every function the sound catalogue exports is played by a row", async () => {
     const W = await import("../../src/audio/sounds/weapons");
@@ -88,26 +88,30 @@ describe("it lists every sound in the game", () => {
   // by name (see src/audio/Levels.ts on why it has no level).
   it("…and so is every sound the engine already had a name for, through the catalogue", () => {
     const catalogue = ["monsters", "world"].map((f) => code(join(SRC, "audio", "sounds", `${f}.ts`))).join("\n");
-    for (const name of ["snarl", "wetDoor", "stoneDoor", "bellToll", "organChord", "pianoNote"]) {
+    for (const name of ["wetDoor", "stoneDoor", "bellToll", "organChord", "pianoNote"]) {
       expect(catalogue, name).toMatch(new RegExp(`\\b${name}\\(`));
     }
+    // `snarl`, the old first-sighting bark, is the board's "old" alert since player feedback round 2 Task 4
+    expect(code(join(SRC, "soundboard", "previous", "monsters.ts"))).toMatch(/\bsnarl\(/);
     expect(registrySource).toMatch(/\bstartBossMusic\(\)/);
   });
 
-  it("covers every monster alert: the ten kinds with their own bark, and the moan everyone else makes", () => {
-    const voice = readFileSync(join(SRC, "audio", "Voice.ts"), "utf8");
-    const kinds = [...voice.matchAll(/kind==="(\w)"/g)].map((m) => m[1]);
-    expect(kinds).toHaveLength(10);
-    const alerts = rows.filter((r) => r.id.startsWith("monster-alert-")).map((r) => r.id.slice("monster-alert-".length));
-    expect(alerts.sort()).toEqual([...kinds, "other"].sort());
-  });
-
-  it("names each distinct pain and death cry once, and every monster makes one of them", async () => {
+  // Player feedback round 2 Task 4: every enemy has its own voice
+  // (src/audio/VoiceTable.ts), so the board lists each enemy's — where it
+  // used to list the ten snarl kinds and the moan, and one row per distinct
+  // pain or death pitch.
+  it("covers every enemy's voice: its alert, its pain, its death, and its attack (the priests have no claw)", async () => {
     const { ENEMY_DEFS } = await import("../../src/enemies/EnemyDefs");
-    const { painPitch, deathPitch } = await import("../../src/audio/sounds/monsters");
-    const distinct = (f: (p: number) => number) => new Set(Object.values(ENEMY_DEFS).map((d) => f(d.pain))).size;
-    expect(rows.filter((r) => r.id.startsWith("monster-pain-"))).toHaveLength(distinct(painPitch));
-    expect(rows.filter((r) => r.id.startsWith("monster-death-"))).toHaveLength(distinct(deathPitch));
+    const ids = new Set(rows.map((r) => r.id));
+    for (const [k, d] of Object.entries(ENEMY_DEFS)) {
+      expect(ids.has(`monster-alert-${k}`), k).toBe(true);
+      expect(ids.has(`monster-pain-${k}`), k).toBe(true);
+      expect(ids.has(d.boss ? `boss-dies-${k}` : `monster-death-${k}`), k).toBe(true);
+      expect(ids.has(`monster-attack-${k}`), k).toBe(!d.priest);
+      if (d.boss) for (const id of [`boss-wakes-${k}`, `boss-roar-${k}`]) expect(ids.has(id), id).toBe(true);
+      expect(ids.has(`priest-summons-${k}`), k).toBe(!!d.priest);
+    }
+    expect(rows.filter((r) => r.id.startsWith("monster-alert-"))).toHaveLength(Object.keys(ENEMY_DEFS).length);
   });
 
   it("puts every row in one of the five groups, with a unique id and a unique name", () => {
@@ -276,10 +280,15 @@ describe("old and new, ready for Task 2", () => {
   // (the weapons) registered the first old versions: every report, every
   // weapon's whole reload, the switch, the dry fire and the pump.
   it("a row has Old and New exactly when a task replaced its sound; every other row has one version, \"current\"", () => {
+    // Task 4 (the monsters' voices): every enemy's voice row, the orbs, the lunge, the charge, the scream
+    const VOICE_ROW = /^(monster-(alert|pain|death|attack)|boss-(dies|wakes|roar)|priest-summons|flesh-throw|slam-windup)-\w$/;
     const replaced = [
       ...Array.from({ length: 8 }, (_, i) => `weapon-fire-${i}`), ...Array.from({ length: 8 }, (_, i) => `reload-${i}`),
       "weapon-lower", "weapon-raise", "dry-fire", "shotgun-pump",
+      ...rows.map((r) => r.id).filter((id) => VOICE_ROW.test(id)),
+      "orb-normal", "orb-heavy", "orb-toxic", "screamer", "lost-soul-charge", "hound-lunge",
     ];
+    expect(replaced.length).toBeGreaterThan(20 + 100);
     for (const r of rows) expect(r.versions.map((v) => v.label), r.id).toEqual(replaced.includes(r.id) ? ["old", "new"] : ["current"]);
   });
 

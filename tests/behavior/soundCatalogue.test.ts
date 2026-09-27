@@ -8,6 +8,7 @@ import * as WO from "../../src/audio/sounds/world";
 import * as UI from "../../src/audio/sounds/ui";
 import * as X from "../../src/audio/sounds/explosions";
 import * as P from "../../src/soundboard/previous/weapons";
+import * as OM from "../../src/soundboard/previous/monsters";
 
 /**
  * THE SOUND CATALOGUE IS THE CALL SITES, MOVED — player feedback round 2,
@@ -53,6 +54,17 @@ import * as P from "../../src/soundboard/previous/weapons";
  * `tests/weapons/foley.test.ts`. Likewise round 1's six `gunshot()`
  * reports, whose oracle is `tests/behavior/weaponReport.test.ts`, are
  * checked here as the board's old ones.
+ *
+ * PLAYER FEEDBACK ROUND 2 TASK 4 — THE SAME, FOR THE MONSTERS. Task 4 gave
+ * every enemy a voice (`src/audio/VoiceTable.ts`, `src/audio/Speak.ts`):
+ * the alert, pain, attack and death, the dog's lunge, the lost soul's
+ * charge, the brute's wind-up, the wailer's scream, the orbs' launch, the
+ * flesh-flinger's throw, and the bosses' waking, roar, summons and death no
+ * longer match any reference call site, on purpose. Their cases below run
+ * the board's "old" versions (`src/soundboard/previous/monsters.ts`, the
+ * catalogue functions as they stood at `f198dea`) against the same
+ * reference sites. The voices are pinned by
+ * `tests/audio/monsterVoices.test.ts`.
  */
 
 interface Case {
@@ -89,10 +101,10 @@ const CASES: Case[] = [
   { name: "holyCrossExplosion", site: "boom(.7)", module: X.holyCrossExplosion },
   { name: "afritDeathExplosion", site: "boom(.8)", module: X.afritDeathExplosion },
   // ---- monsters
-  { name: 'orbLaunch("toxic")', site: 'blip(tox?420:ot==="manc"?180:300,.2,"sawtooth",.08,90)', vars: { tox: true, ot: "cult" }, module: () => M.orbLaunch("toxic") },
-  { name: 'orbLaunch("heavy")', site: 'blip(tox?420:ot==="manc"?180:300,.2,"sawtooth",.08,90)', vars: { tox: false, ot: "manc" }, module: () => M.orbLaunch("heavy") },
-  { name: 'orbLaunch("normal")', site: 'blip(tox?420:ot==="manc"?180:300,.2,"sawtooth",.08,90)', vars: { tox: false, ot: "caco" }, module: () => M.orbLaunch("normal") },
-  { name: "fleshThrow", site: "gurgle(.22,.32);growl(150,.22,.22);", module: M.fleshThrow },
+  { name: 'old orbLaunch("toxic")', site: 'blip(tox?420:ot==="manc"?180:300,.2,"sawtooth",.08,90)', vars: { tox: true, ot: "cult" }, module: () => OM.oldOrbLaunch("toxic") },
+  { name: 'old orbLaunch("heavy")', site: 'blip(tox?420:ot==="manc"?180:300,.2,"sawtooth",.08,90)', vars: { tox: false, ot: "manc" }, module: () => OM.oldOrbLaunch("heavy") },
+  { name: 'old orbLaunch("normal")', site: 'blip(tox?420:ot==="manc"?180:300,.2,"sawtooth",.08,90)', vars: { tox: false, ot: "caco" }, module: () => OM.oldOrbLaunch("normal") },
+  { name: "old fleshThrow", site: "gurgle(.22,.32);growl(150,.22,.22);", module: OM.oldFleshThrow },
   { name: "fleshHitsPlayer", site: "gurgle(.2,.35);", module: M.fleshHitsPlayer },
   { name: "fleshSplat", site: "gurgle(.16,.25);", module: M.fleshSplat },
   { name: "shockwaveRing", site: 'bang(.3,.5,250);blip(60,.5,"sawtooth",.16,30,true);', module: M.shockwaveRing },
@@ -100,29 +112,31 @@ const CASES: Case[] = [
   { name: "debrisImpact", site: "bang(.25,.5,400)", module: M.debrisImpact },
   { name: "wallSplat", site: "bang(.18,.5,600)", module: M.wallSplat },
   { name: "chargeCrash", site: "bang(.2,.5,400)", module: M.chargeCrash },
-  { name: "screamerCall", site: 'growl(180,.9,.4,true);blip(500,.7,"sawtooth",.1,180,true);', module: M.screamerCall },
-  { name: "lostSoulCharge", site: 'blip(700,.3,"sawtooth",.12,1400)', module: M.lostSoulCharge },
-  { name: "slamWindup", site: 'blip(80,.4,"sawtooth",.14,40)', module: M.slamWindup },
+  { name: "old screamerCall", site: 'growl(180,.9,.4,true);blip(500,.7,"sawtooth",.1,180,true);', module: OM.oldScreamerCall },
+  { name: "old lostSoulCharge", site: 'blip(700,.3,"sawtooth",.12,1400)', module: OM.oldLostSoulCharge },
+  { name: "old slamWindup", site: 'blip(80,.4,"sawtooth",.14,40)', module: OM.oldSlamWindup },
   { name: "slamImpact", site: "bang(.3,.6,300)", module: M.slamImpact },
-  { name: "houndLunge", site: 'blip(500,.2,"sawtooth",.1,260)', module: M.houndLunge },
-  { name: "monsterClaw", site: 'blip(140,.12,"sawtooth",.1,60)', module: M.monsterClaw },
-  { name: "bossWakes", site: 'blip(40,1.6,"sawtooth",.2,30,true);bang(.5,.4,300);', module: M.bossWakes },
-  { name: "bossRoar", site: "growl(rnd(42,60),1.0,.6,true);setTimeout(()=>growl(rnd(50,70),.6,.4,true),200);", module: () => M.bossRoar() },
+  { name: "old houndLunge", site: 'blip(500,.2,"sawtooth",.1,260)', module: OM.oldHoundLunge },
+  { name: "old monsterClaw", site: 'blip(140,.12,"sawtooth",.1,60)', module: OM.oldMonsterClaw },
+  { name: "old bossWakes", site: 'blip(40,1.6,"sawtooth",.2,30,true);bang(.5,.4,300);', module: OM.oldBossWakes },
+  { name: "old bossRoar", site: "growl(rnd(42,60),1.0,.6,true);setTimeout(()=>growl(rnd(50,70),.6,.4,true),200);", module: OM.oldBossRoar },
   { name: "priestVanish", site: 'blip(700,.25,"sine",.1,140,true)', module: M.priestVanish },
   { name: "priestAppear", site: 'blip(140,.25,"sine",.12,700,true)', module: M.priestAppear },
-  { name: "priestSummons", site: 'blip(180,.6,"sawtooth",.12,60,true)', module: M.priestSummons },
+  { name: "old priestSummons", site: 'blip(180,.6,"sawtooth",.12,60,true)', module: OM.oldPriestSummons },
   { name: "shieldBlock", site: "bang(.04,.3,3000,800)", module: M.shieldBlock },
   { name: "armourPlateHit", site: "bang(.05,.32,2800,700)", module: M.armourPlateHit },
   { name: "armourShatter", site: "bang(.15,.35,900)", module: M.armourShatter },
   // pain/death: one low stat (clamped up), one mid, one high (clamped down for pain's 360 / death's 200).
-  ...[40, 240, 1200].map((p): Case => ({ name: `monsterPain(${p})`, site: "pain(clamp(e.pain*.35,70,360),.08+Math.random()*.04)", vars: { e: { pain: p } }, module: () => M.monsterPain(p) })),
-  ...[40, 240, 1200].map((p): Case => ({ name: `monsterDeath(${p})`, site: "deathCry(clamp(e.pain*.3,42,200))", vars: { e: { pain: p } }, module: () => M.monsterDeath(p) })),
+  // the old first-sighting bark: every snarl branch, and the generic moan
+  ...["C", "A", "L", "j", "n", "k", "q", "R", "y", "s", "z"].map((k): Case => ({ name: `old monsterAlert(${k})`, site: "snarl(e.key)", vars: { e: { key: k } }, module: () => OM.oldMonsterAlert(k) })),
+  ...[40, 240, 1200].map((p): Case => ({ name: `old monsterPain(${p})`, site: "pain(clamp(e.pain*.35,70,360),.08+Math.random()*.04)", vars: { e: { pain: p } }, module: () => OM.oldMonsterPain(p) })),
+  ...[40, 240, 1200].map((p): Case => ({ name: `old monsterDeath(${p})`, site: "deathCry(clamp(e.pain*.3,42,200))", vars: { e: { pain: p } }, module: () => OM.oldMonsterDeath(p) })),
   { name: "limbTorn", site: "gurgle(.25,.4)", module: M.limbTorn },
   { name: "gibBurst", site: "bang(.2,.45,800);gurgle(.45,.5);", module: M.gibBurst },
   { name: "decapitation", site: "gurgle(.32,.45)", module: M.decapitation },
   { name: "headBounce", site: "gurgle(.1,.18)", module: M.headBounce },
   { name: "headKicked", site: "bang(.08,.3,500)", module: M.headKicked },
-  { name: "bossDies", site: 'bang(.6,.7,400);blip(50,1.4,"sawtooth",.2,28,true);', module: M.bossDies },
+  { name: "old bossDies", site: 'bang(.6,.7,400);blip(50,1.4,"sawtooth",.2,28,true);', module: OM.oldBossDies },
   // ---- world
   ...[[false, false], [true, false], [false, true], [true, true]].map(([sprinting, marble]): Case => ({
     name: `footstep(${sprinting},${marble})`,

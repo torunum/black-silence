@@ -198,7 +198,7 @@ export function killEnemy(enemy: unknown, finalDmg: number, info: DamageInfo) {
     if(S.totGibs===10)ach(ACHIEVEMENTS.organ,S.ach);
     if(Math.random()<.35)dropAmmo(e.x,e.z);
     return;}
-  at(e.x,e.h*.6+(e.fy||0),e.z,()=>monsterDeath(e.pain));
+  at(e.x,e.h*.6+(e.fy||0),e.z,()=>monsterDeath(e.key));
   e.deathT=0;
   if(info.head&&PX[e.key].head>0){
     e.deathKind=2;
@@ -261,7 +261,7 @@ export function dropAmmo(x: number, z: number) {
 export function bossDeath(e: KillEnemy) {
   stopBossMusic();
   shake(.7);screenShake.hitStop=Math.max(screenShake.hitStop,.12);
-  at(e.x,e.h*.6+(e.fy||0),e.z,()=>bossDies());
+  at(e.x,e.h*.6+(e.fy||0),e.z,()=>bossDies(e.key));
   spawnGibs(e.x,e.h*.6,e.z,10,5,e.stone);
   addPool(e.x,e.z,1.8);
   e.deathKind=1;e.deathT=0;e.deathDir=Math.random()<.5?1:-1;

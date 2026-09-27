@@ -151,7 +151,8 @@ function oscillator(t: number, type: OscillatorType, f: number, to: number | und
   return o;
 }
 
-function layer(out: AudioNode, t: number, l: Layer): void {
+/** Builds one layer into `out`, starting at `t` — `play` above, and `./Speak.ts` for the layers under a voice. */
+export function layer(out: AudioNode, t: number, l: Layer): void {
   const end = t + envEnd(l.env) + 0.02;
   // the source(s), into the head of the chain
   const head = ctx().createGain();

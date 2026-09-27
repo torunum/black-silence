@@ -277,7 +277,7 @@ export function enemyTick(dt: number){
           shake(.35);at(e.x,e.h*.6+(e.fy||0),e.z,()=>slamImpact());smoke3d(e.x,.3,e.z,10);
           if(Math.hypot(player.px-e.x,player.pz-e.z)<3.1){damagePlayer(24);
             player.vx+=(player.px-e.x)*3;player.vz+=(player.pz-e.z)*3;}},0.480);
-        at(e.x,e.h*.6+(e.fy||0),e.z,()=>slamWindup());}
+        at(e.x,e.h*.6+(e.fy||0),e.z,()=>slamWindup(e.key));}
       /* dog lunge */
       if(e.lunge&&dist>2&&dist<4.5&&e.lungeT<=0){
         e.lungeT=2.6;e.kx=dx/dist*9;e.kz=dz/dist*9;
@@ -298,7 +298,7 @@ export function enemyTick(dt: number){
         if(!moving){moving=moveEnemy(e,dx/dist,dz/dist,spd*.7,dt);
           if(Math.random()<.05)e.flank*=-1;}}
       if(dist<1.55&&e.cool<=0&&Math.abs((e.fy||0)-(player.pyy-EYE))<1.3){e.cool=1.0;e.atkAnim=.22;damagePlayer(e.mel);
-        at(e.x,e.h*.6+(e.fy||0),e.z,()=>monsterClaw());}
+        at(e.x,e.h*.6+(e.fy||0),e.z,()=>monsterClaw(e.key));}
     }else if(e.alertX>=0){
       const ax=e.alertX-e.x,az=e.alertZ-e.z,ad=Math.hypot(ax,az);
       if(ad>1){moving=moveEnemy(e,ax/ad,az/ad,spd*.7,dt);}
