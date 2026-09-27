@@ -1,7 +1,9 @@
 import { ctx, echoBus } from "./AudioEngine";
-import { bang, blip } from "./Sfx";
-import { gurgle, noiseBuf } from "./Voice";
+import { blip } from "./Sfx";
+import { gurgle } from "./Voice";
+import { noise, noiseOffset } from "./Noise";
 import { after } from "../core/Timers";
+import { bossBeat } from "./sounds/music";
 
 /**
  * AMBIENT STINGERS — doors, bells, the piano and the boss music pulse.
@@ -11,8 +13,11 @@ import { after } from "../core/Timers";
  * AC/masterG/echoG references replaced one-for-one by calls to
  * AudioEngine's ctx()/masterBus()/echoBus() accessors — every frequency,
  * filter Q, envelope time and gain is otherwise untouched. wetDoor and
- * stoneDoor share Voice.ts's noiseBuf/gurgle, the same "wet, organic, not
- * chiptune" synthesis docs/direction.md calls out for the monster voices.
+ * stoneDoor share the monster voices' noise and Voice.ts's gurgle, the same
+ * "wet, organic, not chiptune" synthesis docs/direction.md calls out for the
+ * monster voices. Since player feedback round 2 Task 1 (KNOWN-22) that noise
+ * is `./Noise.ts`'s shared buffer played at an offset, not a fresh
+ * Math.random() buffer per door — the one change from the reference here.
  *
  * Every function keeps the reference's `if (!AC) return;` early exit (as
  * `if (!ctx()) return;`): the game calls these on paths that can run before
@@ -36,11 +41,11 @@ export function wetDoor(): void {
   if(!ctx())return;const t0=ctx().currentTime,dur=1.1;
   const out=ctx().createGain();out.gain.value=.5;out.connect(echoBus());
   // squelch: lowpassed noise sweeping down (suction/tearing)
-  const ns=ctx().createBufferSource();ns.buffer=noiseBuf(dur);
+  const ns=ctx().createBufferSource();ns.buffer=noise();
   const lp=ctx().createBiquadFilter();lp.type="lowpass";
   lp.frequency.setValueAtTime(1400,t0);lp.frequency.exponentialRampToValueAtTime(180,t0+dur);
   const ng=ctx().createGain();ng.gain.value=.6;
-  ns.connect(lp);lp.connect(ng);ng.connect(out);ns.start(t0);ns.stop(t0+dur);
+  ns.connect(lp);lp.connect(ng);ng.connect(out);ns.start(t0,noiseOffset(dur));ns.stop(t0+dur);
   // low organic groan underneath
   const o=ctx().createOscillator();o.type="sawtooth";
   o.frequency.setValueAtTime(60,t0);o.frequency.linearRampToValueAtTime(38,t0+dur);
@@ -54,11 +59,11 @@ export function wetDoor(): void {
 export function stoneDoor(): void {
   if(!ctx())return;const t0=ctx().currentTime,dur=.9;
   const out=ctx().createGain();out.gain.value=.45;out.connect(echoBus());
-  const ns=ctx().createBufferSource();ns.buffer=noiseBuf(dur);
+  const ns=ctx().createBufferSource();ns.buffer=noise();
   const bp=ctx().createBiquadFilter();bp.type="bandpass";bp.Q.value=2;
   bp.frequency.setValueAtTime(300,t0);bp.frequency.linearRampToValueAtTime(90,t0+dur);
   const ng=ctx().createGain();ng.gain.value=.5;
-  ns.connect(bp);bp.connect(ng);ng.connect(out);ns.start(t0);ns.stop(t0+dur);
+  ns.connect(bp);bp.connect(ng);ng.connect(out);ns.start(t0,noiseOffset(dur));ns.stop(t0+dur);
   const o=ctx().createOscillator();o.type="square";
   o.frequency.setValueAtTime(44,t0);o.frequency.linearRampToValueAtTime(30,t0+dur);
   const og=ctx().createGain();og.gain.value=.3;o.connect(og);og.connect(out);
@@ -78,11 +83,18 @@ export function pianoNote(midi: number): void {
     g.gain.setValueAtTime(v,ctx().currentTime);
     g.gain.exponentialRampToValueAtTime(.001,ctx().currentTime+1.4);
     o.connect(g);g.connect(echoBus());o.start();o.stop(ctx().currentTime+1.4);});}
+/**
+ * The boss music pulse: one beat every 300 ms, from the first call until
+ * `stopBossMusic`. The guard and the interval are the reference's; since
+ * player feedback round 2 Task 5 each beat is `bossBeat` (`./sounds/music.ts`:
+ * a drum and a bass note, at a level of its own) instead of the
+ * reference's bare noise thumps and 49 Hz saw — which are on the sound
+ * board as "old" (`src/soundboard/previous/world.ts`, where
+ * `tests/fidelity.test.ts` still compares them with the reference).
+ */
 export function startBossMusic(): void {if(!ctx()||bossPulse)return;
   let beat=0;
   bossPulse=setInterval(()=>{
-    bang(.09,.22,140);
-    if(beat%2===1)bang(.05,.1,900,300);
-    if(beat%4===3)blip(49,.25,"sawtooth",.07,46);
+    bossBeat(beat);
     beat++;},300);}
 export function stopBossMusic(): void {if(bossPulse){clearInterval(bossPulse);bossPulse=null;}}

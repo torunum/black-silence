@@ -508,6 +508,26 @@ function denormalizeAudioAccessors(src: string): string {
     .replace(/\bafter\(/g, "setTimeout(");
 }
 
+/**
+ * Reverses player feedback round 2 Task 1's three substitutions — sound
+ * draws no dice (`docs/superpowers/plans/2026-09-26-player-feedback-2-sound.md`,
+ * `docs/known-issues.md` KNOWN-22). Where the reference built a fresh
+ * random buffer per play (`ns.buffer=noiseBuf(dur)`) and started it
+ * (`ns.start(t0)`), the port plays the shared noise bank at an offset
+ * (`ns.buffer=noise()` ... `ns.start(t0,noiseOffset(dur))`); where the
+ * reference drew jitter from `Math.random()`, the port draws it from
+ * `soundRandom()`. Each is a one-to-one textual substitution in the bodies
+ * below — every one of them names its duration `dur` — so reversing all
+ * three must reproduce the reference byte for byte. Anything else that
+ * differs is a real fidelity break.
+ */
+function denormalizeSoundDice(src: string): string {
+  return src
+    .replace(/\.buffer=noise\(\);/g, ".buffer=noiseBuf(dur);")
+    .replace(/\.start\(t0,noiseOffset\(dur\)\);/g, ".start(t0);")
+    .replace(/\bsoundRandom\(\)/g, "Math.random()");
+}
+
 describe("AudioEngine/Sfx vs reference", () => {
   // AC, masterG, echoG and masterVol are bare globals in the reference;
   // Task 5 (src/audio/AudioEngine.ts) turns them into private module state
@@ -576,12 +596,24 @@ describe("Voice/Ambient vs reference", () => {
   // Same accessor rewiring as AudioEngine/Sfx above: the reference's bare
   // AC/masterG/echoG become ctx()/masterBus()/echoBus() calls, reversed here
   // before comparison.
-  it("noiseBuf's body matches the reference exactly once accessor calls are reversed — this generator has no ctx() guard of its own in the reference either; only called from functions that already checked", () => {
-    const moduleSource = readModuleSource("src/audio/Voice.ts");
-    const refChunk = refSource(REF.noiseBuf);
-    expect(denormalizeAudioAccessors(extractFunctionBody(moduleSource, "noiseBuf"))).toBe(
-      extractFunctionBody(refChunk, "noiseBuf"),
-    );
+  // noiseBuf used to be compared byte-for-byte here. Player feedback round
+  // 2 Task 1 retired it on purpose: it filled a fresh buffer from the
+  // game's own Math.random() for every growl, gurgle, pain cry and door,
+  // which is how sound came to move gameplay (KNOWN-22). Its four callers
+  // below now play src/audio/Noise.ts's shared bank at an offset, and each
+  // is still compared against the reference with that substitution — and
+  // only that — reversed (denormalizeSoundDice).
+  it("noiseBuf is retired, and was exactly the per-play Math.random() fill Task 1 removed", async () => {
+    const voice = await import("../src/audio/Voice");
+    expect(voice).not.toHaveProperty("noiseBuf");
+    for (const file of ["Voice.ts", "Ambient.ts", "Sfx.ts"]) {
+      expect(readModuleSource(`src/audio/${file}`)).not.toMatch(/\bnoiseBuf\(/);
+    }
+    // What the reference's generator was, so the claim above cannot drift:
+    // one fresh buffer per call, every sample a Math.random() draw.
+    const refBody = extractFunctionBody(refSource(REF.noiseBuf), "noiseBuf");
+    expect(refBody).toContain("AC.createBuffer(");
+    expect(refBody).toContain("d[i]=Math.random()*2-1");
   });
 
   // growl's and snarl's former byte-identity tests (Plan 0B) are retired:
@@ -593,22 +625,22 @@ describe("Voice/Ambient vs reference", () => {
   // docs/known-issues.md KNOWN-5.
   //
   // gurgle, pain, deathCry, wetDoor, stoneDoor, bellToll, organChord,
-  // pianoNote, startBossMusic, stopBossMusic and noiseBuf below have no
+  // pianoNote, startBossMusic and stopBossMusic below have no
   // behavior-test coverage of their own, so their body-identity comparisons
   // stay — removing them would leave those functions with no fidelity
   // coverage at all.
-  it("gurgle's body matches the reference exactly once accessor calls are reversed", () => {
+  it("gurgle's body matches the reference exactly once accessor calls and Task 1's sound dice are reversed", () => {
     const moduleSource = readModuleSource("src/audio/Voice.ts");
     const refChunk = refSource(REF.gurgle);
-    expect(denormalizeAudioAccessors(extractFunctionBody(moduleSource, "gurgle"))).toBe(
+    expect(denormalizeSoundDice(denormalizeAudioAccessors(extractFunctionBody(moduleSource, "gurgle")))).toBe(
       extractFunctionBody(refChunk, "gurgle"),
     );
   });
 
-  it("pain's body matches the reference exactly once accessor calls are reversed", () => {
+  it("pain's body matches the reference exactly once accessor calls and Task 1's sound dice are reversed", () => {
     const moduleSource = readModuleSource("src/audio/Voice.ts");
     const refChunk = refSource(REF.pain);
-    expect(denormalizeAudioAccessors(extractFunctionBody(moduleSource, "pain"))).toBe(
+    expect(denormalizeSoundDice(denormalizeAudioAccessors(extractFunctionBody(moduleSource, "pain")))).toBe(
       extractFunctionBody(refChunk, "pain"),
     );
   });
@@ -621,18 +653,18 @@ describe("Voice/Ambient vs reference", () => {
     );
   });
 
-  it("wetDoor's body matches the reference exactly once accessor calls and the after()/setTimeout() timer wrapper are reversed", () => {
+  it("wetDoor's body matches the reference exactly once accessor calls, the after()/setTimeout() timer wrapper and Task 1's sound dice are reversed", () => {
     const moduleSource = readModuleSource("src/audio/Ambient.ts");
     const refChunk = refSource(REF.wetDoor);
-    expect(denormalizeAudioAccessors(extractFunctionBody(moduleSource, "wetDoor"))).toBe(
+    expect(denormalizeSoundDice(denormalizeAudioAccessors(extractFunctionBody(moduleSource, "wetDoor")))).toBe(
       extractFunctionBody(refChunk, "wetDoor"),
     );
   });
 
-  it("stoneDoor's body matches the reference exactly once accessor calls are reversed", () => {
+  it("stoneDoor's body matches the reference exactly once accessor calls and Task 1's sound dice are reversed", () => {
     const moduleSource = readModuleSource("src/audio/Ambient.ts");
     const refChunk = refSource(REF.stoneDoor);
-    expect(denormalizeAudioAccessors(extractFunctionBody(moduleSource, "stoneDoor"))).toBe(
+    expect(denormalizeSoundDice(denormalizeAudioAccessors(extractFunctionBody(moduleSource, "stoneDoor")))).toBe(
       extractFunctionBody(refChunk, "stoneDoor"),
     );
   });
@@ -661,8 +693,18 @@ describe("Voice/Ambient vs reference", () => {
     ).toBe(extractFunctionBody(refChunk, "pianoNote"));
   });
 
-  it("startBossMusic's body matches the reference exactly once accessor calls are reversed, including the bossPulse guard that stops a second call from stacking a second interval", () => {
-    const moduleSource = readModuleSource("src/audio/Ambient.ts");
+  // PLAYER FEEDBACK ROUND 2 TASK 5 — A DELIBERATE DIVERGENCE
+  // (docs/superpowers/plans/2026-09-26-player-feedback-2-sound.md). The game's
+  // startBossMusic keeps the reference's guard and 300 ms interval, but each
+  // beat is now `bossBeat` (src/audio/sounds/music.ts), a drum at a level of
+  // its own, instead of the reference's bang/bang/blip. The reference's body
+  // lives on, verbatim, as the sound board's "old" boss music
+  // (src/soundboard/previous/world.ts), and this pins that copy, so "old" on
+  // the board is the reference's pulse. The game's guard is pinned by
+  // tests/audio/Voice.test.ts's "boss music" block, its timing by
+  // tests/audio/worldSounds.test.ts.
+  it("the board's old startBossMusic body matches the reference exactly once accessor calls are reversed, including the bossPulse guard that stops a second call from stacking a second interval", () => {
+    const moduleSource = readModuleSource("src/soundboard/previous/world.ts");
     const refChunk = refSource(REF.startBossMusic);
     expect(denormalizeAudioAccessors(extractFunctionBody(moduleSource, "startBossMusic"))).toBe(
       extractFunctionBody(refChunk, "startBossMusic"),

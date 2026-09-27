@@ -2,6 +2,7 @@ import type { Builder } from "../builder";
 import { MAT } from "../palette";
 import { cup, fist, forearm } from "../hands";
 import { hump, type Pose, type WeaponArt } from "../pose";
+import { SNIPER } from "../phases";
 
 /**
  * Slot 4, BMG SNIPER — a heavy bolt-action anti-materiel rifle: a long,
@@ -42,15 +43,15 @@ export const bmgSniper: WeaponArt = {
 
     // bolt cycle: 0..0.2 nothing (kick), lift, back, forward, down
     const a = pose.action;
-    let lift = hump(a, 0.25, 0.95, 0.12), back = hump(a, 0.37, 0.83, 0.2);
-    if (r >= 0) { lift = hump(r, 0.08, 0.95, 0.06); back = hump(r, 0.12, 0.9, 0.08); }
+    let lift = hump(a, ...SNIPER.lift), back = hump(a, ...SNIPER.back);
+    if (r >= 0) { lift = hump(r, ...SNIPER.reloadLift); back = hump(r, ...SNIPER.reloadBack); }
 
     // receiver, grip, magazine (the stock is down at the shoulder, out of frame)
     b.cbox(-0.024, -0.005, -0.1, 0.024, 0.055, 0.16, 0.007, MAT.BLUED);
     b.box(0.022, 0.018, -0.09, 0.026, 0.04, 0.04, MAT.BLACK);                   // bolt raceway slot
     b.ext([[-0.03, 0.0], [0.004, 0.0], [-0.012, -0.1], [-0.044, -0.104], [-0.05, -0.02]], -0.017, 0.017, MAT.BLACK);
     b.ext([[0.0, 0.0], [0.06, 0.0], [0.06, -0.008], [0.046, -0.028], [0.012, -0.03], [0.006, -0.024], [0.042, -0.022], [0.052, -0.008], [0.0, -0.008]], -0.004, 0.004, MAT.IRON);
-    const magOut = r < 0 ? 0 : hump(r, 0.26, 0.64, 0.1);
+    const magOut = r < 0 ? 0 : hump(r, ...SNIPER.mag);
     b.push(); b.translate(-0.08 * magOut, -0.18 * magOut, 0.06);
     b.cbox(-0.02, -0.07, -0.04, 0.02, 0.0, 0.04, 0.004, MAT.IRON);
     if (magOut > 0.05) {

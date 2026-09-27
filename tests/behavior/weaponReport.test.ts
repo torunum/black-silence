@@ -3,11 +3,13 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { evalReference, REF, refSource } from "../support/reference";
 import { recordingAudioContext, type AudioEvent } from "../support/recordingAudio";
 import { seedRandom } from "../support/seededRandom";
-import { expectCallLogEqual } from "../support/expectCallLogEqual";
+import { compareSoundLogs, resetSoundDice, soundDiceChunks, soundDiceGlobals, withoutNoiseSource } from "../support/soundOracle";
 import { installDomStubs, loadGameHtml } from "../support/domStubs";
 import { WEAPON_STATS } from "../../src/weapons/definitions";
 import type * as WeaponStateModule from "../../src/weapons/WeaponState";
 import type * as AudioEngineModule from "../../src/audio/AudioEngine";
+import { previousMix } from "../../src/soundboard/previous/mix";
+import { OLD_FIRE, OLD_REPORTS } from "../../src/soundboard/previous/weapons";
 
 /**
  * THE WEAPON REPORT — player feedback round 1, task 4, 2026-09-17.
@@ -27,7 +29,9 @@ import type * as AudioEngineModule from "../../src/audio/AudioEngine";
  * changed a dozen sounds the player did not name. The rebuild is a NEW
  * function plus a rewiring of the weapon sound table.
  *
- * And that table — `WEAPON_SOUNDS` in `src/weapons/WeaponState.ts` — had NO
+ * And that table — `WEAPON_SOUNDS` in `src/weapons/WeaponState.ts` (since
+ * player feedback round 2 Task 1, `WEAPON_FIRE_SOUNDS` in
+ * `src/audio/sounds/weapons.ts`) — had NO
  * oracle of any kind before this file. `tests/fidelity.test.ts`'s
  * "WEAPON_STATS vs. reference" case compares "every field except snd, slot
  * for slot", by name: the eight `snd` closures were the one part of the
@@ -46,6 +50,30 @@ import type * as AudioEngineModule from "../../src/audio/AudioEngine";
  * old durations, old peak gains and the old filter set are all read back
  * out of the reference's own log rather than written down here, so nothing
  * in this file can go stale against a number in a comment.
+ *
+ * PLAYER FEEDBACK ROUND 2, TASK 1 — SOUND DRAWS NO DICE. Every noise
+ * sound, the weapon reports included, now plays one shared noise buffer at
+ * an offset instead of filling a fresh buffer from `Math.random()`, and
+ * draws its jitter from sound's own generator (`docs/known-issues.md`
+ * KNOWN-22). The comparisons below therefore run with the port's dice in
+ * the reference's hand and set the noise source aside only after checking
+ * it — `tests/support/soundOracle.ts`'s header says exactly what that
+ * means. The one assertion that read per-play buffer lengths now reads
+ * per-play noise durations instead; it asserts the same claim.
+ *
+ * PLAYER FEEDBACK ROUND 2, TASK 3 — THE GAME NO LONGER PLAYS THIS REPORT.
+ * Task 3 (`docs/superpowers/plans/2026-09-26-player-feedback-2-sound.md`)
+ * replaced all eight weapon reports with layered designs
+ * (`src/audio/sounds/weapons.ts`, pinned by
+ * `tests/audio/weaponSounds.test.ts`), a deliberate divergence from both
+ * the reference and round 1. Round 1's report survives as the sound board's
+ * "old" button for each gun (`src/soundboard/previous/weapons.ts`:
+ * `gunshot()`, `OLD_REPORTS`, and `OLD_FIRE`, the eight firing sounds as
+ * the game played them at `f9a1ac0`). This file still holds round 1's
+ * claims — now about that "old" version, which is what the owner hears
+ * when they compare — so the record of what round 1 changed, and the
+ * reference's own shape, stay pinned — and one case checks the game's
+ * weapon table really plays the new ones.
  *
  * WHAT THIS FILE CANNOT DO, stated plainly. It is a call-log comparison,
  * exactly like every other oracle in `tests/behavior/` (KNOWN-5 item 5): it
@@ -73,8 +101,8 @@ beforeAll(async () => {
   AudioEngine = await import("../../src/audio/AudioEngine");
 });
 
-/** Same chunk set as tests/behavior/audio.test.ts, plus REF.weapons — whose `snd` closures call bang/blip/growl by bare name and so must share that one vm script's lexical scope. */
-const CHUNKS = [
+/** Same chunk set as tests/behavior/audio.test.ts, plus REF.weapons — whose `snd` closures call bang/blip/growl by bare name and so must share that one vm script's lexical scope. Fill loops rerouted as in soundOracle.ts. */
+const CHUNKS = soundDiceChunks([
   refSource(REF.audioState),
   refSource(REF.audioInit),
   refSource(REF.blip),
@@ -83,7 +111,7 @@ const CHUNKS = [
   refSource(REF.noiseBuf),
   refSource(REF.growl),
   refSource(REF.weapons),
-];
+]);
 
 interface RefBundle {
   audioInit: () => void;
@@ -98,14 +126,14 @@ function constructorReturning(target: unknown): new () => unknown {
   return Ctor as unknown as new () => unknown;
 }
 
-/** Records the reference's own `WEAPONS[slot].snd()` — the OLD report — with Math.random seeded and restored in a finally. */
+/** Records the reference's own `WEAPONS[slot].snd()` — the OLD report — rolling the port's sound dice (see the module doc comment). */
 function recordReference(slot: number, wrap?: (emit: () => void) => void): AudioEvent[] {
   const { ctx, events } = recordingAudioContext();
   const restoreRandom = seedRandom(900 + slot);
   try {
     const ref = evalReference<RefBundle>(CHUNKS, "({audioInit,WEAPONS})", {
       window: { AudioContext: constructorReturning(ctx) },
-      Math,
+      ...soundDiceGlobals(900 + slot),
     });
     ref.audioInit();
     const baseline = events.length;
@@ -124,10 +152,13 @@ function recordModule(slot: number, wrap?: (emit: () => void) => void): AudioEve
   const previous = (globalThis as unknown as { AudioContext?: unknown }).AudioContext;
   (globalThis as unknown as { AudioContext: unknown }).AudioContext = constructorReturning(ctx);
   const restoreRandom = seedRandom(900 + slot);
+  resetSoundDice(900 + slot);
   try {
-    AudioEngine.audioInit();
+    // On the board's "Old mix" — the reference's graph (round 2 Task 2; see
+    // tests/support/soundOracle.ts's "The mix is set aside too").
+    AudioEngine.audioInit({ mix: previousMix });
     const baseline = events.length;
-    const emit = () => WeaponState.WEAPONS[slot].snd();
+    const emit = () => OLD_FIRE[slot]();
     if (wrap) wrap(emit);
     else emit();
     return events.slice(baseline);
@@ -171,6 +202,19 @@ const peakGainSum = (events: AudioEvent[]): number =>
 /** Every buffer's sample count, read off `createBuffer(channels, length, sampleRate)`'s logged arguments. */
 const bufferLengths = (events: AudioEvent[]): number[] => createArgs(events, "AudioBuffer").map((a) => a[1] as number);
 
+/** How long each noise play lasts, in seconds: from its `start(when, offset)` to its `stop(t)`. The port's noise is a shared buffer, so its length says nothing; the play does. */
+function noisePlaySeconds(events: AudioEvent[]): number[] {
+  const sources = new Set(created(events, "AudioBufferSourceNode"));
+  const starts = new Map<string, number>();
+  const out: number[] = [];
+  for (const e of events) {
+    if (!sources.has(e.detail.node as string)) continue;
+    if (e.kind === "start") starts.set(e.detail.node as string, ((e.detail.args as number[])[0]) ?? 0);
+    if (e.kind === "stop") out.push((e.detail.args as number[])[0] - (starts.get(e.detail.node as string) ?? 0));
+  }
+  return out;
+}
+
 /**
  * The set of source nodes (buffer sources and oscillators) whose signal
  * reaches `target` by following logged `connect` edges. Used to prove that
@@ -212,12 +256,24 @@ describe("which weapon reports diverge from the reference at all", () => {
     // checked rather than asserted, and a seventh slot quietly picking up a
     // gunshot() (or a sixth quietly losing one) fails here by name.
     const diverged = WEAPON_STATS.map((_w, slot) => slot).filter((slot) => {
-      const ref = recordReference(slot);
-      const mod = recordModule(slot);
+      // Compared with the noise source set aside: since round 2 Task 1 every
+      // slot plays shared noise, so a raw comparison would call all eight
+      // "diverged" and prove nothing. compareSoundLogs is what the
+      // unchanged-slot tests below hold those two to.
+      const ref = withoutNoiseSource(recordReference(slot));
+      const mod = withoutNoiseSource(recordModule(slot));
       return JSON.stringify(mod) !== JSON.stringify(ref);
     });
     expect(diverged).toEqual(BALLISTIC.map((w) => w.i));
-    expect(diverged).toEqual(WeaponState.REBUILT_REPORT_SLOTS);
+    expect(diverged).toEqual(Object.keys(OLD_REPORTS).map(Number));
+  });
+
+  it("round 2 Task 3: the game no longer plays any of these — every slot's snd is its new catalogue report", async () => {
+    const W = await import("../../src/audio/sounds/weapons");
+    for (let slot = 0; slot < WEAPON_STATS.length; slot++) {
+      expect(WeaponState.WEAPONS[slot].snd, `slot ${slot}`).toBe(W.WEAPON_FIRE_SOUNDS[slot]);
+      expect(WeaponState.WEAPONS[slot].snd, `slot ${slot}`).not.toBe(OLD_FIRE[slot]);
+    }
   });
 
   it("guard: the reference really does define all eight snd closures, so the loop above cannot be vacuous", () => {
@@ -237,12 +293,12 @@ describe.each(UNCHANGED)("$name (slot $i) — NOT a firearm, deliberately untouc
     const ref = recordReference(i);
     const mod = recordModule(i);
     expect(ref.length).toBeGreaterThan(10);
-    expectCallLogEqual(mod, ref, `WEAPONS[${i}].snd() call log`);
+    compareSoundLogs(mod, ref, `WEAPONS[${i}].snd() call log`);
   });
 });
 
 describe.each(BALLISTIC)("$name (slot $i) — the rebuilt report", ({ i }) => {
-  const profile = () => WeaponState.WEAPON_REPORTS[i];
+  const profile = () => OLD_REPORTS[i];
 
   it("REFERENCE (unchanged, the record of what changed): had no highpass anywhere — no transient band at all", () => {
     // Claim 1 of the rebuild. The old closure's only filter on the noise was
@@ -269,8 +325,8 @@ describe.each(BALLISTIC)("$name (slot $i) — the rebuilt report", ({ i }) => {
       .map((d) => d.value as number);
     expect(refLowpassCorners).toContain(p.split);
     // One noise source, not two: the crack and the body are the same
-    // acoustic event through two filters. This is also the KNOWN-20 draw
-    // count — one Math.random() fill loop, exactly as the old single bang().
+    // acoustic event through two filters. (Since round 2 Task 1 it is the
+    // shared noise at an offset and draws nothing — KNOWN-22.)
     expect(created(mod, "AudioBufferSourceNode")).toHaveLength(1);
   });
 
@@ -288,19 +344,23 @@ describe.each(BALLISTIC)("$name (slot $i) — the rebuilt report", ({ i }) => {
     expect(p.bodyEndHz).toBeLessThan(p.split);
   });
 
-  it("decay: the module's noise buffer is strictly shorter than every buffer the reference's closure made", () => {
-    // Claim 2. Both numbers are read out of createBuffer()'s logged
-    // arguments, so this compares the real durations rather than two
-    // literals. The buffer length understates the change on its own: the
-    // reference baked a (1-i/N)^2 polynomial fade into the samples (-12 dB
-    // at half its length), while the module runs an exponential gain ramp to
-    // .001 (around -27 dB at half its length), so the audible decay shortens
-    // by considerably more than these lengths do.
+  it("decay: the module's noise plays strictly shorter than every buffer the reference's closure made", () => {
+    // Claim 2. Both numbers are read out of the logs — the reference's from
+    // createBuffer()'s arguments, the port's from its noise play's start and
+    // stop (round 2 Task 1: one shared buffer, so its length means nothing)
+    // — so this compares the real durations rather than two literals. The
+    // length understates the change on its own: the reference baked a
+    // (1-i/N)^2 polynomial fade into the samples (-12 dB at half its
+    // length), while the module runs an exponential gain ramp to .001
+    // (around -27 dB at half its length), so the audible decay shortens by
+    // considerably more than these lengths do.
     const ref = recordReference(i);
     const mod = recordModule(i);
-    expect(bufferLengths(mod)).toHaveLength(1);
-    expect(bufferLengths(ref).length).toBeGreaterThanOrEqual(1);
-    expect(bufferLengths(mod)[0]).toBeLessThan(Math.max(...bufferLengths(ref)));
+    const refSeconds = bufferLengths(ref).map((n) => n / 44100);
+    expect(noisePlaySeconds(mod)).toHaveLength(1);
+    expect(refSeconds.length).toBeGreaterThanOrEqual(1);
+    expect(noisePlaySeconds(mod)[0]).toBeCloseTo(OLD_REPORTS[i].bodyDur, 10);
+    expect(noisePlaySeconds(mod)[0]).toBeLessThan(Math.max(...refSeconds));
   });
 
   it("MODULE (new): every envelope is on an AudioParam, so this oracle can actually see it", () => {

@@ -2,6 +2,7 @@ import type { Builder } from "../builder";
 import { MAT } from "../palette";
 import { fist, forearm } from "../hands";
 import { hump, type Pose, type WeaponArt } from "../pose";
+import { NAIL } from "../phases";
 
 /**
  * Slot 6, NAIL CANNON — a rotary nailer: six iron barrels in a ring,
@@ -64,7 +65,7 @@ export const nailCannon: WeaponArt = {
 
     // hopper on its post on the left side, hose into the drum
     b.cbox(-0.05, AXIS_Y - 0.02, -0.02, -0.036, AXIS_Y - 0.006, 0.04, 0.003, MAT.IRON);
-    const lift = r < 0 ? 0 : hump(r, 0.12, 0.66, 0.12);
+    const lift = r < 0 ? 0 : hump(r, ...NAIL.lift);
     {
       b.push();
       b.translate(-0.056 - 0.08 * lift, AXIS_Y - 0.03 + 0.03 * lift, -0.02 + 0.1 * lift);

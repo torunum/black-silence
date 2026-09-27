@@ -8,6 +8,8 @@ import { blip } from "../../src/audio/Sfx";
 import { renderState } from "../../src/render/Renderer";
 import { updateListener } from "../../src/audio/Listener";
 import blipBaselineHead3474437 from "./__fixtures__/blip-baseline-head-3474437.json";
+import { previousMix } from "../../src/soundboard/previous/mix";
+import { DRY_SEND, ECHO_SEND } from "../../src/audio/Mix";
 
 /**
  * Plan 1 Task 3's own tests: the per-emission panner
@@ -65,15 +67,38 @@ afterEach(() => {
   emitHere();
 });
 
+/**
+ * `strip` is a gain of the new mix (src/audio/Mix.ts) that feeds the mix's
+ * sum — the node the glue compressor reads — and, through a send gain of
+ * exactly `send`, the reverb's input, which feeds a ConvolverNode.
+ */
+function expectStripWithSend(events: AudioEvent[], strip: string, send: number): void {
+  const outs = (from: string) => events.filter((e) => e.kind === "connect" && e.detail.from === from).map((e) => e.detail.to as string);
+  const gainOf = (id: string) => events.filter((e) => e.kind === "param" && e.detail.node === id && e.detail.prop === "gain").at(-1)?.detail.value;
+  expect(strip).toMatch(/^GainNode#/);
+  const targets = outs(strip);
+  const sum = targets.find((t) => outs(t).some((x) => x.startsWith("DynamicsCompressorNode")));
+  expect(sum, "the strip feeds the mix's sum").toBeDefined();
+  const sendNode = targets.find((t) => t !== sum)!;
+  expect(gainOf(sendNode)).toBe(send);
+  const reverbIn = outs(sendNode)[0];
+  expect(outs(reverbIn).some((x) => x.startsWith("ConvolverNode")), "the send reaches the convolver").toBe(true);
+}
+
 describe("masterBus()/echoBus() — nothing regressed when no position is set", () => {
   // THE MOST IMPORTANT ASSERTION IN THIS TASK (brief, Step 5.1): with no
   // emitAt() call anywhere, blip()'s graph must be byte-for-byte what it was
   // on HEAD (3474437) before this task touched AudioEngine.ts — captured via
   // this exact scenario (see the fixture file's own generation, reproduced
   // in this test's arrange/act) before a single line of Task 3 code existed.
-  it("blip()'s graph is identical to the one captured on HEAD, before Task 3", () => {
+  // Player feedback round 2 Task 2 replaced the graph after a sound (a room,
+  // a master chain, level trims — src/audio/Mix.ts), so this baseline is now
+  // held on the sound board's "Old mix" (src/soundboard/previous/mix.ts), the
+  // reference's own graph: what it pins is that no *position* machinery
+  // leaks into an unpositioned sound, and that is unchanged.
+  it("blip()'s graph is identical to the one captured on HEAD, before Task 3 (on the Old mix)", () => {
     const moduleEvents = withModuleAudioSession((events) => {
-      audioInit();
+      audioInit({ mix: previousMix });
       const baseline = events.length;
       blip(440, 0.12, "square", 0.2, 900, false); // square -> lowpass branch, dry (masterBus)
       blip(660, 0.08, "sine", 0.15, 0, true); // sine -> no lowpass, echo bus
@@ -92,7 +117,7 @@ describe("masterBus()/echoBus() — nothing regressed when no position is set", 
 });
 
 describe("masterBus()/echoBus() — emitAt() arms a positional panner", () => {
-  it("masterBus() hands back a PannerNode positioned at emitAt()'s coordinates, connected into masterG", () => {
+  it("masterBus() hands back a PannerNode positioned at emitAt()'s coordinates, connected into the mix's dry-send strip", () => {
     withModuleAudioSession((events) => {
       audioInit();
       const baseline = events.length;
@@ -124,15 +149,15 @@ describe("masterBus()/echoBus() — emitAt() arms a positional panner", () => {
       expect(paramsFor("maxDistance").at(-1)?.detail.value).toBe(60);
       expect(paramsFor("rolloffFactor").at(-1)?.detail.value).toBe(1);
 
-      // Connected into masterG (audioInit()'s first createGain() call is
-      // masterG — always GainNode#1 in a fresh recording session), not the
-      // raw destination.
+      // Connected into a level strip of the new mix (round 2 Task 2), not
+      // the raw destination — and that strip reaches the room: a positioned
+      // sound is heard in the reverb, at DRY_SEND.
       const wiring = events.slice(baseline).find((e) => e.kind === "connect" && e.detail.from === pannerId);
-      expect(wiring?.detail.to).toBe("GainNode#1");
+      expectStripWithSend(events, wiring?.detail.to as string, DRY_SEND);
     });
   });
 
-  it("echoBus() does the same into echoG", () => {
+  it("echoBus() does the same into the echo-send strip", () => {
     withModuleAudioSession((events) => {
       audioInit();
       const baseline = events.length;
@@ -151,10 +176,9 @@ describe("masterBus()/echoBus() — emitAt() arms a positional panner", () => {
       expect(paramsFor("positionY").at(-1)?.detail.value).toBe(2);
       expect(paramsFor("positionZ").at(-1)?.detail.value).toBe(7);
 
-      // audioInit() builds echoG third (masterG, the feedback gain, then
-      // echoG) — always GainNode#3 in a fresh recording session.
+      // The echo strip: the same, at ECHO_SEND.
       const wiring = events.slice(baseline).find((e) => e.kind === "connect" && e.detail.from === pannerId);
-      expect(wiring?.detail.to).toBe("GainNode#3");
+      expectStripWithSend(events, wiring?.detail.to as string, ECHO_SEND);
     });
   });
 });

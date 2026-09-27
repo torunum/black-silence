@@ -1,6 +1,8 @@
 import { ctx, echoBus, masterBus } from "./AudioEngine";
 import { bang, blip } from "./Sfx";
 import { after } from "../core/Timers";
+import { noise, noiseOffset } from "./Noise";
+import { soundRandom } from "./SoundRandom";
 
 /**
  * GUTTURAL MONSTER VOICES (Doom/Blood style, not chiptune) — built from
@@ -19,15 +21,19 @@ import { after } from "../core/Timers";
  * Every function keeps the reference's `if (!AC) return;` early exit (as
  * `if (!ctx()) return;`): the game calls these on paths that can run before
  * audioInit() and relies on them being silent no-ops rather than throwing.
- * noiseBuf itself has no such guard in the reference either — it is only
- * ever called from functions that have already checked ctx().
+ * (The reference's noiseBuf — a fresh buffer of Math.random() samples per
+ * call — is retired; see below.)
+ *
+ * PLAYER FEEDBACK ROUND 2 TASK 1 — SOUND DRAWS NO DICE (KNOWN-22). The one
+ * deliberate departure from the reference in this file: where the
+ * reference drew from `Math.random()` — the game's own generator — this
+ * draws from `soundRandom()` (`./SoundRandom.ts`), and where it filled a
+ * fresh buffer with random samples per sound it plays `./Noise.ts`'s
+ * shared noise at an offset. Nothing else about the synthesis changed; the
+ * oracles in `tests/behavior/` and `tests/fidelity.test.ts` check exactly
+ * that, with the substitution reversed.
  */
 
-export function noiseBuf(dur: number): AudioBuffer {
-  const n=ctx().createBuffer(1,Math.max(1,ctx().sampleRate*dur|0),ctx().sampleRate);
-  const d=n.getChannelData(0);
-  for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;
-  return n;}
 /* low throaty growl: a roar with a formant + tremolo "vocal cords" */
 export function growl(base: number, dur: number, vol?: number, echo?: boolean): void {
   if(!ctx())return;
@@ -41,13 +47,13 @@ export function growl(base: number, dur: number, vol?: number, echo?: boolean): 
     const g=ctx().createGain();g.gain.value=(i<2?.6:.25);
     o.connect(g);g.connect(out);o.start(t0);o.stop(t0+dur);});
   // breathy noise layer through a moving bandpass (the "throat")
-  const ns=ctx().createBufferSource();ns.buffer=noiseBuf(dur);
+  const ns=ctx().createBufferSource();ns.buffer=noise();
   const bp=ctx().createBiquadFilter();bp.type="bandpass";bp.Q.value=4;
   bp.frequency.setValueAtTime(420,t0);bp.frequency.linearRampToValueAtTime(160,t0+dur);
   const ng=ctx().createGain();ng.gain.value=.5;
-  ns.connect(bp);bp.connect(ng);ng.connect(out);ns.start(t0);ns.stop(t0+dur);
+  ns.connect(bp);bp.connect(ng);ng.connect(out);ns.start(t0,noiseOffset(dur));ns.stop(t0+dur);
   // vocal-cord tremolo
-  const lfo=ctx().createOscillator();lfo.type="sine";lfo.frequency.value=22+Math.random()*18;
+  const lfo=ctx().createOscillator();lfo.type="sine";lfo.frequency.value=22+soundRandom()*18;
   const lg=ctx().createGain();lg.gain.value=(vol||0)*.5||.25;lfo.connect(lg);lg.connect(out.gain);
   lfo.start(t0);lfo.stop(t0+dur);
   // amplitude envelope
@@ -58,13 +64,13 @@ export function growl(base: number, dur: number, vol?: number, echo?: boolean): 
 export function gurgle(dur: number, vol?: number): void {
   if(!ctx())return;const t0=ctx().currentTime;
   const out=ctx().createGain();out.gain.value=vol||.4;out.connect(masterBus());
-  const ns=ctx().createBufferSource();ns.buffer=noiseBuf(dur);
+  const ns=ctx().createBufferSource();ns.buffer=noise();
   const lp=ctx().createBiquadFilter();lp.type="lowpass";lp.frequency.value=900;
-  ns.connect(lp);lp.connect(out);ns.start(t0);ns.stop(t0+dur);
+  ns.connect(lp);lp.connect(out);ns.start(t0,noiseOffset(dur));ns.stop(t0+dur);
   // burbling pitch wobble
   const o=ctx().createOscillator();o.type="sawtooth";
   o.frequency.setValueAtTime(120,t0);
-  for(let i=0;i<6;i++)o.frequency.linearRampToValueAtTime(80+Math.random()*120,t0+dur*(i+1)/6);
+  for(let i=0;i<6;i++)o.frequency.linearRampToValueAtTime(80+soundRandom()*120,t0+dur*(i+1)/6);
   const og=ctx().createGain();og.gain.value=.3;o.connect(og);og.connect(out);
   o.start(t0);o.stop(t0+dur);
   out.gain.setValueAtTime(vol||.4,t0);out.gain.exponentialRampToValueAtTime(.0001,t0+dur);}
@@ -77,10 +83,10 @@ export function pain(base: number, vol?: number): void {
   o.frequency.exponentialRampToValueAtTime(base*.6,t0+dur);
   const bp=ctx().createBiquadFilter();bp.type="bandpass";bp.Q.value=3;bp.frequency.value=base*2;
   o.connect(bp);bp.connect(out);
-  const ns=ctx().createBufferSource();ns.buffer=noiseBuf(dur);
+  const ns=ctx().createBufferSource();ns.buffer=noise();
   const hp=ctx().createBiquadFilter();hp.type="highpass";hp.frequency.value=600;
   const ng=ctx().createGain();ng.gain.value=.25;ns.connect(hp);hp.connect(ng);ng.connect(out);
-  ns.start(t0);ns.stop(t0+dur);
+  ns.start(t0,noiseOffset(dur));ns.stop(t0+dur);
   o.start(t0);o.stop(t0+dur);
   out.gain.setValueAtTime(.0001,t0);out.gain.exponentialRampToValueAtTime(vol||.3,t0+.02);
   out.gain.exponentialRampToValueAtTime(.0001,t0+dur);}
@@ -102,4 +108,4 @@ export function snarl(kind: string): void {
   else if(kind==="R"){growl(90,.5,.35,true);blip(500,.2,"sine",.08,260,true);} // reiver wail
   else if(kind==="y"){growl(54,.6,.45,true);}    // gargoyle stone growl
   else if(kind==="s"){blip(680,.5,"sawtooth",.14,1500,true);growl(240,.4,.3,true);} // wailer
-  else growl(110+Math.random()*60,.45,.32,true);} // generic ghoul moan
+  else growl(110+soundRandom()*60,.45,.32,true);} // generic ghoul moan

@@ -4,7 +4,7 @@ import * as THREE from "three";
 import { installDomStubs, loadGameHtml } from "../support/domStubs";
 import { save } from "../../src/save/SaveGame";
 import { renderState } from "../../src/render/Renderer";
-import { audioInit, getMasterVolume, masterBus } from "../../src/audio/AudioEngine";
+import { audioInit, getMasterVolume, liveVolume } from "../../src/audio/AudioEngine";
 
 /**
  * `initMenus`'s two settings IIFEs — added/changed by Phase 1 Task 2 — and
@@ -109,12 +109,10 @@ describe("initMenus — master volume", () => {
     // And once the audio graph actually exists (audioInit() runs from
     // startGame, not at boot), it is built from the now-correct value.
     audioInit();
-    // masterBus() is typed GainNode | PannerNode as of Plan 1 Task 3 (it
-    // hands back a per-emission PannerNode when emitAt() armed a position),
-    // but nothing in this test ever calls emitAt(), so it genuinely returns
-    // masterG at runtime — the cast only narrows the static type back to
-    // what this test already knows is true here.
-    expect((masterBus() as GainNode).gain.value).toBe(0.8);
+    // Since player feedback round 2 Task 2 the volume is the mix's output
+    // stage (src/audio/Mix.ts), after the limiter — no longer the node
+    // masterBus() hands a sound.
+    expect(liveVolume()).toBe(0.8);
   });
 
   it("moving the volume slider still persists (Task 1's gap this task closes)", () => {

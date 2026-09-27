@@ -559,11 +559,14 @@ human's call. KNOWN-14 carries the four decisions, the evidence behind each,
 and the prediction the side-by-side is supposed to falsify. KNOWN-20 is a bug
 the upgrade surfaced on the way past.
 
-The identical finding recurred with audio: `src/audio/`'s synthesis draws
-from the same seeded `Math.random()` at six sites, an `installAudioStub()`
-was built the same way (stack-sniffed, same fail-loudly-on-zero guard), and
-it is *still not wired in* — see `docs/known-issues.md`'s KNOWN-20 for why
-(measured per-level draw counts, and the real cost of turning it on).
+The identical finding recurred with audio: `src/audio/`'s synthesis drew
+from the same seeded `Math.random()`, and an `installAudioStub()` was built
+the same way and never wired in. **Fixed at the cause in player feedback
+round 2 Task 1** (`docs/known-issues.md` KNOWN-22, which is that audio row
+restored — the KNOWN-20 above is a different, later row that reused the
+number): sound has its own generator and shared noise buffers and draws
+nothing from the game's dice; the stub is gone and every trace now fails if
+a sound ever draws again.
 
 ## Phase 3 Part A status
 
@@ -868,7 +871,68 @@ here changes gameplay, and no trace fixture moved.
 - The boot is large at the moment of impact, deliberately. The knob is `BK` in `kick.ts`.
 - Nobody has felt any of it at 60 fps with a real mouse. The browser pane cannot run rAF, so the owner has to play it.
 
-**Next:** the sound plan, then the prologue plan (the grave → hell opening).
+**Next:** the sound plan (done — see below), then the prologue plan (the grave → hell opening).
+
+## Player feedback round 2 — the sound
+
+Branch `feedback-2-sound`, plan
+`docs/superpowers/plans/2026-09-26-player-feedback-2-sound.md`. The owner:
+"The sounds are still very bad." Five tasks; **all five are done** — nobody
+here has heard any of it, and the owner is the judge. **The sound board is
+where to judge it:** `soundboard.html` beside `index.html` —
+`http://localhost:5173/soundboard.html` under `npm run dev`, and
+`https://torunum.github.io/black-silence/soundboard.html` once the branch
+reaches master (Pages deploys `dist/`, which `npm run build` fills with both
+pages). 270 rows; every rebuilt sound has **Old** and **New** buttons, and the
+board's Old mix / New mix switch and room picker apply to all of them.
+
+| Task 1 | Outcome |
+|---|---|
+| Every sound has a name | Each inline `blip`/`bang`/`click` at a call site is a named function in `src/audio/sounds/` (weapons, monsters, world, ui, explosions). A pure refactor: `tests/behavior/soundCatalogue.test.ts` runs each one against the reference's own call-site text; the three traces' full audio logs (82,401 events) came out byte-identical. |
+| Sound draws no dice (KNOWN-22) | `src/audio/SoundRandom.ts` and `src/audio/Noise.ts`. The trace fixtures moved once — 79 / 264 / 3,433 draws removed — proven to be only that; the boss trace's cutoff went 6012 -> 2808. Every trace now fails if a sound draws from `Math.random()`. |
+| The sound board | `soundboard.html`, 111 sounds in five groups at Task 1 (Weapons 18, Monsters 58, World 29, UI 3, Explosions 3; 270 rows by Task 5), each playing the game's own code; old/new pairs from Task 2 on (`src/soundboard/previous.ts`). Built separately (`vite.soundboard.config.ts`) into `dist/`, so it is on the published site at `/soundboard.html`; the game bundle does not contain it. `window.soundboard.render(id)` renders a sound offline and reports its peak, RMS, length, clipping and DC offset. |
+
+| Task 2 | Outcome |
+|---|---|
+| A room per level | `src/audio/Room.ts`: a convolution reverb whose impulse response is built from seeded noise (never `Math.random`) — pre-delay, a damped exponential tail, early reflections, unit energy, two channels. Six rooms: stone hall (dungeon, church, necropolis), hell, flesh, graveyard, sewer, factory; `loadLevel` picks one from the level's theme. The old "echo bus" (a 340 ms feedback delay with no dry path — an echo sound was heard only as its repeats) is gone; sounds send to the room by an amount. |
+| A master chain | `src/audio/Mix.ts`: glue compressor, limiter, a soft clip that cannot exceed -0.3 dBFS, then the master volume clamped to 0-1. The worst case measured (three explosions, three shotguns, a sniper, a boss death and eight monsters at once, volume 1) peaks at -0.6 dBFS, 0 clipped samples; the old mix put 945 samples past full scale. |
+| Planned levels | `src/audio/Levels.ts`: every catalogue sound plays at a category target and a trim; `scripts/sound-levels.mjs` measures (headless Chrome) and writes `docs/sound-levels.md`. At Task 2 the weapons were peak-bound at -17 to -20 LK against a -14 target; Task 3's redesign lifted all eight to -14. |
+| Old mix / New mix | The board plays every row through the pre-Task-2 graph (`src/soundboard/previous/mix.ts`) or the game's — Task 2 changed no sound's synthesis, so it is one switch, not 111 rows. The tests that compare sound bodies with the reference run on that old mix. |
+
+| Task 3 | Outcome |
+|---|---|
+| The weapons | All eight reports rebuilt as layered sounds (`src/audio/Layers.ts`, `src/audio/sounds/weapons.ts`): a saturated transient, a body with each weapon's character, a thump, a mechanical tail, the whole report saturated together, and a bigger send to the room. The automatic weapons jitter pitch and filters every shot from sound's own dice and end each shot inside one period. All eight measure -14.0 LK (the automatic ones as a one-second burst) at -2.0 to -6.6 dBFS peak — the loudest category, where round 1's reports were peak-bound at -17 to -20. |
+| The mechanisms | 38 foley sounds (`src/audio/sounds/foley.ts`): break-opens, shells, magazines, bolts, the drum, the knob, the hopper, the reliquary's roof, the reaper's soul, the switch, the dry click, and the nail cannon's motor (`src/audio/Spin.ts`, following the animation's spin law). They replace the generic 18% / 62% / 100% reload clicks. `weaponTick` plays each at the phase the viewmodel draws it (`src/weapons/Foley.ts`, reading `src/render/viewmodel/phases.ts`, which the art now draws from) — no timer, so a reload cut short by a switch or by firing leaves nothing pending. No reload or fire timing changed; no fixture moved. |
+| Old / new | Every replaced sound is on the board as Old (`src/soundboard/previous/weapons.ts`: round 1's `gunshot()`, the reference's cross and reaper, the clicks), at the level it had; each weapon's whole reload is a row too. |
+
+| Task 4 | Outcome |
+|---|---|
+| The voices | Every enemy's alert, pain, attack and death — and the lunge, the charge, the wind-up, the scream, the orbs' bark, the flesh throw, a boss's waking, roar, summons and death — is the monster's own voice (`src/audio/VoiceTable.ts`, built by `src/audio/Speak.ts`): a saw or square cord plus seeded-noise breath, WaveShaper grit, three formant bandpasses gliding between two vowels, a 30-80 Hz amplitude growl, a jittered pitch walk and vibrato, an envelope from silence to -80 dB. Five families by type (skitter, moan, bellow, hiss, titan), the fundamental falling with sprite size from 420 Hz (lost soul) to 36 Hz (the Living Heart). Bosses add a second voice an octave down and speak through `echoBus()` (more room). 19 nodes a voice, 21 for a boss, about 7 more for a layer under it (a gurgle, a rake, a crash); one panner. |
+| Same moments | The enemy call sites changed only the sound call's arguments (the enemy's letter; for pain and orbs, the enemy itself as the "throat", so eight pellets make one yelp but a blast through three zombies makes three). No fixture moved. |
+| Levels | Each vocal event has one trim at the monster target (-21 LK); each voice has a measured `gain` that `scripts/sound-levels.mjs --apply` writes into the voice table (2 dB louder per doubling of size, by design). Weapons stay the loudest. Ten alerts at once cost 99.5 ms per second of audio offline against 80.3 for the old barks and 20.4 for the mix alone. |
+| Old / new | 128 monster rows now have Old and New: one per enemy per event (plus the orbs, the lunge, the charge, the scream), each with the sound that enemy made before as Old (`src/soundboard/previous/monsters.ts`). |
+
+| Task 5 | Outcome |
+|---|---|
+| Footsteps | A step is a heel, the body's weight (a falling sine), the toe 22-44 ms later, and what is underfoot — seven floors by the level's theme (`src/audio/Surface.ts`, read through the room `loadLevel` already sets): ash in the prologue's hell, marble on level 1, stone in the church and necropolis, dirt and grass in the graveyard, water in the sewers, metal grating in the factory, flesh in the womb. Every step draws its own stride from sound's dice (pitch, filters, heel-to-toe gap, grit; the feet alternate). Running is heavier — a lower, stronger thud, 2.4-4.3 dB louder (measured) — on the same cadence. Each floor has its own entry, so the floors sit at one level (Task 2's 9 dB stone/marble gap is gone). |
+| Landing | Its own sound where a running footstep used to play (`playerTick`, same frame), scaled by the fall: -33 LK stepping off a ledge, -29 from a jump, -25 from a 12 m/s drop, lower and longer the harder. |
+| The kick | A whoosh as the leg goes out; on the frame `doKick`'s 110 ms check resolves, a meaty thud and wet slap in a monster, a sole on stone with grit for a prop **or a wall** (the check now looks a boot's length ahead with `solidAt`, a read), nothing more into the air. |
+| Bullets | A wall hit is heard at its spark: stone cracks and chips, the factory's metal rings, the womb's flesh slaps. A monster hit is a wet thwack at the blood (one per monster per 30 ms: eight pellets are one thwack). A crate knocks like wood. The ricochet (3 in 10, sound's dice) is a falling whine. Wall hits are capped at three per 20 ms. A prop breaking cracks, thuds hollow, and its splinters land for a third of a second. |
+| Doors | A stone door grinds for exactly `DOOR_SINK_SECONDS` (`src/world/Grid.ts`, 1.27 s — the real `doorTick` is checked against it) and settles with a thud as it stops; a secret door breaks free and grinds heavier; the red-key gate unbolts first; a locked door rattles three times and a low muted tone says no. The flesh doors keep their wet tear. The exit opens with a 1.6 s grind and a low chord. |
+| Pickups | Each family its own short sound: a vial's clink and a warm fifth (health), straps and a plate (armour), a box of rounds, two shells, one slug, gold crosses with a thread of bell, nails pouring, a breath of souls (ammo, balanced to one level), an iron key and a warm hum, a weapon lifted and settled. All in the UI category, the quietest. |
+| Explosions | Layered and saturated together: a crack, a body whose corner collapses from 4 kHz, an FM sub, gravel and stones landing for most of a second, and a brown-noise tail rolling over two seconds, with 2.2x the room send. Worst cases at volume 1, including an explosion + three monsters + a shotgun + running footsteps: -1.0, -0.6 and -0.9 dBFS peak, 0 clipped samples. |
+| UI and menus | A felt brush on hovering a menu row and a low thock with a faint bell on choosing one (the menus had no sound; on the title screen there is no audio until the click that starts the game). The achievement is a small bell, kick-ready a boot set down, the scrap SMG parts clacking together. |
+| Music and ambience | Judged, not assumed: the drone bed is a sub-bass hum through a 170 Hz lowpass and stays. The organ chord was four square waves — the most chiptune sound in the game — and is now detuned saws and octave sines through a lowpass, with a tremulant, wind and a slow swell. The bells are a bell peal (the cross launcher's partials). The boss pulse keeps its 300 ms interval, guard and bar (`src/audio/Music.ts` untouched) but each beat is a drum — kick, off-beat knock, a filtered detuned bass on the fourth — at a level of its own: nothing the game plays is outside a level any more. |
+| Same moments | Gameplay files changed only sound calls: `footstep(true)` → `land(-player.vy)` on the landing frame; `kickImpact()` → `kickImpact(kickTarget(...))` on the same scheduled frame; `itemPickup()` → `itemPickup(it.kind)`; `doorOpens(!!d.flesh)` → the door's kind; a wall and a flesh impact added at the spark and the blood; the menus' hover/select. No fixture moved. |
+| Old / new | `src/soundboard/previous/world.ts` holds every replaced sound as it was at `e34815c`, at its old trim, including the reference's boss pulse body (which `tests/fidelity.test.ts` now pins there). |
+
+**For later rounds:** no fixture may move. Register the old version of a sound
+in `src/soundboard/previous.ts` *before* changing it. Every new catalogue
+sound goes inside `lv(...)` with an entry in `src/audio/Levels.ts`
+(`tests/audio/levels.test.ts` fails otherwise); re-run
+`node scripts/sound-levels.mjs --apply` until it changes nothing, then once
+more without `--apply`. Measure a single sound with `soundboard.render(...)`
+in the Browser pane — it renders; rAF does not.
 
 ## How fidelity is guarded
 
@@ -988,6 +1052,17 @@ Two practices that have mattered most:
   installs its own rAF queue and drains it by hand, which is why 900-frame
   traces are deterministic in vitest regardless of what the pane does.
 
+- **Chrome's `DynamicsCompressorNode` is not transparent at the start of an
+  offline render.** A sound played at frame 0 of an `OfflineAudioContext`
+  comes out 11-14 dB down even through a ratio-1 compressor (the shotgun:
+  -6.8 dBFS without one, -20.8 with); played 1 s in, it is untouched.
+  `src/soundboard/offline.ts` renders 0.5 s of silence first for that
+  reason. Found in player feedback round 2 Task 2, where it first made the
+  new mix look 15 dB quieter than the old.
+- **Headless Chrome works for audio measurement.** `scripts/sound-levels.mjs`
+  starts Vite, launches Chrome (or Edge) with `--headless=new
+  --remote-debugging-port=0`, and drives the sound board over the DevTools
+  protocol with Node 24's built-in `WebSocket` — no dependency. ~25 s a run.
 - **Pointer lock is blocked** (`requestPointerLock` rejects with
   `WrongDocumentError`), so mouse look cannot be exercised in the page.
   What *does* work, verified in the Task 5 session: menu clicks,

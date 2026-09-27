@@ -40,12 +40,26 @@ import type * as HudMessagesModule from "../../src/ui/HudMessages";
  *   needs a once-only id uses one no other case has spent.
  */
 
-/** Toasts.ts calls blip() through a static import; replacing the module is the only way to see its arguments. */
-const { blipCalls } = vi.hoisted(() => ({ blipCalls: [] as unknown[][] }));
-vi.mock("../../src/audio/Sfx", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("../../src/audio/Sfx")>();
-  return { ...actual, blip: (...args: unknown[]) => { blipCalls.push(args); } };
+/**
+ * Toasts.ts plays its sound through a static import; replacing the module is
+ * the only way to see it. PLAYER FEEDBACK ROUND 2 TASK 5 — A DELIBERATE
+ * DIVERGENCE (`docs/superpowers/plans/2026-09-26-player-feedback-2-sound.md`):
+ * the achievement sound was the reference's `blip(160,.5,"sine",.05,120,true)`
+ * and is now a small bell (`src/audio/sounds/ui.ts`'s `achievementChime`), so
+ * the module side records the catalogue call and the comparison below reads
+ * the reference's blip with exactly those arguments as that call. What stays
+ * pinned: one sound per newly unlocked achievement, at the same step, none
+ * for a repeat. The old blip itself is pinned to the reference by
+ * `tests/behavior/soundCatalogue.test.ts`'s "old achievementChime".
+ */
+const { blipCalls } = vi.hoisted(() => ({ blipCalls: [] as unknown[] }));
+vi.mock("../../src/audio/sounds/ui", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("../../src/audio/sounds/ui")>();
+  return { ...actual, achievementChime: () => { blipCalls.push("achievementChime"); } };
 });
+/** The reference's achievement blip — what `achievementChime` replaced. */
+const OLD_CHIME = [160, .5, "sine", .05, 120, true];
+const asChime = (b: unknown): unknown => (JSON.stringify(b) === JSON.stringify(OLD_CHIME) ? "achievementChime" : b);
 
 let Subtitles: typeof SubtitlesModule;
 let Toasts: typeof ToastsModule;
@@ -131,8 +145,8 @@ interface RunResult {
   delays: number[];
   /** The unlocked-achievement record this side wrote into: `S.ach` on the reference side. */
   unlocked: Record<string, { title: string; desc: string }>;
-  /** Arguments of every blip() this side made. */
-  blips: unknown[][];
+  /** Every sound this side made: a blip()'s arguments on the reference side, the catalogue sound's name on the module side (see the mock above). */
+  blips: unknown[];
 }
 
 /** One step of a script: does something, and the harness snapshots the DOM afterwards. */
@@ -219,7 +233,7 @@ function moduleRun(seed: number, steps: readonly Step[]): RunResult {
   };
   try {
     const snapshots = steps.map(([, run]) => { run(api); return snapshot(); });
-    return { snapshots, delays: sched.delays(), unlocked, blips: blipCalls.map((c) => [...c]) };
+    return { snapshots, delays: sched.delays(), unlocked, blips: [...blipCalls] };
   } finally {
     restoreRandom();
     (globalThis as Record<string, unknown>).setTimeout = realSetTimeout;
@@ -287,7 +301,7 @@ function expectParity(seed: number, steps: readonly Step[]): { module: RunResult
   });
   expect(mod.delays).toEqual(ref.delays);
   expect(mod.unlocked).toEqual(ref.unlocked);
-  expect(mod.blips).toEqual(ref.blips);
+  expect(mod.blips).toEqual(ref.blips.map(asChime));
   return { module: mod, reference: ref };
 }
 
@@ -381,7 +395,7 @@ describe("ach — the achievement toast", () => {
     // The unlock sound, and the 4200ms hold + 500ms removal — the delays are
     // the only trace of those two durations, since flushTimers runs the
     // queue whatever the delay says.
-    expect(module.blips[0]).toEqual([160, .5, "sine", .05, 120, true]);
+    expect(module.blips[0]).toEqual("achievementChime");
     expect(module.blips.length).toBe(2); // one per newly unlocked achievement, none for the repeat
     expect(module.delays.slice(0, 2)).toEqual([4200, 4200]);
     expect(module.delays.slice(2)).toEqual([500, 500]);

@@ -2,6 +2,7 @@ import type { Builder } from "../builder";
 import { MAT } from "../palette";
 import { cup, fist, forearm } from "../hands";
 import { hump, ramp, type Pose, type WeaponArt } from "../pose";
+import { REAPER } from "../phases";
 
 /**
  * Slot 7, SOUL REAPER — an arcane device: a blackened iron body with a
@@ -54,7 +55,7 @@ export const soulReaper: WeaponArt = {
 
     // the claws: spring open to fire, and open wide for the reload
     const a = pose.action;
-    const openA = r >= 0 ? 0.5 * hump(r, 0.1, 0.72, 0.1) : 0.55 * hump(a, 0.0, 0.7, 0.12);
+    const openA = r >= 0 ? 0.5 * hump(r, ...REAPER.claws) : 0.55 * hump(a, 0.0, 0.7, 0.12);
     for (let i = 0; i < 3; i++) {
       b.push(); b.translate(0, CORE_Y, 0.2); b.roll(i * 2 * Math.PI / 3 + Math.PI / 2);
       b.translate(0, 0.036, 0); b.pitch(-0.5 - openA);
@@ -69,12 +70,12 @@ export const soulReaper: WeaponArt = {
     // the soul core: spent and re-forming when fired; plucked out dead and pressed in fresh on reload
     b.anchor("muzzle", 0, CORE_Y, CORE_Z);
     if (r < 0) {
-      const spent = hump(a, 0.12, 1.0, 0.4);
+      const spent = hump(a, ...REAPER.spent);
       b.ball(0, CORE_Y, CORE_Z, CORE_R * (1 - 0.6 * spent) * (1 + 0.2 * pose.heat), MAT.SOUL, 10);
       b.anchor("glow", 0, CORE_Y, CORE_Z);
     } else {
-      const dying = ramp(r, 0.02, 0.14);
-      const out = ramp(r, 0.16, 0.34), inn = ramp(r, 0.4, 0.62);
+      const dying = ramp(r, ...REAPER.dying);
+      const out = ramp(r, ...REAPER.pluck), inn = ramp(r, ...REAPER.press);
       // where the hand is: at the cage, away down-left, or coming back
       const away = r < 0.4 ? out : 1 - inn;
       const hx = -0.1 * away, hy = CORE_Y - 0.1 * away, hz = CORE_Z - 0.08 * away;

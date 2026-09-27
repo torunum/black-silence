@@ -12,7 +12,8 @@ import { sparks, blood, holyP, smoke3d } from "../fx/Particles";
 import { spawnGibs } from "../fx/Gibs";
 import { splatMat, holeMat, addWallDecal } from "../fx/Decals";
 import { at } from "../audio/AudioEngine";
-import { bang, boom } from "../audio/Sfx";
+import { bulletHitsProp, bulletHitsWall, bulletHitsFlesh, ricochetRoll, bulletRicochet } from "../audio/sounds/world";
+import { holyCrossExplosion } from "../audio/sounds/explosions";
 import { flashHoly } from "../ui/HudMessages";
 import { screenShake, shake } from "../fx/ShakeState";
 import { breakProp, explodeBarrel, type Prop } from "../world/Props";
@@ -48,7 +49,7 @@ import type { Enemy } from "../enemies/Enemy";
  * imports `WEAPON_STATS` (`src/weapons/definitions.ts`) and reads
  * `WEAPON_STATS[wIdx].pierce` instead — a deliberate substitution, not a
  * drift risk: `WeaponState.ts`'s `WEAPONS` is exactly `{...WEAPON_STATS[i],
- * snd: WEAPON_SOUNDS[i]}`, so `.pierce` is untouched by that merge and the
+ * snd: WEAPON_FIRE_SOUNDS[i]}`, so `.pierce` is untouched by that merge and the
  * two arrays agree on it, always, for every slot. The substitution exists
  * because the real `WEAPONS` cannot come from here: `fire` (in
  * `WeaponState.ts`) already calls `hitscan` (here), so `WeaponState.ts`
@@ -113,7 +114,7 @@ export function hitscan(dir: THREE.Vector3,dmg: number,wIdx: number){
         if(c.p.hp<=0)explodeBarrel(c.p);}
       else{c.p.hp-=dmg;
         spawnGibs(o.x+dir.x*c.t,o.y+dir.y*c.t,o.z+dir.z*c.t,1,2,true);
-        at(o.x+dir.x*c.t,o.y+dir.y*c.t,o.z+dir.z*c.t,()=>bang(.04,.12,1500,300));
+        at(o.x+dir.x*c.t,o.y+dir.y*c.t,o.z+dir.z*c.t,()=>bulletHitsProp());
         if(c.p.hp<=0)breakProp(c.p);}
       used++;if(used>=pierce)return;continue;}
     const e=c.e;
@@ -131,7 +132,7 @@ export function hitscan(dir: THREE.Vector3,dmg: number,wIdx: number){
     const armSide=lateral<0?"L":"R"; // screen-space side
     const hx=hxp,hy=o.y+dir.y*c.t,hz=hzp;
     if(e.plate>0){sparks(hx,hy,hz,6);}
-    else blood(hx,hy,hz,head?10:5,head?2.6:1.8);
+    else{blood(hx,hy,hz,head?10:5,head?2.6:1.8);at(hx,hy,hz,()=>bulletHitsFlesh(e));}   // Task 5: and the flesh, at the blood
     for(let t2=c.t;t2<c.t+6;t2+=.2){
       const sx=o.x+dir.x*t2,sz=o.z+dir.z*t2;
       if(solidAt(sx,sz)){const n=wallNormal(sx,sz,dir);
@@ -144,12 +145,13 @@ export function hitscan(dir: THREE.Vector3,dmg: number,wIdx: number){
     const n=wallNormal(wx,wz,dir);
     sparks(wx-dir.x*.05,clamp(wy,.1,WALLH-.1),wz-dir.z*.05,4);
     addWallDecal(wx,clamp(wy,.15,WALLH-.15),wz,n.x,n.z,.08,holeMat);
-    if(Math.random()<.3)at(wx,clamp(wy,.1,WALLH-.1),wz,()=>bang(.03,.08,4000,800));}}
+    at(wx,clamp(wy,.1,WALLH-.1),wz,()=>bulletHitsWall());   // player feedback round 2 Task 5: the wall is heard, at the spark
+    if(ricochetRoll())at(wx,clamp(wy,.1,WALLH-.1),wz,()=>bulletRicochet());}}
 export function crossExplode(x: number,y: number,z: number){
   flashHoly(.35);shake(.35);screenShake.hitStop=Math.max(screenShake.hitStop,.04);
   renderState.boomLight.position.set(x,y,z);renderState.boomLight.intensity=4;renderState.boomLight.color.setHex(0xfff0b0);
   holyP(x,y,z,40);smoke3d(x,y,z,10);
-  at(x,y,z,()=>boom(.7));
+  at(x,y,z,()=>holyCrossExplosion());
   const blastTargets: readonly HitscanEnemy[] = world.enemies;   // checked widening, not a cast
   for(const e of blastTargets){if(e.dead)continue;
     const d=Math.hypot(e.x-x,e.z-z);

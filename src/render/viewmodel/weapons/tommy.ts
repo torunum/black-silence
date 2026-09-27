@@ -2,6 +2,7 @@ import type { Builder } from "../builder";
 import { MAT } from "../palette";
 import { fist, forearm } from "../hands";
 import { hump, ramp, type Pose, type WeaponArt } from "../pose";
+import { TOMMY } from "../phases";
 
 /**
  * Slot 3, TOMMY GUN — a drum-fed submachine gun: a squat iron receiver with
@@ -44,7 +45,7 @@ export const tommyGun: WeaponArt = {
     // receiver with the knob slot, rear sight, stock
     b.cbox(-0.022, 0.0, -0.08, 0.022, 0.05, 0.13, 0.006, MAT.IRON);
     b.box(-0.004, 0.049, -0.06, 0.004, 0.051, 0.06, MAT.BLACK);
-    const knob = Math.max(pose.action, r < 0 ? 0 : hump(r, 0.78, 0.97, 0.06));
+    const knob = Math.max(pose.action, r < 0 ? 0 : hump(r, ...TOMMY.knob));
     b.ball(0, 0.06, 0.05 - 0.08 * knob, 0.011, MAT.IRON, 6);
     b.cbox(-0.009, 0.05, -0.075, 0.009, 0.068, -0.058, 0.003, MAT.IRON);                 // ladder sight
     b.ext([[-0.08, 0.04], [-0.08, -0.02], [-0.1, -0.06], [-0.12, 0.03]], -0.02, 0.02, MAT.WOOD, { tex: woodTex });
@@ -73,7 +74,7 @@ export const tommyGun: WeaponArt = {
     b.pop();
 
     // the drum: in, out and dropping, the fresh one swung in by hand
-    const out = r < 0 ? 0 : ramp(r, 0.08, 0.24), seat = r < 0 ? 1 : ramp(r, 0.4, 0.6);
+    const out = r < 0 ? 0 : ramp(r, ...TOMMY.out), seat = r < 0 ? 1 : ramp(r, ...TOMMY.seat);
     if (r < 0 || r >= 0.6) { b.push(); b.translate(0, 0.0, 0.14); drum(b); b.pop(); }
     else if (r < 0.32) { b.push(); b.translate(-0.12 * out, -0.25 * out * out, 0.14); b.roll(-0.6 * out); drum(b); b.pop(); }
     else {

@@ -1,7 +1,8 @@
 import * as THREE from "three";
 import { rnd, pick } from "../utils/math";
 import { at } from "../audio/AudioEngine";
-import { bang, boom } from "../audio/Sfx";
+import { propBreaks } from "../audio/sounds/world";
+import { barrelExplosion } from "../audio/sounds/explosions";
 import { woodP, fireP, smoke3d, sparks } from "../fx/Particles";
 import { spawnGibs } from "../fx/Gibs";
 import { scorchMat } from "../fx/Decals";
@@ -66,7 +67,7 @@ type DamageableEnemy = Pick<Enemy, "x" | "z" | "dead" | "kx" | "kz">;
 export function breakProp(p: Prop): void {
   if(p.dead)return;p.dead=true;renderState.scene.remove(p.m);S.propsBroken++;
   woodP(p.x,.5,p.z,12);spawnGibs(p.x,.55,p.z,6,3.4,true);
-  at(p.x,.5,p.z,()=>{bang(.12,.32,1200);bang(.08,.2,500);});
+  at(p.x,.5,p.z,()=>propBreaks());
   if(Math.random()<.2){
     const k=pick(["health","bullets","shells"]);
     world.items.push({kind:k,x:p.x,z:p.z,sp:addSprite(ITEMTEX[k] as THREE.CanvasTexture,p.x,p.z,.55,.55,.5),bob:0});}
@@ -80,7 +81,7 @@ export function explodeBarrel(b: Prop): void {
   spawnGibs(b.x,.8,b.z,6,5,true);
   const sc=new THREE.Mesh(track(new THREE.CircleGeometry(1.5,10)),scorchMat);
   sc.rotation.x=-Math.PI/2;sc.position.set(b.x,.015,b.z);renderState.scene.add(sc);
-  at(b.x,1.2,b.z,()=>boom(1.1));
+  at(b.x,1.2,b.z,()=>barrelExplosion());
   const pd=Math.hypot(player.px-b.x,player.pz-b.z);
   if(pd<5)damagePlayer(60*(1-pd/5));
   const enemies: readonly DamageableEnemy[] = world.enemies;   // checked widening, not a cast

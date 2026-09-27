@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sound board — THE BLACK SILENCE</title>
+<style>
+  :root{--bg:#0b0b0d;--panel:#141418;--line:#2a2a31;--text:#cfc9bd;--dim:#8a8477;--gold:#c9b27a;--red:#a8382a}
+  html,body{margin:0;background:var(--bg);color:var(--text);font-family:"Courier New",monospace}
+  #board{max-width:980px;margin:0 auto;padding:24px 16px 64px}
+  h1{font-size:clamp(20px,4vw,30px);letter-spacing:.12em;color:var(--gold);margin:0 0 8px;font-weight:normal}
+  .lede{font-size:16px;line-height:1.5;margin:0 0 16px;max-width:70ch}
+  .hint{font-size:13px;color:var(--dim);margin:12px 0 0;max-width:70ch;line-height:1.5}
+  .controls{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center}
+  .power{font:inherit;font-size:17px;padding:12px 22px;background:var(--red);color:#fff;border:0;border-radius:6px;cursor:pointer;letter-spacing:.05em}
+  .power:disabled{background:#2d4a2d;cursor:default}
+  .drone{font-size:14px;color:var(--dim);display:flex;align-items:center;gap:6px}
+  .mix,.room{font:inherit;font-size:14px;padding:9px 10px;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:6px;max-width:100%}
+  .search{font:inherit;font-size:15px;padding:9px 12px;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:6px;min-width:0;flex:1 1 240px}
+  h2{font-size:18px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:normal;margin:36px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+  .rows{list-style:none;margin:0;padding:0}
+  .row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border-bottom:1px solid var(--line);transition:background .6s}
+  .row.flash{background:#2a241a;transition:none}
+  .text{display:flex;flex-direction:column;gap:3px;min-width:0}
+  .name{font-size:16px}
+  .detail{font-size:12px;color:var(--dim);overflow-wrap:anywhere}
+  .buttons{display:flex;gap:8px;flex:none}
+  .play{font:inherit;font-size:15px;padding:8px 14px;background:var(--panel);color:var(--text);border:1px solid #4a4436;border-radius:6px;cursor:pointer;white-space:nowrap}
+  .play:hover,.play:focus-visible{border-color:var(--gold);color:#fff}
+  .play.old{border-color:#5a3a34}
+  .play.new{border-color:#3d5a34}
+</style>
+</head>
+<body>
+<div id="board">Loading the sound board…</div>
+<script type="module" src="/src/soundboard/main.ts"></script>
+</body>
+</html>

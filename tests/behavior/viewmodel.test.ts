@@ -32,7 +32,7 @@ import type * as AnimateModule from "../../src/render/viewmodel/animate";
  *   recorded at its describe block), the
  *   scoped-sniper hide, and — the one that protects the trace fixtures —
  *   **how many Math.random values drawViewmodel draws per frame**, per
- *   weapon, firing and not (KNOWN-20: every visual draw shifts every
+ *   weapon, firing and not (KNOWN-22: every visual draw shifts every
  *   gameplay draw after it).
  * - What is new is pinned by what must be true of it: every slot draws a
  *   solid silhouette; every pair of silhouettes differs; the muzzle anchor
@@ -307,7 +307,7 @@ describe("drawViewmodel keeps the reference's Math.random draw count, per weapon
     });
   });
 
-  it("nothing draws from Math.random at import — building the weapon art at boot moves no seeded draw (KNOWN-20)", () => {
+  it("nothing draws from Math.random at import — building the weapon art at boot moves no seeded draw (KNOWN-22)", () => {
     expect(importDraws).toBe(0);
   });
 });

@@ -2,6 +2,7 @@ import type { Builder } from "../builder";
 import { MAT } from "../palette";
 import { cup, fist, forearm } from "../hands";
 import { hump, ramp, type Pose, type WeaponArt } from "../pose";
+import { RIFLE } from "../phases";
 
 /**
  * Slot 2, COMBAT RIFLE — a long iron receiver with a carry handle and its
@@ -45,7 +46,7 @@ export const combatRifle: WeaponArt = {
     b.box(-0.002, 0.068, -0.1, 0.002, 0.073, -0.078, MAT.BLACK);
     b.box(0.02, 0.018, -0.03, 0.022, 0.036, 0.05, MAT.BLACK);                        // ejection port
     // T-shaped charging handle at the back of the receiver: rides back with the action, and with the reload's pull
-    const ch = Math.max(pose.action, r < 0 ? 0 : hump(r, 0.78, 0.96, 0.05));
+    const ch = Math.max(pose.action, r < 0 ? 0 : hump(r, ...RIFLE.charge));
     b.cbox(-0.006, 0.046, -0.06 - 0.06 * ch, 0.006, 0.056, -0.02 - 0.06 * ch, 0.002, MAT.SILVER); // T-handle shaft
     b.cbox(-0.026, 0.044, -0.1 - 0.06 * ch, 0.026, 0.058, -0.086 - 0.06 * ch, 0.003, MAT.SILVER); // T-handle grip
 
@@ -63,7 +64,7 @@ export const combatRifle: WeaponArt = {
     b.anchor("muzzle", 0, 0.028, 0.66);
 
     // magazine: out, swapped, in
-    const drop = r < 0 ? 0 : ramp(r, 0.1, 0.22), seat = r < 0 ? 1 : ramp(r, 0.42, 0.6);
+    const drop = r < 0 ? 0 : ramp(r, ...RIFLE.drop), seat = r < 0 ? 1 : ramp(r, ...RIFLE.seat);
     const handAway = r < 0 ? 0 : hump(r, 0.14, 0.86, 0.12);
     if (r >= 0 && r < 0.3) {
       b.push(); b.translate(0, -0.2 * drop * drop, 0.1 - 0.02 * drop); b.pitch(-0.5 * drop); magazine(b); b.pop();

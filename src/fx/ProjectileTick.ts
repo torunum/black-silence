@@ -1,6 +1,6 @@
 import type * as THREE from "three";
 import { rnd } from "../utils/math";
-import { gurgle } from "../audio/Voice";
+import { fleshHitsPlayer, fleshSplat } from "../audio/sounds/monsters";
 import { spawnP, blood, smoke3d } from "./Particles";
 import { addPool } from "./Decals";
 import { renderState } from "../render/Renderer";
@@ -109,9 +109,9 @@ export function projTick(dt: number){
     const hit=Math.hypot(o.m.position.x-player.px,o.m.position.z-player.pz)<.55&&
        Math.abs(o.m.position.y-(player.pyy-.3))<1;
     if(!dead&&hit){damagePlayer(o.dmg);
-      if(o.flesh){blood(player.px,player.pyy-.2,player.pz,10,1.5);gurgle(.2,.35);}
+      if(o.flesh){blood(player.px,player.pyy-.2,player.pz,10,1.5);fleshHitsPlayer();}
       dead=true;}
     if(dead){
       if(o.flesh){blood(o.m.position.x,Math.max(.1,o.m.position.y),o.m.position.z,8,1.4);
-        addPool(o.m.position.x,o.m.position.z,rnd(.2,.4));gurgle(.16,.25);}
+        addPool(o.m.position.x,o.m.position.z,rnd(.2,.4));fleshSplat();}
       renderState.scene.remove(o.m);orbs.splice(i,1);}}}

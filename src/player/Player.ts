@@ -2,7 +2,7 @@ import type * as THREE from "three";
 import { pick, rnd } from "../utils/math";
 import { MONOLOGUE as M } from "../content/monologue";
 import { ctx } from "../audio/AudioEngine";
-import { bang, blip } from "../audio/Sfx";
+import { playerHurt, footstep as footstepSound, landing as landingSound, jump, gauntletBegins, gauntletCleared } from "../audio/sounds/world";
 import { stopBossMusic } from "../audio/Ambient";
 import { stopMusic } from "../audio/Music";
 import { flashDmg, showMsg } from "../ui/HudMessages";
@@ -84,7 +84,7 @@ function damagePlayer(d: number, silent?: boolean): void {
   if(S.armor>0){const ab=Math.min(S.armor,dmg*.6);S.armor-=ab;dmg-=ab;}
   S.hp-=dmg;
   if(!silent){flashDmg(.45);shake(.3);screenBlood();animCues.hurt++;animCues.hurtAmt=dmg; // (the cue: the hands flinch — animation only, round 2 Task 4)
-    bang(.1,.3,700);blip(90,.2,"sawtooth",.12,40);}
+    playerHurt();}
   if(S.hp<35&&Math.random()<.3)say("lowhp");
   if(S.hp<=0){S.hp=0;S.dead=true;
     stopBossMusic();stopMusic();
@@ -120,8 +120,17 @@ function accelerate(wx_: number, wz_: number, maxs: number, acc: number, dt: num
 function footstep(sprinting: boolean): void {
   if(!ctx())return;
   const marble=S.level===1;
-  bang(.05,sprinting?.09:.06,marble?2400:700,marble?600:0);
-  if(marble)blip(rnd(800,1000),.05,"sine",.02);}
+  footstepSound(sprinting,marble);}
+/**
+ * The frame the player touches the ground, falling at `speed` m/s — where a
+ * running `footstep(true)` used to play. Player feedback round 2 Task 5: the
+ * landing is its own sound now, and scales with the fall
+ * (`src/audio/sounds/steps.ts`). Same moment, same guard, and it reads
+ * `player.vy` before the line that zeroes it; nothing else changed.
+ */
+function land(speed: number): void {
+  if(!ctx())return;
+  landingSound(speed,S.level===1);}
 function playerTick(dt: number): void {
   if(S.dead||S.won||game.inputLock)return;
   if(player.spawnGuard>0)player.spawnGuard-=dt;
@@ -136,10 +145,10 @@ function playerTick(dt: number): void {
   if(player.grounded){
     const fr=Math.exp(-8*dt);player.vx*=fr;player.vz*=fr;
     accelerate(wx_,wz_,sprint?10.5:7,9,dt);
-    if(keys.Space){player.vy=7.4;player.grounded=false;blip(140,.06,"sine",.04,90);}
+    if(keys.Space){player.vy=7.4;player.grounded=false;jump();}
   }else accelerate(wx_,wz_,1.4,70,dt);
   player.vy-=20*dt;player.pyy+=player.vy*dt;
-  if(player.pyy<=standY){if(!player.grounded){footstep(true);shake(.04);}player.pyy=standY;player.vy=0;player.grounded=true;}
+  if(player.pyy<=standY){if(!player.grounded){land(-player.vy);shake(.04);}player.pyy=standY;player.vy=0;player.grounded=true;}
   let nx=player.px+player.vx*dt;
   if(!collides(nx,player.pz)&&!(player.grounded&&floorHeightAt(nx,player.pz)-fh>1.2)){player.px=nx;}else player.vx=0;
   let nz=player.pz+player.vz*dt;
@@ -174,7 +183,7 @@ function playerTick(dt: number): void {
   if(world.challenge&&(world.challenge as unknown as ChallengeState).state===0&&Math.hypot(player.px-(world.challenge as unknown as ChallengeState).x,player.pz-(world.challenge as unknown as ChallengeState).z)<1){
     (world.challenge as unknown as ChallengeState).state=1;say("challenge",true);
     showMsg("THE PLATE HUMS — THEY ARE COMING",3);
-    blip(70,1,"sawtooth",.15,40,true);
+    gauntletBegins();
     (world.challenge as unknown as ChallengeState).plate.material.color.setHex(0xc83a20);
     (world.challenge as unknown as ChallengeState).light.color.setHex(0xc83a20);
     for(let n=0;n<5;n++){
@@ -195,6 +204,6 @@ function playerTick(dt: number): void {
       ["armor","crosses","bullets"].forEach((k,i)=>{
         world.items.push({kind:k,x:(world.challenge as unknown as ChallengeState).x+(i-1)*.8,z:(world.challenge as unknown as ChallengeState).z,
           sp:addSprite(ITEMTEX[k] as THREE.CanvasTexture,(world.challenge as unknown as ChallengeState).x+(i-1)*.8,(world.challenge as unknown as ChallengeState).z,.55,.55,.5),bob:i});});
-      blip(523,.3,"sine",.1,1046,true);}}}
+      gauntletCleared();}}}
 
 export { damagePlayer, accelerate, footstep, playerTick };

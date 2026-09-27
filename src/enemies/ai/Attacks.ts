@@ -9,8 +9,7 @@ import { damagePlayer } from "../../player/Player";
 import { projectiles } from "../../fx/Projectiles";
 import { renderState } from "../../render/Renderer";
 import { at } from "../../audio/AudioEngine";
-import { blip, bang } from "../../audio/Sfx";
-import { gurgle, growl } from "../../audio/Voice";
+import { orbLaunch, fleshThrow, shockwaveRing, debrisWarning, debrisImpact } from "../../audio/sounds/monsters";
 import { gibGeo, gibMatsFlesh, spawnGibs } from "../../fx/Gibs";
 import { blood, smoke3d, sparks, toxicP } from "../../fx/Particles";
 import { shake } from "../../fx/ShakeState";
@@ -60,7 +59,7 @@ interface Strike { x: number; z: number; t: number; warn: THREE.Mesh<THREE.Buffe
 interface PoisonZone { x: number; z: number; r: number; t: number; }
 
 /** world.enemies elements, cast for fireOrb/throwFlesh's ranged-attack spawns. */
-type AttackEnemy = Pick<Enemy, "x" | "z" | "h" | "hp" | "atkAnim" | "orb" | "stone" | "fly" | "flyH" | "fy">;
+type AttackEnemy = Pick<Enemy, "key" | "x" | "z" | "h" | "hp" | "atkAnim" | "orb" | "stone" | "fly" | "flyH" | "fy">;
 
 const orbGeo=new THREE.SphereGeometry(.16,6,6);
 
@@ -87,7 +86,7 @@ export function fireOrb(enemy: unknown,spreadA: number,tox?: boolean){
   projectiles.orbs.push({m,vx:Math.sin(a)*spd,vz:Math.cos(a)*spd,
     vy:((player.pyy-.2)-oy)/(dist/spd),dmg,life:3.2,tox,col});
   renderState.scene.add(m);
-  at(e.x,oy,e.z,()=>blip(tox?420:ot==="manc"?180:300,.2,"sawtooth",.08,90));}
+  at(e.x,oy,e.z,()=>orbLaunch(tox?"toxic":ot==="manc"?"heavy":"normal",e.key,e));}
 export function throwFlesh(enemy: unknown){
   const e=enemy as AttackEnemy;
   const dx=player.px-e.x,dz=player.pz-e.z,dist=Math.hypot(dx,dz);
@@ -101,14 +100,14 @@ export function throwFlesh(enemy: unknown){
   renderState.scene.add(m);
   blood(e.x,oy,e.z,6,1.6);    // it rips the chunk out of its own body
   e.hp-=3;                    // Blood-style self-mutilation
-  at(e.x,oy,e.z,()=>{gurgle(.22,.32);growl(150,.22,.22);});}
+  at(e.x,oy,e.z,()=>fleshThrow(e.key));}
 /* expanding shockwave ring — jump to dodge */
 const ringMatBase=new THREE.MeshBasicMaterial({color:0x9a4ae0,transparent:true,opacity:.6,side:THREE.DoubleSide});
 export function spawnRing(x: number,z: number){
   const m=new THREE.Mesh(track(new THREE.RingGeometry(.1,.45,28)),track(ringMatBase.clone()));
   m.rotation.x=-Math.PI/2;m.position.set(x,.06,z);renderState.scene.add(m);
   world.rings.push({m,x,z,r:.3,hitDone:false});
-  at(x,.06,z,()=>{bang(.3,.5,250);blip(60,.5,"sawtooth",.16,30,true);});shake(.2);}
+  at(x,.06,z,()=>shockwaveRing());shake(.2);}
 export function ringTick(dt: number){
   for(let i=world.rings.length-1;i>=0;i--){const r=world.rings[i] as unknown as Ring;
     r.r+=6.5*dt;
@@ -131,7 +130,7 @@ export function spawnStrike(){
       track(new THREE.MeshBasicMaterial({color:0x150a1e,transparent:true,opacity:.7})));
     warn.rotation.x=-Math.PI/2;warn.position.set(x,.025,z);renderState.scene.add(warn);
     world.strikes.push({x,z,t:.85,warn});
-    at(x,.025,z,()=>blip(1200,.4,"sine",.05,300));
+    at(x,.025,z,()=>debrisWarning());
     return;}}
 export function strikeTick(dt: number){
   for(let i=world.strikes.length-1;i>=0;i--){const s=world.strikes[i] as unknown as Strike;
@@ -147,7 +146,7 @@ export function strikeTick(dt: number){
       const sCeil=ceilHeightAt(s.x,s.z);
       spawnGibs(s.x,sCeil-.4,s.z,5,3,true);
       smoke3d(s.x,1.4,s.z,10);sparks(s.x,1,s.z,6);
-      at(s.x,sCeil-.4,s.z,()=>bang(.25,.5,400));shake(.18);
+      at(s.x,sCeil-.4,s.z,()=>debrisImpact());shake(.18);
       if(Math.hypot(player.px-s.x,player.pz-s.z)<1.3)damagePlayer(18);
       for(const p of world.props as unknown as Prop[]){if(!p.dead&&Math.hypot(p.x-s.x,p.z-s.z)<1.3)
         p.explosive?explodeBarrel(p):breakProp(p);}

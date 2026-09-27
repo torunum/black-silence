@@ -2,6 +2,7 @@ import type { Builder } from "../builder";
 import { MAT } from "../palette";
 import { cup, fist, forearm } from "../hands";
 import { hump, ramp, type Pose, type WeaponArt } from "../pose";
+import { SAWED_OFF } from "../phases";
 
 /**
  * Slot 1, SAWED-OFF SHOTGUN — two blued barrels side by side, cut short,
@@ -33,11 +34,11 @@ export const sawedOff: WeaponArt = {
   hold: { x: 0.08, y: -0.132, z: 0.29, pitch: 0.12, yaw: -0.2, roll: 0.14 },
   kick: { back: 0.08, lift: 0.08 },
   // p runs over the 0.35 s fire window; the pump's back end sits at p≈0.86 (0.30 s)
-  action: (p) => hump(p, 0.45, 1.0, 0.38),
+  action: (p) => hump(p, ...SAWED_OFF.pump),
   draw(b: Builder, pose: Pose) {
     const r = pose.reload;
     b.pitch(-0.06 * pose.action); // the gun dips as the pump is racked
-    const open = r < 0 ? 0 : hump(r, 0.08, 0.86, 0.1);
+    const open = r < 0 ? 0 : hump(r, ...SAWED_OFF.open);
     const tilt = r < 0 ? 0 : hump(r, 0.0, 0.98, 0.14);
     b.translate(0, -0.02 * tilt, 0); b.roll(-0.2 * tilt); b.pitch(-0.1 * tilt); b.yaw(0.12 * tilt);
 
@@ -71,8 +72,8 @@ export const sawedOff: WeaponArt = {
     b.ball(0, by + 0.012, 0.375, 0.0045, MAT.BRASS, 5);                               // bead
     if (open > 0.3) {
       for (const bx of [-0.0165, 0.0165]) b.cyl(bx, by, -0.057, -0.055, 0.011, 0.011, 10, MAT.BLACK);
-      if (r > 0.14 && r < 0.3) {                                                    // spent hulls jumping clear
-        const u = (r - 0.14) / 0.16;
+      if (r > SAWED_OFF.hulls[0] && r < SAWED_OFF.hulls[1]) {                                                    // spent hulls jumping clear
+        const u = (r - SAWED_OFF.hulls[0]) / (SAWED_OFF.hulls[1] - SAWED_OFF.hulls[0]);
         for (const bx of [-0.0165, 0.0165]) {
           b.push(); b.translate(bx + Math.sign(bx) * 0.05 * u, by + 0.09 * u - 0.12 * u * u, -0.07 + 0.03 * u); b.pitch(-1.2 * u); hull(b, 0, 0, 0); b.pop();
         }
@@ -94,7 +95,7 @@ export const sawedOff: WeaponArt = {
 
     // left hand away from the forend: fetches two shells and drops them in
     if (handOff >= 0.05) {
-      const load = ramp(r, 0.42, 0.6);
+      const load = ramp(r, ...SAWED_OFF.load);
       b.push();
       b.translate(-0.07 + 0.05 * handOff, -0.16 + 0.19 * handOff - 0.02 * load, -0.02 - 0.05 * handOff);
       b.roll(-0.5); b.pitch(0.5);
