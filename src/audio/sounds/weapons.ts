@@ -141,7 +141,7 @@ function nail(): Layer[] {
   const p = jit(0.06), q = jit(0.1);
   return [
     // the air let go
-    { noise: "white", filters: [{ type: "highpass", f: 3800 * q }], env: { a: 0.0005, h: 0.002, d: 0.03 }, level: 0.2 },
+    { noise: "white", filters: [{ type: "highpass", f: 3800 * q }], env: { a: 0.0005, h: 0.002, d: 0.03 }, drive: 2, level: 0.2 },
     // the thwack: a hard, pitched knock of steel on steel
     { noise: "white", filters: [{ type: "bandpass", f: 780 * p, q: 3 }], env: { a: 0.0006, h: 0.01, d: 0.034 }, drive: 3, level: 1 },
     { tone: "sine", f: 300 * p, to: 120 * p, over: 0.02, env: { a: 0.0005, h: 0.002, d: 0.03 }, drive: 1.5, level: 0.55 },

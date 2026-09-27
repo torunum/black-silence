@@ -877,7 +877,7 @@ here changes gameplay, and no trace fixture moved.
 
 Branch `feedback-2-sound`, plan
 `docs/superpowers/plans/2026-09-26-player-feedback-2-sound.md`. The owner:
-"The sounds are still very bad." Five tasks; Tasks 1 and 2 are done.
+"The sounds are still very bad." Five tasks; Tasks 1-3 are done.
 
 | Task 1 | Outcome |
 |---|---|
@@ -892,7 +892,13 @@ Branch `feedback-2-sound`, plan
 | Planned levels | `src/audio/Levels.ts`: every catalogue sound plays at a category target and a trim; `scripts/sound-levels.mjs` measures (headless Chrome) and writes `docs/sound-levels.md`. The weapons are peak-bound at -17 to -20 LK against a -14 target — too short-bodied to get louder without the limiter crushing them; Task 3's redesign is what can lift them. |
 | Old mix / New mix | The board plays every row through the pre-Task-2 graph (`src/soundboard/previous/mix.ts`) or the game's — Task 2 changed no sound's synthesis, so it is one switch, not 111 rows. The tests that compare sound bodies with the reference run on that old mix. |
 
-**For Tasks 3-5:** no fixture may move. Register the old version of a sound
+| Task 3 | Outcome |
+|---|---|
+| The weapons | All eight reports rebuilt as layered sounds (`src/audio/Layers.ts`, `src/audio/sounds/weapons.ts`): a saturated transient, a body with each weapon's character, a thump, a mechanical tail, the whole report saturated together, and a bigger send to the room. The automatic weapons jitter pitch and filters every shot from sound's own dice and end each shot inside one period. All eight measure -14.0 LK (the automatic ones as a one-second burst) at -2.0 to -6.6 dBFS peak — the loudest category, where round 1's reports were peak-bound at -17 to -20. |
+| The mechanisms | 38 foley sounds (`src/audio/sounds/foley.ts`): break-opens, shells, magazines, bolts, the drum, the knob, the hopper, the reliquary's roof, the reaper's soul, the switch, the dry click, and the nail cannon's motor (`src/audio/Spin.ts`, following the animation's spin law). They replace the generic 18% / 62% / 100% reload clicks. `weaponTick` plays each at the phase the viewmodel draws it (`src/weapons/Foley.ts`, reading `src/render/viewmodel/phases.ts`, which the art now draws from) — no timer, so a reload cut short by a switch or by firing leaves nothing pending. No reload or fire timing changed; no fixture moved. |
+| Old / new | Every replaced sound is on the board as Old (`src/soundboard/previous/weapons.ts`: round 1's `gunshot()`, the reference's cross and reaper, the clicks), at the level it had; each weapon's whole reload is a row too. |
+
+**For Tasks 4-5:** no fixture may move. Register the old version of a sound
 in `src/soundboard/previous.ts` *before* changing it. Every new catalogue
 sound goes inside `lv(...)` with an entry in `src/audio/Levels.ts`
 (`tests/audio/levels.test.ts` fails otherwise); re-run

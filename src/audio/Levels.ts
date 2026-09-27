@@ -27,14 +27,17 @@ import { voiced } from "./AudioEngine";
  * between impacts and footsteps, and the **ambience** (distant stingers,
  * heartbeat, breath) just above the UI.
  *
- * Weapons aim at -14 and mostly do not get there: today's firearm reports
- * (`gunshot()`, round 1) are a 4 ms crack and a 30-170 ms body, and a
- * sound that short reaches the peak ceiling (`src/soundboard/measure.ts`'s
- * `PEAK_CEILING`) long before it reaches -14. They land at -17 to -19 (the
- * automatic weapons measured as a one-second burst, which is how they are
- * heard), so every other target sits below that: explosions at -19, the
- * rest 2-3 dB apart under it. Task 3's weapons, with real bodies, can take
- * the weapon target up to where it says.
+ * Weapons are at -14, all eight (the automatic weapons measured as a
+ * one-second burst, which is how they are heard). Until player feedback
+ * round 2 Task 3 they could not get there: round 1's reports were a 4 ms
+ * crack and a 30-170 ms body, which reached the peak ceiling
+ * (`src/soundboard/measure.ts`'s `PEAK_CEILING`) at -17 to -20. Task 3's
+ * layered reports (`./Layers.ts`, `./sounds/weapons.ts`) hold their body
+ * for tens of milliseconds and are saturated as a whole, so they reach -14
+ * a few dB under the ceiling. Every other target sits below them:
+ * explosions at -19, the rest 2-3 dB apart under it. The weapons also send
+ * more of themselves to the room than a plain sound (their `room` factors
+ * below): a shot indoors is answered by the hall.
  *
  * ## The trims
  *
@@ -94,7 +97,7 @@ export const SOUND_LEVELS = {
   tommyGunFire: { category: "weapon", trim: -9.1, room: 1.2 },
   sniperFire: { category: "weapon", trim: -11.7, room: 2 },
   crossLauncherFire: { category: "weapon", trim: -7.1, room: 2.4 },
-  nailCannonFire: { category: "weapon", trim: -6.8, room: 1 },
+  nailCannonFire: { category: "weapon", trim: -6.7, room: 1 },
   soulReaperFire: { category: "weapon", trim: -10, room: 2.2 },
   // weapon foley: the switch, the dry click, the kick's swing, casings, the jump
   weaponLower: { category: "foley", trim: 0 },
