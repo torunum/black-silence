@@ -24,7 +24,10 @@ import { mulberry32 } from "./SoundRandom";
  *    air and flesh swallow high frequencies faster than low ones, so a real
  *    tail darkens as it dies. A static corner is what makes cheap reverb
  *    sound like hiss. A one-pole highpass at `lowCut` keeps the tail from
- *    booming (except in hell, which is allowed to).
+ *    booming: the first spectrograms (the shotgun in the stone hall) showed
+ *    its 36-120 Hz thump ringing on for a second and a half under the tail,
+ *    which is mud, not space — so the tail starts at 120-220 Hz, and the
+ *    thump stays in the dry sound. Hell keeps more of its low end (70 Hz).
  * 4. **Early reflections** — a handful of discrete taps: the nearest walls.
  *    `early.count` taps between `early.from` and `early.to` ms, each a
  *    three-sample smear (a gentle lowpass: stone does not reflect a perfect
@@ -74,7 +77,7 @@ export const ROOMS: Readonly<Record<RoomName, RoomSpec>> = {
   hall: {
     label: "Stone hall (dungeon, church, necropolis)",
     seconds: 2.4, rt60: 2.0, predelay: 0.018, attack: 0.02,
-    bright: [6500, 1300], lowCut: 90,
+    bright: [6500, 1300], lowCut: 180,
     early: { count: 8, from: 9, to: 75, gain: 0.32 },
     wet: 0.42,
   },
@@ -84,7 +87,7 @@ export const ROOMS: Readonly<Record<RoomName, RoomSpec>> = {
   hell: {
     label: "Hell (the prologue)",
     seconds: 3.0, rt60: 2.9, predelay: 0.05, attack: 0.06,
-    bright: [2600, 320], lowCut: 30,
+    bright: [2600, 320], lowCut: 70,
     early: { count: 5, from: 55, to: 170, gain: 0.26 },
     wet: 0.5,
   },
@@ -94,7 +97,7 @@ export const ROOMS: Readonly<Record<RoomName, RoomSpec>> = {
   flesh: {
     label: "Flesh (the womb)",
     seconds: 1.1, rt60: 0.8, predelay: 0.003, attack: 0.006,
-    bright: [2200, 450], lowCut: 70,
+    bright: [2200, 450], lowCut: 120,
     early: { count: 12, from: 1.5, to: 20, gain: 0.3 },
     wet: 0.46,
   },
@@ -103,7 +106,7 @@ export const ROOMS: Readonly<Record<RoomName, RoomSpec>> = {
   graveyard: {
     label: "Graveyard (open air)",
     seconds: 1.6, rt60: 1.3, predelay: 0.035, attack: 0.03,
-    bright: [5000, 1400], lowCut: 120,
+    bright: [5000, 1400], lowCut: 200,
     early: { count: 4, from: 70, to: 230, gain: 0.3 },
     wet: 0.26,
   },
@@ -112,7 +115,7 @@ export const ROOMS: Readonly<Record<RoomName, RoomSpec>> = {
   sewer: {
     label: "Sewer (tunnel)",
     seconds: 2.4, rt60: 2.2, predelay: 0.008, attack: 0.015,
-    bright: [4200, 700], lowCut: 160,
+    bright: [4200, 700], lowCut: 220,
     early: { count: 10, from: 22, to: 230, gain: 0.3, regular: true },
     wet: 0.42,
   },
@@ -121,7 +124,7 @@ export const ROOMS: Readonly<Record<RoomName, RoomSpec>> = {
   factory: {
     label: "Factory (metal hall)",
     seconds: 2.0, rt60: 1.7, predelay: 0.012, attack: 0.012,
-    bright: [9000, 2400], lowCut: 100,
+    bright: [9000, 2400], lowCut: 180,
     early: { count: 10, from: 5, to: 55, gain: 0.3 },
     wet: 0.38,
   },

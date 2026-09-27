@@ -1,6 +1,10 @@
-import { audioInit, ctx, isReady } from "../audio/AudioEngine";
+import { audioInit, ctx, currentRoom, isReady, setRoom } from "../audio/AudioEngine";
+import { newMix, type MixFactory } from "../audio/Mix";
+import { ROOM_NAMES, ROOMS, type RoomName } from "../audio/Room";
 import { CATEGORIES, SOUND_ROWS, type SoundRow, type SoundVersion } from "./registry";
-import { renderOffline, type Rendered } from "./offline";
+import { renderOffline, type Rendered, type RenderOptions } from "./offline";
+import { measureLevels, type LevelReport } from "./measure";
+import { previousMix } from "./previous/mix";
 
 /**
  * THE SOUND BOARD PAGE — `soundboard.html`. Built for the project owner, who
@@ -15,13 +19,28 @@ import { renderOffline, type Rendered } from "./offline";
  * The page also puts a small `soundboard` object on `window` for whoever
  * works on a sound next: `soundboard.play(id)`, and `await
  * soundboard.render(id)` to render it offline and read its level (see
- * `./offline.ts`).
+ * `./offline.ts`), and `await soundboard.levels()` to measure them all
+ * (`./measure.ts`, what `scripts/sound-levels.mjs` runs).
+ *
+ * ## Old mix / New mix (player feedback round 2, Task 2)
+ *
+ * Task 2 changed how every sound comes out — a room, a master chain, a
+ * planned level each — without touching any sound's own synthesis. So its
+ * before/after is one switch for the whole board, not an Old/New pair on
+ * each of 111 rows: **Old mix** plays every row through the graph the game
+ * had before (`./previous/mix.ts`: no room, the 340 ms echo, no chain, no
+ * trims), **New mix** through the game's. Beside it, the room the new mix
+ * rings in — one per level theme.
  */
 
 export interface SoundboardApi {
   rows: readonly SoundRow[];
   play(id: string, label?: SoundVersion["label"]): void;
-  render(id: string, seconds?: number, label?: SoundVersion["label"]): Promise<Rendered>;
+  render(id: string, seconds?: number, label?: SoundVersion["label"], opts?: RenderOptions): Promise<Rendered>;
+  levels(): Promise<LevelReport>;
+  /** "old" or "new" — the mix the board plays through (and renders through by default). */
+  setMix(which: "old" | "new"): void;
+  setRoom(room: RoomName): void;
 }
 
 function make<K extends keyof HTMLElementTagNameMap>(tag: K, cls?: string, text?: string): HTMLElementTagNameMap[K] {
@@ -52,17 +71,27 @@ export function mountSoundboard(root: HTMLElement): SoundboardApi {
   search.type = "search";
   search.placeholder = "Find a sound — try \"shotgun\" or \"door\"";
   search.setAttribute("aria-label", "Find a sound");
-  controls.append(power, droneLabel, search);
+  const mixPick = make("select", "mix");
+  mixPick.setAttribute("aria-label", "Mix");
+  mixPick.append(new Option("New mix — rooms, master chain, planned levels", "new"), new Option("Old mix — before the rooms and levels", "old"));
+  const roomPick = make("select", "room");
+  roomPick.setAttribute("aria-label", "Room");
+  for (const r of ROOM_NAMES) roomPick.append(new Option(`Room: ${ROOMS[r].label}`, r));
+  roomPick.value = currentRoom().wanted;
+  controls.append(power, droneLabel, mixPick, roomPick, search);
   head.append(controls);
   head.append(make("p", "hint",
     "Sound starts on your first click — browsers do not allow a page to make noise before that. " +
-    "Where a sound has been redesigned, its row has two buttons: Old and New."));
+    "Old mix / New mix switches every sound between how the game sounded before it had rooms and planned levels, and now. " +
+    "The room is the space the new mix rings in; each level has its own. " +
+    "Where a sound itself has been redesigned, its row has two buttons: Old and New."));
   root.append(head);
 
   let live: BaseAudioContext | null = null;
+  const mixOf = (): MixFactory => (mixPick.value === "old" ? previousMix : newMix);
   function soundOn(): void {
     if (isReady() && live) return;
-    audioInit({ drones: drone.checked });
+    audioInit({ drones: drone.checked, mix: mixOf() });
     live = ctx();
     power.textContent = "Sound is on";
     power.disabled = true;
@@ -72,6 +101,11 @@ export function mountSoundboard(root: HTMLElement): SoundboardApi {
     if (typeof running.resume === "function") void running.resume();
   }
   power.addEventListener("click", soundOn);
+  // A switch rebuilds the graph on the same context. The drone, if it was
+  // on, keeps playing through the first graph, which stays connected.
+  const readopt = (): void => { if (live) audioInit({ context: live, drones: false, mix: mixOf() }); };
+  mixPick.addEventListener("change", readopt);
+  roomPick.addEventListener("change", () => setRoom(roomPick.value as RoomName));
 
   function versionOf(id: string, label?: SoundVersion["label"]): SoundVersion {
     const row = SOUND_ROWS.find((r) => r.id === id);
@@ -131,16 +165,25 @@ export function mountSoundboard(root: HTMLElement): SoundboardApi {
   const api: SoundboardApi = {
     rows: SOUND_ROWS,
     play(id, label) { soundOn(); versionOf(id, label).play(); },
-    async render(id, seconds = 2, label) {
+    async render(id, seconds = 2, label, opts = {}) {
       const v = versionOf(id, label);
       try {
-        return await renderOffline(v.play, seconds);
+        return await renderOffline(v.play, { seconds, mix: mixOf(), ...opts });
       } finally {
         // Back to the speakers. The drone, if it was on, never stopped: it
         // lives on the first graph, which is still connected.
-        if (live) audioInit({ context: live, drones: false });
+        readopt();
       }
     },
+    async levels() {
+      try {
+        return await measureLevels();
+      } finally {
+        readopt();
+      }
+    },
+    setMix(which) { mixPick.value = which; readopt(); },
+    setRoom(room) { roomPick.value = room; setRoom(room); },
   };
   return api;
 }
