@@ -49,9 +49,9 @@ describe("deterministic", () => {
 });
 
 describe("the registry", () => {
-  it("builds the four, and leaves TEX's key set alone", () => {
+  it("builds the eight, and leaves TEX's key set alone", () => {
     buildDressTextures();
-    expect(Object.keys(DRESSTEX).sort()).toEqual(["bridgeStone", "graveEarth", "spark", "yardEarth"]);
+    expect(Object.keys(DRESSTEX).sort()).toEqual(["banner", "bridgeStone", "graveEarth", "rust", "sludge", "spark", "straw", "yardEarth"]);
     expect(Object.keys(TEX).sort()).toEqual(texKeys);
   });
 

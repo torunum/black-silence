@@ -1,10 +1,11 @@
 // @vitest-environment jsdom
-import { beforeAll, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import * as THREE from "three";
 import { installDomStubs, loadGameHtml } from "../support/domStubs";
 import { renderState } from "../../src/render/Renderer";
 import { world } from "../../src/world/WorldState";
 import { LEVELS } from "../../src/world/levels/index";
+import { galleryDef } from "../../src/world/decor/gallery";
 import { save } from "../../src/save/SaveGame";
 import { SHADOW_MAP_SIZE, SHADOW_POLICY, applyShadowSetting, initShadowMap } from "../../src/render/Shadows";
 
@@ -307,7 +308,17 @@ describe("enemies, and the blob that stands in for their shadow", () => {
   });
 });
 
+/**
+ * The kit's clutter mesh (`decorClutter`) is built by any level that lists small
+ * dressing; until levels 1-7 are dressed (the levels-feel-full plan, Tasks 2-3)
+ * no real level does, so the dressing gallery (`src/world/decor/gallery.ts`) —
+ * every piece of a theme in one hall — stands in for one. Once a real level
+ * reaches it the gallery can go.
+ */
 describe("the policy is total", () => {
+  beforeAll(() => { LEVELS.push(galleryDef("dungeon")); });
+  afterAll(() => { LEVELS.pop(); });
+
   it("has a deliberate rule for every named scene child every level builds", () => {
     // The real guard in this file. Dispatch is on `name`, assigned at each
     // mesh's build site, so a future task that adds a new kind of level

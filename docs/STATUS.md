@@ -956,6 +956,35 @@ torches and props on its raised tomb are still at the reference's heights
 (buried), untouched because it is unzoned. The rAF note above no longer held
 in this session: the game ran live in the Browser pane.
 
+## Levels that feel full — Task 1, the kit and the measure
+
+Branch `levels-feel-full`, plan `docs/superpowers/plans/2026-09-29-levels-feel-full.md`.
+The owner said the levels feel very empty. Task 1 builds the tools and changes
+**no level**: levels 1-7 are exactly what they were, and no trace fixture moved
+(`git diff bafb49c -- tests/integration/__fixtures__` is empty).
+
+| Part | Outcome |
+|---|---|
+| A — the measure | `src/world/density.ts` (pure), `scripts/level-density.ts` (`npx vite-node scripts/level-density.ts`), `docs/level-density.md` (generated; re-run after dressing a level). Per level: walkable cells, props by type, decor, pickups by type, enemies, lights, bare cells (nothing on or beside them), the longest straight bare run, the largest bare region, and the grid drawn with the bare regions marked. Held to a grid counted by hand (`tests/world/density.test.ts`) and to what `loadLevel` really builds (`tests/world/densityLoad.test.ts` loads all eight levels and compares enemies, props, items by kind, torches, candles and point lights). |
+| B — the kit | `Decor.ts` split: it keeps the scene half (`dressLevel`); `src/world/decor/` holds the pieces per theme (`dungeon.ts`, `sacred.ts` for church/necropolis/graveyard, `pipes.ts` for sewers/factory, `womb.ts`, the prologue's own moved unchanged into `prologue.ts`), `registry.ts` (every piece's mode and shadow class, and each theme's weighted vocabulary), `parts.ts` (specs to merged geometry), `place.ts` (the rules and the API), `gallery.ts` (every piece of a theme in a hall). 59 pieces (the prologue's 16, five of their shapes re-sized or re-classed for levels, 38 new); four new `DRESSTEX` surfaces (`straw`, `rust`, `sludge`, `banner`). Small clutter merges into `decorClutter`, which does not cast (`Shadows.ts`); the masses (crate piles, sarcophagi, machines, conveyors, fallen statues) stay `decor` and cast. The prologue's scene is byte-for-byte what it was. |
+
+**The API a level's builder uses** (`src/world/decor/place.ts`): `new Decorator(L, theme)`, then
+`place(kind, x, z, {side?, r?, s?, h?})` (throws if the piece breaks a rule),
+`layer(rows, legend)` (a glyph layer over the grid), `clutter({density, seed, kinds?, where?})` (fills the
+wall-adjacent floor from the theme's vocabulary by grid hash), and `L.decor = dress.specs`.
+`validateDecor(L)` re-checks a finished level from scratch. The rules: never on a door cell, a pickup, the spawn or
+the exit; bulky pieces (`edge`, `free`) only on plain floor, never beside a door or pickup, one to a cell, and never
+where blocking the cell would cut the way through (a 1-wide corridor, a bend, a junction's arm); `edge` and `wall`
+pieces need a plain `#` wall behind them. Decor still takes no shot and blocks no step: a piece sits in a wall-side
+strip of its cell so the way stays clear, but a player who walks into it walks through it.
+
+**Look at it:** the dev server, then in the console (after NEW GAME)
+`LEVELS[8] = galleryDef("dungeon"); loadLevel(8)` with `LEVELS` from `/src/world/levels/index.ts`, `galleryDef` from
+`/src/world/decor/gallery.ts` and `loadLevel` from `/src/world/LevelLoader.ts`. The Browser pane's `rAF` does not run
+while it is hidden: to photograph, set `player.px/pz/pyy` and `input.yaw/pitch`, render by hand
+(`renderState.renderer.render`), and read the pixels with `gl.readPixels` in the same task. Screenshots
+taken after a page edit lag one frame behind.
+
 ## How fidelity is guarded
 
 Five mechanisms, and they are **not** interchangeable:
