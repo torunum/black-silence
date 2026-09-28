@@ -169,3 +169,37 @@ describe("zones and words", () => {
     }
   });
 });
+
+describe("the prologue plan's Task 3: hell burns, the churchyard is inhabited", () => {
+  const zoneOf = (x: number, z: number) => L.zones.themes[L.zones.map[z][x]];
+  const decor = (k: string) => L.decor.filter((d) => d.k === k);
+
+  it("bridges the pit with one stone deck per cell, not two laid on each other", () => {
+    const deck = decor("bridge");
+    expect(deck).toHaveLength(7);
+    expect(new Set(deck.map((d) => `${d.x},${d.z}`)).size).toBe(7);
+  });
+
+  it("gives the first step of the climb the climb's stone, not hell's veined rock", () => {
+    for (const x of [24, 25]) {
+      expect(L.hmap[18][x]).toBeGreaterThan(2.1);   // the first step up out of hell
+      expect(zoneOf(x, 18).id).toBe("climb");
+    }
+  });
+
+  it("puts the churchyard on earth — its own ground and grave walls — with the dead in it", () => {
+    const yard = ZONES.find((z) => z.id === "churchyard")!;
+    expect([yard.ground, yard.side]).toEqual(["yardEarth", "graveEarth"]);
+    expect(decor("mound").length).toBeGreaterThanOrEqual(10);
+    expect(decor("hand").length).toBeGreaterThanOrEqual(4);
+    expect(decor("grass").length).toBeGreaterThan(60);
+    for (const d of [...decor("mound"), ...decor("hand"), ...decor("grass")]) expect(zoneOf(Math.floor(d.x), Math.floor(d.z)).id).toBe("churchyard");
+  });
+
+  it("lights the fire in hell alone: burning cells in the pit and five braziers on the banks", () => {
+    const fire = [...decor("ember"), ...decor("bowl")];
+    expect(decor("bowl")).toHaveLength(5);
+    expect(decor("ember").length).toBeGreaterThan(40);
+    for (const d of fire) expect(zoneOf(d.x, d.z).id).toBe("hell");
+  });
+});

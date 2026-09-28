@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { CELL } from "./Grid";
 import { world } from "./WorldState";
 import { track } from "../render/DisposeRegistry";
-import { themeTex, themeKey, lookAt, type ThemeFlags } from "./ZoneLook";
+import { themeTex, themeKey, surfaceKey, lookAt, type ThemeFlags } from "./ZoneLook";
 
 /**
  * The level's walls, floor and raised platforms as scene children — moved
@@ -76,7 +76,7 @@ export function buildFloor(scene: THREE.Scene, level: ThemeFlags): void {
   }
   const mats = new Map<string, THREE.Material>(), groups = new Map<THREE.Material, THREE.Matrix4[]>();
   for (let z = 0; z < world.GH; z++) for (let x = 0; x < world.GW; x++) {
-    const look = lookAt(x, z, level), key = themeKey(look);
+    const look = lookAt(x, z, level), key = surfaceKey(look);
     let m = mats.get(key);
     if (!m) { m = track(new THREE.MeshLambertMaterial({ map: nearestTex(themeTex(look).floor, 1, 1) })); mats.set(key, m); }
     groupPush(groups, m, new THREE.Matrix4().setPosition((x + .5) * CELL, 0, (z + .5) * CELL));
@@ -99,7 +99,7 @@ export function buildPlatforms(scene: THREE.Scene, level: ThemeFlags): void {
   for (let z = 0; z < world.GH; z++) for (let x = 0; x < world.GW; x++) {
     const hgt = world.heightMap[z] && world.heightMap[z][x] || 0;
     if (hgt <= 0) continue;
-    const look = lookAt(x, z, level), key = themeKey(look) + (look.side || "");
+    const look = lookAt(x, z, level), key = surfaceKey(look, true);
     let pm = faces.get(key);
     if (!pm) {
       const tt = themeTex(look);

@@ -1,5 +1,6 @@
 import type * as THREE from "three";
 import { TEX } from "../render/ProcTextures";
+import { DRESSTEX, type DressKey } from "../render/DressTextures";
 import { bandTheme, type BandTheme } from "../render/BandTextures";
 import { world } from "./WorldState";
 import type { ZoneTheme } from "./LevelBuilder";
@@ -26,7 +27,7 @@ import type { ZoneTheme } from "./LevelBuilder";
  */
 
 /** The theme flags every look is chosen from — a `LevelDef` and a `ZoneTheme` both have them. */
-export interface ThemeFlags { hell?: boolean; flesh?: boolean; dungeon?: boolean; side?: string }
+export interface ThemeFlags { hell?: boolean; flesh?: boolean; dungeon?: boolean; side?: string; ground?: string }
 
 /** The textures a theme wears. `side` is a raised platform's side faces. */
 export interface ThemeTex {
@@ -36,15 +37,30 @@ export interface ThemeTex {
   side: THREE.CanvasTexture;
 }
 
-/** `loadLevel`'s own choice, moved here verbatim: hell, then flesh, then dungeon, else church. */
+/** A named texture: `TEX`'s (the reference's) or, for the prologue's own surfaces, `DRESSTEX`'s. */
+export function namedTex(key: string): THREE.CanvasTexture {
+  const t = TEX[key] || DRESSTEX[key as DressKey];
+  if (!t) throw new Error("no texture called " + key + " in TEX or DRESSTEX");
+  return t;
+}
+
+/**
+ * `loadLevel`'s own choice, moved here verbatim: hell, then flesh, then dungeon, else church — and a
+ * zone's `ground`/`side` keys where it names its own (the churchyard's earth, the prologue plan's Task 3).
+ */
 export function themeTex(t: ThemeFlags): ThemeTex {
   const hell = t.hell, flesh = t.flesh, dungeon = t.dungeon;
   return {
     wall: hell ? TEX.hellWall : flesh ? TEX.fleshWall : (dungeon ? TEX.dungeonWall : TEX.churchWall),
-    floor: hell ? TEX.hellFloor : flesh ? TEX.fleshFloor : (dungeon ? TEX.dungeonFloor : TEX.churchFloor),
+    floor: t.ground ? namedTex(t.ground) : hell ? TEX.hellFloor : flesh ? TEX.fleshFloor : (dungeon ? TEX.dungeonFloor : TEX.churchFloor),
     ceil: hell ? TEX.hellCeil : flesh ? TEX.fleshCeil : TEX.ceil,
-    side: t.side ? TEX[t.side] : hell ? TEX.stair : flesh ? TEX.fleshWall : TEX.stair,
+    side: t.side ? namedTex(t.side) : hell ? TEX.stair : flesh ? TEX.fleshWall : TEX.stair,
   };
+}
+
+/** What makes two looks' floors differ: the wall theme, and a ground of their own. With `side`, their raised ground's too. */
+export function surfaceKey(t: ThemeFlags, withSide = false): string {
+  return themeKey(t) + (t.ground ? "|" + t.ground : "") + (withSide ? (t.side || "") : "");
 }
 
 /** The four looks, by the same order of tests — also the trim band's key (`BandTextures.ts`). */

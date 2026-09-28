@@ -230,6 +230,11 @@ export const SOUND_LEVELS = {
   earthShifts: { category: "event", trim: -14.1 },
   lidCracks: { category: "event", trim: -14.5, room: 1.5 },
   dirtFalls: { category: "foley", trim: -12.2 },
+  // the prologue's room tones, per zone (./sounds/hell.ts, src/world/ZoneBed.ts)
+  hellRoar: { category: "ambience", trim: -23.2, room: 1.5 },
+  hellScream: { category: "ambience", trim: -19.2, room: 2.5 },
+  fireCrackle: { category: "ambience", trim: -7.8 },
+  churchyardWind: { category: "ambience", trim: -10.5 },
   // the boss pulse (player feedback round 2 Task 5: rebuilt as a drum, and given a level at last)
   bossPulse: { category: "ambience", trim: -27.8, room: 1.5 },
   // UI

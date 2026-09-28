@@ -18,6 +18,7 @@ import { chatterTick } from "../ui/Chatter";
 import { musicTick } from "../audio/Music";
 import { tickMessage } from "../ui/HudMessages";
 import { partTick } from "../fx/Particles";
+import { fireTick } from "../fx/HellFire";
 import { gibTick } from "../fx/Gibs";
 import { poolTick } from "../fx/Decals";
 import { headTick } from "../enemies/Death";
@@ -123,7 +124,7 @@ function loop(t: number){
     tickScheduled(dt);}
   if(renderState.scene){
     updateListener();
-    partTick(dt);gibTick(dt);poolTick(dt);headTick(dt);torchTick(dt,t);
+    partTick(dt);fireTick(dt);gibTick(dt);poolTick(dt);headTick(dt);torchTick(dt,t);
     const kick=kickShown.shown(weaponRuntime.kickAnim,S.dead||S.won,renderState.scene);
     fxTick(dt,t,weaponRuntime.zoomLerp,
       ()=>drawKickStreaks(kick),

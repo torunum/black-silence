@@ -62,6 +62,12 @@ export function levelLook(def: LevelDef, L: BuiltLevel): LevelDef | ZoneTheme {
 /** The index of the zone the player is standing in, or -1. */
 export function currentZone(): number { return zs.cur; }
 
+/** The room tone of the zone the player is standing in (`ZoneBed.ts`), or null — always null on an unzoned level. */
+export function currentBed(): "hell" | "yard" | null {
+  const t = world.zones && zs.cur >= 0 ? world.zones.themes[zs.cur] : null;
+  return (t && t.bed) || null;
+}
+
 /** Called once by `loadLevel`, after the player is placed: the start zone, snapped, silent. */
 export function enterZones(): void {
   zs.cur = -1; zs.seen.clear();

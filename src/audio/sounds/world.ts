@@ -25,6 +25,7 @@ export { doorOpens, lockedDoor, exitOpens } from "./doors";
 export { itemPickup } from "./pickups";
 export { organSting, churchBells, bossBeat } from "./music";
 export { graveBreath, graveHeartbeat, earthShifts, lidCracks, dirtFalls } from "./grave";
+export { hellRoar, hellScream, fireCrackle, churchyardWind } from "./hell";
 
 /** One piano key (`Piano.ts`). */
 export function pianoKey(midi: number): void { lv("pianoKey", () => { pianoNote(midi); }); }

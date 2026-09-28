@@ -232,6 +232,11 @@ const ENTRIES: Entry[] = [
   { id: "grave-earth", name: "Grave: the earth above shifts", category: "World", detail: "the prologue's opening, before the lid gives", play: WO.earthShifts },
   { id: "grave-lid", name: "Grave: the coffin lid splits", category: "World", detail: "the prologue's opening — the first sharp sound of the game", play: WO.lidCracks },
   { id: "grave-dirt", name: "Grave: dirt falls off him", category: "World", detail: "the prologue's opening, as he rises", play: WO.dirtFalls },
+  { id: "hell-roar", name: "Hell: the cavern's roar (one swell)", category: "World", detail: "the prologue's hell — a swell every 3.6 s, overlapping into one roar", play: WO.hellRoar },
+  { id: "hell-roar-bed", name: "Hell: the cavern's roar (12 seconds of it)", category: "World", detail: "as the zone plays it", play: () => { for (let t = 0; t < 12000; t += 3600) after(WO.hellRoar, t); } },
+  { id: "hell-scream", name: "Hell: a distant scream", category: "World", detail: "every 6-14 s in the prologue's hell", play: WO.hellScream },
+  { id: "hell-crackle", name: "Hell: the pit crackles", category: "World", detail: "every 0.7-2.2 s in the prologue's hell", play: WO.fireCrackle },
+  { id: "yard-wind", name: "Churchyard: a gust of wind", category: "World", detail: "every 4.5-8 s in the prologue's churchyard", play: WO.churchyardWind },
   ...PICKUPS.map(([kind, what]): Entry => ({
     id: `pickup-${kind}`, name: `Pickup: ${what}`, category: "World", detail: "old: one sound for every pickup", play: () => WO.itemPickup(kind),
   })),

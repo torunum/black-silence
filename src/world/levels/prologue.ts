@@ -68,10 +68,24 @@ import type { BuiltLevel, DecorSpec, ZoneTheme } from "../LevelBuilder";
  * 3. **Hell** — the reference's hell look and light. A burning pit (floor 0,
  *    a glowing lava floor, two fire lights) between two banks at 2.1,
  *    crossed by a one-cell stone bridge; steps climb out along both pit
- *    walls, so a fall is a detour, not a trap. Four zombies and two crawlers:
- *    slow, melee-only, 30-50 hp — one or two flare-pistol shots (34), and a
- *    zombie's `fling` makes the kick worth learning. Two health and two ammo
- *    on the banks, two barrels in the pit.
+ *    walls, so a fall is a detour, not a trap. Four zombies and four
+ *    crawlers: slow, melee-only, 30-50 hp — one or two flare-pistol shots
+ *    (34), and a zombie's `fling` makes the kick worth learning. Two health
+ *    and two ammo on the banks, two barrels in the pit.
+ *
+ * **Task 3 (hell burns, the churchyard is inhabited).** The churchyard
+ * stands on earth (`ground`/`side` name `DRESSTEX` surfaces,
+ * `src/render/DressTextures.ts`), with dead grass off the worn path, filled
+ * graves before the stones and bony hands clawing out of some of them, and
+ * a gravedigger's shovel in ADEM's spoil. Hell's pit and braziers burn with
+ * pooled flames and embers (`src/fx/HellFire.ts`, from the `ember` and
+ * `bowl` decor), its glow flickers, and both zones have a room tone
+ * (`bed`, `src/world/ZoneBed.ts`). The bridge is dressed stone lit from the
+ * fire below; the climb's first step is the climb's stone. The enemies were
+ * placed by playing (`tests/integration/prologuePlay.test.ts`): a zombie
+ * beside the stair's foot comes at the player's flank, one waits by the
+ * bridge's far end, and two crawlers by the foot of the climb — so a player
+ * who only walks, shoots and kicks is touched but not in danger.
  * 4. **The climb out** — level 1's dungeon look up five steps to a landing
  *    and the exit `X`, which leads to Level 1 (`endLevel`).
  *
@@ -124,6 +138,15 @@ export function buildPrologue(): BuiltLevel {
   g[3][8] = "l"; g[3][4] = "l"; g[3][14] = "l"; g[6][16] = "l"; g[9][3] = "l"; g[11][19] = "l";
   d("bones", 12, 3, { r: .8, s: .9 });
   d("bones", 3, 7, { r: 2.4 });
+  d("shovel", 10.2, 2.7, { r: .6, h: .3 });
+  // the other dead: filled graves before the stones, and some of them are not staying down either
+  for (const [x, z, hand] of [[2, 3, 0], [6, 3, .4], [15, 3, 0], [17, 3, 0], [19, 3, 0], [4, 6, 0], [14, 6, .5], [18, 6, 0],
+    [2, 9, .3], [15, 9, 0], [19, 9, .45], [14, 11, 0], [18, 11, 0]] as const) {
+    d("mound", x, z, { h: ((x * 5 + z) % 3) - 1 });
+    if (hand) d("hand", x + .15, z + .1, { h: hand, r: x * 1.3 });
+  }
+  d("bones", 16, 7, { r: 1.2, s: .8 });
+  d("bones", 7, 10, { r: 3.3 });
 
   /* ---- 2. the mausoleum and the crypt stair ---------------------------- */
   zone(7, 8, 12, 17, CRYPT);
@@ -139,12 +162,16 @@ export function buildPrologue(): BuiltLevel {
   d("chain", 10, 13, { h: 1.2 });
   d("chain", 9, 16, { h: 1.6 });
 
+  // dead grass over the yard, off the path worn from the grave to the mausoleum door
+  rect(1, 1, 20, 11, (x, z) => {
+    if (g[z][x] === "." && hm[z][x] === YARD && zm[z][x] === YARDZ && !(x >= 8 && x <= 11 && z >= 3 && z <= 7) && (x * 7 + z * 13) % 5 < 3) d("grass", x, z);
+  });
+
   /* ---- 3. hell --------------------------------------------------------- */
   open(1, 19, 10, 34, BANK, BANK + 5.2);         // west bank
   open(18, 19, 27, 34, BANK, BANK + 5.2);        // east bank
   open(11, 19, 17, 34, 0, 9.0);                  // the burning pit
   open(11, 26, 17, 26, BANK, 9.0);               // the bridge
-  for (let x = 11; x <= 17; x++) d("bridge", x, 26);
   for (let x = 11; x <= 17; x++) d("bridge", x, 26);
   open(9, 18, 10, 18, BANK, BANK + 3.4);         // the crypt stair's mouth
   // steps out of the pit along both walls, in both halves the bridge cuts it into
@@ -154,8 +181,8 @@ export function buildPrologue(): BuiltLevel {
   // braziers: a torch in an iron bowl
   for (const [x, z] of [[10, 25], [18, 27], [3, 20], [26, 33], [4, 32]] as const) { g[z][x] = "i"; d("bowl", x, z); }
   // the damned: zombies on the banks, crawlers in the fire
-  g[24][5] = "z"; g[23][21] = "z"; g[29][22] = "z"; g[32][24] = "z";
-  g[23][13] = "w"; g[32][15] = "w";
+  g[19][5] = "z"; g[25][19] = "z"; g[29][22] = "z"; g[32][24] = "z";
+  g[23][13] = "w"; g[32][15] = "w"; g[20][26] = "w"; g[22][27] = "w";
   g[30][13] = "O"; g[21][16] = "O";                // barrels, on the pit floor
   g[22][4] = "a"; g[28][2] = "h"; g[31][20] = "a"; g[24][26] = "h";
   for (const [x, z, r] of [[6, 20, .4], [2, 26, 1.9], [8, 31, 3], [13, 28, .7], [16, 24, 2.2], [12, 33, 4.1],
@@ -165,6 +192,7 @@ export function buildPrologue(): BuiltLevel {
 
   /* ---- 4. the climb out ------------------------------------------------ */
   zone(22, 0, 29, 17, CLIMB);
+  zone(24, 18, 25, 18, CLIMB);                    // the first step up is the climb's stone, not hell's veined rock
   open(24, 18, 25, 18, BANK + STEP, BANK + STEP + 3.0);   // first step, the cavern's mouth
   for (let i = 1; i < 6; i++) { const f = Math.min(YARD, BANK + (i + 1) * STEP); open(24, 18 - i, 25, 18 - i, f, f + 3.2); }
   open(23, 8, 27, 12, YARD, YARD + 3.4);          // the landing
@@ -186,11 +214,11 @@ const YARDZ = 0, CRYPT = 1, HELL = 2, CLIMB = 3;
  * values (`LEVELS[0]`); the climb borrows level 1's, the level it leads to.
  */
 export const ZONES: ZoneTheme[] = [
-  { id: "churchyard", dungeon: true, sub: "graveyard", sky: true, side: "ceil",
+  { id: "churchyard", dungeon: true, sub: "graveyard", sky: true, ground: "yardEarth", side: "graveEarth", bed: "yard",
     fog: 0x0b1018, fogD: .05, amb: 0x5a6a88, ambI: .75 },
   { id: "crypt", sub: "crypt", line: "p0_down",
     fog: 0x0a0909, fogD: .06, amb: 0x4a403c, ambI: .5 },
-  { id: "hell", hell: true, sub: "hell", line: "p0_hell", side: "hellWall",
+  { id: "hell", hell: true, sub: "hell", line: "p0_hell", side: "hellWall", bed: "hell",
     fog: 0x180604, fogD: .07, amb: 0x6e2a14, ambI: .6 },
   { id: "climb", dungeon: true, sub: "dungeon", line: "p0_out",
     fog: 0x07080b, fogD: .05, amb: 0x3a4250, ambI: .5 },

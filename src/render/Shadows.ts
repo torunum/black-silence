@@ -279,6 +279,10 @@ export const SHADOW_POLICY: Readonly<Record<string, ShadowRule>> = {
   decorLight: { cast: false, receive: false },
   moon: { cast: false, receive: false },
   stars: { cast: false, receive: false },
+  /* Hell's flames and embers (`src/fx/HellFire.ts`): additive points of light,
+     like the particle pool's. */
+  fireFlames: { cast: false, receive: false },
+  fireEmbers: { cast: false, receive: false },
 };
 
 /**

@@ -468,6 +468,48 @@ import { MONOLOGUE } from "../../src/content/monologue";
  * the seeded stream and changes nothing this fixture records;
  * `tests/world/opening.test.ts` counts its draws (one: `say()`'s pick).
  * `trace-level1.json` and `trace-level2-boss.json` did not move.
+ *
+ * ## Hell burns — eleventh regeneration: the map changed again
+ *
+ * The prologue plan's Task 3. The prologue's hell was placed by playing it
+ * (`prologuePlay.test.ts`): a zombie moved beside the crypt stair's foot
+ * (cell 5,19), one to the bridge's far end (19,25), and two crawlers added by
+ * the foot of the climb (26,20 and 27,22) — eight enemies where there were
+ * six. The churchyard got earth, grass, mounds, hands and a shovel
+ * (`Decor.ts`); the pit and braziers burn (`src/fx/HellFire.ts`, two `Points`
+ * scene children); the bridge is stone with lit edges; the climb's first
+ * step changed zone. Field by field against the tenth regeneration, all 90
+ * sampled frames:
+ *
+ * - `camera` — `x`, `y` and roll only, in 17 frames, 510-900: the screen
+ *   shake of being hit (`shx`, `shy`, `shr` in `playerTick`), which starts
+ *   at 510 instead of 530. `z`, pitch, yaw and fov identical in all 90.
+ * - `hud` — `hp` in 24 frames: the zombie now at the stair's foot is on the
+ *   player sooner and a second arrives, so hp falls from frame 510 and
+ *   reaches 8 at 900 (was 44). `subt` in 13: which `lvl0` line `say()`
+ *   picks at the skip (the two new crawlers' spawn rolls come first in the
+ *   seeded stream), and the zombie's sighting bark is gone — it now sees the
+ *   player while the crypt's line still holds `say()`'s three-second
+ *   throttle, and a sighting bark is once-only, so it is spent unheard. The
+ *   other six fields identical in all 90.
+ * - `scene.count` — +10 in every frame (108..120 became 118..130): two fire
+ *   `Points`, four children for the two crawlers (sprite and shadow), three
+ *   decor meshes for the new materials (earth, grass, the bridge's glow), and
+ *   one more floor mesh (the churchyard's earth is a look of its own).
+ * - `scene.digest` — differs in all 90 (first `813482c6` -> `2a6d63f9`, last
+ *   `0787c628` -> `6c33aae2`); 90 distinct before and after.
+ *
+ * **The proof that the map is the whole of it**: with the tenth
+ * regeneration's `prologue.ts` put back under all of this task's code, and
+ * the three things that code draws from that old map's own decor held back
+ * — the fire built from its `ember`/`bowl` cells, the bridge's glowing
+ * edges, the bridge's new stone texture — this test passed against the
+ * tenth regeneration's fixture byte for byte, and `combatTrace` and
+ * `bossTrace` against theirs. So the dress textures built at boot, the zone
+ * room tones, the new sounds and the loader's floor grouping move nothing
+ * any trace records; the fire's particles and flicker draw nothing from
+ * `Math.random` (`tests/fx/hellFire.test.ts`). `trace-level1.json` and
+ * `trace-level2-boss.json` did not move.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");
@@ -589,10 +631,13 @@ describe("the recorded run is worth comparing", () => {
     expect(trace.at(-1)!.camera[1]).toBeGreaterThan(3.0);
   });
 
-  it("meets the prologue's enemies: the player is hurt, and a sighting bark is heard", () => {
+  it("meets the prologue's enemies: the player standing at the stair's foot is badly hurt", () => {
+    // (the zombie's sighting bark used to be heard here too; since the eleventh regeneration it
+    // comes while the crypt's line holds say()'s three-second throttle, and a sighting bark is
+    // once-only, so it is spent silently — see the header)
     expect(trace[0].hud.hp).toBe("HEALTH100");
-    expect(trace.at(-1)!.hud.hp).not.toBe("HEALTH100");
-    expect(trace.some((f) => f.hud.subt.includes("Zombies"))).toBe(true);
+    const hp = Number(trace.at(-1)!.hud.hp.replace("HEALTH", ""));
+    expect(hp).toBeLessThan(50);
   });
 
   it("skips the grave opening with its first key: the level's line at once, then the crypt's, never overwritten", () => {

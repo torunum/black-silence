@@ -1,5 +1,7 @@
 import * as THREE from "three";
 import { TEX } from "../render/ProcTextures";
+import { DRESSTEX } from "../render/DressTextures";
+import { buildFire, type Emitter } from "../fx/HellFire";
 import { grain } from "../render/BandTextures";
 import { track } from "../render/DisposeRegistry";
 import { CELL, WALLH } from "./Grid";
@@ -47,7 +49,12 @@ function makeMat(name: string): THREE.Material {
   iron: () => new THREE.MeshLambertMaterial({ color: 0x34302c }),
   ember: () => new THREE.MeshBasicMaterial({ map: TEX.hellWall, color: 0xffa060, transparent: true,
       blending: THREE.AdditiveBlending, depthWrite: false }),
-    slab: () => new THREE.MeshLambertMaterial({ map: TEX.stair, color: 0x8c7c76 }),
+    slab: () => new THREE.MeshLambertMaterial({ map: DRESSTEX.bridgeStone || TEX.stair, color: 0x7a6e68 }),
+    // the fire's light on the stone above it: the bridge's lit edges
+    glow: () => new THREE.MeshBasicMaterial({ color: 0xff6a1c, transparent: true, opacity: .55,
+      blending: THREE.AdditiveBlending, depthWrite: false }),
+    earth: () => new THREE.MeshLambertMaterial({ map: DRESSTEX.yardEarth || TEX.dungeonFloor, color: 0x6e5c4c }),
+    grass: () => new THREE.MeshLambertMaterial({ color: 0x2c3120 }),
   };
   return MATS[name]();
 }
@@ -133,6 +140,38 @@ const PIECES: Record<string, Piece> = {
   bridge: (box) => {   // a deck of dressed stone and a kerb down each side; runs along x
     box("slab", CELL, .08, CELL - .5, loc(0, .04, 0));
     box("slab", CELL, .32, .22, loc(0, .16, CELL / 2 - .11)); box("slab", CELL, .32, .22, loc(0, .16, -CELL / 2 + .11));
+    // lit from below: the kerbs' outer faces and the lip of the deck catch the fire
+    for (const zs of [1, -1]) {
+      box("glow", CELL, .05, .02, loc(0, .03, zs * (CELL / 2 + .012)));
+      box("glow", CELL, .5, .015, loc(0, -.25, zs * (CELL / 2 + .02)));
+    }
+  },
+  mound: (box, _c, d) => {   // a filled grave's earth, sunk and settled
+    box("earth", .95, .16, 1.75, loc(0, .08, 0, 0, 0, (d.h || 0) * .1));
+    box("earth", .7, .1, 1.4, loc(0, .19, .05));
+  },
+  hand: (box, _c, d) => {   // a bony hand clawing up out of the ground, as his did
+    const lean = d.h || .35;
+    box("bone", .07, .42, .07, loc(0, .18, 0, lean));
+    const wy = .38 * Math.cos(lean), wz = .38 * Math.sin(lean);
+    box("bone", .16, .12, .05, loc(0, wy, wz, lean));
+    for (let f = 0; f < 4; f++) box("bone", .025, .15, .025, loc(-.06 + f * .04, wy + .12 * Math.cos(lean - .5), wz + .12 * Math.sin(lean - .5), lean - .5 - (f % 2) * .25));
+    box("bone", .025, .1, .025, loc(.1, wy - .02, wz, lean, 0, -.9));
+  },
+  grass: (box, _c, d) => {   // dead tufts scattered over a cell, placed by the integer hash of the cell
+    for (let i = 0; i < 7; i++) {
+      const x = (grain(i, d.x * 37 + d.z, 5) - .5) * CELL * .9, z = (grain(i, d.x * 37 + d.z, 6) - .5) * CELL * .9;
+      for (let b = 0; b < 3; b++) {
+        const h = .12 + grain(i * 3 + b, d.x + d.z * 31, 7) * .16;
+        box("grass", .025, h, .025, loc(x + (b - 1) * .03, h / 2, z, (b - 1) * .3, 0, (b - 1) * .25));
+      }
+    }
+  },
+  shovel: (box, _c, d) => {   // the gravedigger's, left standing in the spoil
+    const lean = d.h || .25;
+    box("wood", .045, 1.1, .045, loc(0, .62, 0, 0, 0, lean));
+    box("wood", .2, .04, .04, loc(-1.18 * Math.sin(lean) * .98, 1.18 * Math.cos(lean), 0, 0, 0, lean));
+    box("iron", .24, .3, .025, loc(.03 * Math.sin(lean), .02, 0, 0, 0, lean));
   },
   roof: (box, _c, d) => {
     // a gable over the mausoleum: w along x, depth along z, pitched about z, ridge 1.7 up
@@ -166,12 +205,19 @@ function merge(list: THREE.BufferGeometry[]): THREE.BufferGeometry {
 
 function buildPieces(scene: THREE.Scene, specs: DecorSpec[]): void {
   const parts: Parts = new Map();
+  const emitters: Emitter[] = [], lights: THREE.PointLight[] = [];
   for (const d of specs) {
     if (d.k === "light") {   // a fire's glow with no flame of its own — the burning pit's
       const wx = (d.x + .5) * CELL, wz = (d.z + .5) * CELL;
       const l = track(new THREE.PointLight(0xff5a1e, d.s || 1.5, d.h || 12, 1.4));
       l.name = "decorLight"; l.position.set(wx, floorHeightAt(wx, wz) + .8, wz); scene.add(l);
+      lights.push(l);
       continue;
+    }
+    if (d.k === "ember" || d.k === "bowl") {   // a burning floor or a brazier: where the fire's particles rise from
+      const wx = (d.x + .5) * CELL, wz = (d.z + .5) * CELL, fy = floorHeightAt(wx, wz);
+      emitters.push(d.k === "ember" ? { x: wx, y: fy, z: wz, spread: CELL * .9, brazier: false }
+        : { x: wx, y: fy + 1.12, z: wz, spread: .45, brazier: true });
     }
     const piece = PIECES[d.k];
     if (!piece) throw new Error("decor: no piece called " + d.k);
@@ -187,6 +233,7 @@ function buildPieces(scene: THREE.Scene, specs: DecorSpec[]): void {
     const mesh = new THREE.Mesh(track(merge(list)), track(makeMat(mat)));
     mesh.name = "decor"; scene.add(mesh);
   }
+  buildFire(scene, emitters, lights);   // src/fx/HellFire.ts — nothing on a level with no fire
 }
 
 /** A moon and a field of stars over a zone left open to the sky. Drawn past the fog, which would otherwise eat them. */
@@ -231,6 +278,7 @@ function liftDressing(scene: THREE.Scene): void {
 /** Called once by `loadLevel`, after every grid cell has been built. */
 export function dressLevel(scene: THREE.Scene, L: BuiltLevel): void {
   if (L.decor && L.decor.length) buildPieces(scene, L.decor);
+  else buildFire(scene, [], []);   // no fire here: drop the last level's pool
   buildSky(scene);
   liftDressing(scene);
 }

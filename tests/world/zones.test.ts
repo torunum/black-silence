@@ -12,6 +12,7 @@ import { CELL, EYE } from "../../src/world/Grid";
 import { floorHeightAt } from "../../src/world/Collision";
 import { LEVELS } from "../../src/world/levels/index";
 import { ZONES } from "../../src/world/levels/prologue";
+import { DRESSTEX } from "../../src/render/DressTextures";
 import { currentRoom } from "../../src/audio/AudioEngine";
 import { surfaceHere } from "../../src/audio/Surface";
 import { MONOLOGUE } from "../../src/content/monologue";
@@ -80,10 +81,12 @@ const mapOf = (m: THREE.Mesh, i = 0) => {
 };
 /** The same texture, or a clone of it (clones share the canvas). */
 const sameTex = (a: THREE.Texture, b: THREE.Texture) => a === b || a.image === b.image;
-type Flags = { hell?: boolean; flesh?: boolean; dungeon?: boolean; side?: string };
+type Flags = { hell?: boolean; flesh?: boolean; dungeon?: boolean; side?: string; ground?: string };
+/** A zone's own surface, by name: the reference's `TEX` or the prologue's `DRESSTEX` (Task 3's earth). */
+const named = (k: string) => TEX[k] || (DRESSTEX as Record<string, THREE.Texture>)[k];
 const wallOf = (t: Flags) => t.hell ? TEX.hellWall : t.flesh ? TEX.fleshWall : t.dungeon ? TEX.dungeonWall : TEX.churchWall;
-const floorOf = (t: Flags) => t.hell ? TEX.hellFloor : t.flesh ? TEX.fleshFloor : t.dungeon ? TEX.dungeonFloor : TEX.churchFloor;
-const sideOf = (t: Flags) => t.side ? TEX[t.side] : t.flesh ? TEX.fleshWall : TEX.stair;
+const floorOf = (t: Flags) => t.ground ? named(t.ground) : t.hell ? TEX.hellFloor : t.flesh ? TEX.fleshFloor : t.dungeon ? TEX.dungeonFloor : TEX.churchFloor;
+const sideOf = (t: Flags) => t.side ? named(t.side) : t.flesh ? TEX.fleshWall : TEX.stair;
 const zoneAt = (x: number, z: number): ZoneTheme => world.zones!.themes[world.zones!.map[z][x]];
 
 describe("the prologue's zones dress the right cells", () => {
@@ -235,6 +238,41 @@ describe("raised ground", () => {
       expect(fh).toBeGreaterThan(0);
       expect(Math.abs(it.sp.position.y - (fh + .5))).toBeLessThanOrEqual(.0701);
     }
+  });
+});
+
+describe("room tones follow the player (src/world/ZoneBed.ts)", () => {
+  it("the churchyard's wind and hell's roar play where they belong, in place of the level's stingers; nothing on an unzoned level", async () => {
+    const { currentBed } = await import("../../src/world/Zones");
+    const { ambience } = await import("../../src/world/Ambience");
+    const { ambienceState } = await import("../../src/world/AmbienceState");
+    const where: Array<[number, number, string | null]> = [[9.5, 4.5, "yard"], [9.5, 10.5, null], [10, 20.5, "hell"], [25.5, 9.5, null]];
+    loadLevel(0);
+    for (const [x, z, bed] of where) {
+      player.px = x * CELL; player.pz = z * CELL; zoneTick(1 / 60);
+      expect(currentBed(), `${x},${z}`).toBe(bed);
+    }
+    // in hell the stinger timer stands still: the bed plays instead
+    player.px = 10 * CELL; player.pz = 20.5 * CELL; zoneTick(1 / 60);
+    const ambT = ambienceState.ambT;
+    for (let k = 0; k < 60; k++) ambience(1 / 60);
+    expect(ambienceState.ambT).toBe(ambT);
+    // out of the beds (the crypt), the stingers count down as they always did
+    player.px = 9.5 * CELL; player.pz = 10.5 * CELL; zoneTick(1 / 60);
+    for (let k = 0; k < 60; k++) ambience(1 / 60);
+    expect(ambienceState.ambT).toBeLessThan(ambT);
+    loadLevel(1);
+    expect(currentBed()).toBeNull();
+  });
+});
+
+describe("the bridge over the pit", () => {
+  it("is dressed stone — a decor mesh wears the bridge's own texture, with lit edges — not a wooden plank", () => {
+    loadLevel(0);
+    const mats = kids("decor").map((m) => (m as THREE.Mesh).material as THREE.MeshLambertMaterial);
+    expect(mats.some((m) => m.map === DRESSTEX.bridgeStone), "no decor mesh wears DRESSTEX.bridgeStone").toBe(true);
+    // its two lit lips and the fire-glow kerb faces: an additive, unlit material beside the stone
+    expect(mats.some((m) => m.blending === THREE.AdditiveBlending && !m.map && m.opacity < 1), "no additive glow on the bridge's edges").toBe(true);
   });
 });
 

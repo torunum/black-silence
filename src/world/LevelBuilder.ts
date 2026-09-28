@@ -68,8 +68,12 @@ export interface ZoneTheme {
   ambI: number;
   sky?: boolean;
   line?: string;
-  /** A `TEX` key for raised ground's side faces where the theme's stair stone would be wrong (a grave's earth walls). */
+  /** A `TEX` or `DRESSTEX` key for raised ground's side faces where the theme's stair stone would be wrong (a grave's earth walls). */
   side?: string;
+  /** A `TEX` or `DRESSTEX` key for the floor and raised ground's tops, where the theme's own would be wrong (a churchyard's earth). */
+  ground?: string;
+  /** The zone's room tone (`src/world/ZoneBed.ts`): replaces the level's random ambient stingers while the player is in it. */
+  bed?: "hell" | "yard";
 }
 
 /** `map[z][x]` indexes `themes`, for every cell of the grid, solid ones included (a wall wears its zone's texture). */
