@@ -224,6 +224,12 @@ export const SOUND_LEVELS = {
   whispers: { category: "ambience", trim: 3.6 },
   heartbeat: { category: "ambience", trim: -1.2 },
   breath: { category: "ambience", trim: 12.2 },
+  // the prologue's opening: waking in the coffin, heard from inside it (./sounds/grave.ts)
+  graveBreath: { category: "ambience", trim: -15.8 },
+  graveHeartbeat: { category: "ambience", trim: -22.5 },
+  earthShifts: { category: "event", trim: -14.1 },
+  lidCracks: { category: "event", trim: -14.5, room: 1.5 },
+  dirtFalls: { category: "foley", trim: -12.2 },
   // the boss pulse (player feedback round 2 Task 5: rebuilt as a drum, and given a level at last)
   bossPulse: { category: "ambience", trim: -27.8, room: 1.5 },
   // UI

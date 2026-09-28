@@ -3,6 +3,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { beforeAll, describe, expect, it } from "vitest";
 import { runTrace, type InputEvent, type TraceFrame } from "./gameplayTrace";
+import { MONOLOGUE } from "../../src/content/monologue";
 
 /**
  * The Plan 0D characterization test: 900 frames of the real game, played
@@ -44,11 +45,12 @@ import { runTrace, type InputEvent, type TraceFrame } from "./gameplayTrace";
  * - `hud.hp` is `"HEALTH100"` to frame 520, then falls in 8s — 92 at 530,
  *   84 at 590, … 44 at 890. **`damagePlayer` is exercised now**; the enemy
  *   melee that calls it is too.
- * - `hud.subt` holds ADEM's crypt line (`p0_down`, frames 70-80, said by
- *   `src/world/Zones.ts` as the player walks through the mausoleum door),
- *   then the level-opening line (`lvl0`, 90-340, which `loadLevel`'s
- *   1.4-second timer forces over it), then `""`, then the zombie sighting
- *   bark (`see_z`, 840-900).
+ * - `hud.subt` holds the level-opening line (`lvl0`, frames 10-60, said as
+ *   the script's first key press skips the grave opening — see the tenth
+ *   regeneration below), then ADEM's crypt line (`p0_down`, 70-320, said by
+ *   `src/world/Zones.ts` as the player walks through the mausoleum door, and
+ *   no longer overwritten), then `""`, then the zombie sighting bark
+ *   (`see_z`, 840-900).
  * - `scene.count` rises monotonically, 108 to 120, with zero frames where it
  *   decreases: the sweeping fire never finds the two enemies (they come up
  *   behind the sweep), so nothing dies and nothing is removed.
@@ -421,6 +423,51 @@ import { runTrace, type InputEvent, type TraceFrame } from "./gameplayTrace";
  * (`tests/world/zones.test.ts` counts: the only draws the zones cause are
  * `say()`'s own line picks, one per zone line), and `installAudioDrawGuard`
  * still passes.
+ *
+ * ## The grave opening — tenth regeneration: the first line moved, and only that
+ *
+ * The prologue plan's Task 2 (`src/world/Opening.ts`): the prologue now opens
+ * with ADEM clawing out of his grave — 5.5 seconds, input locked, **any key
+ * or click skips it**. **This script skips it, at frame 5**, with the
+ * `KeyW` press it has always opened with: the opening runs for frames 1-4,
+ * the keydown skips it, and the same press walks him south as before. It
+ * is skipped rather than recorded because this fixture's job is the walk,
+ * the stair, the fight and the HUD, and recording 330 frames of a camera
+ * on rails would push all of that out of a 900-frame run or double its
+ * length; the opening's own behaviour — the lock, the pose from lying to
+ * standing, the skip by key and by click, the hidden weapon, the line — is
+ * owned by `tests/world/opening.test.ts`. The skip is at a known frame
+ * because the script says so, not because of a harness hook: it goes
+ * through the game's own listener.
+ *
+ * What moved, field by field against the ninth regeneration, all 90
+ * sampled frames:
+ *
+ * - `camera` — all seven components **identical in all 90**. The opening
+ *   places the camera in frames 1-4 and the skip hands it to `playerTick`
+ *   at the spawn, before the first sample.
+ * - `hud` — `subt` alone, in 32 frames: `lvl0` is now said at the skip
+ *   (frames 10-60) instead of by `loadLevel`'s 1.4-second timer (90-340),
+ *   so the crypt's line (`p0_down`) is no longer overwritten and holds from
+ *   70 to 320. The other seven fields are identical in all 90.
+ * - `scene.count` — **identical in all 90** (108..120).
+ * - `scene.digest` — differs in all 90, from frame 10 (`45592394` ->
+ *   `813482c6`) to 900 (`a0359cea` -> `0787c628`); 90 distinct before and
+ *   after. The `say()` pick of the `lvl0` line is one `Math.random()` draw;
+ *   made at frame 5 instead of frame 84, it re-indexes every draw between —
+ *   the torches' flicker and embers, which the digest records.
+ *
+ * **The proof that the line's timing is the whole of it**: with the
+ * opening running and skipped exactly as committed, but its line left
+ * unsaid and `loadLevel`'s 1.4-second `lvl0` timer put back, this test
+ * passed against the ninth regeneration's fixture **byte for byte, all 90
+ * frames**; and with the prologue's `grave` removed (no opening at all) the
+ * same held — and so did `combatTrace` and `bossTrace` against theirs. So
+ * the opening itself — the lock for four frames, the camera, the lamp, the
+ * lid, the hidden weapon, the new sounds and the dirt — takes nothing from
+ * the seeded stream and changes nothing this fixture records;
+ * `tests/world/opening.test.ts` counts its draws (one: `say()`'s pick).
+ * `trace-level1.json` and `trace-level2-boss.json` did not move.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");
@@ -457,6 +504,7 @@ function fightingScript(): InputEvent[] {
   // doorway and the 4-unit-wide stair.
   const script: InputEvent[] = [
     { frame: 2, kind: "pointerlock", locked: true },
+    // skips the grave opening (src/world/Opening.ts) — any key does — and, held, walks south
     { frame: 5, kind: "key", type: "keydown", code: "KeyW" },
     { frame: 20, kind: "move", movementX: 60, movementY: -30 },
     { frame: 40, kind: "key", type: "keydown", code: "KeyA" },
@@ -545,6 +593,17 @@ describe("the recorded run is worth comparing", () => {
     expect(trace[0].hud.hp).toBe("HEALTH100");
     expect(trace.at(-1)!.hud.hp).not.toBe("HEALTH100");
     expect(trace.some((f) => f.hud.subt.includes("Zombies"))).toBe(true);
+  });
+
+  it("skips the grave opening with its first key: the level's line at once, then the crypt's, never overwritten", () => {
+    const lvl0 = (f: TraceFrame) => MONOLOGUE.lvl0.some((l) => f.hud.subt.includes(l));
+    const down = (f: TraceFrame) => MONOLOGUE.p0_down.some((l) => f.hud.subt.includes(l));
+    expect(lvl0(trace[0]), "frame 10: the opening was skipped at frame 5 and said its line").toBe(true);
+    // standing at the spawn by frame 10: the opening's camera is gone
+    expect(trace[0].camera[1]).toBeGreaterThan(5.1);
+    const first = trace.findIndex(down);
+    expect(first).toBeGreaterThan(0);
+    expect(trace.slice(first).some(lvl0), "lvl0 forced over the crypt's line").toBe(false);
   });
 
   it("shows a player who actually moved and looked around", () => {

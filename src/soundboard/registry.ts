@@ -227,6 +227,11 @@ const ENTRIES: Entry[] = [
   { id: "player-hurt", name: "You are hit", category: "World", play: WO.playerHurt },
   { id: "heartbeat", name: "Heartbeat (low health)", category: "World", play: WO.heartbeat },
   { id: "breath", name: "Breathing (low health)", category: "World", play: WO.breath },
+  { id: "grave-breath", name: "Grave: a breath in the coffin", category: "World", detail: "the prologue's opening, in the dark — muffled", play: WO.graveBreath },
+  { id: "grave-heartbeat", name: "Grave: heartbeat in the coffin", category: "World", detail: "the prologue's opening, in the dark — muffled", play: WO.graveHeartbeat },
+  { id: "grave-earth", name: "Grave: the earth above shifts", category: "World", detail: "the prologue's opening, before the lid gives", play: WO.earthShifts },
+  { id: "grave-lid", name: "Grave: the coffin lid splits", category: "World", detail: "the prologue's opening — the first sharp sound of the game", play: WO.lidCracks },
+  { id: "grave-dirt", name: "Grave: dirt falls off him", category: "World", detail: "the prologue's opening, as he rises", play: WO.dirtFalls },
   ...PICKUPS.map(([kind, what]): Entry => ({
     id: `pickup-${kind}`, name: `Pickup: ${what}`, category: "World", detail: "old: one sound for every pickup", play: () => WO.itemPickup(kind),
   })),

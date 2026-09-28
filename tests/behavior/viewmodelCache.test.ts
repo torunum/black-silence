@@ -58,7 +58,7 @@ function still(cur: number, over: Partial<DrawModule.ViewmodelFrame> = {}): Draw
     started: true, dead: false, pianoOpen: false, zoomLerp: 0, cur,
     vx: 0, vz: 0, vy: 0, grounded: true, yaw: 0, sprintKey: false, bobT: 0, wstate: "idle", wtime: 0,
     equipT: 0.24, unequipT: 0.16, kickAmt: 0, kickRot: 0, kickAnim: 0, swayX: 0, swayY: 0, muzzle: 0,
-    cueHurt: 0, cueHurtAmt: 0, cuePickup: 0, cueDryFire: 0, cueInput: 0, paused: false, ...over,
+    cueHurt: 0, cueHurtAmt: 0, cuePickup: 0, cueDryFire: 0, cueInput: 0, paused: false, hidden: false, ...over,
   };
 }
 /** Draws `frames` frames of `frame`, returning how many re-rendered the model. */

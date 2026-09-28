@@ -175,7 +175,7 @@ export function buildPrologue(): BuiltLevel {
   stone("tomb", 23, 10, { r: Math.PI / 2 });
   d("chain", 26, 10, { h: 1.3 });
 
-  return { g, W, H, hmap: hm, cmap: cm, zones: { map: zm, themes: ZONES }, decor };
+  return { g, W, H, hmap: hm, cmap: cm, zones: { map: zm, themes: ZONES }, decor, grave: { x: 9, z: 3 } };
 }
 
 /** Zone indices into `ZONES`. */

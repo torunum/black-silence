@@ -45,6 +45,8 @@ beforeAll(async () => {
   const newGame = [...document.querySelectorAll(".mbtn")].find((b) => b.textContent?.includes("NEW GAME"));
   if (!newGame) throw new Error("the NEW GAME menu row is gone — this file drives the game through it");
   (newGame as HTMLElement).click();
+  // The prologue opens in its grave, input locked (src/world/Opening.ts): skip it, as any key would.
+  (await import("../../src/world/Opening")).skipOpening();
   const { damagePlayer } = await import("../../src/player/Player");
   const { weaponTick } = await import("../../src/weapons/WeaponState");
   const { itemsTick } = await import("../../src/player/Interact");

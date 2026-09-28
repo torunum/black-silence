@@ -38,6 +38,7 @@ import type { ZoneTheme } from "../../src/world/LevelBuilder";
  * 6. none of it draws from `Math.random`.
  */
 
+let skipOpening: () => void;
 let loadLevel: (idx: number) => void;
 let zoneTick: (dt: number) => void;
 let playerTick: (dt: number) => void;
@@ -58,6 +59,9 @@ beforeAll(async () => {
   const newGame = [...document.querySelectorAll(".mbtn")].find((b) => b.textContent?.includes("NEW GAME"));
   if (!newGame) throw new Error("the NEW GAME menu row is gone — this file drives the game through it");
   (newGame as HTMLElement).click();
+  // The prologue opens in its grave, input locked (src/world/Opening.ts): skip it, as any key would.
+  ({ skipOpening } = await import("../../src/world/Opening"));
+  skipOpening();
 });
 
 afterAll(() => { clearAllTimers(); clearScheduled(); });
@@ -237,6 +241,7 @@ describe("raised ground", () => {
 describe("the exit", () => {
   it("leads to level 1: the pad ends the prologue and the level-end button loads the dungeon", () => {
     loadLevel(0);
+    skipOpening();   // the opening locks input, and playerTick with it (src/world/Opening.ts)
     S.won = false;
     const exit = world.exitPos as unknown as { x: number; z: number };
     player.px = exit.x; player.pz = exit.z; player.pyy = EYE + floorHeightAt(exit.x, exit.z);

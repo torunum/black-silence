@@ -185,6 +185,8 @@ beforeAll(async () => {
   const newGame = [...document.querySelectorAll(".mbtn")].find((b) => b.textContent?.includes("NEW GAME"));
   if (!newGame) throw new Error("the NEW GAME menu row is gone — this file drives the game through it");
   (newGame as HTMLElement).click();
+  // The prologue opens in its grave, input locked (src/world/Opening.ts): skip it, as any key would.
+  (await import("../../src/world/Opening")).skipOpening();
   startedAfterNewGame = captured.hooks?.isStarted();
   // loadLevel sets spawnGuard=2.0 synchronously inside the NEW GAME click
   // handler, before any frame — and therefore before playerTick's own
@@ -318,14 +320,15 @@ describe("the ViewmodelFrame main.ts builds", () => {
   // landing and strafe motion), kickAnim by Task 3 (the leg is drawn with the weapon), the five
   // cue* counters by Task 4 (src/core/AnimCues.ts: what the hands react to), and paused by the
   // branch's review (no idle fidget behind an overlay) —
-  // docs/superpowers/plans/2026-09-24-player-feedback-2-hands.md.
+  // docs/superpowers/plans/2026-09-24-player-feedback-2-hands.md — and hidden by the prologue plan's
+  // Task 2 (no hands while ADEM climbs out of his grave, src/world/Opening.ts).
   const EXPECTED_FIELDS = [
     "bobT", "cueDryFire", "cueHurt", "cueHurtAmt", "cueInput", "cuePickup",
-    "cur", "dead", "equipT", "grounded", "kickAmt", "kickAnim", "kickRot", "muzzle", "paused", "pianoOpen",
+    "cur", "dead", "equipT", "grounded", "hidden", "kickAmt", "kickAnim", "kickRot", "muzzle", "paused", "pianoOpen",
     "sprintKey", "started", "swayX", "swayY", "unequipT", "vx", "vy", "vz", "wstate", "wtime", "yaw", "zoomLerp",
   ];
 
-  it("carries exactly the twenty-eight fields ViewmodelFrame declares — no more, no fewer", () => {
+  it("carries exactly the twenty-nine fields ViewmodelFrame declares — no more, no fewer", () => {
     // draw.ts reads `v.foo` for each; a dropped field is silently undefined
     // there, which is how a missing one would otherwise reach the screen.
     expect(Object.keys(restFrame.vm).sort()).toEqual(EXPECTED_FIELDS);
@@ -381,6 +384,18 @@ describe("the ViewmodelFrame main.ts builds", () => {
     expect(runFrame(performance.now()).vm.paused).toBe(false);
   });
 
+  it("maps hidden to the prologue's opening: true while ADEM climbs out of his grave, false once the hands come up", async () => {
+    expect(restFrame.vm.hidden).toBe(false);
+    const O = await import("../../src/world/Opening");
+    O.beginOpening({ x: 9, z: 3 }, "lvl0");
+    try {
+      expect(runFrame(performance.now()).vm.hidden).toBe(true);
+    } finally {
+      O.skipOpening();
+    }
+    expect(runFrame(performance.now()).vm.hidden).toBe(false);
+  });
+
   it("maps started, dead and pianoOpen to the right three flags", () => {
     expect(restFrame.vm.started).toBe(true);   // NEW GAME was clicked
     expect(restFrame.vm.dead).toBe(false);
@@ -402,7 +417,7 @@ describe("the ViewmodelFrame main.ts builds", () => {
       expect(typeof restFrame.vm[field], `frame.${field}`).toBe("number");
       expect(Number.isNaN(restFrame.vm[field]), `frame.${field} is NaN`).toBe(false);
     }
-    for (const field of ["dead", "grounded", "paused", "pianoOpen", "sprintKey", "started"]) {
+    for (const field of ["dead", "grounded", "hidden", "paused", "pianoOpen", "sprintKey", "started"]) {
       expect(typeof restFrame.vm[field], `frame.${field}`).toBe("boolean");
     }
     expect(typeof restFrame.vm.wstate).toBe("string");

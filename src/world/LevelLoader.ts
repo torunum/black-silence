@@ -29,6 +29,7 @@ import { wallMaterials, addInstanced, groupPush, buildFloor, buildPlatforms } fr
 import { themeTex } from "./ZoneLook";
 import { levelLook, enterZones } from "./Zones";
 import { dressLevel } from "./Decor";
+import { beginOpening, resetOpening } from "./Opening";
 import { spawnProp } from "./PropSpawn";
 import { world } from "./WorldState";
 import type { WallSeg } from "./LevelBuilder";
@@ -176,7 +177,7 @@ export function spawnEnemy(ch: string, wx: number, wz: number, summoned?: boolea
   return e;}
 
 export function loadLevel(idx: number): void {
-  clearAllTimers();clearScheduled();disposeAll();stopMusic();
+  clearAllTimers();clearScheduled();disposeAll();stopMusic();resetOpening();
   S.level=idx;
   const Ldef=LEVELS[idx],L=Ldef.build();
   // The look it starts with: the level's own, or on a zoned level the spawn
@@ -355,4 +356,6 @@ export function loadLevel(idx: number): void {
   lt.textContent=Ldef.name;lt.style.opacity="1";
   after(()=>lt.style.opacity="0",5000);
   showMsg(Ldef.name,3.4);
-  after(()=>say("lvl"+idx,true),1400);}
+  // A level that opens in a grave says its line at the end of the rise (src/world/Opening.ts); the rest after 1.4 s.
+  if(L.grave)beginOpening(L.grave,"lvl"+idx);
+  else after(()=>say("lvl"+idx,true),1400);}

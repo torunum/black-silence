@@ -153,6 +153,8 @@ beforeAll(async () => {
   const newGame = [...document.querySelectorAll(".mbtn")].find((b) => b.textContent?.includes("NEW GAME"));
   if (!newGame) throw new Error("the NEW GAME menu row is gone — this file drives the game through it");
   (newGame as HTMLElement).click();
+  // The prologue opens in its grave, input locked (src/world/Opening.ts): skip it, as any key would.
+  (await import("../../src/world/Opening")).skipOpening();
   // The prologue (level 0) loads with no boss — confirmed here rather than
   // assumed, since the endLevel test below depends on "no boss alive" being
   // trivially true. (It used to load with zero enemies at all; the rebuilt
