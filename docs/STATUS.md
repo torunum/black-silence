@@ -935,6 +935,24 @@ sound goes inside `lv(...)` with an entry in `src/audio/Levels.ts`
 more without `--apply`. Measure a single sound with `soundboard.render(...)`
 in the Browser pane — it renders; rAF does not.
 
+## Player feedback round 2 — the prologue
+
+Branch `feedback-2-prologue`, plan
+`docs/superpowers/plans/2026-09-27-player-feedback-2-prologue.md`. The owner:
+the prologue climbs out of a grave and passes through hell — the reference's
+map did the reverse.
+
+| Task | Outcome |
+|---|---|
+| 1 — the map | `src/world/levels/prologue.ts` is a new 30x36 map (a recorded divergence from the frozen reference, pinned in `tests/fidelity.test.ts`): a **churchyard at night** open to the sky (raised ground at 4.2, no ceiling built, a moon and stars past the fog), ADEM's open grave beside the spawn, headstones, crosses, tombs, two dead trees; a **mausoleum** with a crypt stair five steps down; **hell** — a burning pit between two banks crossed by a stone bridge, four zombies and two crawlers, braziers, bones, chains, two health and two ammo; a **climb out** to the exit to Level 1. **Zones:** `BuiltLevel.zones` gives regions of one level their own walls, floor, ceiling, trim, fog, ambient light, reverb room and footsteps (`src/world/ZoneLook.ts` reads, `src/world/Zones.ts` eases fog/light and switches the room as the player crosses, and says a zone's line once). The loader extracted rather than grew (`LevelMeshes.ts`, `Decor.ts`; 358 lines). ADEM's `lvl0` rewritten; `p0_down`/`p0_hell`/`p0_out` new. `trace-level0.json` regenerated with a new route (down the crypt stair), with the proof in its header; the level-1 and level-2 fixtures did not move. Screenshots and the report in `.superpowers/sdd/2026-09-27-feedback-2-prologue/`. |
+
+**Worth knowing:** on a zoned level torches, candles and items are lifted onto
+raised ground (`Decor.ts`); breakable props are not, because a shot finds a
+prop between y=0 and its height — keep props on floor-0 cells. Level 3's
+torches and props on its raised tomb are still at the reference's heights
+(buried), untouched because it is unzoned. The rAF note above no longer held
+in this session: the game ran live in the Browser pane.
+
 ## How fidelity is guarded
 
 Five mechanisms, and they are **not** interchangeable:
@@ -961,8 +979,10 @@ Five mechanisms, and they are **not** interchangeable:
   and shake decay. **Its fixture was recorded before Plan 0D's first
   migration and must not be regenerated casually** — its whole value is being
   a pre-migration recording. `WRITE_TRACE=1` exists for deliberate,
-  explained updates only. Note it plays the prologue, which has zero enemies,
-  so the entire combat-resolution path is unexercised by it; the file says so
+  explained updates only. Note it plays the prologue, which had zero enemies
+  until the prologue was rebuilt (round 2, below); its rewritten script now
+  meets two and the player is hurt (`damagePlayer` runs), but no shot lands,
+  so the shot-resolution path is still unexercised by it; the file says so
   at length.
 - **`tests/integration/combatTrace.test.ts`** — the same mechanism aimed at the
   gap the prologue trace leaves. Added by Plan 0E Task 1 and the reason 0E was

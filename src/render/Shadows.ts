@@ -32,7 +32,7 @@ import { save } from "../save/SaveGame";
  * source text), the game has between 9 and 21 positional lights per level:
  *
  * ```
- * 0 PROLOGUE     torch 4  window 0  exit 1   ->  9 positional lights
+ * 0 PROLOGUE     torch 12 window 0  exit 1   -> 13, +2 pit glows = 15 (rebuilt in round 2; was 9)
  * 1 DUNGEON      torch 6  window 6  exit 1   -> 17
  * 2 CHURCH       torch 8  window 8  exit 0   -> 20
  * 3 NECROPOLIS   torch 9  window 8  exit 0   -> 21
@@ -266,6 +266,19 @@ export const SHADOW_POLICY: Readonly<Record<string, ShadowRule>> = {
      dashed line that crawls as the player walks. Deliberate, not an
      oversight. */
   torchPost: { cast: false, receive: true },
+  /* A zoned level's floor (`src/world/LevelMeshes.ts`), a quad per cell
+     instanced per zone look: the plain floor's rule, for the plain floor's
+     reason. */
+  floorCells: { cast: false, receive: true },
+  /* Set dressing (`src/world/Decor.ts`): headstones, the dead tree, the
+     mausoleum roof, coffins, bones, chains. Things the player walks round,
+     so a prop's rule. */
+  decor: { cast: true, receive: true },
+  /* The burning pit's glow, the moon, the stars: light and sky, which
+     neither cast nor take a shadow. */
+  decorLight: { cast: false, receive: false },
+  moon: { cast: false, receive: false },
+  stars: { cast: false, receive: false },
 };
 
 /**

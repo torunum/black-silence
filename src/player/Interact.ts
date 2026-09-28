@@ -68,6 +68,8 @@ interface Item {
   x: number;
   z: number;
   kind: string;
+  /** The height it bobs about — set only on raised ground of a zoned level (`src/world/Decor.ts`); else the reference's 0.5. */
+  y0?: number;
 }
 
 /** world.torches elements, cast for torchTick's flicker loop. */
@@ -78,6 +80,8 @@ interface Torch {
   z: number;
   seed: number;
   fr: number;
+  /** The floor it stands on — set only on raised ground of a zoned level (`src/world/Decor.ts`); else 0. */
+  y?: number;
 }
 
 /** world.candles elements, cast for torchTick's flicker loop. */
@@ -109,7 +113,7 @@ export function interact(){
 export function itemsTick(dt: number){
   for(const it of world.items as unknown as Item[]){
     if(it.taken)continue;
-    it.bob+=dt*2.4;it.sp.position.y=.5+Math.sin(it.bob)*.07;
+    it.bob+=dt*2.4;it.sp.position.y=(it.y0??.5)+Math.sin(it.bob)*.07;
     if(Math.hypot(player.px-it.x,player.pz-it.z)<.95){
       let ok=true;
       switch(it.kind){
@@ -150,6 +154,6 @@ export function torchTick(dt: number,t: number){
     tc.L.intensity=1.6+n*.45+Math.random()*.18;
     if(Math.random()<.06){tc.fr=1-tc.fr;
       tc.sp.material.map=(ITEMTEX.torch as THREE.CanvasTexture[])[tc.fr];tc.sp.material.needsUpdate=true;}
-    if(Math.random()<.04)emberP(tc.x+rnd(-.1,.1),1.4,tc.z+rnd(-.1,.1));}
+    if(Math.random()<.04)emberP(tc.x+rnd(-.1,.1),1.4+(tc.y||0),tc.z+rnd(-.1,.1));}
   for(const c of world.candles as unknown as Candle[]){
     c.sp.material.opacity=.8+Math.sin(t*.02+c.seed*9)*.2;}}

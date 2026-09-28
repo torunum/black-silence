@@ -97,11 +97,44 @@ describe("a level with no ceiling map builds the single flat plane it always bui
     expect(named("ceilingRisers").length).toBe(0);
   });
 
-  it("the prologue is in that branch too — the trace fixtures' level", () => {
-    loadLevel(0);
+  it("level 2 — the boss trace fixture's level — is in that branch too", () => {
+    // Was "the prologue is in that branch too". The rebuilt prologue (the
+    // prologue plan, Task 1) opts in with a ceiling map and zones — see the
+    // next describe — so the unchanged-branch guard moved to the other trace
+    // level that never opted in.
+    loadLevel(2);
     expect(world.ceilMap).toBeNull();
     expect(named("ceiling").length).toBe(1);
     expect(named("ceilingCells").length).toBe(0);
+  });
+});
+
+describe("the zoned prologue builds a ceiling per zone look, and none over the sky", () => {
+  it("no quad over a sky cell, a quad at its mapped height over every other cell, each in its zone's texture", async () => {
+    const { TEX } = await import("../../src/render/ProcTextures");
+    loadLevel(0);
+    expect(world.zones).not.toBeNull();
+    expect(named("ceiling").length).toBe(0);
+    const zs = world.zones!;
+    const skyCells = new Set<string>(), want = new Map<string, number>();
+    for (let z = 0; z < world.GH; z++) for (let x = 0; x < world.GW; x++) {
+      if (zs.themes[zs.map[z][x]].sky) skyCells.add(x + "," + z); else want.set(x + "," + z, ceilHeightAtCell(x, z));
+    }
+    expect(skyCells.size, "the churchyard is open to the sky").toBeGreaterThan(200);
+    const seen = new Set<string>();
+    for (const m of named("ceilingCells") as THREE.InstancedMesh[]) {
+      const map = (m.material as THREE.MeshLambertMaterial).map!;
+      for (const { pos } of instances(m)) {
+        const gx = Math.round(pos.x / CELL - 0.5), gz = Math.round(pos.z / CELL - 0.5), key = gx + "," + gz;
+        expect(skyCells.has(key), `a ceiling quad over the sky at ${key}`).toBe(false);
+        expect(pos.y).toBeCloseTo(want.get(key)!, 6);
+        const t = zs.themes[zs.map[gz][gx]];
+        const src = t.hell ? TEX.hellCeil : t.flesh ? TEX.fleshCeil : TEX.ceil;
+        expect(map.image, `the ceiling at ${key} wears its zone's texture`).toBe(src.image);
+        seen.add(key);
+      }
+    }
+    expect(seen.size).toBe(want.size);
   });
 });
 

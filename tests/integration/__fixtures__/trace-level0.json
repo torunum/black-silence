@@ -2,9 +2,9 @@
  {
   "frame": 10,
   "camera": [
-   21,
-   1.008503,
-   47.299902,
+   19,
+   5.208503,
+   9.299902,
    0,
    3.141593,
    0,
@@ -21,18 +21,18 @@
    "keys": ""
   },
   "scene": {
-   "count": 34,
-   "digest": "ba716fe7"
+   "count": 108,
+   "digest": "45592394"
   }
  },
  {
   "frame": 20,
   "camera": [
-   20.995433,
-   1.015784,
-   48.365616,
+   18.997966,
+   5.215842,
+   10.364039,
    0.066,
-   2.877593,
+   3.009593,
    0,
    78
   ],
@@ -47,18 +47,18 @@
    "keys": ""
   },
   "scene": {
-   "count": 34,
-   "digest": "bc87edb1"
+   "count": 108,
+   "digest": "58a14e38"
   }
  },
  {
   "frame": 30,
   "camera": [
-   20.823792,
-   0.975236,
-   49.527757,
+   18.913193,
+   5.175291,
+   11.529688,
    0.066,
-   2.877593,
+   3.009593,
    0,
    78
   ],
@@ -73,18 +73,18 @@
    "keys": ""
   },
   "scene": {
-   "count": 34,
-   "digest": "52f49444"
+   "count": 108,
+   "digest": "22f45447"
   }
  },
  {
   "frame": 40,
   "camera": [
-   20.542987,
-   1.009359,
-   50.658124,
+   18.790325,
+   5.209025,
+   12.688072,
    0.066,
-   2.877593,
+   3.009593,
    0,
    78
   ],
@@ -99,18 +99,18 @@
    "keys": ""
   },
   "scene": {
-   "count": 34,
-   "digest": "5b4a560c"
+   "count": 108,
+   "digest": "f206d4d4"
   }
  },
  {
   "frame": 50,
   "camera": [
-   19.77162,
-   1.014622,
-   51.538886,
-   0.066,
-   2.877593,
+   19.177938,
+   5.214767,
+   13.798178,
+   0.033,
+   3.141593,
    0,
    78
   ],
@@ -125,18 +125,18 @@
    "keys": ""
   },
   "scene": {
-   "count": 34,
-   "digest": "3e1a4bc5"
+   "count": 108,
+   "digest": "b2b6e29c"
   }
  },
  {
   "frame": 60,
   "camera": [
-   18.770576,
-   0.978974,
-   51.648002,
+   19.709116,
+   5.17503,
+   14.859532,
    0.033,
-   3.053593,
+   3.141593,
    0,
    78
   ],
@@ -151,18 +151,18 @@
    "keys": ""
   },
   "scene": {
-   "count": 34,
-   "digest": "a1c650d4"
+   "count": 108,
+   "digest": "152994f1"
   }
  },
  {
   "frame": 70,
   "camera": [
-   17.724504,
-   0.99935,
-   51.648002,
+   19.869575,
+   5.212043,
+   16.026198,
    0.033,
-   3.053593,
+   3.141593,
    0,
    78
   ],
@@ -171,24 +171,24 @@
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "PROLOGUE — OUT OF THE PIT",
-   "subt": "",
+   "subt": "ADEM“The only way out is down. Story of my life, now with masonry.”",
    "lvltitle": "PROLOGUE — OUT OF THE PIT",
    "bossname": "",
    "keys": ""
   },
   "scene": {
-   "count": 34,
-   "digest": "59f6b49b"
+   "count": 108,
+   "digest": "bdcd5c4e"
   }
  },
  {
   "frame": 80,
   "camera": [
-   17.175024,
-   1.006099,
-   51.648002,
+   19.911872,
+   5.212343,
+   17.204552,
    0.033,
-   3.053593,
+   3.141593,
    0,
    78
   ],
@@ -197,24 +197,24 @@
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "PROLOGUE — OUT OF THE PIT",
-   "subt": "",
+   "subt": "ADEM“The only way out is down. Story of my life, now with masonry.”",
    "lvltitle": "PROLOGUE — OUT OF THE PIT",
    "bossname": "",
    "keys": ""
   },
   "scene": {
-   "count": 34,
-   "digest": "3df4d94c"
+   "count": 108,
+   "digest": "7cb57df2"
   }
  },
  {
   "frame": 90,
   "camera": [
-   16.905882,
-   1.004842,
-   51.648002,
+   19.923021,
+   5.183968,
+   18.849954,
    0.033,
-   3.053593,
+   3.141593,
    0,
    78
   ],
@@ -223,24 +223,24 @@
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "PROLOGUE — OUT OF THE PIT",
-   "subt": "ADEM“There's a stairway. Up is up. Up is better than this.”",
+   "subt": "ADEM“Buried. Actually buried. Whoever did the eulogy had better have been crying.”",
    "lvltitle": "PROLOGUE — OUT OF THE PIT",
    "bossname": "",
    "keys": ""
   },
   "scene": {
-   "count": 34,
-   "digest": "b388bbde"
+   "count": 108,
+   "digest": "060c7df5"
   }
  },
  {
   "frame": 100,
   "camera": [
-   16.698837,
-   1.00408,
-   51.648002,
+   19.92596,
+   5.21587,
+   20.599954,
    0.033,
-   3.053593,
+   3.141593,
    0,
    78
   ],
@@ -249,24 +249,24 @@
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "PROLOGUE — OUT OF THE PIT",
-   "subt": "ADEM“There's a stairway. Up is up. Up is better than this.”",
+   "subt": "ADEM“Buried. Actually buried. Whoever did the eulogy had better have been crying.”",
    "lvltitle": "PROLOGUE — OUT OF THE PIT",
    "bossname": "",
    "keys": ""
   },
   "scene": {
-   "count": 34,
-   "digest": "b7944b13"
+   "count": 108,
+   "digest": "dc9b4679"
   }
  },
  {
   "frame": 110,
   "camera": [
-   16.508929,
-   1.003217,
-   51.648002,
+   19.926735,
+   5.18354,
+   22.328109,
    0.033,
-   3.053593,
+   3.141593,
    0,
    78
   ],
@@ -275,24 +275,24 @@
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "PROLOGUE — OUT OF THE PIT",
-   "subt": "ADEM“There's a stairway. Up is up. Up is better than this.”",
+   "subt": "ADEM“Buried. Actually buried. Whoever did the eulogy had better have been crying.”",
    "lvltitle": "PROLOGUE — OUT OF THE PIT",
    "bossname": "",
    "keys": ""
   },
   "scene": {
-   "count": 34,
-   "digest": "459de58b"
+   "count": 108,
+   "digest": "3e8139f9"
   }
  },
  {
   "frame": 120,
   "camera": [
-   16.353038,
-   1.005602,
-   51.648002,
+   19.923641,
+   5.228362,
+   23.512786,
    0.033,
-   3.053593,
+   3.141593,
    0.003732,
    78
   ],
@@ -301,24 +301,24 @@
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "PROLOGUE — OUT OF THE PIT",
-   "subt": "ADEM“There's a stairway. Up is up. Up is better than this.”",
+   "subt": "ADEM“Buried. Actually buried. Whoever did the eulogy had better have been crying.”",
    "lvltitle": "PROLOGUE — OUT OF THE PIT",
    "bossname": "",
    "keys": ""
   },
   "scene": {
-   "count": 34,
-   "digest": "1e47df7b"
+   "count": 108,
+   "digest": "cf1aa9e0"
   }
  },
  {
   "frame": 130,
   "camera": [
-   16.22538,
-   1.001247,
-   51.648002,
+   19.927001,
+   5.116667,
+   24.679453,
    0.033,
-   3.053593,
+   3.141593,
    0,
    78
   ],
@@ -327,24 +327,24 @@
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "PROLOGUE — OUT OF THE PIT",
-   "subt": "ADEM“There's a stairway. Up is up. Up is better than this.”",
+   "subt": "ADEM“Buried. Actually buried. Whoever did the eulogy had better have been crying.”",
    "lvltitle": "PROLOGUE — OUT OF THE PIT",
    "bossname": "",
    "keys": ""
   },
   "scene": {
-   "count": 34,
-   "digest": "ab286822"
+   "count": 108,
+   "digest": "c4c2ecc4"
   }
  },
  {
   "frame": 140,
   "camera": [
-   16.100126,
-   1.000658,
-   51.648002,
+   19.927051,
+   4.764486,
+   25.846119,
    0.033,
-   3.053593,
+   3.141593,
    0,
    78
   ],
@@ -353,24 +353,24 @@
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "PROLOGUE — OUT OF THE PIT",
-   "subt": "ADEM“There's a stairway. Up is up. Up is better than this.”",
+   "subt": "ADEM“Buried. Actually buried. Whoever did the eulogy had better have been crying.”",
    "lvltitle": "PROLOGUE — OUT OF THE PIT",
    "bossname": "",
    "keys": ""
   },
   "scene": {
-   "count": 34,
-   "digest": "a3e48b39"
+   "count": 108,
+   "digest": "8d88be6e"
   }
  },
  {
   "frame": 150,
   "camera": [
-   15.976376,
-   1.117778,
-   51.648002,
+   19.927079,
+   4.58,
+   27.012786,
    0.033,
-   3.053593,
+   3.141593,
    0,
    78
   ],
@@ -379,24 +379,24 @@
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "PROLOGUE — OUT OF THE PIT",
-   "subt": "ADEM“There's a stairway. Up is up. Up is better than this.”",
+   "subt": "ADEM“Buried. Actually buried. Whoever did the eulogy had better have been crying.”",
    "lvltitle": "PROLOGUE — OUT OF THE PIT",
    "bossname": "",
    "keys": ""
   },
   "scene": {
-   "count": 34,
-   "digest": "755381c6"
+   "count": 108,
+   "digest": "97c4e11d"
   }
  },
  {
   "frame": 160,
   "camera": [
-   15.747802,
-   1.99,
-   51.648002,
+   19.927101,
+   4.354444,
+   28.179453,
    0.033,
-   3.053593,
+   3.141593,
    0,
    78
   ],
@@ -405,24 +405,24 @@
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "PROLOGUE — OUT OF THE PIT",
-   "subt": "ADEM“There's a stairway. Up is up. Up is better than this.”",
+   "subt": "ADEM“Buried. Actually buried. Whoever did the eulogy had better have been crying.”",
    "lvltitle": "PROLOGUE — OUT OF THE PIT",
    "bossname": "",
    "keys": ""
   },
   "scene": {
-   "count": 34,
-   "digest": "11034fe9"
+   "count": 108,
+   "digest": "1a271e65"
   }
  },
  {
   "frame": 170,
   "camera": [
-   15.338196,
-   2.306667,
-   51.648002,
+   19.927115,
+   3.993333,
+   29.346119,
    0.033,
-   3.053593,
+   3.141593,
    0,
    78
   ],
@@ -431,24 +431,24 @@
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "PROLOGUE — OUT OF THE PIT",
-   "subt": "ADEM“There's a stairway. Up is up. Up is better than this.”",
+   "subt": "ADEM“Buried. Actually buried. Whoever did the eulogy had better have been crying.”",
    "lvltitle": "PROLOGUE — OUT OF THE PIT",
    "bossname": "",
    "keys": ""
   },
   "scene": {
-   "count": 34,
-   "digest": "923a0bf2"
+   "count": 108,
+   "digest": "ffbfc1dd"
   }
  },
  {
   "frame": 180,
   "camera": [
-   14.761065,
-   2.067778,
-   51.648002,
+   19.927124,
+   3.884444,
+   30.512786,
    0.033,
-   3.053593,
+   3.141593,
    0,
    78
   ],
@@ -457,24 +457,24 @@
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "PROLOGUE — OUT OF THE PIT",
-   "subt": "ADEM“There's a stairway. Up is up. Up is better than this.”",
+   "subt": "ADEM“Buried. Actually buried. Whoever did the eulogy had better have been crying.”",
    "lvltitle": "PROLOGUE — OUT OF THE PIT",
    "bossname": "",
    "keys": ""
   },
   "scene": {
-   "count": 34,
-   "digest": "627d8ed0"
+   "count": 108,
+   "digest": "c42ad703"
   }
  },
  {
   "frame": 190,
   "camera": [
-   14.414673,
-   1.273333,
-   51.648002,
+   19.891552,
+   3.510411,
+   31.67316,
    0.033,
-   3.053593,
+   3.141593,
    0,
    78
   ],
@@ -483,24 +483,24 @@
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "PROLOGUE — OUT OF THE PIT",
-   "subt": "ADEM“There's a stairway. Up is up. Up is better than this.”",
+   "subt": "ADEM“Buried. Actually buried. Whoever did the eulogy had better have been crying.”",
    "lvltitle": "PROLOGUE — OUT OF THE PIT",
    "bossname": "",
    "keys": ""
   },
   "scene": {
-   "count": 34,
-   "digest": "71e85018"
+   "count": 108,
+   "digest": "e1118935"
   }
  },
  {
   "frame": 200,
   "camera": [
-   14.89965,
-   1.00882,
-   51.648002,
+   19.432009,
+   3.364444,
+   32.758543,
    0.033,
-   3.053593,
+   3.141593,
    0,
    78
   ],
@@ -509,24 +509,24 @@
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "PROLOGUE — OUT OF THE PIT",
-   "subt": "ADEM“There's a stairway. Up is up. Up is better than this.”",
+   "subt": "ADEM“Buried. Actually buried. Whoever did the eulogy had better have been crying.”",
    "lvltitle": "PROLOGUE — OUT OF THE PIT",
    "bossname": "",
    "keys": ""
   },
   "scene": {
-   "count": 34,
-   "digest": "768cb6a0"
+   "count": 108,
+   "digest": "d76c0c6b"
   }
  },
  {
   "frame": 210,
   "camera": [
-   15.672882,
-   1.013628,
-   51.648002,
+   19.026274,
+   3.112017,
+   33.668117,
    0.033,
-   3.053593,
+   3.141593,
    0,
    78
   ],
@@ -535,24 +535,24 @@
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "",
-   "subt": "ADEM“There's a stairway. Up is up. Up is better than this.”",
+   "subt": "ADEM“Buried. Actually buried. Whoever did the eulogy had better have been crying.”",
    "lvltitle": "PROLOGUE — OUT OF THE PIT",
    "bossname": "",
    "keys": ""
   },
   "scene": {
-   "count": 34,
-   "digest": "5c60675f"
+   "count": 108,
+   "digest": "2373a6bb"
   }
  },
  {
   "frame": 220,
   "camera": [
-   15.982032,
-   1.001078,
-   51.648002,
+   18.898412,
+   3.103385,
+   33.954758,
    0.033,
-   3.053593,
+   3.141593,
    0,
    78
   ],
@@ -561,24 +561,24 @@
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "",
-   "subt": "ADEM“There's a stairway. Up is up. Up is better than this.”",
+   "subt": "ADEM“Buried. Actually buried. Whoever did the eulogy had better have been crying.”",
    "lvltitle": "PROLOGUE — OUT OF THE PIT",
    "bossname": "",
    "keys": ""
   },
   "scene": {
-   "count": 34,
-   "digest": "9e620772"
+   "count": 108,
+   "digest": "26a01555"
   }
  },
  {
   "frame": 230,
   "camera": [
-   15.972789,
-   1.000634,
-   51.648002,
+   18.864708,
+   3.10086,
+   34.030315,
    0.033,
-   3.053593,
+   3.141593,
    0,
    78
   ],
@@ -587,24 +587,24 @@
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "",
-   "subt": "ADEM“There's a stairway. Up is up. Up is better than this.”",
+   "subt": "ADEM“Buried. Actually buried. Whoever did the eulogy had better have been crying.”",
    "lvltitle": "PROLOGUE — OUT OF THE PIT",
    "bossname": "",
    "keys": ""
   },
   "scene": {
-   "count": 34,
-   "digest": "84a98b35"
+   "count": 108,
+   "digest": "11592966"
   }
  },
  {
   "frame": 240,
   "camera": [
-   15.881157,
-   1.0006,
-   51.648002,
+   18.855824,
+   3.100224,
+   34.050232,
    0.033,
-   3.053593,
+   3.141593,
    0,
    78
   ],
@@ -613,24 +613,24 @@
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "",
-   "subt": "ADEM“There's a stairway. Up is up. Up is better than this.”",
+   "subt": "ADEM“Buried. Actually buried. Whoever did the eulogy had better have been crying.”",
    "lvltitle": "PROLOGUE — OUT OF THE PIT",
    "bossname": "",
    "keys": ""
   },
   "scene": {
-   "count": 34,
-   "digest": "a2e3f1f4"
+   "count": 108,
+   "digest": "778d1d14"
   }
  },
  {
   "frame": 250,
   "camera": [
-   15.833402,
-   1.000115,
-   51.648002,
+   18.853482,
+   3.100059,
+   34.055482,
    0.033,
-   3.053593,
+   3.141593,
    0,
    78
   ],
@@ -639,24 +639,24 @@
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "",
-   "subt": "ADEM“There's a stairway. Up is up. Up is better than this.”",
+   "subt": "ADEM“Buried. Actually buried. Whoever did the eulogy had better have been crying.”",
    "lvltitle": "PROLOGUE — OUT OF THE PIT",
    "bossname": "",
    "keys": ""
   },
   "scene": {
-   "count": 34,
-   "digest": "72ca1115"
+   "count": 108,
+   "digest": "739eafac"
   }
  },
  {
   "frame": 260,
   "camera": [
-   15.820814,
-   1.000027,
-   51.648002,
+   18.852865,
+   3.100015,
+   34.056866,
    0.0154,
-   2.932593,
+   3.020593,
    0,
    78
   ],
@@ -665,24 +665,24 @@
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "",
-   "subt": "ADEM“There's a stairway. Up is up. Up is better than this.”",
+   "subt": "ADEM“Buried. Actually buried. Whoever did the eulogy had better have been crying.”",
    "lvltitle": "PROLOGUE — OUT OF THE PIT",
    "bossname": "",
    "keys": ""
   },
   "scene": {
-   "count": 34,
-   "digest": "c0eed8ac"
+   "count": 108,
+   "digest": "41b09507"
   }
  },
  {
   "frame": 270,
   "camera": [
-   15.817496,
-   1.000007,
-   51.648002,
+   18.852702,
+   3.100004,
+   34.057231,
    0.025285,
-   2.932593,
+   3.020593,
    0,
    78
   ],
@@ -691,24 +691,24 @@
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "",
-   "subt": "ADEM“There's a stairway. Up is up. Up is better than this.”",
+   "subt": "ADEM“Buried. Actually buried. Whoever did the eulogy had better have been crying.”",
    "lvltitle": "PROLOGUE — OUT OF THE PIT",
    "bossname": "",
    "keys": ""
   },
   "scene": {
-   "count": 35,
-   "digest": "3d6035c0"
+   "count": 109,
+   "digest": "4175cfd3"
   }
  },
  {
   "frame": 280,
   "camera": [
-   15.816622,
-   1.000002,
-   51.648002,
+   18.852659,
+   3.100001,
+   34.057327,
    0.018006,
-   2.932593,
+   3.020593,
    0,
    78
   ],
@@ -717,24 +717,24 @@
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "",
-   "subt": "ADEM“There's a stairway. Up is up. Up is better than this.”",
+   "subt": "ADEM“Buried. Actually buried. Whoever did the eulogy had better have been crying.”",
    "lvltitle": "PROLOGUE — OUT OF THE PIT",
    "bossname": "",
    "keys": ""
   },
   "scene": {
-   "count": 35,
-   "digest": "2818a924"
+   "count": 109,
+   "digest": "a7d92192"
   }
  },
  {
   "frame": 290,
   "camera": [
-   15.816391,
-   1,
-   51.648002,
+   18.852648,
+   3.1,
+   34.057352,
    0.029287,
-   2.811593,
+   2.899593,
    0,
    78
   ],
@@ -743,24 +743,24 @@
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "",
-   "subt": "ADEM“There's a stairway. Up is up. Up is better than this.”",
+   "subt": "ADEM“Buried. Actually buried. Whoever did the eulogy had better have been crying.”",
    "lvltitle": "PROLOGUE — OUT OF THE PIT",
    "bossname": "",
    "keys": ""
   },
   "scene": {
-   "count": 35,
-   "digest": "180b5c50"
+   "count": 109,
+   "digest": "6370780a"
   }
  },
  {
   "frame": 300,
   "camera": [
-   15.81633,
-   1,
-   51.648002,
+   18.852645,
+   3.1,
+   34.057359,
    0.038666,
-   2.811593,
+   2.899593,
    0,
    78
   ],
@@ -769,24 +769,24 @@
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "",
-   "subt": "ADEM“There's a stairway. Up is up. Up is better than this.”",
+   "subt": "ADEM“Buried. Actually buried. Whoever did the eulogy had better have been crying.”",
    "lvltitle": "PROLOGUE — OUT OF THE PIT",
    "bossname": "",
    "keys": ""
   },
   "scene": {
-   "count": 36,
-   "digest": "a244bfa2"
+   "count": 110,
+   "digest": "1e090daf"
   }
  },
  {
   "frame": 310,
   "camera": [
-   15.816314,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.031253,
-   2.811593,
+   2.899593,
    0,
    78
   ],
@@ -795,24 +795,24 @@
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "",
-   "subt": "ADEM“There's a stairway. Up is up. Up is better than this.”",
+   "subt": "ADEM“Buried. Actually buried. Whoever did the eulogy had better have been crying.”",
    "lvltitle": "PROLOGUE — OUT OF THE PIT",
    "bossname": "",
    "keys": ""
   },
   "scene": {
-   "count": 36,
-   "digest": "552af325"
+   "count": 110,
+   "digest": "da06af37"
   }
  },
  {
   "frame": 320,
   "camera": [
-   15.81631,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.042499,
-   2.690593,
+   2.778593,
    0,
    78
   ],
@@ -821,24 +821,24 @@
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "",
-   "subt": "ADEM“There's a stairway. Up is up. Up is better than this.”",
+   "subt": "ADEM“Buried. Actually buried. Whoever did the eulogy had better have been crying.”",
    "lvltitle": "PROLOGUE — OUT OF THE PIT",
    "bossname": "",
    "keys": ""
   },
   "scene": {
-   "count": 36,
-   "digest": "dfbc65b3"
+   "count": 110,
+   "digest": "42b017d4"
   }
  },
  {
   "frame": 330,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.05187,
-   2.690593,
+   2.778593,
    0,
    78
   ],
@@ -847,24 +847,24 @@
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "",
-   "subt": "ADEM“There's a stairway. Up is up. Up is better than this.”",
+   "subt": "ADEM“Buried. Actually buried. Whoever did the eulogy had better have been crying.”",
    "lvltitle": "PROLOGUE — OUT OF THE PIT",
    "bossname": "",
    "keys": ""
   },
   "scene": {
-   "count": 37,
-   "digest": "d689bb92"
+   "count": 111,
+   "digest": "eeb12a69"
   }
  },
  {
   "frame": 340,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.044454,
-   2.690593,
+   2.778593,
    0,
    78
   ],
@@ -873,24 +873,24 @@
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "",
-   "subt": "ADEM“There's a stairway. Up is up. Up is better than this.”",
+   "subt": "ADEM“Buried. Actually buried. Whoever did the eulogy had better have been crying.”",
    "lvltitle": "PROLOGUE — OUT OF THE PIT",
    "bossname": "",
    "keys": ""
   },
   "scene": {
-   "count": 37,
-   "digest": "23e51a05"
+   "count": 111,
+   "digest": "939df12c"
   }
  },
  {
   "frame": 350,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.0557,
-   2.569593,
+   2.657593,
    0,
    78
   ],
@@ -905,18 +905,18 @@
    "keys": ""
   },
   "scene": {
-   "count": 37,
-   "digest": "d6684876"
+   "count": 111,
+   "digest": "ae853b9d"
   }
  },
  {
   "frame": 360,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.06507,
-   2.569593,
+   2.657593,
    0,
    78
   ],
@@ -931,18 +931,18 @@
    "keys": ""
   },
   "scene": {
-   "count": 38,
-   "digest": "87a176a5"
+   "count": 112,
+   "digest": "91469786"
   }
  },
  {
   "frame": 370,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.057654,
-   2.569593,
+   2.657593,
    0,
    78
   ],
@@ -957,18 +957,18 @@
    "keys": ""
   },
   "scene": {
-   "count": 38,
-   "digest": "2b8a1441"
+   "count": 112,
+   "digest": "35cf4a7a"
   }
  },
  {
   "frame": 380,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.0381,
-   2.448593,
+   2.536593,
    0,
    78
   ],
@@ -983,18 +983,18 @@
    "keys": ""
   },
   "scene": {
-   "count": 38,
-   "digest": "ac4148e2"
+   "count": 112,
+   "digest": "0c809850"
   }
  },
  {
   "frame": 390,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.04747,
-   2.448593,
+   2.536593,
    0,
    78
   ],
@@ -1009,18 +1009,18 @@
    "keys": ""
   },
   "scene": {
-   "count": 39,
-   "digest": "9e8e6dc5"
+   "count": 113,
+   "digest": "efbcae7f"
   }
  },
  {
   "frame": 400,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.040054,
-   2.448593,
+   2.536593,
    0,
    78
   ],
@@ -1035,18 +1035,18 @@
    "keys": ""
   },
   "scene": {
-   "count": 39,
-   "digest": "19e690e3"
+   "count": 113,
+   "digest": "828c6979"
   }
  },
  {
   "frame": 410,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.0513,
-   2.327593,
+   2.415593,
    0,
    78
   ],
@@ -1061,18 +1061,18 @@
    "keys": ""
   },
   "scene": {
-   "count": 39,
-   "digest": "7237d137"
+   "count": 113,
+   "digest": "cf885555"
   }
  },
  {
   "frame": 420,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.06067,
-   2.327593,
+   2.415593,
    0,
    78
   ],
@@ -1087,18 +1087,18 @@
    "keys": ""
   },
   "scene": {
-   "count": 40,
-   "digest": "02b4d8c5"
+   "count": 114,
+   "digest": "f4f35fcd"
   }
  },
  {
   "frame": 430,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.053254,
-   2.327593,
+   2.415593,
    0,
    78
   ],
@@ -1113,18 +1113,18 @@
    "keys": ""
   },
   "scene": {
-   "count": 40,
-   "digest": "b9ead38d"
+   "count": 114,
+   "digest": "ae993032"
   }
  },
  {
   "frame": 440,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.0645,
-   2.206593,
+   2.294593,
    0,
    78
   ],
@@ -1139,18 +1139,18 @@
    "keys": ""
   },
   "scene": {
-   "count": 40,
-   "digest": "70eb31f2"
+   "count": 114,
+   "digest": "2fed6e3d"
   }
  },
  {
   "frame": 450,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.063984,
-   2.206593,
+   2.294593,
    0,
    78
   ],
@@ -1165,18 +1165,18 @@
    "keys": ""
   },
   "scene": {
-   "count": 40,
-   "digest": "bcb74812"
+   "count": 114,
+   "digest": "7bca6421"
   }
  },
  {
   "frame": 460,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.063849,
-   2.206593,
+   2.294593,
    0,
    78
   ],
@@ -1191,18 +1191,18 @@
    "keys": ""
   },
   "scene": {
-   "count": 40,
-   "digest": "395ef7a6"
+   "count": 114,
+   "digest": "5dbfe68b"
   }
  },
  {
   "frame": 470,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.077013,
-   2.085593,
+   2.173593,
    0,
    78
   ],
@@ -1217,18 +1217,18 @@
    "keys": ""
   },
   "scene": {
-   "count": 40,
-   "digest": "a9409ee2"
+   "count": 114,
+   "digest": "cbe9e1fc"
   }
  },
  {
   "frame": 480,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.077003,
-   2.085593,
+   2.173593,
    0,
    78
   ],
@@ -1243,18 +1243,18 @@
    "keys": ""
   },
   "scene": {
-   "count": 40,
-   "digest": "ec513c2a"
+   "count": 114,
+   "digest": "4f3302eb"
   }
  },
  {
   "frame": 490,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.077001,
-   2.085593,
+   2.173593,
    0,
    78
   ],
@@ -1269,18 +1269,18 @@
    "keys": ""
   },
   "scene": {
-   "count": 40,
-   "digest": "8c819915"
+   "count": 114,
+   "digest": "59f5542d"
   }
  },
  {
   "frame": 500,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.0594,
-   1.964593,
+   2.052593,
    0,
    78
   ],
@@ -1295,18 +1295,18 @@
    "keys": ""
   },
   "scene": {
-   "count": 40,
-   "digest": "8e9cbfe7"
+   "count": 114,
+   "digest": "7c153492"
   }
  },
  {
   "frame": 510,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.0594,
-   1.964593,
+   2.052593,
    0,
    78
   ],
@@ -1321,18 +1321,18 @@
    "keys": ""
   },
   "scene": {
-   "count": 40,
-   "digest": "74ec7f62"
+   "count": 114,
+   "digest": "f9305106"
   }
  },
  {
   "frame": 520,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.0594,
-   1.964593,
+   2.052593,
    0,
    78
   ],
@@ -1347,23 +1347,23 @@
    "keys": ""
   },
   "scene": {
-   "count": 40,
-   "digest": "d26c67a1"
+   "count": 114,
+   "digest": "8bb6f7b2"
   }
  },
  {
   "frame": 530,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.0726,
-   1.843593,
+   1.931593,
    0,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH92",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL — RELOADING",
    "msg": "",
@@ -1373,23 +1373,23 @@
    "keys": ""
   },
   "scene": {
-   "count": 40,
-   "digest": "9a75c8d3"
+   "count": 114,
+   "digest": "4091a496"
   }
  },
  {
   "frame": 540,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852585,
+   3.099944,
+   34.057361,
    0.0726,
-   1.843593,
-   0,
+   1.931593,
+   -0.000034,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH92",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL — RELOADING",
    "msg": "",
@@ -1399,23 +1399,23 @@
    "keys": ""
   },
   "scene": {
-   "count": 40,
-   "digest": "db22cde0"
+   "count": 114,
+   "digest": "2d134068"
   }
  },
  {
   "frame": 550,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.0726,
-   1.843593,
+   1.931593,
    0,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH92",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL — RELOADING",
    "msg": "",
@@ -1425,23 +1425,23 @@
    "keys": ""
   },
   "scene": {
-   "count": 40,
-   "digest": "87f85af2"
+   "count": 114,
+   "digest": "4c973801"
   }
  },
  {
   "frame": 560,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.0858,
-   1.722593,
+   1.810593,
    0,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH92",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL — RELOADING",
    "msg": "",
@@ -1451,23 +1451,23 @@
    "keys": ""
   },
   "scene": {
-   "count": 40,
-   "digest": "0e917a37"
+   "count": 114,
+   "digest": "5ab81086"
   }
  },
  {
   "frame": 570,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.095685,
-   1.722593,
+   1.810593,
    0,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH92",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "",
@@ -1477,23 +1477,23 @@
    "keys": ""
   },
   "scene": {
-   "count": 41,
-   "digest": "b920d7a0"
+   "count": 115,
+   "digest": "0e1e88bd"
   }
  },
  {
   "frame": 580,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.088406,
-   1.722593,
+   1.810593,
    0,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH92",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "",
@@ -1503,23 +1503,23 @@
    "keys": ""
   },
   "scene": {
-   "count": 41,
-   "digest": "1b3a4412"
+   "count": 115,
+   "digest": "6dfd9d44"
   }
  },
  {
   "frame": 590,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.099687,
-   1.601593,
+   1.689593,
    0,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH84",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "",
@@ -1529,23 +1529,23 @@
    "keys": ""
   },
   "scene": {
-   "count": 41,
-   "digest": "09bf5e48"
+   "count": 115,
+   "digest": "c89eeb90"
   }
  },
  {
   "frame": 600,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852191,
+   3.099571,
+   34.057361,
    0.109066,
-   1.601593,
-   0,
+   1.689593,
+   0.000857,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH84",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "",
@@ -1555,23 +1555,23 @@
    "keys": ""
   },
   "scene": {
-   "count": 42,
-   "digest": "1aba6241"
+   "count": 116,
+   "digest": "e2cb1542"
   }
  },
  {
   "frame": 610,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.101653,
-   1.601593,
+   1.689593,
    0,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH84",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "",
@@ -1581,23 +1581,23 @@
    "keys": ""
   },
   "scene": {
-   "count": 42,
-   "digest": "34213994"
+   "count": 116,
+   "digest": "4c25892a"
   }
  },
  {
   "frame": 620,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.082099,
-   1.480593,
+   1.568593,
    0,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH84",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "",
@@ -1607,23 +1607,23 @@
    "keys": ""
   },
   "scene": {
-   "count": 42,
-   "digest": "2e9e23a4"
+   "count": 116,
+   "digest": "a629f6ca"
   }
  },
  {
   "frame": 630,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.09147,
-   1.480593,
+   1.568593,
    0,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH84",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "",
@@ -1633,23 +1633,23 @@
    "keys": ""
   },
   "scene": {
-   "count": 43,
-   "digest": "b1eebf81"
+   "count": 117,
+   "digest": "135d240b"
   }
  },
  {
   "frame": 640,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.084054,
-   1.480593,
+   1.568593,
    0,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH84",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "",
@@ -1659,23 +1659,23 @@
    "keys": ""
   },
   "scene": {
-   "count": 43,
-   "digest": "13187b74"
+   "count": 117,
+   "digest": "4eb989bf"
   }
  },
  {
   "frame": 650,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.0953,
-   1.359593,
+   1.447593,
    0,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH76",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "",
@@ -1685,23 +1685,23 @@
    "keys": ""
   },
   "scene": {
-   "count": 43,
-   "digest": "9583b4a2"
+   "count": 117,
+   "digest": "8de7ede5"
   }
  },
  {
   "frame": 660,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.854659,
+   3.101466,
+   34.057361,
    0.10467,
-   1.359593,
-   0,
+   1.447593,
+   -0.000672,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH76",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "",
@@ -1711,23 +1711,23 @@
    "keys": ""
   },
   "scene": {
-   "count": 44,
-   "digest": "6b3302ac"
+   "count": 118,
+   "digest": "77cc2af4"
   }
  },
  {
   "frame": 670,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.097254,
-   1.359593,
+   1.447593,
    0,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH76",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "",
@@ -1737,23 +1737,23 @@
    "keys": ""
   },
   "scene": {
-   "count": 44,
-   "digest": "5d3f4429"
+   "count": 118,
+   "digest": "046b7d00"
   }
  },
  {
   "frame": 680,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.1085,
-   1.238593,
+   1.326593,
    0,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH76",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "",
@@ -1763,23 +1763,23 @@
    "keys": ""
   },
   "scene": {
-   "count": 44,
-   "digest": "0c21a21e"
+   "count": 118,
+   "digest": "45695407"
   }
  },
  {
   "frame": 690,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.11787,
-   1.238593,
+   1.326593,
    0,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH76",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "",
@@ -1789,23 +1789,23 @@
    "keys": ""
   },
   "scene": {
-   "count": 45,
-   "digest": "88e10e4f"
+   "count": 119,
+   "digest": "cc788b61"
   }
  },
  {
   "frame": 700,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.110454,
-   1.238593,
+   1.326593,
    0,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH76",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL — RELOADING",
    "msg": "",
@@ -1815,23 +1815,23 @@
    "keys": ""
   },
   "scene": {
-   "count": 45,
-   "digest": "0f67c828"
+   "count": 119,
+   "digest": "d213401e"
   }
  },
  {
   "frame": 710,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.1217,
-   1.117593,
+   1.205593,
    0,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH68",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL — RELOADING",
    "msg": "",
@@ -1841,23 +1841,23 @@
    "keys": ""
   },
   "scene": {
-   "count": 45,
-   "digest": "40d201d2"
+   "count": 119,
+   "digest": "d7e83d97"
   }
  },
  {
   "frame": 720,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852056,
+   3.101161,
+   34.057361,
    0.13107,
-   1.117593,
-   0,
+   1.205593,
+   0.000476,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH68",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "",
@@ -1867,23 +1867,23 @@
    "keys": ""
   },
   "scene": {
-   "count": 46,
-   "digest": "bd17d728"
+   "count": 120,
+   "digest": "df30b68d"
   }
  },
  {
   "frame": 730,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.123654,
-   1.117593,
+   1.205593,
    0,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH68",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "",
@@ -1893,23 +1893,23 @@
    "keys": ""
   },
   "scene": {
-   "count": 46,
-   "digest": "a566eac4"
+   "count": 120,
+   "digest": "363e46c4"
   }
  },
  {
   "frame": 740,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.1041,
-   0.996593,
+   1.084593,
    0,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH68",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "",
@@ -1919,23 +1919,23 @@
    "keys": ""
   },
   "scene": {
-   "count": 46,
-   "digest": "817694eb"
+   "count": 120,
+   "digest": "f20b4ae4"
   }
  },
  {
   "frame": 750,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.103584,
-   0.996593,
+   1.084593,
    0,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH68",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL — RELOADING",
    "msg": "",
@@ -1945,23 +1945,23 @@
    "keys": ""
   },
   "scene": {
-   "count": 46,
-   "digest": "4c0cc91f"
+   "count": 120,
+   "digest": "6199ec24"
   }
  },
  {
   "frame": 760,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.103449,
-   0.996593,
+   1.084593,
    0,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH68",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL — RELOADING",
    "msg": "",
@@ -1971,23 +1971,23 @@
    "keys": ""
   },
   "scene": {
-   "count": 46,
-   "digest": "1cb82f6b"
+   "count": 120,
+   "digest": "0c97f387"
   }
  },
  {
   "frame": 770,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.116613,
-   0.875593,
+   0.963593,
    0,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH60",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL — RELOADING",
    "msg": "",
@@ -1997,23 +1997,23 @@
    "keys": ""
   },
   "scene": {
-   "count": 46,
-   "digest": "7a7545b2"
+   "count": 120,
+   "digest": "f4a3e911"
   }
  },
  {
   "frame": 780,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852587,
+   3.099971,
+   34.057361,
    0.116603,
-   0.875593,
-   0,
+   0.963593,
+   -0.000009,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH60",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL — RELOADING",
    "msg": "",
@@ -2023,23 +2023,23 @@
    "keys": ""
   },
   "scene": {
-   "count": 46,
-   "digest": "2341a2d4"
+   "count": 120,
+   "digest": "f2dfde9d"
   }
  },
  {
   "frame": 790,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.116601,
-   0.875593,
+   0.963593,
    0,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH60",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL — RELOADING",
    "msg": "",
@@ -2049,23 +2049,23 @@
    "keys": ""
   },
   "scene": {
-   "count": 46,
-   "digest": "2f28ddca"
+   "count": 120,
+   "digest": "0f6fa0dc"
   }
  },
  {
   "frame": 800,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.1298,
-   0.754593,
+   0.842593,
    0,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH60",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL — RELOADING",
    "msg": "",
@@ -2075,23 +2075,23 @@
    "keys": ""
   },
   "scene": {
-   "count": 46,
-   "digest": "c32d58e3"
+   "count": 120,
+   "digest": "5b13378e"
   }
  },
  {
   "frame": 810,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.1298,
-   0.754593,
+   0.842593,
    0,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH60",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL — RELOADING",
    "msg": "",
@@ -2101,23 +2101,23 @@
    "keys": ""
   },
   "scene": {
-   "count": 46,
-   "digest": "0371d3f3"
+   "count": 120,
+   "digest": "aa378eba"
   }
  },
  {
   "frame": 820,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.1298,
-   0.754593,
+   0.842593,
    0,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH60",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL — RELOADING",
    "msg": "",
@@ -2127,23 +2127,23 @@
    "keys": ""
   },
   "scene": {
-   "count": 46,
-   "digest": "18ff293e"
+   "count": 120,
+   "digest": "36094559"
   }
  },
  {
   "frame": 830,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.143,
-   0.633593,
+   0.721593,
    0,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH52",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL — RELOADING",
    "msg": "",
@@ -2153,190 +2153,190 @@
    "keys": ""
   },
   "scene": {
-   "count": 46,
-   "digest": "72567ef8"
+   "count": 120,
+   "digest": "52899835"
   }
  },
  {
   "frame": 840,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852692,
+   3.099947,
+   34.057361,
    0.143,
-   0.633593,
-   0,
+   0.721593,
+   0.000002,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH52",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL — RELOADING",
    "msg": "",
-   "subt": "",
+   "subt": "ADEM“Zombies. Classic. At least they groan before they bite — very considerate.”",
    "lvltitle": "PROLOGUE — OUT OF THE PIT",
    "bossname": "",
    "keys": ""
   },
   "scene": {
-   "count": 46,
-   "digest": "33b205af"
+   "count": 120,
+   "digest": "aca673ff"
   }
  },
  {
   "frame": 850,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.143,
-   0.633593,
+   0.721593,
    0,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH52",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL — RELOADING",
    "msg": "",
-   "subt": "",
+   "subt": "ADEM“Zombies. Classic. At least they groan before they bite — very considerate.”",
    "lvltitle": "PROLOGUE — OUT OF THE PIT",
    "bossname": "",
    "keys": ""
   },
   "scene": {
-   "count": 46,
-   "digest": "11c19aea"
+   "count": 120,
+   "digest": "85b0cef0"
   }
  },
  {
   "frame": 860,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.143,
-   0.633593,
+   0.721593,
    0,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH52",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL — RELOADING",
    "msg": "",
-   "subt": "",
+   "subt": "ADEM“Zombies. Classic. At least they groan before they bite — very considerate.”",
    "lvltitle": "PROLOGUE — OUT OF THE PIT",
    "bossname": "",
    "keys": ""
   },
   "scene": {
-   "count": 46,
-   "digest": "f908a078"
+   "count": 120,
+   "digest": "10de6e57"
   }
  },
  {
   "frame": 870,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.143,
-   0.633593,
+   0.721593,
    0,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH52",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "",
-   "subt": "",
+   "subt": "ADEM“Zombies. Classic. At least they groan before they bite — very considerate.”",
    "lvltitle": "PROLOGUE — OUT OF THE PIT",
    "bossname": "",
    "keys": ""
   },
   "scene": {
-   "count": 46,
-   "digest": "c41d502d"
+   "count": 120,
+   "digest": "3e547128"
   }
  },
  {
   "frame": 880,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.143,
-   0.633593,
+   0.721593,
    0,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH52",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "",
-   "subt": "",
+   "subt": "ADEM“Zombies. Classic. At least they groan before they bite — very considerate.”",
    "lvltitle": "PROLOGUE — OUT OF THE PIT",
    "bossname": "",
    "keys": ""
   },
   "scene": {
-   "count": 46,
-   "digest": "c6d022d3"
+   "count": 120,
+   "digest": "cdac1dfd"
   }
  },
  {
   "frame": 890,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852644,
+   3.1,
+   34.057361,
    0.143,
-   0.633593,
+   0.721593,
    0,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH44",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "",
-   "subt": "",
+   "subt": "ADEM“Zombies. Classic. At least they groan before they bite — very considerate.”",
    "lvltitle": "PROLOGUE — OUT OF THE PIT",
    "bossname": "",
    "keys": ""
   },
   "scene": {
-   "count": 46,
-   "digest": "0f7d030f"
+   "count": 120,
+   "digest": "c1518c42"
   }
  },
  {
   "frame": 900,
   "camera": [
-   15.816309,
-   1,
-   51.648002,
+   18.852675,
+   3.100003,
+   34.057361,
    0.143,
-   0.633593,
-   0,
+   0.721593,
+   0.000005,
    78
   ],
   "hud": {
-   "hp": "HEALTH100",
+   "hp": "HEALTH44",
    "ar": "ARMOR0",
    "wname": "FLARE PISTOL",
    "msg": "",
-   "subt": "",
+   "subt": "ADEM“Zombies. Classic. At least they groan before they bite — very considerate.”",
    "lvltitle": "PROLOGUE — OUT OF THE PIT",
    "bossname": "",
    "keys": ""
   },
   "scene": {
-   "count": 46,
-   "digest": "df1c7acf"
+   "count": 120,
+   "digest": "a0359cea"
   }
  }
 ]

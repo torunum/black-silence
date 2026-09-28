@@ -10,6 +10,8 @@ import { world } from "../../src/world/WorldState";
 import { renderState } from "../../src/render/Renderer";
 import { CELL, EYE } from "../../src/world/Grid";
 import { LEVELS } from "../../src/world/levels/index";
+import { ZONES } from "../../src/world/levels/prologue";
+import { roomFor } from "../../src/audio/Room";
 import { clearLastSoundLevel, lastSoundLevel } from "../../src/audio/Levels";
 import { STEP_ENTRY } from "../../src/audio/sounds/steps";
 import { surfaceFor, type Surface } from "../../src/audio/Surface";
@@ -77,8 +79,13 @@ afterAll(() => {
 
 beforeEach(() => { heard.length = 0; });
 
-/** Each level's floor, written from what the levels are (not from src/audio/Surface.ts's table). */
-const FLOORS: Surface[] = ["ash", "marble", "stone", "stone", "dirt", "water", "metal", "flesh"];
+/**
+ * Each level's floor where the player starts, written from what the levels
+ * are (not from src/audio/Surface.ts's table). The rebuilt prologue starts in
+ * its churchyard, dirt underfoot; its hell is ash, and
+ * tests/world/zones.test.ts walks the player down there and hears it.
+ */
+const FLOORS: Surface[] = ["dirt", "marble", "stone", "stone", "dirt", "water", "metal", "flesh"];
 
 describe("a footstep's floor follows the level", () => {
   it("covers every level", () => expect(FLOORS).toHaveLength(LEVELS.length));
@@ -90,7 +97,12 @@ describe("a footstep's floor follows the level", () => {
       P.footstep(run);
       expect(lastSoundLevel(), `${run ? "running" : "walking"}`).toBe(STEP_ENTRY[floor]);
     }
-    expect(surfaceFor(LEVELS[level])).toBe(floor);
+    // `surfaceFor` reads a *level's* flags, where `dungeon` means level 1's
+    // marble. The churchyard zone wears the dungeon's rough stone but walks on
+    // its room's dirt (the game asks the room, `surfaceHere`, and only level 1
+    // is marble), so for the prologue the room is the cross-check.
+    if (level === 0) expect(roomFor(ZONES[0])).toBe("graveyard");
+    else expect(surfaceFor(LEVELS[level])).toBe(floor);
     expect(heard.filter((h) => h.name === "footstep").map((h) => h.args.slice(0, 2))).toEqual([[false, level === 1], [true, level === 1]]);
   });
 });

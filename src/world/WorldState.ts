@@ -1,4 +1,5 @@
 import type { Enemy } from "../enemies/Enemy";
+import type { ZoneMap } from "./LevelBuilder";
 
 /**
  * Everything loadLevel() builds and the systems read for the rest of the
@@ -43,6 +44,8 @@ export const world = {
    * directly, so the "falsy cell means WALLH" rule lives in one place.
    */
   ceilMap: null as number[][] | null,
+  /** The level's zones (`BuiltLevel.zones`), or `null` — every level but the prologue. Read through `src/world/Zones.ts`. */
+  zones: null as ZoneMap | null,
   wallSegs: [] as Array<Record<string, unknown>>,
   doors: {} as Record<string, Record<string, unknown>>,
   enemies: [] as Enemy[],

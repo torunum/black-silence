@@ -153,12 +153,13 @@ beforeAll(async () => {
   const newGame = [...document.querySelectorAll(".mbtn")].find((b) => b.textContent?.includes("NEW GAME"));
   if (!newGame) throw new Error("the NEW GAME menu row is gone — this file drives the game through it");
   (newGame as HTMLElement).click();
-  // The prologue (level 0) loads with zero enemies (see wiring.test.ts and
-  // combatTrace.test.ts's own headers) — confirmed again here rather than
-  // assumed, since the endLevel test below depends on "no boss alive"
-  // being trivially true.
-  if (world.enemies.length) {   // `Enemy[]` as of Phase 3 Part A — the old defensive cast is gone
-    throw new Error("the prologue is expected to load with zero enemies — this file's endLevel setup assumes that");
+  // The prologue (level 0) loads with no boss — confirmed here rather than
+  // assumed, since the endLevel test below depends on "no boss alive" being
+  // trivially true. (It used to load with zero enemies at all; the rebuilt
+  // prologue of the prologue plan's Task 1 has a few zombies and crawlers in
+  // its hell, and none is a boss.)
+  if (world.enemies.some((e) => e.boss)) {   // `Enemy[]` as of Phase 3 Part A — the old defensive cast is gone
+    throw new Error("the prologue is expected to load with no boss — this file's endLevel setup assumes that");
   }
 });
 

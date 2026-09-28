@@ -152,6 +152,20 @@ const ARMOUR_CELLS: Readonly<Record<string, ReadonlyArray<readonly [number, numb
   "LEVEL 7 — THE WOMB": [[26, 2], [6, 20], [26, 20], [20, 21]],
 };
 
+/**
+ * The third deliberate divergence, and the only whole-level one: the
+ * prologue (player feedback round 2, the prologue plan, Task 1). The
+ * reference wakes ADEM in a hell cavern and climbs him out to a tomb; the
+ * owner said the prologue was always the other way round — out of the
+ * grave, down through hell — so the port's prologue is a new map
+ * (`src/world/levels/prologue.ts`, whose header records the divergence) and
+ * no cell-for-cell comparison with the reference can mean anything for it.
+ * Pinned instead: the reference's prologue is still the 21x27 hell-first map
+ * it always was (so this file still reads the frozen master), the port's is
+ * not, and the port's is the only level that carries zones.
+ */
+const REBUILT_PROLOGUE = "PROLOGUE — OUT OF THE PIT";
+
 /** Every cell where two grids disagree, as `x,z ref->ours` strings. */
 function gridDiff(ours: string[][], ref: string[][]): string[] {
   const out: string[] = [];
@@ -176,6 +190,14 @@ describe("LEVELS vs. reference", () => {
     (name, def, refDef) => {
       const built = def.build();
       const refBuilt = refDef.build();
+      if (name === REBUILT_PROLOGUE) {
+        expect([refBuilt.W, refBuilt.H], "the frozen reference's prologue").toEqual([21, 27]);
+        expect(refBuilt.g[23][10], "the reference wakes ADEM deep in its hell cavern").toBe("P");
+        expect(gridDiff(built.g, refBuilt.g).length, "the port's prologue is a different map").toBeGreaterThan(100);
+        expect(built.zones, "and it is zoned: churchyard, crypt, hell, climb").toBeDefined();
+        return;
+      }
+      expect(built.zones, `${name} has no zones`).toBeUndefined();
       const pews = name === "LEVEL 2 — THE ABANDONED CHURCH"
         ? LEVEL2_PEW_CELLS.map(([x, z]) => `${x},${z} V->v`)
         : [];
@@ -214,13 +236,28 @@ describe("WEAPON_STATS vs. reference", () => {
 
 describe("MONOLOGUE vs. reference", () => {
   const refM = evalReference<typeof MONOLOGUE>([refSource(REF.monologue)], "M");
+  /**
+   * The rebuilt prologue's lines — the one deliberate divergence here (see
+   * `REBUILT_PROLOGUE` above and `src/content/monologue.ts`'s header):
+   * `lvl0` rewritten for waking in the grave, and three new keys said on
+   * entering the prologue's crypt, hell and climb zones. Everything else is
+   * still held equal to the frozen master, key for key and line for line.
+   */
+  const PROLOGUE_KEYS = ["lvl0", "p0_down", "p0_hell", "p0_out"];
+  const without = (m: Record<string, string[]>) =>
+    Object.fromEntries(Object.entries(m).filter(([k]) => !PROLOGUE_KEYS.includes(k)));
 
-  it("has the identical key set", () => {
-    expect(Object.keys(MONOLOGUE).sort()).toEqual(Object.keys(refM).sort());
+  it("has the identical key set, plus the three prologue zone lines", () => {
+    expect(Object.keys(MONOLOGUE).sort()).toEqual([...Object.keys(refM), "p0_down", "p0_hell", "p0_out"].sort());
   });
 
-  it("matches every line of every key", () => {
-    expect(MONOLOGUE).toEqual(refM);
+  it("matches every line of every key but the prologue's", () => {
+    expect(without(MONOLOGUE)).toEqual(without(refM));
+  });
+
+  it("the prologue's opening line is rewritten, not copied", () => {
+    expect(refM.lvl0.length).toBeGreaterThan(0);
+    for (const line of MONOLOGUE.lvl0) expect(refM.lvl0).not.toContain(line);
   });
 });
 

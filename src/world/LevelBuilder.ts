@@ -40,6 +40,50 @@ export interface BuiltLevel {
   hmap?: number[][];
   cmap?: number[][];
   segs?: WallSeg[];
+  /** Regions of the grid with a look of their own — see `ZoneMap`. Absent on every level but the prologue. */
+  zones?: ZoneMap;
+  /** Set dressing with no gameplay — see `src/world/Decor.ts`. */
+  decor?: DecorSpec[];
+}
+
+/**
+ * The look of one region of a level: the same theme flags and light/fog
+ * fields a `LevelDef` carries (`src/world/levels/index.ts`), so every
+ * existing theme -> texture, trim band, reverb room and footstep surface
+ * rule applies to a zone unchanged. `sky` leaves the zone's ceiling unbuilt
+ * (the walls stop at their risers and the scene background shows above);
+ * `line` is a MONOLOGUE id ADEM says the first time the player walks in.
+ */
+export interface ZoneTheme {
+  id: string;
+  hell?: boolean;
+  flesh?: boolean;
+  dungeon?: boolean;
+  sub?: string;
+  fog: number;
+  fogD: number;
+  amb: number;
+  ambI: number;
+  sky?: boolean;
+  line?: string;
+  /** A `TEX` key for raised ground's side faces where the theme's stair stone would be wrong (a grave's earth walls). */
+  side?: string;
+}
+
+/** `map[z][x]` indexes `themes`, for every cell of the grid, solid ones included (a wall wears its zone's texture). */
+export interface ZoneMap {
+  map: number[][];
+  themes: ZoneTheme[];
+}
+
+/** One piece of set dressing: a kind, a cell position (fractions allowed), a yaw `r`, a size `s`, a kind-specific `h`. */
+export interface DecorSpec {
+  k: string;
+  x: number;
+  z: number;
+  r?: number;
+  s?: number;
+  h?: number;
 }
 
 /** A BuiltLevel that also remembers its room lattice, so link()/put() can address rooms. */

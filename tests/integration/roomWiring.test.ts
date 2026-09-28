@@ -37,13 +37,17 @@ afterAll(() => {
 });
 
 describe("loadLevel selects the level's room", () => {
-  it("NEW GAME starts the prologue in hell", () => {
-    expect(currentRoom()).toEqual({ wanted: "hell", built: "hell" });
+  // The rebuilt prologue starts in its churchyard, under the sky: the
+  // open-air room. It is zoned (src/world/Zones.ts) — its hell is the hell
+  // room, and tests/world/zones.test.ts walks the player down there and
+  // hears the room change.
+  it("NEW GAME starts the prologue in its churchyard, in the open air", () => {
+    expect(currentRoom()).toEqual({ wanted: "graveyard", built: "graveyard" });
   });
 
   it.each([1, 7, 5, 0])("level %i", (idx) => {
     loadLevel(idx);
-    const want = roomFor(LEVELS[idx]);
+    const want = idx === 0 ? "graveyard" : roomFor(LEVELS[idx]);
     expect(currentRoom()).toEqual({ wanted: want, built: want });
   });
 });

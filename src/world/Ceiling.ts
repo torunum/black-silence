@@ -3,6 +3,8 @@ import { CELL, WALLH } from "./Grid";
 import { world } from "./WorldState";
 import { ceilHeightAtCell } from "./Collision";
 import { track } from "../render/DisposeRegistry";
+import { zoneThemeAt, themeKey, themeTex, skyAt } from "./ZoneLook";
+import { groupPush } from "./LevelMeshes";
 
 /**
  * The level's ceiling geometry — one function, two shapes.
@@ -111,9 +113,26 @@ import { track } from "../render/DisposeRegistry";
  * and a builder that quietly overrode cells would make that assertion a
  * statement about the override instead of about the map.
  */
+/*
+ * ## Zones (prologue plan, Task 1)
+ *
+ * A zoned level (`world.zones`, see `ZoneLook.ts`) always takes the
+ * instanced branch, and both meshes are built once per *look*: each cell's
+ * quad wears its zone's ceiling texture, each riser the wall texture of the
+ * zone of the **lower** cell of its pair: against a wall that is the wall's
+ * own zone, so a riser reads as the wall carried on up (the prologue's
+ * mausoleum is pale church stone seen from the churchyard, not the yard's
+ * rough wall); between two open cells it is the lintel or soffit of the
+ * lower ceiling. A zone with `sky` gets no quads at all: its walls stop where their
+ * risers stop, and the scene background (which `Zones.ts` eases to the
+ * zone's fog colour) is the night above. The risers are still built, so a
+ * sky zone's walls stand as tall as its `cmap` says. An unzoned level is one
+ * look, keyed `""` and textured from the arguments, so level 3 gets back
+ * exactly its one `ceilingCells` and one `ceilingRisers` mesh.
+ */
 export function buildCeiling(scene: THREE.Scene, baseTex: THREE.Texture, wallTex: THREE.Texture): void {
   const GW=world.GW,GH=world.GH;
-  if(!world.ceilMap){
+  if(!world.ceilMap&&!world.zones){
     const ceilTex=track(baseTex.clone());ceilTex.needsUpdate=true;ceilTex.repeat.set(GW,GH);
     ceilTex.wrapS=ceilTex.wrapT=THREE.RepeatWrapping;
     ceilTex.magFilter=THREE.NearestFilter;ceilTex.minFilter=THREE.NearestFilter;
@@ -122,27 +141,33 @@ export function buildCeiling(scene: THREE.Scene, baseTex: THREE.Texture, wallTex
     cm.rotation.x=Math.PI/2;cm.position.set(GW*CELL/2,WALLH,GH*CELL/2);
     cm.name="ceiling";scene.add(cm);
     return;}
-  const ceilTex=track(baseTex.clone());ceilTex.needsUpdate=true;
-  ceilTex.wrapS=ceilTex.wrapT=THREE.RepeatWrapping;
-  ceilTex.magFilter=THREE.NearestFilter;ceilTex.minFilter=THREE.NearestFilter;
-  const cellMats:THREE.Matrix4[]=[],riserMats:THREE.Matrix4[]=[];
+  const texOf=new Map<string,{ceil:THREE.Texture;wall:THREE.Texture}>();
+  const cellMats=new Map<string,THREE.Matrix4[]>(),riserMats=new Map<string,THREE.Matrix4[]>();
+  const keyAt=(x:number,z:number)=>{
+    const look=zoneThemeAt(x,z),key=look?themeKey(look):"";
+    if(!texOf.has(key))texOf.set(key,look?{ceil:themeTex(look).ceil,wall:themeTex(look).wall}:{ceil:baseTex,wall:wallTex});
+    return key;};
   for(let z=0;z<GH;z++)for(let x=0;x<GW;x++){
-    const h=ceilHeightAtCell(x,z),wx=(x+.5)*CELL,wz=(z+.5)*CELL;
-    cellMats.push(new THREE.Matrix4().setPosition(wx,h,wz));
+    const h=ceilHeightAtCell(x,z),wx=(x+.5)*CELL,wz=(z+.5)*CELL,key=keyAt(x,z);
+    if(!skyAt(x,z))groupPush(cellMats,key,new THREE.Matrix4().setPosition(wx,h,wz));
     for(const[dx,dz]of[[1,0],[-1,0],[0,1],[0,-1]]){
       const nh=ceilHeightAtCell(x+dx,z+dz);
       if(nh>=h)continue;   // the lower cell of the pair emits nothing — one strip per edge
-      riserMats.push(new THREE.Matrix4().compose(
+      groupPush(riserMats,keyAt(x+dx,z+dz),new THREE.Matrix4().compose(
         new THREE.Vector3(wx+dx*CELL/2,(nh+h)/2,wz+dz*CELL/2),
         new THREE.Quaternion().setFromEuler(new THREE.Euler(0,Math.atan2(dx,dz),0)),
         new THREE.Vector3(CELL,h-nh,1)));}}
   const cellGeo=track(new THREE.PlaneGeometry(CELL,CELL));cellGeo.rotateX(Math.PI/2);
-  const cellMesh=new THREE.InstancedMesh(cellGeo,
-    track(new THREE.MeshLambertMaterial({map:ceilTex})),cellMats.length);
-  cellMats.forEach((mtx,i)=>cellMesh.setMatrixAt(i,mtx));
-  cellMesh.instanceMatrix.needsUpdate=true;cellMesh.name="ceilingCells";scene.add(cellMesh);
-  if(riserMats.length){
+  for(const[key,mats]of cellMats){
+    const ceilTex=track(texOf.get(key)!.ceil.clone());ceilTex.needsUpdate=true;
+    ceilTex.wrapS=ceilTex.wrapT=THREE.RepeatWrapping;
+    ceilTex.magFilter=THREE.NearestFilter;ceilTex.minFilter=THREE.NearestFilter;
+    const cellMesh=new THREE.InstancedMesh(cellGeo,
+      track(new THREE.MeshLambertMaterial({map:ceilTex})),mats.length);
+    mats.forEach((mtx,i)=>cellMesh.setMatrixAt(i,mtx));
+    cellMesh.instanceMatrix.needsUpdate=true;cellMesh.name="ceilingCells";scene.add(cellMesh);}
+  for(const[key,mats]of riserMats){
     const riserMesh=new THREE.InstancedMesh(track(new THREE.PlaneGeometry(1,1)),
-      track(new THREE.MeshLambertMaterial({map:wallTex,side:THREE.DoubleSide})),riserMats.length);
-    riserMats.forEach((mtx,i)=>riserMesh.setMatrixAt(i,mtx));
+      track(new THREE.MeshLambertMaterial({map:texOf.get(key)!.wall,side:THREE.DoubleSide})),mats.length);
+    mats.forEach((mtx,i)=>riserMesh.setMatrixAt(i,mtx));
     riserMesh.instanceMatrix.needsUpdate=true;riserMesh.name="ceilingRisers";scene.add(riserMesh);}}

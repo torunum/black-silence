@@ -11,6 +11,7 @@ import { projTick } from "../fx/ProjectileTick";
 import { ringTick, strikeTick, poisonTick } from "../enemies/ai/Attacks";
 import { itemsTick, doorTick, propTick, torchTick } from "../player/Interact";
 import { eventTick } from "../world/RandomEvents";
+import { zoneTick } from "../world/Zones";
 import { ambience, vitalsAudio } from "../world/Ambience";
 import { chatterTick } from "../ui/Chatter";
 import { musicTick } from "../audio/Music";
@@ -108,7 +109,7 @@ function loop(t: number){
   let anyAware=false;
   if(!paused&&!S.dead&&!S.won){
     cineTick(dt);
-    playerTick(dt);weaponTick(dt);
+    playerTick(dt);zoneTick(dt);weaponTick(dt);
     anyAware=enemyTick(dt)||false;
     projTick(dt);ringTick(dt);strikeTick(dt);poisonTick(dt);
     itemsTick(dt);doorTick(dt);propTick(dt);

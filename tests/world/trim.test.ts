@@ -65,6 +65,22 @@ function child(name: string): THREE.InstancedMesh | undefined {
   return (renderState.scene.children as THREE.Object3D[]).find((c) => c.name === name) as THREE.InstancedMesh | undefined;
 }
 
+/**
+ * Every scene child of that name. A zoned level (the prologue) builds one
+ * `wallCourse` per zone look, each wearing its zone's band — see
+ * `src/world/Trim.ts` and `src/world/ZoneLook.ts`; every other level builds one.
+ */
+function children(name: string): THREE.InstancedMesh[] {
+  return (renderState.scene.children as THREE.Object3D[]).filter((c) => c.name === name) as THREE.InstancedMesh[];
+}
+
+/** The band a wall cell's course should wear: its zone's on a zoned level, else the level's own — in loadLevel's order of tests. */
+function bandThemeAt(i: number, x: number, z: number): BandTheme {
+  const zs = world.zones;
+  const d: { hell?: boolean; flesh?: boolean; dungeon?: boolean } = zs ? zs.themes[zs.map[z][x]] : LEVELS[i];
+  return d.hell ? "hell" : d.flesh ? "flesh" : d.dungeon ? "dungeon" : "church";
+}
+
 interface Placed { pos: THREE.Vector3; up: THREE.Vector3; out: THREE.Vector3 }
 function placed(m: THREE.InstancedMesh, parent?: THREE.Matrix4): Placed[] {
   const res: Placed[] = [];
@@ -146,9 +162,9 @@ describe("wall courses go on the faces that can be seen, and only those", () => 
     // below goes red on the first such instance.
     for (let i = 0; i < LEVELS.length; i++) {
       loadLevel(i);
-      const course = child("wallCourse");
-      expect(course, `level ${i} wallCourse`).toBeDefined();
-      const got = placed(course!);
+      const courses = children("wallCourse");
+      expect(courses.length, `level ${i} wallCourse`).toBeGreaterThan(0);
+      const got = courses.flatMap((c) => placed(c));
       const seen = new Map<string, { plinth: number; cornice: number }>();
       for (const p of got) {
         const f = faceOf(p);
@@ -190,7 +206,7 @@ describe("wall courses go on the faces that can be seen, and only those", () => 
     // (where the riser meets the vault) bare.
     loadLevel(3);
     expect(world.ceilMap).not.toBeNull();
-    const cornices = placed(child("wallCourse")!).filter((p) => p.up.y < 0);
+    const cornices = children("wallCourse").flatMap((c) => placed(c)).filter((p) => p.up.y < 0);
     const raised = cornices.filter((p) => { const f = faceOf(p); return ceilHeightAtCell(f.nx, f.nz) > WALLH; });
     expect(raised.length, "level 3 has wall faces under a raised vault").toBeGreaterThan(20);
     for (const p of raised) expect(p.pos.y).toBeGreaterThan(WALLH + 1);
@@ -198,7 +214,7 @@ describe("wall courses go on the faces that can be seen, and only those", () => 
 
   it("stands each plinth on the platform it is beside, not inside it", () => {
     loadLevel(3);
-    const plinths = placed(child("wallCourse")!).filter((p) => p.up.y > 0);
+    const plinths = children("wallCourse").flatMap((c) => placed(c)).filter((p) => p.up.y > 0);
     const onPlatforms = plinths.filter((p) => { const f = faceOf(p); return platformTop(f.nx, f.nz) > 0; });
     expect(onPlatforms.length, "level 3 has wall faces beside platforms").toBeGreaterThan(20);
     for (const p of onPlatforms) expect(p.pos.y).toBeGreaterThan(0);
@@ -249,21 +265,28 @@ describe("doors", () => {
 });
 
 describe("trim is instanced", () => {
-  it("adds at most two scene children per level, however many pillars and faces it decorates", () => {
+  it("adds at most two scene children per level (one course per zone look on a zoned level), however many pillars and faces it decorates", () => {
     // The Phase 2 Part A property. A mesh per face would put hundreds of
     // children back (level 2 alone has over three hundred exposed faces).
-    const perLevel: Array<{ children: number; instances: number }> = [];
+    // A zoned level (the prologue) gets one course mesh per zone look, each
+    // wearing its zone's band — a constant however many faces, never a mesh per face.
+    const perLevel: Array<{ children: number; instances: number; looks: number }> = [];
     for (let i = 0; i < LEVELS.length; i++) {
       loadLevel(i);
       const kids = (renderState.scene.children as THREE.Object3D[]).filter((c) => c.name === "wallCourse" || c.name === "pillarTrim");
       for (const k of kids) expect((k as THREE.InstancedMesh).isInstancedMesh).toBe(true);
-      perLevel.push({ children: kids.length, instances: kids.reduce((n, k) => n + (k as THREE.InstancedMesh).count, 0) });
+      const zs = world.zones;
+      const looks = zs ? new Set(zs.themes.map((t) => (t.hell ? "h" : t.flesh ? "f" : t.dungeon ? "d" : "c"))).size : 1;
+      perLevel.push({ children: kids.length, instances: kids.reduce((n, k) => n + (k as THREE.InstancedMesh).count, 0), looks });
     }
-    for (const l of perLevel) expect(l.children).toBeLessThanOrEqual(2);
+    for (const l of perLevel) expect(l.children).toBeLessThanOrEqual(l.looks + 1);
+    expect(perLevel.filter((l) => l.looks === 1).every((l) => l.children <= 2)).toBe(true);
     const counts = perLevel.map((l) => l.instances);
     // The instance totals vary by several hundred across the levels while
     // the child count does not move — the whole point.
-    expect(Math.max(...counts) - Math.min(...counts)).toBeGreaterThan(200);
+    // (Was > 200 when the prologue was a bare 21x27 cavern; the rebuilt,
+    // walled churchyard has more faces and the spread is ~198 — still hundreds.)
+    expect(Math.max(...counts) - Math.min(...counts)).toBeGreaterThan(150);
   });
 });
 
@@ -312,18 +335,25 @@ describe("the courses wear the theme's stone band", () => {
     let secrets = 0;
     for (let i = 0; i < LEVELS.length; i++) {
       loadLevel(i);
-      const d = LEVELS[i];
-      const theme: BandTheme = d.hell ? "hell" : d.flesh ? "flesh" : d.dungeon ? "dungeon" : "church";
-      themes.add(theme);
-      const band = BANDTEX[theme];
-      expect(band, `level ${i}: the ${theme} band was built at boot`).toBeDefined();
-      const course = child("wallCourse")!;
-      const map = (course.material as THREE.MeshLambertMaterial).map;
-      expect(map, `level ${i} wallCourse`).toBe(band);
-      expect(map, `level ${i} wallCourse`).not.toBe(TEX[WALL[theme]]);
-      for (const door of Object.values(world.doors)) {
+      // Each course wears the band of its own wall cell's theme: the level's,
+      // or on the zoned prologue its zone's (checked instance by instance).
+      for (const course of children("wallCourse")) {
+        const map = (course.material as THREE.MeshLambertMaterial).map;
+        for (const p of placed(course)) {
+          const f = faceOf(p);
+          const theme = bandThemeAt(i, f.wx, f.wz);
+          themes.add(theme);
+          expect(BANDTEX[theme], `level ${i}: the ${theme} band was built at boot`).toBeDefined();
+          expect(map, `level ${i} wallCourse at (${f.wx},${f.wz})`).toBe(BANDTEX[theme]);
+          expect(map, `level ${i} wallCourse`).not.toBe(TEX[WALL[theme]]);
+        }
+      }
+      for (const [key, door] of Object.entries(world.doors)) {
         const sc = (door.mesh as THREE.Object3D | undefined)?.children.find((c) => c.name === "secretCourse") as THREE.Mesh | undefined;
         // Same material as the courses either side, or the course points at the secret.
+        const [x, z] = key.split(",").map(Number);
+        const band = BANDTEX[bandThemeAt(i, x, z)];
+        const course = children("wallCourse").find((c) => (c.material as THREE.MeshLambertMaterial).map === band)!;
         if (sc) { secrets++; expect(sc.material, `level ${i} secretCourse`).toBe(course.material); }
       }
     }
