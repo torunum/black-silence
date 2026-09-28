@@ -23,7 +23,13 @@ import { surfaceHere, type Surface } from "../Surface";
  * shade lower than the right.
  *
  * **Running is heavier, not faster.** The cadence is the game's
- * (`src/player/Player.ts`'s bob, untouched): a sprinting step lands harder —
+ * (`src/player/Player.ts`'s bob — since the round-2 stride fix, 2.0 steps
+ * a second walking and 3.0 sprinting, was 7.1 and 10.7). Nothing here was
+ * tuned to the old tempo, so nothing changed with it: every layer's
+ * envelope is over within about 160 ms (the sewer's splash, sprinting),
+ * which used to run into the next heel 93 ms later and now ends well before
+ * one 333 ms away. The heel-to-toe gap is a foot's own roll, not a cadence.
+ * A sprinting step lands harder —
  * more weight, a lower and longer thud, more grit — and is about 3 dB louder
  * than a walking one on the same floor. Each floor is its own entry in
  * `../Levels.ts`, levelled from its walk and its run together, so the

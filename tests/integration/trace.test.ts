@@ -307,6 +307,57 @@ import { runTrace, type InputEvent, type TraceFrame } from "./gameplayTrace";
  * (`gameplayTrace.ts`), which fails the run if any `Math.random()` call
  * comes from `src/audio/` — so the next sound change cannot move this
  * fixture silently, and Tasks 2-5 of that plan are required to move none.
+ *
+ * ## Player feedback round 2, the stride — eighth regeneration: the camera bob slowed down
+ *
+ * The owner played again and reported the weapon swaying left and right
+ * very fast, the footsteps with it. `Player.ts`'s `WALK_BOB_RATE` =
+ * `SPRINT_BOB_RATE` went `1.6` -> `0.45`: a footstep per 2π of `bobT*4`,
+ * so `spd*rate*4/2π` steps a second — 7.1 -> **2.0** walking, 10.7 ->
+ * **3.0** sprinting (`tests/player/Player.test.ts` has the arithmetic).
+ * Speed, acceleration and everything else are untouched. The one thing the
+ * rate reaches that this harness records is the camera's head bob,
+ * `bobSin*.025*min(1,spd/7)` in `playerTick`'s `camera.position.set` — so
+ * every frame the player is walking moves in `y`. Field by field against the
+ * pre-change fixture, all 90 sampled frames:
+ *
+ * - `camera` — `y` in **25 frames**, first at **10** (`1.015548` ->
+ *   `1.008503`), last at 300, largest at 40 (0.0337, a bob is ±0.025).
+ *   `x`, `z`, `rx`, `ry`, `rz`, `fov` — **identical in all 90**.
+ * - `hud` — all eight fields **identical in all 90**.
+ * - `scene.count` — **identical in all 90** (34..46).
+ * - `scene.digest` — differs in **64**, every frame from **270** (the first
+ *   sampled frame after the script opens fire at 260: `e51f132c` ->
+ *   `3d6035c0`) to 900 (`35e44eb6` -> `df1c7acf`); 90 distinct digests
+ *   before and after. **This is still the bob.** Three things the game puts
+ *   in the scene take their height from the camera: the muzzle light
+ *   (`fire()` copies `camera.position` into it), and the bullet holes and
+ *   blood splats `hitscan` leaves where a ray *from the camera* meets a wall.
+ *   Compared part by part (131 differing parts: 125 holes, 6 muzzle
+ *   lights), **every differing part differs in `position.y` alone** — same
+ *   type, `x`, `z`, visibility, texture and colour.
+ *
+ * **The proof that the bob is the whole of it**, all three fixtures, with a
+ * throwaway probe in `runTrace` (removed; `gameplayTrace.ts` is unchanged by
+ * this commit) that wrapped `camera.position.set` to record, at the moment
+ * `playerTick` calls it, the `y` it is given and the bob term inside it
+ * (recomputed from `player.bobT`/`grounded`/`vx`/`vz`, which nothing touches
+ * between that line and the end of the tick):
+ *
+ * 1. The probed run at the old rate reproduced the old fixtures exactly, and
+ *    the probed run at the new rate this commit's fixtures exactly — the
+ *    probe changes nothing.
+ * 2. **Old `y` minus old bob equals new `y` minus new bob in every sampled
+ *    frame of all three runs**, to 1.1e-16 here (2.2e-16 at worst, the boss
+ *    run) — floating-point rounding of the subtraction, nothing more. On the
+ *    fixtures' own 6-place numbers the same identity holds to under 1e-6.
+ * 3. With the bob term temporarily taken out of `camera.position.set`, the
+ *    old rate and the new one produced **byte-identical fixtures, all three,
+ *    and identical scene part lists in every frame**. So the rate reaches the
+ *    recording through that one term and nothing else: footsteps (which draw
+ *    from sound's own dice, and `installAudioDrawGuard` would have failed the
+ *    run otherwise), the weapon's stride and everything else that reads
+ *    `bobT` move nothing here.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

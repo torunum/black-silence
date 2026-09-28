@@ -574,6 +574,34 @@ import { MONOLOGUE } from "../../src/content/monologue";
  *   (the severed ghoul's sprite is `PX.z.noLArm`), which the same mutation
  *   turns red. The headless corpse stays unreached here, as before; the
  *   boss trace covers it.
+ *
+ * ## Player feedback round 2, the stride — ninth regeneration: the camera bob slowed down
+ *
+ * `Player.ts`'s `bobT` rate went `1.6` -> `0.45` (2.0 steps a second walking,
+ * 3.0 sprinting, was 7.1 and 10.7; the owner reported the weapon and the
+ * footsteps swaying far too fast). `trace.test.ts`'s section of the same
+ * name has the mechanism and the three-part proof; it held here exactly.
+ * Field by field against the pre-change fixture, all 176 sampled frames:
+ *
+ * - `camera` — `y` in **116 frames**, first at **50** (`1.000419` ->
+ *   `1.000118`), last at 1460, largest at 1260 (0.0460). `x`, `z`, `rx`,
+ *   `ry`, `rz`, `fov` — **identical in all 176**.
+ * - `hud` — all eight fields **identical in all 176**. The fight is the
+ *   same fight: same hits on the same frames, same kill, same ending.
+ * - `scene.count` — **identical in all 176** (95..123).
+ * - `scene.digest` — differs in **136**, first at **410** (`f664a199` ->
+ *   `e76de1b3`), last at 1760 (`a327c77b` -> `f9d72ed8`); 176 distinct
+ *   before and after. 2075 differing parts — 1968 bullet holes and 107
+ *   muzzle lights — and **every one differs in `position.y` alone**: they
+ *   are placed at the camera's height, or where a ray from it meets a wall.
+ *   Every sprite's texture, every visibility and every position but those
+ *   heights is identical frame for frame, so the `material.map=` coverage
+ *   the sections above re-measured is untouched: a mutation that changes a
+ *   texture still differs from this fixture on the same frames it did.
+ *
+ * Old `y` minus old bob equals new `y` minus new bob in every frame (to
+ * 1.1e-16), and with the bob term taken out of the camera both rates give
+ * this fixture byte for byte.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

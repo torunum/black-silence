@@ -679,6 +679,39 @@ import { world } from "../../src/world/WorldState";
  * From this commit on `runTrace` fails any run in which a `Math.random()`
  * call comes from `src/audio/` (`installAudioDrawGuard`, `gameplayTrace.ts`),
  * so a sound change cannot move this fight again.
+ *
+ * ## Player feedback round 2, the stride — the eighth regeneration: the
+ * ## camera bob slowed down, and the fight did not move
+ *
+ * `Player.ts`'s `bobT` rate went `1.6` -> `0.45` (2.0 steps a second walking,
+ * 3.0 sprinting, was 7.1 and 10.7; the owner reported the weapon and the
+ * footsteps swaying far too fast). `trace.test.ts`'s section of the same
+ * name has the mechanism and the three-part proof; it held here exactly.
+ * This script never walks, so the bob only appears when something shoves
+ * the player. Field by field against the pre-change fixture, all 156
+ * sampled frames:
+ *
+ * - `camera` — `y` in **8 frames**, first at **2322** (`1.008366` ->
+ *   `1.007169`), last at 2592, largest 0.0019 at 2538. `x`, `z`, `rx`, `ry`,
+ *   `rz`, `fov` — **identical in all 156**.
+ * - `hud` — all eight fields **identical in all 156**: the priest wakes,
+ *   changes phase and takes damage on the same frames, and the last frame
+ *   still reads `HEALTH3835` / `"THE CORRUPTED PRIEST — PHASE 3"`.
+ * - `scene.count` — **identical in all 156** (156..559).
+ * - `scene.digest` — differs in **23**, first at **2412** (`bb1989f1` ->
+ *   `e160a521`), last at 2808 (`6b044e58` -> `a6ce2bbc`); 156 distinct
+ *   before and after. 148 differing parts — 94 bullet holes, 46 blood
+ *   splats, 8 muzzle lights — **every one differing in `position.y`
+ *   alone**, all placed at the camera's height or where a ray from it
+ *   meets a wall.
+ * - **The structural guard stayed green, correctly.** The form swap still
+ *   writes `PX.Q2.a` at 2241 and is still sampled at 2250 (the priest's
+ *   textures are identical frame for frame; only heights moved), so
+ *   `EVERY`, `TOTAL_FRAMES` and the sweep needed nothing.
+ *
+ * Old `y` minus old bob equals new `y` minus new bob in every frame (to
+ * 2.2e-16), and with the bob term taken out of the camera both rates give
+ * this fixture byte for byte.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

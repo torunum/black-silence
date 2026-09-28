@@ -15,7 +15,18 @@ import {
  *
  * The line-of-fire guarantee for all of these, through the real
  * drawViewmodel at three aspect ratios, is in viewmodel.test.ts.
+ *
+ * **The stride's tempo, player feedback round 2 (2026-09-28).** The owner
+ * reported the weapon swaying left and right very fast. It did: at
+ * Player.ts's old `bobT` rate of 1.6 a step came 7.1 times a second walking
+ * and 10.7 sprinting, so the figure-eight — one sideways swing per two
+ * steps — swung at 3.6 Hz walking and 5.3 Hz sprinting. At the new rate of
+ * 0.45 (`tests/player/Player.test.ts` pins it and shows the arithmetic) it
+ * is 2.0 and 3.0 steps a second, and the sway **1.0 Hz walking, 1.5 Hz
+ * sprinting**. The shape and the phase lock below do not depend on the
+ * rate; the tests that accumulate `bobT` use the new one.
  */
+const RATE = 0.45; // Player.ts's WALK_BOB_RATE = SPRINT_BOB_RATE, pinned in tests/player/Player.test.ts
 
 const DT = 1 / 60;
 const REST: CarryInput = {
@@ -111,21 +122,22 @@ describe("the stride: a figure-eight on bobT", () => {
 
   it("every footstep lands at the bottom of a stride, alternately on the right and the left", () => {
     // Player.ts: bobT += spd*dt*rate; a footstep where sin(bobT*4) crosses zero going up.
-    for (const spd of [7, 10.5]) {
+    // 10 s at 60 fps: 20 steps walking (2.0/s), 30 sprinting (3.0/s).
+    for (const [spd, want] of [[7, 20], [10.5, 30]]) {
       let bobT = 0.37, last = Math.sin(bobT * 4);
       const steps: Array<{ x: number; y: number }> = [];
       const ys: number[] = [];
       for (let f = 0; f < 600; f++) {
-        bobT += spd * DT * 1.6;
+        bobT += spd * DT * RATE;
         const now = Math.sin(bobT * 4);
         const st = stride(bobT, 1);
         ys.push(st.y);
         if (last <= 0 && now > 0) steps.push(st);
         last = now;
       }
-      expect(steps.length).toBeGreaterThan(40);
-      // the phase moves at most spd*DT*1.6*4 rad a frame, so a footstep frame is within that of the bottom
-      const slack = (1 - Math.cos(spd * DT * 1.6 * 4)) / 2 * STRIDE_Y;
+      expect(Math.abs(steps.length - want)).toBeLessThanOrEqual(1);
+      // the phase moves at most spd*DT*RATE*4 rad a frame, so a footstep frame is within that of the bottom
+      const slack = (1 - Math.cos(spd * DT * RATE * 4)) / 2 * STRIDE_Y;
       for (const st of steps) expect(st.y).toBeGreaterThanOrEqual(STRIDE_Y - slack - 1e-9);
       for (let i = 1; i < steps.length; i++) expect(Math.sign(steps[i].x)).toBe(-Math.sign(steps[i - 1].x));
       // and the stride's bottoms happen nowhere else: as many local maxima of y as footsteps (give or take the ends)
@@ -133,6 +145,49 @@ describe("the stride: a figure-eight on bobT", () => {
       for (let i = 1; i < ys.length - 1; i++) if (ys[i] >= ys[i - 1] && ys[i] > ys[i + 1]) peaks++;
       expect(Math.abs(peaks - steps.length)).toBeLessThanOrEqual(1);
     }
+  });
+
+  it("sways sideways at about 1.0 Hz walking and 1.5 Hz sprinting — round 1's rate made it 3.6 and 5.3", () => {
+    const hz = (spd: number, rate: number) => {
+      let bobT = 0.37, lastX = stride(bobT, 1).x, crossings = 0;
+      for (let f = 0; f < 600; f++) {               // 10 s at 60 fps
+        bobT += spd * DT * rate;
+        const x = stride(bobT, 1).x;
+        if (lastX * x < 0) crossings++;
+        lastX = x;
+      }
+      return crossings / 2 / 10;                     // two centre crossings per sideways cycle
+    };
+    expect(hz(7, RATE)).toBeCloseTo(1.0, 1);
+    expect(hz(10.5, RATE)).toBeCloseTo(1.5, 1);
+    expect(hz(7, 1.6)).toBeCloseTo(3.55, 1);
+    expect(hz(10.5, 1.6)).toBeCloseTo(5.35, 1);
+  });
+
+  it("at the slower tempo it is a little larger (9/6, was 7/5) and still far slower on screen than what the owner saw", () => {
+    expect([STRIDE_X, STRIDE_Y]).toEqual([9, 6]);
+    type Stride = (bobT: number, amt: number) => { x: number; y: number };
+    /** Round 1's stride exactly: the same figure-eight at 7/5. */
+    const was: Stride = (bobT, amt) => ({ x: Math.sin(bobT * 2 + Math.PI / 4) * 7 * amt, y: (1 + Math.cos(bobT * 4)) / 2 * 5 * amt });
+    /** Peak screen speed of a stride, overlay px/s, over 2 s at 60 fps. */
+    const peak = (f: Stride, spd: number, rate: number, amt: number) => {
+      let bobT = 0, last = f(bobT, amt), v = 0;
+      for (let i = 0; i < 120; i++) {
+        bobT += spd * DT * rate;
+        const s = f(bobT, amt);
+        v = Math.max(v, Math.hypot(s.x - last.x, s.y - last.y) / DT);
+        last = s;
+      }
+      return v;
+    };
+    // what the owner played: round 1's 7/5 at the 1.6 rate (walk amount .28, sprint .38)
+    const sawWalk = peak(was, 7, 1.6, 0.28), sawSprint = peak(was, 10.5, 1.6, 0.38);
+    expect(sawWalk).toBeGreaterThan(45);
+    expect(sawSprint).toBeGreaterThan(95);
+    expect(peak(stride, 7, RATE, 0.28)).toBeLessThan(sawWalk * 0.4);
+    expect(peak(stride, 10.5, RATE, 0.38)).toBeLessThan(sawSprint * 0.4);
+    // and not smaller than it was: slower wants a little more travel, not less
+    expect(stride(Math.PI / 8, 1).x).toBeGreaterThan(was(Math.PI / 8, 1).x);
   });
 
   it("through the body: the stride fades out in the air and the walk-to-sprint amount blends rather than switches", () => {

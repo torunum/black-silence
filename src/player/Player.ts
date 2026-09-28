@@ -105,15 +105,26 @@ function damagePlayer(d: number, silent?: boolean): void {
  * `SPRINT_BOB_RATE` now equals `WALK_BOB_RATE`: sprinting still steps
  * faster than walking (it moves 1.5x as fast, and bobT scales with actual
  * speed), but only by that speed ratio, not by speed times an added bump.
- * Walking is untouched. **Next tuning step if footsteps are still too
- * frequent while sprinting**: current speed itself (`10.5` above) is the
- * next lever, not this rate — dropping it further would also slow the
- * player, so that trade needs the player's call, not a guess. Exported so
+ *
+ * **Player feedback round 2 (2026-09-28): now `0.45`, both.** The owner
+ * played again and reported the weapon swaying left and right very fast,
+ * and the footsteps with it. At `1.6` a step came every
+ * `2π/(4·spd·rate)` s: `spd·1.6·4/2π` = **7.1 steps/s walking** (spd 7) and
+ * **10.7 sprinting** (10.5) — a human walks at about 2 and runs at about 3.
+ * Round 1's note above named speed as the next lever; it was the wrong one —
+ * the speed was fine, the cadence was 3.5x too fast. At `0.45`,
+ * steps/s = `spd·0.45·2/π`: **2.01 walking, 3.01 sprinting**, and the
+ * viewmodel's figure-eight (`src/render/viewmodel/motion.ts`), which sways
+ * sideways once per two steps, drops from 3.6/5.3 Hz to **1.0/1.5 Hz**.
+ * One rate still serves both, so sprint's cadence stays exactly its speed
+ * ratio (1.5x) over walking's. Movement speed, acceleration and every
+ * other gameplay value are untouched; the camera bob keeps its amplitude
+ * and follows `bobT`'s new tempo. Exported so
  * `tests/player/Player.test.ts` can pin the tuned values directly, the same
  * reason `src/render/viewmodel/draw.ts` exports its own
  * `WALK_BOB_AMT`/`SPRINT_BOB_AMT`.
  */
-export const WALK_BOB_RATE=1.6, SPRINT_BOB_RATE=1.6;
+export const WALK_BOB_RATE=0.45, SPRINT_BOB_RATE=0.45;
 function accelerate(wx_: number, wz_: number, maxs: number, acc: number, dt: number): void {
   const cur=player.vx*wx_+player.vz*wz_,add=maxs-cur;if(add<=0)return;
   let a=acc*maxs*dt;if(a>add)a=add;player.vx+=wx_*a;player.vz+=wz_*a;}

@@ -543,10 +543,12 @@ describe("the weapon stays out of the player's line of fire (Task 1 fix round)",
           const settle = () => { for (let i = 0; i < 120; i++) Draw.drawViewmodel(0.05, 0, { ...still, cueInput: i + 1 }, WEAPON_STATS); };
           settle();
           const restTop = check("rest", still);
-          // sprint: straight ahead at sprint speed, the stride running, into the full sprint pose
+          // sprint: straight ahead at sprint speed, the stride running, into the full sprint pose. At
+          // Player.ts's bobT rate (0.45 since player feedback round 2) one whole figure-eight is ~42 of
+          // these frames, so 90 cover the pose easing in and then more than a full stride at full pose.
           let bobT = 0;
-          for (let i = 0; i < 45; i++) {
-            bobT += 10.5 * 0.016 * 1.6;
+          for (let i = 0; i < 90; i++) {
+            bobT += 10.5 * 0.016 * 0.45;
             sprintTop = check(`sprint frame ${i}`, { ...still, vz: -10.5, sprintKey: true, bobT });
           }
           if (!(sprintTop > restTop + 0.01 * vh)) breaches.push(`${stats.name}: the sprint pose is not lowered (top ${sprintTop.toFixed(1)} vs rest ${restTop.toFixed(1)})`);
