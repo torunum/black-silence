@@ -863,6 +863,7 @@ here changes gameplay, and no trace fixture moved.
 | Running | Sprint pose, figure-eight stride locked to the footsteps, weight against turns and strafes, a lift on take-off and a dip on landing (`motion.ts`). Screen-space motion may lower the weapon but never lift it into the line of fire. |
 | The kick | A modelled leg in trousers and a hobnailed boot with a wind-up, a strike and a recovery (`kick.ts`). Full extension lands on the frame the game resolves the hit. The view leans into it for the render only, and the camera is restored straight after, so gameplay never sees the lean. A kick frozen by death or a win is not shown. |
 | Reactions | A flinch on a hit, a jerk and cant on a dry click, a nod at a pickup, an idle fidget that any input cancels (and none behind an overlay), and a switch that arcs and turns over (`react.ts`, cues in `src/core/AnimCues.ts`). |
+| Stride tempo (fix, branch `stride-cadence`) | The owner played it: the weapon swayed left and right very fast, and so did the footsteps. `Player.ts`'s `bobT` rate went 1.6 -> 0.45, so steps go from 7.1/10.7 a second (walk/sprint) to 2.0/3.0 and the sway from 3.6/5.3 Hz to 1.0/1.5 Hz; speed untouched, stride a little larger at the slower tempo (`STRIDE_X`/`Y` 7/5 -> 9/6), step sounds unchanged; all three trace fixtures moved by the camera bob's height alone (proof in their headers). |
 
 **Open points, honestly:**
 

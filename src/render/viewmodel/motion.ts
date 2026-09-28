@@ -42,8 +42,15 @@ export class Spring {
   }
 }
 
-/** The stride's size at full bob amount, overlay units: horizontal half-width, and the full vertical dip. */
-export const STRIDE_X = 7, STRIDE_Y = 5;
+/**
+ * The stride's size at full bob amount, overlay units: horizontal half-width, and the full vertical dip.
+ * Was 7 and 5 while Player.ts's bobT rate made the figure-eight swing at 3.6 Hz walking and 5.3 Hz
+ * sprinting. Player feedback round 2 slowed it to 1.0 and 1.5 Hz (the owner: the weapon swayed left and
+ * right very fast), and at that tempo 7/5 read as nearly still — about ±2 px of a 320 px overlay, moving
+ * in visible single-pixel steps. 9/6 is a little larger and smoother, and still slow: its peak screen
+ * speed is about 19 px/s walking and 39 sprinting, against the 53 and 107 the owner saw.
+ */
+export const STRIDE_X = 9, STRIDE_Y = 6;
 
 /**
  * The stride: a figure-eight, horizontal at half the vertical rate.
