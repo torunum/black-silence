@@ -935,6 +935,27 @@ sound goes inside `lv(...)` with an entry in `src/audio/Levels.ts`
 more without `--apply`. Measure a single sound with `soundboard.render(...)`
 in the Browser pane — it renders; rAF does not.
 
+## Player feedback round 2 — the prologue
+
+Branch `feedback-2-prologue`, plan
+`docs/superpowers/plans/2026-09-27-player-feedback-2-prologue.md`. The owner:
+the prologue climbs out of a grave and passes through hell — the reference's
+map did the reverse.
+
+| Task | Outcome |
+|---|---|
+| 1 — the map | `src/world/levels/prologue.ts` is a new 30x36 map (a recorded divergence from the frozen reference, pinned in `tests/fidelity.test.ts`): a **churchyard at night** open to the sky (raised ground at 4.2, no ceiling built, a moon and stars past the fog), ADEM's open grave beside the spawn, headstones, crosses, tombs, two dead trees; a **mausoleum** with a crypt stair five steps down; **hell** — a burning pit between two banks crossed by a stone bridge, four zombies and four crawlers, braziers, bones, chains, two health and two ammo; a **climb out** to the exit to Level 1. **Zones:** `BuiltLevel.zones` gives regions of one level their own walls, floor, ceiling, trim, fog, ambient light, reverb room and footsteps (`src/world/ZoneLook.ts` reads, `src/world/Zones.ts` eases fog/light and switches the room as the player crosses, and says a zone's line once). The loader extracted rather than grew (`LevelMeshes.ts`, `Decor.ts`; 358 lines). ADEM's `lvl0` rewritten; `p0_down`/`p0_hell`/`p0_out` new. `trace-level0.json` regenerated with a new route (down the crypt stair), with the proof in its header; the level-1 and level-2 fixtures did not move. Screenshots and the report in `.superpowers/sdd/2026-09-27-feedback-2-prologue/`. |
+| 2 — rising from the grave | `src/world/Opening.ts`: the prologue opens in the dark (a muffled breath and heartbeat, the earth shifting), the coffin lid splits with moonlight in the crack and bursts apart, and the camera rises from lying in the coffin looking up at the sky, to sitting, to clawing over the rim, to standing on the spawn beside the grave, with earth falling past; ADEM's `lvl0` line, then the weapon's equip and the HUD fade in, and control at 5.5 s. Space, Enter, E or a click skips it — never in its first 0.6 s, never on a key's auto-repeat, and not on the click that only regains the pointer lock (review round); the skip neither fires nor kicks. Uses `game.inputLock` and the weapon's own equip; not `world.cine` (the boss slot, which also sinks enemies on raised ground). Only a level whose `BuiltLevel` names a `grave` has one — the prologue. Five new sounds (`src/audio/sounds/grave.ts`) on the board, levelled. The `lvl0` line is now said by the opening, so nothing overwrites `p0_down` (Task 1's concern). `trace-level0.json` regenerated (tenth): the script skips the opening at frame 5 (`drive` calls `skipOpening()` since the review round; the fixture did not move); proven to move only by the line's timing. |
+| 3 — hell burns | Hell's pit and braziers burn with pooled flames and embers (`src/fx/HellFire.ts`: two `Points`, 240 + 120 particles, fixed buffers, positions a pure function of a clock and the integer hash — no allocation per frame, no `Math.random`) and the pit's glow lights flicker. Each zone has a **room tone** in place of the level's random stingers (`src/world/ZoneBed.ts`, `src/audio/sounds/hell.ts`): hell's roar, screams and crackle, the churchyard's wind; on the board and levelled. The churchyard stands on **earth** (`src/render/DressTextures.ts`, a named registry `DRESSTEX` beside `TEX`/`BANDTEX`, because `TEX`'s key set is pinned to the reference), with dead grass, filled graves, hands clawing out and a shovel. The bridge is dressed stone lit from the fire below; the climb's first step wears the climb's stone. Enemies re-placed by playing (`tests/support/prologueBot.ts`, `tests/integration/prologuePlay.test.ts`): 8 (4 zombies, 4 crawlers), stats untouched. `trace-level0.json` regenerated (eleventh), proven to move only with the map. |
+| Review round | Skipping the opening is deliberate (Space/Enter/E or a click, not in the first 0.6 s, not on a repeat, Esc or a modifier, not on the pointer-lock click). A zone's room tone keeps its timers across a quick exit and re-entry (`ZoneBed.ts`, `KEEP`) and a roar never plays within one swell's interval of the last. `Zones.ts` allocates nothing per frame and stops easing once settled. The grass is its own mesh (`decorGrass`) and casts no shadow. Three unpinned guards are pinned (the `!world.zones` lift guard, the blackout guard, the riser's lower-cell texture). `prologuePlay.test.ts` stops when the bot wins or dies (about a third of the time) and prints its numbers only under `BOT_LOG=1`. |
+
+**Worth knowing:** on a zoned level torches, candles and items are lifted onto
+raised ground (`Decor.ts`); breakable props are not, because a shot finds a
+prop between y=0 and its height — keep props on floor-0 cells. Level 3's
+torches and props on its raised tomb are still at the reference's heights
+(buried), untouched because it is unzoned. The rAF note above no longer held
+in this session: the game ran live in the Browser pane.
+
 ## How fidelity is guarded
 
 Five mechanisms, and they are **not** interchangeable:
@@ -961,8 +982,10 @@ Five mechanisms, and they are **not** interchangeable:
   and shake decay. **Its fixture was recorded before Plan 0D's first
   migration and must not be regenerated casually** — its whole value is being
   a pre-migration recording. `WRITE_TRACE=1` exists for deliberate,
-  explained updates only. Note it plays the prologue, which has zero enemies,
-  so the entire combat-resolution path is unexercised by it; the file says so
+  explained updates only. Note it plays the prologue, which had zero enemies
+  until the prologue was rebuilt (round 2, below); its rewritten script now
+  meets two and the player is hurt (`damagePlayer` runs), but no shot lands,
+  so the shot-resolution path is still unexercised by it; the file says so
   at length.
 - **`tests/integration/combatTrace.test.ts`** — the same mechanism aimed at the
   gap the prologue trace leaves. Added by Plan 0E Task 1 and the reason 0E was

@@ -25,6 +25,11 @@ import { floorHeightAt } from "./Collision";
 import { buildCeiling } from "./Ceiling";
 import { buildTrim } from "./Trim";
 import { buildArches } from "./Arches";
+import { wallMaterials, addInstanced, groupPush, buildFloor, buildPlatforms } from "./LevelMeshes";
+import { themeTex } from "./ZoneLook";
+import { levelLook, enterZones } from "./Zones";
+import { dressLevel } from "./Decor";
+import { beginOpening, resetOpening } from "./Opening";
 import { spawnProp } from "./PropSpawn";
 import { world } from "./WorldState";
 import type { WallSeg } from "./LevelBuilder";
@@ -130,6 +135,16 @@ import type { Enemy } from "../enemies/Enemy";
  * either, `spawnProp` is called from the dispatch below and owns the rest
  * entirely, and the move freed the headroom that plan's other two tasks
  * (a themed trim band, then pointed arches) needed.
+ *
+ * The prologue plan's Task 1 (the rebuilt prologue) taught the loader
+ * **zones** — regions of one level with a look of their own — and extracted
+ * rather than appended: the theme -> texture ternaries moved to
+ * `ZoneLook.ts` (`themeTex`), the wall/pillar instancing, the floor and the
+ * raised platforms to `LevelMeshes.ts`, the live fog/light/room crossing to
+ * `Zones.ts` (`levelLook` at load, `enterZones` once the player is placed),
+ * and set dressing plus the lift of torches, candles and items onto raised
+ * ground to `Decor.ts` (`dressLevel`). A level with no `zones` takes every
+ * one of those paths as the single look it always had.
  */
 
 export function spawnEnemy(ch: string, wx: number, wz: number, summoned?: boolean): Enemy {
@@ -162,19 +177,23 @@ export function spawnEnemy(ch: string, wx: number, wz: number, summoned?: boolea
   return e;}
 
 export function loadLevel(idx: number): void {
-  clearAllTimers();clearScheduled();disposeAll();stopMusic();
+  clearAllTimers();clearScheduled();disposeAll();stopMusic();resetOpening();
   S.level=idx;
   const Ldef=LEVELS[idx],L=Ldef.build();
-  setRoom(roomFor(Ldef));   // the level's reverb (src/audio/Room.ts) — player feedback round 2 Task 2
+  // The look it starts with: the level's own, or on a zoned level the spawn
+  // zone's (src/world/Zones.ts), which then follows the player zone to zone.
+  const look=levelLook(Ldef,L);
+  setRoom(roomFor(look));   // the level's reverb (src/audio/Room.ts) — player feedback round 2 Task 2
   world.grid=L.g;world.GW=L.W;world.GH=L.H;
   world.heightMap=L.hmap||null;
   world.ceilMap=L.cmap||null;
+  world.zones=L.zones||null;
   world.wallSegs=(L.segs||[]) as unknown as Record<string, unknown>[];
   renderState.scene=new THREE.Scene();
   setScene(renderState.scene);
-  renderState.scene.background=new THREE.Color(Ldef.fog);
-  renderState.scene.fog=new THREE.FogExp2(Ldef.fog,Ldef.fogD*1.5);
-  renderState.ambLight=track(new THREE.AmbientLight(Ldef.amb,Ldef.ambI*0.42));renderState.scene.add(renderState.ambLight);
+  renderState.scene.background=new THREE.Color(look.fog);
+  renderState.scene.fog=new THREE.FogExp2(look.fog,look.fogD*1.5);
+  renderState.ambLight=track(new THREE.AmbientLight(look.amb,look.ambI*0.42));renderState.scene.add(renderState.ambLight);
   renderState.lamp=track(new THREE.PointLight(0xffb060,1.7,9,1.6));renderState.scene.add(renderState.lamp);
   configureLampShadow(renderState.lamp);   // the game's one shadow caster — src/render/Shadows.ts
   // a tighter hot core so the player is always in a warm pool that falls off to black
@@ -191,25 +210,29 @@ export function loadLevel(idx: number): void {
   player.spawnGuard=2.0;   // brief invulnerability on entry
   S.kills=0;S.gibs=0;S.secrets=0;S.secretsTotal=0;S.shots=0;S.hitsLanded=0;
   S.propsBroken=0;S.enemiesTotal=0;S.key=false;S.levelT0=performance.now();
-  const flesh=Ldef.flesh,hell=Ldef.hell,dungeon=Ldef.dungeon;
-  const wallTex=hell?TEX.hellWall:flesh?TEX.fleshWall:(dungeon?TEX.dungeonWall:TEX.churchWall);
-  const matWall=track(new THREE.MeshLambertMaterial({map:wallTex}));
+  const flesh=Ldef.flesh;
+  const wallTex=themeTex(Ldef).wall;
+  // One wall material per look — the level's own, or on a zoned level each
+  // zone's (src/world/ZoneLook.ts, LevelMeshes.ts). A level with no zones asks
+  // for exactly one, the material it always had.
+  const matWallAt=wallMaterials(Ldef);
   const matWin=track(new THREE.MeshBasicMaterial({map:TEX.window}));
   const wallGeo=track(new THREE.BoxGeometry(CELL,WALLH,CELL));
   const pilGeo=track(new THREE.CylinderGeometry(.46,.55,WALLH,8));
   const matPil=track(new THREE.MeshLambertMaterial({map:TEX.pillar}));
   // Plain walls (#/W) and pillars (I) share one geometry and one material
-  // each across the whole level — only their transforms differ — so they
-  // are the clean InstancedMesh targets (Task 3). Collect each cell's
-  // transform here and build the two InstancedMeshes once the scan is
-  // done, rather than adding a Mesh per cell as before.
+  // each across the whole level (a zoned level: one wall material per zone
+  // look) — only their transforms differ — so they are the clean
+  // InstancedMesh targets (Task 3). Collect each cell's transform here and
+  // build the InstancedMeshes once the scan is done, rather than adding a
+  // Mesh per cell as before.
   //
   // Doors/secrets (+/D/S) stay individual Mesh objects: `doorTick`/
   // `interact` (src/player/Interact.ts) animate the *specific* mesh stored
   // in `world.doors[x+","+z]`, which an InstancedMesh has no per-instance
   // object to hand them, and doors don't even share one material the way
-  // walls do (locked/flesh/plain textures, vs. secrets sharing `matWall`).
-  const wallMats:THREE.Matrix4[]=[],pilMats:THREE.Matrix4[]=[];
+  // walls do (locked/flesh/plain textures, vs. secrets sharing the wall's).
+  const wallMats=new Map<THREE.Material,THREE.Matrix4[]>(),pilMats=new Map<THREE.Material,THREE.Matrix4[]>();
   for(let z=0;z<world.GH;z++)for(let x=0;x<world.GW;x++){
     const ch=world.grid[z][x],wx=(x+.5)*CELL,wz=(z+.5)*CELL;
     if(ch==="#"||ch==="W"){
@@ -217,7 +240,7 @@ export function loadLevel(idx: number): void {
       for(const[dx,dz]of[[1,0],[-1,0],[0,1],[0,-1]]){const r=world.grid[z+dz];
         if(r&&r[x+dx]&&"#W".indexOf(r[x+dx])<0){open=true;dx0=dx;dz0=dz;break;}}
       if(!open)continue;
-      wallMats.push(new THREE.Matrix4().setPosition(wx,WALLH/2,wz));
+      groupPush(wallMats,matWallAt(x,z),new THREE.Matrix4().setPosition(wx,WALLH/2,wz));
       if(ch==="W"){
         const gm=new THREE.Mesh(track(new THREE.PlaneGeometry(1.6,2.6)),matWin);
         gm.position.set(wx+dx0*(CELL/2+.02),WALLH*.56,wz+dz0*(CELL/2+.02));
@@ -230,61 +253,20 @@ export function loadLevel(idx: number): void {
             side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending})));
         cone.position.set(wx+dx0*1.7,(WALLH-.6)/2,wz+dz0*1.7);renderState.scene.add(cone);}}
     else if(ch==="I"){
-      pilMats.push(new THREE.Matrix4().setPosition(wx,WALLH/2,wz));}
+      groupPush(pilMats,matPil,new THREE.Matrix4().setPosition(wx,WALLH/2,wz));}
     else if(ch==="+"||ch==="D"||ch==="S"){
-      let mat;if(ch==="S"){mat=matWall;S.secretsTotal++;}
+      let mat;if(ch==="S"){mat=matWallAt(x,z);S.secretsTotal++;}
       else mat=track(new THREE.MeshLambertMaterial({map:ch==="D"?TEX.doorLocked:(flesh?TEX.fleshDoor:TEX.door)}));
       const m=new THREE.Mesh(wallGeo,mat);m.name="door";m.position.set(wx,WALLH/2,wz);renderState.scene.add(m);
       world.doors[x+","+z]={mesh:m,open:false,locked:ch==="D",secret:ch==="S",flesh:flesh&&ch!=="D"};}}
-  if(wallMats.length){
-    const wallMesh=new THREE.InstancedMesh(wallGeo,matWall,wallMats.length);
-    wallMats.forEach((mtx,i)=>wallMesh.setMatrixAt(i,mtx));
-    wallMesh.name="wall";
-    wallMesh.instanceMatrix.needsUpdate=true;renderState.scene.add(wallMesh);}
-  if(pilMats.length){
-    const pilMesh=new THREE.InstancedMesh(pilGeo,matPil,pilMats.length);
-    pilMats.forEach((mtx,i)=>pilMesh.setMatrixAt(i,mtx));
-    pilMesh.name="pillar";
-    pilMesh.instanceMatrix.needsUpdate=true;renderState.scene.add(pilMesh);}
-  const floorTex=track((hell?TEX.hellFloor:flesh?TEX.fleshFloor:(dungeon?TEX.dungeonFloor:TEX.churchFloor)).clone());
-  floorTex.needsUpdate=true;floorTex.repeat.set(world.GW,world.GH);
-  floorTex.wrapS=floorTex.wrapT=THREE.RepeatWrapping;
-  floorTex.magFilter=THREE.NearestFilter;floorTex.minFilter=THREE.NearestFilter;
-  const fm=new THREE.Mesh(track(new THREE.PlaneGeometry(world.GW*CELL,world.GH*CELL)),
-    track(new THREE.MeshLambertMaterial({map:floorTex})));
-  fm.name="floor";
-  fm.rotation.x=-Math.PI/2;fm.position.set(world.GW*CELL/2,0,world.GH*CELL/2);renderState.scene.add(fm);
-  buildCeiling(renderState.scene as THREE.Scene,(hell?TEX.hellCeil:flesh?TEX.fleshCeil:TEX.ceil),wallTex);
+  addInstanced(renderState.scene as THREE.Scene,wallGeo,wallMats,"wall");
+  addInstanced(renderState.scene as THREE.Scene,pilGeo,pilMats,"pillar");
+  buildFloor(renderState.scene as THREE.Scene,Ldef);   // src/world/LevelMeshes.ts
+  buildCeiling(renderState.scene as THREE.Scene,themeTex(Ldef).ceil,wallTex);
   const band=bandFor(Ldef);
   buildTrim(renderState.scene as THREE.Scene,band);
   buildArches(renderState.scene as THREE.Scene,band);
-  /* raised floor platforms (verticality) — a textured block per elevated cell.
-     Each cell's box used to get its own BoxGeometry sized to that cell's
-     height, so nothing was shared. Instanced here as one unit box (shared
-     `pmats` face materials, same 6-group layout as before) scaled per
-     instance to (CELL,hgt,CELL) — three.js's InstancedMesh normal-matrix
-     handling (node_modules/three/src/renderers/shaders/ShaderChunk/
-     defaultnormal_vertex.glsl.js) accounts for exactly this non-uniform
-     per-instance scale, so lighting on the tall faces is unaffected. */
-  if(world.heightMap){
-    const platTexTop=(hell?TEX.hellFloor:flesh?TEX.fleshFloor:(dungeon?TEX.dungeonFloor:TEX.churchFloor));
-    const platTexSide=hell?TEX.stair:flesh?TEX.fleshWall:TEX.stair;
-    const topMat=track(new THREE.MeshLambertMaterial({map:platTexTop}));
-    const sideMat=track(new THREE.MeshLambertMaterial({map:platTexSide}));
-    const pmats=[sideMat,sideMat,topMat,sideMat,sideMat,sideMat]; // box face order: +x,-x,+y,-y,+z,-z
-    const platMats:THREE.Matrix4[]=[];
-    for(let z=0;z<world.GH;z++)for(let x=0;x<world.GW;x++){
-      const hgt=world.heightMap[z]&&world.heightMap[z][x]||0;
-      if(hgt<=0)continue;
-      const wx=(x+.5)*CELL,wz=(z+.5)*CELL;
-      platMats.push(new THREE.Matrix4().compose(
-        new THREE.Vector3(wx,hgt/2,wz),new THREE.Quaternion(),new THREE.Vector3(CELL,hgt,CELL)));}
-    if(platMats.length){
-      const platGeo=track(new THREE.BoxGeometry(1,1,1));
-      const platMesh=new THREE.InstancedMesh(platGeo,pmats,platMats.length);
-      platMats.forEach((mtx,i)=>platMesh.setMatrixAt(i,mtx));
-      platMesh.name="platform";
-      platMesh.instanceMatrix.needsUpdate=true;renderState.scene.add(platMesh);}}
+  buildPlatforms(renderState.scene as THREE.Scene,Ldef);   // raised floor platforms (verticality) — LevelMeshes.ts
   /* angled wall meshes from arbitrary segments — non-orthogonal Doom/Blood walls */
   if(world.wallSegs.length){
     const segMat=track(new THREE.MeshLambertMaterial({map:wallTex}));
@@ -362,14 +344,18 @@ export function loadLevel(idx: number): void {
       const tex=(k[0]==="w"?ITEMTEX.gun:ITEMTEX[k]) as THREE.CanvasTexture;
       world.items.push({kind:k,x:wx,z:wz,sp:addSprite(tex,wx,wz,.55,.55,.5),bob:Math.random()*6});}
     world.grid[z][x]=".";}
+  dressLevel(renderState.scene as THREE.Scene,L);   // set dressing, and what stands on raised ground — src/world/Decor.ts
   // Every builder has added its children by here, so one pass applies the
   // whole cast/receive policy. At the end rather than per-site because the
   // policy is one decision living in one file (src/render/Shadows.ts); a
   // scene child whose name is not in `SHADOW_POLICY` keeps three's defaults.
   applyShadowFlags(renderState.scene);
   player.vx=player.vy=player.vz=0;player.pyy=EYE+floorHeightAt(player.px,player.pz);input.yaw=Math.PI;input.pitch=0;player.grounded=true;
+  enterZones();   // the start zone's fog, light and room, snapped — src/world/Zones.ts
   const lt=document.getElementById("lvltitle") as HTMLElement;
   lt.textContent=Ldef.name;lt.style.opacity="1";
   after(()=>lt.style.opacity="0",5000);
   showMsg(Ldef.name,3.4);
-  after(()=>say("lvl"+idx,true),1400);}
+  // A level that opens in a grave says its line at the end of the rise (src/world/Opening.ts); the rest after 1.4 s.
+  if(L.grave)beginOpening(L.grave,"lvl"+idx);
+  else after(()=>say("lvl"+idx,true),1400);}

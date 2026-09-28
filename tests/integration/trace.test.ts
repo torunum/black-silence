@@ -3,6 +3,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { beforeAll, describe, expect, it } from "vitest";
 import { runTrace, type InputEvent, type TraceFrame } from "./gameplayTrace";
+import { MONOLOGUE } from "../../src/content/monologue";
 
 /**
  * The Plan 0D characterization test: 900 frames of the real game, played
@@ -28,32 +29,39 @@ import { runTrace, type InputEvent, type TraceFrame } from "./gameplayTrace";
  * `sin`/`cos` transposed in the heading, gravity `20`→`21`, and the shake
  * decay `1.6`→`1.7` all fail this test.
  *
- * ## Combat is NOT covered by this fixture — read this before trusting a test name
+ * ## Combat is only half covered by this fixture — read this before trusting a test name
  *
- * The level this script plays (the prologue) loads with **zero enemies**
- * (`world.enemies.length === 0` right after load — confirmed live in a
- * browser, and consistent with everything the committed fixture shows).
- * There is nothing for the script's shots to hit and nothing that can hit
- * the player back, no matter how long it fires or how it sweeps its aim.
- * Concretely, across all 90 recorded frames of the committed fixture:
+ * **Rewritten for the rebuilt prologue** (the ninth regeneration, at the end
+ * of this comment). Until then the prologue loaded with zero enemies and
+ * none of the combat path was reached here at all. The rebuilt one loads
+ * with **eight** — four zombies and four crawlers, all in its hell — and this
+ * script walks down the crypt stair and stops at its foot, short of hell, so
+ * it meets two of them. Measured with a throwaway probe of the same run (not
+ * committed): 12 shots fired, **0 hits**, 0 kills; at the end a crawler
+ * (`w`, which climbed out of the burning pit) and a zombie stand at the
+ * stair's foot, aware, and the player is at 44 hp. Across the 90 recorded
+ * frames:
  *
- * - `hud.hp` is `"HEALTH100"` in every frame — the player is never damaged.
- * - `hud.subt` only ever holds `""` or the level-opening line — no
- *   `say("see_"+e.key)` enemy-sighting bark ever fires, because no enemy
- *   ever spots the player.
- * - `scene.count` rises monotonically (33 to 45 as of Phase 2 Part A Task 3's
- *   instancing below; 237 to 249 before it — same shape, smaller numbers)
- *   with zero frames where it decreases — nothing is ever removed from the
- *   scene.
+ * - `hud.hp` is `"HEALTH100"` to frame 520, then falls in 8s — 92 at 530,
+ *   84 at 590, … 44 at 890. **`damagePlayer` is exercised now**; the enemy
+ *   melee that calls it is too.
+ * - `hud.subt` holds the level-opening line (`lvl0`, frames 10-60, said as
+ *   the script's first key press skips the grave opening — see the tenth
+ *   regeneration below), then ADEM's crypt line (`p0_down`, 70-320, said by
+ *   `src/world/Zones.ts` as the player walks through the mausoleum door, and
+ *   no longer overwritten), then `""`, then the zombie sighting bark
+ *   (`see_z`, 840-900).
+ * - `scene.count` rises monotonically, 108 to 120, with zero frames where it
+ *   decreases: the sweeping fire never finds the two enemies (they come up
+ *   behind the sweep), so nothing dies and nothing is removed.
  *
- * So **`damagePlayer`, `damageEnemy`, `killEnemy`, `severLimb`, `endLevel`
- * and everything else on the combat-resolution path are not exercised by
- * this fixture at all.** The `scene.count` growth this file does check for
- * is muzzle flashes, ejected casings and impact decals accumulating as the
- * script fires — FX of firing, not evidence that anything got hit. A test
- * name that implies otherwise is wrong; do not add one back. Covering
- * combat needs either a level with enemies added to a trace like this one,
- * or focused unit tests — this file does not grow a combat fixture.
+ * So **`damageEnemy`, `killEnemy`, `severLimb`, `endLevel` and the rest of
+ * the shot-resolution path are still not exercised by this fixture.** The
+ * `scene.count` growth this file checks for is muzzle flashes, ejected
+ * casings and impact decals — FX of firing, not evidence that anything got
+ * hit. A test name that implies otherwise is wrong; do not add one back.
+ * `combatTrace.test.ts` (level 1) and `bossTrace.test.ts` (level 2) are the
+ * combat recordings.
  *
  * Two constants fall out of that same gap and survive sabotage here:
  *
@@ -358,6 +366,156 @@ import { runTrace, type InputEvent, type TraceFrame } from "./gameplayTrace";
  *    from sound's own dice, and `installAudioDrawGuard` would have failed the
  *    run otherwise), the weapon's stride and everything else that reads
  *    `bobT` move nothing here.
+ *
+ * ## The prologue rebuilt — ninth regeneration: a new map, a new route
+ *
+ * Player feedback round 2, `docs/superpowers/plans/2026-09-27-player-feedback-2-prologue.md`
+ * Task 1. The owner: the prologue climbs out of a grave and passes through
+ * hell. The reference's map did the reverse (a hell cavern, then a stair up
+ * to a tomb), so `src/world/levels/prologue.ts` is a new map — a churchyard
+ * under the sky, a mausoleum and a crypt stair down, a hell crossing, a
+ * climb out — with zones (`src/world/Zones.ts`), set dressing
+ * (`src/world/Decor.ts`) and six enemies; ADEM's `lvl0` lines are rewritten
+ * and three zone lines added. Every section above this one describes the
+ * old map and is kept as history. This fixture was expected to move, and it
+ * moved everywhere: against the pre-change fixture, `camera` differs in all
+ * 90 sampled frames (the spawn itself moved), `hud` in 66, `scene.count` in
+ * all 90 (34..46 became 108..120 — the churchyard's walls, floor, ceiling
+ * and trim are one mesh per zone look, plus torches, candles, items,
+ * enemies, the decor meshes, the moon and the stars), `scene.digest` in all
+ * 90 (first `45592394`, last `a0359cea`; 90 distinct).
+ *
+ * **The script was rewritten**, because the old one walked into the old
+ * cavern's south wall and never climbed anything (its `y` never left 1.0
+ * but for the jump). It keeps the old one's shape — walk and look for four
+ * seconds, then twenty swept bursts with a reload every five — and now:
+ *
+ * - **walks**: from beside the grave (`x 19, z 9.3` at frame 10) due south
+ *   across the churchyard, through the mausoleum door and down the stair to
+ *   `z 34.06`, where it stops (frame 205);
+ * - **changes height for real**: `y` 5.21 (the churchyard, floor 4.2) falls
+ *   from frame 130 to 3.10 at frame 230 (floor 2.1) — the crypt stair's five
+ *   0.42 steps, taken as step-downs;
+ * - **turns**: a paired look (yaw 3.142 -> 3.010 -> 3.142 by frame 50,
+ *   kept small so the walk stays inside the doorway and the 4-unit stair),
+ *   then the sweep, 3.021 at 260 to 0.722 at 830;
+ * - **kicks at frame 120** (in the crypt chamber, into the air: the camera's
+ *   roll reads 0.004 in that frame), **jumps at 150** on the stair, sprints
+ *   80-110 and strafes;
+ * - **fires**: 12 shots and `"— RELOADING"` in the HUD; the count grows
+ *   108 -> 120 as decals and flashes accumulate.
+ *
+ * What it records of enemies is in the combat section above: two come up
+ * the stair, the player loses 56 hp to them, no shot hits.
+ *
+ * **The proof that the map is the whole of this diff**, and that the loader
+ * work under it (zones, `LevelMeshes.ts`, `ZoneLook.ts`, `Decor.ts`, the
+ * zone branches in `Ceiling.ts` and `Trim.ts`, the `y0`/`y` lifts in
+ * `Interact.ts`) changes nothing a level without zones can see: with the
+ * reference's old prologue (`prologue.ts` at `9b6abea`), the old `lvl0`
+ * lines (`monologue.ts` at `9b6abea`) and the old script put back — and
+ * every other file as committed here — **this test passed against the old
+ * fixture, byte for byte, all 90 frames**. The old files were then restored.
+ * The other two fixtures, `trace-level1.json` and `trace-level2-boss.json`,
+ * are byte-identical to `9b6abea` (`git diff` empty), so the loader
+ * refactor moved nothing on levels 1 and 2 either. And the run is seeded as
+ * before: no new code draws from `Math.random` at load or per tick
+ * (`tests/world/zones.test.ts` counts: the only draws the zones cause are
+ * `say()`'s own line picks, one per zone line), and `installAudioDrawGuard`
+ * still passes.
+ *
+ * ## The grave opening — tenth regeneration: the first line moved, and only that
+ *
+ * The prologue plan's Task 2 (`src/world/Opening.ts`): the prologue now opens
+ * with ADEM clawing out of his grave — 5.5 seconds, input locked. **This
+ * script skips it, at frame 5**: the opening runs for frames 1-4, and the
+ * same `KeyW` press it has always opened with walks him south as before. It
+ * is skipped rather than recorded because this fixture's job is the walk,
+ * the stair, the fight and the HUD, and recording 330 frames of a camera
+ * on rails would push all of that out of a 900-frame run or double its
+ * length; the opening's own behaviour — the lock, the pose from lying to
+ * standing, the skip by key and by click, the hidden weapon, the line — is
+ * owned by `tests/world/opening.test.ts`. The skip is at a known frame
+ * because the script says so: originally the game's own listener took the
+ * `KeyW` keydown. **Since the review round that made skipping deliberate**
+ * (only Space, Enter, E or a click, never in the first 0.6 s, never on a
+ * repeat) that key no longer skips, so `drive` calls the game's own
+ * `skipOpening()` on frame 5, *before* the frame's scripted input — the
+ * same call the listener made, at the same point of the same frame, with the
+ * `KeyW` delivered right after it as it was right before. Nothing this
+ * fixture records can tell the two apart: `trace-level0.json` did not move
+ * (`git diff` empty), which is the proof.
+ *
+ * What moved, field by field against the ninth regeneration, all 90
+ * sampled frames:
+ *
+ * - `camera` — all seven components **identical in all 90**. The opening
+ *   places the camera in frames 1-4 and the skip hands it to `playerTick`
+ *   at the spawn, before the first sample.
+ * - `hud` — `subt` alone, in 32 frames: `lvl0` is now said at the skip
+ *   (frames 10-60) instead of by `loadLevel`'s 1.4-second timer (90-340),
+ *   so the crypt's line (`p0_down`) is no longer overwritten and holds from
+ *   70 to 320. The other seven fields are identical in all 90.
+ * - `scene.count` — **identical in all 90** (108..120).
+ * - `scene.digest` — differs in all 90, from frame 10 (`45592394` ->
+ *   `813482c6`) to 900 (`a0359cea` -> `0787c628`); 90 distinct before and
+ *   after. The `say()` pick of the `lvl0` line is one `Math.random()` draw;
+ *   made at frame 5 instead of frame 84, it re-indexes every draw between —
+ *   the torches' flicker and embers, which the digest records.
+ *
+ * **The proof that the line's timing is the whole of it**: with the
+ * opening running and skipped exactly as committed, but its line left
+ * unsaid and `loadLevel`'s 1.4-second `lvl0` timer put back, this test
+ * passed against the ninth regeneration's fixture **byte for byte, all 90
+ * frames**; and with the prologue's `grave` removed (no opening at all) the
+ * same held — and so did `combatTrace` and `bossTrace` against theirs. So
+ * the opening itself — the lock for four frames, the camera, the lamp, the
+ * lid, the hidden weapon, the new sounds and the dirt — takes nothing from
+ * the seeded stream and changes nothing this fixture records;
+ * `tests/world/opening.test.ts` counts its draws (one: `say()`'s pick).
+ * `trace-level1.json` and `trace-level2-boss.json` did not move.
+ *
+ * ## Hell burns — eleventh regeneration: the map changed again
+ *
+ * The prologue plan's Task 3. The prologue's hell was placed by playing it
+ * (`prologuePlay.test.ts`): a zombie moved beside the crypt stair's foot
+ * (cell 5,19), one to the bridge's far end (19,25), and two crawlers added by
+ * the foot of the climb (26,20 and 27,22) — eight enemies where there were
+ * six. The churchyard got earth, grass, mounds, hands and a shovel
+ * (`Decor.ts`); the pit and braziers burn (`src/fx/HellFire.ts`, two `Points`
+ * scene children); the bridge is stone with lit edges; the climb's first
+ * step changed zone. Field by field against the tenth regeneration, all 90
+ * sampled frames:
+ *
+ * - `camera` — `x`, `y` and roll only, in 17 frames, 510-900: the screen
+ *   shake of being hit (`shx`, `shy`, `shr` in `playerTick`), which starts
+ *   at 510 instead of 530. `z`, pitch, yaw and fov identical in all 90.
+ * - `hud` — `hp` in 24 frames: the zombie now at the stair's foot is on the
+ *   player sooner and a second arrives, so hp falls from frame 510 and
+ *   reaches 8 at 900 (was 44). `subt` in 13: which `lvl0` line `say()`
+ *   picks at the skip (the two new crawlers' spawn rolls come first in the
+ *   seeded stream), and the zombie's sighting bark is gone — it now sees the
+ *   player while the crypt's line still holds `say()`'s three-second
+ *   throttle, and a sighting bark is once-only, so it is spent unheard. The
+ *   other six fields identical in all 90.
+ * - `scene.count` — +10 in every frame (108..120 became 118..130): two fire
+ *   `Points`, four children for the two crawlers (sprite and shadow), three
+ *   decor meshes for the new materials (earth, grass, the bridge's glow), and
+ *   one more floor mesh (the churchyard's earth is a look of its own).
+ * - `scene.digest` — differs in all 90 (first `813482c6` -> `2a6d63f9`, last
+ *   `0787c628` -> `6c33aae2`); 90 distinct before and after.
+ *
+ * **The proof that the map is the whole of it**: with the tenth
+ * regeneration's `prologue.ts` put back under all of this task's code, and
+ * the three things that code draws from that old map's own decor held back
+ * — the fire built from its `ember`/`bowl` cells, the bridge's glowing
+ * edges, the bridge's new stone texture — this test passed against the
+ * tenth regeneration's fixture byte for byte, and `combatTrace` and
+ * `bossTrace` against theirs. So the dress textures built at boot, the zone
+ * room tones, the new sounds and the loader's floor grouping move nothing
+ * any trace records; the fire's particles and flicker draw nothing from
+ * `Math.random` (`tests/fx/hellFire.test.ts`). `trace-level1.json` and
+ * `trace-level2-boss.json` did not move.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");
@@ -366,8 +524,9 @@ const WRITE = process.env.WRITE_TRACE === "1";
 
 /**
  * Deliberately not a still player, and deliberately long enough that a
- * level with enemies in it would have given combat a chance to happen.
- * (This one doesn't have any — see the module doc comment above.)
+ * level with enemies in it would have given combat a chance to happen —
+ * which the rebuilt prologue now is: two of its enemies find the player at
+ * the foot of the crypt stair (see the module doc comment above).
  *
  * A trace of someone standing at spawn exercises none of
  * px/pz/vx/vz/grounded/bobT — the largest and riskiest group in the plan.
@@ -380,35 +539,41 @@ const WRITE = process.env.WRITE_TRACE === "1";
  * So: move and look for the first four seconds, then fire in swept bursts
  * for ten more. That second phase does exercise the weapon state machine
  * through fire/reload cycles and the FX firing produces (muzzle flashes,
- * casings, impact decals) — it does not exercise combat resolution, because
- * the prologue this script plays has no enemies for those shots to hit.
+ * casings, impact decals) — it does not exercise shot resolution: the sweep
+ * never finds the two enemies that come up behind it (12 shots, 0 hits).
  */
 const FIGHT_START = 260;
 
 function fightingScript(): InputEvent[] {
+  // The rebuilt prologue's route (see the module doc comment): from beside
+  // the grave, straight south across the churchyard, through the mausoleum
+  // door and down the crypt stair — the height change — stopping on the
+  // stair, short of hell. Turns are paired so the walk stays inside the
+  // doorway and the 4-unit-wide stair.
   const script: InputEvent[] = [
     { frame: 2, kind: "pointerlock", locked: true },
+    // walks south, held. The grave opening (src/world/Opening.ts) is skipped by `drive` below, on this same frame, just before this press
     { frame: 5, kind: "key", type: "keydown", code: "KeyW" },
-    { frame: 20, kind: "move", movementX: 120, movementY: -30 },
-    { frame: 40, kind: "key", type: "keydown", code: "KeyD" },
-    { frame: 55, kind: "move", movementX: -80, movementY: 15 },
-    { frame: 70, kind: "key", type: "keyup", code: "KeyD" },
+    { frame: 20, kind: "move", movementX: 60, movementY: -30 },
+    { frame: 40, kind: "key", type: "keydown", code: "KeyA" },
+    { frame: 50, kind: "move", movementX: -60, movementY: 15 },
+    { frame: 55, kind: "key", type: "keyup", code: "KeyA" },
     { frame: 80, kind: "key", type: "keydown", code: "ShiftLeft" },
     { frame: 110, kind: "key", type: "keyup", code: "ShiftLeft" },
     { frame: 120, kind: "button", type: "mousedown", button: 2 },  // kick
     { frame: 122, kind: "button", type: "mouseup", button: 2 },
     { frame: 150, kind: "key", type: "keydown", code: "Space" },   // jump
     { frame: 152, kind: "key", type: "keyup", code: "Space" },
-    { frame: 185, kind: "key", type: "keydown", code: "KeyA" },
-    { frame: 210, kind: "key", type: "keyup", code: "KeyA" },
-    { frame: 240, kind: "key", type: "keyup", code: "KeyW" },
+    { frame: 185, kind: "key", type: "keydown", code: "KeyD" },
+    { frame: 195, kind: "key", type: "keyup", code: "KeyD" },
+    { frame: 205, kind: "key", type: "keyup", code: "KeyW" },
   ];
   // Ten seconds of sweeping fire: turn a little, fire a burst, repeat. In a
   // level that had enemies, sweeping the aim rather than firing at one spot
   // would be what let shots connect without knowing where they were placed
-  // — but this prologue has none (see the module doc comment), so what this
-  // loop actually exercises is the weapon state machine's fire/reload path
-  // and the FX firing produces, not a hit landing.
+  // — but on this route the enemies arrive behind the sweep (see the module
+  // doc comment), so what this loop actually exercises is the weapon state
+  // machine's fire/reload path and the FX firing produces, not a hit landing.
   for (let i = 0; i < 20; i++) {
     const f = FIGHT_START + i * 30;
     script.push({ frame: f, kind: "move", movementX: 55, movementY: i % 4 === 0 ? 8 : -6 });
@@ -427,7 +592,13 @@ const INPUT: readonly InputEvent[] = fightingScript();
 let trace: TraceFrame[];
 
 beforeAll(async () => {
-  trace = await runTrace({ seed: 20260814, frames: 900, dtMs: 1000 / 60, input: INPUT, every: 10 });
+  let skipOpening: () => void = () => {};
+  trace = await runTrace({
+    seed: 20260814, frames: 900, dtMs: 1000 / 60, input: INPUT, every: 10,
+    prepare: async () => { ({ skipOpening } = await import("../../src/world/Opening")); },
+    // Frame 5: the grave opening ends, as the script's first key used to end it (see the header).
+    drive: (frame) => { if (frame === 5) skipOpening(); },
+  });
   if (WRITE) {
     mkdirSync(FIXTURE_DIR, { recursive: true });
     writeFileSync(FIXTURE, JSON.stringify(trace, null, 1) + "\n");
@@ -440,8 +611,8 @@ describe("the recorded run is worth comparing", () => {
   });
 
   it("fires and reloads — the weapon state machine advances and FX accumulate in the scene", () => {
-    // This does NOT check combat — see the module doc comment above: the
-    // prologue has zero enemies, so no shot here ever lands. What this
+    // This does NOT check combat — see the module doc comment above: no
+    // shot here ever lands (12 fired, 0 hits). What this
     // guards against is the script silently degrading into a walking tour
     // that never actually pulls the trigger: an earlier version of this
     // script did exactly that and let a `hitStop` sabotage pass unnoticed.
@@ -450,7 +621,7 @@ describe("the recorded run is worth comparing", () => {
     // walking-only run would not grow the count anywhere near this much.
     expect(Math.max(...counts) - Math.min(...counts)).toBeGreaterThan(5);
     // In this fixture the count only ever grows — FX accumulate and nothing
-    // is ever despawned, because there is nothing (no enemies) to remove.
+    // is ever despawned, because no enemy is hit, so none dies.
     // Pin that shape: a future frame where it drops is a real behavior
     // change, not something that should pass silently.
     for (let i = 1; i < counts.length; i++) {
@@ -462,6 +633,34 @@ describe("the recorded run is worth comparing", () => {
     const wnames = new Set(trace.map((f) => f.hud.wname));
     expect(wnames.size).toBeGreaterThan(1);
     expect([...wnames].some((w) => w.includes("RELOADING"))).toBe(true);
+  });
+
+  it("goes down the crypt stair — a real height change, not just a jump", () => {
+    // The churchyard stands at 4.2 and the stair's foot at 2.1: the eye
+    // (EYE=1 above the floor) starts at ~5.2 and settles at ~3.1.
+    expect(trace[0].camera[1]).toBeGreaterThan(5.1);
+    expect(trace.at(-1)!.camera[1]).toBeLessThan(3.2);
+    expect(trace.at(-1)!.camera[1]).toBeGreaterThan(3.0);
+  });
+
+  it("meets the prologue's enemies: the player standing at the stair's foot is badly hurt", () => {
+    // (the zombie's sighting bark used to be heard here too; since the eleventh regeneration it
+    // comes while the crypt's line holds say()'s three-second throttle, and a sighting bark is
+    // once-only, so it is spent silently — see the header)
+    expect(trace[0].hud.hp).toBe("HEALTH100");
+    const hp = Number(trace.at(-1)!.hud.hp.replace("HEALTH", ""));
+    expect(hp).toBeLessThan(50);
+  });
+
+  it("has the grave opening skipped at frame 5: the level's line at once, then the crypt's, never overwritten", () => {
+    const lvl0 = (f: TraceFrame) => MONOLOGUE.lvl0.some((l) => f.hud.subt.includes(l));
+    const down = (f: TraceFrame) => MONOLOGUE.p0_down.some((l) => f.hud.subt.includes(l));
+    expect(lvl0(trace[0]), "frame 10: the opening was skipped at frame 5 and said its line").toBe(true);
+    // standing at the spawn by frame 10: the opening's camera is gone
+    expect(trace[0].camera[1]).toBeGreaterThan(5.1);
+    const first = trace.findIndex(down);
+    expect(first).toBeGreaterThan(0);
+    expect(trace.slice(first).some(lvl0), "lvl0 forced over the crypt's line").toBe(false);
   });
 
   it("shows a player who actually moved and looked around", () => {

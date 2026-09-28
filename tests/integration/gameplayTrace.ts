@@ -116,6 +116,28 @@ export interface TraceOptions {
    * committed fixtures byte-identical (verified, not assumed).
    */
   afterLoad?: () => void;
+  /**
+   * Called at the start of every frame, before that frame's scripted input:
+   * the events it returns are delivered exactly as scripted ones are. For a
+   * player that reacts to the game — `prologuePlay.test.ts`'s bot reads the
+   * live state and answers with keys, mouse moves and clicks. Default
+   * `undefined`: nothing is called, and a run without it is unchanged.
+   */
+  drive?: (frame: number) => readonly InputEvent[] | void;
+  /**
+   * Awaited once after the level has loaded (after `afterLoad`), before
+   * frame 1 — where a `drive` caller imports the live modules it reads.
+   * Default `undefined`: nothing is awaited.
+   */
+  prepare?: () => Promise<void>;
+  /**
+   * Called at the end of every frame, after the game has run it: returning
+   * true ends the run there, so a caller that has seen what it came for
+   * (`prologuePlay.test.ts`: the bot has won or died) does not pay for the
+   * frames after it. The frames run so far are returned. Default
+   * `undefined`: never called, and a run without it is unchanged.
+   */
+  until?: (frame: number) => boolean;
 }
 
 export interface TraceFrame {
@@ -463,6 +485,7 @@ export async function buildTextureIndex(): Promise<TexNamer> {
   const { ITEMTEX } = await import("../../src/render/ItemTextures");
   const { TEX } = await import("../../src/render/ProcTextures");
   const { BANDTEX } = await import("../../src/render/BandTextures");
+  const { DRESSTEX } = await import("../../src/render/DressTextures");
 
   const byTexture = new Map<Any, string>();
   const byImage = new Map<Any, string>();
@@ -485,6 +508,8 @@ export async function buildTextureIndex(): Promise<TexNamer> {
   }
   for (const key of Object.keys(TEX).sort()) put(TEX[key], `tex.${key}`);
   for (const key of Object.keys(BANDTEX).sort()) put(BANDTEX[key as keyof typeof BANDTEX], `band.${key}`);
+  // the prologue's own surfaces (src/render/DressTextures.ts) — a fifth source, after the four, so it renames nothing
+  for (const key of Object.keys(DRESSTEX).sort()) put(DRESSTEX[key as keyof typeof DRESSTEX], `dress.${key}`);
 
   if (byTexture.size === 0) {
     // The same guard-the-guard reflex as installUuidStub's: this index is
@@ -731,6 +756,7 @@ export async function runTrace(o: TraceOptions): Promise<TraceFrame[]> {
     // first frame, so the run starts from the seeded state. See
     // `TraceOptions.afterLoad`.
     o.afterLoad?.();
+    if (o.prepare) await o.prepare();
 
     // After the click, never before: both menu paths end in `startGame`
     // (src/core/Boot.ts), which is where `buildTextures`/`buildSprites`/
@@ -754,6 +780,7 @@ export async function runTrace(o: TraceOptions): Promise<TraceFrame[]> {
       // Advance the wall clock in lockstep, before the frame's own work, so
       // anything reading performance.now() mid-frame sees this frame's time.
       fakeNow = t0 + frame * o.dtMs;
+      if (o.drive) for (const ev of o.drive(frame) ?? []) deliver(ev, canvas);
       for (const ev of byFrame.get(frame) ?? []) deliver(ev, canvas);
       if (raf.length === 0) throw new Error(`the main loop stopped requesting frames at frame ${frame}`);
       // Snapshot and clear before invoking: a callback that itself calls
@@ -778,6 +805,7 @@ export async function runTrace(o: TraceOptions): Promise<TraceFrame[]> {
           scene: digestScene(getScene(), texName),
         });
       }
+      if (o.until && o.until(frame)) break;
     }
     completed = true;
     return out;

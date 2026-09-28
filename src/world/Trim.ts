@@ -4,6 +4,9 @@ import { world } from "./WorldState";
 import { ceilHeightAtCell } from "./Collision";
 import { TEX } from "../render/ProcTextures";
 import { track } from "../render/DisposeRegistry";
+import { bandFor } from "../render/BandTextures";
+import { zoneThemeAt } from "./ZoneLook";
+import { groupPush } from "./LevelMeshes";
 
 /**
  * GOTHIC TRIM — pillar bases and capitals, and the two wall courses (a
@@ -261,9 +264,18 @@ function instanced(geo: THREE.BufferGeometry, mat: THREE.Material, mats: THREE.M
  */
 export function buildTrim(scene: THREE.Scene, bandTex: THREE.Texture): void {
   const courseGeo = track(courseGeometry());
-  const courseMat = track(new THREE.MeshLambertMaterial({ map: bandTex }));
-  const courses = exposedFaces("#W").flatMap(courseMatrices);
-  if (courses.length) scene.add(instanced(courseGeo, courseMat, courses, "wallCourse"));
+  // One course material per band: the level's own, or on a zoned level the
+  // band of each wall cell's zone (ZoneLook.ts) — an unzoned level has one.
+  const mats = new Map<THREE.Texture, THREE.MeshLambertMaterial>();
+  const matAt = (x: number, z: number) => {
+    const look = zoneThemeAt(x, z), tex = look ? bandFor(look) : bandTex;
+    let m = mats.get(tex);
+    if (!m) { m = track(new THREE.MeshLambertMaterial({ map: tex })); mats.set(tex, m); }
+    return m;
+  };
+  const courses = new Map<THREE.Material, THREE.Matrix4[]>();
+  for (const f of exposedFaces("#W")) for (const m of courseMatrices(f)) groupPush(courses, matAt(f.x, f.z), m);
+  for (const [mat, list] of courses) scene.add(instanced(courseGeo, mat, list, "wallCourse"));
   const piers: THREE.Matrix4[] = [];
   for (let z = 0; z < world.GH; z++) for (let x = 0; x < world.GW; x++)
     if (world.grid[z][x] === "I") piers.push(...pierMatrices(x, z));
@@ -276,11 +288,12 @@ export function buildTrim(scene: THREE.Scene, bandTex: THREE.Texture): void {
     const key = f.x + "," + f.z;
     bySecret.set(key, [...(bySecret.get(key) || []), ...courseMatrices(f)]);
   }
-  for (const [key, mats] of bySecret) {
+  for (const [key, list] of bySecret) {
     const door = world.doors[key] as { mesh?: THREE.Object3D } | undefined;
-    if (!door || !door.mesh || !mats.length) continue;
+    if (!door || !door.mesh || !list.length) continue;
     // Into the door's own frame, so the course rides down with it.
     const toLocal = new THREE.Matrix4().makeTranslation(-door.mesh.position.x, -door.mesh.position.y, -door.mesh.position.z);
-    door.mesh.add(instanced(courseGeo, courseMat, mats.map((m) => toLocal.clone().multiply(m)), "secretCourse"));
+    const [sx, sz] = key.split(",").map(Number);
+    door.mesh.add(instanced(courseGeo, matAt(sx, sz), list.map((m) => toLocal.clone().multiply(m)), "secretCourse"));
   }
 }

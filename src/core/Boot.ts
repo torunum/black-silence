@@ -5,6 +5,7 @@ import { el } from "../ui/dom";
 import { audioInit } from "../audio/AudioEngine";
 import { buildTextures } from "../render/ProcTextures";
 import { buildBandTextures } from "../render/BandTextures";
+import { buildDressTextures } from "../render/DressTextures";
 import { buildSprites } from "../enemies/SpriteBaker";
 import { buildItemTex } from "../render/ItemTextures";
 import { buildPiano } from "../ui/Piano";
@@ -19,6 +20,8 @@ import { loadLevel } from "../world/LevelLoader";
  * added later, beside `buildTextures` rather than inside it. Its grain is
  * an integer hash, not `Math.random`; the only draws are three.js's own
  * texture UUIDs, which the trace harness stubs out of the seeded stream.
+ * `buildDressTextures` (the prologue's earth, grave soil, bridge stone and
+ * spark, `src/render/DressTextures.ts`) is the same kind of builder, beside it.
  * The reference's sixth builder, `buildWeaponSprites`, is gone: the weapon
  * viewmodel is drawn per frame from a pose now (src/render/viewmodel/draw.ts),
  * so nothing about it is built here — and it never drew from Math.random,
@@ -34,7 +37,7 @@ export function startGame(idx: number){
   el("settings").classList.add("hidden");
   game.started=true;
   audioInit();
-  buildTextures();buildBandTextures();buildSprites();buildItemTex();buildPiano();
+  buildTextures();buildBandTextures();buildDressTextures();buildSprites();buildItemTex();buildPiano();
   loadLevel(idx||0);
   S.t0=performance.now();
   renderState.renderer.domElement.requestPointerLock();}

@@ -33,10 +33,11 @@ import type { emitHere as EmitHere } from "../../src/audio/AudioEngine";
  *
  * ## Why the grid gets overwritten after boot
  *
- * NEW GAME loads level 0 (the prologue — zero enemies, confirmed by
- * `tests/integration/combatTrace.test.ts`'s own header), which is exactly
- * what makes it safe to drop a synthetic enemy into `world.enemies` here
- * without a real one already occupying the slot. But the prologue's actual
+ * NEW GAME loads level 0, the prologue. It used to load with zero enemies,
+ * which is what made it safe to drop a synthetic enemy into `world.enemies`
+ * here; the rebuilt prologue (the prologue plan, Task 1) has a few in its
+ * hell, so `world.enemies` is now emptied after boot along with the grid,
+ * and the synthetic enemy is again the only one. But the prologue's actual
  * wall layout is not this file's concern — `los()`/`solidAt()` are already
  * covered elsewhere, and this file only needs a sightline it can reason
  * about by construction. So immediately after boot, `world.grid` is
@@ -122,6 +123,7 @@ beforeAll(async () => {
   world.GH = 30;
   world.heightMap = null;
   world.wallSegs = [];
+  world.enemies = [];
 });
 
 // KNOWN-19: the NEW GAME click above boots src/main.ts on the real clock,

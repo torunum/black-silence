@@ -97,11 +97,75 @@ describe("a level with no ceiling map builds the single flat plane it always bui
     expect(named("ceilingRisers").length).toBe(0);
   });
 
-  it("the prologue is in that branch too — the trace fixtures' level", () => {
-    loadLevel(0);
+  it("level 2 — the boss trace fixture's level — is in that branch too", () => {
+    // Was "the prologue is in that branch too". The rebuilt prologue (the
+    // prologue plan, Task 1) opts in with a ceiling map and zones — see the
+    // next describe — so the unchanged-branch guard moved to the other trace
+    // level that never opted in.
+    loadLevel(2);
     expect(world.ceilMap).toBeNull();
     expect(named("ceiling").length).toBe(1);
     expect(named("ceilingCells").length).toBe(0);
+  });
+});
+
+describe("the zoned prologue builds a ceiling per zone look, and none over the sky", () => {
+  it("no quad over a sky cell, a quad at its mapped height over every other cell, each in its zone's texture", async () => {
+    const { TEX } = await import("../../src/render/ProcTextures");
+    loadLevel(0);
+    expect(world.zones).not.toBeNull();
+    expect(named("ceiling").length).toBe(0);
+    const zs = world.zones!;
+    const skyCells = new Set<string>(), want = new Map<string, number>();
+    for (let z = 0; z < world.GH; z++) for (let x = 0; x < world.GW; x++) {
+      if (zs.themes[zs.map[z][x]].sky) skyCells.add(x + "," + z); else want.set(x + "," + z, ceilHeightAtCell(x, z));
+    }
+    expect(skyCells.size, "the churchyard is open to the sky").toBeGreaterThan(200);
+    const seen = new Set<string>();
+    for (const m of named("ceilingCells") as THREE.InstancedMesh[]) {
+      const map = (m.material as THREE.MeshLambertMaterial).map!;
+      for (const { pos } of instances(m)) {
+        const gx = Math.round(pos.x / CELL - 0.5), gz = Math.round(pos.z / CELL - 0.5), key = gx + "," + gz;
+        expect(skyCells.has(key), `a ceiling quad over the sky at ${key}`).toBe(false);
+        expect(pos.y).toBeCloseTo(want.get(key)!, 6);
+        const t = zs.themes[zs.map[gz][gx]];
+        const src = t.hell ? TEX.hellCeil : t.flesh ? TEX.fleshCeil : TEX.ceil;
+        expect(map.image, `the ceiling at ${key} wears its zone's texture`).toBe(src.image);
+        seen.add(key);
+      }
+    }
+    expect(seen.size).toBe(want.size);
+  });
+});
+
+describe("a riser wears the wall of the zone of the lower cell of its pair", () => {
+  it("every riser on the zoned prologue, edge by edge — against a wall, the wall's own zone (Ceiling.ts's keyAt(x+dx, z+dz))", async () => {
+    const { TEX } = await import("../../src/render/ProcTextures");
+    loadLevel(0);
+    const zs = world.zones!;
+    const wallOf = (x: number, z: number) => {
+      const t = zs.themes[zs.map[z][x]];
+      return t.hell ? TEX.hellWall : t.flesh ? TEX.fleshWall : t.dungeon ? TEX.dungeonWall : TEX.churchWall;
+    };
+    let n = 0, differ = 0;
+    const normal = new THREE.Vector3();
+    for (const m of named("ceilingRisers") as THREE.InstancedMesh[]) {
+      const map = (m.material as THREE.MeshLambertMaterial).map!;
+      for (const { pos, quat } of instances(m)) {
+        // the strip stands on the edge between the higher cell and the lower one, facing from the first to the second
+        normal.set(0, 0, 1).applyQuaternion(quat);
+        const dx = Math.round(normal.x), dz = Math.round(normal.z);
+        const hx = Math.round((pos.x - dx * CELL / 2) / CELL - 0.5), hz = Math.round((pos.z - dz * CELL / 2) / CELL - 0.5);
+        const lx = hx + dx, lz = hz + dz;
+        expect(ceilHeightAtCell(lx, lz), `riser at ${hx},${hz}->${lx},${lz}: the lower cell is lower`).toBeLessThan(ceilHeightAtCell(hx, hz));
+        expect(map.image, `the riser between ${hx},${hz} (high) and ${lx},${lz} (low) wears the LOWER cell's wall`).toBe(wallOf(lx, lz).image);
+        n++;
+        if (wallOf(lx, lz).image !== wallOf(hx, hz).image) differ++;
+      }
+    }
+    expect(n).toBeGreaterThan(20);
+    // the premise: some edges do pair two different walls, or the rule could not be told from its opposite
+    expect(differ).toBeGreaterThan(0);
   });
 });
 

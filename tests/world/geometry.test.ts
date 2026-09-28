@@ -80,7 +80,14 @@ describe("the level's wall/pillar/platform geometry is instanced, not one Mesh p
    * pre-image) pushes the prologue's load-time count back to 237, which
    * fails this ceiling — see this task's report.
    */
-  const PROLOGUE_CHILD_CEILING = 80;
+  //
+  // Raised to level 1's ceiling (150) when the prologue was rebuilt (the
+  // prologue plan, Task 1): it went from an empty 21x27 cavern to a dressed
+  // 30x36 level with enemies, torches, items and one mesh per zone look for
+  // its walls, floor, ceiling and trim — measured ~100 at load. Its grid has
+  // 1080 cells and 300-odd exposed wall cells, so the mutation this guards
+  // (a Mesh per wall cell) still lands far above 150.
+  const PROLOGUE_CHILD_CEILING = 150;
 
   it("builds the prologue's walls/pillars as InstancedMesh objects, not hundreds of Mesh children", () => {
     const scene = renderState.scene as THREE.Scene;

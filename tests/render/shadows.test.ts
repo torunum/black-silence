@@ -251,6 +251,22 @@ describe("who casts and who receives", () => {
     }
   });
 
+  it("keeps the prologue's grass out of the lamp's cube shadow: its own mesh, receiving, not casting", () => {
+    // The tufts are 0.025-wide blades, tens of thousands of triangles: six depth
+    // passes a frame for shadows narrower than a texel. Split off `decor`
+    // (which stays a caster) into `decorGrass`. Set `decorGrass.cast` to true in
+    // `SHADOW_POLICY`, or merge the grass back into `decor`, and this goes red.
+    loadLevel(0);
+    const tris = (o: THREE.Object3D) => (o as THREE.Mesh).geometry.getAttribute("position").count / 3;
+    const grass = childNamed("decorGrass");
+    expect(tris(grass), "the grass is the thousands of triangles this split is for").toBeGreaterThan(5000);
+    expect(grass.castShadow).toBe(false);
+    expect(grass.receiveShadow).toBe(true);
+    const decor = (renderState.scene.children as THREE.Object3D[]).filter((o) => o.name === "decor");
+    expect(decor.length).toBeGreaterThan(3);
+    for (const d of decor) { expect(d.castShadow, "decor casts").toBe(true); expect(d.receiveShadow).toBe(true); }
+  });
+
   it("leaves the torch post receiving but not casting — it is thinner than a shadow texel", () => {
     loadLevel(1);
     const post = childNamed("torchPost");

@@ -11,11 +11,14 @@ import { projTick } from "../fx/ProjectileTick";
 import { ringTick, strikeTick, poisonTick } from "../enemies/ai/Attacks";
 import { itemsTick, doorTick, propTick, torchTick } from "../player/Interact";
 import { eventTick } from "../world/RandomEvents";
+import { zoneTick } from "../world/Zones";
+import { openingTick, openingHidesWeapon } from "../world/Opening";
 import { ambience, vitalsAudio } from "../world/Ambience";
 import { chatterTick } from "../ui/Chatter";
 import { musicTick } from "../audio/Music";
 import { tickMessage } from "../ui/HudMessages";
 import { partTick } from "../fx/Particles";
+import { fireTick } from "../fx/HellFire";
 import { gibTick } from "../fx/Gibs";
 import { poolTick } from "../fx/Decals";
 import { headTick } from "../enemies/Death";
@@ -52,7 +55,9 @@ import { animCues } from "./AnimCues";
  *   Task 3 added `kickAnim`: the kicking leg is drawn with the weapon now.
  *   Task 4 added the five `cue*` fields, copied from `./AnimCues.ts`: counters
  *   gameplay bumps (hit, pickup, dry click, input) for the hands to react to.
- *   The branch's review added `paused` (below): 28 fields in all.
+ *   The branch's review added `paused` (below): 28 fields in all. The prologue
+ *   plan's Task 2 added `hidden` (no hands while ADEM climbs out of his
+ *   grave, `src/world/Opening.ts`): 29.
  * - `renderer.render` runs inside `withKickLean` (round 2, Task 3): the view
  *   leans into a kick for the render only, and the camera is restored exactly
  *   afterwards, so gameplay, the listener and the trace fixtures never see it.
@@ -107,8 +112,8 @@ function loop(t: number){
   const paused=game.pianoOpen||overlayOpen()&&!game.pianoOpen;
   let anyAware=false;
   if(!paused&&!S.dead&&!S.won){
-    cineTick(dt);
-    playerTick(dt);weaponTick(dt);
+    cineTick(dt);openingTick(dt);
+    playerTick(dt);zoneTick(dt);weaponTick(dt);
     anyAware=enemyTick(dt)||false;
     projTick(dt);ringTick(dt);strikeTick(dt);poisonTick(dt);
     itemsTick(dt);doorTick(dt);propTick(dt);
@@ -119,7 +124,7 @@ function loop(t: number){
     tickScheduled(dt);}
   if(renderState.scene){
     updateListener();
-    partTick(dt);gibTick(dt);poolTick(dt);headTick(dt);torchTick(dt,t);
+    partTick(dt);fireTick(dt);gibTick(dt);poolTick(dt);headTick(dt);torchTick(dt,t);
     const kick=kickShown.shown(weaponRuntime.kickAnim,S.dead||S.won,renderState.scene);
     fxTick(dt,t,weaponRuntime.zoomLerp,
       ()=>drawKickStreaks(kick),
@@ -127,7 +132,7 @@ function loop(t: number){
         started:game.started,dead:S.dead,pianoOpen:game.pianoOpen,zoomLerp:weaponRuntime.zoomLerp,cur:S.cur,vx:player.vx,vz:player.vz,vy:player.vy,grounded:player.grounded,yaw:input.yaw,
         sprintKey:!!(keys.ShiftLeft||keys.ShiftRight),bobT:player.bobT,wstate:weaponRuntime.wstate,wtime:weaponRuntime.wtime,
         equipT:EQUIP_T,unequipT:UNEQUIP_T,kickAmt:weaponRuntime.kickAmt,kickRot:weaponRuntime.kickRot,kickAnim:kick,swayX:input.swayX,swayY:input.swayY,muzzle:weaponRuntime.muzzle,
-        cueHurt:animCues.hurt,cueHurtAmt:animCues.hurtAmt,cuePickup:animCues.pickup,cueDryFire:animCues.dryFire,cueInput:animCues.input,paused,
+        cueHurt:animCues.hurt,cueHurtAmt:animCues.hurtAmt,cuePickup:animCues.pickup,cueDryFire:animCues.dryFire,cueInput:animCues.input,paused,hidden:openingHidesWeapon(),
       },WEAPONS));
     hud();
     withKickLean(renderState.camera,kick,()=>renderState.renderer.render(renderState.scene,renderState.camera));}}

@@ -254,7 +254,7 @@ function toViewmodelFrame(s: Scenario): DrawModule.ViewmodelFrame {
     started: true, dead: false, pianoOpen: false, zoomLerp: s.zoomLerp, cur: s.cur,
     vx: s.vx, vz: s.vz, vy: 0, grounded: true, yaw: 0, sprintKey: s.sprintKey, bobT: s.bobT, wstate: s.wstate, wtime: s.wtime,
     equipT: 0.24, unequipT: 0.16, kickAmt: s.kickAmt, kickRot: s.kickRot, kickAnim: 0, swayX: s.swayX, swayY: s.swayY, muzzle: s.muzzle,
-    cueHurt: 0, cueHurtAmt: 0, cuePickup: 0, cueDryFire: 0, cueInput: 0, paused: false,
+    cueHurt: 0, cueHurtAmt: 0, cuePickup: 0, cueDryFire: 0, cueInput: 0, paused: false, hidden: false,
   };
 }
 function toRefGlobals(s: Scenario): Record<string, unknown> {

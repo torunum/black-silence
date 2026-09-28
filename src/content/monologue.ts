@@ -1,12 +1,24 @@
 /**
  * ADEM's mouth — his monologue lines, keyed by trigger id.
  * Keys: lvl<N>, boss_<K>, boss_<K>2, boss_<K>3, see_<K>, and named events.
- * Copied verbatim from reference/sonsurum.html lines 781-885.
+ * Copied verbatim from reference/sonsurum.html lines 781-885 — except the
+ * prologue's, rewritten when the prologue was rebuilt in the order its story
+ * always told (player feedback round 2, the prologue plan, Task 1): `lvl0`
+ * wakes him in his grave, and `p0_down`/`p0_hell`/`p0_out` are said the
+ * first time he walks into the crypt, hell and the climb out
+ * (`src/world/levels/prologue.ts`'s zones, `src/world/Zones.ts`).
+ * `tests/fidelity.test.ts` pins those four keys as the only divergence.
  */
 export const MONOLOGUE: Record<string, string[]> = {
- lvl0:["...I was in the ground. In the fire. And now I am climbing.",
-   "Hell spat me back out. Rude. I was just getting comfortable.",
-   "There's a stairway. Up is up. Up is better than this."],
+ lvl0:["...I was in the ground. Six feet down, in my good shirt. Somebody owes me a shirt.",
+   "Buried. Actually buried. Whoever did the eulogy had better have been crying.",
+   "I clawed out of a coffin with my bare hands. My nails will never forgive me."],
+ p0_down:["A crypt going down. Under a graveyard. Nothing good has ever been down there. Down we go.",
+   "The only way out is down. Story of my life, now with masonry."],
+ p0_hell:["Oh. It's hell. It's actually hell. I had money on 'nothing'.",
+   "Hell. I've been here before. It spat me out once. Let's not give it seconds."],
+ p0_out:["Stairs going UP. Up is up. Up is better than this.",
+   "Fresh air up there. Or at least air that isn't on fire."],
  lvl1:["A dungeon. Of course it's a dungeon. My therapist is going to love this.",
    "Stone walls, chains, screaming in the distance. Real estate around here is criminal."],
  lvl2:["A church. Great. I'm sure everyone inside is super normal.",

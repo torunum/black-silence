@@ -184,6 +184,15 @@ A trim never pushes one sound on its own past -1.5 dBFS peak, or above +18 dB: t
 | `whispers` | ambience | 3.6 | -30 | -30.0 | -23.5 | +0.0 | — | 3.6 |
 | `heartbeat` | ambience | -1.2 | -30 | -30.0 | -12.5 | -0.0 | — | -1.2 |
 | `breath` | ambience | 12.2 | -30 | -30.0 | -18.1 | -0.0 | — | 12.2 |
+| `graveBreath` | ambience | -15.8 | -30 | -30.0 | -21.3 | +0.0 | — | -15.8 |
+| `graveHeartbeat` | ambience | -22.5 | -30 | -30.0 | -17.9 | +0.0 | — | -22.5 |
+| `earthShifts` | event | -14.1 | -22 | -22.0 | -9.9 | +0.0 | — | -14.1 |
+| `lidCracks` | event | -14.5 | -22 | -22.0 | -6.0 | -0.0 | — | -14.5 |
+| `dirtFalls` | foley | -12.2 | -26 | -26.0 | -11.0 | +0.0 | — | -12.2 |
+| `hellRoar` | ambience | -23.2 | -30 | -30.0 | -18.6 | +0.0 | — | -23.2 |
+| `hellScream` | ambience | -19.2 | -30 | -30.0 | -19.9 | +0.0 | — | -19.2 |
+| `fireCrackle` | ambience | -7.8 | -30 | -30.0 | -11.5 | +0.0 | — | -7.8 |
+| `churchyardWind` | ambience | -10.5 | -30 | -30.0 | -19.1 | -0.0 | — | -10.5 |
 | `bossPulse` | ambience | -27.8 | -30 | -30.0 | -19.5 | +0.0 | — | -27.8 |
 | `achievementChime` | ui | -19.8 | -31 | -31.0 | -20.6 | -0.0 | — | -19.8 |
 | `kickReady` | ui | -10.8 | -31 | -31.0 | -15.3 | -0.0 | — | -10.8 |
@@ -457,6 +466,16 @@ Player feedback round 2 Task 4. Every enemy speaks in its own voice (`src/audio/
 | You are hit | `playerHurt` | -16.4 | -8.0 | -32.1 | -31.7 | -31.5 | -23.0 | -23 | +8.5 |
 | Heartbeat (low health) | `heartbeat` | -15.3 | -12.5 | -27.9 | -31.6 | -32.8 | -30.0 | -30 | +2.8 |
 | Breathing (low health) | `breath` | -34.9 | -18.1 | -50.7 | -39.3 | -46.3 | -30.0 | -30 | +16.3 |
+| Grave: a breath in the coffin | `graveBreath` | -9.5 | -21.3 | -23.9 | -38.2 | -18.2 | -30.0 | -30 | -11.8 |
+| Grave: heartbeat in the coffin | `graveHeartbeat` | 0.6 | -17.9 | -9.3 | -33.8 | -11.4 | -30.0 | -30 | -18.6 |
+| Grave: the earth above shifts | `earthShifts` | 0.2 | -9.9 | -11.4 | -23.9 | -12.0 | -22.0 | -22 | -10.0 |
+| Grave: the coffin lid splits | `lidCracks` | 4.7 | -6.0 | -18.1 | -31.1 | -11.5 | -22.0 | -22 | -10.5 |
+| Grave: dirt falls off him | `dirtFalls` | -2.8 | -11.0 | -21.5 | -32.2 | -17.9 | -26.0 | -26 | -8.1 |
+| Hell: the cavern's roar (one swell) | `hellRoar` | 0.7 | -18.6 | -12.3 | -31.5 | -10.7 | -30.0 | -30 | -19.3 |
+| Hell: the cavern's roar (12 seconds of it) | `hellRoar` | 0.7 | -18.6 | -12.3 | -31.5 | -10.7 | -30.0 | -30 | -19.2 |
+| Hell: a distant scream | `hellScream` | -6.5 | -19.9 | -21.9 | -37.8 | -15.5 | -30.0 | -30 | -14.5 |
+| Hell: the pit crackles | `fireCrackle` | -7.6 | -11.5 | -31.8 | -39.8 | -26.2 | -30.0 | -30 | -3.8 |
+| Churchyard: a gust of wind | `churchyardWind` | -12.4 | -19.1 | -31.0 | -37.5 | -23.6 | -30.0 | -30 | -6.4 |
 | Pickup: health | `pickupHealth` | -10.8 | -21.7 | -23.3 | -41.0 | -19.8 | -31.0 | -31 | -11.1 |
 | Pickup: armour | `pickupArmour` | -0.4 | -13.7 | -17.2 | -40.4 | -17.7 | -31.0 | -31 | -13.3 |
 | Pickup: bullets | `pickupAmmo` | -4.3 | -13.0 | -20.3 | -41.0 | -22.6 | -31.2 | -31 | -8.6 |

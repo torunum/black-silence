@@ -95,6 +95,8 @@ export interface ViewmodelFrame {
   cueHurt: number; cueHurtAmt: number; cuePickup: number; cueDryFire: number; cueInput: number;
   /** Loop.ts's `paused` — an overlay (level end, win, death) or the piano is up: no idle fidget behind it. */
   paused: boolean;
+  /** The prologue's opening is running and the hands are not up yet (src/world/Opening.ts): nothing is drawn. */
+  hidden: boolean;
   swayX: number;
   swayY: number;
   muzzle: number;
@@ -199,7 +201,7 @@ export function lastAnchors(): Readonly<Record<string, [number, number]>> {
 }
 
 export function drawViewmodel(dt: number, tNow: number, v: ViewmodelFrame, weapons: readonly WeaponStats[]): void {
-  if(!v.started||v.dead||v.pianoOpen){vm.skipped=true;return;}
+  if(!v.started||v.dead||v.pianoOpen||v.hidden){vm.skipped=true;return;}
   const scoped=v.zoomLerp>=.85&&v.cur===4;
   if(scoped&&!(v.kickAnim>0)){vm.footAt=null;vm.skipped=true;return;} // scoped: hide rifle (a kick still shows its leg, below)
   const fg=getFx(),VW=getVW(),VH=getVH();
