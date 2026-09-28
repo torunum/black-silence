@@ -34,7 +34,7 @@ import { MONOLOGUE } from "../../src/content/monologue";
  * **Rewritten for the rebuilt prologue** (the ninth regeneration, at the end
  * of this comment). Until then the prologue loaded with zero enemies and
  * none of the combat path was reached here at all. The rebuilt one loads
- * with **six** — four zombies and two crawlers, all in its hell — and this
+ * with **eight** — four zombies and four crawlers, all in its hell — and this
  * script walks down the crypt stair and stops at its foot, short of hell, so
  * it meets two of them. Measured with a throwaway probe of the same run (not
  * committed): 12 shots fired, **0 hits**, 0 kills; at the end a crawler
@@ -427,18 +427,24 @@ import { MONOLOGUE } from "../../src/content/monologue";
  * ## The grave opening — tenth regeneration: the first line moved, and only that
  *
  * The prologue plan's Task 2 (`src/world/Opening.ts`): the prologue now opens
- * with ADEM clawing out of his grave — 5.5 seconds, input locked, **any key
- * or click skips it**. **This script skips it, at frame 5**, with the
- * `KeyW` press it has always opened with: the opening runs for frames 1-4,
- * the keydown skips it, and the same press walks him south as before. It
+ * with ADEM clawing out of his grave — 5.5 seconds, input locked. **This
+ * script skips it, at frame 5**: the opening runs for frames 1-4, and the
+ * same `KeyW` press it has always opened with walks him south as before. It
  * is skipped rather than recorded because this fixture's job is the walk,
  * the stair, the fight and the HUD, and recording 330 frames of a camera
  * on rails would push all of that out of a 900-frame run or double its
  * length; the opening's own behaviour — the lock, the pose from lying to
  * standing, the skip by key and by click, the hidden weapon, the line — is
  * owned by `tests/world/opening.test.ts`. The skip is at a known frame
- * because the script says so, not because of a harness hook: it goes
- * through the game's own listener.
+ * because the script says so: originally the game's own listener took the
+ * `KeyW` keydown. **Since the review round that made skipping deliberate**
+ * (only Space, Enter, E or a click, never in the first 0.6 s, never on a
+ * repeat) that key no longer skips, so `drive` calls the game's own
+ * `skipOpening()` on frame 5, *before* the frame's scripted input — the
+ * same call the listener made, at the same point of the same frame, with the
+ * `KeyW` delivered right after it as it was right before. Nothing this
+ * fixture records can tell the two apart: `trace-level0.json` did not move
+ * (`git diff` empty), which is the proof.
  *
  * What moved, field by field against the ninth regeneration, all 90
  * sampled frames:
@@ -546,7 +552,7 @@ function fightingScript(): InputEvent[] {
   // doorway and the 4-unit-wide stair.
   const script: InputEvent[] = [
     { frame: 2, kind: "pointerlock", locked: true },
-    // skips the grave opening (src/world/Opening.ts) — any key does — and, held, walks south
+    // walks south, held. The grave opening (src/world/Opening.ts) is skipped by `drive` below, on this same frame, just before this press
     { frame: 5, kind: "key", type: "keydown", code: "KeyW" },
     { frame: 20, kind: "move", movementX: 60, movementY: -30 },
     { frame: 40, kind: "key", type: "keydown", code: "KeyA" },
@@ -586,7 +592,13 @@ const INPUT: readonly InputEvent[] = fightingScript();
 let trace: TraceFrame[];
 
 beforeAll(async () => {
-  trace = await runTrace({ seed: 20260814, frames: 900, dtMs: 1000 / 60, input: INPUT, every: 10 });
+  let skipOpening: () => void = () => {};
+  trace = await runTrace({
+    seed: 20260814, frames: 900, dtMs: 1000 / 60, input: INPUT, every: 10,
+    prepare: async () => { ({ skipOpening } = await import("../../src/world/Opening")); },
+    // Frame 5: the grave opening ends, as the script's first key used to end it (see the header).
+    drive: (frame) => { if (frame === 5) skipOpening(); },
+  });
   if (WRITE) {
     mkdirSync(FIXTURE_DIR, { recursive: true });
     writeFileSync(FIXTURE, JSON.stringify(trace, null, 1) + "\n");
@@ -640,7 +652,7 @@ describe("the recorded run is worth comparing", () => {
     expect(hp).toBeLessThan(50);
   });
 
-  it("skips the grave opening with its first key: the level's line at once, then the crypt's, never overwritten", () => {
+  it("has the grave opening skipped at frame 5: the level's line at once, then the crypt's, never overwritten", () => {
     const lvl0 = (f: TraceFrame) => MONOLOGUE.lvl0.some((l) => f.hud.subt.includes(l));
     const down = (f: TraceFrame) => MONOLOGUE.p0_down.some((l) => f.hud.subt.includes(l));
     expect(lvl0(trace[0]), "frame 10: the opening was skipped at frame 5 and said its line").toBe(true);

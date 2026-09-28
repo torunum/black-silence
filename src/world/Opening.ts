@@ -19,14 +19,18 @@ import { floorHeightAt } from "./Collision";
  * out of the ground — lying on his back looking up at the night sky, then
  * sitting up, then climbing out to stand beside his own grave, dirt falling
  * away — one line from ADEM, the weapon raised, and control. **5.5 seconds.
- * Any key or click skips it.**
+ * Space, Enter, E or a click skips it — deliberately, see the bottom of the
+ * file.**
  *
  * ## Which level, and when
  *
  * A level has an opening when its `BuiltLevel` names a `grave` (only the
  * prologue does). `loadLevel` calls `beginOpening` as its last act, so it
  * runs when the level starts — NEW GAME, or chapter select's first row —
- * and never mid-level: nothing else loads a level (death reloads the page).
+ * and never mid-level: level 0 is only ever loaded from the menu (death
+ * reloads the page; `LevelEnd.ts`'s `loadLevel(S.level + 1)` moves forward, to
+ * levels that name no grave, and `resetOpening` drops an opening left running
+ * by any load).
  * On a level with an opening, the opening says the level's line
  * (`lvl0`) at its end, in place of `loadLevel`'s 1.4-second timer. That
  * timer is what used to overwrite `p0_down` for a player who ran straight to
@@ -283,7 +287,7 @@ export function openingTick(dt: number): void {
   placeCamera(openingPose(t, opening.site), lampAt(t));
 }
 
-/** Any key or click: straight to the end — standing beside the grave, the line said, the weapon coming up. */
+/** Straight to the end — standing beside the grave, the line said, the weapon coming up. */
 export function skipOpening(): void {
   if (opening.active) finish();
 }
@@ -312,11 +316,28 @@ export function openingHidesWeapon(): boolean {
   return opening.active && !opening.raised;
 }
 
-// Any key or click skips. Registered after `../player/Input.ts`'s own
-// listeners (this module imports it, so it evaluated first), so the event
-// reaching the game's handlers still sees the lock: the skipping key or
-// click does not also kick, reload or interact. A held movement key keeps
-// walking once control arrives; a click does not also fire (`finish`
-// clears `input.firing`).
-addEventListener("keydown", () => { if (opening.active) skipOpening(); });
-addEventListener("mousedown", () => { if (opening.active) skipOpening(); });
+/**
+ * Seconds at the start in which nothing skips it: the click that started the
+ * game (the second click of a double-click on NEW GAME, or the one that takes
+ * the pointer lock) must not also end the opening it began.
+ */
+export const SKIP_AFTER = 0.6;
+
+/** The keys that skip: a deliberate press, not the movement keys, Esc or a modifier. */
+const SKIP_KEYS: ReadonlySet<string> = new Set(["Space", "Enter", "NumpadEnter", "KeyE"]);
+
+// Skipping is deliberate. A held key's auto-repeats, Esc, modifiers and the
+// movement keys do nothing, nothing skips in the first `SKIP_AFTER` seconds,
+// and a click that only re-takes the pointer lock (`input.locked` is false —
+// `../player/Input.ts` is asking for it in the very same event) does not skip.
+// Registered after `../player/Input.ts`'s own listeners (this module imports
+// it, so it evaluated first), so the event reaching the game's handlers still
+// sees the lock: the skipping key or click does not also kick, reload or
+// interact. A held movement key keeps walking once control arrives; a click
+// does not also fire (`finish` clears `input.firing`).
+addEventListener("keydown", (e) => {
+  if (opening.active && opening.t >= SKIP_AFTER && !e.repeat && SKIP_KEYS.has(e.code)) skipOpening();
+});
+addEventListener("mousedown", () => {
+  if (opening.active && opening.t >= SKIP_AFTER && input.locked) skipOpening();
+});

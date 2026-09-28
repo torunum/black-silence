@@ -12,7 +12,7 @@ import { world } from "../../src/world/WorldState";
  * playing out all three of its phases, made **before** Phase 3 replaces the
  * one shared priest brain with three distinct boss brains.
  *
- * `trace.test.ts` plays the prologue, which loads with zero enemies.
+ * `trace.test.ts` plays the prologue, which loads with eight enemies (its hell's).
  * `combatTrace.test.ts` plays level 1, which has fourteen — but level 1's
  * only boss is `U`, THE CATHEDRAL GUARDIAN (`EnemyDefs.ts`: `boss:true,
  * stone:true`, **no** `priest`), so `priestThink` never runs in either.

@@ -20,7 +20,7 @@ import type { BuiltLevel, DecorSpec } from "./LevelBuilder";
  * is never read back: where a piece should block the player (a headstone,
  * the tree) the level puts a solid cell under it (`I`, which on a raised
  * floor is buried out of sight — see `prologue.ts`). Built from boxes and
- * cylinders, merged into **one mesh per material** (`decor`), so a level's
+ * cylinders, merged into **one mesh per material** (`decor`; the grass, which casts no shadow, is `decorGrass`), so a level's
  * whole dressing costs a handful of scene children and draw calls however
  * many pieces it lists. Every "random" angle comes from the spec or from
  * `grain` (`BandTextures.ts`'s integer hash): nothing here calls
@@ -231,7 +231,8 @@ function buildPieces(scene: THREE.Scene, specs: DecorSpec[]): void {
   }
   for (const [mat, list] of parts) {
     const mesh = new THREE.Mesh(track(merge(list)), track(makeMat(mat)));
-    mesh.name = "decor"; scene.add(mesh);
+    // the grass is its own mesh: 25,000 triangles of 2.5 cm blades, which must not be in the lamp's cube shadow (`Shadows.ts`, `decorGrass`)
+    mesh.name = mat === "grass" ? "decorGrass" : "decor"; scene.add(mesh);
   }
   buildFire(scene, emitters, lights);   // src/fx/HellFire.ts — nothing on a level with no fire
 }

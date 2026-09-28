@@ -138,6 +138,37 @@ describe("the zoned prologue builds a ceiling per zone look, and none over the s
   });
 });
 
+describe("a riser wears the wall of the zone of the lower cell of its pair", () => {
+  it("every riser on the zoned prologue, edge by edge — against a wall, the wall's own zone (Ceiling.ts's keyAt(x+dx, z+dz))", async () => {
+    const { TEX } = await import("../../src/render/ProcTextures");
+    loadLevel(0);
+    const zs = world.zones!;
+    const wallOf = (x: number, z: number) => {
+      const t = zs.themes[zs.map[z][x]];
+      return t.hell ? TEX.hellWall : t.flesh ? TEX.fleshWall : t.dungeon ? TEX.dungeonWall : TEX.churchWall;
+    };
+    let n = 0, differ = 0;
+    const normal = new THREE.Vector3();
+    for (const m of named("ceilingRisers") as THREE.InstancedMesh[]) {
+      const map = (m.material as THREE.MeshLambertMaterial).map!;
+      for (const { pos, quat } of instances(m)) {
+        // the strip stands on the edge between the higher cell and the lower one, facing from the first to the second
+        normal.set(0, 0, 1).applyQuaternion(quat);
+        const dx = Math.round(normal.x), dz = Math.round(normal.z);
+        const hx = Math.round((pos.x - dx * CELL / 2) / CELL - 0.5), hz = Math.round((pos.z - dz * CELL / 2) / CELL - 0.5);
+        const lx = hx + dx, lz = hz + dz;
+        expect(ceilHeightAtCell(lx, lz), `riser at ${hx},${hz}->${lx},${lz}: the lower cell is lower`).toBeLessThan(ceilHeightAtCell(hx, hz));
+        expect(map.image, `the riser between ${hx},${hz} (high) and ${lx},${lz} (low) wears the LOWER cell's wall`).toBe(wallOf(lx, lz).image);
+        n++;
+        if (wallOf(lx, lz).image !== wallOf(hx, hz).image) differ++;
+      }
+    }
+    expect(n).toBeGreaterThan(20);
+    // the premise: some edges do pair two different walls, or the rule could not be told from its opposite
+    expect(differ).toBeGreaterThan(0);
+  });
+});
+
 describe("a level with a ceiling map builds geometry matching the map, cell for cell", () => {
   it("level 3 replaces the plane with one instanced quad per cell, each at its mapped height", () => {
     loadLevel(3);

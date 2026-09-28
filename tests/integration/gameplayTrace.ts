@@ -130,6 +130,14 @@ export interface TraceOptions {
    * Default `undefined`: nothing is awaited.
    */
   prepare?: () => Promise<void>;
+  /**
+   * Called at the end of every frame, after the game has run it: returning
+   * true ends the run there, so a caller that has seen what it came for
+   * (`prologuePlay.test.ts`: the bot has won or died) does not pay for the
+   * frames after it. The frames run so far are returned. Default
+   * `undefined`: never called, and a run without it is unchanged.
+   */
+  until?: (frame: number) => boolean;
 }
 
 export interface TraceFrame {
@@ -797,6 +805,7 @@ export async function runTrace(o: TraceOptions): Promise<TraceFrame[]> {
           scene: digestScene(getScene(), texName),
         });
       }
+      if (o.until && o.until(frame)) break;
     }
     completed = true;
     return out;

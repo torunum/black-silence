@@ -37,7 +37,9 @@ import type { LevelDef } from "./levels/index";
  *   opening line.
  *
  * The ease is `1 - exp(-dt * EASE)` a frame — frame-rate independent, and
- * drawing nothing from `Math.random`. The one draw this file causes is
+ * drawing nothing from `Math.random`. It allocates nothing per frame (each
+ * theme's colours are built once), and once every value is within a hair of
+ * its target it snaps there and does no more work. The one draw this file causes is
  * `say()`'s own pick of which line to speak (`Subtitles.ts`, as every `say`
  * has always picked), once on the first entry into each zone that has a
  * line: three in a whole prologue, none standing still or coming back —
@@ -50,6 +52,20 @@ import type { LevelDef } from "./levels/index";
 export const EASE = 2.2;
 
 const zs = { cur: -1, seen: new Set<number>() };
+
+/** Closer than this — a quarter of one 8-bit step in a channel, or 1e-4 of fog density — and the ease snaps to its target, exactly, and stops. */
+const EPS_C = 1 / 1024, EPS_D = 1e-4;
+const far = (a: THREE.Color, b: THREE.Color): boolean =>
+  Math.abs(a.r - b.r) > EPS_C || Math.abs(a.g - b.g) > EPS_C || Math.abs(a.b - b.b) > EPS_C;
+const off = (a: THREE.Color, b: THREE.Color): boolean => a.r !== b.r || a.g !== b.g || a.b !== b.b;
+
+/** A theme's fog and ambient colours, built once per theme — `step` runs every frame and allocates nothing. */
+const palette = new WeakMap<ZoneTheme, { fog: THREE.Color; amb: THREE.Color }>();
+function colours(t: ZoneTheme): { fog: THREE.Color; amb: THREE.Color } {
+  let c = palette.get(t);
+  if (!c) palette.set(t, c = { fog: new THREE.Color(t.fog), amb: new THREE.Color(t.amb) });
+  return c;
+}
 
 /** The look a level starts with: the spawn cell's zone on a zoned level, else the level's own definition. */
 export function levelLook(def: LevelDef, L: BuiltLevel): LevelDef | ZoneTheme {
@@ -92,15 +108,21 @@ function step(dt: number, snap: boolean): void {
   }
   if (zs.cur < 0) return;
   const t = zm.themes[zs.cur];
-  const k = snap ? 1 : 1 - Math.exp(-dt * EASE);
-  const fogTo = new THREE.Color(t.fog), ambTo = new THREE.Color(t.amb);
+  const to = colours(t);
   const scene = renderState.scene as THREE.Scene;
   const fog = scene.fog as THREE.FogExp2 | null;
-  if (fog) { fog.color.lerp(fogTo, k); fog.density += (t.fogD * 1.5 - fog.density) * k; }
-  if (scene.background instanceof THREE.Color) scene.background.lerp(fogTo, k);
+  const bg = scene.background instanceof THREE.Color ? scene.background : null;
   const amb = renderState.ambLight;
+  const fogD = t.fogD * 1.5, ambI = t.ambI * 0.42, dark = ambienceState.darkT > 0;
+  // settled — every value exactly on its target — nothing to ease, so nothing to do: these comparisons are the whole cost of a frame
+  if (!snap && !(fog && (off(fog.color, to.fog) || fogD !== fog.density)) && !(bg && off(bg, to.fog)) &&
+      !(amb && (off(amb.color, to.amb) || (!dark && ambI !== amb.intensity)))) return;
+  const k = snap ? 1 : 1 - Math.exp(-dt * EASE);
+  const settle = (c: THREE.Color, target: THREE.Color): void => { if (far(c, target)) c.lerp(target, k); else c.copy(target); };
+  if (fog) { settle(fog.color, to.fog); fog.density = Math.abs(fogD - fog.density) > EPS_D ? fog.density + (fogD - fog.density) * k : fogD; }
+  if (bg) settle(bg, to.fog);
   if (amb) {
-    amb.color.lerp(ambTo, k);
-    if (ambienceState.darkT <= 0) amb.intensity += (t.ambI * 0.42 - amb.intensity) * k;
+    settle(amb.color, to.amb);
+    if (!dark) amb.intensity = Math.abs(ambI - amb.intensity) > EPS_D ? amb.intensity + (ambI - amb.intensity) * k : ambI;
   }
 }

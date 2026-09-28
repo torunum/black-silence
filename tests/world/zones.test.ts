@@ -149,7 +149,7 @@ describe("the other seven levels are unzoned and build what they always built", 
     expect((fl[0].geometry as THREE.BufferGeometry).type).toBe("PlaneGeometry");
     expect(sameTex(mapOf(fl[0]), floorOf(def))).toBe(true);
     expect(mapOf(fl[0]).repeat.toArray()).toEqual([world.GW, world.GH]);
-    for (const name of ["floorCells", "decor", "decorLight", "moon", "stars"]) expect(kids(name), name).toHaveLength(0);
+    for (const name of ["floorCells", "decor", "decorGrass", "decorLight", "moon", "stars"]) expect(kids(name), name).toHaveLength(0);
     expect(kids("platform").length).toBeLessThanOrEqual(1);
     expect(kids("wallCourse").length).toBeLessThanOrEqual(1);
     const scene = renderState.scene as THREE.Scene;
@@ -215,6 +215,66 @@ describe("crossing into hell", () => {
   });
 });
 
+describe("the ease (src/world/Zones.ts's step)", () => {
+  const HELL = () => { player.px = 10 * CELL; player.pz = 20.5 * CELL; };
+
+  it("allocates no colours per frame, mid-ease or settled", () => {
+    loadLevel(0);
+    HELL(); zoneTick(1 / 60);   // the crossing: the theme's colours are built here, once
+    const spy = vi.spyOn(THREE.Color.prototype, "set");
+    try {
+      for (let k = 0; k < 100; k++) zoneTick(1 / 60);   // easing
+      for (let k = 0; k < 600; k++) zoneTick(1 / 60);   // settled
+      expect(spy).not.toHaveBeenCalled();
+    } finally { spy.mockRestore(); }
+  });
+
+  it("stops easing once settled: exactly on target, a hair's perturbation is left alone, a real one eased back", () => {
+    loadLevel(0);
+    const hell = ZONES[2], scene = renderState.scene as THREE.Scene, fog = scene.fog as THREE.FogExp2;
+    HELL();
+    for (let k = 0; k < 600; k++) zoneTick(1 / 60);
+    const fogTo = new THREE.Color(hell.fog), ambTo = new THREE.Color(hell.amb);
+    expect(fog.color.equals(fogTo), "fog colour exactly on target").toBe(true);
+    expect((scene.background as THREE.Color).equals(fogTo)).toBe(true);
+    expect(fog.density).toBe(hell.fogD * 1.5);
+    expect(renderState.ambLight.color.equals(ambTo)).toBe(true);
+    expect(renderState.ambLight.intensity).toBe(hell.ambI * 0.42);
+    const d = fog.density;
+    fog.density = d + 2e-5;
+    zoneTick(1 / 60);
+    expect(fog.density, "inside epsilon: snapped, not eased").toBe(d);
+    fog.density = d + 0.02;
+    zoneTick(1 / 60);
+    expect(fog.density).toBeLessThan(d + 0.02);
+    expect(fog.density).toBeGreaterThan(d);
+    for (let k = 0; k < 600; k++) zoneTick(1 / 60);
+    expect(fog.density).toBe(d);
+  });
+
+  it("leaves the ambient light alone while the blackout event has the lights out, and takes it back after", async () => {
+    // Zones.ts's `darkT` guard: without it the zone ease fights the event (which restores its own saved level)
+    const { ambienceState } = await import("../../src/world/AmbienceState");
+    loadLevel(0);
+    const hell = ZONES[2], amb = renderState.ambLight;
+    HELL(); zoneTick(1 / 60);
+    for (let k = 0; k < 20; k++) zoneTick(1 / 60);
+    const saved = amb.intensity;
+    try {
+      ambienceState.darkT = 5;
+      amb.intensity = 0.01;   // the event has it dark
+      for (let k = 0; k < 600; k++) zoneTick(1 / 60);
+      expect(amb.intensity, "the zone ease fought the blackout").toBe(0.01);
+      // the colour is not the event's: it keeps easing
+      expect(renderState.ambLight.color.equals(new THREE.Color(hell.amb))).toBe(true);
+      ambienceState.darkT = 0;
+      amb.intensity = saved;
+      for (let k = 0; k < 600; k++) zoneTick(1 / 60);
+      expect(amb.intensity).toBe(hell.ambI * 0.42);
+    } finally { ambienceState.darkT = 0; }
+  });
+});
+
 describe("raised ground", () => {
   it("stands torches and candles on the floor under them, and items bob there", () => {
     loadLevel(0);
@@ -238,6 +298,26 @@ describe("raised ground", () => {
       expect(fh).toBeGreaterThan(0);
       expect(Math.abs(it.sp.position.y - (fh + .5))).toBeLessThanOrEqual(.0701);
     }
+  });
+});
+
+describe("raised ground on an unzoned level is left where the reference put it", () => {
+  it("level 3's torches, candles and items on its raised tomb are not lifted (Decor.ts's `!world.zones` guard)", () => {
+    loadLevel(3);
+    expect(world.zones).toBeNull();
+    type Lifted = { x: number; z: number; sp: THREE.Object3D; L?: THREE.Object3D; y?: number; y0?: number };
+    const torches = world.torches as unknown as Lifted[], candles = world.candles as unknown as Lifted[], items = world.items as unknown as Lifted[];
+    const raised = (a: Lifted[]) => a.filter((t) => floorHeightAt(t.x, t.z) > 0);
+    // the premise: level 3 does stand something on raised ground, or this proves nothing
+    expect(raised(torches).length + raised(candles).length + raised(items).length).toBeGreaterThan(0);
+    for (const t of torches) {
+      expect(t.L!.position.y, "torch light").toBe(1.45);
+      expect(t.sp.position.y, "torch flame").toBe(1.35);
+      expect(t.y, "torch embers' base").toBeUndefined();
+    }
+    for (const p of kids("torchPost")) expect(p.position.y).toBe(.575);
+    for (const c of candles) expect(c.sp.position.y).toBe(.18);
+    for (const it of items) expect(it.y0, "items keep their own bob height").toBeUndefined();
   });
 });
 

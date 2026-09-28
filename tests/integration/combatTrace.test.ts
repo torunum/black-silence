@@ -8,7 +8,8 @@ import { MONOLOGUE } from "../../src/content/monologue";
 
 /**
  * The combat trace — closes KNOWN-10. `trace.test.ts` plays the prologue,
- * which loads with zero enemies (see that file's own header), so nothing
+ * which loads with eight enemies but stops short of hell, so it meets two of them
+ * and lands no hit (see that file's own header), so nothing
  * on the combat-resolution path — `damagePlayer`, `damageEnemy`,
  * `killEnemy`, `enemyTick`, `los`, and everything else Plan 0E's DAMAGE/
  * DEATH and ENEMY AI carves move — is exercised by it at all. This file

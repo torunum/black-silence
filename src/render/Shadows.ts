@@ -274,6 +274,12 @@ export const SHADOW_POLICY: Readonly<Record<string, ShadowRule>> = {
      mausoleum roof, coffins, bones, chains. Things the player walks round,
      so a prop's rule. */
   decor: { cast: true, receive: true },
+  /* The dead grass tufts, split off `decor` for this: tens of thousands of
+     triangles of 0.025-wide blades, which the lamp's cube shadow would draw
+     six times a frame for a shadow narrower than a texel (as the torch
+     post's, above). They take shadow — the lamp's own pool of light — but
+     throw none. */
+  decorGrass: { cast: false, receive: true },
   /* The burning pit's glow, the moon, the stars: light and sky, which
      neither cast nor take a shadow. */
   decorLight: { cast: false, receive: false },

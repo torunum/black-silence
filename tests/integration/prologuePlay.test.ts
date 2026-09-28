@@ -18,7 +18,9 @@ import { PrologueBot, ROUTE, SKILL, type BotEyes } from "../support/prologueBot"
  * slow to turn, a wide aim) — the one the target is about. `BOT_SKILL=usual`
  * plays a steadier one, and `BOT_SEED=n` replays under another seed (the
  * elite rolls and the monsters' choices change); the task's report lists
- * both players under five seeds each.
+ * both players under five seeds each. `BOT_LOG=1` prints the run's numbers
+ * (the ending, the stages, the lowest health, the bot's log); the default
+ * run is silent. The run stops the frame the bot wins or dies.
  */
 
 const SEED = Number(process.env.BOT_SEED ?? 20260928);
@@ -34,6 +36,12 @@ beforeAll(async () => {
   let S: typeof import("../../src/core/State").S;
   let zoneOf: () => string = () => "";
   let finished = false;
+  /** The end of the run, once the bot has won or died: recorded, and the trace stopped there. */
+  const conclude = (frame: number): void => {
+    finished = true;
+    const W = eyes!.world.enemies;
+    end = { dead: S.dead, won: S.won, hp: S.hp, frame, level: S.level as unknown as number, killed: W.filter((e) => e.dead).length, total: W.length };
+  };
   await runTrace({
     seed: SEED, frames: FRAMES, dtMs: 1000 / 60, input: [], every: 600,
     prepare: async () => {
@@ -55,22 +63,19 @@ beforeAll(async () => {
       if (finished) return [];
       const z = zoneOf();
       if (z && (!stages.length || stages[stages.length - 1].zone !== z)) stages.push({ frame, zone: z, hp: S.hp });
-      if (S.dead || S.won) {
-        finished = true;
-        const W = eyes!.world.enemies;
-        end = { dead: S.dead, won: S.won, hp: S.hp, frame, level: S.level as unknown as number, killed: W.filter((e) => e.dead).length, total: W.length };
-        return [];
-      }
       return bot.step(frame).map((e) => ({ ...e, frame }) as InputEvent);
     },
+    // Won or dead: nothing after it is looked at, so stop paying for it (the run used to play out all 150 s regardless).
+    until: (frame) => { if (!finished && (S.dead || S.won)) conclude(frame); return finished; },
   });
   if (!finished) {
     const p = eyes!.player;
     bot.log.push(`stuck at ${p.px.toFixed(1)},${p.pz.toFixed(1)} y ${p.pyy.toFixed(2)} wp ${bot.wp} seen ${bot.seen}; alive: ${eyes!.world.enemies.filter((e) => !e.dead).map((e) => `${e.key}@${e.x.toFixed(1)},${e.z.toFixed(1)} fy ${(e.fy || 0).toFixed(1)}`).join(" ")}`);
   }
   if (!finished) end = { dead: S!.dead, won: S!.won, hp: S!.hp, frame: FRAMES, level: 0, killed: eyes!.world.enemies.filter((e) => e.dead).length, total: eyes!.world.enemies.length };
+  // The run's numbers, for the report: `BOT_LOG=1 npx vitest run tests/integration/prologuePlay.test.ts`. Silent otherwise.
   // eslint-disable-next-line no-console
-  console.log(`seed ${SEED} ${SKILL_NAME}: ${JSON.stringify(end)}\n  stages ${JSON.stringify(stages)}\n  lowest hp ${bot.lowest}, kicks ${bot.kicks}\n  ${bot.log.join("\n  ")}`);
+  if (process.env.BOT_LOG) console.log(`seed ${SEED} ${SKILL_NAME}: ${JSON.stringify(end)}\n  stages ${JSON.stringify(stages)}\n  lowest hp ${bot.lowest}, kicks ${bot.kicks}\n  ${bot.log.join("\n  ")}`);
 }, 300_000);
 
 describe(`a player who moves, shoots and kicks — seed ${SEED}`, () => {

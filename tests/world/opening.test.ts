@@ -25,7 +25,10 @@ import { world } from "../../src/world/WorldState";
  * 3. the weapon and the HUD are hidden until the hands come up;
  * 4. the camera starts down in the grave and ends at standing eye height on
  *    the spawn cell beside it, facing the way the level faces the player;
- * 5. any key or any click skips it, and the skip does not also fire or kick;
+ * 5. Space, Enter, E or a click skips it — but not in its first moments, not
+ *    on a key's auto-repeat, not on Esc, a modifier or a movement key, and not
+ *    on the click that only regains the pointer lock — and the skip does not
+ *    also fire or kick;
  * 6. the level's line is said once, by the opening, and nothing overwrites
  *    `p0_down` later (Task 1's first concern);
  * 7. it draws nothing from `Math.random` but `say()`'s own pick.
@@ -186,13 +189,16 @@ describe("played to the end", () => {
   });
 });
 
-describe("any key or click skips it", () => {
+const key = (code: string, init: KeyboardEventInit = {}) => window.dispatchEvent(new KeyboardEvent("keydown", { code, ...init }));
+const click = (button = 0) => { window.dispatchEvent(new MouseEvent("mousedown", { button })); window.dispatchEvent(new MouseEvent("mouseup", { button })); };
+
+describe("skipping is deliberate", () => {
   it("a key: control at once, standing, the line said, the weapon coming up", () => {
     loadLevel(0);
     document.getElementById("subt")!.innerHTML = "";
-    run(0.5);
-    window.dispatchEvent(new KeyboardEvent("keydown", { code: "KeyW" }));
-    window.dispatchEvent(new KeyboardEvent("keyup", { code: "KeyW" }));
+    run(O.SKIP_AFTER + 0.1);
+    key("Space");
+    window.dispatchEvent(new KeyboardEvent("keyup", { code: "Space" }));
     expect(O.opening.active).toBe(false);
     expect(game.inputLock).toBe(false);
     expect(saidLvl0()).toBe(true);
@@ -202,26 +208,80 @@ describe("any key or click skips it", () => {
     expect([cam().position.x, cam().position.y, cam().position.z].map((v) => +v.toFixed(6))).toEqual([s.x, s.y, s.z].map((v) => +v.toFixed(6)));
   });
 
+  it.each(["Space", "Enter", "NumpadEnter", "KeyE"])("%s, after the grace, skips", (code) => {
+    loadLevel(0);
+    run(O.SKIP_AFTER + 0.05);
+    key(code);
+    expect(O.opening.active).toBe(false);
+  });
+
+  it("nothing skips in the first moments: a double-click's second click, a key, an Enter held from the menu", () => {
+    loadLevel(0);
+    input.locked = true;
+    try {
+      // NEW GAME's second click arrives in the first frames, and so does anything else
+      click(); click(2);
+      key("Enter"); key("Space"); key("KeyE");
+      run(O.SKIP_AFTER - 0.1);
+      click(); key("Enter");
+      expect(O.opening.active, "skipped inside the grace").toBe(true);
+      run(0.2);
+      click();
+      expect(O.opening.active, "a click after the grace skips").toBe(false);
+    } finally { input.locked = false; }
+  });
+
+  it("an auto-repeating key does not skip, however long it is held", () => {
+    loadLevel(0);
+    run(O.SKIP_AFTER + 0.5);
+    for (let i = 0; i < 20; i++) key("Enter", { repeat: true });
+    key("Space", { repeat: true });
+    expect(O.opening.active).toBe(true);
+    key("Enter");
+    expect(O.opening.active, "the first, real press does").toBe(false);
+  });
+
+  it("Esc, modifiers and the movement keys do not skip", () => {
+    loadLevel(0);
+    run(1);
+    for (const code of ["Escape", "ShiftLeft", "ShiftRight", "ControlLeft", "AltLeft", "MetaLeft", "CapsLock", "Tab", "KeyW", "KeyA", "KeyS", "KeyD", "ArrowUp"]) {
+      key(code);
+      expect(O.opening.active, code).toBe(true);
+    }
+    O.skipOpening();
+  });
+
   it("a click: skips, and neither fires nor kicks", () => {
     loadLevel(0);
     run(2.2);
-    const kick = weaponRuntime.kickAnim, cd = S.kickCd;
-    window.dispatchEvent(new MouseEvent("mousedown", { button: 0 }));
-    expect(O.opening.active).toBe(false);
-    expect(input.firing).toBe(false);
-    window.dispatchEvent(new MouseEvent("mouseup", { button: 0 }));
+    input.locked = true;
+    try {
+      const kick = weaponRuntime.kickAnim, cd = S.kickCd;
+      window.dispatchEvent(new MouseEvent("mousedown", { button: 0 }));
+      expect(O.opening.active).toBe(false);
+      expect(input.firing).toBe(false);
+      window.dispatchEvent(new MouseEvent("mouseup", { button: 0 }));
+      loadLevel(0);
+      run(1);
+      click(2);
+      expect(O.opening.active).toBe(false);
+      expect(weaponRuntime.kickAnim, "the skipping right-click is not also a kick").toBe(kick);
+      expect(S.kickCd).toBe(cd);
+    } finally { input.locked = false; }
+  });
+
+  it("the click that only regains the pointer lock does not skip", () => {
     loadLevel(0);
-    run(1);
-    window.dispatchEvent(new MouseEvent("mousedown", { button: 2 }));
-    window.dispatchEvent(new MouseEvent("mouseup", { button: 2 }));
-    expect(O.opening.active).toBe(false);
-    expect(weaponRuntime.kickAnim, "the skipping right-click is not also a kick").toBe(kick);
-    expect(S.kickCd).toBe(cd);
+    run(2);
+    expect(input.locked).toBe(false);
+    click();
+    expect(O.opening.active).toBe(true);
+    O.skipOpening();
   });
 
   it("a mouse move does not skip it", () => {
     loadLevel(0);
-    run(0.5);
+    run(1);
     const e = new MouseEvent("mousemove");
     Object.defineProperty(e, "movementX", { value: 40 });
     Object.defineProperty(e, "movementY", { value: 10 });
