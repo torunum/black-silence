@@ -162,12 +162,12 @@ describe("zones and words", () => {
   });
 
   it("is the only level with zones, and the only one dressed by hand for its own scene", () => {
-    // levels 1-4 carry a decor list since the levels-feel-full plan's Task 2 (tests/world/levelDressing.test.ts
-    // holds them to it); 5-7 get theirs in Task 3, and this stops saying "undefined" for them then
+    // levels 1-4 carry a decor list since the levels-feel-full plan's Task 2 and 5-7 since its Task 3
+    // (tests/world/levelDressing.test.ts and levelDressing567.test.ts hold them to it): none but the prologue has zones
     for (let i = 1; i < LEVELS.length; i++) {
       const b = LEVELS[i].build();
       expect(b.zones, LEVELS[i].name).toBeUndefined();
-      if (i > 4) expect(b.decor, LEVELS[i].name).toBeUndefined();
+      expect(b.decor!.length, LEVELS[i].name).toBeGreaterThan(100);
     }
   });
 });

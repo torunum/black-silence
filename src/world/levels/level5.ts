@@ -1,5 +1,6 @@
 import { emptyGrid, link, put, putAbs } from "../LevelBuilder";
 import type { RoomLayout } from "../LevelBuilder";
+import { dressLevel5 } from "./dress5";
 
 /**
  * LEVEL 5 — THE SEWERS.
@@ -71,5 +72,6 @@ export function buildLevel5(): RoomLayout {
   put(L,3,3,3,2,"o");put(L,3,3,1,1,"x");put(L,3,3,5,1,"r");put(L,3,3,3,4,"h");put(L,3,3,5,3,"t");
   /* grates as windows along outer walls */
   [[9,7],[9,15],[23,7],[23,15]].forEach(([x,z])=>putAbs(L,x,z,"W"));
+  L.decor=dressLevel5(L);   // set dressing and its solid masses: a deliberate divergence from the reference (levels-feel-full plan, Task 3), see dress5.ts
   return L;
 }

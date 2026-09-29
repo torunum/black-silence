@@ -78,9 +78,11 @@ describe("a mass's box", () => {
     for (const k of ["straw", "banner", "cage", "candelabra", "niche", "rubble", "urn", "bench", "lectern"]) expect(massBox(spec(k, 3, 3, 0)), k).toBeNull();
   });
 
-  it("belongs to exactly the pieces that are big enough to be in the way: the casters, the font, and the yard's stones and trees", () => {
+  it("belongs to exactly the pieces that are big enough to be in the way: the casters, the font, the yard's stones and trees, and levels 5-7's pump, tank, press, furnace and tumour", () => {
     expect(MASSES.sort()).toEqual(["altar", "cratepile", "conveyor", "deadtree", "drum", "fallenstatue", "font", "gravecross", "gravestone",
-      "machine", "maiden", "rack", "sapling", "sarcofree", "sarcophagus", "slab", "stocks", "tombfree"].sort());
+      "machine", "maiden", "rack", "sapling", "sarcofree", "sarcophagus", "slab", "stocks", "tombfree",
+      // levels 5-7 (Task 3): the sewers' pump and tank, the factory's press and furnace, the womb's tumour
+      "furnace", "pump", "press", "tank", "tumor"].sort());
   });
 
   it("stays inside its own cell at every yaw a rule allows (a wall side, or a quarter turn), so a flood fill may treat the cell as a wall", () => {
@@ -206,7 +208,7 @@ describe("what the loader gives the world", () => {
     loadLevel(1);
     const boxes = new Set<unknown>([...world.masses.values()].flat());
     expect(boxes.size).toBe(massBoxes(LEVELS[1].build().decor!).length);
-    expect(boxes.size).toBeGreaterThan(20);
+    expect(boxes.size).toBeGreaterThan(15);   // 24 until Task 3 took the instruments off the open floor
     loadLevel(0);
     expect(world.masses.size, "the prologue has no masses").toBe(0);
     loadLevel(3);

@@ -103,4 +103,64 @@ export const PIPE_PIECES: Record<string, Piece> = {
     for (const x of [-.2, .2]) box("led", .09, .09, .02, loc(x, 1.36, WZ + .15));
     cyl("pipe", .08, .08, .6, loc(0, .98, WZ + .16), 5);
   },
+
+  // levels 5 and 6's set-pieces (Task 3): the sewers' pump, tank and lantern, the factory's press, furnace and work lamp
+  pump: (box, cyl) => {   // a sewage pump: a volute casing and a motor on a slab, a valve wheel on top, a pipe into the wall and one up
+    box("wrought", 1.5, .14, 1.05, loc(0, .07, WZ + .6));
+    cyl("pipe", .42, .48, .62, loc(-.3, .45, WZ + .6), 8);
+    cyl("wrought", .3, .3, .06, loc(-.3, .8, WZ + .6), 8);
+    box("rustplate", .62, .55, .55, loc(.5, .42, WZ + .6));
+    for (const x of [.32, .5, .68]) box("wrought", .03, .5, .58, loc(x, .42, WZ + .6));
+    cyl("wrought", .24, .24, .04, loc(-.3, .95, WZ + .6), 8);
+    box("wrought", .5, .04, .04, loc(-.3, .95, WZ + .6)); box("wrought", .04, .04, .5, loc(-.3, .95, WZ + .6));
+    cyl("pipe", .1, .1, .5, loc(-.3, .55, WZ + .3, HP), 6);
+    cyl("pipe", .09, .09, 1.6, loc(.5, 1.5, WZ + .2), 6);
+    box("led", .05, .05, .02, loc(.6, .6, WZ + .89));
+  },
+  tank: (box, cyl) => {   // a riveted settling tank against the wall, banded, with a gauge glass, a hatch and a pipe up into the ceiling
+    cyl("rustplate", .58, .58, 2.3, loc(0, 1.15, WZ + .64), 10);
+    for (const y of [.25, 1.15, 2.05]) cyl("wrought", .6, .6, .07, loc(0, y, WZ + .64), 10);
+    cyl("wrought", .5, .58, .14, loc(0, 2.37, WZ + .64), 10);
+    box("sludge", .05, .8, .02, loc(.32, 1.0, WZ + 1.22));
+    box("wrought", .12, .9, .04, loc(.32, 1.0, WZ + 1.21));
+    cyl("wrought", .17, .17, .05, loc(-.2, .7, WZ + 1.22, HP), 8);
+    cyl("pipe", .08, .08, 1.0, loc(-.2, 2.9, WZ + .64), 6);
+  },
+  lantern: (box, cyl) => {   // a caged lantern on an iron bracket, its glass sickly green: the sewers' light
+    box("wrought", .07, .07, .4, loc(0, 2.0, WZ + .22));
+    box("wrought", .05, .5, .05, loc(0, 1.78, WZ + .04));
+    box("wrought", .03, .18, .03, loc(0, 1.92, WZ + .4));
+    cyl("wrought", .04, .15, .1, loc(0, 1.86, WZ + .4), 6);
+    cyl("lampgreen", .11, .11, .3, loc(0, 1.66, WZ + .4), 6);
+    for (const [x, z] of [[-.12, 0], [.12, 0], [0, -.12], [0, .12]]) box("wrought", .025, .32, .025, loc(x, 1.66, WZ + .4 + z));
+    cyl("wrought", .14, .14, .04, loc(0, 1.5, WZ + .4), 6);
+  },
+  press: (box, cyl) => {   // a hydraulic press: two uprights and a crown over an anvil, the piston down, hazard lamp on the crown
+    box("wrought", 1.5, .3, 1.0, loc(0, .15, WZ + .55));
+    for (const x of [-.6, .6]) box("rustplate", .16, 2.0, .16, loc(x, 1.3, WZ + .55));
+    box("wrought", 1.5, .26, .55, loc(0, 2.35, WZ + .55));
+    box("wrought", .7, .16, .5, loc(0, .38, WZ + .55));
+    cyl("wrought", .11, .11, .85, loc(0, 1.95, WZ + .55), 6);
+    box("rustplate", .8, .14, .6, loc(0, 1.47, WZ + .55));
+    box("led", .08, .08, .04, loc(.5, 2.35, WZ + .84));
+    cyl("pipe", .06, .06, .9, loc(-.35, 2.9, WZ + .3), 5);
+  },
+  furnace: (box, cyl) => {   // a brick furnace with an iron door open on a bed of coals, a flue to the ceiling: the factory's fire
+    box("brick", 1.7, 1.5, .95, loc(0, .75, WZ + .5));
+    box("wrought", 1.8, .1, 1.05, loc(0, 1.55, WZ + .5));
+    box("wrought", 1.8, .12, 1.05, loc(0, .06, WZ + .5));
+    box("wrought", .9, .72, .04, loc(0, .62, WZ + .97));
+    box("coal", .7, .5, .03, loc(0, .55, WZ + 1.0));
+    for (const x of [-.2, 0, .2]) box("wrought", .03, .5, .04, loc(x, .55, WZ + 1.03));
+    cyl("pipe", .2, .2, 2.4, loc(0, 2.7, WZ + .4), 6);
+    box("led", .07, .07, .02, loc(.68, 1.2, WZ + .98));
+  },
+  worklamp: (_b, cyl, _d, top, sph) => {   // a work lamp on a cable from the ceiling: a tin shade, a bare bulb in a wire cage
+    const y = top - 1.15;
+    cyl("wrought", .012, .012, 1.0, loc(0, top - .5, 0), 4);
+    cyl("wrought", .06, .3, .2, loc(0, y + .2, 0), 8);
+    sph("lampwhite", .12, loc(0, y, 0));
+    cyl("wrought", .16, .16, .02, loc(0, y - .12, 0), 8);
+    for (const [x, z] of [[-.14, 0], [.14, 0], [0, -.14], [0, .14]]) cyl("wrought", .008, .008, .34, loc(x, y + .04, z), 3);
+  },
 };

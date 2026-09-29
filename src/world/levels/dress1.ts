@@ -11,8 +11,8 @@ import { Decorator } from "../decor/place";
  * in them but a ring of pillars and eight enemies. It was the emptiest place in the
  * game. Each part is given the reason it was missing:
  *
- *  - THE TORTURE HALL (the great hall's floor): an execution slab at the centre of the
- *    pillar ring, racks and stocks round it, cages on chains overhead, iron maidens
+ *  - THE TORTURE HALL (the great hall's floor): racks and stocks against its walls (Task 3 took
+ *    the slab and the instruments on the open floor out: enemies pinned on them), cages on chains overhead, iron maidens
  *    standing against the north and south walls. The enemies fight among instruments.
  *  - THE CHANCEL (the vestry): the red key sits before an altar under banners, guarded.
  *  - THE STORE (the east wing): crate piles against three walls, stocks by the door.
@@ -23,7 +23,7 @@ import { Decorator } from "../decor/place";
  * **Nothing solid on the recorded route.** `tests/integration/combatTrace.test.ts` walks
  * the start chamber, the x=9 corridor, the z=24 jog and the west room (`ROUTE` below), and
  * fights at its north end; a mass there would move the recording for a reason unrelated to
- * what the trace guards. Everything solid (crate piles, racks, the slab, stocks, maidens)
+ * what the trace guards. Everything solid (crate piles, racks, stocks, maidens)
  * stands east of x=13 or north of z=12, and `ROUTE` gets clutter that can be walked through.
  *
  * Decor crate piles never stand within two cells of the level's real crate `x` (38,21).
@@ -36,12 +36,15 @@ const WALKABLE = ["straw", "rubble", "bonesLoose", "skullpile", "chainLoose", "s
 
 export function dressLevel1(L: { g: Grid; W: number; H: number }): DecorSpec[] {
   const d = new Decorator(L, "dungeon");
-  const H = Math.PI / 2;
-
   // THE TORTURE HALL — the pillar ring's floor
-  d.place("slab", 23, 15);
-  d.place("rack", 19, 19).place("rack", 27, 18, { r: H }).place("rack", 27, 13).place("rack", 22, 21);
-  d.place("stocks", 25, 20).place("stocks", 18, 16).place("stocks", 28, 22);
+  // The instruments stand against the walls. They first stood on the open floor (a slab at the pillar ring's centre, four racks,
+  // three stocks); enemies have no pathfinding, and one that walks at a player behind a rack meets its flat face and stays there
+  // (tests/enemies/stuckCheck.test.ts), so they were moved to the wall or, where they still pinned enemies, taken out.
+  // The slab goes first: the merged meshes are made in the order the list first asks for each material, and the combat trace's recording
+  // hashes the scene's children in order. Its `rock` mesh is one only the slab makes.
+  d.place("slab", 29, 8);
+  d.place("rack", 22, 26, { r: Math.PI }).place("stocks", 23, 26, { r: Math.PI });
+  d.place("rack", 16, 8).place("rack", 31, 8);
   for (const [x, z] of [[18, 13], [21, 13], [26, 15], [21, 17], [24, 19], [29, 16], [19, 22], [26, 23]]) d.place("cage", x, z);
   // iron maidens against the hall's north wall (where the vestry does not open) and its south wall
   for (const x of [15, 17, 30, 32]) d.place("maiden", x, 8, { side: "n" });
@@ -55,7 +58,6 @@ export function dressLevel1(L: { g: Grid; W: number; H: number }): DecorSpec[] {
   // THE STORE — the east wing (the real crate is at 38,21: crate piles keep two cells clear of it)
   for (const x of [35, 37, 40]) d.place("cratepile", x, 12, { side: "n" });
   d.place("cratepile", 41, 14, { side: "e" }).place("cratepile", 41, 20, { side: "e" });
-  d.place("stocks", 36, 17);
 
   // the rest: crate piles and all elsewhere, only what can be walked through on the route
   d.clutter({ density: .34, seed: 5, where: (x, z) => !ROUTE(x, z) });

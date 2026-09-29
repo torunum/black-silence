@@ -1,5 +1,6 @@
 import { emptyGrid, link, put, putAbs } from "../LevelBuilder";
 import type { RoomLayout } from "../LevelBuilder";
+import { dressLevel7 } from "./dress7";
 
 /**
  * LEVEL 7 — THE WOMB.
@@ -79,5 +80,6 @@ export function buildLevel7(): RoomLayout {
   put(L,3,3,3,2,"c");put(L,3,3,1,1,"r");put(L,3,3,5,1,"c");put(L,3,3,3,4,"h");put(L,3,3,5,3,"l");
   /* pulsing sphincter "windows" (membrane openings) */
   [[9,7],[9,15],[23,7],[23,15],[16,0]].forEach(([x,z])=>putAbs(L,x,z,"W"));
+  L.decor=dressLevel7(L);   // set dressing and its solid masses: a deliberate divergence from the reference (levels-feel-full plan, Task 3), see dress7.ts
   return L;
 }

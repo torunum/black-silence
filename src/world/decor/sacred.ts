@@ -132,4 +132,24 @@ export const SACRED_PIECES: Record<string, Piece> = {
       box("bark", .04, .45, .04, within(base, tx + .1, ty + .17, 0, 0, 0, -a + .7));
     }
   },
+  // levels 3 and 4's light (Task 3): a votive stand of candles (glow only, level 3 has no light to spare) and a lantern on a crook
+  votive: (box, cyl) => {   // a stone stand with a dozen candles burning at different heights, wax run down its face
+    box("slate", .7, .28, .5, loc(0, .14, 0));
+    box("stone", .8, .06, .6, loc(0, .3, 0));
+    for (let i = 0; i < 9; i++) {
+      const x = -.28 + (i % 5) * .14, z = i < 5 ? -.12 : .12, h = .1 + ((i * 7) % 5) * .035;
+      cyl("bone", .022, .026, h, loc(x, .33 + h / 2, z), 4);
+      box("flame", .04, .07, .04, loc(x, .33 + h + .04, z));
+    }
+    box("bone", .06, .14, .02, loc(-.2, .2, .26)); box("bone", .05, .1, .02, loc(.15, .22, .26));
+  },
+  gravelamp: (box, cyl) => {   // a crook of iron on a stone footing, a hooded lantern hung from it: a light left for the dead
+    box("stone", .32, .12, .32, loc(0, .06, 0));
+    cyl("wrought", .025, .03, 1.7, loc(0, .9, 0), 5);
+    box("wrought", .42, .03, .03, loc(.19, 1.75, 0)); box("wrought", .03, .16, .03, loc(.36, 1.68, 0));
+    cyl("wrought", .03, .13, .08, loc(.36, 1.55, 0), 6);
+    cyl("lampamber", .09, .09, .22, loc(.36, 1.4, 0), 6);
+    for (const [x, z] of [[-.1, 0], [.1, 0], [0, -.1], [0, .1]]) box("wrought", .02, .24, .02, loc(.36 + x, 1.4, z));
+    cyl("wrought", .11, .11, .03, loc(.36, 1.27, 0), 6);
+  },
 };

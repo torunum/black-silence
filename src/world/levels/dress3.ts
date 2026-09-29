@@ -18,6 +18,9 @@ import { Decorator } from "../decor/place";
  * The solid pieces (sarcophagi, table tombs) are masses (`masses.ts`): they block the player,
  * the enemies and the shots, and the placement rules keep every one out of every corridor,
  * bend, junction and doorway and off every pickup. No trace fixture records this level.
+ *
+ * **Task 3.** The tomb is lit by candles (`votive`), which burn with a flame and no glow: this level has 21 point
+ * lights, the most any level may have, and no torch of the reference is to move.
  */
 
 export function dressLevel3(L: { g: Grid; W: number; H: number }): DecorSpec[] {
@@ -26,6 +29,8 @@ export function dressLevel3(L: { g: Grid; W: number; H: number }): DecorSpec[] {
   // THE GREAT TOMB — a sarcophagus on each dais, table tombs by the crown, the colonnade's sarcophagi
   for (const [x, z] of [[13, 10], [19, 10], [13, 14], [19, 14]]) d.place("sarcofree", x, z);
   d.place("tombfree", 16, 10).place("tombfree", 16, 14);
+  // the tomb's candles: the level has no light to spare (it has the most of any level), so these burn with a flame and no glow
+  for (const [x, z] of [[13, 11], [19, 11], [13, 13], [19, 13], [15, 12], [17, 12]]) d.place("votive", x, z);
   d.place("sarcophagus", 14, 7, { side: "n" }).place("sarcophagus", 18, 7, { side: "n" });
   d.place("sarcophagus", 13, 17, { side: "s" }).place("sarcophagus", 15, 17, { side: "s" });
 

@@ -290,6 +290,8 @@ export const SHADOW_POLICY: Readonly<Record<string, ShadowRule>> = {
   /* The burning pit's glow, the moon, the stars: light and sky, which
      neither cast nor take a shadow. */
   decorLight: { cast: false, receive: false },
+  /* The kit's lamp-bearing pieces' point lights (`src/world/decor/lamps.ts`): a light, like the pit's glow. */
+  decorLamp: { cast: false, receive: false },
   moon: { cast: false, receive: false },
   stars: { cast: false, receive: false },
   /* Hell's flames and embers (`src/fx/HellFire.ts`): additive points of light,

@@ -1,4 +1,4 @@
-import { shifted, type Klass, type Mode, type Piece, type PieceInfo, type Theme } from "./kit";
+import { shifted, WZ, type Klass, type Mode, type Piece, type PieceInfo, type Theme } from "./kit";
 import { PROLOGUE_PIECES as PRO } from "./prologue";
 import { DUNGEON_PIECES as DUN } from "./dungeon";
 import { SACRED_PIECES as SAC } from "./sacred";
@@ -102,6 +102,17 @@ export const PIECES: Record<string, PieceInfo> = {
   pod: P(WOM.pod, "edge"),
   eye: P(WOM.eye, "wall"),
   vein: P(WOM.vein, "flat"),
+  // levels 3-7 set-pieces (Task 3): the light-bearing ones carry a `light` (one real point light each, budgeted per level), the rest are masses
+  votive: P(SAC.votive, "free"),   // glow only: level 3 is at the budget's ceiling
+  gravelamp: P(SAC.gravelamp, "free", "clutter", { light: { color: 0xffa64a, intensity: 1.8, range: 10, at: [.36, 1.4, 0] } }),
+  pump: P(PIP.pump, "edge", "clutter", { mass: [-.8, .8, -.95, .15] }),
+  tank: P(PIP.tank, "edge", "clutter", { mass: [-.62, .62, -.95, .27] }),
+  lantern: P(PIP.lantern, "wall", "clutter", { fixed: true, light: { color: 0xb6dc6a, intensity: 2, range: 11, at: [0, 1.7, WZ + .45] } }),
+  press: P(PIP.press, "edge", "clutter", { mass: [-.8, .8, -.95, .05] }),
+  furnace: P(PIP.furnace, "edge", "clutter", { mass: [-.9, .9, -.97, .03], light: { color: 0xff7a30, intensity: 2.2, range: 10, at: [0, .85, .2] } }),
+  worklamp: P(PIP.worklamp, "hang", "clutter", { fixed: true, light: { color: 0xffe6b0, intensity: 2.4, range: 12, at: [0, 1.2, 0], hung: true } }),
+  tumor: P(WOM.tumor, "edge", "clutter", { mass: [-.85, .85, -.95, .15] }),
+  glowbulb: P(WOM.glowbulb, "free", "clutter", { light: { color: 0xff5a4a, intensity: 2, range: 10, at: [0, 1.15, 0] } }),
 };
 
 /**
@@ -146,9 +157,9 @@ export const VOCAB: Readonly<Record<Theme, ReadonlyArray<{ k: string; w: number 
 export const SETPIECES: Readonly<Record<Theme, readonly string[]>> = {
   dungeon: ["rack", "slab", "stocks", "maiden"],
   church: ["altar"],
-  necropolis: ["sarcofree", "tombfree"],
-  graveyard: ["tombfree", "deadtree"],
-  sewers: [], factory: [], womb: [],
+  necropolis: ["sarcofree", "tombfree", "votive"],
+  graveyard: ["tombfree", "deadtree", "gravelamp"],
+  sewers: ["pump", "tank", "lantern"], factory: ["press", "furnace", "worklamp"], womb: ["tumor", "glowbulb"],
 };
 
 /** The theme a level's `sub` names, if it has a kit (hell, the crypt and the like do not). */

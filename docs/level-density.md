@@ -25,13 +25,13 @@ in a straight line. **Emptiest** = the biggest four-way connected bare region. S
 | level | walkable | props | decor | pickups | enemies | lights | bare | longest bare run | emptiest region |
 |---|---:|---:|---:|---:|---:|---:|---:|---|---|
 | 0 prologue · OUT OF THE PIT | 668 | 2 | 264 | 4 | 8 | 15 | 190 (28%) | 11 cells (x 8-8, z 19-29) | 99 cells (x 1-12, z 18-34) |
-| 1 · THE GOTHIC DUNGEON | 691 | 3 | 187 | 9 | 14 | 13 | 32 (5%) | 5 cells (x 34-38, z 19-19) | 7 cells (x 33-38, z 18-19) |
+| 1 · THE GOTHIC DUNGEON | 691 | 3 | 183 | 9 | 14 | 13 | 39 (6%) | 5 cells (x 13-17, z 17-17) | 8 cells (x 33-38, z 18-19) |
 | 2 · THE ABANDONED CHURCH | 586 | 15 | 186 | 20 | 18 | 16 | 6 (1%) | 2 cells (x 7-7, z 16-17) | 2 cells (x 7-7, z 16-17) |
-| 3 · THE NECROPOLIS | 590 | 14 | 194 | 18 | 21 | 17 | 2 (0%) | 1 cells (x 19-19, z 1-1) | 1 cells (x 19-19, z 1-1) |
-| 4 · THE GRAVEYARD | 623 | 13 | 254 | 18 | 20 | 14 | 7 (1%) | 1 cells (x 4-4, z 3-3) | 1 cells (x 4-4, z 3-3) |
-| 5 · THE SEWERS | 632 | 11 | 0 | 18 | 22 | 12 | 161 (25%) | 9 cells (x 12-12, z 8-16) | 91 cells (x 3-23, z 6-17) |
-| 6 · THE FACTORY | 619 | 10 | 0 | 22 | 20 | 13 | 158 (26%) | 13 cells (x 10-22, z 14-14) | 87 cells (x 9-23, z 7-17) |
-| 7 · THE WOMB | 621 | 0 | 0 | 21 | 26 | 13 | 166 (27%) | 14 cells (x 10-23, z 14-14) | 92 cells (x 9-23, z 7-17) |
+| 3 · THE NECROPOLIS | 590 | 14 | 200 | 18 | 21 | 17 | 2 (0%) | 1 cells (x 19-19, z 1-1) | 1 cells (x 19-19, z 1-1) |
+| 4 · THE GRAVEYARD | 623 | 13 | 255 | 18 | 20 | 17 | 7 (1%) | 2 cells (x 12-12, z 12-13) | 2 cells (x 12-12, z 12-13) |
+| 5 · THE SEWERS | 632 | 11 | 300 | 18 | 22 | 17 | 5 (1%) | 3 cells (x 6-6, z 6-8) | 5 cells (x 6-7, z 6-8) |
+| 6 · THE FACTORY | 619 | 10 | 276 | 22 | 20 | 17 | 2 (0%) | 1 cells (x 11-11, z 10-10) | 1 cells (x 11-11, z 10-10) |
+| 7 · THE WOMB | 621 | 0 | 278 | 21 | 26 | 17 | 8 (1%) | 3 cells (x 22-22, z 12-14) | 5 cells (x 21-22, z 12-14) |
 
 ## 0 prologue · OUT OF THE PIT
 
@@ -84,13 +84,13 @@ in a straight line. **Emptiest** = the biggest four-way connected bare region. S
 
 ## 1 · THE GOTHIC DUNGEON
 
-- walkable cells: 691; bare: 32
+- walkable cells: 691; bare: 39
 - breakable props: barrel 2, crate 1
-- decor pieces: 187 (altar 1, banner 4, bench 4, bonesLoose 16, cage 17, candelabra 2, chainLoose 22, cratepile 6, maiden 8, rack 4, rubble 39, sconce 8, shackles 7, skullpile 12, slab 1, stocks 4, straw 32)
+- decor pieces: 183 (altar 1, banner 4, bench 4, bonesLoose 16, cage 17, candelabra 2, chainLoose 22, cratepile 6, maiden 8, rack 3, rubble 39, sconce 8, shackles 7, skullpile 12, slab 1, stocks 1, straw 32)
 - pickups: armor 1, bullets 2, crosses 1, health 2, key 1, slugs 1, weapon 1
 - enemies: 14 (1 boss); torches 6, candles 2, lights 13
-- longest bare run: 5 cells, x 34-38, z 19-19
-- emptiest region: 7 cells, x 33-38, z 18-19
+- longest bare run: 5 cells, x 13-17, z 17-17
+- emptiest region: 8 cells, x 33-38, z 18-19
 
 ```
 ############################################
@@ -106,15 +106,15 @@ in a straight line. **Emptiest** = the biggest four-way connected bare region. S
 ##############+++++++++++++++++++###########
 ##############.+#+++#+++#+++#+#+.###########
 #########++++++++++++++++++++++++#++++++++##
-#########++++++.+++++++++++++++++#++++++++##
+#########++++++.+++++++++++.+++++#++++++++##
 #########+++++#+++++++++++++++++++++++++++##
-#########+++++.+#+++++++++++++#+.+++++++++##
+#########+++++.+#+..++++++++++#+.+++++++++##
 #########++++.#+++++++++++++++++.++++++++.##
-#########++++....+++++++++++++++.+++++++++##
-#########++++.#++++++++++++++++++RR+++++++##
-#########+++++.+#+++++++++++++#+++RRRRR+++##
+#########++++.....++++++++++++++.+++++++++##
+#########++++.#++++++++++++++++++RRR++++++##
+#########+++++.+#+++++++++.+++#+++RRRRR+++##
 #########+++++#+++++++++++++++++++++++++++##
-#########+++++.++++++++++++++++++#++++++++##
+#########+++++.++++++.+++++++++++#++++++++##
 #########++++..++++++++++++++++++#++++++++##
 ###########+##.+#+++#+++#+++#+#++#######+###
 #########++++++++++++++++++++++++#####+++++#
@@ -173,7 +173,7 @@ in a straight line. **Emptiest** = the biggest four-way connected bare region. S
 
 - walkable cells: 590; bare: 2
 - breakable props: barrel 3, crate 4, shelf 6, table 1
-- decor pieces: 194 (bonesLoose 26, bonestack 12, chainLoose 25, niche 24, rubble 22, sarcofree 4, sarcophagus 13, skullpile 41, tombfree 2, urn 25)
+- decor pieces: 200 (bonesLoose 26, bonestack 12, chainLoose 25, niche 24, rubble 22, sarcofree 4, sarcophagus 13, skullpile 41, tombfree 2, urn 25, votive 6)
 - pickups: armor 3, bullets 3, crosses 2, health 4, key 1, shells 3, slugs 2
 - enemies: 21 (3 boss); torches 9, candles 8, lights 17
 - longest bare run: 1 cells, x 19-19, z 1-1
@@ -211,17 +211,17 @@ in a straight line. **Emptiest** = the biggest four-way connected bare region. S
 
 - walkable cells: 623; bare: 7
 - breakable props: barrel 2, crate 4, shelf 6, table 1
-- decor pieces: 254 (bonesLoose 32, deadtree 9, fence 38, gravecross 42, gravestone 63, hand 3, mound 41, opengrave 19, sapling 3, tombfree 4)
+- decor pieces: 255 (bonesLoose 46, deadtree 8, fence 38, gravecross 33, gravelamp 3, gravestone 47, hand 3, mound 53, opengrave 21, sapling 1, tombfree 2)
 - pickups: armor 3, bullets 3, health 4, key 1, nails 2, shells 3, slugs 1, weapon 1
-- enemies: 20 (3 boss); torches 10, candles 7, lights 14
-- longest bare run: 1 cells, x 4-4, z 3-3
-- emptiest region: 1 cells, x 4-4, z 3-3
+- enemies: 20 (3 boss); torches 10, candles 7, lights 17
+- longest bare run: 2 cells, x 12-12, z 12-13
+- emptiest region: 2 cells, x 12-12, z 12-13
 
 ```
 #################################
 #+++++++++++++++#+++++++++++++++#
 #+++++++++++++++#+++++++++++++++#
-#+++R+++.+++++++++++++++++++++++#
+#+++.+++.+++++++++++++++++++++++#
 #+++++++++++++++#+++++++++++++++#
 #+++++++++++++++#+++++++++++++++#
 ####+#######+###############+####
@@ -230,8 +230,8 @@ in a straight line. **Emptiest** = the biggest four-way connected bare region. S
 #+++++++++++++++++++++++++++++++#
 #+++++++++++++++#+++++++++++++++#
 #+++++++++++++++#++++++.++++++++#
-####+####+++.+++#++.++++####+####
-#+++++++#+++++++++++++++++++++++#
+####+####+++R+++#+++++++####+####
+#+++++++#+++R+++++++++++++++++++#
 #+++++++#+++++++++++++++++++++++#
 #+++++++++++++++++++++++.+++++++#
 #+++++++#+#+++++++++++#+++++++++#
@@ -247,115 +247,115 @@ in a straight line. **Emptiest** = the biggest four-way connected bare region. S
 
 ## 5 · THE SEWERS
 
-- walkable cells: 632; bare: 161
+- walkable cells: 632; bare: 5
 - breakable props: barrel 6, crate 4, table 1
-- decor pieces: 0
+- decor pieces: 300 (cage 24, chainLoose 24, debris 40, grate 61, ladder 8, lantern 5, outfall 10, pipe 12, pipedrop 8, pump 18, sludge 72, tank 18)
 - pickups: armor 3, bullets 2, crosses 1, health 5, key 1, shells 2, slugs 2, weapon 2
-- enemies: 22 (3 boss); torches 8, candles 7, lights 12
-- longest bare run: 9 cells, x 12-12, z 8-16
-- emptiest region: 91 cells, x 3-23, z 6-17
+- enemies: 22 (3 boss); torches 8, candles 7, lights 17
+- longest bare run: 3 cells, x 6-6, z 6-8
+- emptiest region: 5 cells, x 6-7, z 6-8
 
 ```
 #################################
-#+++..+++....+++.....+++#+++.+++#
-#+++..+++.++++++..++++++#+++++++#
-#+++.+++..++++++..++++++++++++++#
-#..+++++.+++++++++++++++#+++++++#
-#..+++++.++++++++++++++.#+++++++#
-#+++++RR####+###############+####
-#++RRRRRR#++++RRR+++.++##+++++..#
-#++++RRRR+#+RRRRR+++++#+#+++++..#
-#.++++++R+++RRRRR+++++++++++++..#
-#+++++++RRRRR+++RRR+++++#+++++++#
-#+++.+++RRRRR+++++RRR+++#+++..++#
-#+++..++#RRRR+++#+RRRRRR#+++..++#
-#++++.++#RRRRR++++RRRRRR#+++....#
-#++++.++#+RRRR+++RRRRRR+#+++++..#
-#.+++++++#++RRRRRRRRR++#++++++++#
-#+++++++#+#+RRRRR+++R+#+#+++++++#
-#++++++.#+++++RRR+++++++#+++++++#
+#+++++++++++++++++++++++#+++++++#
+#+++++++++++++++++++++++#+++++++#
+#+++++++++++++++++++++++++++++++#
+#+++++++++++++++++++++++#+++++++#
+#+++++++++++++++++++++++#+++++++#
+#+++++R+####+###############+####
+#+++++RR+#+++++++++++++##+++++++#
+#+++++RR++#+++++++++++#+#+++++++#
+#+++++++++++++++++++++++++++++++#
+#+++++++++++++++++++++++#+++++++#
+#+++++++++++++++++++++++#+++++++#
+#+++++++#+++++++#+++++++#+++++++#
+#+++++++#+++++++++++++++#+++++++#
+#+++++++#+++++++++++++++#+++++++#
+#++++++++#+++++++++++++#++++++++#
+#+++++++#+#+++++++++++#+#+++++++#
+#+++++++#+++++++++++++++#+++++++#
 ####+#######+#######+#######+####
 #+++++++#+++++++++++++++++++++++#
 #+++++++#+++++++++++++++++++++++#
-#+++++++#+++++++++++++++.+++++++#
-#+++++..#.++++++++++++++...+++++#
-#+++++..#..++++++++..+++...+++++#
+#+++++++#+++++++++++++++++++++++#
+#+++++++#+++++++++++++++++++++++#
+#+++++++#+++++++++++++++++++++++#
 #################################
 ```
 
 ## 6 · THE FACTORY
 
-- walkable cells: 619; bare: 158
+- walkable cells: 619; bare: 2
 - breakable props: barrel 8, crate 2
-- decor pieces: 0
+- decor pieces: 276 (chainLoose 80, conveyor 8, cratepile 7, drum 5, furnace 1, gauge 10, hook 57, machine 23, pipe 24, pipedrop 19, press 8, rubble 31, worklamp 3)
 - pickups: armor 4, bullets 2, crosses 1, health 6, key 1, shells 2, slugs 1, souls 2, weapon 3
-- enemies: 20 (3 boss); torches 8, candles 7, lights 13
-- longest bare run: 13 cells, x 10-22, z 14-14
-- emptiest region: 87 cells, x 9-23, z 7-17
+- enemies: 20 (3 boss); torches 8, candles 7, lights 17
+- longest bare run: 1 cells, x 11-11, z 10-10
+- emptiest region: 1 cells, x 11-11, z 10-10
 
 ```
 #################################
-#+++..++#....+++.....+++#+++.+++#
-#+++..++#+++++++..++++++#+++++++#
-#+++.+++++++++++..++++++++++++++#
-#..+++++#+++++++++++++++#+++++++#
-#..+++++#++++++++++++++.#+++++++#
-#+++++..####+###############+####
-#++.....##++++RRR++++++##+++++..#
-#++++..+#+#++RRRR+++++#+#+++++..#
-#.+++++++++++RRRR+++++++++++++..#
-#+++++++#+RRRRRRRRR+++++#+++++++#
-#+++++++#RRRRRR+++RRR+++#+++..++#
-####+####RRRRRR+#+RRRRRR#+++..++#
-#+++++++#RRRRRR+++RRRRRR#+++....#
-#++++.++#+RRRRRRRRRRRRR+#+++++..#
-#.+++++++#++RRRRRRRRR++#++++++++#
-#+++++++#+#++RRRRRRR++#+#+++++++#
-#++++++.#+++++RRRRR+++++#+++++++#
-#+++....####+#######+#######+####
-#+++.+++#+++++++++++++++#+++++++#
 #+++++++#+++++++++++++++#+++++++#
 #+++++++#+++++++++++++++#+++++++#
-#+++++..#.++++++++++++++#..+++++#
-#+++++..#..++++++++..+++#..+++++#
+#+++++++++++++++++++++++++++++++#
+#+++++++#+++++++++++++++#+++++++#
+#+++++++#+++++++++++++++#+++++++#
+#+++++++####+###############+####
+#+++++++##+++++++++++++##+++++++#
+#+++++++#+#+++++++++++#+#+++++++#
+#+++++++++++++++++++++++++++++++#
+#+++++++#++R++++++.+++++#+++++++#
+#+++++++#+++++++++++++++#+++++++#
+####+####+++++++#+++++++#+++++++#
+#+++++++#+++++++++++++++#+++++++#
+#+++++++#+++++++++++++++#+++++++#
+#++++++++#+++++++++++++#++++++++#
+#+++++++#+#+++++++++++#+#+++++++#
+#+++++++#+++++++++++++++#+++++++#
+#+++++++####+#######+#######+####
+#+++++++#+++++++++++++++#+++++++#
+#+++++++#+++++++++++++++#+++++++#
+#+++++++#+++++++++++++++#+++++++#
+#+++++++#+++++++++++++++#+++++++#
+#+++++++#+++++++++++++++#+++++++#
 #################################
 ```
 
 ## 7 · THE WOMB
 
-- walkable cells: 621; bare: 166
+- walkable cells: 621; bare: 8
 - breakable props: -
-- decor pieces: 0
+- decor pieces: 278 (drape 89, eye 20, glowbulb 4, growth 12, pod 15, sinew 22, tumor 21, vein 95)
 - pickups: armor 4, bullets 2, crosses 3, health 5, key 1, nails 2, shells 2, slugs 1, souls 1
-- enemies: 26 (3 boss); torches 8, candles 7, lights 13
-- longest bare run: 14 cells, x 10-23, z 14-14
-- emptiest region: 92 cells, x 9-23, z 7-17
+- enemies: 26 (3 boss); torches 8, candles 7, lights 17
+- longest bare run: 3 cells, x 22-22, z 12-14
+- emptiest region: 5 cells, x 21-22, z 12-14
 
 ```
 #################################
-#+++..++#....+++.....+++#+++.+++#
-#+++..++#+++++++..++++++#+++++++#
-#+++.+++++++++++..++++++++++++++#
-#..+++++#+++++++++++++++#+++++..#
-#..+++++#++++++++++++++.#+++++..#
-#+++++..####+###############+####
-#++.....##++++RRR+++.++#++++++..#
-#++++..+#+#+RRRRR+++++#+++++++..#
-#.++++++++++RRRRR+++++++.+++++..#
-#+++++++#+RRRRRRRRR+++++.+++++++#
-#+++++++#RRRRRR+++RRR+++.+++++++#
-####+####RRRRRR+#+RRRRRR####+####
-#+++++++#RRRRRR+++RRRRRR++++++..#
-#++++.++#+RRRRRRRRRRRRRR++++++..#
-#.+++++++#++RRRRRRRRR++#.+++++++#
-#+++++++#+#+RRRRRRRRR+#+++++++++#
-#++++++.#+++++RRRRR+++++++++++++#
-#+++....####+#######+#######+####
-#+++.+++#+++++++++++++++#+++++++#
+#+++++++#+++++++++++++++#+++.+++#
+#+++++++#+++++++++++++++#+++++++#
+#+++++++++++++++++++++++++++++++#
 #+++++++#+++++++++++++++#+++++++#
 #+++++++#+++++++++++++++#+++++++#
-#+++++..#.++++++++++++++#..+++++#
-#+++++..#..++++++++..+++#..+++++#
+#+++++++####+###############+####
+#+++++++##+++++++++++++#++++++++#
+#+++++++#+#+++++++++++#+++++++++#
+#+++++++++++++++++++++++++++++++#
+#+++++++#+++++++++++++++++++++++#
+#+++++++#+++++++++++++++++++++++#
+####+####+++++.+#+++++R+####+####
+#+++++++#++++++++++++RR+++++++++#
+#+++++++#++.+++++++++RR+++++++++#
+#++++++++#+++++++++++++#++++++++#
+#+++++++#+#+++++++++++#+++++++++#
+#+++++++#+++++++++++++++++++++++#
+#+++++++####+#######+#######+####
+#+++++++#+++++++++++++++#+++++++#
+#+++++++#+++++++++++++++#+++++++#
+#+++++++#+++++++++++++++#+++++++#
+#+++++++#+++++++++++++++#+++++++#
+#+++++++#+++++++++++++++#+++++++#
 #################################
 ```
 

@@ -46,6 +46,28 @@ export const WOMB_PIECES: Record<string, Piece> = {
     sph("iris", .14, loc(.03, 1.7, WZ + .36, 0, 0, 0, 1, 1, .4));
     box("dark", .05, .16, .02, loc(.03, 1.7, WZ + .42));
   },
+  tumor: (box, _c, d, _t, sph) => {   // a great tumorous heap of flesh against the wall, its lobes warted and veined: a mass a fight goes round
+    const s = cellHash(d.x, d.z);
+    sph("flesh", .7, loc(0, .6, WZ + .58, 0, 0, 0, 1.2, .95, .8));
+    sph("flesh", .44, loc(-.56, .4, WZ + .52, 0, 0, 0, 1, .9, .85));
+    sph("flesh", .42, loc(.6, .38, WZ + .55, 0, 0, 0, 1, .95, .85));
+    sph("flesh", .36, loc(.1, 1.3, WZ + .42, 0, 0, 0, 1, 1, .8));
+    for (let i = 0; i < 6; i++)   // warts on the big lump
+      sph("wart", .09, loc((grain(i, s, 67) - .5) * 1.1, .55 + grain(i, s, 68) * .6, WZ + .78 + grain(i, s, 69) * .12));
+    box("sinew", .12, .05, .5, loc(.25, .025, WZ + .92, 0, .5)); box("sinew", .1, .05, .45, loc(-.3, .025, WZ + .9, 0, -.4));
+    box("sinew", .08, 1.3, .08, loc(.05, 1.2, WZ + .06, 0, 0, .08));
+  },
+  glowbulb: (box, _c, d, _t, sph) => {   // a stalk of flesh bearing a swollen glowing bulb, three buds round it: the womb's light
+    const s = cellHash(d.x, d.z);
+    sph("flesh", .3, loc(0, .07, 0, 0, 0, 0, 1.4, .35, 1.4));
+    box("sinew", .1, 1.0, .1, loc(0, .55, 0, 0, .3, .05));
+    sph("glowflesh", .2, loc(0, 1.15, 0, 0, 0, 0, 1, 1.3, 1));
+    for (let i = 0; i < 3; i++) {
+      const a = i * 2.1 + grain(i, s, 70) * .6;
+      box("sinew", .04, .4, .04, loc(Math.sin(a) * .16, .3, Math.cos(a) * .16, 0, 0, .3));
+      sph("glowflesh", .07, loc(Math.sin(a) * .26, .52, Math.cos(a) * .26));
+    }
+  },
   vein: (box, _c, d) => {   // a thick vein snaking across the floor with two branches, kept inside the cell
     const s = cellHash(d.x, d.z), keep = (v: number) => Math.max(-.6, Math.min(.6, v));
     let ang = Math.PI / 2 + (grain(1, s, 64) - .5) * .5, x = -.75, z = (grain(2, s, 65) - .5) * .4;

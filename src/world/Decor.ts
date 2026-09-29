@@ -8,6 +8,7 @@ import { floorHeightAt } from "./Collision";
 import type { BuiltLevel, DecorSpec } from "./LevelBuilder";
 import { makeMat } from "./decor/kit";
 import { addPiece, merge, partClass, partMaterial, type Parts } from "./decor/parts";
+import { addLamps } from "./decor/lamps";
 
 /**
  * SET DRESSING — the scene-building half. What a piece looks like is the
@@ -71,6 +72,7 @@ function buildPieces(scene: THREE.Scene, specs: DecorSpec[]): void {
     // the grass is its own mesh: 25,000 triangles of 2.5 cm blades, which must not be in the lamp's cube shadow (`Shadows.ts`, `decorGrass`)
     mesh.name = MESH_NAME[partClass(k)]; scene.add(mesh);
   }
+  addLamps(scene, specs);   // the kit's light-bearing pieces (src/world/decor/lamps.ts): one real point light each, budgeted per level
   buildFire(scene, emitters, lights);   // src/fx/HellFire.ts — nothing on a level with no fire
 }
 

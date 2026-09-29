@@ -6,6 +6,7 @@ import { renderState } from "../../src/render/Renderer";
 import { world } from "../../src/world/WorldState";
 import { LEVELS } from "../../src/world/levels/index";
 import { measureLevel } from "../../src/world/density";
+import { LIGHT_BUDGET, lampsOf } from "../../src/world/decor/lamps";
 
 /**
  * THE EMPTINESS MEASURE AGREES WITH THE LOADER (levels-feel-full plan, Task 1).
@@ -53,5 +54,11 @@ describe.each(LEVELS.map((l, i) => ({ i, name: l.name })))("$name", ({ i }) => {
     let point = 0;
     renderState.scene.traverse((o) => { if ((o as THREE.PointLight).isPointLight) point++; });
     expect(point - 4, "lights").toBe(d.lights);
+    // the light budget (levels-feel-full plan, Task 3): no level's scene holds more point lights than level 3's 21, and each
+    // light-bearing decor piece is exactly one of them, named `decorLamp`
+    expect(point, "point lights in the scene, the player's four included").toBeLessThanOrEqual(LIGHT_BUDGET);
+    const lamps: string[] = [];
+    renderState.scene.traverse((o) => { if (o.name === "decorLamp") lamps.push(o.name); });
+    expect(lamps.length, "decorLamp lights").toBe(lampsOf(LEVELS[i].build().decor).length);
   });
 });

@@ -1,5 +1,6 @@
 import { ENEMY_DEFS } from "../enemies/EnemyDefs";
 import type { BuiltLevel, DecorSpec } from "./LevelBuilder";
+import { PIECES } from "./decor/registry";
 
 /**
  * HOW FULL A LEVEL IS — the measurements behind "the levels feel very empty"
@@ -180,6 +181,7 @@ export function measureLevel(L: Pick<BuiltLevel, "g" | "decor">): Density {
   let decor = 0;
   for (const d of L.decor || []) {
     if (d.k === "light") { lights++; continue; }
+    if (PIECES[d.k]?.light) lights++;   // a lantern, a work lamp, a furnace: it is also decor
     decor++; bump(decorByKind, d.k);
   }
   const bare = bareGrid(L), { region, cells } = emptiestRegion(bare);

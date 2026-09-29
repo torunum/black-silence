@@ -56,10 +56,10 @@ describe("levels 1-4 are dressed by their own builders", () => {
   });
 
   it("puts solid masses in each: the dungeon's instruments, the church's altar and fallen saints, the tombs' sarcophagi, the yard's stones", () => {
-    const want: Record<number, number> = { 1: 20, 2: 8, 3: 12, 4: 30 };
+    const want: Record<number, number> = { 1: 15, 2: 8, 3: 12, 4: 30 };
     for (const i of DRESSED) expect(built(i).decor!.filter(isMass).length, `level ${i}`).toBeGreaterThanOrEqual(want[i]);
     const kinds = (i: number) => new Set(built(i).decor!.filter(isMass).map((d) => d.k));
-    for (const k of ["slab", "rack", "stocks", "maiden", "cratepile"]) expect(kinds(1).has(k), `the dungeon lacks a ${k}`).toBe(true);
+    for (const k of ["rack", "stocks", "maiden", "cratepile"]) expect(kinds(1).has(k), `the dungeon lacks a ${k}`).toBe(true);
     for (const k of ["altar", "fallenstatue", "font"]) expect(kinds(2).has(k), `the church lacks a ${k}`).toBe(true);
     for (const k of ["sarcofree", "tombfree", "sarcophagus"]) expect(kinds(3).has(k), `the necropolis lacks a ${k}`).toBe(true);
     for (const k of ["deadtree", "tombfree", "gravestone"]) expect(kinds(4).has(k), `the graveyard lacks a ${k}`).toBe(true);
@@ -93,7 +93,7 @@ describe("the density targets", () => {
     }
   });
 
-  it("holds the great hall to a torture hall: no bare region of more than 12 cells inside it, and the instruments are there", () => {
+  it("holds the great hall to a torture hall: no bare region of more than 12 cells inside it, and the instruments are there (against its walls)", () => {
     const L = built(1), bare = bareGrid(L);
     const inHall = (x: number, z: number) => x >= 14 && x <= 32 && z >= 8 && z <= 26;
     const seen = new Set<string>();
@@ -111,9 +111,12 @@ describe("the density targets", () => {
     const inside = L.decor!.filter((d) => inHall(Math.floor(d.x + .5), Math.floor(d.z + .5)));
     const count = (k: string) => inside.filter((d) => d.k === k).length;
     expect(inside.length, "pieces in the hall").toBeGreaterThan(70);
-    expect(count("slab"), "an execution slab at its centre").toBeGreaterThanOrEqual(1);
+    // the slab at the pillar ring's centre and the racks and stocks on the open floor were taken out in Task 3: enemies pinned on
+    // their flat faces (tests/enemies/stuckCheck.test.ts). What is left stands against the walls.
+    expect(inside.filter((d) => d.k === "slab" && d.z === 8).length, "the slab stands against the north wall, not on the open floor").toBe(1);
+    expect(count("slab"), "one slab").toBe(1);
     expect(count("rack"), "racks").toBeGreaterThanOrEqual(3);
-    expect(count("stocks"), "stocks").toBeGreaterThanOrEqual(2);
+    expect(count("stocks"), "stocks").toBeGreaterThanOrEqual(1);
     expect(count("cage"), "cages on chains").toBeGreaterThanOrEqual(6);
     expect(count("maiden"), "iron maidens on its walls").toBeGreaterThanOrEqual(6);
   });

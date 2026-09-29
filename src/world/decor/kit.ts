@@ -56,6 +56,12 @@ export interface PieceInfo {
   mass?: readonly [number, number, number, number];
   /** What a player might take this for: the `x` crate or the `O` barrel. The placement rules keep it away from the real thing. */
   lookalike?: "crate" | "barrel";
+  /**
+   * A light-bearing piece: `Decor.ts` gives it one real point light, where `at` says in the piece's own frame (`hung`:
+   * its `y` is measured down from the ceiling). Every light is a per-fragment cost on every lit surface, so each level has
+   * a budget (`tests/world/lightBudget.test.ts`) and a piece without this is glow at most (an unlit emissive material).
+   */
+  light?: { color: number; intensity: number; range: number; at: readonly [number, number, number]; hung?: boolean };
 }
 
 /** Local transform: a position, an XYZ rotation and an optional scale. */
@@ -140,6 +146,13 @@ function materials(): Record<string, () => THREE.Material> {
     pod: () => new THREE.MeshLambertMaterial({ color: 0xc09a7c }),
     eyewhite: () => new THREE.MeshLambertMaterial({ color: 0xd6cdb8 }),
     iris: () => new THREE.MeshLambertMaterial({ color: 0xb08a1a }),
+    // the light-bearing pieces' own glow (`lamps.ts`): unlit, so a lamp reads as lit from any distance the fog allows
+    lampgreen: () => basic(0xc4e070),
+    lampwhite: () => basic(0xfff2cc),
+    lampamber: () => basic(0xffb454),
+    coal: () => basic(0xff7a28),
+    glowflesh: () => basic(0xff8a72),
+    brick: () => lambert(TEX.dungeonWall, 0x6e5a4e),
   };
 }
 
