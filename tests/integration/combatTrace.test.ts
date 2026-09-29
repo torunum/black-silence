@@ -603,6 +603,59 @@ import { MONOLOGUE } from "../../src/content/monologue";
  * Old `y` minus old bob equals new `y` minus new bob in every frame (to
  * 1.1e-16), and with the bob term taken out of the camera both rates give
  * this fixture byte for byte.
+ *
+ * ## Levels-feel-full Task 2 — tenth regeneration: level 1 is furnished, and the fight did not move
+ *
+ * `src/world/levels/dress1.ts` dresses the great hall as a torture hall (a slab, racks, stocks,
+ * cages, iron maidens), the vestry as a chancel, the east wing as a store, and every wall and
+ * corner with the dungeon's clutter: 187 pieces merged into 27 scene meshes, 24 of the pieces
+ * solid masses (`src/world/decor/masses.ts`: a point inside one is a wall to `solidAt`, so it stops
+ * the player, the enemies, the shots and the line of sight). `level1.ts` also moved two
+ * pickups and added two explosive barrels in the hall. This is a **deliberate content change**,
+ * the kind of regeneration the header above says to expect for one, so the account is owed field
+ * by field. All 176 sampled frames, against the fixture as it stood at commit `64b4e8d`:
+ *
+ * - `camera` — all seven components **identical in all 176 frames**.
+ * - `hud` — all eight fields **identical in all 176**; the run still ends `HEALTH68`/`ARMOR2`.
+ * - `scene.count` — **+31 in every one of the 176 frames**, no other delta (95..123 -> 126..154).
+ *   The 31 is exactly 27 (the dressing: one merged mesh per shadow class and material, and there
+ *   are 27 of those in level 1's list, which `costOf` reports without booting a scene) plus 4
+ *   (two barrels, each a prop mesh and its blob).
+ * - `scene.digest` — differs in all 176, first at frame 10 (`c4a21a3a` -> `3bf3a1dd`), last at
+ *   1760 (`f9d72ed8` -> `ebe61469`); 176 distinct digests before and after.
+ *
+ * **Why the fight had no mechanism to move, and how each piece of the change was checked.**
+ *
+ * 1. *The decor draws nothing.* It is placed from the integer hash (`grain`), never `Math.random`
+ *    (`tests/world/levelDressing.test.ts` spies on it), and `installUuidStub` keeps three's UUID
+ *    draws out of the stream, so 27 more meshes shift no gameplay draw. Two throwaway
+ *    regenerations bracket it: with `dress1.ts` returning `[]` (barrels and moved pickups kept)
+ *    the difference from `64b4e8d` is `scene.count` **+4 in all 176**, `camera` and `hud`
+ *    identical, digest different; so the 27 are the decor and only the decor. (The digest reads
+ *    top-level children's type, position, visibility and texture, not a merged mesh's geometry, so
+ *    it sees the decor only as the 27 children it adds.)
+ * 2. *The pickups moved without crossing an enemy.* `loadLevel` draws in scan order — a torch, a
+ *    candle or a pickup one value, an enemy seven — so an enemy's values depend on how many
+ *    draws precede it. The bullets box (4,32) and the health pack (9,32) went to (19,25) and
+ *    (26,25): between the old and the new cell, in scan order, there is no enemy, so every
+ *    enemy is handed exactly the draws it always was (`U@19,3:0 z@17,12:11 f@29,12:18 j@10,13:25
+ *    … z@34,34:108`, asserted in `levelDressing.test.ts`; the torches at (31,25), (6,29), (10,29)
+ *    do lie between and take a neighbour's flicker seed, which only the digest can see). A second
+ *    throwaway regeneration with the decor gone *and* the barrels gone (the pickup moves alone):
+ *    `camera`, `hud` and `scene.count` identical in all 176, digest different in all 176.
+ *    Moving the ammo across the hall's enemies instead (a mutation, run once) makes this test go
+ *    red at frame 10 — the trace does see a stream shift.
+ * 3. *The barrels draw nothing either* (`spawnProp`'s crate and barrel branches have no `rnd`; only
+ *    the chair does) and stand at (28,16) and (26,21), sixteen cells from the player, who never
+ *    leaves the west end. Only the count sees them.
+ * 4. *Nothing solid stands where this script walks or fights.* The route — the start chamber, the
+ *    x=9 corridor, the z=24 jog and the west room, where the turret stands at (12,12) — is
+ *    `x <= 13 && z >= 12`, and `dress1.ts` puts only walk-through clutter there (`ROUTE`;
+ *    `levelDressing.test.ts` asserts no mass cell in it). Every mass is at x >= 14 or z < 12.
+ *    A rack at (12,16), on the route, makes this file go red at frame 1340 (mutation, run once).
+ *
+ * Coverage is unchanged: every `material.map=` site this header lists is reached on the same
+ * frames as before, because camera, hud and every sprite's texture are identical.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

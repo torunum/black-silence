@@ -1,0 +1,197 @@
+{
+ "commit": "64b4e8d",
+ "rows": [
+  {
+   "name": "0 prologue · OUT OF THE PIT",
+   "walkable": 668,
+   "props": 2,
+   "decor": 264,
+   "pickups": 4,
+   "enemies": 8,
+   "lights": 15,
+   "bare": 190,
+   "longestRun": {
+    "cells": 11,
+    "x0": 8,
+    "z0": 19,
+    "x1": 8,
+    "z1": 29
+   },
+   "emptiest": {
+    "cells": 99,
+    "x0": 1,
+    "z0": 18,
+    "x1": 12,
+    "z1": 34
+   }
+  },
+  {
+   "name": "1 · THE GOTHIC DUNGEON",
+   "walkable": 691,
+   "props": 1,
+   "decor": 0,
+   "pickups": 9,
+   "enemies": 14,
+   "lights": 13,
+   "bare": 321,
+   "longestRun": {
+    "cells": 19,
+    "x0": 26,
+    "z0": 8,
+    "x1": 26,
+    "z1": 26
+   },
+   "emptiest": {
+    "cells": 257,
+    "x0": 9,
+    "z0": 2,
+    "x1": 41,
+    "z1": 26
+   }
+  },
+  {
+   "name": "2 · THE ABANDONED CHURCH",
+   "walkable": 586,
+   "props": 15,
+   "decor": 0,
+   "pickups": 20,
+   "enemies": 18,
+   "lights": 16,
+   "bare": 98,
+   "longestRun": {
+    "cells": 9,
+    "x0": 14,
+    "z0": 7,
+    "x1": 14,
+    "z1": 15
+   },
+   "emptiest": {
+    "cells": 45,
+    "x0": 12,
+    "z0": 7,
+    "x1": 20,
+    "z1": 17
+   }
+  },
+  {
+   "name": "3 · THE NECROPOLIS",
+   "walkable": 590,
+   "props": 14,
+   "decor": 0,
+   "pickups": 18,
+   "enemies": 21,
+   "lights": 17,
+   "bare": 105,
+   "longestRun": {
+    "cells": 9,
+    "x0": 18,
+    "z0": 7,
+    "x1": 18,
+    "z1": 15
+   },
+   "emptiest": {
+    "cells": 65,
+    "x0": 9,
+    "z0": 7,
+    "x1": 23,
+    "z1": 17
+   }
+  },
+  {
+   "name": "4 · THE GRAVEYARD",
+   "walkable": 623,
+   "props": 13,
+   "decor": 0,
+   "pickups": 18,
+   "enemies": 20,
+   "lights": 14,
+   "bare": 159,
+   "longestRun": {
+    "cells": 14,
+    "x0": 10,
+    "z0": 14,
+    "x1": 23,
+    "z1": 14
+   },
+   "emptiest": {
+    "cells": 93,
+    "x0": 8,
+    "z0": 7,
+    "x1": 24,
+    "z1": 17
+   }
+  },
+  {
+   "name": "5 · THE SEWERS",
+   "walkable": 632,
+   "props": 11,
+   "decor": 0,
+   "pickups": 18,
+   "enemies": 22,
+   "lights": 12,
+   "bare": 161,
+   "longestRun": {
+    "cells": 9,
+    "x0": 12,
+    "z0": 8,
+    "x1": 12,
+    "z1": 16
+   },
+   "emptiest": {
+    "cells": 91,
+    "x0": 3,
+    "z0": 6,
+    "x1": 23,
+    "z1": 17
+   }
+  },
+  {
+   "name": "6 · THE FACTORY",
+   "walkable": 619,
+   "props": 10,
+   "decor": 0,
+   "pickups": 22,
+   "enemies": 20,
+   "lights": 13,
+   "bare": 158,
+   "longestRun": {
+    "cells": 13,
+    "x0": 10,
+    "z0": 14,
+    "x1": 22,
+    "z1": 14
+   },
+   "emptiest": {
+    "cells": 87,
+    "x0": 9,
+    "z0": 7,
+    "x1": 23,
+    "z1": 17
+   }
+  },
+  {
+   "name": "7 · THE WOMB",
+   "walkable": 621,
+   "props": 0,
+   "decor": 0,
+   "pickups": 21,
+   "enemies": 26,
+   "lights": 13,
+   "bare": 166,
+   "longestRun": {
+    "cells": 14,
+    "x0": 10,
+    "z0": 14,
+    "x1": 23,
+    "z1": 14
+   },
+   "emptiest": {
+    "cells": 92,
+    "x0": 9,
+    "z0": 7,
+    "x1": 23,
+    "z1": 17
+   }
+  }
+ ]
+}

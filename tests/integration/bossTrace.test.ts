@@ -712,6 +712,36 @@ import { world } from "../../src/world/WorldState";
  * Old `y` minus old bob equals new `y` minus new bob in every frame (to
  * 2.2e-16), and with the bob term taken out of the camera both rates give
  * this fixture byte for byte.
+ *
+ * ## Levels-feel-full Task 2 — the ninth regeneration: the church is furnished, and the fight did not move
+ *
+ * `src/world/levels/dress2.ts` dresses the nave (candelabra down both sides of the aisle, banners,
+ * saints fallen against the walls), the chapel (an altar under its window), the narthex (the font),
+ * and every other room and corridor along its walls: 186 pieces, 11 of them solid masses
+ * (`src/world/decor/masses.ts`), merged into 20 scene meshes. Level 2's grid, pickups and props are
+ * untouched. This is a content change, so the account is owed field by field. All 156 sampled
+ * frames, against the fixture as it stood at commit `64b4e8d`:
+ *
+ * - `camera` — all seven components **identical in all 156 frames**.
+ * - `hud` — all eight fields **identical in all 156**; the run still ends `HEALTH3835`,
+ *   `"THE CORRUPTED PRIEST — PHASE 3"`, `"DECAPITATED"`.
+ * - `scene.count` — **+20 in every one of the 156 frames**, no other delta (156..559 -> 176..579):
+ *   the 20 merged dressing meshes, and nothing else, because the level's props, pickups and
+ *   enemies are the ones it had.
+ * - `scene.digest` — differs in all 156, first at frame 18 (`8f6c6807` -> `b730cabf`), last at
+ *   2808 (`a6ce2bbc` -> `83e7d686`); 156 distinct digests before and after.
+ * - **The structural guard (Phase 3 Part D) stayed green**, as it did for the trim and the arches:
+ *   a change with no draws cannot shift the phase-3 form swap out of its sampled window, and the
+ *   guard is not loosened by this commit.
+ *
+ * Why the fight had no mechanism to move: the decor draws nothing (`grain`, never `Math.random`),
+ * and **no mass stands where this script fights.** The player is at (21,21) in the crypt and the
+ * priest in the doorway (16,20); the ritual room and the crypt (`x 9-23, z >= 19`) get only what
+ * can be walked through — candelabra, rubble, glass, banners — and `levelDressing.test.ts`
+ * asserts no mass cell there. The masses are in the nave and the other rooms (the altar (20,1), the
+ * font (14,1), four fallen saints (9,10) (9,14) (23,10) (23,14) and what the clutter adds), where
+ * this recording never sends a summon or an orb. A mass in the crypt would have moved this file:
+ * that is what the boundary is for.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

@@ -49,8 +49,8 @@ export function dressLevel2(L: { g: Grid; W: number; H: number }): DecorSpec[] {
   // THE BELL TOWER — the ropes hang to the floor
   d.place("chainLoose", 3, 2).place("chainLoose", 5, 2).place("chainLoose", 3, 4).place("chainLoose", 5, 4);
 
-  d.clutter({ density: .34, seed: 21, kinds: FURNISH, where: (x, z) => !BOSS(x, z) });
-  d.clutter({ density: .34, seed: 22, kinds: WALKABLE, where: BOSS });
+  d.clutter({ density: .44, seed: 21, kinds: FURNISH, where: (x, z) => !BOSS(x, z) });
+  d.clutter({ density: .44, seed: 22, kinds: WALKABLE, where: BOSS });
   d.clutter({ density: .1, seed: 23, interior: true, kinds: ["glass", "rubble", "candelabra", "bonesLoose"] });
   return d.specs;
 }

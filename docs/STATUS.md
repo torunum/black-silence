@@ -975,7 +975,7 @@ wall-adjacent floor from the theme's vocabulary by grid hash), and `L.decor = dr
 `validateDecor(L)` re-checks a finished level from scratch. The rules: never on a door cell, a pickup, the spawn or
 the exit; bulky pieces (`edge`, `free`) only on plain floor, never beside a door or pickup, one to a cell, and never
 where blocking the cell would cut the way through (a 1-wide corridor, a bend, a junction's arm); `edge` and `wall`
-pieces need a plain `#` wall behind them. Decor still takes no shot and blocks no step: a piece sits in a wall-side
+pieces need a plain `#` wall behind them. Small decor still takes no shot and blocks no step (Task 2 made the big pieces solid: see below): a piece sits in a wall-side
 strip of its cell so the way stays clear, but a player who walks into it walks through it.
 
 **Look at it:** the dev server, then in the console (after NEW GAME)
@@ -984,6 +984,50 @@ strip of its cell so the way stays clear, but a player who walks into it walks t
 while it is hidden: to photograph, set `player.px/pz/pyy` and `input.yaw/pitch`, render by hand
 (`renderState.renderer.render`), and read the pixels with `gl.readPixels` in the same task. Screenshots
 taken after a page edit lag one frame behind.
+
+## Levels that feel full — Task 2, levels 1-4 furnished, and solid masses
+
+Same branch and plan. Levels 1-4 are dressed by their own builders (`src/world/levels/dress1.ts` .. `dress4.ts`,
+called from the end of `buildLevel1`..`4`), a recorded divergence from the frozen reference (its grids,
+enemies, keys and doors are untouched). `docs/level-density.md` now prints the table before (the baseline,
+`docs/level-density-baseline.json`, measured with commit `64b4e8d`'s own code) and after.
+
+| level | composition | bare cells | emptiest region |
+|---|---|---|---|
+| 1 dungeon | the great hall is a **torture hall** (an execution slab at the pillar ring's centre, four racks, stocks, cages on chains, iron maidens along the north and south walls); the vestry is a **chancel** (altar, banners, candelabra round the red key); the east wing a **store** (crate piles); straw, shackles, bones, sconces everywhere else | 321 (46%) -> 32 (5%) | 257 -> 7 cells |
+| 2 church | candelabra down the nave's aisle, banners, four fallen saints against its walls, an altar under the chapel window, the font by the narthex door, bell-tower ropes, rubble and glass | 98 (17%) -> 6 (1%) | 45 -> 2 |
+| 3 necropolis | a sarcophagus on each of the pit's four daises, table tombs by the crowning pillar, sarcophagi under the colonnade, burial niches, urns, bone stacks | 105 (18%) -> 2 (0%) | 65 -> 1 |
+| 4 graveyard | table tombs and dead trees in the chapel yard, headstones and crosses along every wall, open graves, mounds, iron fence | 159 (26%) -> 7 (1%) | 93 -> 1 |
+
+**Solid masses (`src/world/decor/masses.ts`).** A piece with a `mass` footprint in the registry (rack, slab,
+stocks, iron maiden, crate pile, altar, font, fallen statue, sarcophagus, table tomb, dead tree, machine,
+conveyor, drum, and thin boxes for a headstone, a cross and a sapling) is a box in `world.masses`, and
+`solidAt` (`Collision.ts`) treats a point inside one as a wall. That one rule is what the player's `collides`, every
+enemy step, a projectile, a hitscan ray and an enemy's `los` ask, so a mass stops all of them: **shots stop on
+a mass, at any height** (a knee-high fallen statue is as much cover as a machine — one rule for the cost of a
+box lookup, and it is why the placement rules keep masses out of every path). Small clutter stays walk-through.
+Masses are not breakable props. The rules (`place.ts`): a mass keeps its box inside its own cell; is never in a
+corridor, bend, junction or doorway, never beside a door, pickup, spawn or exit; and `validateDecor` floods the
+level from the spawn with every mass a wall and reports any pickup, key, exit or enemy spawn the masses cut
+off. **No lookalikes:** a crate pile or drum (`lookalike`) stays two cells from a real `x` crate or `O` barrel,
+and the decor crate is dark, strapped, its lid pried off, a tarp over it — never the pale wood of the crate a
+player shoots.
+
+**Pickups and props.** Level 1 only: the bullets box (4,32) and the health pack (9,32), which lay at the spawn
+where a player is at full health, moved to (19,25) and (26,25), the hall's south rim beside the entrance from the west
+corridor, where the first fight is lost; two explosive barrels were added in the hall's east half (28,16), (26,21).
+Both pickups moved without crossing an enemy in `loadLevel`'s scan order, so every enemy is handed the same seeded
+draws (asserted in `tests/world/levelDressing.test.ts`; the trace fixture depends on it). Levels 2-4 had a supply in
+every room already; nothing moved.
+
+**Fixtures.** `trace-level1.json` and `trace-level2-boss.json` regenerated; camera and hud identical in every
+sampled frame of both, `scene.count` +31 (27 dressing meshes, 2 barrels x 2) and +20; the accounts are in the
+two test headers. No mass stands on either route (asserted). `trace-level0.json` byte-identical.
+
+**Tests.** `tests/world/masses.test.ts` (the box, the lookup, the real `playerTick` walked into a mass, `los`, a
+shot's ray-march, the loader), `tests/world/levelDressing.test.ts` (levels 1-4: legal, dense, the hall, masses
+never in the way, no lookalikes, the routes, the moves). Screenshots, the report and the mutation list are in
+`.superpowers/sdd/2026-09-29-levels-feel-full/task-2-*`.
 
 ## How fidelity is guarded
 

@@ -58,8 +58,8 @@ export function dressLevel1(L: { g: Grid; W: number; H: number }): DecorSpec[] {
   d.place("stocks", 36, 17);
 
   // the rest: crate piles and all elsewhere, only what can be walked through on the route
-  d.clutter({ density: .26, seed: 5, where: (x, z) => !ROUTE(x, z) });
-  d.clutter({ density: .3, seed: 6, kinds: WALKABLE, where: ROUTE });
-  d.clutter({ density: .12, seed: 7, interior: true });
+  d.clutter({ density: .34, seed: 5, where: (x, z) => !ROUTE(x, z) });
+  d.clutter({ density: .42, seed: 6, kinds: WALKABLE, where: ROUTE });
+  d.clutter({ density: .12, seed: 7, interior: true, kinds: WALKABLE });   // the floor of the hall and everywhere else: nothing solid
   return d.specs;
 }

@@ -120,4 +120,17 @@ describe("the table", () => {
     expect(md.match(/^\| /gm)!.length).toBe(LEVELS.length + 1);
     expect(md).toMatch(/generated/i);
   });
+
+  it("prints the table twice, before and after, when it is given the numbers from before a level was dressed", () => {
+    const rows = LEVELS.map((l) => ({ name: l.name, d: measureLevel(l.build()) }));
+    const before = rows.map(({ name, d }) => ({ name, walkable: d.walkable, props: d.propsTotal, decor: 0, pickups: d.pickupsTotal, enemies: d.enemies,
+      lights: d.lights, bare: d.walkable, longestRun: { ...d.longestRun, cells: 99 }, emptiest: { ...d.emptiest, cells: 98 } }));
+    const md = densityMarkdown(rows, { commit: "abc1234", rows: before });
+    expect(md).toContain("## Before");
+    expect(md).toContain("`abc1234`");
+    expect(md).toContain("## After");
+    expect(md.match(/^\| /gm)!.length, "two tables of a header and a row a level").toBe(2 * (LEVELS.length + 1));
+    expect(md).toContain("99 cells");   // the baseline's run, printed beside the current one
+    expect(md).toContain("100%)");       // and every baseline cell bare
+  });
 });

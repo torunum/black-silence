@@ -199,8 +199,21 @@ export function measureLevel(L: Pick<BuiltLevel, "g" | "decor">): Density {
 const fmt = (o: Record<string, number>): string => Object.entries(o).sort().map(([k, v]) => `${k} ${v}`).join(", ") || "-";
 const span = (r: Region): string => `x ${r.x0}-${r.x1}, z ${r.z0}-${r.z1}`;
 
-/** The markdown `docs/level-density.md` carries: a summary table, then each level's detail and map. */
-export function densityMarkdown(rows: Array<{ name: string; d: Density }>): string {
+/** One level's row of a measurement taken earlier (`docs/level-density-baseline.json`): the numbers the summary table prints. */
+export interface BaselineRow {
+  name: string; walkable: number; props: number; decor: number; pickups: number; enemies: number; lights: number;
+  bare: number; longestRun: Run; emptiest: Region;
+}
+export interface Baseline { commit: string; rows: BaselineRow[] }
+
+const pct = (bare: number, walkable: number): number => Math.round(100 * bare / walkable);
+
+/**
+ * The markdown `docs/level-density.md` carries: a summary table, then each level's detail and map. With a
+ * `baseline` (the numbers before a level was dressed) the table is printed twice, before and after, so the
+ * change is read off one page.
+ */
+export function densityMarkdown(rows: Array<{ name: string; d: Density }>, baseline?: Baseline): string {
   const out: string[] = [
     "# Level density",
     "",
@@ -211,11 +224,17 @@ export function densityMarkdown(rows: Array<{ name: string; d: Density }>): stri
     "one cell in any of eight directions, no decor piece; walls do not count). **Run** = the most bare cells",
     "in a straight line. **Emptiest** = the biggest four-way connected bare region. See `src/world/density.ts`.",
     "",
-    "| level | walkable | props | decor | pickups | enemies | lights | bare | longest bare run | emptiest region |",
-    "|---|---:|---:|---:|---:|---:|---:|---:|---|---|",
   ];
-  for (const { name, d } of rows)
-    out.push(`| ${name} | ${d.walkable} | ${d.propsTotal} | ${d.decor} | ${d.pickupsTotal} | ${d.enemies} | ${d.lights} | ${d.bareCells} (${Math.round(100 * d.bareCells / d.walkable)}%) | ${d.longestRun.cells} cells (${span(d.longestRun)}) | ${d.emptiest.cells} cells (${span(d.emptiest)}) |`);
+  const head = ["| level | walkable | props | decor | pickups | enemies | lights | bare | longest bare run | emptiest region |",
+    "|---|---:|---:|---:|---:|---:|---:|---:|---|---|"];
+  const line = (name: string, r: BaselineRow): string =>
+    `| ${name} | ${r.walkable} | ${r.props} | ${r.decor} | ${r.pickups} | ${r.enemies} | ${r.lights} | ${r.bare} (${pct(r.bare, r.walkable)}%) | ${r.longestRun.cells} cells (${span(r.longestRun)}) | ${r.emptiest.cells} cells (${span(r.emptiest)}) |`;
+  const asRow = (name: string, d: Density): BaselineRow => ({ name, walkable: d.walkable, props: d.propsTotal, decor: d.decor, pickups: d.pickupsTotal,
+    enemies: d.enemies, lights: d.lights, bare: d.bareCells, longestRun: d.longestRun, emptiest: d.emptiest });
+  if (baseline) {
+    out.push(`## Before — the baseline (commit \`${baseline.commit}\`)`, "", ...head, ...baseline.rows.map((r) => line(r.name, r)), "", "## After — as built", "");
+  }
+  out.push(...head, ...rows.map(({ name, d }) => line(name, asRow(name, d))));
   for (const { name, d } of rows) {
     out.push("", `## ${name}`, "",
       `- walkable cells: ${d.walkable}; bare: ${d.bareCells}`,

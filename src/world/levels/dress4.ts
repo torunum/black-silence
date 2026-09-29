@@ -26,7 +26,9 @@ export function dressLevel4(L: { g: Grid; W: number; H: number }): DecorSpec[] {
   // the dead trees of the outer yards
   for (const [x, z] of [[1, 5], [14, 1], [17, 1], [30, 5], [1, 10], [14, 22], [30, 22]]) d.place("deadtree", x, z);
 
-  d.clutter({ density: .36, seed: 41 });
+  // the stones themselves, along every wall: what a graveyard is made of
+  d.clutter({ density: .4, seed: 40, kinds: ["gravestone", "gravecross"] });
+  d.clutter({ density: .42, seed: 41 });
   d.clutter({ density: .14, seed: 42, interior: true, kinds: ["gravestone", "gravecross", "opengrave", "mound", "bonesLoose", "sapling"] });
   return d.specs;
 }

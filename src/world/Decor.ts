@@ -20,7 +20,8 @@ import { addPiece, merge, partClass, partMaterial, type Parts } from "./decor/pa
  * may list `BuiltLevel.decor`, and after the levels-feel-full plan's Task 1
  * every theme has a kit to do it with.
  *
- * **Nothing here is gameplay.** Decor never collides, never takes a shot and
+ * **Nothing here is gameplay** (this file only draws the list; the solid masses among it —
+ * `src/world/decor/masses.ts` — are built into `world.masses` by `loadLevel`, and `solidAt` reads them). Small decor never collides, never takes a shot and
  * is never read back: where a piece should block the player (a headstone,
  * the tree) the level puts a solid cell under it (`I`, which on a raised
  * floor is buried out of sight — see `prologue.ts`). Built from boxes,

@@ -29,7 +29,7 @@ export function dressLevel3(L: { g: Grid; W: number; H: number }): DecorSpec[] {
   d.place("sarcophagus", 14, 7, { side: "n" }).place("sarcophagus", 18, 7, { side: "n" });
   d.place("sarcophagus", 13, 17, { side: "s" }).place("sarcophagus", 15, 17, { side: "s" });
 
-  d.clutter({ density: .36, seed: 31 });
+  d.clutter({ density: .46, seed: 31 });
   d.clutter({ density: .12, seed: 32, interior: true, kinds: ["urn", "skullpile", "rubble", "bonesLoose", "chainLoose"] });
   return d.specs;
 }
