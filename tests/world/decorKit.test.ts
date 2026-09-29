@@ -119,7 +119,9 @@ describe("each piece is cheap, and stays where it says", () => {
       if (["flat", "wall", "hang"].includes(info.mode)) expect(info.cls, `${k} is ${info.mode} and must not cast`).toBe("clutter");
       expect(["decor", "clutter"], k).toContain(info.cls);
     }
-    expect(kit.filter((k) => PIECES[k].cls === "decor").sort(), "the casters").toEqual(["cratepile", "conveyor", "fallenstatue", "machine", "sarcophagus"].sort());
+    expect(kit.filter((k) => PIECES[k].cls === "decor").sort(), "the casters").toEqual(
+      ["cratepile", "conveyor", "fallenstatue", "machine", "sarcophagus",
+        "altar", "deadtree", "maiden", "rack", "sarcofree", "slab", "stocks", "tombfree"].sort());   // the masses of size: the level builders' set-pieces are casters too
   });
 
   it("leaves the prologue's own pieces as they were: casters, but the grass", () => {
@@ -298,14 +300,14 @@ describe("clutter along walls", () => {
 });
 
 describe("the cost stays bounded", () => {
-  it("merges each gallery hall into at most 16 meshes, and the clutter of each real level into at most 16", () => {
-    for (const t of THEMES) expect(costOf(buildGallery(t).decor!).meshes, `${t} gallery`).toBeLessThanOrEqual(16);
+  it("merges each gallery hall into at most 24 meshes, and the clutter of each real level into at most 24 (a mesh per shadow class and material, however many pieces)", () => {
+    for (const t of THEMES) expect(costOf(buildGallery(t).decor!).meshes, `${t} gallery`).toBeLessThanOrEqual(24);
     for (let i = 1; i <= 7; i++) {
       const L = LEVELS[i].build(); const d = new Decorator(L, themeOf(LEVELS[i].sub)!); d.clutter({ density: .4, seed: 3 });
       const c = costOf(d.specs);
-      expect(c.meshes, `level ${i}`).toBeLessThanOrEqual(16);
+      expect(c.meshes, `level ${i}`).toBeLessThanOrEqual(24);
       expect(c.triangles, `level ${i} triangles`).toBeLessThanOrEqual(24000);
-      expect(c.castTriangles, `level ${i} caster triangles`).toBeLessThanOrEqual(3500);
+      expect(c.castTriangles, `level ${i} caster triangles`).toBeLessThanOrEqual(4000);
     }
   });
 

@@ -1,5 +1,6 @@
 import { emptyGrid, link, put, putAbs } from "../LevelBuilder";
 import type { RoomLayout } from "../LevelBuilder";
+import { dressLevel3 } from "./dress3";
 
 /**
  * LEVEL 3 — THE NECROPOLIS.
@@ -113,5 +114,6 @@ export function buildLevel3(): RoomLayout {
   sC(11,9,21,15,7.0);           // over the pit's rim, where the floor drops away
   sC(13,10,19,14,8.6);          // the vault's crown, directly over the sovereign
   L.cmap=cmp;
+  L.decor=dressLevel3(L);   // set dressing and its solid masses: a deliberate divergence from the reference (levels-feel-full plan, Task 2), see dress3.ts
   return L;
 }

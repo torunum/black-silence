@@ -149,7 +149,8 @@ describe("the other seven levels are unzoned and build what they always built", 
     expect((fl[0].geometry as THREE.BufferGeometry).type).toBe("PlaneGeometry");
     expect(sameTex(mapOf(fl[0]), floorOf(def))).toBe(true);
     expect(mapOf(fl[0]).repeat.toArray()).toEqual([world.GW, world.GH]);
-    for (const name of ["floorCells", "decor", "decorGrass", "decorLight", "moon", "stars"]) expect(kids(name), name).toHaveLength(0);
+    // levels 1-4 are dressed (levels-feel-full plan, Task 2): they have a `decor` mesh; nothing of the prologue's ground cover, fire or sky
+    for (const name of ["floorCells", ...(i <= 4 ? [] : ["decor"]), "decorGrass", "decorLight", "moon", "stars"]) expect(kids(name), name).toHaveLength(0);
     expect(kids("platform").length).toBeLessThanOrEqual(1);
     expect(kids("wallCourse").length).toBeLessThanOrEqual(1);
     const scene = renderState.scene as THREE.Scene;

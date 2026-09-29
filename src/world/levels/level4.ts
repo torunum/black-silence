@@ -1,5 +1,6 @@
 import { emptyGrid, link, put, putAbs } from "../LevelBuilder";
 import type { RoomLayout } from "../LevelBuilder";
+import { dressLevel4 } from "./dress4";
 
 /**
  * LEVEL 4 — THE GRAVEYARD.
@@ -65,5 +66,6 @@ export function buildLevel4(): RoomLayout {
   put(L,3,3,3,2,"7");put(L,3,3,1,1,"9");put(L,3,3,5,1,"r");put(L,3,3,3,4,"h");put(L,3,3,1,3,"9");
   /* outer iron-fence gaps as windows */
   [[11,0],[16,0],[21,0],[11,24],[21,24]].forEach(([x,z])=>putAbs(L,x,z,"W"));
+  L.decor=dressLevel4(L);   // set dressing and its solid masses: a deliberate divergence from the reference (levels-feel-full plan, Task 2), see dress4.ts
   return L;
 }

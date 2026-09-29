@@ -1,13 +1,16 @@
 import { aperture, blankGrid, carve, hall, pillarsRing, put1 } from "../LevelBuilder";
-import type { Grid } from "../LevelBuilder";
+import type { DecorSpec, Grid } from "../LevelBuilder";
+import { dressLevel1 } from "./dress1";
 
 /**
  * Simple, flat, single-level layout. Asymmetric room shapes and sizes,
  * but ONE floor height everywhere — no galleries, no pits, no balconies,
  * no jutting diagonal walls. Clean and easy to read.
- * Copied verbatim from reference/sonsurum.html lines 314-374.
+ * Copied verbatim from reference/sonsurum.html lines 314-374 — the grid. The set dressing on top of it
+ * (`decor`: the torture hall, the chancel, the store; solid masses among it) is this project's,
+ * a deliberate divergence from the reference (levels-feel-full plan, Task 2): see `dress1.ts`.
  */
-export function buildLevel1(): { g: Grid; W: number; H: number } {
+export function buildLevel1(): { g: Grid; W: number; H: number; decor: DecorSpec[] } {
   const W=44,H=36;
   const L=blankGrid(W,H);const g=L.g;
 
@@ -66,5 +69,5 @@ export function buildLevel1(): { g: Grid; W: number; H: number } {
   put1(g,15,9,"i");put1(g,31,9,"i");put1(g,15,25,"i");put1(g,31,25,"i");
   put1(g,23,8,"l");
 
-  return L;
+  return {...L,decor:dressLevel1(L)};
 }

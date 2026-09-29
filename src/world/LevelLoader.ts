@@ -29,6 +29,7 @@ import { wallMaterials, addInstanced, groupPush, buildFloor, buildPlatforms } fr
 import { themeTex } from "./ZoneLook";
 import { levelLook, enterZones } from "./Zones";
 import { dressLevel } from "./Decor";
+import { massMap } from "./decor/masses";
 import { beginOpening, resetOpening } from "./Opening";
 import { spawnProp } from "./PropSpawn";
 import { world } from "./WorldState";
@@ -188,6 +189,7 @@ export function loadLevel(idx: number): void {
   world.heightMap=L.hmap||null;
   world.ceilMap=L.cmap||null;
   world.zones=L.zones||null;
+  world.masses=massMap(L.decor);   // the solid dressing (src/world/decor/masses.ts), which `solidAt` reads
   world.wallSegs=(L.segs||[]) as unknown as Record<string, unknown>[];
   renderState.scene=new THREE.Scene();
   setScene(renderState.scene);

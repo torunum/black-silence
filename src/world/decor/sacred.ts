@@ -110,4 +110,26 @@ export const SACRED_PIECES: Record<string, Piece> = {
     box("earth", .3, .16, 1.3, loc(-.7, .08, .1));
     box("wood", 1.0, .05, .14, loc(0, .07, .3, 0, .06));
   },
+  altar: (box, cyl) => {   // a stone altar against the wall: a block on a plinth, a cloth gone grey, two brass candlesticks and a book
+    box("slate", 1.7, .2, .7, loc(0, .1, WZ + .45));
+    box("stone", 1.5, .7, .55, loc(0, .55, WZ + .45));
+    box("marble", 1.7, .1, .7, loc(0, .95, WZ + .45));
+    box("cloth", 1.2, .02, .6, loc(0, 1.01, WZ + .45)); box("cloth", 1.0, .62, .02, loc(0, .64, WZ + .74));
+    for (const x of [-.65, .65]) {
+      cyl("brass", .05, .08, .4, loc(x, 1.2, WZ + .45), 6);
+      cyl("bone", .03, .03, .16, loc(x, 1.48, WZ + .45), 4); box("flame", .05, .09, .05, loc(x, 1.6, WZ + .45));
+    }
+    box("bone", .3, .04, .22, loc(0, 1.05, WZ + .5, 0, .2));
+  },
+  deadtree: (box, cyl) => {   // a dead tree, its trunk split, four crooked limbs and a twig off each
+    cyl("bark", .11, .24, 2.6, loc(0, 1.3, 0), 6);
+    cyl("bark", .04, .1, .8, loc(.06, 2.85, 0, 0, 0, -.15), 5);
+    for (let i = 0; i < 4; i++) {
+      const yaw = i * 1.7 + .4, y0 = 1.3 + i * .32, a = .7 + (i % 2) * .35, len = .95 - i * .06;
+      const base = loc(0, y0, 0, 0, yaw);
+      box("bark", .09 - i * .012, len, .09 - i * .012, within(base, Math.sin(a) * len / 2, Math.cos(a) * len / 2, 0, 0, 0, -a));
+      const tx = Math.sin(a) * len, ty = Math.cos(a) * len;
+      box("bark", .04, .45, .04, within(base, tx + .1, ty + .17, 0, 0, 0, -a + .7));
+    }
+  },
 };

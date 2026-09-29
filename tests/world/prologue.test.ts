@@ -161,11 +161,13 @@ describe("zones and words", () => {
     expect(ZONES[0].line, "the churchyard has the level's own opening line, lvl0").toBeUndefined();
   });
 
-  it("is the only level with zones or decor", () => {
+  it("is the only level with zones, and the only one dressed by hand for its own scene", () => {
+    // levels 1-4 carry a decor list since the levels-feel-full plan's Task 2 (tests/world/levelDressing.test.ts
+    // holds them to it); 5-7 get theirs in Task 3, and this stops saying "undefined" for them then
     for (let i = 1; i < LEVELS.length; i++) {
       const b = LEVELS[i].build();
       expect(b.zones, LEVELS[i].name).toBeUndefined();
-      expect(b.decor, LEVELS[i].name).toBeUndefined();
+      if (i > 4) expect(b.decor, LEVELS[i].name).toBeUndefined();
     }
   });
 });

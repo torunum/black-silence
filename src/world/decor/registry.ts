@@ -1,4 +1,4 @@
-import type { Klass, Mode, Piece, PieceInfo, Theme } from "./kit";
+import { shifted, type Klass, type Mode, type Piece, type PieceInfo, type Theme } from "./kit";
 import { PROLOGUE_PIECES as PRO } from "./prologue";
 import { DUNGEON_PIECES as DUN } from "./dungeon";
 import { SACRED_PIECES as SAC } from "./sacred";
@@ -45,33 +45,43 @@ export const PIECES: Record<string, PieceInfo> = {
   // the same shapes as clutter, for levels: no shadow, sized to stand freely
   bonesLoose: P(PRO.bones, "flat"),
   chainLoose: P(PRO.chain, "hang", "clutter", { fixed: true, h: 1.5 }),
-  gravestone: P(PRO.headstone, "free", "clutter", { scale: .72 }),
-  gravecross: P(PRO.cross, "free", "clutter", { scale: .78 }),
-  sapling: P(PRO.tree, "free", "clutter", { scale: .5 }),
+  // a headstone, a cross and a sapling are small masses: a thin box each (before the piece's scale), so a yard's rows are walked between, not through
+  gravestone: P(PRO.headstone, "free", "clutter", { scale: .72, mass: [-.45, .45, -.15, .15] }),
+  gravecross: P(PRO.cross, "free", "clutter", { scale: .78, mass: [-.31, .31, -.08, .08] }),
+  sapling: P(PRO.tree, "free", "clutter", { scale: .5, mass: [-.27, .27, -.27, .27] }),
   // dungeon
   shackles: P(DUN.shackles, "wall"),
   cage: P(DUN.cage, "hang", "clutter", { fixed: true }),
   straw: P(DUN.straw, "flat"),
-  cratepile: P(DUN.cratepile, "edge", "decor"),
+  cratepile: P(DUN.cratepile, "edge", "decor", { mass: [-.92, .85, -.97, -.13], lookalike: "crate" }),
   sconce: P(DUN.sconce, "wall"),
   rubble: P(DUN.rubble, "flat"),
   skullpile: P(DUN.skullpile, "flat"),
   bench: P(DUN.bench, "edge"),
+  // dungeon set-pieces: masses a room is built round (not in the vocabulary: the level's builder places each)
+  rack: P(DUN.rack, "free", "decor", { mass: [-.95, .95, -.42, .42] }),
+  slab: P(DUN.slab, "free", "decor", { mass: [-.93, .93, -.47, .47] }),
+  stocks: P(DUN.stocks, "free", "decor", { mass: [-.75, .75, -.25, .25] }),
+  maiden: P(DUN.maiden, "edge", "decor", { mass: [-.47, .47, -.97, -.28] }),
   // church
   candelabra: P(SAC.candelabra, "free"),
   lectern: P(SAC.lectern, "edge"),
-  fallenstatue: P(SAC.fallenstatue, "edge", "decor"),
+  fallenstatue: P(SAC.fallenstatue, "edge", "decor", { mass: [-.95, .9, -.95, -.05] }),
   banner: P(SAC.banner, "wall"),
   glass: P(SAC.glass, "flat"),
-  font: P(SAC.font, "edge"),
+  font: P(SAC.font, "edge", "clutter", { mass: [-.45, .45, -.85, .05] }),
+  altar: P(SAC.altar, "edge", "decor", { mass: [-.87, .87, -.97, -.15] }),
   // necropolis
-  sarcophagus: P(SAC.sarcophagus, "edge", "decor"),
+  sarcophagus: P(SAC.sarcophagus, "edge", "decor", { mass: [-.93, .93, -.95, -.05] }),
+  sarcofree: P(shifted(SAC.sarcophagus, .5), "free", "decor", { mass: [-.93, .93, -.46, .46] }),
   urn: P(SAC.urn, "free"),
   niche: P(SAC.niche, "wall"),
   bonestack: P(SAC.bonestack, "edge"),
   // graveyard
   fence: P(SAC.fence, "wall"),
   opengrave: P(SAC.opengrave, "flat"),
+  tombfree: P(PRO.tomb, "free", "decor", { mass: [-.58, .58, -.94, .94] }),   // the prologue's table tomb, standing free
+  deadtree: P(SAC.deadtree, "free", "decor", { mass: [-.25, .25, -.25, .25] }),
   // sewers and factory
   pipe: P(PIP.pipe, "wall", "clutter", { fixed: true }),
   pipedrop: P(PIP.pipedrop, "wall", "clutter", { fixed: true }),
@@ -80,10 +90,10 @@ export const PIECES: Record<string, PieceInfo> = {
   debris: P(PIP.debris, "flat"),
   outfall: P(PIP.outfall, "wall"),
   ladder: P(PIP.ladder, "wall", "clutter", { fixed: true }),
-  machine: P(PIP.machine, "edge", "decor"),
-  drum: P(PIP.drum, "edge"),
+  machine: P(PIP.machine, "edge", "decor", { mass: [-.85, .85, -.95, -.05] }),
+  drum: P(PIP.drum, "edge", "clutter", { mass: [-.75, .8, -.95, .12], lookalike: "barrel" }),
   hook: P(PIP.hook, "hang", "clutter", { fixed: true }),
-  conveyor: P(PIP.conveyor, "edge", "decor"),
+  conveyor: P(PIP.conveyor, "edge", "decor", { mass: [-.95, .95, -.95, -.28] }),
   gauge: P(PIP.gauge, "wall"),
   // womb
   growth: P(WOM.growth, "edge"),
@@ -127,6 +137,18 @@ export const VOCAB: Readonly<Record<Theme, ReadonlyArray<{ k: string; w: number 
   womb: [
     { k: "growth", w: 2 }, { k: "sinew", w: 2 }, { k: "drape", w: 2 }, { k: "pod", w: 1.5 }, { k: "eye", w: 1 }, { k: "vein", w: 3 },
   ],
+};
+
+/**
+ * The masses and free-standing pieces a level's builder places by hand, beyond what `clutter` scatters:
+ * the gallery shows them too, so a piece nobody scatters is still looked at.
+ */
+export const SETPIECES: Readonly<Record<Theme, readonly string[]>> = {
+  dungeon: ["rack", "slab", "stocks", "maiden"],
+  church: ["altar"],
+  necropolis: ["sarcofree", "tombfree"],
+  graveyard: ["tombfree", "deadtree"],
+  sewers: [], factory: [], womb: [],
 };
 
 /** The theme a level's `sub` names, if it has a kit (hell, the crypt and the like do not). */

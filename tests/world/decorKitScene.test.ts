@@ -21,7 +21,7 @@ import { galleryDef } from "../../src/world/decor/gallery";
  * built exactly as it was. Booted the way `tests/render/shadows.test.ts`
  * boots: NEW GAME through `main.ts`, then `loadLevel(n)` directly. The
  * dressed levels here are the real level grids with `Decorator.clutter` laid
- * over them in the test (no level is dressed in the game yet — Tasks 2-3).
+ * over them in the test (levels 1-4 are dressed by their own builders since Task 2; 5-7 wait for Task 3).
  */
 
 let loadLevel: (idx: number) => void;
@@ -48,15 +48,22 @@ function dressed(i: number, density = .4): LevelDef {
 const mapsOf = (m: THREE.Mesh) => (Array.isArray(m.material) ? m.material : [m.material]).map((x) => (x as THREE.MeshLambertMaterial).map);
 
 describe("what the loader builds from a decor list", () => {
-  it("merges a dressed level into a handful of meshes: a hundred pieces add at most 16 scene children", () => {
+  it("merges a dressed level into a handful of meshes: a hundred and more pieces add at most 28 scene children", () => {
     for (let i = 1; i <= 7; i++) {
-      LEVELS.length = 8; loadLevel(i);
+      LEVELS.length = 8;
+      // the level as the game builds it, with its decor list stripped (levels 1-4 are dressed by their builders now)
+      LEVELS[8] = { ...LEVELS[i], build: () => { const L = LEVELS[i].build(); L.decor = undefined; return L; } }; loadLevel(8);
       const bare = renderState.scene.children.length;
       expect(decorMeshes(), `level ${i} undressed`).toHaveLength(0);
       LEVELS[8] = dressed(i); loadLevel(8);
       const added = renderState.scene.children.length - bare;
       expect(decorMeshes().length, `level ${i}`).toBeGreaterThan(3);
-      expect(added, `level ${i} gained ${added} scene children`).toBeLessThanOrEqual(16);
+      expect(added, `level ${i} gained ${added} scene children`).toBeLessThanOrEqual(28);
+      if (i <= 4) {   // the real level: its own hand dressing, merged the same way
+        LEVELS[8] = LEVELS[i]; loadLevel(8);
+        expect(renderState.scene.children.length - bare, `level ${i} as built`).toBeLessThanOrEqual(28);
+        expect(decorMeshes().length, `level ${i} as built`).toBeGreaterThan(3);
+      }
     }
   });
 

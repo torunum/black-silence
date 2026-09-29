@@ -2,7 +2,7 @@ import { LEVELS, type LevelDef } from "../levels/index";
 import type { BuiltLevel } from "../LevelBuilder";
 import type { Theme } from "./kit";
 import { Decorator } from "./place";
-import { PIECES, VOCAB } from "./registry";
+import { PIECES, SETPIECES, VOCAB } from "./registry";
 
 /**
  * THE GALLERY — every piece of a theme's vocabulary standing in a lit hall,
@@ -28,7 +28,7 @@ import { PIECES, VOCAB } from "./registry";
 const STEP = 3;
 
 export function buildGallery(theme: Theme): BuiltLevel {
-  const kinds = [...new Set(VOCAB[theme].map((v) => v.k))];
+  const kinds = [...new Set([...VOCAB[theme].map((v) => v.k), ...SETPIECES[theme]])];
   const rows: Record<"wall" | "free" | "flat" | "hang", string[]> = { wall: [], free: [], flat: [], hang: [] };
   for (const k of kinds) {
     const m = PIECES[k].mode;

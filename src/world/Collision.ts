@@ -55,6 +55,8 @@ export function solidAt(wx: number,wz: number){
   const ch=row[gx];if(ch===undefined)return true;
   if(ch==="#"||ch==="I"||ch==="W")return true;
   if(ch==="+"||ch==="D"||ch==="S"){const d=world.doors[gx+","+gz];return d&&!d.open;}
+  if(world.masses.size){const ms=world.masses.get(gz*4096+gx);   // a piece of solid dressing (src/world/decor/masses.ts): a wall to walk, shot and sight alike
+    if(ms)for(const m of ms)if(wx>=m.x0&&wx<m.x1&&wz>=m.z0&&wz<m.z1)return true;}
   return false;}
 
 /* ===== arbitrary (non-orthogonal) wall segments — the Doom/Blood look =====

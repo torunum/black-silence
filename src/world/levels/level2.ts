@@ -1,5 +1,6 @@
 import { emptyGrid, link, put, putAbs } from "../LevelBuilder";
 import type { RoomLayout } from "../LevelBuilder";
+import { dressLevel2 } from "./dress2";
 
 /**
  * LEVEL 2 — THE ABANDONED CHURCH.
@@ -102,5 +103,6 @@ export function buildLevel2(): RoomLayout {
   /* stained glass windows on nave walls + outer church walls */
   [[9,7],[9,11],[9,15],[23,7],[23,11],[23,15]].forEach(([x,z])=>putAbs(L,x,z,"W"));
   [[11,0],[16,0],[21,0]].forEach(([x,z])=>putAbs(L,x,z,"W"));
+  L.decor=dressLevel2(L);   // set dressing and its solid masses: a deliberate divergence from the reference (levels-feel-full plan, Task 2), see dress2.ts
   return L;
 }

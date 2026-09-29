@@ -48,12 +48,29 @@ export interface PieceInfo {
   fixed?: boolean;
   /** The `h` a spec gets when it names none: a loose chain's length, so a default one clears a player's head. */
   h?: number;
+  /**
+   * A mass: the piece is solid. Its footprint `[x0, x1, z0, z1]` in the piece's own frame (before yaw and
+   * scale), which `masses.ts` turns into a box the player, the enemies and the shots stop at. Small clutter
+   * has none and stays walk-through.
+   */
+  mass?: readonly [number, number, number, number];
+  /** What a player might take this for: the `x` crate or the `O` barrel. The placement rules keep it away from the real thing. */
+  lookalike?: "crate" | "barrel";
 }
 
 /** Local transform: a position, an XYZ rotation and an optional scale. */
 export function loc(x: number, y: number, z: number, rx = 0, ry = 0, rz = 0, sx = 1, sy = sx, sz = sx): THREE.Matrix4 {
   return new THREE.Matrix4().compose(new THREE.Vector3(x, y, z),
     new THREE.Quaternion().setFromEuler(new THREE.Euler(rx, ry, rz)), new THREE.Vector3(sx, sy, sz));
+}
+
+/** A piece moved `dz` along its own z: the wall-hung sarcophagus stood in the middle of a room, say. */
+export function shifted(build: Piece, dz: number): Piece {
+  const s = loc(0, 0, dz);
+  return (box, cyl, d, top, sph) => build(
+    (mat, w, h, dd, m) => box(mat, w, h, dd, s.clone().multiply(m)),
+    (mat, r0, r1, h, m, seg) => cyl(mat, r0, r1, h, s.clone().multiply(m), seg),
+    d, top, (mat, r, m) => sph(mat, r, s.clone().multiply(m)));
 }
 
 /** A transform relative to another: a part placed in a sub-assembly's frame. */
@@ -100,7 +117,10 @@ function materials(): Record<string, () => THREE.Material> {
     grass: () => new THREE.MeshLambertMaterial({ color: 0x2c3120 }),
     // the kit's own
     rock: () => lambert(TEX.dungeonWall, 0x8e9090),
-    crate: () => lambert(TEX.wood, 0x9c8a74),
+    // dark with age, tar and damp: a decor crate is never the pale new wood of the `x` crate a player shoots
+    crate: () => lambert(TEX.wood, 0x4e453c),
+    blood: () => new THREE.MeshLambertMaterial({ color: 0x4a0e0c }),
+    canvas: () => new THREE.MeshLambertMaterial({ color: 0x5c5a48 }),
     straw: () => lambert(DRESSTEX.straw || TEX.wood),
     cloth: () => lambert(DRESSTEX.banner || TEX.wood),
     brass: () => new THREE.MeshLambertMaterial({ color: 0x8a6a2a }),

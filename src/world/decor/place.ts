@@ -3,6 +3,7 @@ import type { BuiltLevel, DecorSpec, Grid } from "../LevelBuilder";
 import { classifyGlyph, decorCell } from "../density";
 import { SIDE_D, WALL_ROT, type Side, type Theme } from "./kit";
 import { PIECES, VOCAB } from "./registry";
+import { massCells } from "./masses";
 
 /**
  * PLACING DRESSING — the rules, and the API a level's builder uses (levels-
@@ -27,7 +28,15 @@ import { PIECES, VOCAB } from "./registry";
  *    1-wide corridor, a bend and a junction's arm are;
  *  - `edge` and `wall` pieces with their back to a plain `#` wall (the yaw
  *    `WALL_ROT` gives), one to each wall side;
- *  - `flat` pieces at most two to a cell, `hang` pieces one.
+ *  - `flat` pieces at most two to a cell, `hang` pieces one;
+ *  - a **mass** (a piece with a `mass` footprint: it is solid, `masses.ts`) keeps its whole box inside
+ *    its own cell, so the flood fills below may treat the cell as a wall; and a *lookalike* (a crate
+ *    pile, a drum) stays two cells clear of a real `x` crate or `O` barrel, which a player has
+ *    learned to shoot: decor must never be mistaken for a prop that breaks or explodes.
+ *
+ * And from scratch, for a finished level (`validateDecor`): with every mass treated as a wall, the
+ * spawn still reaches every cell it reached without them, so every pickup, key, exit and enemy
+ * spawn stays reachable however the pieces add up.
  *
  * Nothing here calls `Math.random`: positions and picks come from `grain`,
  * the integer hash of the cell and a seed, so a level always dresses the same.
@@ -74,6 +83,15 @@ export class Board {
     return true;
   }
 
+  /** Is a real crate `x` or barrel `O` within two cells? A lookalike must not stand there. */
+  private nearReal(cx: number, cz: number): boolean {
+    for (let dz = -2; dz <= 2; dz++) for (let dx = -2; dx <= 2; dx++) {
+      const c = this.at(cx + dx, cz + dz);
+      if (c === "x" || c === "O") return true;
+    }
+    return false;
+  }
+
   /** Why this spec may not go here, or null if it may. */
   why(d: DecorSpec): string | null {
     const info = PIECES[d.k];
@@ -98,6 +116,8 @@ export class Board {
       if (this.bulky.has(key(cx, cz))) return "a second bulky piece in the cell";
       if (this.blocksPath(cx, cz)) return "blocks the way (a 1-wide corridor, a bend or a junction)";
     }
+    if (info.lookalike && this.nearReal(cx, cz)) return "a lookalike beside a real crate or barrel";
+    if (info.mass && massCells(d).length > 1) return "its mass spills out of its cell";
     if (info.mode === "edge" || info.mode === "wall") {
       const side = sideOf(d.r || 0);
       if (!side) return "not squarely against a side";
@@ -121,13 +141,47 @@ export class Board {
   }
 }
 
-/** Every rule a finished level's decor list breaks. Empty means the dressing is safe. Run on a builder's own output (its grid still has its glyphs). */
+/** The cells the spawn reaches on four-way steps: doors and secrets passable (a static check, as `analysis.ts`), pillars, walls and windows and the `blocked` cells not. */
+function reach(g: Grid, blocked: ReadonlySet<number>): Set<number> | null {
+  let start = -1;
+  g.forEach((row, z) => row.forEach((c, x) => { if (c === "P") start = key(x, z); }));
+  if (start < 0) return null;
+  const seen = new Set<number>([start]), stack = [start];
+  while (stack.length) {
+    const k = stack.pop()!, x = k % 4096, z = (k - x) / 4096;
+    for (const s of SIDES) {
+      const nx = x + SIDE_D[s][0], nz = z + SIDE_D[s][1], nk = key(nx, nz), c = g[nz]?.[nx];
+      if (c === undefined || "#WI".includes(c) || seen.has(nk) || blocked.has(nk)) continue;
+      seen.add(nk); stack.push(nk);
+    }
+  }
+  return seen;
+}
+
+/** Every cell a mass touches. */
+export function massBlocked(decor: readonly DecorSpec[] | undefined): Set<number> {
+  const out = new Set<number>();
+  for (const d of decor || []) for (const [x, z] of massCells(d)) out.add(key(x, z));
+  return out;
+}
+
+/**
+ * Every rule a finished level's decor list breaks. Empty means the dressing is safe. Run on a builder's own
+ * output (its grid still has its glyphs). Beyond the per-piece rules it flood-fills the level from the spawn
+ * with every mass a wall: anything the spawn reached before, a pickup, key, exit or enemy, it must still reach.
+ */
 export function validateDecor(L: Pick<BuiltLevel, "g" | "decor">): DecorProblem[] {
   const board = new Board(L.g), out: DecorProblem[] = [];
   for (const spec of L.decor || []) {
     const why = board.why(spec);
     if (why) out.push({ spec, why }); else board.add(spec);
   }
+  const blocked = massBlocked(L.decor), open = reach(L.g, new Set()), shut = reach(L.g, blocked);
+  if (open && shut) L.g.forEach((row, z) => row.forEach((c, x) => {
+    const cls = classifyGlyph(c), k = key(x, z);
+    if (!["pickup", "enemy", "exit", "plate", "prop", "piano", "torch", "candle"].includes(cls) || !open.has(k) || shut.has(k)) return;
+    out.push({ spec: { k: "(mass)", x, z }, why: `the masses cut off the ${cls} '${c}' at (${x},${z})` });
+  }));
   return out;
 }
 
@@ -141,6 +195,11 @@ export interface ClutterOptions {
   kinds?: readonly string[];
   /** Only cells this returns true for — a room's bounds, or "not the boss's arena". */
   where?: (x: number, z: number) => boolean;
+  /**
+   * Also dress cells with no wall beside them: a hall's floor, not just its edges. Such a cell can only take a
+   * piece that needs no wall (flat, hung or free), so a room's middle is straw and bones and cages, not crates.
+   */
+  interior?: boolean;
 }
 
 /**
@@ -177,7 +236,8 @@ export class Decorator {
       const sides = o.side ? [o.side] : this.wallSides(x, z);
       if (!sides.length) return "no wall beside it";
       d.r = WALL_ROT[sides[Math.floor(grain(x, z, 71) * sides.length)]];
-    } else if (info.mode !== "solid" && info.mode !== "cover") d.r = grain(x, z, 72) * Math.PI * 2;
+    } else if (info.mass) d.r = 0;   // a free mass turned to a random angle would spill out of its cell
+    else if (info.mode !== "solid" && info.mode !== "cover") d.r = grain(x, z, 72) * Math.PI * 2;
     if (o.s !== undefined) d.s = o.s;
     if (o.h !== undefined) d.h = o.h;
     const why = this.board.why(d);
@@ -202,22 +262,26 @@ export class Decorator {
   /** Dresses plain floor beside walls with the theme's vocabulary; returns how many pieces went in. Candidates that break a rule are skipped. */
   clutter(o: ClutterOptions = {}): number {
     const density = o.density ?? .3, seed = o.seed ?? 1;
-    const vocab = VOCAB[this.theme].filter((v) => !o.kinds || o.kinds.includes(v.k));
-    const total = vocab.reduce((n, v) => n + v.w, 0);
+    const all = VOCAB[this.theme].filter((v) => !o.kinds || o.kinds.includes(v.k));
+    const loose = all.filter((v) => !["edge", "wall"].includes(PIECES[v.k].mode));   // what a cell with no wall beside it can take
     let placed = 0;
     for (let z = 0; z < this.L.H; z++) for (let x = 0; x < this.L.W; x++) {
       if (this.L.g[z][x] !== "." || (o.where && !o.where(x, z))) continue;
       const sides = this.wallSides(x, z);
-      if (!sides.length || grain(x, z, seed) >= density * (sides.length > 1 ? 1.6 : 1)) continue;
+      if (!sides.length && !o.interior) continue;
+      if (grain(x, z, seed) >= density * (sides.length > 1 ? 1.6 : 1)) continue;
+      const vocab = sides.length ? all : loose, total = vocab.reduce((n, v) => n + v.w, 0);
+      if (!vocab.length) continue;
       for (let attempt = 0; attempt < 3; attempt++) {   // the first choice may not fit; the hash offers two more
         let at = grain(x, z, seed + 1 + attempt * 7) * total, k = vocab[0].k;
         for (const v of vocab) { if ((at -= v.w) < 0) { k = v.k; break; } }
-        const side = sides[Math.floor(grain(x, z, seed + 4) * sides.length)], mode = PIECES[k].mode;
+        const side: Side = sides.length ? sides[Math.floor(grain(x, z, seed + 4) * sides.length)] : "n", mode = PIECES[k].mode;
         const jitter = mode === "flat" ? (grain(x, z, seed + 5) - .5) * .5 : 0;
-        const lean = mode === "free" ? .28 : 0;   // a freestanding piece stands nearer its wall
+        const lean = mode === "free" && sides.length ? .28 : 0;   // a freestanding piece stands nearer its wall
         const dx = SIDE_D[side][0], dz = SIDE_D[side][1];
         const spec: DecorSpec = { k, x: x + dx * lean + (dz ? jitter : 0), z: z + dz * lean + (dx ? jitter : 0) };
         if (mode === "edge" || mode === "wall") spec.r = WALL_ROT[side];
+        else if (PIECES[k].mass) spec.r = Math.floor(grain(x, z, seed + 6) * 4) * Math.PI / 2;   // a mass is an axis-aligned box: a quarter turn keeps it the shape it is
         else if (mode !== "cover" && mode !== "solid") spec.r = grain(x, z, seed + 6) * Math.PI * 2;
         if (this.board.why(spec)) continue;
         this.board.add(spec); this.specs.push(spec); placed++;

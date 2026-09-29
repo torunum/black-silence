@@ -50,13 +50,20 @@ export const DUNGEON_PIECES: Record<string, Piece> = {
       box("straw", .4 + grain(i, s, 23) * .4, .05, .16 + grain(i, s, 26) * .1, loc(x, .03 + (i % 3) * .022, z, 0, grain(i, s, 24) * Math.PI));
     }
   },
-  cratepile: (box, _c, d) => {   // two crates and a third askew on top, slats gone, a plank on the floor
+  cratepile: (box, _c, d) => {   // strapped crates, dark with age: a lid pried off the top one, a wall of slats stove in, a tarp over the third
     const t = (grain(1, cellHash(d.x, d.z), 25) - .5) * .3;
-    box("crate", .8, .8, .8, loc(-.5, .4, WZ + .45, 0, .05 + t));
-    box("crate", .74, .74, .74, loc(.45, .37, WZ + .43, 0, -.12));
-    box("crate", .62, .62, .62, loc(-.42, 1.11, WZ + .44, 0, .4 + t));
+    const strapped = (x: number, y: number, z: number, s: number, ry: number): void => {
+      box("crate", s, s, s, loc(x, y, z, 0, ry));
+      for (const dy of [-.3, .3]) box("wrought", s + .03, .06, s + .03, loc(x, y + dy * s, z, 0, ry));
+    };
+    strapped(-.5, .4, WZ + .45, .8, .05 + t);
+    strapped(.45, .37, WZ + .43, .74, -.12);
+    strapped(-.42, 1.11, WZ + .44, .62, .4 + t);
+    box("dark", .5, .02, .5, loc(-.42, 1.43, WZ + .44, 0, .4 + t));   // the open top of the upper crate, and the slats left across it
+    box("crate", .5, .04, .08, loc(-.42, 1.44, WZ + .44, 0, .4 + t)); box("crate", .08, .04, .5, loc(-.3, 1.44, WZ + .4, 0, .4 + t));
     box("dark", .5, .07, .02, loc(-.5, .52, WZ + .89));
     box("dark", .44, .06, .02, loc(.45, .3, WZ + .82));
+    box("canvas", .72, .05, .6, loc(.45, .76, WZ + .43, .08, -.12, .1));
     box("crate", .62, .05, .14, loc(.25, .03, WZ + 1.0, 0, .5));
   },
   sconce: (box, cyl) => {   // an iron bracket and cup with a charred stub of torch in it — out
@@ -83,5 +90,41 @@ export const DUNGEON_PIECES: Record<string, Piece> = {
   bench: (box) => {   // a plank bench along the wall
     box("wood", 1.7, .07, .4, loc(0, .42, WZ + .3));
     box("wood", .08, .4, .34, loc(-.7, .2, WZ + .3)); box("wood", .08, .4, .34, loc(.7, .2, WZ + .3));
+  },
+  rack: (box, cyl) => {   // a torture rack: a plank bed on four legs between two windlass rollers with hand-spokes, ropes and a cuff at each end
+    for (const x of [-.8, .8]) for (const z of [-.3, .3]) box("wood", .12, .5, .12, loc(x, .25, z));
+    for (const z of [-.3, .3]) box("wood", 1.85, .1, .12, loc(0, .55, z));
+    for (let i = 0; i < 6; i++) box("wood", .16, .05, .6, loc(-.7 + i * .28, .61, 0));
+    for (const x of [-.85, .85]) {
+      cyl("bark", .1, .1, .84, loc(x, .72, 0, Math.PI / 2), 6);
+      box("wrought", .05, .5, .05, loc(x, .72, .43)); box("wrought", .05, .05, .3, loc(x, .95, .43));
+      box("wrought", .16, .04, .16, loc(x * .82, .66, .16)); box("wrought", .16, .04, .16, loc(x * .82, .66, -.16));
+      box("bark", .04, .03, .36, loc(x * .9, .68, 0));
+    }
+    box("blood", .7, .01, .34, loc(-.1, .645, 0, 0, .2));
+  },
+  slab: (box, cyl) => {   // a stone execution slab: a block base, a slate top channelled for blood, iron rings at the corners, a pail
+    box("rock", 1.5, .6, .6, loc(0, .3, 0));
+    box("slate", 1.85, .16, .9, loc(0, .68, 0));
+    box("blood", 1.5, .02, .07, loc(0, .77, 0)); box("blood", .07, .02, .5, loc(.55, .77, 0));
+    for (const x of [-.85, .85]) for (const z of [-.4, .4]) box("wrought", .1, .1, .06, loc(x, .68, z * 1.08));
+    box("blood", .3, .012, .3, loc(.7, .006, .6));
+    cyl("wrought", .14, .11, .24, loc(.7, .12, .6), 6);
+  },
+  maiden: (box) => {   // an iron maiden: a tall riveted iron case, its door swung open on a black inside set with spikes
+    box("rustplate", .86, 1.9, .6, loc(0, .95, WZ + .35));
+    box("wrought", .94, .1, .66, loc(0, 1.95, WZ + .35)); box("wrought", .9, .1, .64, loc(0, .05, WZ + .35));
+    box("dark", .5, 1.5, .02, loc(-.05, 1.05, WZ + .66));
+    for (let i = 0; i < 5; i++) for (const s of [-.2, .1]) box("wrought", .03, .03, .16, loc(s, .55 + i * .27, WZ + .72));
+    box("rustplate", .42, 1.8, .05, loc(.7, .95, WZ + .7, 0, -1.0));
+    box("blood", .05, .5, .02, loc(.12, .7, WZ + .67));
+  },
+  stocks: (box) => {   // the pillory: two posts, a hinged board with three holes, on a low base, a beam over it
+    box("wood", 1.5, .08, .5, loc(0, .04, 0));
+    for (const x of [-.65, .65]) box("wood", .1, 1.4, .1, loc(x, .75, 0));
+    box("wood", 1.3, .22, .08, loc(0, .84, 0)); box("wood", 1.3, .22, .08, loc(0, 1.08, 0, 0, 0, -.03));
+    for (const x of [-.4, 0, .4]) box("dark", .13, .17, .1, loc(x, .96, 0));
+    box("wood", 1.5, .08, .12, loc(0, 1.46, 0));
+    box("blood", .3, .01, .3, loc(.25, .085, .05));
   },
 };

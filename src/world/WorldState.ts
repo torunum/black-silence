@@ -1,6 +1,9 @@
 import type { Enemy } from "../enemies/Enemy";
 import type { ZoneMap } from "./LevelBuilder";
 
+/** A solid mass of set dressing (a sarcophagus, a machine): an axis-aligned box in world units, `[x0, x1) x [z0, z1)`. See `src/world/decor/masses.ts`. */
+export interface MassBox { x0: number; x1: number; z0: number; z1: number }
+
 /**
  * Everything loadLevel() builds and the systems read for the rest of the
  * level: the tile grid and its dimensions, the height map and wall
@@ -46,6 +49,12 @@ export const world = {
   ceilMap: null as number[][] | null,
   /** The level's zones (`BuiltLevel.zones`), or `null` — every level but the prologue. Read through `src/world/Zones.ts`. */
   zones: null as ZoneMap | null,
+  /**
+   * The level's solid dressing, by grid cell (`gz * 4096 + gx`, a box listed under every cell it touches):
+   * `solidAt` asks it, so the player, the enemies, the shots and the line of sight all stop at a mass.
+   * Empty for every level with none. Built by `loadLevel` from the decor list (`massMap`).
+   */
+  masses: new Map<number, MassBox[]>(),
   wallSegs: [] as Array<Record<string, unknown>>,
   doors: {} as Record<string, Record<string, unknown>>,
   enemies: [] as Enemy[],
