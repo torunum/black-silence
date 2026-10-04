@@ -74,6 +74,19 @@ export interface ZoneTheme {
   ground?: string;
   /** The zone's room tone (`src/world/ZoneBed.ts`): replaces the level's random ambient stingers while the player is in it. */
   bed?: "hell" | "yard";
+  /** A `HELLTEX` key (or any named texture) for the ceiling over the zone, where the theme's own would be wrong. */
+  ceil?: string;
+  /** The same, for the stone of a wall seen as a ceiling riser (a step between two ceilings), the one wall texture not built in the shell. */
+  wall?: string;
+  /** The same, for the trim courses along the zone's walls (`BandTextures.ts` has one per theme; this names another). */
+  band?: string;
+  /**
+   * The zone's walls, cliffs and raised ground are meshes mapped in world space (`src/world/HellShell.ts`) in the
+   * zone's own stone — no instanced wall box, no platform, no floor quad of the zone is built. Needs `HELLTEX`.
+   */
+  shell?: boolean;
+  /** The zone's floor at y = 0 is a lake of lava (`src/fx/Lava.ts`): two animated, unlit layers, in place of the floor quads. */
+  lava?: boolean;
 }
 
 /** `map[z][x]` indexes `themes`, for every cell of the grid, solid ones included (a wall wears its zone's texture). */

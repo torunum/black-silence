@@ -5,8 +5,7 @@ import { grain } from "./BandTextures";
 /**
  * DRESSING TEXTURES — the prologue's own surfaces, which the reference's
  * texture set never had: the churchyard's earth and grass, the raw soil of
- * an open grave's walls, the dressed stone of the bridge over the burning
- * pit, and the soft spark the fire's particles are drawn with (the prologue
+ * an open grave's walls and the soft spark the fire's particles are drawn with (the prologue
  * plan's Task 3, `docs/superpowers/plans/2026-09-27-player-feedback-2-prologue.md`).
  *
  * The levels-feel-full plan's Task 1 added four more, for the dressing kit
@@ -31,7 +30,7 @@ import { grain } from "./BandTextures";
  * faces of raised ground (`ZoneLook.ts`'s `themeTex`).
  */
 
-export type DressKey = "yardEarth" | "graveEarth" | "bridgeStone" | "spark" | "straw" | "rust" | "sludge" | "banner";
+export type DressKey = "yardEarth" | "graveEarth" | "spark" | "straw" | "rust" | "sludge" | "banner";
 
 export const DRESSTEX: Partial<Record<DressKey, THREE.CanvasTexture>> = {};
 
@@ -82,23 +81,6 @@ function graveEarth(g: CanvasRenderingContext2D, w: number, h: number): void {
       g.fillRect(x & (w - 1), y & (h - 1), 1, 1);
       x += grain(i, 30 + j, 74) * 2 - .6; y += grain(i, 60 + j, 74) < .7 ? 1 : 0;
     }
-  }
-}
-
-/** The bridge's deck: two long dressed slabs with a joint, worn smooth down the middle, scorched at the edges. */
-function bridgeStone(g: CanvasRenderingContext2D, w: number, h: number): void {
-  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
-    const slab = x < w / 2 ? 0 : 1, fine = grain(x, y, 81) - .5, tone = (grain(slab, y >> 4, 82) - .5) * 10;
-    const worn = Math.max(0, 1 - Math.abs(y - h / 2) / (h * .3)) * 8;              // the walked middle
-    const scorch = Math.max(0, 1 - Math.min(y, h - 1 - y) / 7) * 26;               // soot where the fire licks up
-    g.fillStyle = `rgb(${86 + tone + worn - scorch + fine * 14 | 0},${76 + tone + worn - scorch * 1.1 + fine * 12 | 0},${68 + tone + worn - scorch * 1.2 + fine * 12 | 0})`;
-    g.fillRect(x, y, 1, 1);
-  }
-  g.fillStyle = "#1c1612"; g.fillRect(w / 2 - 1, 0, 2, h); g.fillRect(0, 0, 1, h);   // the joints between slabs
-  g.fillStyle = "rgba(0,0,0,.25)";
-  for (let i = 0; i < 5; i++) {   // cracks
-    let x = grain(i, 1, 83) * w, y = grain(i, 2, 83) * h;
-    for (let j = 0; j < 10; j++) { g.fillRect(x & (w - 1), y & (h - 1), 1, 1); x += grain(i, j, 84) < .5 ? 1 : 0; y += 1; }
   }
 }
 
@@ -166,7 +148,6 @@ function banner(g: CanvasRenderingContext2D, w: number, h: number): void {
 export function buildDressTextures(): void {
   DRESSTEX.yardEarth = makeTex(yardEarth);
   DRESSTEX.graveEarth = makeTex(graveEarth);
-  DRESSTEX.bridgeStone = makeTex(bridgeStone);
   DRESSTEX.straw = makeTex(straw);
   DRESSTEX.rust = makeTex(rust);
   DRESSTEX.sludge = makeTex(sludge);

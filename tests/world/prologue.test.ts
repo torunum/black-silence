@@ -4,6 +4,9 @@ import { LEVELS } from "../../src/world/levels/index";
 import { MONOLOGUE } from "../../src/content/monologue";
 import { ENEMY_DEFS } from "../../src/enemies/EnemyDefs";
 import type { BuiltLevel } from "../../src/world/LevelBuilder";
+import { massBlocked, validateDecor } from "../../src/world/decor/place";
+import { massCells } from "../../src/world/decor/masses";
+import { PIECES } from "../../src/world/decor/registry";
 
 /**
  * THE REBUILT PROLOGUE — out of the grave, down through hell, up and out
@@ -148,9 +151,13 @@ describe("zones and words", () => {
     }
     expect(ZONES.map((t) => t.id)).toEqual(["churchyard", "crypt", "hell", "climb"]);
     expect(ZONES.filter((t) => t.sky).map((t) => t.id)).toEqual(["churchyard"]);
-    // hell keeps the reference prologue's own fog and light
+    // hell wears its own stone and has its own fog and light (the 2026-10-04 rework: a deeper, thinner dark so the lava is the light),
+    // no longer the reference prologue's values (LEVELS[0]: fog 0x180604 at .07, ambient 0x6e2a14 at .6)
     const h = ZONES[2], def = LEVELS[0];
-    expect([h.hell, h.fog, h.fogD, h.amb, h.ambI]).toEqual([true, def.fog, def.fogD, def.amb, def.ambI]);
+    expect([h.hell, h.shell, h.lava]).toEqual([true, true, true]);
+    expect([h.fog, h.fogD, h.amb, h.ambI]).toEqual([0x1c0804, .05, 0x5a2412, 1.7]);
+    expect(h.fogD).toBeLessThan(def.fogD);
+    expect([h.ground, h.side, h.wall, h.ceil, h.band]).toEqual(["scorch", "rock", "vault", "vault", "band"]);
   });
 
   it("has ADEM say something on the way down, in hell and on the way out", () => {
@@ -203,5 +210,57 @@ describe("the prologue plan's Task 3: hell burns, the churchyard is inhabited", 
     expect(decor("bowl")).toHaveLength(5);
     expect(decor("ember").length).toBeGreaterThan(40);
     for (const d of fire) expect(zoneOf(d.x, d.z).id).toBe("hell");
+  });
+});
+
+describe("hell, reworked: the dressing breaks up the cavern, and none of it is in the way", () => {
+  const zoneOf = (x: number, z: number) => L.zones.themes[L.zones.map[z][x]];
+  const decor = (k: string) => L.decor.filter((d) => d.k === k);
+  const HELL_KINDS = ["outcrop", "stalagmite", "basaltcol", "spikes", "shards", "skullpole", "stalactite", "pyre", "ribs", "lavafall"];
+
+  it("has rock outcrops, fangs, columns, a pyre, stakes, ribs, spikes, shards, stalactites and two falls of lava, all in hell", () => {
+    const want: Record<string, number> = { outcrop: 4, stalagmite: 2, basaltcol: 2, pyre: 1, skullpole: 6, ribs: 2, spikes: 5, shards: 10, stalactite: 15, lavafall: 2 };
+    for (const [k, n] of Object.entries(want)) expect(decor(k).length, k).toBeGreaterThanOrEqual(n);
+    for (const k of HELL_KINDS) for (const d of decor(k)) expect(zoneOf(Math.floor(d.x + .5), Math.floor(d.z + .5)).id, `${k} at ${d.x},${d.z}`).toBe("hell");
+  });
+
+  it("keeps every hell piece to the kit's own placement rules, and every mass leaves the spawn its way to everything it could reach", () => {
+    // the rules of `decor/place.ts` run on hell's pieces alone: the prologue's older, hand-placed ones were built under their own
+    const hell = { g: L.g, decor: L.decor.filter((d) => HELL_KINDS.includes(d.k) && d.k !== "lavafall") };
+    expect(validateDecor(hell)).toEqual([]);
+    expect(PIECES.lavafall.mode).toBe("cover");
+  });
+
+  it("cuts nobody off: with every mass a wall, the grave still walks to every pickup, enemy and the exit (an independent flood fill)", () => {
+    const blocked = massBlocked(L.decor), key = (x: number, z: number) => z * 4096 + x;
+    const free = walk(find("P")[0], (x, z) => blocked.has(key(x, z)));
+    const open = walk(find("P")[0]);
+    let checked = 0;
+    for (let z = 0; z < L.H; z++) for (let x = 0; x < L.W; x++) {
+      if (!"zwhaOX".includes(L.g[z][x])) continue;
+      checked++;
+      expect(open[z][x] && !free[z][x], `the masses cut off '${L.g[z][x]}' at ${x},${z}`).toBe(false);
+    }
+    expect(checked).toBeGreaterThan(12);
+    expect(blocked.size, "there are masses to test").toBeGreaterThan(8);
+  });
+
+  it("keeps masses off every cell beside a pickup, a spawn or an exit, a brazier, and off the ways the enemies and the player come and go", () => {
+    const cells = new Set<string>();
+    for (const d of L.decor) if (PIECES[d.k]?.mass) for (const [x, z] of massCells(d)) cells.add(x + "," + z);
+    expect(cells.size).toBeGreaterThan(8);
+    const near = (x: number, z: number, r: number) => { for (let dz = -r; dz <= r; dz++) for (let dx = -r; dx <= r; dx++) if (cells.has(`${x + dx},${z + dz}`)) return true; return false; };
+    for (const ch of "haXzw") for (const c of find(ch)) expect(near(c.x, c.z, 1), `a mass beside '${ch}' at ${c.x},${c.z}`).toBe(false);
+    // the way from the bridge's west end to the crypt stair's foot (x 8-10, z 18-27), where the zombie at the stair and the crawlers out of the pit walk
+    for (let z = 18; z <= 27; z++) for (let x = 8; x <= 10; x++) expect(cells.has(`${x},${z}`), `a mass at ${x},${z}`).toBe(false);
+    // the zombie's own ground by the stair, and the climb's mouth on the east bank, and the steps out of the pit
+    for (let z = 18; z <= 22; z++) for (let x = 3; x <= 7; x++) expect(cells.has(`${x},${z}`), `a mass at ${x},${z}`).toBe(false);
+    for (let z = 18; z <= 23; z++) for (let x = 23; x <= 26; x++) expect(cells.has(`${x},${z}`), `a mass at ${x},${z}`).toBe(false);
+    for (const x of [10, 12, 16, 18]) for (const z of [19, 20, 21, 22, 31, 32, 33, 34]) expect(cells.has(`${x},${z}`), `a mass at the pit's steps ${x},${z}`).toBe(false);
+  });
+
+  it("burns in a corner of the west bank, on open floor: the pyre", () => {
+    expect(decor("pyre")).toHaveLength(1);
+    for (const d of decor("pyre")) expect(L.g[Math.floor(d.z)][Math.floor(d.x)]).toBe(".");
   });
 });

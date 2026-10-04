@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { buildFire, type Emitter } from "../fx/HellFire";
+import { buildLavafall } from "../fx/Lava";
 import { grain } from "../render/BandTextures";
 import { track } from "../render/DisposeRegistry";
 import { CELL } from "./Grid";
@@ -56,14 +57,15 @@ function buildPieces(scene: THREE.Scene, specs: DecorSpec[]): void {
     if (d.k === "light") {   // a fire's glow with no flame of its own — the burning pit's
       const wx = (d.x + .5) * CELL, wz = (d.z + .5) * CELL;
       const l = track(new THREE.PointLight(0xff5a1e, d.s || 1.5, d.h || 12, 1.4));
-      l.name = "decorLight"; l.position.set(wx, floorHeightAt(wx, wz) + .8, wz); scene.add(l);
+      l.name = "decorLight"; l.position.set(wx, floorHeightAt(wx, wz) + (d.r !== undefined ? d.r : .8), wz); scene.add(l);
       lights.push(l);
       continue;
     }
-    if (d.k === "ember" || d.k === "bowl") {   // a burning floor or a brazier: where the fire's particles rise from
+    if (d.k === "lavafall") { buildLavafall(scene, d); continue; }   // a moving plane of the lake's own lava (src/fx/Lava.ts), not merged geometry
+    if (d.k === "ember" || d.k === "bowl" || d.k === "pyre") {   // a burning floor, a brazier or a pyre: where the fire's particles rise from
       const wx = (d.x + .5) * CELL, wz = (d.z + .5) * CELL, fy = floorHeightAt(wx, wz);
       emitters.push(d.k === "ember" ? { x: wx, y: fy, z: wz, spread: CELL * .9, brazier: false }
-        : { x: wx, y: fy + 1.12, z: wz, spread: .45, brazier: true });
+        : { x: wx, y: fy + (d.k === "pyre" ? .7 : 1.12), z: wz, spread: d.k === "pyre" ? .6 : .45, brazier: true });
     }
     addPiece(parts, d);
   }

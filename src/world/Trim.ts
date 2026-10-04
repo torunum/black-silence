@@ -4,8 +4,7 @@ import { world } from "./WorldState";
 import { ceilHeightAtCell } from "./Collision";
 import { TEX } from "../render/ProcTextures";
 import { track } from "../render/DisposeRegistry";
-import { bandFor } from "../render/BandTextures";
-import { zoneThemeAt } from "./ZoneLook";
+import { bandOf, zoneThemeAt } from "./ZoneLook";
 import { groupPush } from "./LevelMeshes";
 
 /**
@@ -268,7 +267,7 @@ export function buildTrim(scene: THREE.Scene, bandTex: THREE.Texture): void {
   // band of each wall cell's zone (ZoneLook.ts) — an unzoned level has one.
   const mats = new Map<THREE.Texture, THREE.MeshLambertMaterial>();
   const matAt = (x: number, z: number) => {
-    const look = zoneThemeAt(x, z), tex = look ? bandFor(look) : bandTex;
+    const look = zoneThemeAt(x, z), tex = look ? bandOf(look) : bandTex;
     let m = mats.get(tex);
     if (!m) { m = track(new THREE.MeshLambertMaterial({ map: tex })); mats.set(tex, m); }
     return m;

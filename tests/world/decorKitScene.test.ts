@@ -100,9 +100,11 @@ describe("what the loader builds from a decor list", () => {
     }
   });
 
-  it("leaves the prologue exactly as it was: its meshes are `decor` and `decorGrass`, no clutter mesh", () => {
+  it("leaves the prologue's own dressing as it was: its meshes are `decor` and `decorGrass`, and the one clutter mesh per material that hell's small pieces make (stalactites, spikes, stakes, ribs)", () => {
     LEVELS.length = 8; loadLevel(0);
-    expect(kids("decorClutter")).toHaveLength(0);
+    expect(kids("decorClutter").length).toBeGreaterThan(0);
+    expect(kids("decorClutter").length, "one per material, not one per piece").toBeLessThanOrEqual(8);
+    for (const m of kids("decorClutter")) expect(m.castShadow).toBe(false);
     expect(kids("decorGrass")).toHaveLength(1);
     expect(kids("decor").length).toBeGreaterThan(3);
     for (const m of kids("decor")) expect(m.castShadow).toBe(true);

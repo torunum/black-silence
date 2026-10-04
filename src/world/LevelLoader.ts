@@ -26,7 +26,8 @@ import { buildCeiling } from "./Ceiling";
 import { buildTrim } from "./Trim";
 import { buildArches } from "./Arches";
 import { wallMaterials, addInstanced, groupPush, buildFloor, buildPlatforms } from "./LevelMeshes";
-import { themeTex } from "./ZoneLook";
+import { themeTex, shellAt } from "./ZoneLook";
+import { buildHell } from "./HellShell";
 import { levelLook, enterZones } from "./Zones";
 import { dressLevel } from "./Decor";
 import { massMap } from "./decor/masses";
@@ -242,7 +243,7 @@ export function loadLevel(idx: number): void {
       for(const[dx,dz]of[[1,0],[-1,0],[0,1],[0,-1]]){const r=world.grid[z+dz];
         if(r&&r[x+dx]&&"#W".indexOf(r[x+dx])<0){open=true;dx0=dx;dz0=dz;break;}}
       if(!open)continue;
-      groupPush(wallMats,matWallAt(x,z),new THREE.Matrix4().setPosition(wx,WALLH/2,wz));
+      if(!shellAt(x,z))groupPush(wallMats,matWallAt(x,z),new THREE.Matrix4().setPosition(wx,WALLH/2,wz));   // a shell zone's walls are built world-mapped (HellShell.ts)
       if(ch==="W"){
         const gm=new THREE.Mesh(track(new THREE.PlaneGeometry(1.6,2.6)),matWin);
         gm.position.set(wx+dx0*(CELL/2+.02),WALLH*.56,wz+dz0*(CELL/2+.02));
@@ -269,6 +270,7 @@ export function loadLevel(idx: number): void {
   buildTrim(renderState.scene as THREE.Scene,band);
   buildArches(renderState.scene as THREE.Scene,band);
   buildPlatforms(renderState.scene as THREE.Scene,Ldef);   // raised floor platforms (verticality) — LevelMeshes.ts
+  buildHell(renderState.scene as THREE.Scene);   // hell's walls, cliffs, ground and lava, world-mapped — src/world/HellShell.ts
   /* angled wall meshes from arbitrary segments — non-orthogonal Doom/Blood walls */
   if(world.wallSegs.length){
     const segMat=track(new THREE.MeshLambertMaterial({map:wallTex}));

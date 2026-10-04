@@ -516,6 +516,41 @@ import { MONOLOGUE } from "../../src/content/monologue";
  * any trace records; the fire's particles and flicker draw nothing from
  * `Math.random` (`tests/fx/hellFire.test.ts`). `trace-level1.json` and
  * `trace-level2-boss.json` did not move.
+ *
+ * ## Hell, reworked — twelfth regeneration: the cavern is a shell, and the scene gained 17 children
+ *
+ * The owner played the prologue and said hell was "really bad" and its textures worse (the reference's brick
+ * grid with straight lines drawn across it, tiled on every face; the pit the same tile).
+ * `docs/superpowers/plans/2026-10-04-hell-rework.md`. Hell now has textures of its own (`HELLTEX`,
+ * `src/render/HellTextures.ts`, painted by the integer hash like the bands and the dressing's), its walls, cliffs
+ * and ground are three world-mapped meshes (`src/world/HellShell.ts`) in place of instanced boxes, platforms and
+ * floor quads, its pit is a lava lake of two unlit layers that flow by texture offset (`src/fx/Lava.ts`), and it is
+ * dressed (`src/world/decor/hell.ts`) and lit by four glows instead of two. Field by field against the eleventh
+ * regeneration (a node script, `fixture-proof.mjs`, written with the Write tool and not committed: it reads the
+ * two JSON files and compares each field of each of the 90 frames), all 90 sampled frames:
+ *
+ * - `camera` — all seven components **identical in all 90 frames**.
+ * - `hud` — all eight fields **identical in all 90 frames**: the same hp falling to 8, the same lines.
+ * - `scene.count` — **+17 in every one of the 90 frames** and nothing else (118..130 became 135..147). Counted by
+ *   name off the loaded level (a throwaway test run in this tree and in a worktree of `7bd0d65`, not committed):
+ *   `hellRock` +1, `hellGround` +1, `lava` +1, `lavaCrust` +1, `lavafall` +2; `decor` 9 -> 13 and `decorClutter`
+ *   0 -> 8 (hell's pieces and the materials they ask for: basalt, magma, char, old bone...); `decorLight` 2 -> 4 (the
+ *   pit's glows); and three fewer, `wall` 3 -> 2, `floorCells` 4 -> 3, `platform` 4 -> 3, because hell's boxes,
+ *   floor quads and platforms are no longer built (`ZoneLook.shellAt`). 6 + 4 + 8 + 2 - 3 = 17.
+ * - `scene.digest` — differs in all 90 (first frame 10 `2a6d63f9` -> `4d4b2c66`, last frame 900 `6c33aae2` ->
+ *   `4240a3dd`; 90 distinct before and after), necessarily: the child list, their textures (`hell.rock`,
+ *   `hell.lava`, ... — `buildTextureIndex` indexes `HELLTEX` as a sixth source after the other five, so nothing they
+ *   name is renamed) and their positions are what it hashes.
+ *
+ * **Why camera and HUD could not move, and did not.** The player's route and the enemies that meet him are the
+ * eleventh regeneration's; hell's new masses are on the banks' far corners and edges, off every cell between the
+ * crypt stair's foot and the zombie and crawlers that come for it (`tests/world/prologue.test.ts` holds the keep-clear
+ * cells; `tests/enemies/stuckCheck.test.ts` now runs the prologue too, and found twelve crawlers pinned by the first
+ * layout, which is why the layout has so few masses). Nothing new draws from `Math.random` — the textures are
+ * hashed, the lava and the heat of the cracked rock are pure functions of the clock (`tests/world/hellShell.test.ts`
+ * counts: no draw from any hell module, at load or per frame), and `installAudioDrawGuard` still passes — so the seeded
+ * stream every enemy timer, elite roll and subtitle pick draws from is exactly as long as it was. The other two
+ * fixtures, `trace-level1.json` and `trace-level2-boss.json`, are byte-identical to `7bd0d65` (`git diff` empty).
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");
@@ -676,6 +711,16 @@ describe("the recorded run is worth comparing", () => {
     const digests = new Set(trace.map((f) => f.scene.digest));
     expect(digests.size).toBeGreaterThan(20);
     expect(trace[0].scene.count).toBeGreaterThan(10);
+  });
+
+  it("runs hell's lava with the loop: Loop.ts ticks the lake every render frame of the 900", async () => {
+    // MUTATION TARGET: take `lavaTick` out of Loop.ts's render block and the lake never moves in the real game.
+    // (The hell tests tick it by hand; this is the one that proves the loop does.)
+    const { lavaState } = await import("../../src/fx/Lava");
+    const s = lavaState();
+    expect(s.built, "the prologue's lake was built").toBe(true);
+    expect(s.t, "the loop has run its clock for the 15 seconds of the trace").toBeGreaterThan(10);
+    expect(s.sheet!.offset.y, "and the sheet has flowed").toBeGreaterThan(.1);
   });
 
   it("shows the HUD reacting", () => {

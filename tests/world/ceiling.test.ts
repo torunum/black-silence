@@ -9,6 +9,7 @@ import { world } from "../../src/world/WorldState";
 import { CELL, WALLH } from "../../src/world/Grid";
 import { ceilHeightAtCell } from "../../src/world/Collision";
 import { LEVELS } from "../../src/world/levels/index";
+import { themeTex } from "../../src/world/ZoneLook";
 
 /**
  * Phase 2 Part B Task 1 — the ceiling can vary per cell, opt-in per level
@@ -111,7 +112,6 @@ describe("a level with no ceiling map builds the single flat plane it always bui
 
 describe("the zoned prologue builds a ceiling per zone look, and none over the sky", () => {
   it("no quad over a sky cell, a quad at its mapped height over every other cell, each in its zone's texture", async () => {
-    const { TEX } = await import("../../src/render/ProcTextures");
     loadLevel(0);
     expect(world.zones).not.toBeNull();
     expect(named("ceiling").length).toBe(0);
@@ -129,7 +129,7 @@ describe("the zoned prologue builds a ceiling per zone look, and none over the s
         expect(skyCells.has(key), `a ceiling quad over the sky at ${key}`).toBe(false);
         expect(pos.y).toBeCloseTo(want.get(key)!, 6);
         const t = zs.themes[zs.map[gz][gx]];
-        const src = t.hell ? TEX.hellCeil : t.flesh ? TEX.fleshCeil : TEX.ceil;
+        const src = themeTex(t).ceil;   // the zone names its own where the theme's would be wrong: hell's vault, not the reference's hellCeil
         expect(map.image, `the ceiling at ${key} wears its zone's texture`).toBe(src.image);
         seen.add(key);
       }
@@ -140,13 +140,9 @@ describe("the zoned prologue builds a ceiling per zone look, and none over the s
 
 describe("a riser wears the wall of the zone of the lower cell of its pair", () => {
   it("every riser on the zoned prologue, edge by edge — against a wall, the wall's own zone (Ceiling.ts's keyAt(x+dx, z+dz))", async () => {
-    const { TEX } = await import("../../src/render/ProcTextures");
     loadLevel(0);
     const zs = world.zones!;
-    const wallOf = (x: number, z: number) => {
-      const t = zs.themes[zs.map[z][x]];
-      return t.hell ? TEX.hellWall : t.flesh ? TEX.fleshWall : t.dungeon ? TEX.dungeonWall : TEX.churchWall;
-    };
+    const wallOf = (x: number, z: number) => themeTex(zs.themes[zs.map[z][x]]).wall;   // hell names the vault's stone for the riser between two ceilings
     let n = 0, differ = 0;
     const normal = new THREE.Vector3();
     for (const m of named("ceilingRisers") as THREE.InstancedMesh[]) {
@@ -158,6 +154,8 @@ describe("a riser wears the wall of the zone of the lower cell of its pair", () 
         const hx = Math.round((pos.x - dx * CELL / 2) / CELL - 0.5), hz = Math.round((pos.z - dz * CELL / 2) / CELL - 0.5);
         const lx = hx + dx, lz = hz + dz;
         expect(ceilHeightAtCell(lx, lz), `riser at ${hx},${hz}->${lx},${lz}: the lower cell is lower`).toBeLessThan(ceilHeightAtCell(hx, hz));
+        // a shell zone's walls carry on up to the ceiling themselves (HellShell.ts): no riser stands where one would stand beside them
+        expect(zs.themes[zs.map[lz][lx]].shell && "#W".includes(world.grid[lz][lx]), `a riser against hell's wall at ${lx},${lz}`).toBeFalsy();
         expect(map.image, `the riser between ${hx},${hz} (high) and ${lx},${lz} (low) wears the LOWER cell's wall`).toBe(wallOf(lx, lz).image);
         n++;
         if (wallOf(lx, lz).image !== wallOf(hx, hz).image) differ++;

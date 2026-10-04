@@ -13,6 +13,7 @@ import { floorHeightAt } from "../../src/world/Collision";
 import { LEVELS } from "../../src/world/levels/index";
 import { ZONES } from "../../src/world/levels/prologue";
 import { DRESSTEX } from "../../src/render/DressTextures";
+import { HELLTEX } from "../../src/render/HellTextures";
 import { currentRoom } from "../../src/audio/AudioEngine";
 import { surfaceHere } from "../../src/audio/Surface";
 import { MONOLOGUE } from "../../src/content/monologue";
@@ -83,7 +84,7 @@ const mapOf = (m: THREE.Mesh, i = 0) => {
 const sameTex = (a: THREE.Texture, b: THREE.Texture) => a === b || a.image === b.image;
 type Flags = { hell?: boolean; flesh?: boolean; dungeon?: boolean; side?: string; ground?: string };
 /** A zone's own surface, by name: the reference's `TEX` or the prologue's `DRESSTEX` (Task 3's earth). */
-const named = (k: string) => TEX[k] || (DRESSTEX as Record<string, THREE.Texture>)[k];
+const named = (k: string) => TEX[k] || (DRESSTEX as Record<string, THREE.Texture>)[k] || (HELLTEX as Record<string, THREE.Texture>)[k];
 const wallOf = (t: Flags) => t.hell ? TEX.hellWall : t.flesh ? TEX.fleshWall : t.dungeon ? TEX.dungeonWall : TEX.churchWall;
 const floorOf = (t: Flags) => t.ground ? named(t.ground) : t.hell ? TEX.hellFloor : t.flesh ? TEX.fleshFloor : t.dungeon ? TEX.dungeonFloor : TEX.churchFloor;
 const sideOf = (t: Flags) => t.side ? named(t.side) : t.flesh ? TEX.fleshWall : TEX.stair;
@@ -94,16 +95,17 @@ describe("the prologue's zones dress the right cells", () => {
     loadLevel(0);
     const walls = kids("wall") as THREE.InstancedMesh[];
     // one wall mesh per look: the churchyard and the climb both wear the
-    // dungeon's stone, so four zones are three looks
-    expect(walls.length, "one wall mesh per zone look").toBe(3);
+    // dungeon's stone, and hell's walls are not boxes at all (HellShell.ts), so four zones are two
+    expect(walls.length, "one wall mesh per zone look that has boxes").toBe(2);
     let n = 0;
     const looks = new Set<string>();
     for (const m of walls) for (const c of cellsOf(m)) {
       n++; looks.add(zoneAt(c.x, c.z).id);
+      expect(zoneAt(c.x, c.z).shell, `a wall box in the shell zone at ${c.x},${c.z}`).toBeFalsy();
       expect(sameTex(mapOf(m), wallOf(zoneAt(c.x, c.z))), `wall at ${c.x},${c.z} (${zoneAt(c.x, c.z).id})`).toBe(true);
     }
-    expect(n).toBeGreaterThan(150);
-    expect(looks).toEqual(new Set(["churchyard", "crypt", "hell", "climb"]));
+    expect(n).toBeGreaterThan(100);
+    expect(looks).toEqual(new Set(["churchyard", "crypt", "climb"]));
   });
 
   it("every floor cell and every raised platform wears its zone's floor (and side) texture", () => {
@@ -114,15 +116,19 @@ describe("the prologue's zones dress the right cells", () => {
       cells++;
       expect(sameTex(mapOf(m), floorOf(zoneAt(c.x, c.z))), `floor at ${c.x},${c.z}`).toBe(true);
     }
-    expect(cells).toBe(world.GW * world.GH);
+    let shell = 0;
+    for (let z = 0; z < world.GH; z++) for (let x = 0; x < world.GW; x++) if (zoneAt(x, z).shell) shell++;
+    expect(shell, "hell is a big part of the map").toBeGreaterThan(400);
+    expect(cells, "a floor quad everywhere but in hell, whose ground and lake are HellShell.ts's").toBe(world.GW * world.GH - shell);
     let plats = 0;
     for (const m of kids("platform") as THREE.InstancedMesh[]) for (const c of cellsOf(m)) {
       plats++;
       const t = zoneAt(c.x, c.z);
+      expect(t.shell, `a platform in the shell zone at ${c.x},${c.z}`).toBeFalsy();
       expect(sameTex(mapOf(m, 2), floorOf(t)), `platform top at ${c.x},${c.z}`).toBe(true);
       expect(sameTex(mapOf(m, 0), sideOf(t)), `platform side at ${c.x},${c.z}`).toBe(true);
     }
-    expect(plats).toBeGreaterThan(300);
+    expect(plats).toBeGreaterThan(150);
   });
 
   it("starts in the churchyard's fog, light and room", () => {
@@ -351,8 +357,8 @@ describe("the bridge over the pit", () => {
   it("is dressed stone — a decor mesh wears the bridge's own texture, with lit edges — not a wooden plank", () => {
     loadLevel(0);
     const mats = kids("decor").map((m) => (m as THREE.Mesh).material as THREE.MeshLambertMaterial);
-    expect(mats.some((m) => m.map === DRESSTEX.bridgeStone), "no decor mesh wears DRESSTEX.bridgeStone").toBe(true);
-    // its two lit lips and the fire-glow kerb faces: an additive, unlit material beside the stone
+    expect(mats.some((m) => m.map === HELLTEX.bridge), "no decor mesh wears HELLTEX.bridge").toBe(true);
+    // its two lit lips: an additive, unlit material beside the stone
     expect(mats.some((m) => m.blending === THREE.AdditiveBlending && !m.map && m.opacity < 1), "no additive glow on the bridge's edges").toBe(true);
   });
 });

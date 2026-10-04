@@ -82,7 +82,9 @@ describe("a mass's box", () => {
     expect(MASSES.sort()).toEqual(["altar", "cratepile", "conveyor", "deadtree", "drum", "fallenstatue", "font", "gravecross", "gravestone",
       "machine", "maiden", "rack", "sapling", "sarcofree", "sarcophagus", "slab", "stocks", "tombfree",
       // levels 5-7 (Task 3): the sewers' pump and tank, the factory's press and furnace, the womb's tumour
-      "furnace", "pump", "press", "tank", "tumor"].sort());
+      "furnace", "pump", "press", "tank", "tumor",
+      // hell (the prologue's rework): the rock outcrops, stalagmites and basalt columns, and the burning pyres
+      "outcrop", "stalagmite", "basaltcol", "pyre"].sort());
   });
 
   it("stays inside its own cell at every yaw a rule allows (a wall side, or a quarter turn), so a flood fill may treat the cell as a wall", () => {
@@ -210,7 +212,14 @@ describe("what the loader gives the world", () => {
     expect(boxes.size).toBe(massBoxes(LEVELS[1].build().decor!).length);
     expect(boxes.size).toBeGreaterThan(11);   // 24 until Task 3 took the instruments off the open floor and the stuck check took more
     loadLevel(0);
-    expect(world.masses.size, "the prologue has no masses").toBe(0);
+    // the prologue is hand-dressed, and its only masses are hell's: outcrops, fangs, columns and pyres, none of them in the yard or the climb
+    const hellBoxes = new Set<{ x0: number; x1: number; z0: number; z1: number }>([...world.masses.values()].flat());
+    expect(hellBoxes.size, "hell's masses").toBe(massBoxes(LEVELS[0].build().decor!).length);
+    expect(hellBoxes.size).toBeGreaterThan(8);
+    for (const b of hellBoxes) {
+      const x = Math.floor((b.x0 + b.x1) / 2 / 2), z = Math.floor((b.z0 + b.z1) / 2 / 2);
+      expect(world.zones!.themes[world.zones!.map[z][x]].id, `a mass at ${x},${z}`).toBe("hell");
+    }
     loadLevel(3);
     expect(world.masses.size).toBeGreaterThan(0);
   }, 30_000);

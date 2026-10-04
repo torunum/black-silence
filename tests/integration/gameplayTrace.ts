@@ -486,6 +486,7 @@ export async function buildTextureIndex(): Promise<TexNamer> {
   const { TEX } = await import("../../src/render/ProcTextures");
   const { BANDTEX } = await import("../../src/render/BandTextures");
   const { DRESSTEX } = await import("../../src/render/DressTextures");
+  const { HELLTEX } = await import("../../src/render/HellTextures");
 
   const byTexture = new Map<Any, string>();
   const byImage = new Map<Any, string>();
@@ -510,6 +511,8 @@ export async function buildTextureIndex(): Promise<TexNamer> {
   for (const key of Object.keys(BANDTEX).sort()) put(BANDTEX[key as keyof typeof BANDTEX], `band.${key}`);
   // the prologue's own surfaces (src/render/DressTextures.ts) — a fifth source, after the four, so it renames nothing
   for (const key of Object.keys(DRESSTEX).sort()) put(DRESSTEX[key as keyof typeof DRESSTEX], `dress.${key}`);
+  // hell's own (src/render/HellTextures.ts) — a sixth, after the five, so it renames nothing
+  for (const key of Object.keys(HELLTEX).sort()) put(HELLTEX[key as keyof typeof HELLTEX], `hell.${key}`);
 
   if (byTexture.size === 0) {
     // The same guard-the-guard reflex as installUuidStub's: this index is

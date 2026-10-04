@@ -9,12 +9,12 @@ import { PIECES } from "../../src/world/decor/registry";
 import { solidAt } from "../../src/world/Collision";
 
 /**
- * DO THE ENEMIES GET STUCK ON THE NEW OBSTACLES? (levels-feel-full plan, Task 3.)
+ * DO THE ENEMIES GET STUCK ON THE NEW OBSTACLES? (levels-feel-full plan, Task 3; level 0 added by the hell rework, 2026-10-04.)
  *
  * Enemies have no pathfinding: an enemy that sees the player steps straight at them
  * (`moveEnemy` refuses a step whose x-part or z-part lands in a wall), and one that does not
  * walks to where it last saw them. Since Task 2 the dressing has solid masses (`world.masses`,
- * read through `solidAt`), which are walls that stand in rooms. This loads levels 1-7 for real,
+ * read through `solidAt`), which are walls that stand in rooms. This loads levels 0-7 for real,
  * puts the player at a few places, makes every enemy aware of them and runs the real
  * `enemyTick` for twelve simulated seconds, then reports every enemy that ended **pinned against
  * a mass**: not moving for the last four seconds, still well short of the player, with a mass
@@ -165,9 +165,10 @@ function check(i: number, at: [number, number], extra?: MassBox[]): Outcome {
   return { enemies: withM.pos.length, pinned, pinnedByMass: byMass, detail };
 }
 
-describe("enemies on levels 1-7 with the masses in", () => {
+describe("enemies on levels 0-7 with the masses in", () => {
   const rows: string[] = [];
-  for (let i = 1; i <= 7; i++) {
+  // level 0, the prologue, since the hell rework gave its banks solid outcrops, fangs, columns and pyres (src/world/decor/hell.ts)
+  for (let i = 0; i <= 7; i++) {
     it(`level ${i}: no enemy ends pinned against a mass, from twenty-four places the player may stand`, () => {
       let enemies = 0, pinned = 0, byMass = 0, scenarios = 0, contact = 0;
       const detail: string[] = [];

@@ -6,6 +6,7 @@ import { audioInit } from "../audio/AudioEngine";
 import { buildTextures } from "../render/ProcTextures";
 import { buildBandTextures } from "../render/BandTextures";
 import { buildDressTextures } from "../render/DressTextures";
+import { buildHellTextures } from "../render/HellTextures";
 import { buildSprites } from "../enemies/SpriteBaker";
 import { buildItemTex } from "../render/ItemTextures";
 import { buildPiano } from "../ui/Piano";
@@ -37,7 +38,7 @@ export function startGame(idx: number){
   el("settings").classList.add("hidden");
   game.started=true;
   audioInit();
-  buildTextures();buildBandTextures();buildDressTextures();buildSprites();buildItemTex();buildPiano();
+  buildTextures();buildBandTextures();buildDressTextures();buildHellTextures();buildSprites();buildItemTex();buildPiano();
   loadLevel(idx||0);
   S.t0=performance.now();
   renderState.renderer.domElement.requestPointerLock();}

@@ -65,8 +65,8 @@ import type { BuiltLevel, DecorSpec, ZoneTheme } from "../LevelBuilder";
  *    stone, a gabled roof and a cross against the sky), a crypt chamber, and
  *    a stair of five steps going down through the rock, 0.42 a step — the
  *    old staircase's rise.
- * 3. **Hell** — the reference's hell look and light. A burning pit (floor 0,
- *    a glowing lava floor, two fire lights) between two banks at 2.1,
+ * 3. **Hell** — a basalt cavern, reworked (below). A lake of lava (floor 0,
+ *    four fire lights) between two banks at 2.1,
  *    crossed by a one-cell stone bridge; steps climb out along both pit
  *    walls, so a fall is a detour, not a trap. Four zombies and four
  *    crawlers: slow, melee-only, 30-50 hp — one or two flare-pistol shots
@@ -88,6 +88,19 @@ import type { BuiltLevel, DecorSpec, ZoneTheme } from "../LevelBuilder";
  * who only walks, shoots and kicks is touched but not in danger.
  * 4. **The climb out** — level 1's dungeon look up five steps to a landing
  *    and the exit `X`, which leads to Level 1 (`endLevel`).
+ *
+ * **Hell, reworked (2026-10-04).** The owner played it and said hell was bad and
+ * its textures worse: the reference's brick-and-straight-lines texture tiled on
+ * every face read as a wire fence, and the pit was the same tile. Hell now has
+ * textures of its own (`HELLTEX`, `src/render/HellTextures.ts`) mapped in world
+ * space as one cavern (`src/world/HellShell.ts`, `ZoneTheme.shell`): cracked
+ * basalt walls and cliffs with fissures that glow, scorched ground, a vault, and
+ * a lava lake that flows (`src/fx/Lava.ts`, `ZoneTheme.lava`). It is dressed
+ * with rock outcrops, stalagmites, basalt columns, spikes, stakes, stalactites,
+ * pyres, ribs and two falls of lava (`src/world/decor/hell.ts`). The masses are
+ * on the banks' far edges, off every route the enemies and the player take
+ * (`tests/enemies/stuckCheck.test.ts` runs the prologue, and the trace fixture
+ * walks the crypt stair into hell and is unmoved in camera and HUD).
  *
  * The only way from the grave to `X` is through hell (pinned by a height-aware
  * search in `tests/world/prologue.test.ts`). Nothing breakable stands on
@@ -177,7 +190,8 @@ export function buildPrologue(): BuiltLevel {
   // steps out of the pit along both walls, in both halves the bridge cuts it into
   for (let i = 0; i < 4; i++) for (const x of [11, 17]) { hm[31 + i][x] = (i + 1) * STEP; hm[22 - i][x] = (i + 1) * STEP; }
   rect(11, 19, 17, 34, (x, z) => { if (hm[z][x] === 0) d("ember", x, z); });
-  d("light", 14, 22, { s: 1.6 }); d("light", 14, 31, { s: 1.6 });
+  // the lake's own light, four glows low over the lava: the cavern's walls are lit from below by the fire, not by ambient
+  for (const z of [21, 24, 29, 32]) d("light", 14, z, { s: 2.2, h: 15, r: 2.4 });
   // braziers: a torch in an iron bowl
   for (const [x, z] of [[10, 25], [18, 27], [3, 20], [26, 33], [4, 32]] as const) { g[z][x] = "i"; d("bowl", x, z); }
   // the damned: zombies on the banks, crawlers in the fire
@@ -189,6 +203,7 @@ export function buildPrologue(): BuiltLevel {
     [20, 20, 1.3], [25, 27, 5], [21, 34, .2], [15, 19, 2.8]] as const) d("bones", x, z, { r });
   for (const [x, z, h] of [[12, 22, 3.2], [16, 29, 4.2], [14, 20, 2.6], [15, 33, 3.6], [5, 28, 2.2], [23, 25, 2.0]] as const)
     d("chain", x, z, { h });
+  hellDressing(d);
 
   /* ---- 4. the climb out ------------------------------------------------ */
   zone(22, 0, 29, 17, CLIMB);
@@ -206,20 +221,55 @@ export function buildPrologue(): BuiltLevel {
   return { g, W, H, hmap: hm, cmap: cm, zones: { map: zm, themes: ZONES }, decor, grave: { x: 9, z: 3 } };
 }
 
+/**
+ * The cavern's dressing (`src/world/decor/hell.ts`): outcrops against the walls, fangs and columns on the
+ * banks' far sides, stakes and pyres between, spikes along the pit's lip, ribs, falls of lava down the pit's
+ * two ends, and stalactites in the roof. The masses stay out of x 8-10 and z 18-27 on the west bank (the way
+ * from the bridge to the crypt stair, which the zombie at the foot and the crawlers out of the pit take),
+ * out of x 23-26 and z 18-23 on the east (the climb's mouth), and out of every cell beside a pickup. Freestanding
+ * masses are few and sit in the banks' corners: `tests/enemies/stuckCheck.test.ts` (which runs this level) found the
+ * first layout's twelve crawlers pinned against fangs, columns and a pyre standing in the open, and against
+ * outcrops at the ends of the wall rows the crawlers walk, so those were moved or made walk-over (`shards`).
+ */
+function hellDressing(d: (k: string, x: number, z: number, o?: Partial<DecorSpec>) => void): void {
+  const W = Math.PI / 2, S = Math.PI;
+  // outcrops, backs to the walls: west wall (x 1), south wall (z 34)
+  for (const [x, z, r] of [[1, 23, W], [1, 31, W], [6, 34, S], [22, 34, S]] as const) d("outcrop", x, z, { r });
+  // fangs, columns, a pyre: freestanding masses, in the corners of the banks and well off the straight lines between a crawler and a player
+  for (const [x, z] of [[4, 25], [25, 28]] as const) d("stalagmite", x, z);
+  for (const [x, z, r] of [[2, 33, 1.1], [26, 31, .7]] as const) d("basaltcol", x, z, { r });
+  d("pyre", 7, 33);
+  // splinters of rock underfoot, walked over
+  for (const [x, z] of [[3, 22], [8, 29], [5, 27], [9, 33], [2, 26], [21, 21], [20, 24], [22, 27], [25, 22], [20, 28], [24, 34], [19, 32], [27, 25], [26, 29], [27, 33]] as const) d("shards", x, z, { r: x * 2 + z });
+  // stakes and ribs and spikes: dressing you walk past
+  for (const [x, z] of [[7, 23], [5, 30], [9, 31], [22, 22], [25, 25], [19, 29]] as const) d("skullpole", x, z, { r: (x * 3 + z) % 7 });
+  d("ribs", 3, 27, { r: .6 }); d("ribs", 24, 30, { r: 2.4 });
+  for (const [x, z] of [[10, 29], [10, 32], [18, 24], [18, 30], [10, 21]] as const) d("spikes", x, z, { r: x + z });
+  // lava down the pit's two ends: the south wall's wide, the north wall's narrower
+  d("lavafall", 14, 34.45, { r: Math.PI, s: 3.4, h: 9 });
+  d("lavafall", 13, 18.55, { r: 0, s: 1.8, h: 8.6 });
+  // the roof: fangs of rock over the banks and the pit
+  for (const [x, z, h] of [[3, 22, 2.2], [7, 27, 1.6], [2, 30, 2.4], [8, 32, 1.8], [5, 24, 1.4], [20, 22, 2], [24, 26, 2.2], [21, 30, 1.8],
+    [26, 31, 2.4], [19, 33, 1.6], [23, 21, 2.4], [12, 21, 3], [16, 23, 2.6], [13, 28, 3.2], [15, 31, 2.8], [12, 33, 2.4], [16, 20, 2.2],
+    [14, 24, 2.8], [12, 30, 3]] as const) d("stalactite", x, z, { h });
+}
+
 /** Zone indices into `ZONES`. */
 const YARDZ = 0, CRYPT = 1, HELL = 2, CLIMB = 3;
 
 /**
- * The four looks. Hell's fog and light are the reference's own prologue
- * values (`LEVELS[0]`); the climb borrows level 1's, the level it leads to.
+ * The four looks. Hell wears its own stone (`HELLTEX`) and its fog and light are its own now, a
+ * deeper, less red dark than the reference's prologue values (`LEVELS[0]`: 0x180604 at .07, ambient
+ * 0x6e2a14 at .6) so that the lava is the light and depth reads; the climb borrows level 1's, the level it leads to.
  */
 export const ZONES: ZoneTheme[] = [
   { id: "churchyard", dungeon: true, sub: "graveyard", sky: true, ground: "yardEarth", side: "graveEarth", bed: "yard",
     fog: 0x0b1018, fogD: .05, amb: 0x5a6a88, ambI: .75 },
   { id: "crypt", sub: "crypt", line: "p0_down",
     fog: 0x0a0909, fogD: .06, amb: 0x4a403c, ambI: .5 },
-  { id: "hell", hell: true, sub: "hell", line: "p0_hell", side: "hellWall", bed: "hell",
-    fog: 0x180604, fogD: .07, amb: 0x6e2a14, ambI: .6 },
+  { id: "hell", hell: true, sub: "hell", line: "p0_hell", bed: "hell",
+    shell: true, lava: true, ground: "scorch", side: "rock", wall: "vault", ceil: "vault", band: "band",
+    fog: 0x1c0804, fogD: .05, amb: 0x5a2412, ambI: 1.7 },
   { id: "climb", dungeon: true, sub: "dungeon", line: "p0_out",
     fog: 0x07080b, fogD: .05, amb: 0x3a4250, ambI: .5 },
 ];

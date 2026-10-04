@@ -1,6 +1,8 @@
 import * as THREE from "three";
 import { TEX } from "../../render/ProcTextures";
 import { DRESSTEX } from "../../render/DressTextures";
+import { HELLTEX, glowOf } from "../../render/HellTextures";
+import { heatMaterial } from "../../fx/Lava";
 import type { DecorSpec } from "../LevelBuilder";
 
 /**
@@ -113,14 +115,24 @@ function materials(): Record<string, () => THREE.Material> {
     bone: () => new THREE.MeshLambertMaterial({ color: 0xc9bea2 }),
     iron: () => new THREE.MeshLambertMaterial({ color: 0x34302c }),
     wrought: () => new THREE.MeshLambertMaterial({ color: 0x1a1816 }),
-    ember: () => new THREE.MeshBasicMaterial({ map: TEX.hellWall, color: 0xffa060, transparent: true,
-      blending: THREE.AdditiveBlending, depthWrite: false }),
-    slab: () => new THREE.MeshLambertMaterial({ map: DRESSTEX.bridgeStone || TEX.stair, color: 0x7a6e68 }),
+    // the bridge's deck and kerbs: hell's own charred stone (`HellTextures.ts`)
+    slab: () => new THREE.MeshLambertMaterial({ map: HELLTEX.bridge || TEX.stair, color: 0x7a6e68 }),
     // the fire's light on the stone above it: the bridge's lit edges
     glow: () => new THREE.MeshBasicMaterial({ color: 0xff6a1c, transparent: true, opacity: .55,
       blending: THREE.AdditiveBlending, depthWrite: false }),
     earth: () => new THREE.MeshLambertMaterial({ map: DRESSTEX.yardEarth || TEX.dungeonFloor, color: 0x6e5c4c }),
     grass: () => new THREE.MeshLambertMaterial({ color: 0x2c3120 }),
+    // hell's: basalt wears the cavern's rock (its cracks are hairlines on a piece this small), magma is the fire in a seam, char what burned
+    basalt: () => {
+      const glow = glowOf(HELLTEX.chunk);
+      if (!glow) return lambert(HELLTEX.chunk, 0xb0a098);
+      const m = new THREE.MeshLambertMaterial({ map: HELLTEX.chunk, emissive: 0xffffff, emissiveMap: glow });
+      heatMaterial(m);   // its cracks breathe with the pit (src/fx/Lava.ts)
+      return m;
+    },
+    magma: () => basic(0xff3a0a),     // authored dark: the tone mapping lifts an unlit colour a long way (`HellPaint.ts` `shown`)
+    oldbone: () => new THREE.MeshLambertMaterial({ color: 0x80745e }),
+    char: () => new THREE.MeshLambertMaterial({ color: 0x241915 }),
     // the kit's own
     rock: () => lambert(TEX.dungeonWall, 0x8e9090),
     // dark with age, tar and damp: a decor crate is never the pale new wood of the `x` crate a player shoots
