@@ -146,10 +146,13 @@ let hinted = false;
 /** Each `playerTick`: walking into the exit door opens it; coming up to it says so, or says why not. */
 export function exitTick(): void {
   const d = doors.exit;
-  if (!d || !world.exitPos || trans.phase !== "idle") return;
+  if (!d || trans.phase !== "idle") return;
   const a = against(d, player.px, player.pz, input.yaw);
   const near = a.out >= 0 && a.out < HINT_OUT && Math.abs(a.across) < USE.across;
   if (!near) { hinted = false; return; }
+  // A boss level's door is built sealed (no exitPos until the boss dies):
+  // say so once, so a dark door does not read as a broken one.
+  if (!world.exitPos) { if (!hinted) { hinted = true; showMsg("SEALED — SOMETHING STILL BREATHES HERE", 2.2); } return; }
   const bossLeft = world.enemies.some((e) => e.boss && !e.dead);
   if (bossLeft) { showMsg("SOMETHING STILL BREATHES HERE", 1.5); return; }
   if (a.out < TOUCH.out && Math.abs(a.across) < TOUCH.across) { leaveLevel(); return; }
