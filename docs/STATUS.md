@@ -1029,6 +1029,50 @@ shot's ray-march, the loader), `tests/world/levelDressing.test.ts` (levels 1-4: 
 never in the way, no lookalikes, the routes, the moves). Screenshots, the report and the mutation list are in
 `.superpowers/sdd/2026-09-29-levels-feel-full/task-2-*`.
 
+## Levels that feel full — Task 3, levels 5-7 furnished, light for the dark rooms, and enemies that do not stick
+
+Same branch and plan. Levels 5-7 are dressed by `dress5.ts`-`dress7.ts` (a recorded divergence from the frozen
+reference, as for 1-4; grids, enemies, keys, pickups untouched). Density (`docs/level-density.md`): bare cells
+161 (25%) -> 5 (1%) sewers, 158 (26%) -> 2 (0%) factory, 166 (27%) -> 7 (1%) womb; the arenas' 87-93 bare cells
+-> at most 5. **Arena floors stay open**: no mass further than a step from a wall, pillar or window in the boss
+arenas (the big room and the boss hall), the core of each still one piece with every mass a wall, masses under a fifth
+of an arena's floor, the boss hall's three middle rows clear (`tests/world/levelDressing567.test.ts`).
+
+| level | composition | masses left |
+|---|---|---|
+| 5 sewers | pipes, outfalls, a ladder, grates, scum, debris, cages on chains, gauges; tanks and pumps at the walls; five wall lanterns | 15 |
+| 6 factory | hooks and chains overhead, pipes, gauges; machines, presses, conveyors, crate piles, a furnace; three work lamps | 32 |
+| 7 womb | veins, drapes, sinew, eyes, pods, growths; tumours on the walls; four glowing bulbs | 8 |
+
+**The stuck check** (`tests/enemies/stuckCheck.test.ts`). Enemies have no pathfinding and `moveEnemy` gives up
+on a blocked x-step without trying z, so an enemy that walks into the end of a wall-side mass stays there. The test
+loads levels 1-7, puts the player in 24 places, wakes and alerts every enemy and runs the real `enemyTick` for 12 s;
+an enemy counts as pinned *by a mass* only if it is touching one, nothing but a mass is between it and the player
+(the bare-grid line is clear) and the same enemy without masses ends 3+ units nearer. **Twenty-four places proved not enough**:
+`STUCK_PLACES=999` puts the player on every walkable cell (about 600 scenarios a level, 4 minutes with the levels in
+parallel) and found 320 pins across the seven levels in the first sweep (116 in the graveyard, 81 sewers, 72 womb, 42
+factory); wall-side pumps, tanks, tumours, machines and the yard's free tombs and stones were the culprits. Four rounds of
+removing or replacing what pinned (a gauge, a pipe, an outfall or a growth in its place) brought it to zero on every
+level; the cost was about half the sewers' and the womb's masses and a third of the factory's. Those masses are
+listed in the test (`PINNERS`) and must stay out. The AI is untouched.
+
+**Light.** Budget: no level's scene holds more than 21 point lights (the player's four included), level 3's count
+(`LIGHT_BUDGET`, `src/world/decor/lamps.ts`, `tests/world/lightBudget.test.ts`). Real lights: the sewers' five lanterns,
+the factory's furnace and three work lamps, the womb's four bulbs, the yard's three crook lanterns; each level that has
+them is at 21. Levels 1-3 got none (1 and 2 are recorded by trace fixtures, 3 is at the budget). **Glow** costs no light:
+braziers (dungeon), candle stands (church, necropolis), dim crook lanterns, wall lanterns, work lamps and bulbs, built from
+unlit emissive materials. On levels 1 and 2 they are built from materials those levels' meshes already had, so they add
+geometry to existing merged meshes and no mesh: `trace-level1.json`, `trace-level2-boss.json` and `trace-level0.json` are
+byte-identical to `6db08bc`, and a test (`lightBudget.test.ts`) holds that. Every lattice block the static lights leave
+three quarters dark has a light in it. The honest reading: a glow piece is a bright speck, not a pool of light; it tells the eye
+where a light is, it does not light the room. `src/world/lightmap.ts` measures the static light (the player's lamp left out).
+
+Screenshots (before = `6db08bc` served from a worktree, after = this branch, same spots, rendered by hand into a
+receiver as above) and the report: `.superpowers/sdd/2026-09-29-levels-feel-full/task-3-*`. Two environment lessons:
+the hidden pane throttles timers, so a frame taken 500 ms after moving the camera can be the previous view (wait for the camera
+to arrive); and `git diff` on a file written by PowerShell's `Set-Content` can carry cp1252 bytes (the WIP had written dashes that
+way): check with a strict UTF-8 decode.
+
 ## How fidelity is guarded
 
 Five mechanisms, and they are **not** interchangeable:

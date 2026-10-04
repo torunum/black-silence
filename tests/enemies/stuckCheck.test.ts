@@ -202,3 +202,33 @@ describe("the check itself", () => {
     expect(o.pinnedByMass).toBe(0);
   }, 600000);
 });
+
+/**
+ * WHAT THE EXHAUSTIVE SWEEP FOUND (`STUCK_PLACES=999`: the player on every walkable cell of a level in turn, about 600 scenarios a level,
+ * run in four rounds until the last sweep found nobody). Twenty-four places cannot see a mass that pins enemies from two player positions
+ * in six hundred, so every mass the sweeps found pinning one is listed here and must stay out of its level: put one back and the
+ * enemies it caught are caught again. Each is `kind@cell`; a level's builder removed or replaced it (a gauge, a pipe, an outfall or a
+ * growth stands in the sewers', factory's and womb's places; the yard's stones and trees are filtered out by `dress4.ts`).
+ */
+const PINNERS: Record<number, readonly string[]> = {
+  1: ["altar@23,2", "altar@25,2", "maiden@17,26", "maiden@25,26", "maiden@28,26", "cratepile@37,12", "cratepile@41,20", "cratepile@15,26"],
+  3: ["sarcophagus@3,19"],
+  4: ["tombfree@20,14", "tombfree@12,10", "deadtree@14,22", "gravestone@24,1", "gravecross@14,19", "gravestone@17,19", "gravecross@9,1", "gravestone@12,1",
+    "gravestone@18,23", "gravestone@6,5", "gravestone@22,5", "gravestone@15,23", "gravecross@8,1", "gravestone@22,1", "gravestone@8,5", "gravecross@16,23",
+    "gravecross@19,19", "gravestone@4,1", "gravestone@24,7", "gravestone@11,19", "gravestone@1,17", "gravestone@13,23", "gravestone@1,18"],
+  5: ["pump@26,23", "tank@10,1", "pump@15,1", "pump@19,19", "pump@25,19", "pump@24,23", "pump@11,5", "pump@1,9", "tank@14,7", "pump@14,1", "tank@23,11",
+    "tank@9,1", "tank@1,6", "tank@1,14", "pump@1,12", "tank@14,17", "pump@13,19", "tank@21,23", "tank@22,23", "tank@31,23", "tank@18,7"],
+  6: ["machine@17,1", "conveyor@18,1", "drum@18,23", "press@14,7", "machine@16,7", "press@20,23", "machine@7,7", "conveyor@25,10", "press@21,19",
+    "conveyor@14,1", "drum@7,4", "machine@21,5", "press@18,7", "machine@25,14", "conveyor@1,18", "drum@13,1", "press@20,1", "machine@19,23", "cratepile@7,6", "machine@17,7"],
+  7: ["tumor@19,1", "tumor@19,23", "tumor@13,5", "tumor@27,17", "tumor@13,1", "tumor@19,19", "tumor@7,4", "tumor@18,7", "tumor@26,7", "tumor@13,19", "tumor@13,23",
+    "tumor@27,7", "tumor@19,17"],
+};
+
+describe("the masses the exhaustive sweep found pinning enemies stay out", () => {
+  for (const [lvl, list] of Object.entries(PINNERS)) {
+    it(`level ${lvl}: none of its ${list.length} listed pinners is built`, () => {
+      const present = new Set((LEVELS[Number(lvl)].build().decor || []).filter((d) => PIECES[d.k]?.mass).map((d) => { const c = decorCell(d); return `${d.k}@${c.x},${c.z}`; }));
+      expect(list.filter((k) => present.has(k))).toEqual([]);
+    });
+  }
+});
