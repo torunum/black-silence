@@ -656,6 +656,34 @@ import { MONOLOGUE } from "../../src/content/monologue";
  *
  * Coverage is unchanged: every `material.map=` site this header lists is reached on the same
  * frames as before, because camera, hud and every sprite's texture are identical.
+ *
+ * ## The transitions plan, Task 1 — no regeneration: the kick meter was never in the digest
+ *
+ * `docs/superpowers/plans/2026-10-05-transitions.md` Task 1 removed the HUD's kick meter (`#kickwrap`: a fill bar and the
+ * label `KICK 1s` / `KICK [RMB]`). The plan allowed that every fixture's `hud` field might move with it, if the digest
+ * included the label. It does not: `HUD_IDS` in `gameplayTrace.ts` is `hp ar wname msg subt lvltitle bossname keys`, and
+ * the meter was never among them. So nothing moved, and the proof is the plainest one: with the meter's markup, style and
+ * update code gone (the cooldown `KICK_CD` = 1 s untouched), all three committed fixtures passed unchanged and un-regenerated (full suite,
+ * 108 files / 1675 tests; `git diff` on `__fixtures__` empty after Task 1's commit). The cooldown itself is
+ * still seen where it always was: the kick's ready-click `kickReady()`, which is why Cause 2 above moves the scene digest.
+ *
+ * ## The transitions plan, Task 2 — eleventh regeneration: the exit is a door and so is the entrance, and the scene gained three
+ *
+ * Level 1's exit pad (a box and a point light at `X`, (31, 33)) is an iron door in the south wall of the hall, two doors in
+ * all: the exit (`exitDoor`, `doorGlow`, and the pad's light) and an entrance at the spawn (`entranceDoor`, `doorGlow`, in
+ * the west wall, shut and dark). Scene: **+3** (pad and light out, five in). The hall ends at the edge of the grid with no
+ * wall built there, so the exit door brings a wall of its own across the hall's open end (`slabSpan` in `ExitDoor.ts`;
+ * the level's grid is held cell for cell to the reference and is untouched). This script never reaches the exit
+ * (the nearest the camera comes to it, measured off the fixture's own camera x/z, is 47.0 units), so no door is opened. Field by field against the pre-change fixture, all 176 sampled frames:
+ *
+ * - `camera` — all seven components **identical in all 176 frames**.
+ * - `hud` — all eight fields **identical in all 176 frames**; the run still ends `HEALTH68`/`ARMOR2`.
+ * - `scene.count` — **+3 in every one of the 176 frames**, no other delta (126..154 -> 129..157).
+ * - `scene.digest` — differs in all 176, necessarily. First: frame 10, `3bf3a1dd` -> `99776932`. Last: frame 1760,
+ *   `ebe61469` -> `dbf99dd4`. 176 distinct digests before and after.
+ *
+ * The proof that the doors are the whole of it is in `trace.test.ts`'s section of the same name (the old pad put back, the
+ * door children filtered out of the digest: all three old fixtures reproduce byte for byte).
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

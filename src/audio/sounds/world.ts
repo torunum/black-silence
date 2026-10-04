@@ -21,7 +21,7 @@ import { lv } from "../Levels";
 
 export { footstep, landing, jump } from "./steps";
 export { bulletHitsWall, bulletHitsFlesh, bulletHitsProp, ricochetRoll, bulletRicochet, propBreaks } from "./impacts";
-export { doorOpens, lockedDoor, exitOpens } from "./doors";
+export { doorOpens, lockedDoor, exitOpens, exitWalkthrough, chapterToll, doorShutsBehind } from "./doors";
 export { itemPickup } from "./pickups";
 export { organSting, churchBells, bossBeat } from "./music";
 export { graveBreath, graveHeartbeat, earthShifts, lidCracks, dirtFalls } from "./grave";

@@ -551,6 +551,43 @@ import { MONOLOGUE } from "../../src/content/monologue";
  * counts: no draw from any hell module, at load or per frame), and `installAudioDrawGuard` still passes — so the seeded
  * stream every enemy timer, elite roll and subtitle pick draws from is exactly as long as it was. The other two
  * fixtures, `trace-level1.json` and `trace-level2-boss.json`, are byte-identical to `7bd0d65` (`git diff` empty).
+ *
+ * ## The transitions plan, Task 1 — no regeneration: the kick meter was never in the digest
+ *
+ * `docs/superpowers/plans/2026-10-05-transitions.md` Task 1 removed the HUD's kick meter (`#kickwrap`: a fill bar and the
+ * label `KICK 1s` / `KICK [RMB]`). The plan allowed that every fixture's `hud` field might move with it, if the digest
+ * included the label. It does not: `HUD_IDS` in `gameplayTrace.ts` is `hp ar wname msg subt lvltitle bossname keys`, and
+ * the meter was never among them. So nothing moved, and the proof is the plainest one: with the meter's markup, style and
+ * update code gone (the cooldown `KICK_CD` = 1 s untouched), all three committed fixtures passed unchanged and un-regenerated (full suite,
+ * 108 files / 1675 tests; `git diff` on `__fixtures__` empty after Task 1's commit). The cooldown itself is
+ * still seen where it always was: the kick's ready-click `kickReady()`, which is why Cause 2 above moves the scene digest.
+ *
+ * ## The transitions plan, Task 2 — thirteenth regeneration: the exit is a door, and the scene gained one child
+ *
+ * The pad this level ended on (a box and a point light at the `X` cell) is a door now (`src/world/DoorKit.ts`, placed by
+ * `src/world/ExitDoor.ts`): a crypt door in the landing's north wall, in two scene children (`exitDoor`, `doorGlow`) and
+ * the one point light the pad had, so the scene is **+1** (pad and light out, three in). The prologue has its grave and
+ * so no entrance door. This script walks to the foot of the crypt stair and never reaches the exit (the nearest the camera comes to the door,
+ * measured off this fixture's own camera x/z, is 31.1 units), so the door is never opened. Field by field (a node script, `fixture-proof.mjs`, written with the Write tool and not committed: it reads the
+ * pre-change fixture from `git show HEAD:` and the new one and compares each field of each of the 90 frames), all 90
+ * sampled frames:
+ *
+ * - `camera` — all seven components **identical in all 90 frames**.
+ * - `hud` — all eight fields **identical in all 90 frames**.
+ * - `scene.count` — **+1 in every one of the 90 frames**, no other delta (135..147 -> 136..148).
+ * - `scene.digest` — differs in all 90, necessarily: the child list changed. First: frame 10, `4d4b2c66` -> `ef4e2274`.
+ *   Last: frame 900, `4240a3dd` -> `f6da74bf`. 90 distinct digests before and after.
+ *
+ * **The proof that the doors are the whole of it.** With the old pad and its light put back in the loader, and
+ * `digestScene` temporarily filtering out the children named `exitDoor`, `entranceDoor` and `doorGlow` and the door's one
+ * point light, all three pre-change fixtures (this one, `trace-level1.json`, `trace-level2-boss.json`) were reproduced
+ * **byte for byte**, every field of every sampled frame — and then the loader and `gameplayTrace.ts` were put back. So the
+ * rest of the change (the doors' textures, `DoorTextures.ts`, built at boot from an integer hash; the decor
+ * the doors claim; the prologue's fourth outcrop, moved from (22, 34) to (1, 19) because `stuckCheck.test.ts` found a crawler
+ * pinned on it once the door changed the dice a level load takes; and `Transition.ts`, which is idle) moves nothing a
+ * trace records. Nothing new draws from `Math.random`: `tests/world/exitDoor.test.ts` and `tests/render/doorTextures.test.ts`
+ * count (three's own UUIDs aside, which this harness stubs out of the stream), and `buildTextureIndex` indexes `DOORTEX` as a
+ * seventh source after the six, so a door texture reads `door.church`, never an `unnamed#N`.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

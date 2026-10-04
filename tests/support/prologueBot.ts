@@ -41,11 +41,15 @@ export type BotEvent =
   | { kind: "move"; movementX: number; movementY: number }
   | { kind: "pointerlock"; locked: boolean };
 
-/** The route, in world units (a cell is 2): the centre of the corridor at each turn. */
+/**
+ * The route, in world units (a cell is 2): the centre of the corridor at each turn. It ends at the exit's door, not the exit cell:
+ * the door stands in the landing's north wall (z 16), and walking into it (within 0.7 of it) is what opens it
+ * (`src/world/Transition.ts`). The pad this route used to end on, at z 19, is two cells short of that wall.
+ */
 export const ROUTE: ReadonlyArray<readonly [number, number, string]> = [
   [20, 13, "churchyard"], [20, 17, "mausoleum door"], [20, 22, "crypt"], [20, 37, "stair foot"],
   [19, 44, "west bank"], [19, 50, "west bank"], [21, 53, "bridge"], [37, 53, "bridge's far end"],
-  [44, 46, "east bank"], [50, 40, "climb"], [50, 27, "climb"], [50, 22, "landing"], [51, 19, "exit"],
+  [44, 46, "east bank"], [50, 40, "climb"], [50, 27, "climb"], [50, 22, "landing"], [51, 16.6, "exit"],
 ];
 
 /** Out of the burning pit, if it falls in: up the steps along the pit's east wall, north or south, to the east bank. */

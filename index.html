@@ -57,6 +57,10 @@
   .title{font-size:clamp(26px,6.5vw,60px);letter-spacing:.32em;color:#b8b2a6;margin:0;
     text-shadow:0 0 18px rgba(120,80,140,.3),3px 3px 0 #000}
   .title b{color:#9c2f1e;font-weight:bold}
+  /* the chapter card, over the black of a level change (src/world/Transition.ts): the level just left, struck through */
+  #letitle .done{text-decoration:line-through;text-decoration-thickness:3px;text-decoration-color:#9c2f1e;color:#6e6a5e}
+  #leline{margin-top:26px;max-width:min(620px,86vw);font-size:15px;font-style:italic;letter-spacing:1px;line-height:1.5;color:#d8c89a;text-shadow:2px 2px 0 #000}
+  #fade{position:fixed;inset:0;z-index:19;background:#000;opacity:0;pointer-events:none}
   .sub{margin-top:10px;font-size:13px;letter-spacing:.5em;color:#5c5850;text-transform:uppercase}
   .controls{margin-top:30px;font-size:12px;line-height:2;letter-spacing:2px;color:#6e6a5e;text-transform:uppercase}
   .start{margin-top:30px;font-size:15px;letter-spacing:.4em;color:#b8b2a6;text-transform:uppercase;
@@ -190,10 +194,12 @@
   <div class="start" onclick="location.reload()">[ CLICK TO TRY AGAIN ]</div>
 </div>
 
+<div id="fade"></div>
 <div id="levelend" class="overlay hidden">
-  <h1 class="title" id="letitle">DUNGEON <b>CLEARED</b></h1>
+  <h1 class="title" id="letitle"><span class="done">DUNGEON</span> <b>CLEARED</b></h1>
   <div class="grade" id="legrade">B</div>
   <div class="stats" id="lestats"></div>
+  <div id="leline"></div>
   <div class="start" id="lebtn">[ CONTINUE INTO THE CHURCH ]</div>
 </div>
 

@@ -246,6 +246,9 @@ const ENTRIES: Entry[] = [
   { id: "door-flesh", name: "Flesh door opens", category: "World", play: () => WO.doorOpens("flesh") },
   { id: "door-locked", name: "Locked door (needs the red key)", category: "World", detail: "rattled, and a tone that says no", play: WO.lockedDoor },
   { id: "exit-opens", name: "Exit opens", category: "World", play: WO.exitOpens },
+  { id: "exit-walkthrough", name: "Exit: walking through the open door into the dark", category: "World", detail: "1.5 s: air drawn in, a chord rising, three footfalls", play: WO.exitWalkthrough },
+  { id: "chapter-toll", name: "Chapter card: the bell", category: "World", detail: "once, as the card comes up over the black", play: WO.chapterToll },
+  { id: "door-shuts-behind", name: "Entrance door shuts behind you", category: "World", detail: "on arrival at the next level: a heavy door, and its latch", play: WO.doorShutsBehind },
   ...WALL_MATERIALS.map((m): Entry => ({
     id: `bullet-wall-${m}`, name: `Bullet hits a ${m} wall`, category: "World", detail: `${m === "stone" ? "every level but two" : m === "metal" ? "the factory" : "the womb"} — new: a wall hit made no sound but the ricochet`, play: () => WO.bulletHitsWall(m),
   })),

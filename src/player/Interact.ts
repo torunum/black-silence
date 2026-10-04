@@ -21,6 +21,7 @@ import { alertSound } from "../enemies/ai/Perception";
 import { requestSwitch, WEAPONS } from "../weapons/WeaponState";
 import { openPiano } from "../ui/Piano";
 import { animCues } from "../core/AnimCues";
+import { tryExit } from "../world/Transition";
 
 /**
  * Interaction and pickups — opening doors, the piano-proximity check,
@@ -94,6 +95,7 @@ const WNAMES: Record<string, string> = {w1:"SAWED-OFF SHOTGUN",w2:"COMBAT RIFLE"
 export function interact(){
   if(!game.started||game.inputLock)return;
   if(world.pianoPos&&Math.hypot(player.px-(world.pianoPos as unknown as PianoPos).x,player.pz-(world.pianoPos as unknown as PianoPos).z)<1.9){openPiano();return;}
+  if(tryExit())return;   // the exit door: E at it, facing it (src/world/Transition.ts)
   const dir=new THREE.Vector3();renderState.camera.getWorldDirection(dir);
   for(let t=.4;t<2.6;t+=.2){
     const wx_=player.px+dir.x*t,wz_=player.pz+dir.z*t;

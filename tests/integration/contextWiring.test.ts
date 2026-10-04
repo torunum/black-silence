@@ -7,6 +7,7 @@ import { game } from "../../src/core/Game";
 import { S } from "../../src/core/State";
 import { clearAllTimers } from "../../src/core/Timers";
 import { clearScheduled } from "../../src/core/Time";
+import { resetTransition } from "../../src/world/TransitionState";
 
 /**
  * `src/core/Context.ts`'s three remaining entries, as of Plan 0E Task 12
@@ -78,7 +79,7 @@ import { clearScheduled } from "../../src/core/Time";
  * `#piano`'s inline `display` to `"flex"` (and sets `game.pianoOpen`),
  * `showWin` unhides `#win`. Each test drives the real call site — not a
  * copy of it — with the game genuinely in the state that reaches it
- * (player standing on the exit pad with no boss alive for `endLevel`,
+ * (player walking into the exit door with no boss alive for the exit — `endLevel` until the transitions plan,
  * player within `interact()`'s piano radius for `openPiano`), then checks
  * the FULL three-way shape below rather than a single flag. That is what
  * makes a wrong-target registration fail here and not just a missing one:
@@ -184,25 +185,30 @@ beforeEach(() => {
   // one test's side effects can't leak into the next test's assertion.
   document.getElementById("levelend")!.classList.add("hidden");
   document.getElementById("win")!.classList.add("hidden");
+  resetTransition();
+  game.inputLock = false;
   (document.getElementById("piano") as HTMLElement).style.display = "";
   game.pianoOpen = false;
   S.won = false;
 });
 
-describe("endLevel (src/ui/LevelEnd.ts, imported directly by src/player/Player.ts) — the exit-pad branch", () => {
-  it("unhides #levelend (not #win, not the piano) when the player stands on the exit pad with no boss alive", () => {
-    expect(world.exitPos, "prologue's LevelLoader should have set an exit pad").not.toBeNull();
-    const exit = world.exitPos as unknown as { x: number; z: number };
-    player.px = exit.x;
-    player.pz = exit.z;
+describe("the exit door (src/world/Transition.ts, called by src/player/Player.ts's exitTick) — what endLevel's exit-pad branch was", () => {
+  it("opens when the player walks into it with no boss alive, and the card (#levelend, not #win, not the piano) comes up when the walk ends", async () => {
+    const { doors } = await import("../../src/world/ExitDoor");
+    const { transitionTick } = await import("../../src/world/Transition");
+    const door = doors.exit!;
+    expect(door, "prologue's LevelLoader should have built an exit door").not.toBeNull();
+    expect(world.exitPos, "prologue's LevelLoader should have set the exit").not.toBeNull();
+    player.px = door.x + door.nx * .5;
+    player.pz = door.z + door.nz * .5;
 
     playerTick(1 / 60);
 
-    expect(overlayState()).toEqual({ levelendVisible: true, winVisible: false, pianoVisible: false });
-    // A secondary, independent reader of "endLevel ran" — not the
-    // discriminating check on its own (showWin also sets S.won), but real
-    // corroboration alongside the DOM shape above.
+    // the game is stopped and the door is opening, but no panel yet: a level used to end on a static one the moment the pad was touched
     expect(S.won).toBe(true);
+    expect(overlayState()).toEqual({ levelendVisible: false, winVisible: false, pianoVisible: false });
+    for (let i = 0; i < 150; i++) transitionTick(1 / 60);
+    expect(overlayState()).toEqual({ levelendVisible: true, winVisible: false, pianoVisible: false });
   });
 });
 

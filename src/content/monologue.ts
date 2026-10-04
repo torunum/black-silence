@@ -120,3 +120,30 @@ export const MONOLOGUE: Record<string, string[]> = {
  wallkill:["Pinned. He's a wall ornament now."],
  dead:["Well. That happened.","I regret several recent decisions."]
 };
+
+/**
+ * ADEM at the end of a level, on the chapter card (`src/world/Transition.ts`,
+ * the transitions plan `docs/superpowers/plans/2026-10-05-transitions.md`):
+ * one line a level, by the level's index. Two to choose from — the first
+ * for a level cleared well (grade S, A or B), the second for one that went
+ * badly (C or D) — picked by the grade, never by dice, so the same run shows
+ * the same line. A separate export from `MONOLOGUE` on purpose:
+ * `tests/fidelity.test.ts` holds that table's key set equal to the frozen
+ * reference's. The womb (7) has none; its end is the win screen.
+ */
+export const CHAPTER_LINES: Readonly<Record<number, readonly [string, string]>> = {
+  0: ["Out of the pit, through a door, and not one soul held it for me. Onward.",
+      "I left a trail the whole way up. Somebody will have to mop hell."],
+  1: ["Cells empty, chains still swinging. Housekeeping would be proud, if housekeeping were alive.",
+      "That went worse than it looked. Everything goes worse than it looks. Next door."],
+  2: ["The bell can stop now. I'd say a prayer, but the line's been busy since the funeral.",
+      "If anyone upstairs is keeping score, I'd like a recount."],
+  3: ["Down here the dead keep better order than the living. I'm leaving before they notice.",
+      "I think I woke a few of them. I'm calling it an introduction."],
+  4: ["Quiet graves, fresh air. Suspiciously nice, which is exactly why I'm leaving.",
+      "Everyone I buried tonight was already buried. That's a new low, even for me."],
+  5: ["I can smell it on me. Ten showers won't touch it. Onward, smelling like a decision.",
+      "Something grabbed my boot down there. I kept the boot. I did not keep the dignity."],
+  6: ["Whatever they were making in there, I just stopped the line. Management can write me a letter.",
+      "The machines ran the whole time and never once looked up. Rude."],
+};

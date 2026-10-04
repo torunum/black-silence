@@ -6,6 +6,7 @@ import { buildItemTex } from "../../src/render/ItemTextures";
 import { buildTextures } from "../../src/render/ProcTextures";
 import { BANDTEX, buildBandTextures } from "../../src/render/BandTextures";
 import { HELLTEX, buildHellTextures } from "../../src/render/HellTextures";
+import { DOORTEX, buildDoorTextures } from "../../src/render/DoorTextures";
 import { buildTextureIndex } from "./gameplayTrace";
 
 /**
@@ -96,6 +97,18 @@ describe("buildTextureIndex — the unnamed# fallback", () => {
     for (const key of keys) expect(texName(HELLTEX[key as keyof typeof HELLTEX]), key).toBe(`hell.${key}`);
     // a clone of one (the lava's, the ceiling's) is named for its original
     expect(texName(HELLTEX.lava!.clone())).toBe("hell.lava~clone");
+    expect(texName({ isTexture: true })).toBe("unnamed#1");
+  });
+
+  it("names the exit and entrance doors' textures from their registry, door.<key>, never unnamed#N", async () => {
+    // MUTATION TARGET: drop DOORTEX from buildTextureIndex and every door in the trace's scenes becomes unnamed#N,
+    // renumbering every genuinely unnamed texture after it.
+    buildDoorTextures();
+    const texName = await buildTextureIndex();
+    const keys = Object.keys(DOORTEX);
+    expect(keys.length).toBe(8);
+    for (const key of keys) expect(texName(DOORTEX[key as keyof typeof DOORTEX]), key).toBe(`door.${key}`);
+    expect(texName(DOORTEX.church!.clone())).toBe("door.church~clone");
     expect(texName({ isTexture: true })).toBe("unnamed#1");
   });
 });
