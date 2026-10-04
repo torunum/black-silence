@@ -11,6 +11,7 @@ import { ceilHeightAtCell, solidAt } from "../../src/world/Collision";
 import { LEVELS } from "../../src/world/levels/index";
 import { SHADOW_POLICY } from "../../src/render/Shadows";
 import { BANDTEX, type BandTheme } from "../../src/render/BandTextures";
+import { HELLTEX } from "../../src/render/HellTextures";
 
 /**
  * Phase 2 Part B — gothic trim (`src/world/Trim.ts`): pillar bases and
@@ -75,7 +76,9 @@ function children(name: string): THREE.InstancedMesh[] {
 }
 
 /** The band a wall cell's course should wear: its zone's on a zoned level, else the level's own — in loadLevel's order of tests. */
-function bandThemeAt(i: number, x: number, z: number): BandTheme {
+function bandThemeAt(i: number, x: number, z: number): BandTheme | "hellband" {
+  const named = world.zones && world.zones.themes[world.zones.map[z][x]].band;
+  if (named === "band") return "hellband";   // hell's own course stone (HELLTEX.band), the 2026-10-04 rework: basalt, not the dungeon's grey
   const zs = world.zones;
   const d: { hell?: boolean; flesh?: boolean; dungeon?: boolean } = zs ? zs.themes[zs.map[z][x]] : LEVELS[i];
   return d.hell ? "hell" : d.flesh ? "flesh" : d.dungeon ? "dungeon" : "church";
@@ -330,8 +333,8 @@ describe("the courses wear the theme's stone band", () => {
     // MUTATION TARGET: pass `wallTex` to `buildTrim` again (the pre-band
     // behaviour), or give a level another theme's band, and this goes red.
     // The theme is re-derived from the level flags, in loadLevel's order.
-    const WALL: Record<BandTheme, string> = { hell: "hellWall", flesh: "fleshWall", dungeon: "dungeonWall", church: "churchWall" };
-    const themes = new Set<BandTheme>();
+    const WALL: Record<BandTheme, string> = { hell: "hellWall", flesh: "fleshWall", dungeon: "dungeonWall", church: "churchWall" };   // (a level flagged hell and unzoned would wear BANDTEX.hell; the zoned prologue wears HELLTEX.band)
+    const themes = new Set<BandTheme | "hellband">();
     let secrets = 0;
     for (let i = 0; i < LEVELS.length; i++) {
       loadLevel(i);
@@ -343,21 +346,23 @@ describe("the courses wear the theme's stone band", () => {
           const f = faceOf(p);
           const theme = bandThemeAt(i, f.wx, f.wz);
           themes.add(theme);
-          expect(BANDTEX[theme], `level ${i}: the ${theme} band was built at boot`).toBeDefined();
-          expect(map, `level ${i} wallCourse at (${f.wx},${f.wz})`).toBe(BANDTEX[theme]);
-          expect(map, `level ${i} wallCourse`).not.toBe(TEX[WALL[theme]]);
+          const band = theme === "hellband" ? HELLTEX.band : BANDTEX[theme];
+          expect(band, `level ${i}: the ${theme} band was built at boot`).toBeDefined();
+          expect(map, `level ${i} wallCourse at (${f.wx},${f.wz})`).toBe(band);
+          if (theme !== "hellband") expect(map, `level ${i} wallCourse`).not.toBe(TEX[WALL[theme]]);
+          else for (const ref of [TEX.hellWall, BANDTEX.hell]) expect(map, "hell's courses wear neither the reference's wall nor the old band").not.toBe(ref);
         }
       }
       for (const [key, door] of Object.entries(world.doors)) {
         const sc = (door.mesh as THREE.Object3D | undefined)?.children.find((c) => c.name === "secretCourse") as THREE.Mesh | undefined;
         // Same material as the courses either side, or the course points at the secret.
         const [x, z] = key.split(",").map(Number);
-        const band = BANDTEX[bandThemeAt(i, x, z)];
+        const at = bandThemeAt(i, x, z), band = at === "hellband" ? HELLTEX.band : BANDTEX[at];
         const course = children("wallCourse").find((c) => (c.material as THREE.MeshLambertMaterial).map === band)!;
         if (sc) { secrets++; expect(sc.material, `level ${i} secretCourse`).toBe(course.material); }
       }
     }
-    expect(themes.size, "all four themes loaded").toBe(4);
+    expect(themes, "the churchyard's and climb's dungeon, the crypt's church, hell's own band — and the flesh level's").toEqual(new Set(["dungeon", "church", "hellband", "flesh"]));
     expect(secrets, "no secret course was checked").toBeGreaterThan(0);
   });
 });

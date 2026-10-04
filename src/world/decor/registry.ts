@@ -4,6 +4,7 @@ import { DUNGEON_PIECES as DUN } from "./dungeon";
 import { SACRED_PIECES as SAC } from "./sacred";
 import { PIPE_PIECES as PIP } from "./pipes";
 import { WOMB_PIECES as WOM } from "./womb";
+import { HELL_PIECES as HEL } from "./hell";
 
 /**
  * THE KIT: every piece, how it stands, which mesh it merges into, and the
@@ -49,6 +50,17 @@ export const PIECES: Record<string, PieceInfo> = {
   gravestone: P(PRO.headstone, "free", "clutter", { scale: .72, mass: [-.45, .45, -.15, .15] }),
   gravecross: P(PRO.cross, "free", "clutter", { scale: .78, mass: [-.31, .31, -.08, .08] }),
   sapling: P(PRO.tree, "free", "clutter", { scale: .5, mass: [-.27, .27, -.27, .27] }),
+  // hell: the prologue's cavern, hand-placed (`levels/prologue.ts`); the masses are solid, the rest is dressing
+  outcrop: P(HEL.outcrop, "edge", "decor", { mass: [-.9, .9, -.97, .25] }),
+  stalagmite: P(HEL.stalagmite, "free", "decor", { mass: [-.5, .5, -.5, .5] }),
+  basaltcol: P(HEL.basaltcol, "free", "decor", { mass: [-.62, .62, -.62, .62] }),
+  pyre: P(HEL.pyre, "free", "decor", { mass: [-.55, .55, -.55, .55] }),
+  spikes: P(HEL.spikes, "flat"),
+  shards: P(HEL.shards, "flat"),
+  skullpole: P(HEL.skullpole, "free"),
+  stalactite: P(HEL.stalactite, "hang", "clutter", { fixed: true, h: 1.8 }),
+  ribs: P(HEL.ribs, "free"),
+  lavafall: P(() => {}, "cover", "clutter", { fixed: true }),   // a plane that moves (`Decor.ts` hands the spec to `src/fx/Lava.ts`); no merged parts
   // dungeon
   shackles: P(DUN.shackles, "wall"),
   cage: P(DUN.cage, "hang", "clutter", { fixed: true }),

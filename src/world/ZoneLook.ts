@@ -1,7 +1,9 @@
-import type * as THREE from "three";
+import * as THREE from "three";
 import { TEX } from "../render/ProcTextures";
 import { DRESSTEX, type DressKey } from "../render/DressTextures";
-import { bandTheme, type BandTheme } from "../render/BandTextures";
+import { HELLTEX, glowOf, type HellKey } from "../render/HellTextures";
+import { bandFor, bandTheme } from "../render/BandTextures";
+import { heatMaterial } from "../fx/Lava";
 import { world } from "./WorldState";
 import type { ZoneTheme } from "./LevelBuilder";
 
@@ -27,7 +29,7 @@ import type { ZoneTheme } from "./LevelBuilder";
  */
 
 /** The theme flags every look is chosen from — a `LevelDef` and a `ZoneTheme` both have them. */
-export interface ThemeFlags { hell?: boolean; flesh?: boolean; dungeon?: boolean; side?: string; ground?: string }
+export interface ThemeFlags { hell?: boolean; flesh?: boolean; dungeon?: boolean; side?: string; ground?: string; ceil?: string; wall?: string; band?: string; shell?: boolean }
 
 /** The textures a theme wears. `side` is a raised platform's side faces. */
 export interface ThemeTex {
@@ -37,10 +39,10 @@ export interface ThemeTex {
   side: THREE.CanvasTexture;
 }
 
-/** A named texture: `TEX`'s (the reference's) or, for the prologue's own surfaces, `DRESSTEX`'s. */
+/** A named texture: `TEX`'s (the reference's) or, for the prologue's own surfaces, `DRESSTEX`'s, or hell's own, `HELLTEX`'s. */
 export function namedTex(key: string): THREE.CanvasTexture {
-  const t = TEX[key] || DRESSTEX[key as DressKey];
-  if (!t) throw new Error("no texture called " + key + " in TEX or DRESSTEX");
+  const t = TEX[key] || DRESSTEX[key as DressKey] || HELLTEX[key as HellKey];
+  if (!t) throw new Error("no texture called " + key + " in TEX, DRESSTEX or HELLTEX");
   return t;
 }
 
@@ -51,9 +53,9 @@ export function namedTex(key: string): THREE.CanvasTexture {
 export function themeTex(t: ThemeFlags): ThemeTex {
   const hell = t.hell, flesh = t.flesh, dungeon = t.dungeon;
   return {
-    wall: hell ? TEX.hellWall : flesh ? TEX.fleshWall : (dungeon ? TEX.dungeonWall : TEX.churchWall),
+    wall: t.wall ? namedTex(t.wall) : hell ? TEX.hellWall : flesh ? TEX.fleshWall : (dungeon ? TEX.dungeonWall : TEX.churchWall),
     floor: t.ground ? namedTex(t.ground) : hell ? TEX.hellFloor : flesh ? TEX.fleshFloor : (dungeon ? TEX.dungeonFloor : TEX.churchFloor),
-    ceil: hell ? TEX.hellCeil : flesh ? TEX.fleshCeil : TEX.ceil,
+    ceil: t.ceil ? namedTex(t.ceil) : hell ? TEX.hellCeil : flesh ? TEX.fleshCeil : TEX.ceil,
     side: t.side ? namedTex(t.side) : hell ? TEX.stair : flesh ? TEX.fleshWall : TEX.stair,
   };
 }
@@ -63,9 +65,32 @@ export function surfaceKey(t: ThemeFlags, withSide = false): string {
   return themeKey(t) + (t.ground ? "|" + t.ground : "") + (withSide ? (t.side || "") : "");
 }
 
-/** The four looks, by the same order of tests — also the trim band's key (`BandTextures.ts`). */
-export function themeKey(t: ThemeFlags): BandTheme {
-  return bandTheme(t);
+/** The four looks, by the same order of tests — a zone that names its own wall or ceiling stone is a look of its own. */
+export function themeKey(t: ThemeFlags): string {
+  return bandTheme(t) + (t.wall ? "|" + t.wall : "") + (t.ceil ? "|" + t.ceil : "");
+}
+
+/** The trim band a look's courses wear: the zone's own, if it names one, else its theme's (`BandTextures.ts`). */
+export function bandOf(t: ThemeFlags): THREE.Texture {
+  return t.band ? namedTex(t.band) : bandFor(t);
+}
+
+/**
+ * A lit surface material for a map: a Lambert, and where the map is a hell surface with cracks (`glowOf`) the emissive
+ * map that keeps them hot in the dark. `extra` is anything else the caller wants on it (a side, vertex colours).
+ */
+export function litMaterial(map: THREE.Texture, extra: THREE.MeshLambertMaterialParameters = {}): THREE.MeshLambertMaterial {
+  const glow = glowOf(map);
+  if (!glow) return new THREE.MeshLambertMaterial({ map, ...extra });
+  const m = new THREE.MeshLambertMaterial({ map, emissive: 0xffffff, emissiveMap: glow, ...extra });
+  heatMaterial(m);   // its glow breathes with the pit (src/fx/Lava.ts)
+  return m;
+}
+
+/** True where a zone builds its own world-mapped walls and ground (`ZoneTheme.shell`), so the level's box, platform and floor quad are not built there. */
+export function shellAt(x: number, z: number): boolean {
+  const t = zoneThemeAt(x, z);
+  return !!(t && t.shell);
 }
 
 /** The zone a cell belongs to, or `null` on a level with no zones (or off the map). */

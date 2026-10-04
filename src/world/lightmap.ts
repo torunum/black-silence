@@ -36,7 +36,7 @@ export function staticLights(L: Pick<BuiltLevel, "g" | "decor">): Source[] {
       }
     }
   }));
-  for (const d of L.decor || []) if (d.k === "light") out.push({ x: (d.x + .5) * CELL, y: .8, z: (d.z + .5) * CELL, intensity: d.s || 1.5, range: d.h || 12, decay: 1.4 });
+  for (const d of L.decor || []) if (d.k === "light") out.push({ x: (d.x + .5) * CELL, y: d.r !== undefined ? d.r : .8, z: (d.z + .5) * CELL, intensity: d.s || 1.5, range: d.h || 12, decay: 1.4 });
   for (const l of lampsOf(L.decor)) out.push({ x: l.x, y: l.y, z: l.z, intensity: l.intensity, range: l.range, decay: 1.8 });
   return out;
 }

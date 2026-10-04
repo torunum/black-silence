@@ -121,7 +121,8 @@ describe("each piece is cheap, and stays where it says", () => {
     }
     expect(kit.filter((k) => PIECES[k].cls === "decor").sort(), "the casters").toEqual(
       ["cratepile", "conveyor", "fallenstatue", "machine", "sarcophagus",
-        "altar", "deadtree", "maiden", "rack", "sarcofree", "slab", "stocks", "tombfree"].sort());   // the masses of size: the level builders' set-pieces are casters too
+        "altar", "deadtree", "maiden", "rack", "sarcofree", "slab", "stocks", "tombfree",
+        "outcrop", "stalagmite", "basaltcol", "pyre"].sort());   // the masses of size: the level builders' set-pieces are casters too (and hell's four, hand-placed in the prologue)
   });
 
   it("leaves the prologue's own pieces as they were: casters, but the grass", () => {

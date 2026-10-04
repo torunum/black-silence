@@ -3,7 +3,7 @@ import { CELL, WALLH } from "./Grid";
 import { world } from "./WorldState";
 import { ceilHeightAtCell } from "./Collision";
 import { track } from "../render/DisposeRegistry";
-import { zoneThemeAt, themeKey, themeTex, skyAt } from "./ZoneLook";
+import { zoneThemeAt, themeKey, themeTex, skyAt, shellAt, litMaterial } from "./ZoneLook";
 import { groupPush } from "./LevelMeshes";
 
 /**
@@ -153,6 +153,7 @@ export function buildCeiling(scene: THREE.Scene, baseTex: THREE.Texture, wallTex
     for(const[dx,dz]of[[1,0],[-1,0],[0,1],[0,-1]]){
       const nh=ceilHeightAtCell(x+dx,z+dz);
       if(nh>=h)continue;   // the lower cell of the pair emits nothing — one strip per edge
+      if(shellAt(x+dx,z+dz)&&"#W".includes(world.grid[z+dz][x+dx]))continue;   // a shell zone's wall carries on up to the ceiling itself (HellShell.ts)
       groupPush(riserMats,keyAt(x+dx,z+dz),new THREE.Matrix4().compose(
         new THREE.Vector3(wx+dx*CELL/2,(nh+h)/2,wz+dz*CELL/2),
         new THREE.Quaternion().setFromEuler(new THREE.Euler(0,Math.atan2(dx,dz),0)),
@@ -163,7 +164,7 @@ export function buildCeiling(scene: THREE.Scene, baseTex: THREE.Texture, wallTex
     ceilTex.wrapS=ceilTex.wrapT=THREE.RepeatWrapping;
     ceilTex.magFilter=THREE.NearestFilter;ceilTex.minFilter=THREE.NearestFilter;
     const cellMesh=new THREE.InstancedMesh(cellGeo,
-      track(new THREE.MeshLambertMaterial({map:ceilTex})),mats.length);
+      track(litMaterial(ceilTex)),mats.length);
     mats.forEach((mtx,i)=>cellMesh.setMatrixAt(i,mtx));
     cellMesh.instanceMatrix.needsUpdate=true;cellMesh.name="ceilingCells";scene.add(cellMesh);}
   for(const[key,mats]of riserMats){

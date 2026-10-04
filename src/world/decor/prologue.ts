@@ -70,15 +70,12 @@ export const PROLOGUE_PIECES: Record<string, Piece> = {
     cyl("iron", .4, .22, .24, loc(0, 1.04, 0), 8);
     cyl("iron", .1, .1, .06, loc(0, .9, 0), 6);
   },
-  ember: (box) => { box("ember", CELL, .02, CELL, loc(0, .03, 0)); },
+  ember: () => {},   // a burning cell is a fire emitter (`Decor.ts`), and the lava under it is the lake's (`src/fx/Lava.ts`); a slab over the lava was the reference's grid
   bridge: (box) => {   // a deck of dressed stone and a kerb down each side; runs along x
     box("slab", CELL, .08, CELL - .5, loc(0, .04, 0));
-    box("slab", CELL, .32, .22, loc(0, .16, CELL / 2 - .11)); box("slab", CELL, .32, .22, loc(0, .16, -CELL / 2 + .11));
-    // lit from below: the kerbs' outer faces and the lip of the deck catch the fire
-    for (const zs of [1, -1]) {
-      box("glow", CELL, .05, .02, loc(0, .03, zs * (CELL / 2 + .012)));
-      box("glow", CELL, .5, .015, loc(0, -.25, zs * (CELL / 2 + .02)));
-    }
+    box("char", CELL, .32, .22, loc(0, .16, CELL / 2 - .11)); box("char", CELL, .32, .22, loc(0, .16, -CELL / 2 + .11));
+    // the lip of the deck catches the lava's light (the cliff under it is lit by the lake's own lights and its own cracks)
+    for (const zs of [1, -1]) box("glow", CELL, .05, .02, loc(0, .03, zs * (CELL / 2 + .012)));
   },
   mound: (box, _c, d) => {   // a filled grave's earth, sunk and settled
     box("earth", .95, .16, 1.75, loc(0, .08, 0, 0, 0, (d.h || 0) * .1));

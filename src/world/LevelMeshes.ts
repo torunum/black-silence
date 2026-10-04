@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { CELL } from "./Grid";
 import { world } from "./WorldState";
 import { track } from "../render/DisposeRegistry";
-import { themeTex, themeKey, surfaceKey, lookAt, type ThemeFlags } from "./ZoneLook";
+import { themeTex, themeKey, surfaceKey, lookAt, litMaterial, shellAt, type ThemeFlags } from "./ZoneLook";
 
 /**
  * The level's walls, floor and raised platforms as scene children — moved
@@ -33,7 +33,7 @@ export function wallMaterials(level: ThemeFlags): (x: number, z: number) => THRE
   return (x, z) => {
     const look = lookAt(x, z, level), key = themeKey(look);
     let m = byKey.get(key);
-    if (!m) { m = track(new THREE.MeshLambertMaterial({ map: themeTex(look).wall })); byKey.set(key, m); }
+    if (!m) { m = track(litMaterial(themeTex(look).wall)); byKey.set(key, m); }
     return m;
   };
 }
@@ -76,6 +76,7 @@ export function buildFloor(scene: THREE.Scene, level: ThemeFlags): void {
   }
   const mats = new Map<string, THREE.Material>(), groups = new Map<THREE.Material, THREE.Matrix4[]>();
   for (let z = 0; z < world.GH; z++) for (let x = 0; x < world.GW; x++) {
+    if (shellAt(x, z)) continue;   // a shell zone's ground and lake are HellShell.ts's
     const look = lookAt(x, z, level), key = surfaceKey(look);
     let m = mats.get(key);
     if (!m) { m = track(new THREE.MeshLambertMaterial({ map: nearestTex(themeTex(look).floor, 1, 1) })); mats.set(key, m); }
@@ -98,7 +99,7 @@ export function buildPlatforms(scene: THREE.Scene, level: ThemeFlags): void {
   const faces = new Map<string, THREE.Material[]>(), groups = new Map<THREE.Material[], THREE.Matrix4[]>();
   for (let z = 0; z < world.GH; z++) for (let x = 0; x < world.GW; x++) {
     const hgt = world.heightMap[z] && world.heightMap[z][x] || 0;
-    if (hgt <= 0) continue;
+    if (hgt <= 0 || shellAt(x, z)) continue;   // (a shell zone's raised ground is HellShell.ts's)
     const look = lookAt(x, z, level), key = surfaceKey(look, true);
     let pm = faces.get(key);
     if (!pm) {

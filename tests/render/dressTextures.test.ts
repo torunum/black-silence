@@ -4,6 +4,7 @@ import { installDomStubs } from "../support/domStubs";
 import { recordingCanvas, installRecordingGetContext, type DrawCall } from "../support/recordingCanvas";
 import { seedRandom } from "../support/seededRandom";
 import { DRESSTEX, buildDressTextures } from "../../src/render/DressTextures";
+import { buildHellTextures } from "../../src/render/HellTextures";
 import { TEX, buildTextures } from "../../src/render/ProcTextures";
 import { themeTex } from "../../src/world/ZoneLook";
 import { ZONES } from "../../src/world/levels/prologue";
@@ -28,6 +29,7 @@ let texKeys: string[] = [];
 beforeAll(() => {
   installDomStubs();
   buildTextures();
+  buildHellTextures();   // the hell zone names its stone by key (`themeTex`), which needs them built
   texKeys = Object.keys(TEX).sort();
 });
 
@@ -49,9 +51,9 @@ describe("deterministic", () => {
 });
 
 describe("the registry", () => {
-  it("builds the eight, and leaves TEX's key set alone", () => {
+  it("builds the seven (the bridge's stone is hell's now: HELLTEX.bridge), and leaves TEX's key set alone", () => {
     buildDressTextures();
-    expect(Object.keys(DRESSTEX).sort()).toEqual(["banner", "bridgeStone", "graveEarth", "rust", "sludge", "spark", "straw", "yardEarth"]);
+    expect(Object.keys(DRESSTEX).sort()).toEqual(["banner", "graveEarth", "rust", "sludge", "spark", "straw", "yardEarth"]);
     expect(Object.keys(TEX).sort()).toEqual(texKeys);
   });
 

@@ -5,6 +5,7 @@ import { buildSprites } from "../../src/enemies/SpriteBaker";
 import { buildItemTex } from "../../src/render/ItemTextures";
 import { buildTextures } from "../../src/render/ProcTextures";
 import { BANDTEX, buildBandTextures } from "../../src/render/BandTextures";
+import { HELLTEX, buildHellTextures } from "../../src/render/HellTextures";
 import { buildTextureIndex } from "./gameplayTrace";
 
 /**
@@ -39,6 +40,7 @@ describe("buildTextureIndex — the unnamed# fallback", () => {
     installDomStubs();
     buildTextures();
     buildBandTextures();
+    buildHellTextures();
     buildSprites();
     buildItemTex();
   });
@@ -82,6 +84,18 @@ describe("buildTextureIndex — the unnamed# fallback", () => {
     for (const theme of themes) expect(texName(BANDTEX[theme as keyof typeof BANDTEX])).toBe(`band.${theme}`);
     // And the counter is untouched by them: the first unknown object after
     // naming every band is still unnamed#1.
+    expect(texName({ isTexture: true })).toBe("unnamed#1");
+  });
+
+  it("names hell's own textures from their registry, hell.<key>, never unnamed#N", async () => {
+    // MUTATION TARGET: drop HELLTEX from buildTextureIndex and the trace's hell walls, ground, lava and ceiling all become unnamed#N,
+    // renumbering every genuinely unnamed texture after them — and a fixture regenerated then is unreadable in a way no hash diff shows.
+    const texName = await buildTextureIndex();
+    const keys = Object.keys(HELLTEX);
+    expect(keys.length).toBe(13);
+    for (const key of keys) expect(texName(HELLTEX[key as keyof typeof HELLTEX]), key).toBe(`hell.${key}`);
+    // a clone of one (the lava's, the ceiling's) is named for its original
+    expect(texName(HELLTEX.lava!.clone())).toBe("hell.lava~clone");
     expect(texName({ isTexture: true })).toBe("unnamed#1");
   });
 });
