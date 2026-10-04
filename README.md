@@ -6,32 +6,60 @@
 
 A gothic retro first-person shooter with pixelated 3D spaces, eight weapons,
 and a power kick for anything that gets too close. Download one HTML file,
-open it in your desktop browser, and descend.
+open it in your desktop browser, and claw your way out of the ground.
 
 ![THE BLACK SILENCE: The Hollow Parish](docs/media/cover.png)
 
 **[Play in your browser](https://torunum.github.io/black-silence/)** ·
 **[Download the game](https://github.com/torunum/black-silence/releases/download/preview-2026-09-18/THE-BLACK-SILENCE.html)** ·
-**[Watch the trailer](https://torunum.github.io/black-silence/media/black-silence-trailer.mp4)** ·
+**[Watch the trailer](https://torunum.github.io/black-silence/media/black-silence-trailer.mp4)** (from the 2026-09-18 build) ·
+**[Listen to the sound board](https://torunum.github.io/black-silence/soundboard.html)** ·
 **[Press kit / Basın kiti](docs/PRESS-KIT.md)**
 
 ## Enter the Parish
 
-- **A prologue and seven chapters:** from the pit and gothic dungeon through
-  an abandoned church, necropolis, graveyard, sewers, factory, and The Womb.
-- **Eight weapons to acquire:** a sawed-off shotgun, automatic weapons, a scoped
-  sniper, the Holy Cross Launcher, and the Soul Reaper expand your arsenal.
+- **It starts in a grave.** In the prologue ADEM wakes in a coffin, splits the
+  lid, and claws out into a churchyard at night: stars, a moon, headstones,
+  a mausoleum. Its crypt stair leads down into hell: cracked basalt with
+  glowing fissures, a real flowing lava pit with a lava fall, a stone bridge,
+  fire and embers. Then you climb back out. Seven chapters follow: the gothic
+  dungeon, an abandoned church, a necropolis, a graveyard, sewers, a factory,
+  and The Womb.
+- **Eight weapons to acquire:** a flare pistol, a sawed-off shotgun, a combat
+  rifle, a tommy gun, a scoped sniper, the Holy Cross Launcher, a nail cannon,
+  and the Soul Reaper. Each is a small 3D rig, posed and drawn down to pixel
+  art every frame, with mechanisms that move: the pump, the break-open
+  barrels, the drum, the spinning cluster.
 - **Close-range impact:** sprint, jump, and power-kick enemies into walls.
-- **More than corridors:** secret doors, red keys, explosive barrels, boss
-  encounters, and a playable piano.
+  The sprint has its own pose, the stride is a human two or three steps a
+  second, and the kick is a real leg.
+- **Rooms with things in them:** a torture hall of cages, racks and iron
+  maidens; a nave of candelabra, banners and fallen saints; sarcophagi, pipes
+  and machines; flesh growths in The Womb. The large pieces are solid.
+  Secret doors, red keys, explosive barrels, boss encounters, and a playable
+  piano are still in there.
+- **A sound of its own:** every sound is rebuilt: a reverb room per theme,
+  layered weapons, monster voices, and the sounds of the world. The
+  [sound board](https://torunum.github.io/black-silence/soundboard.html)
+  plays them one by one.
 - **Built from code:** procedural textures, sprites, sound, and music;
   adjustable low-resolution rendering and locally saved chapter unlocks
   when browser storage is available.
 
 ![Animated gameplay preview](docs/media/preview.gif)
 
-[Dungeon screenshot](docs/media/dungeon.png) ·
-[Church screenshot](docs/media/church.png)
+| | |
+| --- | --- |
+| ![A night churchyard: the moon, a mausoleum, an open grave](docs/media/01-churchyard.png) | ![Hell: a lava river, a lava fall and a stone bridge](docs/media/03-hell-lava.png) |
+| The churchyard, with the grave ADEM left open | Hell: basalt, fire and a river of lava |
+| ![The abandoned church: an altar under banners, two zombies](docs/media/05-church-altar.png) | ![The Womb: a hall of flesh](docs/media/06-womb.png) |
+| Level 2, the church altar and its banners | Level 7, The Womb |
+
+![All eight weapons](docs/media/08-weapons.png)
+
+More: [rising out of the grave](docs/media/02-grave-rising.png) ·
+[the torture hall in a fight](docs/media/04-torture-hall.png) ·
+[a crawler in the lava](docs/media/07-hell-crawler.png).
 
 ## Play
 
@@ -112,10 +140,17 @@ a complete network-dependency audit.
 **Sessizlik çöktü. Sıra sende.**
 
 THE BLACK SILENCE: The Hollow Parish, gotik atmosferi retro FPS aksiyonuyla
-birleştiren, geliştirme aşamasında oynanabilir bir oyun. Bir ön bölüm ve yedi
-bölüm boyunca sekiz silahı keşfet; koş, zıpla ve yaklaşan düşmanları tekmeyle
-savur. Gizli kapılar, bölüm sonu karşılaşmaları ve çalınabilir bir piyano seni
-bekliyor.
+birleştiren, geliştirme aşamasında oynanabilir bir oyun. Ön bölümde ADEM, gece
+bir mezarlıkta tabutunu yarıp mezarından çıkıyor; mezarlıktaki mozolenin mahzen
+merdiveni onu cehenneme indiriyor: parlayan çatlaklı bazalt, akan gerçek bir
+lav havuzu, taş bir köprü, ateş ve kor. Sonra yedi bölüm boyunca sekiz silahı
+keşfet. Silahların hepsi baştan çizildi; her biri hareketli mekanizmalarıyla
+küçük bir 3B düzenek. Koş, zıpla ve yaklaşan düşmanları tekmeyle savur. İşkence
+salonu, şamdanlı kilise nefi, lahitler ve et kütleleriyle döşenmiş
+bölümlerde, gizli kapılar, bölüm sonu karşılaşmaları ve çalınabilir bir piyano
+seni bekliyor. Ses tamamen yeniden yapıldı; her sesi
+[ses panosunda](https://torunum.github.io/black-silence/soundboard.html) tek tek
+dinleyebilirsin.
 
 [Tarayıcıda oyna](https://torunum.github.io/black-silence/) veya
 [tek HTML dosyasını indir](https://github.com/torunum/black-silence/releases/download/preview-2026-09-18/THE-BLACK-SILENCE.html), masaüstü tarayıcında aç
