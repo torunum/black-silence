@@ -1,16 +1,19 @@
 import { S } from "../core/State";
-import { save } from "../save/SaveGame";
-import { flushSave } from "../save/persist";
-import { LEVELS } from "../world/levels/index";
-import { loadLevel } from "../world/LevelLoader";
 import { stopBossMusic } from "../audio/Ambient";
 import { stopMusic } from "../audio/Music";
 import { ach } from "./Toasts";
 import { ACHIEVEMENTS } from "../content/achievements";
-import { renderState } from "../render/Renderer";
 import { el } from "./dom";
 
 /**
+ * The win screen, and the two scoring helpers it and the chapter card share.
+ * **`endLevel` and the `#lebtn` click listener are gone** (the transitions
+ * plan, `docs/superpowers/plans/2026-10-05-transitions.md`): a level ends at a
+ * door now (`src/world/Transition.ts`), which saves `maxLevel` where `endLevel`
+ * did, shows the grade and stats from `gradeOf`/`statsHtml` below on a chapter
+ * card over black, and loads the next level when that card is continued. What
+ * follows is the module as it was, with the level-end half cut out.
+ *
  * Level end, the win screen, and the two scoring helpers they both call.
  * Moved verbatim from `src/legacy.js`'s "LEVEL END + WIN + HUD" section
  * (formerly lines 106-139: `gradeOf` 106-112, `statsHtml` 113-118,
@@ -48,21 +51,6 @@ export function statsHtml(): string {
   return `KILLS <b>${S.kills} / ${S.enemiesTotal}</b> · GIBBED <b>${S.gibs}</b><br>`+
     `SECRETS <b>${S.secrets} / ${S.secretsTotal}</b> · OBJECTS BROKEN <b>${S.propsBroken}</b><br>`+
     `ACCURACY <b>${acc}%</b> · TIME <b>${(t/60|0)}:${String(t%60).padStart(2,"0")}</b>`;}
-export function endLevel(): void {
-  if(S.won)return;S.won=true;
-  save.maxLevel=Math.max(save.maxLevel,Math.min(S.level+1,LEVELS.length-1));
-  flushSave();
-  stopBossMusic();document.exitPointerLock();
-  el("legrade").textContent=gradeOf();
-  el("lestats").innerHTML=statsHtml();
-  const nextName=LEVELS[S.level+1]?LEVELS[S.level+1].name.replace(/^LEVEL \d+ — /,""):"";
-  el("lebtn").textContent="[ DESCEND TO "+nextName+" ]";
-  el("levelend").classList.remove("hidden");}
-el("lebtn").addEventListener("click",()=>{
-  el("levelend").classList.add("hidden");
-  S.won=false;
-  loadLevel(S.level+1);
-  renderState.renderer.domElement.requestPointerLock();});
 export function showWin(): void {
   if(S.dead)return;S.won=true;
   stopBossMusic();stopMusic();document.exitPointerLock();

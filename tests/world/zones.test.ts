@@ -364,18 +364,29 @@ describe("the bridge over the pit", () => {
 });
 
 describe("the exit", () => {
-  it("leads to level 1: the pad ends the prologue and the level-end button loads the dungeon", () => {
+  it("leads to level 1: the crypt door ends the prologue, the card comes up over black, and a deliberate key loads the dungeon", async () => {
+    const { doors } = await import("../../src/world/ExitDoor");
+    const { transitionTick } = await import("../../src/world/Transition");
+    const { trans, T } = await import("../../src/world/TransitionState");
     loadLevel(0);
     skipOpening();   // the opening locks input, and playerTick with it (src/world/Opening.ts)
     S.won = false;
-    const exit = world.exitPos as unknown as { x: number; z: number };
-    player.px = exit.x; player.pz = exit.z; player.pyy = EYE + floorHeightAt(exit.x, exit.z);
+    expect(doors.exit!.rig.style, "the prologue's exit is a crypt door").toBe("crypt");
+    const d = doors.exit!;
+    player.px = d.x + d.nx * .5; player.pz = d.z + d.nz * .5; player.pyy = EYE + floorHeightAt(player.px, player.pz);
     playerTick(1 / 60);
     expect(S.won).toBe(true);
+    expect(document.getElementById("levelend")!.classList.contains("hidden"), "no panel while the door opens").toBe(true);
+    for (let i = 0; i < Math.ceil((T.walk + T.hold + .1) * 60); i++) transitionTick(1 / 60);
     expect(document.getElementById("levelend")!.classList.contains("hidden")).toBe(false);
     expect(document.getElementById("lebtn")!.textContent).toContain("THE GOTHIC DUNGEON");
-    (document.getElementById("lebtn") as HTMLElement).click();
+    expect(document.getElementById("letitle")!.textContent).toContain("OUT OF THE PIT");
+    for (let i = 0; i < 70; i++) transitionTick(1 / 60);   // past T.cardAfter
+    expect(trans.phase).toBe("card");
+    window.dispatchEvent(new KeyboardEvent("keydown", { code: "Space" }));
     expect(S.level).toBe(1);
     expect(world.zones).toBeNull();
+    for (let i = 0; i < Math.ceil((T.arrive + .1) * 60); i++) transitionTick(1 / 60);   // the arrival
+    expect(trans.phase).toBe("idle");
   });
 });

@@ -27,6 +27,17 @@ import { DOOR_SINK_SECONDS } from "../../world/Grid";
  *   `../Ambient.ts`), which was never the problem.
  * - **The exit** opening is a longer, deeper grind with a low chord
  *   swelling up under it: the way out.
+ *
+ * The transitions plan (`docs/superpowers/plans/2026-10-05-transitions.md`)
+ * adds the three sounds of leaving one level and entering the next:
+ *
+ * - **`exitWalkthrough`** — the camera walks into the open door (1.5 s): air
+ *   drawn in through the doorway and a low chord rising, with three soft
+ *   footfalls on stone, ending in the held breath of the black.
+ * - **`chapterToll`** — the chapter card comes up: one low bell, struck once,
+ *   its partials ringing out at their own lengths.
+ * - **`doorShutsBehind`** — the entrance door of the new level closes behind
+ *   the player: a latch, and the thud of a heavy door coming to rest.
  */
 
 export type DoorKind = "stone" | "secret" | "gate" | "flesh";
@@ -100,6 +111,46 @@ export function exitOpens(): void {
       ...grind(1.6, 1.3, p),
       ...settle(1.6, 1.2, p),
       { at: 0.2, tone: "sine", f: [65.4, 98, 130.8], filters: [{ type: "lowpass", f: 900 }], env: { a: 0.6, h: 0.4, d: 1.3 }, level: 0.3 },
+    ]);
+  });
+}
+
+/** The camera walks through the open exit door into the dark (`Transition.ts`, the first 1.5 s): a breath drawn in, a chord rising, three soft footfalls. */
+export function exitWalkthrough(): void {
+  const p = jit(0.03);
+  lv("exitWalkthrough", () => {
+    play([
+      // the air drawn through the doorway, brightening as the door nears
+      { noise: "pink", filters: [{ type: "lowpass", f: 260 * p, q: 0.7, to: 1500 * p, over: 1.2 }], env: { a: 0.9, h: 0.15, d: 0.6 }, am: { rate: 5, depth: 0.15 }, level: 0.5 },
+      // the low chord rising under it
+      { tone: "sine", f: [55 * p, 82.4 * p, 110 * p], filters: [{ type: "lowpass", f: 700 }], env: { a: 0.8, h: 0.3, d: 0.9 }, level: 0.35 },
+      { tone: "sine", f: 44, to: 30, over: 1.6, env: { a: 0.5, h: 0.5, d: 0.7 }, drive: 1.2, level: 0.4 },
+      // three footfalls on stone, soft
+      ...[0.15, 0.55, 0.95].map((at): Layer => ({ at, noise: "brown", filters: [{ type: "lowpass", f: 320 }], env: { a: 0.005, h: 0.02, d: 0.12 }, level: 0.5 })),
+    ]);
+  });
+}
+
+/** The chapter card comes up over the black: one low bell, struck once, every partial ringing at its own length. */
+export function chapterToll(): void {
+  const p = jit(0.01);
+  lv("chapterToll", () => {
+    const partials: Array<[number, number, number]> = [[98, 0.5, 3.4], [147.6, 0.22, 2.4], [196.4, 0.3, 2.8], [246, 0.12, 1.6], [294.6, 0.12, 1.4]];
+    play([
+      ...partials.map(([f, level, d]): Layer => ({ tone: "sine", f: f * p, env: { a: 0.004, d }, level })),
+      { noise: "brown", filters: [{ type: "lowpass", f: 420 }], env: { a: 0.002, h: 0.01, d: 0.14 }, drive: 1.5, level: 0.4 },
+    ]);
+  });
+}
+
+/** The entrance door of the new level shuts behind the player: the latch, then the heavy door coming to rest. */
+export function doorShutsBehind(): void {
+  const p = jit(0.04);
+  lv("doorShutsBehind", () => {
+    play([
+      ...settle(0.05, 1, p),
+      ...clack(0.22, [900 * p, 1420 * p, 2300 * p], 0.2, 0.5),
+      thud(0.22, 160 * p, 0.08, 0.4),
     ]);
   });
 }

@@ -7,6 +7,7 @@ import { buildTextures } from "../render/ProcTextures";
 import { buildBandTextures } from "../render/BandTextures";
 import { buildDressTextures } from "../render/DressTextures";
 import { buildHellTextures } from "../render/HellTextures";
+import { buildDoorTextures } from "../render/DoorTextures";
 import { buildSprites } from "../enemies/SpriteBaker";
 import { buildItemTex } from "../render/ItemTextures";
 import { buildPiano } from "../ui/Piano";
@@ -28,6 +29,9 @@ import { loadLevel } from "../world/LevelLoader";
  * so nothing about it is built here — and it never drew from Math.random,
  * so removing it moves no seeded draw.
  *
+ * `buildDoorTextures` (the leaves and light of the exit and entrance doors,
+ * `src/render/DoorTextures.ts`) is the same kind of builder, after hell's.
+ *
  * Passed to `src/ui/Menus.ts`'s `initMenus` as a parameter rather than
  * imported there directly, so that module never has to reach into this one.
  */
@@ -38,7 +42,7 @@ export function startGame(idx: number){
   el("settings").classList.add("hidden");
   game.started=true;
   audioInit();
-  buildTextures();buildBandTextures();buildDressTextures();buildHellTextures();buildSprites();buildItemTex();buildPiano();
+  buildTextures();buildBandTextures();buildDressTextures();buildHellTextures();buildDoorTextures();buildSprites();buildItemTex();buildPiano();
   loadLevel(idx||0);
   S.t0=performance.now();
   renderState.renderer.domElement.requestPointerLock();}

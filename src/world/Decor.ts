@@ -10,6 +10,9 @@ import type { BuiltLevel, DecorSpec } from "./LevelBuilder";
 import { makeMat } from "./decor/kit";
 import { addPiece, merge, partClass, partMaterial, type Parts } from "./decor/parts";
 import { addLamps } from "./decor/lamps";
+import { PIECES } from "./decor/registry";
+import { decorCell } from "./density";
+import { doorClaims } from "./ExitDoor";
 
 /**
  * SET DRESSING — the scene-building half. What a piece looks like is the
@@ -119,7 +122,9 @@ function liftDressing(scene: THREE.Scene): void {
 
 /** Called once by `loadLevel`, after every grid cell has been built. */
 export function dressLevel(scene: THREE.Scene, L: BuiltLevel): void {
-  if (L.decor && L.decor.length) buildPieces(scene, L.decor);
+  // what the level's author placed, less what the exit and entrance doors stand where (`ExitDoor.ts`'s `doorClaims`)
+  const specs = (L.decor || []).filter((d) => { const c = decorCell(d), p = PIECES[d.k]; return !(p && doorClaims(c.x, c.z, p.mode)); });
+  if (specs.length) buildPieces(scene, specs);
   else buildFire(scene, [], []);   // no fire here: drop the last level's pool
   buildSky(scene);
   liftDressing(scene);

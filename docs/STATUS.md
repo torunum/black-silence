@@ -32,6 +32,36 @@ No license grant has been assigned to the original game code/artwork.
 The dated phase notes below are historical; use this checkpoint and git log
 for the latest publication work.
 
+## Level transitions - 2026-10-05
+
+The owner: "the level transitions are very bad", and the kick meter "doesn't
+need a reload timer on screen". Plan: `docs/superpowers/plans/2026-10-05-transitions.md`;
+the report with frames is in `.superpowers/sdd/2026-10-05-transitions/`
+(gitignored). Branch `transitions`.
+
+- **No kick meter** (`feat: the kick needs no meter on screen`). The cooldown
+  (`KICK_CD` = 1 s) is untouched; no trace fixture moved because the trace HUD
+  digest never held the kick label.
+- **A level ends at a door and the next begins at one** (`src/world/DoorKit.ts`
+  eight themed doors, `ExitDoor.ts` where they stand, `Transition.ts` the flow,
+  `TransitionState.ts` its state). Exit: E facing it, or walking into it; the
+  boss rule is unchanged; `maxLevel` is saved the moment the door is opened.
+  Walk (1.5 s) -> chapter card over black (grade, stats, one ADEM line from
+  `CHAPTER_LINES`) -> any deliberate key/click -> next level behind black ->
+  arrival (2.3 s) from the entrance door at the `P` spawn. Levels 2-6 build
+  their exit door **sealed** at load; `openExit` (the boss's death) unseals it.
+  Level 1's and level 3's exits bring a wall of their own (grid edge; a ledge
+  the player cannot climb). The womb has no exit; the win screen is unchanged.
+- Level data was not touched except the prologue's fourth hell outcrop
+  (22,34) -> (1,19): a crawler pinned on it once the door changed the dice a
+  level load takes (`stuckCheck.test.ts`).
+- **Tell the next session**: a browser-pane check of the arrival and walk is
+  done by stepping the game by hand (replace `requestAnimationFrame`, call the
+  captured loop callback N times) because the pane does not run rAF when
+  hidden, and Vite's dev server gives HMR-touched modules a `?t=` URL, so
+  `import('/src/...')` from the console gets a different instance unless the URL
+  is taken from `performance.getEntriesByType('resource')`.
+
 Written to survive session loss. If you are picking this up cold, read this
 file, then `docs/direction.md`, then the current plan under
 `docs/superpowers/plans/`. Trust this file and `git log` over any recollection.

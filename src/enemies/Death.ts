@@ -28,6 +28,8 @@ import { weaponRuntime } from "../weapons/WeaponRuntime";
 import { EYE, CELL } from "../world/Grid";
 import { solidAt } from "../world/Collision";
 import { world } from "../world/WorldState";
+import { exitCell, unsealExit } from "../world/ExitDoor";
+import { LEVELS } from "../world/levels/index";
 import { track } from "../render/DisposeRegistry";
 import type { Enemy } from "./Enemy";
 
@@ -291,18 +293,9 @@ export function bossDeath(e: KillEnemy) {
 
 export function openExit() {
   if(world.exitPos)return;
-  // place exit on a guaranteed-open tile in the south processional area
-  const cands=[[16,16],[16,15],[15,16],[17,16],[16,17]];
-  let gx=16,gz=16;
-  for(const[cx,cz] of cands){
-    const wx=(cx+.5)*CELL,wz=(cz+.5)*CELL;
-    if(!solidAt(wx,wz)){gx=cx;gz=cz;break;}}
+  // the exit cell is the first open one of the south processional area (src/world/ExitDoor.ts); the door
+  // for it was built at load, sealed, and the boss's death unseals it: the glow comes up, with the pad's old light
+  const[gx,gz]=exitCell();
   world.exitPos={x:(gx+.5)*CELL,z:(gz+.5)*CELL};
-  const pad=new THREE.Mesh(track(new THREE.BoxGeometry(CELL*1.3,.06,CELL*1.3)),
-    track(new THREE.MeshBasicMaterial({color:0x4a6b8a})));
-  pad.position.set((world.exitPos as unknown as ExitPos).x,.03,(world.exitPos as unknown as ExitPos).z);renderState.scene.add(pad);
-  // decay:1 explicit — r128's PointLight default before r186 moved it to 2;
-  // this light (and reference/sonsurum.html:3155, which omits it the same
-  // way) was tuned against the old default, not the new one. See KNOWN-14.
-  const gl=track(new THREE.PointLight(0x4a6b8a,1.1,8,1));gl.position.set((world.exitPos as unknown as ExitPos).x,1,(world.exitPos as unknown as ExitPos).z);renderState.scene.add(gl);
+  unsealExit(renderState.scene as THREE.Scene,LEVELS[S.level]);
   at((world.exitPos as unknown as ExitPos).x,1,(world.exitPos as unknown as ExitPos).z,()=>exitOpens());}

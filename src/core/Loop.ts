@@ -13,6 +13,8 @@ import { itemsTick, doorTick, propTick, torchTick } from "../player/Interact";
 import { eventTick } from "../world/RandomEvents";
 import { zoneTick } from "../world/Zones";
 import { openingTick, openingHidesWeapon } from "../world/Opening";
+import { transitionTick } from "../world/Transition";
+import { transitionHidesHands } from "../world/TransitionState";
 import { ambience, vitalsAudio } from "../world/Ambience";
 import { chatterTick } from "../ui/Chatter";
 import { musicTick } from "../audio/Music";
@@ -112,6 +114,7 @@ function loop(t: number){
   time.scaledDt=dt;
   const paused=game.pianoOpen||overlayOpen()&&!game.pianoOpen;
   let anyAware=false;
+  if(!S.dead)transitionTick(dt);   // the walk through an exit door runs with the game stopped (S.won), the card with an overlay up
   if(!paused&&!S.dead&&!S.won){
     cineTick(dt);openingTick(dt);
     playerTick(dt);zoneTick(dt);weaponTick(dt);
@@ -133,7 +136,7 @@ function loop(t: number){
         started:game.started,dead:S.dead,pianoOpen:game.pianoOpen,zoomLerp:weaponRuntime.zoomLerp,cur:S.cur,vx:player.vx,vz:player.vz,vy:player.vy,grounded:player.grounded,yaw:input.yaw,
         sprintKey:!!(keys.ShiftLeft||keys.ShiftRight),bobT:player.bobT,wstate:weaponRuntime.wstate,wtime:weaponRuntime.wtime,
         equipT:EQUIP_T,unequipT:UNEQUIP_T,kickAmt:weaponRuntime.kickAmt,kickRot:weaponRuntime.kickRot,kickAnim:kick,swayX:input.swayX,swayY:input.swayY,muzzle:weaponRuntime.muzzle,
-        cueHurt:animCues.hurt,cueHurtAmt:animCues.hurtAmt,cuePickup:animCues.pickup,cueDryFire:animCues.dryFire,cueInput:animCues.input,paused,hidden:openingHidesWeapon(),
+        cueHurt:animCues.hurt,cueHurtAmt:animCues.hurtAmt,cuePickup:animCues.pickup,cueDryFire:animCues.dryFire,cueInput:animCues.input,paused,hidden:openingHidesWeapon()||transitionHidesHands(),
       },WEAPONS));
     hud();
     withKickLean(renderState.camera,kick,()=>renderState.renderer.render(renderState.scene,renderState.camera));}}

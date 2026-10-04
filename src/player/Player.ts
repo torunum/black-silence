@@ -8,7 +8,7 @@ import { stopMusic } from "../audio/Music";
 import { flashDmg, showMsg } from "../ui/HudMessages";
 import { say } from "../ui/Subtitles";
 import { ach } from "../ui/Toasts";
-import { endLevel } from "../ui/LevelEnd";
+import { exitTick } from "../world/Transition";
 import { screenBlood } from "../render/Overlay2D";
 import { addSprite } from "../render/RenderCore";
 import { renderState } from "../render/Renderer";
@@ -36,9 +36,10 @@ import { animCues } from "../core/AnimCues";
  * from `src/legacy.js`'s "PLAYER" section (formerly lines 728-821;
  * `reference/sonsurum.html`'s equivalent section).
  *
- * `playerTick` calls `endLevel` (the level-exit pad, `else endLevel();`
- * below), a direct import from `src/ui/LevelEnd.ts` as of Plan 0F Task 2.
- * Before that, `endLevel` stayed in `legacy.js` and this file reached it
+ * `playerTick` calls `exitTick` (the level's exit door, `src/world/Transition.ts`,
+ * from the transitions plan; until then it called `endLevel` for a glowing pad
+ * in the floor). `endLevel` was a direct import from `src/ui/LevelEnd.ts` as of
+ * Plan 0F Task 2. Before that, `endLevel` stayed in `legacy.js` and this file reached it
  * through `src/core/Context.ts`'s locator instead, imported under a rename
  * here to avoid a clash with `AudioEngine.ts`'s own `ctx` (still imported
  * above, still called once in `footstep`, below). `damagePlayer` made the
@@ -58,12 +59,6 @@ import { animCues } from "../core/AnimCues";
  * `world.enemies` is `Enemy[]` (Phase 3 Part A, KNOWN-13); `TickEnemy` below
  * is a `Pick<Enemy, …>` checked widening of it, not a cast.
  */
-
-/** world.exitPos's actual shape, set by LevelLoader.ts for the "X" tile. */
-interface ExitPos {
-  x: number;
-  z: number;
-}
 
 /** world.challenge's actual shape, set by LevelLoader.ts for the "Y" tile. */
 interface ChallengeState {
@@ -184,12 +179,8 @@ function playerTick(dt: number): void {
   renderState.camera.rotation.y=input.yaw;renderState.camera.rotation.x=input.pitch+weaponRuntime.recoilPitch;renderState.camera.rotation.z=shr;
   renderState.lamp.position.set(player.px,player.pyy+.4,player.pz);
   if(renderState.lampCore)renderState.lampCore.position.set(player.px,player.pyy+.2,player.pz);
-  /* exit pad (level 1) */
-  if(world.exitPos&&Math.hypot(player.px-(world.exitPos as unknown as ExitPos).x,player.pz-(world.exitPos as unknown as ExitPos).z)<1.2){
-    const enemies: readonly TickEnemy[] = world.enemies;   // checked widening, not a cast
-    const bossLeft=enemies.some(e=>e.boss&&!e.dead);
-    if(bossLeft)showMsg("SOMETHING STILL BREATHES HERE",1.5);
-    else endLevel();}
+  /* the exit door: walking into it opens it, coming up to it says so or says why not (src/world/Transition.ts) */
+  exitTick();
   /* challenge plate */
   if(world.challenge&&(world.challenge as unknown as ChallengeState).state===0&&Math.hypot(player.px-(world.challenge as unknown as ChallengeState).x,player.pz-(world.challenge as unknown as ChallengeState).z)<1){
     (world.challenge as unknown as ChallengeState).state=1;say("challenge",true);

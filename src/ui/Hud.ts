@@ -1,13 +1,15 @@
 import { S } from "../core/State";
 import { world } from "../world/WorldState";
 import { weaponRuntime } from "../weapons/WeaponRuntime";
-import { WEAPONS, KICK_CD } from "../weapons/WeaponState";
+import { WEAPONS } from "../weapons/WeaponState";
 import { el, q } from "./dom";
 import type { Enemy } from "../enemies/Enemy";
 
 /**
  * The per-frame HUD painter — health, armour, ammo, weapon name, the key
- * indicator, the kick meter, and the boss bar. `src/ui/HudMessages.ts` is
+ * indicator and the boss bar. (There was a kick meter here once; the
+ * owner found a one-second cooldown needs no timer on screen, 2026-10-05.
+ * The cooldown itself, `KICK_CD`, is unchanged.) `src/ui/HudMessages.ts` is
  * the timed centre-screen message queue and the two damage flashes; this
  * is a different thing with a similar name, the same distinction
  * `src/weapons/WeaponRuntime.ts`/`WeaponState.ts` already draw for
@@ -47,11 +49,6 @@ export function hud(): void {
   el("wname").textContent=
     w.name+(weaponRuntime.wstate==="reload"?" — RELOADING":"");
   el("keys").textContent=S.key?"■ RED KEY":"";
-  const kw=el("kickwrap");
-  el("kickfill").style.width=(100*(1-S.kickCd/KICK_CD))+"%";
-  el("kicklabel").textContent=
-    S.kickCd>0?("KICK "+Math.ceil(S.kickCd)+"s"):"KICK [RMB]";
-  kw.classList.toggle("ready",S.kickCd<=0);
   const enemies: readonly BossEnemy[] = world.enemies;   // checked widening, not a cast
   const boss=enemies&&enemies.find(e=>e.boss&&!e.dead&&!e.dormant);
   const bb=el("bossbar");

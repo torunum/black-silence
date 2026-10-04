@@ -742,6 +742,36 @@ import { world } from "../../src/world/WorldState";
  * font (14,1), four fallen saints (9,10) (9,14) (23,10) (23,14) and what the clutter adds), where
  * this recording never sends a summon or an orb. A mass in the crypt would have moved this file:
  * that is what the boundary is for.
+ *
+ * ## The transitions plan, Task 1 — no regeneration: the kick meter was never in the digest
+ *
+ * `docs/superpowers/plans/2026-10-05-transitions.md` Task 1 removed the HUD's kick meter (`#kickwrap`: a fill bar and the
+ * label `KICK 1s` / `KICK [RMB]`). The plan allowed that every fixture's `hud` field might move with it, if the digest
+ * included the label. It does not: `HUD_IDS` in `gameplayTrace.ts` is `hp ar wname msg subt lvltitle bossname keys`, and
+ * the meter was never among them. So nothing moved, and the proof is the plainest one: with the meter's markup, style and
+ * update code gone (the cooldown `KICK_CD` = 1 s untouched), all three committed fixtures passed unchanged and un-regenerated (full suite,
+ * 108 files / 1675 tests; `git diff` on `__fixtures__` empty after Task 1's commit). The cooldown itself is
+ * still seen where it always was: the kick's ready-click `kickReady()`, which is why Cause 2 above moves the scene digest.
+ *
+ * ## The transitions plan, Task 2 — the tenth regeneration: the church has its doors, and the fight did not move
+ *
+ * The church (level 2) is a boss level: its exit does not exist until the priest dies (`openExit`). Its door is built at
+ * load, **sealed** (dark, no light, nothing to touch) and unsealed by `openExit`, and there is an entrance door at the
+ * spawn. Four scene children (`exitDoor`, `doorGlow`, `entranceDoor`, `doorGlow`); no light until the priest dies. The
+ * door is sealed whatever the player does while the priest lives, and the nearest the camera comes to it is 12.2 units. Field by field against the pre-change
+ * fixture, all 156 sampled frames:
+ *
+ * - `camera` — all seven components **identical in all 156 frames**.
+ * - `hud` — all eight fields **identical in all 156 frames**; the run still ends `HEALTH2876`, `"THE CORRUPTED PRIEST — PHASE 3"`.
+ * - `scene.count` — **+4 in every one of the 156 frames**, no other delta (176..579 -> 180..583).
+ * - `scene.digest` — differs in all 156, necessarily. First: frame 18, `b730cabf` -> `da34bfcd`. Last: frame 2808,
+ *   `83e7d686` -> `fb5a2d7c`. 156 distinct digests before and after.
+ * - **The structural guard stayed green**, and the fight did not move: nothing the doors do draws from the stream.
+ *
+ * The proof that the doors are the whole of it is in `trace.test.ts`'s section of the same name. The church's decor
+ * lost two pieces at load, a banner hung on the very wall the exit door stands in and a candelabrum at the exit cell
+ * (`doorClaims` in `ExitDoor.ts`, applied by `Decor.ts`; the level's own list is untouched): decor is merged into one mesh
+ * per material, so the child list is not what they change.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

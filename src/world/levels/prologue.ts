@@ -233,8 +233,13 @@ export function buildPrologue(): BuiltLevel {
  */
 function hellDressing(d: (k: string, x: number, z: number, o?: Partial<DecorSpec>) => void): void {
   const W = Math.PI / 2, S = Math.PI;
-  // outcrops, backs to the walls: west wall (x 1), south wall (z 34)
-  for (const [x, z, r] of [[1, 23, W], [1, 31, W], [6, 34, S], [22, 34, S]] as const) d("outcrop", x, z, { r });
+  // outcrops, backs to the walls: west wall (x 1), south wall (z 34). The fourth stood at (22, 34), the end of the south
+  // wall row the crawlers walk to a player on the east bank, and `stuckCheck.test.ts` pinned a crawler on it as soon as
+  // the exit's door (src/world/ExitDoor.ts) replaced the pad and so changed the dice a level load takes (every
+  // three.js object draws its UUID from the seeded stream, and the door is not the pad's four objects). It is in the
+  // north-west corner of the bank now, where nothing walks along the wall: tried at (27, 26), (19, 19), (5, 19) and
+  // (22, 19) and pinned a crawler or a zombie at each, so the cell is a measured one.
+  for (const [x, z, r] of [[1, 23, W], [1, 31, W], [6, 34, S], [1, 19, W]] as const) d("outcrop", x, z, { r });
   // fangs, columns, a pyre: freestanding masses, in the corners of the banks and well off the straight lines between a crawler and a player
   for (const [x, z] of [[4, 25], [25, 28]] as const) d("stalagmite", x, z);
   for (const [x, z, r] of [[2, 33, 1.1], [26, 31, .7]] as const) d("basaltcol", x, z, { r });

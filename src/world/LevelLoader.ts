@@ -33,6 +33,7 @@ import { dressLevel } from "./Decor";
 import { massMap } from "./decor/masses";
 import { beginOpening, resetOpening } from "./Opening";
 import { spawnProp } from "./PropSpawn";
+import { buildLevelDoors, EXIT_BOSSES } from "./ExitDoor";
 import { world } from "./WorldState";
 import type { WallSeg } from "./LevelBuilder";
 import { after, clearAllTimers } from "../core/Timers";
@@ -281,19 +282,14 @@ export function loadLevel(idx: number): void {
       m.position.set((s.x1+s.x2)/2,WALLH/2,(s.z1+s.z2)/2);
       m.rotation.y=-Math.atan2(s.z2-s.z1,s.x2-s.x1);
       renderState.scene.add(m);}}
+  let bossExit=false;   // a boss on the grid whose death opens the exit: its door is built sealed
   for(let z=0;z<world.GH;z++)for(let x=0;x<world.GW;x++){
     const ch=world.grid[z][x];
     if(".#WI+DS".includes(ch))continue;
     const wx=(x+.5)*CELL,wz=(z+.5)*CELL;
+    if(EXIT_BOSSES.includes(ch))bossExit=true;   // a boss whose death opens the exit
     if(ch==="P"){player.px=wx;player.pz=wz;}
-    else if(ch==="X"){world.exitPos={x:wx,z:wz};
-      const ph=floorHeightAt(wx,wz);
-      const pad=new THREE.Mesh(track(new THREE.BoxGeometry(CELL*1.3,.06,CELL*1.3)),
-        track(new THREE.MeshBasicMaterial({color:0x4a6b8a})));
-      pad.position.set(wx,ph+.04,wz);renderState.scene.add(pad);
-      // decay:1 explicit — restores r128's PointLight default (r186 moved it to
-      // 2); reference/sonsurum.html:2909 omits it the same way. See KNOWN-14.
-      const gl=track(new THREE.PointLight(0x4a6b8a,.9,6,1));gl.position.set(wx,ph+1,wz);renderState.scene.add(gl);}
+    else if(ch==="X")world.exitPos={x:wx,z:wz};   // the exit is a door now, built below once the walls are known (src/world/ExitDoor.ts)
     else if(ch==="i"){
       const pole=new THREE.Mesh(track(new THREE.CylinderGeometry(.06,.09,1.15,6)),
         track(new THREE.MeshLambertMaterial({color:0x1a160f})));
@@ -348,6 +344,7 @@ export function loadLevel(idx: number): void {
       const tex=(k[0]==="w"?ITEMTEX.gun:ITEMTEX[k]) as THREE.CanvasTexture;
       world.items.push({kind:k,x:wx,z:wz,sp:addSprite(tex,wx,wz,.55,.55,.5),bob:Math.random()*6});}
     world.grid[z][x]=".";}
+  buildLevelDoors(renderState.scene as THREE.Scene,Ldef,bossExit,!L.grave);   // the exit and the entrance — src/world/ExitDoor.ts
   dressLevel(renderState.scene as THREE.Scene,L);   // set dressing, and what stands on raised ground — src/world/Decor.ts
   // Every builder has added its children by here, so one pass applies the
   // whole cast/receive policy. At the end rather than per-site because the

@@ -230,6 +230,15 @@ export const SHADOW_POLICY: Readonly<Record<string, ShadowRule>> = {
      frame regardless, since the lamp itself moves, so a moving door costs
      nothing extra here. */
   door: { cast: true, receive: true },
+  /* The exit and entrance doors (`src/world/DoorKit.ts`, the transitions plan):
+     stone, iron and wood standing in front of a wall, so a door's rule. Their
+     light — the bloom in the opening, the lit threshold, the crack of light,
+     the sigil, the lamp flames — is a second group, `doorGlow`, which is
+     only light: unlit, additive, casting and taking nothing, like the pit's
+     glow. */
+  exitDoor: { cast: true, receive: true },
+  entranceDoor: { cast: true, receive: true },
+  doorGlow: { cast: false, receive: false },
   /* Props: crates, tables, chairs, shelves, pews, barrels, the piano. A
      barrel's shadow on the floor is the second clearest read in the game
      after a pillar's. `applyShadowFlags` sets these through the whole
