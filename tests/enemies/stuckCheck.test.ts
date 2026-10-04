@@ -55,7 +55,7 @@ beforeAll(async () => {
   (document as unknown as { exitPointerLock: () => void }).exitPointerLock = () => {};
   await import("../../src/main");
   const newGame = [...document.querySelectorAll(".mbtn")].find((b) => b.textContent?.includes("NEW GAME"));
-  if (!newGame) throw new Error("the NEW GAME menu row is gone — this file drives the game through it");
+  if (!newGame) throw new Error("the NEW GAME menu row is gone â€” this file drives the game through it");
   (newGame as HTMLElement).click();   // boots the game: the textures and sprites `loadLevel` needs are drawn here
 });
 

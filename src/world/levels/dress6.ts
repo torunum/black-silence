@@ -32,16 +32,16 @@ export function dressLevel6(L: { g: Grid; W: number; H: number }): DecorSpec[] {
   const d = new Decorator(L, "factory");
   const at = (k: string, cells: ReadonlyArray<readonly [number, number]>, o: PlaceOptions = {}) => { for (const [x, z] of cells) d.place(k, x, z, o); };
 
-  // THE LOADING DOCK — a conveyor in through the north wall, crate piles and drums stacked along the walls, hooks on chains
+  // THE LOADING DOCK â€” a conveyor in through the north wall, crate piles and drums stacked along the walls, hooks on chains
   d.place("conveyor", 4, 1, { side: "n" });
   at("cratepile", [[5, 1], [6, 1]], { side: "n" });
   at("drum", [[7, 4]], { side: "e" });
   at("hook", [[3, 3], [5, 3], [2, 4]]);
-  // THE PIPE GALLERY — machines down its west wall and by the door
+  // THE PIPE GALLERY â€” machines down its west wall and by the door
   at("machine", [[1, 9], [1, 10]], { side: "w" });
   d.place("machine", 7, 7, { side: "e" });
 
-  // THE CONVEYOR HALL AND PRESS ROOM — conveyors down the north wall, a press at each end, machines between, a lamp over the middle
+  // THE CONVEYOR HALL AND PRESS ROOM â€” conveyors down the north wall, a press at each end, machines between, a lamp over the middle
   at("press", [[12, 1], [20, 1]], { side: "n" });
   at("conveyor", [[14, 1], [18, 1]], { side: "n" });
   at("machine", [[17, 1]], { side: "n" });
@@ -49,12 +49,12 @@ export function dressLevel6(L: { g: Grid; W: number; H: number }): DecorSpec[] {
   at("hook", [[13, 3], [20, 2], [16, 3]]);
   at("worklamp", [[16, 2]]);
 
-  // FURNACE CONTROL — the furnace on the north wall, a press and machines round it
+  // FURNACE CONTROL â€” the furnace on the north wall, a press and machines round it
   at("furnace", [[28, 1]], { side: "n" });
   at("press", [[27, 1]], { side: "n" });
   at("machine", [[30, 1]]);
 
-  // THE FOUNDRY FLOOR — the rim only: presses and machines on the north wall, conveyors on the east, presses on the south
+  // THE FOUNDRY FLOOR â€” the rim only: presses and machines on the north wall, conveyors on the east, presses on the south
   at("press", [[14, 7], [18, 7]], { side: "n" });
   at("machine", [[16, 7]], { side: "n" });
   at("conveyor", [[23, 11], [23, 13]], { side: "e" });
@@ -63,12 +63,12 @@ export function dressLevel6(L: { g: Grid; W: number; H: number }): DecorSpec[] {
   at("worklamp", [[16, 10]]);
   at("hook", [[13, 9], [19, 15], [20, 11]]);
 
-  // THE EAST WING — the reactor walk and the smelter
+  // THE EAST WING â€” the reactor walk and the smelter
   at("machine", [[25, 8], [25, 14]], { side: "w" });
   at("conveyor", [[25, 10]], { side: "w" });
   at("press", [[25, 16]], { side: "w" });
 
-  // THE BOSS HALL — conveyors on the north wall, presses and crate piles on the south, the middle rows clear
+  // THE BOSS HALL â€” conveyors on the north wall, presses and crate piles on the south, the middle rows clear
   at("conveyor", [[13, 19]], { side: "n" });
   at("press", [[21, 19]], { side: "n" });
   at("cratepile", [[13, 23]], { side: "s" });

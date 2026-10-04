@@ -35,7 +35,7 @@ export function dressLevel5(L: { g: Grid; W: number; H: number }): DecorSpec[] {
   const d = new Decorator(L, "sewers");
   const at = (k: string, cells: ReadonlyArray<readonly [number, number]>, o: PlaceOptions = {}) => { for (const [x, z] of cells) d.place(k, x, z, o); };
 
-  // THE MAIN TUNNEL — settling tanks and pumps along the north wall, the inflow's outfalls, the ladder up to the street
+  // THE MAIN TUNNEL â€” settling tanks and pumps along the north wall, the inflow's outfalls, the ladder up to the street
   at("tank", [[9, 1], [10, 1]], { side: "n" });
   at("pump", [[14, 1], [15, 1]], { side: "n" });
   at("outfall", [[4, 1], [6, 1], [18, 1], [20, 1], [22, 1]], { side: "n" });
@@ -52,7 +52,7 @@ export function dressLevel5(L: { g: Grid; W: number; H: number }): DecorSpec[] {
   d.place("tank", 31, 1, { side: "n" });
   at("grate", [[29, 4]]); d.place("sludge", 27, 4);
 
-  // THE SETTLING BASIN — the rim only: tanks on the north, east and south walls, pumps between
+  // THE SETTLING BASIN â€” the rim only: tanks on the north, east and south walls, pumps between
   at("tank", [[14, 7], [18, 7]], { side: "n" });
   at("lantern", [[16, 7]], { side: "n" });
   at("tank", [[14, 17], [23, 11], [23, 13]]);
@@ -60,7 +60,7 @@ export function dressLevel5(L: { g: Grid; W: number; H: number }): DecorSpec[] {
   at("grate", [[13, 9], [19, 15], [16, 10], [16, 14], [12, 12], [20, 12]]);
   at("sludge", [[12, 10], [18, 14], [14, 13], [20, 10]]);
 
-  // THE WEST SHAFT — the overflow and the drowned passage
+  // THE WEST SHAFT â€” the overflow and the drowned passage
   at("pump", [[1, 9], [1, 12], [7, 16]]);
   at("tank", [[1, 14], [1, 6]]);
   at("cage", [[4, 8], [3, 14]]);
@@ -72,7 +72,7 @@ export function dressLevel5(L: { g: Grid; W: number; H: number }): DecorSpec[] {
   at("cage", [[27, 9], [29, 11], [27, 15]]);
   at("grate", [[28, 8], [28, 13], [26, 12]]);
 
-  // THE BOSS HALL — tanks and pumps along the south wall, the middle rows clear
+  // THE BOSS HALL â€” tanks and pumps along the south wall, the middle rows clear
   at("tank", [[10, 23], [11, 23], [21, 23], [22, 23]], { side: "s" });
   at("pump", [[24, 23], [26, 23]], { side: "s" });
   at("pump", [[10, 19], [13, 19], [19, 19], [25, 19]], { side: "n" });
