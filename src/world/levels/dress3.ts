@@ -36,5 +36,10 @@ export function dressLevel3(L: { g: Grid; W: number; H: number }): DecorSpec[] {
 
   d.clutter({ density: .46, seed: 31 });
   d.clutter({ density: .12, seed: 32, interior: true, kinds: ["urn", "skullpile", "rubble", "bonesLoose", "chainLoose"] });
-  return d.specs;
+  // more candles in the rooms the tomb's torches do not reach
+  for (const [x, z] of [[3, 3], [28, 1], [30, 5], [15, 7], [30, 9], [2, 19], [5, 22], [13, 20], [29, 19], [31, 23]]) d.place("votive", x, z);
+  // a sarcophagus the clutter pass stood where an enemy walking at a player meets its end (tests/enemies/stuckCheck.test.ts), taken out
+  return d.specs.filter((s) => !STUCK.has(`${s.k}@${Math.floor(s.x + .5)},${Math.floor(s.z + .5)}`));
 }
+
+const STUCK = new Set(["sarcophagus@3,19"]);

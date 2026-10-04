@@ -27,19 +27,24 @@ export function dressLevel4(L: { g: Grid; W: number; H: number }): DecorSpec[] {
   const d = new Decorator(L, "graveyard");
 
   // THE CHAPEL YARD — table tombs and dead trees round the arena
-  for (const [x, z] of [[12, 10], [20, 14]]) d.place("tombfree", x, z);
+  for (const [x, z] of [[12, 10], [20, 14]]) d.place("opengrave", x, z);
   d.place("deadtree", 14, 9);
   // lanterns on crooks left for the dead: one in each half of the yard and one on the way between them
   d.place("gravelamp", 14, 11).place("gravelamp", 16, 14).place("gravelamp", 18, 11);
   // the dead trees of the outer yards
-  for (const [x, z] of [[1, 5], [14, 1], [17, 1], [30, 5], [1, 10], [14, 22], [30, 22]]) d.place("deadtree", x, z);
+  for (const [x, z] of [[1, 5], [14, 1], [17, 1], [30, 5], [1, 10], [30, 22]]) d.place("deadtree", x, z);
 
   // the stones themselves, along every wall: what a graveyard is made of
   d.clutter({ density: .4, seed: 40, kinds: ["gravestone", "gravecross"] });
   d.clutter({ density: .42, seed: 41 });
   d.clutter({ density: .14, seed: 42, interior: true, kinds: ["opengrave", "mound", "bonesLoose"] });   // no stones on the open floor: an enemy walks into a stone's face and stays there (tests/enemies/stuckCheck.test.ts)
+  // crook lanterns, glow only, in the corner rooms and the east wing the three real ones do not reach
+  for (const [x, z] of [[3, 3], [26, 1], [30, 3], [5, 10], [31, 7], [2, 19], [5, 22], [29, 22], [27, 19]]) d.place("gravelampDim", x, z);
   // stones that enemies walking at a player got pinned against (tests/enemies/stuckCheck.test.ts), taken out
   return d.specs.filter((s) => !STUCK.has(`${s.k}@${Math.floor(s.x + .5)},${Math.floor(s.z + .5)}`));
 }
 
-const STUCK = new Set(["gravestone@25,11", "gravestone@15,19", "gravecross@19,23"]);
+const STUCK = new Set(["gravestone@25,11", "gravestone@15,19", "gravecross@19,23",
+  "gravestone@24,1", "gravecross@14,19", "gravestone@17,19", "gravecross@9,1", "gravestone@12,1", "gravestone@18,23", "gravestone@6,5", "gravestone@22,5",
+  "gravestone@15,23", "gravecross@8,1", "gravestone@22,1", "gravestone@8,5", "gravecross@16,23",
+  "gravecross@19,19", "gravestone@4,1", "gravestone@24,7", "gravestone@11,19", "gravestone@1,17", "gravestone@13,23", "gravestone@1,18"]);

@@ -7,8 +7,6 @@ import { classifyGlyph, decorCell, measureLevel } from "../../src/world/density"
 import { validateDecor } from "../../src/world/decor/place";
 import { massCells } from "../../src/world/decor/masses";
 import { PIECES } from "../../src/world/decor/registry";
-import { LIGHT_BUDGET, lampsOf } from "../../src/world/decor/lamps";
-import { setPieceLight } from "../../src/world/lightmap";
 import { BASIN, HALL as HALL5 } from "../../src/world/levels/dress5";
 import { FOUNDRY, HALL as HALL6 } from "../../src/world/levels/dress6";
 import { VENTRICLE, HALL as HALL7 } from "../../src/world/levels/dress7";
@@ -26,9 +24,8 @@ import { VENTRICLE, HALL as HALL7 } from "../../src/world/levels/dress7";
  *    with no wall, pillar or window within a step, eight ways); the core is still one piece with every mass a
  *    wall (nothing to get pinned in or walled off); and the masses together cover under a fifth of the arena's
  *    floor. The boss halls (the row of five between two long walls) keep their three middle rows clear;
- *  - the light: each level has the lamps it was given, their number stays inside the budget, the rooms the
- *    lamps are for are lit (a share of the set-pieces that would be dark without them is not), and levels 1 and
- *    2 have exactly the lights they had (their trace fixtures record the scene).
+ *  - the light is held by `lightBudget.test.ts`; the enemies that must not be pinned on any of it by `tests/enemies/stuckCheck.test.ts`
+ *    (the stuck check took the sewers' and the womb's masses down by half, and the factory's by a third: the counts below are what is left).
  */
 const built = (i: number): BuiltLevel => LEVELS[i].build();
 const baseline = JSON.parse(readFileSync(new URL("../../docs/level-density-baseline.json", import.meta.url), "utf8")) as Baseline;
@@ -67,15 +64,16 @@ describe("levels 5-7 are dressed by their own builders", () => {
   it("is dressed in its own theme's vocabulary: the sewers' tanks, pumps and lanterns; the factory's presses, furnace and machines; the womb's tumours, eyes and bulbs", () => {
     const kinds = (i: number) => { const m: Record<string, number> = {}; for (const d of built(i).decor!) m[d.k] = (m[d.k] || 0) + 1; return m; };
     const want: Record<number, Record<string, number>> = {
-      5: { tank: 4, pump: 6, lantern: 4, cage: 6, outfall: 5, grate: 8, sludge: 8, pipe: 5 },
-      6: { press: 5, furnace: 1, worklamp: 3, machine: 8, conveyor: 4, cratepile: 2, drum: 1, hook: 6, gauge: 3 },
-      7: { tumor: 10, glowbulb: 4, eye: 6, pod: 4, drape: 6, sinew: 4, vein: 8 },
+      5: { tank: 5, pump: 6, lantern: 4, cage: 6, outfall: 5, grate: 8, sludge: 8, pipe: 5 },
+      6: { press: 3, furnace: 1, worklamp: 3, machine: 8, conveyor: 4, cratepile: 2, drum: 1, hook: 6, gauge: 3 },
+      7: { tumor: 6, growth: 10, glowbulb: 4, eye: 6, pod: 4, drape: 6, sinew: 4, vein: 8 },
     };
     for (const i of LEVELS_567) for (const [k, n] of Object.entries(want[i])) expect(kinds(i)[k] || 0, `level ${i} lacks ${k}`).toBeGreaterThanOrEqual(n);
   });
 
-  it("puts solid masses in each, 20 and more", () => {
-    for (const i of LEVELS_567) expect(built(i).decor!.filter(isMass).length, `level ${i}`).toBeGreaterThanOrEqual(i === 7 ? 18 : 30);
+  it("puts solid masses in each, as many as the stuck check leaves (enemies have no pathfinding: a mass an enemy walks into stays a wall to it)", () => {
+    const want: Record<number, number> = { 5: 12, 6: 25, 7: 6 };
+    for (const i of LEVELS_567) expect(built(i).decor!.filter(isMass).length, `level ${i}`).toBeGreaterThanOrEqual(want[i]);
   });
 });
 
@@ -159,59 +157,6 @@ describe("the arena floors stay open", () => {
       const blocked = new Set(massCellsOf(L).map(([x, z]) => z * 4096 + x));
       for (let dz = -1; dz <= 1; dz++) for (let dx = -2; dx <= 2; dx++) expect(blocked.has((boss[1] + dz) * 4096 + boss[0] + dx), `level ${i}: a mass beside the boss`).toBe(false);
     }
-  });
-});
-
-describe("the light", () => {
-  const measured = (i: number) => measureLevel(built(i)).lights;
-
-  it("gives each level the lamps it was given: five lanterns in the sewers, a furnace and three work lamps in the factory, four bulbs in the womb", () => {
-    const lamps = (i: number) => lampsOf(built(i).decor);
-    expect(lamps(5).map((l) => l.spec.k).sort()).toEqual(["lantern", "lantern", "lantern", "lantern", "lantern"]);
-    expect(lamps(6).map((l) => l.spec.k).sort()).toEqual(["furnace", "worklamp", "worklamp", "worklamp"]);
-    expect(lamps(7).map((l) => l.spec.k).sort()).toEqual(["glowbulb", "glowbulb", "glowbulb", "glowbulb"]);
-    for (const i of LEVELS_567) for (const l of lamps(i)) { expect(l.y).toBeGreaterThan(.5); expect(l.y).toBeLessThan(3.4); }
-  });
-
-  it("keeps every level's point lights (the player's four included) inside the budget — the most any level had: level 3's 21", () => {
-    for (let i = 0; i < LEVELS.length; i++) expect(measured(i) + 4, `${LEVELS[i].name}`).toBeLessThanOrEqual(LIGHT_BUDGET);
-    expect(LIGHT_BUDGET, "the budget is level 3's count, the highest before this task").toBe(measured(3) + 4);
-  });
-
-  it("leaves levels 1 and 2 exactly the lights they had, and level 3 (at the budget) too: their fixtures record the scene, and level 3 has none to spare", () => {
-    for (const i of [1, 2, 3]) expect(measured(i), `level ${i}`).toBe(baseline.rows[i].lights);
-    expect(lampsOf(built(1).decor)).toEqual([]);
-    expect(lampsOf(built(2).decor)).toEqual([]);
-    expect(lampsOf(built(3).decor), "level 3 burns candles, it has no light-bearing piece").toEqual([]);
-    expect(built(3).decor!.filter((d) => d.k === "votive").length, "level 3's candles").toBeGreaterThanOrEqual(4);
-  });
-
-  it("lights the graveyard's yard: the table tombs and dead trees of the chapel yard stand in lit cells", () => {
-    const yard = (x: number, z: number) => x >= 9 && x <= 23 && z >= 7 && z <= 17;
-    const L = built(4), lit = setPieceLight({ g: L.g, decor: L.decor!.filter((d) => d.k === "tombfree" || d.k === "deadtree" || d.k === "gravelamp") }, yard);
-    expect(lit.total).toBeGreaterThanOrEqual(6);
-    expect(lit.dark, "the yard's tombs and trees left dark").toEqual([]);
-    expect(lampsOf(L.decor).length, "level 4's lamps").toBe(3);
-  });
-
-  it("leaves no more than a quarter of levels 5-7's set-pieces in cells their level's own lights do not reach — and the lamps are what does it", () => {
-    for (const i of LEVELS_567) {
-      const L = built(i), withLamps = setPieceLight(L);
-      const bare = { g: L.g, decor: L.decor!.filter((d) => !PIECES[d.k].light) };   // the same level with its lamps taken away
-      // the masses of the bare level only: the lamps are set-pieces too, and they light their own cell
-      const without = setPieceLight(bare);
-      expect(withLamps.dark.length / withLamps.total, `level ${i}: dark set-pieces ${withLamps.dark.join(" ")}`).toBeLessThanOrEqual(.25);
-      expect(without.dark.length / without.total, `level ${i} without its lamps`).toBeGreaterThan(withLamps.dark.length / withLamps.total + .15);
-    }
-  });
-
-  it("uses the lamps' light as it is: a level's lamp piece names its own pool, strength and reach", () => {
-    for (const k of ["lantern", "worklamp", "furnace", "glowbulb", "gravelamp"]) {
-      const l = PIECES[k].light!;
-      expect(l.intensity, k).toBeGreaterThanOrEqual(1.4); expect(l.intensity, k).toBeLessThanOrEqual(2.5);
-      expect(l.range, k).toBeGreaterThanOrEqual(9); expect(l.range, k).toBeLessThanOrEqual(12);
-    }
-    expect(PIECES.votive.light, "the candles of level 3 are glow only").toBeUndefined();
   });
 });
 

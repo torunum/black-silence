@@ -56,13 +56,13 @@ describe("levels 1-4 are dressed by their own builders", () => {
   });
 
   it("puts solid masses in each: the dungeon's instruments, the church's altar and fallen saints, the tombs' sarcophagi, the yard's stones", () => {
-    const want: Record<number, number> = { 1: 15, 2: 8, 3: 12, 4: 30 };
+    const want: Record<number, number> = { 1: 12, 2: 8, 3: 12, 4: 30 };
     for (const i of DRESSED) expect(built(i).decor!.filter(isMass).length, `level ${i}`).toBeGreaterThanOrEqual(want[i]);
     const kinds = (i: number) => new Set(built(i).decor!.filter(isMass).map((d) => d.k));
     for (const k of ["rack", "stocks", "maiden", "cratepile"]) expect(kinds(1).has(k), `the dungeon lacks a ${k}`).toBe(true);
     for (const k of ["altar", "fallenstatue", "font"]) expect(kinds(2).has(k), `the church lacks a ${k}`).toBe(true);
     for (const k of ["sarcofree", "tombfree", "sarcophagus"]) expect(kinds(3).has(k), `the necropolis lacks a ${k}`).toBe(true);
-    for (const k of ["deadtree", "tombfree", "gravestone"]) expect(kinds(4).has(k), `the graveyard lacks a ${k}`).toBe(true);
+    for (const k of ["deadtree", "gravestone", "gravecross"]) expect(kinds(4).has(k), `the graveyard lacks a ${k}`).toBe(true);
   });
 });
 
@@ -118,7 +118,7 @@ describe("the density targets", () => {
     expect(count("rack"), "racks").toBeGreaterThanOrEqual(3);
     expect(count("stocks"), "stocks").toBeGreaterThanOrEqual(1);
     expect(count("cage"), "cages on chains").toBeGreaterThanOrEqual(6);
-    expect(count("maiden"), "iron maidens on its walls").toBeGreaterThanOrEqual(6);
+    expect(count("maiden"), "iron maidens on its walls").toBeGreaterThanOrEqual(4);
   });
 });
 

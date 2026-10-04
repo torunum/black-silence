@@ -66,3 +66,19 @@ export function setPieceLight(L: Pick<BuiltLevel, "g" | "decor">, where: (x: num
   }
   return { total, dark };
 }
+
+/** How many of a level's walkable cells its static lights leave dark (under `LIT`), and how many it has. */
+export function darkShare(L: Pick<BuiltLevel, "g" | "decor">, where: (x: number, z: number) => boolean = () => true): { dark: number; walk: number } {
+  const lights = staticLights(L);
+  let dark = 0, walk = 0;
+  L.g.forEach((row, z) => row.forEach((c, x) => {
+    if ("#W".includes(c) || !where(x, z)) return;
+    walk++;
+    if (lightAt(lights, x, z) < LIT) dark++;
+  }));
+  return { dark, walk };
+}
+
+/** The pieces that give a room something to be seen by: a point-light bearer, or a glow-only lamp (an unlit emissive piece). */
+export const GLOW_PIECES: readonly string[] = ["brazier", "votive", "gravelampDim", "lanternDim", "worklampDim", "bulbDim"];
+export const isLightGiver = (k: string): boolean => !!PIECES[k]?.light || GLOW_PIECES.includes(k);

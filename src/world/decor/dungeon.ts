@@ -127,4 +127,18 @@ export const DUNGEON_PIECES: Record<string, Piece> = {
     box("wood", 1.5, .08, .12, loc(0, 1.46, 0));
     box("blood", .3, .01, .3, loc(.25, .085, .05));
   },
+  // Task 3: a light for the dark halls. Glow only (unlit materials, no point light): levels 1 and 2 are recorded by trace fixtures, and a
+  // real light would move them. It is built from materials these levels' meshes already have, so it adds geometry, not a mesh.
+  brazier: (box, cyl, d) => {   // an iron tripod holding a brass bowl of coals, flames standing out of it
+    const s = cellHash(d.x, d.z);
+    for (const a of [0, 2.1, 4.2]) box("wrought", .05, .8, .05, loc(Math.sin(a) * .26, .4, Math.cos(a) * .26, Math.cos(a) * .22, 0, -Math.sin(a) * .22));
+    cyl("wrought", .3, .3, .03, loc(0, .38, 0), 8);
+    cyl("brass", .46, .28, .24, loc(0, .82, 0), 8);
+    box("flame", .6, .05, .6, loc(0, .94, 0, 0, .4));
+    for (let i = 0; i < 5; i++) {
+      const a = i * 1.26 + s, h = .3 + grain(i, s, 90) * .35, r = i ? .17 : 0;
+      box("flame", .12, h, .12, loc(Math.sin(a) * r, .94 + h / 2, Math.cos(a) * r, 0, a, 0));
+    }
+    box("flame", .2, .85, .2, loc(0, 1.0 + .42, 0, 0, .5));
+  },
 };

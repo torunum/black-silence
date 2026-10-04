@@ -48,20 +48,26 @@ export function dressLevel1(L: { g: Grid; W: number; H: number }): DecorSpec[] {
   for (const [x, z] of [[18, 13], [21, 13], [26, 15], [21, 17], [24, 19], [29, 16], [19, 22], [26, 23]]) d.place("cage", x, z);
   // iron maidens against the hall's north wall (where the vestry does not open) and its south wall
   for (const x of [15, 17, 30, 32]) d.place("maiden", x, 8, { side: "n" });
-  for (const x of [17, 20, 25, 28]) d.place("maiden", x, 26, { side: "s" });
+  d.place("maiden", 20, 26, { side: "s" });
 
   // THE CHANCEL — the vestry, the red key's reliquary
-  d.place("altar", 23, 2, { side: "n" });
-  for (const x of [19, 21, 25, 27]) d.place("banner", x, 2, { side: "n" });
+  d.place("altar", 27, 2, { side: "n" });
+  for (const x of [19, 21, 23, 25]) d.place("banner", x, 2, { side: "n" });
   d.place("candelabra", 21, 3).place("candelabra", 25, 3);
 
   // THE STORE — the east wing (the real crate is at 38,21: crate piles keep two cells clear of it)
-  for (const x of [35, 37, 40]) d.place("cratepile", x, 12, { side: "n" });
-  d.place("cratepile", 41, 14, { side: "e" }).place("cratepile", 41, 20, { side: "e" });
+  for (const x of [35, 40]) d.place("cratepile", x, 12, { side: "n" });
+  d.place("cratepile", 41, 14, { side: "e" });
 
   // the rest: crate piles and all elsewhere, only what can be walked through on the route
   d.clutter({ density: .34, seed: 5, where: (x, z) => !ROUTE(x, z) });
   d.clutter({ density: .42, seed: 6, kinds: WALKABLE, where: ROUTE });
   d.clutter({ density: .12, seed: 7, interior: true, kinds: WALKABLE });   // the floor of the hall and everywhere else: nothing solid
-  return d.specs;
+  // THE LIGHT — braziers in the halls the torches do not reach (glow only: a real light would move the trace fixtures). Last, so the
+  // pieces before them keep their order, and with it the order of the merged meshes the combat trace's recording hashes.
+  for (const [x, z] of [[18, 2], [22, 2], [26, 12], [30, 14], [26, 16], [30, 18], [19, 12], [22, 15], [36, 12], [41, 12], [34, 16], [38, 24], [27, 31], [34, 31]]) d.place("brazier", x, z);
+  // a crate pile the clutter pass stood where an enemy walking at a player meets its flat face (tests/enemies/stuckCheck.test.ts), taken out
+  return d.specs.filter((s) => !STUCK.has(`${s.k}@${Math.floor(s.x + .5)},${Math.floor(s.z + .5)}`));
 }
+
+const STUCK = new Set(["cratepile@15,26"]);

@@ -134,7 +134,7 @@ export const SACRED_PIECES: Record<string, Piece> = {
   },
   // levels 3 and 4's light (Task 3): a votive stand of candles (glow only, level 3 has no light to spare) and a lantern on a crook
   votive: (box, cyl) => {   // a stone stand with a dozen candles burning at different heights, wax run down its face
-    box("slate", .7, .28, .5, loc(0, .14, 0));
+    box("stone", .7, .28, .5, loc(0, .14, 0));
     box("stone", .8, .06, .6, loc(0, .3, 0));
     for (let i = 0; i < 9; i++) {
       const x = -.28 + (i % 5) * .14, z = i < 5 ? -.12 : .12, h = .1 + ((i * 7) % 5) * .035;

@@ -5,6 +5,8 @@ import { LEVELS } from "../../src/world/levels/index";
 import type { MassBox } from "../../src/world/WorldState";
 import { CELL } from "../../src/world/Grid";
 import { decorCell } from "../../src/world/density";
+import { PIECES } from "../../src/world/decor/registry";
+import { solidAt } from "../../src/world/Collision";
 
 /**
  * DO THE ENEMIES GET STUCK ON THE NEW OBSTACLES? (levels-feel-full plan, Task 3.)
@@ -16,17 +18,22 @@ import { decorCell } from "../../src/world/density";
  * puts the player at a few places, makes every enemy aware of them and runs the real
  * `enemyTick` for twelve simulated seconds, then reports every enemy that ended **pinned against
  * a mass**: not moving for the last four seconds, still well short of the player, with a mass
- * within a body's width of it — and only if the same enemy in the same scenario with the masses
- * taken away is not just as stuck (a wall, or another room, is not a mass's doing).
+ * within a body's width of it — and only if a mass is what keeps it from the player: a straight line
+ * over the bare grid (masses taken away) from the enemy to the player is clear of walls, and the same
+ * enemy in the same scenario without masses ended three or more units nearer (or on top of them).
+ * A wall, or another room, is not a mass's doing. `moveEnemy` tries the x-step and gives up if it is
+ * blocked without trying z, so an enemy walking along a wall into the end of a wall-side mass stops dead:
+ * that is the case this finds.
  *
  * The player stands still, so this is the harshest case: a real player keeps moving and an
  * enemy that lost sight of them behind a mass sees them again round it. Nothing here is a
  * change to the AI; when a mass pins an enemy the mass is what moves (`levels/dress*.ts`).
  *
- * `STUCK_REPORT=1 npx vitest run tests/enemies/stuckCheck.test.ts` prints the numbers.
+ * `STUCK_REPORT=1 npx vitest run tests/enemies/stuckCheck.test.ts` prints the numbers;
+ * `STUCK_PLACES=999` puts the player on every walkable cell in turn (about ten minutes) instead of twenty-four.
  */
 
-const DT = 1 / 30, SECONDS = 12, WINDOW = 4, PIN = .3, PLACES = 24;
+const DT = 1 / 30, SECONDS = 12, WINDOW = 4, PIN = .3, PLACES = Number(process.env.STUCK_PLACES) || 24;   // STUCK_PLACES=999 puts the player on every walkable cell
 
 type World = typeof import("../../src/world/WorldState").world;
 let world: World;
@@ -84,7 +91,7 @@ function spots(i: number): Array<[number, number]> {
   const nearest = (tx: number, tz: number): [number, number] => floor.reduce((b, c) => Math.hypot(c[0] - tx, c[1] - tz) < Math.hypot(b[0] - tx, b[1] - tz) ? c : b);
   const far = floor.reduce((b, c) => Math.hypot(c[0] - spawn[0], c[1] - spawn[1]) > Math.hypot(b[0] - spawn[0], b[1] - spawn[1]) ? c : b);
   const out: Array<[number, number]> = [spawn, nearest(g[0].length / 2, g.length / 2), far];
-  const stride = Math.floor(floor.length / (PLACES - out.length));
+  const stride = Math.max(1, Math.floor(floor.length / (PLACES - out.length)));
   for (let k = Math.floor(stride / 2); out.length < PLACES && k < floor.length; k += stride) out.push(floor[k]);
   return out;
 }
@@ -95,7 +102,7 @@ interface Outcome { enemies: number; pinned: number; pinnedByMass: number; detai
  * Loads a level, seeds the dice, puts the player at a cell, wakes and alerts every enemy, runs the tick, and
  * returns who ended pinned. `withMasses: false` clears `world.masses` after the load: the same level without them.
  */
-function run(i: number, at: [number, number], withMasses: boolean, extra?: MassBox[]): { pos: Array<{ x: number; z: number; pinned: boolean; touch: boolean; key: string; mass: string; reached: boolean }> } {
+function run(i: number, at: [number, number], withMasses: boolean, extra?: MassBox[]): { pos: Array<{ clear: boolean; x: number; z: number; pinned: boolean; touch: boolean; key: string; mass: string; reached: boolean }> } {
   const rnd = seeded(1000 + i * 7 + at[0] * 3 + at[1]);
   const spy = vi.spyOn(Math, "random").mockImplementation(rnd);
   try {
@@ -126,22 +133,34 @@ function run(i: number, at: [number, number], withMasses: boolean, extra?: MassB
         const short = Math.hypot(player.px - e.x, player.pz - e.z) > 3;
         const pinned = !e.dead && short && Math.hypot(a[0] - b[0], a[1] - b[1]) < PIN && (e.stun || 0) <= 0;
         const n = nearestMass(e.x, e.z);
-        return { x: e.x, z: e.z, pinned, touch: !!n && n.d < e.r + .35, key: e.key, reached: Math.hypot(player.px - e.x, player.pz - e.z) < 2.5, mass: n ? `${Math.floor((n.m.x0 + n.m.x1) / 2 / CELL)},${Math.floor((n.m.z0 + n.m.z1) / 2 / CELL)}` : "-" };
+        return { clear: gridClear(e.x, e.z, player.px, player.pz), x: e.x, z: e.z, pinned, touch: !!n && n.d < e.r + .35, key: e.key, reached: Math.hypot(player.px - e.x, player.pz - e.z) < 2.5, mass: n ? `${Math.floor((n.m.x0 + n.m.x1) / 2 / CELL)},${Math.floor((n.m.z0 + n.m.z1) / 2 / CELL)}` : "-" };
       }),
     };
   } finally { spy.mockRestore(); }
+}
+
+/** Is the straight line between two points free of walls, doors and windows, leaving the masses out of it? */
+function gridClear(x1: number, z1: number, x2: number, z2: number): boolean {
+  const kept = world.masses; world.masses = new Map();
+  try {
+    const len = Math.hypot(x2 - x1, z2 - z1);
+    for (let t = 0; t <= len; t += .2) if (solidAt(x1 + (x2 - x1) * t / len, z1 + (z2 - z1) * t / len)) return false;
+    return true;
+  } finally { world.masses = kept; }
 }
 
 /** Runs the scenario with the masses and without, and says who a mass pinned. */
 function check(i: number, at: [number, number], extra?: MassBox[]): Outcome {
   const withM = run(i, at, true, extra), without = run(i, at, false);
   const kinds = new Map<string, string>();
-  for (const d of LEVELS[i].build().decor || []) { const { x, z } = decorCell(d); kinds.set(`${x},${z}`, d.k); }
+  for (const d of LEVELS[i].build().decor || []) if (PIECES[d.k]?.mass) { const { x, z } = decorCell(d); kinds.set(`${x},${z}`, d.k); }
+  const px = (at[0] + .5) * CELL, pz = (at[1] + .5) * CELL;
   const detail: string[] = [];
   let pinned = 0, byMass = 0;
   withM.pos.forEach((p, k) => {
     if (p.pinned) pinned++;
-    if (p.pinned && p.touch && without.pos[k].reached) { byMass++; detail.push(`${p.key} at (${(p.x / CELL - .5).toFixed(1)},${(p.z / CELL - .5).toFixed(1)}) pinned on the ${kinds.get(p.mass) ?? "?"} at cell (${p.mass}), player at (${at[0]},${at[1]})`); }
+    const nearer = Math.hypot(p.x - px, p.z - pz) - Math.hypot(without.pos[k].x - px, without.pos[k].z - pz);
+    if (p.pinned && p.touch && p.clear && (without.pos[k].reached || nearer >= 3)) { byMass++; detail.push(`${p.key} at (${(p.x / CELL - .5).toFixed(1)},${(p.z / CELL - .5).toFixed(1)}) pinned on the ${kinds.get(p.mass) ?? "?"} at cell (${p.mass}), player at (${at[0]},${at[1]})`); }
   });
   return { enemies: withM.pos.length, pinned, pinnedByMass: byMass, detail };
 }
@@ -161,7 +180,7 @@ describe("enemies on levels 1-7 with the masses in", () => {
       rows.push(`| ${i} ${LEVELS[i].name.replace(/^LEVEL \d — /, "")} | ${world.masses.size ? "yes" : "-"} | ${scenarios} | ${enemies} | ${pinned} | ${byMass} |`);
       expect(detail, `level ${i}: enemies a mass pinned`).toEqual([]);
       expect(contact >= 0).toBe(true);
-    }, 120000);
+    }, 600000);
   }
 
   afterAll(() => {
@@ -176,10 +195,10 @@ describe("the check itself", () => {
     const wall: MassBox = { x0: 7 * CELL, x1: 7.9 * CELL, z0: 1 * CELL, z1: 6 * CELL };
     const o = check(5, [2, 2], [wall]);
     expect(o.pinnedByMass, "enemies the planted wall pinned").toBeGreaterThan(0);
-  }, 120000);
+  }, 600000);
 
   it("does not blame a mass for a wall: the level 5 tunnel without any planted mass pins nobody on a mass", () => {
     const o = check(5, [2, 2]);
     expect(o.pinnedByMass).toBe(0);
-  }, 120000);
+  }, 600000);
 });

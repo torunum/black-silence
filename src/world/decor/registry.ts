@@ -112,6 +112,12 @@ export const PIECES: Record<string, PieceInfo> = {
   furnace: P(PIP.furnace, "edge", "clutter", { mass: [-.9, .9, -.97, .03], light: { color: 0xff7a30, intensity: 2.2, range: 10, at: [0, .85, .2] } }),
   worklamp: P(PIP.worklamp, "hang", "clutter", { fixed: true, light: { color: 0xffe6b0, intensity: 2.4, range: 12, at: [0, 1.2, 0], hung: true } }),
   tumor: P(WOM.tumor, "edge", "clutter", { mass: [-.85, .85, -.95, .15] }),
+  // glow-only twins of the lamp pieces (Task 3): the same look with no point light, for the dark rooms the budget has no light left for
+  brazier: P(DUN.brazier, "free", "clutter"),
+  gravelampDim: P(SAC.gravelamp, "free", "clutter"),
+  lanternDim: P(PIP.lantern, "wall", "clutter", { fixed: true }),
+  worklampDim: P(PIP.worklamp, "hang", "clutter", { fixed: true }),
+  bulbDim: P(WOM.glowbulb, "free", "clutter"),
   glowbulb: P(WOM.glowbulb, "free", "clutter", { light: { color: 0xff5a4a, intensity: 2, range: 10, at: [0, 1.15, 0] } }),
 };
 

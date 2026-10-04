@@ -52,5 +52,7 @@ export function dressLevel2(L: { g: Grid; W: number; H: number }): DecorSpec[] {
   d.clutter({ density: .44, seed: 21, kinds: FURNISH, where: (x, z) => !BOSS(x, z) });
   d.clutter({ density: .44, seed: 22, kinds: WALKABLE, where: BOSS });
   d.clutter({ density: .1, seed: 23, interior: true, kinds: ["glass", "rubble", "candelabra", "bonesLoose"] });
+  // THE LIGHT — candle stands in the rooms the torches do not reach (glow only: level 2 is recorded by the boss trace)
+  for (const [x, z] of [[26, 1], [31, 1], [27, 7], [1, 19], [5, 22], [9, 22], [29, 19], [25, 22]]) d.place("votive", x, z);
   return d.specs;
 }

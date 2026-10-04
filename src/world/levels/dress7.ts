@@ -32,9 +32,10 @@ export function dressLevel7(L: { g: Grid; W: number; H: number }): DecorSpec[] {
   const at = (k: string, cells: ReadonlyArray<readonly [number, number]>, o: PlaceOptions = {}) => { for (const [x, z] of cells) d.place(k, x, z, o); };
 
   // THE MAW and THE GULLET
-  at("tumor", [[13, 1], [19, 1]], { side: "n" });
-  at("tumor", [[7, 2], [7, 4]], { side: "e" });
-  at("tumor", [[13, 5]], { side: "s" });
+  at("growth", [[13, 1], [19, 1]], { side: "n" });
+  at("tumor", [[7, 2]], { side: "e" });
+  at("growth", [[7, 4]], { side: "e" });
+  at("growth", [[13, 5]], { side: "s" });
   at("eye", [[3, 1], [5, 1], [14, 1], [18, 1]], { side: "n" });
   d.place("eye", 17, 5, { side: "s" });
   at("sinew", [[9, 1], [12, 1], [20, 1], [23, 1]], { side: "n" });
@@ -42,9 +43,12 @@ export function dressLevel7(L: { g: Grid; W: number; H: number }): DecorSpec[] {
   at("drape", [[4, 3], [12, 3], [17, 3], [21, 3]]);
 
   // THE GREAT VENTRICLE — the rim only
-  at("tumor", [[18, 7], [22, 7], [26, 7], [27, 7]], { side: "n" });
-  at("tumor", [[13, 17], [19, 17]], { side: "s" });
-  at("tumor", [[27, 17]], { side: "s" });
+  at("tumor", [[22, 7]], { side: "n" });
+  at("growth", [[27, 7]], { side: "n" });
+  at("growth", [[18, 7], [26, 7]], { side: "n" });
+  at("tumor", [[13, 17]], { side: "s" });
+  at("growth", [[19, 17]], { side: "s" });
+  at("growth", [[27, 17]], { side: "s" });
   at("tumor", [[9, 8], [9, 10], [9, 14]], { side: "w" });
   at("eye", [[16, 7], [10, 7]], { side: "n" });
   at("eye", [[16, 17]], { side: "s" });
@@ -55,8 +59,9 @@ export function dressLevel7(L: { g: Grid; W: number; H: number }): DecorSpec[] {
   d.place("glowbulb", 29, 11.28);
 
   // THE BOSS HALL
-  at("tumor", [[13, 19], [19, 19]], { side: "n" });
-  at("tumor", [[13, 23], [19, 23]], { side: "s" });
+  at("growth", [[13, 19], [19, 19]], { side: "n" });
+  at("growth", [[13, 23]], { side: "s" });
+  at("growth", [[19, 23]], { side: "s" });
   at("eye", [[10, 19], [22, 19]], { side: "n" });
   at("pod", [[11, 23], [21, 23]], { side: "s" });
   at("drape", [[13, 21], [19, 21]]);
@@ -68,5 +73,7 @@ export function dressLevel7(L: { g: Grid; W: number; H: number }): DecorSpec[] {
 
   d.clutter({ density: .5, seed: 71 });
   d.clutter({ density: .2, seed: 72, interior: true, kinds: ["vein", "drape"] });
+  // THE DIM BULBS — glow only, in the side rooms the four real bulbs do not reach
+  for (const [x, z] of [[1, 1], [27, 1], [31, 2], [5, 10], [1, 19], [5, 22], [9, 22], [29, 19], [25, 22]]) d.place("bulbDim", x, z);
   return d.specs;
 }

@@ -208,7 +208,7 @@ describe("what the loader gives the world", () => {
     loadLevel(1);
     const boxes = new Set<unknown>([...world.masses.values()].flat());
     expect(boxes.size).toBe(massBoxes(LEVELS[1].build().decor!).length);
-    expect(boxes.size).toBeGreaterThan(15);   // 24 until Task 3 took the instruments off the open floor
+    expect(boxes.size).toBeGreaterThan(11);   // 24 until Task 3 took the instruments off the open floor and the stuck check took more
     loadLevel(0);
     expect(world.masses.size, "the prologue has no masses").toBe(0);
     loadLevel(3);
