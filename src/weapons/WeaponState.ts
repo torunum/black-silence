@@ -92,11 +92,11 @@ export const EQUIP_T=.24,UNEQUIP_T=.16;
  * Power-kick cooldown, in seconds. Was `15` (a player-week-scale number that
  * nobody chose on purpose); the project owner played the game and reported
  * it as "too long" — player feedback round 1, task 2, 2026-09-17 — and gave
- * an exact replacement, one second. `doKick` sets `S.kickCd` to this value;
- * `weaponTick` counts it down; `src/ui/Hud.ts`'s fill-bar width read the
- * other literal `15` (its countdown label was already derived from
- * `S.kickCd` directly, no separate literal to duplicate) — so the two
- * previously-independent copies of `15` can never disagree again.
+ * an exact replacement, one second. `doKick` sets `S.kickCd` to this value
+ * and `weaponTick` counts it down. The HUD's kick meter, which read this
+ * constant for its fill bar, is gone (the owner, 2026-10-05: a one-second
+ * cooldown is fast enough that no timer on screen is needed); the cooldown
+ * itself is unchanged, and the "kickready" bark and click still mark its end.
  */
 export const KICK_CD=1;
 
