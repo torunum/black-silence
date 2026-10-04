@@ -280,9 +280,18 @@ export const SHADOW_POLICY: Readonly<Record<string, ShadowRule>> = {
      post's, above). They take shadow — the lamp's own pool of light — but
      throw none. */
   decorGrass: { cast: false, receive: true },
+  /* The kit's small clutter (`src/world/decor/`: straw, glass, skulls, rubble,
+     a candelabrum, chains, pipes, veins), merged apart from `decor` for the
+     same reason as the grass: none of it is wider than a shadow texel at 256,
+     and every caster is drawn six times a frame in the lamp's cube. It takes
+     the lamp's light and throws no shadow. The masses (sarcophagi, machine
+     blocks, crate piles, fallen statues) stay in `decor` and cast. */
+  decorClutter: { cast: false, receive: true },
   /* The burning pit's glow, the moon, the stars: light and sky, which
      neither cast nor take a shadow. */
   decorLight: { cast: false, receive: false },
+  /* The kit's lamp-bearing pieces' point lights (`src/world/decor/lamps.ts`): a light, like the pit's glow. */
+  decorLamp: { cast: false, receive: false },
   moon: { cast: false, receive: false },
   stars: { cast: false, receive: false },
   /* Hell's flames and embers (`src/fx/HellFire.ts`): additive points of light,

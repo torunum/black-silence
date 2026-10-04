@@ -186,7 +186,7 @@ describe("LEVELS vs. reference", () => {
   });
 
   it.each(LEVELS.map((def, i) => [def.name, def, refLevels[i]] as const))(
-    "%s builds the reference grid, cell for cell, apart from level 2's eight pews and the twenty armour tiles",
+    "%s builds the reference grid, cell for cell, apart from level 2's eight pews, the twenty armour tiles and level 1's supply moves",
     (name, def, refDef) => {
       const built = def.build();
       const refBuilt = refDef.build();
@@ -202,7 +202,12 @@ describe("LEVELS vs. reference", () => {
         ? LEVEL2_PEW_CELLS.map(([x, z]) => `${x},${z} V->v`)
         : [];
       const armour = (ARMOUR_CELLS[name] ?? []).map(([x, z]) => `${x},${z} A->r`);
-      const expected = [...pews, ...armour].sort();
+      // levels-feel-full plan, Task 2 (argued in level1.ts and src/world/levels/dress1.ts): the ammo box and the health pack that lay
+      // at the spawn moved to the great hall's south rim, and two explosive barrels stand in the hall
+      const supply = name === "LEVEL 1 — THE GOTHIC DUNGEON"
+        ? ["4,32 a->.", "9,32 h->.", "19,25 .->a", "26,25 .->h", "28,16 .->O", "26,21 .->O"]
+        : [];
+      const expected = [...pews, ...armour, ...supply].sort();
       expect(gridDiff(built.g, refBuilt.g)).toEqual(expected);
       expect(built.hmap).toEqual(refBuilt.hmap);
       expect(built.segs).toEqual(refBuilt.segs);

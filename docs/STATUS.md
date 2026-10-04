@@ -956,6 +956,123 @@ torches and props on its raised tomb are still at the reference's heights
 (buried), untouched because it is unzoned. The rAF note above no longer held
 in this session: the game ran live in the Browser pane.
 
+## Levels that feel full — Task 1, the kit and the measure
+
+Branch `levels-feel-full`, plan `docs/superpowers/plans/2026-09-29-levels-feel-full.md`.
+The owner said the levels feel very empty. Task 1 builds the tools and changes
+**no level**: levels 1-7 are exactly what they were, and no trace fixture moved
+(`git diff bafb49c -- tests/integration/__fixtures__` is empty).
+
+| Part | Outcome |
+|---|---|
+| A — the measure | `src/world/density.ts` (pure), `scripts/level-density.ts` (`npx vite-node scripts/level-density.ts`), `docs/level-density.md` (generated; re-run after dressing a level). Per level: walkable cells, props by type, decor, pickups by type, enemies, lights, bare cells (nothing on or beside them), the longest straight bare run, the largest bare region, and the grid drawn with the bare regions marked. Held to a grid counted by hand (`tests/world/density.test.ts`) and to what `loadLevel` really builds (`tests/world/densityLoad.test.ts` loads all eight levels and compares enemies, props, items by kind, torches, candles and point lights). |
+| B — the kit | `Decor.ts` split: it keeps the scene half (`dressLevel`); `src/world/decor/` holds the pieces per theme (`dungeon.ts`, `sacred.ts` for church/necropolis/graveyard, `pipes.ts` for sewers/factory, `womb.ts`, the prologue's own moved unchanged into `prologue.ts`), `registry.ts` (every piece's mode and shadow class, and each theme's weighted vocabulary), `parts.ts` (specs to merged geometry), `place.ts` (the rules and the API), `gallery.ts` (every piece of a theme in a hall). 59 pieces (the prologue's 16, five of their shapes re-sized or re-classed for levels, 38 new); four new `DRESSTEX` surfaces (`straw`, `rust`, `sludge`, `banner`). Small clutter merges into `decorClutter`, which does not cast (`Shadows.ts`); the masses (crate piles, sarcophagi, machines, conveyors, fallen statues) stay `decor` and cast. The prologue's scene is byte-for-byte what it was. |
+
+**The API a level's builder uses** (`src/world/decor/place.ts`): `new Decorator(L, theme)`, then
+`place(kind, x, z, {side?, r?, s?, h?})` (throws if the piece breaks a rule),
+`layer(rows, legend)` (a glyph layer over the grid), `clutter({density, seed, kinds?, where?})` (fills the
+wall-adjacent floor from the theme's vocabulary by grid hash), and `L.decor = dress.specs`.
+`validateDecor(L)` re-checks a finished level from scratch. The rules: never on a door cell, a pickup, the spawn or
+the exit; bulky pieces (`edge`, `free`) only on plain floor, never beside a door or pickup, one to a cell, and never
+where blocking the cell would cut the way through (a 1-wide corridor, a bend, a junction's arm); `edge` and `wall`
+pieces need a plain `#` wall behind them. Small decor still takes no shot and blocks no step (Task 2 made the big pieces solid: see below): a piece sits in a wall-side
+strip of its cell so the way stays clear, but a player who walks into it walks through it.
+
+**Look at it:** the dev server, then in the console (after NEW GAME)
+`LEVELS[8] = galleryDef("dungeon"); loadLevel(8)` with `LEVELS` from `/src/world/levels/index.ts`, `galleryDef` from
+`/src/world/decor/gallery.ts` and `loadLevel` from `/src/world/LevelLoader.ts`. The Browser pane's `rAF` does not run
+while it is hidden: to photograph, set `player.px/pz/pyy` and `input.yaw/pitch`, render by hand
+(`renderState.renderer.render`), and read the pixels with `gl.readPixels` in the same task. Screenshots
+taken after a page edit lag one frame behind.
+
+## Levels that feel full — Task 2, levels 1-4 furnished, and solid masses
+
+Same branch and plan. Levels 1-4 are dressed by their own builders (`src/world/levels/dress1.ts` .. `dress4.ts`,
+called from the end of `buildLevel1`..`4`), a recorded divergence from the frozen reference (its grids,
+enemies, keys and doors are untouched). `docs/level-density.md` now prints the table before (the baseline,
+`docs/level-density-baseline.json`, measured with commit `64b4e8d`'s own code) and after.
+
+| level | composition | bare cells | emptiest region |
+|---|---|---|---|
+| 1 dungeon | the great hall is a **torture hall** (an execution slab at the pillar ring's centre, four racks, stocks, cages on chains, iron maidens along the north and south walls); the vestry is a **chancel** (altar, banners, candelabra round the red key); the east wing a **store** (crate piles); straw, shackles, bones, sconces everywhere else | 321 (46%) -> 32 (5%) | 257 -> 7 cells |
+| 2 church | candelabra down the nave's aisle, banners, four fallen saints against its walls, an altar under the chapel window, the font by the narthex door, bell-tower ropes, rubble and glass | 98 (17%) -> 6 (1%) | 45 -> 2 |
+| 3 necropolis | a sarcophagus on each of the pit's four daises, table tombs by the crowning pillar, sarcophagi under the colonnade, burial niches, urns, bone stacks | 105 (18%) -> 2 (0%) | 65 -> 1 |
+| 4 graveyard | table tombs and dead trees in the chapel yard, headstones and crosses along every wall, open graves, mounds, iron fence | 159 (26%) -> 7 (1%) | 93 -> 1 |
+
+**Solid masses (`src/world/decor/masses.ts`).** A piece with a `mass` footprint in the registry (rack, slab,
+stocks, iron maiden, crate pile, altar, font, fallen statue, sarcophagus, table tomb, dead tree, machine,
+conveyor, drum, and thin boxes for a headstone, a cross and a sapling) is a box in `world.masses`, and
+`solidAt` (`Collision.ts`) treats a point inside one as a wall. That one rule is what the player's `collides`, every
+enemy step, a projectile, a hitscan ray and an enemy's `los` ask, so a mass stops all of them: **shots stop on
+a mass, at any height** (a knee-high fallen statue is as much cover as a machine — one rule for the cost of a
+box lookup, and it is why the placement rules keep masses out of every path). Small clutter stays walk-through.
+Masses are not breakable props. The rules (`place.ts`): a mass keeps its box inside its own cell; is never in a
+corridor, bend, junction or doorway, never beside a door, pickup, spawn or exit; and `validateDecor` floods the
+level from the spawn with every mass a wall and reports any pickup, key, exit or enemy spawn the masses cut
+off. **No lookalikes:** a crate pile or drum (`lookalike`) stays two cells from a real `x` crate or `O` barrel,
+and the decor crate is dark, strapped, its lid pried off, a tarp over it — never the pale wood of the crate a
+player shoots.
+
+**Pickups and props.** Level 1 only: the bullets box (4,32) and the health pack (9,32), which lay at the spawn
+where a player is at full health, moved to (19,25) and (26,25), the hall's south rim beside the entrance from the west
+corridor, where the first fight is lost; two explosive barrels were added in the hall's east half (28,16), (26,21).
+Both pickups moved without crossing an enemy in `loadLevel`'s scan order, so every enemy is handed the same seeded
+draws (asserted in `tests/world/levelDressing.test.ts`; the trace fixture depends on it). Levels 2-4 had a supply in
+every room already; nothing moved.
+
+**Fixtures.** `trace-level1.json` and `trace-level2-boss.json` regenerated; camera and hud identical in every
+sampled frame of both, `scene.count` +31 (27 dressing meshes, 2 barrels x 2) and +20; the accounts are in the
+two test headers. No mass stands on either route (asserted). `trace-level0.json` byte-identical.
+
+**Tests.** `tests/world/masses.test.ts` (the box, the lookup, the real `playerTick` walked into a mass, `los`, a
+shot's ray-march, the loader), `tests/world/levelDressing.test.ts` (levels 1-4: legal, dense, the hall, masses
+never in the way, no lookalikes, the routes, the moves). Screenshots, the report and the mutation list are in
+`.superpowers/sdd/2026-09-29-levels-feel-full/task-2-*`.
+
+## Levels that feel full — Task 3, levels 5-7 furnished, light for the dark rooms, and enemies that do not stick
+
+Same branch and plan. Levels 5-7 are dressed by `dress5.ts`-`dress7.ts` (a recorded divergence from the frozen
+reference, as for 1-4; grids, enemies, keys, pickups untouched). Density (`docs/level-density.md`): bare cells
+161 (25%) -> 5 (1%) sewers, 158 (26%) -> 2 (0%) factory, 166 (27%) -> 7 (1%) womb; the arenas' 87-93 bare cells
+-> at most 5. **Arena floors stay open**: no mass further than a step from a wall, pillar or window in the boss
+arenas (the big room and the boss hall), the core of each still one piece with every mass a wall, masses under a fifth
+of an arena's floor, the boss hall's three middle rows clear (`tests/world/levelDressing567.test.ts`).
+
+| level | composition | masses left |
+|---|---|---|
+| 5 sewers | pipes, outfalls, a ladder, grates, scum, debris, cages on chains, gauges; tanks and pumps at the walls; five wall lanterns | 15 |
+| 6 factory | hooks and chains overhead, pipes, gauges; machines, presses, conveyors, crate piles, a furnace; three work lamps | 32 |
+| 7 womb | veins, drapes, sinew, eyes, pods, growths; tumours on the walls; four glowing bulbs | 8 |
+
+**The stuck check** (`tests/enemies/stuckCheck.test.ts`). Enemies have no pathfinding and `moveEnemy` gives up
+on a blocked x-step without trying z, so an enemy that walks into the end of a wall-side mass stays there. The test
+loads levels 1-7, puts the player in 24 places, wakes and alerts every enemy and runs the real `enemyTick` for 12 s;
+an enemy counts as pinned *by a mass* only if it is touching one, nothing but a mass is between it and the player
+(the bare-grid line is clear) and the same enemy without masses ends 3+ units nearer. **Twenty-four places proved not enough**:
+`STUCK_PLACES=999` puts the player on every walkable cell (about 600 scenarios a level, 4 minutes with the levels in
+parallel) and found 320 pins across the seven levels in the first sweep (116 in the graveyard, 81 sewers, 72 womb, 42
+factory); wall-side pumps, tanks, tumours, machines and the yard's free tombs and stones were the culprits. Four rounds of
+removing or replacing what pinned (a gauge, a pipe, an outfall or a growth in its place) brought it to zero on every
+level; the cost was about half the sewers' and the womb's masses and a third of the factory's. Those masses are
+listed in the test (`PINNERS`) and must stay out. The AI is untouched.
+
+**Light.** Budget: no level's scene holds more than 21 point lights (the player's four included), level 3's count
+(`LIGHT_BUDGET`, `src/world/decor/lamps.ts`, `tests/world/lightBudget.test.ts`). Real lights: the sewers' five lanterns,
+the factory's furnace and three work lamps, the womb's four bulbs, the yard's three crook lanterns; each level that has
+them is at 21. Levels 1-3 got none (1 and 2 are recorded by trace fixtures, 3 is at the budget). **Glow** costs no light:
+braziers (dungeon), candle stands (church, necropolis), dim crook lanterns, wall lanterns, work lamps and bulbs, built from
+unlit emissive materials. On levels 1 and 2 they are built from materials those levels' meshes already had, so they add
+geometry to existing merged meshes and no mesh: `trace-level1.json`, `trace-level2-boss.json` and `trace-level0.json` are
+byte-identical to `6db08bc`, and a test (`lightBudget.test.ts`) holds that. Every lattice block the static lights leave
+three quarters dark has a light in it. The honest reading: a glow piece is a bright speck, not a pool of light; it tells the eye
+where a light is, it does not light the room. `src/world/lightmap.ts` measures the static light (the player's lamp left out).
+
+Screenshots (before = `6db08bc` served from a worktree, after = this branch, same spots, rendered by hand into a
+receiver as above) and the report: `.superpowers/sdd/2026-09-29-levels-feel-full/task-3-*`. Two environment lessons:
+the hidden pane throttles timers, so a frame taken 500 ms after moving the camera can be the previous view (wait for the camera
+to arrive); and `git diff` on a file written by PowerShell's `Set-Content` can carry cp1252 bytes (the WIP had written dashes that
+way): check with a strict UTF-8 decode.
+
 ## How fidelity is guarded
 
 Five mechanisms, and they are **not** interchangeable:

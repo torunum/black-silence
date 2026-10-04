@@ -307,7 +307,13 @@ describe("enemies, and the blob that stands in for their shadow", () => {
   });
 });
 
+/**
+ * The kit's clutter mesh (`decorClutter`) is built by any level that lists small
+ * dressing: levels 1-4 do (levels-feel-full plan, Task 2), so the rule for it is
+ * reached by real levels and no stand-in is needed.
+ */
 describe("the policy is total", () => {
+
   it("has a deliberate rule for every named scene child every level builds", () => {
     // The real guard in this file. Dispatch is on `name`, assigned at each
     // mesh's build site, so a future task that adds a new kind of level

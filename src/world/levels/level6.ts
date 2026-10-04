@@ -1,5 +1,6 @@
 import { emptyGrid, link, put, putAbs } from "../LevelBuilder";
 import type { RoomLayout } from "../LevelBuilder";
+import { dressLevel6 } from "./dress6";
 
 /**
  * LEVEL 6 — THE FACTORY.
@@ -72,5 +73,6 @@ export function buildLevel6(): RoomLayout {
   put(L,3,3,3,2,"8");put(L,3,3,1,1,"0");put(L,3,3,5,1,"0");put(L,3,3,3,4,"h");put(L,3,3,5,3,"r");
   /* grated windows */
   [[9,7],[9,15],[23,7],[23,15],[16,0]].forEach(([x,z])=>putAbs(L,x,z,"W"));
+  L.decor=dressLevel6(L);   // set dressing and its solid masses: a deliberate divergence from the reference (levels-feel-full plan, Task 3), see dress6.ts
   return L;
 }

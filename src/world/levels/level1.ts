@@ -1,20 +1,23 @@
 import { aperture, blankGrid, carve, hall, pillarsRing, put1 } from "../LevelBuilder";
-import type { Grid } from "../LevelBuilder";
+import type { DecorSpec, Grid } from "../LevelBuilder";
+import { dressLevel1 } from "./dress1";
 
 /**
  * Simple, flat, single-level layout. Asymmetric room shapes and sizes,
  * but ONE floor height everywhere — no galleries, no pits, no balconies,
  * no jutting diagonal walls. Clean and easy to read.
- * Copied verbatim from reference/sonsurum.html lines 314-374.
+ * Copied verbatim from reference/sonsurum.html lines 314-374 — the grid. The set dressing on top of it
+ * (`decor`: the torture hall, the chancel, the store; solid masses among it) is this project's,
+ * a deliberate divergence from the reference (levels-feel-full plan, Task 2): see `dress1.ts`.
  */
-export function buildLevel1(): { g: Grid; W: number; H: number } {
+export function buildLevel1(): { g: Grid; W: number; H: number; decor: DecorSpec[] } {
   const W=44,H=36;
   const L=blankGrid(W,H);const g=L.g;
 
   // --- START CHAMBER (small, southwest) ---
   carve(g,3,28,11,33);
   g[31][5]="P";
-  put1(g,6,29,"i");put1(g,10,29,"i");put1(g,4,32,"a");put1(g,9,32,"h");
+  put1(g,6,29,"i");put1(g,10,29,"i");   // the reference put an ammo box and a health pack here, at the spawn (see the hall below)
 
   // --- ENTRY CORRIDOR (narrow, dog-legs up to the great hall) ---
   hall(g,9,30,9,24,1);            // north out of start
@@ -66,5 +69,15 @@ export function buildLevel1(): { g: Grid; W: number; H: number } {
   put1(g,15,9,"i");put1(g,31,9,"i");put1(g,15,25,"i");put1(g,31,25,"i");
   put1(g,23,8,"l");
 
-  return L;
+  // --- pickup and prop moves (levels-feel-full plan, Task 2; argued in dress1.ts) ---
+  // The reference set a bullets box (4,32) and a health pack (9,32) at the spawn, where a player is at full
+  // health with a full magazine, and put nothing in the hall, eight enemies and no supply. They are at
+  // the hall's south rim now, beside the entrance from the west corridor, the first place a fight is lost.
+  // Both stay in the same run of the level's scan order (no enemy is between the old cell and the new one),
+  // so the loader hands every enemy the same seeded draws it always did.
+  put1(g,19,25,"a");put1(g,26,25,"h");
+  // Two barrels in the hall: the fight had nothing in it to shoot but the enemies.
+  put1(g,28,16,"O");put1(g,26,21,"O");
+
+  return {...L,decor:dressLevel1(L)};
 }
