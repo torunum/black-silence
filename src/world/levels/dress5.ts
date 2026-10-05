@@ -96,5 +96,7 @@ export function dressLevel5(L: { g: Grid; W: number; H: number }): DecorSpec[] {
   d.clutter({ density: .2, seed: 52, interior: true, kinds: ["grate", "sludge", "debris", "cage", "chainLoose"] });
   // THE DIM LANTERNS — glow only, in the side rooms the five real lanterns do not reach
   for (const [x, z, side] of [[1, 1, "w"], [7, 12, "e"], [30, 7, "n"], [1, 19, "n"], [7, 22, "e"], [29, 19, "n"], [29, 23, "s"]] as const) d.place("lanternDim", x, z, { side });
+  // THE CHECKPOINTS — a shuttered lamp at the east column's north door (28,6) and in the south-east room (the pipes took the wall by the south door): it lights when the player passes (src/world/Checkpoints.ts)
+  for (const [x, z, side] of [[27, 5, "s"], [30, 19, "n"]] as const) d.place("shutlamp", x, z, { side });
   return d.specs;
 }

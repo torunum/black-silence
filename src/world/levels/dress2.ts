@@ -54,5 +54,7 @@ export function dressLevel2(L: { g: Grid; W: number; H: number }): DecorSpec[] {
   d.clutter({ density: .1, seed: 23, interior: true, kinds: ["glass", "rubble", "candelabra", "bonesLoose"] });
   // THE LIGHT — candle stands in the rooms the torches do not reach (glow only: level 2 is recorded by the boss trace)
   for (const [x, z] of [[26, 1], [31, 1], [27, 7], [1, 19], [5, 22], [9, 22], [29, 19], [25, 22]]) d.place("votive", x, z);
+  // THE CHECKPOINTS — a wayside shrine at each of the east column's outer doors (28,6 and 28,18), on the way to the Priest: it lights when the player passes (src/world/Checkpoints.ts)
+  for (const [x, z, side] of [[27, 5, "s"], [27, 19, "n"]] as const) d.place("shrine", x, z, { side });
   return d.specs;
 }

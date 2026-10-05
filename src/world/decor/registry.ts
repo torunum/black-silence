@@ -5,6 +5,7 @@ import { SACRED_PIECES as SAC } from "./sacred";
 import { PIPE_PIECES as PIP } from "./pipes";
 import { WOMB_PIECES as WOM } from "./womb";
 import { HELL_PIECES as HEL } from "./hell";
+import { CHECKPOINT_PIECES as CKP } from "./checkpoint";
 
 /**
  * THE KIT: every piece, how it stands, which mesh it merges into, and the
@@ -131,6 +132,14 @@ export const PIECES: Record<string, PieceInfo> = {
   worklampDim: P(PIP.worklamp, "hang", "clutter", { fixed: true }),
   bulbDim: P(WOM.glowbulb, "free", "clutter"),
   glowbulb: P(WOM.glowbulb, "free", "clutter", { light: { color: 0xff5a4a, intensity: 2, range: 10, at: [0, 1.15, 0] } }),
+  // the checkpoint markers (deeper-levels plan, Task 1): one per theme, thin wall pieces that stand unlit until the player passes (checkpoint.ts)
+  candlestub: P(CKP.candlestub, "wall"),
+  shrine: P(CKP.shrine, "wall"),
+  ossuarylamp: P(CKP.ossuarylamp, "wall"),
+  hooklantern: P(CKP.hooklantern, "wall"),
+  shutlamp: P(CKP.shutlamp, "wall"),
+  pilotlight: P(CKP.pilotlight, "wall"),
+  quickening: P(CKP.quickening, "wall"),
 };
 
 /**
@@ -173,11 +182,11 @@ export const VOCAB: Readonly<Record<Theme, ReadonlyArray<{ k: string; w: number 
  * the gallery shows them too, so a piece nobody scatters is still looked at.
  */
 export const SETPIECES: Readonly<Record<Theme, readonly string[]>> = {
-  dungeon: ["rack", "slab", "stocks", "maiden"],
-  church: ["altar"],
-  necropolis: ["sarcofree", "tombfree", "votive"],
-  graveyard: ["tombfree", "deadtree", "gravelamp"],
-  sewers: ["pump", "tank", "lantern"], factory: ["press", "furnace", "worklamp"], womb: ["tumor", "glowbulb"],
+  dungeon: ["rack", "slab", "stocks", "maiden", "candlestub"],
+  church: ["altar", "shrine"],
+  necropolis: ["sarcofree", "tombfree", "votive", "ossuarylamp"],
+  graveyard: ["tombfree", "deadtree", "gravelamp", "hooklantern"],
+  sewers: ["pump", "tank", "lantern", "shutlamp"], factory: ["press", "furnace", "worklamp", "pilotlight"], womb: ["tumor", "glowbulb", "quickening"],
 };
 
 /** The theme a level's `sub` names, if it has a kit (hell, the crypt and the like do not). */

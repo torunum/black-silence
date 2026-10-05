@@ -97,6 +97,33 @@ section and KNOWN-14.
 
 ---
 
+## Deeper levels — Task 1, checkpoints (branch `deeper-levels`)
+
+Plan: `docs/superpowers/plans/2026-10-05-deeper-levels.md`. Death no longer reloads the
+page. Each themed level (1-7; the prologue has none, see below) has one or two lit-on-pass
+markers, and the death screen offers RISE AGAIN AT THE LAST SHRINE (only if one was lit)
+and RESTART THE LEVEL, both on deliberate input (a one-second hold, no auto-repeat, the
+button or Space/Enter/R).
+
+- **The rule: reload, then replay facts.** A death calls `loadLevel` again (the one path that
+  cancels timers and scheduled calls, disposes GPU resources and replaces the scene), then
+  re-applies what the marker recorded: the player (position, facing, health, armour, key,
+  weapons, magazines, ammo) and ids (enemies killed, items taken, doors opened, props broken,
+  a cleared plate, untaken drops). `src/world/CheckpointState.ts` has the argument, `Checkpoints.ts`
+  the marker and the record, `Respawn.ts` the two choices and what they do to the numbers.
+- **Markers** are decor-kit pieces (`src/world/decor/checkpoint.ts`): candlestub (dungeon), shrine
+  (church), ossuarylamp (necropolis), hooklantern (graveyard), shutlamp (sewers), pilotlight
+  (factory), quickening (womb). Thin wall pieces, unlit as built; when lit they gain a flame sprite
+  and an additive glow (no point light: the lights are a budget and a new light stalls the shaders),
+  a sound (`shrineLights`) and a line on the HUD. A level places them in its dress file, last.
+- A level load (menu, chapter select, next level) forgets the checkpoint; saves are untouched.
+- Levels 0-2's trace fixtures did not move: the markers are off their routes and unlit in them.
+- Not done on purpose: no marker in the prologue (a grave opening, a pit and a bridge, no kit
+  theme); corpses and gore are not carried across a death; the markers of levels 2-7 sit at the
+  east column's doors and are a placeholder until those levels are rebuilt (Tasks 3-9).
+- Dev-pane note: `requestAnimationFrame` ran only while the browser pane was being screenshotted;
+  frames are in `.superpowers/sdd/2026-10-05-deeper-levels/task-1-*.png`.
+
 ## What this is
 
 `THE BLACK SILENCE — The Hollow Parish`, a retro FPS that existed as a single

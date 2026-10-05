@@ -65,6 +65,10 @@
   .controls{margin-top:30px;font-size:12px;line-height:2;letter-spacing:2px;color:#6e6a5e;text-transform:uppercase}
   .start{margin-top:30px;font-size:15px;letter-spacing:.4em;color:#b8b2a6;text-transform:uppercase;
     animation:blink 1.6s infinite;cursor:pointer}
+  /* the death screen's two choices: dim for the first second, while nothing is taken (src/ui/DeathScreen.ts's DEATH_HOLD), then they pulse */
+  #deadwhere{margin-top:10px;color:#8a6a4a}
+  .deadbtn{margin-top:22px;animation:deadwait 1s linear,blink 1.6s 1s infinite}
+  @keyframes deadwait{from{opacity:.2}to{opacity:.2}}
   .menu{margin-top:34px;display:flex;flex-direction:column;gap:16px;align-items:center}
   .mbtn{font-size:16px;letter-spacing:.36em;color:#9a948a;text-transform:uppercase;cursor:pointer;
     padding:8px 22px;border:1px solid rgba(120,110,98,.18);transition:.16s;min-width:240px}
@@ -191,7 +195,9 @@
 <div id="dead" class="overlay hidden">
   <h1 class="title" style="color:#9c2f1e">THE PARISH<br>KEEPS YOU</h1>
   <div class="stats" id="deadquip"></div>
-  <div class="start" onclick="location.reload()">[ CLICK TO TRY AGAIN ]</div>
+  <div class="stats" id="deadwhere"></div>
+  <div class="start deadbtn" id="riseBtn">[ RISE AGAIN AT THE LAST SHRINE — SPACE ]</div>
+  <div class="start deadbtn" id="restartBtn">[ RESTART THE LEVEL — R ]</div>
 </div>
 
 <div id="fade"></div>

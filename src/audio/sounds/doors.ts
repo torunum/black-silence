@@ -154,3 +154,23 @@ export function doorShutsBehind(): void {
     ]);
   });
 }
+
+/**
+ * A checkpoint marker catches (`src/world/Checkpoints.ts`, deeper-levels plan Task 1): a strike, a wick drawing, a flame taking and a soft
+ * note rising out of it — the sound of a light left for the dead being answered. Quiet and warm: it is a reward, not an alarm.
+ */
+export function shrineLights(): void {
+  const p = jit(0.03);
+  lv("shrineLights", () => {
+    play([
+      // the strike: a dry scrape and a spark
+      { noise: "white", filters: [{ type: "highpass", f: 2600 }, { type: "lowpass", f: 7000 }], env: { a: 0.002, h: 0.01, d: 0.1 }, level: 0.3 },
+      ...clack(0.02, [2400 * p, 3600 * p], 0.03, 0.2),
+      // the flame drawing breath, brightening as it takes
+      { at: 0.06, noise: "pink", filters: [{ type: "lowpass", f: 320 * p, q: 0.7, to: 1500 * p, over: 0.5 }], env: { a: 0.12, h: 0.1, d: 0.55 }, level: 0.4 },
+      // a low fifth swelling under it, and one high note that rings out
+      { at: 0.1, tone: "sine", f: [196 * p, 294 * p], filters: [{ type: "lowpass", f: 1400 }], env: { a: 0.05, h: 0.2, d: 1.3 }, level: 0.3 },
+      { at: 0.16, tone: "sine", f: 784 * p, env: { a: 0.01, d: 1.1 }, level: 0.12 },
+    ]);
+  });
+}

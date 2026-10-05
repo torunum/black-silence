@@ -66,6 +66,9 @@ export function dressLevel1(L: { g: Grid; W: number; H: number }): DecorSpec[] {
   // THE LIGHT — braziers in the halls the torches do not reach (glow only: a real light would move the trace fixtures). Last, so the
   // pieces before them keep their order, and with it the order of the merged meshes the combat trace's recording hashes.
   for (const [x, z] of [[18, 2], [22, 2], [26, 12], [30, 14], [26, 16], [30, 18], [19, 12], [22, 15], [36, 12], [41, 12], [34, 16], [38, 24], [27, 31], [34, 31]]) d.place("brazier", x, z);
+  // THE CHECKPOINTS — a candle on a skull at the hall's west mouth, where the jog from the start's corridor comes in, and one in the corridor to the exit chamber
+  // (a wall piece, so it stands in a corridor; it lights when the player passes — src/world/Checkpoints.ts). Last, so nothing before it moves, and nowhere near the combat trace's ROUTE.
+  for (const [x, z, side] of [[14, 25, "w"], [30, 28, "e"]] as const) d.place("candlestub", x, z, { side });
   // a crate pile the clutter pass stood where an enemy walking at a player meets its flat face (tests/enemies/stuckCheck.test.ts), taken out
   return d.specs.filter((s) => !STUCK.has(`${s.k}@${Math.floor(s.x + .5)},${Math.floor(s.z + .5)}`));
 }

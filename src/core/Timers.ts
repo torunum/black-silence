@@ -58,3 +58,8 @@ export function clearAllTimers(): void {
   for (const id of live) clearTimeout(id);
   live.clear();
 }
+
+/** How many `after` timers are waiting. Read by the tests that hold a restart to leaving none of the dead run's behind. */
+export function pendingTimers(): number {
+  return live.size;
+}

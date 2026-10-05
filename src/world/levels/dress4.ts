@@ -40,6 +40,8 @@ export function dressLevel4(L: { g: Grid; W: number; H: number }): DecorSpec[] {
   d.clutter({ density: .14, seed: 42, interior: true, kinds: ["opengrave", "mound", "bonesLoose"] });   // no stones on the open floor: an enemy walks into a stone's face and stays there (tests/enemies/stuckCheck.test.ts)
   // crook lanterns, glow only, in the corner rooms and the east wing the three real ones do not reach
   for (const [x, z] of [[3, 3], [26, 1], [30, 3], [5, 10], [31, 7], [2, 19], [5, 22], [29, 22], [27, 19]]) d.place("gravelampDim", x, z);
+  // THE CHECKPOINTS — a lantern on a hook at each of the east column's outer doors (28,6 and 28,18): it lights when the player passes (src/world/Checkpoints.ts)
+  for (const [x, z, side] of [[27, 5, "s"], [27, 19, "n"]] as const) d.place("hooklantern", x, z, { side });
   // stones that enemies walking at a player got pinned against (tests/enemies/stuckCheck.test.ts), taken out
   return d.specs.filter((s) => !STUCK.has(`${s.k}@${Math.floor(s.x + .5)},${Math.floor(s.z + .5)}`));
 }
