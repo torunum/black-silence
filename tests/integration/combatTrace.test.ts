@@ -691,70 +691,44 @@ const FIXTURE = join(FIXTURE_DIR, "trace-level1.json");
 const WRITE = process.env.WRITE_TRACE === "1";
 
 const SENS = 0.0022; // src/player/Input.ts's mouse sensitivity at zoomLerp=0 (no scope equipped)
-const REV = (2 * Math.PI) / SENS; // one full revolution's worth of movementX
 
 /**
- * Retuned by Phase 2 Part A Task 3 (see the module doc comment's "regenerated
- * twice" section) from the original 1680 — measured live, under the
- * `installUuidStub`-corrected RNG stream, as the frame past which the run's
- * one kill has landed and the player is alive with room to spare (`S.hp` in
- * the 60s at cutoff, not falling toward the `S.dead` a too-short budget
- * hits). Still well short of the player dying outright.
+ * Measured live under the seeded stream (the header's last section): 1100 is the frame by which the run's two kills have landed, the first corpse has
+ * collapsed (`z.die1`, `z.die2`), an orb has been fired and has died against a wall (the `scene.count` decreases the "something despawned" assertion needs:
+ * frames 580, 690, 810 and 1080) and the armour seeded at 50 is all gone, with the player alive on 40 health. A sweep run on past it takes the player to 25 by
+ * frame 1250 and would reach `S.dead` a few hundred frames later: this script is lethal in both directions, and a fixture of the player already dead is a worse
+ * net than one of them still fighting. Not the old 1760: the fight is at the start of the level now, 14 cells from the spawn, so the run is short.
  */
-const TOTAL_FRAMES = 1760;
+const TOTAL_FRAMES = 1100;
 
+/**
+ * The script, for the rebuilt level 1 (deeper-levels plan, Task 3): the player wakes in the spawn cell of the upper gaol facing south, into the cell's own wall.
+ *
+ *  - **Frame 5-40: turn east**, to the doorway in the cell's east wall (x 7, z 5, on the spawn's own row: the cell's `P` is at (3,5)). `yaw -= movementX * SENS`,
+ *    so a quarter turn from the spawn's yaw of pi to 3 pi / 2 (forward `(-sin yaw, -cos yaw)` = +x) is `-(pi / 2) / SENS` of movementX, in eight steps.
+ *  - **Frame 160: walk.** Not 50, as the old script did: the level's own line (`MONOLOGUE.lvl1`) is said at about frame 90 and the next unforced line is
+ *    throttled for 3 s (`Subtitles.ts`'s `say`), and a sighting line is *spent* by that throttle (`onceSaid` is set before it is checked): a zombie that sees
+ *    the player at frame 180 says nothing, for good. At 160 the first zombie, 21 cells away, wakes at about frame 300 and says its line.
+ *  - **Frame 380: stop**, at (16.5, 5.5) cells, in the middle of the cell block's west half, the first zombie 5.7 units away and the second at 15.
+ *  - **Frame 470-974: a standing turret that watches its front.** The aim sweeps 8 degrees a step between 60 degrees to the left of east and 60 to the right
+ *    (a triangle wave, 14 frames a step), firing on every step (3 frames in, 15 out) and reloading on every sixth. The old script swept a whole circle with a slow
+ *    rotation; this one fights what comes at it from one side, which is what the cell block is: a wide hall with the enemies at its east end. The sweep is why the
+ *    pistol's shots land on arms and not only heads: the first zombie loses an arm (`LIMB SEVERED`, `z.noRArm`).
+ *
+ * `Input.ts` is read by the harness through the same events a player's hands make (`gameplayTrace.ts`).
+ */
 function combatScript(): InputEvent[] {
-  const s: InputEvent[] = [
-    { frame: 2, kind: "pointerlock", locked: true },
-  ];
-  // Spawn yaw is PI (facing south, into the start room's own wall) — turn
-  // to face north, toward the corridor, in exactly pi/SENS worth of
-  // movementX so the residual is microradians rather than the ~0.05 rad a
-  // rounder number leaves (see the module doc comment for why that
-  // residual matters over hundreds of frames of holding forward).
-  for (let i = 0; i < 8; i++) {
-    s.push({ frame: 5 + i * 5, kind: "move", movementX: Math.PI / SENS / 8, movementY: 0 });
-  }
-  s.push({ frame: 50, kind: "key", type: "keydown", code: "KeyW" });
-  // A brief strafe toward the corridor's world-x — the start room is wide
-  // enough that walking due north from spawn misses the corridor entirely.
-  s.push({ frame: 52, kind: "key", type: "keydown", code: "KeyD" });
-  s.push({ frame: 100, kind: "key", type: "keyup", code: "KeyD" });
-  // Tap the level's one door every 20 frames through the whole approach —
-  // interact() is a no-op unless a door is within ~2.6 units and roughly
-  // in front, so this is safe to spam rather than timing precisely.
-  for (let f = 150; f <= 1500; f += 20) {
-    s.push({ frame: f, kind: "key", type: "keydown", code: "KeyE" });
-    s.push({ frame: f + 2, kind: "key", type: "keyup", code: "KeyE" });
-  }
-  // Approach-phase fire: this also supplies the small alternating look
-  // (+-60 movementX) that drifts the player sideways into the corridor's
-  // one-cell-wide doorway over the course of the walk — removing it (or
-  // changing its magnitude) changes where the player ends up, not just
-  // whether they fire.
-  for (let i = 0; i < 33; i++) {
-    const f = 400 + i * 30;
-    s.push({ frame: f, kind: "move", movementX: i % 2 === 0 ? 60 : -60, movementY: 0 });
-    s.push({ frame: f + 4, kind: "button", type: "mousedown", button: 0 });
-    s.push({ frame: f + 14, kind: "button", type: "mouseup", button: 0 });
-    if (i % 5 === 4) {
-      s.push({ frame: f + 20, kind: "key", type: "keydown", code: "KeyR" });
-      s.push({ frame: f + 22, kind: "key", type: "keyup", code: "KeyR" });
-    }
-  }
-  // Standing turret phase, from ~frame 1400 (measured live — see the
-  // module doc comment). Only the first 24 of a planned ~2.86-revolution
-  // sweep are actually emitted (12 before Task 3's stub retune — see the
-  // module doc comment's "regenerated twice" section for why more shots,
-  // not just more frames, were needed), since that already lands the run's
-  // kill; the denominator stays 130 rather than being recomputed for a
-  // shorter loop, which would change the per-step angle and retune the
-  // whole encounter's timing.
-  s.push({ frame: 1400, kind: "key", type: "keyup", code: "KeyW" });
-  const SWEEP_START = 1420, SWEEP_STEP = 22, SWEEP_STEPS_DENOM = 130, SWEEP_STEPS_USED = 24;
-  for (let i = 0; i < SWEEP_STEPS_USED; i++) {
+  const s: InputEvent[] = [{ frame: 2, kind: "pointerlock", locked: true }];
+  for (let i = 0; i < 8; i++) s.push({ frame: 5 + i * 5, kind: "move", movementX: -(Math.PI / 2) / SENS / 8, movementY: 0 });
+  s.push({ frame: 160, kind: "key", type: "keydown", code: "KeyW" });
+  s.push({ frame: 380, kind: "key", type: "keyup", code: "KeyW" });
+  const SWEEP_START = 470, SWEEP_STEP = 14, SWEEP_STEPS = 36, AMP = 8 * Math.PI / 180, LIMIT = 60 * Math.PI / 180;
+  let off = 0, dir = 1;
+  for (let i = 0; i < SWEEP_STEPS; i++) {
     const f = SWEEP_START + i * SWEEP_STEP;
-    s.push({ frame: f, kind: "move", movementX: (2.86 * REV) / SWEEP_STEPS_DENOM, movementY: 0 });
+    if (Math.abs(off + dir * AMP) > LIMIT) dir = -dir;
+    off += dir * AMP;
+    s.push({ frame: f, kind: "move", movementX: -dir * AMP / SENS, movementY: 0 });
     s.push({ frame: f + 3, kind: "button", type: "mousedown", button: 0 });
     s.push({ frame: f + 15, kind: "button", type: "mouseup", button: 0 });
     if (i % 6 === 5) {

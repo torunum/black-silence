@@ -74,7 +74,7 @@ export function buildLevel1(): BuiltLevel {
   lv.spawn(spawn.at(1, 2)).key(undercroft.at(9, 3)).exit(exit.at(1, 3));
 
   // ---- the quiet: the spawn cell and the cell block's west end hold nothing. Then the rising fights.
-  lv.enemy("z", block.at(13, 1), block.at(17, 4));                                  // the cell block
+  lv.enemy("z", block.at(13, 1), block.at(17, 4)).enemy("j", block.at(18, 1));          // the cell block
   lv.enemy("s", cellC.at(3, 2));
   lv.enemy("g", undercroft.at(6, 4), undercroft.at(10, 6)).enemy("t", undercroft.at(11, 4));   // the undercroft
   lv.enemy("j", guard.at(7, 2)).enemy("f", guard.at(3, 6)).enemy("m", guard.at(5, 3));   // the guard room
