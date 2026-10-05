@@ -23,7 +23,7 @@ same code as hard validation and fails if this file is out of date.
 | level | walkable | critical path | key | rooms | passages | loops | branches | dead ends | heights | transitions | keys / locked / doors | secrets (pickups) | checkpoints (path fraction) | enemies | arenas | exit door |
 | --- | ---: | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | ---: | ---: | --- |
 | 0 · prologue · OUT OF THE PIT | 668 | 45 | - | 1 | 0 | 0 | 0 | 0 | 12 | 59 | 0 / 0 / 0 | 0 (-) | - | 8 (320 + 0 boss hp) | 1 | wall |
-| 1 · THE GOTHIC DUNGEON | 1099 | 123 | required, 26 steps off the way | 14 | 12 | 1 | 3 | 4 | 15 | 28 | 1 / 1 / 7 | 2 (4, 4) | 55% forced, 79% forced | 22 (965 + 700 boss hp) | 1 | wall |
+| 1 · THE GOTHIC DUNGEON | 1099 | 123 | required, 26 steps off the way | 14 | 12 | 1 | 3 | 4 | 15 | 28 | 1 / 1 / 7 | 2 (4, 4) | 55% forced, 79% forced | 23 (1010 + 700 boss hp) | 1 | wall |
 | 2 · THE ABANDONED CHURCH | 586 | 66 | required, 32 steps off the way | 12 | 11 | 1 | 1 | 1 | 1 | 0 | 1 / 2 / 9 | 1 (4) | 26% forced, 61% | 18 (790 + 2500 boss hp) | 1 | wall |
 | 3 · THE NECROPOLIS | 590 | 44 | optional | 13 | 14 | 3 | 4 | 2 | 6 | 49 | 1 / 1 / 15 | 1 (5) | 91%, 84% | 21 (1500 + 3950 boss hp) | 0 | freestanding |
 | 4 · THE GRAVEYARD | 623 | 44 | optional | 6 | 8 | 4 | 2 | 0 | 1 | 0 | 1 / 1 / 9 | 1 (5) | 91%, 84% | 20 (725 + 3050 boss hp) | 2 | wall |
@@ -48,7 +48,7 @@ Regions with enemies, in reading order. *ratio* is ammunition-worth over hit poi
 
 | region | kind | cells | enemies | hp | boss hp | ammo worth | health | armour | ratio |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| x 8-27, z 2-7 | room | 120 | 2 | 100 | 0 | 1632 | 25 | 0 | 16.32 |
+| x 8-27, z 2-7 | room | 120 | 3 | 145 | 0 | 1632 | 25 | 0 | 11.26 |
 | x 34-43, z 3-11 | room | 90 | 3 | 135 | 0 | 3378 | 125 | 0 | 25.02 |
 | x 17-21, z 9-12 | room | 20 | 1 | 40 | 0 | 2244 | 0 | 0 | 56.10 |
 | x 3-16, z 14-22 | room | 126 | 3 | 125 | 0 | 1938 | 25 | 0 | 15.50 |

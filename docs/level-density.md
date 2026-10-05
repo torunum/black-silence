@@ -25,7 +25,7 @@ in a straight line. **Emptiest** = the biggest four-way connected bare region. S
 | level | walkable | props | decor | pickups | enemies | lights | bare | longest bare run | emptiest region |
 |---|---:|---:|---:|---:|---:|---:|---:|---|---|
 | 0 prologue · OUT OF THE PIT | 668 | 2 | 322 | 4 | 8 | 17 | 51 (8%) | 5 cells (x 12-16, z 26-26) | 8 cells (x 8-11, z 18-21) |
-| 1 · THE GOTHIC DUNGEON | 1099 | 3 | 380 | 43 | 22 | 14 | 38 (3%) | 4 cells (x 28-31, z 11-11) | 4 cells (x 5-6, z 5-6) |
+| 1 · THE GOTHIC DUNGEON | 1099 | 3 | 380 | 43 | 23 | 14 | 36 (3%) | 4 cells (x 28-31, z 11-11) | 4 cells (x 5-6, z 5-6) |
 | 2 · THE ABANDONED CHURCH | 586 | 15 | 196 | 20 | 18 | 16 | 6 (1%) | 2 cells (x 7-7, z 16-17) | 2 cells (x 7-7, z 16-17) |
 | 3 · THE NECROPOLIS | 590 | 14 | 211 | 18 | 21 | 17 | 1 (0%) | 1 cells (x 19-19, z 1-1) | 1 cells (x 19-19, z 1-1) |
 | 4 · THE GRAVEYARD | 623 | 13 | 245 | 18 | 20 | 17 | 6 (1%) | 2 cells (x 12-12, z 12-13) | 2 cells (x 12-12, z 12-13) |
@@ -84,19 +84,19 @@ in a straight line. **Emptiest** = the biggest four-way connected bare region. S
 
 ## 1 · THE GOTHIC DUNGEON
 
-- walkable cells: 1099; bare: 38
+- walkable cells: 1099; bare: 36
 - breakable props: barrel 2, crate 1
-- decor pieces: 380 (altar 1, banner 4, bench 5, bonesLoose 53, brazier 12, cage 25, candlestub 2, chainLoose 43, cratepile 11, maiden 3, rack 2, rubble 84, sconce 6, shackles 8, skullpile 51, slab 1, stocks 1, straw 68)
+- decor pieces: 380 (altar 1, banner 4, bench 5, bonesLoose 54, brazier 14, cage 27, candlestub 2, chainLoose 43, cratepile 5, maiden 3, rack 2, rubble 84, sconce 6, shackles 12, skullpile 46, slab 1, stocks 1, straw 70)
 - pickups: armor 5, bullets 15, crosses 1, health 14, key 1, shells 4, slugs 1, weapon 2
-- enemies: 22 (1 boss); torches 13, candles 0, lights 14
+- enemies: 23 (1 boss); torches 13, candles 0, lights 14
 - longest bare run: 4 cells, x 28-31, z 11-11
 - emptiest region: 4 cells, x 5-6, z 5-6
 
 ```
 ##########################################################
 ##########################################################
-########+++++++++++++++++.++##############################
-##..+++#+++++++++++++++++.++######++++++.+++##############
+########++++++++++++++++++++##############################
+##..+++#++++++++++++++++++++######++++++.+++##############
 ##+++++#+++++++++...+++++++++...++++++++++++##############
 ##+++RR++++++++++++++++.++++######++++++++++#+++++########
 ##+++RR#++++++++++++++++++++######++++++++++#+++++########

@@ -386,7 +386,7 @@ describe("what a death does to the numbers", () => {
     const t0 = S.levelT0, atDeath = checkpoint.deadAt - t0;
     rise();
     const now = performance.now() - S.levelT0;
-    expect(Math.abs(now - atDeath), "the clock is where it stood when the player died").toBeLessThan(200);
+    expect(Math.abs(now - atDeath), "the clock is where it stood when the player died").toBeLessThan(1000);   // the wall time of the reload itself, which a 58 x 44 level with 600 pieces of dressing makes 200-400 ms under load; the lost nine seconds are what this tells apart
     expect(S.deaths).toBe(1);
     expect(statsHtml()).toMatch(/DEATHS <b>1<\/b>/);
     dieAndWait(); restart();

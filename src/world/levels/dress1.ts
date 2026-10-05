@@ -28,7 +28,7 @@ export interface Rooms {
 }
 
 /** A mass the clutter pass stood where an enemy walking at a player meets its flat face (`tests/enemies/stuckCheck.test.ts`): taken out. */
-export const PINNERS_1: readonly string[] = [];
+export const PINNERS_1: readonly string[] = ["cratepile@49,26", "cratepile@24,29", "cratepile@40,11"];
 
 /** The dungeon vocabulary without its one solid piece: what may go in the upper gaol, where the combat trace walks and fights (`tests/integration/combatTrace.test.ts`). */
 const WALKABLE = ["straw", "rubble", "bonesLoose", "skullpile", "chainLoose", "shackles", "cage", "sconce", "bench"];
@@ -76,9 +76,9 @@ export function dressLevel1(d: Decorator, r: Rooms): void {
 
   // clutter: the rest, by the area. Nothing solid goes where it was filtered out (`PINNERS_1`).
   d.clutter({ density: .34, seed: 5, kinds: WALKABLE, where: (x, z) => block.contains(x, z) });
-  d.clutter({ density: .3, seed: 5, where: (x, z) => guard.contains(x, z) || armoury.contains(x, z) || ward.contains(x, z) });
+  d.clutter({ density: .3, seed: 5, kinds: WALKABLE, where: (x, z) => guard.contains(x, z) || armoury.contains(x, z) || ward.contains(x, z) });   // (the crate piles of these rooms are the authored ones above: each scattered one a sweep tried pinned an enemy)
   d.clutter({ density: .45, seed: 6, kinds: ["rubble", "skullpile", "bonesLoose", "chainLoose", "straw", "shackles"], where: (x, z) => undercroft.contains(x, z) || closet.contains(x, z) });
-  d.clutter({ density: .3, seed: 7, where: (x, z) => hall.contains(x, z) && x !== 36 });
+  d.clutter({ density: .3, seed: 7, kinds: WALKABLE, where: (x, z) => hall.contains(x, z) && x !== 36 });   // no crate piles in the hall: a sweep found a flat face an enemy walks into at (24,29)
   // the floors of the big rooms, which have no wall beside them: only what lies on the floor or hangs over it, nothing solid
   const FLOOR = ["straw", "skullpile", "bonesLoose", "chainLoose", "rubble", "cage"];
   d.clutter({ density: .2, seed: 8, kinds: FLOOR, interior: true, where: (x, z) => hall.contains(x, z) || block.contains(x, z) || guard.contains(x, z) || armoury.contains(x, z) });

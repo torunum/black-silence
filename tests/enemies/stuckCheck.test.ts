@@ -212,7 +212,8 @@ describe("the check itself", () => {
  * growth stands in the sewers', factory's and womb's places; the yard's stones and trees are filtered out by `dress4.ts`).
  */
 const PINNERS: Record<number, readonly string[]> = {
-  1: ["altar@23,2", "altar@25,2", "maiden@17,26", "maiden@25,26", "maiden@28,26", "cratepile@37,12", "cratepile@41,20", "cratepile@15,26"],
+  // level 1 as rebuilt (deeper-levels plan, Task 3): its first sweep (STUCK_PLACES=999, 999 places) found three crate piles, at the armoury's south mouth, the hall's south-west corner and the guard room's south wall; the old level's list went with it
+  1: ["cratepile@49,26", "cratepile@24,29", "cratepile@40,11"],
   3: ["sarcophagus@3,19"],
   4: ["tombfree@20,14", "tombfree@12,10", "deadtree@14,22", "gravestone@24,1", "gravecross@14,19", "gravestone@17,19", "gravecross@9,1", "gravestone@12,1",
     "gravestone@18,23", "gravestone@6,5", "gravestone@22,5", "gravestone@15,23", "gravecross@8,1", "gravestone@22,1", "gravestone@8,5", "gravecross@16,23",
