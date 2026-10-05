@@ -75,5 +75,7 @@ export function dressLevel7(L: { g: Grid; W: number; H: number }): DecorSpec[] {
   d.clutter({ density: .2, seed: 72, interior: true, kinds: ["vein", "drape"] });
   // THE DIM BULBS — glow only, in the side rooms the four real bulbs do not reach
   for (const [x, z] of [[1, 1], [27, 1], [31, 2], [5, 10], [1, 19], [5, 22], [9, 22], [29, 19], [25, 22]]) d.place("bulbDim", x, z);
+  // THE CHECKPOINTS — a dull bulb of flesh at each of the east column's outer doors (28,6 and 28,18): it quickens when the player passes (src/world/Checkpoints.ts)
+  for (const [x, z, side] of [[27, 5, "s"], [27, 19, "n"]] as const) d.place("quickening", x, z, { side });
   return d.specs;
 }

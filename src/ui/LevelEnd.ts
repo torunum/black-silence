@@ -50,7 +50,8 @@ export function statsHtml(): string {
   const acc=S.shots>0?Math.round(100*S.hitsLanded/S.shots):0;
   return `KILLS <b>${S.kills} / ${S.enemiesTotal}</b> · GIBBED <b>${S.gibs}</b><br>`+
     `SECRETS <b>${S.secrets} / ${S.secretsTotal}</b> · OBJECTS BROKEN <b>${S.propsBroken}</b><br>`+
-    `ACCURACY <b>${acc}%</b> · TIME <b>${(t/60|0)}:${String(t%60).padStart(2,"0")}</b>`;}
+    `ACCURACY <b>${acc}%</b> · TIME <b>${(t/60|0)}:${String(t%60).padStart(2,"0")}</b>`+
+    (S.deaths>0?`<br>DEATHS <b>${S.deaths}</b>`:"");}   // only once there is one: a level won without dying reads as it always did (src/world/Respawn.ts says what a death does to the rest)
 export function showWin(): void {
   if(S.dead)return;S.won=true;
   stopBossMusic();stopMusic();document.exitPointerLock();

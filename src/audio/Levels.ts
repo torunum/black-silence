@@ -214,6 +214,8 @@ export const SOUND_LEVELS = {
   exitWalkthrough: { category: "event", trim: -13.8, room: 1.5 },
   chapterToll: { category: "event", trim: -15.5, room: 2.5 },
   doorShutsBehind: { category: "event", trim: -17, room: 2.5 },
+  // the deeper-levels plan: a checkpoint marker catches
+  shrineLights: { category: "event", trim: -13.5, room: 2 },
   gauntletBegins: { category: "event", trim: 0.8 },
   gauntletCleared: { category: "event", trim: 3 },
   blackout: { category: "event", trim: 2.4 },

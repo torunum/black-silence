@@ -89,6 +89,8 @@ export function dressLevel6(L: { g: Grid; W: number; H: number }): DecorSpec[] {
   d.clutter({ density: .2, seed: 62, interior: true, kinds: ["hook", "chainLoose", "rubble"] });
   // THE DIM WORK LAMPS — glow only, hung in the side rooms the four real lights do not reach
   for (const [x, z] of [[1, 1], [5, 10], [31, 7], [1, 19], [5, 20], [28, 19], [31, 22]]) d.place("worklampDim", x, z);
+  // THE CHECKPOINTS — a pilot light at each of the east column's outer doors (28,6 and 28,18): it lights when the player passes (src/world/Checkpoints.ts)
+  for (const [x, z, side] of [[29, 5, "s"], [27, 19, "n"]] as const) d.place("pilotlight", x, z, { side });
   // a drum the clutter pass stood where enemies walking along the hall's south wall meet its flat face (tests/enemies/stuckCheck.test.ts), taken out
   return d.specs.filter((s) => !STUCK.has(`${s.k}@${Math.floor(s.x + .5)},${Math.floor(s.z + .5)}`));
 }

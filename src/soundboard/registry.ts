@@ -249,6 +249,7 @@ const ENTRIES: Entry[] = [
   { id: "exit-walkthrough", name: "Exit: walking through the open door into the dark", category: "World", detail: "1.5 s: air drawn in, a chord rising, three footfalls", play: WO.exitWalkthrough },
   { id: "chapter-toll", name: "Chapter card: the bell", category: "World", detail: "once, as the card comes up over the black", play: WO.chapterToll },
   { id: "door-shuts-behind", name: "Entrance door shuts behind you", category: "World", detail: "on arrival at the next level: a heavy door, and its latch", play: WO.doorShutsBehind },
+  { id: "shrine-lights", name: "Checkpoint: the shrine catches", category: "World", detail: "a strike, a wick drawing, a flame taking and a note rising: the light left for the dead is answered", play: WO.shrineLights },
   ...WALL_MATERIALS.map((m): Entry => ({
     id: `bullet-wall-${m}`, name: `Bullet hits a ${m} wall`, category: "World", detail: `${m === "stone" ? "every level but two" : m === "metal" ? "the factory" : "the womb"} — new: a wall hit made no sound but the ricochet`, play: () => WO.bulletHitsWall(m),
   })),

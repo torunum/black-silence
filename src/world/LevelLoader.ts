@@ -34,6 +34,7 @@ import { massMap } from "./decor/masses";
 import { beginOpening, resetOpening } from "./Opening";
 import { spawnProp } from "./PropSpawn";
 import { buildLevelDoors, EXIT_BOSSES } from "./ExitDoor";
+import { buildCheckpoints } from "./Checkpoints";
 import { world } from "./WorldState";
 import type { WallSeg } from "./LevelBuilder";
 import { after, clearAllTimers } from "../core/Timers";
@@ -148,7 +149,19 @@ import type { Enemy } from "../enemies/Enemy";
  * and set dressing plus the lift of torches, candles and items onto raised
  * ground to `Decor.ts` (`dressLevel`). A level with no `zones` takes every
  * one of those paths as the single look it always had.
+ *
+ * **Checkpoints** (deeper-levels plan, Task 1). A load is either a first load of a level (the menu, a
+ * chapter select, the next level through its door) or a *resume*: the same level built again because
+ * the player died (`src/world/Respawn.ts`), at the shrine they reached (`resume.at`) or at the level's
+ * own start. Both go through everything above, so nothing from the dead run survives (timers, scheduled
+ * calls, GPU resources, the scene, music), and `buildCheckpoints` is told which it is: a first load
+ * forgets the checkpoints and records what the player came in with, a resume keeps them. A resume is
+ * placed before `enterZones`, so a zoned level takes the look of where the player stands, and says
+ * nothing at the end (no title, no grave opening, no level line): `Respawn.ts` does the telling.
  */
+
+/** A reload for a death: where the player stands and which way they face, or nothing to start the level over at its own spawn. */
+export interface Resume { at?: { x: number; z: number; yaw: number } }
 
 export function spawnEnemy(ch: string, wx: number, wz: number, summoned?: boolean): Enemy {
   const d=EDEF[ch];
@@ -179,7 +192,7 @@ export function spawnEnemy(ch: string, wx: number, wz: number, summoned?: boolea
   if(d.boss)world.bossRef=world.bossRef||e;
   return e;}
 
-export function loadLevel(idx: number): void {
+export function loadLevel(idx: number, resume?: Resume): void {
   clearAllTimers();clearScheduled();disposeAll();stopMusic();resetOpening();
   S.level=idx;
   const Ldef=LEVELS[idx],L=Ldef.build();
@@ -346,14 +359,17 @@ export function loadLevel(idx: number): void {
     world.grid[z][x]=".";}
   buildLevelDoors(renderState.scene as THREE.Scene,Ldef,bossExit,!L.grave);   // the exit and the entrance — src/world/ExitDoor.ts
   dressLevel(renderState.scene as THREE.Scene,L);   // set dressing, and what stands on raised ground — src/world/Decor.ts
+  buildCheckpoints(L,!!resume);   // the markers the decor list names, and what to forget or keep — src/world/Checkpoints.ts
   // Every builder has added its children by here, so one pass applies the
   // whole cast/receive policy. At the end rather than per-site because the
   // policy is one decision living in one file (src/render/Shadows.ts); a
   // scene child whose name is not in `SHADOW_POLICY` keeps three's defaults.
   applyShadowFlags(renderState.scene);
-  player.vx=player.vy=player.vz=0;player.pyy=EYE+floorHeightAt(player.px,player.pz);input.yaw=Math.PI;input.pitch=0;player.grounded=true;
+  if(resume?.at){player.px=resume.at.x;player.pz=resume.at.z;}   // a rise: where the shrine caught the player
+  player.vx=player.vy=player.vz=0;player.pyy=EYE+floorHeightAt(player.px,player.pz);input.yaw=resume?.at?resume.at.yaw:Math.PI;input.pitch=0;player.grounded=true;
   enterZones();   // the start zone's fog, light and room, snapped — src/world/Zones.ts
   const lt=document.getElementById("lvltitle") as HTMLElement;
+  if(resume){lt.style.opacity="0";return;}   // a death's reload tells the player itself (src/world/Respawn.ts): no title, no opening, no level line
   lt.textContent=Ldef.name;lt.style.opacity="1";
   after(()=>lt.style.opacity="0",5000);
   showMsg(Ldef.name,3.4);

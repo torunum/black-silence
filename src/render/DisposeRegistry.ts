@@ -48,3 +48,8 @@ export function disposeAll(): void {
   for (const r of tracked) r.dispose();
   tracked.length = 0;
 }
+
+/** How many resources are waiting to be freed. Read by the tests that hold a restart to leaking none. */
+export function trackedCount(): number {
+  return tracked.length;
+}

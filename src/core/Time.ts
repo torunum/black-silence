@@ -40,3 +40,6 @@ export function tickScheduled(scaledDt: number): void {
 
 /** Drops every pending call unfired. Called from `src/world/LevelLoader.ts`'s `loadLevel`, alongside `src/core/Timers.ts`'s `clearAllTimers`, so a scheduled effect from the level being left behind can't land in the next one (Plan 0F Task 6, KNOWN-3). */
 export function clearScheduled(): void { pending.length = 0; }
+
+/** How many scheduled calls are waiting. Read by the tests that hold a restart to leaving none of the dead run's behind. */
+export function pendingScheduled(): number { return pending.length; }

@@ -38,6 +38,8 @@ export function dressLevel3(L: { g: Grid; W: number; H: number }): DecorSpec[] {
   d.clutter({ density: .12, seed: 32, interior: true, kinds: ["urn", "skullpile", "rubble", "bonesLoose", "chainLoose"] });
   // more candles in the rooms the tomb's torches do not reach
   for (const [x, z] of [[3, 3], [28, 1], [30, 5], [15, 7], [30, 9], [2, 19], [5, 22], [13, 20], [29, 19], [31, 23]]) d.place("votive", x, z);
+  // THE CHECKPOINTS — an ossuary lamp at each of the east column's outer doors (28,6 and 28,18): it lights when the player passes (src/world/Checkpoints.ts)
+  for (const [x, z, side] of [[27, 5, "s"], [27, 19, "n"]] as const) d.place("ossuarylamp", x, z, { side });
   // a sarcophagus the clutter pass stood where an enemy walking at a player meets its end (tests/enemies/stuckCheck.test.ts), taken out
   return d.specs.filter((s) => !STUCK.has(`${s.k}@${Math.floor(s.x + .5)},${Math.floor(s.z + .5)}`));
 }

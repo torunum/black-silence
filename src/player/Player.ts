@@ -1,6 +1,5 @@
 import type * as THREE from "three";
-import { pick, rnd } from "../utils/math";
-import { MONOLOGUE as M } from "../content/monologue";
+import { rnd } from "../utils/math";
 import { ctx } from "../audio/AudioEngine";
 import { playerHurt, footstep as footstepSound, landing as landingSound, jump, gauntletBegins, gauntletCleared } from "../audio/sounds/world";
 import { stopBossMusic } from "../audio/Ambient";
@@ -9,10 +8,11 @@ import { flashDmg, showMsg } from "../ui/HudMessages";
 import { say } from "../ui/Subtitles";
 import { ach } from "../ui/Toasts";
 import { exitTick } from "../world/Transition";
+import { checkpointTick } from "../world/Checkpoints";
+import { showDeath } from "../ui/DeathScreen";
 import { screenBlood } from "../render/Overlay2D";
 import { addSprite } from "../render/RenderCore";
 import { renderState } from "../render/Renderer";
-import { el } from "../ui/dom";
 import { ITEMTEX } from "../render/ItemTextures";
 import { ACHIEVEMENTS } from "../content/achievements";
 import { keys, input } from "./Input";
@@ -84,8 +84,7 @@ function damagePlayer(d: number, silent?: boolean): void {
   if(S.hp<=0){S.hp=0;S.dead=true;
     stopBossMusic();stopMusic();
     document.exitPointerLock();
-    el("deadquip").textContent='ADEM: “'+pick(M.dead)+'”';
-    el("dead").classList.remove("hidden");}}
+    showDeath();}}   // the death screen: rise at the last shrine, or restart the level — in the engine, no page reload (src/ui/DeathScreen.ts)
 
 /**
  * `player.bobT`'s per-frame rate, `spd*dt*rate` — drives both the footstep
@@ -181,6 +180,7 @@ function playerTick(dt: number): void {
   if(renderState.lampCore)renderState.lampCore.position.set(player.px,player.pyy+.2,player.pz);
   /* the exit door: walking into it opens it, coming up to it says so or says why not (src/world/Transition.ts) */
   exitTick();
+  checkpointTick(dt);   // a checkpoint marker the player comes up to catches, and records what they carry (src/world/Checkpoints.ts)
   /* challenge plate */
   if(world.challenge&&(world.challenge as unknown as ChallengeState).state===0&&Math.hypot(player.px-(world.challenge as unknown as ChallengeState).x,player.pz-(world.challenge as unknown as ChallengeState).z)<1){
     (world.challenge as unknown as ChallengeState).state=1;say("challenge",true);
