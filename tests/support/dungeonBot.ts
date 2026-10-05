@@ -162,7 +162,7 @@ export class DungeonBot {
     }
     // stuck: not 1.2 m from where it was 3 s ago while it wanted to walk
     if (frame - this.anchor.f >= 180) {
-      if (Math.hypot(player.px - this.anchor.x, player.pz - this.anchor.z) < 1.2 && !(t && this.firing)) { this.ignore = 150; this.stuck++; this.log.push(`f${frame}: stuck at ${(player.px / 2).toFixed(1)},${(player.pz / 2).toFixed(1)} wp ${this.wp}`); if (this.stuck % 2 === 0 && this.wp < this.route.length - 1) this.wp++; this.detour = null; }
+      if (Math.hypot(player.px - this.anchor.x, player.pz - this.anchor.z) < 1.2 && !(t && this.firing)) { this.ignore = 150; this.stuck++; this.log.push(`f${frame}: stuck at ${(player.px / 2).toFixed(1)},${(player.pz / 2).toFixed(1)} wp ${this.wp}`); if (this.stuck % 2 === 0 && this.wp < this.route.length - 1) this.wp++; this.detour = null; }   // back along the way it came, and again: a waypoint skipped is a wall walked at
       this.anchor = { x: player.px, z: player.pz, f: frame };
     }
     if (wantFire !== this.firing) { out.push({ kind: "button", type: wantFire ? "mousedown" : "mouseup", button: 0 }); this.firing = wantFire; }
