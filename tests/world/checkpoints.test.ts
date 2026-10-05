@@ -15,7 +15,7 @@ import { weaponRuntime } from "../../src/weapons/WeaponRuntime";
 import { screenShake } from "../../src/fx/ShakeState";
 import { CELL, WALLH } from "../../src/world/Grid";
 import { LEVELS } from "../../src/world/levels/index";
-import { checkpoint } from "../../src/world/CheckpointState";
+import { checkpoint, RISE_MIN_HP } from "../../src/world/CheckpointState";
 import { lastSoundLevel } from "../../src/audio/Levels";
 
 /**
@@ -244,6 +244,25 @@ describe("rising again at the last shrine", () => {
     expect([weaponRuntime.zoomLerp, screenShake.hitStop]).toEqual([0, 0]);
     expect(mark(0).lit, "the shrine is lit again, and the next death rises here too").toBe(true);
     expect(checkpoint.snap).not.toBeNull();
+  });
+
+  it("raises you with at least half your health (the mercy floor), armour as recorded: a shrine reached at 3 hp is not a death sentence", () => {
+    expect(RISE_MIN_HP).toBe(50);
+    start(1);
+    Object.assign(S, { hp: 3, armor: 17 });
+    pass(0);
+    expect(checkpoint.snap!.inv.hp, "the record is honest").toBe(3);
+    S.hp = 80; dieAndWait();
+    rise();
+    expect(S.hp, "risen with the floor").toBe(50);
+    expect(S.armor, "armour as recorded").toBe(17);
+    // at or above the floor, nothing is added
+    start(1);
+    Object.assign(S, { hp: 50, armor: 0 }); pass(0); dieAndWait(); rise();
+    expect(S.hp).toBe(50);
+    start(1);
+    Object.assign(S, { hp: 91, armor: 0 }); pass(0); dieAndWait(); rise();
+    expect(S.hp, "a healthy rise is not capped or raised").toBe(91);
   });
 
   it("keeps the dead dead, the taken taken and the opened open — and brings back what the dead run killed, took and opened after", () => {

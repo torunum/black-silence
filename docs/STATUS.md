@@ -117,6 +117,7 @@ button or Space/Enter/R).
   and an additive glow (no point light: the lights are a budget and a new light stalls the shaders),
   a sound (`shrineLights`) and a line on the HUD. A level places them in its dress file, last.
 - A level load (menu, chapter select, next level) forgets the checkpoint; saves are untouched.
+- **Mercy floor** (`RISE_MIN_HP` = 50, `CheckpointState.ts`; applied in `riseAgain`): a rise restores health as recorded but never less than 50, so a shrine reached at 3 hp is not a death sentence. Armour and the rest come back as recorded; the snapshot itself still records the truth. A restart is unaffected. Pinned in `tests/world/checkpoints.test.ts`.
 - Levels 0-2's trace fixtures did not move: the markers are off their routes and unlit in them.
 - Not done on purpose: no marker in the prologue (a grave opening, a pit and a bridge, no kit
   theme); corpses and gore are not carried across a death; the markers of levels 2-7 sit at the
