@@ -140,7 +140,7 @@ Plan: `docs/superpowers/plans/2026-10-05-deeper-levels.md` (Task 2 and the targe
   decor masses are walls), `regions.ts` (rooms = 2x2-block cells, passages, the graph, loops = `E - V + C`), `metrics.ts` (heights, fights),
   `analyse.ts` (hard validation and metrics), `targets.ts` (`REBUILT`, `TARGETS`, `checkTargets`, `LEGACY_PROBLEMS`). `DoorSite.ts` is the pure half of
   `ExitDoor.ts`'s siting rule, now shared.
-- **Hard validation** every level passes (but for `LEGACY_PROBLEMS`: level 1 `key-no-door` (KNOWN-1) and `exit-door` (grid-edge slab); level 3
+- **Hard validation** every level passes (but for `LEGACY_PROBLEMS`: level 1 had `key-no-door` (KNOWN-1) and `exit-door` (grid-edge slab) until Task 3 rebuilt it; level 3
   `unreachable` (the barrel on a south gallery stretch the ramps cut off) and `exit-door` (freestanding)): exit reachable through required keys
   without a secret, key before door, no softlock (a reachable state that cannot finish), everything reachable, secrets behind secret doors with a reward, exit door sited.
 - **For Tasks 3-9:** a rebuilt level adds its index to `REBUILT` and meets `TARGETS` (Task 3's section); it also leaves `LEGACY_PROBLEMS`. Walkable means
