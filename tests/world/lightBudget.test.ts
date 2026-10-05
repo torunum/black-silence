@@ -8,6 +8,7 @@ import { LIGHT_BUDGET, lampsOf } from "../../src/world/decor/lamps";
 import { addPiece, type Parts } from "../../src/world/decor/parts";
 import { PIECES } from "../../src/world/decor/registry";
 import { GLOW_PIECES, darkShare, isLightGiver, setPieceLight } from "../../src/world/lightmap";
+import { REBUILT } from "../../src/world/structure/targets";
 
 /**
  * THE LIGHT (levels-feel-full plan, Task 3). The player carries a lamp, so a piece of dressing is lit when the
@@ -32,8 +33,8 @@ const LEVELS_567 = [5, 6, 7] as const;
 /** The blocks of the 33x25 lattice (levels 2-7): three columns by three rows of merged rooms. */
 const BLOCKS: Array<[number, number, number, number]> = [];
 for (const [z0, z1] of [[1, 5], [7, 17], [19, 23]]) for (const [x0, x1] of [[1, 7], [9, 23], [25, 31]]) BLOCKS.push([x0, x1, z0, z1]);
-/** Level 1's dark halls, which the lattice does not describe. */
-const HALLS_1: Array<[number, number, number, number]> = [[26, 32, 9, 26], [34, 42, 12, 22], [27, 35, 31, 35]];
+/** Level 1's dark halls (the rebuilt level's: the great hall's east half, the armoury, the ward, the way out), which the lattice does not describe. */
+const HALLS_1: Array<[number, number, number, number]> = [[30, 42, 18, 30], [45, 53, 18, 26], [44, 56, 31, 41], [30, 40, 33, 40]];
 
 describe("the real lights", () => {
   it("gives each level the lamps it was given: five lanterns in the sewers, a furnace and three work lamps in the factory, four bulbs in the womb, three lanterns in the yard", () => {
@@ -50,9 +51,11 @@ describe("the real lights", () => {
     expect(LIGHT_BUDGET, "the budget is level 3's count, the highest before this task").toBe(measured(3) + 4);
   });
 
-  it("leaves levels 1, 2 and 3 exactly the lights they had: levels 1 and 2 are recorded by trace fixtures, level 3 is at the budget", () => {
-    for (const i of [1, 2, 3]) expect(measured(i), `level ${i}`).toBe(baseline.rows[i].lights);
+  it("leaves levels 2 and 3 exactly the lights they had (level 2 is recorded by a trace fixture, level 3 is at the budget), and level 1, rebuilt, inside it", () => {
+    for (const i of [1, 2, 3].filter((n) => !REBUILT.includes(n))) expect(measured(i), `level ${i}`).toBe(baseline.rows[i].lights);
     for (const i of [1, 2, 3]) expect(lampsOf(built(i).decor), `level ${i} has a light-bearing piece`).toEqual([]);
+    // the rebuilt level: 13 torches, the exit and no window: 14 lights, the budget's 17 with a margin of three
+    for (const i of REBUILT) expect(measured(i) + 4, `level ${i} (rebuilt)`).toBeLessThanOrEqual(LIGHT_BUDGET - 3);
   });
 
   it("gives every lamp the strength and reach of a torch's light, and the candles of level 3 none", () => {
@@ -131,8 +134,8 @@ describe("the glow", () => {
     }
   });
 
-  it("adds geometry to the meshes levels 1 and 2 already had and no mesh of its own: their trace fixtures record the scene's children, and the glow cannot move them", () => {
-    for (const i of [1, 2]) {
+  it("adds geometry to the meshes level 2 already had and no mesh of its own: its trace fixture records the scene's children, and the glow cannot move it (level 1's fixture was re-recorded with its rebuild)", () => {
+    for (const i of [1, 2].filter((n) => !REBUILT.includes(n))) {
       const L = built(i), glow = L.decor!.filter((d) => GLOW_PIECES.includes(d.k)), rest = L.decor!.filter((d) => !GLOW_PIECES.includes(d.k));
       expect(glow.length, `level ${i} has glow`).toBeGreaterThan(5);
       expect(meshKeys(L.decor), `level ${i}: the glow brought a mesh with it`).toEqual(meshKeys(rest));

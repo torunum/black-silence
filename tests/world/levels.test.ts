@@ -124,16 +124,16 @@ describe.each(built)("$name", ({ grid }) => {
 });
 
 /**
- * Characterization test for KNOWN-1. Level 1 places a red key and a Guardian
- * miniboss guarding it, but contains no locked door at all — the key does
- * nothing. Phase 0 preserves the bug; this pins it so it cannot spread
- * unnoticed and fails loudly when Phase 4 fixes it.
+ * KNOWN-1, closed. Level 1 placed a red key and a Guardian miniboss guarding it but contained no locked door at all: the key did
+ * nothing, and this test recorded it ("expect level 1"). The level was rebuilt (deeper-levels plan, Task 3) and its key opens the
+ * iron gate in front of the armoury, a door the way to the exit goes through: no level places a key with no locked door, and a
+ * level that does fails here (the structure suite names it too: `key-no-door`).
  */
-it("records levels that place a key with no locked door (KNOWN-1)", () => {
+it("places no key without a locked door (KNOWN-1, closed by level 1's rebuild)", () => {
   const offenders = built
     .filter(({ grid }) => findAll(grid, "K").length > 0 && findAll(grid, "D").length === 0)
     .map(({ name }) => name);
-  expect(offenders).toEqual(["LEVEL 1 — THE GOTHIC DUNGEON"]);
+  expect(offenders).toEqual([]);
 });
 
 /**
@@ -267,7 +267,7 @@ it("every armour tile the authors wrote reaches the item table (KNOWN-11)", () =
   );
   expect(counts).toEqual({
     "PROLOGUE — OUT OF THE PIT": 0,          // the prologue authors none
-    "LEVEL 1 — THE GOTHIC DUNGEON": 1,       // the secret alcove's reward cache
+    "LEVEL 1 — THE GOTHIC DUNGEON": 2,       // rebuilt: the torturer's closet, and the warders' hoard behind a secret door
     "LEVEL 2 — THE ABANDONED CHURCH": 2,
     "LEVEL 3 — THE NECROPOLIS": 3,
     "LEVEL 4 — THE GRAVEYARD": 3,
@@ -275,7 +275,7 @@ it("every armour tile the authors wrote reaches the item table (KNOWN-11)", () =
     "LEVEL 6 — THE FACTORY": 4,
     "LEVEL 7 — THE WOMB": 4,
   });
-  expect(Object.values(counts).reduce((a, b) => a + b, 0)).toBe(20);
+  expect(Object.values(counts).reduce((a, b) => a + b, 0)).toBe(21);   // the reference's twenty, and level 1 (rebuilt) has two where it had one
 });
 
 /**

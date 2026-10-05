@@ -23,7 +23,7 @@ same code as hard validation and fails if this file is out of date.
 | level | walkable | critical path | key | rooms | passages | loops | branches | dead ends | heights | transitions | keys / locked / doors | secrets (pickups) | checkpoints (path fraction) | enemies | arenas | exit door |
 | --- | ---: | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | ---: | ---: | --- |
 | 0 · prologue · OUT OF THE PIT | 668 | 45 | - | 1 | 0 | 0 | 0 | 0 | 12 | 59 | 0 / 0 / 0 | 0 (-) | - | 8 (320 + 0 boss hp) | 1 | wall |
-| 1 · THE GOTHIC DUNGEON | 691 | 42 | optional | 4 | 3 | 0 | 0 | 0 | 1 | 0 | 1 / 0 / 3 | 1 (3) | 38%, 86% forced | 14 (590 + 700 boss hp) | 1 | edge |
+| 1 · THE GOTHIC DUNGEON | 1099 | 123 | required, 26 steps off the way | 14 | 12 | 1 | 3 | 4 | 15 | 28 | 1 / 1 / 7 | 2 (4, 4) | 55% forced, 79% forced | 25 (1115 + 700 boss hp) | 1 | wall |
 | 2 · THE ABANDONED CHURCH | 586 | 66 | required, 32 steps off the way | 12 | 11 | 1 | 1 | 1 | 1 | 0 | 1 / 2 / 9 | 1 (4) | 26% forced, 61% | 18 (790 + 2500 boss hp) | 1 | wall |
 | 3 · THE NECROPOLIS | 590 | 44 | optional | 13 | 14 | 3 | 4 | 2 | 6 | 49 | 1 / 1 / 15 | 1 (5) | 91%, 84% | 21 (1500 + 3950 boss hp) | 0 | freestanding |
 | 4 · THE GRAVEYARD | 623 | 44 | optional | 6 | 8 | 4 | 2 | 0 | 1 | 0 | 1 / 1 / 9 | 1 (5) | 91%, 84% | 20 (725 + 3050 boss hp) | 2 | wall |
@@ -48,8 +48,14 @@ Regions with enemies, in reading order. *ratio* is ammunition-worth over hit poi
 
 | region | kind | cells | enemies | hp | boss hp | ammo worth | health | armour | ratio |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| x 9-41, z 2-26 | room | 557 | 12 | 490 | 700 | 1952 | 50 | 0 | 1.64 |
-| x 27-35, z 31-35 | room | 45 | 2 | 100 | 0 | 1632 | 50 | 0 | 16.32 |
+| x 8-27, z 2-7 | room | 120 | 2 | 100 | 0 | 1632 | 0 | 0 | 16.32 |
+| x 34-43, z 3-11 | room | 90 | 4 | 170 | 0 | 3378 | 75 | 0 | 19.87 |
+| x 17-21, z 9-12 | room | 20 | 1 | 40 | 0 | 2244 | 0 | 0 | 56.10 |
+| x 3-16, z 14-22 | room | 126 | 3 | 125 | 0 | 1938 | 25 | 0 | 15.50 |
+| x 24-42, z 18-30 | room | 235 | 8 | 370 | 0 | 3900 | 125 | 0 | 10.54 |
+| x 45-53, z 18-26 | room | 81 | 3 | 170 | 0 | 5340 | 150 | 50 | 31.41 |
+| x 18-22, z 21-27 | room | 35 | 1 | 40 | 0 | 4512 | 100 | 50 | 112.80 |
+| x 44-56, z 31-41 | room | 143 | 3 | 100 | 700 | 5646 | 175 | 50 | 7.06 |
 
 ### 2 · THE ABANDONED CHURCH
 
@@ -126,9 +132,6 @@ Regions with enemies, in reading order. *ratio* is ammunition-worth over hit poi
 Every level passes the hard validation (`analyse().problems`: reachability, key before door, no softlock, everything reachable, secrets behind secret doors, the exit door sited) except for these, which the old
 levels already had and which a rebuilt level must not (`LEGACY_PROBLEMS`, `src/world/structure/targets.ts`):
 
-- **1 · LEVEL 1 — THE GOTHIC DUNGEON**
-  - `key-no-door`: a key ((23,4)) and no locked door to open with it
-  - `exit-door`: the exit door at (31,33) has no wall within 3 cells on its own floor (edge)
 - **3 · LEVEL 3 — THE NECROPOLIS**
   - `unreachable`: 'O' (prop) stranded at (18,17)
   - `exit-door`: the exit door at (16,16) has no wall within 3 cells on its own floor (freestanding)
@@ -139,21 +142,21 @@ A level listed in `REBUILT` (`src/world/structure/targets.ts`) must meet every n
 
 | target | number | measured today |
 | --- | --- | --- |
-| critical path | 1.8-3x the old level's, and at least 80 steps | 1: 42, 2: 66, 3: 44, 4: 44, 5: 44, 6: 44, 7: 32 |
-| loops | at least 1 | 1: 0, 2: 1, 3: 3, 4: 4, 5: 3, 6: 3, 7: 3 |
-| key hunt | a key, a locked door on the way, the key at least 20 steps off it | 1: none, 2: 32, 3: none, 4: none, 5: none, 6: none, 7: none |
-| secrets | at least 2, each with at least 2 pickups behind it | 1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1, 7: 1 |
+| critical path | 1.8-3x the old level's, and at least 80 steps | 1: 123, 2: 66, 3: 44, 4: 44, 5: 44, 6: 44, 7: 32 |
+| loops | at least 1 | 1: 1, 2: 1, 3: 3, 4: 4, 5: 3, 6: 3, 7: 3 |
+| key hunt | a key, a locked door on the way, the key at least 20 steps off it | 1: 26, 2: 32, 3: none, 4: none, 5: none, 6: none, 7: none |
+| secrets | at least 2, each with at least 2 pickups behind it | 1: 2, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1, 7: 1 |
 | arena | at least 1 | 1: 1, 2: 1, 3: 0, 4: 2, 5: 3, 6: 1, 7: 2 |
-| verticality | at least 3 floor heights and 2 transitions | 1: 1/0, 2: 1/0, 3: 6/49, 4: 1/0, 5: 1/0, 6: 1/0, 7: 1/0 |
-| rooms, branch points | at least 8 rooms, 2 branch points | 1: 4/0, 2: 12/1, 3: 13/4, 4: 6/2, 5: 5/3, 6: 8/3, 7: 7/3 |
-| checkpoint | one that every route passes, between 40% and 60% of the critical path | 1: no, 2: no, 3: no, 4: no, 5: no, 6: no, 7: no |
+| verticality | at least 3 floor heights and 2 transitions | 1: 15/28, 2: 1/0, 3: 6/49, 4: 1/0, 5: 1/0, 6: 1/0, 7: 1/0 |
+| rooms, branch points | at least 8 rooms, 2 branch points | 1: 14/3, 2: 12/1, 3: 13/4, 4: 6/2, 5: 5/3, 6: 8/3, 7: 7/3 |
+| checkpoint | one that every route passes, between 40% and 60% of the critical path | 1: yes, 2: no, 3: no, 4: no, 5: no, 6: no, 7: no |
 | fights | ammunition worth at least 2x the rank-and-file hit points of a region; 0.6x all of them before a boss, with 50 health and 50 armour on the way | see the tables above |
 
-Old critical paths (the 1x of "about twice"): 1: 42, 2: 66, 3: 44, 4: 44, 5: 44, 6: 44, 7: 32. `REBUILT` is empty: no level has been rebuilt yet.
+Old critical paths (the 1x of "about twice"): 1: 42, 2: 66, 3: 44, 4: 44, 5: 44, 6: 44, 7: 32. `REBUILT` is 1.
 
 What the levels as built miss, by the targets (a rebuilt level starts from none of these):
 
-- 1: 10 unmet
+- 1: 0 unmet
 - 2: 6 unmet
 - 3: 5 unmet
 - 4: 8 unmet

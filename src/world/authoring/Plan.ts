@@ -86,6 +86,7 @@ export class LevelPlan {
   private doors: Array<{ x: number; z: number; kind: DoorKind }> = [];
   private dressing: Queued[] = [];
   private spawned = false;
+  private head: number | undefined;
 
   constructor(W: number, H: number, readonly theme?: Theme) {
     this.W = W; this.H = H;
@@ -178,6 +179,12 @@ export class LevelPlan {
     return this;
   }
 
+  /**
+   * A ceiling `h` above every open cell whose floor is raised (a ceiling map; a room's own `ceil` wins): stairs, graded corridors and
+   * rooms on a higher floor all keep the same headroom without each being told. Cells at floor 0 keep the level's 3.4.
+   */
+  headroom(h: number): this { this.head = h; return this; }
+
   /** A door in a wall line. Checked at `build()`. */
   door(x: number, z: number, kind: DoorKind): this { this.doors.push({ x, z, kind }); return this; }
   /** Pillars around a room's interior, a ring `step` apart (default 3), inset by one. */
@@ -269,9 +276,10 @@ export class LevelPlan {
       g[z][x] = DOOR[kind];
     }
     const out: BuiltLevel = { g, W: this.W, H: this.H };
-    if (hm.some((r) => r.some((h) => h))) out.hmap = hm;
-    if (this.ceils.length) {
+    if (hm.some((r) => r.some((h) => h))) { out.hmap = hm; out.lift = true; }
+    if (this.ceils.length || this.head !== undefined) {
       const cm = Array.from({ length: this.H }, () => Array(this.W).fill(0));
+      if (this.head !== undefined) for (let z = 0; z < this.H; z++) for (let x = 0; x < this.W; x++) if (hm[z][x] > 0 && !"#WI+DS".includes(g[z][x])) cm[z][x] = Math.round((hm[z][x] + this.head) * 100) / 100;
       for (const { r, h } of this.ceils) for (let z = r.z0; z <= r.z1; z++) for (let x = r.x0; x <= r.x1; x++) if (!"#WI+DS".includes(g[z][x])) cm[z][x] = h;   // a solid cell keeps the default: Ceiling.ts
       out.cmap = cm;
     }

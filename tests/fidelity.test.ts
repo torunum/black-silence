@@ -143,7 +143,8 @@ const LEVEL2_PEW_CELLS: ReadonlyArray<readonly [number, number]> = [
  * `tests/world/rosterReach.test.ts`'s `PLACED` comment documents).
  */
 const ARMOUR_CELLS: Readonly<Record<string, ReadonlyArray<readonly [number, number]>>> = {
-  "LEVEL 1 — THE GOTHIC DUNGEON": [[40, 25]],
+  // level 1 is no longer here: it was rebuilt (REBUILT_LEVEL_1 below) and has no cell to compare; its armour is pinned in
+  // tests/integration/armourPickup.test.ts, and the other nineteen tiles are the ones still compared
   "LEVEL 2 — THE ABANDONED CHURCH": [[28, 9], [4, 23]],
   "LEVEL 3 — THE NECROPOLIS": [[30, 20], [4, 21], [20, 21]],
   "LEVEL 4 — THE GRAVEYARD": [[30, 20], [4, 21], [20, 21]],
@@ -166,6 +167,20 @@ const ARMOUR_CELLS: Readonly<Record<string, ReadonlyArray<readonly [number, numb
  */
 const REBUILT_PROLOGUE = "PROLOGUE — OUT OF THE PIT";
 
+/**
+ * The fourth deliberate divergence, and the second whole-level one: level 1, THE GOTHIC DUNGEON (the deeper-levels plan, Task 3).
+ * The owner said, on 2026-10-05, "Make the levels longer and a bit more complex": level 1 was 42 steps from the spawn to the exit,
+ * one flat floor, no loop, a key that opened nothing (KNOWN-1). It is rebuilt with the level-design toolkit
+ * (`src/world/authoring/Plan.ts`) to the numbers `src/world/structure/targets.ts` sets and `docs/level-structure.md` measures, so
+ * the grid, the heights and the roster are no longer the reference's and no cell-for-cell comparison means anything. What is
+ * pinned in its place, so this file still reads the frozen master and still says something true about the port:
+ *  - the reference's level 1 is still the 44x36 single-floor map it always was (the frozen master is unedited);
+ *  - the port's is a different size and map (hundreds of cells differ), has the three floors and the shape the plan asked for;
+ *  - it keeps the reference's roster, letter for letter (no enemy kind appears or goes), its Guardian `U` and its red key.
+ * The other six levels stay pinned to the reference cell for cell, below.
+ */
+const REBUILT_LEVEL_1 = "LEVEL 1 — THE GOTHIC DUNGEON";
+
 /** Every cell where two grids disagree, as `x,z ref->ours` strings. */
 function gridDiff(ours: string[][], ref: string[][]): string[] {
   const out: string[] = [];
@@ -186,7 +201,7 @@ describe("LEVELS vs. reference", () => {
   });
 
   it.each(LEVELS.map((def, i) => [def.name, def, refLevels[i]] as const))(
-    "%s builds the reference grid, cell for cell, apart from level 2's eight pews, the twenty armour tiles and level 1's supply moves",
+    "%s builds the reference grid, cell for cell, apart from level 2's eight pews and the twenty armour tiles; the prologue and level 1 are rebuilt and pinned instead",
     (name, def, refDef) => {
       const built = def.build();
       const refBuilt = refDef.build();
@@ -197,17 +212,33 @@ describe("LEVELS vs. reference", () => {
         expect(built.zones, "and it is zoned: churchyard, crypt, hell, climb").toBeDefined();
         return;
       }
+      if (name === REBUILT_LEVEL_1) {
+        expect([refBuilt.W, refBuilt.H], "the frozen reference's level 1").toEqual([44, 36]);
+        expect(refBuilt.hmap, "the reference's level 1 is one floor").toBeUndefined();
+        expect(refBuilt.g[31][5], "the reference's level 1 starts in a chamber in its south-west").toBe("P");
+        expect([built.W, built.H], "the port's level 1 is a bigger map").toEqual([58, 44]);
+        expect(gridDiff(built.g, refBuilt.g).length, "the port's level 1 is a different map").toBeGreaterThan(300);
+        const heights = new Set(built.hmap!.flat());
+        expect([...heights].filter((h) => [0, 1.2, 2.4].includes(h)).sort(), "three tiers: the dungeon, the warders' and the upper gaol").toEqual([0, 1.2, 2.4]);
+        const count = (g: string[][], ch: string): number => g.flat().filter((c) => c === ch).length;
+        expect(count(built.g, "D"), "the key opens a gate").toBe(1);
+        expect(count(built.g, "K")).toBe(1);
+        expect(count(built.g, "S"), "two secrets, where the reference had one").toBe(2);
+        const roster = (g: string[][]): string => [...new Set(g.flat().filter((c) => c in ENEMY_DEFS))].sort().join("");
+        // the reference's `A` in its secret alcove is KNOWN-11's armour spelt as the Mancubus: it was never an enemy the port kept
+        expect(roster(built.g), "the same kinds of enemy as the reference's level 1").toBe(roster(refBuilt.g).replace("A", ""));
+        expect(roster(built.g)).toBe("Ufgjmstz");
+        expect(count(built.g, "U"), "one Guardian").toBe(1);
+        expect(built.zones).toBeUndefined();
+        expect(built.segs).toBeUndefined();
+        return;
+      }
       expect(built.zones, `${name} has no zones`).toBeUndefined();
       const pews = name === "LEVEL 2 — THE ABANDONED CHURCH"
         ? LEVEL2_PEW_CELLS.map(([x, z]) => `${x},${z} V->v`)
         : [];
       const armour = (ARMOUR_CELLS[name] ?? []).map(([x, z]) => `${x},${z} A->r`);
-      // levels-feel-full plan, Task 2 (argued in level1.ts and src/world/levels/dress1.ts): the ammo box and the health pack that lay
-      // at the spawn moved to the great hall's south rim, and two explosive barrels stand in the hall
-      const supply = name === "LEVEL 1 — THE GOTHIC DUNGEON"
-        ? ["4,32 a->.", "9,32 h->.", "19,25 .->a", "26,25 .->h", "28,16 .->O", "26,21 .->O"]
-        : [];
-      const expected = [...pews, ...armour, ...supply].sort();
+      const expected = [...pews, ...armour].sort();
       expect(gridDiff(built.g, refBuilt.g)).toEqual(expected);
       expect(built.hmap).toEqual(refBuilt.hmap);
       expect(built.segs).toEqual(refBuilt.segs);

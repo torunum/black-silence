@@ -5,6 +5,8 @@ import { analyse, type Structure } from "../../src/world/structure/analyse";
 import { structureMarkdown } from "../../src/world/structure/markdown";
 import { checkTargets, LEGACY_PROBLEMS, OLD_CRITICAL, REBUILT, TARGETS } from "../../src/world/structure/targets";
 import { buildCharnel } from "../support/proofLevel";
+import { evalReference, REF, refSource } from "../support/reference";
+import type { BuiltLevel } from "../../src/world/LevelBuilder";
 
 /**
  * EVERY LEVEL, THROUGH THE STRUCTURE SUITE (deeper-levels plan, Task 2; `src/world/structure/`). Two things:
@@ -105,8 +107,10 @@ describe("the targets themselves", () => {
     expect(meet(proof)).toEqual([]);
   });
 
-  it("are missed, number by number, by the levels as they were: level 1 fails nine of them, level 2 six", () => {
-    const l1 = checkTargets(1, built[1].s).join("\n"), l2 = checkTargets(2, built[2].s).join("\n");
+  it("are missed, number by number, by the levels as they were: level 1 (the frozen reference's, which the rebuild replaced) fails nine of them, level 2 six", () => {
+    // level 1 is rebuilt and meets the targets (above); "as it was" is the reference's own level 1, the grid it had: no dressing, so no checkpoints and no masses
+    const old1 = analyse(evalReference<() => BuiltLevel>([refSource(REF.levelBuilder), refSource(REF.put1), refSource(REF.buildLevel1)], "buildLevel1")());
+    const l1 = checkTargets(1, old1).join("\n"), l2 = checkTargets(2, built[2].s).join("\n");
     expect(l1).toMatch(/critical path is 42 steps, wanted 80-126/);
     expect(l1).toMatch(/0 loops/);
     expect(l1).toMatch(/no key hunt/);
@@ -116,7 +120,7 @@ describe("the targets themselves", () => {
     expect(l1).toMatch(/4 rooms/);
     expect(l1).toMatch(/0 branch points/);
     expect(l1).toMatch(/no checkpoint every route passes/);
-    expect(checkTargets(1, built[1].s).length).toBeGreaterThanOrEqual(9);
+    expect(checkTargets(1, old1).length).toBeGreaterThanOrEqual(9);
     expect(l2).not.toMatch(/no key hunt/);   // level 2 has one: the key is 32 steps off the way
     expect(l2).not.toMatch(/loops/);
     expect(l2).toMatch(/critical path is 66 steps, wanted 119-198/);

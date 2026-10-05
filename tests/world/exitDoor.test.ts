@@ -26,8 +26,8 @@ import { floorHeightAt, solidAt, ceilHeightAt } from "../../src/world/Collision"
  * 1. every level but the last has an exit door, every level but the prologue (which has its grave) an
  *    entrance, and the womb has no exit (its end is the win screen);
  * 2. each theme has a door of its own: eight levels, eight styles, eight different pieces of building;
- * 3. a door stands in a wall with floor the player can reach in front of it (level 1's and level 3's
- *    bring a wall of their own, and are the only ones that do), under the ceiling, in its cell, with the
+ * 3. a door stands in a wall with floor the player can reach in front of it (level 3's brings a wall of its
+ *    own, and is the only one that does: level 1's did, at the grid's edge, until it was rebuilt), under the ceiling, in its cell, with the
  *    exit *cell* where it always was;
  * 4. the five boss levels' doors are sealed — dark, no light, nothing to touch — until the boss dies;
  * 5. opening one: the boss rule, E facing it, walking into it;
@@ -156,8 +156,8 @@ describe("a door stands in a wall, in front of floor the player can reach", () =
     });
   }
 
-  it("brings a wall of its own at level 1's grid edge and level 3's ledge, and nowhere else", () => {
-    expect([...new Set(slabs)].sort()).toEqual([1, 3]);
+  it("brings a wall of its own at level 3's ledge, and nowhere else (level 1's grid edge went with the rebuild: its exit stands in a wall)", () => {
+    expect([...new Set(slabs)].sort()).toEqual([3]);
   });
 
   it("is reached on foot: from the spawn, over the game's step-up of 1.2, to the cell in front of every exit", () => {
@@ -200,7 +200,7 @@ describe("the exit is where it always was", () => {
     loadLevel(0);
     expect(world.exitPos).toEqual({ x: 25.5 * CELL, z: 9.5 * CELL });
     loadLevel(1);
-    expect(world.exitPos).toEqual({ x: 31.5 * CELL, z: 33.5 * CELL });
+    expect(world.exitPos).toEqual({ x: 31.5 * CELL, z: 36.5 * CELL });   // (31.5, 33.5 before level 1 was rebuilt)
   });
 
   it("builds the five boss levels' doors for the cell openExit takes — the first of EXIT_CELLS that is open ground — and no other level's", () => {

@@ -44,11 +44,12 @@ import { doorClaims } from "./ExitDoor";
  * a zoned level (the prologue's churchyard stands 4.2 above its hell) they
  * are lifted here onto the floor under them; items keep that height as they
  * bob (`Interact.ts`'s `itemsTick` reads `y0`) and a torch's embers rise
- * from its own flame (`y`). Breakable props are not lifted, because a shot
- * finds them between y=0 and their height (`Hitscan.ts`): a level must not
- * put one on raised ground, and `tests/world/prologue.test.ts` says so for
- * the prologue. Unzoned levels are not touched, so level 3's torches on its
- * raised tomb stay where the reference put them.
+ * from its own flame (`y`). Breakable props are not lifted on a zoned level, because a shot
+ * finds them between y=0 and their height (`Hitscan.ts`): the prologue must not
+ * put one on raised ground, and `tests/world/prologue.test.ts` says so. A level
+ * that opts in (`BuiltLevel.lift`, level 1) has them lifted, mesh and height both
+ * (the shot's range is then y=0 to the floor plus their height). Every other level
+ * is not touched, so level 3's torches on its raised tomb stay where the reference put them.
  */
 
 const MESH_NAME = { decor: "decor", clutter: "decorClutter", grass: "decorGrass" } as const;
@@ -104,9 +105,14 @@ function buildSky(scene: THREE.Scene): void {
 
 interface Lifted { x: number; z: number; sp: THREE.Object3D; L?: THREE.Object3D; y?: number; y0?: number }
 
-/** Torches, candles and items onto the raised floor under them — zoned levels only (see the header). */
-function liftDressing(scene: THREE.Scene): void {
-  if (!world.zones) return;
+/**
+ * Torches, candles and items onto the raised floor under them. Zoned levels (the prologue) always; a level that asks for it (`BuiltLevel.lift`: level 1's tiers, which
+ * `LevelPlan` sets when a level has raised floors) too, and its props as well, because the loader stands every one of them at floor 0: a torch on a
+ * 2.4 floor would burn under it. A level that asks for nothing is untouched (level 3's tomb keeps its torches where the reference put them,
+ * `tests/world/zones.test.ts`): nothing here runs, and nothing moves.
+ */
+function liftDressing(scene: THREE.Scene, L: BuiltLevel): void {
+  if (!world.zones && !L.lift) return;
   for (const tc of world.torches as unknown as Lifted[]) {
     const fy = floorHeightAt(tc.x, tc.z);
     if (fy <= 0) continue;
@@ -118,6 +124,11 @@ function liftDressing(scene: THREE.Scene): void {
   for (const it of world.items as unknown as Lifted[]) {
     it.y0 = .5 + floorHeightAt(it.x, it.z); it.sp.position.y = it.y0;
   }
+  if (world.zones) return;
+  for (const p of world.props as unknown as Array<{ x: number; z: number; m: THREE.Object3D; hgt: number }>) {
+    const fy = floorHeightAt(p.x, p.z);
+    if (fy > 0) { p.m.position.y += fy; p.hgt += fy; }
+  }
 }
 
 /** Called once by `loadLevel`, after every grid cell has been built. */
@@ -127,5 +138,5 @@ export function dressLevel(scene: THREE.Scene, L: BuiltLevel): void {
   if (specs.length) buildPieces(scene, specs);
   else buildFire(scene, [], []);   // no fire here: drop the last level's pool
   buildSky(scene);
-  liftDressing(scene);
+  liftDressing(scene, L);
 }

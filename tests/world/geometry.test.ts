@@ -99,20 +99,24 @@ describe("the level's wall/pillar/platform geometry is instanced, not one Mesh p
     expect(instanced.some((m) => (m as THREE.InstancedMesh).count > 50)).toBe(true);
   });
 
-  it("builds level 1's height-map-free walls/pillars the same way", () => {
+  it("builds level 1's walls, pillars and tiers the same way", () => {
     loadLevel(1);
     const scene = renderState.scene as THREE.Scene;
-    // Level 1's measured post-merge count is 93 (was 295); no headroom
-    // maths beyond the prologue's — same shape, different level.
-    expect(scene.children.length).toBeLessThan(150);
+    // The reference's level 1 measured 93 post-merge children (was 295). It was rebuilt (deeper-levels plan, Task 3): 25 enemies (a
+    // sprite and a blob each), some fifty pickups, thirteen torches (post, flame and light each), a ceiling map's two meshes, the
+    // platforms of its three tiers and a few dozen merged decor meshes make it 186. A Mesh per wall cell (its 1,100 walkable
+    // cells have 900-odd exposed walls) would land far above 260, which is what this guards.
+    expect(scene.children.length).toBeLessThan(260);
     expect(scene.children.some((c) => (c as THREE.InstancedMesh).isInstancedMesh)).toBe(true);
+    expect(scene.children.some((c) => c.name === "platform"), "the tiers are platforms").toBe(true);
+    expect((scene.children.find((c) => c.name === "wall") as THREE.InstancedMesh).count, "a wall mesh collapsing hundreds of cells").toBeGreaterThan(300);
   });
 
   it("instances height-map platforms too, on a level that actually has them", () => {
-    // Levels 0 and 1 have no elevated cells (world.heightMap's own values
+    // Level 0 has no elevated cells (world.heightMap's own values
     // are all <=0 even where the map exists), so the platform branch's
-    // `if(platMats.length)` never fires for either — level 3 does have
-    // real platforms and is what actually exercises that code path.
+    // `if(platMats.length)` never fires for it — level 3 has real platforms
+    // (and level 1, since its rebuild, has three tiers of them).
     loadLevel(3);
     const scene = renderState.scene as THREE.Scene;
     const instanced = scene.children.filter((c) => (c as THREE.InstancedMesh).isInstancedMesh);
