@@ -276,7 +276,7 @@ describe("the pickups and props that moved, and the ones that did not", () => {
     const g = built(1).g;
     for (let z = 3; z <= 6; z++) for (let x = 2; x <= 6; x++) expect(["floor", "spawn", "torch"], `(${x},${z})`).toContain(classifyGlyph(g[z][x]));
     for (let z = 2; z <= 7; z++) for (let x = 8; x <= 12; x++) expect(["floor", "pickup", "torch"], `(${x},${z})`).toContain(classifyGlyph(g[z][x]));
-    expect(measureLevel(built(1)).pickupsTotal).toBe(35);
+    expect(measureLevel(built(1)).pickupsTotal).toBe(43);
   });
 
   it("level 1: two explosive barrels stand in the great hall, and the one crate in the armoury", () => {

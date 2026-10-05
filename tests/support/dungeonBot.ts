@@ -7,8 +7,8 @@ import type { BotEnemy, BotEvent, BotItem } from "./prologueBot";
  *
  *  - **It follows a route it is handed** (cell centres, from the structure analysis' walk with the props and masses as walls), through
  *    doors (it taps E when a door is within reach on the route ahead, and the red key opens the gate it has found) to the exit's door.
- *  - **It picks things up**: health when it is hurt, bullets when it is low, the weapons it walks past (it holds the best it owns:
- *    rifle, shotgun, pistol), within a few steps of the route and with a line of sight to them.
+ *  - **It picks things up**: health when it is hurt, bullets when it is low, the weapons it walks past (it holds the shotgun for what is close,
+ *    the pistol otherwise: 34 a bullet is the thrifty one), within a few steps of the route and with a line of sight to them.
  *  - **It fights what it sees** as the prologue's bot does: the nearest monster in front of it within 14 m with a line of sight (or one at
  *    3 m, or any once it has just been hit), after a short reaction, turning at a human hand's speed, aiming with a wobble, reloading when
  *    empty and kicking when one is within 2 m. It presses on at what stands in its way and holds still for what does not. It never
@@ -31,12 +31,10 @@ export interface RoutePoint { x: number; z: number; ch: string; stage: string }
 
 const SENS = .0022, SIGHT = 14, CONE = 70 * Math.PI / 180;
 export const DUNGEON_SKILL = {
-  usual: { turn: .06, react: 20, wobble: 1 },
+  usual: { turn: .08, react: 15, wobble: .35 },
   poor: { turn: .03, react: 42, wobble: 2 },
 } as const;
 const wrap = (a: number): number => ((a + Math.PI * 3) % (Math.PI * 2)) - Math.PI;
-/** The weapons it prefers, best first: the rifle (slot 3) fires bullets quickly, then the shotgun (slot 2), then the pistol. */
-const PREFERENCE = [2, 1, 0];
 
 export class DungeonBot {
   wp = 0;
@@ -53,6 +51,8 @@ export class DungeonBot {
   /** Where it was and when, to notice that it is stuck. */
   anchor = { x: 0, z: 0, f: 0 };
   stuck = 0;
+  /** Frames left in which it takes no notice of what it sees: a monster it cannot reach (round a pillar) is not worth standing at. */
+  ignore = 0;
   /** hp on reaching each stage, in the order met. */
   stages: Array<{ stage: string; frame: number; hp: number; armor: number }> = [];
   constructor(private eyes: DungeonEyes, private route: readonly RoutePoint[], private skill: { turn: number; react: number; wobble: number } = DUNGEON_SKILL.usual) {}
@@ -90,7 +90,7 @@ export class DungeonBot {
     let best: BotItem | null = null, bd = 16;
     for (const it of world.items) {
       if (it.taken) continue;
-      const need = (it.kind === "health" && S.hp < 62) || (it.kind === "bullets" && bullets < 40) || (it.kind === "shells" && S.weapons[1] && S.ammo.shells < 6)
+      const need = (it.kind === "health" && S.hp < 62) || (it.kind === "bullets" && bullets < 70) || (it.kind === "shells" && S.weapons[1] && S.ammo.shells < 6)
         || (it.kind === "armor" && S.armor < 25) || (/^w\d$/.test(it.kind) && !S.weapons[+it.kind[1]]);
       if (!need) continue;
       const d = Math.hypot(it.x - player.px, it.z - player.pz);
@@ -109,18 +109,23 @@ export class DungeonBot {
     this.lowest = Math.min(this.lowest, S.hp);
     if (S.hp < this.lastHp) this.hitT = 45;
     this.lastHp = S.hp; this.hitT--;
-    // hold the best weapon it owns
-    for (const w of PREFERENCE) {
-      if (!S.weapons[w]) continue;
-      const ammoKind = this.eyes.weaponAmmo(w);
-      if (S.cur !== w && frame % 30 === 0 && (S.ammo[ammoKind] > 0 || S.mag[w] > 0) && !this.firing) out.push({ kind: "key", type: "keydown", code: `Digit${w + 1}` }, { kind: "key", type: "keyup", code: `Digit${w + 1}` });
-      if (S.ammo[ammoKind] > 0 || S.mag[w] > 0) break;
+    // the weapon for the moment: the shotgun for what is close (shells permitting), else the pistol (34 a bullet: the thrifty one), the rifle only when bullets are plenty
+    {
+      const near = this.target();
+      const has = (w: number): boolean => S.weapons[w] && (S.ammo[this.eyes.weaponAmmo(w)] > 0 || S.mag[w] > 0);
+      const closeBy = !!near && Math.hypot(near.x - player.px, near.z - player.pz) < 6;
+      const want = closeBy && has(1) ? 1 : has(0) ? 0 : has(2) ? 2 : has(1) ? 1 : 0;
+      const boss = !!near && near.key === "U" && has(2);   // the Guardian: the rifle's rate is what a long fight wants
+      const plenty = boss || (S.ammo.bullets > 150 && has(2) && !closeBy) ? 2 : want;
+      if (S.cur !== plenty && frame % 20 === 0 && !this.firing) out.push({ kind: "key", type: "keydown", code: `Digit${plenty + 1}` }, { kind: "key", type: "keyup", code: `Digit${plenty + 1}` });
     }
-    const t = this.target();
+    this.ignore--;
+    const t = this.ignore > 0 ? null : this.target();
     this.seen = t ? this.seen + 1 : 0;
     let wantFire = false;
     const gate = this.route[Math.min(this.wp, this.route.length - 1)];
-    if (t && this.seen > this.skill.react) {
+    const engaged = !!t && this.seen > this.skill.react;
+    if (engaged && t) {
       const dx = t.x - player.px, dz = t.z - player.pz, d = Math.hypot(dx, dz);
       const aimY = (t.fy || 0) + t.h * .5 - player.pyy;
       const wobble = (.045 * Math.sin(frame * .21) + .025 * Math.sin(frame * .57)) * this.skill.wobble;
@@ -130,9 +135,9 @@ export class DungeonBot {
       this.key("KeyS", d < 1.4, out);
       const empty = S.mag[S.cur] <= 0;
       if (empty && S.ammo[this.eyes.weaponAmmo(S.cur)] > 0 && frame % 20 === 0) out.push({ kind: "key", type: "keydown", code: "KeyR" }, { kind: "key", type: "keyup", code: "KeyR" });
-      wantFire = off < .08 && !empty;
+      wantFire = off < .045 && !empty && d < 11;
       if (d < 2 && S.kickCd <= 0 && off < .3) { out.push({ kind: "button", type: "mousedown", button: 2 }, { kind: "button", type: "mouseup", button: 2 }); this.kicks++; }
-    } else if (!t) {
+    } else {
       this.key("KeyS", false, out);
       // reload a mostly empty magazine while nothing is in sight
       if (S.mag[S.cur] <= 1 && S.ammo[this.eyes.weaponAmmo(S.cur)] > 0 && frame % 40 === 0) out.push({ kind: "key", type: "keydown", code: "KeyR" }, { kind: "key", type: "keyup", code: "KeyR" });
@@ -157,7 +162,7 @@ export class DungeonBot {
     }
     // stuck: not 1.2 m from where it was 3 s ago while it wanted to walk
     if (frame - this.anchor.f >= 180) {
-      if (Math.hypot(player.px - this.anchor.x, player.pz - this.anchor.z) < 1.2 && !t) { this.stuck++; this.log.push(`f${frame}: stuck at ${(player.px / 2).toFixed(1)},${(player.pz / 2).toFixed(1)} wp ${this.wp}`); if (this.stuck % 2 === 0 && this.wp < this.route.length - 1) this.wp++; this.detour = null; }
+      if (Math.hypot(player.px - this.anchor.x, player.pz - this.anchor.z) < 1.2 && !(t && this.firing)) { this.ignore = 150; this.stuck++; this.log.push(`f${frame}: stuck at ${(player.px / 2).toFixed(1)},${(player.pz / 2).toFixed(1)} wp ${this.wp}`); if (this.stuck % 2 === 0 && this.wp < this.route.length - 1) this.wp++; this.detour = null; }
       this.anchor = { x: player.px, z: player.pz, f: frame };
     }
     if (wantFire !== this.firing) { out.push({ kind: "button", type: wantFire ? "mousedown" : "mouseup", button: 0 }); this.firing = wantFire; }

@@ -86,6 +86,6 @@ export function dressLevel1(d: Decorator, r: Rooms): void {
   d.clutter({ density: .55, seed: 9, kinds: ["skullpile", "bonesLoose", "rubble", "straw"], where: (x, z) => r.hoard1.contains(x, z) || r.hoard2.contains(x, z) });
 
   // THE LIGHT: glow only (braziers), where the torches leave a room dark
-  for (const [x, z] of [[11, 3], [24, 6], [8, 7], [34, 9], [43, 3], [25, 19], [41, 19], [24, 29], [42, 29], [45, 18], [53, 26], [45, 26], [46, 32], [56, 32], [56, 40], [33, 40], [40, 34],
+  for (const [x, z] of [[11, 3], [24, 6], [8, 7], [34, 9], [43, 3], [25, 19], [41, 19], [24, 29], [42, 29], [45, 18], [53, 26], [45, 26], [53, 32], [46, 36], [55, 37], [33, 40], [40, 34],
     [5, 15], [16, 20], [12, 22], [20, 22], [20, 26]]) d.tryPlace("brazier", x, z);
 }

@@ -74,24 +74,24 @@ export function buildLevel1(): BuiltLevel {
   lv.spawn(spawn.at(1, 2)).key(undercroft.at(9, 3)).exit(exit.at(1, 3));
 
   // ---- the quiet: the spawn cell and the cell block's west end hold nothing. Then the rising fights.
-  lv.enemy("z", block.at(13, 1), block.at(17, 4)).enemy("j", block.at(18, 1));          // the cell block
+  lv.enemy("z", block.at(13, 1), block.at(17, 4));                                  // the cell block
   lv.enemy("s", cellC.at(3, 2));
   lv.enemy("g", undercroft.at(6, 4), undercroft.at(10, 6)).enemy("t", undercroft.at(11, 4));   // the undercroft
-  lv.enemy("j", guard.at(7, 2)).enemy("f", guard.at(3, 6), guard.at(7, 6)).enemy("m", guard.at(5, 3));   // the guard room
-  lv.enemy("z", hall.at(5, 2), hall.at(15, 3)).enemy("f", hall.at(3, 9)).enemy("g", hall.at(14, 10)).enemy("m", hall.at(9, 4))
-    .enemy("t", hall.at(10, 8)).enemy("s", hall.at(5, 6)).enemy("j", hall.at(12, 7));   // the hall: the arena
+  lv.enemy("j", guard.at(7, 2)).enemy("f", guard.at(3, 6)).enemy("m", guard.at(5, 3));   // the guard room
+  lv.enemy("z", hall.at(9, 4), hall.at(15, 5), hall.at(1, 10)).enemy("m", hall.at(8, 8)).enemy("j", hall.at(12, 7))
+    .enemy("f", hall.at(2, 6)).enemy("g", hall.at(15, 11)).enemy("s", hall.at(2, 9));   // the hall: the arena
   lv.enemy("s", closet.at(2, 3));
   lv.enemy("m", armoury.at(5, 3)).enemy("t", armoury.at(2, 6)).enemy("z", armoury.at(7, 6));
-  lv.enemy("U", ward.at(7, 3)).enemy("z", ward.at(2, 8), ward.at(11, 8));           // the ward: the Guardian
+  lv.enemy("U", ward.at(7, 3));           // the ward: the Guardian
 
   // ---- the supply
-  lv.pickup("a", block.at(2, 1), block.at(10, 4), cellB.at(2, 1), cellC.at(1, 1)).pickup("h", wardenCell.at(2, 1));
+  lv.pickup("a", block.at(2, 1), block.at(10, 4), cellB.at(2, 1), cellC.at(1, 1)).pickup("h", block.at(16, 5)).pickup("h", wardenCell.at(2, 1));
   lv.pickup("a", undercroft.at(2, 2), undercroft.at(11, 1)).pickup("h", undercroft.at(13, 1));
-  lv.pickup("2", guard.at(1, 1)).pickup("a", guard.at(8, 7)).pickup("h", guard.at(2, 4)).pickup("b", guard.at(8, 1));
-  lv.pickup("a", hall.at(16, 1), hall.at(16, 11)).pickup("h", hall.at(2, 11), hall.at(16, 5)).pickup("b", hall.at(2, 2));
+  lv.pickup("2", guard.at(1, 1)).pickup("a", guard.at(8, 7)).pickup("h", guard.at(2, 4), guard.at(5, 7)).pickup("b", guard.at(8, 1));
+  lv.pickup("a", hall.at(16, 1), hall.at(16, 11)).pickup("h", hall.at(15, 2)).pickup("r", hall.at(14, 1)).pickup("h", hall.at(2, 11), hall.at(16, 5)).pickup("b", hall.at(2, 2));
   lv.pickup("r", closet.at(3, 5)).pickup("a", closet.at(1, 1));
-  lv.pickup("3", armoury.at(7, 1)).pickup("a", armoury.at(1, 1), armoury.at(1, 7)).pickup("b", armoury.at(7, 7)).pickup("h", armoury.at(3, 3));
-  lv.pickup("a", ward.at(1, 1)).pickup("h", ward.at(11, 1));
+  lv.pickup("3", armoury.at(7, 1)).pickup("a", armoury.at(1, 1), armoury.at(1, 7)).pickup("b", armoury.at(7, 7)).pickup("h", armoury.at(3, 3)).pickup("r", armoury.at(2, 2));
+  lv.pickup("a", ward.at(1, 1)).pickup("h", ward.at(11, 1), ward.at(1, 9), ward.at(11, 9)).pickup("r", ward.at(6, 9));
   lv.pickup("r", hoard1.at(1, 1)).pickup("c", hoard1.at(3, 1)).pickup("h", hoard1.at(2, 3)).pickup("b", hoard1.at(3, 3));
   lv.pickup("a", hoard2.at(1, 1), hoard2.at(7, 1)).pickup("o", hoard2.at(3, 2)).pickup("h", hoard2.at(5, 2));
   lv.prop("O", hall.at(4, 4), hall.at(14, 6)).prop("x", armoury.at(4, 5));
