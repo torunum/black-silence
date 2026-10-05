@@ -27,10 +27,12 @@ import { floorHeightAt } from "./Collision";
  * A level has an opening when its `BuiltLevel` names a `grave` (only the
  * prologue does). `loadLevel` calls `beginOpening` as its last act, so it
  * runs when the level starts — NEW GAME, or chapter select's first row —
- * and never mid-level: level 0 is only ever loaded from the menu (death
- * reloads the page; `LevelEnd.ts`'s `loadLevel(S.level + 1)` moves forward, to
- * levels that name no grave, and `resetOpening` drops an opening left running
- * by any load).
+ * and never mid-level: level 0 is only ever loaded from the menu (a death
+ * reloads the level, not the page, but as a *resume* — `loadLevel`'s second
+ * argument, `src/world/Respawn.ts` — which returns before this point: nobody
+ * climbs out of the grave twice; `Transition.ts`'s `loadLevel(S.level + 1)`
+ * moves forward, to levels that name no grave, and `resetOpening` drops an
+ * opening left running by any load).
  * On a level with an opening, the opening says the level's line
  * (`lvl0`) at its end, in place of `loadLevel`'s 1.4-second timer. That
  * timer is what used to overwrite `p0_down` for a player who ran straight to

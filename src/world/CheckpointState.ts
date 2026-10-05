@@ -31,10 +31,10 @@ import type { CheckpointLook } from "./decor/checkpoint";
  * ~50 fields of AI state timers; a door holds a mesh; every one of them is owned by a scene `loadLevel`
  * disposes. Copying them is copying GPU objects, and putting them back means keeping a scene alive that
  * the leak rules say must be freed. Facts about ids are plain data; a fresh level has fresh sprites,
- * and the replay marks the dead ones gone. What it costs, deliberately: corpses and gore are not kept
- * (a killed enemy is simply not there), enemies alive at the shrine are alive again at full health
- * wherever they spawned (they were never given a chance to be hurt before the shrine matters), and an
- * enemy that dropped ammo has its drop kept only if untaken.
+ * and the replay marks the dead ones gone. What it costs, deliberately: corpses, gore and scorch marks are
+ * not kept (a killed enemy is simply not there); an enemy alive at the shrine is alive again where it was
+ * *placed*, at full health and asleep, however it had moved or been hurt; a half-won fight (the plate's
+ * wave) starts over; and what the dead dropped is kept only if nobody had taken it.
  */
 
 /** One checkpoint marker standing in the level (built from the level's decor list). */

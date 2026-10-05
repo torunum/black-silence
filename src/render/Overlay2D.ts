@@ -60,6 +60,20 @@ export function screenBlood(): void {
   for(let i=0;i<5;i++)bloodHits.push({x:rnd(0,VW),y:rnd(0,VH),r:rnd(6,22),life:1});
 }
 
+/**
+ * Drops every screen-space effect still in flight — blood on the lens, casings, smoke puffs.
+ * `loadLevel` calls it: these are the dead run's, and a level that begins again (a rise at the
+ * shrine, a restart: deeper-levels plan, Task 1) must not begin under a death's blood.
+ */
+export function resetScreenFx(): void {
+  bloodHits.length=0;casings.length=0;puffs.length=0;
+}
+
+/** How many screen-space effects are in flight (the tests read it to hold a restart to leaving none). */
+export function screenFxCount(): number {
+  return bloodHits.length+casings.length+puffs.length;
+}
+
 /** Overlay2D's private 2D context, for src/render/viewmodel/{kit,draw}.ts — call at point of use, never cache. */
 export function getFx(): CanvasRenderingContext2D {
   return fg;

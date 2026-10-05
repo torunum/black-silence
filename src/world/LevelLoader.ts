@@ -13,6 +13,7 @@ import { applyShadowFlags, configureLampShadow } from "../render/Shadows";
 import { buildParticles } from "../fx/Particles";
 import { resetDecals } from "../fx/Decals";
 import { resetGibs } from "../fx/Gibs";
+import { resetScreenFx } from "../render/Overlay2D";
 import { headPool } from "../fx/Heads";
 import { projectiles } from "../fx/Projectiles";
 import { showMsg } from "../ui/HudMessages";
@@ -218,7 +219,7 @@ export function loadLevel(idx: number, resume?: Resume): void {
   renderState.muzzleLight=track(new THREE.PointLight(0xffc878,0,14,1.4));renderState.scene.add(renderState.muzzleLight);
   renderState.boomLight=track(new THREE.PointLight(0xff7830,0,20,1.4));renderState.scene.add(renderState.boomLight);
   buildParticles();
-  resetDecals();resetGibs();
+  resetDecals();resetGibs();resetScreenFx();
   world.doors={};world.enemies=[];world.props=[];world.items=[];world.torches=[];world.candles=[];
   world.poisonZones=[];world.rings=[];world.strikes=[];projectiles.nails=[];projectiles.orbs=[];headPool.heads=[];
   world.exitPos=null;world.pianoPos=null;world.challenge=null;world.bossRef=null;world.cine=null;
