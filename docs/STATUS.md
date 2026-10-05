@@ -125,6 +125,27 @@ button or Space/Enter/R).
 - Dev-pane note: `requestAnimationFrame` ran only while the browser pane was being screenshotted;
   frames are in `.superpowers/sdd/2026-10-05-deeper-levels/task-1-*.png`.
 
+## Deeper levels — Task 2, the level-design toolkit and the structure suite (branch `deeper-levels`)
+
+Plan: `docs/superpowers/plans/2026-10-05-deeper-levels.md` (Task 2 and the targets in Task 3). Numbers: `docs/level-structure.md`
+(`npx vite-node scripts/level-structure.ts` writes it; `tests/world/structureLevels.test.ts` fails if it is stale).
+
+- **Authoring layer** `src/world/authoring/` (`Plan.ts`, `sets.ts`): `LevelPlan` writes a level as rooms (size, floor, ceiling), corridors
+  (straight, bent, via points, graded between floors), `stairs`/`ramp`, plain/locked/secret doors, spawn/exit/key/enemy/pickup/prop/light/plate,
+  the theme's checkpoint marker, named set-pieces (`chancel`, `torture`, `store`, `braziers`, `ossuary`) and the kit's `Decorator`;
+  `build()` returns the `BuiltLevel` the loader takes. Hand-written levels are untouched. Guard rails: no overlapping rooms, nothing on the
+  border, a door only in a wall line and (cut into a wall) at the higher floor, no floors a step apart more than 1.2, KNOWN-4 and KNOWN-11
+  glyphs refused. Examples: `tests/support/sampleLevel.ts` (THE WELL, small) and `proofLevel.ts` (THE CHARNEL STAIR, meets every target).
+- **Structure suite** `src/world/structure/`: `walk.ts` (the movement model: four-way, step-up 1.2, directed drops, one global key, secrets optional,
+  decor masses are walls), `regions.ts` (rooms = 2x2-block cells, passages, the graph, loops = `E - V + C`), `metrics.ts` (heights, fights),
+  `analyse.ts` (hard validation and metrics), `targets.ts` (`REBUILT`, `TARGETS`, `checkTargets`, `LEGACY_PROBLEMS`). `DoorSite.ts` is the pure half of
+  `ExitDoor.ts`'s siting rule, now shared.
+- **Hard validation** every level passes (but for `LEGACY_PROBLEMS`: level 1 `key-no-door` (KNOWN-1) and `exit-door` (grid-edge slab); level 3
+  `unreachable` (the barrel on a south gallery stretch the ramps cut off) and `exit-door` (freestanding)): exit reachable through required keys
+  without a secret, key before door, no softlock (a reachable state that cannot finish), everything reachable, secrets behind secret doors with a reward, exit door sited.
+- **For Tasks 3-9:** a rebuilt level adds its index to `REBUILT` and meets `TARGETS` (Task 3's section); it also leaves `LEGACY_PROBLEMS`. Walkable means
+  steps of at most 1.2, no jumping. `tests/world/authoringLoad.test.ts` shows how to load a toolkit level into the real game (push a `LevelDef`).
+
 ## What this is
 
 `THE BLACK SILENCE — The Hollow Parish`, a retro FPS that existed as a single
