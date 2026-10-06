@@ -15,7 +15,7 @@ import { world } from "./WorldState";
 import { LEVELS } from "./levels/index";
 import { loadLevel } from "./LevelLoader";
 import { applyInventory, igniteMark } from "./Checkpoints";
-import { checkpoint as CP, type Facts, type Snapshot } from "./CheckpointState";
+import { checkpoint as CP, RISE_MIN_HP, type Facts, type Snapshot } from "./CheckpointState";
 
 /**
  * RISING AGAIN, AND STARTING OVER (deeper-levels plan, Task 1) — what the death screen's two choices
@@ -29,7 +29,7 @@ import { checkpoint as CP, type Facts, type Snapshot } from "./CheckpointState";
  *
  * The level, as `loadLevel` makes it, with the player where the shrine caught them, facing as they
  * faced; then what they carried (health, armour, the key, every weapon, magazine and ammunition
- * count, the weapon in hand) and the facts about the level (the dead stay dead, the taken stay taken,
+ count, the weapon in hand; health is at least `RISE_MIN_HP`, a mercy floor, armour as recorded) and the facts about the level (the dead stay dead, the taken stay taken,
  * the opened stay open). The checkpoint stays, so a second death rises at the same shrine.
  *
  * ## RESTART THE LEVEL
@@ -106,6 +106,7 @@ export function riseAgain(): boolean {
   const t0 = S.levelT0, away = performance.now() - CP.deadAt, deaths = S.deaths;
   loadLevel(S.level, { at: snap.at });
   applyInventory(snap.inv);
+  S.hp = Math.max(S.hp, RISE_MIN_HP);   // a mercy floor: a shrine reached at 3 hp does not raise you at 3 hp
   Object.assign(S, snap.tallies);
   S.deaths = deaths; S.levelT0 = t0 + away;
   replay(snap.facts);

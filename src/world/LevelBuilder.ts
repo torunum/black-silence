@@ -44,6 +44,8 @@ export interface BuiltLevel {
   zones?: ZoneMap;
   /** Set dressing with no gameplay — see `src/world/Decor.ts`. */
   decor?: DecorSpec[];
+  /** Stand the torches, candles, items and props on the raised floor under them (`src/world/Decor.ts`): set by `LevelPlan` for a level with raised floors. The hand-written levels never set it. */
+  lift?: boolean;
   /** The cell the player wakes in: the level opens with the rise from the grave (`src/world/Opening.ts`). Only the prologue has one. */
   grave?: { x: number; z: number };
 }

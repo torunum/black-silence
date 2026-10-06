@@ -120,7 +120,7 @@ export function hitscan(dir: THREE.Vector3,dmg: number,wIdx: number){
     const e=c.e;
     weaponRuntime.volleyHit=true;
     // vertical fraction up the sprite (0 feet .. 1 head)
-    const ecy0=e.fly?(e.flyH||1.5):e.h*.5;
+    const ecy0=e.fly?(e.flyH||1.5):e.h*.5+(e.fy||0);   // the sprite's centre, on the floor it stands on: a zombie on a raised floor was one long head
     const frac=clamp((c.cy-(ecy0-e.h*.5))/e.h,0,1);
     // horizontal: project hit point onto camera-right axis, normalized to half-width
     const rightX=Math.cos(input.yaw),rightZ=-Math.sin(input.yaw);

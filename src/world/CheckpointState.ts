@@ -37,6 +37,12 @@ import type { CheckpointLook } from "./decor/checkpoint";
  * wave) starts over; and what the dead dropped is kept only if nobody had taken it.
  */
 
+/**
+ * The least health a rise at a shrine gives: the shrine records what the player had on reaching it, and a shrine
+ * reached at 3 hp would otherwise mean rising at 3 hp. Armour and everything else come back as recorded.
+ */
+export const RISE_MIN_HP = 50;
+
 /** One checkpoint marker standing in the level (built from the level's decor list). */
 export interface Mark {
   k: string;

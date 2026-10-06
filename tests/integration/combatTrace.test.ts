@@ -13,8 +13,12 @@ import { MONOLOGUE } from "../../src/content/monologue";
  * on the combat-resolution path — `damagePlayer`, `damageEnemy`,
  * `killEnemy`, `enemyTick`, `los`, and everything else Plan 0E's DAMAGE/
  * DEATH and ENEMY AI carves move — is exercised by it at all. This file
- * plays level 1 instead (`U z×4 f×2 j m×2 t g×2 s`, **14** enemies), far
- * enough into it that the player actually meets some of them.
+ * plays level 1 instead, far enough into it that the player actually meets some of
+ * them. **Level 1 was rebuilt** (deeper-levels plan, Task 3: 23 enemies, `z×6 j×3 m×3 s×3 g×3 f×2 t×2 U`), and this fixture with it: see the last section,
+ * "Deeper levels, Task 3 — twelfth regeneration". It is the account of the fixture as it stands now. Every section before it is the history of the fixture
+ * as it was recorded on the old level (the great hall, the corridor and the west room): what they say of that layout, those frames, those numbers and that
+ * route was measured then and is kept as the record of why each regeneration happened. They are not claims about the fixture today, and where a claim there
+ * is still true of it the last section says so, having measured it again.
  *
  * The roster used to read `… s A`, 15 enemies. The fifteenth was the `A`
  * in the secret alcove — an armour pickup the level author wrote, turned
@@ -27,9 +31,10 @@ import { MONOLOGUE } from "../../src/content/monologue";
  * a later task's refactor is correct only if this file still diverges
  * nowhere from it. Regenerating it (`WRITE_TRACE=1`) to make a red build
  * green destroys that value the same way it would for `trace.test.ts`;
- * see that file's header for the full argument. Don't.
+ * see that file's header for the full argument. Don't. (The one exception is a level that is rebuilt on purpose, which invalidates this
+ * recording by changing what it records: the deeper-levels plan says to follow this header's procedure then, and the last section is that.)
  *
- * ## Getting to level 1, and then to a fight
+ * ## Getting to level 1, and then to a fight (the old level 1: history, see the last section for today's)
  *
  * `runTrace`'s `level` option (see `gameplayTrace.ts`) opens the chapter
  * select screen and clicks level 1's row instead of `NEW GAME`. From there
@@ -684,6 +689,79 @@ import { MONOLOGUE } from "../../src/content/monologue";
  *
  * The proof that the doors are the whole of it is in `trace.test.ts`'s section of the same name (the old pad put back, the
  * door children filtered out of the digest: all three old fixtures reproduce byte for byte).
+ *
+ * ## Deeper levels, Task 3 — twelfth regeneration: level 1 is rebuilt, and this is the fixture of the new level
+ *
+ * `docs/superpowers/plans/2026-10-05-deeper-levels.md` Task 3 rebuilds level 1 with the level-design toolkit (`src/world/levels/level1.ts`: 58 x 44, three
+ * floors, 14 rooms, 23 enemies, the Guardian in a ward at the far end). Nothing the old script walked or fought on exists any more, so this is not a
+ * regeneration of the old run but a re-recording of the same *purpose* on the new layout, by the header's procedure: keep what the trace exercises, rewrite
+ * the script for the new rooms, re-derive every measured claim, regenerate (`WRITE_TRACE=1`) and give the analysis. Nothing in the sections above is a claim
+ * about the fixture now; what follows is.
+ *
+ * ### What the trace is for, and still is
+ * Combat resolution on the real path (`damagePlayer`, `damageEnemy`, `killEnemy`, `enemyTick`, `los`), the armour-absorb arm of `damagePlayer` (through the seeded
+ * `S.armor`), a kill, a dismemberment, the sighting line, the weapon state machine, and the sprite frames of a fight: all measured below, each by a mutation.
+ *
+ * ### The script, and why it is what it is
+ * The player wakes in the spawn cell of the upper gaol (floor 2.4, so the camera's `y` is 3.4 in every frame), at (3.5, 5.5) in cells, facing south into the
+ * wall. It turns a quarter-turn east (`yaw -= movementX * SENS`, so `-(pi / 2) / SENS` of movementX, in eight steps: the same float arithmetic as the old turn,
+ * which the old header explains is what keeps the residual under a microradian), walks east along the spawn's own row through the doorway at (7, 5) and out along
+ * the cell block, and stops at (16.5, 5.5) at frame 380. Then it is a standing turret that watches its front: it sweeps 8 degrees a step between 60 degrees to the
+ * left of east and 60 to the right, firing every step. The old turret swept most of a circle; this one fights what comes at it from one side, which is what the
+ * cell block is. Three decisions in it came from running it, not from reading it:
+ *
+ *  - **It walks at frame 160, not 50.** The sighting line is the trace's `an enemy spotted the player` assertion, and a sighting is said once per session and
+ *    *spent by the 3 s throttle* (`Subtitles.ts`: `onceSaid` is set before the throttle is checked). The level's own line is said at frame 90. A first draft that
+ *    walked at 50 woke the first zombie at about frame 180, 1.5 s after it, and recorded no zombie line at all. At 160 the zombie wakes at about frame 290 and says
+ *    it (`"Zombies. Classic…"`, frame 290).
+ *  - **There is a cultist in the cell block** (`j` at (26, 3)). Without it the run had two zombies, no ranged attack and nothing that despawns: `scene.count` rose
+ *    from 188 to 213 and never fell (measured over 1300 frames), and "something despawned mid-fight" was red. With it the cultist's orbs end against walls and the
+ *    count falls four times (frames 580, 690, 810, 1080). That is the same assertion the old run satisfied, and the cultist is the level's only enemy whose orb and
+ *    walk cycle (`j.a`, `j.b`) a trace this short can show.
+ *  - **It stops at frame 1100, not 1760.** The fight is at the start of the level, 14 cells from the spawn, and a sweep run on goes from 40 health at frame 1100
+ *    to 25 at 1250 and would reach `S.dead` a few hundred frames later: lethal in both directions, as the old header says, and a fixture of the player already dead
+ *    is a worse net than one still fighting. The armour seeded at 50 is exactly used up by frame 940.
+ *
+ * ### The measured claims, re-derived
+ *  - **Frames and fields.** 110 recorded frames (every 10th of 1100). `hud.hp` 100 -> 40 in nine values, `hud.ar` 50 -> 0 in eight (ARMOR43 at frame 530, 34, 27,
+ *    18, 9, 2, then 0 at 940: the absorb arm takes 60% of every hit until the plate is gone), `hud.msg` the level title (frame 10) then `LIMB SEVERED` (frame 870),
+ *    `hud.subt` the level line (frame 90) and the zombie line (frame 290), `hud.wname` `FLARE PISTOL` and `FLARE PISTOL — RELOADING`. `scene.count` 190 at load (129
+ *    before: the level is bigger), 190..215 in the run, falling at the four frames above.
+ *  - **Kills and what they did.** `S.kills` is 2: both zombies, the first collapsing from frame 620 (`z.die1`, `z.die2`), the second losing its right arm first
+ *    (`z.noRArm`) at 870. The cultist is alive at the end, 4 units away, still firing. The Guardian is dormant at (51, 34), 45 cells from the player, never woken: its
+ *    one texture in the run is `U.a`.
+ *  - **The textures a fight shows** (read off every enemy's sprite every 5th frame, through `buildTextureIndex`): `z.a`, `z.b` (the walk), `z.atk` (the attack pose),
+ *    `z.die1`, `z.die2`, `z.noRArm`, `j.a`, `j.b`, and the resting `a` of the dormant `f g m s t U`. Not `z.noHead`: no shot in this run decapitates.
+ *  - **Why the seeded armour stays.** `S.armor = 50` is still what makes the absorb arm reachable: level 1 now has five armour tiles (the torturer's closet at
+ *    (21, 26), the hall's stair at (38, 19), the armoury, the ward and the warders' hoard behind a secret door at (46, 6)) and the nearest is 21 cells from anywhere
+ *    the player stands in this run. Without the seed the run holds 0 armour in every frame and the arm goes dark.
+ *  - **The Task 5 sites** (`tickScheduled` and `schedule`): instrumented for one throwaway run, `tickScheduled` fires on all 1100 gameplay frames and `schedule()` is
+ *    called **zero times**. The script never kicks; the level has no Mancubus (`A` is armour: KNOWN-11), no Slaughtaur and no Ettin (the roster is `z j m s g f t U`).
+ *    So this fixture exercises none of the four call sites, as the old one did not, and the structural argument above (the roster has no `k`, `n` or `B`) holds
+ *    for the new roster as it did for the old.
+ *
+ * ### A bug the new level found, and the fix that made the sever possible
+ * The upper gaol stands on a raised floor (2.4), and `Hitscan.ts` worked out where on an enemy a shot landed from a sprite centre at floor 0 while finding the
+ * candidates from one on the floor the enemy stands on. On any raised floor the height of the hit was therefore past the head, and **every shot at an enemy
+ * on the upper tiers was a headshot**: twice the damage and never an arm. Measured on the first draft of this script, before the fix: the first zombie died of
+ * `DECAPITATED` every time and no sweep produced a limb. The fix is one term (`+ (e.fy || 0)`); `tests/weapons/hitscanRaised.test.ts` holds a chest shot, a head
+ * shot and an arm shot to the same damage on floors 0 and 2.4 (and goes red, `chest: expected -18 to be 16`, with the term taken out). It moves no fixture but this
+ * one: the prologue's trace lands no hit and the boss trace's level has one floor.
+ *
+ * ### Coverage, re-measured against this fixture
+ * Each by running this file under the mutation (the diverging frame is the first the digest differs in):
+ *  - the walk-guard inversion (`(e.atkAnim??0)<=0`): red, first frame **300**;
+ *  - the attack pose rewritten to `PX[e.key].a`: red, first frame **530**;
+ *  - the two-stage death collapse (`P.die1`/`P.die2` -> `P.a`): red, first frame **620**;
+ *  - `Damage.ts`'s sever frame (`P[key]||P.a` -> `P.a`): red, first frame **870**: this fixture covers it again (it had lost it at the eighth regeneration);
+ *  - the armour absorb weakened (`dmg*.6` -> `dmg*.1`): red, first frame **530**;
+ *  - `S.kills++` never run: red in "an enemy actually died", because nothing in the recording sees it (the old header's argument);
+ *  - **`Death.ts`'s headless corpse** (`PX[e.key].noHead` -> `.a`): **green, not reached**, as before. The boss trace covers it.
+ * `git diff aab8f7d -- tests/integration/__fixtures__/trace-level0.json tests/integration/__fixtures__/trace-level2-boss.json` is empty: the other two fixtures did
+ * not move.
+ *
+ * The level also stands the torches, candles, items and props of its raised floors on them (`BuiltLevel.lift`, `src/world/Decor.ts`): a torch burned under the 2.4
+ * floor otherwise. That is in this fixture's digest as a `y`, and nowhere else: no other level opts in.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");
@@ -691,70 +769,44 @@ const FIXTURE = join(FIXTURE_DIR, "trace-level1.json");
 const WRITE = process.env.WRITE_TRACE === "1";
 
 const SENS = 0.0022; // src/player/Input.ts's mouse sensitivity at zoomLerp=0 (no scope equipped)
-const REV = (2 * Math.PI) / SENS; // one full revolution's worth of movementX
 
 /**
- * Retuned by Phase 2 Part A Task 3 (see the module doc comment's "regenerated
- * twice" section) from the original 1680 — measured live, under the
- * `installUuidStub`-corrected RNG stream, as the frame past which the run's
- * one kill has landed and the player is alive with room to spare (`S.hp` in
- * the 60s at cutoff, not falling toward the `S.dead` a too-short budget
- * hits). Still well short of the player dying outright.
+ * Measured live under the seeded stream (the header's last section): 1100 is the frame by which the run's two kills have landed, the first corpse has
+ * collapsed (`z.die1`, `z.die2`), an orb has been fired and has died against a wall (the `scene.count` decreases the "something despawned" assertion needs:
+ * frames 580, 690, 810 and 1080) and the armour seeded at 50 is all gone, with the player alive on 40 health. A sweep run on past it takes the player to 25 by
+ * frame 1250 and would reach `S.dead` a few hundred frames later: this script is lethal in both directions, and a fixture of the player already dead is a worse
+ * net than one of them still fighting. Not the old 1760: the fight is at the start of the level now, 14 cells from the spawn, so the run is short.
  */
-const TOTAL_FRAMES = 1760;
+const TOTAL_FRAMES = 1100;
 
+/**
+ * The script, for the rebuilt level 1 (deeper-levels plan, Task 3): the player wakes in the spawn cell of the upper gaol facing south, into the cell's own wall.
+ *
+ *  - **Frame 5-40: turn east**, to the doorway in the cell's east wall (x 7, z 5, on the spawn's own row: the cell's `P` is at (3,5)). `yaw -= movementX * SENS`,
+ *    so a quarter turn from the spawn's yaw of pi to 3 pi / 2 (forward `(-sin yaw, -cos yaw)` = +x) is `-(pi / 2) / SENS` of movementX, in eight steps.
+ *  - **Frame 160: walk.** Not 50, as the old script did: the level's own line (`MONOLOGUE.lvl1`) is said at about frame 90 and the next unforced line is
+ *    throttled for 3 s (`Subtitles.ts`'s `say`), and a sighting line is *spent* by that throttle (`onceSaid` is set before it is checked): a zombie that sees
+ *    the player at frame 180 says nothing, for good. At 160 the first zombie, 18 cells away from the spawn (it stands at (21, 3)), wakes at about frame 300 and says its line.
+ *  - **Frame 380: stop**, at (16.5, 5.5) cells, in the middle of the cell block's west half, the first zombie placed 5.4 cells away and the second 8.6 (where they stand at the start: they have moved by then).
+ *  - **Frame 470-974: a standing turret that watches its front.** The aim sweeps 8 degrees a step between 60 degrees to the left of east and 60 to the right
+ *    (a triangle wave, 14 frames a step), firing on every step (3 frames in, 15 out) and reloading on every sixth. The old script swept a whole circle with a slow
+ *    rotation; this one fights what comes at it from one side, which is what the cell block is: a wide hall with the enemies at its east end. The sweep is why the
+ *    pistol's shots land on arms and not only heads: the first zombie loses an arm (`LIMB SEVERED`, `z.noRArm`).
+ *
+ * `Input.ts` is read by the harness through the same events a player's hands make (`gameplayTrace.ts`).
+ */
 function combatScript(): InputEvent[] {
-  const s: InputEvent[] = [
-    { frame: 2, kind: "pointerlock", locked: true },
-  ];
-  // Spawn yaw is PI (facing south, into the start room's own wall) — turn
-  // to face north, toward the corridor, in exactly pi/SENS worth of
-  // movementX so the residual is microradians rather than the ~0.05 rad a
-  // rounder number leaves (see the module doc comment for why that
-  // residual matters over hundreds of frames of holding forward).
-  for (let i = 0; i < 8; i++) {
-    s.push({ frame: 5 + i * 5, kind: "move", movementX: Math.PI / SENS / 8, movementY: 0 });
-  }
-  s.push({ frame: 50, kind: "key", type: "keydown", code: "KeyW" });
-  // A brief strafe toward the corridor's world-x — the start room is wide
-  // enough that walking due north from spawn misses the corridor entirely.
-  s.push({ frame: 52, kind: "key", type: "keydown", code: "KeyD" });
-  s.push({ frame: 100, kind: "key", type: "keyup", code: "KeyD" });
-  // Tap the level's one door every 20 frames through the whole approach —
-  // interact() is a no-op unless a door is within ~2.6 units and roughly
-  // in front, so this is safe to spam rather than timing precisely.
-  for (let f = 150; f <= 1500; f += 20) {
-    s.push({ frame: f, kind: "key", type: "keydown", code: "KeyE" });
-    s.push({ frame: f + 2, kind: "key", type: "keyup", code: "KeyE" });
-  }
-  // Approach-phase fire: this also supplies the small alternating look
-  // (+-60 movementX) that drifts the player sideways into the corridor's
-  // one-cell-wide doorway over the course of the walk — removing it (or
-  // changing its magnitude) changes where the player ends up, not just
-  // whether they fire.
-  for (let i = 0; i < 33; i++) {
-    const f = 400 + i * 30;
-    s.push({ frame: f, kind: "move", movementX: i % 2 === 0 ? 60 : -60, movementY: 0 });
-    s.push({ frame: f + 4, kind: "button", type: "mousedown", button: 0 });
-    s.push({ frame: f + 14, kind: "button", type: "mouseup", button: 0 });
-    if (i % 5 === 4) {
-      s.push({ frame: f + 20, kind: "key", type: "keydown", code: "KeyR" });
-      s.push({ frame: f + 22, kind: "key", type: "keyup", code: "KeyR" });
-    }
-  }
-  // Standing turret phase, from ~frame 1400 (measured live — see the
-  // module doc comment). Only the first 24 of a planned ~2.86-revolution
-  // sweep are actually emitted (12 before Task 3's stub retune — see the
-  // module doc comment's "regenerated twice" section for why more shots,
-  // not just more frames, were needed), since that already lands the run's
-  // kill; the denominator stays 130 rather than being recomputed for a
-  // shorter loop, which would change the per-step angle and retune the
-  // whole encounter's timing.
-  s.push({ frame: 1400, kind: "key", type: "keyup", code: "KeyW" });
-  const SWEEP_START = 1420, SWEEP_STEP = 22, SWEEP_STEPS_DENOM = 130, SWEEP_STEPS_USED = 24;
-  for (let i = 0; i < SWEEP_STEPS_USED; i++) {
+  const s: InputEvent[] = [{ frame: 2, kind: "pointerlock", locked: true }];
+  for (let i = 0; i < 8; i++) s.push({ frame: 5 + i * 5, kind: "move", movementX: -(Math.PI / 2) / SENS / 8, movementY: 0 });
+  s.push({ frame: 160, kind: "key", type: "keydown", code: "KeyW" });
+  s.push({ frame: 380, kind: "key", type: "keyup", code: "KeyW" });
+  const SWEEP_START = 470, SWEEP_STEP = 14, SWEEP_STEPS = 36, AMP = 8 * Math.PI / 180, LIMIT = 60 * Math.PI / 180;
+  let off = 0, dir = 1;
+  for (let i = 0; i < SWEEP_STEPS; i++) {
     const f = SWEEP_START + i * SWEEP_STEP;
-    s.push({ frame: f, kind: "move", movementX: (2.86 * REV) / SWEEP_STEPS_DENOM, movementY: 0 });
+    if (Math.abs(off + dir * AMP) > LIMIT) dir = -dir;
+    off += dir * AMP;
+    s.push({ frame: f, kind: "move", movementX: -dir * AMP / SENS, movementY: 0 });
     s.push({ frame: f + 3, kind: "button", type: "mousedown", button: 0 });
     s.push({ frame: f + 15, kind: "button", type: "mouseup", button: 0 });
     if (i % 6 === 5) {
@@ -778,17 +830,10 @@ const SEE_LINES: string[] = Object.entries(MONOLOGUE)
 let trace: TraceFrame[];
 
 beforeAll(async () => {
-  // Level 1 *can* place an armour pickup now — KNOWN-11 is fixed and the
-  // alcove's tile is `r` — but this script never opens the secret door
-  // that leads to it, so a run without this line still holds `S.armor = 0`
-  // for all 1760 frames and `damagePlayer`'s armour-absorb branch goes
-  // dark. `loadLevel()` never resets `S.armor`, so setting it here, before
-  // `runTrace` boots the game, is what keeps that branch reachable — which
-  // is exactly what let sabotage 1 in the Plan 0E Task 1 report pass
-  // unnoticed on the first attempt. See the module doc comment's rewritten
-  // "Why the run starts with `S.armor = 50`" section, and
-  // `tests/integration/armourPickup.test.ts` for the unseeded proof that a
-  // player can now reach armour at all.
+  // Level 1 has five armour tiles since its rebuild, and this script reaches none of them (the nearest is 21 cells from anywhere the player stands),
+  // so a run without this line holds `S.armor = 0` for all 1100 frames and `damagePlayer`'s armour-absorb branch goes dark. `loadLevel()` never resets
+  // `S.armor`, so setting it here, before `runTrace` boots the game, is what keeps that branch reachable. See the last section of the header
+  // ("Why the seeded armour stays") and `tests/integration/armourPickup.test.ts` for the unseeded proof that a player can reach armour at all.
   S.armor = 50;
   trace = await runTrace({
     seed: 20260815, frames: TOTAL_FRAMES, dtMs: 1000 / 60, input: INPUT, every: 10, level: 1,

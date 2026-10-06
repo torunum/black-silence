@@ -14,7 +14,7 @@ import { game } from "../core/Game";
 import { player } from "./PlayerState";
 import { S } from "../core/State";
 import { CELL, WALLH } from "../world/Grid";
-import { solidAt } from "../world/Collision";
+import { floorHeightAt, solidAt } from "../world/Collision";
 import { world } from "../world/WorldState";
 import { explodeBarrel, type Prop } from "../world/Props";
 import { alertSound } from "../enemies/ai/Perception";
@@ -69,7 +69,7 @@ interface Item {
   x: number;
   z: number;
   kind: string;
-  /** The height it bobs about — set only on raised ground of a zoned level (`src/world/Decor.ts`); else the reference's 0.5. */
+  /** The height it bobs about — set at load on raised ground (`src/world/Decor.ts`); else the reference's 0.5 over whatever floor it lies on (a drop on a raised floor). */
   y0?: number;
 }
 
@@ -115,7 +115,7 @@ export function interact(){
 export function itemsTick(dt: number){
   for(const it of world.items as unknown as Item[]){
     if(it.taken)continue;
-    it.bob+=dt*2.4;it.sp.position.y=(it.y0??.5)+Math.sin(it.bob)*.07;
+    it.bob+=dt*2.4;it.sp.position.y=(it.y0??.5+floorHeightAt(it.x,it.z))+Math.sin(it.bob)*.07;
     if(Math.hypot(player.px-it.x,player.pz-it.z)<.95){
       let ok=true;
       switch(it.kind){

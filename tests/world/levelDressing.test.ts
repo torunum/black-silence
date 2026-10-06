@@ -10,6 +10,8 @@ import { PIECES, SETPIECES } from "../../src/world/decor/registry";
 import { THEMES, WALL_ROT } from "../../src/world/decor/kit";
 import { buildGallery } from "../../src/world/decor/gallery";
 import { findAll, floodFill } from "../../src/world/analysis";
+import { REBUILT } from "../../src/world/structure/targets";
+import { idx, terrainOf, walk } from "../../src/world/structure/walk";
 
 /**
  * LEVELS 1-4 ARE FURNISHED (levels-feel-full plan, Task 2). What the dressing of the dungeon, the
@@ -20,13 +22,16 @@ import { findAll, floodFill } from "../../src/world/analysis";
  *  - legal by every placement rule, and by the from-scratch flood fill (`validateDecor`);
  *  - the density target (the bare fraction and the largest bare region), against the numbers
  *    before any level was dressed (`docs/level-density-baseline.json`);
- *  - the dungeon's great hall is a torture hall, not one 257-cell empty region;
+ *  - the dungeon's great hall is a torture hall, not one empty region (level 1 was rebuilt, deeper-levels plan Task 3: its hall is x 24-42, z 18-30);
  *  - masses never sit in a doorway, on a pickup, in a corridor or a bend, or cut anything off;
  *  - decor never sits beside the real crates and barrels a player has learned to shoot;
  *  - nothing solid stands where the two trace fixtures walk and fight;
- *  - the pickups and props that moved, and the ones that did not.
+ *  - the pickups and props of level 1 (rebuilt) and the ones of levels 2-4 that did not move.
+ * A rebuilt level (`REBUILT`) is held to the absolute targets (the bare fraction, the bare region) and not to the baseline it replaced.
  */
 const DRESSED = [1, 2, 3, 4] as const;
+/** Level 1's upper gaol, the part of the rebuilt level the combat trace walks and fights in: the spawn cell, the cell block and its cells. */
+const UPPER_GAOL = { x1: 27, z1: 12 };
 const built = (i: number): BuiltLevel => LEVELS[i].build();
 const baseline = JSON.parse(readFileSync(new URL("../../docs/level-density-baseline.json", import.meta.url), "utf8")) as Baseline;
 const grid = (...rows: string[]): string[][] => rows.map((r) => [...r]);
@@ -73,6 +78,7 @@ describe("the density targets", () => {
       expect(d.bareCells / d.walkable, `level ${i} bare fraction`).toBeLessThanOrEqual(.08);
       expect(d.emptiest.cells, `level ${i} emptiest region`).toBeLessThanOrEqual(12);
       expect(d.longestRun.cells, `level ${i} longest bare run`).toBeLessThanOrEqual(6);
+      if (REBUILT.includes(i)) continue;   // a rebuilt level is another level: it has no baseline of its own to be a collapse from
       // and it is the same level: the walkable area, the enemies and the pickups are the numbers they were
       expect(d.walkable, `level ${i} walkable`).toBe(b.walkable);
       expect(d.enemies, `level ${i} enemies`).toBe(b.enemies);
@@ -84,7 +90,7 @@ describe("the density targets", () => {
   });
 
   it("measures the baseline it compares with: the undressed level is as bare as the baseline says", () => {
-    for (const i of DRESSED) {
+    for (const i of DRESSED.filter((n) => !REBUILT.includes(n))) {
       const L = built(i); L.decor = [];
       const d = measureLevel(L);
       // the pickups and barrels level 1 moved change its bare cells by a handful; the rest are the baseline's numbers to the cell
@@ -95,10 +101,10 @@ describe("the density targets", () => {
 
   it("holds the great hall to a torture hall: no bare region of more than 12 cells inside it, and the instruments are there (against its walls)", () => {
     const L = built(1), bare = bareGrid(L);
-    const inHall = (x: number, z: number) => x >= 14 && x <= 32 && z >= 8 && z <= 26;
+    const inHall = (x: number, z: number) => x >= 24 && x <= 42 && z >= 18 && z <= 30;
     const seen = new Set<string>();
     let biggest = 0;
-    for (let z = 8; z <= 26; z++) for (let x = 14; x <= 32; x++) {
+    for (let z = 18; z <= 30; z++) for (let x = 24; x <= 42; x++) {
       if (!bare[z][x] || seen.has(x + "," + z)) continue;
       let n = 0; const stack: Array<[number, number]> = [[x, z]]; seen.add(x + "," + z);
       while (stack.length) {
@@ -111,14 +117,15 @@ describe("the density targets", () => {
     const inside = L.decor!.filter((d) => inHall(Math.floor(d.x + .5), Math.floor(d.z + .5)));
     const count = (k: string) => inside.filter((d) => d.k === k).length;
     expect(inside.length, "pieces in the hall").toBeGreaterThan(70);
-    // the slab at the pillar ring's centre and the racks and stocks on the open floor were taken out in Task 3: enemies pinned on
-    // their flat faces (tests/enemies/stuckCheck.test.ts). What is left stands against the walls.
-    expect(inside.filter((d) => d.k === "slab" && d.z === 8).length, "the slab stands against the north wall, not on the open floor").toBe(1);
+    // (the rebuilt hall keeps the old one's lesson: the racks, the stocks and the slab stand against its north wall, not on the open floor,
+    // because enemies pinned on their flat faces: tests/enemies/stuckCheck.test.ts)
+    for (const k of ["slab", "rack", "stocks"]) for (const d of inside.filter((p) => p.k === k)) expect(d.z, `a ${k} stands on the north wall's row`).toBe(18);
     expect(count("slab"), "one slab").toBe(1);
-    expect(count("rack"), "racks").toBeGreaterThanOrEqual(3);
+    expect(count("rack"), "racks").toBeGreaterThanOrEqual(2);
     expect(count("stocks"), "stocks").toBeGreaterThanOrEqual(1);
     expect(count("cage"), "cages on chains").toBeGreaterThanOrEqual(6);
-    expect(count("maiden"), "iron maidens on its walls").toBeGreaterThanOrEqual(4);
+    expect(count("maiden"), "iron maidens on its south wall").toBeGreaterThanOrEqual(3);
+    for (const d of inside.filter((p) => p.k === "maiden")) expect(d.z, "a maiden stands on the south wall's row").toBe(30);
   });
 });
 
@@ -243,44 +250,39 @@ describe("decor is never mistaken for a prop that breaks", () => {
 });
 
 describe("the two traces walk where nothing solid stands", () => {
-  it("level 1: no mass in the start chamber, the corridor, the jog or the west room (x <= 13, z >= 12), where combatTrace.test.ts walks and fights", () => {
-    for (const [x, z] of massCellsOf(built(1))) expect(x <= 13 && z >= 12, `a mass at (${x},${z}) is on the combat trace's route`).toBe(false);
+  it("level 1: no mass in the upper gaol (the spawn cell, the cell block and its three cells: x <= 27, z <= 12), where combatTrace.test.ts starts, walks and fights", () => {
+    for (const [x, z] of massCellsOf(built(1))) expect(x <= UPPER_GAOL.x1 && z <= UPPER_GAOL.z1, `a mass at (${x},${z}) is on the combat trace's route`).toBe(false);
   });
 
   it("level 2: no mass in the ritual room or the crypt (x 9-23, z >= 19), where bossTrace.test.ts stands and fights", () => {
     for (const [x, z] of massCellsOf(built(2))) expect(x >= 9 && x <= 23 && z >= 19, `a mass at (${x},${z}) is where the boss trace fights`).toBe(false);
   });
 
-  it("level 1: every enemy is handed the seeded draws it always was: pickups moved without crossing an enemy in the loader's scan order", () => {
-    // the loader draws in scan order: torch, candle and item 1 each, enemy 7. Recorded with commit 64b4e8d's grid.
-    const RECORDED = "U@19,3:0 z@17,12:11 f@29,12:18 j@10,13:25 z@24,13:32 m@37,14:39 t@23,18:47 g@40,18:54 s@31,19:61 g@16,22:70 m@30,22:77 f@22,24:84 z@28,32:100 z@34,34:108";
-    const L = built(1);
-    let n = 0;
-    const out: string[] = [];
-    for (let z = 0; z < L.H; z++) for (let x = 0; x < L.W; x++) {
-      const cls = classifyGlyph(L.g[z][x]);
-      if (cls === "enemy") { out.push(`${L.g[z][x]}@${x},${z}:${n}`); n += 7; } else if (["torch", "candle", "pickup"].includes(cls)) n += 1;
-    }
-    expect(out.join(" ")).toBe(RECORDED);
+  it("level 1: nothing stands within 15 steps of the spawn; the cell block's two zombies are 15-25 steps off: the fight comes to a player who walked there", () => {
+    // the combat trace's fight: tests/integration/combatTrace.test.ts walks east from the spawn and meets them
+    const L = built(1), t = terrainOf(L), [spawn] = findAll(L.g, "P"), dist = walk(t, idx(t, spawn.x, spawn.z), { secrets: "none" }).dist;
+    const foes = ["z", "f", "g", "m", "t", "s", "j", "U"].flatMap((c) => findAll(L.g, c).map((p) => ({ c, ...p, d: dist[idx(t, p.x, p.z)] })));
+    expect(Math.min(...foes.map((f) => f.d)), "the nearest enemy, steps").toBeGreaterThanOrEqual(15);
+    const zs = foes.filter((f) => f.c === "z" && f.z <= 7).map((f) => f.d);
+    expect(zs.length, "zombies in the cell block").toBe(2);
+    for (const d of zs) { expect(d).toBeGreaterThanOrEqual(15); expect(d).toBeLessThanOrEqual(25); }
   });
 });
 
 describe("the pickups and props that moved, and the ones that did not", () => {
   const glyphs = (g: string[][], ch: string) => findAll(g, ch).map((c) => `${c.x},${c.z}`);
 
-  it("level 1: the bullets box and the health pack that lay at the spawn are at the hall's south rim, beside its entrance, and the spawn chamber holds none", () => {
+  it("level 1: the spawn cell holds no pickup and no enemy (the quiet start), and the cell block's west end only a bullets box", () => {
     const g = built(1).g;
-    expect(glyphs(g, "a").sort()).toEqual(["12,20", "19,25"].sort());
-    expect(glyphs(g, "h").sort()).toEqual(["10,17", "26,25"].sort());
-    for (const [x, z] of [[4, 32], [9, 32]]) expect(g[z][x]).toBe(".");
-    for (let z = 28; z <= 33; z++) for (let x = 3; x <= 11; x++) expect(classifyGlyph(g[z][x]), `(${x},${z})`).not.toBe("pickup");
-    expect(measureLevel(built(1)).pickupsTotal).toBe(9);
+    for (let z = 3; z <= 6; z++) for (let x = 2; x <= 6; x++) expect(["floor", "spawn", "torch"], `(${x},${z})`).toContain(classifyGlyph(g[z][x]));
+    for (let z = 2; z <= 7; z++) for (let x = 8; x <= 12; x++) expect(["floor", "pickup", "torch"], `(${x},${z})`).toContain(classifyGlyph(g[z][x]));
+    expect(measureLevel(built(1)).pickupsTotal).toBe(43);
   });
 
-  it("level 1: two explosive barrels stand in the hall's east half, a crate and a barrel apiece in no other place", () => {
+  it("level 1: two explosive barrels stand in the great hall, and the one crate in the armoury", () => {
     const g = built(1).g;
-    expect(glyphs(g, "O").sort()).toEqual(["26,21", "28,16"].sort());
-    expect(glyphs(g, "x")).toEqual(["38,21"]);
+    expect(glyphs(g, "O").sort()).toEqual(["28,22", "38,24"].sort());
+    expect(glyphs(g, "x")).toEqual(["49,23"]);
   });
 
   it("levels 2-4 keep every pickup where the reference put them: they were already spread through their rooms", () => {

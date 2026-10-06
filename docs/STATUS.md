@@ -117,12 +117,51 @@ button or Space/Enter/R).
   and an additive glow (no point light: the lights are a budget and a new light stalls the shaders),
   a sound (`shrineLights`) and a line on the HUD. A level places them in its dress file, last.
 - A level load (menu, chapter select, next level) forgets the checkpoint; saves are untouched.
-- Levels 0-2's trace fixtures did not move: the markers are off their routes and unlit in them.
+- **Mercy floor** (`RISE_MIN_HP` = 50, `CheckpointState.ts`; applied in `riseAgain`): a rise restores health as recorded but never less than 50, so a shrine reached at 3 hp is not a death sentence. Armour and the rest come back as recorded; the snapshot itself still records the truth. A restart is unaffected. Pinned in `tests/world/checkpoints.test.ts`.
+- Levels 0-2's trace fixtures did not move: the markers are off their routes and unlit in them. (Level 1 was rebuilt in Task 3 and now has its own two shrines, at (36,14) and (50,29).)
 - Not done on purpose: no marker in the prologue (a grave opening, a pit and a bridge, no kit
   theme); corpses and gore are not carried across a death; the markers of levels 2-7 sit at the
   east column's doors and are a placeholder until those levels are rebuilt (Tasks 3-9).
 - Dev-pane note: `requestAnimationFrame` ran only while the browser pane was being screenshotted;
   frames are in `.superpowers/sdd/2026-10-05-deeper-levels/task-1-*.png`.
+
+## Deeper levels — Task 2, the level-design toolkit and the structure suite (branch `deeper-levels`)
+
+Plan: `docs/superpowers/plans/2026-10-05-deeper-levels.md` (Task 2 and the targets in Task 3). Numbers: `docs/level-structure.md`
+(`npx vite-node scripts/level-structure.ts` writes it; `tests/world/structureLevels.test.ts` fails if it is stale).
+
+- **Authoring layer** `src/world/authoring/` (`Plan.ts`, `sets.ts`): `LevelPlan` writes a level as rooms (size, floor, ceiling), corridors
+  (straight, bent, via points, graded between floors), `stairs`/`ramp`, plain/locked/secret doors, spawn/exit/key/enemy/pickup/prop/light/plate,
+  the theme's checkpoint marker, named set-pieces (`chancel`, `torture`, `store`, `braziers`, `ossuary`) and the kit's `Decorator`;
+  `build()` returns the `BuiltLevel` the loader takes. Hand-written levels are untouched. Guard rails: no overlapping rooms, nothing on the
+  border, a door only in a wall line and (cut into a wall) at the higher floor, no floors a step apart more than 1.2, KNOWN-4 and KNOWN-11
+  glyphs refused. Examples: `tests/support/sampleLevel.ts` (THE WELL, small) and `proofLevel.ts` (THE CHARNEL STAIR, meets every target).
+- **Structure suite** `src/world/structure/`: `walk.ts` (the movement model: four-way, step-up 1.2, directed drops, one global key, secrets optional,
+  decor masses are walls), `regions.ts` (rooms = 2x2-block cells, passages, the graph, loops = `E - V + C`), `metrics.ts` (heights, fights),
+  `analyse.ts` (hard validation and metrics), `targets.ts` (`REBUILT`, `TARGETS`, `checkTargets`, `LEGACY_PROBLEMS`). `DoorSite.ts` is the pure half of
+  `ExitDoor.ts`'s siting rule, now shared.
+- **Hard validation** every level passes (but for `LEGACY_PROBLEMS`: level 1 had `key-no-door` (KNOWN-1) and `exit-door` (grid-edge slab) until Task 3 rebuilt it; level 3
+  `unreachable` (the barrel on a south gallery stretch the ramps cut off) and `exit-door` (freestanding)): exit reachable through required keys
+  without a secret, key before door, no softlock (a reachable state that cannot finish), everything reachable, secrets behind secret doors with a reward, exit door sited.
+- **For Tasks 3-9:** a rebuilt level adds its index to `REBUILT` and meets `TARGETS` (Task 3's section); it also leaves `LEGACY_PROBLEMS`. Walkable means
+  steps of at most 1.2, no jumping. `tests/world/authoringLoad.test.ts` shows how to load a toolkit level into the real game (push a `LevelDef`).
+
+## Deeper levels — Task 3, level 1 rebuilt (branch `deeper-levels`)
+
+Plan: `docs/superpowers/plans/2026-10-05-deeper-levels.md`. **THE GOTHIC DUNGEON is rebuilt** with the `LevelPlan` toolkit (`src/world/levels/level1.ts`, dressing in `dress1.ts`): 58 x 44, 14 rooms,
+critical path 123 steps (was 42), a loop (the cell block to the guard room by the north passage or through the warden's cell), a key hunt (the key at the far end of the undercroft, a ramp down from the
+cell block: 26 steps off the way; the iron gate in front of the armoury is the door it opens: **KNOWN-1 closed**), two secrets with four pickups each, one arena (the great torture hall: 8 enemies, pillar
+ring, racks, stocks, slab, maidens, cages), three floors (the upper gaol 2.4, the warders' 1.2, the dungeon 0), forced shrines at 55% (the stair down to the hall) and 79% (before the Guardian), the Guardian `U` in
+the ward at the end (the exit door will not open till it is dead). Same roster as before (`z f g m t s j U`), 23 enemies. `REBUILT = [1]`, no `LEGACY_PROBLEMS` entry; `docs/level-structure.md` and `docs/level-density.md` regenerated.
+Report, map, play-through and mutations: `.superpowers/sdd/2026-10-05-deeper-levels/task-3-report.md`; frames `task-3-*.png`.
+
+- **Three engine facts the rebuild needed** (each a few lines, each tested): `BuiltLevel.lift` (set by `LevelPlan` when a level has raised floors) makes `Decor.ts` stand torches, candles, items and props on the floor under
+  them (`tests/world/liftDressing.test.ts`; level 3 keeps its old behaviour on purpose); `itemsTick` bobs a drop over the floor it lies on (`liftDressing.test.ts`; it also stands any item or drop on level 3's raised floors over them, where they bobbed at floor 0's height before); and `Hitscan.ts` worked out the place of a hit on an enemy's body from a centre at floor 0,
+  so **every shot at an enemy on a raised floor was a headshot** (twice the damage, never a limb) — fixed with one term, pinned by `tests/weapons/hitscanRaised.test.ts`. `LevelPlan.headroom(h)` gives raised cells a ceiling.
+- **A door on a raised floor is a slab to the eye** (a door mesh is 3.4 tall from floor 0): the upper gaol (2.4) has doorways, not doors.
+- **`combatTrace` re-recorded** (header, "twelfth regeneration"): the script walks east out of the spawn cell and fights two zombies and a cultist in the cell block; `trace-level0.json` and `trace-level2-boss.json` untouched.
+- **Play-through** `tests/integration/dungeonPlay.test.ts` / `tests/support/dungeonBot.ts`: a bot that never strafes: usual skill wins 10 of 12 seeds tried (seeds 1-3, 5, 7, 8, 11, 12, 13, and the committed 20261005; two, 4 and 6, stalled on the bot's own waypoint handling) and poor skill 4 of 4 (1-3, 11); it has never died, and its lowest health in the four runs of 2026-10-06 was 41 (poor) and 49-60 (usual).
+- **Stuck check** (`STUCK_PLACES=999`, 999 places, run in three rounds): three crate piles found and taken out; the level is clean.
 
 ## What this is
 

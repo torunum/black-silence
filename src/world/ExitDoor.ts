@@ -6,6 +6,7 @@ import { floorHeightAt, solidAt } from "./Collision";
 import { world } from "./WorldState";
 import { player } from "../player/PlayerState";
 import { buildRig, pose, setLit, slab, styleFor, type DoorStyle, type Rig } from "./DoorKit";
+import { ANY, BEHIND, ENTRANCE_REACH, EXIT_CELLS, EXIT_REACH, siteDoorIn, type Site } from "./DoorSite";
 
 /**
  * WHERE THE DOORS GO — the transitions plan
@@ -58,55 +59,18 @@ import { buildRig, pose, setLit, slab, styleFor, type DoorStyle, type Rig } from
  * one the glowing pad had, so the level's light budget does not move.
  */
 
-/** The cells `openExit` tries, in order — moved here from `Death.ts` unchanged. */
-export const EXIT_CELLS: ReadonlyArray<readonly [number, number]> = [[16, 16], [16, 15], [15, 16], [17, 16], [16, 17]];
-/** The bosses whose death opens the exit (`bossDeath`'s `openExit` arms). */
-export const EXIT_BOSSES = "QZNHV";
-export const EXIT_REACH = 3, ENTRANCE_REACH = 4;
-
-/** South, north, east, west — an exit has no side to prefer. */
-const ANY: ReadonlyArray<readonly [number, number]> = [[0, 1], [0, -1], [1, 0], [-1, 0]];
-/** North first: the player starts facing south, so the way they came in is behind them. */
-const BEHIND: ReadonlyArray<readonly [number, number]> = [[0, -1], [-1, 0], [1, 0], [0, 1]];
-
-/** Where a door stands: the cell to stand in, which way the wall is, and how far. */
-export interface Site {
-  /** The cell in front of the door. */
-  sx: number; sz: number;
-  /** The direction from that cell to the wall. */
-  dx: number; dz: number;
-  /** Cells from the cell searched from to the wall. */
-  k: number;
-  /** The door has no wall to stand in and brings a slab of its own. */
-  slab: boolean;
-}
+export { EXIT_CELLS, EXIT_BOSSES, EXIT_REACH, ENTRANCE_REACH, type Site } from "./DoorSite";
 
 /** The floor under a cell's centre. */
 const floorOf = (cx: number, cz: number): number => floorHeightAt((cx + .5) * CELL, (cz + .5) * CELL);
-/** The most the floor at a door may differ from the floor at the exit cell it serves: under the player's step-up of 1.2. */
-const LEDGE = 0.9;
 
 /**
  * The nearest `#` wall in four directions from a cell, within `reach` cells; ties go to the earlier of `order`.
  * With `edge`, the grid's own edge counts as a wall (a `slab` site) — for the one exit that stands against it.
+ * The rule itself is `DoorSite.ts`'s, which the level-structure validation asks of a level that was never loaded.
  */
 export function siteDoor(cx: number, cz: number, reach: number, order: ReadonlyArray<readonly [number, number]>, edge = false): Site | null {
-  let best: Site | null = null;
-  for (const [dx, dz] of order) {
-    for (let k = 1; k <= reach; k++) {
-      const ch = world.grid[cz + dz * k]?.[cx + dx * k];
-      if (ch !== undefined && "IW+DS".includes(ch)) break;
-      if (ch === "#" || (ch === undefined && edge)) {
-        const sx = cx + dx * (k - 1), sz = cz + dz * (k - 1);
-        // a wall on a ledge the player cannot step up to (level 3's south gallery, 2.3 above the nave's step) is no wall to stand at
-        if (Math.abs(floorOf(sx, sz) - floorOf(cx, cz)) > LEDGE) break;
-        if (!best || k < best.k) best = { sx, sz, dx, dz, k, slab: ch === undefined };
-        break;
-      }
-      if (ch === undefined) break;
-    }
-  }
-  return best;
+  return siteDoorIn(world.grid, floorOf, cx, cz, reach, order, edge);
 }
 
 /** How wide the grid's open edge is either side of a slab site's cell: the wall a door brings fills all of it. */

@@ -66,6 +66,17 @@ real verticality, and checkpoints at the halfway point(s).
 
 Commit: `feat: a level-design toolkit, and every level measured`
 
+**Built (Task 2).** `src/world/authoring/Plan.ts` (`LevelPlan`: rooms with a size and a floor,
+corridors straight or bent and graded between floors, `stairs`/`ramp`, plain/locked/secret doors,
+`spawn`/`exit`/`key`/`enemy`/`pickup`/`prop`/`light`/`plate`, `checkpoint`, named set-pieces and the
+kit's `Decorator`; `build()` returns the `BuiltLevel` the loader takes) with guard rails against
+the known glyph traps (KNOWN-4, KNOWN-11). `src/world/structure/` (`analyse(level)`: the hard
+validation and the metrics; `targets.ts`: `REBUILT`, `TARGETS`, `checkTargets`).
+`scripts/level-structure.ts` writes `docs/level-structure.md`. A small level (`tests/support/sampleLevel.ts`,
+THE WELL) shows the API; a level written to meet every target (`tests/support/proofLevel.ts`) proves the
+targets can be met together. Hard-validation failures levels 1 and 3 already had are pinned in
+`LEGACY_PROBLEMS`; a rebuilt level may have none.
+
 ## Task 3 — level 1 rebuilt (the template)
 
 The Gothic Dungeon, rebuilt with the toolkit to the targets: a longer, branching
@@ -73,6 +84,31 @@ dungeon — cell blocks, the torture hall, a flooded undercroft or an oubliette
 below, a key hunt, a loop back to an earlier area, secrets, a checkpoint. Keep
 its furnishing quality (the decor kit), its lighting budget, its exit and
 entrance doors. Re-record `combatTrace` per its header.
+
+### Targets for every rebuilt level (set by Task 2, enforced by `REBUILT`)
+
+Measured on levels 1-7 as they were built (`docs/level-structure.md`): critical path 42, 66, 44, 44, 44, 44, 32
+steps (levels 4-6 exactly the same 44: one building, three wallpapers); one floor height everywhere but level 3's
+tomb; one secret each; a key on the way on level 2 only; and no checkpoint that every route passes between 40-60%
+(levels 3-6 have theirs at 84-91%, level 7's nearest is 53% and a route can miss it).
+A level's index goes into `REBUILT` (`src/world/structure/targets.ts`) in the task that rebuilds it, and from then on
+`tests/world/structureLevels.test.ts` holds it to `checkTargets` and to the hard validation with no waiver:
+
+| target | number | why |
+|---|---|---|
+| critical path | 1.8-3x the old level's, and at least 80 steps: level 1 80-126, level 2 119-198, levels 3-6 80-132, level 7 80-96 | "about 2x"; the 80 floor keeps levels 1 and 7 (42, 32) from being rebuilt short; the cap keeps a level from growing past playable |
+| loops | at least 1 loop (independent cycle in the room graph) | the lattice levels have 3-4 by accident, level 1 has none |
+| key hunt | a key, a locked door on the way, the key at least 20 steps off the way | level 2 has it (32); levels 3-7 lock a side room, which is not a hunt |
+| secrets | at least 2 secrets, each with at least 2 pickups behind it | every level has exactly 1 today, with 3-5 pickups |
+| arena | at least 1 arena (a room of 60+ cells with 8+ of enemy weight, a boss weighing 4) | six of the seven have one today by accident; level 3 has none |
+| verticality | at least 3 floor heights and 2 vertical transitions | of levels 1-7 only level 3 (the tomb) has any |
+| rooms, branches | at least 8 rooms and 2 branch points (a region with 3+ neighbours) | level 1 has 4 rooms and 0 branches; "branching dungeon" |
+| checkpoint | one that every route passes, between 40-60% of the critical path | no level has one (level 2's is at 61%, level 7's at 53% and avoidable) |
+| ammunition | every fight: ammunition found on the way worth 2x the rank-and-file hit points; before a boss, 0.6x all of them, with 50 health and 50 armour on the way | the worst rank-and-file fight today is 2.6x, the worst boss room 0.67x; levels 1, 4, 5 and 7 reach a boss with no armour or no health |
+
+"Ammunition worth" is damage on paper at 50% accuracy, counting the first weapon that fires each kind and the 60 bullets
+the player starts with, and not what enemies drop. Doors cut into a wall (`LevelPlan.door`) take the higher of the two
+floors and may not join floors more than a step (1.2) apart; a player cannot climb what a jump alone would.
 
 Commit: `feat: the dungeon goes deeper`
 

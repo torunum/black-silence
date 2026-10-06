@@ -15,7 +15,7 @@ import { weaponRuntime } from "../../src/weapons/WeaponRuntime";
 import { screenShake } from "../../src/fx/ShakeState";
 import { CELL, WALLH } from "../../src/world/Grid";
 import { LEVELS } from "../../src/world/levels/index";
-import { checkpoint } from "../../src/world/CheckpointState";
+import { checkpoint, RISE_MIN_HP } from "../../src/world/CheckpointState";
 import { lastSoundLevel } from "../../src/audio/Levels";
 
 /**
@@ -246,6 +246,25 @@ describe("rising again at the last shrine", () => {
     expect(checkpoint.snap).not.toBeNull();
   });
 
+  it("raises you with at least half your health (the mercy floor), armour as recorded: a shrine reached at 3 hp is not a death sentence", () => {
+    expect(RISE_MIN_HP).toBe(50);
+    start(1);
+    Object.assign(S, { hp: 3, armor: 17 });
+    pass(0);
+    expect(checkpoint.snap!.inv.hp, "the record is honest").toBe(3);
+    S.hp = 80; dieAndWait();
+    rise();
+    expect(S.hp, "risen with the floor").toBe(50);
+    expect(S.armor, "armour as recorded").toBe(17);
+    // at or above the floor, nothing is added
+    start(1);
+    Object.assign(S, { hp: 50, armor: 0 }); pass(0); dieAndWait(); rise();
+    expect(S.hp).toBe(50);
+    start(1);
+    Object.assign(S, { hp: 91, armor: 0 }); pass(0); dieAndWait(); rise();
+    expect(S.hp, "a healthy rise is not capped or raised").toBe(91);
+  });
+
   it("keeps the dead dead, the taken taken and the opened open — and brings back what the dead run killed, took and opened after", () => {
     start(1);
     const fighters = world.enemies.map((e, i) => [e, i] as const).filter(([e]) => !e.boss);
@@ -367,12 +386,12 @@ describe("what a death does to the numbers", () => {
     const t0 = S.levelT0, atDeath = checkpoint.deadAt - t0;
     rise();
     const now = performance.now() - S.levelT0;
-    expect(Math.abs(now - atDeath), "the clock is where it stood when the player died").toBeLessThan(200);
+    expect(Math.abs(now - atDeath), "the clock is where it stood when the player died").toBeLessThan(3000);   // the wall time of the reload itself, which a 58 x 44 level with 600 pieces of dressing makes 200-400 ms under load; the lost nine seconds are what this tells apart
     expect(S.deaths).toBe(1);
     expect(statsHtml()).toMatch(/DEATHS <b>1<\/b>/);
     dieAndWait(); restart();
     expect(S.deaths, "a restart counts it too").toBe(2);
-    expect(performance.now() - S.levelT0, "and starts the clock over").toBeLessThan(500);
+    expect(performance.now() - S.levelT0, "and starts the clock over (the wall time of the reload is all it holds: 30 s of lost run is what this tells apart)").toBeLessThan(3000);
   });
 });
 

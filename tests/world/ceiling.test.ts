@@ -80,9 +80,10 @@ afterAll(() => {
 });
 
 describe("a level with no ceiling map builds the single flat plane it always built", () => {
-  it("level 1 gets exactly one ceiling child, a PlaneGeometry Mesh at y=WALLH", () => {
-    loadLevel(1);
-    expect(LEVELS[1].build().cmap).toBeUndefined(); // the premise: level 1 never opted in
+  it("level 4 gets exactly one ceiling child, a PlaneGeometry Mesh at y=WALLH", () => {
+    // (it was level 1 until that level was rebuilt with tiers, which have ceilings of their own: it opts in now)
+    loadLevel(4);
+    expect(LEVELS[4].build().cmap).toBeUndefined(); // the premise: level 4 never opted in
     expect(world.ceilMap).toBeNull();
 
     const ceil = named("ceiling");
@@ -266,7 +267,7 @@ describe("the riser strips close every height transition", () => {
   });
 
   it("a level without a ceiling map has no risers to build", () => {
-    loadLevel(1);
+    loadLevel(4);
     expect(named("ceilingRisers").length).toBe(0);
   });
 });

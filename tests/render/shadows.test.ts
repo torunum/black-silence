@@ -235,19 +235,20 @@ describe("who casts and who receives", () => {
     // flips FrontSide to BackSide for shadows — is a good way to put the whole
     // scene in shadow. The ceiling starts at WALLH=3.4 and the lamp sits at
     // about 1.4, so ceiling geometry could only throw a shadow upward.
-    loadLevel(1);
+    loadLevel(4);   // (level 1 until it was rebuilt with tiers and a ceiling map of its own)
     for (const name of ["floor", "ceiling"]) {
       const o = childNamed(name);
       expect(o.receiveShadow, `${name}.receiveShadow`).toBe(true);
       expect(o.castShadow, `${name}.castShadow`).toBe(false);
     }
-    // Level 3 is the only level that opts into a per-cell ceiling map today,
-    // so it is the only place the other two ceiling shapes exist at all.
-    loadLevel(3);
+    // Levels 1 and 3 opt into a per-cell ceiling map (and the prologue), so those are where the other two ceiling shapes exist at all.
+    for (const lvl of [1, 3]) {
+    loadLevel(lvl);
     for (const name of ["ceilingCells", "ceilingRisers"]) {
       const o = childNamed(name);
       expect(o.receiveShadow, `${name}.receiveShadow`).toBe(true);
       expect(o.castShadow, `${name}.castShadow`).toBe(false);
+    }
     }
   });
 

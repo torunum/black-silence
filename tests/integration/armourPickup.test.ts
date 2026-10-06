@@ -110,7 +110,7 @@ describe("armour exists: a level's own grid puts armour on the floor and the pla
   it("the fixture this file is built on is not vacuous — some level authors armour", () => {
     // Without this, a regression that deleted every `r` from every grid
     // would turn each level's case below into a pass over an empty list.
-    expect(EXPECTED.reduce((n, l) => n + l.armour, 0)).toBe(20);
+    expect(EXPECTED.reduce((n, l) => n + l.armour, 0)).toBe(24);   // the reference's twenty, and level 1 (rebuilt) has five where it had one
   });
 
   it.each(EXPECTED.map((l, i) => [l.name, i, l.armour] as const))(
@@ -145,7 +145,8 @@ describe("armour exists: a level's own grid puts armour on the floor and the pla
         S.armor = 0;
       }
     }
-    expect(taken, "no armour was picked up anywhere — this assertion would otherwise be vacuous").toBe(20);
+    // twenty tiles in the reference; level 1 was rebuilt (deeper-levels plan, Task 3) with five of its own where it had one, so twenty-four
+    expect(taken, "no armour was picked up anywhere — this assertion would otherwise be vacuous").toBe(24);
   });
 
   it("the HUD's armour slot, which could only ever read 0, now reads what the player picked up", () => {
@@ -165,23 +166,21 @@ describe("armour exists: a level's own grid puts armour on the floor and the pla
     expect(document.querySelector("#ar .num")?.textContent).toBe("50");
   });
 
-  it("level 1's armour is the reward cache in the secret alcove, where the author wrote it", () => {
-    // `src/world/levels/level1.ts`: `put1(g,40,25,"r")`, commented "armor",
-    // behind the secret door at `g[23][40]`. This pins the *place*, not just
-    // the count — an armour item that spawned somewhere else would satisfy
-    // every other assertion in this file.
+  it("level 1's armour is five plates: the torturer's closet, the great hall's stair, the armoury, the ward and the warders' hoard behind a secret door, where the author wrote them", () => {
+    // `src/world/levels/level1.ts` (rebuilt, deeper-levels plan Task 3): `lv.pickup("r", closet.at(3, 5))` and `hoard1.at(1, 1)`. This pins the
+    // *place*, not just the count: an armour item that spawned somewhere else would satisfy every other assertion in this file.
     loadLevel(1);
     const items = world.items as unknown as Array<{ kind: string; x: number; z: number }>;
     const armour = items.filter((i) => i.kind === "armor");
-    expect(armour.map((a) => [a.x, a.z])).toEqual([[(40 + 0.5) * CELL, (25 + 0.5) * CELL]]);
+    expect(armour.map((a) => [a.x / CELL - .5, a.z / CELL - .5]).sort((p, q) => p[0] - q[0] || p[1] - q[1])).toEqual([[21, 26], [38, 19], [46, 6], [47, 20], [50, 40]]);
   });
 
-  it("and no enemy stands in the alcove any more", () => {
+  it("and no enemy stands in either hoard: the warders' (x 45-49, z 5-9) and the drowned ossuary (x 5-13, z 24-27), behind their secret doors", () => {
     loadLevel(1);
     const enemies = world.enemies as unknown as Array<{ key: string; x: number; z: number }>;
     expect(enemies.some((e) => e.key === "A")).toBe(false);
-    const inAlcove = enemies.filter((e) => e.x > 37 * CELL && e.z > 23 * CELL);
-    expect(inAlcove.map((e) => e.key)).toEqual([]);
+    const inHoards = enemies.filter((e) => (e.x > 45 * CELL && e.x < 50 * CELL && e.z > 5 * CELL && e.z < 10 * CELL) || (e.x > 5 * CELL && e.x < 14 * CELL && e.z > 24 * CELL && e.z < 28 * CELL));
+    expect(inHoards.map((e) => e.key)).toEqual([]);
   });
 });
 
