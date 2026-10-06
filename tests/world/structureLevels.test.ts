@@ -108,9 +108,12 @@ describe("the targets themselves", () => {
   });
 
   it("are missed, number by number, by the levels as they were: level 1 (the frozen reference's, which the rebuild replaced) fails nine of them, level 2 six", () => {
-    // level 1 is rebuilt and meets the targets (above); "as it was" is the reference's own level 1, the grid it had: no dressing, so no checkpoints and no masses
+    // levels 1 and 2 are rebuilt and meet the targets (above); "as it was" is the reference's own grid: no dressing, so no checkpoints and no masses.
+    // Level 2 as it was has its pews as `v` and its armour as `r`, as the port spelt them before the rebuild (KNOWN-4, KNOWN-11: the reference's `V` is a Foreman and `A` a Mancubus)
     const old1 = analyse(evalReference<() => BuiltLevel>([refSource(REF.levelBuilder), refSource(REF.put1), refSource(REF.buildLevel1)], "buildLevel1")());
-    const l1 = checkTargets(1, old1).join("\n"), l2 = checkTargets(2, built[2].s).join("\n");
+    const ref2 = evalReference<() => BuiltLevel>([refSource(REF.levelBuilder), refSource(REF.put1), refSource(REF.buildLevel2)], "buildLevel2")();
+    const old2 = analyse({ ...ref2, g: ref2.g.map((row) => row.map((c) => (c === "V" ? "v" : c === "A" ? "r" : c))) });
+    const l1 = checkTargets(1, old1).join("\n"), l2 = checkTargets(2, old2).join("\n");
     expect(l1).toMatch(/critical path is 42 steps, wanted 80-126/);
     expect(l1).toMatch(/0 loops/);
     expect(l1).toMatch(/no key hunt/);

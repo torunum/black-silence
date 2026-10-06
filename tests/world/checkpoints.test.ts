@@ -349,7 +349,7 @@ describe("a new level forgets the shrine", () => {
     start(2);
     expect(checkpoint.snap).toBeNull();
     expect(checkpoint.entry).not.toBeNull();
-    expect(checkpoint.marks.map((m) => m.k)).toEqual(["shrine", "shrine"]);
+    expect(checkpoint.marks.map((m) => m.k)).toEqual(["shrine", "shrine", "shrine"]);   // the rebuilt church has three
     expect(checkpoint.marks.every((m) => !m.lit)).toBe(true);
     expect(S.deaths, "and the level's deaths").toBe(0);
     expect(save.maxLevel, "saves are unchanged").toBe(3);

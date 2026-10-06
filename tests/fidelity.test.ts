@@ -119,6 +119,9 @@ const refLevels = evalReference<RefLevelDef[]>(LEVEL_CHUNKS, "LEVELS");
  * these eight cells may differ, only in this direction, and only in level 2.
  * Adding a ninth divergence — or letting one of these drift back to `V`, or
  * appear in another level — fails the same assertion.
+ *
+ * **History since the deeper-levels plan, Task 4:** level 2 is rebuilt whole (`REBUILT_LEVEL_2` below), so the port no longer has these eight cells to
+ * compare. They are what the *frozen* master still holds, and the rebuilt level's pin asserts that: the reference's eight pews are still `V`.
  */
 const LEVEL2_PEW_CELLS: ReadonlyArray<readonly [number, number]> = [
   [21, 4],   // (2,0) chapel
@@ -143,9 +146,8 @@ const LEVEL2_PEW_CELLS: ReadonlyArray<readonly [number, number]> = [
  * `tests/world/rosterReach.test.ts`'s `PLACED` comment documents).
  */
 const ARMOUR_CELLS: Readonly<Record<string, ReadonlyArray<readonly [number, number]>>> = {
-  // level 1 is no longer here: it was rebuilt (REBUILT_LEVEL_1 below) and has no cell to compare; its armour is pinned in
-  // tests/integration/armourPickup.test.ts, and the other nineteen tiles are the ones still compared
-  "LEVEL 2 — THE ABANDONED CHURCH": [[28, 9], [4, 23]],
+  // levels 1 and 2 are no longer here: they were rebuilt (REBUILT_LEVEL_1 and REBUILT_LEVEL_2 below) and have no cell to compare; their armour is pinned in
+  // tests/integration/armourPickup.test.ts, and the other seventeen tiles are the ones still compared
   "LEVEL 3 — THE NECROPOLIS": [[30, 20], [4, 21], [20, 21]],
   "LEVEL 4 — THE GRAVEYARD": [[30, 20], [4, 21], [20, 21]],
   "LEVEL 5 — THE SEWERS": [[6, 20], [30, 20], [20, 21]],
@@ -181,6 +183,19 @@ const REBUILT_PROLOGUE = "PROLOGUE — OUT OF THE PIT";
  */
 const REBUILT_LEVEL_1 = "LEVEL 1 — THE GOTHIC DUNGEON";
 
+/**
+ * The fifth deliberate divergence, and the third whole-level one: level 2, THE ABANDONED CHURCH (the deeper-levels plan, Task 4). The reference's
+ * church is a 4 x 4 lattice of seven-by-five rooms round a merged nave on one floor, 66 steps from the spawn to the exit, with the `LEVEL2_PEW_CELLS`
+ * above spelt `V` (KNOWN-4) and two `A` (KNOWN-11) the port had already changed; it is rebuilt with the level-design toolkit (`src/world/levels/level2.ts`)
+ * as a cruciform church on four floors, so no cell-for-cell comparison means anything. What is pinned in its place, so this file still reads the frozen
+ * master and still says something true about the port:
+ *  - the reference's level 2 is still the 33x25 single-floor lattice it always was, with its eight `V` pews, its Priest `Q` at (16,20) and its two armour `A`;
+ *  - the port's is a different size and map, has the floors the plan asked for (the crypt at 0, the church at 1.2, the choir loft at 2.4, the belfry at 3.6);
+ *  - it keeps the reference's roster letter for letter but for what KNOWN-4 and KNOWN-11 took out (the `V` pews, the `A` armour) and the one `C` that was a chair
+ *    in the priest's chambers and a Cacodemon in the game; it has the one Priest, the one Guardian, one red key and its gate, two secrets where the reference had one.
+ */
+const REBUILT_LEVEL_2 = "LEVEL 2 — THE ABANDONED CHURCH";
+
 /** Every cell where two grids disagree, as `x,z ref->ours` strings. */
 function gridDiff(ours: string[][], ref: string[][]): string[] {
   const out: string[] = [];
@@ -201,7 +216,7 @@ describe("LEVELS vs. reference", () => {
   });
 
   it.each(LEVELS.map((def, i) => [def.name, def, refLevels[i]] as const))(
-    "%s builds the reference grid, cell for cell, apart from level 2's eight pews and the twenty armour tiles; the prologue and level 1 are rebuilt and pinned instead",
+    "%s builds the reference grid, cell for cell, apart from the armour tiles of levels 3-7; the prologue and levels 1 and 2 are rebuilt and pinned instead",
     (name, def, refDef) => {
       const built = def.build();
       const refBuilt = refDef.build();
@@ -233,12 +248,35 @@ describe("LEVELS vs. reference", () => {
         expect(built.segs).toBeUndefined();
         return;
       }
+      if (name === REBUILT_LEVEL_2) {
+        const count = (g: string[][], ch: string): number => g.flat().filter((c) => c === ch).length;
+        expect([refBuilt.W, refBuilt.H], "the frozen reference's level 2").toEqual([33, 25]);
+        expect(refBuilt.hmap, "the reference's level 2 is one floor").toBeUndefined();
+        expect(refBuilt.g[20][16], "the reference's Priest waits at the altar").toBe("Q");
+        for (const [x, z] of LEVEL2_PEW_CELLS) expect(refBuilt.g[z][x], `the reference's pew at (${x},${z}) is spelt V, a Foreman (KNOWN-4)`).toBe("V");
+        expect(count(refBuilt.g, "A"), "and its two armour tiles are spelt A, a Mancubus (KNOWN-11)").toBe(2);
+        expect([built.W, built.H], "the port's level 2 is a bigger map").toEqual([64, 46]);
+        expect(gridDiff(built.g, refBuilt.g).length, "the port's level 2 is a different map").toBeGreaterThan(600);
+        const heights = new Set(built.hmap!.flat());
+        expect([...heights].filter((h) => [0, 1.2, 2.4, 3.6].includes(h)).sort(), "four floors: the crypt, the church, the choir loft and the belfry").toEqual([0, 1.2, 2.4, 3.6]);
+        expect(count(built.g, "D"), "the key opens the grand doors").toBe(1);
+        expect(count(built.g, "K")).toBe(1);
+        expect(count(built.g, "S"), "two secrets, where the reference had one").toBe(2);
+        expect(count(built.g, "V") + count(built.g, "A") + count(built.g, "C"), "no Foreman, no Mancubus, no chair that is a Cacodemon (KNOWN-4, KNOWN-11)").toBe(0);
+        const roster = (g: string[][]): string => [...new Set(g.flat().filter((c) => c in ENEMY_DEFS))].sort().join("");
+        // the reference's `V` (eight pews), `A` (two armour) and `C` (a chair) are what KNOWN-4 and KNOWN-11 name: not enemies the port kept
+        expect(roster(built.g), "the same kinds of enemy as the reference's level 2, less what two known issues took out").toBe(roster(refBuilt.g).replace(/[VAC]/g, ""));
+        expect(roster(built.g)).toBe("QUfgmstwz");
+        expect(count(built.g, "Q"), "one Priest").toBe(1);
+        expect(count(built.g, "U"), "one Guardian").toBe(1);
+        expect(count(built.g, "v"), "pews, and spelt v").toBeGreaterThanOrEqual(8);
+        expect(built.zones).toBeUndefined();
+        expect(built.segs).toBeUndefined();
+        return;
+      }
       expect(built.zones, `${name} has no zones`).toBeUndefined();
-      const pews = name === "LEVEL 2 — THE ABANDONED CHURCH"
-        ? LEVEL2_PEW_CELLS.map(([x, z]) => `${x},${z} V->v`)
-        : [];
       const armour = (ARMOUR_CELLS[name] ?? []).map(([x, z]) => `${x},${z} A->r`);
-      const expected = [...pews, ...armour].sort();
+      const expected = [...armour].sort();
       expect(gridDiff(built.g, refBuilt.g)).toEqual(expected);
       expect(built.hmap).toEqual(refBuilt.hmap);
       expect(built.segs).toEqual(refBuilt.segs);

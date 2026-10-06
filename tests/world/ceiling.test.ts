@@ -99,12 +99,12 @@ describe("a level with no ceiling map builds the single flat plane it always bui
     expect(named("ceilingRisers").length).toBe(0);
   });
 
-  it("level 2 — the boss trace fixture's level — is in that branch too", () => {
-    // Was "the prologue is in that branch too". The rebuilt prologue (the
+  it("level 5 is in that branch too", () => {
+    // Was "the prologue is in that branch too", then "level 2 — the boss trace fixture's level". The rebuilt prologue (the
     // prologue plan, Task 1) opts in with a ceiling map and zones — see the
-    // next describe — so the unchanged-branch guard moved to the other trace
-    // level that never opted in.
-    loadLevel(2);
+    // next describe — and so did level 2 when it was rebuilt (deeper-levels plan, Task 4: a nave with a vault of its own), so the
+    // unchanged-branch guard moved to a level that never opted in.
+    loadLevel(5);
     expect(world.ceilMap).toBeNull();
     expect(named("ceiling").length).toBe(1);
     expect(named("ceilingCells").length).toBe(0);
