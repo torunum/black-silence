@@ -99,7 +99,7 @@ export function buildLevel2(): BuiltLevel {
   lv.pickup("a", [52, 11]).pickup("h", [61, 11]);                                        // the ringing chamber
   lv.pickup("h", [53, 8]).pickup("a", [60, 6]);                                          // the ramp
   lv.pickup("5", [53, 2]).pickup("o", [54, 2], [60, 2]).pickup("h", [61, 3]).pickup("a", [61, 5]);   // the belfry: the sniper rifle
-  lv.pickup("a", [48, 15], [28, 16], [28, 26]).pickup("h", [48, 27], [27, 24]).pickup("r", [27, 18]).pickup("b", [47, 21]);   // the nave
+  lv.pickup("a", [48, 15], [28, 16], [28, 26]).pickup("h", [48, 27], [27, 22]).pickup("r", [27, 21]).pickup("b", [47, 21]);   // the nave
   lv.pickup("a", [28, 10]).pickup("h", [34, 6]).pickup("b", [28, 6]);                    // the north chapel
   lv.pickup("h", [39, 6]).pickup("a", [45, 10]).pickup("b", [39, 10]);                   // the lady chapel
   lv.pickup("4", [49, 8]).pickup("r", [49, 6]).pickup("c", [49, 10]).pickup("h", [48, 7]);   // the reliquary
@@ -115,7 +115,7 @@ export function buildLevel2(): BuiltLevel {
   for (const z of [19, 23]) for (const x of [29, 31, 33, 43, 45, 47]) lv.prop("v", [x, z]);
 
   // ---- the light: torches (real lights: 17 is the budget with the windows), then glow in dress2.ts
-  lv.light("i", [61, 19], [57, 15], [57, 9], [26, 19], [26, 23], [10, 37], [28, 37]);
+  lv.light("i", [61, 19], [57, 15], [57, 9], [26, 19], [17, 29], [10, 37], [28, 37]);
   for (const x of [29, 36, 46]) { lv.window(x, 13); lv.window(x, 29); }
   lv.window(13, 16).window(13, 20).window(57, 1);   // the chancel's two, either side of the altar
   lv.light("p", [19, 4]);   // the organ, in the choir loft
