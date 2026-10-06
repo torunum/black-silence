@@ -786,8 +786,8 @@ const TOTAL_FRAMES = 1100;
  *    so a quarter turn from the spawn's yaw of pi to 3 pi / 2 (forward `(-sin yaw, -cos yaw)` = +x) is `-(pi / 2) / SENS` of movementX, in eight steps.
  *  - **Frame 160: walk.** Not 50, as the old script did: the level's own line (`MONOLOGUE.lvl1`) is said at about frame 90 and the next unforced line is
  *    throttled for 3 s (`Subtitles.ts`'s `say`), and a sighting line is *spent* by that throttle (`onceSaid` is set before it is checked): a zombie that sees
- *    the player at frame 180 says nothing, for good. At 160 the first zombie, 21 cells away, wakes at about frame 300 and says its line.
- *  - **Frame 380: stop**, at (16.5, 5.5) cells, in the middle of the cell block's west half, the first zombie 5.7 units away and the second at 15.
+ *    the player at frame 180 says nothing, for good. At 160 the first zombie, 18 cells away from the spawn (it stands at (21, 3)), wakes at about frame 300 and says its line.
+ *  - **Frame 380: stop**, at (16.5, 5.5) cells, in the middle of the cell block's west half, the first zombie placed 5.4 cells away and the second 8.6 (where they stand at the start: they have moved by then).
  *  - **Frame 470-974: a standing turret that watches its front.** The aim sweeps 8 degrees a step between 60 degrees to the left of east and 60 to the right
  *    (a triangle wave, 14 frames a step), firing on every step (3 frames in, 15 out) and reloading on every sixth. The old script swept a whole circle with a slow
  *    rotation; this one fights what comes at it from one side, which is what the cell block is: a wide hall with the enemies at its east end. The sweep is why the

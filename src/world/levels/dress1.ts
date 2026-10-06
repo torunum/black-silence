@@ -35,7 +35,7 @@ const WALKABLE = ["straw", "rubble", "bonesLoose", "skullpile", "chainLoose", "s
 
 export function dressLevel1(d: Decorator, r: Rooms): void {
   const { block, guard, undercroft, closet, hall, armoury, ward, exit } = r;
-  const note = (e: string | null, what: string): void => { if (e) console.log(`DRESS ${what}: ${e}`); };
+  const note = (e: string | null, what: string): void => { if (e) throw new Error(`level 1 dressing: ${what} refused: ${e}`); };   // an authored piece the kit refuses is a layout bug, not a log line
 
   // THE TORTURE HALL (x 24-42, z 18-30; the stair comes in at x 36)
   note(d.tryPlace("rack", 27, 18, { r: 0 }), "rack");

@@ -118,7 +118,7 @@ button or Space/Enter/R).
   a sound (`shrineLights`) and a line on the HUD. A level places them in its dress file, last.
 - A level load (menu, chapter select, next level) forgets the checkpoint; saves are untouched.
 - **Mercy floor** (`RISE_MIN_HP` = 50, `CheckpointState.ts`; applied in `riseAgain`): a rise restores health as recorded but never less than 50, so a shrine reached at 3 hp is not a death sentence. Armour and the rest come back as recorded; the snapshot itself still records the truth. A restart is unaffected. Pinned in `tests/world/checkpoints.test.ts`.
-- Levels 0-2's trace fixtures did not move: the markers are off their routes and unlit in them.
+- Levels 0-2's trace fixtures did not move: the markers are off their routes and unlit in them. (Level 1 was rebuilt in Task 3 and now has its own two shrines, at (36,14) and (50,29).)
 - Not done on purpose: no marker in the prologue (a grave opening, a pit and a bridge, no kit
   theme); corpses and gore are not carried across a death; the markers of levels 2-7 sit at the
   east column's doors and are a placeholder until those levels are rebuilt (Tasks 3-9).
@@ -145,6 +145,23 @@ Plan: `docs/superpowers/plans/2026-10-05-deeper-levels.md` (Task 2 and the targe
   without a secret, key before door, no softlock (a reachable state that cannot finish), everything reachable, secrets behind secret doors with a reward, exit door sited.
 - **For Tasks 3-9:** a rebuilt level adds its index to `REBUILT` and meets `TARGETS` (Task 3's section); it also leaves `LEGACY_PROBLEMS`. Walkable means
   steps of at most 1.2, no jumping. `tests/world/authoringLoad.test.ts` shows how to load a toolkit level into the real game (push a `LevelDef`).
+
+## Deeper levels — Task 3, level 1 rebuilt (branch `deeper-levels`)
+
+Plan: `docs/superpowers/plans/2026-10-05-deeper-levels.md`. **THE GOTHIC DUNGEON is rebuilt** with the `LevelPlan` toolkit (`src/world/levels/level1.ts`, dressing in `dress1.ts`): 58 x 44, 14 rooms,
+critical path 123 steps (was 42), a loop (the cell block to the guard room by the north passage or through the warden's cell), a key hunt (the key at the far end of the undercroft, a ramp down from the
+cell block: 26 steps off the way; the iron gate in front of the armoury is the door it opens: **KNOWN-1 closed**), two secrets with four pickups each, one arena (the great torture hall: 8 enemies, pillar
+ring, racks, stocks, slab, maidens, cages), three floors (the upper gaol 2.4, the warders' 1.2, the dungeon 0), forced shrines at 55% (the stair down to the hall) and 79% (before the Guardian), the Guardian `U` in
+the ward at the end (the exit door will not open till it is dead). Same roster as before (`z f g m t s j U`), 23 enemies. `REBUILT = [1]`, no `LEGACY_PROBLEMS` entry; `docs/level-structure.md` and `docs/level-density.md` regenerated.
+Report, map, play-through and mutations: `.superpowers/sdd/2026-10-05-deeper-levels/task-3-report.md`; frames `task-3-*.png`.
+
+- **Three engine facts the rebuild needed** (each a few lines, each tested): `BuiltLevel.lift` (set by `LevelPlan` when a level has raised floors) makes `Decor.ts` stand torches, candles, items and props on the floor under
+  them (`tests/world/liftDressing.test.ts`; level 3 keeps its old behaviour on purpose); `itemsTick` bobs a drop over the floor it lies on; and `Hitscan.ts` worked out the place of a hit on an enemy's body from a centre at floor 0,
+  so **every shot at an enemy on a raised floor was a headshot** (twice the damage, never a limb) — fixed with one term, pinned by `tests/weapons/hitscanRaised.test.ts`. `LevelPlan.headroom(h)` gives raised cells a ceiling.
+- **A door on a raised floor is a slab to the eye** (a door mesh is 3.4 tall from floor 0): the upper gaol (2.4) has doorways, not doors.
+- **`combatTrace` re-recorded** (header, "twelfth regeneration"): the script walks east out of the spawn cell and fights two zombies and a cultist in the cell block; `trace-level0.json` and `trace-level2-boss.json` untouched.
+- **Play-through** `tests/integration/dungeonPlay.test.ts` / `tests/support/dungeonBot.ts`: a bot that never strafes wins 7 of 9 seeds (usual skill) and 3 of 3 (poor), dies on none (two stalled on its own navigation).
+- **Stuck check** (`STUCK_PLACES=999`, 999 places, run in three rounds): three crate piles found and taken out; the level is clean.
 
 ## What this is
 

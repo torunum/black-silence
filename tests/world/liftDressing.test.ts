@@ -57,3 +57,20 @@ describe("level 1's torches, items and props stand on the floor under them", () 
     for (const p of props) expect(p.m.position.y).toBeGreaterThanOrEqual(floorHeightAt(p.x, p.z));
   });
 });
+
+describe("a drop on a raised floor bobs over that floor", () => {
+  it("`itemsTick` puts an item with no height of its own (an enemy's drop) at .5 over the floor it lies on, not over floor 0", async () => {
+    loadLevel(1);
+    const { itemsTick } = await import("../../src/player/Interact");
+    const { dropAmmo } = await import("../../src/enemies/Death");
+    const { player } = await import("../../src/player/PlayerState");
+    // a spot on the upper gaol (2.4), well away from the player so nothing is picked up
+    const spot = (world.items as unknown as Array<{ x: number; z: number }>).find((it) => floorHeightAt(it.x, it.z) >= 2.4 && Math.hypot(it.x - player.px, it.z - player.pz) > 6);
+    expect(spot, "an item on the upper floor").toBeDefined();
+    dropAmmo(spot!.x + .3, spot!.z);
+    const drop = (world.items as unknown as Array<{ y0?: number; sp: THREE.Sprite }>).at(-1)!;
+    expect(drop.y0, "a drop has no height of its own").toBeUndefined();
+    itemsTick(.016);
+    expect(Math.abs(drop.sp.position.y - (2.4 + .5))).toBeLessThan(.08);
+  });
+});
