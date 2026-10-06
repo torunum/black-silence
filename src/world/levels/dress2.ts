@@ -30,7 +30,7 @@ export interface Rooms {
 }
 
 /** A mass the clutter pass or a hand placement stood where an enemy walking at a player meets its flat face (`tests/enemies/stuckCheck.test.ts`): taken out. */
-export const PINNERS_2: readonly string[] = [];
+export const PINNERS_2: readonly string[] = ["fallenstatue@33,14", "fallenstatue@38,14", "fallenstatue@33,28", "fallenstatue@38,28", "sarcophagus@9,36"];
 
 /** The church vocabulary without its solid pieces (a fallen saint, the font): what may go on the floors the fights cross. */
 const WALKABLE = ["glass", "rubble", "candelabra", "lectern", "banner", "sconce", "bonesLoose"];
@@ -52,7 +52,8 @@ export function dressLevel2(d: Decorator, r: Rooms): void {
   for (const [x, z] of [[18, 16], [20, 20], [22, 18], [17, 21]]) may("glass", x, z);
 
   // THE NAVE (x 26-49, z 14-28): saints against the aisle walls, banners between the windows, candelabra down the aisle
-  for (const x of [33, 38]) { may("fallenstatue", x, 14, { side: "n" }); may("fallenstatue", x, 28, { side: "s" }); }
+  // (the saints that lay along the aisle walls, at x 33 and 38, pinned the nave's dead on their flat faces: tests/enemies/stuckCheck.test.ts, `PINNERS_2`; two of them lie in the chapels now)
+  may("fallenstatue", 14, 8, { side: "w" }); may("fallenstatue", 46, 10, { side: "e" });
   for (const x of [27, 35, 40, 44, 48]) { may("banner", x, 14, { side: "n" }); may("banner", x, 28, { side: "s" }); }
   for (const x of [30, 34, 38, 44, 47]) for (const z of [20, 22]) may("candelabra", x, z);
   for (const [x, z] of [[29, 14], [36, 14], [46, 14], [29, 28], [36, 28], [46, 28]]) may("glass", x, z);   // the glass beneath its window
@@ -102,7 +103,7 @@ export function dressLevel2(d: Decorator, r: Rooms): void {
   may("font", 24, 32, { side: "e" }); may("candelabra", 15, 28); may("votive", 24, 28); may("votive", 14, 32);
 
   // THE CRYPT and the OSSUARY: the dead, in their own furniture
-  for (const x of [9, 14, 29, 32]) may("sarcophagus", x, crypt.z0, { side: "n" });
+  for (const x of [14, 29, 32]) may("sarcophagus", x, crypt.z0, { side: "n" });
   for (const x of [8, 12, 16, 24, 30, 33]) may(x % 4 ? "niche" : "urn", x, crypt.z1, { side: "s" });
   for (const x of [6, 18, 26]) may("bonestack", x, crypt.z1, { side: "s" });
   may("skullpile", 4, crypt.z0); may("skullpile", 34, crypt.z1);

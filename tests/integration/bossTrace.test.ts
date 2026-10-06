@@ -873,7 +873,7 @@ const REV = (2 * Math.PI) / SENS;
  * 18**. 2808/18 = 156 recorded frames. The module doc comment's last
  * section has the measurement and the field-by-field account.
  */
-const TOTAL_FRAMES = 2808;
+const TOTAL_FRAMES = 7596;
 const EVERY = 18;
 /**
  * The fifth knob the structural guard depends on, alongside `TOTAL_FRAMES`
@@ -885,10 +885,10 @@ const EVERY = 18;
  */
 const DT_MS = 1000 / 60;
 
-/** Where the priest is placed by `putAbs(L,16,20,"Q")`, in world units. */
-const PRIEST_X = 33, PRIEST_Z = 41;
-/** Grid (21,21) — an empty crypt floor cell, 10.2 units from the priest with clear LOS. */
-const START_X = 43, START_Z = 43;
+/** Where the priest is placed by `lv.enemy("Q", [19, 18])` in `src/world/levels/level2.ts` (the rebuilt church's chancel), in world units. */
+const PRIEST_X = 39, PRIEST_Z = 37;
+/** Grid (24,20) — an empty floor cell at the chancel's east side, 10.8 units from the priest with clear LOS (the wake radius is 13). */
+const START_X = 49, START_Z = 41;
 
 function bossScript(): InputEvent[] {
   const s: InputEvent[] = [{ frame: 2, kind: "pointerlock", locked: true }];
@@ -901,7 +901,7 @@ function bossScript(): InputEvent[] {
   // phase-1 melee exchange has resolved. See the module doc comment for why
   // it covers the whole circle instead of the wedge the boss happens to
   // teleport into.
-  const SWEEP_START = 620, SWEEP_STEP = 4, SWEEP_SECS = 9;
+  const SWEEP_START = 620, SWEEP_STEP = 4, SWEEP_SECS = 10.5;
   const perStep = REV / ((SWEEP_SECS * 60) / SWEEP_STEP);
   for (let f = SWEEP_START; f <= TOTAL_FRAMES; f += SWEEP_STEP) {
     s.push({ frame: f, kind: "move", movementX: perStep, movementY: 0 });
@@ -1089,9 +1089,10 @@ describe("the recorded run actually fights a priest boss", () => {
     // `else` it must not have fallen into is `r=.48; hgt=1.1; hp=24;
     // explosive=true` — every field differs, so this cannot pass by
     // accident on a partial fall-through either.
-    expect(pewShapes).toHaveLength(8);
+    expect(pewShapes).toHaveLength(12);
     for (const p of pewShapes) {
-      expect(p).toEqual({ r: 0.75, hgt: 0.95, hp: 18, explosive: false });
+      // `hgt` is the pew's height over floor 0 (.95) plus the floor it stands on: the rebuilt church's nave is at 1.2 and `liftDressing` (`Decor.ts`) lifts props
+      expect(p).toEqual({ r: 0.75, hgt: 0.95 + 1.2, hp: 18, explosive: false });
     }
   });
 

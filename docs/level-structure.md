@@ -24,7 +24,7 @@ same code as hard validation and fails if this file is out of date.
 | --- | ---: | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | ---: | ---: | --- |
 | 0 · prologue · OUT OF THE PIT | 668 | 45 | - | 1 | 0 | 0 | 0 | 0 | 12 | 59 | 0 / 0 / 0 | 0 (-) | - | 8 (320 + 0 boss hp) | 1 | wall |
 | 1 · THE GOTHIC DUNGEON | 1099 | 123 | required, 26 steps off the way | 14 | 12 | 1 | 3 | 4 | 15 | 28 | 1 / 1 / 7 | 2 (4, 4) | 55% forced, 79% forced | 23 (1010 + 700 boss hp) | 1 | wall |
-| 2 · THE ABANDONED CHURCH | 1260 | 168 | required, 88 steps off the way | 13 | 11 | 1 | 2 | 3 | 39 | 46 | 1 / 1 / 5 | 2 (4, 5) | 58% forced, 73%, 92% forced | 35 (1445 + 2500 boss hp) | 2 | wall |
+| 2 · THE ABANDONED CHURCH | 1260 | 168 | required, 88 steps off the way | 13 | 11 | 1 | 2 | 3 | 39 | 46 | 1 / 1 / 5 | 2 (4, 5) | 58% forced, 73%, 92% forced | 35 (1440 + 2500 boss hp) | 2 | wall |
 | 3 · THE NECROPOLIS | 590 | 44 | optional | 13 | 14 | 3 | 4 | 2 | 6 | 49 | 1 / 1 / 15 | 1 (5) | 91%, 84% | 21 (1500 + 3950 boss hp) | 0 | freestanding |
 | 4 · THE GRAVEYARD | 623 | 44 | optional | 6 | 8 | 4 | 2 | 0 | 1 | 0 | 1 / 1 / 9 | 1 (5) | 91%, 84% | 20 (725 + 3050 boss hp) | 2 | wall |
 | 5 · THE SEWERS | 632 | 44 | optional | 5 | 6 | 3 | 3 | 0 | 1 | 0 | 1 / 1 / 8 | 1 (4) | 91%, 84% | 22 (925 + 3750 boss hp) | 3 | wall |
@@ -66,10 +66,10 @@ Regions with enemies, in reading order. *ratio* is ammunition-worth over hit poi
 | x 27-35, z 6-10 | room | 45 | 2 | 90 | 0 | 5584 | 225 | 50 | 62.04 |
 | x 38-46, z 6-10 | room | 45 | 2 | 95 | 0 | 4144 | 150 | 0 | 43.62 |
 | x 53-60, z 6-10 | passage | 19 | 2 | 65 | 0 | 1632 | 50 | 0 | 25.11 |
-| x 52-61, z 11-13 | room | 30 | 2 | 80 | 0 | 1632 | 50 | 0 | 20.40 |
-| x 14-24, z 14-22 | room | 99 | 1 | 0 | 1800 | 7218 | 325 | 150 | 4.01 |
-| x 26-49, z 14-28 | room | 346 | 9 | 390 | 0 | 4018 | 150 | 50 | 10.30 |
-| x 14-24, z 27-32 | room | 66 | 3 | 140 | 0 | 6322 | 300 | 150 | 45.16 |
+| x 52-61, z 11-13 | room | 30 | 3 | 145 | 0 | 1632 | 50 | 0 | 11.26 |
+| x 14-24, z 14-22 | room | 99 | 1 | 0 | 1800 | 10536 | 425 | 200 | 5.85 |
+| x 26-49, z 14-28 | room | 346 | 8 | 320 | 0 | 4018 | 150 | 50 | 12.56 |
+| x 14-24, z 27-32 | room | 66 | 3 | 140 | 0 | 7880 | 325 | 150 | 56.29 |
 | x 38-46, z 32-37 | room | 54 | 2 | 115 | 0 | 3928 | 150 | 0 | 34.16 |
 | x 4-34, z 36-43 | room | 248 | 7 | 220 | 700 | 5994 | 250 | 100 | 6.52 |
 
