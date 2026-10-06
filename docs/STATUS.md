@@ -156,11 +156,11 @@ the ward at the end (the exit door will not open till it is dead). Same roster a
 Report, map, play-through and mutations: `.superpowers/sdd/2026-10-05-deeper-levels/task-3-report.md`; frames `task-3-*.png`.
 
 - **Three engine facts the rebuild needed** (each a few lines, each tested): `BuiltLevel.lift` (set by `LevelPlan` when a level has raised floors) makes `Decor.ts` stand torches, candles, items and props on the floor under
-  them (`tests/world/liftDressing.test.ts`; level 3 keeps its old behaviour on purpose); `itemsTick` bobs a drop over the floor it lies on; and `Hitscan.ts` worked out the place of a hit on an enemy's body from a centre at floor 0,
+  them (`tests/world/liftDressing.test.ts`; level 3 keeps its old behaviour on purpose); `itemsTick` bobs a drop over the floor it lies on (`liftDressing.test.ts`; it also stands any item or drop on level 3's raised floors over them, where they bobbed at floor 0's height before); and `Hitscan.ts` worked out the place of a hit on an enemy's body from a centre at floor 0,
   so **every shot at an enemy on a raised floor was a headshot** (twice the damage, never a limb) — fixed with one term, pinned by `tests/weapons/hitscanRaised.test.ts`. `LevelPlan.headroom(h)` gives raised cells a ceiling.
 - **A door on a raised floor is a slab to the eye** (a door mesh is 3.4 tall from floor 0): the upper gaol (2.4) has doorways, not doors.
 - **`combatTrace` re-recorded** (header, "twelfth regeneration"): the script walks east out of the spawn cell and fights two zombies and a cultist in the cell block; `trace-level0.json` and `trace-level2-boss.json` untouched.
-- **Play-through** `tests/integration/dungeonPlay.test.ts` / `tests/support/dungeonBot.ts`: a bot that never strafes wins 7 of 9 seeds (usual skill) and 3 of 3 (poor), dies on none (two stalled on its own navigation).
+- **Play-through** `tests/integration/dungeonPlay.test.ts` / `tests/support/dungeonBot.ts`: a bot that never strafes: usual skill wins 10 of 12 seeds tried (seeds 1-3, 5, 7, 8, 11, 12, 13, and the committed 20261005; two, 4 and 6, stalled on the bot's own waypoint handling) and poor skill 4 of 4 (1-3, 11); it has never died, and its lowest health in the four runs of 2026-10-06 was 41 (poor) and 49-60 (usual).
 - **Stuck check** (`STUCK_PLACES=999`, 999 places, run in three rounds): three crate piles found and taken out; the level is clean.
 
 ## What this is
