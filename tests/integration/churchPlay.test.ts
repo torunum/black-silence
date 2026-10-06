@@ -72,10 +72,14 @@ beforeAll(async () => {
       // the way ends at the exit's door: walking into it (E at it as well) opens it
       const d = doors.exit!;
       route.push({ x: d.x + d.nx * .35, z: d.z + d.nz * .35, ch: ".", stage: "the way out" });
-      bot = new DungeonBot(eyes, route, DUNGEON_SKILL[SKILL_NAME]);
+      bot = new DungeonBot(eyes, route, DUNGEON_SKILL[SKILL_NAME], "Q", route.length - 2, "the sacristy");   // the Priest must die before the door (it goes after him if he is not where he was), and it tops up in the sacristy first
     },
     drive: (frame): InputEvent[] => (finished ? [] : bot.step(frame).map((e) => ({ ...e, frame }) as InputEvent)),
-    until: (frame) => { if (!finished && (S.dead || S.won)) conclude(frame); return finished; },
+    until: (frame) => {
+      if (!finished && frame % 300 === 0) { const q = eyes!.world.enemies.find((e) => e.key === "Q") as unknown as { dormant: boolean; phase: number; hp: number; x: number; z: number; dead: boolean } | undefined; if (q) bot.log.push(`f${frame}: Q ${q.dormant ? "asleep" : "awake"} phase ${q.phase} hp ${Math.round(q.hp)} at ${(q.x / 2).toFixed(1)},${(q.z / 2).toFixed(1)}${q.dead ? " DEAD" : ""}`); }
+      if (!finished && (S.dead || S.won)) conclude(frame);
+      return finished;
+    },
   });
   if (!finished) end = { dead: S!.dead, won: S!.won, hp: S!.hp, armor: S!.armor, frame: FRAMES, killed: eyes!.world.enemies.filter((e) => e.dead).length, total: eyes!.world.enemies.length, priest: eyes!.world.enemies.some((e) => e.key === "Q" && e.dead), guardian: eyes!.world.enemies.some((e) => e.key === "U" && e.dead) };
   if (!end.won) { const p = eyes!.player; const SS = eyes!.S; bot.log.push(`state: hp ${SS.hp} ammo ${JSON.stringify(SS.ammo)} mag ${SS.mag.join()} cur ${SS.cur} weapons ${SS.weapons.map((w) => (w ? 1 : 0)).join("")} keys ${[...bot.keys].join()} firing ${bot.firing} yaw ${eyes!.input.yaw.toFixed(2)}`); bot.log.push(`stopped at ${(p.px / 2).toFixed(1)},${(p.pz / 2).toFixed(1)} wp ${bot.wp}/${route.length}; alive: ${eyes!.world.enemies.filter((e) => !e.dead).map((e) => `${e.key}@${(e.x / 2).toFixed(0)},${(e.z / 2).toFixed(0)}`).join(" ")}`); }

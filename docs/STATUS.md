@@ -1399,8 +1399,11 @@ omission.
   owner played the game and reported it, so all eight are now `v`, a prop-only
   pew spelling; level 2 has no Foreman. The dispatch order was deliberately
   **not** flipped — `C` is an intentional Cacodemon in levels 6 and 7 — so the
-  tables still overlap, and **the chair in the priest's chambers is still a
-  Cacodemon**. The next level that writes a chair or a pew hits this again.
+  tables still overlap. (**The chair in the priest's chambers was a Cacodemon
+  until the church was rebuilt, deeper-levels plan Task 4: level 2 places no `C`
+  now, and the rebuilt church's twelve pews are `v`.**) The next level that
+  writes a chair or a pew as the reference spells them hits this again; the
+  toolkit's `LevelPlan.prop` refuses `C` and `V`.
   KNOWN-11, below, was the same mechanism against the *item* table and is now
   closed the same way, which changes nothing about this row.
 - **KNOWN-20** — `loadLevel`'s item map names sixteen `ITEMTEX` keys and

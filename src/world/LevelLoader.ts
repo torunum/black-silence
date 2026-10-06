@@ -262,14 +262,14 @@ export function loadLevel(idx: number, resume?: Resume): void {
       if(ch==="W"){
         const gm=new THREE.Mesh(track(new THREE.PlaneGeometry(1.6,2.6)),matWin);
         gm.position.set(wx+dx0*(CELL/2+.02),WALLH*.56,wz+dz0*(CELL/2+.02));
-        gm.lookAt(wx+dx0*4,WALLH*.56,wz+dz0*4);renderState.scene.add(gm);
+        gm.lookAt(wx+dx0*4,WALLH*.56,wz+dz0*4);gm.name="window";renderState.scene.add(gm);
         const col=pick([0x5a3a8e,0x3a5a9e,0x9e3a3a]);
         const wl=track(new THREE.PointLight(col,1.1,9,1.5));
         wl.position.set(wx+dx0*1.7,WALLH*.6,wz+dz0*1.7);renderState.scene.add(wl);
         const cone=new THREE.Mesh(track(new THREE.ConeGeometry(1.2,WALLH-.6,8,1,true)),
           track(new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:.05,
             side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending})));
-        cone.position.set(wx+dx0*1.7,(WALLH-.6)/2,wz+dz0*1.7);renderState.scene.add(cone);}}
+        cone.position.set(wx+dx0*1.7,(WALLH-.6)/2,wz+dz0*1.7);cone.name="windowCone";renderState.scene.add(cone);}}
     else if(ch==="I"){
       groupPush(pilMats,matPil,new THREE.Matrix4().setPosition(wx,WALLH/2,wz));}
     else if(ch==="+"||ch==="D"||ch==="S"){

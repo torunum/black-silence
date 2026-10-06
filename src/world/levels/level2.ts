@@ -18,12 +18,13 @@ import { dressLevel2, PINNERS_2 } from "./dress2";
  *   floor 1.2   the church: narthex, nave and its aisles, the chancel, the side chapels, the sacristy, the ringing chamber, the reliquary
  *   floor 0     the crypt beneath the sacristy, and the ossuary behind its secret door
  *
- *   - THE WAY: narthex -> the bell tower (a long ramp up the tower, the key at the top: the key hunt) -> back down -> the narthex's
- *     grand doors (locked: the key opens them) -> the nave (the arena: pews, an arcade, nine of the dead) -> the chancel arch -> the Priest.
- *     The Priest's death opens the exit (`openExit`: the first open cell of `EXIT_CELLS`, which is (16,16), in the chancel), so the chancel
- *     is where the grid's cell (16,16) is.
- *   - THE LOOP: the nave and the chancel are joined by the arch, and again through the sacristy (a door in the nave's south aisle, a door in
- *     the chancel's south wall). The crypt, below the sacristy, comes up by a long ramp to the south chapel and the nave: a second one.
+ *   - THE WAY: the narthex -> the bell tower (a long ramp up its two runs, the key at the top: the key hunt) -> back down -> the narthex's grand doors
+ *     (locked: the key opens them) -> the nave (the arena: pews, an arcade, eight of the dead) -> down into the crypt (the Guardian) by the short ramp at the nave's
+ *     south aisle -> the stair up into the sacristy -> the passage to the chancel -> the Priest at his altar. The nave and the chancel are not joined: between them stands a
+ *     rood screen of five pillars, which the player sees the altar through and cannot pass, and the way to the Priest is under the church and up behind it.
+ *     The Priest's death opens the exit (`openExit`: the first open cell of `EXIT_CELLS`, which is (16,16), in the chancel), so the chancel is where the grid's cell (16,16) is.
+ *   - THE LOOP: the nave reaches the crypt twice, by the short ramp and by the long one through the south chapel.
+ *   - THE CHECKPOINTS: the grand doors (every route to the nave passes them, key in hand: 57% of the way), the head of the short ramp, and the sacristy's passage (the last, before the Priest).
  *   - Everything that needs a door has it on floor 0 or 1.2: a door is a full-height slab, and on a 2.4 floor it would stand to the eye. The
  *     choir loft and the belfry have doorways, not doors.
  *   - Level 2 has no Foreman and no Mancubus (KNOWN-4, KNOWN-11): a pew is `v`, armour is `r`; and no chair (`C` is a Cacodemon): the
@@ -80,11 +81,11 @@ export function buildLevel2(): BuiltLevel {
   lv.enemy("Q", [19, 18]);
 
   // ---- the quiet: the narthex holds nothing. Then, up the tower: two in the ringing chamber, one on each run of the ramp, three in the belfry
-  lv.enemy("z", [53, 12]).enemy("w", [61, 13]);                                          // the ringing chamber
+  lv.enemy("z", [53, 12]).enemy("w", [61, 13]).enemy("t", [53, 11]);                      // the ringing chamber
   lv.enemy("f", [56, 9]).enemy("g", [57, 7]);                                            // the ramp
   lv.enemy("s", [57, 3]).enemy("t", [58, 4]).enemy("z", [54, 4]);                        // the belfry
   // ---- the nave: the arena. Nine of the dead among the pews, the nearest of them eight cells from the grand doors
-  lv.enemy("z", [42, 22], [39, 20]).enemy("f", [36, 26], [36, 16]).enemy("m", [33, 21]).enemy("t", [31, 22])
+  lv.enemy("z", [42, 22], [39, 20]).enemy("f", [36, 26]).enemy("w", [36, 16]).enemy("m", [33, 21])
     .enemy("g", [44, 15]).enemy("w", [45, 27]).enemy("s", [29, 15]);
   lv.enemy("z", [33, 8]).enemy("s", [29, 7]);                                            // the north chapel
   lv.enemy("t", [44, 8]).enemy("g", [40, 9]);                                            // the lady chapel
@@ -103,15 +104,15 @@ export function buildLevel2(): BuiltLevel {
   lv.pickup("h", [39, 6]).pickup("a", [45, 10]).pickup("b", [39, 10]);                   // the lady chapel
   lv.pickup("4", [49, 8]).pickup("r", [49, 6]).pickup("c", [49, 10]).pickup("h", [48, 7]);   // the reliquary
   lv.pickup("a", [15, 5]).pickup("h", [23, 5]).pickup("b", [23, 9]);                     // the choir loft
-  lv.pickup("6", [15, 20]).pickup("c", [16, 21], [22, 15]).pickup("h", [22, 21]);       // the chancel
-  lv.pickup("r", [15, 32]).pickup("h", [23, 32]).pickup("b", [14, 27]).pickup("a", [24, 27]);   // the sacristy
+  lv.pickup("6", [15, 20]).pickup("c", [16, 21], [22, 15]).pickup("h", [22, 21], [24, 21], [24, 19], [17, 22]).pickup("r", [15, 22]).pickup("o", [23, 20]).pickup("a", [22, 16], [15, 16], [20, 15], [24, 17]).pickup("b", [23, 17]);   // the chancel
+  lv.pickup("r", [15, 32]).pickup("h", [23, 31], [16, 28]).pickup("b", [14, 27]).pickup("a", [24, 27], [23, 28], [20, 31], [15, 30]).pickup("o", [22, 28], [17, 31]);   // the sacristy
   lv.pickup("a", [5, 37], [5, 43]).pickup("h", [6, 41], [33, 43]).pickup("r", [33, 37]).pickup("o", [20, 42]);   // the crypt
   lv.pickup("a", [4, 30], [10, 33]).pickup("o", [10, 30]).pickup("h", [4, 33]).pickup("c", [7, 32]);   // the ossuary
   lv.pickup("a", [39, 37]).pickup("h", [45, 37]).pickup("b", [40, 33]);                  // the south chapel
-  lv.prop("T", [17, 30]).prop("F", [14, 29], [14, 31]);                                  // the sacristy: a table, shelves
+  lv.prop("F", [14, 29], [14, 31]);                                                    // the sacristy: shelves against the west wall
   lv.prop("x", [36, 40]).prop("O", [13, 36]);                                            // the crypt: a crate, a barrel
-  // the nave's pews: two blocks a side of the aisle, the crossing between them
-  for (const z of [19, 23]) for (const x of [29, 31, 33, 35, 40, 42, 44, 46]) lv.prop("v", [x, z]);
+  // the nave's pews: two blocks a side of the aisle, the crossing between them (nine cells wide: where the transept would be)
+  for (const z of [19, 23]) for (const x of [29, 31, 33, 43, 45, 47]) lv.prop("v", [x, z]);
 
   // ---- the light: torches (real lights: 17 is the budget with the windows), then glow in dress2.ts
   lv.light("i", [61, 19], [57, 15], [57, 9], [26, 19], [26, 23], [10, 37], [28, 37]);
