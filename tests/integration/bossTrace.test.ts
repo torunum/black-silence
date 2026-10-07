@@ -873,7 +873,7 @@ const REV = (2 * Math.PI) / SENS;
  * 18**. 2808/18 = 156 recorded frames. The module doc comment's last
  * section has the measurement and the field-by-field account.
  */
-const TOTAL_FRAMES = 7596;
+const TOTAL_FRAMES = 3078;
 const EVERY = 18;
 /**
  * The fifth knob the structural guard depends on, alongside `TOTAL_FRAMES`
@@ -901,6 +901,10 @@ function bossScript(): InputEvent[] {
   // phase-1 melee exchange has resolved. See the module doc comment for why
   // it covers the whole circle instead of the wedge the boss happens to
   // teleport into.
+  // the muzzle comes up a little (0.05 rad: the mouse moves up, `input.pitch -= movementY * sens`) before the sweep: a summon on the church's 1.2 floor stands with its head just above
+  // a level shot's reach (a zombie's head begins 74% up its sprite: 2.24, and a level shot from the eye at 2.2 meets it at 71%), so a level sweep never takes a head off, and this
+  // fixture's one headless corpse (`Death.ts`) would be gone from it
+  s.push({ frame: 600, kind: "move", movementX: 0, movementY: -23 });
   const SWEEP_START = 620, SWEEP_STEP = 4, SWEEP_SECS = 10.5;
   const perStep = REV / ((SWEEP_SECS * 60) / SWEEP_STEP);
   for (let f = SWEEP_START; f <= TOTAL_FRAMES; f += SWEEP_STEP) {
