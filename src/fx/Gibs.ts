@@ -6,6 +6,7 @@ import { rnd } from "../utils/math";
 import { getScene } from "../render/SceneRef";
 import { blood } from "./Particles";
 import { addPool } from "./Decals";
+import { floorHeightAt } from "../world/Collision";
 
 /**
  * GIBS — flying body-part chunks spawned on overkill/dismemberment/prop
@@ -90,8 +91,9 @@ export function gibTick(dt: number): void {
     if (!g.live) continue;
     g.vy -= 16 * dt; g.m.position.x += g.vx * dt; g.m.position.y += g.vy * dt; g.m.position.z += g.vz * dt;
     g.m.rotation.x += g.spin * dt; g.m.rotation.z += g.spin * .7 * dt;
-    if (g.m.position.y < .07) {
-      g.m.position.y = .07;
+    const floor = floorHeightAt(g.m.position.x, g.m.position.z) + .07;   // the floor under it now: it can roll onto another height
+    if (g.m.position.y < floor) {
+      g.m.position.y = floor;
       if (Math.abs(g.vy) > 1.2) {
         g.vy *= -.4; g.vx *= .5; g.vz *= .5;
         if (!g.wood && Math.random() < .5) addPool(g.m.position.x, g.m.position.z, rnd(.15, .35));

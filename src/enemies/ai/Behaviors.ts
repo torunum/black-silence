@@ -154,8 +154,8 @@ export function enemyTick(dt: number){
     if(e.gone)continue;
     /* during a boss cinematic, nothing moves or attacks — just hold position */
     if(world.cine&&!e.dead){
-      const cy=e.fly?(e.flyH||1.5):e.h/2;
-      e.sp.position.set(e.x,cy,e.z);e.blob.position.set(e.x,.012,e.z);
+      const cy=e.fly?(e.flyH||1.5):e.h/2+(e.fy||0);
+      e.sp.position.set(e.x,cy,e.z);e.blob.position.set(e.x,(e.fy||0)+.012,e.z);
       e.cool=Math.max(e.cool||0,.4);
       continue;}
     if(e.dead){
@@ -169,14 +169,15 @@ export function enemyTick(dt: number){
         e.sp.material.rotation=e.deathDir*t*Math.PI/6;   // gentler tilt, frames do the work
       }else{
         e.sp.material.rotation=e.deathDir*t*Math.PI/2;}
-      e.sp.position.y=e.h/2*(1-t)+e.h*.18*t;
       e.kx*=Math.exp(-4*dt);e.kz*=Math.exp(-4*dt);
       const nx=e.x+e.kx*dt,nz=e.z+e.kz*dt;
       if(!solidAt(nx,e.z))e.x=nx;if(!solidAt(e.x,nz))e.z=nz;
+      e.fy=floorHeightAt(e.x,e.z);   // the corpse lies on the floor it was knocked onto, not on floor 0
+      e.sp.position.y=e.h/2*(1-t)+e.h*.18*t+e.fy;
       e.sp.position.x=e.x;e.sp.position.z=e.z;
-      e.blob.position.set(e.x,.012,e.z);
+      e.blob.position.set(e.x,e.fy+.012,e.z);
       if(e.deathKind===2&&e.deathT<.4&&Math.random()<.5)
-        blood(e.x,e.h*.8*(1-t)+.3,e.z,2,2);
+        blood(e.x,e.h*.8*(1-t)+.3+e.fy,e.z,2,2);
       if(!e.dropped&&e.deathT>.5){e.dropped=true;
         if(!e.boss&&Math.random()<.3)dropAmmo(e.x,e.z);}
       continue;}
@@ -196,15 +197,15 @@ export function enemyTick(dt: number){
         damageEnemy(e,40,{wIdx:-2});
         const d=new THREE.Vector3(e.kx,0,e.kz).normalize();
         const n=wallNormal(nx,nz,d);
-        addWallDecal(nx-d.x*.2,rnd(.8,1.6),nz-d.z*.2,n.x,n.z,rnd(.5,.8),splatMat);
-        blood(e.x,1,e.z,14,2.5);
+        addWallDecal(nx-d.x*.2,rnd(.8,1.6)+(e.fy||0),nz-d.z*.2,n.x,n.z,rnd(.5,.8),splatMat);
+        blood(e.x,1+(e.fy||0),e.z,14,2.5);
         at(nx,e.h*.6+(e.fy||0),nz,()=>wallSplat());shake(.2);
         say(Math.random()<.5?"kicksplat":"wallkill",true);
         ach(ACHIEVEMENTS.punt,S.ach);
         e.kx=0;e.kz=0;
       }else{e.x=nx;e.z=nz;}
       e.sp.position.set(e.x,e.h/2+(e.fy||0)+Math.sin(Math.min(1,e.flungT/.9)*Math.PI)*1.1,e.z);
-      e.blob.position.set(e.x,.012,e.z);
+      e.blob.position.set(e.x,(e.fy||0)+.012,e.z);
       continue;}
     if(Math.abs(e.kx)+Math.abs(e.kz)>.05){
       const nx=e.x+e.kx*dt,nz=e.z+e.kz*dt;
@@ -213,8 +214,8 @@ export function enemyTick(dt: number){
     const dx=player.px-e.x,dz=player.pz-e.z,dist=Math.hypot(dx,dz);
     if(dist>30){e.sp.position.set(e.x,e.h/2+(e.fy||0),e.z);e.blob.position.set(e.x,(e.fy||0)+.012,e.z);continue;}
     if(e.stun>0){e.stun-=dt;
-      e.sp.position.set(e.x+rnd(-.03,.03),e.h/2,e.z+rnd(-.03,.03));
-      e.blob.position.set(e.x,.012,e.z);continue;}
+      e.sp.position.set(e.x+rnd(-.03,.03),e.h/2+(e.fy||0),e.z+rnd(-.03,.03));
+      e.blob.position.set(e.x,(e.fy||0)+.012,e.z);continue;}
     const seen=los(e.x,e.z,player.px,player.pz)&&dist<22;
     e.cool-=dt;e.dodgeT-=dt;e.lungeT-=dt;e.slamT-=dt;e.screamT-=dt;e.flingCD-=dt;
     const injured=e.hp<e.maxhp*.35;
@@ -326,7 +327,7 @@ export function enemyTick(dt: number){
     if(e.fly){
       const hov=(e.flyH||1.5)+Math.sin(performance.now()/420+e.x)*.18;
       e.sp.position.set(lx,hov,lz);
-      e.blob.position.set(e.x,.012,e.z);e.blob.material.opacity=.3;
+      e.blob.position.set(e.x,floorHeightAt(e.x,e.z)+.012,e.z);e.blob.material.opacity=.3;
     }else{
       e.fy=floorHeightAt(e.x,e.z);
       e.sp.position.set(lx,e.h/2+(e.fy||0)+Math.sin(performance.now()/300+e.x)*.03,lz);

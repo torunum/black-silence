@@ -85,6 +85,7 @@ type DamageEnemy = Pick<
   | "x"
   | "z"
   | "h"
+  | "fy"
   | "plate"
   | "sp"
   | "hp"
@@ -119,7 +120,7 @@ export function damageEnemy(enemy: unknown, dmg: number, info?: DamageInfo) {
     at(info.hx||e.x,info.hy||e.h*.6,info.hz||e.z,()=>armourPlateHit());
     e.stun=Math.max(e.stun,.08);
     if(e.plate<=0){
-      spawnGibs(e.x,e.h*.7,e.z,4,3.4,true);
+      spawnGibs(e.x,e.h*.7+(e.fy||0),e.z,4,3.4,true);
       at(info.hx||e.x,info.hy||e.h*.6,info.hz||e.z,()=>armourShatter());showMsg("ARMOR SHATTERED");
       e.sp.material.color.setHex(0x8a9650);}
     return;}
@@ -160,7 +161,7 @@ export function refreshSeverSprite(e: DamageEnemy) {
 
 /* spawn a flying chunk for a torn-off limb + a wet sound */
 export function severLimb(e: DamageEnemy, type: string, info?: DamageInfo) {
-  const y=type==="legs"?e.h*.25:e.h*.55;
+  const y=(type==="legs"?e.h*.25:e.h*.55)+(e.fy||0);   // on the floor it stands on
   const n=type==="legs"?5:4;
   spawnGibs(e.x,y,e.z,n,3.2);
   blood(e.x,y,e.z,12,2.2);
