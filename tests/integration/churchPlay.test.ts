@@ -18,7 +18,7 @@ import { cellOf, idx, terrainOf, walk } from "../../src/world/structure/walk";
  * `BOT_LOG=1 npx vitest run tests/integration/churchPlay.test.ts` prints the run's numbers.
  */
 
-const SEED = Number(process.env.BOT_SEED ?? 5);
+const SEED = Number(process.env.BOT_SEED ?? 3);
 const SKILL_NAME = (process.env.BOT_SKILL ?? "usual") as keyof typeof DUNGEON_SKILL;
 const FRAMES = Number(process.env.BOT_FRAMES ?? 60 * 900);   // a quarter of an hour of game
 
