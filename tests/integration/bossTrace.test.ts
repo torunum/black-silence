@@ -8,6 +8,8 @@ import { player } from "../../src/player/PlayerState";
 import { world } from "../../src/world/WorldState";
 
 /**
+ * **Read the last section first: the church was rebuilt (deeper-levels plan, Task 4), and the positions and numbers in the sections before it are those of the reference's church.**
+ *
  * The boss trace — a recording of `priestThink` (`src/enemies/Boss.ts`)
  * playing out all three of its phases, made **before** Phase 3 replaces the
  * one shared priest brain with three distinct boss brains.
@@ -772,6 +774,49 @@ import { world } from "../../src/world/WorldState";
  * lost two pieces at load, a banner hung on the very wall the exit door stands in and a candelabrum at the exit cell
  * (`doorClaims` in `ExitDoor.ts`, applied by `Decor.ts`; the level's own list is untouched): decor is merged into one mesh
  * per material, so the child list is not what they change.
+
+ *
+ * ## The deeper-levels plan, Task 4 — the eleventh regeneration: the church was rebuilt whole, and the fight was re-seeded
+ *
+ * **Everything above describes THE ABANDONED CHURCH AS IT WAS** (the reference's 33 x 25 lattice: the priest in a crypt at
+ * (16,20), the player seeded at (21,21), eight pews, a nave of rooms with doors). `src/world/levels/level2.ts` is now a cruciform
+ * church, 64 x 46, written with `LevelPlan`; the priest `Q` waits at its altar, in the chancel, at grid (19,18), world (39,37), and
+ * the cell his death opens (`openExit`'s (16,16)) is in the same room. The numbers in the sections above are not re-quoted as
+ * current; these are, each re-measured by a throwaway probe of this file's own script (`PROBE_*` knobs over a copy of it, deleted).
+ * What the fixture exists to record is what survived, and the account is owed field by field:
+ *
+ * - **The seeded start.** `START_X/Z` = world (49,41), grid (24,20), an empty chancel cell 10.8 units from the priest with clear line of
+ *   sight, inside his 13-unit wake radius (he wakes on frame 1, the cinematic aims the player at him, as before). The player stands on the
+ *   church's 1.2 floor, so the camera is at y 2.2, not 1.0. `S.hp = 5000` still.
+ * - **The sweep resonated, and had to change: 9 s -> 10.5 s.** First run in the new chancel the priest was hit **zero times in 7,200
+ *   frames** (13 revolutions). Cause, found by logging the weapon state in the frames the aim crossed him: the nail cannon fires a 50-round
+ *   magazine in 2.5 s and reloads for 2 s, a 4.5 s cycle, and a 9 s revolution is exactly two of them. The sweep and the gun were phase-locked,
+ *   so a priest standing at a bearing that falls in the reload half of the cycle (frames 684-707 on the pass logged: `wstate` "reload", `mag` 0)
+ *   was never shot. The old church escaped by where its one teleport happened to put him. 10.5 s (630 frames) steps each pass 90 frames
+ *   round the 270-frame cycle, so two passes in three find the gun firing. Not tuned to a seed: a lock-free period was the requirement
+ *   (7.3, 8.3, 9.7 and 10.4 s all damage him, more slowly).
+ * - **A decapitation had to be kept.** The first re-recording lost `Death.ts`'s headless corpse (mutation 4 below: red in **0** frames): a summon on the
+ *   church's 1.2 floor stands with its head just above a level shot's reach (a head is the top 26% of the sprite, 2.24 up a zombie; a shot from the
+ *   eye at 2.2 meets it at 71%), so a level sweep took no head. The script now lifts the muzzle 0.05 rad (a `movementY` of -23 at frame 600, before
+ *   the sweep starts: the priest's band is 3.1 tall, so it still hits him). `DECAPITATED` first shows at frame 792.
+ * - **Master's gore fix moved the fight, and it was re-measured.** After the merge of `dcff553` (pools, gibs, heads and corpses land on the local floor)
+ *   the same script had the priest's phase 3 start at 3768 instead of 7023, and later 2511 with the muzzle change. The fix draws from the stream and
+ *   puts things at other heights; it is not isolated further here, only measured. Phase transitions, from the run's own `priest.phase`: phase 1 -> 2 at
+ *   **frame 507** (1800 -> 1184 hp, 616 spent), a single teleport to world (42.2,37.6), 7.6 units from the player (half-width 1.0027 / 7.6 = 0.132
+ *   rad, 4.2% of a revolution), phase 2 -> 3 at **frame 2511** (594 more hp in 2,004 frames, 33 s), dead at frame 3850 (a longer probe).
+ * - **The guard's window is [2511,2536)**, the swap write and the walk cycle's next one (25 frames, wider than any before). `EVERY` stays 18: 18 x 140 = **2520** is
+ *   in it, nine frames after the swap. `TOTAL_FRAMES` = **3078** = 18 x 171: 567 frames of live phase 3 after the swap, the priest alive (it dies at 3850), under 33%
+ *   of his hp, `formKey` `Q2`. The player ends at HEALTH3947: **1,053 drained** of 5000, through the real `damagePlayer`. 171 sampled frames (was 156).
+ * - **Field by field against the previous fixture**, first 156 frames, same frame numbers: `camera` **156** (the start moved and rose to y 2.2), `hud` **151**
+ *   (`hp` 139, `msg` 77, `subt` 35, `bossname` 15, `wname` 2; `ar`, `lvltitle`, `keys` identical in all), `scene.count` **156** (frame 18: 180 -> **264**, the rebuilt
+ *   level's 35 enemies, 70 pickups, nine windows with their beams, three shrines and the merged decor), `scene.digest` **156**. All differ because it is another
+ *   level; nothing was argued as unchanged. Range 264..662 (was 180..583); 171 distinct digests.
+ * - **What survives, tested.** The five observables hold (`hud.bossname` reaches PHASE 3, `THE PRIEST CALLS HIS FLOCK` at frame 738, summons exist, the priest ends awake / hurt /
+ *   `Q2` / alive, `RELOADING` appears); the pews test reads twelve pews at `hgt` 2.15 (0.95 over the church's 1.2 floor: `liftDressing`). The four `material.map` mutations were re-run
+ *   against this fixture, each one turned red, the numbers over 171 sampled frames: **form swap** `PX[e.formKey].a` -> `PX[e.key].a`: red in exactly **1** frame, **2520** (the
+ *   structural guard's job); **boss walk cycle** pinned to `set[0]`: **150** frames, 180 to 3078 (both forms); **death collapse** `P.die1/P.die2` -> `P.a/P.b`: **107**, from 1170;
+ *   **headless corpse**: **128**, from 792. Each moves `scene.digest` only (`camera`, `hud`, `scene.count` in 0). A fifth, phase 3 made unreachable (`e.hp<-1`), turned
+ *   four named tests red and the guard with them. `trace-level0.json` is byte-identical; `trace-level1.json` is master's (re-recorded there for the gore fix).
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");
