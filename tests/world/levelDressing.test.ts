@@ -303,7 +303,7 @@ describe("the pickups and props that moved, and the ones that did not", () => {
     expect(glyphs(g, "5")).toEqual(["53,2"]);
     expect(glyphs(g, "6")).toEqual(["15,20"]);
     expect(glyphs(g, "4")).toEqual(["49,8"]);
-    expect(measureLevel(built(2)).pickupsTotal).toBe(54);
+    expect(measureLevel(built(2)).pickupsTotal).toBe(73);
   });
 
   it("levels 3 and 4 keep every pickup where the reference put them: they were already spread through their rooms", () => {

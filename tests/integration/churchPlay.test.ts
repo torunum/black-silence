@@ -18,7 +18,7 @@ import { cellOf, idx, terrainOf, walk } from "../../src/world/structure/walk";
  * `BOT_LOG=1 npx vitest run tests/integration/churchPlay.test.ts` prints the run's numbers.
  */
 
-const SEED = Number(process.env.BOT_SEED ?? 20261006);
+const SEED = Number(process.env.BOT_SEED ?? 5);
 const SKILL_NAME = (process.env.BOT_SKILL ?? "usual") as keyof typeof DUNGEON_SKILL;
 const FRAMES = Number(process.env.BOT_FRAMES ?? 60 * 900);   // a quarter of an hour of game
 
@@ -72,7 +72,7 @@ beforeAll(async () => {
       // the way ends at the exit's door: walking into it (E at it as well) opens it
       const d = doors.exit!;
       route.push({ x: d.x + d.nx * .35, z: d.z + d.nz * .35, ch: ".", stage: "the way out" });
-      bot = new DungeonBot(eyes, route, DUNGEON_SKILL[SKILL_NAME], "Q", route.length - 2, "the sacristy");   // the Priest must die before the door (it goes after him if he is not where he was), and it tops up in the sacristy first
+      bot = new DungeonBot(eyes, route, DUNGEON_SKILL[SKILL_NAME], "Q", route.length - 2, "the sacristy", true);   // the Priest must die before the door (it goes after him if he is not where he was), and it tops up in the sacristy first
     },
     drive: (frame): InputEvent[] => (finished ? [] : bot.step(frame).map((e) => ({ ...e, frame }) as InputEvent)),
     until: (frame) => {

@@ -812,7 +812,7 @@ import { world } from "../../src/world/WorldState";
  *   level's 35 enemies, 70 pickups, nine windows with their beams, three shrines and the merged decor), `scene.digest` **156**. All differ because it is another
  *   level; nothing was argued as unchanged. Range 264..662 (was 180..583); 171 distinct digests.
  * - **What survives, tested.** The five observables hold (`hud.bossname` reaches PHASE 3, `THE PRIEST CALLS HIS FLOCK` at frame 738, summons exist, the priest ends awake / hurt /
- *   `Q2` / alive, `RELOADING` appears); the pews test reads twelve pews at `hgt` 2.15 (0.95 over the church's 1.2 floor: `liftDressing`). The four `material.map` mutations were re-run
+ *   `Q2` / alive, `RELOADING` appears); the pews test reads nine pews at `hgt` 2.15 (0.95 over the church's 1.2 floor: `liftDressing`). The four `material.map` mutations were re-run
  *   against this fixture, each one turned red, the numbers over 171 sampled frames: **form swap** `PX[e.formKey].a` -> `PX[e.key].a`: red in exactly **1** frame, **2520** (the
  *   structural guard's job); **boss walk cycle** pinned to `set[0]`: **150** frames, 180 to 3078 (both forms); **death collapse** `P.die1/P.die2` -> `P.a/P.b`: **107**, from 1170;
  *   **headless corpse**: **128**, from 792. Each moves `scene.digest` only (`camera`, `hud`, `scene.count` in 0). A fifth, phase 3 made unreachable (`e.hp<-1`), turned
@@ -918,8 +918,8 @@ const REV = (2 * Math.PI) / SENS;
  * 18**. 2808/18 = 156 recorded frames. The module doc comment's last
  * section has the measurement and the field-by-field account.
  */
-const TOTAL_FRAMES = 3078;
-const EVERY = 18;
+const TOTAL_FRAMES = 7616;
+const EVERY = 16;
 /**
  * The fifth knob the structural guard depends on, alongside `TOTAL_FRAMES`
  * and `EVERY`: `runTrace`'s own frame clock and the guard's write-log frame
@@ -1138,7 +1138,7 @@ describe("the recorded run actually fights a priest boss", () => {
     // `else` it must not have fallen into is `r=.48; hgt=1.1; hp=24;
     // explosive=true` — every field differs, so this cannot pass by
     // accident on a partial fall-through either.
-    expect(pewShapes).toHaveLength(12);
+    expect(pewShapes).toHaveLength(9);
     for (const p of pewShapes) {
       // `hgt` is the pew's height over floor 0 (.95) plus the floor it stands on: the rebuilt church's nave is at 1.2 and `liftDressing` (`Decor.ts`) lifts props
       expect(p).toEqual({ r: 0.75, hgt: 0.95 + 1.2, hp: 18, explosive: false });

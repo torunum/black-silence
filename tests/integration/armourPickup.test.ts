@@ -110,7 +110,7 @@ describe("armour exists: a level's own grid puts armour on the floor and the pla
   it("the fixture this file is built on is not vacuous — some level authors armour", () => {
     // Without this, a regression that deleted every `r` from every grid
     // would turn each level's case below into a pass over an empty list.
-    expect(EXPECTED.reduce((n, l) => n + l.armour, 0)).toBe(26);   // the reference's twenty, and levels 1 and 2 (rebuilt) have five and four where they had one and two
+    expect(EXPECTED.reduce((n, l) => n + l.armour, 0)).toBe(27);   // the reference's twenty, and levels 1 and 2 (rebuilt) have five and five where they had one and two
   });
 
   it.each(EXPECTED.map((l, i) => [l.name, i, l.armour] as const))(
@@ -145,8 +145,8 @@ describe("armour exists: a level's own grid puts armour on the floor and the pla
         S.armor = 0;
       }
     }
-    // twenty tiles in the reference; level 1 was rebuilt (deeper-levels plan, Task 3) with five of its own where it had one, and level 2 (Task 4) with four where it had two: twenty-six
-    expect(taken, "no armour was picked up anywhere — this assertion would otherwise be vacuous").toBe(26);
+    // twenty tiles in the reference; level 1 was rebuilt (deeper-levels plan, Task 3) with five of its own where it had one, and level 2 (Task 4) with five where it had two: twenty-seven
+    expect(taken, "no armour was picked up anywhere — this assertion would otherwise be vacuous").toBe(27);
   });
 
   it("the HUD's armour slot, which could only ever read 0, now reads what the player picked up", () => {

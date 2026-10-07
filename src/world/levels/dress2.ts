@@ -66,7 +66,7 @@ export function dressLevel2(d: Decorator, r: Rooms): void {
   d.clutter({ density: .45, seed: 25, kinds: ["glass", "rubble", "bonesLoose"], interior: true, where: (x, z) => narthex.contains(x, z) });
   for (const x of [59, 61]) may("banner", x, 18, { side: "n" });
   for (const x of [56, 58]) may("banner", x, 28, { side: "s" });
-  may("candelabra", 55, 24); may("votive", 61, 24); may("votive", 54, 27);
+  may("candelabra", 55, 24); may("votive", 61, 24); may("votive", 54, 27); may("votive", 57, 27); may("brazier", 61, 27); may("votive", 54, 20);
 
   // THE RINGING CHAMBER and the BELFRY: the ropes hang to the floor
   for (const [x, z] of [[54, 11], [58, 13], [60, 11]]) may("chainLoose", x, z);

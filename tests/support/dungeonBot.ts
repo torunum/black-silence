@@ -60,9 +60,10 @@ export class DungeonBot {
   /**
    * `hunt`: an enemy (by its key) the way to the exit is shut until it is dead: once the bot has come to `huntFrom` (a route index, the exit's cell) and it still lives,
    * the bot goes after it where it stands, rather than on to a door that will not open (the Priest teleports, and his second phase stands where it lands).
+   * `blacklist`: an item it stuck on the way to (a pew between it and the item) is not gone for again, and a stuck detour does not skip a waypoint (the church has pews; the dungeon's run was recorded without).
    * `topUp`: a stage (the sacristy, before the Priest) in which it takes every health pack, plate and box of ammunition it sees, as a player does before a boss.
    */
-  constructor(private eyes: DungeonEyes, private route: readonly RoutePoint[], private skill: { turn: number; react: number; wobble: number } = DUNGEON_SKILL.usual, private hunt: string | null = null, private huntFrom = 1e9, private topUp: string | null = null) {}
+  constructor(private eyes: DungeonEyes, private route: readonly RoutePoint[], private skill: { turn: number; react: number; wobble: number } = DUNGEON_SKILL.usual, private hunt: string | null = null, private huntFrom = 1e9, private topUp: string | null = null, private blacklist = false) {}
 
   private key(code: string, down: boolean, out: BotEvent[]): void {
     if (down === this.keys.has(code)) return;
@@ -183,7 +184,7 @@ export class DungeonBot {
     }
     // stuck: not 1.2 m from where it was 3 s ago while it wanted to walk
     if (frame - this.anchor.f >= 180) {
-      if (Math.hypot(player.px - this.anchor.x, player.pz - this.anchor.z) < 1.2 && !(t && this.firing)) { this.ignore = 150; this.stuck++; this.log.push(`f${frame}: stuck at ${(player.px / 2).toFixed(1)},${(player.pz / 2).toFixed(1)} wp ${this.wp}`); if (this.detour) this.skip.add(this.detour); else if (this.stuck % 2 === 0 && this.wp < this.route.length - 1) this.wp++; this.detour = null; }   // back along the way it came, and again: a waypoint skipped is a wall walked at
+      if (Math.hypot(player.px - this.anchor.x, player.pz - this.anchor.z) < 1.2 && !(t && this.firing)) { this.ignore = 150; this.stuck++; this.log.push(`f${frame}: stuck at ${(player.px / 2).toFixed(1)},${(player.pz / 2).toFixed(1)} wp ${this.wp}`); if (this.blacklist && this.detour) this.skip.add(this.detour); else if (this.stuck % 2 === 0 && this.wp < this.route.length - 1) this.wp++; this.detour = null; }   // back along the way it came, and again: a waypoint skipped is a wall walked at
       this.anchor = { x: player.px, z: player.pz, f: frame };
     }
     if (wantFire !== this.firing) { out.push({ kind: "button", type: wantFire ? "mousedown" : "mouseup", button: 0 }); this.firing = wantFire; }

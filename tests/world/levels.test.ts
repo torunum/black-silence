@@ -218,7 +218,7 @@ it("level 2's pews are props, not enemies, and `v` is claimed by no enemy def (K
   expect(counts).toEqual({
     "PROLOGUE — OUT OF THE PIT": 0,
     "LEVEL 1 — THE GOTHIC DUNGEON": 0,
-    "LEVEL 2 — THE ABANDONED CHURCH": 16,   // rebuilt: two blocks of pews a side of the nave's aisle (was eight, in the reference's rooms)
+    "LEVEL 2 — THE ABANDONED CHURCH": 9,   // rebuilt: two blocks of three pews on the north side of the nave's aisle and one on the south (was eight, in the reference's rooms)
     "LEVEL 3 — THE NECROPOLIS": 0,
     "LEVEL 4 — THE GRAVEYARD": 0,
     "LEVEL 5 — THE SEWERS": 0,
@@ -270,14 +270,14 @@ it("every armour tile the authors wrote reaches the item table (KNOWN-11)", () =
   expect(counts).toEqual({
     "PROLOGUE — OUT OF THE PIT": 0,          // the prologue authors none
     "LEVEL 1 — THE GOTHIC DUNGEON": 5,       // rebuilt: the closet, the hall's stair, the armoury, the ward, and the warders' hoard behind a secret door
-    "LEVEL 2 — THE ABANDONED CHURCH": 4,     // rebuilt: the nave's west end, the reliquary behind its secret door, the sacristy and the crypt
+    "LEVEL 2 — THE ABANDONED CHURCH": 5,     // rebuilt: the nave's west end, the reliquary behind its secret door, the sacristy, the chancel and the crypt
     "LEVEL 3 — THE NECROPOLIS": 3,
     "LEVEL 4 — THE GRAVEYARD": 3,
     "LEVEL 5 — THE SEWERS": 3,
     "LEVEL 6 — THE FACTORY": 4,
     "LEVEL 7 — THE WOMB": 4,
   });
-  expect(Object.values(counts).reduce((a, b) => a + b, 0)).toBe(26);   // the reference's twenty, and levels 1 and 2 (rebuilt) have five and four where they had one and two
+  expect(Object.values(counts).reduce((a, b) => a + b, 0)).toBe(27);   // the reference's twenty, and levels 1 and 2 (rebuilt) have five and five where they had one and two
 });
 
 /**

@@ -106,13 +106,14 @@ export function buildLevel2(): BuiltLevel {
   lv.pickup("a", [15, 5]).pickup("h", [23, 5]).pickup("b", [23, 9]);                     // the choir loft
   lv.pickup("6", [15, 20]).pickup("c", [16, 21], [22, 15]).pickup("h", [22, 21], [24, 21], [24, 19], [17, 22]).pickup("r", [15, 22]).pickup("o", [23, 20]).pickup("a", [22, 16], [15, 16], [20, 15], [24, 17]).pickup("b", [23, 17]);   // the chancel
   lv.pickup("r", [15, 32]).pickup("h", [23, 31], [16, 28]).pickup("b", [14, 27]).pickup("a", [24, 27], [23, 28], [20, 31], [15, 30]).pickup("o", [22, 28], [17, 31]);   // the sacristy
-  lv.pickup("a", [5, 37], [5, 43]).pickup("h", [6, 41], [33, 43]).pickup("r", [33, 37]).pickup("o", [20, 42]);   // the crypt
+  lv.pickup("a", [5, 37], [5, 43]).pickup("h", [6, 41], [33, 43]).pickup("r", [33, 37]).pickup("o", [20, 42]).pickup("h", [34, 38], [34, 42]).pickup("a", [33, 40]);   // the crypt
   lv.pickup("a", [4, 30], [10, 33]).pickup("o", [10, 30]).pickup("h", [4, 33]).pickup("c", [7, 32]);   // the ossuary
   lv.pickup("a", [39, 37]).pickup("h", [45, 37]).pickup("b", [40, 33]);                  // the south chapel
   lv.prop("F", [14, 29], [14, 31]);                                                    // the sacristy: shelves against the west wall
   lv.prop("x", [36, 40]).prop("O", [13, 36]);                                            // the crypt: a crate, a barrel
   // the nave's pews: two blocks a side of the aisle, the crossing between them (nine cells wide: where the transept would be)
-  for (const z of [19, 23]) for (const x of [29, 31, 33, 43, 45, 47]) lv.prop("v", [x, z]);
+  for (const x of [29, 31, 33, 43, 45, 47]) lv.prop("v", [x, 19]);
+  for (const x of [43, 45, 47]) lv.prop("v", [x, 23]);   // (the south-west block was dragged off: the way down to the crypt runs along that wall, and a pew is a wall to anything that walks at it)
 
   // ---- the light: torches (real lights: 17 is the budget with the windows), then glow in dress2.ts
   lv.light("i", [61, 19], [57, 15], [57, 9], [26, 19], [17, 29], [10, 37], [28, 37]);

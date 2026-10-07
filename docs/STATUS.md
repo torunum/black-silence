@@ -1401,7 +1401,7 @@ omission.
   **not** flipped — `C` is an intentional Cacodemon in levels 6 and 7 — so the
   tables still overlap. (**The chair in the priest's chambers was a Cacodemon
   until the church was rebuilt, deeper-levels plan Task 4: level 2 places no `C`
-  now, and the rebuilt church's twelve pews are `v`.**) The next level that
+  now, and the rebuilt church's nine pews are `v`.**) The next level that
   writes a chair or a pew as the reference spells them hits this again; the
   toolkit's `LevelPlan.prop` refuses `C` and `V`.
   KNOWN-11, below, was the same mechanism against the *item* table and is now
