@@ -19,6 +19,7 @@ import { alertSound } from "../enemies/ai/Perception";
 import { damageEnemy } from "../enemies/Damage";
 import { damagePlayer } from "../player/Player";
 import { world } from "./WorldState";
+import { floorHeightAt } from "./Collision";
 import type { Enemy } from "../enemies/Enemy";
 
 /**
@@ -66,7 +67,8 @@ type DamageableEnemy = Pick<Enemy, "x" | "z" | "dead" | "kx" | "kz">;
 
 export function breakProp(p: Prop): void {
   if(p.dead)return;p.dead=true;renderState.scene.remove(p.m);S.propsBroken++;
-  woodP(p.x,.5,p.z,12);spawnGibs(p.x,.55,p.z,6,3.4,true);
+  const fy=floorHeightAt(p.x,p.z);   // a prop on a raised floor breaks on that floor
+  woodP(p.x,.5+fy,p.z,12);spawnGibs(p.x,.55+fy,p.z,6,3.4,true);
   at(p.x,.5,p.z,()=>propBreaks());
   if(Math.random()<.2){
     const k=pick(["health","bullets","shells"]);
@@ -74,13 +76,13 @@ export function breakProp(p: Prop): void {
   if(S.propsBroken===15)ach(ACHIEVEMENTS.redec,S.ach);}
 
 export function explodeBarrel(b: Prop): void {
-  if(b.dead)return;b.dead=true;renderState.scene.remove(b.m);S.propsBroken++;
+  if(b.dead)return;b.dead=true;const fy=floorHeightAt(b.x,b.z);renderState.scene.remove(b.m);S.propsBroken++;
   shake(.7);screenShake.hitStop=Math.max(screenShake.hitStop,.05);
-  renderState.boomLight.position.set(b.x,1.2,b.z);renderState.boomLight.intensity=4;renderState.boomLight.color.setHex(0xff7830);
-  fireP(b.x,.8,b.z,40);smoke3d(b.x,1,b.z,22);sparks(b.x,.8,b.z,18);
-  spawnGibs(b.x,.8,b.z,6,5,true);
+  renderState.boomLight.position.set(b.x,1.2+fy,b.z);renderState.boomLight.intensity=4;renderState.boomLight.color.setHex(0xff7830);
+  fireP(b.x,.8+fy,b.z,40);smoke3d(b.x,1+fy,b.z,22);sparks(b.x,.8+fy,b.z,18);
+  spawnGibs(b.x,.8+fy,b.z,6,5,true);
   const sc=new THREE.Mesh(track(new THREE.CircleGeometry(1.5,10)),scorchMat);
-  sc.rotation.x=-Math.PI/2;sc.position.set(b.x,.015,b.z);renderState.scene.add(sc);
+  sc.rotation.x=-Math.PI/2;sc.position.set(b.x,fy+.015,b.z);renderState.scene.add(sc);
   at(b.x,1.2,b.z,()=>barrelExplosion());
   const pd=Math.hypot(player.px-b.x,player.pz-b.z);
   if(pd<5)damagePlayer(60*(1-pd/5));

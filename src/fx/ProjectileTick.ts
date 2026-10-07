@@ -7,7 +7,7 @@ import { renderState } from "../render/Renderer";
 import { player } from "../player/PlayerState";
 import { damagePlayer } from "../player/Player";
 import { S } from "../core/State";
-import { ceilHeightAt, solidAt } from "../world/Collision";
+import { ceilHeightAt, solidAt, floorHeightAt } from "../world/Collision";
 import { crossExplode } from "../weapons/Hitscan";
 import { weaponRuntime } from "../weapons/WeaponRuntime";
 import { world } from "../world/WorldState";
@@ -105,13 +105,13 @@ export function projTick(dt: number){
     }else if(Math.random()<.4){
       const c=o.col||0x9a4ae0,r2=(c>>16&255)/255,g2=(c>>8&255)/255,b2=(c&255)/255;
       spawnP(o.m.position.x,o.m.position.y,o.m.position.z,0,0,0,r2,g2,b2,.25,3);}
-    let dead=o.life<=0||solidAt(o.m.position.x,o.m.position.z)||(o.flesh&&o.m.position.y<.1);
+    let dead=o.life<=0||solidAt(o.m.position.x,o.m.position.z)||(o.flesh&&o.m.position.y<floorHeightAt(o.m.position.x,o.m.position.z)+.1);   // a thrown chunk lands on the floor under it
     const hit=Math.hypot(o.m.position.x-player.px,o.m.position.z-player.pz)<.55&&
        Math.abs(o.m.position.y-(player.pyy-.3))<1;
     if(!dead&&hit){damagePlayer(o.dmg);
       if(o.flesh){blood(player.px,player.pyy-.2,player.pz,10,1.5);fleshHitsPlayer();}
       dead=true;}
     if(dead){
-      if(o.flesh){blood(o.m.position.x,Math.max(.1,o.m.position.y),o.m.position.z,8,1.4);
+      if(o.flesh){blood(o.m.position.x,Math.max(floorHeightAt(o.m.position.x,o.m.position.z)+.1,o.m.position.y),o.m.position.z,8,1.4);
         addPool(o.m.position.x,o.m.position.z,rnd(.2,.4));fleshSplat();}
       renderState.scene.remove(o.m);orbs.splice(i,1);}}}

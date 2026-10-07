@@ -191,9 +191,9 @@ export function priestThink(enemy: unknown,dt: number,dist: number,dx: number,dz
             const a=rnd(0,6.28),d=rnd(3,6);
             const nx=player.px+Math.sin(a)*d,nz=player.pz+Math.cos(a)*d;
             if(!solidAt(nx,nz)){
-              const ne=spawnEnemy(Math.random()<.6?"z":"f",nx,nz,true);
+              const ne=spawnEnemy(Math.random()<.6?"z":"f",nx,nz,true),fh=ne.fy;
               ne.aware=true;ne.alertX=player.px;ne.alertZ=player.pz;
-              smoke3d(nx,.6,nz,10);blood(nx,.3,nz,6,1.5);
+              smoke3d(nx,fh+.6,nz,10);blood(nx,fh+.3,nz,6,1.5);
               break;}}}
         at(e.x,e.h*.6+(e.fy||0),e.z,()=>priestSummons(e.key));
         showMsg("THE PRIEST CALLS HIS FLOCK");}}
@@ -215,4 +215,4 @@ export function priestThink(enemy: unknown,dt: number,dist: number,dx: number,dz
       const set=e.phase===3?[PX[fk].a,PX[fk].b]:[PX[bk].a,PX[bk].b];
       e.sp.material.map=set[e.frame];e.sp.material.needsUpdate=true;}}
   e.sp.position.set(e.x,e.h/2+(e.fy||0)+Math.sin(performance.now()/280)*.05,e.z);
-  e.blob.position.set(e.x,.012,e.z);}
+  e.blob.position.set(e.x,(e.fy||0)+.012,e.z);}

@@ -762,6 +762,46 @@ import { MONOLOGUE } from "../../src/content/monologue";
  *
  * The level also stands the torches, candles, items and props of its raised floors on them (`BuiltLevel.lift`, `src/world/Decor.ts`): a torch burned under the 2.4
  * floor otherwise. That is in this fixture's digest as a `y`, and nowhere else: no other level opts in.
+ *
+ * ## Gore on raised floors — thirteenth regeneration: blood, gibs and heads land on the floor they fall on
+ *
+ * The owner: "in most places the blood doesn't stay on the floor, there's no dismemberment, and heads don't come off". The gore code assumed the ground was
+ * y = 0 (a pool at y .01, a gib clamped at .07, a blood drop at .02, a head spawned at `e.h * .92` and bounced on `h.sz * .5`, a corpse sunk to `e.h * .18`, a
+ * limb thrown from `e.h * .55`), and on a raised floor (this level's upper gaol, 2.4) all of it was spawned or settled inside the floor. Every one of those
+ * sites now uses the floor under it (`floorHeightAt(x, z)`, or the enemy's `e.fy` when it spawns from an enemy), including when it rolls onto another height. No
+ * dice were added or moved: the same draws, in the same order. `tests/integration/goreRaisedFloors.test.ts` holds each site on floors of 0, 1.2 and 4.2.
+ *
+ * ### What moved, and what did not (`WRITE_TRACE=1`, compared with the committed fixture field by field by a node script)
+ *  - **Camera: 0 of the 110 frames differ. HUD (hp, ar, wname, msg, subt, lvltitle, bossname, keys): 0 of 110 differ. Frame numbers: identical.** The player's walk,
+ *    the damage taken, the armour, the `LIMB SEVERED` message at 870, the sighting line at 290: all as before. The fight is the same fight.
+ *  - **`scene.digest` differs in 62 of the 110 frames, every one from 480 to 1100 (490 is the only frame in that range that agrees); `scene.count` in 21,
+ *    all from 900.** Nothing before frame 480 moved, which is the first recorded frame after the first shot lands on the first zombie (frame 473).
+ *  - The prologue's fixture (`trace-level0.json`: 12 shots, 0 hits, 0 kills, so no gore) and the boss trace's (level 2, one floor) are byte-identical:
+ *    `git diff -- tests/integration/__fixtures__/trace-level0.json tests/integration/__fixtures__/trace-level2-boss.json` is empty.
+ *
+ * ### Where each part of the movement comes from (each by reverting that one site and running this file; the first diverging frame is the first the digest differs in)
+ *  - **A hurt enemy's sprite** (`Behaviors.ts`, the stunned branch put the sprite at `e.h / 2`, under the 2.4 floor, for the whole stun): first frame **480**. A zombie
+ *    hit on the upper gaol used to vanish into the floor for about a fifth of a second at every hit; it now stands.
+ *  - **Blood particles landing** (`Particles.ts`): first frame **500**. A drop on a raised floor never reached y .02 and died in the air; it now lands, and
+ *    rolls its 14% for a pool.
+ *  - **The corpse and its shadow** (`Behaviors.ts`, the dead branch): first frame **620**, the first zombie's collapse (`z.die1`). It lay at `e.h * .18` under the floor.
+ *  - **The pool's height** (`Decals.ts`): first frame **620**.
+ *  - **The torn-off arm** (`Damage.ts`, `severLimb`): first frame **870**, which is `LIMB SEVERED`. Its gibs and blood started under the floor.
+ *  - **The gibs' floor** (`Gibs.ts`): first frame **890**.
+ *  - `scene.count` is higher from 900 by 2 to 5 children, 217 against 214 at the last frame. Read off the scene at frame 1100 (a throwaway probe, old code and new, same
+ *    script): the only kind of child that differs is the blood pool (14 against 11); every sprite, gib, light, orb and decor child agrees. A pool is only ever made when
+ *    something lands (a bouncing gib's 50%, a drop's 14%, a head's, a sever's), and on this floor things now land where they did not: so the seeded stream is
+ *    drawn on in a different place from there, and the later pools differ. The decreases the "something despawned" assertion needs are the same four (580, 690, 810,
+ *    1080) plus a fifth, 940 (218 -> 217).
+ *  - No kill in this run decapitates, so the head's own sites (`spawnHead`, `headTick`) are not reached by this fixture. They are
+ *    held by `goreRaisedFloors.test.ts`, where a headshot kill on floors of 0, 1.2 and 4.2 still decapitates (`deathKind` 2, `DECAPITATED`, a head thrown from the neck)
+ *    and the head comes to rest at `floor + sz / 2`, and a hit on an arm and on the legs still severs. Decapitation and dismemberment were not failing to trigger on a raised
+ *    floor (`Hitscan.ts` was already fixed for it, `hitscanRaised.test.ts`): they fired, and their heads and limbs were inside the floor.
+ *
+ * ### Coverage, re-measured: each mutation below turns something red
+ * Pool y (`Decals.addPool`): this file, frame 620, and the pool tests. Gib floor: frame 890. Particle floor: frame 500. Corpse height and its shadow: frame 620. Sever
+ * height: frame 870. Stun sprite: frame **480**. The head's spawn height and its floor, the decapitation's blood and gibs, the broken crate's gibs: green here (not
+ * reached), red in `goreRaisedFloors.test.ts`.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");
