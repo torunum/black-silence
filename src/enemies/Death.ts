@@ -26,7 +26,7 @@ import { player } from "../player/PlayerState";
 import { damagePlayer } from "../player/Player";
 import { weaponRuntime } from "../weapons/WeaponRuntime";
 import { EYE, CELL } from "../world/Grid";
-import { solidAt } from "../world/Collision";
+import { solidAt, floorHeightAt } from "../world/Collision";
 import { world } from "../world/WorldState";
 import { exitCell, unsealExit } from "../world/ExitDoor";
 import { LEVELS } from "../world/levels/index";
@@ -168,14 +168,15 @@ interface Head {
 
 export function killEnemy(enemy: unknown, finalDmg: number, info: DamageInfo) {
   const e=enemy as KillEnemy;
+  const fy=e.fy||0;   // the floor it dies on: every gore and fx below is placed on it, not on floor 0
   e.dead=true;
   if(!e.summoned)S.kills++;
   S.totKills++;
   e.blob.scale.setScalar(1.6);
   /* Afrit death explosion */
   if(e.key==="q"){
-    fireP(e.x,e.fy?e.fy+1:1,e.z,26);sparks(e.x,1,e.z,16);at(e.x,e.fy?e.fy+1:1,e.z,()=>afritDeathExplosion());
-    renderState.boomLight.position.set(e.x,1.2,e.z);renderState.boomLight.intensity=3.5;renderState.boomLight.color.setHex(0xff7830);
+    fireP(e.x,fy+1,e.z,26);sparks(e.x,fy+1,e.z,16);at(e.x,fy+1,e.z,()=>afritDeathExplosion());
+    renderState.boomLight.position.set(e.x,fy+1.2,e.z);renderState.boomLight.intensity=3.5;renderState.boomLight.color.setHex(0xff7830);
     const pd=Math.hypot(player.px-e.x,player.pz-e.z);
     if(pd<3.5&&Math.abs((e.fy||0)-(player.pyy-EYE))<2)damagePlayer(28*(1-pd/3.5));
     const nearby: readonly DeathEnemy[] = world.enemies;   // checked widening, not a cast
@@ -192,7 +193,7 @@ export function killEnemy(enemy: unknown, finalDmg: number, info: DamageInfo) {
   if(overkill){
     S.gibs++;S.totGibs++;
     e.gone=true;renderState.scene.remove(e.sp);renderState.scene.remove(e.blob);
-    spawnGibs(e.x,e.h*.6,e.z,12,4.5);
+    spawnGibs(e.x,e.h*.6+fy,e.z,12,4.5);
     addPool(e.x,e.z,rnd(.8,1.2));
     shake(.22);screenShake.hitStop=Math.max(screenShake.hitStop,.045);
     at(e.x,e.h*.6+(e.fy||0),e.z,()=>gibBurst());
@@ -205,8 +206,8 @@ export function killEnemy(enemy: unknown, finalDmg: number, info: DamageInfo) {
   if(info.head&&PX[e.key].head>0){
     e.deathKind=2;
     e.sp.material.map=(PX[e.key].noHead)||PX[e.key].hl;e.sp.material.needsUpdate=true;
-    blood(e.x,e.h,e.z,22,2.8);
-    spawnGibs(e.x,e.h,e.z,3,3.2);
+    blood(e.x,e.h+fy,e.z,22,2.8);
+    spawnGibs(e.x,e.h+fy,e.z,3,3.2);
     spawnHead(e,info);            // <-- the head pops off and can be kicked
     at(e.x,e.h*.6+(e.fy||0),e.z,()=>decapitation());shake(.16);
     showMsg("DECAPITATED");
@@ -223,10 +224,10 @@ export function spawnHead(e: KillEnemy, info: DamageInfo) {
   const sp=new THREE.Sprite(track(new THREE.SpriteMaterial({map:tex,transparent:true})));
   const sz=Math.max(.34,e.w*.34);
   sp.scale.set(sz,sz,1);
-  sp.position.set(e.x,e.h*.92,e.z);
+  sp.position.set(e.x,e.h*.92+(e.fy||0),e.z);
   renderState.scene.add(sp);
   const dx=info&&info.dir?info.dir.x:rnd(-1,1),dz=info&&info.dir?info.dir.z:rnd(-1,1);
-  headPool.heads.push({sp,x:e.x,y:e.h*.92,z:e.z,
+  headPool.heads.push({sp,x:e.x,y:e.h*.92+(e.fy||0),z:e.z,
     vx:dx*rnd(2,4)+rnd(-1,1),vy:rnd(3.5,5.5),vz:dz*rnd(2,4)+rnd(-1,1),
     spin:rnd(-8,8),rest:false,life:30,sz});}
 
@@ -238,7 +239,8 @@ export function headTick(dt: number) {
       h.x+=h.vx*dt;h.y+=h.vy*dt;h.z+=h.vz*dt;
       h.sp.material.rotation+=h.spin*dt;
       if(solidAt(h.x,h.z)){h.vx*=-.4;h.vz*=-.4;h.x-=h.vx*dt;h.z-=h.vz*dt;}
-      if(h.y<=h.sz*.5){h.y=h.sz*.5;
+      const floor=floorHeightAt(h.x,h.z);   // the floor under it now: it can roll onto another height
+      if(h.y<=floor+h.sz*.5){h.y=floor+h.sz*.5;
         if(Math.abs(h.vy)>1.3){h.vy*=-.42;h.vx*=.6;h.vz*=.6;h.spin*=.6;
           if(Math.random()<.6)blood(h.x,h.y,h.z,3,1.2);
           if(Math.random()<.5)addPool(h.x,h.z,rnd(.2,.35));
@@ -264,7 +266,7 @@ export function bossDeath(e: KillEnemy) {
   stopBossMusic();
   shake(.7);screenShake.hitStop=Math.max(screenShake.hitStop,.12);
   at(e.x,e.h*.6+(e.fy||0),e.z,()=>bossDies(e.key));
-  spawnGibs(e.x,e.h*.6,e.z,10,5,e.stone);
+  spawnGibs(e.x,e.h*.6+(e.fy||0),e.z,10,5,e.stone);
   addPool(e.x,e.z,1.8);
   e.deathKind=1;e.deathT=0;e.deathDir=Math.random()<.5?1:-1;
   say("boss_dead",true);

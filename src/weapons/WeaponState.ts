@@ -101,7 +101,7 @@ export const EQUIP_T=.24,UNEQUIP_T=.16;
 export const KICK_CD=1;
 
 /** What doKick's melee sweep reads off a `world.enemies` element. */
-type KickEnemy = Pick<Enemy, "dead" | "x" | "z" | "h" | "boss" | "maxhp" | "kx" | "kz" | "stun" | "flung" | "flungT">;
+type KickEnemy = Pick<Enemy, "dead" | "x" | "z" | "h" | "fy" | "boss" | "maxhp" | "kx" | "kz" | "stun" | "flung" | "flungT">;
 
 export function requestSwitch(i: number){
   if(!game.started||!S.weapons[i]||i===S.cur||weaponRuntime.pending===i)return;
@@ -224,7 +224,7 @@ export function doKick(){
       e.kx+=dx/d*kb;e.kz+=dz/d*kb;
       e.stun=Math.max(e.stun,e.boss?.25:.9);
       if(!e.boss&&e.maxhp<=60){e.flung=.9;e.flungT=0;}
-      blood(e.x,e.h*.6,e.z,4,2);
+      blood(e.x,e.h*.6+(e.fy||0),e.z,4,2);
       damageEnemy(e,15,{dir:{x:dx/d,z:dz/d},wIdx:-1});}
     for(const p of world.props as unknown as Prop[]){if(p.dead)continue;
       const dx=p.x-player.px,dz=p.z-player.pz,d=Math.hypot(dx,dz);

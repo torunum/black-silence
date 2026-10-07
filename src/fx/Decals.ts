@@ -5,6 +5,7 @@ import "../render/ColorPolicy";
 import { rnd } from "../utils/math";
 import { getScene } from "../render/SceneRef";
 import { track } from "../render/DisposeRegistry";
+import { floorHeightAt } from "../world/Collision";
 
 /**
  * DECALS — floor blood pools (addPool/poolTick) and wall splatter/bullet
@@ -49,12 +50,13 @@ export function resetDecals(): void {
   wallDecals = [];
 }
 
+/** A pool sits just above the floor under it (`floorHeightAt`), which is not always 0. */
 export function addPool(x: number, z: number, s: number): void {
   const scene = getScene();
   let m: THREE.Mesh;
   if (pools.length >= POOLMAX) { m = pools.shift()!; }
   else { m = new THREE.Mesh(track(new THREE.CircleGeometry(1, 8)), poolMat); m.rotation.x = -Math.PI / 2; scene.add(m); }
-  m.position.set(x, .01 + Math.random() * .004, z); m.scale.set(s * .3, s * .3, 1); m.userData.target = s;
+  m.position.set(x, floorHeightAt(x, z) + .01 + Math.random() * .004, z); m.scale.set(s * .3, s * .3, 1); m.userData.target = s;
   pools.push(m);
 }
 
