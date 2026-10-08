@@ -24,6 +24,7 @@ import { moveEnemy } from "./Locomotion";
 import { fireOrb, throwFlesh } from "./Attacks";
 import { wakeBoss, roarFor, priestThink } from "../Boss";
 import { damageEnemy } from "../Damage";
+import { tickHitReact } from "../HitReact";
 import { dropAmmo } from "../Death";
 import { schedule } from "../../core/Time";
 import type { Enemy as EnemyShape } from "../Enemy";
@@ -145,6 +146,8 @@ type Enemy = Pick<
   | "wasAtk"
   | "fly"
   | "flyH"
+  | "flashT"
+  | "lean"
 >;
 
 export function enemyTick(dt: number){
@@ -186,7 +189,7 @@ export function enemyTick(dt: number){
       if(d0<(e.priest?13:9)&&los(e.x,e.z,player.px,player.pz))wakeBoss(e);
       e.sp.position.set(e.x,e.h/2+(e.fy||0),e.z);e.blob.position.set(e.x,(e.fy||0)+.012,e.z);
       continue;}
-    if(e.hurt>0){e.hurt-=dt;
+    if(e.hurt>0){e.hurt-=dt;tickHitReact(e,dt);   // the white flash, then the red tint, and the lean (src/enemies/HitReact.ts)
       if(e.hurt<=0)e.sp.material.color.setHex(e.elite?0xd8c878:0xffffff);}
     /* kicked airborne flight */
     if(e.flung>0){

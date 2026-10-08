@@ -9,6 +9,9 @@ import { addPool } from "../fx/Decals";
 import { player } from "../player/PlayerState";
 import { killEnemy, type DamageInfo } from "./Death";
 import { ctx } from "../core/Context";
+import { registerHit, sideOf } from "../fx/HitFeel";
+import { renderState } from "../render/Renderer";
+import { startHitReact } from "./HitReact";
 import type { Enemy } from "./Enemy";
 
 /**
@@ -101,6 +104,9 @@ type DamageEnemy = Pick<
   | "key"
   | "sever"
   | "severKey"
+  | "gone"
+  | "flashT"
+  | "lean"
 >;
 
 export function damageEnemy(enemy: unknown, dmg: number, info?: DamageInfo) {
@@ -123,9 +129,12 @@ export function damageEnemy(enemy: unknown, dmg: number, info?: DamageInfo) {
       spawnGibs(e.x,e.h*.7+(e.fy||0),e.z,4,3.4,true);
       at(info.hx||e.x,info.hy||e.h*.6,info.hz||e.z,()=>armourShatter());showMsg("ARMOR SHATTERED");
       e.sp.material.color.setHex(0x8a9650);}
+    registerHit({wIdx:info.wIdx,head:false,plate:true,kill:false,side:sideOf(player.px,player.pz,e.x,e.z,renderState.camera.rotation.y)});
     return;}
   e.hp-=dmg;
-  e.hurt=.12;e.sp.material.color.setHex(0xff8866);
+  // the flash, the lean and the old red tint (src/enemies/HitReact.ts): the sprite goes white for the weapon's flash time, then red until `hurt` runs out
+  const yaw=renderState.camera.rotation.y;
+  startHitReact(e,info.wIdx,info.explosive,info.dir?info.dir.x*Math.cos(yaw)-info.dir.z*Math.sin(yaw):0);
   at(info.hx||e.x,info.hy||e.h*.6,info.hz||e.z,()=>monsterPain(e.key,e));
   const res=1-(e.kbRes||0);
   const kb=(info.explosive?7:(info.wIdx===1?5:info.wIdx===0?2.4:info.wIdx===4?6:info.wIdx===-1?0:1.1))*res;
@@ -145,7 +154,9 @@ export function damageEnemy(enemy: unknown, dmg: number, info?: DamageInfo) {
     else if(info.leg&&big&&(heavy||Math.random()<.45)&&!e.sever.legs){
       e.sever.legs=true;severLimb(e,"legs",info);}
     refreshSeverSprite(e);}
-  if(e.hp<=0)killEnemy(e,dmg,info);}
+  if(e.hp<=0)killEnemy(e,dmg,info);
+  // one report per body hit; src/fx/HitFeel.ts folds a volley's into a single stop, punch, marker and sound
+  registerHit({wIdx:info.wIdx,explosive:info.explosive,head:info.head,kill:e.hp<=0,gib:e.hp<=0&&!!e.gone,side:sideOf(player.px,player.pz,e.x,e.z,yaw)});}
 
 /* pick the right dismembered texture for the enemy's current sever state */
 export function refreshSeverSprite(e: DamageEnemy) {

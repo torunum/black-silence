@@ -147,6 +147,10 @@ export interface Enemy {
   severKey?: "noLegs" | "noLArm" | "noRArm" | "gibbed";
   /** True while the attack sprite is swapped in. Written by `src/enemies/ai/Behaviors.ts`. */
   wasAtk?: boolean;
+  /** Seconds of white flash left after a hit. Written by `src/enemies/HitReact.ts` (Damage.ts starts it, `enemyTick` ages it). */
+  flashT?: number;
+  /** How far the sprite leans away from the last hit at the start of the flinch, radians (signed). Written by `src/enemies/HitReact.ts`. */
+  lean?: number;
 
   /* ---- group 3: KNOWN-15 — authored, read, never delivered ------------
    *

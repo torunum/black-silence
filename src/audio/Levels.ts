@@ -189,6 +189,11 @@ export const SOUND_LEVELS = {
   bulletHitsWall: { category: "impact", trim: -4.7 },
   bulletHitsFlesh: { category: "impact", trim: -9.1 },
   bulletHitsProp: { category: "impact", trim: 0.8 },
+  // the impact plan, Task 1: the hit confirmation at the crosshair (./sounds/hits.ts)
+  hitFlesh: { category: "impact", trim: -7.8 },
+  hitHead: { category: "impact", trim: -8.7 },
+  hitArmour: { category: "impact", trim: -9.5 },
+  hitKill: { category: "explosion", trim: -13.8 },
   bulletRicochet: { category: "impact", trim: -5 },
   propBreaks: { category: "impact", trim: -16.8 },
   playerHurt: { category: "impact", trim: 4.4 },

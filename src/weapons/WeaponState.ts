@@ -16,6 +16,7 @@ import { kickReady } from "../audio/sounds/ui";
 import { renderState } from "../render/Renderer";
 import { blood, smoke3d } from "../fx/Particles";
 import { screenShake, shake } from "../fx/ShakeState";
+import { addFirePunch, FIRE_STRENGTH } from "../fx/ViewPunch";
 import { projectiles } from "../fx/Projectiles";
 import { ejectCasing } from "../render/Overlay2D";
 import { say } from "../ui/Subtitles";
@@ -162,7 +163,8 @@ export function fire(w: typeof WEAPONS[number]){
   S.mag[S.cur]--;weaponRuntime.wCool=w.rate;weaponRuntime.wstate="fire";weaponRuntime.wtime=0;
   S.shots++;
   weaponRuntime.kickAmt=w.kick;weaponRuntime.kickRot=(Math.random()-.5)*w.kick*.25;
-  shake(w.trauma);weaponRuntime.muzzle=.4+(S.cur===1?.15:0)+(S.cur===4?.2:0);
+  shake(w.trauma);addFirePunch(FIRE_STRENGTH[S.cur]??0,S.shots);   // the view is shoved back, for the render only (src/fx/ViewPunch.ts)
+  weaponRuntime.muzzle=.4+(S.cur===1?.15:0)+(S.cur===4?.2:0);
   renderState.muzzleLight.position.copy(renderState.camera.position);
   renderState.muzzleLight.intensity=2.6+(S.cur===1?1.4:0)+(S.cur===5?1.6:0);
   renderState.muzzleLight.color.setHex(S.cur===5?0xfff0b0:0xffc878);

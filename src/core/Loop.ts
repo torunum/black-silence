@@ -23,6 +23,8 @@ import { partTick } from "../fx/Particles";
 import { fireTick } from "../fx/HellFire";
 import { lavaTick } from "../fx/Lava";
 import { gibTick } from "../fx/Gibs";
+import { feelTick } from "../fx/HitFeel";
+import { punchTick, withViewPunch } from "../fx/ViewPunch";
 import { poolTick } from "../fx/Decals";
 import { headTick } from "../enemies/Death";
 import { fxTick } from "../render/Overlay2D";
@@ -129,6 +131,7 @@ function loop(t: number){
   if(renderState.scene){
     updateListener();
     partTick(dt);fireTick(dt);lavaTick(dt);gibTick(dt);poolTick(dt);headTick(dt);torchTick(dt,t);
+    feelTick(time.dt);punchTick(dt);   // this frame's blows become one stop, punch, marker and sound (src/fx/HitFeel.ts); the punch ages with the game's clock, so it holds through a freeze
     const kick=kickShown.shown(weaponRuntime.kickAnim,S.dead||S.won,renderState.scene);
     fxTick(dt,t,weaponRuntime.zoomLerp,
       ()=>drawKickStreaks(kick),
@@ -139,7 +142,7 @@ function loop(t: number){
         cueHurt:animCues.hurt,cueHurtAmt:animCues.hurtAmt,cuePickup:animCues.pickup,cueDryFire:animCues.dryFire,cueInput:animCues.input,paused,hidden:openingHidesWeapon()||transitionHidesHands(),
       },WEAPONS));
     hud();
-    withKickLean(renderState.camera,kick,()=>renderState.renderer.render(renderState.scene,renderState.camera));}}
+    withKickLean(renderState.camera,kick,()=>withViewPunch(renderState.camera,()=>renderState.renderer.render(renderState.scene,renderState.camera)));}}
 
 /** Kicks off the frame loop. Called once, from `main.ts`, at boot. */
 export function startLoop(): void { requestAnimationFrame(loop); }

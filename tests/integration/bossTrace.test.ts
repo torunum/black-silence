@@ -922,7 +922,7 @@ const REV = (2 * Math.PI) / SENS;
  * 18**. 2808/18 = 156 recorded frames. The module doc comment's last
  * section has the measurement and the field-by-field account.
  */
-const TOTAL_FRAMES = 7616;
+const TOTAL_FRAMES = 8192;
 const EVERY = 16;
 /**
  * The fifth knob the structural guard depends on, alongside `TOTAL_FRAMES`
