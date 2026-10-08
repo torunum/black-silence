@@ -275,10 +275,7 @@ export const SHADOW_POLICY: Readonly<Record<string, ShadowRule>> = {
      dashed line that crawls as the player walks. Deliberate, not an
      oversight. */
   torchPost: { cast: false, receive: true },
-  /* A stained-glass window's pane and its beam (`LevelLoader.ts`; named so `Decor.ts` can stand them on a raised floor): unlit glass and an additive
-     shaft of light, the lamp's and the particles' rule. They were unnamed meshes with no flags before, which is this rule. */
-  window: { cast: false, receive: false },
-  windowCone: { cast: false, receive: false },
+  window: { cast: false, receive: false }, windowCone: { cast: false, receive: false },   // a window's pane and its beam (`LevelLoader.ts`; named for `Decor.ts`'s lift): unlit, as they were unnamed
   /* A zoned level's floor (`src/world/LevelMeshes.ts`), a quad per cell
      instanced per zone look: the plain floor's rule, for the plain floor's
      reason. */
