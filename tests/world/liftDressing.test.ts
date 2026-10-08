@@ -74,3 +74,27 @@ describe("a drop on a raised floor bobs over that floor", () => {
     expect(Math.abs(drop.sp.position.y - (2.4 + .5))).toBeLessThan(.08);
   });
 });
+
+describe("a window's glass and beam stand on the floor of the room they look into (the church, deeper-levels plan Task 4)", () => {
+  it("lifts the glass (a plane 2.6 tall, centred 1.9 up) and the beam by the floor under them, and leaves the light low over the floor it lights", () => {
+    expect(LEVELS[2].build().lift).toBe(true);
+    loadLevel(2);
+    const kids = renderState.scene.children as THREE.Object3D[];
+    const glass = kids.filter((c) => c.name === "window"), beams = kids.filter((c) => c.name === "windowCone");
+    expect(glass.length, "the church's nine windows").toBe(9);
+    expect(beams.length).toBe(9);
+    const floors = new Set<number>();
+    for (const g of glass) {
+      const fy = floorHeightAt(g.position.x, g.position.z);
+      floors.add(fy);
+      expect(g.position.y, `glass at ${(g.position.x / 2) | 0},${(g.position.z / 2) | 0}`).toBeCloseTo(3.4 * .56 + fy, 6);
+    }
+    for (const b of beams) expect(b.position.y).toBeCloseTo((3.4 - .6) / 2 + floorHeightAt(b.position.x, b.position.z), 6);
+    expect([...floors], "every one of the church's windows looks into a room at 1.2 (the belfry's is at 3.6)").toContain(1.2);
+    expect(floors.has(3.6), "the belfry's window").toBe(true);
+    // the prologue, which has windows? whatever it has, a level that does not ask for it keeps its glass where the reference put it
+    loadLevel(3);
+    for (const g of (renderState.scene.children as THREE.Object3D[]).filter((c) => c.name === "window")) expect(g.position.y).toBeCloseTo(3.4 * .56, 6);
+  });
+});
+

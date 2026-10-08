@@ -6,7 +6,7 @@ import type { Structure } from "./analyse";
  * `tests/world/structureLevels.test.ts` then holds that level to `checkTargets` as well as to the hard validation every
  * level passes. Level 1 (Task 3) is the first.
  */
-export const REBUILT: readonly number[] = [1];
+export const REBUILT: readonly number[] = [1, 2];
 
 /**
  * The critical path of levels 1-7 as built before any rebuild, in steps (`scripts/level-structure.ts`, 2026-10-05). "About twice

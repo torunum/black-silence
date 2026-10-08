@@ -214,6 +214,8 @@ describe("the check itself", () => {
 const PINNERS: Record<number, readonly string[]> = {
   // level 1 as rebuilt (deeper-levels plan, Task 3): its first sweep (STUCK_PLACES=999, 999 places) found three crate piles, at the armoury's south mouth, the hall's south-west corner and the guard room's south wall; the old level's list went with it
   1: ["cratepile@49,26", "cratepile@24,29", "cratepile@40,11"],
+  // level 2 as rebuilt (deeper-levels plan, Task 4): its first sweep (STUCK_PLACES=999) found the four fallen saints along the nave's aisle walls and a sarcophagus at the crypt's west end; the church's own list went with them
+  2: ["fallenstatue@33,14", "fallenstatue@38,14", "fallenstatue@33,28", "fallenstatue@38,28", "sarcophagus@9,36"],
   3: ["sarcophagus@3,19"],
   4: ["tombfree@20,14", "tombfree@12,10", "deadtree@14,22", "gravestone@24,1", "gravecross@14,19", "gravestone@17,19", "gravecross@9,1", "gravestone@12,1",
     "gravestone@18,23", "gravestone@6,5", "gravestone@22,5", "gravestone@15,23", "gravecross@8,1", "gravestone@22,1", "gravestone@8,5", "gravecross@16,23",

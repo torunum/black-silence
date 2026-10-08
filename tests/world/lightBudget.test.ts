@@ -33,6 +33,8 @@ const LEVELS_567 = [5, 6, 7] as const;
 /** The blocks of the 33x25 lattice (levels 2-7): three columns by three rows of merged rooms. */
 const BLOCKS: Array<[number, number, number, number]> = [];
 for (const [z0, z1] of [[1, 5], [7, 17], [19, 23]]) for (const [x0, x1] of [[1, 7], [9, 23], [25, 31]]) BLOCKS.push([x0, x1, z0, z1]);
+/** Level 2's halls (the rebuilt church: the nave, the narthex, the sacristy, the crypt, the south chapel, the choir loft and the tower's two rooms), which the lattice does not describe. */
+const HALLS_2: Array<[number, number, number, number]> = [[26, 49, 14, 28], [54, 61, 18, 28], [14, 24, 27, 32], [4, 34, 36, 43], [38, 46, 32, 37], [14, 24, 4, 9], [52, 61, 11, 13], [52, 61, 2, 5]];
 /** Level 1's dark halls (the rebuilt level's: the great hall's east half, the armoury, the ward, the way out), which the lattice does not describe. */
 const HALLS_1: Array<[number, number, number, number]> = [[30, 42, 18, 30], [45, 53, 18, 26], [44, 56, 31, 41], [30, 40, 33, 40]];
 
@@ -51,11 +53,13 @@ describe("the real lights", () => {
     expect(LIGHT_BUDGET, "the budget is level 3's count, the highest before this task").toBe(measured(3) + 4);
   });
 
-  it("leaves levels 2 and 3 exactly the lights they had (level 2 is recorded by a trace fixture, level 3 is at the budget), and level 1, rebuilt, inside it", () => {
+  it("leaves level 3 exactly the lights it had (it is at the budget), and levels 1 and 2, rebuilt, inside it", () => {
     for (const i of [1, 2, 3].filter((n) => !REBUILT.includes(n))) expect(measured(i), `level ${i}`).toBe(baseline.rows[i].lights);
     for (const i of [1, 2, 3]) expect(lampsOf(built(i).decor), `level ${i} has a light-bearing piece`).toEqual([]);
-    // the rebuilt level: 13 torches, the exit and no window: 14 lights, the budget's 17 with a margin of three
-    for (const i of REBUILT) expect(measured(i) + 4, `level ${i} (rebuilt)`).toBeLessThanOrEqual(LIGHT_BUDGET - 3);
+    // level 1, rebuilt: 13 torches, the exit and no window: 14 lights, the budget's 17 with a margin of three. Level 2, rebuilt: nine windows of stained glass
+    // (the nave's six, the two either side of the altar, the belfry's) and seven torches: 16 lights, a margin of one. Light was level 1's weak point, and the
+    // church spends what the budget allows on the glass that lights a church; the rest of the dark is the glow's (candle stands and braziers cost no light)
+    for (const i of REBUILT) expect(measured(i) + 4, `level ${i} (rebuilt)`).toBeLessThanOrEqual(LIGHT_BUDGET - (i === 1 ? 3 : 1));
   });
 
   it("gives every lamp the strength and reach of a torch's light, and the candles of level 3 none", () => {
@@ -112,6 +116,7 @@ describe("the glow", () => {
 
   it("gives every block the static lights leave three quarters dark a light to be seen by: a real lamp or a glow piece in it", () => {
     for (let i = 2; i <= 7; i++) {
+      if (REBUILT.includes(i)) continue;   // a rebuilt level is not the 33x25 lattice: its halls are tested below
       const L = built(i), bare = { g: L.g, decor: L.decor!.filter((d) => !isLightGiver(d.k)) };
       for (const [x0, x1, z0, z1] of BLOCKS) {
         const inBlock = (x: number, z: number) => x >= x0 && x <= x1 && z >= z0 && z <= z1;
@@ -134,7 +139,17 @@ describe("the glow", () => {
     }
   });
 
-  it("adds geometry to the meshes level 2 already had and no mesh of its own: its trace fixture records the scene's children, and the glow cannot move it (level 1's fixture was re-recorded with its rebuild)", () => {
+  it("does the same for level 2's rooms: every hall of the church has a candle stand or a brazier in it, and the ones the glass and the torches leave dark have several", () => {
+    const L = built(2), bare = { g: L.g, decor: L.decor!.filter((d) => !isLightGiver(d.k)) };
+    for (const [x0, x1, z0, z1] of HALLS_2) {
+      const inBlock = (x: number, z: number) => x >= x0 && x <= x1 && z >= z0 && z <= z1;
+      const { dark, walk } = darkShare(bare, inBlock);
+      const n = L.decor!.filter((d) => GLOW_PIECES.includes(d.k) && inBlock(decorCell(d).x, decorCell(d).z)).length;
+      expect(n, `level 2: the hall x ${x0}-${x1}, z ${z0}-${z1} (${Math.round(100 * dark / walk)}% dark without its glow) has no candle stand or brazier`).toBeGreaterThanOrEqual(dark / walk > .5 ? 3 : 1);
+    }
+  });
+
+  it("adds geometry to the meshes level 2 already had and no mesh of its own: its trace fixture records the scene's children, and the glow cannot move it (levels 1 and 2's fixtures were re-recorded with their rebuilds, and the loop is empty until a level that is still as it was has a fixture)", () => {
     for (const i of [1, 2].filter((n) => !REBUILT.includes(n))) {
       const L = built(i), glow = L.decor!.filter((d) => GLOW_PIECES.includes(d.k)), rest = L.decor!.filter((d) => !GLOW_PIECES.includes(d.k));
       expect(glow.length, `level ${i} has glow`).toBeGreaterThan(5);

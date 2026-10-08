@@ -97,7 +97,7 @@ describe("the levels place them on the way through", () => {
     for (let i = 1; i <= 7; i++) {
       const L = LEVELS[i].build(), here = L.decor!.filter((d) => isCheckpointKind(d.k));
       expect(here.length, `level ${i}`).toBeGreaterThanOrEqual(1);
-      expect(here.length, `level ${i}`).toBeLessThanOrEqual(2);
+      expect(here.length, `level ${i}`).toBeLessThanOrEqual(i === 2 ? 3 : 2);   // the church, rebuilt, has three: the grand doors, the head of the way down, the way to the chancel
       for (const d of here) expect(markers(themeOf(LEVELS[i].sub)!), `level ${i}`).toContain(d.k);
       expect(validateDecor(L), `level ${i}`).toEqual([]);
     }

@@ -100,8 +100,8 @@ describe("projTick clamps flight to the local ceiling, not to WALLH", () => {
   });
 
   it("but the same cross at the same height dies on a level with no ceiling map", () => {
-    loadLevel(2);
-    expect(ceilHeightAt(player.px, player.pz)).toBe(WALLH); // level 2 never opted in (level 1 did, when it was rebuilt: its tiers have ceilings of their own)
+    loadLevel(5);
+    expect(ceilHeightAt(player.px, player.pz)).toBe(WALLH); // level 5 never opted in (levels 1 and 2 did, when they were rebuilt: their tiers have ceilings of their own)
     projectiles.nails.length = 0;
     pushNail(player.px, HIGH_Y, player.pz, false);
     projTick(0.001);
@@ -112,7 +112,7 @@ describe("projTick clamps flight to the local ceiling, not to WALLH", () => {
   });
 
   it("and a reaper tracer at the same height dies there too", () => {
-    loadLevel(2);
+    loadLevel(5);
     projectiles.nails.length = 0;
     pushNail(player.px, HIGH_Y, player.pz, true);
     projTick(0.001);

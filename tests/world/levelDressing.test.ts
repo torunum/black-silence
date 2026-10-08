@@ -254,8 +254,20 @@ describe("the two traces walk where nothing solid stands", () => {
     for (const [x, z] of massCellsOf(built(1))) expect(x <= UPPER_GAOL.x1 && z <= UPPER_GAOL.z1, `a mass at (${x},${z}) is on the combat trace's route`).toBe(false);
   });
 
-  it("level 2: no mass in the ritual room or the crypt (x 9-23, z >= 19), where bossTrace.test.ts stands and fights", () => {
-    for (const [x, z] of massCellsOf(built(2))) expect(x >= 9 && x <= 23 && z >= 19, `a mass at (${x},${z}) is where the boss trace fights`).toBe(false);
+  it("level 2: the chancel (x 14-24, z 14-22), where bossTrace.test.ts stands and fights, holds one mass, the altar against its west wall, and nothing else solid", () => {
+    // (the rebuilt church, deeper-levels plan Task 4: the old level's boundary was its ritual room and crypt, x 9-23, z >= 19)
+    const inChancel = massCellsOf(built(2)).filter(([x, z]) => x >= 14 && x <= 24 && z >= 14 && z <= 22);
+    expect(inChancel, "the altar's cell and no other").toEqual([[14, 18]]);
+    const altar = built(2).decor!.filter((d) => d.k === "altar" && d.x === 14 && d.z === 18);
+    expect(altar, "the altar stands on the west wall, between its two windows").toHaveLength(1);
+    expect(built(2).g[16][13], "a window of coloured glass either side of the altar").toBe("W");
+    expect(built(2).g[20][13]).toBe("W");
+  });
+
+  it("level 2: nothing stands within 15 steps of the spawn; the first fight is the ringing chamber's, at the tower's foot", () => {
+    const L = built(2), t = terrainOf(L), [spawn] = findAll(L.g, "P"), dist = walk(t, idx(t, spawn.x, spawn.z), { secrets: "none" }).dist;
+    const foes = ["z", "f", "g", "m", "t", "s", "w", "U", "Q"].flatMap((c) => findAll(L.g, c).map((p) => ({ c, ...p, d: dist[idx(t, p.x, p.z)] })));
+    expect(Math.min(...foes.map((f) => f.d)), "the nearest enemy, steps").toBeGreaterThanOrEqual(15);
   });
 
   it("level 1: nothing stands within 15 steps of the spawn; the cell block's two zombies are 15-25 steps off: the fight comes to a player who walked there", () => {
@@ -285,14 +297,22 @@ describe("the pickups and props that moved, and the ones that did not", () => {
     expect(glyphs(g, "x")).toEqual(["49,23"]);
   });
 
-  it("levels 2-4 keep every pickup where the reference put them: they were already spread through their rooms", () => {
-    // recorded from commit 64b4e8d's grids: glyph@x,z in the loader's scan order
+  it("level 2: the sniper rifle is at the top of the bell tower with the red key, the cross launcher by the Priest's altar and the machine gun in the reliquary", () => {
+    const g = built(2).g;
+    expect(glyphs(g, "K")).toEqual(["52,3"]);
+    expect(glyphs(g, "5")).toEqual(["53,2"]);
+    expect(glyphs(g, "6")).toEqual(["15,20"]);
+    expect(glyphs(g, "4")).toEqual(["49,8"]);
+    expect(measureLevel(built(2)).pickupsTotal).toBe(73);
+  });
+
+  it("levels 3 and 4 keep every pickup where the reference put them: they were already spread through their rooms", () => {
+    // recorded from commit 64b4e8d's grids: glyph@x,z in the loader's scan order (level 2 was rebuilt: deeper-levels plan, Task 4)
     const ref: Record<number, string> = {
-      2: "o@2,2 o@6,2 5@4,3 h@23,5 h@26,5 a@26,8 r@28,9 b@2,11 h@7,13 K@31,17 b@15,19 c@2,20 c@6,20 4@4,21 6@16,21 h@20,21 o@27,21 c@29,21 b@12,22 r@4,23",
       3: "o@28,3 h@15,5 a@18,5 h@26,5 K@31,11 h@7,13 b@31,16 a@23,19 a@6,20 c@26,20 r@30,20 r@4,21 r@20,21 c@28,21 b@12,22 o@26,22 b@4,23 h@28,23",
       4: "o@28,3 h@15,5 a@18,5 h@26,5 K@31,11 h@7,13 b@31,16 a@23,19 a@6,20 9@26,20 r@30,20 r@4,21 r@20,21 7@28,21 b@12,22 9@26,22 b@4,23 h@28,23",
     };
-    for (const i of [2, 3, 4]) {
+    for (const i of [3, 4]) {
       const L = built(i), out: string[] = [];
       for (let z = 0; z < L.H; z++) for (let x = 0; x < L.W; x++) if (classifyGlyph(L.g[z][x]) === "pickup") out.push(`${L.g[z][x]}@${x},${z}`);
       expect(out.join(" "), `level ${i}`).toBe(ref[i]);

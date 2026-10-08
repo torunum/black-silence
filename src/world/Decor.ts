@@ -120,6 +120,8 @@ function liftDressing(scene: THREE.Scene, L: BuiltLevel): void {
     for (const c of scene.children)
       if (c.name === "torchPost" && c.position.x === tc.x && c.position.z === tc.z) c.position.y += fy;
   }
+  // a window's coloured glass and its beam stand on the floor of the room they look into (the glass sits a hair outside the wall, in the room's own cell; the light stays low, over the floor it lights)
+  if (L.lift) for (const c of scene.children) if (c.name === "window" || c.name === "windowCone") c.position.y += floorHeightAt(c.position.x, c.position.z);
   for (const c of world.candles as unknown as Lifted[]) c.sp.position.y += floorHeightAt(c.x, c.z);
   for (const it of world.items as unknown as Lifted[]) {
     it.y0 = .5 + floorHeightAt(it.x, it.z); it.sp.position.y = it.y0;

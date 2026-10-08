@@ -24,7 +24,7 @@ same code as hard validation and fails if this file is out of date.
 | --- | ---: | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | ---: | ---: | --- |
 | 0 · prologue · OUT OF THE PIT | 668 | 45 | - | 1 | 0 | 0 | 0 | 0 | 12 | 59 | 0 / 0 / 0 | 0 (-) | - | 8 (320 + 0 boss hp) | 1 | wall |
 | 1 · THE GOTHIC DUNGEON | 1099 | 123 | required, 26 steps off the way | 14 | 12 | 1 | 3 | 4 | 15 | 28 | 1 / 1 / 7 | 2 (4, 4) | 55% forced, 79% forced | 23 (1010 + 700 boss hp) | 1 | wall |
-| 2 · THE ABANDONED CHURCH | 586 | 66 | required, 32 steps off the way | 12 | 11 | 1 | 1 | 1 | 1 | 0 | 1 / 2 / 9 | 1 (4) | 26% forced, 61% | 18 (790 + 2500 boss hp) | 1 | wall |
+| 2 · THE ABANDONED CHURCH | 1260 | 168 | required, 88 steps off the way | 13 | 11 | 1 | 2 | 3 | 39 | 46 | 1 / 1 / 5 | 2 (4, 5) | 58% forced, 73%, 92% forced | 35 (1440 + 2500 boss hp) | 2 | wall |
 | 3 · THE NECROPOLIS | 590 | 44 | optional | 13 | 14 | 3 | 4 | 2 | 6 | 49 | 1 / 1 / 15 | 1 (5) | 91%, 84% | 21 (1500 + 3950 boss hp) | 0 | freestanding |
 | 4 · THE GRAVEYARD | 623 | 44 | optional | 6 | 8 | 4 | 2 | 0 | 1 | 0 | 1 / 1 / 9 | 1 (5) | 91%, 84% | 20 (725 + 3050 boss hp) | 2 | wall |
 | 5 · THE SEWERS | 632 | 44 | optional | 5 | 6 | 3 | 3 | 0 | 1 | 0 | 1 / 1 / 8 | 1 (4) | 91%, 84% | 22 (925 + 3750 boss hp) | 3 | wall |
@@ -61,13 +61,17 @@ Regions with enemies, in reading order. *ratio* is ammunition-worth over hit poi
 
 | region | kind | cells | enemies | hp | boss hp | ammo worth | health | armour | ratio |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| x 17-23, z 1-5 | room | 35 | 2 | 100 | 0 | 1020 | 25 | 0 | 10.20 |
-| x 25-31, z 1-5 | room | 34 | 1 | 120 | 0 | 1660 | 25 | 0 | 13.83 |
-| x 1-7, z 7-11 | room | 35 | 2 | 120 | 0 | 1876 | 0 | 0 | 15.63 |
-| x 25-31, z 7-11 | room | 35 | 2 | 70 | 0 | 2182 | 50 | 50 | 31.17 |
-| x 1-7, z 13-17 | room | 35 | 3 | 110 | 0 | 1660 | 75 | 0 | 15.09 |
-| x 25-31, z 13-17 | room | 35 | 3 | 60 | 700 | 2182 | 75 | 50 | 2.87 |
-| x 9-23, z 19-23 | room | 72 | 5 | 210 | 1800 | 3024 | 100 | 50 | 1.50 |
+| x 52-61, z 2-5 | room | 40 | 3 | 155 | 0 | 2884 | 100 | 0 | 18.61 |
+| x 14-24, z 4-9 | room | 65 | 2 | 95 | 0 | 6412 | 325 | 100 | 67.49 |
+| x 27-35, z 6-10 | room | 45 | 2 | 90 | 0 | 5584 | 225 | 50 | 62.04 |
+| x 38-46, z 6-10 | room | 45 | 2 | 95 | 0 | 4144 | 150 | 0 | 43.62 |
+| x 53-60, z 6-10 | passage | 19 | 2 | 65 | 0 | 1632 | 50 | 0 | 25.11 |
+| x 52-61, z 11-13 | room | 30 | 3 | 145 | 0 | 1632 | 50 | 0 | 11.26 |
+| x 14-24, z 14-22 | room | 99 | 1 | 0 | 1800 | 10842 | 475 | 200 | 6.02 |
+| x 26-49, z 14-28 | room | 346 | 8 | 320 | 0 | 4018 | 150 | 50 | 12.56 |
+| x 14-24, z 27-32 | room | 66 | 3 | 140 | 0 | 8186 | 375 | 150 | 58.47 |
+| x 38-46, z 32-37 | room | 54 | 2 | 115 | 0 | 3928 | 150 | 0 | 34.16 |
+| x 4-34, z 36-43 | room | 248 | 7 | 220 | 700 | 6300 | 300 | 100 | 6.85 |
 
 ### 3 · THE NECROPOLIS
 
@@ -142,22 +146,22 @@ A level listed in `REBUILT` (`src/world/structure/targets.ts`) must meet every n
 
 | target | number | measured today |
 | --- | --- | --- |
-| critical path | 1.8-3x the old level's, and at least 80 steps | 1: 123, 2: 66, 3: 44, 4: 44, 5: 44, 6: 44, 7: 32 |
+| critical path | 1.8-3x the old level's, and at least 80 steps | 1: 123, 2: 168, 3: 44, 4: 44, 5: 44, 6: 44, 7: 32 |
 | loops | at least 1 | 1: 1, 2: 1, 3: 3, 4: 4, 5: 3, 6: 3, 7: 3 |
-| key hunt | a key, a locked door on the way, the key at least 20 steps off it | 1: 26, 2: 32, 3: none, 4: none, 5: none, 6: none, 7: none |
-| secrets | at least 2, each with at least 2 pickups behind it | 1: 2, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1, 7: 1 |
-| arena | at least 1 | 1: 1, 2: 1, 3: 0, 4: 2, 5: 3, 6: 1, 7: 2 |
-| verticality | at least 3 floor heights and 2 transitions | 1: 15/28, 2: 1/0, 3: 6/49, 4: 1/0, 5: 1/0, 6: 1/0, 7: 1/0 |
-| rooms, branch points | at least 8 rooms, 2 branch points | 1: 14/3, 2: 12/1, 3: 13/4, 4: 6/2, 5: 5/3, 6: 8/3, 7: 7/3 |
-| checkpoint | one that every route passes, between 40% and 60% of the critical path | 1: yes, 2: no, 3: no, 4: no, 5: no, 6: no, 7: no |
+| key hunt | a key, a locked door on the way, the key at least 20 steps off it | 1: 26, 2: 88, 3: none, 4: none, 5: none, 6: none, 7: none |
+| secrets | at least 2, each with at least 2 pickups behind it | 1: 2, 2: 2, 3: 1, 4: 1, 5: 1, 6: 1, 7: 1 |
+| arena | at least 1 | 1: 1, 2: 2, 3: 0, 4: 2, 5: 3, 6: 1, 7: 2 |
+| verticality | at least 3 floor heights and 2 transitions | 1: 15/28, 2: 39/46, 3: 6/49, 4: 1/0, 5: 1/0, 6: 1/0, 7: 1/0 |
+| rooms, branch points | at least 8 rooms, 2 branch points | 1: 14/3, 2: 13/2, 3: 13/4, 4: 6/2, 5: 5/3, 6: 8/3, 7: 7/3 |
+| checkpoint | one that every route passes, between 40% and 60% of the critical path | 1: yes, 2: yes, 3: no, 4: no, 5: no, 6: no, 7: no |
 | fights | ammunition worth at least 2x the rank-and-file hit points of a region; 0.6x all of them before a boss, with 50 health and 50 armour on the way | see the tables above |
 
-Old critical paths (the 1x of "about twice"): 1: 42, 2: 66, 3: 44, 4: 44, 5: 44, 6: 44, 7: 32. `REBUILT` is 1.
+Old critical paths (the 1x of "about twice"): 1: 42, 2: 66, 3: 44, 4: 44, 5: 44, 6: 44, 7: 32. `REBUILT` is 1, 2.
 
 What the levels as built miss, by the targets (a rebuilt level starts from none of these):
 
 - 1: 0 unmet
-- 2: 6 unmet
+- 2: 0 unmet
 - 3: 5 unmet
 - 4: 8 unmet
 - 5: 8 unmet
