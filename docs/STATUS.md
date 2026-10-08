@@ -163,6 +163,22 @@ Report, map, play-through and mutations: `.superpowers/sdd/2026-10-05-deeper-lev
 - **Play-through** `tests/integration/dungeonPlay.test.ts` / `tests/support/dungeonBot.ts`: a bot that never strafes: usual skill wins 10 of 12 seeds tried (seeds 1-3, 5, 7, 8, 11, 12, 13, and the committed 20261005; two, 4 and 6, stalled on the bot's own waypoint handling) and poor skill 4 of 4 (1-3, 11); it has never died, and its lowest health in the four runs of 2026-10-06 was 41 (poor) and 49-60 (usual).
 - **Stuck check** (`STUCK_PLACES=999`, 999 places, run in three rounds): three crate piles found and taken out; the level is clean.
 
+## Deeper levels — Task 4, level 2 rebuilt (branch `deeper-levels`)
+
+Plan: `docs/superpowers/plans/2026-10-05-deeper-levels.md`. **THE ABANDONED CHURCH is rebuilt** with the `LevelPlan` toolkit (`src/world/levels/level2.ts`, dressing in `dress2.ts`): 64 x 46, 13 rooms, critical path **168 steps**
+(was 66), a loop (the nave reaches the crypt by two ramps), a key hunt (the red key at the top of the bell tower, 88 steps off the way; the grand doors between the narthex and the nave are what it opens), two secrets (4 and 5 pickups:
+the reliquary behind the lady chapel, the ossuary behind the crypt), two arenas (the nave: 8 enemies, pews and an arcade; the crypt: the Guardian and six), four floors (the crypt 0, the church 1.2, the choir loft 2.4, the belfry 3.6),
+forced shrines at 58% (the grand doors) and 92% (the sacristy's passage, the last before the Priest) and an unforced one at the head of the way down. The Priest `Q` is still the boss and still at the altar, in the chancel,
+which the nave only *sees* through a rood screen of five pillars: the way to him is down through the crypt and up behind the church (the exit cell `openExit` opens, (16,16), is in the chancel). Roster as before (`z f g m t w s U Q`), 35 enemies.
+`REBUILT = [1, 2]`; no `LEGACY_PROBLEMS` entry; `docs/level-structure.md` and `docs/level-density.md` regenerated. Report, map, play-through and mutations: `.superpowers/sdd/2026-10-05-deeper-levels/task-4-report.md`; frames `task-4-*.png`.
+
+- **Engine facts the rebuild needed** (each tested): a window's glass and beam stand on the floor of the room they look into on a level that asks for `lift` (`LevelLoader.ts` names them, `Decor.ts` lifts them, `Shadows.ts` gives the names a rule; `tests/world/liftDressing.test.ts`): at 1.2 the glass was half under the floor; the light stays low. No weapon, enemy or movement value changed.
+- **The light**: nine windows of stained glass (the nave's six, the two either side of the altar, the belfry's) and seven torches: 16 point lights, a margin of one under the budget (`tests/world/lightBudget.test.ts` now allows level 2 that margin; level 1's is three). Candle stands, braziers and candelabra carry the rest. It is dim all the same (fog and ambient are the reference's, pinned by `fidelity.test.ts`); the chancel, behind the rood screen, is the best-lit room.
+- **KNOWN-4**: level 2 places no `C` (the chair of the old priest's chambers is gone) and nine `v` pews; the toolkit refuses `C`/`V` as props. **Fidelity pin rewritten** (`REBUILT_LEVEL_2`), the old eight-pew list kept as what the frozen master still holds.
+- **`bossTrace` re-recorded** (header, "eleventh regeneration"): the player is seeded in the chancel at world (49,41); the sweep period went 9 s -> 10.5 s because 9 s was phase-locked with the nail cannon's reload (zero hits in 7,200 frames); the muzzle lifts 0.05 rad so a summon's head can be taken (the headless corpse is still covered); phase 2 -> 3 at frame 7020, `EVERY` 16, 7616 frames. `trace-level0.json` is byte-identical to `8034042`.
+- **Play-through** `tests/integration/churchPlay.test.ts` (`DungeonBot` with a priest hunt, a kite and strafe against him, a top-up in the sacristy and an item blacklist; level 1's committed run is unchanged): usual skill won 4 of 6 seeds in the last batch (1, 3, 4, 6; seeds 2 and 5 died, the Priest and the Guardian), 4 of 6 in the one before; poor skill is in the report. The Priest is the hard fight for a bot that cannot shelter.
+- **Stuck check** (`STUCK_PLACES=999`): the four fallen saints along the nave's aisle walls and a crypt sarcophagus pinned enemies and are out (`PINNERS_2`); the second round was clean.
+
 ## What this is
 
 `THE BLACK SILENCE — The Hollow Parish`, a retro FPS that existed as a single

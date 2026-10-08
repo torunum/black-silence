@@ -72,7 +72,7 @@ export function dressLevel2(d: Decorator, r: Rooms): void {
   for (const [x, z] of [[54, 11], [58, 13], [60, 11]]) may("chainLoose", x, z);
   for (const [x, z] of [[54, 3], [57, 4], [59, 3], [56, 5]]) may("chainLoose", x, z);
   for (const [x, z] of [[53, 12], [61, 12]]) may("rubble", x, z);
-  may("votive", 52, 12); may("votive", 61, 5); may("votive", 55, 5); may("candelabra", 59, 2);
+  may("votive", 52, 12); may("votive", 55, 12); may("brazier", 59, 12); may("votive", 61, 5); may("votive", 55, 5); may("candelabra", 59, 2);
 
   // THE CHAPELS: an altar each, under banners
   for (const [room, x] of [[chapelA, 31], [chapelB, 42]] as const) {
@@ -87,7 +87,7 @@ export function dressLevel2(d: Decorator, r: Rooms): void {
   // THE SOUTH CHAPEL: the altar on the west wall, the way down to the dead beyond the south wall
   must("altar", 38, 34, { side: "w" });
   for (const z of [33, 35]) may("banner", 38, z, { side: "w" });
-  may("candelabra", 40, 33); may("candelabra", 40, 36); may("votive", 46, 32); may("votive", 46, 36);
+  may("candelabra", 40, 33); may("candelabra", 40, 36); may("votive", 46, 32); may("votive", 46, 36); may("votive", 38, 37); may("votive", 42, 36); may("brazier", 44, 33); may("votive", 46, 34);
 
   // THE RELIQUARY (behind its secret door): candles and old glass
   d.clutter({ density: .6, seed: 14, kinds: ["glass", "rubble", "candelabra"], where: (x, z) => r.reliquary.contains(x, z) });
@@ -95,12 +95,12 @@ export function dressLevel2(d: Decorator, r: Rooms): void {
   // THE CHOIR LOFT: lecterns and banners round the organ
   for (const x of [16, 22]) may("lectern", x, loft.z0, { side: "n" });
   for (const x of [15, 18, 21, 23]) may("banner", x, loft.z0, { side: "n" });
-  may("lectern", 14, 7, { side: "w" }); may("candelabra", 15, 9); may("candelabra", 23, 8); may("votive", 14, 4); may("votive", 24, 4);
+  may("lectern", 14, 7, { side: "w" }); may("candelabra", 15, 9); may("candelabra", 23, 8); may("votive", 14, 4); may("votive", 24, 4); may("brazier", 19, 8); may("votive", 14, 9); may("votive", 22, 9);
 
   // THE SACRISTY: lecterns, banners, a font of old water
   may("lectern", 17, sacristy.z1, { side: "s" }); may("lectern", 24, 30, { side: "e" });
   for (const x of [16, 23]) may("banner", x, sacristy.z0, { side: "n" });
-  may("font", 24, 32, { side: "e" }); may("candelabra", 15, 28); may("votive", 24, 28); may("votive", 14, 32);
+  may("font", 24, 32, { side: "e" }); may("candelabra", 15, 28); may("votive", 24, 28); may("votive", 14, 32); may("brazier", 18, 30); may("brazier", 21, 30); may("votive", 19, 32); may("votive", 22, 32);
 
   // THE CRYPT and the OSSUARY: the dead, in their own furniture
   for (const x of [14, 29, 32]) may("sarcophagus", x, crypt.z0, { side: "n" });
