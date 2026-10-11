@@ -192,6 +192,7 @@ export const WEAPON_FIRE_SOUNDS: readonly (() => void)[] = [
 // The power kick's swing and impact are world sounds since player feedback round 2 Task 5
 // (`./impacts.ts`); re-exported here, where `doKick`'s file has always found them.
 export { kickSwing, kickImpact } from "./impacts";
+export { kickSlamFlesh, kickSlamStone, kickWhiff, kickLands } from "./kick";   // the impact plan, Task 2: the kick connects
 /**
  * A spent shell hitting the floor (`ejectCasing`): a short high tick at a
  * random pitch, a random 250-450 ms after the casing leaves the gun.

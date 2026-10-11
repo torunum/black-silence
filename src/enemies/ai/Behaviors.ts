@@ -25,6 +25,7 @@ import { fireOrb, throwFlesh } from "./Attacks";
 import { wakeBoss, roarFor, priestThink } from "../Boss";
 import { damageEnemy } from "../Damage";
 import { tickHitReact } from "../HitReact";
+import { corpseSlam, landFx, liftAt, skidFx, spinFor, trailFx, tumbleAt, wallSlamFx } from "../Launch";
 import { dropAmmo } from "../Death";
 import { schedule } from "../../core/Time";
 import type { Enemy as EnemyShape } from "../Enemy";
@@ -172,11 +173,18 @@ export function enemyTick(dt: number){
         e.sp.material.rotation=e.deathDir*t*Math.PI/6;   // gentler tilt, frames do the work
       }else{
         e.sp.material.rotation=e.deathDir*t*Math.PI/2;}
-      e.kx*=Math.exp(-4*dt);e.kz*=Math.exp(-4*dt);
+      // a corpse the kick killed is still in the air (`flung`): it keeps its speed, arcs and tumbles, and is slammed into a wall (src/enemies/Launch.ts)
+      const air=e.flung>0;
+      if(air){const pt=e.flungT;e.flung-=dt;e.flungT+=dt;trailFx(e.x,e.h*.5+(e.fy||0)+liftAt(e.flungT),e.z,e.kx,e.kz,pt,e.flungT);}
+      else{e.kx*=Math.exp(-4*dt);e.kz*=Math.exp(-4*dt);}
       const nx=e.x+e.kx*dt,nz=e.z+e.kz*dt;
-      if(!solidAt(nx,e.z))e.x=nx;if(!solidAt(e.x,nz))e.z=nz;
+      let blocked=false;
+      if(!solidAt(nx,e.z))e.x=nx;else blocked=true;if(!solidAt(e.x,nz))e.z=nz;else blocked=true;
+      if(air&&blocked){e.flung=0;corpseSlam(e,nx,nz);e.kx=0;e.kz=0;}
       e.fy=floorHeightAt(e.x,e.z);   // the corpse lies on the floor it was knocked onto, not on floor 0
-      e.sp.position.y=e.h/2*(1-t)+e.h*.18*t+e.fy;
+      e.sp.position.y=e.h/2*(1-t)+e.h*.18*t+e.fy+(air?liftAt(e.flungT):0);
+      if(air)e.sp.material.rotation+=tumbleAt(e.flungT,spinFor(e.kx,e.kz))-tumbleAt(e.flungT-dt,spinFor(e.kx,e.kz));
+      else if(e.flungT>0&&e.flung<=0){e.flungT=0;landFx(e.x,e.fy,e.z,e.kx,e.kz);}   // it came down this frame
       e.sp.position.x=e.x;e.sp.position.z=e.z;
       e.blob.position.set(e.x,e.fy+.012,e.z);
       if(e.deathKind===2&&e.deathT<.4&&Math.random()<.5)
@@ -197,22 +205,30 @@ export function enemyTick(dt: number){
       const nx=e.x+e.kx*dt,nz=e.z+e.kz*dt;
       if(solidAt(nx,nz)){
         e.flung=0;e.stun=1.2;
-        damageEnemy(e,40,{wIdx:-2});
         const d=new THREE.Vector3(e.kx,0,e.kz).normalize();
+        damageEnemy(e,40,{wIdx:-2});
         const n=wallNormal(nx,nz,d);
         addWallDecal(nx-d.x*.2,rnd(.8,1.6)+(e.fy||0),nz-d.z*.2,n.x,n.z,rnd(.5,.8),splatMat);
         blood(e.x,1+(e.fy||0),e.z,14,2.5);
         at(nx,e.h*.6+(e.fy||0),nz,()=>wallSplat());shake(.2);
+        wallSlamFx(e,nx,nz,d.x,d.z);
         say(Math.random()<.5?"kicksplat":"wallkill",true);
         ach(ACHIEVEMENTS.punt,S.ach);
-        e.kx=0;e.kz=0;
-      }else{e.x=nx;e.z=nz;}
-      e.sp.position.set(e.x,e.h/2+(e.fy||0)+Math.sin(Math.min(1,e.flungT/.9)*Math.PI)*1.1,e.z);
+        e.kx=0;e.kz=0;e.sp.material.rotation=0;
+      }else{
+        e.x=nx;e.z=nz;
+        // the body is lifted, tumbles head over heels and bleeds as it goes; it lands upright (src/enemies/Launch.ts)
+        const pt=e.flungT-dt;
+        e.sp.material.rotation=e.flung>0?tumbleAt(e.flungT,spinFor(e.kx,e.kz)):0;
+        trailFx(e.x,e.h*.5+(e.fy||0)+liftAt(e.flungT),e.z,e.kx,e.kz,pt,e.flungT);
+        if(e.flung<=0){landFx(e.x,e.fy||0,e.z,e.kx,e.kz);e.flungT=0;}}
+      e.sp.position.set(e.x,e.h/2+(e.fy||0)+(e.flung>0?liftAt(e.flungT):0),e.z);
       e.blob.position.set(e.x,(e.fy||0)+.012,e.z);
       continue;}
     if(Math.abs(e.kx)+Math.abs(e.kz)>.05){
       const nx=e.x+e.kx*dt,nz=e.z+e.kz*dt;
       if(!solidAt(nx,e.z))e.x=nx;if(!solidAt(e.x,nz))e.z=nz;
+      skidFx(e.x,e.fy||0,e.z,e.kx,e.kz);
       e.kx*=Math.exp(-6*dt);e.kz*=Math.exp(-6*dt);}
     const dx=player.px-e.x,dz=player.pz-e.z,dist=Math.hypot(dx,dz);
     if(dist>30){e.sp.position.set(e.x,e.h/2+(e.fy||0),e.z);e.blob.position.set(e.x,(e.fy||0)+.012,e.z);continue;}

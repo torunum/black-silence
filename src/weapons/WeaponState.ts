@@ -28,6 +28,8 @@ import { input } from "../player/Input";
 import { breakProp, explodeBarrel, type Prop } from "../world/Props";
 import { alertSound } from "../enemies/ai/Perception";
 import { damageEnemy } from "../enemies/Damage";
+import { puntHeads } from "../enemies/Death";
+import { kickResolved, type KickMet } from "./KickFx";
 import { after } from "../core/Timers";
 import { hitscan } from "./Hitscan";
 import { schedule } from "../core/Time";
@@ -228,17 +230,22 @@ export function doKick(){
       if(!e.boss&&e.maxhp<=60){e.flung=.9;e.flungT=0;}
       blood(e.x,e.h*.6+(e.fy||0),e.z,4,2);
       damageEnemy(e,15,{dir:{x:dx/d,z:dz/d},wIdx:-1});}
+    let hitProp=false;
     for(const p of world.props as unknown as Prop[]){if(p.dead)continue;
       const dx=p.x-player.px,dz=p.z-player.pz,d=Math.hypot(dx,dz);
       if(d>2.6)continue;
       const dot=(dx*dir.x+dz*dir.z)/Math.max(.001,d);
       if(dot<.5)continue;
-      hitAny=true;
+      hitAny=true;hitProp=true;
       if(p.explosive)explodeBarrel(p);else breakProp(p);}
+    const hitHead=!hitFoe&&puntHeads(dir.x,dir.z)>0;   // the severed heads in its path are punted (src/enemies/Death.ts)
     // Player feedback round 2 Task 5: what the boot met decides the sound — a monster, a prop or a wall,
     // or the air (which is the swing alone). The wall is only looked at, never changed; nothing else moved.
-    kickImpact(kickTarget(hitFoe,hitAny,dir));
-    if(hitAny){shake(.15);screenShake.hitStop=Math.max(screenShake.hitStop,.03);}
+    kickImpact(kickTarget(hitFoe||hitHead,hitAny||hitHead,dir));
+    if(hitAny||hitHead){shake(.15);screenShake.hitStop=Math.max(screenShake.hitStop,.03);}
+    // what the boot met, for the screen and the air (src/weapons/KickFx.ts): a body, a head, a prop, a wall, or nothing
+    const met:KickMet=hitFoe?"body":hitHead?"head":hitProp?"prop":kickTarget(false,false,dir)==="stone"?"wall":"air";
+    kickResolved(met,dir.x,dir.z,S.shots);
   },0.110);}
 /**
  * What a kick resolving now struck, for its sound (`kickImpact`): a monster

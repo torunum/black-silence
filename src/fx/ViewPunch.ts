@@ -54,6 +54,14 @@ export function addFirePunch(strength: number, flip: number): void {
   punch.roll = clampTo(punch.roll + FIRE_PUNCH.roll * strength * (flip & 1 ? 1 : -1), PUNCH_MAX.roll);
 }
 
+/** The kick's overreach on finding nothing: the body goes after the leg, lunging on and pitching forward. */
+export const WHIFF_PUNCH = { lunge: 0.075, pitch: -0.034, roll: 0.016 };
+export function addWhiffPunch(flip: number): void {
+  punch.lunge = clampTo(punch.lunge + WHIFF_PUNCH.lunge, PUNCH_MAX.lunge);
+  punch.pitch = clampTo(punch.pitch + WHIFF_PUNCH.pitch, PUNCH_MAX.pitch);
+  punch.roll = clampTo(punch.roll + WHIFF_PUNCH.roll * (flip & 1 ? 1 : -1), PUNCH_MAX.roll);
+}
+
 export function punchTick(dt: number): void {
   punch.lunge *= Math.exp(-PUNCH_RATE.lunge * dt);
   punch.pitch *= Math.exp(-PUNCH_RATE.pitch * dt);

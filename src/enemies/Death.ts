@@ -10,6 +10,7 @@ import { addSprite } from "../render/RenderCore";
 import { ITEMTEX } from "../render/ItemTextures";
 import { fireP, sparks, blood } from "../fx/Particles";
 import { spawnGibs } from "../fx/Gibs";
+import { bloodFx } from "../fx/ImpactFx";
 import { addPool } from "../fx/Decals";
 import { screenShake, shake } from "../fx/ShakeState";
 import { headPool } from "../fx/Heads";
@@ -24,7 +25,6 @@ import { showMsg } from "../ui/HudMessages";
 import { ACHIEVEMENTS } from "../content/achievements";
 import { player } from "../player/PlayerState";
 import { damagePlayer } from "../player/Player";
-import { weaponRuntime } from "../weapons/WeaponRuntime";
 import { EYE, CELL } from "../world/Grid";
 import { solidAt, floorHeightAt } from "../world/Collision";
 import { world } from "../world/WorldState";
@@ -251,12 +251,28 @@ export function headTick(dt: number) {
     const pd=Math.hypot(h.x-player.px,h.z-player.pz);
     if(pd<.7){
       const a=Math.atan2(h.x-player.px,h.z-player.pz);
-      const force=weaponRuntime.kickAnim>0?9:3.4;
-      h.vx=Math.sin(a)*force;h.vz=Math.cos(a)*force;h.vy=weaponRuntime.kickAnim>0?5:2.2;
-      h.spin=rnd(-12,12);h.rest=false;
-      if(weaponRuntime.kickAnim>0){at(h.x,h.y,h.z,()=>headKicked());blood(h.x,h.y,h.z,4,1.4);}}
+      // walking into a head only nudges it; the real punt is the kick's (`puntHeads`, called as `doKick`'s hit lands)
+      h.vx=Math.sin(a)*3.4;h.vz=Math.cos(a)*3.4;h.vy=2.2;
+      h.spin=rnd(-12,12);h.rest=false;}
     h.sp.position.set(h.x,h.y,h.z);
     if(h.life<=0){renderState.scene.remove(h.sp);headPool.heads.splice(i,1);}}}
+
+/**
+ * The kick's boot meets the severed heads in front of it (`doKick`, on the frame its hit resolves, along `dir`):
+ * each one within reach of the player and in his path is punted hard — thrown along the kick, up, spinning —
+ * with a spray of blood and the thud of it. Returns how many were hit. (`rnd` is not drawn: the kick's
+ * variety is the head's own spin sign, from its index.)
+ */
+export function puntHeads(dirx: number, dirz: number): number {
+  let n=0;
+  for(const raw of headPool.heads){const h=raw as unknown as Head;
+    const dx=h.x-player.px,dz=h.z-player.pz,d=Math.hypot(dx,dz);
+    if(d>2.4||d<.001||(dx*dirx+dz*dirz)/d<.5)continue;
+    h.vx=dirx*12+dx/d*2;h.vz=dirz*12+dz/d*2;h.vy=6.4;
+    h.spin=(n&1?-1:1)*15;h.rest=false;
+    at(h.x,h.y,h.z,()=>headKicked());bloodFx(h.x,h.y,h.z,10,1.6,dirx,dirz);
+    n++;}
+  return n;}
 
 export function dropAmmo(x: number, z: number) {
   const k=pick(["bullets","shells","bullets"]);

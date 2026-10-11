@@ -171,6 +171,11 @@ export const SOUND_LEVELS = {
   // (player feedback round 2 Task 5: the kick lands in a monster or on stone — in the air it makes no sound of its own)
   kickImpactFlesh: { category: "impact", trim: -14.7 },
   kickImpactStone: { category: "impact", trim: -9.9 },
+  // the impact plan, Task 2: layered with them on the frame the kick resolves (./sounds/kick.ts); the two slams are levelled with the explosions (-19): a boot with the whole body behind it, under the reports and over the thuds
+  kickSlamFlesh: { category: "explosion", trim: -15.4 },
+  kickSlamStone: { category: "explosion", trim: -11.9 },
+  kickWhiff: { category: "foley", trim: -8.5 },
+  kickLands: { category: "impact", trim: -13 },
   wallSplat: { category: "impact", trim: 3.8 },
   chargeCrash: { category: "impact", trim: 4.9 },
   slamImpact: { category: "impact", trim: 3.4 },

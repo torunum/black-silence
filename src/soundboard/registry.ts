@@ -185,6 +185,10 @@ const ENTRIES: Entry[] = [
   { id: "casing", name: "Shell casing lands", category: "Weapons", detail: "comes 0.25-0.45 s after the click", play: W.casingTinkle },
   { id: "kick-swing", name: "Kick: swing", category: "Weapons", detail: "the whoosh — all a kick into the air makes", play: W.kickSwing },
   { id: "kick-impact", name: "Kick: connects with a monster", category: "Weapons", detail: "110 ms after the swing, as the game resolves it", play: () => W.kickImpact("flesh") },
+  { id: "kick-slam-flesh", name: "Kick: the slam under a body hit", category: "Weapons", detail: "impact plan Task 2: layered with the thud, on the same frame", play: W.kickSlamFlesh },
+  { id: "kick-slam-stone", name: "Kick: the slam under a wall, crate or head", category: "Weapons", detail: "impact plan Task 2: layered with the sole on stone", play: W.kickSlamStone },
+  { id: "kick-whiff", name: "Kick: finds nothing", category: "Weapons", detail: "impact plan Task 2: the leg through the air and the body going after it, as the hit would have landed", play: W.kickWhiff },
+  { id: "kick-lands", name: "Kicked monster lands", category: "Weapons", detail: "impact plan Task 2: a thud, a slap and a skid at the end of its flight", play: W.kickLands },
   { id: "kick-impact-stone", name: "Kick: connects with a wall or a prop", category: "Weapons", detail: "old: the same sound as a monster, and a wall made none", play: () => W.kickImpact("stone") },
 
   // ---- Monsters
