@@ -20,9 +20,12 @@ import { cellOf, idx, terrainOf, walk } from "../../src/world/structure/walk";
 
 /**
  * Which seed the default run plays. **The bot's fight is a lottery that a seed decides** (the priest's phases, his orbs and the summons are all drawn from the seeded stream, and the bot never
- * dodges): before the impact plan seeds 1, 3, 4, 6, 11 won and 2, 5, 7, 8, 9, 10, 12 lost (measured, the same code, `BOT_SEED=n`); the plan's hit-stop moved every run by a few milliseconds of
- * game time and so re-rolled each: seed 3, the old default, died fighting the priest in his third phase (247 of 1800 hp left), and seed 10 won. The default is a seed that wins on the present
- * code and no more than that; `BOT_SEED=n` replays any other. It is moved when a change to what the game does moves the lottery, with the reason here.
+ * dodges). Measured with `BOT_SEED=n BOT_LOG=1`, seeds 1 to 16, on the code before the impact plan (`d35dd5f`): **7 of 16 reach the exit** (1, 3, 4, 6, 11, 13, 16) and nine die (2, 5, 7, 8, 9, 10, 12, 14, 15).
+ * The plan's hit-stop (`src/fx/HitFeel.ts`: a few milliseconds of game time in all) moved every run, which re-rolled each seed: on the same seeds, with Task 1 in, **2 of 14 won** (10 and 14; seeds 1-9, 11, 12
+ * and 13 died or, for 7 and 12, never reached the door in 54,000 frames; 15 and 16 were not finished). Seed 3, the old default, now dies fighting the priest in his third phase. That is a worse rate than the
+ * 7 of 16 before, by a margin (Fisher, one-sided, p of about .09) that fourteen runs cannot call: the game's clock is scaled uniformly by a stop, so nothing in it should favour the priest, and no mechanism
+ * was found; it is recorded in `docs/STATUS.md` as an open question for a player. The default is a seed that wins on the present code and no more than that; it is moved when a change to what the game does
+ * moves the lottery, with the reason here.
  */
 const SEED = Number(process.env.BOT_SEED ?? 10);
 const SKILL_NAME = (process.env.BOT_SKILL ?? "usual") as keyof typeof DUNGEON_SKILL;
