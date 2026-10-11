@@ -10,6 +10,9 @@ import { player } from "../player/PlayerState";
 import { killEnemy, type DamageInfo } from "./Death";
 import { ctx } from "../core/Context";
 import { registerHit, sideOf } from "../fx/HitFeel";
+import { limbFx } from "../fx/GoreFx";
+import { crawlArt } from "../fx/GoreTex";
+import { crawlFactor } from "./Sever";
 import { renderState } from "../render/Renderer";
 import { startHitReact } from "./HitReact";
 import type { Enemy } from "./Enemy";
@@ -107,6 +110,7 @@ type DamageEnemy = Pick<
   | "gone"
   | "flashT"
   | "lean"
+  | "w"
 >;
 
 export function damageEnemy(enemy: unknown, dmg: number, info?: DamageInfo) {
@@ -168,6 +172,9 @@ export function refreshSeverSprite(e: DamageEnemy) {
   if(s.lArm&&s.rArm)key="gibbed";
   if(!key)return;
   e.severKey=key;
+  if(s.legs){   // a legless monster is a crawler: its own, shorter sprite, with an arm gone as well if one is (src/fx/GoreTex.ts)
+    const c=crawlArt(e.key,!!s.lArm,!!s.rArm,false);
+    if(c){e.sp.material.map=c.tex;e.sp.material.needsUpdate=true;return;}}
   e.sp.material.map=P[key]||P.a;e.sp.material.needsUpdate=true;}
 
 /* spawn a flying chunk for a torn-off limb + a wet sound */
@@ -180,4 +187,6 @@ export function severLimb(e: DamageEnemy, type: string, info?: DamageInfo) {
   at(e.x,y,e.z,()=>limbTorn());
   if(info&&info.dir){ // throw a big chunk in the shot direction
     spawnGibChunk(e.x,y,e.z,info.dir.x,info.dir.z);}
+  limbFx(e,type==="legs"?"legs":"arm",info&&info.armSide,info);   // the limb itself flies, the stump pumps, the wall and the floor take blood (src/fx/GoreFx.ts)
+  if(type==="legs"){e.h*=crawlFactor(e.key);e.sp.scale.set(e.w,e.h,1);}   // and what is left of it crawls: shorter, sprite and hitbox alike
   showMsg(type==="legs"?"LEGS BLOWN OFF":"LIMB SEVERED");}

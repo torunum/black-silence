@@ -9,7 +9,7 @@ import { kickLands } from "../audio/sounds/kick";
 import { wallSplat } from "../audio/sounds/monsters";
 import { player } from "../player/PlayerState";
 import { sideOf } from "../fx/HitFeel";
-import { renderState } from "../render/Renderer";
+import { viewYaw } from "../render/ViewYaw";
 
 /**
  * A KICKED BODY IN THE AIR — lifted, tumbling, trailing blood, landing
@@ -42,7 +42,7 @@ export function tumbleAt(t: number, spin: number): number {
 
 /** Which way a body thrown along (`dx`,`dz`) tumbles: toward the side of the screen it is thrown to (a thrown-left body goes over the left shoulder). */
 export function spinFor(dx: number, dz: number): number {
-  const yaw = renderState.camera.rotation.y;
+  const yaw = viewYaw();
   return dx * Math.cos(yaw) - dz * Math.sin(yaw) >= 0 ? -1 : 1;
 }
 
@@ -73,7 +73,7 @@ export function skidFx(x: number, fy: number, z: number, vx: number, vz: number)
 export function wallSlamPunch(x: number, z: number): void {
   const d = Math.hypot(x - player.px, z - player.pz);
   if (d > 16) return;
-  addHitPunch(Math.max(0.3, 1 - d / 16), sideOf(player.px, player.pz, x, z, renderState.camera.rotation.y));
+  addHitPunch(Math.max(0.3, 1 - d / 16), sideOf(player.px, player.pz, x, z, viewYaw()));
 }
 
 /**

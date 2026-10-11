@@ -187,6 +187,11 @@ export const SOUND_LEVELS = {
   limbTorn: { category: "impact", trim: 4.6 },
   gibBurst: { category: "impact", trim: -1.7 },
   decapitation: { category: "impact", trim: 2.9 },
+  // the impact plan, Task 3: played with those (./sounds/gore.ts)
+  boneSnap: { category: "impact", trim: -10.4 },
+  spurtPulse: { category: "impact", trim: -9.4 },
+  partLands: { category: "impact", trim: -10 },
+  gibMeat: { category: "impact", trim: -21.6 },
   headBounce: { category: "impact", trim: 15.6 },
   headKicked: { category: "impact", trim: 10.4 },
   fleshHitsPlayer: { category: "impact", trim: 7.7 },

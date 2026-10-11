@@ -26,6 +26,9 @@ import { wakeBoss, roarFor, priestThink } from "../Boss";
 import { damageEnemy } from "../Damage";
 import { tickHitReact } from "../HitReact";
 import { corpseSlam, landFx, liftAt, skidFx, spinFor, trailFx, tumbleAt, wallSlamFx } from "../Launch";
+import { walkSet, crawlFx } from "../Sever";
+import { smearFloor } from "../../fx/Splats";
+import { fallT, swayAt } from "../Corpse";
 import { dropAmmo } from "../Death";
 import { schedule } from "../../core/Time";
 import type { Enemy as EnemyShape } from "../Enemy";
@@ -149,6 +152,7 @@ type Enemy = Pick<
   | "flyH"
   | "flashT"
   | "lean"
+  | "sever"
 >;
 
 export function enemyTick(dt: number){
@@ -164,7 +168,7 @@ export function enemyTick(dt: number){
       continue;}
     if(e.dead){
       e.deathT+=dt;
-      const t=clamp(e.deathT/.45,0,1);
+      const t=fallT(e.deathKind,e.deathT);   // a headless body staggers before it falls (src/enemies/Corpse.ts)
       /* two-stage collapse frames (redesigned enemies) */
       const P=PX[e.key];
       if(P.die1&&e.deathKind!==2&&!e.severKey){
@@ -172,7 +176,7 @@ export function enemyTick(dt: number){
         if(want&&e.sp.material.map!==want){e.sp.material.map=want;e.sp.material.needsUpdate=true;}
         e.sp.material.rotation=e.deathDir*t*Math.PI/6;   // gentler tilt, frames do the work
       }else{
-        e.sp.material.rotation=e.deathDir*t*Math.PI/2;}
+        e.sp.material.rotation=e.deathDir*t*Math.PI/2+swayAt(e.deathKind,e.deathT);}
       // a corpse the kick killed is still in the air (`flung`): it keeps its speed, arcs and tumbles, and is slammed into a wall (src/enemies/Launch.ts)
       const air=e.flung>0;
       if(air){const pt=e.flungT;e.flung-=dt;e.flungT+=dt;trailFx(e.x,e.h*.5+(e.fy||0)+liftAt(e.flungT),e.z,e.kx,e.kz,pt,e.flungT);}
@@ -181,6 +185,7 @@ export function enemyTick(dt: number){
       let blocked=false;
       if(!solidAt(nx,e.z))e.x=nx;else blocked=true;if(!solidAt(e.x,nz))e.z=nz;else blocked=true;
       if(air&&blocked){e.flung=0;corpseSlam(e,nx,nz);e.kx=0;e.kz=0;}
+      if(!air){const sv=Math.hypot(e.kx,e.kz);if(sv>1.5&&Math.floor(e.deathT*14)!==Math.floor((e.deathT-dt)*14))smearFloor(e.x,e.z,e.kx,e.kz,Math.min(1.2,sv*.14));}   // a smear where it slid
       e.fy=floorHeightAt(e.x,e.z);   // the corpse lies on the floor it was knocked onto, not on floor 0
       e.sp.position.y=e.h/2*(1-t)+e.h*.18*t+e.fy+(air?liftAt(e.flungT):0);
       if(air)e.sp.material.rotation+=tumbleAt(e.flungT,spinFor(e.kx,e.kz))-tumbleAt(e.flungT-dt,spinFor(e.kx,e.kz));
@@ -326,15 +331,16 @@ export function enemyTick(dt: number){
     /* walk animation */
     if(moving&&e.atkAnim!==undefined&&e.atkAnim<=0){e.animT+=dt;
       if(e.animT>.22){e.animT=0;e.frame=1-e.frame;
-        const set=e.deathKind===2?[PX[e.key].hl,PX[e.key].hlb]:[PX[e.key].a,PX[e.key].b];
-        e.sp.material.map=set[e.frame];e.sp.material.needsUpdate=true;}}
+        const set=walkSet(e);   // what the monster is now: whole, or as it was left (src/enemies/Sever.ts)
+        e.sp.material.map=set[e.frame];e.sp.material.needsUpdate=true;
+}}
     /* attack pose: swap to the dedicated attack frame while striking */
     if((e.atkAnim??0)>0&&PX[e.key].atk&&!e.severKey&&e.deathKind!==2){
       if(e.sp.material.map!==PX[e.key].atk){
         e.sp.material.map=PX[e.key].atk;e.sp.material.needsUpdate=true;e.wasAtk=true;}
     }else if(e.wasAtk){ // attack finished -> back to normal stance
       e.wasAtk=false;
-      const set=e.deathKind===2?[PX[e.key].hl,PX[e.key].hlb]:[PX[e.key].a,PX[e.key].b];
+      const set=walkSet(e);
       e.sp.material.map=set[e.frame];e.sp.material.needsUpdate=true;}
     /* attack lunge: brief grow + lean toward player */
     let lunge=0;
@@ -350,5 +356,8 @@ export function enemyTick(dt: number){
     }else{
       e.fy=floorHeightAt(e.x,e.z);
       e.sp.position.set(lx,e.h/2+(e.fy||0)+Math.sin(performance.now()/300+e.x)*.03,lz);
+      if(e.sever&&e.sever.legs){   // a crawler hauls itself along, dragging a smear (src/enemies/Sever.ts)
+        if(e.hurt<=0)e.sp.material.rotation=moving?Math.sin(performance.now()/150+e.x)*.07:0;
+        if(moving)crawlFx(e,-ldx,-ldz);}
       e.blob.position.set(e.x,(e.fy||0)+.012,e.z);}}
   return anyAware;}

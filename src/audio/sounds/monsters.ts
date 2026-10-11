@@ -135,3 +135,6 @@ const CRASH: Layer[] = [
 ];
 /** A boss dies (`bossDeath`): its death cry, with the octave under it, over the crash. */
 export function bossDies(kind: string): void { lv("bossDies", () => { speak(kind, "death", CRASH); }); }
+
+// the impact plan, Task 3: played with the limb, the decapitation, the burst and the bounce above (./gore.ts)
+export { boneSnap, spurtPulse, partLands, gibMeat } from "./gore";
