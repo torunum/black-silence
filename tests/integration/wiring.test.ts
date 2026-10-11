@@ -2,6 +2,7 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { installDomStubs, loadGameHtml } from "../support/domStubs";
 import { screenShake } from "../../src/fx/ShakeState";
+import { resetPunch } from "../../src/fx/ViewPunch";
 import { player } from "../../src/player/PlayerState";
 import { clearAllTimers } from "../../src/core/Timers";
 import { clearScheduled } from "../../src/core/Time";
@@ -439,6 +440,7 @@ describe("the kick's lean, as the world is rendered (round 2, Task 3)", () => {
       return original.apply(this, args);
     };
     screenShake.hitStop = 0;
+    resetPunch();   // the view punch (impact plan: a whiffed kick or a shot leaves one) is a second render-time offset; this test is about the kick's lean alone
     weaponRuntime.kickAnim = kickAnim;
     try {
       const frame = runFrame(performance.now());

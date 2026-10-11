@@ -173,7 +173,7 @@ describe("a kick that lands in a body", () => {
       let prev = liveParticles();
       for (let i = 0; i < 24; i++) { frame(); const n = liveParticles(); if (n > prev) grew++; prev = n; }
     } finally { restore(); }
-    expect(grew, "drops thrown off every thirtieth of a second: a frame in two grows the count").toBeGreaterThanOrEqual(99);
+    expect(grew, "drops thrown off every thirtieth of a second: a frame in two grows the count").toBeGreaterThanOrEqual(9);
     expect(foe.flung).toBeGreaterThan(0);
     // the frame the flight ends: the landing's dust and drops (nine of dust, five of blood) arrive at once
     let burst = 0;

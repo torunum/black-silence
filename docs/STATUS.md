@@ -30,6 +30,44 @@ frames' digest. The boss fight's phase-3 swap went from 7020 to 7644, window
 window); the form-swap mutation still turns it red at frame 7648. The analysis
 is in both files' headers.
 
+### Task 2 - the kick connects
+
+The kick's rules are as they were: the swing at 0, the hit resolved 110 ms later
+(`schedule(...,0.110)`, pinned by `tests/integration/kickTiming.test.ts` and
+`tests/behavior/viewmodelKick.test.ts`: the drawn leg is at full extension on
+the very frame the hit lands), 15 damage, a 16 units/s shove, the stun, the
+flight of a body of 60 hp or less, the cooldown. What changed is what the
+player sees, hears and feels.
+
+| Piece | Before | After |
+|---|---|---|
+| The leg (`src/render/viewmodel/kick.ts`) | Strike `u * (.55 + .45u)`: 43% of the travel in the last 20 ms; the knee came up into view late | A **coil** over the chamber (thigh +.5 rad, knee +.35, toe cocked, let go by the hit) and a strike of `u^2` (`STRIKE_POWER`): 56% of the travel in the last 20 ms; the knee shows at 50 ms, the boot at 83. A **rebound** while planted (1.6 cm, twice, never nearer than the hit). Extension is still exactly 1 from 110 ms to 160 ms and below 1 before |
+| The view's lean | pitch -.05, drop .03, forward .07 | pitch -.08, drop .05, forward .11 (render only, as before) |
+| On a body | `damageEnemy` 15, `blood(4)`, a thud, a hit-stop of .03 s | the same, and the kick's row of `FEEL` (`src/fx/HitFeel.ts`): hit-stop .060 s (kill .100), a punch of .9 (kill 1.0), the white flash, the marker; dust off the boot (6) and 14 drops of blood along the kick (`src/weapons/KickFx.ts`); a sub-bass slam under the thud (`kickSlamFlesh`) |
+| On a wall, a crate, a barrel or a head | .03 s on a prop (a wall: nothing), the thud | .050 s (`OBJECT_STOP`), a punch of .85, 12 dust and 5-9 stone chips, a harder slam (`kickSlamStone`); a barrel still explodes at once |
+| On nothing | the whoosh as the leg goes out | the whoosh, and at the frame the hit would have landed the view **overreaches**: lunges .075 m on, pitches .034 rad forward, tilts .016 (`addWhiffPunch`), with `kickWhiff` (the swish of the leg through the air); no stop, no marker |
+| The launch (`src/enemies/Launch.ts`, `enemyTick`'s `flung` branch) | the sprite rose 1.1 m and came down; the body stayed upright | rises **1.7 m**, tumbles **two whole turns** head over heels (so it lands exactly upright), sheds 2 drops of blood thirty times a second, comes down in a puff of dust (9) and drops (5) with a thud (`kickLands`), and skids dust off its feet while it slides |
+| The wall | 40 damage, the splat decal, the sound, a shake of .2 | the same, and 26 drops sprayed back off the wall, dust, chips, and the view's punch (harder the nearer the player) |
+| A body the kick KILLS | a corpse that slid four units | it **flies** too: it keeps its speed through the air, arcs, tumbles and is slammed into a wall with the same splat (`corpseSlam`) |
+| A severed head | walking into it during the 0.32 s of the kick's animation punted it (at any frame of it, hit or not) | walking into it only nudges it (3.4); **the boot punts it** (12 units/s along the kick, 6.4 up, spinning, 10 drops of blood) on the frame the hit lands, with the stop and the punch |
+
+Hit-stop adds up like Task 1's: a kick that lands on a body is one stop of .060
+s (.100 on a kill), one on a wall or a crate .050 s; the bot in `churchPlay` kicks
+9-20 times a run. Particles go into the one pooled buffer (`PMAX` 1100, a ring: at
+the cap the oldest slot is reused, nothing allocates); the kick's bursts are 14-42
+particles, a flight's trail about 54. Nothing here draws from the game's
+`Math.random`: the particles' dice are `src/fx/FxRand.ts`'s (a kind-4 particle is a
+drop of blood that lands as kind 1 does but rolls its pool from FxRand).
+
+**Fixtures: none moved.** The prologue's script kicks the air at frame 120: the
+whiff's punch is render-only and its sound draws from sound's own dice; the other
+two scripts never kick. All three traces reproduce byte for byte with Task 2 in.
+
+**Not seen, honestly:** nobody has felt the stop, the punch or the overreach with a
+real mouse; nobody has heard the four new sounds (`kickSlamFlesh`, `kickSlamStone`,
+`kickWhiff`, `kickLands`: the board, group Weapons; the two slams are levelled with
+the explosions, -19 LK, the whiff with the foley, the landing with the impacts).
+
 ## Publication checkpoint - 2026-09-18
 
 The project owner requested a public GitHub release with promotional media.
