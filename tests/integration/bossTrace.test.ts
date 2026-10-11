@@ -821,6 +821,39 @@ import { world } from "../../src/world/WorldState";
  *   **headless corpse**: **405**, from 1152. Each moves `scene.digest` only (`camera`, `hud`, `scene.count` in 0). A fifth, phase 3 made unreachable (`e.hp<-1`), turned
  *   named tests red, the form-swap guard among them, and moved `camera`, `hud` and `scene` in 31, 38 and 36 frames. `trace-level0.json` is byte-identical to `8034042`;
  *   `trace-level1.json` is master's (re-recorded there for the gore fix).
+ *
+ * ## The impact plan, Task 1 — the twelfth regeneration: a kill freezes the game for a moment, and the phase-3 swap moved from 7020 to 7644
+ *
+ * `docs/superpowers/plans/2026-10-08-impact.md` Task 1 (`src/fx/HitFeel.ts`, `src/enemies/HitReact.ts`). See `combatTrace.test.ts`'s last section for what the change is and
+ * which of its parts a trace can see (the hit-stop and the monster's flash, nothing else). Here a nail cannon is a stream, so **its hits freeze nothing** (`FEEL[6].hit` = 0);
+ * what freezes the game is its **kills**, `FEEL[6].kill` = .035 s.
+ *
+ * **What the run asks for**: nine stops, all nine kills (the priest's summons), each .035 s: .315 s of real time, .29 s of game time out of 136 s (0.21%). A stop that small
+ * is enough, and this is the lesson of this file once more: the fight is chaotic in the seeded stream, and a few milliseconds of game time moved a boss that is hit blind
+ * thousands of times.
+ *
+ * ### What moved, compared with the eleventh regeneration, sample by sample over the first 476 (the frame numbers are the same; there are now 512 samples, see below)
+ *  - `scene.digest` — first at **256** (the only thing that differs before frame 1152: the priest's flash, see the proof) and in 409 of 476 in all.
+ *  - `camera` — first at **1152**: `x` 155, `y` 154, `rz` 155, `rx` 299 frames (the shake and recoil phases again; `z`, `ry`, `fov` identical in all 476).
+ *  - `hud` — `hp` 340 (first 1184), `wname` 63 (1456, the reload cycle's phase), `msg` 50 (1328..4240), `subt` 20 (3616..7280), `bossname` 38 (7024..7616: the swap is later),
+ *    `ar`, `lvltitle`, `keys` identical. `scene.count` 401 (first 1168). The first summon dies at about frame 1100 and everything after it is a different stretch of the same fight.
+ *  - **The fight, re-measured by a probe of this file's own script run to 14,400 frames (not committed):** phase 1 -> 2 at sample 512 (unchanged: before any summon dies),
+ *    phase 2 -> 3 at frame **7644** (was 7020), the form swap's visible window **[7644,7662)** (18 frames: the walk cycle's next write is two frames later than it was), the
+ *    priest dead well after (hp -4 at 14,400).
+ *
+ * ### The retune: `TOTAL_FRAMES` 7616 -> **8192**, `EVERY` stays **16**
+ * At 7616 the priest was still in phase 2 (667 hp), and four named tests said so, the guard among them ("the priest never reached phase 3"): the guard did its job. 16 x 478 =
+ * **7648** is inside [7644,7662), four frames in, and 16 x 512 = **8192** gives **548 frames of live phase 3** after the swap (it was 596), the priest at **502 of 1800 hp** (28%, under
+ * the check's 33%), `formKey` `Q2`, alive. The player ends at HEALTH3661: **1,339 drained** of 5000. 512 sampled frames (was 476); the fixture is about 215 KB.
+ *
+ * ### The proof that the hit-stop is the whole of it
+ * In a throwaway copy of the tree, against the eleventh regeneration's fixture (`TOTAL_FRAMES` 7616):
+ *  1. **Every stop in `FEEL` set to 0 and `startHitReact` back to the old tint: byte for byte, all 476 frames** (and `trace.test.ts` too). The plumbing moves nothing.
+ *  2. **The flash and the lean on, stops still 0: `camera` 0, `hud` 0, `scene.count` 0 in all 476 frames, `scene.digest` in 11** (first 256, last 7600): a sampled frame fell on a hit
+ *     sprite's white. That is the whole of the flash's reach, and why the first divergence above is 256.
+ *  3. The stops on: the table above.
+ * **The structural guard stayed meaningful**: the swap's window [7644,7662) holds a sampled frame (7648), and the form-swap mutation (`PX[e.formKey].a` -> `PX[e.key].a`) turns the
+ * fixture red, first at frame 7648, the sampled frame inside the swap's window (run in a throwaway copy).
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

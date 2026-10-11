@@ -72,7 +72,7 @@ afterAll(() => { clearAllTimers(); clearScheduled(); });
 function stage(hp = 5000): void {
   foe.hp = hp; foe.maxhp = hp; foe.dead = false; foe.gone = false; foe.dormant = false; foe.sever = {};
   foe.stun = 0; foe.kx = 0; foe.kz = 0; foe.hurt = 0; foe.flashT = 0; foe.lean = 0;
-  foe.sp.material.color.setHex(0xffffff); foe.sp.material.rotation = 0;
+  foe.sp.material.color.setHex((foe as unknown as { elite: boolean }).elite ? 0xd8c878 : 0xffffff); foe.sp.material.rotation = 0;
   const fy = floorHeightAt(foe.x, foe.z);
   player.px = foe.x - 4; player.pz = foe.z; player.pyy = EYE + fy;
   player.spawnGuard = 99;
@@ -115,7 +115,7 @@ describe("a hit lands: the flash, the marker, the stop, the punch", () => {
       else if (c.getHex() === 0xff8866) sawTint = true;
     }
     expect(sawWhite && sawTint).toBe(true);
-    expect(foe.sp.material.color.getHex()).toBe(0xffffff);
+    expect(foe.sp.material.color.getHex()).toBe((foe as unknown as { elite: boolean }).elite ? 0xd8c878 : 0xffffff);   // an elite goes back to its gold
     expect(foe.sp.material.rotation).toBe(0);
   });
 
@@ -161,6 +161,21 @@ describe("a hit lands: the flash, the marker, the stop, the punch", () => {
     // the camera sits where playerTick put it: at the player, at the eye, not lunged
     expect(Math.abs(renderState.camera.position.x - player.px)).toBeLessThan(0.1);   // (the screen shake's offset is under a tenth)
     expect(renderState.camera.rotation.z).toBeLessThan(0.1);
+  });
+
+  it("the render sees the punch and nothing else does: the camera is lunged inside renderer.render and exactly as playerTick left it outside", () => {
+    shoot(1, 9);
+    let inside = 0, calls = 0;
+    const r = renderState.renderer as unknown as { render: (...a: unknown[]) => void };
+    const real = r.render;
+    r.render = (...a: unknown[]) => { calls++; inside = renderState.camera.position.x; return real.apply(r, a); };
+    try {
+      frame();
+      const outside = renderState.camera.position.x;
+      expect(calls).toBeGreaterThan(0);
+      expect(inside - outside, "facing +x: a lunge toward the target is +x").toBeGreaterThan(0.02);
+      expect(Math.abs(outside - player.px)).toBeLessThan(0.1);
+    } finally { r.render = real; }
   });
 
   it("a shot into armour is a clink: the grey marker, no stop", () => {

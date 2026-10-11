@@ -802,6 +802,37 @@ import { MONOLOGUE } from "../../src/content/monologue";
  * Pool y (`Decals.addPool`): this file, frame 620, and the pool tests. Gib floor: frame 890. Particle floor: frame 500. Corpse height and its shadow: frame 620. Sever
  * height: frame 870. Stun sprite: frame **480**. The head's spawn height and its floor, the decapitation's blood and gibs, the broken crate's gibs: green here (not
  * reached), red in `goreRaisedFloors.test.ts`.
+ *
+ * ## The impact plan, Task 1 — fourteenth regeneration: a hit now freezes the game for a moment
+ *
+ * `docs/superpowers/plans/2026-10-08-impact.md` Task 1 (`src/fx/HitFeel.ts`, `src/enemies/HitReact.ts`): a blow that lands asks for a hit-stop scaled by the weapon
+ * (pistol hit .030 s, kill .075 s; the table is `FEEL`), the monster flashes white for `FEEL.flash` before the old red tint, leans away from the shot, and the view is
+ * punched, a marker lit and a sound played. **Only two of those reach this recording**: the hit-stop (it runs the game at 8% for its length, so the fight shifts in
+ * time) and the flash (a sprite colour, which the digest reads). The punch is applied around `renderer.render` and undone, the marker is drawn on the 2D overlay, the
+ * lean is a sprite rotation and the sounds draw from sound's own dice: none is in `camera`, `hud` or the scene digest.
+ *
+ * **What the run asks for**: five stops, two of them kills (the two zombies); the longest .075 s (a kill with the pistol), .240 s of real time in all, which is .22 s of
+ * game time out of the run's 18.3 s (1.2%). Measured by a throwaway counter at the stop's one write site (not committed).
+ *
+ * ### What moved (`WRITE_TRACE=1`, against the thirteenth regeneration, field by field by a node script, all 110 sampled frames)
+ *  - `camera` — `x` 17 frames, `y` 17, `rz` 17, `rx` 26; first at **480** (the first recorded frame after the first shot lands, frame 473), `x`/`y`/`rz` last at 1100 and `rx`
+ *    at 960. `z`, `ry` and `fov` identical in all 110. The player is not moved by a hit-stop; what moves is the *phase* of the screen shake (`playerTick`'s
+ *    `trauma` decays by the stopped dt, and its sines read the clock) and of the recoil's decay (`rx`), both of which age by the scaled time.
+ *  - `hud` — `hp` in 9 frames (530..1090) and `ar` in 7 (530..950): the zombies' blows land a few frames later than before; `msg` in 1 (frame 1000: `LIMB SEVERED`
+ *    now shows in a different sampled frame, the arm came off a few frames later). `wname`, `subt`, `lvltitle`, `bossname`, `keys`: identical in all 110.
+ *    The run still ends `HEALTH40`, `ARMOR0`: it is the same fight, a little later.
+ *  - `scene.count` in 49 frames (490..1090), range 190..218 as before; `scene.digest` in 63 (480..1100); 110 distinct digests before and after. The count moves because
+ *    a pool or a gib that landed a frame earlier or later is a different child in a sampled frame.
+ *
+ * ### The proof that the hit-stop is the whole of it
+ * Done in a throwaway copy of the tree (`src/` and `tests/`), against the thirteenth regeneration's fixture:
+ *  1. **Every stop in `FEEL` set to 0 and `startHitReact` put back to the old `color.setHex(0xff8866)`: the fixture reproduced byte for byte, all 110 frames.** So the
+ *     plumbing (`registerHit` in `damageEnemy`, `feelTick` in the loop, the marker, the punch, the new sounds, the optional `flashT`/`lean` fields) takes nothing from the
+ *     seeded stream and moves nothing this fixture records.
+ *  2. **The flash and the lean back on, stops still 0: byte for byte again** (0 frames differ in every field). A flash is 3 frames at 60 fps and the red tint 4 more; no
+ *     sampled frame (every 10th) falls on a hit sprite in this run. (The boss trace's sample does, in 11 of 476 frames: its header.)
+ *  3. The stops on: the table above.
+ * `trace-level0.json` (no hit lands in the prologue's run) is byte-identical (`git diff` empty); the boss trace's account is in its own header.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

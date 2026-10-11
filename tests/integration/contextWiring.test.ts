@@ -261,7 +261,7 @@ describe("ctx.wakeBoss — src/enemies/Damage.ts's damageEnemy, dormant-boss bra
     // the wakeBoss branch, plus the ones wakeBoss itself reads. Same
     // technique the showWin test above uses, and the same one Player.ts and
     // Death.ts's own local cast interfaces already use.
-    const mat = { color: { setHex: () => {} } };
+    const mat = { color: { setHex: () => {}, setRGB: () => {} }, rotation: 0 };   // setRGB and rotation: the hit flash and the lean (impact plan, Task 1)
     const boss = {
       boss: true, dormant: true, dead: false,
       hp: 3000, maxhp: 3000, plate: 0, pain: 200, stun: 0, slow: 1,

@@ -1,5 +1,35 @@
 # Where this project stands
 
+## Impact: hit feel, the kick, gore - 2026-10-08 (branch `impact`)
+
+The owner: better hit feel, a better kick, more gore. Plan:
+`docs/superpowers/plans/2026-10-08-impact.md`; the report with the frame strips
+is in `.superpowers/sdd/2026-10-08-impact/` (gitignored). Nobody has felt any of
+it with a real mouse at 60 fps, and **nobody has heard the new sounds** (they
+are on the sound board, `soundboard.html`, and levelled by
+`scripts/sound-levels.mjs`); the owner is the judge.
+
+### Task 1 - every hit lands
+
+| Piece | What it is |
+|---|---|
+| `src/fx/HitFeel.ts` | `damageEnemy` reports every body it hits (`registerHit`); a frame's reports fold into one hit-stop, one punch, one marker and one sound (`feelTick`, once a frame in `Loop.ts`). Eight pellets are one thump. The table `FEEL` is per weapon: hit-stop on a hit / on a kill, punch strength, flash seconds. |
+| Hit-stop (the one place this plan touches the simulation) | Before: kills that gib .045 s, the kick .03 s, bosses and blasts .04-.12 s, nothing for a plain hit. Now: pistol .030 hit / .075 kill; shotgun .050 / .110 (once per volley, up to half again for many pellets); BMG .085 / .150; soul reaper .060 / .120; kick .060 / .100; blast .020 / .060; **rifle, tommy gun and nail cannon: 0 on a hit** (a stream is not 20 jolts) and .045 / .040 / .035 on a kill. A gib is 1.25x its kill. Never past .16 s; a non-killing stop at most once in .2 s of real time. A stop of S seconds runs the game at 8% for S, so it takes about 0.92 S of game time out of the fight: the level 1 trace asks for five stops (.240 s in 18.3 s, 1.2%), the boss trace nine (.315 s in 136 s, 0.2%). No damage, rate, cooldown, HP or speed changed; knockback and stun are as they were. |
+| The enemy | `src/enemies/HitReact.ts`: white for the weapon's flash time (.020-.090 s; a colour multiplier past 1 through the tone mapper), the old red tint for the rest of `hurt`, a lean away from the shot that settles. The two optional fields `flashT` and `lean` are on `Enemy`. A killing blow gets the tint and no flash, so a corpse is never left white. |
+| The player | `src/fx/ViewPunch.ts`: the view lunges toward what was hit, dips and tilts to its side (a kill harder), and a heavy gun shoves it back when it fires (`FIRE_STRENGTH`: shotgun and BMG 1, pistol .45, rifle .2, tommy gun .1, nail cannon .06). **Render only**, like the kick's lean: applied around `renderer.render`, undone by assignment, so the aim, the listener and the trace fixtures never see it. It ages with the game's clock, so a hit-stop holds it at its peak. |
+| The marker | `src/fx/HitMarker.ts`, drawn last in `fxTick`: four corner ticks (cream flesh; gold with a pip for a headshot; a grey plus for armour; red, larger, flying outward for a kill; a gib adds the plus). Draws nothing while idle. |
+| The sound | `src/audio/sounds/hits.ts` (`hitFlesh`, `hitHead`, `hitArmour`, `hitKill`), at the crosshair, layered over the report and the thwack; one per kind per 80 ms. In the catalogue, on the board (World), levelled (impact -23 LK, the kill -19). Unheard. |
+| `src/fx/FxRand.ts` | The impact effects' own seeded dice (mulberry32, reseeded by `loadLevel`), so nothing new draws from the seeded `Math.random` the fixtures are recorded under. |
+
+**Fixtures.** `trace-level0.json` did not move (no hit lands). `trace-level1.json`
+and `trace-level2-boss.json` moved by the hit-stop alone: with every stop set to
+0 and the old tint put back both reproduced byte for byte; with only the flash
+on the level 1 fixture is byte-identical and the boss's differs in 11 of 476
+frames' digest. The boss fight's phase-3 swap went from 7020 to 7644, window
+[7644,7662); `TOTAL_FRAMES` 7616 -> 8192, `EVERY` 16 (7648 is inside the
+window); the form-swap mutation still turns it red at frame 7648. The analysis
+is in both files' headers.
+
 ## Publication checkpoint - 2026-09-18
 
 The project owner requested a public GitHub release with promotional media.
