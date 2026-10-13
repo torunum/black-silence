@@ -315,8 +315,8 @@ export const SHADOW_POLICY: Readonly<Record<string, ShadowRule>> = {
   lavafall: { cast: false, receive: false },
   /* Hell's flames and embers (`src/fx/HellFire.ts`): additive points of light,
      like the particle pool's. */
-  fireFlames: { cast: false, receive: false },
-  fireEmbers: { cast: false, receive: false },
+  fireFlames: { cast: false, receive: false }, fireEmbers: { cast: false, receive: false },
+  goreSplats: { cast: false, receive: false }, goreChunks: { cast: false, receive: false }, goreDrops: { cast: false, receive: false }, goreMist: { cast: false, receive: false },   // the impact plan's gore (`src/fx/Gore*.ts`, `Splats.ts`): unlit stains, bits and drops, like the particle pool's
 };
 
 /**

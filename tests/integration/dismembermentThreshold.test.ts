@@ -54,7 +54,7 @@ function makeGhoul(): Record<string, unknown> {
     boss: false,
     key: "z", // ROTTING GHOUL — a real, non-boss PXDEF key, so PX["z"].regions is truthy
     x: 5, z: 5, h: 1.8,
-    sp: { material: { color: { setHex: () => {} }, map: null, needsUpdate: false } },
+    sp: { material: { color: { setHex: () => {}, setRGB: () => {} }, rotation: 0, map: null, needsUpdate: false } },   // setRGB and rotation: the hit flash and the lean (impact plan, Task 1)
   };
 }
 

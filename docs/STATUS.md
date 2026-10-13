@@ -1,5 +1,142 @@
 # Where this project stands
 
+## Impact: hit feel, the kick, gore - 2026-10-08 (branch `impact`)
+
+The owner: better hit feel, a better kick, more gore. Plan:
+`docs/superpowers/plans/2026-10-08-impact.md`; the report with the frame strips
+is in `.superpowers/sdd/2026-10-08-impact/` (gitignored). Nobody has felt any of
+it with a real mouse at 60 fps, and **nobody has heard the new sounds** (they
+are on the sound board, `soundboard.html`, and levelled by
+`scripts/sound-levels.mjs`); the owner is the judge.
+
+### Task 1 - every hit lands
+
+| Piece | What it is |
+|---|---|
+| `src/fx/HitFeel.ts` | `damageEnemy` reports every body it hits (`registerHit`); a frame's reports fold into one hit-stop, one punch, one marker and one sound (`feelTick`, once a frame in `Loop.ts`). Eight pellets are one thump. The table `FEEL` is per weapon: hit-stop on a hit / on a kill, punch strength, flash seconds. |
+| Hit-stop (the one place this plan touches the simulation) | Before: kills that gib .045 s, the kick .03 s, bosses and blasts .04-.12 s, nothing for a plain hit. Now: pistol .030 hit / .075 kill; shotgun .050 / .110 (once per volley, up to half again for many pellets); BMG .085 / .150; soul reaper .060 / .120; kick .060 / .100; blast .020 / .060; **rifle, tommy gun and nail cannon: 0 on a hit** (a stream is not 20 jolts) and .045 / .040 / .035 on a kill. A gib is 1.25x its kill. Never past .16 s; a non-killing stop at most once in .2 s of real time. A stop of S seconds runs the game at 8% for S, so it takes about 0.92 S of game time out of the fight: the level 1 trace asks for five stops (.240 s in 18.3 s, 1.2%), the boss trace nine (.315 s in 136 s, 0.2%). No damage, rate, cooldown, HP or speed changed; knockback and stun are as they were. |
+| The enemy | `src/enemies/HitReact.ts`: white for the weapon's flash time (.020-.090 s; a colour multiplier past 1 through the tone mapper), the old red tint for the rest of `hurt`, a lean away from the shot that settles. The two optional fields `flashT` and `lean` are on `Enemy`. A killing blow gets the tint and no flash, so a corpse is never left white. |
+| The player | `src/fx/ViewPunch.ts`: the view lunges toward what was hit, dips and tilts to its side (a kill harder), and a heavy gun shoves it back when it fires (`FIRE_STRENGTH`: shotgun and BMG 1, pistol .45, rifle .2, tommy gun .1, nail cannon .06). **Render only**, like the kick's lean: applied around `renderer.render`, undone by assignment, so the aim, the listener and the trace fixtures never see it. It ages with the game's clock, so a hit-stop holds it at its peak. |
+| The marker | `src/fx/HitMarker.ts`, drawn last in `fxTick`: four corner ticks (cream flesh; gold with a pip for a headshot; a grey plus for armour; red, larger, flying outward for a kill; a gib adds the plus). Draws nothing while idle. |
+| The sound | `src/audio/sounds/hits.ts` (`hitFlesh`, `hitHead`, `hitArmour`, `hitKill`), at the crosshair, layered over the report and the thwack; one per kind per 80 ms. In the catalogue, on the board (World), levelled (impact -23 LK, the kill -19). Unheard. |
+| `src/fx/FxRand.ts` | The impact effects' own seeded dice (mulberry32, reseeded by `loadLevel`), so nothing new draws from the seeded `Math.random` the fixtures are recorded under. |
+
+**Fixtures.** `trace-level0.json` did not move (no hit lands). `trace-level1.json`
+and `trace-level2-boss.json` moved by the hit-stop alone: with every stop set to
+0 and the old tint put back both reproduced byte for byte; with only the flash
+on the level 1 fixture is byte-identical and the boss's differs in 11 of 476
+frames' digest. The boss fight's phase-3 swap went from 7020 to 7644, window
+[7644,7662); `TOTAL_FRAMES` 7616 -> 8192, `EVERY` 16 (7648 is inside the
+window); the form-swap mutation still turns it red at frame 7648. The analysis
+is in both files' headers.
+
+### Task 2 - the kick connects
+
+The kick's rules are as they were: the swing at 0, the hit resolved 110 ms later
+(`schedule(...,0.110)`, pinned by `tests/integration/kickTiming.test.ts` and
+`tests/behavior/viewmodelKick.test.ts`: the drawn leg is at full extension on
+the very frame the hit lands), 15 damage, a 16 units/s shove, the stun, the
+flight of a body of 60 hp or less, the cooldown. What changed is what the
+player sees, hears and feels.
+
+| Piece | Before | After |
+|---|---|---|
+| The leg (`src/render/viewmodel/kick.ts`) | Strike `u * (.55 + .45u)`: 43% of the travel in the last 20 ms; the knee came up into view late | A **coil** over the chamber (thigh +.5 rad, knee +.35, toe cocked, let go by the hit) and a strike of `u^2` (`STRIKE_POWER`): 56% of the travel in the last 20 ms; the knee shows at 50 ms, the boot at 83. A **rebound** while planted (1.6 cm, twice, never nearer than the hit). Extension is still exactly 1 from 110 ms to 160 ms and below 1 before |
+| The view's lean | pitch -.05, drop .03, forward .07 | pitch -.08, drop .05, forward .11 (render only, as before) |
+| On a body | `damageEnemy` 15, `blood(4)`, a thud, a hit-stop of .03 s | the same, and the kick's row of `FEEL` (`src/fx/HitFeel.ts`): hit-stop .060 s (kill .100), a punch of .9 (kill 1.0), the white flash, the marker; dust off the boot (6) and 14 drops of blood along the kick (`src/weapons/KickFx.ts`); a sub-bass slam under the thud (`kickSlamFlesh`) |
+| On a wall, a crate, a barrel or a head | .03 s on a prop (a wall: nothing), the thud | .050 s (`OBJECT_STOP`), a punch of .85, 12 dust and 5-9 stone chips, a harder slam (`kickSlamStone`); a barrel still explodes at once |
+| On nothing | the whoosh as the leg goes out | the whoosh, and at the frame the hit would have landed the view **overreaches**: lunges .075 m on, pitches .034 rad forward, tilts .016 (`addWhiffPunch`), with `kickWhiff` (the swish of the leg through the air); no stop, no marker |
+| The launch (`src/enemies/Launch.ts`, `enemyTick`'s `flung` branch) | the sprite rose 1.1 m and came down; the body stayed upright | rises **1.7 m**, tumbles **two whole turns** head over heels (so it lands exactly upright), sheds 2 drops of blood thirty times a second, comes down in a puff of dust (9) and drops (5) with a thud (`kickLands`), and skids dust off its feet while it slides |
+| The wall | 40 damage, the splat decal, the sound, a shake of .2 | the same, and 26 drops sprayed back off the wall, dust, chips, and the view's punch (harder the nearer the player) |
+| A body the kick KILLS | a corpse that slid four units | it **flies** too: it keeps its speed through the air, arcs, tumbles and is slammed into a wall with the same splat (`corpseSlam`) |
+| A severed head | walking into it during the 0.32 s of the kick's animation punted it (at any frame of it, hit or not) | walking into it only nudges it (3.4); **the boot punts it** (12 units/s along the kick, 6.4 up, spinning, 10 drops of blood) on the frame the hit lands, with the stop and the punch |
+
+Hit-stop adds up like Task 1's: a kick that lands on a body is one stop of .060
+s (.100 on a kill), one on a wall or a crate .050 s; the bot in `churchPlay` kicks
+9-20 times a run. Particles go into the one pooled buffer (`PMAX` 1100, a ring: at
+the cap the oldest slot is reused, nothing allocates); the kick's bursts are 14-42
+particles, a flight's trail about 54. Nothing here draws from the game's
+`Math.random`: the particles' dice are `src/fx/FxRand.ts`'s (a kind-4 particle is a
+drop of blood that lands as kind 1 does but rolls its pool from FxRand).
+
+**Fixtures: none moved.** The prologue's script kicks the air at frame 120: the
+whiff's punch is render-only and its sound draws from sound's own dice; the other
+two scripts never kick. All three traces reproduce byte for byte with Task 2 in.
+
+**Not seen, honestly:** nobody has felt the stop, the punch or the overreach with a
+real mouse; nobody has heard the four new sounds (`kickSlamFlesh`, `kickSlamStone`,
+`kickWhiff`, `kickLands`: the board, group Weapons; the two slams are levelled with
+the explosions, -19 LK, the whiff with the foley, the landing with the impacts).
+
+### Task 3 - decapitation, dismemberment and overkill
+
+The rule it was built under: **gore is presentation, and presentation draws
+nothing from the game's `Math.random` and changes nothing the game does.** Every
+effect rolls from `src/fx/FxRand.ts`; every pool, texture and part sprite is built
+under `quietly()` (`src/fx/Quiet.ts`: swaps `Math.random` for a private counter
+for the call, so even three.js's uuid draws leave the game's stream alone); the
+legacy blood, gibs and pools keep their draws, count and order.
+
+| Piece | What it is |
+|---|---|
+| A head off (`GoreFx.decapFx`, `Parts.ts`) | The head is a **part**: its own face cut from the monster's sprite with a wet neck (`GoreTex.ts`, baked once per monster, not per kill), thrown as it always was (same draws, same order), shedding a trail of drops in flight (about 30 a second while it is fast), bouncing and bleeding, and it can be kicked. The neck **pumps** (`Spurt.ts`): pulses for about three seconds, a fountain first and a dribble after. Blood goes on the wall the shot was heading for (a main splat, its spray, drips running down) and on either side of the line, and on the floor under and beyond the body. A bone snap. |
+| The body that lost its head (`Corpse.ts`) | Stands and sways for .28 s (`STAGGER_SECS`), falls over .42 s (`FALL_SECS`). Its **sprite stumbles** .7 m along the shot (`STUMBLE_DIST`, eased out over .55 s): an offset of the sprite and its shadow alone, so the body, its pools and its drop are where the game has always put them. |
+| A limb off (`GoreFx.limbFx`) | An arm: a part (its own art, with a bone end) flies along the shot with a trail, lands and lies on its side; the shoulder pumps; blood on the wall and floor. The legs: the legs fly, the hip pumps. |
+| The legless (`Sever.ts`, `GoreTex.crawlArt`) | The monster is its upper body, on its own sprite (with an arm or the head missing as well if they are), and **crawls**, dragging a smear every 32nd frame. The walk cycle used to swap the whole sprite straight back in at its next step, so an armless monster had its arm again a fifth of a second later: `walkSet` now steps between the two frames of what the monster is. |
+| An overkill (`GoreFx.gibFx`) | 30 chunks of meat, bone, sinew and organs (one `InstancedMesh`, tumbling, bouncing, resting), the head and both arms and the legs fly off whole, a burst of 52 gouts and 12 puffs of mist, four pools on the floor, blood on **every wall within five metres**. The game's own gibs (`spawnGibs`, reference-pinned) are still thrown on top. |
+| The floor | Everything lands on the floor under it (`floorHeightAt`), on floors 0, 1.2 and 4.2 alike (`goreConnects.test.ts` runs every case on all three). |
+| Corpses (`Corpses.ts`) | The last 60 stay; the oldest past that leaves the scene (`gone`, which every system already skips) and is a stain on the floor. A boss's is not counted. |
+| Sound | `boneSnap`, `spurtPulse`, `partLands`, `gibMeat` (`src/audio/sounds/gore.ts`): in the catalogue, on the board (group Monsters), measured by `scripts/sound-levels.mjs --apply`. **Unheard.** |
+
+**Budgets** (all pooled; pinned by `tests/fx/goreBudgets.test.ts`; nothing
+allocates per frame, which `goreConnects.test.ts` checks over a long fight):
+splat blots 224 and streaks 96 (`InstancedMesh`, at most 24 growing at a time),
+chunks 160 (`InstancedMesh`), drops 320 and mist 48 (`Points`), part sprites 20,
+spurts 12, corpses 60. Five scene children are constant per level (two `Points`,
+two mapped meshes, one unmapped); parts are sprites up to 20 more. A pool past
+its cap reuses its oldest slot.
+
+**The two places this touches the simulation, recorded:**
+1. **A legless monster is shorter.** `severLimb` shrinks `e.h` by `crawlFactor`
+   (the rows above the legs over all the rows, the legs are the bottom 28% of the sprite, so about .72):
+   sprite and hitbox alike, so a shot at a crawler's head is a shot at its head
+   and not at the air above it. This is a gameplay change (a crawler is a smaller
+   target); the plan asked for the crawl and a sprite that is shorter and a hitbox
+   that is not would be a lie.
+2. **At most 60 corpses stay** (a long fight on a big level could leave hundreds
+   of sprites and shadows). The oldest is `gone`; the enemy itself is as dead as it
+   was and the kill counts stand.
+
+**Stream neutrality, and what it cost to get.** The first draft moved the boss
+trace out of phase 3. Three things had touched the game's stream, found by
+bisecting the boss run: a falling gore drop landed through `addPool`, which
+jitters its height with `Math.random` (now `splatFloor`); building the pools drew
+three.js uuids (now `quietly`; level 0's `stuckCheck` crawler had moved); and the
+decapitated body's staggered fall curve replaced `t` in the dead branch of
+`enemyTick`, which the *legacy* neck blood spawns by (so when it landed decided
+the order of the game's dice). `t` is the game's own again and the sprite reads
+`tf`; the stumble is the sprite's, not a knock on `kx`/`kz`. A change of *when* a
+legacy particle lands reorders every legacy draw after it.
+
+**Fixtures** (all three regenerated, per their headers' procedure; the analysis
+is in each header's last section). Field by field over every sampled frame
+(90, 110, 512): **`camera` and `hud` identical in all of them**; only
+`scene.count` and `scene.digest` moved. The digest was taken apart child by child
+against the tree the task started from (which reproduced the old fixtures byte
+for byte under the same instrumentation): five constant gore children in every
+frame, plus part sprites and the displaced headless bodies and their pools in
+the frames after a head, limb or gib. Counts: prologue 136..148 -> 141..153,
+level 1 190..218 -> 195..224, boss 264..679 -> 269..689. The priest still goes
+phase 1 -> 2 -> 3 and the guard on the third phase passes.
+
+**Not seen, honestly:** nobody has heard the four gore sounds; nobody has seen
+this at 60 fps on a real GPU (the strips are headless SwiftShader at 960x540, one
+frame per sampled step). The old reference-pinned cube gibs (`spawnGibs`) read as
+pale squares when one passes near the camera; they are the game's own and are
+pinned by the reference, so they stay. The bot's win-rate in `churchPlay` fell
+(7/16 -> 2/14 over the seeds run, p about .09) and no mechanism was found: the
+hit-stop of Task 1 is the one simulation change that reaches it. Task 3's smaller crawler moved the lottery again (seed 10, the default since Task 1, no longer kills the priest in 54,000 frames; seeds 1 and 3 die; seed 5 wins and is the default now).
+
 ## Publication checkpoint - 2026-09-18
 
 The project owner requested a public GitHub release with promotional media.

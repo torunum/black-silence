@@ -41,6 +41,8 @@ import { KICK_ANIM, KICK_HIT_T } from "../../weapons/WeaponRuntime";
 export const KICK_CHAMBER = 0.05;
 /** Seconds since the kick: the foot leaves the target and the recovery begins. */
 export const KICK_HOLD = 0.16;
+/** How sharply the strike accelerates into the lock-out: 1 would be a steady drive, the larger the later the leg arrives. */
+export const STRIKE_POWER = 2;
 /** Seconds since the kick: the leg is back at the chamber on its way down. */
 export const KICK_RECHAMBER = 0.235;
 
@@ -64,7 +66,8 @@ export function extension(t: number): number {
   if (t < KICK_CHAMBER || t > KICK_ANIM) return 0;
   // a hair under KICK_HIT_T counts as the hit: kickAnim and the scheduler subtract the same dt's in a
   // different order, so their float sums can differ in the last bit
-  if (t < KICK_HIT_T - 1e-9) { const u = span(t, KICK_CHAMBER, KICK_HIT_T); return u * (0.55 + 0.45 * u); }
+  // (impact plan, Task 2: it was u * (.55 + .45u), most of the travel in the first half; now u^2, over half of it in the last 20 ms: a snap)
+  if (t < KICK_HIT_T - 1e-9) { const u = span(t, KICK_CHAMBER, KICK_HIT_T); return Math.pow(u, STRIKE_POWER); }
   if (t <= KICK_HOLD) return 1;
   return 1 - smooth(span(t, KICK_HOLD, KICK_RECHAMBER));
 }
@@ -101,12 +104,29 @@ const CHAMBER = { thigh: 0.36, knee: 1.95, ankle: 0.55, hz: 0.02 };
 const STRUCK = { thigh: 0.36, knee: 0.05, ankle: -0.5, hz: 0.1 };
 const lerp = (a: number, b: number, u: number): number => a + (b - a) * u;
 
+/**
+ * The wind-up's coil (impact plan, Task 2): over the chamber the knee comes up higher and the leg folds
+ * tighter, the toe cocked up, held until the strike lets go of it — the strike then has further to travel
+ * and the snap more in it. Zero from the hit on (and so the recovery is as it was).
+ */
+const COIL = { thigh: 0.5, knee: 0.35, ankle: 0.25, hz: -0.03 };
+function coil(t: number): number {
+  if (t < KICK_CHAMBER) return smooth(t / KICK_CHAMBER);
+  return t < KICK_HIT_T ? 1 : 0;
+}
+/** The foot's rebound off what it hit: pushed back a centimetre or so, twice, and settling, while it is planted (never nearer than the hit). */
+function recoil(t: number): number {
+  if (t < KICK_HIT_T || t > KICK_HOLD) return 0;
+  const u = t - KICK_HIT_T;
+  return 0.016 * Math.exp(-u * 32) * Math.abs(Math.sin(u * 64));
+}
+
 /** The leg for elapsed time `t` (seconds since the kick), or null when no kick is running. */
 export function legPose(t: number): LegPose | null {
   if (t < 0 || t >= KICK_ANIM) return null;
-  const r = raised(t), e = extension(t);
-  const k = (key: "thigh" | "knee" | "ankle" | "hz"): number => lerp(lerp(HANG[key], CHAMBER[key], r), STRUCK[key], e);
-  return { hx: 0.075, hy: -0.33, hz: k("hz"), yaw: -0.2 - 0.06 * e, thigh: k("thigh"), knee: k("knee"), ankle: k("ankle"), twist: 0.3 - 0.1 * e, turn: -0.3 - 0.65 * e };
+  const r = raised(t), e = extension(t), c = coil(t);
+  const k = (key: "thigh" | "knee" | "ankle" | "hz"): number => lerp(lerp(HANG[key], CHAMBER[key], r) + COIL[key] * c, STRUCK[key], e);
+  return { hx: 0.075, hy: -0.33, hz: k("hz") - recoil(t), yaw: -0.2 - 0.06 * e, thigh: k("thigh"), knee: k("knee"), ankle: k("ankle"), twist: 0.3 - 0.1 * e, turn: -0.3 - 0.65 * e };
 }
 
 /** The weapon swung out of the way: 0 at the aim, 1 fully aside. Out during the wind-up, back over the recovery. */
@@ -130,7 +150,7 @@ export function leanAmount(t: number): number {
   return 1 - smooth(span(t, KICK_HOLD, KICK_ANIM));
 }
 /** The lean at full strength: the head dips forward and down (pitch, radians; drop and forward push, metres) and the body cants a little. */
-export const LEAN = { pitch: -0.05, roll: -0.03, drop: 0.03, fwd: 0.07 };
+export const LEAN = { pitch: -0.08, roll: -0.04, drop: 0.05, fwd: 0.11 };   // (impact plan, Task 2: was -.05, -.03, .03, .07)
 
 /** The slice of a three.js camera withKickLean touches. */
 export interface LeanCamera {

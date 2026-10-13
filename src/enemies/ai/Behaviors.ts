@@ -24,6 +24,11 @@ import { moveEnemy } from "./Locomotion";
 import { fireOrb, throwFlesh } from "./Attacks";
 import { wakeBoss, roarFor, priestThink } from "../Boss";
 import { damageEnemy } from "../Damage";
+import { tickHitReact } from "../HitReact";
+import { corpseSlam, landFx, liftAt, skidFx, spinFor, trailFx, tumbleAt, wallSlamFx } from "../Launch";
+import { walkSet, crawlFx } from "../Sever";
+import { smearFloor } from "../../fx/Splats";
+import { fallT, stumbleK, swayAt } from "../Corpse";
 import { dropAmmo } from "../Death";
 import { schedule } from "../../core/Time";
 import type { Enemy as EnemyShape } from "../Enemy";
@@ -145,6 +150,11 @@ type Enemy = Pick<
   | "wasAtk"
   | "fly"
   | "flyH"
+  | "flashT"
+  | "lean"
+  | "sever"
+  | "stumbleX"
+  | "stumbleZ"
 >;
 
 export function enemyTick(dt: number){
@@ -160,7 +170,8 @@ export function enemyTick(dt: number){
       continue;}
     if(e.dead){
       e.deathT+=dt;
-      const t=clamp(e.deathT/.45,0,1);
+      const t=clamp(e.deathT/.45,0,1);   // (the game's own: the legacy neck blood below spawns by it, and when that lands decides the order of the game's dice)
+      const tf=fallT(e.deathKind,e.deathT);   // what the sprite shows: a headless body staggers before it falls (src/enemies/Corpse.ts)
       /* two-stage collapse frames (redesigned enemies) */
       const P=PX[e.key];
       if(P.die1&&e.deathKind!==2&&!e.severKey){
@@ -168,14 +179,24 @@ export function enemyTick(dt: number){
         if(want&&e.sp.material.map!==want){e.sp.material.map=want;e.sp.material.needsUpdate=true;}
         e.sp.material.rotation=e.deathDir*t*Math.PI/6;   // gentler tilt, frames do the work
       }else{
-        e.sp.material.rotation=e.deathDir*t*Math.PI/2;}
-      e.kx*=Math.exp(-4*dt);e.kz*=Math.exp(-4*dt);
+        e.sp.material.rotation=e.deathDir*tf*Math.PI/2+swayAt(e.deathKind,e.deathT);}
+      // a corpse the kick killed is still in the air (`flung`): it keeps its speed, arcs and tumbles, and is slammed into a wall (src/enemies/Launch.ts)
+      const air=e.flung>0;
+      if(air){const pt=e.flungT;e.flung-=dt;e.flungT+=dt;trailFx(e.x,e.h*.5+(e.fy||0)+liftAt(e.flungT),e.z,e.kx,e.kz,pt,e.flungT);}
+      else{e.kx*=Math.exp(-4*dt);e.kz*=Math.exp(-4*dt);}
       const nx=e.x+e.kx*dt,nz=e.z+e.kz*dt;
-      if(!solidAt(nx,e.z))e.x=nx;if(!solidAt(e.x,nz))e.z=nz;
+      let blocked=false;
+      if(!solidAt(nx,e.z))e.x=nx;else blocked=true;if(!solidAt(e.x,nz))e.z=nz;else blocked=true;
+      if(air&&blocked){e.flung=0;corpseSlam(e,nx,nz);e.kx=0;e.kz=0;}
+      if(!air){const sv=Math.hypot(e.kx,e.kz);if(sv>1.5&&Math.floor(e.deathT*14)!==Math.floor((e.deathT-dt)*14))smearFloor(e.x,e.z,e.kx,e.kz,Math.min(1.2,sv*.14));}   // a smear where it slid
       e.fy=floorHeightAt(e.x,e.z);   // the corpse lies on the floor it was knocked onto, not on floor 0
-      e.sp.position.y=e.h/2*(1-t)+e.h*.18*t+e.fy;
+      e.sp.position.y=e.h/2*(1-tf)+e.h*.18*tf+e.fy+(air?liftAt(e.flungT):0);
+      if(air)e.sp.material.rotation+=tumbleAt(e.flungT,spinFor(e.kx,e.kz))-tumbleAt(e.flungT-dt,spinFor(e.kx,e.kz));
+      else if(e.flungT>0&&e.flung<=0){e.flungT=0;landFx(e.x,e.fy,e.z,e.kx,e.kz);}   // it came down this frame
       e.sp.position.x=e.x;e.sp.position.z=e.z;
       e.blob.position.set(e.x,e.fy+.012,e.z);
+      if(e.stumbleX!==undefined){const k=stumbleK(e.deathT);   // a headless body's sprite (and its shadow) stumbles a step along the shot (src/enemies/Corpse.ts)
+        e.sp.position.x=e.x+e.stumbleX*k;e.sp.position.z=e.z+(e.stumbleZ||0)*k;e.blob.position.x=e.sp.position.x;e.blob.position.z=e.sp.position.z;}
       if(e.deathKind===2&&e.deathT<.4&&Math.random()<.5)
         blood(e.x,e.h*.8*(1-t)+.3+e.fy,e.z,2,2);
       if(!e.dropped&&e.deathT>.5){e.dropped=true;
@@ -186,7 +207,7 @@ export function enemyTick(dt: number){
       if(d0<(e.priest?13:9)&&los(e.x,e.z,player.px,player.pz))wakeBoss(e);
       e.sp.position.set(e.x,e.h/2+(e.fy||0),e.z);e.blob.position.set(e.x,(e.fy||0)+.012,e.z);
       continue;}
-    if(e.hurt>0){e.hurt-=dt;
+    if(e.hurt>0){e.hurt-=dt;tickHitReact(e,dt);   // the white flash, then the red tint, and the lean (src/enemies/HitReact.ts)
       if(e.hurt<=0)e.sp.material.color.setHex(e.elite?0xd8c878:0xffffff);}
     /* kicked airborne flight */
     if(e.flung>0){
@@ -194,22 +215,30 @@ export function enemyTick(dt: number){
       const nx=e.x+e.kx*dt,nz=e.z+e.kz*dt;
       if(solidAt(nx,nz)){
         e.flung=0;e.stun=1.2;
-        damageEnemy(e,40,{wIdx:-2});
         const d=new THREE.Vector3(e.kx,0,e.kz).normalize();
+        damageEnemy(e,40,{wIdx:-2});
         const n=wallNormal(nx,nz,d);
         addWallDecal(nx-d.x*.2,rnd(.8,1.6)+(e.fy||0),nz-d.z*.2,n.x,n.z,rnd(.5,.8),splatMat);
         blood(e.x,1+(e.fy||0),e.z,14,2.5);
         at(nx,e.h*.6+(e.fy||0),nz,()=>wallSplat());shake(.2);
+        wallSlamFx(e,nx,nz,d.x,d.z);
         say(Math.random()<.5?"kicksplat":"wallkill",true);
         ach(ACHIEVEMENTS.punt,S.ach);
-        e.kx=0;e.kz=0;
-      }else{e.x=nx;e.z=nz;}
-      e.sp.position.set(e.x,e.h/2+(e.fy||0)+Math.sin(Math.min(1,e.flungT/.9)*Math.PI)*1.1,e.z);
+        e.kx=0;e.kz=0;e.sp.material.rotation=0;
+      }else{
+        e.x=nx;e.z=nz;
+        // the body is lifted, tumbles head over heels and bleeds as it goes; it lands upright (src/enemies/Launch.ts)
+        const pt=e.flungT-dt;
+        e.sp.material.rotation=e.flung>0?tumbleAt(e.flungT,spinFor(e.kx,e.kz)):0;
+        trailFx(e.x,e.h*.5+(e.fy||0)+liftAt(e.flungT),e.z,e.kx,e.kz,pt,e.flungT);
+        if(e.flung<=0){landFx(e.x,e.fy||0,e.z,e.kx,e.kz);e.flungT=0;}}
+      e.sp.position.set(e.x,e.h/2+(e.fy||0)+(e.flung>0?liftAt(e.flungT):0),e.z);
       e.blob.position.set(e.x,(e.fy||0)+.012,e.z);
       continue;}
     if(Math.abs(e.kx)+Math.abs(e.kz)>.05){
       const nx=e.x+e.kx*dt,nz=e.z+e.kz*dt;
       if(!solidAt(nx,e.z))e.x=nx;if(!solidAt(e.x,nz))e.z=nz;
+      skidFx(e.x,e.fy||0,e.z,e.kx,e.kz);
       e.kx*=Math.exp(-6*dt);e.kz*=Math.exp(-6*dt);}
     const dx=player.px-e.x,dz=player.pz-e.z,dist=Math.hypot(dx,dz);
     if(dist>30){e.sp.position.set(e.x,e.h/2+(e.fy||0),e.z);e.blob.position.set(e.x,(e.fy||0)+.012,e.z);continue;}
@@ -307,15 +336,16 @@ export function enemyTick(dt: number){
     /* walk animation */
     if(moving&&e.atkAnim!==undefined&&e.atkAnim<=0){e.animT+=dt;
       if(e.animT>.22){e.animT=0;e.frame=1-e.frame;
-        const set=e.deathKind===2?[PX[e.key].hl,PX[e.key].hlb]:[PX[e.key].a,PX[e.key].b];
-        e.sp.material.map=set[e.frame];e.sp.material.needsUpdate=true;}}
+        const set=walkSet(e);   // what the monster is now: whole, or as it was left (src/enemies/Sever.ts)
+        e.sp.material.map=set[e.frame];e.sp.material.needsUpdate=true;
+}}
     /* attack pose: swap to the dedicated attack frame while striking */
     if((e.atkAnim??0)>0&&PX[e.key].atk&&!e.severKey&&e.deathKind!==2){
       if(e.sp.material.map!==PX[e.key].atk){
         e.sp.material.map=PX[e.key].atk;e.sp.material.needsUpdate=true;e.wasAtk=true;}
     }else if(e.wasAtk){ // attack finished -> back to normal stance
       e.wasAtk=false;
-      const set=e.deathKind===2?[PX[e.key].hl,PX[e.key].hlb]:[PX[e.key].a,PX[e.key].b];
+      const set=walkSet(e);
       e.sp.material.map=set[e.frame];e.sp.material.needsUpdate=true;}
     /* attack lunge: brief grow + lean toward player */
     let lunge=0;
@@ -331,5 +361,8 @@ export function enemyTick(dt: number){
     }else{
       e.fy=floorHeightAt(e.x,e.z);
       e.sp.position.set(lx,e.h/2+(e.fy||0)+Math.sin(performance.now()/300+e.x)*.03,lz);
+      if(e.sever&&e.sever.legs){   // a crawler hauls itself along, dragging a smear (src/enemies/Sever.ts)
+        if(e.hurt<=0)e.sp.material.rotation=moving?Math.sin(performance.now()/150+e.x)*.07:0;
+        if(moving)crawlFx(e,-ldx,-ldz);}
       e.blob.position.set(e.x,(e.fy||0)+.012,e.z);}}
   return anyAware;}

@@ -147,6 +147,13 @@ export interface Enemy {
   severKey?: "noLegs" | "noLArm" | "noRArm" | "gibbed";
   /** True while the attack sprite is swapped in. Written by `src/enemies/ai/Behaviors.ts`. */
   wasAtk?: boolean;
+  /** Seconds of white flash left after a hit. Written by `src/enemies/HitReact.ts` (Damage.ts starts it, `enemyTick` ages it). */
+  flashT?: number;
+  /** Where a decapitated body's sprite stumbles to, metres from where it stands, along the shot (the sprite's, not the body's: the corpse and what it drops stay where the game put them). Written by `killEnemy`, read by `enemyTick`. */
+  stumbleX?: number;
+  stumbleZ?: number;
+  /** How far the sprite leans away from the last hit at the start of the flinch, radians (signed). Written by `src/enemies/HitReact.ts`. */
+  lean?: number;
 
   /* ---- group 3: KNOWN-15 — authored, read, never delivered ------------
    *

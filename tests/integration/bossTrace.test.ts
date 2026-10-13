@@ -821,6 +821,72 @@ import { world } from "../../src/world/WorldState";
  *   **headless corpse**: **405**, from 1152. Each moves `scene.digest` only (`camera`, `hud`, `scene.count` in 0). A fifth, phase 3 made unreachable (`e.hp<-1`), turned
  *   named tests red, the form-swap guard among them, and moved `camera`, `hud` and `scene` in 31, 38 and 36 frames. `trace-level0.json` is byte-identical to `8034042`;
  *   `trace-level1.json` is master's (re-recorded there for the gore fix).
+ *
+ * ## The impact plan, Task 1 — the twelfth regeneration: a kill freezes the game for a moment, and the phase-3 swap moved from 7020 to 7644
+ *
+ * `docs/superpowers/plans/2026-10-08-impact.md` Task 1 (`src/fx/HitFeel.ts`, `src/enemies/HitReact.ts`). See `combatTrace.test.ts`'s last section for what the change is and
+ * which of its parts a trace can see (the hit-stop and the monster's flash, nothing else). Here a nail cannon is a stream, so **its hits freeze nothing** (`FEEL[6].hit` = 0);
+ * what freezes the game is its **kills**, `FEEL[6].kill` = .035 s.
+ *
+ * **What the run asks for**: nine stops, all nine kills (the priest's summons), each .035 s: .315 s of real time, .29 s of game time out of 136 s (0.21%). A stop that small
+ * is enough, and this is the lesson of this file once more: the fight is chaotic in the seeded stream, and a few milliseconds of game time moved a boss that is hit blind
+ * thousands of times.
+ *
+ * ### What moved, compared with the eleventh regeneration, sample by sample over the first 476 (the frame numbers are the same; there are now 512 samples, see below)
+ *  - `scene.digest` — first at **256** (the only thing that differs before frame 1152: the priest's flash, see the proof) and in 409 of 476 in all.
+ *  - `camera` — first at **1152**: `x` 155, `y` 154, `rz` 155, `rx` 299 frames (the shake and recoil phases again; `z`, `ry`, `fov` identical in all 476).
+ *  - `hud` — `hp` 340 (first 1184), `wname` 63 (1456, the reload cycle's phase), `msg` 50 (1328..4240), `subt` 20 (3616..7280), `bossname` 38 (7024..7616: the swap is later),
+ *    `ar`, `lvltitle`, `keys` identical. `scene.count` 401 (first 1168). The first summon dies at about frame 1100 and everything after it is a different stretch of the same fight.
+ *  - **The fight, re-measured by a probe of this file's own script run to 14,400 frames (not committed):** phase 1 -> 2 at sample 512 (unchanged: before any summon dies),
+ *    phase 2 -> 3 at frame **7644** (was 7020), the form swap's visible window **[7644,7662)** (18 frames: the walk cycle's next write is two frames later than it was), the
+ *    priest dead well after (hp -4 at 14,400).
+ *
+ * ### The retune: `TOTAL_FRAMES` 7616 -> **8192**, `EVERY` stays **16**
+ * At 7616 the priest was still in phase 2 (667 hp), and four named tests said so, the guard among them ("the priest never reached phase 3"): the guard did its job. 16 x 478 =
+ * **7648** is inside [7644,7662), four frames in, and 16 x 512 = **8192** gives **548 frames of live phase 3** after the swap (it was 596), the priest at **502 of 1800 hp** (28%, under
+ * the check's 33%), `formKey` `Q2`, alive. The player ends at HEALTH3661: **1,339 drained** of 5000. 512 sampled frames (was 476); the fixture is about 215 KB.
+ *
+ * ### The proof that the hit-stop is the whole of it
+ * In a throwaway copy of the tree, against the eleventh regeneration's fixture (`TOTAL_FRAMES` 7616):
+ *  1. **Every stop in `FEEL` set to 0 and `startHitReact` back to the old tint: byte for byte, all 476 frames** (and `trace.test.ts` too). The plumbing moves nothing.
+ *  2. **The flash and the lean on, stops still 0: `camera` 0, `hud` 0, `scene.count` 0 in all 476 frames, `scene.digest` in 11** (first 256, last 7600): a sampled frame fell on a hit
+ *     sprite's white. That is the whole of the flash's reach, and why the first divergence above is 256.
+ *  3. The stops on: the table above.
+ * **The structural guard stayed meaningful**: the swap's window [7644,7662) holds a sampled frame (7648), and the form-swap mutation (`PX[e.formKey].a` -> `PX[e.key].a`) turns the
+ * fixture red, first at frame 7648, the sampled frame inside the swap's window (run in a throwaway copy).
+ *
+ * ## The impact plan, Task 3 — thirteenth regeneration: gore (the scene gained five constant children, and the headless summons and what they drop moved a little)
+ *
+ * `docs/superpowers/plans/2026-10-08-impact.md` Task 3 (`src/fx/{GoreFx,Splats,GoreChunks,GoreDrops,Parts,Spurt,GoreTex,Quiet}.ts`, `src/enemies/{Corpse,Corpses,Sever}.ts`):
+ * decapitation with a neck spray and a head that bleeds as it flies, limbs that come off with a bone and a spurting stump, a legless crawl, overkill gibs, floor and wall
+ * splats, and at most sixty corpses that stay. **The rule the whole task was built under: none of it may draw from the game's stream or change what the game does.** The
+ * effects draw from `FxRand` (mulberry32), every texture, pool and part is built under `quietly()` (`Quiet.ts`: it swaps `Math.random` for a private counter, so even
+ * three.js's uuid draws leave the game's stream alone), and the legacy calls keep their count and their order.
+ *
+ * ### What moved, against the previous fixture (`WRITE_TRACE=1`; field by field by a node script, `fixdiff.cjs`, not committed; every sampled frame)
+ *  - `camera` — all seven components **identical in every sampled frame** (x, y, z, rx, ry, rz, fov: 0 frames differ).
+ *  - `hud` — all eight fields **identical in every sampled frame** (`hp`, `ar`, `wname`, `msg`, `subt`, `lvltitle`, `bossname`, `keys`: 0 frames differ).
+ *    So the player, the fight and the clock are exactly where they were; the run ends on the same hp, armour and weapon.
+ *  - `scene.count` and `scene.digest` — differ in **every** sampled frame, necessarily: **+5 in 185 of the 512 frames, +6 in 11, +7 in 35, +8 in 86 and +10 in 195** (264..679 -> 269..689); the digest differs in all 512 (first: frame 16; last: 8192), 512 distinct digests before and after. The priest still goes **phase 1 (21 samples) -> phase 2 (446) -> phase 3 (35)**, `bossname` identical in all 512, and the guard on the third phase passes.
+ *
+ * ### The proof that the gore pools and the parts are the whole of it (the scene digest, child by child)
+ * The digest hashes `type:x,y,z:visible:texture:colour` per scene child. A throwaway copy of the tree (`src/` and `tests/`, with the digest's inputs also written out
+ * unhashed beside the fixture, `.parts.json`, not committed) was run for the tree this task started from (`df89fe2`) and for this one, and each sampled frame's child
+ * lists compared as multisets (`partsdiff.cjs`, not committed). The copy of the old tree **reproduced the previous fixtures byte for byte**, so the instrumentation itself
+ * moves nothing. The differences, all of them:
+ *  - **Five children added in every sampled frame, all at (0,0,0)** — the pooled instanced systems, constant for the whole level (`buildGore`): two `Points`
+ *    (drops, mist), two mapped `Mesh`es (the splats and the chunks as `InstancedMesh`) and one unmapped `Mesh`. 90 frames x 5 here; the same five in the other two traces.
+ *  - Parts of the decapitated summons, 441 of 512 frames: the headless sprite (`z.noHead`, `f.noHead`) is at a slightly different place (it **stumbles** a step along the shot, `Corpse.ts`; the old tree dropped it where it died) and so are the blood pools that fell under it, because the head's flight now bounces in the part pool and the *legacy* draws it keeps (`Math.random() < .6` for the blood, `< .5` for the pool, in the same order) land at different times; plus the severed heads: the old tree's head was a sprite showing the monster's whole face texture (`z.a`, `f.a`: removed in 114 and 235 frames), the new one is a part with its own baked face, cut with a wet neck (an unnamed texture: added), and the chunks and limbs. Every one of those is a child of a monster that died to a headshot, a sever or a gib. The camera and the hud do not move: the fight is the same fight.
+ * Nothing else is added, removed or moved. In particular no player-side or HUD-side field, and no enemy that did not die by decapitation, sever or gib.
+ *
+ * ### Why it took bisecting to make that true (kept for the next person who adds an effect)
+ * The first draft of this task moved the boss trace's phase 3 out of reach: three things in it had touched the game's stream, each found by bisecting the boss run:
+ *  1. a falling blood drop landed through `addPool`, which jitters its height with `Math.random` (now `splatFloor`, which does not);
+ *  2. building the pools drew three.js uuids from `Math.random`, which moved level 0's `stuckCheck` crawler (now built `quietly`);
+ *  3. a decapitated body's fall used a staggered curve in the dead branch, and the *legacy* neck blood spawns by that same `t`, so when it landed decided the order of the
+ *     game's dice (now `t` is the game's own `deathT/.45` and the sprite's stagger is `tf`, which only the sprite reads), and the stumble that the body takes along the shot is
+ *     the sprite's own offset (`stumbleX`/`stumbleZ`, `Corpse.ts`), not a knock on `kx`/`kz`, which the simulation reads.
+ * A change of *when* a legacy particle lands reorders every legacy draw after it, in a fight that is hit blind thousands of times. This fixture is the net for that.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");
@@ -922,7 +988,7 @@ const REV = (2 * Math.PI) / SENS;
  * 18**. 2808/18 = 156 recorded frames. The module doc comment's last
  * section has the measurement and the field-by-field account.
  */
-const TOTAL_FRAMES = 7616;
+const TOTAL_FRAMES = 8192;
 const EVERY = 16;
 /**
  * The fifth knob the structural guard depends on, alongside `TOTAL_FRAMES`

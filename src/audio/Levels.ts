@@ -171,6 +171,11 @@ export const SOUND_LEVELS = {
   // (player feedback round 2 Task 5: the kick lands in a monster or on stone — in the air it makes no sound of its own)
   kickImpactFlesh: { category: "impact", trim: -14.7 },
   kickImpactStone: { category: "impact", trim: -9.9 },
+  // the impact plan, Task 2: layered with them on the frame the kick resolves (./sounds/kick.ts); the two slams are levelled with the explosions (-19): a boot with the whole body behind it, under the reports and over the thuds
+  kickSlamFlesh: { category: "explosion", trim: -15.4 },
+  kickSlamStone: { category: "explosion", trim: -11.9 },
+  kickWhiff: { category: "foley", trim: -8.5 },
+  kickLands: { category: "impact", trim: -13 },
   wallSplat: { category: "impact", trim: 3.8 },
   chargeCrash: { category: "impact", trim: 4.9 },
   slamImpact: { category: "impact", trim: 3.4 },
@@ -182,6 +187,11 @@ export const SOUND_LEVELS = {
   limbTorn: { category: "impact", trim: 4.6 },
   gibBurst: { category: "impact", trim: -1.7 },
   decapitation: { category: "impact", trim: 2.9 },
+  // the impact plan, Task 3: played with those (./sounds/gore.ts)
+  boneSnap: { category: "impact", trim: -10.4 },
+  spurtPulse: { category: "impact", trim: -9.4 },
+  partLands: { category: "impact", trim: -10 },
+  gibMeat: { category: "impact", trim: -21.6 },
   headBounce: { category: "impact", trim: 15.6 },
   headKicked: { category: "impact", trim: 10.4 },
   fleshHitsPlayer: { category: "impact", trim: 7.7 },
@@ -189,6 +199,11 @@ export const SOUND_LEVELS = {
   bulletHitsWall: { category: "impact", trim: -4.7 },
   bulletHitsFlesh: { category: "impact", trim: -9.1 },
   bulletHitsProp: { category: "impact", trim: 0.8 },
+  // the impact plan, Task 1: the hit confirmation at the crosshair (./sounds/hits.ts)
+  hitFlesh: { category: "impact", trim: -7.8 },
+  hitHead: { category: "impact", trim: -8.7 },
+  hitArmour: { category: "impact", trim: -9.5 },
+  hitKill: { category: "explosion", trim: -13.8 },
   bulletRicochet: { category: "impact", trim: -5 },
   propBreaks: { category: "impact", trim: -16.8 },
   playerHurt: { category: "impact", trim: 4.4 },

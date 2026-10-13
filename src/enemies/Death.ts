@@ -10,11 +10,16 @@ import { addSprite } from "../render/RenderCore";
 import { ITEMTEX } from "../render/ItemTextures";
 import { fireP, sparks, blood } from "../fx/Particles";
 import { spawnGibs } from "../fx/Gibs";
+import { decapFx, gibFx } from "../fx/GoreFx";
+import { makePart } from "../fx/Parts";
+import { trackCorpse } from "./Corpses";
+import { crawlArt } from "../fx/GoreTex";
+import { crawlFactor } from "./Sever";
+import { STUMBLE_DIST } from "./Corpse";
 import { addPool } from "../fx/Decals";
 import { screenShake, shake } from "../fx/ShakeState";
-import { headPool } from "../fx/Heads";
 import { at } from "../audio/AudioEngine";
-import { gibBurst, monsterDeath, decapitation, headBounce, headKicked, bossDies } from "../audio/sounds/monsters";
+import { gibBurst, monsterDeath, decapitation, bossDies } from "../audio/sounds/monsters";
 import { afritDeathExplosion } from "../audio/sounds/explosions";
 import { exitOpens } from "../audio/sounds/world";
 import { stopBossMusic } from "../audio/Ambient";
@@ -24,13 +29,10 @@ import { showMsg } from "../ui/HudMessages";
 import { ACHIEVEMENTS } from "../content/achievements";
 import { player } from "../player/PlayerState";
 import { damagePlayer } from "../player/Player";
-import { weaponRuntime } from "../weapons/WeaponRuntime";
 import { EYE, CELL } from "../world/Grid";
-import { solidAt, floorHeightAt } from "../world/Collision";
 import { world } from "../world/WorldState";
 import { exitCell, unsealExit } from "../world/ExitDoor";
 import { LEVELS } from "../world/levels/index";
-import { track } from "../render/DisposeRegistry";
 import type { Enemy } from "./Enemy";
 
 /**
@@ -139,6 +141,9 @@ type KillEnemy = Pick<
   | "kx"
   | "kz"
   | "stone"
+  | "sever"
+  | "stumbleX"
+  | "stumbleZ"
 >;
 
 /**
@@ -149,21 +154,6 @@ type KillEnemy = Pick<
 interface ExitPos {
   x: number;
   z: number;
-}
-
-/** headPool.heads elements, cast for headTick's per-head physics loop. */
-interface Head {
-  sp: THREE.Sprite;
-  x: number;
-  y: number;
-  z: number;
-  vx: number;
-  vy: number;
-  vz: number;
-  spin: number;
-  rest: boolean;
-  life: number;
-  sz: number;
 }
 
 export function killEnemy(enemy: unknown, finalDmg: number, info: DamageInfo) {
@@ -200,12 +190,14 @@ export function killEnemy(enemy: unknown, finalDmg: number, info: DamageInfo) {
     if(Math.random()<.4)say("gib");
     if(S.totGibs===10)ach(ACHIEVEMENTS.organ,S.ach);
     if(Math.random()<.35)dropAmmo(e.x,e.z);
+    gibFx(e,info);   // the body bursts into meat, bone and organs; its head and limbs fly; blood on every wall (src/fx/GoreFx.ts)
     return;}
   at(e.x,e.h*.6+(e.fy||0),e.z,()=>monsterDeath(e.key));
   e.deathT=0;
   if(info.head&&PX[e.key].head>0){
     e.deathKind=2;
-    e.sp.material.map=(PX[e.key].noHead)||PX[e.key].hl;e.sp.material.needsUpdate=true;
+    const crawler=e.sever&&e.sever.legs?crawlArt(e.key,!!e.sever.lArm,!!e.sever.rArm,true):null;   // a legless body loses its head from the crawler's own sprite
+    e.sp.material.map=crawler?crawler.tex:(PX[e.key].noHead)||PX[e.key].hl;e.sp.material.needsUpdate=true;
     blood(e.x,e.h+fy,e.z,22,2.8);
     spawnGibs(e.x,e.h+fy,e.z,3,3.2);
     spawnHead(e,info);            // <-- the head pops off and can be kicked
@@ -213,50 +205,23 @@ export function killEnemy(enemy: unknown, finalDmg: number, info: DamageInfo) {
     showMsg("DECAPITATED");
     if(!S.beheads)S.beheads=0;
     if(++S.beheads===5)ach(ACHIEVEMENTS.behead,S.ach);
+    decapFx(e,info);   // the neck pumps, blood on the wall and the floor (src/fx/GoreFx.ts); the body staggers a step before it falls (src/enemies/Corpse.ts)
+    if(info.dir){e.stumbleX=info.dir.x*STUMBLE_DIST;e.stumbleZ=info.dir.z*STUMBLE_DIST;}   // the sprite stumbles a step along the shot (its own offset: the corpse, its pools and its drop are where the game has always put them)
   } else e.deathKind=1;
   e.deathDir=Math.random()<.7?1:-1;
   if(info.dir){e.kx+=info.dir.x*2.5;e.kz+=info.dir.z*2.5;}
-  addPool(e.x,e.z,rnd(.6,1));}
+  addPool(e.x,e.z,rnd(.6,1));
+  trackCorpse(e);}   // the last sixty corpses stay (src/enemies/Corpses.ts)
 
-/* a severed head: a small sprite that arcs off the body, lands, and can be kicked */
+/* a severed head: its own face, cut from the monster's sprite with a wet neck, that arcs off the body, bleeds, lands, and can be kicked */
 export function spawnHead(e: KillEnemy, info: DamageInfo) {
-  const tex=PX[e.key].a;
-  const sp=new THREE.Sprite(track(new THREE.SpriteMaterial({map:tex,transparent:true})));
-  const sz=Math.max(.34,e.w*.34);
-  sp.scale.set(sz,sz,1);
-  sp.position.set(e.x,e.h*.92+(e.fy||0),e.z);
-  renderState.scene.add(sp);
   const dx=info&&info.dir?info.dir.x:rnd(-1,1),dz=info&&info.dir?info.dir.z:rnd(-1,1);
-  headPool.heads.push({sp,x:e.x,y:e.h*.92+(e.fy||0),z:e.z,
-    vx:dx*rnd(2,4)+rnd(-1,1),vy:rnd(3.5,5.5),vz:dz*rnd(2,4)+rnd(-1,1),
-    spin:rnd(-8,8),rest:false,life:30,sz});}
+  // the throw draws from the game's stream exactly as it always did, in that order (the fixtures are recorded under it), and so does the head's flight
+  const vx=dx*rnd(2,4)+rnd(-1,1),vy=rnd(3.5,5.5),vz=dz*rnd(2,4)+rnd(-1,1),spin=rnd(-8,8);
+  const crawler=!!(e.sever&&e.sever.legs);   // a legless monster is shorter, and its head is the whole monster's head all the same
+  makePart(0,{x:e.x,z:e.z,w:e.w,fy:e.fy,key:e.key,h:crawler?e.h/crawlFactor(e.key):e.h},{x:e.x,y:e.h*(crawler?.8:.92)+(e.fy||0),z:e.z,vx,vy,vz,spin});}
 
-export function headTick(dt: number) {
-  for(let i=headPool.heads.length-1;i>=0;i--){const h=headPool.heads[i] as unknown as Head;
-    h.life-=dt;
-    if(!h.rest){
-      h.vy-=15*dt;
-      h.x+=h.vx*dt;h.y+=h.vy*dt;h.z+=h.vz*dt;
-      h.sp.material.rotation+=h.spin*dt;
-      if(solidAt(h.x,h.z)){h.vx*=-.4;h.vz*=-.4;h.x-=h.vx*dt;h.z-=h.vz*dt;}
-      const floor=floorHeightAt(h.x,h.z);   // the floor under it now: it can roll onto another height
-      if(h.y<=floor+h.sz*.5){h.y=floor+h.sz*.5;
-        if(Math.abs(h.vy)>1.3){h.vy*=-.42;h.vx*=.6;h.vz*=.6;h.spin*=.6;
-          if(Math.random()<.6)blood(h.x,h.y,h.z,3,1.2);
-          if(Math.random()<.5)addPool(h.x,h.z,rnd(.2,.35));
-          at(h.x,h.y,h.z,()=>headBounce());}
-        else{h.vy=0;h.vx*=.7;h.vz*=.7;h.spin*=.7;
-          if(Math.abs(h.vx)<.2&&Math.abs(h.vz)<.2){h.rest=true;h.spin=0;}}}}
-    // player kick: walk into it (or kick action) to punt it
-    const pd=Math.hypot(h.x-player.px,h.z-player.pz);
-    if(pd<.7){
-      const a=Math.atan2(h.x-player.px,h.z-player.pz);
-      const force=weaponRuntime.kickAnim>0?9:3.4;
-      h.vx=Math.sin(a)*force;h.vz=Math.cos(a)*force;h.vy=weaponRuntime.kickAnim>0?5:2.2;
-      h.spin=rnd(-12,12);h.rest=false;
-      if(weaponRuntime.kickAnim>0){at(h.x,h.y,h.z,()=>headKicked());blood(h.x,h.y,h.z,4,1.4);}}
-    h.sp.position.set(h.x,h.y,h.z);
-    if(h.life<=0){renderState.scene.remove(h.sp);headPool.heads.splice(i,1);}}}
+export {headTick,puntHeads} from "../fx/Parts";
 
 export function dropAmmo(x: number, z: number) {
   const k=pick(["bullets","shells","bullets"]);
