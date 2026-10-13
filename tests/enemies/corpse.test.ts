@@ -2,7 +2,7 @@
 import * as THREE from "three";
 import { beforeAll, describe, expect, it } from "vitest";
 import { installDomStubs } from "../support/domStubs";
-import { FALL_SECS, STAGGER_SECS, fallT, swayAt } from "../../src/enemies/Corpse";
+import { FALL_SECS, STAGGER_SECS, STUMBLE_DIST, STUMBLE_SECS, fallT, stumbleK, swayAt } from "../../src/enemies/Corpse";
 import { CORPSE_MAX, corpseCount, resetCorpses, trackCorpse } from "../../src/enemies/Corpses";
 import { setScene } from "../../src/render/SceneRef";
 
@@ -10,6 +10,23 @@ import { setScene } from "../../src/render/SceneRef";
  * HOW A BODY FALLS, WHAT IT LOOKS LIKE MISSING A PART, AND HOW MANY STAY
  * (impact plan, Task 3).
  */
+
+describe("a headless body's sprite stumbles", () => {
+  it("from nowhere to the whole step in STUMBLE_SECS, fast first and settling, never past one", () => {
+    expect(stumbleK(0)).toBe(0);
+    expect(stumbleK(STUMBLE_SECS)).toBe(1);
+    expect(stumbleK(STUMBLE_SECS * 5)).toBe(1);
+    expect(stumbleK(STUMBLE_SECS / 2), "eased out: more than half the way in half the time").toBeGreaterThan(0.7);
+    let prev = 0;
+    for (let t = 0; t <= STUMBLE_SECS + 0.1; t += 0.005) { const k = stumbleK(t); expect(k).toBeGreaterThanOrEqual(prev); expect(k).toBeLessThanOrEqual(1); prev = k; }
+  });
+
+  it("a step is under a metre: it is a stumble, not a run", () => {
+    expect(STUMBLE_DIST).toBeGreaterThan(0.3);
+    expect(STUMBLE_DIST).toBeLessThan(1);
+    expect(STUMBLE_SECS).toBeGreaterThanOrEqual(STAGGER_SECS);
+  });
+});
 
 describe("a body falls", () => {
   it("a plain kill goes down in .45 s, as it always did", () => {

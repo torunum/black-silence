@@ -15,6 +15,7 @@ import { makePart } from "../fx/Parts";
 import { trackCorpse } from "./Corpses";
 import { crawlArt } from "../fx/GoreTex";
 import { crawlFactor } from "./Sever";
+import { STUMBLE_DIST } from "./Corpse";
 import { addPool } from "../fx/Decals";
 import { screenShake, shake } from "../fx/ShakeState";
 import { at } from "../audio/AudioEngine";
@@ -141,6 +142,8 @@ type KillEnemy = Pick<
   | "kz"
   | "stone"
   | "sever"
+  | "stumbleX"
+  | "stumbleZ"
 >;
 
 /**
@@ -203,7 +206,7 @@ export function killEnemy(enemy: unknown, finalDmg: number, info: DamageInfo) {
     if(!S.beheads)S.beheads=0;
     if(++S.beheads===5)ach(ACHIEVEMENTS.behead,S.ach);
     decapFx(e,info);   // the neck pumps, blood on the wall and the floor (src/fx/GoreFx.ts); the body staggers a step before it falls (src/enemies/Corpse.ts)
-    if(info.dir){e.kx+=info.dir.x*1.4;e.kz+=info.dir.z*1.4;}
+    if(info.dir){e.stumbleX=info.dir.x*STUMBLE_DIST;e.stumbleZ=info.dir.z*STUMBLE_DIST;}   // the sprite stumbles a step along the shot (its own offset: the corpse, its pools and its drop are where the game has always put them)
   } else e.deathKind=1;
   e.deathDir=Math.random()<.7?1:-1;
   if(info.dir){e.kx+=info.dir.x*2.5;e.kz+=info.dir.z*2.5;}

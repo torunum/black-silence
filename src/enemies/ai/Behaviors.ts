@@ -28,7 +28,7 @@ import { tickHitReact } from "../HitReact";
 import { corpseSlam, landFx, liftAt, skidFx, spinFor, trailFx, tumbleAt, wallSlamFx } from "../Launch";
 import { walkSet, crawlFx } from "../Sever";
 import { smearFloor } from "../../fx/Splats";
-import { fallT, swayAt } from "../Corpse";
+import { fallT, stumbleK, swayAt } from "../Corpse";
 import { dropAmmo } from "../Death";
 import { schedule } from "../../core/Time";
 import type { Enemy as EnemyShape } from "../Enemy";
@@ -153,6 +153,8 @@ type Enemy = Pick<
   | "flashT"
   | "lean"
   | "sever"
+  | "stumbleX"
+  | "stumbleZ"
 >;
 
 export function enemyTick(dt: number){
@@ -168,7 +170,8 @@ export function enemyTick(dt: number){
       continue;}
     if(e.dead){
       e.deathT+=dt;
-      const t=fallT(e.deathKind,e.deathT);   // a headless body staggers before it falls (src/enemies/Corpse.ts)
+      const t=clamp(e.deathT/.45,0,1);   // (the game's own: the legacy neck blood below spawns by it, and when that lands decides the order of the game's dice)
+      const tf=fallT(e.deathKind,e.deathT);   // what the sprite shows: a headless body staggers before it falls (src/enemies/Corpse.ts)
       /* two-stage collapse frames (redesigned enemies) */
       const P=PX[e.key];
       if(P.die1&&e.deathKind!==2&&!e.severKey){
@@ -176,7 +179,7 @@ export function enemyTick(dt: number){
         if(want&&e.sp.material.map!==want){e.sp.material.map=want;e.sp.material.needsUpdate=true;}
         e.sp.material.rotation=e.deathDir*t*Math.PI/6;   // gentler tilt, frames do the work
       }else{
-        e.sp.material.rotation=e.deathDir*t*Math.PI/2+swayAt(e.deathKind,e.deathT);}
+        e.sp.material.rotation=e.deathDir*tf*Math.PI/2+swayAt(e.deathKind,e.deathT);}
       // a corpse the kick killed is still in the air (`flung`): it keeps its speed, arcs and tumbles, and is slammed into a wall (src/enemies/Launch.ts)
       const air=e.flung>0;
       if(air){const pt=e.flungT;e.flung-=dt;e.flungT+=dt;trailFx(e.x,e.h*.5+(e.fy||0)+liftAt(e.flungT),e.z,e.kx,e.kz,pt,e.flungT);}
@@ -187,11 +190,13 @@ export function enemyTick(dt: number){
       if(air&&blocked){e.flung=0;corpseSlam(e,nx,nz);e.kx=0;e.kz=0;}
       if(!air){const sv=Math.hypot(e.kx,e.kz);if(sv>1.5&&Math.floor(e.deathT*14)!==Math.floor((e.deathT-dt)*14))smearFloor(e.x,e.z,e.kx,e.kz,Math.min(1.2,sv*.14));}   // a smear where it slid
       e.fy=floorHeightAt(e.x,e.z);   // the corpse lies on the floor it was knocked onto, not on floor 0
-      e.sp.position.y=e.h/2*(1-t)+e.h*.18*t+e.fy+(air?liftAt(e.flungT):0);
+      e.sp.position.y=e.h/2*(1-tf)+e.h*.18*tf+e.fy+(air?liftAt(e.flungT):0);
       if(air)e.sp.material.rotation+=tumbleAt(e.flungT,spinFor(e.kx,e.kz))-tumbleAt(e.flungT-dt,spinFor(e.kx,e.kz));
       else if(e.flungT>0&&e.flung<=0){e.flungT=0;landFx(e.x,e.fy,e.z,e.kx,e.kz);}   // it came down this frame
       e.sp.position.x=e.x;e.sp.position.z=e.z;
       e.blob.position.set(e.x,e.fy+.012,e.z);
+      if(e.stumbleX!==undefined){const k=stumbleK(e.deathT);   // a headless body's sprite (and its shadow) stumbles a step along the shot (src/enemies/Corpse.ts)
+        e.sp.position.x=e.x+e.stumbleX*k;e.sp.position.z=e.z+(e.stumbleZ||0)*k;e.blob.position.x=e.sp.position.x;e.blob.position.z=e.sp.position.z;}
       if(e.deathKind===2&&e.deathT<.4&&Math.random()<.5)
         blood(e.x,e.h*.8*(1-t)+.3+e.fy,e.z,2,2);
       if(!e.dropped&&e.deathT>.5){e.dropped=true;

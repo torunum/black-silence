@@ -11,6 +11,8 @@ import { renderState } from "../../src/render/Renderer";
 import { EYE } from "../../src/world/Grid";
 import { floorHeightAt } from "../../src/world/Collision";
 import { S } from "../../src/core/State";
+import { watchRandom } from "../support/randomWatch";
+import { STUMBLE_DIST } from "../../src/enemies/Corpse";
 
 /**
  * DECAPITATION, DISMEMBERMENT AND OVERKILL, THROUGH THE REAL GAME (impact plan,
@@ -159,8 +161,14 @@ describe.each([0, 1.2, 4.2])("on a floor of %s", (fy) => {
     });
 
     it("staggers a step before it falls: on its feet for .28 s and swaying, then down by .7 s, and a step further along the shot than a plain kill", () => {
+      const plain = arena(flat(fy));
+      shoot(plain, -0.1, 0, plain.hp);   // a body shot that kills, no more: the game's own knock, with no neck to stumble from
+      expect(plain.deathKind).toBe(1);
+      const plainKx = plain.kx;
       const z = arena(flat(fy));
       shoot(z, 0.38, 0, 30);
+      expect(z.deathKind).toBe(2);
+      expect(z.kx, "the body's knock is the game's own and nothing more: the stumble is the sprite's, not another 1.4 on the body's velocity").toBeCloseTo(plainKx, 0);
       player.px = 1; player.pz = 1;
       const x0 = z.x;
       frames(15);   // .25 s
@@ -169,7 +177,9 @@ describe.each([0, 1.2, 4.2])("on a floor of %s", (fy) => {
       frames(45);   // 1 s
       expect(Math.abs(z.sp.material.rotation), "down").toBeCloseTo(Math.PI / 2, 1);
       expect(z.sp.position.y).toBeCloseTo(fy + z.h * 0.18, 1);
-      expect(z.x - x0, "knocked back along the shot (+x), further than 2.5 / 4 = .6").toBeGreaterThan(0.7);
+      expect(z.sp.position.x - x0, "knocked back along the shot (+x), and then a step further, the sprite's own: STUMBLE_DIST").toBeGreaterThan(0.7 + STUMBLE_DIST * 0.95);
+      expect(z.sp.position.x - z.x, "the sprite is ahead of the body by the whole stumble once it has stopped").toBeCloseTo(STUMBLE_DIST, 2);
+      expect(z.blob.position.x, "and its shadow goes with it").toBeCloseTo(z.sp.position.x, 6);
     });
 
     it("blood on the floor under it at once, and on the nearest wall the shot was heading for", () => {
@@ -299,6 +309,20 @@ describe.each([0, 1.2, 4.2])("on a floor of %s", (fy) => {
       expect(z.gone).toBe(true);
       expect(wallDecals(), "walls on two sides").toBeGreaterThanOrEqual(12);
     });
+  });
+});
+
+describe("the game's dice", () => {
+  it("a falling drop of the plan's blood (particle kind 4) lands, pools and splats without a single draw from Math.random", async () => {
+    arena(flat(0));
+    const { spawnP } = await import("../../src/fx/Particles");
+    for (let i = 0; i < 400; i++) spawnP(10 + (i % 20) * 0.3, 1.2, 10 + Math.floor(i / 20) * 0.3, 0, 0, 0, 0.6, 0.02, 0.02, 3, 4);
+    const w = watchRandom();
+    const before = SP.splatStats().blobs;
+    frames(30);
+    w.stop();
+    expect(SP.splatStats().blobs, "some of them left a stain (about one in seven)").toBeGreaterThan(before);
+    expect(w.draws(), "and none rolled the game's dice for it (`addPool` jitters its height with Math.random)").toBe(0);
   });
 });
 

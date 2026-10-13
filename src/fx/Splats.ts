@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import "../render/ColorPolicy";
 import { getScene } from "../render/SceneRef";
 import { track } from "../render/DisposeRegistry";
 import { floorHeightAt } from "../world/Collision";

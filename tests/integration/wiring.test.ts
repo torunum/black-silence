@@ -440,6 +440,7 @@ describe("the kick's lean, as the world is rendered (round 2, Task 3)", () => {
       return original.apply(this, args);
     };
     screenShake.hitStop = 0;
+    clearScheduled();   // a kick an earlier test started may still be waiting to land: its whiff's punch (.034 rad of pitch, impact plan Task 2) would fall in this frame, on a loaded machine
     resetPunch();   // the view punch (impact plan: a whiffed kick or a shot leaves one) is a second render-time offset; this test is about the kick's lean alone
     weaponRuntime.kickAnim = kickAnim;
     try {

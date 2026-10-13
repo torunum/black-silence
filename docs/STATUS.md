@@ -68,6 +68,75 @@ real mouse; nobody has heard the four new sounds (`kickSlamFlesh`, `kickSlamSton
 `kickWhiff`, `kickLands`: the board, group Weapons; the two slams are levelled with
 the explosions, -19 LK, the whiff with the foley, the landing with the impacts).
 
+### Task 3 - decapitation, dismemberment and overkill
+
+The rule it was built under: **gore is presentation, and presentation draws
+nothing from the game's `Math.random` and changes nothing the game does.** Every
+effect rolls from `src/fx/FxRand.ts`; every pool, texture and part sprite is built
+under `quietly()` (`src/fx/Quiet.ts`: swaps `Math.random` for a private counter
+for the call, so even three.js's uuid draws leave the game's stream alone); the
+legacy blood, gibs and pools keep their draws, count and order.
+
+| Piece | What it is |
+|---|---|
+| A head off (`GoreFx.decapFx`, `Parts.ts`) | The head is a **part**: its own face cut from the monster's sprite with a wet neck (`GoreTex.ts`, baked once per monster, not per kill), thrown as it always was (same draws, same order), shedding a trail of drops in flight (about 30 a second while it is fast), bouncing and bleeding, and it can be kicked. The neck **pumps** (`Spurt.ts`): pulses for about three seconds, a fountain first and a dribble after. Blood goes on the wall the shot was heading for (a main splat, its spray, drips running down) and on either side of the line, and on the floor under and beyond the body. A bone snap. |
+| The body that lost its head (`Corpse.ts`) | Stands and sways for .28 s (`STAGGER_SECS`), falls over .42 s (`FALL_SECS`). Its **sprite stumbles** .7 m along the shot (`STUMBLE_DIST`, eased out over .55 s): an offset of the sprite and its shadow alone, so the body, its pools and its drop are where the game has always put them. |
+| A limb off (`GoreFx.limbFx`) | An arm: a part (its own art, with a bone end) flies along the shot with a trail, lands and lies on its side; the shoulder pumps; blood on the wall and floor. The legs: the legs fly, the hip pumps. |
+| The legless (`Sever.ts`, `GoreTex.crawlArt`) | The monster is its upper body, on its own sprite (with an arm or the head missing as well if they are), and **crawls**, dragging a smear every 32nd frame. The walk cycle used to swap the whole sprite straight back in at its next step, so an armless monster had its arm again a fifth of a second later: `walkSet` now steps between the two frames of what the monster is. |
+| An overkill (`GoreFx.gibFx`) | 30 chunks of meat, bone, sinew and organs (one `InstancedMesh`, tumbling, bouncing, resting), the head and both arms and the legs fly off whole, a burst of 52 gouts and 12 puffs of mist, four pools on the floor, blood on **every wall within five metres**. The game's own gibs (`spawnGibs`, reference-pinned) are still thrown on top. |
+| The floor | Everything lands on the floor under it (`floorHeightAt`), on floors 0, 1.2 and 4.2 alike (`goreConnects.test.ts` runs every case on all three). |
+| Corpses (`Corpses.ts`) | The last 60 stay; the oldest past that leaves the scene (`gone`, which every system already skips) and is a stain on the floor. A boss's is not counted. |
+| Sound | `boneSnap`, `spurtPulse`, `partLands`, `gibMeat` (`src/audio/sounds/gore.ts`): in the catalogue, on the board (group Monsters), measured by `scripts/sound-levels.mjs --apply`. **Unheard.** |
+
+**Budgets** (all pooled; pinned by `tests/fx/goreBudgets.test.ts`; nothing
+allocates per frame, which `goreConnects.test.ts` checks over a long fight):
+splat blots 224 and streaks 96 (`InstancedMesh`, at most 24 growing at a time),
+chunks 160 (`InstancedMesh`), drops 320 and mist 48 (`Points`), part sprites 20,
+spurts 12, corpses 60. Five scene children are constant per level (two `Points`,
+two mapped meshes, one unmapped); parts are sprites up to 20 more. A pool past
+its cap reuses its oldest slot.
+
+**The two places this touches the simulation, recorded:**
+1. **A legless monster is shorter.** `severLimb` shrinks `e.h` by `crawlFactor`
+   (the rows above the legs over all the rows, the legs are the bottom 28% of the sprite, so about .72):
+   sprite and hitbox alike, so a shot at a crawler's head is a shot at its head
+   and not at the air above it. This is a gameplay change (a crawler is a smaller
+   target); the plan asked for the crawl and a sprite that is shorter and a hitbox
+   that is not would be a lie.
+2. **At most 60 corpses stay** (a long fight on a big level could leave hundreds
+   of sprites and shadows). The oldest is `gone`; the enemy itself is as dead as it
+   was and the kill counts stand.
+
+**Stream neutrality, and what it cost to get.** The first draft moved the boss
+trace out of phase 3. Three things had touched the game's stream, found by
+bisecting the boss run: a falling gore drop landed through `addPool`, which
+jitters its height with `Math.random` (now `splatFloor`); building the pools drew
+three.js uuids (now `quietly`; level 0's `stuckCheck` crawler had moved); and the
+decapitated body's staggered fall curve replaced `t` in the dead branch of
+`enemyTick`, which the *legacy* neck blood spawns by (so when it landed decided
+the order of the game's dice). `t` is the game's own again and the sprite reads
+`tf`; the stumble is the sprite's, not a knock on `kx`/`kz`. A change of *when* a
+legacy particle lands reorders every legacy draw after it.
+
+**Fixtures** (all three regenerated, per their headers' procedure; the analysis
+is in each header's last section). Field by field over every sampled frame
+(90, 110, 512): **`camera` and `hud` identical in all of them**; only
+`scene.count` and `scene.digest` moved. The digest was taken apart child by child
+against the tree the task started from (which reproduced the old fixtures byte
+for byte under the same instrumentation): five constant gore children in every
+frame, plus part sprites and the displaced headless bodies and their pools in
+the frames after a head, limb or gib. Counts: prologue 136..148 -> 141..153,
+level 1 190..218 -> 195..224, boss 264..679 -> 269..689. The priest still goes
+phase 1 -> 2 -> 3 and the guard on the third phase passes.
+
+**Not seen, honestly:** nobody has heard the four gore sounds; nobody has seen
+this at 60 fps on a real GPU (the strips are headless SwiftShader at 960x540, one
+frame per sampled step). The old reference-pinned cube gibs (`spawnGibs`) read as
+pale squares when one passes near the camera; they are the game's own and are
+pinned by the reference, so they stay. The bot's win-rate in `churchPlay` fell
+(7/16 -> 2/14 over the seeds run, p about .09) and no mechanism was found: the
+hit-stop of Task 1 is the one simulation change that reaches it. Task 3's smaller crawler moved the lottery again (seed 10, the default since Task 1, no longer kills the priest in 54,000 frames; seeds 1 and 3 die; seed 5 wins and is the default now).
+
 ## Publication checkpoint - 2026-09-18
 
 The project owner requested a public GitHub release with promotional media.

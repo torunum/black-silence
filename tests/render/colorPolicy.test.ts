@@ -195,12 +195,14 @@ describe("colour policy", () => {
       checked++;
       if (!/import ["'][^"']*render\/ColorPolicy["']/.test(src)) offenders.push(f);
     }
-    // Guard: the four files this scan actually has today —
+    // Guard: the six files this scan actually has today —
     // src/fx/Decals.ts, src/fx/Gibs.ts, src/weapons/WeaponState.ts,
-    // src/enemies/ai/Attacks.ts — derived independently by hand, not copied
+    // src/enemies/ai/Attacks.ts, and (the impact plan's gore, whose pools
+    // keep a module-scope `new THREE.Color()` scratch to tint instances with)
+    // src/fx/GoreChunks.ts and src/fx/Splats.ts — derived independently by hand, not copied
     // from whatever the scan happens to return (that circularity is exactly
     // what let the multi-line miss above go unnoticed).
-    expect(checked).toBe(4);
+    expect(checked).toBe(6);
     expect(offenders).toEqual([]);
   });
 

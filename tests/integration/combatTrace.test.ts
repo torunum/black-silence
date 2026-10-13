@@ -833,6 +833,39 @@ import { MONOLOGUE } from "../../src/content/monologue";
  *     sampled frame (every 10th) falls on a hit sprite in this run. (The boss trace's sample does, in 11 of 476 frames: its header.)
  *  3. The stops on: the table above.
  * `trace-level0.json` (no hit lands in the prologue's run) is byte-identical (`git diff` empty); the boss trace's account is in its own header.
+ *
+ * ## The impact plan, Task 3 — fifteenth regeneration: gore (the scene gained five constant children, and one part sprite in 24 frames)
+ *
+ * `docs/superpowers/plans/2026-10-08-impact.md` Task 3 (`src/fx/{GoreFx,Splats,GoreChunks,GoreDrops,Parts,Spurt,GoreTex,Quiet}.ts`, `src/enemies/{Corpse,Corpses,Sever}.ts`):
+ * decapitation with a neck spray and a head that bleeds as it flies, limbs that come off with a bone and a spurting stump, a legless crawl, overkill gibs, floor and wall
+ * splats, and at most sixty corpses that stay. **The rule the whole task was built under: none of it may draw from the game's stream or change what the game does.** The
+ * effects draw from `FxRand` (mulberry32), every texture, pool and part is built under `quietly()` (`Quiet.ts`: it swaps `Math.random` for a private counter, so even
+ * three.js's uuid draws leave the game's stream alone), and the legacy calls keep their count and their order.
+ *
+ * ### What moved, against the previous fixture (`WRITE_TRACE=1`; field by field by a node script, `fixdiff.cjs`, not committed; every sampled frame)
+ *  - `camera` — all seven components **identical in every sampled frame** (x, y, z, rx, ry, rz, fov: 0 frames differ).
+ *  - `hud` — all eight fields **identical in every sampled frame** (`hp`, `ar`, `wname`, `msg`, `subt`, `lvltitle`, `bossname`, `keys`: 0 frames differ).
+ *    So the player, the fight and the clock are exactly where they were; the run ends on the same hp, armour and weapon.
+ *  - `scene.count` and `scene.digest` — differ in **every** sampled frame, necessarily: **+5 in 86 of the 110 frames and +6 in 24** (190..218 -> 195..224); the digest differs in all 110 (first: frame 10; last: 1100), 110 distinct digests before and after.
+ *
+ * ### The proof that the gore pools and the parts are the whole of it (the scene digest, child by child)
+ * The digest hashes `type:x,y,z:visible:texture:colour` per scene child. A throwaway copy of the tree (`src/` and `tests/`, with the digest's inputs also written out
+ * unhashed beside the fixture, `.parts.json`, not committed) was run for the tree this task started from (`df89fe2`) and for this one, and each sampled frame's child
+ * lists compared as multisets (`partsdiff.cjs`, not committed). The copy of the old tree **reproduced the previous fixtures byte for byte**, so the instrumentation itself
+ * moves nothing. The differences, all of them:
+ *  - **Five children added in every sampled frame, all at (0,0,0)** — the pooled instanced systems, constant for the whole level (`buildGore`): two `Points`
+ *    (drops, mist), two mapped `Mesh`es (the splats and the chunks as `InstancedMesh`) and one unmapped `Mesh`. 90 frames x 5 here; the same five in the other two traces.
+ *  - **One added `Sprite` in 24 sampled frames** (e.g. at (34.16, 3.57, 10.66)): the run's severed limb or head as a part sprite (`Parts.ts`), where the old tree had a head sprite in `headPool` only for decapitations. That is the +6.
+ * Nothing else is added, removed or moved. In particular no player-side or HUD-side field, and no enemy that did not die by decapitation, sever or gib.
+ *
+ * ### Why it took bisecting to make that true (kept for the next person who adds an effect)
+ * The first draft of this task moved the boss trace's phase 3 out of reach: three things in it had touched the game's stream, each found by bisecting the boss run:
+ *  1. a falling blood drop landed through `addPool`, which jitters its height with `Math.random` (now `splatFloor`, which does not);
+ *  2. building the pools drew three.js uuids from `Math.random`, which moved level 0's `stuckCheck` crawler (now built `quietly`);
+ *  3. a decapitated body's fall used a staggered curve in the dead branch, and the *legacy* neck blood spawns by that same `t`, so when it landed decided the order of the
+ *     game's dice (now `t` is the game's own `deathT/.45` and the sprite's stagger is `tf`, which only the sprite reads), and the stumble that the body takes along the shot is
+ *     the sprite's own offset (`stumbleX`/`stumbleZ`, `Corpse.ts`), not a knock on `kx`/`kz`, which the simulation reads.
+ * A change of *when* a legacy particle lands reorders every legacy draw after it, in a fight that is hit blind thousands of times. This fixture is the net for that.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");
