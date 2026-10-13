@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { texFromPx } from "../enemies/SpriteBaker";
 import { PXDEF } from "../enemies/pixels/index";
+import { quietly } from "./Quiet";
 
 /**
  * THE TEXTURES OF THE GORE (`docs/superpowers/plans/2026-10-08-impact.md`,
@@ -159,7 +160,7 @@ export function partArt(key: string, kind: PartKind): PartArt | null {
     else if (kind === "legs") rows = cap(crop(d.px, 0, H - legRows(H), W, H), "top");
     if (rows && rows.length && rows[0].length) {
       const pal: Record<string, string> = { ...d.pal, ...CAP };
-      art = { tex: texFromPx(rows, pal), cw: rows[0].length, ch: rows.length, W, H };
+      art = quietly(() => ({ tex: texFromPx(rows, pal), cw: rows[0].length, ch: rows.length, W, H }));
     }
   }
   arts.set(id, art);
@@ -197,7 +198,7 @@ export function crawlArt(key: string, lArm: boolean, rArm: boolean, noHead: bool
     for (let x = 0; x < W; x++) capCell(x, keep - 1, (x + 1) % 3 === 0);   // the hips
     const rows = g.map((r) => r.join(""));
     const pal: Record<string, string> = { ...d.pal, ...CAP };
-    art = { tex: texFromPx(rows, pal), texB: texFromPx(rows, pal, { mirror: true }), keep, H };
+    art = quietly(() => ({ tex: texFromPx(rows, pal), texB: texFromPx(rows, pal, { mirror: true }), keep, H }));
   }
   crawls.set(id, art);
   return art;

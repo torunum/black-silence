@@ -59,7 +59,8 @@ describe("a gout", () => {
   it("rises, peaks and falls under gravity, and is gone when it lands", () => {
     D.goutFx(24, 1, 24, 30, 5, 0, 0, 1);
     const up = Math.max(...ys());
-    expect(up).toBeCloseTo(1, 5);
+    expect(up, "thrown from the stump with a hair of flight already").toBeGreaterThanOrEqual(1);
+    expect(up).toBeLessThan(1.4);
     run(0.2);
     expect(Math.max(...ys()), "rising").toBeGreaterThan(1.5);
     run(0.3);

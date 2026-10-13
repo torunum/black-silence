@@ -8,6 +8,7 @@ import { crawlFactor } from "../enemies/Sever";
 import { legRows } from "./GoreTex";
 import { viewYaw } from "../render/ViewYaw";
 import { fxr, fxRange } from "./FxRand";
+import { quietly } from "./Quiet";
 import { buildDrops, dropTick, goutFx, mistFx, resetDrops } from "./GoreDrops";
 import { buildChunks, burstChunks, chunkTick, resetChunks } from "./GoreChunks";
 import { buildSplats, dripWall, resetSplats, splatFloor, splatTick, splatWall } from "./Splats";
@@ -116,17 +117,17 @@ export function limbFx(e: GoreHost, kind: "arm" | "legs", side: string | undefin
   if (kind === "arm") {
     const s = side === "L" ? -1 : 1;
     const y = e.h * (0.5 + rowFrac(armTop + 1.5, H)) + fy;
-    const x0 = e.x + rx * s * e.w * 0.3, z0 = e.z + rz * s * e.w * 0.3;
+    const ax = e.x + rx * s * e.w * 0.3, az = e.z + rz * s * e.w * 0.3;
     makePart(side === "L" ? 1 : 2, host, {
-      x: x0, y, z: z0,
+      x: ax, y, z: az,
       vx: d.x * fxRange(3.5, 6.5) + rx * s * fxRange(0.8, 2), vy: fxRange(3, 5.2), vz: d.z * fxRange(3.5, 6.5) + rz * s * fxRange(0.8, 2),
       spin: (fxr() < 0.5 ? -1 : 1) * fxRange(9, 16),
     });
     startSpurt(e, SHOULDER, s * 0.28, rowFrac(armTop + 1.5, H), s, d.x, d.z);
-    goutFx(x0, y, z0, 18, 3.4, d.x, d.z, 0.6);
-    splatter(x0, y, z0, d.x, d.z, 6, fxRange(0.3, 0.5));
-    splatFloor(x0, z0, fxRange(0.5, 0.8), 1);
-    at(x0, y, z0, () => boneSnap());
+    goutFx(ax, y, az, 18, 3.4, d.x, d.z, 0.6);
+    splatter(ax, y, az, d.x, d.z, 6, fxRange(0.3, 0.5));
+    splatFloor(ax, az, fxRange(0.5, 0.8), 1);
+    at(ax, y, az, () => boneSnap());
   } else {
     const y = e.h * 0.2 + fy;
     makePart(3, host, {
@@ -182,9 +183,7 @@ export function goreTick(dt: number): void {
 
 /** Makes the level's gore pools (once the scene is new) and starts the spurts over. Called by `resetImpactFx`. */
 export function buildGore(): void {
-  buildSplats();
-  buildChunks();
-  buildDrops();
+  quietly(() => { buildSplats(); buildChunks(); buildDrops(); });   // the pools' uuids are not the game's dice (./Quiet.ts)
   resetSpurts();
 }
 

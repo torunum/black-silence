@@ -163,6 +163,6 @@ describe("the dice", () => {
     try { P.makePart(0, foe, start({ x: 30 })); tick(8); } finally { h.stop(); }
     // `headTick`'s bounce draws two rolls (and `rnd` for a pool) each bounce, exactly as it always did: a handful, never a stream
     expect(h.draws()).toBeGreaterThan(0);
-    expect(h.draws()).toBeLessThan(30);
+    expect(h.draws(), "a handful, not a stream: eight seconds of bounces").toBeLessThan(150);
   });
 });

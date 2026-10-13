@@ -15,6 +15,7 @@ import { goutFx } from "./GoreDrops";
 import { splatFloor } from "./Splats";
 import { partArt, type PartKind } from "./GoreTex";
 import { fxRange } from "./FxRand";
+import { quietly } from "./Quiet";
 
 /**
  * THE PARTS A MONSTER COMES APART INTO — a severed head, an arm, the legs
@@ -75,6 +76,10 @@ export interface PartStart { x: number; y: number; z: number; vx: number; vy: nu
  * null if the monster has no such part (a monster with no head) or the scene is not up.
  */
 export function makePart(kind: number, e: PartHost, s: PartStart, life = Infinity): Part | null {
+  return quietly(() => makePartNow(kind, e, s, life));   // the sprite's and its material's uuids are not the game's dice (./Quiet.ts)
+}
+
+function makePartNow(kind: number, e: PartHost, s: PartStart, life: number): Part | null {
   const art = partArt(e.key, KINDS[kind]);
   if (!art) return null;
   const big = kind === 0 ? 1 : PART_SCALE;   // an arm or the legs are drawn a third larger than life: the pixels are small

@@ -5,6 +5,7 @@ import { addPool } from "./Decals";
 import { track } from "../render/DisposeRegistry";
 import { floorHeightAt } from "../world/Collision";
 import { fxr, fxRange } from "./FxRand";
+import { splatFloor } from "./Splats";
 
 /**
  * PARTICLES — a single pooled THREE.Points object (a fixed-size PMAX ring
@@ -148,7 +149,7 @@ export function partTick(dt: number): void {
     if (p.y < floor && p.kind !== 3) {
       if (p.kind === 1) { if (Math.random() < .14) addPool(p.x, p.z, rnd(.12, .3)); p.life = 0; }
       // kind 4: a drop of the impact plan's blood (src/fx/ImpactFx.ts): lands as kind 1 does, but its dice are the effects' own, not the game's
-      else if (p.kind === 4) { if (fxr() < .14) addPool(p.x, p.z, fxRange(.12, .3)); p.life = 0; }
+      else if (p.kind === 4) { if (fxr() < .14) splatFloor(p.x, p.z, fxRange(.12, .3)); p.life = 0; }   // (`addPool` jitters its height with Math.random: a splat does not)
       else { p.y = floor; p.vy *= -.35; p.vx *= .6; p.vz *= .6; }
     }
     pPos[i * 3] = p.x; pPos[i * 3 + 1] = p.y; pPos[i * 3 + 2] = p.z;
