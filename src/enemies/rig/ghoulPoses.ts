@@ -38,7 +38,7 @@ function make(s: Std): RigPose {
   const set = (n: string, r: Rot | undefined): void => { if (r) rot[n] = r; };
   set("pelvis", s.pelvis); set("spine", s.spine ?? [0.1, 0, 0]); set("chest", s.chest ?? [0.12, 0, 0]);
   set("neck", s.neck ?? [0.02, 0, 0]); set("head", s.head ?? [0.08, 0, 0]);
-  rot.jaw = [s.jaw ?? 0.14, 0, 0];
+  rot.jaw = [s.jaw ?? 0.3, 0, 0];
   const arm = (side: "L" | "R", a: Arm | undefined): void => {
     const d = a ?? { f: 0.1 }, o = side === "L" ? 1 : -1;
     rot["shoulder" + side] = [-d.f, d.tw ?? 0, (d.out ?? 0.16) * o];
@@ -68,7 +68,7 @@ function walk(i: number): RigPose {
   return make({
     spine: [0.14 + 0.03 * c, 0.1 * c, 0.03 * s], chest: [0.22 - 0.04 * c, -0.16 * c, 0.05 * s],
     neck: [0.12, 0.12 * c, 0], head: [0.24 + 0.05 * Math.cos(2 * p), 0.1 * c, -0.04 * s],
-    jaw: 0.13 + 0.14 * Math.max(0, Math.sin(2 * p)),
+    jaw: 0.28 + 0.16 * Math.max(0, Math.sin(2 * p)),
     gut: Math.sin(p + 0.9), claw: 0.35 + 0.15 * s,
     aL: { f: 0.18 - 0.32 * s, out: 0.3, e: 0.55 + 0.2 * c, w: 0.1 },
     aR: { f: 0.45 + 0.34 * s, out: 0.22, e: 0.85 - 0.25 * c, w: 0.25 },
@@ -78,12 +78,12 @@ function walk(i: number): RigPose {
   });
 }
 
-const idle = make({ jaw: 0.16, gut: 0.15, aL: { f: 0.12, out: 0.28, e: 0.5 }, aR: { f: 0.34, out: 0.2, e: 0.8, w: 0.25 }, lL: { f: 0.05, k: 0.1 }, lR: { f: -0.1, k: 0.16 } });
+const idle = make({ jaw: 0.3, gut: 0.15, aL: { f: 0.12, out: 0.28, e: 0.5 }, aR: { f: 0.34, out: 0.2, e: 0.8, w: 0.25 }, lL: { f: 0.05, k: 0.1 }, lR: { f: -0.1, k: 0.16 } });
 
 /** The attack: the ghoul rears (it has no wind-up to speak of, `atkAnim` lasts .22 s), lunges and rakes, and recovers. */
 const atk: RigPose[] = [
   make({ spine: [-0.12, 0, 0], chest: [-0.12, 0.1, 0], neck: [-0.2, 0, 0], head: [-0.3, 0, 0], jaw: 1.0, claw: 0, gut: -0.4,
-    aL: { f: 2.1, out: 0.5, e: 0.5, w: 0.1 }, aR: { f: 2.2, out: 0.4, e: 0.4, w: 0.1 },
+    aL: { f: 1.85, out: 0.5, e: 0.5, w: 0.1 }, aR: { f: 1.95, out: 0.4, e: 0.4, w: 0.1 },
     lL: { f: 0.35, k: 0.7 }, lR: { f: -0.2, k: 0.55 }, root: [0, 0, 0.04] }),
   make({ spine: [0.55, -0.1, 0], chest: [0.5, -0.18, 0], neck: [-0.35, 0, 0], head: [-0.25, 0, 0], jaw: 0.75, claw: 1, gut: 0.9,
     aL: { f: 1.2, out: 0.3, e: 0.3, w: 0.35 }, aR: { f: 1.0, out: 0.2, e: 0.4, w: 0.35 },
@@ -111,26 +111,26 @@ const die: RigPose[] = [
   make({ spine: [0.1, 0, 0.14], chest: [-0.12, 0.1, 0.18], neck: [-0.15, 0, 0], head: [-0.2, 0.2, 0.1], jaw: 0.8, claw: 0.1, gut: 0.5,
     aL: { f: 0.1, out: 0.55, e: 0.25, w: 0 }, aR: { f: 0.3, out: 0.65, e: 0.3, w: 0 },
     lL: { f: 1.35, k: 1.95, out: 0.15 }, lR: { f: 1.2, k: 1.85, out: 0.15 },
-    ground: false, root: [0.02, -0.4, -0.04], floor: 0.93 }),
+    ground: false, root: [0.06, -0.4, -0.04], floor: 0.93 }),
   make({ pelvis: [0, 0, 0.55], spine: [0.1, 0, 0.3], chest: [-0.05, 0, 0.3], neck: [-0.1, 0, 0.1], head: [-0.1, 0.1, 0.3], jaw: 0.6, claw: 0.2, gut: 0.8,
-    aL: { f: 0.2, out: 0.5, e: 0.3 }, aR: { f: -0.2, out: 0.5, e: 0.4 },
-    lL: { f: 0.9, k: 1.5, out: 0.2 }, lR: { f: 0.5, k: 1.4, out: 0.2 },
-    ground: false, root: [-0.05, -0.5, 0], floor: 0.866 }),
+    aL: { f: 0.2, out: 0.4, e: 0.3 }, aR: { f: -0.2, out: 0.35, e: 0.4 },
+    lL: { f: 1.0, k: 1.7, out: 0.2 }, lR: { f: 0.6, k: 1.6, out: 0.2 },
+    ground: false, root: [-0.16, -0.44, 0], floor: 0.866 }),
   make({ pelvis: [0, 0, 1.15], spine: [0.1, 0, 0.2], chest: [0.0, 0, 0.2], neck: [0, 0, 0.1], head: [0.1, 0.1, 0.25], jaw: 0.5, claw: 0.3, gut: 0.3,
-    aL: { f: -0.1, out: 0.7, e: 0.3 }, aR: { f: 0.3, out: 0.9, e: 0.2 },
-    lL: { f: 1.2, k: 1.9, out: 0.25 }, lR: { f: 0.7, k: 1.7, out: 0.2 },
-    ground: false, root: [-0.12, -0.62, 0], floor: 0.78 }),
+    aL: { f: -0.1, out: 0.45, e: 0.5 }, aR: { f: 0.3, out: 0.55, e: 0.7 },
+    lL: { f: 1.35, k: 2.1, out: 0.25 }, lR: { f: 0.9, k: 1.95, out: 0.2 },
+    ground: false, root: [-0.23, -0.5, 0], floor: 0.78 }),
   make({ pelvis: [0, 0, 1.4], spine: [0.1, 0, 0.1], chest: [0.05, 0, 0.1], neck: [0, 0, 0.05], head: [0.1, 0.1, 0.2], jaw: 0.5, claw: 0.2, gut: 0,
-    aL: { f: -0.2, out: 0.9, e: 0.25 }, aR: { f: 0.4, out: 1.1, e: 0.3 },
-    lL: { f: 1.3, k: 1.95, out: 0.3 }, lR: { f: 0.9, k: 1.8, out: 0.3 },
-    ground: false, root: [-0.16, -0.7, 0], floor: 0.7 }),
+    aL: { f: -0.2, out: 0.5, e: 0.5 }, aR: { f: 0.4, out: 0.6, e: 0.8 },
+    lL: { f: 1.45, k: 2.2, out: 0.3 }, lR: { f: 1.1, k: 2.05, out: 0.3 },
+    ground: false, root: [-0.25, -0.52, 0], floor: 0.7 }),
 ];
 
 /** Walking on its arms, with the legs gone: the hips drag, the body is propped up on its arms and the head comes up to look. */
 function crawl(i: number): RigPose {
   const p = (i / 4) * TAU, s = Math.sin(p), c = Math.cos(p);
   return make({
-    ground: false, root: [0.03 * s, -0.7 + 0.015 * Math.cos(2 * p), 0],
+    ground: false, root: [0.05 + 0.03 * s, -0.7 + 0.015 * Math.cos(2 * p), 0],
     spine: [0.5, 0.14 * c, 0.05 * s], chest: [0.3, -0.2 * c, 0.06 * s], neck: [-0.35, 0.1 * c, 0], head: [-0.25, 0.1 * c, 0], jaw: 0.2 + 0.12 * Math.max(0, s), gut: c, claw: 0.7,
     aL: { f: 0.55 + 0.4 * s, out: 0.35, e: 0.85 - 0.3 * s, w: 0.4 }, aR: { f: 0.55 - 0.4 * s, out: 0.3, e: 0.85 + 0.3 * s, w: 0.4 },
   });
@@ -138,30 +138,30 @@ function crawl(i: number): RigPose {
 
 const crawlIdle = crawl(0);
 const crawlAtk: RigPose[] = [
-  make({ ground: false, root: [0, -0.66, 0.05], spine: [0.15, 0, 0], chest: [-0.1, 0.1, 0], neck: [-0.2, 0, 0], head: [-0.3, 0, 0], jaw: 1.0, claw: 0, gut: -0.5,
+  make({ ground: false, root: [0.05, -0.66, 0.05], spine: [0.15, 0, 0], chest: [-0.1, 0.1, 0], neck: [-0.2, 0, 0], head: [-0.3, 0, 0], jaw: 1.0, claw: 0, gut: -0.5,
     aL: { f: 2.0, out: 0.5, e: 0.4 }, aR: { f: 2.1, out: 0.4, e: 0.4 } }),
   make({ ground: false, root: [0, -0.75, -0.1], spine: [0.85, 0, 0], chest: [0.5, -0.2, 0], neck: [-0.5, 0, 0], head: [-0.3, 0, 0], jaw: 0.75, claw: 1, gut: 0.8,
     aL: { f: 1.3, out: 0.3, e: 0.3 }, aR: { f: 1.15, out: 0.25, e: 0.4 } }),
-  make({ ground: false, root: [0, -0.72, -0.04], spine: [0.65, 0, 0], chest: [0.4, 0, 0], neck: [-0.4, 0, 0], head: [-0.3, 0, 0], jaw: 0.3, claw: 0.7, gut: 0.3,
+  make({ ground: false, root: [0.05, -0.72, -0.04], spine: [0.65, 0, 0], chest: [0.4, 0, 0], neck: [-0.4, 0, 0], head: [-0.3, 0, 0], jaw: 0.3, claw: 0.7, gut: 0.3,
     aL: { f: 0.9, out: 0.4, e: 0.5 }, aR: { f: 0.95, out: 0.4, e: 0.55 } }),
 ];
 const crawlPain: RigPose[] = [
-  make({ ground: false, root: [0, -0.68, 0.05], spine: [0.2, 0.1, 0], chest: [-0.1, 0.2, 0], neck: [-0.1, 0, 0], head: [-0.6, 0.15, 0], jaw: 0.95, claw: 0, gut: -0.5,
+  make({ ground: false, root: [0.06, -0.68, 0.05], spine: [0.2, 0.1, 0], chest: [-0.1, 0.2, 0], neck: [-0.1, 0, 0], head: [-0.6, 0.15, 0], jaw: 0.95, claw: 0, gut: -0.5,
     aL: { f: 0.2, out: 0.9, e: 0.3, w: 0 }, aR: { f: 0.4, out: 0.85, e: 0.3, w: 0 } }),
   make({ ground: false, root: [0, -0.76, 0], spine: [0.9, -0.1, 0], chest: [0.5, 0, 0], neck: [-0.3, 0, 0], head: [0.0, 0, 0], jaw: 0.35, claw: 0.8, gut: 0.6,
     aL: { f: 0.9, out: 0.1, e: 1.3 }, aR: { f: 0.9, out: 0.1, e: 1.3 } }),
 ];
 const crawlDie: RigPose[] = [
-  make({ ground: false, floor: 0.975, root: [0, -0.7, 0.05], spine: [0.0, 0, 0.1], chest: [-0.2, 0, 0.1], neck: [-0.3, 0, 0], head: [-0.5, 0, 0.1], jaw: 1.0, claw: 0, gut: -0.4,
-    aL: { f: 1.5, out: 0.8, e: 0.2, w: 0 }, aR: { f: 1.4, out: 0.8, e: 0.2, w: 0 } }),
-  make({ ground: false, floor: 0.93, root: [-0.05, -0.76, 0], pelvis: [0, 0, 0.45], spine: [0.3, 0, 0.1], chest: [0.1, 0, 0.1], neck: [-0.1, 0, 0], head: [-0.2, 0.1, 0.1], jaw: 0.7, claw: 0.1, gut: 0.4,
+  make({ ground: false, floor: 0.975, root: [0.02, -0.7, 0.05], spine: [0.0, 0, 0.1], chest: [-0.2, 0, 0.1], neck: [-0.3, 0, 0], head: [-0.5, 0, 0.1], jaw: 1.0, claw: 0, gut: -0.4,
+    aL: { f: 1.5, out: 0.6, e: 0.2, w: 0 }, aR: { f: 1.4, out: 0.6, e: 0.2, w: 0 } }),
+  make({ ground: false, floor: 0.93, root: [0.02, -0.7, 0], pelvis: [0, 0, 0.45], spine: [0.3, 0, 0.1], chest: [0.1, 0, 0.1], neck: [-0.1, 0, 0], head: [-0.2, 0.1, 0.1], jaw: 0.7, claw: 0.1, gut: 0.4,
     aL: { f: 0.9, out: 0.7, e: 0.4 }, aR: { f: 1.0, out: 0.7, e: 0.4 } }),
-  make({ ground: false, floor: 0.866, root: [-0.12, -0.8, 0], pelvis: [0, 0, 0.95], spine: [0.2, 0, 0.1], chest: [0.1, 0, 0.1], neck: [0, 0, 0], head: [0.1, 0.1, 0.1], jaw: 0.5, claw: 0.2, gut: 0.2,
+  make({ ground: false, floor: 0.866, root: [-0.12, -0.66, 0], pelvis: [0, 0, 0.95], spine: [0.2, 0, 0.1], chest: [0.1, 0, 0.1], neck: [0, 0, 0], head: [0.1, 0.1, 0.1], jaw: 0.5, claw: 0.2, gut: 0.2,
     aL: { f: 0.5, out: 0.9, e: 0.3 }, aR: { f: 0.7, out: 0.9, e: 0.3 } }),
-  make({ ground: false, floor: 0.78, root: [-0.2, -0.82, 0], pelvis: [0, 0, 1.3], spine: [0.1, 0, 0.1], chest: [0.1, 0, 0.1], neck: [0.1, 0, 0], head: [0.2, 0.1, 0.1], jaw: 0.5, claw: 0.2, gut: 0.1,
-    aL: { f: 0.3, out: 1.0, e: 0.3 }, aR: { f: 0.4, out: 1.0, e: 0.3 } }),
-  make({ ground: false, floor: 0.7, root: [-0.25, -0.83, 0], pelvis: [0, 0, 1.45], spine: [0.1, 0, 0.1], chest: [0.1, 0, 0.1], neck: [0.1, 0, 0], head: [0.3, 0.1, 0.1], jaw: 0.45, claw: 0.1, gut: 0,
-    aL: { f: 0.1, out: 1.1, e: 0.3 }, aR: { f: 0.2, out: 1.1, e: 0.3 } }),
+  make({ ground: false, floor: 0.78, root: [-0.2, -0.64, 0], pelvis: [0, 0, 1.3], spine: [0.1, 0, 0.1], chest: [0.1, 0, 0.1], neck: [0.1, 0, 0], head: [0.2, 0.1, 0.1], jaw: 0.5, claw: 0.2, gut: 0.1,
+    aL: { f: -0.1, out: 0.7, e: 0.5 }, aR: { f: 0.0, out: 0.7, e: 0.5 } }),
+  make({ ground: false, floor: 0.7, root: [-0.25, -0.64, 0], pelvis: [0, 0, 1.45], spine: [0.1, 0, 0.1], chest: [0.1, 0, 0.1], neck: [0.1, 0, 0], head: [0.3, 0.1, 0.1], jaw: 0.45, claw: 0.1, gut: 0,
+    aL: { f: -0.2, out: 0.75, e: 0.5 }, aR: { f: -0.1, out: 0.75, e: 0.5 } }),
 ];
 
 export const GHOUL_POSES: RigPoses = {

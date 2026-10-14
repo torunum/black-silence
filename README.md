@@ -14,6 +14,7 @@ open it in your desktop browser, and claw your way out of the ground.
 **[Download the game](https://github.com/torunum/black-silence/releases/download/preview-2026-09-18/THE-BLACK-SILENCE.html)** ·
 **[Watch the trailer](https://torunum.github.io/black-silence/media/black-silence-trailer.mp4)** (from the 2026-09-18 build) ·
 **[Listen to the sound board](https://torunum.github.io/black-silence/soundboard.html)** ·
+**[Meet the bestiary](https://torunum.github.io/black-silence/bestiary.html)** ·
 **[Press kit / Basın kiti](docs/PRESS-KIT.md)**
 
 ## Enter the Parish
@@ -122,6 +123,17 @@ on the published site, or at `http://localhost:5173/soundboard.html` while
 game; it is a separate page, and the game does not load it.
 `node scripts/sound-levels.mjs` measures every sound on it in a headless
 Chrome and rewrites [`docs/sound-levels.md`](docs/sound-levels.md).
+
+**The bestiary** lists every enemy in the game, animated, with a button for each
+thing it can do: walk, attack, pain, death, and each dismemberment (head, either
+arm, legs). The enemies are being redrawn as small posed 3D rigs, in the same
+hard-toned style as the weapons; where one has been redrawn the old pixel art
+and the new play side by side, and the parts that fly off it are shown under
+it. Open it at
+[`/bestiary.html`](https://torunum.github.io/black-silence/bestiary.html) on the
+published site, or at `http://localhost:5173/bestiary.html` while `npm run dev`
+is running. `npm run build` builds it into `dist/` next to the game and the
+sound board; it is a separate page, and the game does not load it.
 
 The standalone file has been smoke-tested offline. The build script checks
 for leftover asset references in HTML attributes; this check alone is not

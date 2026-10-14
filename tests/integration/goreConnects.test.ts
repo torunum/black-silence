@@ -53,7 +53,7 @@ type Foe = {
 type Part = { kind: number; x: number; y: number; z: number; vx: number; vy: number; rest: boolean; sz: number; sp: THREE.Sprite };
 
 const N = 24;
-/** The monsters the presentation tests run over: the ghoul (a rig) and the thrall (legacy pixel art, whose frames and fall are as they always were). */
+/** The monsters the presentation tests run over: the ghoul (a rig) and the plague bloat (legacy pixel art, whose frames and fall are as they always were). */
 const PRESENTED = ["z", "t"] as const;
 
 beforeAll(async () => {
@@ -186,7 +186,7 @@ describe.each([0, 1.2, 4.2])("on a floor of %s", (fy) => {
       } else expect(Math.abs(z.sp.material.rotation), "down").toBeCloseTo(Math.PI / 2, 1);
       expect(z.sp.position.y).toBeCloseTo(fy + z.h * 0.18, 1);
       expect(z.sp.position.x - x0, "knocked back along the shot (+x), and then a step further, the sprite's own: STUMBLE_DIST").toBeGreaterThan(0.7 + STUMBLE_DIST * 0.95);
-      expect(z.sp.position.x - z.x, "the sprite is ahead of the body by the whole stumble once it has stopped").toBeCloseTo(STUMBLE_DIST, key === "z" ? 2 : 1);   // (the shot is aimed a little upward, so its direction is not quite unit on the floor: more so at the thrall's height)
+      expect(z.sp.position.x - z.x, "the sprite is ahead of the body by the whole stumble once it has stopped").toBeCloseTo(STUMBLE_DIST, key === "z" ? 2 : 1);   // (the shot is aimed a little upward, so its direction is not quite unit on the floor: more so at the plague bloat's height)
       expect(z.blob.position.x, "and its shadow goes with it").toBeCloseTo(z.sp.position.x, 6);
     });
 

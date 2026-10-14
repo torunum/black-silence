@@ -98,7 +98,7 @@ beforeEach(() => {
  * position. `summoned:true` forces `spawnEnemy`'s 11% elite roll to false so
  * nothing here can flake on a dice throw.
  */
-function alertedThrall(): Enemy {
+function alertedBloat(): Enemy {
   const e = spawnEnemy("t", 5, 30, true);
   e.alertX = player.px;
   e.alertZ = player.pz;
@@ -114,14 +114,14 @@ describe("enemyTick's walk-frame guard treats an unattacked enemy differently fr
     expect(PX["t"].b).toBeTruthy();
     expect(PX["t"].a).not.toBe(PX["t"].b);
 
-    const e = alertedThrall();
+    const e = alertedBloat();
     const z0 = e.z;
     enemyTick(DT);
     expect(e.z, "moveEnemy never moved the ghoul — the walk-animation branch is unreachable in this setup").not.toBe(z0);
   });
 
   it("atkAnim undefined (never attacked) — no walk frame is cycled, exactly as the reference does not", () => {
-    const e = alertedThrall();
+    const e = alertedBloat();
     expect(e.atkAnim, "spawnEnemy is not supposed to build atkAnim — see Enemy.ts group 2").toBeUndefined();
 
     // Asserted after *every* tick, not once at the end. The frame index is a
@@ -139,7 +139,7 @@ describe("enemyTick's walk-frame guard treats an unattacked enemy differently fr
   });
 
   it("atkAnim === 0 (attack just ended) — the walk frames do cycle", () => {
-    const e = alertedThrall();
+    const e = alertedBloat();
     e.atkAnim = 0;
 
     enemyTick(DT);
@@ -152,12 +152,12 @@ describe("enemyTick's walk-frame guard treats an unattacked enemy differently fr
     // The whole point, stated as one comparison. `??0` maps `undefined` onto
     // `0`, so under that mutation both arms of this test produce PX.z.b and
     // the equality below holds — which is what makes it red.
-    const never = alertedThrall();
+    const never = alertedBloat();
     enemyTick(DT);
     const neverMap = never.sp.material.map;
 
     world.enemies = [];
-    const attacked = alertedThrall();
+    const attacked = alertedBloat();
     attacked.atkAnim = 0;
     enemyTick(DT);
     const attackedMap = attacked.sp.material.map;
@@ -186,14 +186,14 @@ describe("enemyTick's walk-frame guard also requires `moving` — a stationary e
    * the whole tick. Giving it `atkAnim=0` satisfies the rest of the guard,
    * so only the `moving&&` half stands between it and a frame swap.
    */
-  function unalertedThrall(): Enemy {
+  function unalertedBloat(): Enemy {
     // 25 units out: past the seen threshold (dist<22) but under the dist>30
     // early continue, so the tick still reaches the walk-animation guard.
     return spawnEnemy("t", 5, 30, true);
   }
 
   it("guard: alertX===-1 and out of sight — moving is false — atkAnim===0 still does not cycle the frame", () => {
-    const e = unalertedThrall();
+    const e = unalertedBloat();
     expect(e.alertX, "spawnEnemy's own default — this enemy has never been alerted").toBe(-1);
     e.atkAnim = 0;
 
@@ -210,7 +210,7 @@ describe("enemyTick's walk-frame guard also requires `moving` — a stationary e
  * THE GHOUL IS A RIG (enemies plan, Task 1): the legacy quirk above is the
  * legacy art's — a monster with a rig (`PX[key].rig`, `src/enemies/RigAnim.ts`)
  * walks from its first step, through all six frames of its cycle, whether or
- * not it has ever attacked. The thrall above is the legacy enemy whose frame
+ * not it has ever attacked. The plague bloat above is the legacy enemy whose frame
  * selection these tests pin exactly as it was; the ghoul is the first rig.
  */
 describe("a rigged monster (the ghoul) walks through all six poses of its cycle from its first step", () => {

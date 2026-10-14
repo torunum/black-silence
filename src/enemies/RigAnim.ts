@@ -4,6 +4,7 @@ import { roleCount } from "./rig/bake";
 import { HEAD, L_ARM, LEGS, R_ARM, type Role } from "./rig/kit";
 import { fallT } from "./Corpse";
 import { HURT_LEN } from "./HitReact";
+import { ATK_LEN, ATK_SPLIT, DEATH_AT } from "./rig/timing";
 
 /**
  * WHICH FRAME A RIGGED MONSTER SHOWS (`docs/superpowers/plans/2026-10-13-enemies.md`).
@@ -30,12 +31,7 @@ import { HURT_LEN } from "./HitReact";
  *   `deathDir` says.
  */
 
-/** Seconds `atkAnim` runs from (`Behaviors.ts`, `Attacks.ts`): the three phases split it. */
-const ATK_LEN = 0.22;
-/** The attack's phases as shares of its time: the wind-up, the strike, the recover. */
-const ATK_SPLIT: readonly [number, number] = [0.25, 0.65];
-/** How far through the fall (`fallT`) each death frame starts: the jerk, the buckle, the topple, the thud, the lie. */
-export const DEATH_AT: readonly number[] = [0, 0.133, 0.31, 0.53, 0.84];
+export { DEATH_AT };
 
 interface Sprite { map: THREE.Texture | null; needsUpdate: boolean }
 export interface RigShape {

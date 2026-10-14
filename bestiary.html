@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bestiary — THE BLACK SILENCE</title>
+<style>
+  :root{--bg:#0b0b0d;--panel:#141418;--line:#2a2a31;--text:#cfc9bd;--dim:#8a8477;--gold:#c9b27a;--red:#a8382a;--green:#5f8a4e}
+  html,body{margin:0;background:var(--bg);color:var(--text);font-family:"Courier New",monospace}
+  #board{max-width:1100px;margin:0 auto;padding:24px 16px 64px}
+  h1{font-size:clamp(20px,4vw,30px);letter-spacing:.12em;color:var(--gold);margin:0 0 8px;font-weight:normal}
+  .lede{font-size:16px;line-height:1.5;margin:0 0 16px;max-width:70ch}
+  .controls{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;margin-bottom:8px}
+  .speed{font:inherit;font-size:14px;padding:9px 10px;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:6px}
+  .card{border-top:1px solid var(--line);padding:18px 0 22px}
+  h2{font-size:18px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:normal;margin:0 0 12px}
+  h2 .key{color:var(--dim);letter-spacing:.05em;text-transform:none}
+  .badge{margin-left:12px;font-size:12px;letter-spacing:.08em;padding:2px 8px;border:1px solid #4a4436;border-radius:10px;color:var(--dim)}
+  .badge.new{border-color:var(--green);color:#9bc48a}
+  .view{display:flex;flex-wrap:wrap;gap:18px 28px;align-items:flex-end}
+  figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:6px}
+  figure canvas{background:#101014;border:1px solid var(--line);image-rendering:pixelated;max-width:100%;height:auto}
+  figcaption{font-size:12px;color:var(--dim);min-height:1em}
+  .buttons{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .play{font:inherit;font-size:14px;padding:8px 12px;background:var(--panel);color:var(--text);border:1px solid #4a4436;border-radius:6px;cursor:pointer;white-space:nowrap}
+  .play:hover,.play:focus-visible{border-color:var(--gold);color:#fff}
+  .play.on{border-color:var(--gold);background:#2a241a}
+  .play:disabled{opacity:.35;cursor:default}
+  .parts{display:flex;flex-wrap:wrap;gap:6px 26px;margin-top:12px;align-items:flex-end}
+  .partgroup{display:flex;gap:10px;align-items:flex-end}
+  .partlabel{font-size:12px;color:var(--dim);align-self:center;margin-right:2px}
+  canvas.part{image-rendering:pixelated;background:#101014;border:1px solid var(--line);width:auto;height:64px}
+</style>
+</head>
+<body>
+<div id="board">Loading the bestiary…</div>
+<script type="module" src="/src/bestiary/main.ts"></script>
+</body>
+</html>

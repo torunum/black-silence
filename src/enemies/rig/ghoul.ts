@@ -21,7 +21,7 @@ import { GHOUL_POSES, GHOUL_PART_POSES } from "./ghoulPoses";
 
 const FLESH = FIRST_OWN, CLOTH = FIRST_OWN + 1;
 /** Its head is a third larger than a man's on that body: the sunken face is what the sprite is. */
-const HEAD_K = 1.25;
+const HEAD_K = 1.26;
 const PI = Math.PI;
 
 export const GHOUL_PALETTE = enemyPalette({
@@ -34,7 +34,7 @@ export const GHOUL_PALETTE = enemyPalette({
 const J = (name: string, parent: string | null, x: number, y: number, z: number): Joint => ({ name, parent, at: [x, y, z] });
 const joints: Joint[] = [
   J("pelvis", null, 0, 0.88, 0),
-  J("spine", "pelvis", 0, 0.06, 0), J("chest", "spine", 0, 0.27, 0), J("neck", "chest", 0, 0.34, -0.02), J("head", "neck", 0, 0.05, -0.03), J("jaw", "head", 0, 0.035 * HEAD_K, -0.005 * HEAD_K),
+  J("spine", "pelvis", 0, 0.06, 0), J("chest", "spine", 0, 0.27, 0), J("neck", "chest", 0, 0.35, -0.02), J("head", "neck", 0, 0.085, -0.03), J("jaw", "head", 0, 0.035 * HEAD_K, -0.005 * HEAD_K),
   J("shoulderL", "chest", -0.255, 0.27, 0), J("elbowL", "shoulderL", 0, -0.30, 0), J("wristL", "elbowL", 0, -0.28, 0),
   J("shoulderR", "chest", 0.255, 0.27, 0), J("elbowR", "shoulderR", 0, -0.30, 0), J("wristR", "elbowR", 0, -0.28, 0),
   J("hipL", "pelvis", -0.115, -0.04, 0), J("kneeL", "hipL", 0, -0.41, 0), J("ankleL", "kneeL", 0, -0.39, 0),
@@ -173,18 +173,18 @@ const parts: RigPart[] = [
   // ---- the head ----
   part("head", "head", (c) => {
     const b = scaled(c.b, HEAD_K);
-    b.prz([[-0.058, 0.0], [0.058, 0.0], [0.082, 0.05], [0.093, 0.12], [0.086, 0.19], [0.05, 0.25], [0.0, 0.268], [-0.05, 0.25], [-0.086, 0.19], [-0.093, 0.12], [-0.082, 0.05]], -0.1, 0.11, FLESH, { r1: 0.8, tex: blotchTex(1.6, 1, -1.2) });
-    b.box(-0.098, 0.162, -0.118, 0.098, 0.19, -0.098, FLESH);                                  // the brow
+    b.prz([[-0.056, 0.0], [0.056, 0.0], [0.078, 0.05], [0.086, 0.12], [0.08, 0.2], [0.05, 0.26], [0.0, 0.29], [-0.05, 0.26], [-0.08, 0.2], [-0.086, 0.12], [-0.078, 0.05]], -0.095, 0.11, FLESH, { r1: 0.78, tex: blotchTex(1.6, 1, -1.2) });
+    b.box(-0.09, 0.168, -0.104, 0.09, 0.182, -0.094, FLESH);                                   // the brow, a ridge
     b.box(-0.092, 0.07, -0.112, -0.058, 0.098, -0.098, FLESH); b.box(0.058, 0.07, -0.112, 0.092, 0.098, -0.098, FLESH);   // cheekbones
-    b.box(-0.078, 0.1, -0.114, -0.016, 0.16, -0.098, E.CAVITY); b.box(0.016, 0.1, -0.114, 0.078, 0.16, -0.098, E.CAVITY);   // sunken eyes
-    b.box(-0.056, 0.118, -0.118, -0.036, 0.136, -0.113, E.EYE); b.box(0.036, 0.118, -0.118, 0.056, 0.136, -0.113, E.EYE);
+    b.prz([[-0.07, 0.115], [-0.045, 0.098], [-0.02, 0.112], [-0.018, 0.15], [-0.045, 0.165], [-0.072, 0.15]], -0.105, -0.092, E.CAVITY); b.prz([[0.07, 0.115], [0.045, 0.098], [0.02, 0.112], [0.018, 0.15], [0.045, 0.165], [0.072, 0.15]], -0.105, -0.092, E.CAVITY);   // sunken eyes
+    b.box(-0.056, 0.122, -0.108, -0.034, 0.142, -0.104, E.EYE); b.box(0.034, 0.122, -0.108, 0.056, 0.142, -0.104, E.EYE);
     b.box(-0.013, 0.058, -0.114, 0.013, 0.1, -0.098, E.CAVITY);                                // no nose, a hole
     b.box(-0.06, 0.02, -0.108, -0.042, 0.062, -0.098, E.CAVITY); b.box(0.042, 0.02, -0.108, 0.06, 0.062, -0.098, E.CAVITY);   // hollow cheeks
-    b.box(-0.06, -0.085, -0.1, 0.06, 0.004, -0.02, E.CAVITY);                                  // the dark of its mouth, behind the teeth
-    for (let i = 0; i < 6; i++) b.box(-0.054 + i * 0.0185, 0.0, -0.114, -0.0385 + i * 0.0185, 0.034, -0.1, E.TOOTH);    // upper teeth
+    b.box(-0.062, -0.09, -0.104, 0.062, 0.004, -0.02, E.CAVITY);                               // the dark of its mouth, behind the teeth
+    for (let i = 0; i < 6; i++) b.box(-0.054 + i * 0.0185, i % 2 ? -0.004 : -0.012, -0.112, -0.0385 + i * 0.0185, 0.034, -0.1, E.TOOTH);    // upper teeth, ragged
     b.box(0.02, 0.236, -0.06, 0.07, 0.262, 0.0, E.BONE, { tex: crackTex });                    // the skull showing through the scalp
     b.box(-0.115, 0.07, 0.0, -0.098, 0.12, 0.05, FLESH); b.box(0.098, 0.07, 0.0, 0.115, 0.12, 0.05, FLESH);        // ears
-    for (const x of [-0.07, -0.02, 0.05]) limb(b, x, 0.09, 0.2, -0.1, 0.007, 0.002, E.SINEW, 4);   // a few strings of hair
+    for (const x of [-0.07, -0.02, 0.05]) limb(b, x, 0.09, 0.2, 0.0, 0.007, 0.002, E.SINEW, 4);   // a few strings of hair
   }),
   part("jaw", "head", (c) => {
     const b = scaled(c.b, HEAD_K);
@@ -200,19 +200,19 @@ const parts: RigPart[] = [
 
 const stumps: Stump[] = [
   { joint: "neck", group: "head", draw: (c) => {
-    limb(c.b, 0, 0, 0.06, 0.1, 0.05, 0.042, E.MEAT, 7, { tex: meatTex });
-    limb(c.b, 0, 0.0, 0.07, 0.15, 0.014, 0.011, E.BONE, 5);                                  // the spine's end
-    c.b.box(-0.03, 0.09, -0.05, -0.01, 0.12, -0.03, E.SINEW); c.b.box(0.012, 0.09, 0.02, 0.03, 0.115, 0.04, E.ORGAN);
+    limb(c.b, 0, 0, 0.05, 0.12, 0.058, 0.048, E.MEAT, 7, { tex: meatTex });
+    limb(c.b, 0, 0.0, 0.07, 0.19, 0.017, 0.013, E.BONE, 5);                                  // the spine's end, standing out of it
+    c.b.box(-0.045, 0.1, -0.06, -0.015, 0.15, -0.03, E.SINEW); c.b.box(0.015, 0.1, 0.02, 0.045, 0.14, 0.05, E.ORGAN); c.b.box(0.02, 0.1, -0.06, 0.05, 0.13, -0.035, E.MEAT);
   } },
   ...(["L", "R"] as const).map((s): Stump => ({ joint: "shoulder" + s, group: s === "L" ? "lArm" : "rArm", draw: (c) => {
-    limb(c.b, 0, 0, 0, -0.07, 0.05, 0.044, E.MEAT, 7, { tex: meatTex });
-    limb(c.b, 0.005, 0, -0.02, -0.13, 0.014, 0.011, E.BONE, 5);
-    c.b.box(-0.03, -0.1, -0.05, -0.012, -0.065, -0.03, E.SINEW);
+    limb(c.b, 0, 0, 0.01, -0.11, 0.062, 0.05, E.MEAT, 7, { tex: meatTex });
+    limb(c.b, 0.005, 0, -0.02, -0.19, 0.017, 0.013, E.BONE, 5);
+    c.b.box(-0.04, -0.15, -0.06, -0.012, -0.1, -0.03, E.SINEW); c.b.box(0.02, -0.14, -0.05, 0.05, -0.1, -0.02, E.MEAT);
   } })),
   ...(["L", "R"] as const).map((s): Stump => ({ joint: "hip" + s, group: "legs", draw: (c) => {
-    limb(c.b, 0, 0, 0, -0.08, 0.064, 0.056, E.MEAT, 7, { tex: meatTex });
-    limb(c.b, 0, 0, -0.03, -0.13, 0.017, 0.013, E.BONE, 5);
-    c.b.box(0.02, -0.11, -0.04, 0.04, -0.07, -0.02, E.SINEW);
+    limb(c.b, 0, 0, 0, -0.12, 0.07, 0.06, E.MEAT, 7, { tex: meatTex });
+    limb(c.b, 0, 0, -0.03, -0.2, 0.02, 0.015, E.BONE, 5);
+    c.b.box(0.02, -0.16, -0.05, 0.05, -0.1, -0.02, E.SINEW); c.b.box(-0.05, -0.15, -0.05, -0.02, -0.1, -0.02, E.MEAT);
   } })),
 ];
 
@@ -231,7 +231,7 @@ export const GHOUL: Rig = {
   partSpecs: {
     head: { group: "head", pose: GHOUL_PART_POSES.head, cap: cap("neck", (c) => {
       limb(c.b, 0, 0, -0.01, 0.06, 0.05, 0.044, E.MEAT, 7, { tex: meatTex }); limb(c.b, 0, 0, 0.0, -0.06, 0.014, 0.011, E.BONE, 5);
-      limb(c.b, 0.03, 0.01, 0.03, -0.1, 0.008, 0.004, E.SINEW, 4); limb(c.b, -0.025, -0.01, 0.03, -0.08, 0.009, 0.004, E.ORGAN, 4);
+      limb(c.b, 0.03, 0.01, 0.03, -0.06, 0.008, 0.004, E.SINEW, 4); limb(c.b, -0.025, -0.01, 0.03, -0.05, 0.009, 0.004, E.ORGAN, 4);
     }) },
     lArm: { group: "lArm", pose: GHOUL_PART_POSES.arm, cap: cap("shoulderL", (c) => { limb(c.b, 0, 0, -0.01, 0.04, 0.05, 0.044, E.MEAT, 7, { tex: meatTex }); limb(c.b, 0, 0, 0.0, 0.11, 0.014, 0.011, E.BONE, 5); }) },
     rArm: { group: "rArm", pose: GHOUL_PART_POSES.arm, cap: cap("shoulderR", (c) => { limb(c.b, 0, 0, -0.01, 0.04, 0.05, 0.044, E.MEAT, 7, { tex: meatTex }); limb(c.b, 0, 0, 0.0, 0.11, 0.014, 0.011, E.BONE, 5); }) },
