@@ -11,6 +11,7 @@ import { MONOLOGUE } from "../src/content/monologue";
 import { TEX, buildTextures } from "../src/render/ProcTextures";
 import { PXDEF } from "../src/enemies/pixels";
 import { PX, buildSprites } from "../src/enemies/SpriteBaker";
+import { RIGS } from "../src/enemies/rig";
 import { ITEMTEX, buildItemTex } from "../src/render/ItemTextures";
 import { getMasterVolume } from "../src/audio/AudioEngine";
 import { WEAPON_ART } from "../src/render/viewmodel/arts";
@@ -474,8 +475,17 @@ describe("SpriteBaker (texFromPx/buildSprites) vs. reference", () => {
     }
   });
 
-  it("computes the identical dismemberment regions (W, H, head, armTop, armBot) for every creature", () => {
+  it("computes the identical dismemberment regions (W, H, head, armTop, armBot) for every creature without a rig", () => {
+    // DIVERGENCE (enemies plan, Task 1): a creature with a rig (src/enemies/rig/) does not bake from its PXDEF grid, so its
+    // regions are its rig's: the same nominal 19 x 24 grid the gore code measures rows in (W, H as the legacy art had them), with
+    // the head and the arms where the rig's own anatomy puts them. Everything else is still the reference's, region for region.
     for (const key of Object.keys(PX)) {
+      if (RIGS[key]) {
+        const g = RIGS[key].regions, ref = refModule.PX[key].regions as { W: number; H: number };
+        expect({ W: g.W, H: g.H }, `${key}: a rig keeps the legacy grid's size`).toEqual({ W: ref.W, H: ref.H });
+        expect((PX[key] as unknown as Record<string, unknown>).regions, key).toEqual(g);
+        continue;
+      }
       const ours = (PX[key] as unknown as Record<string, unknown>).regions;
       const ref = refModule.PX[key].regions;
       expect(ours, key).toEqual(ref);
@@ -524,10 +534,17 @@ describe("SpriteBaker (texFromPx/buildSprites) vs. reference", () => {
   // strip the TS-only syntax the port adds, then require the remainder to
   // match the reference exactly. PXDEF above stays strictly byte-identical
   // because it is pure data that no annotation ever touches.
-  it("buildSprites' body is identical to the reference once TS-only syntax is stripped — the dismemberment mask arithmetic (armTop, armBot, region rectangles) untouched", () => {
+  it("buildSprites' body is identical to the reference once TS-only syntax is stripped — the dismemberment mask arithmetic (armTop, armBot, region rectangles) untouched — save the one line that hands a rigged creature to its rig", () => {
+    // DIVERGENCE (enemies plan, Task 1): one line, `if(RIGS[k]){PX[k]=rigSprite(RIGS[k]);burnLegacySpriteDraws(d);continue;}`, at the top
+    // of the loop. It is taken out here, and only it: any other change to the body, or a second such line, fails this.
+    const RIG_LINE = /^[ 	]*if(RIGS[k]){PX[k]=rigSprite(RIGS[k]);burnLegacySpriteDraws(d);continue;}[^
+]*
+/m;
     const moduleSource = readModuleSource("src/enemies/SpriteBaker.ts");
+    const body = extractFunctionBody(moduleSource, "buildSprites");
+    expect(RIG_LINE.test(body), "the rig line is where the divergence is pinned").toBe(true);
     const refChunk = refSource(REF.buildSprites);
-    expect(normalizeTsSource(extractFunctionBody(moduleSource, "buildSprites"))).toBe(
+    expect(normalizeTsSource(body.replace(RIG_LINE, ""))).toBe(
       normalizeTsSource(extractFunctionBody(refChunk, "buildSprites")),
     );
   });

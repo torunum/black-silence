@@ -94,12 +94,12 @@ beforeEach(() => {
 });
 
 /**
- * A ROTTING GHOUL 25 units from the player, already alerted to the player's
+ * A THRALL 25 units from the player, already alerted to the player's
  * position. `summoned:true` forces `spawnEnemy`'s 11% elite roll to false so
  * nothing here can flake on a dice throw.
  */
-function alertedGhoul(): Enemy {
-  const e = spawnEnemy("z", 5, 30, true);
+function alertedThrall(): Enemy {
+  const e = spawnEnemy("t", 5, 30, true);
   e.alertX = player.px;
   e.alertZ = player.pz;
   return e;
@@ -110,18 +110,18 @@ describe("enemyTick's walk-frame guard treats an unattacked enemy differently fr
     // Without this, "the map did not change" would be indistinguishable from
     // "a === b" and "moving was never true" — the two ways this file could
     // pass while covering nothing.
-    expect(PX["z"].a).toBeTruthy();
-    expect(PX["z"].b).toBeTruthy();
-    expect(PX["z"].a).not.toBe(PX["z"].b);
+    expect(PX["t"].a).toBeTruthy();
+    expect(PX["t"].b).toBeTruthy();
+    expect(PX["t"].a).not.toBe(PX["t"].b);
 
-    const e = alertedGhoul();
+    const e = alertedThrall();
     const z0 = e.z;
     enemyTick(DT);
     expect(e.z, "moveEnemy never moved the ghoul — the walk-animation branch is unreachable in this setup").not.toBe(z0);
   });
 
   it("atkAnim undefined (never attacked) — no walk frame is cycled, exactly as the reference does not", () => {
-    const e = alertedGhoul();
+    const e = alertedThrall();
     expect(e.atkAnim, "spawnEnemy is not supposed to build atkAnim — see Enemy.ts group 2").toBeUndefined();
 
     // Asserted after *every* tick, not once at the end. The frame index is a
@@ -134,37 +134,37 @@ describe("enemyTick's walk-frame guard treats an unattacked enemy differently fr
       enemyTick(DT);
       expect(e.animT, `animT advanced on tick ${i} — the walk clock is running for an enemy that has never attacked`).toBe(0);
       expect(e.frame, `frame changed on tick ${i}`).toBe(0);
-      expect(e.sp.material.map, `sprite frame swapped on tick ${i}`).toBe(PX["z"].a);
+      expect(e.sp.material.map, `sprite frame swapped on tick ${i}`).toBe(PX["t"].a);
     }
   });
 
   it("atkAnim === 0 (attack just ended) — the walk frames do cycle", () => {
-    const e = alertedGhoul();
+    const e = alertedThrall();
     e.atkAnim = 0;
 
     enemyTick(DT);
 
     expect(e.frame).toBe(1);
-    expect(e.sp.material.map).toBe(PX["z"].b);
+    expect(e.sp.material.map).toBe(PX["t"].b);
   });
 
   it("the two differ — this is the assertion `(e.atkAnim??0)<=0` cannot satisfy", () => {
     // The whole point, stated as one comparison. `??0` maps `undefined` onto
     // `0`, so under that mutation both arms of this test produce PX.z.b and
     // the equality below holds — which is what makes it red.
-    const never = alertedGhoul();
+    const never = alertedThrall();
     enemyTick(DT);
     const neverMap = never.sp.material.map;
 
     world.enemies = [];
-    const attacked = alertedGhoul();
+    const attacked = alertedThrall();
     attacked.atkAnim = 0;
     enemyTick(DT);
     const attackedMap = attacked.sp.material.map;
 
     expect(neverMap).not.toBe(attackedMap);
-    expect(neverMap).toBe(PX["z"].a);
-    expect(attackedMap).toBe(PX["z"].b);
+    expect(neverMap).toBe(PX["t"].a);
+    expect(attackedMap).toBe(PX["t"].b);
   });
 });
 
@@ -186,14 +186,14 @@ describe("enemyTick's walk-frame guard also requires `moving` — a stationary e
    * the whole tick. Giving it `atkAnim=0` satisfies the rest of the guard,
    * so only the `moving&&` half stands between it and a frame swap.
    */
-  function unalertedGhoul(): Enemy {
+  function unalertedThrall(): Enemy {
     // 25 units out: past the seen threshold (dist<22) but under the dist>30
     // early continue, so the tick still reaches the walk-animation guard.
-    return spawnEnemy("z", 5, 30, true);
+    return spawnEnemy("t", 5, 30, true);
   }
 
   it("guard: alertX===-1 and out of sight — moving is false — atkAnim===0 still does not cycle the frame", () => {
-    const e = unalertedGhoul();
+    const e = unalertedThrall();
     expect(e.alertX, "spawnEnemy's own default — this enemy has never been alerted").toBe(-1);
     e.atkAnim = 0;
 
@@ -203,5 +203,47 @@ describe("enemyTick's walk-frame guard also requires `moving` — a stationary e
     expect(e.animT, "animT advanced even though moving stayed false").toBe(0);
     expect(e.frame, "frame changed even though moving stayed false").toBe(0);
     expect(e.sp.material.map, "sprite frame swapped even though moving stayed false").toBe(mapBefore);
+  });
+});
+
+/**
+ * THE GHOUL IS A RIG (enemies plan, Task 1): the legacy quirk above is the
+ * legacy art's — a monster with a rig (`PX[key].rig`, `src/enemies/RigAnim.ts`)
+ * walks from its first step, through all six frames of its cycle, whether or
+ * not it has ever attacked. The thrall above is the legacy enemy whose frame
+ * selection these tests pin exactly as it was; the ghoul is the first rig.
+ */
+describe("a rigged monster (the ghoul) walks through all six poses of its cycle from its first step", () => {
+  const WALK = ["walk0", "walk1", "walk2", "walk3", "walk4", "walk5"];
+  const frame = (name: string): unknown => (PX as unknown as Record<string, Record<string, unknown>>)["z"][name];
+
+  it("guard: it has a rig, six distinct walk frames, and it really does move", () => {
+    expect((PX as unknown as Record<string, Record<string, unknown>>)["z"].rig, "PX.z has no rig").toBeTruthy();
+    expect(new Set(WALK.map(frame)).size, "six distinct textures").toBe(6);
+    const e = spawnEnemy("z", 5, 30, true);
+    e.alertX = player.px; e.alertZ = player.pz;
+    const z0 = e.z;
+    enemyTick(DT);
+    expect(e.z, "moveEnemy never moved the ghoul").not.toBe(z0);
+  });
+
+  it("atkAnim undefined (never attacked): the cycle still runs, and every tick's frame is one of its six walk poses", () => {
+    const e = spawnEnemy("z", 5, 30, true);
+    e.alertX = player.px; e.alertZ = player.pz;
+    expect(e.atkAnim, "spawnEnemy builds no atkAnim").toBeUndefined();
+    const seen = new Set<unknown>();
+    for (let i = 0; i < 8; i++) {
+      enemyTick(0.13);   // a little over one pose's .125 s, so each tick steps on
+      expect(WALK.map(frame), `tick ${i}: not a walk pose`).toContain(e.sp.material.map);
+      seen.add(e.sp.material.map);
+    }
+    expect(seen.size, "all six poses of the cycle in 8 steps").toBe(6);
+  });
+
+  it("a ghoul that is not moving stands in its idle frame, whatever `atkAnim` says", () => {
+    const e = spawnEnemy("z", 5, 30, true);   // unalerted, far from the player: moving stays false
+    e.atkAnim = 0;
+    for (let i = 0; i < 4; i++) enemyTick(0.3);
+    expect(e.sp.material.map).toBe(frame("idle"));
   });
 });

@@ -1,0 +1,15 @@
+import type { Rig } from "./kit";
+import { GHOUL } from "./ghoul";
+
+/**
+ * The monsters that have a rig, by the grid character that spawns them. An
+ * enemy in this table is baked from its rig (`SpriteBaker.buildSprites`) and
+ * animated by it (`src/enemies/RigAnim.ts`); every other enemy keeps its PXDEF
+ * art exactly as it was. The migration is one monster at a time
+ * (`docs/superpowers/plans/2026-10-13-enemies.md`): add a key here, and
+ * `tests/enemies/legacyDraws.test.ts` holds that the seeded stream the
+ * fixtures are recorded under still moves exactly as the legacy bake moved it.
+ */
+export const RIGS: Readonly<Record<string, Rig>> = { z: GHOUL };
+
+export function rigFor(key: string): Rig | undefined { return RIGS[key]; }

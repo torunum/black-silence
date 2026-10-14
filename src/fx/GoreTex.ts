@@ -1,5 +1,6 @@
 import * as THREE from "three";
-import { texFromPx } from "../enemies/SpriteBaker";
+import { PX, texFromPx } from "../enemies/SpriteBaker";
+import { HEAD, L_ARM, LEGS, R_ARM } from "../enemies/rig/kit";
 import { PXDEF } from "../enemies/pixels/index";
 import { quietly } from "./Quiet";
 
@@ -8,6 +9,13 @@ import { quietly } from "./Quiet";
  * Task 3): the splat and the streak the blood decals wear, and the parts a
  * monster comes apart into — its head, an arm, its legs — cut out of its
  * own pixel sprite with a wet stump at the torn end.
+ *
+ * A monster with a rig (`src/enemies/rig/`) has parts of its own, drawn from the
+ * skeleton: its head with the neck torn off it, an arm with the shoulder torn
+ * off, its legs with the pelvis torn off (`RigSet.part`), and its own crawler
+ * (`RigSet.tex("crawl", ..)`) with the stumps at its real joints. `partArt` and
+ * `crawlArt` return those for a rigged key and cut the legacy pixel sprite
+ * for every other.
  *
  * Nothing here draws from `Math.random()`: the splat's ragged edge is a
  * hash of the pixel, so every run bakes the same textures, and baking one
@@ -81,6 +89,9 @@ export function streakTexture(): THREE.CanvasTexture {
 
 export type PartKind = "head" | "lArm" | "rArm" | "legs";
 
+/** How much larger than the monster's own scale a limb is drawn (a head is true size): `Parts.ts` multiplies by it, and a rig's limbs, which are drawn at their true size, are divided by it. */
+export const LIMB_SCALE = 1.3;
+
 export interface PartArt {
   tex: THREE.CanvasTexture;
   /** The crop's size in cells of the monster's sprite; the part is drawn at this many cells' worth of the monster's own size. */
@@ -147,6 +158,13 @@ function cap(rows: string[], edge: "bottom" | "left" | "right" | "top"): string[
 export function partArt(key: string, kind: PartKind): PartArt | null {
   const id = key + ":" + kind;
   if (arts.has(id)) return arts.get(id) ?? null;
+  const rigSet = PX[key]?.rig;
+  if (rigSet) {   // the monster's own part, drawn from its skeleton
+    const r = rigSet.part(kind), k = kind === "head" ? 1 : 1 / LIMB_SCALE;
+    const own: PartArt = { tex: r.tex, cw: r.cw * k, ch: r.ch * k, W: r.W, H: r.H };
+    arts.set(id, own);
+    return own;
+  }
   const d = PXDEF[key];
   let art: PartArt | null = null;
   if (d) {
@@ -183,6 +201,13 @@ const crawls = new Map<string, CrawlArt | null>();
 export function crawlArt(key: string, lArm: boolean, rArm: boolean, noHead: boolean): CrawlArt | null {
   const id = key + ":c" + (lArm ? "L" : "") + (rArm ? "R" : "") + (noHead ? "H" : "");
   if (crawls.has(id)) return crawls.get(id) ?? null;
+  const rigSet = PX[key]?.rig;
+  if (rigSet) {   // the monster's own crawler: its skeleton without legs, hips torn, and an arm or the head gone as well if they are
+    const mask = LEGS | (lArm ? L_ARM : 0) | (rArm ? R_ARM : 0) | (noHead ? HEAD : 0), H = PX[key].regions.H;
+    const own: CrawlArt = { tex: rigSet.tex("crawl", 0, mask), texB: rigSet.tex("crawl", 2, mask), keep: H - legRows(H), H };
+    crawls.set(id, own);
+    return own;
+  }
   const d = PXDEF[key];
   let art: CrawlArt | null = null;
   if (d) {

@@ -29,6 +29,8 @@ import { STUMBLE_DIST } from "../../src/enemies/Corpse";
 
 let hitscan: (dir: THREE.Vector3, dmg: number, wIdx: number) => void;
 let loadLevel: (i: number) => void;
+let spawnEnemy: (ch: string, x: number, z: number, summoned?: boolean) => unknown;
+let rigTex: (role: string, i: number, mask: number, mirror?: boolean) => THREE.Texture;
 let enemyTick: (dt: number) => number | undefined | boolean;
 let headTick: (dt: number) => void, gibTick: (dt: number) => void, partTick: (dt: number) => void, goreTick: (dt: number) => void;
 let buildParticles: () => void, resetGibs: () => void, resetDecals: () => void;
@@ -51,6 +53,8 @@ type Foe = {
 type Part = { kind: number; x: number; y: number; z: number; vx: number; vy: number; rest: boolean; sz: number; sp: THREE.Sprite };
 
 const N = 24;
+/** The monsters the presentation tests run over: the ghoul (a rig) and the thrall (legacy pixel art, whose frames and fall are as they always were). */
+const PRESENTED = ["z", "t"] as const;
 
 beforeAll(async () => {
   installDomStubs();
@@ -58,7 +62,7 @@ beforeAll(async () => {
   (HTMLElement.prototype as unknown as { requestPointerLock: () => void }).requestPointerLock = () => {};
   (document as unknown as { exitPointerLock: () => void }).exitPointerLock = () => {};
   ({ hitscan } = await import("../../src/weapons/Hitscan"));
-  ({ loadLevel } = await import("../../src/world/LevelLoader"));
+  ({ loadLevel, spawnEnemy } = await import("../../src/world/LevelLoader") as never);
   ({ headTick } = await import("../../src/enemies/Death") as never);
   ({ gibTick, resetGibs } = await import("../../src/fx/Gibs"));
   ({ partTick, buildParticles } = await import("../../src/fx/Particles") as never);
@@ -74,6 +78,7 @@ beforeAll(async () => {
   TEX = await import("../../src/fx/GoreTex");
   ({ crawlFactor } = await import("../../src/enemies/Sever") as never);
   PX = (await import("../../src/enemies/SpriteBaker")).PX as never;
+  rigTex = (role, i, mask, mirror) => (PX.z.rig as unknown as { tex: typeof rigTex }).tex(role, i, mask, mirror);
   await import("../../src/main");
   const newGame = [...document.querySelectorAll(".mbtn")].find((b) => b.textContent?.includes("NEW GAME"));
   if (!newGame) throw new Error("the NEW GAME menu row is gone — this file drives the game through it");
@@ -83,7 +88,7 @@ beforeAll(async () => {
 afterAll(() => { clearAllTimers(); clearScheduled(); });
 
 /** Loads level 1 and lays an open arena over it (floor `floorAt`, a wall column where `wallAt` says), one zombie alone at its middle, the gore pools fresh. */
-function arena(floorAt: (gx: number, gz: number) => number, wallAt: (gx: number, gz: number) => boolean = () => false): Foe {
+function arena(floorAt: (gx: number, gz: number) => number, wallAt: (gx: number, gz: number) => boolean = () => false, key = "z"): Foe {
   loadLevel(1);
   world.grid = Array.from({ length: N }, (_, gz) => Array.from({ length: N }, (_, gx) => (wallAt(gx, gz) ? "#" : ".")));
   world.GW = N; world.GH = N;
@@ -93,7 +98,7 @@ function arena(floorAt: (gx: number, gz: number) => number, wallAt: (gx: number,
   resetGibs(); resetDecals(); buildParticles(); headPool.heads.length = 0;
   S.beheads = 0;
   const foes = world.enemies as unknown as Foe[];
-  const z = foes.find((e) => e.key === "z" && !e.elite)!;
+  const z = (foes.find((e) => e.key === key && !e.elite) ?? spawnEnemy(key, 25, 25, true)) as unknown as Foe;
   for (const o of foes) if (o !== z) { o.dead = true; o.gone = true; }
   z.x = 25; z.z = 25; z.fy = floorHeightAt(z.x, z.z); z.dormant = false; z.hp = 50; z.maxhp = 50; z.dead = false; z.gone = false; z.sever = {}; z.severKey = undefined; z.deathKind = 0; z.deathT = 0;
   z.kx = 0; z.kz = 0; z.speed = 0.0001; z.cool = 9999; z.aware = false; z.stun = 0; z.slow = 1; z.hurt = 0;
@@ -160,12 +165,12 @@ describe.each([0, 1.2, 4.2])("on a floor of %s", (fy) => {
       expect(SPURT.spurtCount(), "and it runs dry").toBe(0);
     });
 
-    it("staggers a step before it falls: on its feet for .28 s and swaying, then down by .7 s, and a step further along the shot than a plain kill", () => {
-      const plain = arena(flat(fy));
+    it.each(PRESENTED)("staggers a step before it falls: on its feet for .28 s and swaying, then down by .7 s, and a step further along the shot than a plain kill (%s)", (key) => {
+      const plain = arena(flat(fy), undefined, key);
       shoot(plain, -0.1, 0, plain.hp);   // a body shot that kills, no more: the game's own knock, with no neck to stumble from
       expect(plain.deathKind).toBe(1);
       const plainKx = plain.kx;
-      const z = arena(flat(fy));
+      const z = arena(flat(fy), undefined, key);
       shoot(z, 0.38, 0, 30);
       expect(z.deathKind).toBe(2);
       expect(z.kx, "the body's knock is the game's own and nothing more: the stumble is the sprite's, not another 1.4 on the body's velocity").toBeCloseTo(plainKx, 0);
@@ -175,7 +180,10 @@ describe.each([0, 1.2, 4.2])("on a floor of %s", (fy) => {
       expect(Math.abs(z.sp.material.rotation), "still up, swaying").toBeLessThan(0.14);
       expect(z.sp.position.y, "on its feet").toBeGreaterThan(fy + z.h * 0.4);
       frames(45);   // 1 s
-      expect(Math.abs(z.sp.material.rotation), "down").toBeCloseTo(Math.PI / 2, 1);
+      if (key === "z") {   // a rigged body's frames do the falling: the last death frame, headless, and no tilt but the sway's, which has died away
+        expect(z.sp.material.map, "down: the last death frame, without its head").toBe(rigTex("die", 4, 1, z.deathDir < 0));
+        expect(Math.abs(z.sp.material.rotation), "flat on its own frame, not tilted").toBeLessThan(0.01);
+      } else expect(Math.abs(z.sp.material.rotation), "down").toBeCloseTo(Math.PI / 2, 1);
       expect(z.sp.position.y).toBeCloseTo(fy + z.h * 0.18, 1);
       expect(z.sp.position.x - x0, "knocked back along the shot (+x), and then a step further, the sprite's own: STUMBLE_DIST").toBeGreaterThan(0.7 + STUMBLE_DIST * 0.95);
       expect(z.sp.position.x - z.x, "the sprite is ahead of the body by the whole stumble once it has stopped").toBeCloseTo(STUMBLE_DIST, 2);
@@ -196,8 +204,8 @@ describe.each([0, 1.2, 4.2])("on a floor of %s", (fy) => {
   });
 
   describe("an arm torn off", () => {
-    it("flies as a part with a trail, lands on the floor and lies, while the shoulder pumps and the monster walks on without it", () => {
-      const z = arena(flat(fy));
+    it.each(PRESENTED)("flies as a part with a trail, lands on the floor and lies, while the shoulder pumps and the monster walks on without it (%s)", (key) => {
+      const z = arena(flat(fy), undefined, key);
       z.hp = 100; z.maxhp = 100;
       shoot(z, 0, 0.8, 34);
       const s = z.sever!;
@@ -210,15 +218,19 @@ describe.each([0, 1.2, 4.2])("on a floor of %s", (fy) => {
       expect(a.vx, "along the shot").toBeGreaterThan(2);
       expect(SPURT.spurtCount(), "the stump").toBe(1);
       const armTex = (a.sp.material as THREE.SpriteMaterial).map;
-      expect(armTex).toBe(TEX.partArt("z", s.lArm ? "lArm" : "rArm")!.tex);
+      expect(armTex).toBe(TEX.partArt(key, s.lArm ? "lArm" : "rArm")!.tex);
       // it walks on: toward a player 12 units off, for a second and a half
       player.px = z.x - 12; player.pz = z.z; player.pyy = EYE + fy; z.speed = 3; z.cool = 0; z.aware = true; z.alertX = player.px; z.alertZ = player.pz; z.stun = 0; z.hurt = 0; z.atkAnim = 0;   // (a monster only runs its walk cycle once it has attacked: atkAnim is undefined until then)
-      const want = s.lArm ? [PX.z.noLArm, PX.z.noLArmB] : [PX.z.noRArm, PX.z.noRArmB];
+      const mask = s.lArm ? 2 : 4;
+      const want = key === "z"
+        ? [...[0, 1, 2, 3, 4, 5].map((i) => rigTex("walk", i, mask)), rigTex("idle", 0, mask)]   // a rig: its whole walk cycle, and standing, without the arm
+        : s.lArm ? [PX[key].noLArm, PX[key].noLArmB] : [PX[key].noRArm, PX[key].noRArmB];
       const seen = new Set<unknown>();
       for (let i = 0; i < 90; i++) { frames(1); seen.add((z.sp.material as THREE.SpriteMaterial).map); }
-      expect(seen.has(PX.z.a) || seen.has(PX.z.b), "never whole again").toBe(false);
+      expect(seen.has(PX[key].a) || seen.has(PX[key].b) || seen.has(rigTex("walk", 0, 0)), "never whole again").toBe(false);
       expect([...seen].every((t) => want.includes(t as never)), "armless frames only").toBe(true);
-      expect(seen.size, "it still walks: both frames").toBe(2);
+      if (key === "z") expect(seen.size, "it still walks: its cycle, through at least four of its six steps").toBeGreaterThanOrEqual(4);
+      else expect(seen.size, "it still walks: both frames").toBe(2);
       frames(60 * 6);
       expect(a.rest).toBe(true);
       expect(a.y).toBeCloseTo(fy + a.sz * 0.5, 5);
@@ -227,8 +239,8 @@ describe.each([0, 1.2, 4.2])("on a floor of %s", (fy) => {
   });
 
   describe("the legs torn off", () => {
-    it("the legs fly, the hip pumps, and the monster drops to a crawl on a sprite and a hitbox of its own, dragging a smear", () => {
-      const z = arena(flat(fy));
+    it.each(PRESENTED)("the legs fly, the hip pumps, and the monster drops to a crawl on a sprite and a hitbox of its own, dragging a smear (%s)", (key) => {
+      const z = arena(flat(fy), undefined, key);
       z.hp = 100; z.maxhp = 100;
       const h0 = z.h;
       shoot(z, -0.4, 0, 34);
@@ -237,18 +249,24 @@ describe.each([0, 1.2, 4.2])("on a floor of %s", (fy) => {
       const legs = parts().filter((p) => p.kind === 3);
       expect(legs, "the legs").toHaveLength(1);
       expect(SPURT.spurtCount(), "the hip").toBe(1);
-      expect(z.h, "shorter: the hitbox is the visible body").toBeCloseTo(h0 * crawlFactor("z"), 9);
-      expect(z.sp.scale.y, "and so is the sprite").toBeCloseTo(h0 * crawlFactor("z"), 9);
-      expect((z.sp.material as THREE.SpriteMaterial).map, "on the crawler's own sprite").toBe(TEX.crawlArt("z", false, false, false)!.tex);
+      expect(z.h, "shorter: the hitbox is the visible body").toBeCloseTo(h0 * crawlFactor(key), 9);
+      expect(z.sp.scale.y, "and so is the sprite").toBeCloseTo(h0 * crawlFactor(key), 9);
+      expect((z.sp.material as THREE.SpriteMaterial).map, "on the crawler's own sprite").toBe(TEX.crawlArt(key, false, false, false)!.tex);
       player.px = z.x - 12; player.pz = z.z; player.pyy = EYE + fy; z.speed = 3; z.cool = 0; z.aware = true; z.alertX = player.px; z.alertZ = player.pz; z.stun = 0; z.hurt = 0; z.slow = 1; z.atkAnim = 0;
       const streaks0 = SP.splatStats().streaks;
-      const crawl = TEX.crawlArt("z", false, false, false)!;
+      const crawl = TEX.crawlArt(key, false, false, false)!;
       const seen = new Set<unknown>();
       let x0 = z.x;
       for (let i = 0; i < 150; i++) { frames(1); seen.add((z.sp.material as THREE.SpriteMaterial).map); }
-      expect(seen.has(PX.z.a) || seen.has(PX.z.b), "never whole again").toBe(false);
-      expect([...seen].every((t) => t === crawl.tex || t === crawl.texB), "the crawler's frames only").toBe(true);
-      expect(seen.size, "and it walks: both").toBe(2);
+      expect(seen.has(PX[key].a) || seen.has(PX[key].b) || seen.has(rigTex("walk", 0, 0)), "never whole again").toBe(false);
+      if (key === "z") {   // a rig: its own crawl cycle (four steps), and its crawler standing still
+        const cycle = [0, 1, 2, 3].map((i) => rigTex("crawl", i, 8));
+        expect([...seen].every((t) => cycle.includes(t as never) || t === rigTex("crawlIdle", 0, 8)), "the crawler's frames only").toBe(true);
+        expect(seen.size, "and it crawls: its cycle, through at least three of its four steps").toBeGreaterThanOrEqual(3);
+      } else {
+        expect([...seen].every((t) => t === crawl.tex || t === crawl.texB), "the crawler's frames only").toBe(true);
+        expect(seen.size, "and it walks: both").toBe(2);
+      }
       expect(z.sp.position.y, "on the floor it stands on, by its own height").toBeCloseTo(fy + z.h / 2, 1);
       expect(z.x - x0, "it crawled toward the player").toBeLessThan(-0.5);
       expect(SP.splatStats().streaks - streaks0, "a smear every thirty-odd frames").toBeGreaterThanOrEqual(3);

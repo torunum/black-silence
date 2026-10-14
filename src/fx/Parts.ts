@@ -13,7 +13,7 @@ import { headPool } from "./Heads";
 import { bloodFx } from "./ImpactFx";
 import { goutFx } from "./GoreDrops";
 import { splatFloor } from "./Splats";
-import { partArt, type PartKind } from "./GoreTex";
+import { LIMB_SCALE, partArt, type PartKind } from "./GoreTex";
 import { fxRange } from "./FxRand";
 import { quietly } from "./Quiet";
 
@@ -42,7 +42,7 @@ import { quietly } from "./Quiet";
 
 export const PART_MAX = 20;
 /** How much larger than the monster's own scale a limb is drawn (a head is true size). */
-export const PART_SCALE = 1.3;
+export const PART_SCALE = LIMB_SCALE;
 
 /** 0 a head, 1 a left arm, 2 a right arm, 3 the legs. */
 export const KINDS: readonly PartKind[] = ["head", "lArm", "rArm", "legs"];
