@@ -34,7 +34,7 @@ let hitscan: (dir: THREE.Vector3, dmg: number, wIdx: number) => void;
 let loadLevel: (i: number) => void;
 let gibTick: (dt: number) => void, resetGibs: () => void, spawnGibs: (x: number, y: number, z: number, n: number, pow: number, wood?: boolean) => void;
 let partTick: (dt: number) => void, buildParticles: () => void, spawnP: (...a: number[]) => void;
-let addPool: (x: number, z: number, s: number) => void, resetDecals: () => void, poolMat: THREE.Material, gibGeo: THREE.BufferGeometry;
+let addPool: (x: number, z: number, s: number) => void, resetDecals: () => void, poolMat: THREE.Material, gibGeo: THREE.BufferGeometry, woodGeo: THREE.BufferGeometry;
 let headTick: (dt: number) => void, spawnHead: (e: unknown, info: unknown) => void, headPool: { heads: Array<Record<string, unknown>> };
 let enemyTick: (dt: number) => void, breakProp: (p: unknown) => void;
 let projTick: (dt: number) => void, projectiles: { orbs: unknown[] };
@@ -46,7 +46,7 @@ beforeAll(async () => {
   (document as unknown as { exitPointerLock: () => void }).exitPointerLock = () => {};
   ({ hitscan } = await import("../../src/weapons/Hitscan"));
   ({ loadLevel } = await import("../../src/world/LevelLoader"));
-  ({ gibTick, resetGibs, spawnGibs, gibGeo } = await import("../../src/fx/Gibs"));
+  ({ gibTick, resetGibs, spawnGibs, gibGeo, woodGeo } = await import("../../src/fx/Gibs"));
   ({ partTick, buildParticles, spawnP } = await import("../../src/fx/Particles") as never);
   ({ addPool, resetDecals, poolMat } = await import("../../src/fx/Decals"));
   ({ headTick, spawnHead } = await import("../../src/enemies/Death") as never);
@@ -82,7 +82,7 @@ function arena(floorAt: (gx: number, gz: number) => number): Foe {
 }
 const flat = (fy: number) => () => fy;
 const scene = () => renderState.scene as THREE.Scene;
-const gibMeshes = () => scene().children.filter((o) => (o as THREE.Mesh).geometry === gibGeo) as THREE.Mesh[];
+const gibMeshes = () => scene().children.filter((o) => [gibGeo, woodGeo].includes((o as THREE.Mesh).geometry)) as THREE.Mesh[];
 const poolMeshes = () => scene().children.filter((o) => (o as THREE.Mesh).material === poolMat) as THREE.Mesh[];
 const sky = () => scene().children.filter((o) => o.type === "Points" && (o as THREE.Points).geometry.attributes.position.count === 1100).pop() as THREE.Points;   // the last one: arena() rebuilt the pool
 const settle = (secs: number): void => {

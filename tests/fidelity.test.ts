@@ -481,7 +481,7 @@ describe("SpriteBaker (texFromPx/buildSprites) vs. reference", () => {
     // the head and the arms where the rig's own anatomy puts them. Everything else is still the reference's, region for region.
     for (const key of Object.keys(PX)) {
       if (RIGS[key]) {
-        const g = RIGS[key].regions, ref = refModule.PX[key].regions as { W: number; H: number };
+        const g = RIGS[key].regions, ref = refModule.PX[key].regions as unknown as { W: number; H: number };
         expect({ W: g.W, H: g.H }, `${key}: a rig keeps the legacy grid's size`).toEqual({ W: ref.W, H: ref.H });
         expect((PX[key] as unknown as Record<string, unknown>).regions, key).toEqual(g);
         continue;
@@ -537,9 +537,7 @@ describe("SpriteBaker (texFromPx/buildSprites) vs. reference", () => {
   it("buildSprites' body is identical to the reference once TS-only syntax is stripped — the dismemberment mask arithmetic (armTop, armBot, region rectangles) untouched — save the one line that hands a rigged creature to its rig", () => {
     // DIVERGENCE (enemies plan, Task 1): one line, `if(RIGS[k]){PX[k]=rigSprite(RIGS[k]);burnLegacySpriteDraws(d);continue;}`, at the top
     // of the loop. It is taken out here, and only it: any other change to the body, or a second such line, fails this.
-    const RIG_LINE = /^[ 	]*if(RIGS[k]){PX[k]=rigSprite(RIGS[k]);burnLegacySpriteDraws(d);continue;}[^
-]*
-/m;
+    const RIG_LINE = /^[ \t]*if\(RIGS\[k\]\)\{PX\[k\]=rigSprite\(RIGS\[k\]\);burnLegacySpriteDraws\(d\);continue;\}[^\n]*\n/m;
     const moduleSource = readModuleSource("src/enemies/SpriteBaker.ts");
     const body = extractFunctionBody(moduleSource, "buildSprites");
     expect(RIG_LINE.test(body), "the rig line is where the divergence is pinned").toBe(true);

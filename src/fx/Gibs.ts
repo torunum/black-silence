@@ -7,15 +7,31 @@ import { getScene } from "../render/SceneRef";
 import { blood } from "./Particles";
 import { addPool } from "./Decals";
 import { floorHeightAt } from "../world/Collision";
+import { quietly } from "./Quiet";
 
 /**
  * GIBS — flying body-part chunks spawned on overkill/dismemberment/prop
  * destruction, pooled and recycled the same way as Particles.ts and
  * Decals.ts.
  *
- * Copied verbatim from reference/sonsurum.html lines 1618-1644 (see
- * tests/support/reference.ts's REF.particlesDecalsGibs) — every material
- * colour, velocity range and spin range is art and must never change.
+ * Copied from reference/sonsurum.html lines 1618-1644 (see
+ * tests/support/reference.ts's REF.particlesDecalsGibs) — every velocity
+ * range, spin range and draw is art and must never change.
+ *
+ * **One thing here is not the reference's: how a flesh gib looks** (enemies
+ * plan, Task 1). The reference's gibs are .13 boxes in three flat Lambert
+ * colours, one of them a pale grey (`0x9a948a`), and near the camera they
+ * read as large pale squares: placeholder boxes, not meat. A flesh gib is now
+ * a lump — a faceted, lopsided ball of the same size — in three materials that
+ * are what a body comes apart into: raw **meat**, **organ** and **bone**, each
+ * with hard dark creases and a blood-smeared underside painted in the vertex
+ * colours (flat tones, like the weapons and the rig's monsters, no texture
+ * and no canvas). The three-way pick (`(Math.random()*3)|0`), the count, the
+ * sizes, the throws and the physics are exactly the reference's, draw for draw,
+ * so no fixture's gameplay moves; the wood gibs of a smashed crate are still
+ * the reference's boxes, in the reference's colours (`woodGeo`, `gibMatsWood`).
+ * `tests/behavior/fx.test.ts` pins the divergence: everything of a flesh gib
+ * but its geometry and colour is still compared with the reference's.
  *
  * gibGeo and gibMatsFlesh are exported alongside spawnGibs/gibTick/
  * resetGibs/spawnGibChunk because legacy.js's throwFlesh() builds its own
@@ -48,17 +64,51 @@ export interface Gib {
   wood: boolean;
 }
 
+/** Raw meat, organ, bone: the three things a flesh gib can be. The index is the reference's (`gibMatsFlesh[0]` is also the thrown flesh of `throwFlesh` and the big chunk of `spawnGibChunk`). Their colours multiply the lump's vertex colours (`chunkGeometry`). */
 export const gibMatsFlesh = [
-  new THREE.MeshLambertMaterial({ color: 0x6e1208 }),
-  new THREE.MeshLambertMaterial({ color: 0x3a0c06 }),
-  new THREE.MeshLambertMaterial({ color: 0x9a948a }),
+  new THREE.MeshLambertMaterial({ color: 0xa8281a, vertexColors: true }),   // meat: wet, red
+  new THREE.MeshLambertMaterial({ color: 0x8a3a58, vertexColors: true }),   // organ: a bruised purple-pink
+  new THREE.MeshLambertMaterial({ color: 0xcdbf98, vertexColors: true }),   // bone: yellowed ivory, not grey
 ];
 export const gibMatsWood = [
   new THREE.MeshLambertMaterial({ color: 0x4a3826 }),
   new THREE.MeshLambertMaterial({ color: 0x2e2418 }),
   new THREE.MeshLambertMaterial({ color: 0x6a543a }),
 ];
-export const gibGeo = new THREE.BoxGeometry(.13, .13, .13);
+/** A hash of a point to [0,1): the lump's own dice (no `Math.random`: the same lump every run). */
+function hash3(x: number, y: number, z: number): number {
+  let h = (Math.imul(Math.round(x * 4000), 374761393) + Math.imul(Math.round(y * 4000), 668265263) + Math.imul(Math.round(z * 4000), 1442695041)) | 0;
+  h = Math.imul(h ^ (h >>> 13), 1274126177);
+  return (((h ^ (h >>> 16)) >>> 0) & 0xffff) / 0x10000;
+}
+
+/**
+ * A lump of flesh the size of the reference's .13 box: a faceted ball with every point pushed in or out by its own hash
+ * (the same push for the same point, so it stays whole), stretched a little, with flat per-face tones in four steps
+ * painted in its vertex colours and a blood-smeared underside. Built with a uuid's four draws, exactly as the box was.
+ */
+function chunkGeometry(): THREE.BufferGeometry {
+  const g = new THREE.IcosahedronGeometry(0.085, 1);
+  const p = g.getAttribute("position") as THREE.BufferAttribute;
+  for (let i = 0; i < p.count; i++) {
+    const x = p.getX(i), y = p.getY(i), z = p.getZ(i), k = 0.78 + 0.42 * hash3(x, y, z);
+    p.setXYZ(i, x * k * 1.12, y * k * 0.86, z * k * 1.05);
+  }
+  g.computeVertexNormals();
+  const c = new Float32Array(p.count * 3), TONES = [0.5, 0.7, 0.88, 1];
+  for (let t = 0; t < p.count; t += 3) {
+    const cx = (p.getX(t) + p.getX(t + 1) + p.getX(t + 2)) / 3, cy = (p.getY(t) + p.getY(t + 1) + p.getY(t + 2)) / 3, cz = (p.getZ(t) + p.getZ(t + 1) + p.getZ(t + 2)) / 3;
+    const tone = TONES[Math.floor(hash3(cx + 1, cy + 2, cz + 3) * 4)], wet = cy < -0.012 ? 1 : 0;   // the underside is smeared
+    for (let v = 0; v < 3; v++) { c[(t + v) * 3] = tone; c[(t + v) * 3 + 1] = tone * (wet ? 0.62 : 1); c[(t + v) * 3 + 2] = tone * (wet ? 0.55 : 1); }
+  }
+  g.setAttribute("color", new THREE.BufferAttribute(c, 3));
+  return g;
+}
+
+/** A flesh gib's shape. (Shared by every level, never disposed.) */
+export const gibGeo: THREE.BufferGeometry = chunkGeometry();
+/** A crate's splinters keep the reference's .13 box. Built without drawing a uuid (`quietly`): `gibGeo` took the box's place in the stream. */
+export const woodGeo: THREE.BufferGeometry = quietly(() => new THREE.BoxGeometry(.13, .13, .13));
 
 const GIBMAX = 110;
 
@@ -75,7 +125,8 @@ export function spawnGibs(x: number, y: number, z: number, n: number, pow: numbe
   for (let i = 0; i < n; i++) {
     let g: Gib;
     if (gibs.length >= GIBMAX) { g = gibs.shift()!; }
-    else { g = { m: new THREE.Mesh(gibGeo, mats[0]) } as unknown as Gib; scene.add(g.m); }
+    else { g = { m: new THREE.Mesh(wood ? woodGeo : gibGeo, mats[0]) } as unknown as Gib; scene.add(g.m); }
+    g.m.geometry = wood ? woodGeo : gibGeo;
     g.m.material = mats[(Math.random() * 3) | 0];
     g.m.position.set(x, y, z);
     g.vx = rnd(-1, 1) * pow; g.vy = rnd(.5, 1.4) * pow; g.vz = rnd(-1, 1) * pow;
@@ -117,6 +168,7 @@ export function spawnGibChunk(x: number, y: number, z: number, dirx: number, dir
   let g: Gib;
   if (gibs.length >= GIBMAX) { g = gibs.shift()!; }
   else { g = { m: new THREE.Mesh(gibGeo, gibMatsFlesh[0]) } as unknown as Gib; scene.add(g.m); }
+  g.m.geometry = gibGeo;
   g.m.material = gibMatsFlesh[0];
   g.m.position.set(x, y, z); g.m.scale.setScalar(2.2);
   g.vx = dirx * 5 + rnd(-2, 2); g.vy = rnd(3, 5); g.vz = dirz * 5 + rnd(-2, 2);
