@@ -303,6 +303,38 @@ describe("the game selects its frames", () => {
   });
 });
 
+describe("the parts that fly are the ghoul's own", () => {
+  it("the flying head, arms and legs are the rig's parts, baked from its skeleton: the same textures every time, in its own set", async () => {
+    const TEX = await import("../../src/fx/GoreTex");
+    const { makePart } = await import("../../src/fx/Parts");
+    const { headPool } = await import("../../src/fx/Heads");
+    const set = PX.z.rig as unknown as { all(): unknown[]; part(k: string): { tex: unknown } };
+    for (const k of ["head", "lArm", "rArm", "legs"] as const) {
+      const art = TEX.partArt("z", k)!;
+      expect(set.all(), `${k}: baked by the rig`).toContain(art.tex);
+      expect(TEX.partArt("z", k)!.tex, "and kept").toBe(art.tex);
+      expect(set.part(k).tex).toBe(art.tex);
+    }
+    // a legacy monster's parts are still cut from its pixel art, not from any rig
+    expect(TEX.partArt("t", "head")!.tex).not.toBe(TEX.partArt("z", "head")!.tex);
+    expect((PX.t.rig as unknown), "t has no rig set to contain it").toBeUndefined();
+    // and the sprite that is thrown is that texture
+    headPool.heads.length = 0;
+    const host = { x: 5, z: 5, h: 1.65, w: 1.18, fy: 0, key: "z" };
+    const part = makePart(0, host, { x: 5, y: 1.5, z: 5, vx: 1, vy: 4, vz: 0, spin: 3 })!;
+    expect((part.sp.material as { map: unknown }).map, "the head that flies is the ghoul's own").toBe(TEX.partArt("z", "head")!.tex);
+    expect((part.sp.material as { map: unknown }).map).not.toBe(PX.z.a);
+    headPool.heads.length = 0;
+  });
+
+  it("the crawler is the rig's too: crawlArt gives its crawl frames, with the arm or the head gone as asked", async () => {
+    const TEX = await import("../../src/fx/GoreTex");
+    expect(TEX.crawlArt("z", false, false, false)!.tex).toBe(rig().tex("crawl", 0, LEGS));
+    expect(TEX.crawlArt("z", true, false, false)!.tex).toBe(rig().tex("crawl", 0, LEGS | L_ARM));
+    expect(TEX.crawlArt("z", false, true, true)!.texB).toBe(rig().tex("crawl", 2, LEGS | R_ARM | HEAD));
+  });
+});
+
 describe("a legacy enemy is unchanged", () => {
   it("the plague bloat has no rig and its legacy frames: it dies on die1 then die2, tilting as it always did", () => {
     expect(PX.t.rig).toBeUndefined();

@@ -621,6 +621,27 @@ import { MONOLOGUE } from "../../src/content/monologue";
  *     game's dice (now `t` is the game's own `deathT/.45` and the sprite's stagger is `tf`, which only the sprite reads), and the stumble that the body takes along the shot is
  *     the sprite's own offset (`stumbleX`/`stumbleZ`, `Corpse.ts`), not a knock on `kx`/`kz`, which the simulation reads.
  * A change of *when* a legacy particle lands reorders every legacy draw after it, in a fight that is hit blind thousands of times. This fixture is the net for that.
+ *
+ * ## The enemies plan, Task 1 — regeneration: the ghoul is a rig (digest only, 13 frames)
+ *
+ * `docs/superpowers/plans/2026-10-13-enemies.md`, Task 1: the rotting ghoul (`z`) is baked from a skeleton (`src/enemies/rig/`) and animated by it
+ * (`src/enemies/RigAnim.ts`): a walk of six, an idle, an attack of three, pain, five frames of death. The rig bake draws nothing from `Math.random`, and
+ * `burnLegacySpriteDraws` consumes exactly what the legacy bake of the ghoul drew (52 stump draws, 17 textures x 2 uuids; `tests/enemies/legacyDraws.test.ts` measures
+ * the real bake), so the dice every level rolls after boot are the dice they always were.
+ * The procedure was this header's own (a throwaway copy of the tree, `src/` and `tests/`, with the digest's inputs written out unhashed beside the run; the
+ * tree the task started from, `1cde062`, **reproduced all three committed fixtures byte for byte under the same instrumentation**, so the instrumentation moves nothing;
+ * then the new tree, and each sampled frame's child lists compared as multisets, keyed by type, position and visibility; the fixtures themselves compared field by field
+ * against `git show HEAD:` by a node script; neither committed).
+ *  - `camera` — all seven components **identical in all 90 sampled frames**.
+ *  - `hud` — all eight fields **identical in all 90 sampled frames**; the run still ends `HEALTH8`.
+ *  - `scene.count` — **identical in all 90** (141..153): nothing was added or removed.
+ *  - `scene.digest` — differs in **13 of 90 frames** (first 270, last 880); 90 distinct digests before and after. All 13 are one scene child, the ghoul's sprite, whose
+ *    texture name changed because it now shows a frame of its walk cycle: `z.a` -> `z.walk0` (3), `z.walk1` (1), `z.walk2` (2), `z.walk4` (2), `z.walk5` (1),
+ *    `z.b` (1: the fourth step's texture is the legacy `b` slot's alias) and `z.atk` -> `z.atkRecover` (3: a ghoul at the end of its swing). Position, visibility and colour of every child are identical; no
+ *    child was added, removed or moved. (The legacy ghoul swapped `a`/`b` only after its first attack, a quirk the rig does not share; that is why a ghoul that has never
+ *    attacked now shows walk poses where it showed `a`.)
+ * The structural claim of the plan, "the scene digest moves only where a ghoul selects a new frame role or a gib's look changes", is therefore held exactly: no gib
+ * is sampled in this run (its colour changes are in the other two files).
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

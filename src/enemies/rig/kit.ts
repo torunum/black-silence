@@ -74,6 +74,8 @@ export interface Frame {
   floor: number;
   /** The view the billboard is drawn from: the monster turned `yaw` about the vertical, looked down on at `pitch`. */
   yaw: number; pitch: number;
+  /** Rig metres the figure is moved to the right in the frame: a monster turned in its view stands left of its own middle. */
+  shift: number;
 }
 
 export type Role = "walk" | "idle" | "atk" | "pain" | "die" | "crawl" | "crawlIdle" | "crawlAtk" | "crawlPain" | "crawlDie";

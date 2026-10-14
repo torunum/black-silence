@@ -111,19 +111,19 @@ const die: RigPose[] = [
   make({ spine: [0.1, 0, 0.14], chest: [-0.12, 0.1, 0.18], neck: [-0.15, 0, 0], head: [-0.2, 0.2, 0.1], jaw: 0.8, claw: 0.1, gut: 0.5,
     aL: { f: 0.1, out: 0.55, e: 0.25, w: 0 }, aR: { f: 0.3, out: 0.65, e: 0.3, w: 0 },
     lL: { f: 1.35, k: 1.95, out: 0.15 }, lR: { f: 1.2, k: 1.85, out: 0.15 },
-    ground: false, root: [0.06, -0.4, -0.04], floor: 0.93 }),
+    ground: false, root: [-0.04, -0.4, -0.04], floor: 0.93 }),
   make({ pelvis: [0, 0, 0.55], spine: [0.1, 0, 0.3], chest: [-0.05, 0, 0.3], neck: [-0.1, 0, 0.1], head: [-0.1, 0.1, 0.3], jaw: 0.6, claw: 0.2, gut: 0.8,
     aL: { f: 0.2, out: 0.4, e: 0.3 }, aR: { f: -0.2, out: 0.35, e: 0.4 },
     lL: { f: 1.0, k: 1.7, out: 0.2 }, lR: { f: 0.6, k: 1.6, out: 0.2 },
-    ground: false, root: [-0.16, -0.44, 0], floor: 0.866 }),
+    ground: false, root: [-0.26, -0.44, 0], floor: 0.866 }),
   make({ pelvis: [0, 0, 1.15], spine: [0.1, 0, 0.2], chest: [0.0, 0, 0.2], neck: [0, 0, 0.1], head: [0.1, 0.1, 0.25], jaw: 0.5, claw: 0.3, gut: 0.3,
     aL: { f: -0.1, out: 0.45, e: 0.5 }, aR: { f: 0.3, out: 0.55, e: 0.7 },
     lL: { f: 1.35, k: 2.1, out: 0.25 }, lR: { f: 0.9, k: 1.95, out: 0.2 },
-    ground: false, root: [-0.23, -0.5, 0], floor: 0.78 }),
+    ground: false, root: [-0.33, -0.5, 0], floor: 0.78 }),
   make({ pelvis: [0, 0, 1.4], spine: [0.1, 0, 0.1], chest: [0.05, 0, 0.1], neck: [0, 0, 0.05], head: [0.1, 0.1, 0.2], jaw: 0.5, claw: 0.2, gut: 0,
     aL: { f: -0.2, out: 0.5, e: 0.5 }, aR: { f: 0.4, out: 0.6, e: 0.8 },
     lL: { f: 1.45, k: 2.2, out: 0.3 }, lR: { f: 1.1, k: 2.05, out: 0.3 },
-    ground: false, root: [-0.25, -0.52, 0], floor: 0.7 }),
+    ground: false, root: [-0.35, -0.52, 0], floor: 0.7 }),
 ];
 
 /** Walking on its arms, with the legs gone: the hips drag, the body is propped up on its arms and the head comes up to look. */
@@ -154,13 +154,13 @@ const crawlPain: RigPose[] = [
 const crawlDie: RigPose[] = [
   make({ ground: false, floor: 0.975, root: [0.02, -0.7, 0.05], spine: [0.0, 0, 0.1], chest: [-0.2, 0, 0.1], neck: [-0.3, 0, 0], head: [-0.5, 0, 0.1], jaw: 1.0, claw: 0, gut: -0.4,
     aL: { f: 1.5, out: 0.6, e: 0.2, w: 0 }, aR: { f: 1.4, out: 0.6, e: 0.2, w: 0 } }),
-  make({ ground: false, floor: 0.93, root: [0.02, -0.7, 0], pelvis: [0, 0, 0.45], spine: [0.3, 0, 0.1], chest: [0.1, 0, 0.1], neck: [-0.1, 0, 0], head: [-0.2, 0.1, 0.1], jaw: 0.7, claw: 0.1, gut: 0.4,
+  make({ ground: false, floor: 0.93, root: [-0.10, -0.7, 0], pelvis: [0, 0, 0.45], spine: [0.3, 0, 0.1], chest: [0.1, 0, 0.1], neck: [-0.1, 0, 0], head: [-0.2, 0.1, 0.1], jaw: 0.7, claw: 0.1, gut: 0.4,
     aL: { f: 0.9, out: 0.7, e: 0.4 }, aR: { f: 1.0, out: 0.7, e: 0.4 } }),
-  make({ ground: false, floor: 0.866, root: [-0.12, -0.66, 0], pelvis: [0, 0, 0.95], spine: [0.2, 0, 0.1], chest: [0.1, 0, 0.1], neck: [0, 0, 0], head: [0.1, 0.1, 0.1], jaw: 0.5, claw: 0.2, gut: 0.2,
+  make({ ground: false, floor: 0.866, root: [-0.24, -0.66, 0], pelvis: [0, 0, 0.95], spine: [0.2, 0, 0.1], chest: [0.1, 0, 0.1], neck: [0, 0, 0], head: [0.1, 0.1, 0.1], jaw: 0.5, claw: 0.2, gut: 0.2,
     aL: { f: 0.5, out: 0.9, e: 0.3 }, aR: { f: 0.7, out: 0.9, e: 0.3 } }),
-  make({ ground: false, floor: 0.78, root: [-0.2, -0.64, 0], pelvis: [0, 0, 1.3], spine: [0.1, 0, 0.1], chest: [0.1, 0, 0.1], neck: [0.1, 0, 0], head: [0.2, 0.1, 0.1], jaw: 0.5, claw: 0.2, gut: 0.1,
+  make({ ground: false, floor: 0.78, root: [-0.32, -0.64, 0], pelvis: [0, 0, 1.3], spine: [0.1, 0, 0.1], chest: [0.1, 0, 0.1], neck: [0.1, 0, 0], head: [0.2, 0.1, 0.1], jaw: 0.5, claw: 0.2, gut: 0.1,
     aL: { f: -0.1, out: 0.7, e: 0.5 }, aR: { f: 0.0, out: 0.7, e: 0.5 } }),
-  make({ ground: false, floor: 0.7, root: [-0.25, -0.64, 0], pelvis: [0, 0, 1.45], spine: [0.1, 0, 0.1], chest: [0.1, 0, 0.1], neck: [0.1, 0, 0], head: [0.3, 0.1, 0.1], jaw: 0.45, claw: 0.1, gut: 0,
+  make({ ground: false, floor: 0.7, root: [-0.37, -0.64, 0], pelvis: [0, 0, 1.45], spine: [0.1, 0, 0.1], chest: [0.1, 0, 0.1], neck: [0.1, 0, 0], head: [0.3, 0.1, 0.1], jaw: 0.45, claw: 0.1, gut: 0,
     aL: { f: -0.2, out: 0.75, e: 0.5 }, aR: { f: -0.1, out: 0.75, e: 0.5 } }),
 ];
 

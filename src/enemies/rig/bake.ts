@@ -52,7 +52,7 @@ function render(rig: Rig, p: RigPose, o: DrawOpts, w: number, h: number, ox: num
 export function renderBitmap(rig: Rig, p: RigPose, mask: number, crawl: boolean, mirror = false): Bitmap {
   const f = rig.frame, h = crawl ? Math.round(f.h * rig.crawlH) : f.h;
   const floor = p.floor ?? f.floor;
-  return render(rig, p, { mask }, f.w, h, f.w / 2, h * floor, mirror);
+  return render(rig, p, { mask }, f.w, h, f.w / 2 + f.shift * (f.h / f.worldH), h * floor, mirror);
 }
 
 /** A torn-off part on its own: `group` only, with its torn end, cropped to what it covers. Returns the bitmap and its size in rig metres. */

@@ -35,10 +35,10 @@ const J = (name: string, parent: string | null, x: number, y: number, z: number)
 const joints: Joint[] = [
   J("pelvis", null, 0, 0.88, 0),
   J("spine", "pelvis", 0, 0.06, 0), J("chest", "spine", 0, 0.27, 0), J("neck", "chest", 0, 0.35, -0.02), J("head", "neck", 0, 0.085, -0.03), J("jaw", "head", 0, 0.035 * HEAD_K, -0.005 * HEAD_K),
-  J("shoulderL", "chest", -0.255, 0.27, 0), J("elbowL", "shoulderL", 0, -0.30, 0), J("wristL", "elbowL", 0, -0.28, 0),
-  J("shoulderR", "chest", 0.255, 0.27, 0), J("elbowR", "shoulderR", 0, -0.30, 0), J("wristR", "elbowR", 0, -0.28, 0),
-  J("hipL", "pelvis", -0.115, -0.04, 0), J("kneeL", "hipL", 0, -0.41, 0), J("ankleL", "kneeL", 0, -0.39, 0),
-  J("hipR", "pelvis", 0.115, -0.04, 0), J("kneeR", "hipR", 0, -0.41, 0), J("ankleR", "kneeR", 0, -0.39, 0),
+  J("shoulderL", "chest", -0.29, 0.27, 0), J("elbowL", "shoulderL", 0, -0.30, 0), J("wristL", "elbowL", 0, -0.28, 0),
+  J("shoulderR", "chest", 0.29, 0.27, 0), J("elbowR", "shoulderR", 0, -0.30, 0), J("wristR", "elbowR", 0, -0.28, 0),
+  J("hipL", "pelvis", -0.135, -0.04, 0), J("kneeL", "hipL", 0, -0.41, 0), J("ankleL", "kneeL", 0, -0.39, 0),
+  J("hipR", "pelvis", 0.135, -0.04, 0), J("kneeR", "hipR", 0, -0.41, 0), J("ankleR", "kneeR", 0, -0.39, 0),
 ];
 
 const part = (joint: string, group: PartGroup, draw: (c: Ctx) => void): RigPart => ({ joint, group, draw });
@@ -123,8 +123,8 @@ const parts: RigPart[] = [
   // ---- the body ----
   part("pelvis", "body", (c) => {
     const b = c.b;
-    b.cbox(-0.14, -0.08, -0.09, 0.14, 0.07, 0.085, 0.02, FLESH, { tex: blotchTex(1) });
-    b.box(-0.155, -0.15, -0.12, 0.155, 0.0, -0.09, CLOTH, { tex: clothTex });              // the rag round its hips
+    b.cbox(-0.165, -0.08, -0.09, 0.165, 0.07, 0.085, 0.02, FLESH, { tex: blotchTex(1) });
+    b.box(-0.18, -0.15, -0.12, 0.18, 0.0, -0.09, CLOTH, { tex: clothTex });              // the rag round its hips
   }),
   part("pelvis", "legs", (c) => {   // and the strips of it that hang down the legs: they go with them
     const b = c.b;
@@ -134,7 +134,7 @@ const parts: RigPart[] = [
   }),
   part("spine", "body", (c) => {
     const b = c.b, g = c.x("gut");
-    b.cbox(-0.135, 0, -0.07, 0.135, 0.28, 0.08, 0.025, FLESH, { tex: blotchTex(1.1) });
+    b.cbox(-0.155, 0, -0.07, 0.155, 0.28, 0.08, 0.025, FLESH, { tex: blotchTex(1.1) });
     b.prz([[-0.08, 0.04], [0.06, 0.03], [0.1, 0.12], [0.09, 0.22], [0.0, 0.245], [-0.09, 0.22], [-0.1, 0.12]], -0.079, -0.066, E.CAVITY);   // the wound in its belly, ragged
     b.prz([[-0.1, 0.22], [-0.02, 0.25], [0.05, 0.24], [0.04, 0.265], [-0.08, 0.275]], -0.085, -0.066, E.MEAT, { tex: meatTex });
     b.prz([[-0.1, 0.03], [0.1, 0.015], [0.12, 0.05], [-0.09, 0.07]], -0.085, -0.066, E.MEAT, { tex: meatTex });
@@ -154,8 +154,8 @@ const parts: RigPart[] = [
   }),
   part("chest", "body", (c) => {
     const b = c.b;
-    b.cbox(-0.2, 0, 0.0, 0.2, 0.33, 0.105, 0.035, FLESH, { tex: blotchTex(1) });             // the back and the sides
-    b.prz([[-0.235, 0.26], [-0.12, 0.385], [0.12, 0.385], [0.235, 0.26], [0.2, 0.2], [-0.2, 0.2]], -0.06, 0.09, FLESH, { r1: 0.97, tex: blotchTex(1.2) });    // the hunched shoulders, raised round its neck
+    b.cbox(-0.235, 0, 0.0, 0.235, 0.33, 0.105, 0.035, FLESH, { tex: blotchTex(1) });             // the back and the sides
+    b.prz([[-0.275, 0.26], [-0.13, 0.385], [0.13, 0.385], [0.275, 0.26], [0.235, 0.2], [-0.235, 0.2]], -0.06, 0.09, FLESH, { r1: 0.97, tex: blotchTex(1.2) });    // the hunched shoulders, raised round its neck
     b.prz([[-0.115, 0.04], [0.1, 0.035], [0.165, 0.12], [0.15, 0.27], [0.04, 0.3], [-0.1, 0.295], [-0.165, 0.2]], -0.083, -0.01, E.CAVITY);   // the cavity the ribs close over: torn, not a window
     b.prz([[-0.12, 0.3], [-0.04, 0.31], [-0.08, 0.35], [-0.15, 0.33]], -0.092, -0.07, FLESH);          // flaps of skin left hanging off its edge
     b.prz([[0.1, 0.035], [0.17, 0.12], [0.2, 0.06], [0.14, 0.0]], -0.092, -0.07, E.MEAT);
@@ -221,7 +221,7 @@ const cap = (joint: string, draw: (c: Ctx) => void): PartCap => ({ joint, draw }
 export const GHOUL: Rig = {
   key: "z",
   palette: GHOUL_PALETTE,
-  frame: { w: 72, h: 100, worldH: 2.14, floor: 0.975, yaw: 0.5, pitch: 0.05 },
+  frame: { w: 72, h: 100, worldH: 2.14, floor: 0.975, yaw: 0.5, pitch: 0.05, shift: 0.1 },
   crawlH: 17 / 24,
   joints, parts, stumps,
   poses: GHOUL_POSES,

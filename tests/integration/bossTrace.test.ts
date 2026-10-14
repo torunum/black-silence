@@ -887,6 +887,26 @@ import { world } from "../../src/world/WorldState";
  *     game's dice (now `t` is the game's own `deathT/.45` and the sprite's stagger is `tf`, which only the sprite reads), and the stumble that the body takes along the shot is
  *     the sprite's own offset (`stumbleX`/`stumbleZ`, `Corpse.ts`), not a knock on `kx`/`kz`, which the simulation reads.
  * A change of *when* a legacy particle lands reorders every legacy draw after it, in a fight that is hit blind thousands of times. This fixture is the net for that.
+ *
+ * ## The enemies plan, Task 1 — regeneration: the ghoul is a rig, and the gibs are meat (digest only, 443 frames)
+ *
+ * Task 1 of `docs/superpowers/plans/2026-10-13-enemies.md` (see `trace.test.ts`'s and `combatTrace.test.ts`'s headers): the ghoul is a rig, and a flesh gib is meat, organ or bone.
+ * The procedure was this header's own (a throwaway copy of the tree, `src/` and `tests/`, with the digest's inputs written out unhashed beside the run; the
+ * tree the task started from, `1cde062`, **reproduced all three committed fixtures byte for byte under the same instrumentation**, so the instrumentation moves nothing;
+ * then the new tree, and each sampled frame's child lists compared as multisets, keyed by type, position and visibility; the fixtures themselves compared field by field
+ * against `git show HEAD:` by a node script; neither committed).
+ *  - `camera` — all seven components **identical in all 512 sampled frames**.
+ *  - `hud` — all eight fields **identical in all 512 sampled frames**; the run still ends `HEALTH3661` / `THE CORRUPTED PRIEST — PHASE 3`.
+ *  - `scene.count` — **identical in all 512** (269..689).
+ *  - `scene.digest` — differs in **443 of 512 frames** (first 1120, last 8192); 512 distinct digests before and after. All of it:
+ *    - **ghoul sprites' texture name — 2,982 changes in 443 frames**: walk poses `z.a` -> `z.walk0`/`walk1`/`walk2`/`walk4`/`z.b`/`walk5` (30), attack and pain (`z.atk` -> `z.atkWind`/`z.atkRecover`/`z.pain0`, `z.a` -> `z.pain0`/`z.pain1`: 8),
+ *      the fall (`z.die1` -> `z.death2`, 2, and `unnamed#8`, 1) and the corpses (`z.die2` -> `z.death4`, 787, and `z.die2` -> `unnamed#9`, 273, a corpse that had lost a limb: its variant frame is baked on demand); headless bodies
+ *      (`z.noHead` -> `z.hl` (2), `unnamed#5` (1) and `unnamed#6` (438): the headless body's lazily baked frames) and the flying parts' sprites (`unnamed#5` -> `unnamed#7`, 1,440: the ghoul's own head replacing the legacy crop).
+ *    - **flesh gibs' colour — 5,643 changes in 441 frames**: `6e1208` -> `a8281a` (1,742), `3a0c06` -> `8a3a58` (1,712), `9a948a` -> `cdbf98` (2,189, the pale grey cube is bone now).
+ *    - **the flying head — 441 frames, one sprite removed and one added at the same x and z, a constant .1032 m lower**: the head is the ghoul's own and shorter (.413 m high against the legacy crop's
+ *      .619), and a head sprite is drawn `vis` = (height - `sz`)/2 above its centre of mass. **The head's physics are identical in every tick** (a dump of all 30,055 ticks in both trees: x, y, z, v, `sz`, rest:
+ *      0 ticks differ), so the game's own dice, which the head's bounce draws, fall where they fell.
+ * **The structural guard** (`priest reaches all three phases`, the form swap inside its sampled window) stays green: phase 3 is entered at the same frame, because nothing in the fight moved.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");
