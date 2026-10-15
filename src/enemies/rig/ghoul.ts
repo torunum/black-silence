@@ -227,7 +227,7 @@ export const GHOUL: Rig = {
   poses: GHOUL_POSES,
   walkStep: 0.125,
   // the legacy 19 x 24 grid the gore code measures rows in: the head is the top quarter, the arms start at the shoulders
-  regions: { W: 19, H: 24, head: 6, armTop: 6.5, armBot: 15 },
+  regions: { W: 19, H: 24, head: 6, armTop: 8, armBot: 16, shoulder: 6.5 },
   partSpecs: {
     head: { group: "head", pose: GHOUL_PART_POSES.head, cap: cap("neck", (c) => {
       limb(c.b, 0, 0, -0.01, 0.06, 0.05, 0.044, E.MEAT, 7, { tex: meatTex }); limb(c.b, 0, 0, 0.0, -0.06, 0.014, 0.011, E.BONE, 5);

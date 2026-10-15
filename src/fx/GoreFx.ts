@@ -113,21 +113,22 @@ export function decapFx(e: GoreHost, info?: Shot): void {
 export function limbFx(e: GoreHost, kind: "arm" | "legs", side: string | undefined, info?: Shot): void {
   const fy = e.fy || 0, d = dirOf(info);
   const P = PX[e.key], armTop = P ? P.regions.armTop : 8, { rows: H, host } = shape(e);
+  const seam = P ? (P.regions.shoulder ?? P.regions.armTop) : 8;   // where the cut is on the body (a rig's shoulder): the effects. The arm itself is thrown from `armTop`'s height, as it always was
   const yaw = viewYaw(), rx = Math.cos(yaw), rz = -Math.sin(yaw);
   if (kind === "arm") {
     const s = side === "L" ? -1 : 1;
-    const y = e.h * (0.5 + rowFrac(armTop + 1.5, H)) + fy;
+    const y = e.h * (0.5 + rowFrac(armTop + 1.5, H)) + fy, cy = e.h * (0.5 + rowFrac(seam + 1.5, H)) + fy;
     const ax = e.x + rx * s * e.w * 0.3, az = e.z + rz * s * e.w * 0.3;
     makePart(side === "L" ? 1 : 2, host, {
       x: ax, y, z: az,
       vx: d.x * fxRange(3.5, 6.5) + rx * s * fxRange(0.8, 2), vy: fxRange(3, 5.2), vz: d.z * fxRange(3.5, 6.5) + rz * s * fxRange(0.8, 2),
       spin: (fxr() < 0.5 ? -1 : 1) * fxRange(9, 16),
     });
-    startSpurt(e, SHOULDER, s * 0.28, rowFrac(armTop + 1.5, H), s, d.x, d.z);
-    goutFx(ax, y, az, 18, 3.4, d.x, d.z, 0.6);
-    splatter(ax, y, az, d.x, d.z, 6, fxRange(0.3, 0.5));
+    startSpurt(e, SHOULDER, s * 0.28, rowFrac(seam + 1.5, H), s, d.x, d.z);
+    goutFx(ax, cy, az, 18, 3.4, d.x, d.z, 0.6);
+    splatter(ax, cy, az, d.x, d.z, 6, fxRange(0.3, 0.5));
     splatFloor(ax, az, fxRange(0.5, 0.8), 1);
-    at(ax, y, az, () => boneSnap());
+    at(ax, cy, az, () => boneSnap());
   } else {
     const y = e.h * 0.2 + fy;
     makePart(3, host, {

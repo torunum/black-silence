@@ -34,7 +34,7 @@ export interface BakedSprite {
   atk: THREE.CanvasTexture | null;
   die1: THREE.CanvasTexture | null;
   die2: THREE.CanvasTexture | null;
-  regions: { W: number; H: number; head: number; armTop: number; armBot: number };
+  regions: { W: number; H: number; head: number; armTop: number; armBot: number; shoulder?: number };
   /** Only a creature with a rig: its frames, baked on first use. */
   rig?: RigSet;
 }

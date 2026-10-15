@@ -111,8 +111,12 @@ export interface Rig {
   poses: RigPoses;
   /** Seconds a walk pose is held. */
   walkStep: number;
-  /** The rig's head and arms in the legacy `regions` the gore code reads (rows of a nominal grid `W` x `H`). */
-  regions: { W: number; H: number; head: number; armTop: number; armBot: number };
+  /**
+   * The rig's head and arms in the legacy `regions` the gore code reads (rows of a nominal grid `W` x `H`). `head` is where its neck is and `shoulder` where its
+   * arms' cut is (the effects there); `armTop` is the height a torn-off arm is *thrown* from, which is the legacy value so that the arm's physics, and so what a
+   * kick that lands on it does to the game's clock, are the legacy monster's.
+   */
+  regions: { W: number; H: number; head: number; armTop: number; armBot: number; shoulder?: number };
   partSpecs: { head: PartSpec; lArm: PartSpec; rArm: PartSpec; legs: PartSpec };
 }
 
