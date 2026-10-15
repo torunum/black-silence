@@ -30,6 +30,7 @@ import { walkSet, crawlFx } from "../Sever";
 import { smearFloor } from "../../fx/Splats";
 import { fallT, stumbleK, swayAt } from "../Corpse";
 import { dropAmmo } from "../Death";
+import { rigDead, rigLive } from "../RigAnim";
 import { schedule } from "../../core/Time";
 import type { Enemy as EnemyShape } from "../Enemy";
 
@@ -174,7 +175,8 @@ export function enemyTick(dt: number){
       const tf=fallT(e.deathKind,e.deathT);   // what the sprite shows: a headless body staggers before it falls (src/enemies/Corpse.ts)
       /* two-stage collapse frames (redesigned enemies) */
       const P=PX[e.key];
-      if(P.die1&&e.deathKind!==2&&!e.severKey){
+      if(P.rig){rigDead(e);e.sp.material.rotation=swayAt(e.deathKind,e.deathT);}   // a rigged body's frames do the falling (src/enemies/RigAnim.ts); a headless one still sways on its feet
+      else if(P.die1&&e.deathKind!==2&&!e.severKey){
         const want=e.deathT<.22?P.die1:P.die2;
         if(want&&e.sp.material.map!==want){e.sp.material.map=want;e.sp.material.needsUpdate=true;}
         e.sp.material.rotation=e.deathDir*t*Math.PI/6;   // gentler tilt, frames do the work
@@ -243,6 +245,7 @@ export function enemyTick(dt: number){
     const dx=player.px-e.x,dz=player.pz-e.z,dist=Math.hypot(dx,dz);
     if(dist>30){e.sp.position.set(e.x,e.h/2+(e.fy||0),e.z);e.blob.position.set(e.x,(e.fy||0)+.012,e.z);continue;}
     if(e.stun>0){e.stun-=dt;
+      if(PX[e.key].rig)rigLive(e,dt,false,true);   // held: the pain frames while it is hurt, then standing
       e.sp.position.set(e.x+rnd(-.03,.03),e.h/2+(e.fy||0),e.z+rnd(-.03,.03));
       e.blob.position.set(e.x,(e.fy||0)+.012,e.z);continue;}
     const seen=los(e.x,e.z,player.px,player.pz)&&dist<22;
@@ -333,14 +336,17 @@ export function enemyTick(dt: number){
       const ax=e.alertX-e.x,az=e.alertZ-e.z,ad=Math.hypot(ax,az);
       if(ad>1){moving=moveEnemy(e,ax/ad,az/ad,spd*.7,dt);}
       else e.alertX=-1;}
+    const rigged=!!PX[e.key].rig;
+    if(rigged)rigLive(e,dt,moving,false);   // a monster with a rig: the walk cycle, the attack's three phases, pain and the idle (src/enemies/RigAnim.ts)
     /* walk animation */
-    if(moving&&e.atkAnim!==undefined&&e.atkAnim<=0){e.animT+=dt;
+    if(!rigged&&moving&&e.atkAnim!==undefined&&e.atkAnim<=0){e.animT+=dt;
       if(e.animT>.22){e.animT=0;e.frame=1-e.frame;
         const set=walkSet(e);   // what the monster is now: whole, or as it was left (src/enemies/Sever.ts)
         e.sp.material.map=set[e.frame];e.sp.material.needsUpdate=true;
 }}
     /* attack pose: swap to the dedicated attack frame while striking */
-    if((e.atkAnim??0)>0&&PX[e.key].atk&&!e.severKey&&e.deathKind!==2){
+    if(rigged){}
+    else if((e.atkAnim??0)>0&&PX[e.key].atk&&!e.severKey&&e.deathKind!==2){
       if(e.sp.material.map!==PX[e.key].atk){
         e.sp.material.map=PX[e.key].atk;e.sp.material.needsUpdate=true;e.wasAtk=true;}
     }else if(e.wasAtk){ // attack finished -> back to normal stance

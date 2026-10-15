@@ -1,5 +1,9 @@
 import * as THREE from "three";
 import { PXDEF } from "./pixels";
+import type { BakedSprite } from "./BakedSprite";
+import { RIGS } from "./rig";
+import { rigSprite } from "./rig/sprite";
+import { burnLegacySpriteDraws } from "./rig/legacyDraws";
 
 /**
  * PIXEL SPRITES — frame A + mirrored frame B for walk.
@@ -11,6 +15,12 @@ import { PXDEF } from "./pixels";
  * stump texture at the torn edge. Copied verbatim from
  * reference/sonsurum.html lines 1089-1125 (texFromPx) and 1487-1516
  * (PX, buildSprites).
+ *
+ * The one place `buildSprites` differs from the reference is the line that
+ * hands a creature with a rig (`src/enemies/rig/`) to the rig and burns the
+ * draws its legacy bake would have made (`burnLegacySpriteDraws`): the
+ * normalized body is still pinned to the reference by `tests/fidelity.test.ts`
+ * with that one line taken out, and `PXDEF` is pinned whole.
  */
 
 export interface TexOpts {
@@ -59,31 +69,12 @@ export function texFromPx(px: string[], pal: Record<string, string>, opts?: TexO
   const t=new THREE.CanvasTexture(c);
   t.magFilter=THREE.NearestFilter;t.minFilter=THREE.NearestFilter;return t;}
 
-export interface BakedSprite {
-  a: THREE.CanvasTexture;
-  b: THREE.CanvasTexture;
-  hl: THREE.CanvasTexture;
-  hlb: THREE.CanvasTexture;
-  head: number;
-  noHead: THREE.CanvasTexture | null;
-  noHeadB: THREE.CanvasTexture | null;
-  noLArm: THREE.CanvasTexture;
-  noLArmB: THREE.CanvasTexture;
-  noRArm: THREE.CanvasTexture;
-  noRArmB: THREE.CanvasTexture;
-  noLegs: THREE.CanvasTexture;
-  noLegsB: THREE.CanvasTexture;
-  gibbed: THREE.CanvasTexture;
-  gibbedB: THREE.CanvasTexture;
-  atk: THREE.CanvasTexture | null;
-  die1: THREE.CanvasTexture | null;
-  die2: THREE.CanvasTexture | null;
-  regions: { W: number; H: number; head: number; armTop: number; armBot: number };
-}
+export type { BakedSprite };
 
 export const PX: Record<string, BakedSprite> = {};
 export function buildSprites(): void {
   for(const k in PXDEF){const d=PXDEF[k];
+    if(RIGS[k]){PX[k]=rigSprite(RIGS[k]);burnLegacySpriteDraws(d);continue;}
     const W=d.px[0].length,H=d.px.length;
     const head=d.head||0;
     // region rectangles [x0,y0,x1,y1]

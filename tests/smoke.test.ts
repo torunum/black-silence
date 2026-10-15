@@ -63,7 +63,8 @@ describe("main.ts boot", () => {
     // soundboard.html, never in index.html (player feedback round 2 Task 1),
     // so its lookups are checked against that page by
     // tests/soundboard/soundboard.test.ts instead.
-    for (const file of srcFiles(SRC_DIR).filter((f) => !/[\\/]soundboard[\\/]/.test(f))) {
+    // (src/bestiary/ is the same, for bestiary.html: tests/bestiary/bestiary.test.ts, enemies plan Task 1.)
+    for (const file of srcFiles(SRC_DIR).filter((f) => !/[\\/](soundboard|bestiary)[\\/]/.test(f))) {
       const src = readFileSync(file, "utf8");
       for (const m of src.matchAll(/\.(getElementById|querySelector)\("([^"]+)"\)/g)) {
         calls.push({ file, method: m[1], selector: m[2] });

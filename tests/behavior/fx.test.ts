@@ -124,6 +124,28 @@ describe("PARTICLES/DECALS/GIBS behavioral parity with reference", () => {
     const refSnapshots: Object3DSnapshot[] = refAdded.map((o) => snapshotObject3D(o as unknown as Parameters<typeof snapshotObject3D>[0]));
     const modSnapshots: Object3DSnapshot[] = modAdded.map((o) => snapshotObject3D(o as unknown as Parameters<typeof snapshotObject3D>[0]));
 
+    // DIVERGENCE (enemies plan, Task 1): a flesh gib is a lump of meat, organ or bone (an IcosahedronGeometry in vertex-coloured
+    // Lambert), not the reference's .13 box in three flat colours. Every one of them is checked to be that, and is then compared with
+    // the reference's gib at the same place in the log on everything else — its position, rotation, scale, and which of the three
+    // colours it drew (the pick is the reference's `Math.random()*3|0`, so the index is the same, and the new colours sit in the
+    // same order). A wood gib (a crate's splinter) is still compared whole, box and colour.
+    const OLD = [0x6e1208, 0x3a0c06, 0x9a948a], NEW = [0xa8281a, 0x8a3a58, 0xcdbf98];
+    let lumps = 0;
+    for (let i = 0; i < modSnapshots.length; i++) {
+      const m = modSnapshots[i], r = refSnapshots[i];
+      if (m.geometry?.type !== "IcosahedronGeometry") continue;
+      lumps++;
+      expect(r.geometry, "the reference's gib at this place is its box").toEqual({ type: "BoxGeometry", parameters: expect.objectContaining({ width: 0.13 }) });
+      expect(m.geometry?.parameters, "a lump the box's size").toEqual(expect.objectContaining({ radius: 0.085 }));
+      expect(m.material?.type).toBe("MeshLambertMaterial");
+      expect(m.material?.vertexColors, "tones painted in its vertices").toBe(true);
+      const k = OLD.indexOf(r.material!.color!);
+      expect(k, "the reference's colour is one of its three").toBeGreaterThanOrEqual(0);
+      expect(m.material?.color, "meat, organ or bone, in the reference's order").toBe(NEW[k]);
+      modSnapshots[i] = { ...m, geometry: r.geometry, material: { ...m.material!, color: r.material!.color, vertexColors: r.material!.vertexColors } };
+    }
+    expect(lumps, "and the flesh gibs of the script (two in three of 115 calls, a pool of 110)").toBeGreaterThan(40);
+
     // A recorder that can pass on an empty (or trivially short) log proves
     // nothing (see tests/behavior/textures.test.ts's identical caveat).
     // Expected: 1 (Points) + 150 (addPool caps at POOLMAX) + 200 (addWallDecal

@@ -1,5 +1,5 @@
 import { fillFace, type Raster, type TexFn } from "./raster";
-import { MATERIALS, toneCount } from "./palette";
+import { toneCount, type Palette } from "./palette";
 
 /**
  * Builds the viewmodel out of boxes, prisms and extrusions in 3D and draws
@@ -107,7 +107,7 @@ export class Builder {
     const sx: number[] = [], sy: number[] = [];
     for (const p of clipped) { sx.push(this.cx + this.F * p[0] / p[2]); sy.push(this.cy - this.F * p[1] / p[2]); }
     fillFace(this.r, {
-      sx, sy, nx, ny, nz, k, mat, part, tone: shade(mat, nx, ny, nz, p0),
+      sx, sy, nx, ny, nz, k, mat, part, tone: shade(this.r.pal, mat, nx, ny, nz, p0),
       tex: o?.tex, inv: o?.tex ? (inv ?? this.inverse()) : undefined,
     }, this.F, this.cx, this.cy);
   }
@@ -223,8 +223,8 @@ export class Builder {
 }
 
 /** Continuous tone for a face: Lambert against the key light, plus a hard specular glint for polished materials. */
-function shade(mat: number, nx: number, ny: number, nz: number, p: V3): number {
-  const M = MATERIALS[mat], top = toneCount(mat) - 1;
+function shade(pal: Palette, mat: number, nx: number, ny: number, nz: number, p: V3): number {
+  const M = pal.materials[mat], top = toneCount(mat, pal) - 1;
   if (!M) return 0;
   if (M.emissive) return top - 0.2;
   const amb = M.amb ?? 0.2;

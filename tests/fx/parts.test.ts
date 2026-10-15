@@ -51,9 +51,19 @@ describe("making a part", () => {
       expect(h.sp.position.y + 0, "and is drawn at its own height, standing where the old one sat").toBeCloseTo(1.5 + (h.sp.scale.y - h.sz) / 2, 6);
       const a = P.makePart(1, foe, start())!;
       expect(a.sp.material.map).toBe(arm.tex);
-      expect(a.sz, "a limb rests on its thin side").toBeCloseTo(Math.min(a.sp.scale.x, a.sp.scale.y), 6);
+      // the ghoul has a rig: its arm is drawn true size in the legacy crop's physical box (the box decides how it falls and rests: the church bot's run depends on it)
+      expect(a.sz, "a rigged limb rests in the legacy box, its art thinner than the box").toBeGreaterThan(Math.min(a.sp.scale.x, a.sp.scale.y) + 0.1);
+      expect(arm.phys, "and says what box").toBeTruthy();
       expect(scene.children.filter((o) => o.type === "Sprite")).toHaveLength(2);
       expect(parts()).toHaveLength(2);
+      // a legacy monster's limb is its own box: it rests on its thin side, as it always did
+      return import("../../src/fx/GoreTex").then((m) => {
+        const legacy = { ...foe, key: "t" }, art2 = m.partArt("t", "lArm")!;
+        const b = P.makePart(1, legacy, start())!;
+        expect(b.sp.material.map).toBe(art2.tex);
+        expect(art2.phys).toBeUndefined();
+        expect(b.sz, "a limb rests on its thin side").toBeCloseTo(Math.min(b.sp.scale.x, b.sp.scale.y), 6);
+      });
     });
   });
 

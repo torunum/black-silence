@@ -13,7 +13,7 @@ import { headPool } from "./Heads";
 import { bloodFx } from "./ImpactFx";
 import { goutFx } from "./GoreDrops";
 import { splatFloor } from "./Splats";
-import { partArt, type PartKind } from "./GoreTex";
+import { LIMB_SCALE, partArt, type PartKind } from "./GoreTex";
 import { fxRange } from "./FxRand";
 import { quietly } from "./Quiet";
 
@@ -42,7 +42,7 @@ import { quietly } from "./Quiet";
 
 export const PART_MAX = 20;
 /** How much larger than the monster's own scale a limb is drawn (a head is true size). */
-export const PART_SCALE = 1.3;
+export const PART_SCALE = LIMB_SCALE;
 
 /** 0 a head, 1 a left arm, 2 a right arm, 3 the legs. */
 export const KINDS: readonly PartKind[] = ["head", "lArm", "rArm", "legs"];
@@ -99,8 +99,11 @@ function makePartNow(kind: number, e: PartHost, s: PartStart, life: number): Par
   sp.material.rotation = 0;
   sp.position.set(s.x, s.y + (kind === 0 ? (h - Math.max(0.34, e.w * 0.34)) / 2 : 0), s.z);
   // a head keeps the old head's size for its physics (and so its bounces and their draws), drawn at its own; a limb lies on its thin side
-  const sz = kind === 0 ? Math.max(0.34, e.w * 0.34) : Math.min(w, h);
-  const vis = kind === 0 ? (h - sz) / 2 : 0;
+  // a rig's limb is drawn true size in the legacy crop's physical box (`art.phys`): the box decides how it falls and rests, and the art is drawn down on the floor in it
+  const pw = art.phys ? art.phys.fw * e.w * big : w, ph = art.phys ? art.phys.fh * e.h * big : h;
+  const sz = kind === 0 ? Math.max(0.34, e.w * 0.34) : Math.min(pw, ph);
+  // (a head stands on the floor by its own height; the legs stand, upright or upside down, on theirs; an arm lies on its side, on its thickness)
+  const vis = kind === 0 || (kind === 3 && art.phys) ? (h - sz) / 2 : art.phys ? (w - sz) / 2 : 0;
   const p: Part = { sp, x: s.x, y: s.y, z: s.z, vx: s.vx, vy: s.vy, vz: s.vz, spin: s.spin, rest: false, life, sz, vis, kind, settle: 0, trail: 0 };
   headPool.heads.push(p as unknown as Record<string, unknown>);
   return p;

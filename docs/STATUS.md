@@ -1,5 +1,45 @@
 # Where this project stands
 
+## Enemies, redrawn: Task 1 - the rig kit, the ghoul, the bestiary - 2026-10-15 (branch `enemies`)
+
+The owner wanted the character models developed further, in the style. Plan:
+`docs/superpowers/plans/2026-10-13-enemies.md`; the report and the strips are in
+`.superpowers/sdd/2026-10-13-enemies/` (gitignored). **One enemy is on the rig, the
+rotting ghoul (`z`, the commonest, 27 placed).** The gate: 143 files, 2258 tests (the baseline was 140 / 2159), size and cycles clean. Tasks 2-4 (the horde, the demons,
+the bosses) are not started. Nobody has played it with a mouse at 60 fps; the
+strips are headless SwiftShader at 960x540.
+
+| Piece | What it is |
+|---|---|
+| The kit, `src/enemies/rig/` | `kit.ts` the model: a skeleton of `Joint`s, `RigPart`s hung on them in groups (`body`, `head`, `lArm`, `rArm`, `legs`), a `Stump` per severable group drawn at the real joint when it is torn off, a `RigPose` (every joint's rotation, the pelvis's offset, named scalars like the jaw and the entrails' sway, a floor), `drawFigure` (everything but a mask, or one group and its torn end). `bake.ts`: `renderBitmap(rig, pose, mask, crawl, mirror)`, `RigSet.tex(role, i, mask, mirror)` (baked on first use, kept), `RigSet.part(kind)`. `palette.ts` the shared flesh materials (bone, meat, organ, cavity, eye, tooth, sinew); `shapes.ts` limbs, `scaled()`, surface shaders; `sprite.ts` `rigSprite(rig)` = a `PX[key]`; `timing.ts` the frame times; `index.ts` `RIGS`. No `Math.random` anywhere in it. |
+| The weapons' renderer, made shareable | `src/render/viewmodel/{palette,raster,builder}.ts`: a `Palette` (materials, LUT, rim table) that a `Raster` carries, the weapons' being the default. Every weapon, in six poses each, renders **byte-identically** before and after (sha256 of the colour and depth buffers of all 48 renders, `26b09a20...` on both trees). |
+| The ghoul, `rig/ghoul.ts` + `ghoulPoses.ts` | 18 joints, 72 x 100 frame, 2.14 rig-m high. Kept: the sunken corpse face with glowing eyes, the cracked ribcage over a torn chest, the heart in view, entrails spilling and swinging, claws; the legacy palette's greys, greens, reds. Frames: **walk 6** (a limp: the right leg short of its stride; feet always on the floor: the pelvis is lowered until the lowest foot touches), **idle 1**, **attack 3** (arms up and the jaw wide; the lunge; the recover), **pain 2** (the head thrown back; folded over the wound), **death 5** (the jerk, the knees go, the topple, the thud, the lie; each drawn on the floor the sinking sprite is at). The legless ghoul: **crawl 4**, idle, attack 3, pain 2, death 5, on a frame the height of its hitbox. Variants for any torn-off head, either arm, legs. Its own flying head, arms and legs (the legs lie on their side). The head is the top quarter (its centre above .77 of the frame in every standing frame; `Hitscan`'s `frac>0.74` is unchanged). |
+| Integration | `PX.z` carries the legacy role names (`a`, `b`, `atk`, `die1`, `die2`, `hl`, `noHead`, `noLArm`, ... each a frame of the rig) and new ones (`walk0..5`, `idle`, `atkWind/Strike/Recover`, `pain0/1`, `death0..4`) as slots; all but `idle` are getters that bake on first use. `src/enemies/RigAnim.ts` picks the frame from state the game already keeps (`animT`, `hurt`, `atkAnim`, `sever`, `deathT`, `deathKind`, `deathDir`): it adds none and draws no dice. `Behaviors.ts`: three call sites, and a legacy enemy never reaches them. `GoreTex.partArt`/`crawlArt` return the rig's parts and crawler for a rigged key. |
+| The shim | `buildSprites` hands a rigged creature to its rig and `burnLegacySpriteDraws(d)` consumes what its legacy bake drew: **52 stump `Math.random()` calls and 17 textures x 2 uuids x 4 = 136 draws** for the ghoul, derived from the rows, **measured against the real bake for all 31 creatures** (`tests/enemies/legacyDraws.test.ts`), and the whole boot draws exactly what it drew with no rig. The uuid draws are burned by calling `generateUUID()`, so the trace harness's stub treats them as it treated the legacy ones. |
+| Boot cost, measured | Chromium headless: all 25 legacy creatures baked 44.3 ms; with the ghoul on the rig **44.8 ms**. A pose rasterizes in 1.2 ms (17 standing frames 23 ms; 22 monsters eagerly would be about half a second against the 250 ms budget), so **only a monster's idle is baked at boot (1.8 ms), and every other frame on first use** (1.3 ms, once). Texture memory: 29 KB a frame; the ghoul's whole standing set 490 KB. |
+| The bestiary, `/bestiary.html` | `src/bestiary/`, `vite.bestiary.config.ts`, built by `npm run build` into `dist/` beside the game and the sound board. A card for each of the 25 enemies: its art animated, old and new side by side for a re-rigged one, buttons walk / attack / pain / death / head off / each arm / legs off, the flying parts under it; speed half / full / quarter; death sinks the sprite as the game does. Never imported by the game: the import graph from `main.ts` is walked by `tests/bestiary/bestiary.test.ts`, and the real bundle was grepped (0 mentions). Linked from the README next to the sound board. |
+| The gibs | `src/fx/Gibs.ts`: a flesh gib is a faceted lump of meat, organ or bone (hard tones in four steps, a bloody underside, in the vertex colours; no texture), same size, same count, same throws, same `(Math.random()*3)|0` pick. The pale grey `0x9a948a` is ivory bone now. The crates' splinters keep the reference's box. `tests/behavior/fx.test.ts` pins the divergence (every other field of every gib is still compared with the reference). |
+| Limbs' physics, kept | A first draft gave the rig's arm a thin box of its own; the church bot (`churchPlay.test.ts`), which kicks parts, lost its recorded fight (10 extra draws at frame 2181: a kick that lands on a part is a hit-stop). A rigged limb now falls and rests in the legacy crop's box and is thrown from the legacy height (`PartArt.phys`, `regions.armTop` 8); only the sprite is drawn lower in it (`vis`) and the cut and spray are at the rig's shoulder (`regions.shoulder` 6.5). That run is bit-identical to the one before the rig. |
+
+**Fixtures** (all three regenerated, each header carries the account). Field by
+field, every sampled frame, against the committed fixtures of `1cde062`:
+`camera` and `hud` **identical** in all 90 / 110 / 512 frames, `scene.count`
+identical, the digest moved in **13 / 82 / 443** frames: a ghoul's texture name (it
+walks, strikes, hurts, falls), a flesh gib's colour, and (combat, boss) the flying
+arm's and head's sprite offset (head physics identical in all 30,055 ticks of the
+boss run). The old tree reproduced the old fixtures byte for byte under the same
+instrumentation. The priest still goes phase 1 -> 2 -> 3, final `HEALTH3661`.
+
+**Dead-frame detail worth knowing.** `enemyTick`'s dying sprite sinks by
+`h/2*(1-tf)+h*.18*tf`; the rig kept that curve (so positions in the digests did not
+move) and draws each death frame on the floor line that sink puts it at.
+
+**Not seen, honestly.** The ghoul next to the old one: the new one is more of a body,
+more like the weapons; the old one is bolder, with a red-and-white ribcage that
+pops at range, and is wider. At 8 m the new ghoul is a small pale figure. Nobody
+has judged the bestiary on a real screen, nor the walk at 60 fps. The corpse is tan
+(the legacy kill tint, `0xff8866`, is left on as it always was).
+
 ## Impact: hit feel, the kick, gore - 2026-10-08 (branch `impact`)
 
 The owner: better hit feel, a better kick, more gore. Plan:

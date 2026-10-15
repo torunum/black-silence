@@ -1,4 +1,4 @@
-import { MATERIALS, MAT, RGBA_LUT, toneCount } from "./palette";
+import { MAT, VIEW_PALETTE, toneCount, type Palette } from "./palette";
 
 /**
  * A tiny software rasterizer for the viewmodel: indexed colour, a depth
@@ -34,7 +34,8 @@ export class Raster {
   /** Dirty box of the last frame, inclusive-exclusive. */
   x0 = 0; y0 = 0; x1 = 0; y1 = 0;
 
-  constructor(w = RW, h = RH) {
+  /** `pal` is the palette its material ids index: the weapons' by default, a monster's own for the enemy rig. */
+  constructor(w = RW, h = RH, readonly pal: Palette = VIEW_PALETTE) {
     this.w = w; this.h = h;
     this.col = new Uint8Array(w * h);
     this.z = new Float32Array(w * h).fill(Infinity);
@@ -87,7 +88,7 @@ export function fillFace(r: Raster, f: Face, F: number, cx: number, cy: number):
   const yA = Math.max(0, Math.ceil(minY - 0.5)), yB = Math.min(r.h - 1, Math.floor(maxY - 0.5));
   if (yB < yA) return;
   const W = r.w, zb = r.z, cb = r.col, pb = r.part, part = f.part, k = f.k, nx = f.nx;
-  const top = toneCount(f.mat) - 1, low = MATERIALS[f.mat]?.emissive ? 1 : 0, base = f.mat * 8;
+  const top = toneCount(f.mat, r.pal) - 1, low = r.pal.materials[f.mat]?.emissive ? 1 : 0, base = f.mat * 8;
   const tex = f.tex, m = f.inv;
   // A shaded pixel's tone; a 2x2 dither only where a shader's value sits right on a tone boundary.
   const pick = (t: number, odd: number): number => {
@@ -151,6 +152,7 @@ const XS = new Float64Array(32);
  */
 export function finish(r: Raster): void {
   const { w, h, col, z, part } = r;
+  const RIM = r.pal.rim;
   const X0 = Math.max(0, r.x0 - 1), Y0 = Math.max(0, r.y0 - 1);
   const X1 = Math.min(w, r.x1 + 1), Y1 = Math.min(h, r.y1 + 1);
   if (X1 <= X0 || Y1 <= Y0) return;
@@ -178,19 +180,16 @@ export function finish(r: Raster): void {
       mark[i] = 0;
       const mat = col[i] >> 3;
       if (mk === 1) { col[i] = MAT.OUT * 8; z[i] = 1e9; }
-      else if (mk === 2) { if (mat !== MAT.SOUL && mat !== MAT.FLAME) col[i] = MAT.OUT * 8; }
-      else col[i] = mat * 8 + Math.min((col[i] & 7) + 2, toneCount(mat) - 1);
+      else if (mk === 2) { if (!r.pal.materials[mat]?.emissive) col[i] = MAT.OUT * 8; }
+      else col[i] = mat * 8 + Math.min((col[i] & 7) + 2, toneCount(mat, r.pal) - 1);
     }
   }
   r.x0 = X0; r.y0 = Y0; r.x1 = X1; r.y1 = Y1;
 }
-/** Materials that take a rim of light, by id. */
-const RIM: boolean[] = [];
-for (const key of Object.keys(MATERIALS)) RIM[Number(key)] = !!MATERIALS[Number(key)].rim;
 
 /** Writes the raster's dirty box into an RGBA buffer the size of the raster (clearing what the previous frame left outside it). */
 export function toRGBA(r: Raster, out: Uint8ClampedArray, prev?: { x0: number; y0: number; x1: number; y1: number }): void {
-  const { w, col } = r;
+  const { w, col } = r, RGBA_LUT = r.pal.lut;
   const X0 = Math.min(r.x0, prev?.x0 ?? r.x0), Y0 = Math.min(r.y0, prev?.y0 ?? r.y0);
   const X1 = Math.max(r.x1, prev?.x1 ?? r.x1), Y1 = Math.max(r.y1, prev?.y1 ?? r.y1);
   for (let y = Y0; y < Y1; y++) {

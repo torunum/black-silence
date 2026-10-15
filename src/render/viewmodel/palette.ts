@@ -63,16 +63,25 @@ export const MATERIALS: Record<number, Material> = {
   [MAT.BOOT]:   { ramp: ["#0a0706", "#120c08", "#1b130d", "#271b12", "#35251a", "#473224", "#5e4431"], amb: .18, spec: .45, rim: true },
 };
 
-/** Tones in a material's ramp. */
-export function toneCount(mat: number): number {
-  return MATERIALS[mat]?.ramp.length ?? 1;
+/**
+ * A palette: a table of materials, the RGBA of every `material*8+tone` index and which materials take a rim of light.
+ * The weapons use the one above (`VIEW_PALETTE`); the enemy rig (`src/enemies/rig/`) draws with the same rasterizer and
+ * shading but a palette of its own per monster, so it is not held to 31 materials for the whole bestiary. Material 1
+ * (`MAT.OUT`) is the outline in every palette.
+ */
+export interface Palette {
+  materials: Record<number, Material>;
+  /** RGBA per palette index (index = material*8+tone). */
+  lut: Uint8Array;
+  /** Materials that take a rim of light, by id. */
+  rim: boolean[];
 }
 
-/** RGBA per palette index (index = material*8+tone), built once from the ramps above. */
-export const RGBA_LUT: Uint8Array = (() => {
-  const lut = new Uint8Array(256 * 4);
-  for (const key of Object.keys(MATERIALS)) {
-    const mat = Number(key), ramp = MATERIALS[mat].ramp;
+export function makePalette(materials: Record<number, Material>): Palette {
+  const lut = new Uint8Array(256 * 4), rim: boolean[] = [];
+  for (const key of Object.keys(materials)) {
+    const mat = Number(key), ramp = materials[mat].ramp;
+    rim[mat] = !!materials[mat].rim;
     for (let t = 0; t < 8; t++) {
       const hex = ramp[Math.min(t, ramp.length - 1)];
       const i = (mat * 8 + t) * 4;
@@ -82,5 +91,16 @@ export const RGBA_LUT: Uint8Array = (() => {
       lut[i + 3] = 255;
     }
   }
-  return lut;
-})();
+  return { materials, lut, rim };
+}
+
+/** The viewmodel's palette: every weapon, glove and sleeve. */
+export const VIEW_PALETTE: Palette = makePalette(MATERIALS);
+
+/** Tones in a material's ramp. */
+export function toneCount(mat: number, pal: Palette = VIEW_PALETTE): number {
+  return pal.materials[mat]?.ramp.length ?? 1;
+}
+
+/** RGBA per palette index (index = material*8+tone), built once from the ramps above. */
+export const RGBA_LUT: Uint8Array = VIEW_PALETTE.lut;
