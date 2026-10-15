@@ -193,7 +193,7 @@ describe("the game never loads it", () => {
 
   it("is built by its own Vite config, after the game's, into the same dist/ — and the single-file build still starts from the game's", () => {
     const pkg = JSON.parse(readFileSync(join(ROOT, "package.json"), "utf8")) as { scripts: Record<string, string> };
-    expect(pkg.scripts.build).toBe("vite build && vite build --config vite.soundboard.config.ts");
+    expect(pkg.scripts.build).toBe("vite build && vite build --config vite.soundboard.config.ts && vite build --config vite.bestiary.config.ts");   // the bestiary (enemies plan, Task 1) is built after it, the same way
     expect(pkg.scripts["build:single"]).toMatch(/^npm run build && node scripts\/inline-single-file\.mjs$/);
     const cfg = readFileSync(join(ROOT, "vite.soundboard.config.ts"), "utf8");
     expect(cfg).toMatch(/emptyOutDir:\s*false/);
