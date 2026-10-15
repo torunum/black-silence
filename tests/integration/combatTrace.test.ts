@@ -886,11 +886,13 @@ import { MONOLOGUE } from "../../src/content/monologue";
  *      variants are baked the first time they are wanted, after the index that names textures was built, so they are named by the digest's fallback counter).
  *    - **flesh gibs' colour — 120 changes in 24 frames**: `3a0c06` -> `8a3a58` (96, the organ) and `6e1208` -> `a8281a` (24, the meat). Position, visibility and the three-way pick are identical
  *      (a gib's material index is the reference's, so every gib that was the second colour is the second colour). No bone-coloured gib falls in a sampled frame here.
- *    - **one flying arm — 24 frames, 24 sprites removed and 24 added at the same x and z**: the severed arm is now the ghoul's own arm, a thin limb drawn at true size, thrown from the
- *      rig's shoulder (`regions.armTop` 6.5, the legacy 8: .1033 m higher); its sprite starts that much higher and, being thinner (`sz` .164 against .614), comes to rest and bounces on a
- *      different tick, so its position differs after the first bounce. A limb's physics draw only from `FxRand` (`Parts.ts`), never from the game's stream: that is why `camera` and `hud` did not move.
- *      (Measured: a dump of every tick of the part in both trees, 236 ticks: the start identical except the .1033 in y; 197 of 236 ticks differ in x, z or velocity.)
- * The claim of the plan holds: only a ghoul's frame role, a gib's look, and the one flying limb's own art and size moved.
+ *    - **one flying arm — 24 frames, 24 sprites removed and 24 added at the same x and z, every one .2249 m lower**: the severed arm is now the ghoul's own arm, a thin limb drawn at
+ *      true size, lying on its thickness. Its *physics* are the legacy arm's exactly: it is thrown from the legacy height (`regions.armTop` 8; the rig's shoulder, 6.5, is where the
+ *      cut and the spray are: `regions.shoulder`) and falls, bounces and rests in the legacy crop's box (`PartArt.phys`: `sz` .614), so a kick that lands on it, and the hit-stop that
+ *      follows, are where they were; only the sprite is drawn lower in its box (`vis` = (width - `sz`)/2, -.2249 here) so a thin arm lies on the floor and not .3 m above it. (This
+ *      matters: a first draft gave the arm its own thin box, and the church bot of `churchPlay.test.ts`, which kicks parts, was moved off the recorded run by 10 extra draws at
+ *      frame 2181 and lost its fight; with the legacy box that run is bit-identical to the one before the rig.)
+ * The claim of the plan holds: only a ghoul's frame role, a gib's look, and the one flying limb's sprite offset moved.
  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

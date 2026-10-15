@@ -100,21 +100,21 @@ export interface PartArt {
   W: number; H: number;
   /**
    * A rig's part is drawn at its true size, but a part is also a physical thing (it bounces, lies and is kicked, and a kick that lands on one is a hit-stop),
-   * and its physics are the legacy crop's: this is that crop's size in cells (the legacy cut of the same part from the PXDEF rows), so a rigged monster's parts
+   * and its physics are the legacy crop's: this is that crop's size as a fraction of the monster's own width and height (the legacy cut of the same part from the PXDEF rows: its cells over the grid's), so a rigged monster's parts
    * fall, rest and are struck exactly where the legacy monster's did and the game's clock does not move. Absent for a part cut from pixel art, which is its own box.
    */
-  phys?: { cw: number; ch: number };
+  phys?: { fw: number; fh: number };
 }
 
 /** The size in cells of the legacy cut of `kind` from `key`'s PXDEF rows (what `partArt` crops for an unrigged monster): the physical box of a rig's part. */
-function legacyBox(key: string, kind: PartKind): { cw: number; ch: number } | undefined {
+function legacyBox(key: string, kind: PartKind): { fw: number; fh: number } | undefined {
   const d = PXDEF[key];
   if (!d || kind === "head") return undefined;   // a head's physics never depended on its art (`Parts.ts`)
   const H = d.px.length, W = Math.max(...d.px.map((r) => r.length)), head = d.head || 0;
   const armTop = head, armBot = Math.min(H - 3, head + Math.ceil((H - head) * 0.45));
-  if (kind === "lArm") return { cw: Math.ceil(W * 0.32) + 1, ch: armBot - armTop };
-  if (kind === "rArm") return { cw: W - (Math.floor(W * 0.68) - 1), ch: armBot - armTop };
-  return { cw: W, ch: legRows(H) };
+  if (kind === "lArm") return { fw: (Math.ceil(W * 0.32) + 1) / W, fh: (armBot - armTop) / H };
+  if (kind === "rArm") return { fw: (W - (Math.floor(W * 0.68) - 1)) / W, fh: (armBot - armTop) / H };
+  return { fw: 1, fh: legRows(H) / H };
 }
 
 const arts = new Map<string, PartArt | null>();

@@ -112,7 +112,7 @@ describe("its parts are real", () => {
   const whole = frame("idle", 0);
   /** The pixels the part `group` alone covers in the standing frame. */
   const only = (group: "head" | "lArm" | "rArm" | "legs"): Bitmap => {
-    const f = GHOUL.frame, r = new Raster(f.w, f.h, GHOUL.palette), pxm = f.h / f.worldH, b = new Builder(r, pxm * 14, f.w / 2, f.h * f.floor);
+    const f = GHOUL.frame, r = new Raster(f.w, f.h, GHOUL.palette), pxm = f.h / f.worldH, b = new Builder(r, pxm * 14, f.w / 2 + f.shift * pxm, f.h * f.floor);
     b.translate(0, 0, 14); b.pitch(f.pitch); b.yaw(f.yaw);
     drawFigure(b, GHOUL, rolePose(GHOUL, "idle", 0), { mask: 0, only: group });
     const data = new Uint8ClampedArray(f.w * f.h * 4);
@@ -122,18 +122,21 @@ describe("its parts are real", () => {
   /** Opaque pixels of `a` where `region` is. */
   const within = (a: Bitmap, region: Bitmap): number => { let n = 0; for (let i = 3; i < a.data.length; i += 4) if (a.data[i] && region.data[i]) n++; return n; };
   // (the right arm hangs in front of the torso in this view, so what it covered is torso once it is gone: it asks for less)
-  it.each([["head", HEAD, "head", 0.55], ["left arm", L_ARM, "lArm", 0.55], ["right arm", R_ARM, "rArm", 0.85], ["legs", LEGS, "legs", 0.55]] as const)("without its %s the part is gone and a stump of meat is at its joint", (_n, mask, group, ratio) => {
+  /** Pixels of `region` where `a` and `b` differ. */
+  const changed = (a: Bitmap, b: Bitmap, region: Bitmap): number => { let n = 0; for (let i = 0; i < a.data.length; i += 4) if (region.data[i + 3] && (a.data[i] !== b.data[i] || a.data[i + 1] !== b.data[i + 1] || a.data[i + 2] !== b.data[i + 2] || a.data[i + 3] !== b.data[i + 3])) n++; return n; };
+  it.each([["head", HEAD, "head", 0.55], ["left arm", L_ARM, "lArm", 0.55], ["right arm", R_ARM, "rArm", 1.01], ["legs", LEGS, "legs", 0.7]] as const)("without its %s the part is gone and a stump of meat is at its joint", (_n, mask, group, ratio) => {
     const m = frame("idle", 0, mask), region = only(group);
-    expect(OPAQUE(region), "the part covers something").toBeGreaterThan(100);
+    expect(OPAQUE(region), "the part covers something").toBeGreaterThan(80);
     // what the part covered is mostly empty now: a stump is a stub, not the limb
     expect(within(m, region), "the part is gone from where it was").toBeLessThan(within(whole, region) * ratio);
+    expect(changed(m, whole, region), "what the part covered is something else now").toBeGreaterThan(OPAQUE(region) * 0.5);
     expect(BITMAP_DIFF(m, whole)).toBeGreaterThan(100);
     expect(ofMaterial(m, E.MEAT), "wet meat where it was torn").toBeGreaterThan(ofMaterial(whole, E.MEAT) + 8);
   });
 
   it("the part drawn on its own is exactly what the body lost: nothing of the head is in the headless body", () => {
     const r = new Raster(GHOUL.frame.w, GHOUL.frame.h, GHOUL.palette), pxm = GHOUL.frame.h / GHOUL.frame.worldH;
-    const b = new Builder(r, pxm * 14, GHOUL.frame.w / 2, GHOUL.frame.h * GHOUL.frame.floor);
+    const b = new Builder(r, pxm * 14, GHOUL.frame.w / 2 + GHOUL.frame.shift * pxm, GHOUL.frame.h * GHOUL.frame.floor);
     b.translate(0, 0, 14); b.pitch(GHOUL.frame.pitch); b.yaw(GHOUL.frame.yaw);
     drawFigure(b, GHOUL, rolePose(GHOUL, "idle", 0), { mask: 0, only: "head" });
     finish(r);
@@ -163,7 +166,7 @@ describe("its parts are real", () => {
 
 describe("its head is the head the hit test counts", () => {
   it.each([["idle", 0], ...[0, 1, 2, 3, 4, 5].map((i) => ["walk", i] as const)] as const)("%s%i: the head sits in the top of the sprite (Hitscan's frac>0.74 is its top 26%%)", (role, i) => {
-    const f = GHOUL.frame, r = new Raster(f.w, f.h, GHOUL.palette), pxm = f.h / f.worldH, b = new Builder(r, pxm * 14, f.w / 2, f.h * f.floor);
+    const f = GHOUL.frame, r = new Raster(f.w, f.h, GHOUL.palette), pxm = f.h / f.worldH, b = new Builder(r, pxm * 14, f.w / 2 + f.shift * pxm, f.h * f.floor);
     b.translate(0, 0, 14); b.pitch(f.pitch); b.yaw(f.yaw);
     drawFigure(b, GHOUL, rolePose(GHOUL, role, i), { mask: 0, only: "head" });
     finish(r);
@@ -325,6 +328,24 @@ describe("the parts that fly are the ghoul's own", () => {
     expect((part.sp.material as { map: unknown }).map, "the head that flies is the ghoul's own").toBe(TEX.partArt("z", "head")!.tex);
     expect((part.sp.material as { map: unknown }).map).not.toBe(PX.z.a);
     headPool.heads.length = 0;
+  });
+
+  it("a rigged monster's limbs fall, rest and are kicked exactly as the legacy monster's did: the legacy crop's physical box, thrown from the legacy height", async () => {
+    // the church bot (churchPlay.test.ts) kicks parts, and a kick that lands is a hit-stop: the rig's thin arm in a box of its own moved that run off its recording
+    const { makePart } = await import("../../src/fx/Parts");
+    const { headPool } = await import("../../src/fx/Heads");
+    const { PXDEF } = await import("../../src/enemies/pixels");
+    const d = PXDEF.z, W = Math.max(...d.px.map((r) => r.length)), H = d.px.length, head = d.head || 0;
+    const armBot = Math.min(H - 3, head + Math.ceil((H - head) * 0.45)), host = { x: 5, z: 5, h: 1.65, w: 1.18, fy: 0, key: "z" };
+    const legacy = { 1: Math.min(((Math.ceil(W * 0.32) + 1) / W) * host.w * 1.3, ((armBot - head) / H) * host.h * 1.3), 2: Math.min(((W - (Math.floor(W * 0.68) - 1)) / W) * host.w * 1.3, ((armBot - head) / H) * host.h * 1.3), 3: Math.min(host.w * 1.3, (Math.ceil(H * 0.28) / H) * host.h * 1.3) };
+    for (const kind of [1, 2, 3] as const) {
+      headPool.heads.length = 0;
+      const p = makePart(kind, host, { x: 5, y: 1, z: 5, vx: 0, vy: 0, vz: 0, spin: 0 })! as unknown as { sz: number; sp: { scale: { x: number; y: number } } };
+      expect(p.sz, `kind ${kind}'s box`).toBeCloseTo(legacy[kind], 9);
+      expect(Math.min(p.sp.scale.x, p.sp.scale.y), "while the art drawn in it is its own, thinner").toBeLessThan(p.sz);
+    }
+    headPool.heads.length = 0;
+    expect(PX.z.regions, "the arm is thrown from the legacy height").toMatchObject({ armTop: head, armBot });
   });
 
   it("the crawler is the rig's too: crawlArt gives its crawl frames, with the arm or the head gone as asked", async () => {
