@@ -163,6 +163,7 @@ bölümlerde, gizli kapılar, bölüm sonu karşılaşmaları ve çalınabilir b
 seni bekliyor. Ses tamamen yeniden yapıldı; her sesi
 [ses panosunda](https://torunum.github.io/black-silence/soundboard.html) tek tek
 dinleyebilirsin.
+Düşmanlar da baştan çiziliyor: [canavar defteri](https://torunum.github.io/black-silence/bestiary.html) her düşmanı yürürken, saldırırken, ölürken ve parça parça koparken gösterir; yeniden çizilenlerin eski ve yeni hali yan yana durur.
 
 [Tarayıcıda oyna](https://torunum.github.io/black-silence/) veya
 [tek HTML dosyasını indir](https://github.com/torunum/black-silence/releases/download/preview-2026-09-18/THE-BLACK-SILENCE.html), masaüstü tarayıcında aç

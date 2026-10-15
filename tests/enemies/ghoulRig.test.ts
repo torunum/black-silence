@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { installDomStubs, loadGameHtml } from "../support/domStubs";
 import type { Enemy } from "../../src/enemies/Enemy";
 import { GHOUL } from "../../src/enemies/rig/ghoul";
@@ -160,7 +160,8 @@ describe("its parts are real", () => {
     }
     const head = renderPart(GHOUL, "head"), legs = renderPart(GHOUL, "legs");
     expect(head.mh, "the head is a head").toBeLessThan(0.62);
-    expect(legs.mh, "the legs are legs").toBeGreaterThan(0.6);
+    expect(legs.mw, "the legs are legs, lying on their side").toBeGreaterThan(0.6);
+    expect(legs.mh, "a pair, one above the other").toBeLessThan(0.5);
   });
 });
 
@@ -389,12 +390,21 @@ describe("a legacy enemy is unchanged", () => {
 });
 
 describe("it costs what the budget says", () => {
-  it("its eager frames (17) bake in a fraction of the budget: a milli-second a pose", () => {
+  it("only its idle frame is baked at boot; every other frame is baked the first time it is asked for, and kept", async () => {
+    const { rigSprite } = await import("../../src/enemies/rig/sprite");
+    const s = rigSprite(GHOUL), set = s.rig as unknown as { baked: number };
+    expect(set.baked, "the idle, nothing else").toBe(1);
+    const w2 = (s as unknown as Record<string, unknown>).walk2;
+    expect(set.baked).toBe(2);
+    expect((s as unknown as Record<string, unknown>).walk2, "and kept").toBe(w2);
+    expect(set.baked).toBe(2);
+    void s.b; void s.atk; void s.die1; void s.die2;
+    expect(set.baked, "the legacy slots are frames of the same set").toBe(6);
+  });
+
+  it("all 17 standing frames rasterize in a fraction of the 250 ms budget (22 monsters at this rate are the number in docs/STATUS.md, which is why they are lazy)", () => {
     const t0 = performance.now();
     for (const [role, n] of ROLES.slice(0, 5)) for (let i = 0; i < n; i++) frame(role, i);
-    const ms = performance.now() - t0;
-    vi.stubGlobal("__bakeMs", ms);
-    expect(ms, "17 poses rasterized").toBeLessThan(250);
-    vi.unstubAllGlobals();
+    expect(performance.now() - t0, "17 poses rasterized").toBeLessThan(250);
   });
 });

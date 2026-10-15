@@ -10,11 +10,15 @@ import { HEAD, L_ARM, LEGS, R_ARM, type Rig, type Role } from "./kit";
  * trace digest names them (`buildTextureIndex` walks `PX[key]`'s own
  * texture slots) and `rig`, which has everything else.
  *
- * The standing frames — a walk of six, the idle, the attack, pain and
- * death — are baked here, at boot. The dismembered roles are getters: a
- * variant is baked the first time something asks for it, which for most is
- * never (and `tests/enemies/ghoulRig.test.ts` reads them all once, to name
- * them).
+ * **Only the idle frame is baked at boot** (the one a monster spawns in); every other
+ * slot is a getter that bakes its frame the first time something asks for it and
+ * keeps it. Measured (headless Chromium, `docs/STATUS.md`): a pose rasterizes in
+ * about 1.2 ms, so the ghoul's 17 standing frames are 23 ms, and 22 monsters baked
+ * eagerly would be about half a second of boot against the plan's 250 ms budget;
+ * baked on demand a monster costs its idle (about 1.5 ms) at boot, and a frame
+ * costs its 1.2 ms the first time an enemy of that kind walks, strikes, hurts or
+ * falls. A getter is still a slot: `buildTextureIndex` (the trace digest) walks
+ * them all, so the traces name every frame, and the tests read them all once.
  */
 
 /** The slot names of the eager frames. None may be a legacy role's name: `die1`, `die2` and `atk` mean what they always meant (a falling frame, the flat corpse, the strike). */
@@ -28,15 +32,15 @@ export function rigSprite(rig: Rig): BakedSprite {
   const o: Record<string, unknown> = {};
   for (const [role, names] of SLOTS) {
     if (names.length !== roleCount(rig, role)) throw new Error(`rig ${rig.key}: ${role} has ${roleCount(rig, role)} poses, the slots name ${names.length}`);
-    names.forEach((n, i) => { o[n] = set.tex(role, i); });
+    names.forEach((n, i) => { if (role === "idle") o[n] = set.tex(role, i); else lazy(n, role, i, 0); });
   }
-  const lazy = (name: string, role: Role, i: number, mask: number): void => {
+  function lazy(name: string, role: Role, i: number, mask: number): void {
     Object.defineProperty(o, name, { get: () => set.tex(role, i, mask), enumerable: true, configurable: true });
-  };
+  }
   // the legacy roles: `a` and `b` the two walk frames (here the idle, and the step half a cycle on), the attack's strike,
   // the two death frames (the first fall, the last, flat), and the variants an enemy that has lost something wears
-  o.a = o.idle; o.b = set.tex("walk", 3);
-  o.atk = o.atkStrike; o.die1 = o.death1; o.die2 = o.death4;
+  o.a = o.idle;
+  lazy("b", "walk", 3, 0); lazy("atk", "atk", 1, 0); lazy("die1", "die", 1, 0); lazy("die2", "die", 4, 0);
   lazy("hl", "idle", 0, HEAD); lazy("noHead", "idle", 0, HEAD);
   lazy("hlb", "walk", 3, HEAD); lazy("noHeadB", "walk", 3, HEAD);
   lazy("noLArm", "idle", 0, L_ARM); lazy("noLArmB", "walk", 3, L_ARM);

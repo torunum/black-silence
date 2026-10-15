@@ -173,7 +173,8 @@ export const GHOUL_POSES: RigPoses = {
 export const GHOUL_PART_POSES = {
   head: make({ head: [0.05, 0, 0], jaw: 0.35, ground: false }),
   arm: make({ aL: { f: 0, out: 0.1, e: 0.35, w: 0.1 }, aR: { f: 0, out: 0.1, e: 0.35, w: 0.1 }, claw: 0.5, ground: false }),
-  legs: make({ lL: { f: 0, k: 0.1 }, lR: { f: 0, k: 0.1 } }),
+  // the legs lie on their side (the pelvis turned a quarter): a pair of severed legs is a thing on the floor, not two posts standing on it
+  legs: make({ pelvis: [0, 0, Math.PI / 2], lL: { f: 0, k: 0.1 }, lR: { f: 0, k: 0.1 }, ground: false }),
 };
 
 export { lerpPose };
