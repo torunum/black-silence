@@ -1,6 +1,6 @@
 import type { Builder } from "../builder";
 import { MAT } from "../palette";
-import { cup, fist, forearm } from "../hands";
+import { clasp, fist, forearm } from "../hands";
 import { hump, ramp, type Pose, type WeaponArt } from "../pose";
 import { REAPER } from "../phases";
 
@@ -22,12 +22,12 @@ const ribTex = (_x: number, y: number, z: number): number =>
 const runeTex = (x: number, y: number): number =>
   (Math.floor((Math.atan2(y, x) + 4) * 5) % 3) === 0 ? 2 : 0;
 
-const CORE_Y = 0.04, CORE_Z = 0.32, CORE_R = 0.058;
+const CORE_Y = 0.04, CORE_Z = 0.27, CORE_R = 0.058;
 
 export const soulReaper: WeaponArt = {
   name: "SOUL REAPER",
-  hold: { x: 0.11, y: -0.1, z: 0.3, pitch: -0.01, yaw: -0.38, roll: 0.05 },
-  kick: { back: 0.07, lift: 0.06 },
+  hold: { x: 0.05, y: -0.248, z: 0.5, pitch: 0, yaw: 0, roll: 0 },
+  kick: { back: 0.08, lift: 0.035 },
   action: (p) => p,
   spinRate: 5,
   idleSpin: 0.7,
@@ -37,7 +37,7 @@ export const soulReaper: WeaponArt = {
     b.translate(0, -0.015 * tilt, 0); b.roll(-0.3 * tilt); b.pitch(-0.06 * tilt);
 
     // blackened iron body, a crest of bone spines along its back, bone ribs round it
-    b.cbox(-0.017, 0.02, 0.0, 0.017, 0.06, 0.2, 0.008, MAT.BLACK, { tex: ribTex });
+    b.cbox(-0.017, 0.02, 0.0, 0.017, 0.06, 0.15, 0.008, MAT.BLACK, { tex: ribTex });
     for (let i = 0; i < 4; i++) {
       b.push(); b.translate(0, 0.058, 0.04 + i * 0.045); b.pitch(Math.PI / 2 - 0.7);
       b.cyl(0, 0, 0, 0.05 - i * 0.006, 0.009, 0.0008, 4, MAT.BONE, { a0: Math.PI / 4 });
@@ -57,7 +57,7 @@ export const soulReaper: WeaponArt = {
     const a = pose.action;
     const openA = r >= 0 ? 0.5 * hump(r, ...REAPER.claws) : 0.55 * hump(a, 0.0, 0.7, 0.12);
     for (let i = 0; i < 3; i++) {
-      b.push(); b.translate(0, CORE_Y, 0.2); b.roll(i * 2 * Math.PI / 3 + Math.PI / 2);
+      b.push(); b.translate(0, CORE_Y, 0.15); b.roll(i * 2 * Math.PI / 3 + Math.PI / 2);
       b.translate(0, 0.036, 0); b.pitch(-0.5 - openA);
       b.cbox(-0.012, -0.009, 0.0, 0.012, 0.009, 0.1, 0.004, MAT.BONE);
       b.translate(0, 0.0, 0.096); b.pitch(0.95 + openA * 0.6);
@@ -69,6 +69,8 @@ export const soulReaper: WeaponArt = {
 
     // the soul core: spent and re-forming when fired; plucked out dead and pressed in fresh on reload
     b.anchor("muzzle", 0, CORE_Y, CORE_Z);
+    b.anchor("bore", 0, CORE_Y, 0.0);                    // rear of the bore, on the barrel's axis
+    b.anchor("crest", 0, CORE_Y + 0.05, CORE_Z);               // straight above the muzzle: the roll reference
     if (r < 0) {
       const spent = hump(a, ...REAPER.spent);
       b.ball(0, CORE_Y, CORE_Z, CORE_R * (1 - 0.6 * spent) * (1 + 0.2 * pose.heat), MAT.SOUL, 10);
@@ -98,9 +100,10 @@ export const soulReaper: WeaponArt = {
       }
     }
 
+    b.anchor("fore", 0, CORE_Y, 0.09);                       // the body, behind the claws
     // bone grip; left hand steadies the body
     b.ext([[-0.03, 0.02], [0.004, 0.02], [-0.012, -0.1], [-0.042, -0.104], [-0.05, -0.02]], -0.016, 0.016, MAT.BONE);
-    if (r < 0.12 || r >= 0.7) { b.push(); b.translate(0, CORE_Y, 0.12); cup(b, 0.026, 0.028); b.pop(); }
+    if (r < 0.12 || r >= 0.7) { b.push(); b.translate(0, CORE_Y, 0.09); clasp(b, 0.036, 0.034, -0.03); b.pop(); }
     b.push(); b.pitch(-0.25); fist(b, 1, { w: 0.016 }); b.pop();
     forearm(b, 0.012, -0.05, -0.06, [0.3, -0.42, -1], 0.031);
   },

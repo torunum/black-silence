@@ -12,18 +12,21 @@ import { drawLeg, legPose } from "./kick";
  * so the gun and hands take up about a third of the screen's height, as
  * Doom/Quake viewmodels do.
  *
- * AIM_DX/AIM_DY shift the lens: the viewmodel's vanishing point sits this
- * far right of and below the crosshair. A barrel held straight forward
- * converges on its vanishing point, so without the shift every muzzle
- * points exactly at the crosshair and the gun covers what the player is
- * shooting at. With the shift the weapon still reads as pointing forward,
- * but it stays low and out of the centre of the screen.
- * tests/behavior/viewmodel.test.ts pins this: every weapon, at rest, firing
+ * The viewmodel looks straight down the view axis: its vanishing point is the
+ * crosshair (AIM_DX = AIM_DY = 0), so a barrel held parallel to the view
+ * runs up the screen toward the crosshair and is not canted. It used to
+ * shift the lens (14 px right, 38 px down) so the weapon would stay clear
+ * of the crosshair, and every weapon was then held yawed and rolled to
+ * show its length: they read as crooked (owner, 2026-10-17). Clearance now
+ * comes from where and how large the weapon is held, never from a tilt.
+ * tests/behavior/viewmodel.test.ts pins that every weapon, at rest, firing
  * and reloading, and at more than one aspect ratio, stays below a line 15%
- * of the screen's height under the crosshair (CLEAR_BELOW).
+ * of the screen's height under the crosshair (CLEAR_BELOW), and
+ * tests/behavior/viewmodelStraight.test.ts that every barrel is parallel
+ * to the view at rest, with no roll.
  */
 export const FOCAL = 170;
-export const AIM_DX = 14, AIM_DY = 38;
+export const AIM_DX = 0, AIM_DY = 0;
 /** How far below the crosshair, as a fraction of screen height, the weapon's topmost pixel must stay. */
 export const CLEAR_BELOW = 0.15;
 

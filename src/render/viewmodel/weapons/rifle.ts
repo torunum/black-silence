@@ -1,6 +1,6 @@
 import type { Builder } from "../builder";
 import { MAT } from "../palette";
-import { cup, fist, forearm } from "../hands";
+import { clasp, fist, forearm } from "../hands";
 import { hump, ramp, type Pose, type WeaponArt } from "../pose";
 import { RIFLE } from "../phases";
 
@@ -29,8 +29,8 @@ function magazine(b: Builder): void {
 
 export const combatRifle: WeaponArt = {
   name: "COMBAT RIFLE",
-  hold: { x: 0.13, y: -0.097, z: 0.32, pitch: -0.03, yaw: -0.2, roll: 0.06 },
-  kick: { back: 0.025, lift: 0.08 },
+  hold: { x: 0.05, y: -0.238, z: 0.5, pitch: 0, yaw: 0, roll: 0 },
+  kick: { back: 0.04, lift: 0.04 },
   action: (p) => hump(p, 0.0, 0.9, 0.3),
   draw(b: Builder, pose: Pose) {
     const r = pose.reload;
@@ -55,13 +55,15 @@ export const combatRifle: WeaponArt = {
     b.ext([[0.0, 0.0], [0.07, 0.0], [0.07, -0.008], [0.056, -0.028], [0.014, -0.03], [0.006, -0.024], [0.05, -0.022], [0.062, -0.008], [0.0, -0.008]], -0.004, 0.004, MAT.IRON);
 
     // handguard, barrel, front sight tower, flash hider
-    b.cyl(0, 0.028, 0.14, 0.4, 0.027, 0.025, 8, MAT.BLACK, { tex: ventTex, a0: 0 });
+    b.cyl(0, 0.028, 0.14, 0.3, 0.027, 0.025, 8, MAT.BLACK, { tex: ventTex, a0: 0 });
     b.cyl(0, 0.028, 0.14, 0.152, 0.03, 0.03, 8, MAT.IRON, { a0: 0 });
-    b.cyl(0, 0.028, 0.4, 0.62, 0.009, 0.009, 8, MAT.BLUED);
-    b.ext([[0.43, 0.03], [0.47, 0.03], [0.465, 0.085], [0.45, 0.085]], -0.006, 0.006, MAT.IRON);
-    b.box(-0.0035, 0.085, 0.452, 0.0035, 0.1, 0.46, MAT.IRON);                        // front post
-    b.cyl(0, 0.028, 0.6, 0.66, 0.013, 0.012, 6, MAT.IRON, { tex: (_x, _y, z) => ((z * 180) | 0) & 1 ? -1.4 : 0 });
-    b.anchor("muzzle", 0, 0.028, 0.66);
+    b.cyl(0, 0.028, 0.3, 0.46, 0.009, 0.009, 8, MAT.BLUED);
+    b.ext([[0.33, 0.03], [0.37, 0.03], [0.365, 0.07], [0.35, 0.07]], -0.006, 0.006, MAT.IRON);
+    b.box(-0.0035, 0.07, 0.352, 0.0035, 0.084, 0.36, MAT.IRON);                        // front post
+    b.cyl(0, 0.028, 0.44, 0.5, 0.013, 0.012, 6, MAT.IRON, { tex: (_x, _y, z) => ((z * 180) | 0) & 1 ? -1.4 : 0 });
+    b.anchor("muzzle", 0, 0.028, 0.5);
+    b.anchor("bore", 0, 0.028, -0.05);                    // rear of the bore, on the barrel's axis
+    b.anchor("crest", 0, 0.028 + 0.05, 0.5);               // straight above the muzzle: the roll reference
 
     // magazine: out, swapped, in
     const drop = r < 0 ? 0 : ramp(r, ...RIFLE.drop), seat = r < 0 ? 1 : ramp(r, ...RIFLE.seat);
@@ -80,8 +82,9 @@ export const combatRifle: WeaponArt = {
         b.pop();
       }
     }
+    b.anchor("fore", 0, 0.028, 0.22);                        // the handguard
     // the left hand: on the handguard, or pulling the T-handle
-    if (handAway < 0.05) { b.push(); b.translate(0, 0.028, 0.29); cup(b, 0.027, 0.027); b.pop(); }
+    if (handAway < 0.05) { b.push(); b.translate(0, 0.028, 0.22); clasp(b, 0.027, 0.027, -0.027); b.pop(); }
     else if (r > 0.72) {
       b.push(); b.translate(-0.022, 0.051, -0.093 - 0.06 * ch); b.roll(-Math.PI / 2);
       fist(b, -1, { w: 0.007, fingers: 3 });

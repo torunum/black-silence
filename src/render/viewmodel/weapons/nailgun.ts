@@ -35,8 +35,8 @@ function hopper(b: Builder): void {
 
 export const nailCannon: WeaponArt = {
   name: "NAIL CANNON",
-  hold: { x: 0.13, y: -0.112, z: 0.32, pitch: -0.03, yaw: -0.2, roll: 0.1 },
-  kick: { back: 0.012, lift: 0.03 },
+  hold: { x: 0.05, y: -0.25, z: 0.5, pitch: 0, yaw: 0, roll: 0 },
+  kick: { back: 0.07, lift: 0.02 },
   action: (p) => p,
   spinRate: 26,
   draw(b: Builder, pose: Pose) {
@@ -56,12 +56,14 @@ export const nailCannon: WeaponArt = {
     b.push(); b.translate(0, AXIS_Y, 0); b.roll(pose.spin);
     for (let i = 0; i < 6; i++) {
       const ang = i * Math.PI / 3;
-      b.cyl(Math.cos(ang) * 0.03, Math.sin(ang) * 0.03, 0.1, 0.5, 0.0115, 0.0115, 6, MAT.IRON);
+      b.cyl(Math.cos(ang) * 0.03, Math.sin(ang) * 0.03, 0.1, 0.36, 0.0115, 0.0115, 6, MAT.IRON);
     }
-    for (const z of [0.22, 0.46]) b.cyl(0, 0, z, z + 0.022, 0.047, 0.047, 6, MAT.COPPER, { a0: 0 });
-    b.cyl(0, 0, 0.1, 0.49, 0.014, 0.014, 6, MAT.BLACK);
+    for (const z of [0.17, 0.32]) b.cyl(0, 0, z, z + 0.022, 0.047, 0.047, 6, MAT.COPPER, { a0: 0 });
+    b.cyl(0, 0, 0.1, 0.35, 0.014, 0.014, 6, MAT.BLACK);
     b.pop();
-    b.anchor("muzzle", 0, AXIS_Y, 0.5);
+    b.anchor("muzzle", 0, AXIS_Y, 0.36);
+    b.anchor("bore", 0, AXIS_Y, -0.04);                    // rear of the bore, on the barrel's axis
+    b.anchor("crest", 0, AXIS_Y + 0.05, 0.36);               // straight above the muzzle: the roll reference
 
     // hopper on its post on the left side, hose into the drum
     b.cbox(-0.05, AXIS_Y - 0.02, -0.02, -0.036, AXIS_Y - 0.006, 0.04, 0.003, MAT.IRON);
@@ -75,9 +77,10 @@ export const nailCannon: WeaponArt = {
     }
     b.push(); b.translate(-0.07, AXIS_Y + 0.012, 0.075); b.yaw(1.2); b.cyl(0, 0, 0, 0.04, 0.007, 0.007, 6, MAT.BLACK); b.pop();
 
+    b.anchor("fore", -0.06, AXIS_Y - 0.07, 0.1);             // the side handle
     // left hand: on the side handle, or carrying hoppers
     if (lift < 0.05) {
-      b.push(); b.translate(-0.06, AXIS_Y - 0.03, 0.14);
+      b.push(); b.translate(-0.06, AXIS_Y - 0.03, 0.1);
       b.cbox(0.0, -0.004, -0.01, 0.02, 0.004, 0.01, 0.002, MAT.IRON);
       b.ext([[-0.012, 0.0], [0.012, 0.0], [0.01, -0.08], [-0.01, -0.08]], -0.012, 0.012, MAT.WOOD);
       fist(b, -1, { w: 0.012 });

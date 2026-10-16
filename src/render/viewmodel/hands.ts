@@ -54,19 +54,24 @@ export function forearm(b: Builder, x: number, y: number, z: number, dir: [numbe
 }
 
 /**
- * The left hand cupped under a forend or barrel that runs along local z
- * through the origin: palm underneath, fingers curled up the far (left)
- * side, thumb along the near (right) side, forearm running back and down
- * to the left. `w` is the forend's half width, `h` its depth below the axis.
+ * The left hand clasped round a fore-end that runs along local z, seen from
+ * behind and to the left (the gun is held right of the view axis, so its
+ * left flank faces the eye): the back of the hand lies against the left
+ * flank, the four fingers curl over the top, the thumb runs forward along
+ * the underside, and the forearm leaves the wrist back and down to the
+ * left. `w` is the fore-end's half width, `top` and `bottom` its extent in
+ * local y. The hand's anchor ("leftHand") is where it touches the flank.
  */
-export function cup(b: Builder, w: number, h: number): void {
-  b.cbox(-w - 0.008, -h - 0.024, -0.05, w + 0.01, -h + 0.002, 0.04, 0.007, MAT.GLOVE, { tex: gloveTex });
-  for (let i = 0; i < 4; i++) {
-    const z = -0.032 + i * 0.021;
-    rodY(b, -h - 0.012, -h * 0.25 + 0.006 - i * 0.002, -w - 0.007, z, 0.0095, MAT.GLOVE);
-  }
-  b.push(); b.translate(w + 0.006, -h * 0.35, -0.05); b.cyl(0, 0, 0, 0.06, 0.011, 0.009, 6, MAT.GLOVE); b.pop();
-  forearm(b, -0.004, -h - 0.018, -0.05, [-0.4, -0.55, -1], 0.029);
+export function clasp(b: Builder, w: number, top: number, bottom: number): void {
+  const mid = (top + bottom) / 2;
+  b.anchor("leftHand", -w, mid, 0);
+  // the back of the hand, against the flank
+  b.cbox(-w - 0.034, bottom - 0.006, -0.05, -w + 0.001, top - 0.002, 0.04, 0.008, MAT.GLOVE, { tex: gloveTex });
+  // four fingers over the top, their knuckles on the near side
+  for (let i = 0; i < 4; i++) rodX(b, -w - 0.03, w * 0.35, top + 0.006, -0.036 + i * 0.02, 0.0095, MAT.GLOVE);
+  // the thumb forward along the underside
+  b.push(); b.translate(-w - 0.012, bottom + 0.004, -0.03); b.cyl(0, 0, 0, 0.07, 0.0115, 0.0095, 6, MAT.GLOVE); b.pop();
+  forearm(b, -w - 0.018, bottom - 0.004, -0.05, [-0.45, -0.6, -1], 0.029);
 }
 
 /**
@@ -78,6 +83,7 @@ export function cup(b: Builder, w: number, h: number): void {
  */
 export function fist(b: Builder, side: 1 | -1, o: { trigger?: boolean; w?: number; fingers?: number } = {}): void {
   const s = side, w = o.w ?? 0.014;
+  b.anchor(s > 0 ? "rightHand" : "leftHand", 0, -0.04, 0);
   const X = (a: number, c: number): [number, number] => (s > 0 ? [a, c] : [-c, -a]);
   // the palm and the back of the hand: a rounded block behind and outside the grip
   const [px0, px1] = X(-w - 0.003, w + 0.02);

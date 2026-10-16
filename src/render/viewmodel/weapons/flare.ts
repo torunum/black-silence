@@ -31,8 +31,8 @@ function shell(b: Builder, z0: number): void {
 
 export const flarePistol: WeaponArt = {
   name: "FLARE PISTOL",
-  hold: { x: 0.1, y: -0.075, z: 0.45, pitch: 0.0, yaw: -0.55, roll: 0.2 },
-  kick: { back: 0.06, lift: 0.1 },
+  hold: { x: 0.06, y: -0.18, z: 0.42, pitch: 0, yaw: 0, roll: 0 },
+  kick: { back: 0.07, lift: 0.06 },
   action: (p) => 1 - ramp(p, ...FLARE.cock),
   draw(b: Builder, pose: Pose) {
     const r = pose.reload;
@@ -78,6 +78,8 @@ export const flarePistol: WeaponArt = {
       if (r > 0.6 && r < 0.84) { b.push(); b.translate(0, cy, -0.028); shell(b, 0); b.pop(); } // fresh shell seated
     }
     b.anchor("muzzle", 0, cy, 0.178);
+    b.anchor("bore", 0, cy, -0.028);                    // rear of the bore, on the barrel's axis
+    b.anchor("crest", 0, cy + 0.05, 0.178);               // straight above the muzzle: the roll reference
     b.pop();
 
     // right hand on the grip, finger on the trigger

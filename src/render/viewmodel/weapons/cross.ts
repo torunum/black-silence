@@ -1,6 +1,6 @@
 import type { Builder } from "../builder";
 import { MAT } from "../palette";
-import { cup, fist, forearm } from "../hands";
+import { clasp, fist, forearm } from "../hands";
 import { hump, ramp, type Pose, type WeaponArt } from "../pose";
 import { CROSS } from "../phases";
 
@@ -25,10 +25,10 @@ const ROOF_SPLIT = 0.042;
 
 /** The cross bolt: a shaft along +z riding the roof ridge, ending in an upright cross standing over the mouth. */
 export function crossBolt(b: Builder): void {
-  b.cbox(-0.004, -0.004, -0.14, 0.004, 0.004, 0.12, 0.0015, MAT.GOLD);
-  b.cbox(-0.006, -0.012, 0.11, 0.006, 0.09, 0.122, 0.002, MAT.GOLD);           // upright
-  b.cbox(-0.036, 0.046, 0.11, 0.036, 0.058, 0.122, 0.002, MAT.GOLD);           // crossbar
-  b.ball(0, 0.052, 0.108, 0.008, MAT.RED, 6);                                  // a garnet at the crossing
+  b.cbox(-0.004, -0.004, -0.18, 0.004, 0.004, 0.08, 0.0015, MAT.GOLD);
+  b.cbox(-0.006, -0.012, 0.07, 0.006, 0.058, 0.082, 0.002, MAT.GOLD);           // upright
+  b.cbox(-0.026, 0.03, 0.07, 0.026, 0.042, 0.082, 0.002, MAT.GOLD);           // crossbar
+  b.ball(0, 0.036, 0.068, 0.008, MAT.RED, 6);                                  // a garnet at the crossing
 }
 
 function pinnacle(b: Builder, x: number, y: number, z: number): void {
@@ -39,8 +39,8 @@ function pinnacle(b: Builder, x: number, y: number, z: number): void {
 
 export const crossLauncher: WeaponArt = {
   name: "HOLY CROSS LAUNCHER",
-  hold: { x: 0.125, y: -0.158, z: 0.33, pitch: -0.03, yaw: -0.2, roll: 0.04 },
-  kick: { back: 0.07, lift: 0.05 },
+  hold: { x: 0.05, y: -0.283, z: 0.55, pitch: 0, yaw: 0, roll: 0 },
+  kick: { back: 0.09, lift: 0.03 },
   action: (p) => p,
   draw(b: Builder, pose: Pose) {
     const r = pose.reload;
@@ -50,17 +50,17 @@ export const crossLauncher: WeaponArt = {
 
     // housing: walls, then the roof (hinged on its left eave for the reload)
     b.push(); b.translate(0, 0.0, 0.0);
-    b.prz(ARCH.filter(([, y]) => y <= ROOF_SPLIT), -0.06, 0.22, MAT.BONE, { tex: ivoryTex });
+    b.prz(ARCH.filter(([, y]) => y <= ROOF_SPLIT), -0.06, 0.16, MAT.BONE, { tex: ivoryTex });
     b.push(); b.translate(-0.032, ROOF_SPLIT, 0); b.roll(-1.4 * lid); b.translate(0.032, -ROOF_SPLIT, 0);
-    b.prz(ARCH.filter(([, y]) => y >= ROOF_SPLIT), -0.06, 0.22, MAT.BONE);
-    for (const z of [-0.06, 0.07, 0.2]) b.prz(ARCH.filter(([, y]) => y >= ROOF_SPLIT).map(([x, y]) => [x * 1.12, (y - ROOF_SPLIT) * 1.12 + ROOF_SPLIT]), z, z + 0.018, MAT.GOLD);
+    b.prz(ARCH.filter(([, y]) => y >= ROOF_SPLIT), -0.06, 0.16, MAT.BONE);
+    for (const z of [-0.06, 0.05, 0.14]) b.prz(ARCH.filter(([, y]) => y >= ROOF_SPLIT).map(([x, y]) => [x * 1.12, (y - ROOF_SPLIT) * 1.12 + ROOF_SPLIT]), z, z + 0.018, MAT.GOLD);
     b.pop();
-    for (const z of [-0.06, 0.07, 0.2]) b.prz([[-0.035, -0.004], [0.035, -0.004], [0.035, ROOF_SPLIT], [-0.035, ROOF_SPLIT]], z, z + 0.018, MAT.GOLD);
+    for (const z of [-0.06, 0.05, 0.14]) b.prz([[-0.035, -0.004], [0.035, -0.004], [0.035, ROOF_SPLIT], [-0.035, ROOF_SPLIT]], z, z + 0.018, MAT.GOLD);
     b.cyl(0, 0.04, -0.064, -0.06, 0.022, 0.022, 10, MAT.GOLD);                    // rose window frame
     b.cyl(0, 0.04, -0.066, -0.063, 0.016, 0.016, 10, MAT.RED);                    // its red glass
-    for (const [x, z] of [[-0.034, -0.06], [0.034, -0.06], [-0.034, 0.2], [0.034, 0.2]]) pinnacle(b, x, ROOF_SPLIT, z);
-    b.cbox(-0.02, 0.004, 0.22, 0.02, 0.05, 0.25, 0.006, MAT.GOLD);                 // the mouth
-    b.cbox(-0.012, 0.012, 0.25, 0.012, 0.042, 0.252, 0.004, MAT.BLACK);
+    for (const [x, z] of [[-0.034, -0.06], [0.034, -0.06], [-0.034, 0.14], [0.034, 0.14]]) pinnacle(b, x, ROOF_SPLIT, z);
+    b.cbox(-0.02, 0.004, 0.16, 0.02, 0.05, 0.19, 0.006, MAT.GOLD);                 // the mouth
+    b.cbox(-0.012, 0.012, 0.19, 0.012, 0.042, 0.192, 0.004, MAT.BLACK);
     b.pop();
 
     // the cross bolt: flies, then the next rises from the roof slot
@@ -84,12 +84,15 @@ export const crossLauncher: WeaponArt = {
       const up = ramp(a, ...CROSS.rise);
       b.push(); b.translate(0, 0.02 + 0.07 * up, 0.12); crossBolt(b); b.pop();
     }
-    b.anchor("muzzle", 0, 0.03, 0.26);
+    b.anchor("muzzle", 0, 0.03, 0.2);
+    b.anchor("bore", 0, 0.03, -0.06);                    // rear of the bore, on the barrel's axis
+    b.anchor("crest", 0, 0.03 + 0.05, 0.2);               // straight above the muzzle: the roll reference
 
+    b.anchor("fore", 0, 0.02, 0.09);                         // the housing's front half
     // wooden grip, guard; left hand cradles the front
     b.ext([[-0.03, 0.0], [0.004, 0.0], [-0.012, -0.1], [-0.042, -0.104], [-0.05, -0.02]], -0.016, 0.016, MAT.WOOD);
     b.ext([[0.0, 0.0], [0.06, 0.0], [0.06, -0.008], [0.046, -0.028], [0.012, -0.03], [0.006, -0.024], [0.042, -0.022], [0.052, -0.008], [0.0, -0.008]], -0.004, 0.004, MAT.GOLD);
-    if (r < 0.2 || r > 0.7) { b.push(); b.translate(0, 0.02, 0.13); cup(b, 0.032, 0.02); b.pop(); }
+    if (r < 0.2 || r > 0.7) { b.push(); b.translate(0, 0.02, 0.09); clasp(b, 0.035, 0.022, -0.02); b.pop(); }
 
     // right hand on the grip
     b.push(); b.pitch(-0.25); fist(b, 1, { trigger: true, w: 0.016 }); b.pop();

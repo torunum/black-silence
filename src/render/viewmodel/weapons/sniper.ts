@@ -1,6 +1,6 @@
 import type { Builder } from "../builder";
 import { MAT } from "../palette";
-import { cup, fist, forearm } from "../hands";
+import { clasp, fist, forearm } from "../hands";
 import { hump, type Pose, type WeaponArt } from "../pose";
 import { SNIPER } from "../phases";
 
@@ -18,7 +18,7 @@ import { SNIPER } from "../phases";
  */
 
 const brakeTex = (_x: number, y: number, z: number): number =>
-  Math.abs(y) < 0.009 && (Math.floor((z - 0.8) * 70) & 1) ? -3 : 0; // brake ports
+  Math.abs(y) < 0.009 && (Math.floor((z - 0.6) * 70) & 1) ? -3 : 0; // brake ports
 
 function bolt(b: Builder, lift: number, back: number): void {
   b.push(); b.translate(0.0, 0.03, -0.05 - 0.06 * back);
@@ -33,8 +33,8 @@ function bolt(b: Builder, lift: number, back: number): void {
 
 export const bmgSniper: WeaponArt = {
   name: "BMG SNIPER",
-  hold: { x: 0.13, y: -0.125, z: 0.32, pitch: -0.03, yaw: -0.2, roll: 0.04 },
-  kick: { back: 0.09, lift: 0.06 },
+  hold: { x: 0.05, y: -0.269, z: 0.55, pitch: 0, yaw: 0, roll: 0 },
+  kick: { back: 0.18, lift: 0.03 },
   action: (p) => p,
   draw(b: Builder, pose: Pose) {
     const r = pose.reload;
@@ -68,23 +68,26 @@ export const bmgSniper: WeaponArt = {
     }
 
     // heavy barrel, muzzle brake, folded bipod
-    b.cyl(0, 0.026, 0.16, 0.8, 0.017, 0.015, 10, MAT.BLUED);
-    b.cbox(-0.024, 0.004, 0.8, 0.024, 0.048, 0.9, 0.007, MAT.IRON, { tex: (x, y, z) => brakeTex(x, y - 0.026, z) });
-    b.anchor("muzzle", 0, 0.026, 0.9);
+    b.cyl(0, 0.026, 0.16, 0.6, 0.017, 0.015, 10, MAT.BLUED);
+    b.cbox(-0.024, 0.004, 0.6, 0.024, 0.048, 0.68, 0.007, MAT.IRON, { tex: (x, y, z) => brakeTex(x, y - 0.026, z) });
+    b.anchor("muzzle", 0, 0.026, 0.68);
+    b.anchor("bore", 0, 0.026, -0.06);                    // rear of the bore, on the barrel's axis
+    b.anchor("crest", 0, 0.026 + 0.05, 0.68);               // straight above the muzzle: the roll reference
     b.cbox(-0.022, -0.02, 0.16, 0.022, 0.012, 0.34, 0.006, MAT.BLACK);            // forend
-    for (const s of [-1, 1]) b.cbox(s * 0.012 - 0.004, 0.0, 0.34, s * 0.012 + 0.004, 0.008, 0.6, 0.002, MAT.IRON); // bipod legs folded
+    for (const s of [-1, 1]) b.cbox(s * 0.012 - 0.004, 0.0, 0.34, s * 0.012 + 0.004, 0.008, 0.5, 0.002, MAT.IRON); // bipod legs folded
 
     // scope on two rings, eyepiece towards the eye
-    for (const z of [-0.02, 0.12]) b.cbox(-0.012, 0.05, z, 0.012, 0.078, z + 0.024, 0.003, MAT.IRON);
+    for (const z of [-0.02, 0.08]) b.cbox(-0.012, 0.05, z, 0.012, 0.078, z + 0.024, 0.003, MAT.IRON);
     b.cyl(0, 0.098, -0.1, -0.03, 0.022, 0.018, 12, MAT.BLACK);                    // eyepiece bell
-    b.cyl(0, 0.098, -0.03, 0.18, 0.016, 0.016, 12, MAT.BLACK);                    // tube
-    b.cyl(0, 0.098, 0.18, 0.28, 0.018, 0.026, 12, MAT.BLACK);                     // objective bell
+    b.cyl(0, 0.098, -0.03, 0.12, 0.016, 0.016, 12, MAT.BLACK);                    // tube
+    b.cyl(0, 0.098, 0.12, 0.2, 0.018, 0.026, 12, MAT.BLACK);                     // objective bell
     b.cyl(0, 0.098, -0.102, -0.098, 0.017, 0.017, 12, MAT.LENS);                  // eyepiece glass
     b.cyl(0.0, 0.122, 0.01, 0.04, 0.009, 0.009, 8, MAT.IRON);                     // elevation turret
     b.push(); b.translate(0.022, 0.098, 0.025); b.yaw(Math.PI / 2); b.cyl(0, 0, 0, 0.018, 0.009, 0.009, 8, MAT.IRON); b.pop();
 
+    b.anchor("fore", 0, -0.004, 0.2);                        // the forend
     // left hand under the forend (or away on the magazine)
-    if (magOut <= 0.05) { b.push(); b.translate(0, -0.004, 0.25); cup(b, 0.022, 0.016); b.pop(); }
+    if (magOut <= 0.05) { b.push(); b.translate(0, -0.004, 0.2); clasp(b, 0.022, 0.016, -0.016); b.pop(); }
 
     // right hand on the grip
     b.push(); b.pitch(-0.25); fist(b, 1, { trigger: true, w: 0.017 }); b.pop();

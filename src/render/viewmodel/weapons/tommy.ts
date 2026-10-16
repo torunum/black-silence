@@ -34,8 +34,8 @@ function drum(b: Builder): void {
 
 export const tommyGun: WeaponArt = {
   name: "TOMMY GUN",
-  hold: { x: 0.1, y: -0.07, z: 0.33, pitch: -0.02, yaw: -0.1, roll: 0.26 },
-  kick: { back: 0.016, lift: 0.05 },
+  hold: { x: 0.05, y: -0.201, z: 0.5, pitch: 0, yaw: 0, roll: 0 },
+  kick: { back: 0.06, lift: 0.03 },
   action: (p) => hump(p, 0.0, 1.0, 0.45),
   draw(b: Builder, pose: Pose) {
     const r = pose.reload;
@@ -55,15 +55,18 @@ export const tommyGun: WeaponArt = {
     b.ext([[0.0, 0.0], [0.06, 0.0], [0.06, -0.008], [0.046, -0.028], [0.012, -0.03], [0.006, -0.024], [0.042, -0.022], [0.052, -0.008], [0.0, -0.008]], -0.004, 0.004, MAT.IRON);
 
     // finned barrel, compensator
-    for (let i = 0; i < 9; i++) b.cyl(0, 0.028, 0.14 + i * 0.022, 0.152 + i * 0.022, 0.021, 0.021, 10, MAT.IRON);
-    b.cyl(0, 0.028, 0.13, 0.35, 0.014, 0.014, 10, MAT.BLUED);
-    b.cbox(-0.016, 0.012, 0.35, 0.016, 0.044, 0.41, 0.004, MAT.IRON, { tex: (_x, y, z) => (y > 0.03 && (Math.floor(z * 150) & 1) ? -2 : 0) });
-    b.box(-0.003, 0.044, 0.39, 0.003, 0.054, 0.4, MAT.IRON);
-    b.anchor("muzzle", 0, 0.028, 0.41);
+    for (let i = 0; i < 6; i++) b.cyl(0, 0.028, 0.14 + i * 0.022, 0.152 + i * 0.022, 0.021, 0.021, 10, MAT.IRON);
+    b.cyl(0, 0.028, 0.13, 0.27, 0.014, 0.014, 10, MAT.BLUED);
+    b.cbox(-0.016, 0.012, 0.27, 0.016, 0.044, 0.33, 0.004, MAT.IRON, { tex: (_x, y, z) => (y > 0.03 && (Math.floor(z * 150) & 1) ? -2 : 0) });
+    b.box(-0.003, 0.044, 0.31, 0.003, 0.054, 0.32, MAT.IRON);
+    b.anchor("muzzle", 0, 0.028, 0.33);
+    b.anchor("bore", 0, 0.028, -0.05);                    // rear of the bore, on the barrel's axis
+    b.anchor("crest", 0, 0.028 + 0.05, 0.33);               // straight above the muzzle: the roll reference
 
+    b.anchor("fore", 0, -0.03, 0.21);                        // the vertical foregrip
     // vertical foregrip with the left hand on it
     const handAway = r < 0 ? 0 : hump(r, 0.12, 0.86, 0.1);
-    b.push(); b.translate(0, 0.0, 0.28);
+    b.push(); b.translate(0, 0.0, 0.21);
     b.ext([[-0.018, 0.012], [0.018, 0.012], [0.02, -0.06], [0.012, -0.09], [-0.014, -0.09], [-0.02, -0.06]], -0.017, 0.017, MAT.WOOD, { tex: woodTex });
     b.cbox(-0.02, 0.0, -0.03, 0.02, 0.014, 0.03, 0.004, MAT.IRON);
     if (handAway < 0.05) {

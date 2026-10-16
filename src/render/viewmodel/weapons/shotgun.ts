@@ -1,6 +1,6 @@
 import type { Builder } from "../builder";
 import { MAT } from "../palette";
-import { cup, fist, forearm } from "../hands";
+import { clasp, fist, forearm } from "../hands";
 import { hump, ramp, type Pose, type WeaponArt } from "../pose";
 import { SAWED_OFF } from "../phases";
 
@@ -31,8 +31,8 @@ function hull(b: Builder, x: number, y: number, z: number): void {
 
 export const sawedOff: WeaponArt = {
   name: "SAWED-OFF SHOTGUN",
-  hold: { x: 0.08, y: -0.132, z: 0.29, pitch: 0.12, yaw: -0.2, roll: 0.14 },
-  kick: { back: 0.08, lift: 0.08 },
+  hold: { x: 0.05, y: -0.22, z: 0.5, pitch: 0, yaw: 0, roll: 0 },
+  kick: { back: 0.1, lift: 0.045 },
   // p runs over the 0.35 s fire window; the pump's back end sits at p≈0.86 (0.30 s)
   action: (p) => hump(p, ...SAWED_OFF.pump),
   draw(b: Builder, pose: Pose) {
@@ -65,11 +65,11 @@ export const sawedOff: WeaponArt = {
     const by = 0.058;
     b.cbox(-0.032, 0.03, -0.055, 0.032, 0.062, 0.05, 0.007, MAT.BLUED);            // breech lump
     for (const bx of [-0.0165, 0.0165]) {
-      b.cyl(bx, by, 0.04, 0.39, 0.016, 0.016, 10, MAT.BLUED);
-      b.cyl(bx, by, 0.37, 0.392, 0.017, 0.017, 10, MAT.IRON);                      // sawn muzzle, filed bright
+      b.cyl(bx, by, 0.04, 0.31, 0.016, 0.016, 10, MAT.BLUED);
+      b.cyl(bx, by, 0.29, 0.312, 0.017, 0.017, 10, MAT.IRON);                      // sawn muzzle, filed bright
     }
-    b.cbox(-0.003, by + 0.004, 0.05, 0.003, by + 0.009, 0.37, 0.001, MAT.BLACK);    // dark valley between the tubes
-    b.ball(0, by + 0.012, 0.375, 0.0045, MAT.BRASS, 5);                               // bead
+    b.cbox(-0.003, by + 0.004, 0.05, 0.003, by + 0.009, 0.29, 0.001, MAT.BLACK);    // dark valley between the tubes
+    b.ball(0, by + 0.012, 0.295, 0.0045, MAT.BRASS, 5);                               // bead
     if (open > 0.3) {
       for (const bx of [-0.0165, 0.0165]) b.cyl(bx, by, -0.057, -0.055, 0.011, 0.011, 10, MAT.BLACK);
       if (r > SAWED_OFF.hulls[0] && r < SAWED_OFF.hulls[1]) {                                                    // spent hulls jumping clear
@@ -80,17 +80,20 @@ export const sawedOff: WeaponArt = {
       }
       if (r > 0.6) for (const bx of [-0.0165, 0.0165]) hull(b, bx, by, -0.058);    // fresh shells seated
     }
-    b.anchor("muzzle", 0, by, 0.392);
+    b.anchor("muzzle", 0, by, 0.312);
+    b.anchor("bore", 0, by, -0.055);                    // rear of the bore, on the barrel's axis
+    b.anchor("crest", 0, by + 0.05, 0.312);               // straight above the muzzle: the roll reference
     b.pop();
 
     // slide forend under the barrels, with the left hand on it
+    b.anchor("fore", 0, 0.03, 0.17);                         // the slide forend, under the barrels
     const handOff = r < 0 ? 0 : hump(r, 0.22, 0.8, 0.14);
     const slide = -0.1 * pose.action;
     b.push();
-    b.translate(0, 0.04, 0.2 + slide);
+    b.translate(0, 0.04, 0.17 + slide);
     // wider than the pair of barrels, so from above its wooden flanks show either side of them as it racks
     b.cbox(-0.04, -0.02, -0.07, 0.04, 0.012, 0.07, 0.01, MAT.WOOD, { tex: woodTex });
-    if (handOff < 0.05) cup(b, 0.04, 0.02);
+    if (handOff < 0.05) clasp(b, 0.04, 0.012, -0.02);
     b.pop();
 
     // left hand away from the forend: fetches two shells and drops them in
