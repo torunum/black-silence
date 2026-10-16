@@ -62,11 +62,12 @@ describe("legacyDraws derives what the legacy bake draws", () => {
   });
 
   // the numbers the shim burns for each re-rigged creature (stump colours; textures x 8 uuid draws), derived from the rows and held here so that a change to a row or a rig's key is seen
-  it.each([["z", 52, 17], ["t", 88, 17], ["f", 60, 17], ["m", 48, 17], ["s", 64, 17], ["g", 20, 15], ["w", 36, 15]] as const)("%s: %i stump draws and %i textures (the shim's count)", (key, stumps, textures) => {
+  it.each([["z", 52, 17], ["t", 88, 17], ["f", 60, 17], ["m", 48, 17], ["s", 64, 17], ["g", 20, 15], ["w", 36, 15],
+    ["j", 60, 14], ["L", 36, 15], ["C", 52, 15], ["n", 60, 14], ["k", 52, 14], ["y", 32, 12], ["R", 24, 12]] as const)("%s: %i stump draws and %i textures (the shim's count)", (key, stumps, textures) => {
     expect(legacyDraws(PXDEF[key])).toEqual({ stumps, textures });
     expect(Object.keys(RIGS), "and it is a rig").toContain(key);
   });
-  it("every creature with a rig is in that table", () => { expect(Object.keys(RIGS).sort()).toEqual(["f", "g", "m", "s", "t", "w", "z"]); });
+  it("every creature with a rig is in that table", () => { expect(Object.keys(RIGS).sort()).toEqual(["C", "L", "R", "f", "g", "j", "k", "m", "n", "s", "t", "w", "y", "z"]); });
 });
 
 describe("burnLegacySpriteDraws consumes exactly that", () => {

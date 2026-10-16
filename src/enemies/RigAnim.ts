@@ -4,7 +4,7 @@ import { roleCount } from "./rig/bake";
 import { HEAD, L_ARM, LEGS, R_ARM, type Role } from "./rig/kit";
 import { fallT } from "./Corpse";
 import { HURT_LEN } from "./HitReact";
-import { ATK_LEN, ATK_SPLIT, DEATH_AT, LUNGE_AIR, LUNGE_SECS, LUNGE_SPLIT, SCREAM_SPLIT, SCREAM_STUN } from "./rig/timing";
+import { ATK_LEN, ATK_SPLIT, DEATH_AT, LUNGE_AIR, LUNGE_SECS, LUNGE_SPLIT, SCREAM_SPLIT, SCREAM_STUN, SLAM_SPLIT, SLAM_STUN, SLAM_T } from "./rig/timing";
 
 /**
  * WHICH FRAME A RIGGED MONSTER SHOWS (`docs/superpowers/plans/2026-10-13-enemies.md`).
@@ -40,8 +40,8 @@ export interface RigShape {
   sever?: { lArm?: boolean; rArm?: boolean; legs?: boolean };
   deathKind: number; deathT: number; deathDir: number;
   hurt: number; atkAnim?: number; animT: number; frame: number;
-  /** What a monster does that is not `atkAnim`: the wailer's scream (a stun) and the hound's leap (a timer). */
-  scream?: boolean; screamT?: number; stun?: number; lunge?: boolean; lungeT?: number;
+  /** What a monster does that is not `atkAnim`: the wailer's scream (a stun), the hound's leap (a timer) and the ettin's slam (a stun as well). */
+  scream?: boolean; screamT?: number; stun?: number; lunge?: boolean; lungeT?: number; slam?: boolean; slamT?: number;
 }
 
 /** The monster's dismember mask: its torn-off arms and legs, and (once dead of it) its head. */
@@ -71,6 +71,7 @@ export function rigLive(e: RigShape, dt: number, moving: boolean, stunned: boole
   if (e.hurt > 0) { role = crawl ? "crawlPain" : "pain"; i = e.hurt > HURT_LEN * 0.5 ? 0 : 1; }
   else if (!stunned && (e.atkAnim ?? 0) > 0) { role = crawl ? "crawlAtk" : "atk"; i = attackPhase(e.atkAnim ?? 0); }
   else if (stunned && e.scream && (e.screamT ?? 0) > 8.5 && (e.stun ?? 0) > 0) { role = crawl ? "crawlAtk" : "atk"; i = phaseAt(SCREAM_STUN - (e.stun ?? 0), SCREAM_SPLIT); }   // it is screaming: held where it stands
+  else if (stunned && e.slam && (e.slamT ?? 0) >= SLAM_T && (e.stun ?? 0) > 0) { role = crawl ? "crawlAtk" : "atk"; i = phaseAt(Math.max(0, SLAM_STUN - (e.stun ?? 0)), SLAM_SPLIT); }   // it is slamming: held where it stands, hammer up, down, heaved back
   else if (!stunned && e.lunge && LUNGE_SECS - (e.lungeT ?? 0) < LUNGE_AIR && LUNGE_SECS - (e.lungeT ?? 0) >= 0) { role = crawl ? "crawlAtk" : "atk"; i = phaseAt(LUNGE_SECS - (e.lungeT ?? 0), LUNGE_SPLIT); }   // in the air
   else if (moving && !stunned) {
     role = crawl ? "crawl" : "walk";

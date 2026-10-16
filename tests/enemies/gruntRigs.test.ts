@@ -11,7 +11,7 @@ import { ENEMY_DEFS } from "../../src/enemies/EnemyDefs";
 import { PXDEF } from "../../src/enemies/pixels";
 import { Builder } from "../../src/render/viewmodel/builder";
 import { Raster, finish } from "../../src/render/viewmodel/raster";
-import { E } from "../../src/enemies/rig/palette";
+import { E, FIRST_OWN } from "../../src/enemies/rig/palette";
 
 /**
  * THE COMMON GRUNTS ARE RIGS (enemies plan, Task 2): the plague bloat `t`, the flayed sprinter `f`, the
@@ -33,10 +33,14 @@ import { E } from "../../src/enemies/rig/palette";
  */
 
 /** How much of the legacy sprite's fill each rig must keep: the thinner bodies (the wailer, a starved thing in a shroud) are held to less, the barrels and brutes to nearly all of it. */
-const FILL_BAR: Record<string, number> = { t: 0.8, f: 0.8, m: 0.85, s: 0.6, g: 0.8, w: 0.8 };
-const KEYS = ["t", "f", "m", "s", "g", "w"] as const;
+const FILL_BAR: Record<string, number> = { t: 0.8, f: 0.8, m: 0.85, s: 0.6, g: 0.8, w: 0.8, j: 0.65, L: 0.6, C: 0.7, n: 0.65, k: 0.65, y: 0.7, R: 0.7 };
+const KEYS = ["t", "f", "m", "s", "g", "w", "j", "L", "C", "n", "k", "y", "R"] as const;
 type Key = (typeof KEYS)[number];
-const HAS_HEAD: Record<Key, boolean> = { t: true, f: true, m: true, s: true, g: false, w: false };
+/** The five that fly and the two that were never given a head row: the demons' flyers have none (a head shot is not counted on them), the hound and the dragger neither. */
+const HAS_HEAD: Record<Key, boolean> = { t: true, f: true, m: true, s: true, g: false, w: false, j: true, L: false, C: false, n: true, k: true, y: false, R: false };
+/** What a torn-off part leaves is wet meat, except on a skull of fire (a hollow of embers) and on stone (pale rock): the material whose pixels must show at the break. */
+const STUMP: Partial<Record<Key, number>> = { L: FIRST_OWN + 4, y: FIRST_OWN + 2 };
+const stumpMat = (key: Key): number => STUMP[key] ?? E.MEAT;
 
 const DIFF = (a: Bitmap, b: Bitmap): number => { let n = 0; for (let i = 0; i < a.data.length; i += 4) if (a.data[i] !== b.data[i] || a.data[i + 1] !== b.data[i + 1] || a.data[i + 2] !== b.data[i + 2] || a.data[i + 3] !== b.data[i + 3]) n++; return n; };
 const OPAQUE = (a: Bitmap): number => { let n = 0; for (let i = 3; i < a.data.length; i += 4) if (a.data[i]) n++; return n; };
@@ -174,7 +178,7 @@ describe.each(KEYS)("%s: its parts are real", (key) => {
     expect(DIFF(m, whole), "the figure is different").toBeGreaterThan(100);
     expect(within(m, region), "the part is gone from where it was (a stump is a stub, not the limb)").toBeLessThan(within(whole, region) * 0.97);
     expect(changed(m, whole, region), "what the part covered is something else now").toBeGreaterThan(OPAQUE(region) * 0.3);
-    expect(ofMaterial(rig, m, E.MEAT), "wet meat where it was torn").toBeGreaterThan(ofMaterial(rig, whole, E.MEAT) + 6);
+    expect(ofMaterial(rig, m, stumpMat(key)), "wet meat (or embers, or broken stone) where it was torn").toBeGreaterThan(ofMaterial(rig, whole, stumpMat(key)) + 6);
   });
 
   it("each part that flies is its own, baked from its skeleton: smaller than the monster and not its frame shrunk", () => {
@@ -189,7 +193,7 @@ describe.each(KEYS)("%s: its parts are real", (key) => {
 
   it("the legless one is a different body: the crawl frame carries stumps of meat at the hips and is not a walk frame", () => {
     const c = frame(rig, "crawl", 0, LEGS);
-    expect(ofMaterial(rig, c, E.MEAT), "meat at the hips").toBeGreaterThan(4);
+    expect(ofMaterial(rig, c, stumpMat(key)), "meat (or embers, or broken stone) at the hips").toBeGreaterThan(4);
     expect(DIFF(c, frame(rig, "crawl", 2, LEGS))).toBeGreaterThan(60);
   });
 });

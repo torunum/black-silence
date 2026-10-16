@@ -508,7 +508,12 @@ describe("SpriteBaker (texFromPx/buildSprites) vs. reference", () => {
           expect(ref, `${key}.${f} should be null to match ours`).toBeNull();
           continue;
         }
-        expect(ref, `reference ${key}.${f} missing`).toBeDefined();
+        if (ref == null) {   // the legacy art of the five demons that have no attack or death rows has no such frame: only a rig adds one, and it keeps the filters
+          expect((PX[key] as { rig?: unknown }).rig, `${key}.${f}: the reference has no such frame, so ours must be a rig's own`).toBeTruthy();
+          expect(ours.magFilter, `${key}.${f} magFilter`).toBe(THREE.NearestFilter);
+          expect(ours.minFilter, `${key}.${f} minFilter`).toBe(THREE.NearestFilter);
+          continue;
+        }
         expect(ours.magFilter, `${key}.${f} magFilter`).toBe(ref!.magFilter);
         expect(ours.minFilter, `${key}.${f} minFilter`).toBe(ref!.minFilter);
       }

@@ -99,7 +99,7 @@ beforeEach(() => {
  * nothing here can flake on a dice throw.
  */
 function alertedBloat(): Enemy {
-  const e = spawnEnemy("j", 5, 30, true);
+  const e = spawnEnemy("B", 5, 30, true);
   e.alertX = player.px;
   e.alertZ = player.pz;
   return e;
@@ -110,9 +110,9 @@ describe("enemyTick's walk-frame guard treats an unattacked enemy differently fr
     // Without this, "the map did not change" would be indistinguishable from
     // "a === b" and "moving was never true" — the two ways this file could
     // pass while covering nothing.
-    expect(PX["j"].a).toBeTruthy();
-    expect(PX["j"].b).toBeTruthy();
-    expect(PX["j"].a).not.toBe(PX["j"].b);
+    expect(PX["B"].a).toBeTruthy();
+    expect(PX["B"].b).toBeTruthy();
+    expect(PX["B"].a).not.toBe(PX["B"].b);
 
     const e = alertedBloat();
     const z0 = e.z;
@@ -134,7 +134,7 @@ describe("enemyTick's walk-frame guard treats an unattacked enemy differently fr
       enemyTick(DT);
       expect(e.animT, `animT advanced on tick ${i} — the walk clock is running for an enemy that has never attacked`).toBe(0);
       expect(e.frame, `frame changed on tick ${i}`).toBe(0);
-      expect(e.sp.material.map, `sprite frame swapped on tick ${i}`).toBe(PX["j"].a);
+      expect(e.sp.material.map, `sprite frame swapped on tick ${i}`).toBe(PX["B"].a);
     }
   });
 
@@ -145,7 +145,7 @@ describe("enemyTick's walk-frame guard treats an unattacked enemy differently fr
     enemyTick(DT);
 
     expect(e.frame).toBe(1);
-    expect(e.sp.material.map).toBe(PX["j"].b);
+    expect(e.sp.material.map).toBe(PX["B"].b);
   });
 
   it("the two differ — this is the assertion `(e.atkAnim??0)<=0` cannot satisfy", () => {
@@ -163,8 +163,8 @@ describe("enemyTick's walk-frame guard treats an unattacked enemy differently fr
     const attackedMap = attacked.sp.material.map;
 
     expect(neverMap).not.toBe(attackedMap);
-    expect(neverMap).toBe(PX["j"].a);
-    expect(attackedMap).toBe(PX["j"].b);
+    expect(neverMap).toBe(PX["B"].a);
+    expect(attackedMap).toBe(PX["B"].b);
   });
 });
 
@@ -189,7 +189,7 @@ describe("enemyTick's walk-frame guard also requires `moving` — a stationary e
   function unalertedBloat(): Enemy {
     // 25 units out: past the seen threshold (dist<22) but under the dist>30
     // early continue, so the tick still reaches the walk-animation guard.
-    return spawnEnemy("j", 5, 30, true);
+    return spawnEnemy("B", 5, 30, true);
   }
 
   it("guard: alertX===-1 and out of sight — moving is false — atkAnim===0 still does not cycle the frame", () => {

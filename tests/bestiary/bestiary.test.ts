@@ -119,18 +119,18 @@ describe("it shows every enemy, the old art and the new side by side", () => {
   it("an enemy re-rigged can do all eight; a legacy enemy cannot be hurt (it has no pain frames) and some cannot attack", () => {
     const z = root.querySelector<HTMLElement>('.card[data-key="z"]')!;
     for (const b of z.querySelectorAll<HTMLButtonElement>("button.play")) expect(b.disabled, `z ${b.dataset.clip}`).toBe(false);
-    const j = root.querySelector<HTMLElement>('.card[data-key="j"]')!;
+    const j = root.querySelector<HTMLElement>('.card[data-key="B"]')!;
     expect(j.querySelector<HTMLButtonElement>('button[data-clip="pain"]')!.disabled).toBe(true);
     expect(j.querySelector<HTMLButtonElement>('button[data-clip="walk"]')!.disabled).toBe(false);
   });
 });
 
-describe("the horde is redrawn: every grunt shows the old art and the new, and plays all it can", () => {
-  it.each(["z", "t", "f", "m", "s", "g", "w"])("%s: two pictures, 'redrawn', walk/attack/pain/death and each part off play the rig's frames", (key) => {
+describe("the horde and the demons are redrawn: every grunt and demon shows the old art and the new, and plays all it can", () => {
+  it.each(["z", "t", "f", "m", "s", "g", "w", "j", "L", "C", "n", "k", "y", "R"])("%s: two pictures, 'redrawn', walk/attack/pain/death and each part off play the rig's frames", (key) => {
     const card = root.querySelector<HTMLElement>(`.card[data-key="${key}"]`)!;
     expect(card.querySelectorAll("figure canvas").length).toBe(2);
     expect(card.querySelector(".badge")!.textContent).toBe("redrawn");
-    const headless = key === "g" || key === "w";   // no head row in their legacy art: nothing to behead, so no button to press
+    const headless = ["g", "w", "L", "C", "y", "R"].includes(key);   // no head row in their legacy art: nothing to behead, so no button to press
     for (const b of card.querySelectorAll<HTMLButtonElement>("button.play")) expect(b.disabled, `${key} ${b.dataset.clip}`).toBe(headless && b.dataset.clip === "head");
     const frames = new Set<HTMLCanvasElement | null>();
     for (const clip of ["walk", "attack", "pain", "death", "lArm", "rArm", "legs"] as const) { api.play(key, clip); frames.add(api.frameOf(key, "new", 1)); }
@@ -156,7 +156,7 @@ describe("its buttons play things", () => {
     expect(newFrames.size).toBe(6);
     expect(oldFrames.size).toBe(2);
     for (const f of newFrames) expect(oldFrames.has(f)).toBe(false);
-    expect(api.frameOf("j", "new", 0), "a legacy enemy has no new column").toBeNull();
+    expect(api.frameOf("B", "new", 0), "a legacy enemy has no new column").toBeNull();
   });
 
   it("every dismemberment plays frames of its own: the ghoul without its head, an arm, the other, or its legs", () => {

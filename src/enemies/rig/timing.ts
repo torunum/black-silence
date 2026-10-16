@@ -22,3 +22,5 @@ export const KILL_FALL = 0.45, STAGGER = 0.28, BEHEAD_FALL = 0.42;
 export const LUNGE_SECS = 2.6, LUNGE_AIR = 0.4, LUNGE_SPLIT: readonly [number, number] = [0.12, 0.3];
 /** The wailer's scream: `stun` is set to this and `screamT` to `SCREAM_T`; the attack frames are held across it (gather, shriek, slump). */
 export const SCREAM_STUN = 1.1, SCREAM_T = 9, SCREAM_SPLIT: readonly [number, number] = [0.15, 0.95];
+/** The ettin's slam: `slamT` is set to `SLAM_T` and `stun` to `SLAM_STUN` when it starts, and the hammer lands at .48 s (`Behaviors.ts`); the attack frames are held across the stun (the wind-up, the blow, the heave back). */
+export const SLAM_T = 4, SLAM_STUN = 0.5, SLAM_SPLIT: readonly [number, number] = [0.28, 0.46];

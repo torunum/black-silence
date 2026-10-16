@@ -88,7 +88,7 @@ describe("a monster's parts", () => {
   it("is made once and kept, and draws nothing from Math.random", () => {
     const w = watchRandom();
     try {
-      const a = tex.partArt("j", "lArm"), b = tex.partArt("j", "lArm");
+      const a = tex.partArt("B", "lArm"), b = tex.partArt("B", "lArm");
       expect(b).toBe(a);
       for (const k of Object.keys(PXDEF)) for (const kind of ["head", "lArm", "rArm", "legs"] as const) tex.partArt(k, kind);
     } finally { w.stop(); }
