@@ -177,6 +177,7 @@ export function partArt(key: string, kind: PartKind): PartArt | null {
   if (arts.has(id)) return arts.get(id) ?? null;
   const rigSet = PX[key]?.rig;
   if (rigSet) {   // the monster's own part, drawn from its skeleton
+    if (kind === "head" && rigSet.rig.regions.head === 0) { arts.set(id, null); return null; }   // a monster with no head row has no head to lose, as its legacy art has none
     const r = rigSet.part(kind), k = kind === "head" ? 1 : 1 / LIMB_SCALE;
     const own: PartArt = { tex: r.tex, cw: r.cw * k, ch: r.ch * k, W: r.W, H: r.H, phys: legacyBox(key, kind) };
     arts.set(id, own);

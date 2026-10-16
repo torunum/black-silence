@@ -17,3 +17,8 @@ export const DEATH_AT: readonly number[] = [0, 0.133, 0.31, 0.53, 0.84];
 export const PAIN_LEN = 0.12;
 /** A plain kill's fall (`fallT`'s .45 s), and a beheaded body's stagger and fall. */
 export const KILL_FALL = 0.45, STAGGER = 0.28, BEHEAD_FALL = 0.42;
+
+/** A hound's leap: the seconds after `lungeT` is set (to 2.6) that it is in the air, and where its coil, spring and landing split them. */
+export const LUNGE_SECS = 2.6, LUNGE_AIR = 0.4, LUNGE_SPLIT: readonly [number, number] = [0.12, 0.3];
+/** The wailer's scream: `stun` is set to this and `screamT` to `SCREAM_T`; the attack frames are held across it (gather, shriek, slump). */
+export const SCREAM_STUN = 1.1, SCREAM_T = 9, SCREAM_SPLIT: readonly [number, number] = [0.15, 0.95];

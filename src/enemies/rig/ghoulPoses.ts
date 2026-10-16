@@ -1,63 +1,25 @@
-import { lerpPose, pose, type Rot, type RigPose, type RigPoses } from "./kit";
-import type { V3 } from "../../render/viewmodel/builder";
+import { lerpPose, type RigPose, type RigPoses } from "./kit";
+import { dims, makeStd, type Std } from "./humanoid";
 
 /**
  * THE GHOUL'S POSES: a walk of six, an idle, an attack of three (the wind-up,
  * the strike, the recover), two of pain and five of death, and the same again
  * for the legless ghoul that drags itself on its arms.
  *
- * Every pose is a handful of numbers (`Std`): the spine's lean, the head's
- * hang, each arm's swing and bend, each leg's swing and knee. `make` turns
- * them into joint rotations and, for a standing pose, lowers the pelvis until
- * the lowest foot is on the floor, so no step floats. Angles are radians; a
- * positive `f` swings a limb forward, a positive `k` bends a knee, a positive
- * pitch on the spine, chest, neck or head leans it toward the viewer.
+ * Every pose is a handful of numbers (`Std`, `./humanoid.ts`): the spine's
+ * lean, the head's hang, each arm's swing and bend, each leg's swing and
+ * knee, and the ghoul's own `gut` (the sway of its entrails) and `claw`.
  *
  * The walk is a function of the phase, so its six frames are the same cycle
  * sampled six times; a limp (the right leg short of its stride and dragging)
  * keeps it the ghoul's and not a man's.
  */
 
-interface Arm { f: number; out?: number; tw?: number; e?: number; w?: number }
-interface Leg { f: number; k?: number; out?: number; toe?: number }
-interface Std {
-  root?: V3; pelvis?: Rot; spine?: Rot; chest?: Rot; neck?: Rot; head?: Rot;
-  jaw?: number; gut?: number; claw?: number;
-  aL?: Arm; aR?: Arm; lL?: Leg; lR?: Leg;
-  /** Lower the pelvis so the lowest foot is on the floor (default), or leave `root` as given. */
-  ground?: boolean;
-  floor?: number;
-}
-
-const PEL_Y = 0.88, ANKLE_Y = 0.04;
-/** Height of an ankle below the pelvis for a leg swung `f` with its knee bent `k`. */
-const ankleBelow = (f: number, k: number): number => -0.04 - 0.41 * Math.cos(f) - 0.39 * Math.cos(f - k);
-
-function make(s: Std): RigPose {
-  const rot: Record<string, Rot> = {};
-  const set = (n: string, r: Rot | undefined): void => { if (r) rot[n] = r; };
-  set("pelvis", s.pelvis); set("spine", s.spine ?? [0.1, 0, 0]); set("chest", s.chest ?? [0.12, 0, 0]);
-  set("neck", s.neck ?? [0.02, 0, 0]); set("head", s.head ?? [0.08, 0, 0]);
-  rot.jaw = [s.jaw ?? 0.3, 0, 0];
-  const arm = (side: "L" | "R", a: Arm | undefined): void => {
-    const d = a ?? { f: 0.1 }, o = side === "L" ? 1 : -1;
-    rot["shoulder" + side] = [-d.f, d.tw ?? 0, (d.out ?? 0.16) * o];
-    rot["elbow" + side] = [-(d.e ?? 0.5), 0, 0];
-    rot["wrist" + side] = [-(d.w ?? 0.12), 0, 0];
-  };
-  arm("L", s.aL); arm("R", s.aR);
-  const lg = (side: "L" | "R", l: Leg | undefined): number => {
-    const d = l ?? { f: 0 }, k = d.k ?? 0.08, o = side === "L" ? 1 : -1;
-    rot["hip" + side] = [-d.f, 0, (d.out ?? 0.03) * o];
-    rot["knee" + side] = [k, 0, 0];
-    rot["ankle" + side] = [d.f - k + (d.toe ?? 0), 0, 0];
-    return ankleBelow(d.f, k);
-  };
-  const low = Math.min(lg("L", s.lL), lg("R", s.lR));
-  let root: V3 = s.root ?? [0, 0, 0];
-  if (s.ground !== false) root = [root[0], root[1] + ANKLE_Y - PEL_Y - low, root[2]];
-  return pose(root, rot, { jaw: 0, gut: s.gut ?? 0, claw: s.claw ?? 0.4 }, s.floor);
-}
+type GStd = Omit<Std, "x"> & { gut?: number; claw?: number };
+/** Broad in the shoulder and the hip: the legacy ghoul was a block of red and white, and the first rig of it came out half as wide. */
+export const GHOUL_BODY = dims({ shoulderX: 0.37, hipX: 0.18, rest: { leg: { f: 0, k: 0.08, out: 0.1 }, arm: { f: 0.1, out: 0.3, e: 0.5, w: 0.12 } } });
+const std = makeStd(GHOUL_BODY);
+const make = (s: GStd): RigPose => std({ ...s, x: { gut: s.gut ?? 0, claw: s.claw ?? 0.4 } });
 
 const TAU = Math.PI * 2;
 

@@ -30,7 +30,7 @@ import { STUMBLE_DIST } from "../../src/enemies/Corpse";
 let hitscan: (dir: THREE.Vector3, dmg: number, wIdx: number) => void;
 let loadLevel: (i: number) => void;
 let spawnEnemy: (ch: string, x: number, z: number, summoned?: boolean) => unknown;
-let rigTex: (role: string, i: number, mask: number, mirror?: boolean) => THREE.Texture;
+let rigTexOf: (key: string, role: string, i: number, mask: number, mirror?: boolean) => THREE.Texture;
 let enemyTick: (dt: number) => number | undefined | boolean;
 let headTick: (dt: number) => void, gibTick: (dt: number) => void, partTick: (dt: number) => void, goreTick: (dt: number) => void;
 let buildParticles: () => void, resetGibs: () => void, resetDecals: () => void;
@@ -53,8 +53,9 @@ type Foe = {
 type Part = { kind: number; x: number; y: number; z: number; vx: number; vy: number; rest: boolean; sz: number; sp: THREE.Sprite };
 
 const N = 24;
-/** The monsters the presentation tests run over: the ghoul (a rig) and the plague bloat (legacy pixel art, whose frames and fall are as they always were). */
-const PRESENTED = ["z", "t"] as const;
+/** The monsters the presentation tests run over: the rigged ones with a head (the ghoul, the plague bloat, the flayed sprinter) and the cultist (legacy pixel art, whose frames and fall are as they always were). */
+const PRESENTED = ["z", "t", "f", "j"] as const;
+const rigged = (key: string): boolean => !!PX[key].rig;
 
 beforeAll(async () => {
   installDomStubs();
@@ -78,7 +79,7 @@ beforeAll(async () => {
   TEX = await import("../../src/fx/GoreTex");
   ({ crawlFactor } = await import("../../src/enemies/Sever") as never);
   PX = (await import("../../src/enemies/SpriteBaker")).PX as never;
-  rigTex = (role, i, mask, mirror) => (PX.z.rig as unknown as { tex: typeof rigTex }).tex(role, i, mask, mirror);
+  rigTexOf = (key, role, i, mask, mirror) => (PX[key].rig as unknown as { tex(role: string, i: number, mask: number, mirror?: boolean): THREE.Texture }).tex(role, i, mask, mirror);
   await import("../../src/main");
   const newGame = [...document.querySelectorAll(".mbtn")].find((b) => b.textContent?.includes("NEW GAME"));
   if (!newGame) throw new Error("the NEW GAME menu row is gone — this file drives the game through it");
@@ -180,8 +181,8 @@ describe.each([0, 1.2, 4.2])("on a floor of %s", (fy) => {
       expect(Math.abs(z.sp.material.rotation), "still up, swaying").toBeLessThan(0.14);
       expect(z.sp.position.y, "on its feet").toBeGreaterThan(fy + z.h * 0.4);
       frames(45);   // 1 s
-      if (key === "z") {   // a rigged body's frames do the falling: the last death frame, headless, and no tilt but the sway's, which has died away
-        expect(z.sp.material.map, "down: the last death frame, without its head").toBe(rigTex("die", 4, 1, z.deathDir < 0));
+      if (rigged(key)) {   // a rigged body's frames do the falling: the last death frame, headless, and no tilt but the sway's, which has died away
+        expect(z.sp.material.map, "down: the last death frame, without its head").toBe(rigTexOf(key, "die", 4, 1, z.deathDir < 0));
         expect(Math.abs(z.sp.material.rotation), "flat on its own frame, not tilted").toBeLessThan(0.01);
       } else expect(Math.abs(z.sp.material.rotation), "down").toBeCloseTo(Math.PI / 2, 1);
       expect(z.sp.position.y).toBeCloseTo(fy + z.h * 0.18, 1);
@@ -222,14 +223,14 @@ describe.each([0, 1.2, 4.2])("on a floor of %s", (fy) => {
       // it walks on: toward a player 12 units off, for a second and a half
       player.px = z.x - 12; player.pz = z.z; player.pyy = EYE + fy; z.speed = 3; z.cool = 0; z.aware = true; z.alertX = player.px; z.alertZ = player.pz; z.stun = 0; z.hurt = 0; z.atkAnim = 0;   // (a monster only runs its walk cycle once it has attacked: atkAnim is undefined until then)
       const mask = s.lArm ? 2 : 4;
-      const want = key === "z"
-        ? [...[0, 1, 2, 3, 4, 5].map((i) => rigTex("walk", i, mask)), rigTex("idle", 0, mask)]   // a rig: its whole walk cycle, and standing, without the arm
+      const want = rigged(key)
+        ? [...[0, 1, 2, 3, 4, 5].map((i) => rigTexOf(key, "walk", i, mask)), rigTexOf(key, "idle", 0, mask), ...[0, 1, 2].map((i) => rigTexOf(key, "atk", i, mask)), ...[0, 1].map((i) => rigTexOf(key, "pain", i, mask))]   // a rig: its whole walk cycle, standing, and what it does that is not walking (spit, shriek), without the arm
         : s.lArm ? [PX[key].noLArm, PX[key].noLArmB] : [PX[key].noRArm, PX[key].noRArmB];
       const seen = new Set<unknown>();
       for (let i = 0; i < 90; i++) { frames(1); seen.add((z.sp.material as THREE.SpriteMaterial).map); }
-      expect(seen.has(PX[key].a) || seen.has(PX[key].b) || seen.has(rigTex("walk", 0, 0)), "never whole again").toBe(false);
+      expect(seen.has(PX[key].a) || seen.has(PX[key].b) || (rigged(key) && seen.has(rigTexOf(key, "walk", 0, 0))), "never whole again").toBe(false);
       expect([...seen].every((t) => want.includes(t as never)), "armless frames only").toBe(true);
-      if (key === "z") expect(seen.size, "it still walks: its cycle, through at least four of its six steps").toBeGreaterThanOrEqual(4);
+      if (rigged(key)) expect(seen.size, "it still walks: its cycle, through at least four of its six steps").toBeGreaterThanOrEqual(4);
       else expect(seen.size, "it still walks: both frames").toBe(2);
       frames(60 * 6);
       expect(a.rest).toBe(true);
@@ -258,10 +259,11 @@ describe.each([0, 1.2, 4.2])("on a floor of %s", (fy) => {
       const seen = new Set<unknown>();
       let x0 = z.x;
       for (let i = 0; i < 150; i++) { frames(1); seen.add((z.sp.material as THREE.SpriteMaterial).map); }
-      expect(seen.has(PX[key].a) || seen.has(PX[key].b) || seen.has(rigTex("walk", 0, 0)), "never whole again").toBe(false);
-      if (key === "z") {   // a rig: its own crawl cycle (four steps), and its crawler standing still
-        const cycle = [0, 1, 2, 3].map((i) => rigTex("crawl", i, 8));
-        expect([...seen].every((t) => cycle.includes(t as never) || t === rigTex("crawlIdle", 0, 8)), "the crawler's frames only").toBe(true);
+      expect(seen.has(PX[key].a) || seen.has(PX[key].b) || (rigged(key) && seen.has(rigTexOf(key, "walk", 0, 0))), "never whole again").toBe(false);
+      if (rigged(key)) {   // a rig: its own crawl cycle (four steps), and its crawler standing still
+        const cycle = [0, 1, 2, 3].map((i) => rigTexOf(key, "crawl", i, 8));
+        const others = [rigTexOf(key, "crawlIdle", 0, 8), ...[0, 1, 2].map((i) => rigTexOf(key, "crawlAtk", i, 8)), ...[0, 1].map((i) => rigTexOf(key, "crawlPain", i, 8))];
+        expect([...seen].every((t) => cycle.includes(t as never) || others.includes(t as never)), "the crawler's frames only").toBe(true);
         expect(seen.size, "and it crawls: its cycle, through at least three of its four steps").toBeGreaterThanOrEqual(3);
       } else {
         expect([...seen].every((t) => t === crawl.tex || t === crawl.texB), "the crawler's frames only").toBe(true);
