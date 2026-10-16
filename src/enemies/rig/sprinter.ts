@@ -24,7 +24,7 @@ const MUSCLE = FIRST_OWN, TAN = FIRST_OWN + 1, YELLOW = FIRST_OWN + 2, WRAP = FI
 
 export const SPRINTER_PALETTE = enemyPalette({
   // the legacy R / i: raw muscle, bright where it is wet
-  [MUSCLE]: { ramp: ["#2a0806", "#4e0f08", "#781a0e", "#a02112", "#c42c18", "#de4020", "#f05a30"], amb: .46, spec: .6, rim: true },
+  [MUSCLE]: { ramp: ["#2a0604", "#4e0a06", "#760e08", "#9e140a", "#c01c0e", "#da2c14", "#ee4620"], amb: .6, spec: .6, rim: true },
   // the legacy b: bone with the dried yellow of old tallow in it
   [TAN]:    { ramp: ["#3a3022", "#6e5d44", "#a08a64", "#c8b48a", "#e4d3a8", "#f6ebc6"], amb: .42, spec: .25, rim: true },
   // the legacy j: the yellow of its teeth and the inside of its jaw

@@ -25,9 +25,9 @@ const SKIN = FIRST_OWN, SHROUD = FIRST_OWN + 1, THROAT = FIRST_OWN + 2, BONE2 = 
 
 export const WAILER_PALETTE = enemyPalette({
   // the legacy p / P: skin the colour of a bruise that has gone grey
-  [SKIN]:   { ramp: ["#1e1824", "#342b3e", "#4d4059", "#695b78", "#8a7a9a", "#ad9cbc", "#d0c1dc"], amb: .46, spec: .12 },
+  [SKIN]:   { ramp: ["#20142a", "#3a2448", "#58386e", "#7a50a0", "#9a64c4", "#b884e0", "#d6b0f2"], amb: .46, spec: .12 },
   // the legacy d: the shroud it was buried in
-  [SHROUD]: { ramp: ["#16101a", "#241b2b", "#352938", "#4a3b50", "#625068", "#7c6a84"], amb: .42 },
+  [SHROUD]: { ramp: ["#1a0f20", "#2c1a36", "#43284f", "#5c3a6c", "#784f8a", "#9468a6"], amb: .42 },
   // the legacy B: the inside of its throat, lit from within
   [THROAT]: { ramp: ["#7a1608", "#a22410", "#c43418", "#d8431e", "#e65024", "#f2602c"], emissive: true },
   // the legacy b: bone, a lavender white
@@ -37,7 +37,7 @@ export const WAILER_PALETTE = enemyPalette({
 });
 
 /** Its head is nearly twice a head: the sprite is a face and a scream. */
-const HK = 2.5;
+const HK = 2.3;
 /** The gape: an oval from the upper teeth to the lower jaw. */
 const MOUTH: Array<[number, number]> = Array.from({ length: 12 }, (_, i) => [Math.cos((i / 12) * Math.PI * 2) * 0.115, -0.03 + Math.sin((i / 12) * Math.PI * 2) * 0.1]);
 const part = (joint: string, group: PartGroup, draw: (c: Ctx) => void): RigPart => ({ joint, group, draw });
@@ -141,7 +141,7 @@ const O = { neck: 0.09, arm: 0.07, leg: 0.1, neckTop: 0.3, legLen: 0.3, armLen: 
 export const WAILER: Rig = {
   key: "s",
   palette: WAILER_PALETTE,
-  frame: { w: 68, h: 97, worldH: 2.3, floor: 0.975, yaw: 0.35, pitch: 0.05, shift: 0.05 },
+  frame: { w: 68, h: 97, worldH: 2.45, floor: 0.975, yaw: 0.35, pitch: 0.05, shift: 0.05 },
   crawlH: 12 / 17,
   joints, parts, stumps: humanStumps(O),
   poses: WAILER_POSES,

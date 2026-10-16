@@ -16,7 +16,7 @@ import { crawlDieSeq, dieSeq } from "./humanFall";
 export const WAILER_BODY = dims({
   pelvisY: 0.96, spineY: 0.06, chestY: 0.3, neckY: 0.34, neckZ: -0.02, headY: 0.05, headZ: -0.03, jawY: 0.074, jawZ: -0.01,
   shoulderX: 0.34, shoulderY: 0.3, upperArm: 0.34, foreArm: 0.32, hipX: 0.12, hipDrop: 0.04, thigh: 0.43, shin: 0.42, ankleY: 0.04,
-  rest: { spine: [0.1, 0, 0], chest: [0.14, 0, 0], neck: [0.0, 0, 0], head: [-0.1, 0, 0], jaw: 1.0, arm: { f: 0.1, out: 0.3, e: 0.4, w: 0.15 }, leg: { f: 0, k: 0.06, out: 0.04 } },
+  rest: { spine: [0.1, 0, 0], chest: [0.14, 0, 0], neck: [0.0, 0, 0], head: [-0.1, 0, 0], jaw: 1.0, arm: { f: 0.1, out: 0.5, e: 0.4, w: 0.15 }, leg: { f: 0, k: 0.06, out: 0.04 } },
 });
 const std = makeStd(WAILER_BODY);
 const TAU = Math.PI * 2;
@@ -26,7 +26,7 @@ function walk(i: number): RigPose {
   const p = (i / 6) * TAU, s = Math.sin(p), c = Math.cos(p);
   return std({
     spine: [0.12 + 0.03 * c, 0.1 * c, 0.04 * s], chest: [0.16, -0.14 * c, 0.05 * s], neck: [0.04, 0.1 * c, 0], head: [-0.12 + 0.05 * Math.cos(2 * p), 0.1 * c, -0.05 * s], jaw: 1.0 + 0.1 * Math.sin(p),
-    aL: { f: 0.8 - 0.25 * s, out: 0.45, e: 0.3 + 0.1 * c, w: 0.2 }, aR: { f: 0.55 + 0.25 * s, out: 0.4, e: 0.4 - 0.1 * c, w: 0.2 },
+    aL: { f: 0.8 - 0.25 * s, out: 0.6, e: 0.3 + 0.1 * c, w: 0.2 }, aR: { f: 0.55 + 0.25 * s, out: 0.55, e: 0.4 - 0.1 * c, w: 0.2 },
     lL: { f: 0.5 * s, k: 0.08 + 0.7 * Math.max(0, c), out: 0.05, toe: 0.2 * Math.max(0, -s) }, lR: { f: -0.5 * s, k: 0.08 + 0.7 * Math.max(0, -c), out: 0.05 },
     root: [0.02 * s, 0.014 * Math.cos(2 * p), 0], x: x(0.5 + 0.2 * s, 0.25 + 0.2 * Math.sin(p + 1)),
   });
@@ -38,7 +38,7 @@ const idle = std({ head: [-0.3, 0, 0], jaw: 1.05, x: x(0.4, 0.15), aL: { f: 0.15
 const atk: RigPose[] = [
   std({ spine: [0.35, 0, 0], chest: [0.4, 0, 0], neck: [0.2, 0, 0], head: [0.2, 0, 0], jaw: 0.5, x: x(0.8, 0),
     aL: { f: 0.6, out: 0.1, e: 1.2, w: 0.3 }, aR: { f: 0.6, out: 0.1, e: 1.2, w: 0.3 }, lL: { f: 0.1, k: 0.2 }, lR: { f: -0.1, k: 0.2 }, root: [0, 0, -0.04] }),
-  std({ spine: [-0.22, 0, 0], chest: [-0.32, 0, 0], neck: [-0.3, 0, 0], head: [-0.55, 0, 0], jaw: 1.45, x: x(1, 1),
+  std({ spine: [-0.12, 0, 0], chest: [-0.2, 0, 0], neck: [-0.15, 0, 0], head: [-0.32, 0, 0], jaw: 1.45, x: x(1, 1),
     aL: { f: 0.9, out: 1.35, e: 0.15, w: 0 }, aR: { f: 0.9, out: 1.35, e: 0.15, w: 0 }, lL: { f: 0.1, k: 0.3, out: 0.1 }, lR: { f: -0.1, k: 0.25, out: 0.1 }, root: [0, 0, 0.06] }),
   std({ spine: [0.3, 0, 0], chest: [0.28, 0, 0], neck: [0.1, 0, 0], head: [0.0, 0, 0], jaw: 0.9, x: x(0.6, 0.4),
     aL: { f: 0.5, out: 0.5, e: 0.7 }, aR: { f: 0.55, out: 0.5, e: 0.7 }, lL: { f: 0.1, k: 0.2 }, lR: { f: -0.08, k: 0.2 }, root: [0, 0, -0.02] }),

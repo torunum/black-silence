@@ -315,7 +315,7 @@ describe.each(KEYS)("%s: the game selects its frames", (key) => {
     expect(map(e), "legless: the crawler's idle, without the arm").toBe(rigOf(key).tex("crawlIdle", 0, LEGS | L_ARM));
   });
 
-  it.runIf(HAS_HEAD[key])("a beheaded body stands, headless, for .28 s and then falls headless", () => {
+  if (HAS_HEAD[key]) it("a beheaded body stands, headless, for .28 s and then falls headless", () => {
     const h = standing(key);
     damageEnemy(h, h.hp + 6, { head: true, wIdx: 0, dir: { x: 1, z: 0 } });
     expect(h.deathKind).toBe(2);
@@ -325,7 +325,7 @@ describe.each(KEYS)("%s: the game selects its frames", (key) => {
     expect(map(h), "then down, headless").toBe(rigOf(key).tex("die", 4, HEAD, h.deathDir < 0));
   });
 
-  it.runIf(!HAS_HEAD[key])("a shot at its top is not a head hit: no beheading, the body dies whole", () => {
+  if (!HAS_HEAD[key]) it("a shot at its top is not a head hit: no beheading, the body dies whole", () => {
     const h = standing(key);
     damageEnemy(h, h.hp + 6, { head: true, wIdx: 0, dir: { x: 1, z: 0 } });
     expect(h.deathKind, "an ordinary death (the legacy art has no head row)").toBe(1);
