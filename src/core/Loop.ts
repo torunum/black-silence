@@ -132,7 +132,7 @@ function loop(t: number){
   if(renderState.scene){
     updateListener();
     partTick(dt);fireTick(dt);lavaTick(dt);gibTick(dt);poolTick(dt);headTick(dt);torchTick(dt,t);
-    goreTick(dt);feelTick(time.dt);punchTick(dt);   // this frame's blows become one stop, punch, marker and sound (src/fx/HitFeel.ts); the punch ages with the game's clock, so it holds through a freeze
+    goreTick(dt);feelTick(time.dt);punchTick(dt);   // this frame's blows become one stop, punch and sound (src/fx/HitFeel.ts); the punch ages with the game's clock, so it holds through a freeze
     const kick=kickShown.shown(weaponRuntime.kickAnim,S.dead||S.won,renderState.scene);
     fxTick(dt,t,weaponRuntime.zoomLerp,
       ()=>drawKickStreaks(kick),

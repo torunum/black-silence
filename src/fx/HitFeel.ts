@@ -1,20 +1,19 @@
 import { screenShake } from "./ShakeState";
-import { showMarker, type MarkerKind } from "./HitMarker";
 import { addHitPunch } from "./ViewPunch";
 import { renderState } from "../render/Renderer";
 import { hitArmour, hitFlesh, hitHead, hitKill } from "../audio/sounds/hits";
 
 /**
  * HIT FEEL — what the player gets back when a shot, a kick or a blast lands
- * on a monster: a hit-stop, a punch of the camera toward it, a marker at the
- * crosshair and a crisp confirming sound. `docs/superpowers/plans/
+ * on a monster: a hit-stop, a punch of the camera toward it and a crisp
+ * confirming sound. No marker is drawn at the crosshair: hits are felt, not
+ * labelled (the owner, 2026-10-17). `docs/superpowers/plans/
  * 2026-10-08-impact.md`, Task 1.
  *
  * **One feedback per volley, not per pellet.** `damageEnemy` (and nothing
  * else) calls `registerHit` for every body it damages; the events of one
  * frame are folded into `pending` and `feelTick` — once a frame, after the
- * gameplay tick — turns them into one stop, one punch, one marker and one
- * sound. Eight shotgun pellets are one thump, not eight jolts; a nail cannon
+ * gameplay tick — turns them into one stop, one punch and one sound. Eight shotgun pellets are one thump, not eight jolts; a nail cannon
  * is a stream whose hits do not freeze the game at all (its kills do).
  *
  * **What it costs the simulation** (it is the one place this plan touches
@@ -81,15 +80,20 @@ export interface HitEvent {
   side: number;
 }
 
-const RANK: Record<MarkerKind, number> = { armour: 1, flesh: 2, head: 3, kill: 4, headkill: 5, gib: 6 };
+/** What a blow was, strongest last: it picks the sound, and the strongest blow of a frame speaks. */
+export type HitKind = "armour" | "flesh" | "head" | "kill" | "headkill" | "gib";
+const RANK: Record<HitKind, number> = { armour: 1, flesh: 2, head: 3, kill: 4, headkill: 5, gib: 6 };
 
 /** This frame's events folded together. Rewritten in place; never reallocated. */
-const pending = { n: 0, kind: "flesh" as MarkerKind, stop: 0, stops: 0, punch: 0, side: 0, killed: false };
+const pending = { n: 0, kind: "flesh" as HitKind, stop: 0, stops: 0, punch: 0, side: 0, killed: false };
 /** Real seconds since the last non-killing hit-stop, and per sound kind since it last played. */
+/** The kind of the last felt frame's strongest blow (tests read it; nothing draws it). */
+export const lastFelt: { kind: HitKind | null } = { kind: null };
 const clock = { sinceStop: 9, flesh: 9, head: 9, kill: 9, armour: 9 };
 
 export function resetHitFeel(): void {
   pending.n = 0; pending.kind = "flesh"; pending.stop = 0; pending.stops = 0; pending.punch = 0; pending.side = 0; pending.killed = false;
+  lastFelt.kind = null;
   clock.sinceStop = clock.flesh = clock.head = clock.kill = clock.armour = 9;
 }
 
@@ -102,7 +106,7 @@ export function sideOf(px: number, pz: number, x: number, z: number, yaw: number
 /** `damageEnemy` reports a body it hit. Cheap: it only folds the event in. */
 export function registerHit(ev: HitEvent): void {
   const row = feelRow(ev.wIdx, ev.explosive);
-  const kind: MarkerKind = ev.plate ? "armour"
+  const kind: HitKind = ev.plate ? "armour"
     : ev.gib ? "gib" : ev.kill ? (ev.head ? "headkill" : "kill") : ev.head ? "head" : "flesh";
   const stop = ev.plate ? 0 : ev.kill ? row.kill * (ev.gib ? 1.25 : 1) : row.hit;
   const punch = ev.plate ? row.punch * 0.4 : ev.kill ? row.killPunch : row.punch;
@@ -127,7 +131,7 @@ export function feelTick(realDt: number): void {
     screenShake.hitStop = Math.max(screenShake.hitStop, Math.min(STOP_MAX, stop));
     if (!pending.killed) clock.sinceStop = 0;
   }
-  showMarker(kind);
+  lastFelt.kind = kind;
   if (pending.punch > 0) addHitPunch(pending.punch, pending.side);
   const sk = kind === "gib" || kind === "kill" || kind === "headkill" ? "kill" : kind === "head" ? "head" : kind === "armour" ? "armour" : "flesh";
   if (clock[sk] >= SOUND_GAP) { clock[sk] = 0; (sk === "kill" ? hitKill : sk === "head" ? hitHead : sk === "armour" ? hitArmour : hitFlesh)(); }

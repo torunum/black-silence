@@ -159,7 +159,7 @@ export function damageEnemy(enemy: unknown, dmg: number, info?: DamageInfo) {
       e.sever.legs=true;severLimb(e,"legs",info);}
     refreshSeverSprite(e);}
   if(e.hp<=0)killEnemy(e,dmg,info);
-  // one report per body hit; src/fx/HitFeel.ts folds a volley's into a single stop, punch, marker and sound
+  // one report per body hit; src/fx/HitFeel.ts folds a volley's into a single stop, punch and sound
   registerHit({wIdx:info.wIdx,explosive:info.explosive,head:info.head,kill:e.hp<=0,gib:e.hp<=0&&!!e.gone,side:sideOf(player.px,player.pz,e.x,e.z,yaw)});}
 
 /* pick the right dismembered texture for the enemy's current sever state */

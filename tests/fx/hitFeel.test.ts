@@ -9,23 +9,21 @@ vi.mock("../../src/audio/sounds/hits", () => ({
 }));
 
 import { screenShake } from "../../src/fx/ShakeState";
-import { marker } from "../../src/fx/HitMarker";
 import { punch } from "../../src/fx/ViewPunch";
 import {
-  EXPLOSIVE, FEEL, SOUND_GAP, STOP_GAP, STOP_MAX, feelRow, feelTick, registerHit, resetHitFeel, sideOf,
+  EXPLOSIVE, FEEL, SOUND_GAP, STOP_GAP, STOP_MAX, feelRow, feelTick, lastFelt, registerHit, resetHitFeel, sideOf,
 } from "../../src/fx/HitFeel";
-import { resetMarker } from "../../src/fx/HitMarker";
 import { resetPunch } from "../../src/fx/ViewPunch";
 
 /**
  * THE HIT FEEL (docs/superpowers/plans/2026-10-08-impact.md, Task 1): what a
  * blow that lands gives back — a hit-stop scaled by the weapon and by kill
- * against hit, folded into one thump per volley; a marker; a punch; a
- * confirming sound, spaced so a stream is a stream.
+ * against hit, folded into one thump per volley; a punch; a confirming sound,
+ * spaced so a stream is a stream. No marker: nothing is drawn at the crosshair.
  */
 
 const FRAME = 1 / 60;
-beforeEach(() => { resetHitFeel(); resetMarker(); resetPunch(); screenShake.hitStop = 0; played.log.length = 0; });
+beforeEach(() => { resetHitFeel(); resetPunch(); screenShake.hitStop = 0; played.log.length = 0; });
 
 /** One blow of `ev` kind, felt at the end of the frame, and the hit-stop it asked for. */
 function felt(ev: Parameters<typeof registerHit>[0]): number {
@@ -106,31 +104,31 @@ describe("hit-stop is scaled by the weapon, and by a kill against a hit", () => 
     screenShake.hitStop = 0;
     feelTick(FRAME);
     expect(screenShake.hitStop).toBe(0);
-    expect(marker.left).toBe(0);
+    expect(lastFelt.kind).toBeNull();
     expect(punch).toEqual({ lunge: 0, pitch: 0, roll: 0 });
     expect(played.log).toEqual([]);
   });
 });
 
-describe("the marker, the punch and the sound follow the strongest blow of the frame", () => {
+describe("the punch and the sound follow the strongest blow of the frame", () => {
   it("a kill beats a headshot beats a hit beats armour", () => {
     registerHit({ wIdx: 0, plate: true, side: 0 }); feelTick(FRAME);
-    expect(marker.kind).toBe("armour");
-    resetMarker(); registerHit({ wIdx: 0, plate: true, side: 0 }); registerHit({ wIdx: 0, side: 0 }); feelTick(FRAME);
-    expect(marker.kind).toBe("flesh");
-    resetMarker(); registerHit({ wIdx: 0, side: 0 }); registerHit({ wIdx: 0, head: true, side: 0 }); feelTick(FRAME);
-    expect(marker.kind).toBe("head");
-    resetMarker(); registerHit({ wIdx: 0, head: true, side: 0 }); registerHit({ wIdx: 0, kill: true, side: 0 }); feelTick(FRAME);
-    expect(marker.kind).toBe("kill");
-    resetMarker(); registerHit({ wIdx: 0, kill: true, head: true, side: 0 }); feelTick(FRAME);
-    expect(marker.kind).toBe("headkill");
-    resetMarker(); registerHit({ wIdx: 0, kill: true, gib: true, side: 0 }); feelTick(FRAME);
-    expect(marker.kind).toBe("gib");
+    expect(lastFelt.kind).toBe("armour");
+    resetHitFeel(); registerHit({ wIdx: 0, plate: true, side: 0 }); registerHit({ wIdx: 0, side: 0 }); feelTick(FRAME);
+    expect(lastFelt.kind).toBe("flesh");
+    resetHitFeel(); registerHit({ wIdx: 0, side: 0 }); registerHit({ wIdx: 0, head: true, side: 0 }); feelTick(FRAME);
+    expect(lastFelt.kind).toBe("head");
+    resetHitFeel(); registerHit({ wIdx: 0, head: true, side: 0 }); registerHit({ wIdx: 0, kill: true, side: 0 }); feelTick(FRAME);
+    expect(lastFelt.kind).toBe("kill");
+    resetHitFeel(); registerHit({ wIdx: 0, kill: true, head: true, side: 0 }); feelTick(FRAME);
+    expect(lastFelt.kind).toBe("headkill");
+    resetHitFeel(); registerHit({ wIdx: 0, kill: true, gib: true, side: 0 }); feelTick(FRAME);
+    expect(lastFelt.kind).toBe("gib");
   });
 
-  it("a hit lights the marker and punches the view; a stream's hit punches far less than a shotgun's", () => {
+  it("a hit punches the view and speaks; a stream's hit punches far less than a shotgun's", () => {
     felt({ wIdx: 1, side: 1 });
-    expect(marker.left).toBeGreaterThan(0);
+    expect(played.log).toEqual(["flesh"]);
     const shotgun = Math.abs(punch.lunge);
     expect(shotgun).toBeGreaterThan(0);
     resetPunch(); resetHitFeel();

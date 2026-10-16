@@ -8,9 +8,8 @@ import { player } from "../../src/player/PlayerState";
 import { input } from "../../src/player/Input";
 import { renderState } from "../../src/render/Renderer";
 import { screenShake } from "../../src/fx/ShakeState";
-import { marker, resetMarker } from "../../src/fx/HitMarker";
 import { punch, resetPunch } from "../../src/fx/ViewPunch";
-import { resetHitFeel, FEEL } from "../../src/fx/HitFeel";
+import { resetHitFeel, FEEL, lastFelt } from "../../src/fx/HitFeel";
 import { liveParticles } from "../../src/fx/Particles";
 import { headPool } from "../../src/fx/Heads";
 import { S } from "../../src/core/State";
@@ -104,7 +103,7 @@ function stage(opts: { gap?: number; runway?: number; wallWithin?: number; hp?: 
       renderState.camera.position.set(px, player.pyy, pz);
       input.yaw = Math.atan2(-dx, -dz);
       input.pitch = 0;
-      resetHitFeel(); resetMarker(); resetPunch(); screenShake.hitStop = 0; S.kickCd = 0;
+      resetHitFeel(); resetPunch(); screenShake.hitStop = 0; S.kickCd = 0;
       return { dx, dz };
     }
   }
@@ -128,7 +127,7 @@ function kickAndResolve(): number {
 beforeEach(() => { for (const h of headPool.heads) (h.sp as { visible: boolean }).visible = false; headPool.heads.length = 0; });
 
 describe("a kick that lands in a body", () => {
-  it("freezes the game for the kick's own stop, punches the view, lights the marker, and launches the body", () => {
+  it("freezes the game for the kick's own stop, punches the view, is felt as a hit, and launches the body", () => {
     const { dx, dz } = stage({ runway: 3 });
     const before = liveParticles();
     const frames = kickAndResolve();
@@ -138,7 +137,7 @@ describe("a kick that lands in a body", () => {
     expect(foe.kx * dx + foe.kz * dz, "along the kick").toBeGreaterThan(15);
     expect(screenShake.hitStop, "the kick's stop").toBeGreaterThanOrEqual(FEEL[-1].hit - 1e-9);
     expect(punch.lunge, "the view lunges at it").toBeGreaterThan(0.05);
-    expect(marker.left).toBeGreaterThan(0);
+    expect(lastFelt.kind, "felt").not.toBeNull();
     expect(foe.sp.material.color.r, "white").toBeGreaterThan(1);
     expect(liveParticles(), "dust and blood off the boot").toBeGreaterThan(before + 12);
   });
@@ -220,18 +219,18 @@ describe("a kick that lands in a body", () => {
 });
 
 describe("a kick that finds nothing", () => {
-  it("whiffs: the view overreaches (lunge on, pitch forward), no marker, no stop", () => {
+  it("whiffs: the view overreaches (lunge on, pitch forward), nothing felt, no stop", () => {
     // face a long clear way with nothing in it
     stage({ runway: 6 });
     foe.x += 60; foe.z += 60;   // out of the way: nothing within the boot's reach
     foe.hp = 5000;
     frame();
-    resetPunch(); resetMarker(); screenShake.hitStop = 0; S.kickCd = 0;
+    resetPunch(); resetHitFeel(); screenShake.hitStop = 0; S.kickCd = 0;
     doKick();
     for (let i = 0; i < 8; i++) frame();
     expect(punch.lunge + punch.pitch * 0, "lunged").toBeGreaterThan(0);
     expect(punch.pitch, "pitched forward").toBeLessThan(0);
-    expect(marker.left).toBe(0);
+    expect(lastFelt.kind, "nothing felt").toBeNull();
     expect(screenShake.hitStop).toBe(0);
   });
 });

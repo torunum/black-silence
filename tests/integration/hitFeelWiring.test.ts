@@ -9,19 +9,18 @@ import { player } from "../../src/player/PlayerState";
 import { input } from "../../src/player/Input";
 import { renderState } from "../../src/render/Renderer";
 import { screenShake } from "../../src/fx/ShakeState";
-import { marker, resetMarker } from "../../src/fx/HitMarker";
 import { punch, resetPunch } from "../../src/fx/ViewPunch";
-import { resetHitFeel, FEEL, STOP_MAX } from "../../src/fx/HitFeel";
+import { resetHitFeel, FEEL, STOP_MAX, lastFelt } from "../../src/fx/HitFeel";
 import { EYE } from "../../src/world/Grid";
 import { floorHeightAt } from "../../src/world/Collision";
 
 /**
  * EVERY HIT LANDS, THROUGH THE REAL GAME (impact plan, Task 1). The units
- * (tests/fx/hitFeel, hitMarker, viewPunch; tests/enemies/hitReact) prove
+ * (tests/fx/hitFeel, noHitMarker, viewPunch; tests/enemies/hitReact) prove
  * each piece; this proves the pieces are wired: a shot at a real zombie on
  * a real level, through the real `hitscan` and `damageEnemy`, then real
- * `Loop.ts` frames — the sprite goes white and leans, the marker lights at
- * the crosshair, the hit-stop is the weapon's, the view is punched for the
+ * `Loop.ts` frames — the sprite goes white and leans, the blow is felt (and
+ * nothing is drawn at the crosshair: there is no marker), the hit-stop is the weapon's, the view is punched for the
  * render only, and a kill is bigger than a hit.
  */
 
@@ -78,10 +77,10 @@ function stage(hp = 5000): void {
   player.spawnGuard = 99;
   renderState.camera.position.set(player.px, player.pyy, player.pz);
   input.yaw = -Math.PI / 2;   // facing +x
-  resetHitFeel(); resetMarker(); resetPunch();
+  resetHitFeel(); resetPunch();
   screenShake.hitStop = 0;
   for (let i = 0; i < 2; i++) frame();   // settle: the camera, the spawn guard, last frame's leftovers
-  resetHitFeel(); resetMarker(); resetPunch(); screenShake.hitStop = 0;
+  resetHitFeel(); resetPunch(); screenShake.hitStop = 0;
 }
 function shoot(wIdx: number, dmg: number, up = 0, side = 0): void {
   const fy = floorHeightAt(foe.x, foe.z);
@@ -90,16 +89,15 @@ function shoot(wIdx: number, dmg: number, up = 0, side = 0): void {
   hitscan(dir, dmg, wIdx);
 }
 
-describe("a hit lands: the flash, the marker, the stop, the punch", () => {
+describe("a hit lands: the flash, the stop, the punch", () => {
   beforeEach(() => stage());
 
-  it("a pistol hit turns the zombie white, lights the marker at the crosshair, freezes the game a moment and punches the view", () => {
+  it("a pistol hit turns the zombie white, is felt, freezes the game a moment and punches the view", () => {
     shoot(0, 34);
     frame();
     expect(foe.sp.material.color.r, "white: a multiplier past 1").toBeGreaterThan(1);
     expect(foe.flashT, "the flash is running").toBeGreaterThan(0);
-    expect(marker.left, "the marker").toBeGreaterThan(0);
-    expect(marker.kind).toBe("flesh");
+    expect(lastFelt.kind, "felt as a plain hit").toBe("flesh");
     expect(screenShake.hitStop, "the pistol's hit-stop").toBeCloseTo(FEEL[0].hit, 6);
     expect(punch.lunge, "the view lunges at it").toBeGreaterThan(0);
     expect(foe.sp.material.rotation, "it leans").not.toBe(0);
@@ -119,14 +117,14 @@ describe("a hit lands: the flash, the marker, the stop, the punch", () => {
     expect(foe.sp.material.rotation).toBe(0);
   });
 
-  it("a headshot's marker is a headshot's, a body shot's a body's", () => {
+  it("a headshot is felt as a headshot, a body shot as a body's", () => {
     shoot(0, 34, 0.38);   // doubled on a head: 68 of 5000
     frame();
-    expect(marker.kind).toBe("head");
+    expect(lastFelt.kind).toBe("head");
     stage();
     shoot(0, 34, 0);
     frame();
-    expect(marker.kind).toBe("flesh");
+    expect(lastFelt.kind).toBe("flesh");
   });
 
   it("the hit-stop is the weapon's: nothing for a rifle or a nail cannon, the pistol's, a shotgun volley's, the BMG's", () => {
@@ -178,36 +176,36 @@ describe("a hit lands: the flash, the marker, the stop, the punch", () => {
     } finally { r.render = real; }
   });
 
-  it("a shot into armour is a clink: the grey marker, no stop", () => {
+  it("a shot into armour is a clink: the armour sound, no stop", () => {
     (foe as unknown as { plate: number }).plate = 100;
     try {
       shoot(0, 34);
       frame();
-      expect(marker.kind).toBe("armour");
+      expect(lastFelt.kind).toBe("armour");
       expect(screenShake.hitStop).toBe(0);
     } finally { (foe as unknown as { plate: number }).plate = 0; }
   });
 });
 
 describe("a kill is bigger than a hit", () => {
-  it("the kill's marker is red, its stop longer, its punch harder than the same weapon's plain hit", () => {
+  it("the kill is felt as a kill, its stop longer, its punch harder than the same weapon's plain hit", () => {
     stage();
     shoot(0, 34); frame();
     const hit = { stop: screenShake.hitStop, lunge: punch.lunge };
     stage(30);
     shoot(0, 34); frame();
     expect(foe.dead).toBe(true);
-    expect(marker.kind === "kill" || marker.kind === "gib").toBe(true);
+    expect(lastFelt.kind === "kill" || lastFelt.kind === "gib").toBe(true);
     expect(screenShake.hitStop).toBeGreaterThan(hit.stop);
     expect(punch.lunge).toBeGreaterThan(hit.lunge);
   });
 
-  it("a headshot kill is a head-kill marker", () => {
+  it("a headshot kill is felt as a head-kill", () => {
     stage(60);   // the pistol's 34 is doubled on a head: 68 leaves -8, dead but not gibbed (past -22 it would be)
     shoot(0, 34, 0.38);
     frame();
     expect(foe.dead).toBe(true);
-    expect(marker.kind).toBe("headkill");
+    expect(lastFelt.kind).toBe("headkill");
   });
 
   it("a corpse is not left white", () => {
