@@ -32,6 +32,8 @@ import { E } from "../../src/enemies/rig/palette";
  *   the crawl; the hound's leap and the wailer's scream hold the attack frames.
  */
 
+/** How much of the legacy sprite's fill each rig must keep: the thinner bodies (the wailer, a starved thing in a shroud) are held to less, the barrels and brutes to nearly all of it. */
+const FILL_BAR: Record<string, number> = { t: 0.8, f: 0.8, m: 0.85, s: 0.6, g: 0.8, w: 0.8 };
 const KEYS = ["t", "f", "m", "s", "g", "w"] as const;
 type Key = (typeof KEYS)[number];
 const HAS_HEAD: Record<Key, boolean> = { t: true, f: true, m: true, s: true, g: false, w: false };
@@ -129,7 +131,7 @@ describe.each(KEYS)("%s: the rig", (key) => {
     for (const [role, i] of [["idle", 0], ["walk", 0], ["walk", 3]] as const) {
       const n = newLook(frame(rig, role, i));
       expect(n.width, `${role}${i} is as wide as the old art (${old.width.toFixed(2)})`).toBeGreaterThan(old.width * 0.85);
-      expect(n.fill, `${role}${i} fills its frame (${old.fill.toFixed(2)})`).toBeGreaterThan(old.fill * 0.6);
+      expect(n.fill, `${role}${i} fills its frame (${old.fill.toFixed(2)})`).toBeGreaterThan(old.fill * FILL_BAR[key]);
       expect(n.lum, `${role}${i} is as bright (${old.lum.toFixed(0)})`).toBeGreaterThan(old.lum * 0.95);
       expect(n.punch, `${role}${i} has its saturated accents (${(old.punch * 100).toFixed(1)}%)`).toBeGreaterThan(old.punch * 0.2);
     }
