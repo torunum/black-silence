@@ -893,7 +893,22 @@ import { MONOLOGUE } from "../../src/content/monologue";
  *      matters: a first draft gave the arm its own thin box, and the church bot of `churchPlay.test.ts`, which kicks parts, was moved off the recorded run by 10 extra draws at
  *      frame 2181 and lost its fight; with the legacy box that run is bit-identical to the one before the rig.)
  * The claim of the plan holds: only a ghoul's frame role, a gib's look, and the one flying limb's sprite offset moved.
- */
+ *
+ * ## The enemies plan, Task 2 — regeneration: the six common grunts are rigs (digest only, 110 frames)
+ *
+ * Task 2 of `docs/superpowers/plans/2026-10-13-enemies.md`: the plague bloat `t`, the flayed sprinter `f`, the plated horror `m`, the wailer `s`, the hound `g` and the dragger `w`
+ * are rigs (`src/enemies/rig/`; `trace.test.ts`'s header says what that is). The shim burns what each one's legacy bake drew: 88 + 60 + 48 + 64 + 20 + 36 = **316 stump draws**
+ * and 17 + 17 + 17 + 17 + 15 + 15 textures x 8 = **784 uuid draws** (`tests/enemies/legacyDraws.test.ts` holds each against the real legacy bake), so the seeded stream does not move.
+ * The procedure was this header's own: a throwaway copy of the tree (`src/` and `tests/`, with the digest's inputs written out unhashed beside the run); the tree the task started
+ * from (`3d0423a`) **reproduced all three committed fixtures byte for byte** under the same instrumentation, so the instrumentation moves nothing; then the new tree, and each sampled
+ * frame's child lists compared as multisets, keyed by type, position and visibility; the fixtures compared field by field by a node script (neither committed; the account is
+ * `.superpowers/sdd/2026-10-13-enemies/digest-diff-task2.txt`). The regenerated fixtures are byte for byte what the instrumented run wrote.
+ *  - `camera` — all seven components **identical in all 110 sampled frames**. `hud` — all eight fields **identical in all 110** (the run still ends `HEALTH40`). `scene.count` — **identical in all 110** (195..224).
+ *  - `scene.digest` — differs in **38 of 110 frames** (110 distinct digests before and after). Child by child, all of it:
+ *    - **the wailer's texture name — 14 changes in 14 frames**: walking `s.a` -> `s.walk0` (3), `walk2` (3), `s.b` (3), `walk4` (2), `walk5` (2), `walk1` (1). No colour changed anywhere.
+ *    - **one flying part — 24 frames, 24 sprites removed and 24 added at the same x and z, every one .0082 m higher**: a severed limb is now the monster's own, drawn at true size in the legacy crop's box
+ *      (`PartArt.phys`: its physics are the legacy part's exactly, thrown from the legacy height; only the sprite's offset in its box differs, as in the ghoul's regeneration above).
+  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");
 const FIXTURE = join(FIXTURE_DIR, "trace-level1.json");

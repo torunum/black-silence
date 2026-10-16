@@ -642,7 +642,20 @@ import { MONOLOGUE } from "../../src/content/monologue";
  *    attacked now shows walk poses where it showed `a`.)
  * The structural claim of the plan, "the scene digest moves only where a ghoul selects a new frame role or a gib's look changes", is therefore held exactly: no gib
  * is sampled in this run (its colour changes are in the other two files).
- */
+ *
+ * ## The enemies plan, Task 2 — regeneration: the six common grunts are rigs (digest only, 90 frames)
+ *
+ * Task 2 of `docs/superpowers/plans/2026-10-13-enemies.md`: the plague bloat `t`, the flayed sprinter `f`, the plated horror `m`, the wailer `s`, the hound `g` and the dragger `w`
+ * are rigs (`src/enemies/rig/`; `trace.test.ts`'s header says what that is). The shim burns what each one's legacy bake drew: 88 + 60 + 48 + 64 + 20 + 36 = **316 stump draws**
+ * and 17 + 17 + 17 + 17 + 15 + 15 textures x 8 = **784 uuid draws** (`tests/enemies/legacyDraws.test.ts` holds each against the real legacy bake), so the seeded stream does not move.
+ * The procedure was this header's own: a throwaway copy of the tree (`src/` and `tests/`, with the digest's inputs written out unhashed beside the run); the tree the task started
+ * from (`3d0423a`) **reproduced all three committed fixtures byte for byte** under the same instrumentation, so the instrumentation moves nothing; then the new tree, and each sampled
+ * frame's child lists compared as multisets, keyed by type, position and visibility; the fixtures compared field by field by a node script (neither committed; the account is
+ * `.superpowers/sdd/2026-10-13-enemies/digest-diff-task2.txt`). The regenerated fixtures are byte for byte what the instrumented run wrote.
+ *  - `camera` — all seven components **identical in all 90 sampled frames**. `hud` — all eight fields **identical in all 90** (the run still ends `HEALTH8`). `scene.count` — **identical in all 90**.
+ *  - `scene.digest` — differs in **37 of 90 frames**, and all of it is one thing: **the dragger's texture name — 37 changes in 37 frames** (the crawlers that climb out of the pit
+ *    walking: `w.a` -> `w.walk0` (4), `walk1` (7), `walk2` (5), `walk4` (5), `walk5` (5), `w.b` (4); attacking: `w.atk` -> `w.atkRecover` (7)). No colour, no position, no child added or removed.
+  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");
 const FIXTURE = join(FIXTURE_DIR, "trace-level0.json");
