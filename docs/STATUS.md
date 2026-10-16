@@ -1,5 +1,62 @@
 # Where this project stands
 
+## Enemies, redrawn: Task 2 - the horde - 2026-10-16 (branch `enemies`)
+
+Plan: `docs/superpowers/plans/2026-10-13-enemies.md`; the report and the strips are in
+`.superpowers/sdd/2026-10-13-enemies/`. **Seven enemies are on the rig now: the ghoul
+and the six that make most of the horde** - the plague bloat `t` (24 placed), the
+wailer `s` (12), the dragger `w` (21), the flayed sprinter `f` (14), the plated
+horror `m` (14), the hound `g` (12). (The plan calls `w` "the wailer"; in
+`EnemyDefs`/`PXDEF` `s` is the WAILER, with the scream, and `w` the DRAGGER, torn at the
+waist: the data is what the rigs follow.) The gate: 144 files, 2462 tests, size and cycles
+clean. Tasks 3-4 (the demons, the bosses) are not started.
+
+| Enemy | The rig, in a line | Frames and what is special |
+|---|---|---|
+| Plague bloat `t` | a barrel of sick green hanging over short legs, a split belly of emissive bile, boils, a head sunk in its shoulders | walk 6 (a waddle), attack = rears back swelling, thrusts and spews, pain 2, death 5 (the belly bursts wider as it falls), crawl 4; stumps visible under the belly (`neckTop`, `legLen`) |
+| Flayed sprinter `f` | skinless red muscle with fibres, bone-tan ribs and hands, a skull head and a yellow-toothed jaw that drops to the chest | sprint 6, attack = coil, pounce (airborne), land; never stands up even idle |
+| Plated horror `m` | rust-and-steel armour over grey-green rot: pauldrons the width of the sprite, a cuirass in two halves with raw meat and a heart in the gap, a helmet with an ember in its slit | stomp 6, attack = the slam (both arms over its head, down, recover), the plates splay open as it dies (`open`) |
+| Wailer `s` | a violet, starved body in a shroud that flares, a skull twice a head with a throat that glows orange on its own | shamble 6, attack = the scream; **`RigAnim` holds the shriek frames across its 1.1 s scream stun**; the jaw shuts as it dies |
+| Hound `g` | a flayed quadruped seen across the sprite, a bone-spike ridge, ribs, a mouth that is red inside, drool | trot-gallop 6, attack = the leap (**held over the .4 s after `lungeT` is set**); forelegs are its arms, hind legs its `legs`: **legless it hauls itself on its forelegs** (crawl 4); no head row, so no head hit and no headless frame, as in the legacy art |
+| Dragger `w` | half a man torn at the waist on two long arms, a face with red eyes, ribs bare along the back, two ropes of gut slithering behind | haul 6, attack = a lunge with one hand out; its guts are its `legs`: without them it is a torso on two arms (crawl 4); no head row either |
+
+Every one of them has an idle, an attack of three phases, pain of two, a death of five
+(drawn on the floor the sinking sprite is at), a crawl, dismemberment variants with stumps
+at the real joints and its **own flying head, arms and legs**. Shared: `rig/humanoid.ts`
+(the two-legged skeleton and `makeStd`), `limbs.ts` (arms, legs, stumps, part caps),
+`humanFall.ts` (the fall and the crawl the humanoids share), `ground.ts` (forward kinematics:
+the lowest paw or hand on the floor, for the hound and the dragger).
+
+**The mass and the colour.** The first rigged ghoul came out slimmer and paler than the sprite
+it replaced; the six were built against that, and so was the ghoul's own second pass (broader
+shoulders and hips, a red wound and bright ribs and guts instead of a black cavity, lighter skin:
+width 69% of its frame against the legacy's 70%, brightness 60 against 50, saturated share 3.7%
+against 2.7%). `tests/enemies/gruntRigs.test.ts` holds, for every rig, that its silhouette is as wide
+as the legacy art's (85%), as full (60%), as bright (95%) and has a fifth of its saturated accents.
+
+**The shim.** `burnLegacySpriteDraws` now burns 52 (z), 88 (t), 60 (f), 48 (m), 64 (s), 20 (g)
+and 36 (w) stump `Math.random()` calls and 17/17/17/17/17/15/15 textures x 8 uuid draws:
+316 + 784 more than the ghoul's alone, each held against the real legacy bake. **Boot cost**
+(headless Chromium, median of 9): all 25 creatures 60.3 ms legacy, **54.4 ms with seven on the
+rig** (an idle frame is 0.8-2.1 ms, 7 frames, 173 KB at boot); all 17 standing frames of one
+monster, baked on first use, 16-32 ms and 260-550 KB.
+
+**Fixtures.** Per each header's procedure (old tree reproduced the three fixtures byte for byte
+under the instrumentation; `.superpowers/sdd/2026-10-13-enemies/digest-diff-task2.txt`):
+`camera` and `hud` identical in all 90 / 110 / 512 sampled frames, `scene.count` identical, the
+digest moved in 37 / 38 / 455 frames - frame roles (the dragger, the wailer, the sprinter) and the
+sprite offset of one flying part (+.0082 / +.0265 m; physics are the legacy box's). The priest still
+goes phase 1, 2, 3 and the run ends `HEALTH3661`; `churchPlay`, `dungeonPlay` and the stuck check are green.
+
+**Honest verdicts** (headless SwiftShader strips and old-vs-new, `task-2-*.png`; in this game every
+sprite is lifted by the renderer, old and new alike): the **bloat**, the **horror**, the **hound** and the
+**dragger** are bigger and more body than what they replace and read at range; the **sprinter** is a
+vivid red-orange anatomical runner, less loud than the legacy red-and-white stripes; the **wailer** is
+a violet scarecrow that is only readable as a scream when it throws its arms out; the **ghoul** at range
+is a hunched green figure with an orange-red chest, better than the first rig and still less loud than the old
+red-and-white. A corpse is tan because the kill tint multiplies it for good (the legacy did the same).
+Nobody has played it at 60 fps.
+
 ## Enemies, redrawn: Task 1 - the rig kit, the ghoul, the bestiary - 2026-10-15 (branch `enemies`)
 
 The owner wanted the character models developed further, in the style. Plan:

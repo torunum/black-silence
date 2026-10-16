@@ -907,7 +907,26 @@ import { world } from "../../src/world/WorldState";
  *      .619), and a head sprite is drawn `vis` = (height - `sz`)/2 above its centre of mass. **The head's physics are identical in every tick** (a dump of all 30,055 ticks in both trees: x, y, z, v, `sz`, rest:
  *      0 ticks differ), so the game's own dice, which the head's bounce draws, fall where they fell.
  * **The structural guard** (`priest reaches all three phases`, the form swap inside its sampled window) stays green: phase 3 is entered at the same frame, because nothing in the fight moved.
- */
+ *
+ * ## The enemies plan, Task 2 — regeneration: the six common grunts are rigs (digest only, 512 frames)
+ *
+ * Task 2 of `docs/superpowers/plans/2026-10-13-enemies.md`: the plague bloat `t`, the flayed sprinter `f`, the plated horror `m`, the wailer `s`, the hound `g` and the dragger `w`
+ * are rigs (`src/enemies/rig/`; `trace.test.ts`'s header says what that is). The shim burns what each one's legacy bake drew: 88 + 60 + 48 + 64 + 20 + 36 = **316 stump draws**
+ * and 17 + 17 + 17 + 17 + 15 + 15 textures x 8 = **784 uuid draws** (`tests/enemies/legacyDraws.test.ts` holds each against the real legacy bake), so the seeded stream does not move.
+ * The procedure was this header's own: a throwaway copy of the tree (`src/` and `tests/`, with the digest's inputs written out unhashed beside the run); the tree the task started
+ * from (`3d0423a`) **reproduced all three committed fixtures byte for byte** under the same instrumentation, so the instrumentation moves nothing; then the new tree, and each sampled
+ * frame's child lists compared as multisets, keyed by type, position and visibility; the fixtures compared field by field by a node script (neither committed; the account is
+ * `.superpowers/sdd/2026-10-13-enemies/digest-diff-task2.txt`). The regenerated fixtures are byte for byte what the instrumented run wrote.
+ *  - `camera` — all seven components **identical in all 512 sampled frames**. `hud` — all eight fields **identical in all 512**: **the priest still goes phase 1 -> 2 -> 3 and the run ends
+ *    `HEALTH3661` / `THE CORRUPTED PRIEST — PHASE 3`**, and the structural guard below is green. `scene.count` — **identical in all 512**.
+ *  - `scene.digest` — differs in **455 of 512 frames**. Child by child, all of it:
+ *    - **frame roles of the sprinter and the wailer — 2,031 texture-name changes in 455 frames**: the sprinter walking `f.a` -> `f.walk0` (3), `walk1` (4), `walk4` (1), `f.b` (2), attacking `f.atk` ->
+ *      `f.atkRecover` (6), `atkWind` (3), `f.pain0` (3: from walking and from attacking); dying `f.die1` -> `f.death1` (1) and the corpses on the floor `f.die2` -> `f.death4` (276); beheaded, `f.noHead` -> `f.hl` (5) and the headless
+ *      bodies that walk and lie, which are baked the first time they are wanted (after the index that names textures was built) and so are named by the digest's fallback counter: `f.noHead` ->
+ *      `unnamed#9` (1,430), `unnamed#8` (2), `#10` (2), `#11` (1), then `unnamed#9` -> `unnamed#13` (273) and `unnamed#8` -> `#12` (1): the same textures, numbered by first sight in a later frame; the wailer `s.a` -> `s.walk0` (6), `walk2` (6), `walk4` (5), `walk1` (1).
+ *    - **one flying part — 430 frames, 1,440 sprites removed and 1,440 added at the same x and z, every one .0265 m higher** (the head of a sprinter and the like, in the legacy crop's box; the same
+ *      mechanism as the ghoul's). No colour changed anywhere.
+  */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");
 const FIXTURE = join(FIXTURE_DIR, "trace-level2-boss.json");

@@ -58,7 +58,7 @@ describe("making a part", () => {
       expect(parts()).toHaveLength(2);
       // a legacy monster's limb is its own box: it rests on its thin side, as it always did
       return import("../../src/fx/GoreTex").then((m) => {
-        const legacy = { ...foe, key: "t" }, art2 = m.partArt("t", "lArm")!;
+        const legacy = { ...foe, key: "j" }, art2 = m.partArt("j", "lArm")!;
         const b = P.makePart(1, legacy, start())!;
         expect(b.sp.material.map).toBe(art2.tex);
         expect(art2.phys).toBeUndefined();

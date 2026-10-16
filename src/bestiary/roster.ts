@@ -111,7 +111,8 @@ function newClips(set: RigSet): Partial<Record<ClipName, Clip>> {
     attack: clipOf([...frames("atk", 3), t("idle", 0)], [...atkAt, ATK_LEN * 1000], 700),
     pain: clipOf([t("pain", 0), t("pain", 1), t("idle", 0)], [0, PAIN_LEN * 500, PAIN_LEN * 1000], 600),
     death: clipOf(dieFrames(0), dieAt(KILL_FALL, 0), 1500, { sink: sinkKill }),
-    head: clipOf([t("idle", 0, HEAD), ...dieFrames(HEAD)], [0, ...dieAt(BEHEAD_FALL, STAGGER * 1000)], 1500, { sink: sinkBehead }),
+    // a monster with no head row (the hound, the dragger) is never beheaded: `Hitscan` counts no head hit on it
+    ...(r.regions.head > 0 ? { head: clipOf([t("idle", 0, HEAD), ...dieFrames(HEAD)], [0, ...dieAt(BEHEAD_FALL, STAGGER * 1000)], 1500, { sink: sinkBehead }) } : {}),
     lArm: cycle(frames("walk", 6, L_ARM), step),
     rArm: cycle(frames("walk", 6, R_ARM), step),
     legs: cycle(frames("crawl", 4, LEGS), step * 1.7),
@@ -131,7 +132,7 @@ export function bestiary(): Entry[] {
       clips: (side) => (side === "old" ? (oc ??= oldClips(d)) : set ? (nc ??= newClips(set)) : {}),
       parts: (side) => {
         const kinds = ["head", "lArm", "rArm", "legs"] as const;
-        if (side === "new") return set ? kinds.map((kind) => ({ kind, canvas: img(set.part(kind).tex) })) : [];
+        if (side === "new") return set ? kinds.filter((kind) => kind !== "head" || set.rig.regions.head > 0).map((kind) => ({ kind, canvas: img(set.part(kind).tex) })) : [];
         // the legacy cuts: `partArt` for a key whose `PX` has no rig (the bestiary never boots the game's sprites) is the pixel art's
         return kinds.flatMap((kind) => { const a = partArt(key, kind); return a ? [{ kind, canvas: img(a.tex) }] : []; });
       },

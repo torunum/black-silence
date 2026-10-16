@@ -61,9 +61,12 @@ describe("legacyDraws derives what the legacy bake draws", () => {
     expect(measured.uuid, `${key}: Math.random calls inside generateUUID (four per uuid, two uuids a texture)`).toBe(derived.textures * 8);
   });
 
-  it("the ghoul's: 52 stump draws and 17 textures (136 uuid draws)", () => {
-    expect(legacyDraws(PXDEF.z)).toEqual({ stumps: 52, textures: 17 });
+  // the numbers the shim burns for each re-rigged creature (stump colours; textures x 8 uuid draws), derived from the rows and held here so that a change to a row or a rig's key is seen
+  it.each([["z", 52, 17], ["t", 88, 17], ["f", 60, 17], ["m", 48, 17], ["s", 64, 17], ["g", 20, 15], ["w", 36, 15]] as const)("%s: %i stump draws and %i textures (the shim's count)", (key, stumps, textures) => {
+    expect(legacyDraws(PXDEF[key])).toEqual({ stumps, textures });
+    expect(Object.keys(RIGS), "and it is a rig").toContain(key);
   });
+  it("every creature with a rig is in that table", () => { expect(Object.keys(RIGS).sort()).toEqual(["f", "g", "m", "s", "t", "w", "z"]); });
 });
 
 describe("burnLegacySpriteDraws consumes exactly that", () => {
@@ -85,11 +88,11 @@ describe("buildSprites with the rigs in draws exactly what it drew with none", (
     expect(PX.z.rig, "and the ghoul is the rig's").toBeTruthy();
   });
 
-  it("the rig's own bake draws nothing: its eager frames, every dismembered variant, its parts and its crawler", async () => {
+  it.each(Object.keys(RIGS))("%s: the rig's own bake draws nothing: its eager frames, every dismembered variant, its parts and its crawler", async (key) => {
     const { rigSprite } = await import("../../src/enemies/rig/sprite");
     const { LEGS, HEAD, L_ARM, R_ARM } = await import("../../src/enemies/rig/kit");
     const d = countDraws(() => {
-      const s = rigSprite(RIGS.z);
+      const s = rigSprite(RIGS[key]);
       const set = s.rig!;
       for (const m of [0, HEAD, L_ARM, R_ARM, L_ARM | R_ARM, LEGS, LEGS | HEAD, LEGS | L_ARM | R_ARM]) {
         set.tex(m & LEGS ? "crawl" : "walk", 1, m);
@@ -101,3 +104,4 @@ describe("buildSprites with the rigs in draws exactly what it drew with none", (
     expect(d).toEqual({ uuid: 0, other: 0 });
   });
 });
+

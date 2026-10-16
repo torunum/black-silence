@@ -1,5 +1,11 @@
 import type { Rig } from "./kit";
 import { GHOUL } from "./ghoul";
+import { BLOAT } from "./bloat";
+import { SPRINTER } from "./sprinter";
+import { HORROR } from "./horror";
+import { WAILER } from "./wailer";
+import { HOUND } from "./hound";
+import { DRAGGER } from "./dragger";
 
 /**
  * The monsters that have a rig, by the grid character that spawns them. An
@@ -10,6 +16,6 @@ import { GHOUL } from "./ghoul";
  * `tests/enemies/legacyDraws.test.ts` holds that the seeded stream the
  * fixtures are recorded under still moves exactly as the legacy bake moved it.
  */
-export const RIGS: Readonly<Record<string, Rig>> = { z: GHOUL };
+export const RIGS: Readonly<Record<string, Rig>> = { z: GHOUL, t: BLOAT, f: SPRINTER, m: HORROR, s: WAILER, g: HOUND, w: DRAGGER };
 
 export function rigFor(key: string): Rig | undefined { return RIGS[key]; }

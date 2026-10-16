@@ -41,8 +41,9 @@ export function rigSprite(rig: Rig): BakedSprite {
   // the two death frames (the first fall, the last, flat), and the variants an enemy that has lost something wears
   o.a = o.idle;
   lazy("b", "walk", 3, 0); lazy("atk", "atk", 1, 0); lazy("die1", "die", 1, 0); lazy("die2", "die", 4, 0);
-  lazy("hl", "idle", 0, HEAD); lazy("noHead", "idle", 0, HEAD);
-  lazy("hlb", "walk", 3, HEAD); lazy("noHeadB", "walk", 3, HEAD);
+  lazy("hl", "idle", 0, HEAD); lazy("hlb", "walk", 3, HEAD);
+  // a monster with no head row (the hound, the dragger) has no headless frame, as its legacy art has none: `Hitscan` never counts a head hit on it
+  if (rig.regions.head > 0) { lazy("noHead", "idle", 0, HEAD); lazy("noHeadB", "walk", 3, HEAD); } else { o.noHead = null; o.noHeadB = null; }
   lazy("noLArm", "idle", 0, L_ARM); lazy("noLArmB", "walk", 3, L_ARM);
   lazy("noRArm", "idle", 0, R_ARM); lazy("noRArmB", "walk", 3, R_ARM);
   lazy("gibbed", "idle", 0, L_ARM | R_ARM); lazy("gibbedB", "walk", 3, L_ARM | R_ARM);

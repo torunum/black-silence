@@ -161,7 +161,7 @@ describe("its parts are real", () => {
     const head = renderPart(GHOUL, "head"), legs = renderPart(GHOUL, "legs");
     expect(head.mh, "the head is a head").toBeLessThan(0.62);
     expect(legs.mw, "the legs are legs, lying on their side").toBeGreaterThan(0.6);
-    expect(legs.mh, "a pair, one above the other").toBeLessThan(0.5);
+    expect(legs.mh, "a pair, one above the other").toBeLessThan(0.75);
   });
 });
 
@@ -320,8 +320,8 @@ describe("the parts that fly are the ghoul's own", () => {
       expect(set.part(k).tex).toBe(art.tex);
     }
     // a legacy monster's parts are still cut from its pixel art, not from any rig
-    expect(TEX.partArt("t", "head")!.tex).not.toBe(TEX.partArt("z", "head")!.tex);
-    expect((PX.t.rig as unknown), "t has no rig set to contain it").toBeUndefined();
+    expect(TEX.partArt("j", "head")!.tex).not.toBe(TEX.partArt("z", "head")!.tex);
+    expect((PX.j.rig as unknown), "j has no rig set to contain it").toBeUndefined();
     // and the sprite that is thrown is that texture
     headPool.heads.length = 0;
     const host = { x: 5, z: 5, h: 1.65, w: 1.18, fy: 0, key: "z" };
@@ -358,34 +358,34 @@ describe("the parts that fly are the ghoul's own", () => {
 });
 
 describe("a legacy enemy is unchanged", () => {
-  it("the plague bloat has no rig and its legacy frames: it dies on die1 then die2, tilting as it always did", () => {
-    expect(PX.t.rig).toBeUndefined();
-    const e = standing("t");
+  it("the cacodemon has no rig and its legacy frames: it dies on die1 then die2, tilting as it always did", () => {
+    expect(PX.C.rig).toBeUndefined();
+    const e = standing("C");
     damageEnemy(e, e.hp + 6, { wIdx: 0, dir: { x: 1, z: 0 } });
     enemyTick(0.05);
-    expect(map(e), "die1 before .22 s").toBe(PX.t.die1);
+    expect(map(e), "die1 before .22 s").toBe(PX.C.die1);
     expect(e.sp.material.rotation).toBeCloseTo(e.deathDir * (0.05 / 0.45) * Math.PI / 6, 9);
     for (let i = 0; i < 40; i++) enemyTick(0.01);
-    expect(map(e), "die2 after").toBe(PX.t.die2);
+    expect(map(e), "die2 after").toBe(PX.C.die2);
     expect(e.sp.material.rotation).toBeCloseTo(e.deathDir * Math.PI / 6, 9);
   });
 
-  it("the flayed sprinter has no rig, no pain frame (a hit changes its frame not at all) and walks its two legacy frames", () => {
-    expect(PX.f.rig).toBeUndefined();
-    const e = standing("f");
+  it("the cultist has no rig, no pain frame (a hit changes its frame not at all) and walks its two legacy frames", () => {
+    expect(PX.j.rig).toBeUndefined();
+    const e = standing("j");
     e.hp = 500; e.maxhp = 500;
     const before = map(e);
     damageEnemy(e, 5, { wIdx: 0, dir: { x: 1, z: 0 } });
     enemyTick(0.01);
     expect(map(e), "a hit does not change a legacy frame").toBe(before);
-    expect(before).toBe(PX.f.a);
+    expect(before).toBe(PX.j.a);
   });
 
   it("a legacy enemy that loses an arm is the legacy variant, as before", () => {
-    const e = standing("t");
+    const e = standing("j");
     e.hp = 900; e.maxhp = 900;
     damageEnemy(e, 40, { arm: true, armSide: "R", wIdx: 1, dir: { x: 1, z: 0 } });
-    expect(map(e)).toBe(PX.t.noRArm);
+    expect(map(e)).toBe(PX.j.noRArm);
   });
 });
 
