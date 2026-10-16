@@ -54,24 +54,29 @@ export function legParts(d: Dims, side: "L" | "R", l: LegSpec): RigPart[] {
 }
 
 /** What each torn-off group leaves at its joint, scaled to the body: `neck` / `arm` / `leg` are the radii of the torn flesh. */
-export interface StumpSpec { neck: number; arm: number; leg: number; mat?: number }
+export interface StumpSpec {
+  neck: number; arm: number; leg: number; mat?: number;
+  /** How far the torn flesh stands out of the neck, the shoulder and the hip (rig metres): a body that hides its joints (a belly over the hips, a pauldron over the shoulder) needs a longer stump to be seen. */
+  neckTop?: number; armLen?: number; legLen?: number;
+}
 
 export function humanStumps(o: StumpSpec): Stump[] {
   const m = o.mat ?? E.MEAT;
   return [
     { joint: "neck", group: "head", draw: (c) => {
-      limb(c.b, 0, 0, 0.05, 0.12, o.neck, o.neck * 0.82, m, 7, { tex: meatTex });
-      limb(c.b, 0, 0.0, 0.07, 0.19, 0.017, 0.013, E.BONE, 5);
+      limb(c.b, 0, 0, 0.05, o.neckTop ?? 0.12, o.neck, o.neck * 0.82, m, 7, { tex: meatTex });
+      limb(c.b, 0, 0.0, 0.07, (o.neckTop ?? 0.12) + 0.07, 0.017, 0.013, E.BONE, 5);
       c.b.box(-0.045, 0.1, -0.06, -0.015, 0.15, -0.03, E.SINEW); c.b.box(0.015, 0.1, 0.02, 0.045, 0.14, 0.05, E.ORGAN); c.b.box(0.02, 0.1, -0.06, 0.05, 0.13, -0.035, m);
     } },
     ...(["L", "R"] as const).map((s): Stump => ({ joint: "shoulder" + s, group: s === "L" ? "lArm" : "rArm", draw: (c) => {
-      limb(c.b, 0, 0, 0.01, -0.11, o.arm, o.arm * 0.8, m, 7, { tex: meatTex });
-      limb(c.b, 0.005, 0, -0.02, -0.19, 0.017, 0.013, E.BONE, 5);
+      limb(c.b, 0, 0, 0.01, -(o.armLen ?? 0.11), o.arm, o.arm * 0.8, m, 7, { tex: meatTex });
+      limb(c.b, 0.005, 0, -0.02, -(o.armLen ?? 0.11) - 0.08, 0.017, 0.013, E.BONE, 5);
       c.b.box(-0.04, -0.15, -0.06, -0.012, -0.1, -0.03, E.SINEW); c.b.box(0.02, -0.14, -0.05, 0.05, -0.1, -0.02, m);
+      c.b.ball(s === "L" ? -0.05 : 0.05, -(o.armLen ?? 0.11) * 0.75, -0.02, o.arm * 0.85, m, 6);   // a flap of it hanging out from the body, where a stump can be seen
     } })),
     ...(["L", "R"] as const).map((s): Stump => ({ joint: "hip" + s, group: "legs", draw: (c) => {
-      limb(c.b, 0, 0, 0, -0.12, o.leg, o.leg * 0.86, m, 7, { tex: meatTex });
-      limb(c.b, 0, 0, -0.03, -0.2, 0.02, 0.015, E.BONE, 5);
+      limb(c.b, 0, 0, 0, -(o.legLen ?? 0.12), o.leg, o.leg * 0.86, m, 7, { tex: meatTex });
+      limb(c.b, 0, 0, -0.03, -(o.legLen ?? 0.12) - 0.08, 0.02, 0.015, E.BONE, 5);
       c.b.box(0.02, -0.16, -0.05, 0.05, -0.1, -0.02, E.SINEW); c.b.box(-0.05, -0.15, -0.05, -0.02, -0.1, -0.02, m);
     } })),
   ];

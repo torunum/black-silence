@@ -14,8 +14,8 @@ import { dims, makeStd, type Std } from "./humanoid";
 /** Short legs, a high wide chest, a head sunk between the shoulders. */
 export const BLOAT_BODY = dims({
   pelvisY: 0.76, spineY: 0.1, chestY: 0.36, neckY: 0.3, neckZ: -0.04, headY: 0.06, headZ: -0.04, jawY: 0.03, jawZ: -0.01,
-  shoulderX: 0.38, shoulderY: 0.2, upperArm: 0.26, foreArm: 0.26, hipX: 0.17, hipDrop: 0.05, thigh: 0.34, shin: 0.34, ankleY: 0.035,
-  rest: { spine: [0.05, 0, 0], chest: [0.05, 0, 0], neck: [0.1, 0, 0], head: [0.05, 0, 0], jaw: 0.15, arm: { f: 0.05, out: 0.28, e: 0.3, w: 0.1 }, leg: { f: 0, k: 0.06, out: 0.1 } },
+  shoulderX: 0.4, shoulderY: 0.2, upperArm: 0.26, foreArm: 0.26, hipX: 0.17, hipDrop: 0.05, thigh: 0.34, shin: 0.34, ankleY: 0.035,
+  rest: { spine: [0.05, 0, 0], chest: [0.05, 0, 0], neck: [0.1, 0, 0], head: [0.05, 0, 0], jaw: 0.15, arm: { f: 0.05, out: 0.45, e: 0.3, w: 0.1 }, leg: { f: 0, k: 0.06, out: 0.1 } },
 });
 const std = makeStd(BLOAT_BODY);
 
@@ -30,7 +30,7 @@ function walk(i: number): RigPose {
     pelvis: [0, 0, 0.05 * s],
     spine: [0.05 + 0.02 * c, 0.06 * c, 0.11 * s], chest: [0.06, -0.06 * c, -0.07 * s], neck: [0.1, 0.05 * c, 0], head: [0.06 + 0.03 * Math.cos(2 * p), 0.05 * c, -0.06 * s],
     jaw: 0.12 + 0.1 * Math.max(0, Math.sin(2 * p)), bile: Math.sin(p + 0.9),
-    aL: { f: 0.1 - 0.25 * s, out: 0.32, e: 0.3 + 0.1 * c }, aR: { f: 0.1 + 0.25 * s, out: 0.32, e: 0.3 - 0.1 * c },
+    aL: { f: 0.1 - 0.25 * s, out: 0.5, e: 0.3 + 0.1 * c }, aR: { f: 0.1 + 0.25 * s, out: 0.5, e: 0.3 - 0.1 * c },
     lL: { f: 0.4 * s, k: 0.08 + 0.55 * Math.max(0, c), out: 0.14 }, lR: { f: -0.4 * s, k: 0.08 + 0.55 * Math.max(0, -c), out: 0.14 },
     root: [0.035 * s, 0.012 * Math.cos(2 * p), 0],
   });

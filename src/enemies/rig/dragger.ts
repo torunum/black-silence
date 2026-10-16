@@ -45,7 +45,7 @@ const scab: TexFn = (x, y, z) => (Math.sin(x * 55 + y * 40 + z * 33) * Math.sin(
 /** A claw hand dragging along the floor: a palm and four hooked bone fingers. */
 function hand(c: Ctx, s: -1 | 1): void {
   const b = c.b, claw = c.x("claw");
-  b.cbox(-0.04, -0.07, -0.03, 0.04, 0.005, 0.03, 0.01, SKIN);
+  b.cbox(-0.055, -0.08, -0.04, 0.055, 0.005, 0.04, 0.012, SKIN);
   for (let i = -1.5; i <= 1.5; i++) {
     b.push(); b.translate(i * 0.024, -0.065, 0); b.pitch(-0.2 - claw * 0.5); b.roll(i * -0.1);
     limb(b, 0, 0, 0, -0.06, 0.011, 0.008, SKIN, 5); b.translate(0, -0.06, 0); b.pitch(-0.3 - claw * 0.8); limb(b, 0, 0, 0, -0.11, 0.009, 0.0015, TAN, 5);
@@ -80,20 +80,20 @@ const parts: RigPart[] = [
   }),
   part("spine", "body", (c) => {
     const b = c.b;
-    b.cbox(-0.17, -0.15, 0.0, 0.17, 0.14, 0.3, 0.05, SKIN, { tex: scab });
-    b.box(0.17, -0.1, 0.04, 0.19, 0.1, 0.24, RAW, { tex: meatTex }); b.box(-0.19, -0.1, 0.04, -0.17, 0.1, 0.24, RAW, { tex: meatTex });
-    for (let i = 0; i < 4; i++) b.ball(0, 0.145, 0.04 + i * 0.07, 0.025, TAN, 5);
+    b.cbox(-0.22, -0.18, 0.0, 0.22, 0.17, 0.3, 0.06, SKIN, { tex: scab });
+    b.box(0.22, -0.13, 0.04, 0.25, 0.13, 0.26, RAW, { tex: meatTex }); b.box(-0.25, -0.13, 0.04, -0.22, 0.13, 0.26, RAW, { tex: meatTex });
+    for (let i = 0; i < 4; i++) b.ball(0, 0.17, 0.04 + i * 0.07, 0.03, TAN, 5);
   }),
   part("chest", "body", (c) => {
     const b = c.b;
-    b.cbox(-0.21, -0.18, -0.24, 0.21, 0.18, 0.2, 0.06, SKIN, { tex: blotchTex(1) });
-    b.prz([[-0.27, 0.14], [-0.12, 0.26], [0.12, 0.26], [0.27, 0.14], [0.2, 0.08], [-0.2, 0.08]], -0.12, 0.16, SKIN, { r1: 0.95 });   // hunched shoulders
+    b.cbox(-0.27, -0.22, -0.26, 0.27, 0.22, 0.2, 0.07, SKIN, { tex: blotchTex(1) });
+    b.prz([[-0.34, 0.18], [-0.15, 0.32], [0.15, 0.32], [0.34, 0.18], [0.26, 0.1], [-0.26, 0.1]], -0.14, 0.16, SKIN, { r1: 0.95 });   // hunched shoulders
     for (const s of [-1, 1]) {
-      b.box(s * 0.212, -0.14, -0.2, s * 0.226, 0.14, 0.16, RAW, { tex: meatTex });
-      for (let k = 0; k < 5; k++) { b.push(); b.translate(s * 0.23, 0.16, -0.17 + k * 0.08); b.roll(s * -0.2); limb(b, 0, 0, 0, -0.3, 0.017, 0.012, TAN, 5); b.pop(); }
+      b.box(s * 0.27, -0.17, -0.22, s * 0.29, 0.17, 0.16, RAW, { tex: meatTex });
+      for (let k = 0; k < 5; k++) { b.push(); b.translate(s * 0.295, 0.2, -0.2 + k * 0.08); b.roll(s * -0.2); limb(b, 0, 0, 0, -0.36, 0.022, 0.015, TAN, 5); b.pop(); }
     }
     for (let i = 0; i < 4; i++) b.ball(0, 0.18, -0.18 + i * 0.1, 0.028, TAN, 5);
-    b.ball(0.0, -0.1, -0.24, 0.07, GUT, 6);                                                     // something hanging out of its belly
+    b.ball(0.0, -0.12, -0.27, 0.1, GUT, 6);                                                     // something hanging out of its belly
   }),
   part("neck", "body", (c) => limb(c.b, 0, 0, 0, 0.2, 0.095, 0.08, SKIN, 7, { tex: scab })),
   // ---- the head: sunken face, eyes that glow, a jaw hanging open ----
@@ -115,22 +115,22 @@ const parts: RigPart[] = [
     for (let i = 0; i < 5; i++) b.box(-0.05 + i * 0.0225, -0.04, -0.112, -0.032 + i * 0.0225, -0.012, -0.1, E.TOOTH);
     b.box(-0.04, -0.055, -0.1, 0.04, -0.04, -0.04, RAW);
   }),
-  ...armParts(DRAGGER_BODY, "lArm", { joint: 0.05, upper: { r0: 0.06, r1: 0.045, mat: SKIN, tex: scab, deco: (c) => c.b.box(0.03, -0.18, -0.04, 0.05, -0.08, 0.04, RAW) }, fore: { r0: 0.045, r1: 0.032, mat: SKIN, tex: scab, deco: (c, len) => limb(c.b, 0, -0.03, -len * 0.1, -len * 0.7, 0.01, 0.008, TAN, 4) }, hand }),
-  ...armParts(DRAGGER_BODY, "rArm", { joint: 0.05, upper: { r0: 0.06, r1: 0.045, mat: SKIN, tex: scab, deco: (c) => c.b.box(-0.05, -0.18, -0.04, -0.03, -0.08, 0.04, RAW) }, fore: { r0: 0.045, r1: 0.032, mat: SKIN, tex: scab, deco: (c, len) => limb(c.b, 0, -0.03, -len * 0.1, -len * 0.7, 0.01, 0.008, TAN, 4) }, hand }),
+  ...armParts(DRAGGER_BODY, "lArm", { joint: 0.07, upper: { r0: 0.085, r1: 0.062, mat: SKIN, tex: scab, deco: (c) => c.b.box(0.045, -0.18, -0.05, 0.07, -0.06, 0.05, RAW) }, fore: { r0: 0.062, r1: 0.044, mat: SKIN, tex: scab, deco: (c, len) => limb(c.b, 0, -0.03, -len * 0.1, -len * 0.7, 0.01, 0.008, TAN, 4) }, hand }),
+  ...armParts(DRAGGER_BODY, "rArm", { joint: 0.07, upper: { r0: 0.085, r1: 0.062, mat: SKIN, tex: scab, deco: (c) => c.b.box(-0.07, -0.18, -0.05, -0.045, -0.06, 0.05, RAW) }, fore: { r0: 0.062, r1: 0.044, mat: SKIN, tex: scab, deco: (c, len) => limb(c.b, 0, -0.03, -len * 0.1, -len * 0.7, 0.01, 0.008, TAN, 4) }, hand }),
   ...(["L", "R"] as const).flatMap((s, k) => [
-    part("hip" + s, "legs", (c) => rope(c, 0.26, 0.055, 0.05, k)),
-    part("knee" + s, "legs", (c) => rope(c, 0.26, 0.05, 0.04, k + 1)),
-    part("ankle" + s, "legs", (c) => rope(c, 0.22, 0.04, 0.02, k)),
+    part("hip" + s, "legs", (c) => rope(c, 0.26, 0.085, 0.075, k)),
+    part("knee" + s, "legs", (c) => rope(c, 0.26, 0.075, 0.06, k + 1)),
+    part("ankle" + s, "legs", (c) => rope(c, 0.22, 0.06, 0.03, k)),
   ]),
 ];
 
 const stumps: Stump[] = [
   { joint: "neck", group: "head", draw: (c) => { limb(c.b, 0, 0, 0.05, 0.2, 0.1, 0.085, E.MEAT, 7, { tex: meatTex }); limb(c.b, 0, 0, 0.1, 0.28, 0.02, 0.014, E.BONE, 5); c.b.box(-0.05, 0.16, -0.04, -0.02, 0.24, -0.01, E.SINEW); c.b.box(0.02, 0.16, -0.03, 0.05, 0.22, 0.0, E.ORGAN); } },
   ...(["L", "R"] as const).map((s): Stump => ({ joint: "shoulder" + s, group: s === "L" ? "lArm" : "rArm", draw: (c) => {
-    limb(c.b, 0, 0, 0.01, -0.12, 0.065, 0.055, E.MEAT, 7, { tex: meatTex }); limb(c.b, 0.005, 0, -0.02, -0.2, 0.017, 0.013, E.BONE, 5); c.b.box(-0.04, -0.15, -0.06, -0.012, -0.1, -0.03, E.SINEW);
+    limb(c.b, 0, 0, 0.01, -0.34, 0.09, 0.07, E.MEAT, 7, { tex: meatTex }); limb(c.b, 0.005, 0, -0.02, -0.42, 0.018, 0.013, E.BONE, 5); c.b.box(-0.04, -0.3, -0.06, -0.012, -0.22, -0.03, E.SINEW); c.b.ball(s === "L" ? -0.07 : 0.07, -0.28, 0, 0.075, E.MEAT, 6);
   } })),
   ...(["L", "R"] as const).map((s): Stump => ({ joint: "hip" + s, group: "legs", draw: (c) => {   // a torn end of gut, and what hung from it
-    c.b.ball(0, 0, 0.03, 0.06, E.MEAT, 6); c.b.cyl(0, 0, 0.02, 0.12, 0.04, 0.02, 5, E.ORGAN, { tex: meatTex }); c.b.box(-0.02, -0.02, 0.05, 0.02, 0.02, 0.1, E.SINEW);
+    c.b.ball(0, 0, 0.14, 0.09, E.MEAT, 6); c.b.cyl(0, 0, 0.04, 0.34, 0.075, 0.05, 6, E.MEAT, { tex: meatTex }); c.b.cyl(0, 0.03, 0.3, 0.42, 0.03, 0.015, 4, E.ORGAN); c.b.box(-0.02, -0.02, 0.2, 0.02, 0.02, 0.36, E.SINEW);
   } })),
 ];
 
@@ -146,7 +146,7 @@ const partSpecs: Record<"head" | "lArm" | "rArm" | "legs", PartSpec> = {
 export const DRAGGER: Rig = {
   key: "w",
   palette: DRAGGER_PALETTE,
-  frame: { w: 83, h: 47, worldH: 1.12, floor: 0.93, yaw: 0.9, pitch: 0.14, shift: 0.0 },
+  frame: { w: 83, h: 47, worldH: 1.06, floor: 0.93, yaw: 0.9, pitch: 0.14, shift: 0.0 },
   crawlH: 5 / 7,
   joints, parts, stumps,
   poses: DRAGGER_POSES,

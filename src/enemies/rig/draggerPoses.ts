@@ -21,14 +21,14 @@ import { grounded } from "./ground";
  * (`ground.ts`): the lowest hand is on the floor.
  */
 
-export const DRAGGER_BODY = dims({ upperArm: 0.28, foreArm: 0.28, thigh: 0.26, shin: 0.26 });
+export const DRAGGER_BODY = dims({ upperArm: 0.25, foreArm: 0.25, thigh: 0.26, shin: 0.26 });
 
 const J = (name: string, parent: string | null, x: number, y: number, z: number): Joint => ({ name, parent, at: [x, y, z] });
 export const DRAGGER_JOINTS: Joint[] = [
   J("pelvis", null, 0, 0.2, 0.36), J("spine", "pelvis", 0, 0.0, -0.28), J("chest", "spine", 0, 0.03, -0.22),
   J("neck", "chest", 0, 0.1, -0.16), J("head", "neck", 0, 0.12, -0.02), J("jaw", "head", 0, -0.02, -0.03),
-  J("shoulderL", "chest", -0.2, 0.0, -0.1), J("elbowL", "shoulderL", 0, -0.28, 0), J("wristL", "elbowL", 0, -0.28, 0),
-  J("shoulderR", "chest", 0.2, 0.0, -0.1), J("elbowR", "shoulderR", 0, -0.28, 0), J("wristR", "elbowR", 0, -0.28, 0),
+  J("shoulderL", "chest", -0.26, 0.0, -0.1), J("elbowL", "shoulderL", 0, -0.25, 0), J("wristL", "elbowL", 0, -0.25, 0),
+  J("shoulderR", "chest", 0.26, 0.0, -0.1), J("elbowR", "shoulderR", 0, -0.25, 0), J("wristR", "elbowR", 0, -0.25, 0),
   J("hipL", "pelvis", -0.07, -0.04, 0.04), J("kneeL", "hipL", 0, 0, 0.26), J("ankleL", "kneeL", 0, 0, 0.26),
   J("hipR", "pelvis", 0.07, -0.04, 0.04), J("kneeR", "hipR", 0, 0, 0.26), J("ankleR", "kneeR", 0, 0, 0.26),
 ];

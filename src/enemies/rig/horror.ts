@@ -26,7 +26,7 @@ const STEEL = FIRST_OWN, RUST = FIRST_OWN + 1, ROT = FIRST_OWN + 2, EMBER = FIRS
 
 export const HORROR_PALETTE = enemyPalette({
   // the legacy A: bolted-on armour plate, brighter on its edges
-  [STEEL]: { ramp: ["#0f1114", "#1b1e23", "#2c3036", "#40464e", "#5a626b", "#7a838d", "#a4aeb8"], amb: .34, spec: .7, rim: true },
+  [STEEL]: { ramp: ["#0f1114", "#1b1e23", "#2a2e34", "#3a4046", "#4e555d", "#636b74", "#7e8791"], amb: .44, spec: .45, rim: true },
   // the legacy r: rust, on the rims and where the rivets weep
   [RUST]:  { ramp: ["#1a0b05", "#331609", "#522410", "#74351a", "#96482a", "#b9603a"], amb: .34, spec: .2, rim: true },
   // the legacy g: the grey-green flesh under it
@@ -132,7 +132,7 @@ function armSpec(s: -1 | 1): Parameters<typeof armParts>[2] {
   };
 }
 
-const O = { neck: 0.07, arm: 0.08, leg: 0.1 };
+const O = { neck: 0.07, arm: 0.09, leg: 0.1, armLen: 0.4 };
 
 export const HORROR: Rig = {
   key: "m",

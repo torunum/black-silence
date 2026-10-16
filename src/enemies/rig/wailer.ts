@@ -39,7 +39,7 @@ export const WAILER_PALETTE = enemyPalette({
 /** Its head is nearly twice a head: the sprite is a face and a scream. */
 const HK = 2.5;
 /** The gape: an oval from the upper teeth to the lower jaw. */
-const MOUTH: Array<[number, number]> = Array.from({ length: 12 }, (_, i) => [Math.cos((i / 12) * Math.PI * 2) * 0.1, -0.03 + Math.sin((i / 12) * Math.PI * 2) * 0.088]);
+const MOUTH: Array<[number, number]> = Array.from({ length: 12 }, (_, i) => [Math.cos((i / 12) * Math.PI * 2) * 0.115, -0.03 + Math.sin((i / 12) * Math.PI * 2) * 0.1]);
 const part = (joint: string, group: PartGroup, draw: (c: Ctx) => void): RigPart => ({ joint, group, draw });
 const veins: TexFn = (x, y, z) => (Math.sin(x * 70 + y * 55 + Math.sin(z * 30) * 2) > 0.9 ? -1.2 : Math.sin(x * 40 - z * 60) > 0.96 ? 0.8 : 0);
 
@@ -73,9 +73,8 @@ const parts: RigPart[] = [
   part("pelvis", "body", (c) => {
     c.b.cbox(-0.16, -0.09, -0.09, 0.16, 0.07, 0.08, 0.02, SKIN);
     c.b.cbox(-0.19, -0.05, -0.12, 0.19, 0.05, 0.1, 0.02, SHROUD);                              // the sash it was tied with
-    rags(c.b, -0.05, 0.38, 0.5, c.x("rag"), 5);
   }),
-  part("pelvis", "legs", (c) => rags(c.b, -0.07, 0.34, 0.8, c.x("rag") * 0.6 + 0.1, 4)),
+  part("pelvis", "legs", (c) => { rags(c.b, -0.05, 0.38, 0.5, c.x("rag"), 5); rags(c.b, -0.07, 0.34, 0.8, c.x("rag") * 0.6 + 0.1, 4); }),   // the skirt of the shroud goes with the legs it hangs over
   part("spine", "body", (c) => {
     c.b.cbox(-0.15, 0, -0.07, 0.15, 0.3, 0.07, 0.025, SKIN, { tex: veins });
     for (let i = 0; i < 4; i++) c.b.box(-0.12, 0.06 + i * 0.06, -0.076, 0.12, 0.07 + i * 0.06, -0.068, BONE2);   // ribs under the skin
@@ -137,7 +136,7 @@ const parts: RigPart[] = [
   })),
 ];
 
-const O = { neck: 0.07, arm: 0.065, leg: 0.085 };
+const O = { neck: 0.09, arm: 0.07, leg: 0.1, neckTop: 0.3, legLen: 0.3, armLen: 0.2 };
 
 export const WAILER: Rig = {
   key: "s",

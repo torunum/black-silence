@@ -125,6 +125,20 @@ describe("it shows every enemy, the old art and the new side by side", () => {
   });
 });
 
+describe("the horde is redrawn: every grunt shows the old art and the new, and plays all it can", () => {
+  it.each(["z", "t", "f", "m", "s", "g", "w"])("%s: two pictures, 'redrawn', walk/attack/pain/death and each part off play the rig's frames", (key) => {
+    const card = root.querySelector<HTMLElement>(`.card[data-key="${key}"]`)!;
+    expect(card.querySelectorAll("figure canvas").length).toBe(2);
+    expect(card.querySelector(".badge")!.textContent).toBe("redrawn");
+    const headless = key === "g" || key === "w";   // no head row in their legacy art: nothing to behead, so no button to press
+    for (const b of card.querySelectorAll<HTMLButtonElement>("button.play")) expect(b.disabled, `${key} ${b.dataset.clip}`).toBe(headless && b.dataset.clip === "head");
+    const frames = new Set<HTMLCanvasElement | null>();
+    for (const clip of ["walk", "attack", "pain", "death", "lArm", "rArm", "legs"] as const) { api.play(key, clip); frames.add(api.frameOf(key, "new", 1)); }
+    expect(frames.size, "each clip shows frames of its own").toBe(7);
+    api.play(key, "walk");
+  });
+});
+
 describe("its buttons play things", () => {
   it("a press makes the row play that clip, and marks the button", () => {
     const card = root.querySelector<HTMLElement>('.card[data-key="z"]')!;

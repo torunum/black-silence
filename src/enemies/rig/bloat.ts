@@ -120,7 +120,7 @@ const parts: RigPart[] = [
   })),
 ];
 
-const O = { neck: 0.1, arm: 0.1, leg: 0.11 };
+const O = { neck: 0.1, arm: 0.1, leg: 0.14, neckTop: 0.3, legLen: 0.34, armLen: 0.3 };
 
 export const BLOAT: Rig = {
   key: "t",

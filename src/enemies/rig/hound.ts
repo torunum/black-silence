@@ -137,7 +137,7 @@ function paw(c: Ctx): void {
 const stumps: Stump[] = [
   { joint: "neck", group: "head", draw: (c) => { limb(c.b, 0, 0, 0.14, 0.36, 0.1, 0.082, E.MEAT, 7, { tex: meatTex }); limb(c.b, 0, 0, 0.2, 0.42, 0.02, 0.014, E.BONE, 5); c.b.box(-0.05, 0.3, -0.04, -0.02, 0.38, -0.01, E.SINEW); c.b.box(0.02, 0.3, -0.03, 0.05, 0.37, 0.0, E.ORGAN); } },
   ...(["L", "R"] as const).map((s): Stump => ({ joint: "shoulder" + s, group: s === "L" ? "lArm" : "rArm", draw: (c) => {
-    limb(c.b, 0, 0, 0.01, -0.12, 0.075, 0.06, E.MEAT, 7, { tex: meatTex }); limb(c.b, 0.005, 0, -0.02, -0.2, 0.018, 0.013, E.BONE, 5); c.b.box(-0.04, -0.15, -0.06, -0.012, -0.1, -0.03, E.SINEW);
+    limb(c.b, 0, 0, 0.01, -0.34, 0.085, 0.065, E.MEAT, 7, { tex: meatTex }); limb(c.b, 0.005, 0, -0.02, -0.42, 0.018, 0.013, E.BONE, 5); c.b.box(-0.04, -0.3, -0.06, -0.012, -0.22, -0.03, E.SINEW); c.b.ball(s === "L" ? -0.06 : 0.06, -0.26, 0, 0.07, E.MEAT, 6);
   } })),
   ...(["L", "R"] as const).map((s): Stump => ({ joint: "hip" + s, group: "legs", draw: (c) => {
     limb(c.b, 0, 0, 0, -0.14, 0.1, 0.075, E.MEAT, 7, { tex: meatTex }); limb(c.b, 0, 0, -0.03, -0.22, 0.02, 0.015, E.BONE, 5); c.b.box(0.02, -0.16, -0.05, 0.05, -0.1, -0.02, E.SINEW);
@@ -156,7 +156,7 @@ const partSpecs: Record<"head" | "lArm" | "rArm" | "legs", PartSpec> = {
 export const HOUND: Rig = {
   key: "g",
   palette: HOUND_PALETTE,
-  frame: { w: 91, h: 58, worldH: 1.22, floor: 0.96, yaw: 0.95, pitch: 0.1, shift: 0.0 },
+  frame: { w: 91, h: 58, worldH: 1.22, floor: 0.96, yaw: 0.85, pitch: 0.1, shift: 0.0 },
   crawlH: 5 / 7,
   joints, parts, stumps,
   poses: HOUND_POSES,
