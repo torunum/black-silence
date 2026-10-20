@@ -1,4 +1,5 @@
 import type { LevelPlan, Room } from "../authoring/Plan";
+import { dressMonastery } from "./dressMonastery";
 
 /** The monastery's rooms, by name (`./monastery.ts` builds them). */
 export interface MonasteryRooms {
@@ -98,8 +99,9 @@ export function populateMonastery(lv: LevelPlan, r: MonasteryRooms): void {
     [60, 37], [41, 14], ossuary.at(0, 0), [13, 7]);   // thirteen: the budget (tests/world/lightBudget.test.ts) with the windows
   lv.light("l", cell.at(6, 0), gchapel.at(2, 0), cold.at(0, 0), ashes.at(2, 0), reading.at(2, 0), ossuary.at(17, 7), [13, 13], [19, 13]);
 
-  // ---- the blockout's dressing: the theme's clutter along the walls (the hand-placed pass comes after the play is settled)
-  lv.clutter({ density: 0.35, seed: 9 });
+  // ---- the dressing: each region its own vocabulary (./dressMonastery.ts), then the theme's clutter thinly along what is left
+  lv.dress((d) => dressMonastery(d));
+  lv.clutter({ density: 0.15, seed: 9 });
 
   // ---- the shrines: one at each turn of the way
   lv.checkpoint([79, 62], { side: "n" });     // the crypt hall, on the way up

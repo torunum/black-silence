@@ -4,6 +4,7 @@ import { renderState } from "../render/Renderer";
 import { el } from "../ui/dom";
 import { audioInit } from "../audio/AudioEngine";
 import { loadSamples } from "../audio/Samples";
+import { devHook } from "./DevHook";
 import { paintPickups } from "../render/PickupArt";
 import { buildTextures } from "../render/ProcTextures";
 import { buildBandTextures } from "../render/BandTextures";
@@ -46,5 +47,6 @@ export function startGame(idx: number){
   audioInit();loadSamples();
   buildTextures();buildBandTextures();buildDressTextures();buildHellTextures();buildDoorTextures();buildSprites();buildItemTex();paintPickups();buildPiano();
   loadLevel(idx||0);
+  devHook();
   S.t0=performance.now();
   renderState.renderer.domElement.requestPointerLock();}

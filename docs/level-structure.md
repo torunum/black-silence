@@ -31,7 +31,7 @@ same code as hard validation and fails if this file is out of date.
 | 6 · THE FACTORY | 619 | 44 | optional | 8 | 9 | 3 | 3 | 1 | 1 | 0 | 1 / 1 / 10 | 1 (5) | 91%, 84% | 20 (1171 + 4150 boss hp) | 1 | wall |
 | 7 · THE BONE CATHEDRAL | 998 | 112 | required, 24 steps off the way | 11 | 9 | 1 | 3 | 2 | 19 | 28 | 1 / 1 / 5 | 2 (6, 4) | 15% forced, 44% forced, 83% forced | 33 (1360 + 3100 boss hp) | 2 | wall |
 | 8 · THE WOMB | 621 | 32 | optional | 7 | 8 | 3 | 3 | 1 | 1 | 0 | 1 / 1 / 9 | 1 (4) | 53%, 97% | 26 (1373 + 4550 boss hp) | 2 | n/a |
-| 9 · THE ASH BELL MONASTERY | 4725 | 347 | required, 122 steps off the way | 26 | 30 | 4 | 5 | 9 | 41 | 109 | 1 / 1 / 28 | 6 (4, 5, 3, 3, 3, 3) | 5%, 16%, 29% forced, 57% forced, 66% forced, 85% forced, 96% | 115 (5105 + 1500 boss hp) | 3 | wall |
+| 9 · THE ASH BELL MONASTERY | 4741 | 347 | required, 122 steps off the way | 26 | 30 | 4 | 5 | 9 | 41 | 109 | 1 / 1 / 28 | 6 (4, 5, 3, 3, 3, 3) | 5%, 16%, 29% forced, 57% forced, 66% forced, 85% forced, 96% | 115 (5105 + 1500 boss hp) | 3 | wall |
 
 The prologue is one open cavern (hell) and one yard (the zones of `prologue.ts`), so "rooms" says little there. Levels 4-6 share a critical path of exactly 44: the same building with different wallpaper
 (`docs/level-density.md`). Levels 3-7 have a key and a locked door but no key on the way: the door guards a side chamber, so there is no key hunt.
@@ -158,18 +158,18 @@ Regions with enemies, in reading order. *ratio* is ammunition-worth over hit poi
 | x 82-96, z 4-18 | room | 225 | 6 | 270 | 0 | 9197 | 450 | 50 | 34.06 |
 | x 6-24, z 6-26 | room | 358 | 5 | 160 | 1500 | 11960 | 675 | 100 | 7.20 |
 | x 66-90, z 25-40 | room | 400 | 7 | 320 | 0 | 8661 | 375 | 50 | 27.07 |
-| x 34-73, z 28-82 | room | 1278 | 19 | 820 | 0 | 3810 | 200 | 0 | 4.65 |
-| x 18-26, z 30-36 | room | 63 | 3 | 145 | 0 | 6879 | 250 | 0 | 47.44 |
+| x 34-73, z 28-82 | room | 1294 | 19 | 820 | 0 | 3810 | 200 | 0 | 4.65 |
+| x 18-26, z 30-36 | room | 63 | 3 | 145 | 0 | 7527 | 325 | 0 | 51.91 |
 | x 28-36, z 30-36 | room | 63 | 1 | 50 | 0 | 5430 | 225 | 0 | 108.60 |
 | x 12-22, z 38-46 | room | 99 | 4 | 185 | 0 | 5826 | 250 | 50 | 31.49 |
-| x 24-36, z 39-46 | room | 104 | 4 | 190 | 0 | 4242 | 175 | 0 | 22.33 |
+| x 24-36, z 39-46 | room | 104 | 4 | 190 | 0 | 4242 | 200 | 0 | 22.33 |
 | x 64-66, z 43-44 | passage | 5 | 2 | 105 | 0 | 3720 | 175 | 0 | 35.43 |
 | x 68-86, z 44-58 | room | 271 | 5 | 190 | 0 | 4026 | 225 | 0 | 21.19 |
-| x 88-96, z 44-58 | room | 129 | 6 | 270 | 0 | 6348 | 275 | 0 | 23.51 |
+| x 88-96, z 44-58 | room | 129 | 6 | 270 | 0 | 6042 | 275 | 0 | 22.38 |
 | x 10-34, z 50-66 | room | 341 | 10 | 485 | 0 | 4476 | 225 | 0 | 9.23 |
 | x 64-66, z 53-54 | passage | 5 | 2 | 100 | 0 | 3198 | 150 | 0 | 31.98 |
 | x 42-43, z 58-60 | passage | 5 | 2 | 85 | 0 | 3198 | 100 | 0 | 37.62 |
-| x 58-59, z 58-60 | passage | 5 | 2 | 60 | 0 | 3198 | 100 | 0 | 53.30 |
+| x 58-59, z 58-60 | passage | 5 | 2 | 60 | 0 | 2676 | 100 | 0 | 44.60 |
 | x 76-90, z 62-70 | room | 123 | 3 | 130 | 0 | 1326 | 25 | 0 | 10.20 |
 | x 13-22, z 68-74 | room | 70 | 4 | 195 | 0 | 4161 | 175 | 0 | 21.34 |
 | x 24-32, z 69-81 | room | 114 | 5 | 225 | 0 | 3720 | 175 | 0 | 16.53 |

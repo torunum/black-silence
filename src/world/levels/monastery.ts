@@ -63,7 +63,7 @@ export function buildMonastery(): BuiltLevel {
   const tomb = lv.room("sealed tomb", { x: 57, z: 77, w: 2, h: 2, floor: G });
   lv.window(58, 76);                                                            // SECRET 2: the hoard seen through the bars...
   lv.door(59, 78, "secret");                                                    // ...and the way in, round the back
-  for (const [x, z] of [[45, 70], [48, 70], [51, 70], [54, 70], [57, 70], [60, 70], [45, 74], [49, 74], [53, 74], [61, 74], [65, 76], [62, 80], [54, 81], [43, 77], [40, 80], [44, 81]] as const) lv.put("I", x, z);   // gravestones: the sight broken
+  for (const [x, z] of [[45, 70], [48, 70], [51, 70], [54, 70], [57, 70], [60, 70], [45, 74], [49, 74], [53, 74], [61, 74], [65, 76], [62, 80], [54, 81], [43, 77], [40, 80], [44, 81]] as const) lv.dress((d) => { d.tryPlace("tombfree", x, z, { r: (x + z) % 2 ? Math.PI / 2 : 0 }); });   // table tombs: the sight and the way broken
   lv.corridor([76, 65], [73, 68], { door: "plain" });                            // up out of the crypt into the graveyard's north-east corner (graded)
   lv.carve(50, 58, 52, 67, G);                                                   // the gatehouse: north into the courtyard
 

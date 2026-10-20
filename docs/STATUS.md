@@ -26,6 +26,13 @@ off the ossuary, and a pump room that is a second way into the rite chapel. The 
 measures, 347 steps), with 115 enemies in the level and about 95 on the way: a first run estimated at 20-30 minutes, explorers more.
 Estimated, not played: the owner's runs are the measure.
 
+**Dressed** (`dressMonastery.ts`): each region its own vocabulary from the kit whatever the level's theme — sarcophagi, urns and niches
+in the crypt; table tombs (cover that breaks sight and way), headstones, crosses, open graves and mounds in the graveyard; slabs, racks
+and chains in the morgue; machines, drums, hooks and pipes in the crematorium; lecterns, banners, candelabra and broken glass in the
+library; bone stacks and skull piles under the courtyard; pipes, grates and sludge in the cistern; the altar and the cult's banners in the
+rite chapel. All of it `may` (a piece the kit refuses is skipped), none of it a light. `#dev` in the address gives a script
+`window.__bs.tp(x, z, yaw)` and `__bs.calm()` (`src/core/DevHook.ts`), for walking a level's screenshots.
+
 ## Owner's round, 2026-10-20 (evening): the pickups redrawn, the reloads brought into view
 
 "can silah mermisi vs simgelerini daha güzel yapalım ... pompalı mermisi vs simgesi hepsinin farklı olsun" — **every pickup is its own
