@@ -11,7 +11,7 @@ import type { BuiltLevel } from "../../src/world/LevelBuilder";
 /**
  * EVERY LEVEL, THROUGH THE STRUCTURE SUITE (deeper-levels plan, Task 2; `src/world/structure/`). Two things:
  *
- *  1. **Hard validation** of every level, 0-7: reachability of the exit through the required keys, key before door and no
+ *  1. **Hard validation** of every level, 0-8: reachability of the exit through the required keys, key before door and no
  *     softlock, every enemy, pickup, secret and checkpoint reachable, secrets behind secret doors and rewarding, the exit door
  *     sited. The old levels have a few failures they always had (`LEGACY_PROBLEMS`); they are pinned exactly, so a level that
  *     loses one must lose it from the list, and a new one is a red test.
@@ -56,20 +56,20 @@ describe("the levels as built, pinned where they were measured", () => {
   });
 
   it("has the exit doors ExitDoor.ts builds: a wall, but for level 1's grid edge and level 3's gallery-backed nave; the finale has none", () => {
-    expectOld({ 0: "wall", 1: "edge", 2: "wall", 3: "freestanding", 4: "wall", 5: "wall", 6: "wall", 7: "n/a" }, (s) => s.exitSite);
+    expectOld({ 0: "wall", 1: "edge", 2: "wall", 3: "freestanding", 4: "wall", 5: "wall", 6: "wall", 8: "n/a" }, (s) => s.exitSite);
   });
 
   it("opens the way with the right goal: a pad, a boss then the exit cell, or the finale", () => {
-    expectOld({ 0: "pad", 1: "pad", 2: "boss", 3: "boss", 4: "boss", 5: "boss", 6: "boss", 7: "finale" }, (s) => s.exit.kind);
+    expectOld({ 0: "pad", 1: "pad", 2: "boss", 3: "boss", 4: "boss", 5: "boss", 6: "boss", 8: "finale" }, (s) => s.exit.kind);
     expectOld({ 2: "Q", 3: "Z", 4: "N", 5: "H", 6: "V" }, (s) => s.exit.boss);
   });
 
   it("needs a key on the way on level 2 only: the others' locked doors guard side rooms (level 1's key opens nothing: KNOWN-1)", () => {
-    expectOld({ 0: false, 1: false, 2: true, 3: false, 4: false, 5: false, 6: false, 7: false }, (s) => s.critical.keyRequired);
+    expectOld({ 0: false, 1: false, 2: true, 3: false, 4: false, 5: false, 6: false, 8: false }, (s) => s.critical.keyRequired);
   });
 
   it("has one secret with at least three pickups on every level but the prologue, and two shrines on levels 1-7", () => {
-    expectOld({ 0: 0, 1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1, 7: 1 }, (s) => s.secrets);
+    expectOld({ 0: 0, 1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1, 8: 1 }, (s) => s.secrets);
     for (const { index, s } of old) { if (index) expect(s.secretRewards.every((r) => r >= 3), `level ${index}`).toBe(true); expect(s.checkpoints.length, `level ${index}`).toBe(index ? 2 : 0); }
   });
 
@@ -84,7 +84,7 @@ describe("REBUILT: the levels held to the targets", () => {
   it("names real levels, once each, in order, with no waiver", () => {
     expect([...REBUILT]).toEqual([...new Set(REBUILT)].sort((a, b) => a - b));
     for (const i of REBUILT) {
-      expect(i >= 1 && i <= 7, `level ${i}`).toBe(true);
+      expect(i >= 1 && i <= 8, `level ${i}`).toBe(true);
       expect(LEGACY_PROBLEMS[i], `level ${i} is rebuilt: it has no waiver`).toBeUndefined();
     }
   });
@@ -161,10 +161,10 @@ describe("the targets themselves", () => {
     expect(meet({ ...proof, critical: { ...proof.critical, length: 132 } })).toEqual([]);
   });
 
-  it("scales the path with the level being rebuilt: level 2's old 66 wants 119-198, level 7's old 32 wants 80-96", () => {
+  it("scales the path with the level being rebuilt: level 2's old 66 wants 119-198, level 8's old 32 (the womb) wants 80-96", () => {
     expect(checkTargets(2, { ...proof, critical: { ...proof.critical, length: 118 } }).join()).toMatch(/118 steps, wanted 119-198/);
     expect(checkTargets(2, { ...proof, critical: { ...proof.critical, length: 119 } })).toEqual([]);
-    expect(checkTargets(7, { ...proof, critical: { ...proof.critical, length: 97 } }).join()).toMatch(/wanted 80-96/);
+    expect(checkTargets(8, { ...proof, critical: { ...proof.critical, length: 97 } }).join()).toMatch(/wanted 80-96/);
   });
 
   it("are the numbers the plan's Task 3 section writes down", () => {

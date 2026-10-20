@@ -94,17 +94,17 @@ describe("the levels place them on the way through", () => {
 
   it("gives each themed level one or two markers, of its own theme's kind, and the prologue (a grave, a pit and a bridge: no kit theme) none", () => {
     expect(LEVELS[0].build().decor!.filter((d) => isCheckpointKind(d.k))).toEqual([]);
-    for (let i = 1; i <= 7; i++) {
+    for (let i = 1; i <= 8; i++) {
       const L = LEVELS[i].build(), here = L.decor!.filter((d) => isCheckpointKind(d.k));
       expect(here.length, `level ${i}`).toBeGreaterThanOrEqual(1);
-      expect(here.length, `level ${i}`).toBeLessThanOrEqual(i === 2 ? 3 : 2);   // the church, rebuilt, has three: the grand doors, the head of the way down, the way to the chancel
+      expect(here.length, `level ${i}`).toBeLessThanOrEqual(i === 2 || i === 7 ? 3 : 2);   // the church, rebuilt, has three: the grand doors, the head of the way down, the way to the chancel; the bone cathedral three: the stair top, the bone passage, the vestry stair
       for (const d of here) expect(markers(themeOf(LEVELS[i].sub)!), `level ${i}`).toContain(d.k);
       expect(validateDecor(L), `level ${i}`).toEqual([]);
     }
   });
 
   it("stands each within two cells of a shortest route from the spawn to the end, so the player passes it", () => {
-    for (let i = 1; i <= 7; i++) {
+    for (let i = 1; i <= 8; i++) {
       const path = route(i), cells = [...path].map((k) => k.split(",").map(Number));
       for (const d of LEVELS[i].build().decor!.filter((s) => isCheckpointKind(s.k))) {
         const c = decorCell(d), near = Math.min(...cells.map(([x, z]) => Math.hypot(x - c.x, z - c.z)));

@@ -36,6 +36,7 @@ import { updateListener } from "../audio/Listener";
 import { weaponRuntime } from "../weapons/WeaponRuntime";
 import { player } from "../player/PlayerState";
 import { hud } from "../ui/Hud";
+import { minimapTick } from "../ui/Minimap";
 import { animCues } from "./AnimCues";
 
 /**
@@ -143,6 +144,7 @@ function loop(t: number){
         cueHurt:animCues.hurt,cueHurtAmt:animCues.hurtAmt,cuePickup:animCues.pickup,cueDryFire:animCues.dryFire,cueInput:animCues.input,paused,hidden:openingHidesWeapon()||transitionHidesHands(),
       },WEAPONS));
     hud();
+    minimapTick(dt,t,game.started&&!S.dead&&!S.won&&!paused&&!openingHidesWeapon());   // the corner map and the automap (src/ui/Minimap.ts)
     withKickLean(renderState.camera,kick,()=>withViewPunch(renderState.camera,()=>renderState.renderer.render(renderState.scene,renderState.camera)));}}
 
 /** Kicks off the frame loop. Called once, from `main.ts`, at boot. */

@@ -23,13 +23,20 @@ import { drawLeg, legPose } from "./kick";
  * of the screen's height under the crosshair (CLEAR_BELOW).
  */
 export const FOCAL = 170;
-export const AIM_DX = 14, AIM_DY = 38;
+export const AIM_DX = 0, AIM_DY = 40;
+/**
+ * The weapons' own lens, longer than the leg's FOCAL (owner, 2026-10-20: the weapons stood crooked, "daha Doom Blood gibi").
+ * Every gun is now held straight ahead, centred under the crosshair and seen from behind and a little above, as Doom's and
+ * Blood's are: no cant, no swing across the screen. A long lens keeps a gun held that way big and flat instead of a stub
+ * foreshortened to nothing.
+ */
+export const WEAPON_FOCAL = 400;
 /** How far below the crosshair, as a fraction of screen height, the weapon's topmost pixel must stay. */
-export const CLEAR_BELOW = 0.15;
+export const CLEAR_BELOW = 0.06;
 
 export function renderWeapon(r: Raster, art: WeaponArt | null, pose: Pose, cx: number, cy: number): Record<string, [number, number]> {
   r.clear();
-  const b = new Builder(r, FOCAL, cx + AIM_DX, cy + AIM_DY);
+  const b = new Builder(r, WEAPON_FOCAL, cx + AIM_DX, cy + AIM_DY);
   if (art) { // null: the scoped-in sniper, hidden, while a kick still shows the leg
     const h = art.hold;
     b.translate(h.x + pose.x, h.y + pose.y, h.z + pose.z);

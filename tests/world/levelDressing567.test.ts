@@ -38,9 +38,9 @@ const structural = (c: string): boolean => "#WI".includes(c);
 
 /** [level, the big room where the mid-level fight is, the boss hall]. */
 const ARENAS: ReadonlyArray<readonly [number, (x: number, z: number) => boolean, (x: number, z: number) => boolean]> = [
-  [5, BASIN, HALL5], [6, FOUNDRY, HALL6], [7, VENTRICLE, HALL7],
+  [5, BASIN, HALL5], [6, FOUNDRY, HALL6], [8, VENTRICLE, HALL7],
 ];
-const LEVELS_567 = [5, 6, 7] as const;
+const LEVELS_567 = [5, 6, 8] as const;   // the sewers, the factory and the womb (8 since the bone cathedral went in at 7)
 
 describe("levels 5-7 are dressed by their own builders", () => {
   it("each lists a couple of hundred pieces, every one a piece of the kit, and builds the same list every time", () => {
@@ -66,13 +66,13 @@ describe("levels 5-7 are dressed by their own builders", () => {
     const want: Record<number, Record<string, number>> = {
       5: { tank: 5, pump: 6, lantern: 4, cage: 6, outfall: 5, grate: 8, sludge: 8, pipe: 5 },
       6: { press: 3, furnace: 1, worklamp: 3, machine: 8, conveyor: 4, cratepile: 2, drum: 1, hook: 6, gauge: 3 },
-      7: { tumor: 6, growth: 10, glowbulb: 4, eye: 6, pod: 4, drape: 6, sinew: 4, vein: 8 },
+      8: { tumor: 6, growth: 10, glowbulb: 4, eye: 6, pod: 4, drape: 6, sinew: 4, vein: 8 },
     };
     for (const i of LEVELS_567) for (const [k, n] of Object.entries(want[i])) expect(kinds(i)[k] || 0, `level ${i} lacks ${k}`).toBeGreaterThanOrEqual(n);
   });
 
   it("puts solid masses in each, as many as the stuck check leaves (enemies have no pathfinding: a mass an enemy walks into stays a wall to it)", () => {
-    const want: Record<number, number> = { 5: 12, 6: 25, 7: 6 };
+    const want: Record<number, number> = { 5: 12, 6: 25, 8: 6 };
     for (const i of LEVELS_567) expect(built(i).decor!.filter(isMass).length, `level ${i}`).toBeGreaterThanOrEqual(want[i]);
   });
 });

@@ -6,7 +6,7 @@ import type { Structure } from "./analyse";
  * `tests/world/structureLevels.test.ts` then holds that level to `checkTargets` as well as to the hard validation every
  * level passes. Level 1 (Task 3) is the first.
  */
-export const REBUILT: readonly number[] = [1, 2];
+export const REBUILT: readonly number[] = [1, 2, 7];
 
 /**
  * The critical path of levels 1-7 as built before any rebuild, in steps (`scripts/level-structure.ts`, 2026-10-05). "About twice
@@ -14,7 +14,9 @@ export const REBUILT: readonly number[] = [1, 2];
  * `tests/world/structureLevels.test.ts` pins each level that is not in `REBUILT` to its number, so a number cannot drift while
  * the level is as it was; a level that is rebuilt leaves the pin and takes the 1.8-3x window of this number instead.
  */
-export const OLD_CRITICAL: Readonly<Record<number, number>> = { 1: 42, 2: 66, 3: 44, 4: 44, 5: 44, 6: 44, 7: 32 };
+export const OLD_CRITICAL: Readonly<Record<number, number>> = { 1: 42, 2: 66, 3: 44, 4: 44, 5: 44, 6: 44, 7: 44, 8: 32 };
+// 7 is the bone cathedral (2026-10-20), new, with no old level of its own: it is measured against the lattice levels' 44, as if it had been one
+// of them, and is written to the targets from the start (`REBUILT`). The womb, which was 7, is 8 since the cathedral went in before it.
 
 /**
  * Hard failures the levels as they were built already have, by level, each recorded and argued so a rebuilt level starts clean

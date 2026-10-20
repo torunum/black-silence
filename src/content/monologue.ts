@@ -129,7 +129,7 @@ export const MONOLOGUE: Record<string, string[]> = {
  * badly (C or D) — picked by the grade, never by dice, so the same run shows
  * the same line. A separate export from `MONOLOGUE` on purpose:
  * `tests/fidelity.test.ts` holds that table's key set equal to the frozen
- * reference's. The womb (7) has none; its end is the win screen.
+ * reference's. The womb (8) has none; its end is the win screen.
  */
 export const CHAPTER_LINES: Readonly<Record<number, readonly [string, string]>> = {
   0: ["Out of the pit, through a door, and not one soul held it for me. Onward.",
@@ -146,4 +146,6 @@ export const CHAPTER_LINES: Readonly<Record<number, readonly [string, string]>> 
       "Something grabbed my boot down there. I kept the boot. I did not keep the dignity."],
   6: ["Whatever they were making in there, I just stopped the line. Management can write me a letter.",
       "The machines ran the whole time and never once looked up. Rude."],
+  7: ["A whole cathedral made of people. Lovely acoustics. The stairs down are warm, which is never good news.",
+      "The Sovereign got back up twice. I got back up more. Somebody keep count, I'm going downstairs."],
 };

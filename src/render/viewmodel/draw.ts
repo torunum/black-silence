@@ -218,8 +218,11 @@ export function drawViewmodel(dt: number, tNow: number, v: ViewmodelFrame, weapo
   const painted=paint(scoped?-1:v.cur,pose,cy);
   // The ceiling: screen-space motion (stride, lag, take-off, breathing) may lower the weapon freely,
   // but may lift it only as far as leaves its top pixel CLEAR_BELOW under the crosshair.
+  // The line: since the weapons are held straight ahead (owner, 2026-10-20) a rig motion — an equip swing, a reload's
+  // tilt, a recoil — can carry the muzzle up past it too, so the ceiling holds the finished image under the line
+  // whatever lifted it: screen motion is clamped, and a rig pose that rose is lowered until its top sits on the line.
   let sy=pose.sy;
-  if(painted&&sy<0)sy=Math.max(sy,Math.min(0,VH/2+CLEAR_BELOW*VH-(top0+vm.topRow*s)));
+  if(painted)sy=Math.max(sy,VH/2+CLEAR_BELOW*VH-(top0+vm.topRow*s));
   const left=(VW-RW*s)/2+pose.sx, top=top0+sy;
   if(painted){
     fg.save();

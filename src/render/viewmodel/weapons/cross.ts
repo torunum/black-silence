@@ -39,7 +39,7 @@ function pinnacle(b: Builder, x: number, y: number, z: number): void {
 
 export const crossLauncher: WeaponArt = {
   name: "HOLY CROSS LAUNCHER",
-  hold: { x: 0.125, y: -0.158, z: 0.33, pitch: -0.03, yaw: -0.2, roll: 0.04 },
+  hold: { x: 0.03, y: -0.0988, z: 0.26, pitch: -0.2, yaw: 0, roll: 0 },  // straight ahead, centred: Doom/Blood (owner, 2026-10-20)
   kick: { back: 0.07, lift: 0.05 },
   action: (p) => p,
   draw(b: Builder, pose: Pose) {
@@ -84,7 +84,7 @@ export const crossLauncher: WeaponArt = {
       const up = ramp(a, ...CROSS.rise);
       b.push(); b.translate(0, 0.02 + 0.07 * up, 0.12); crossBolt(b); b.pop();
     }
-    b.anchor("muzzle", 0, 0.03, 0.26);
+    b.anchor("muzzle", 0, 0.142, 0.235);   // where the cross leaves: at its crossing, over the mouth (seen from behind, the mouth is under the housing)
 
     // wooden grip, guard; left hand cradles the front
     b.ext([[-0.03, 0.0], [0.004, 0.0], [-0.012, -0.1], [-0.042, -0.104], [-0.05, -0.02]], -0.016, 0.016, MAT.WOOD);

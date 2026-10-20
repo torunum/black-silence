@@ -7,9 +7,10 @@ import { buildLevel4 } from "./level4";
 import { buildLevel5 } from "./level5";
 import { buildLevel6 } from "./level6";
 import { buildLevel7 } from "./level7";
+import { buildCathedral } from "./cathedral";
 
 /**
- * The eight level tables. Grid characters (also used by LevelBuilder.ts's
+ * The nine level tables (the bone cathedral, index 7, was added 2026-10-20 between the factory and the womb). Grid characters (also used by LevelBuilder.ts's
  * carving helpers):
  *   chars: # wall · I pillar · W window-wall · . floor
  *   + door · D locked · S secret
@@ -54,6 +55,8 @@ export const LEVELS: LevelDef[] = [
   fog:0x0a0e0a,fogD:.055,amb:0x36443a,ambI:.44,floor:"church",sub:"sewers"},
  {name:"LEVEL 6 — THE FACTORY",build:buildLevel6,
   fog:0x0c0a08,fogD:.05,amb:0x4a4038,ambI:.5,floor:"dungeon",sub:"factory"},
- {name:"LEVEL 7 — THE WOMB",build:buildLevel7,
+ {name:"LEVEL 7 — THE BONE CATHEDRAL",build:buildCathedral,   // new (owner, 2026-10-20): ./cathedral.ts
+  fog:0x0e0c0a,fogD:.045,amb:0x5a5046,ambI:.5,floor:"church",sub:"necropolis"},
+ {name:"LEVEL 8 — THE WOMB",build:buildLevel7,
   fog:0x1a0606,fogD:.06,amb:0x6e2a28,ambI:.5,floor:"flesh",sub:"womb",flesh:true},
 ];

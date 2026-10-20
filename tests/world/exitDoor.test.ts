@@ -84,13 +84,14 @@ describe("every level has the doors it should", () => {
 });
 
 describe("each theme has its own door", () => {
-  const EXPECT: DoorStyle[] = ["crypt", "iron", "church", "tomb", "cemetery", "sluice", "freight", "sphincter"];
+  // the bone cathedral (7, new on 2026-10-20) is of the necropolis's stone and shares its tomb door: nine levels, eight styles
+  const EXPECT: DoorStyle[] = ["crypt", "iron", "church", "tomb", "cemetery", "sluice", "freight", "tomb", "sphincter"];
 
-  it("gives the eight levels eight different styles, the crypt door to the prologue and the sphincter to the womb", () => {
+  it("gives the levels eight different styles, the crypt door to the prologue and the sphincter to the womb (the bone cathedral shares the tomb's)", () => {
     // MUTATION TARGET: make styleFor answer one style for every level
     expect(LEVELS.map((l) => styleFor(l))).toEqual(EXPECT);
     expect(new Set(EXPECT).size).toBe(8);
-    expect([...DOOR_STYLES].sort()).toEqual([...EXPECT].sort());
+    expect([...DOOR_STYLES].sort()).toEqual([...new Set(EXPECT)].sort());
   });
 
   it("builds each level's door in its style, and the eight are different buildings, not one with another colour", () => {
@@ -212,16 +213,16 @@ describe("the exit is where it always was", () => {
     expect(EXIT_BOSSES).toBe("QZNHV");
   });
 
-  it("goes by the boss glyphs the grid writes: Q Z N H V on levels 2-6 (a sealed door), and on no other level", () => {
+  it("goes by the boss glyphs the grid writes: Q Z N H V on levels 2-7 (a sealed door), and on no other level", () => {
     for (let i = 0; i <= LAST; i++) {
       const g = LEVELS[i].build().g.flat().join("");
-      expect([...EXIT_BOSSES].some((c) => g.includes(c)), LEVELS[i].name).toBe(i >= 2 && i <= 6);
+      expect([...EXIT_BOSSES].some((c) => g.includes(c)), LEVELS[i].name).toBe(i >= 2 && i <= 7);
     }
   });
 });
 
 describe("a boss level's door is sealed until the boss dies", () => {
-  for (let i = 2; i <= 6; i++) {
+  for (let i = 2; i <= 7; i++) {
     it(`level ${i}: dark, lightless and untouchable at the start, lit with its light when openExit runs`, () => {
       loadLevel(i);
       const d = doors.exit!;

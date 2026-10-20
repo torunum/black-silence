@@ -153,8 +153,18 @@ const ARMOUR_CELLS: Readonly<Record<string, ReadonlyArray<readonly [number, numb
   "LEVEL 4 — THE GRAVEYARD": [[30, 20], [4, 21], [20, 21]],
   "LEVEL 5 — THE SEWERS": [[6, 20], [30, 20], [20, 21]],
   "LEVEL 6 — THE FACTORY": [[26, 2], [6, 20], [19, 20], [30, 22]],
-  "LEVEL 7 — THE WOMB": [[26, 2], [6, 20], [26, 20], [20, 21]],
+  "LEVEL 8 — THE WOMB": [[26, 2], [6, 20], [26, 20], [20, 21]],
 };
+
+/**
+ * The sixth deliberate divergence, and the first level the reference never had: LEVEL 7, THE BONE CATHEDRAL (owner, 2026-10-20, "daha yeni
+ * bölüm eklenmesi"), between the factory and the womb (`src/world/levels/cathedral.ts`). The reference has eight levels and the port nine: the
+ * port's list with the cathedral taken out is the reference's, in order, but for the womb's number in its name (it was 7 and is 8).
+ */
+const NEW_LEVEL = "LEVEL 7 — THE BONE CATHEDRAL";
+/** A port level's name as the reference spells it: the womb moved from 7 to 8 when the cathedral went in. */
+const refName = (name: string): string => (name === "LEVEL 8 — THE WOMB" ? "LEVEL 7 — THE WOMB" : name);
+const PORTED = LEVELS.filter((d) => d.name !== NEW_LEVEL);
 
 /**
  * The third deliberate divergence, and the only whole-level one: the
@@ -210,13 +220,30 @@ function gridDiff(ours: string[][], ref: string[][]): string[] {
 }
 
 describe("LEVELS vs. reference", () => {
-  it("declares the same eight levels, in order, with identical metadata", () => {
-    const meta = (defs: ReadonlyArray<{ build: unknown }>) =>
-      defs.map(({ build, ...rest }) => rest);
-    expect(meta(LEVELS)).toEqual(meta(refLevels));
+  it("declares the same eight levels, in order, with identical metadata, and the new bone cathedral before the womb", () => {
+    const meta = (defs: ReadonlyArray<{ build: unknown; name: string }>) =>
+      defs.map(({ build, name, ...rest }) => ({ name: refName(name), ...rest }));
+    expect(meta(PORTED)).toEqual(meta(refLevels));
+    expect(LEVELS).toHaveLength(refLevels.length + 1);
+    expect(LEVELS.findIndex((d) => d.name === NEW_LEVEL), "the cathedral is level 7, between the factory and the womb").toBe(7);
   });
 
-  it.each(LEVELS.map((def, i) => [def.name, def, refLevels[i]] as const))(
+  it("the bone cathedral is the port's own: built with the toolkit, three floors, the Sovereign and the Guardian, a red key and its gate", () => {
+    const built = LEVELS[7].build();
+    const count = (g: string[][], ch: string): number => g.flat().filter((c) => c === ch).length;
+    expect([built.W, built.H]).toEqual([62, 46]);
+    const heights = new Set(built.hmap!.flat());
+    expect([...heights].filter((h) => [0, 1.2, 2.4].includes(h)).sort()).toEqual([0, 1.2, 2.4]);
+    expect(count(built.g, "Z"), "one Sovereign").toBe(1);
+    expect(count(built.g, "U"), "one Guardian").toBe(1);
+    expect(count(built.g, "K"), "one red key").toBe(1);
+    expect(count(built.g, "D"), "one locked gate").toBe(1);
+    expect(count(built.g, "S"), "two secrets").toBe(2);
+    for (const ch of ["A", "C", "V"]) expect(count(built.g, ch), `no ${ch} (KNOWN-4, KNOWN-11)`).toBe(0);
+    expect(built.zones).toBeUndefined();
+  });
+
+  it.each(PORTED.map((def, i) => [def.name, def, refLevels[i]] as const))(
     "%s builds the reference grid, cell for cell, apart from the armour tiles of levels 3-7; the prologue and levels 1 and 2 are rebuilt and pinned instead",
     (name, def, refDef) => {
       const built = def.build();

@@ -28,7 +28,7 @@ import { REBUILT } from "../../src/world/structure/targets";
 const built = (i: number): BuiltLevel => LEVELS[i].build();
 const baseline = JSON.parse(readFileSync(new URL("../../docs/level-density-baseline.json", import.meta.url), "utf8")) as Baseline;
 const measured = (i: number) => measureLevel(built(i)).lights;
-const LEVELS_567 = [5, 6, 7] as const;
+const LEVELS_567 = [5, 6, 8] as const;   // the sewers, the factory and the womb (8 since the bone cathedral went in at 7)
 
 /** The blocks of the 33x25 lattice (levels 2-7): three columns by three rows of merged rooms. */
 const BLOCKS: Array<[number, number, number, number]> = [];
@@ -43,7 +43,7 @@ describe("the real lights", () => {
     const lamps = (i: number) => lampsOf(built(i).decor).map((l) => l.spec.k).sort();
     expect(lamps(5)).toEqual(["lantern", "lantern", "lantern", "lantern", "lantern"]);
     expect(lamps(6)).toEqual(["furnace", "worklamp", "worklamp", "worklamp"]);
-    expect(lamps(7)).toEqual(["glowbulb", "glowbulb", "glowbulb", "glowbulb"]);
+    expect(lamps(8)).toEqual(["glowbulb", "glowbulb", "glowbulb", "glowbulb"]);
     expect(lamps(4)).toEqual(["gravelamp", "gravelamp", "gravelamp"]);
     for (const i of [4, ...LEVELS_567]) for (const l of lampsOf(built(i).decor)) { expect(l.y).toBeGreaterThan(.5); expect(l.y).toBeLessThan(3.4); }
   });
@@ -109,13 +109,13 @@ describe("the glow", () => {
   });
 
   it("is on every level: braziers in the dungeon's halls, candle stands in the church and the tomb, dim lamps in the yard, sewers, factory and womb", () => {
-    const want: Record<number, string> = { 1: "brazier", 2: "votive", 3: "votive", 4: "gravelampDim", 5: "lanternDim", 6: "worklampDim", 7: "bulbDim" };
-    const min: Record<number, number> = { 1: 10, 2: 6, 3: 8, 4: 6, 5: 6, 6: 6, 7: 6 };
-    for (let i = 1; i <= 7; i++) expect(built(i).decor!.filter((d) => d.k === want[i]).length, `level ${i}: ${want[i]}`).toBeGreaterThanOrEqual(min[i]);
+    const want: Record<number, string> = { 1: "brazier", 2: "votive", 3: "votive", 4: "gravelampDim", 5: "lanternDim", 6: "worklampDim", 7: "votive", 8: "bulbDim" };
+    const min: Record<number, number> = { 1: 10, 2: 6, 3: 8, 4: 6, 5: 6, 6: 6, 7: 6, 8: 6 };
+    for (let i = 1; i <= 8; i++) expect(built(i).decor!.filter((d) => d.k === want[i]).length, `level ${i}: ${want[i]}`).toBeGreaterThanOrEqual(min[i]);
   });
 
   it("gives every block the static lights leave three quarters dark a light to be seen by: a real lamp or a glow piece in it", () => {
-    for (let i = 2; i <= 7; i++) {
+    for (let i = 2; i <= 8; i++) {
       if (REBUILT.includes(i)) continue;   // a rebuilt level is not the 33x25 lattice: its halls are tested below
       const L = built(i), bare = { g: L.g, decor: L.decor!.filter((d) => !isLightGiver(d.k)) };
       for (const [x0, x1, z0, z1] of BLOCKS) {

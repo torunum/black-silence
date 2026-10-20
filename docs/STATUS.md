@@ -1,5 +1,30 @@
 # Where this project stands
 
+## Owner's round, 2026-10-20: the X goes, the guns stand straight, a map, a new chapter
+
+Four asks, in the owner's words: remove the X that shows when a shot hits an enemy; the weapon models stand crooked and should be
+more like Doom and Blood; add a new chapter; add a minimap ("mini map önemli. yönümüzü bulamıyoruz").
+
+- **The hit marker is not drawn.** `Overlay2D.ts`'s `fxTick` no longer calls `drawHitMarker`; the marker's state still runs (the
+  hit-stop, the punch and the confirming sound are the feedback). `tests/behavior/hitMarkerOverlay.test.ts` now holds that nothing of
+  it is drawn, idle or after a kill.
+- **The weapons are held straight ahead, centred, seen from behind and a little above** — no cant (`roll`), no swing across the
+  screen (`yaw`), the lens no longer shifted right (`AIM_DX` 0). The guns have their own, longer lens (`rig.ts`'s `WEAPON_FOCAL`
+  400; the leg keeps `FOCAL` 170) so a gun held that way reads big and flat, the way Doom's and Blood's sprites do. The line of fire
+  moved from 15% to 6% of the screen under the crosshair (`CLEAR_BELOW`; Doom's own guns come that close), and `draw.ts`'s ceiling
+  now holds the finished image under it whatever lifted it, rig motion included. The cross launcher's muzzle anchor is the cross
+  itself (it is what flies). Seen from behind, the combat rifle's and the sniper's bolts sit below the frame: their shot reads as
+  the recoil, and `viewmodel.test.ts` exempts those two from the "mechanism moves" check.
+- **The minimap** (`src/ui/Minimap.ts`): a round corner map, top left, that turns with the player (the facing is always up; a red N
+  on the rim), and a full automap, north up, on `M` or held `Tab`. Only what the player has seen is drawn — a fan of rays through
+  the grid every tenth of a second, stopped by walls and closed doors; a secret door is a wall until it opens; the key is marked
+  where it lies, the exit door once seen (green once it opens). Per level, no `Math.random`. `tests/ui/minimap.test.ts`.
+- **LEVEL 7 — THE BONE CATHEDRAL** (`src/world/levels/cathedral.ts`, `dressCathedral.ts`): new, between the factory and the womb,
+  which is now LEVEL 8. Written with `LevelPlan` on the necropolis's theme and in `REBUILT` from the start: 112 steps, a loop, a key
+  hunt (the charnel vault), two secrets, three floors, three shrines (one forced at 44%), the Guardian in the west vault and the
+  Bone Sovereign on its throne. It shares the necropolis's tomb door (nine levels, eight styles). Its `OLD_CRITICAL` is the lattice
+  levels' 44, as if it had been one. Every index-keyed table in the tests moved the womb from 7 to 8.
+
 ## Enemies, redrawn: Task 2 - the horde - 2026-10-16 (branch `enemies`)
 
 Plan: `docs/superpowers/plans/2026-10-13-enemies.md`; the report and the strips are in

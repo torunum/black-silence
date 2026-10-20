@@ -34,7 +34,7 @@ function drum(b: Builder): void {
 
 export const tommyGun: WeaponArt = {
   name: "TOMMY GUN",
-  hold: { x: 0.1, y: -0.07, z: 0.33, pitch: -0.02, yaw: -0.1, roll: 0.26 },
+  hold: { x: 0.03, y: -0.125, z: 0.36, pitch: 0.3, yaw: 0, roll: 0 },  // straight ahead, centred: Doom/Blood (owner, 2026-10-20)
   kick: { back: 0.016, lift: 0.05 },
   action: (p) => hump(p, 0.0, 1.0, 0.45),
   draw(b: Builder, pose: Pose) {

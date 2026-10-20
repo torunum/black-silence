@@ -203,7 +203,7 @@ describe("one scene child a level", () => {
 
   it("wears the level's trim band, flesh level included, and takes the wall's shadow rule", () => {
     expect(SHADOW_POLICY.doorArch).toEqual(SHADOW_POLICY.wall);
-    for (const [i, theme] of [[1, "dungeon"], [2, "church"], [7, "flesh"]] as const) {
+    for (const [i, theme] of [[1, "dungeon"], [2, "church"], [8, "flesh"]] as const) {
       loadLevel(i);
       const m = arches()!;
       expect((m.material as THREE.MeshLambertMaterial).map, `level ${i}`).toBe(BANDTEX[theme]);

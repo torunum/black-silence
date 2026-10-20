@@ -170,7 +170,31 @@
    }
   },
   {
-   "name": "7 · THE WOMB",
+   "name": "7 · THE BONE CATHEDRAL",
+   "walkable": 998,
+   "props": 9,
+   "decor": 0,
+   "pickups": 77,
+   "enemies": 33,
+   "lights": 16,
+   "bare": 207,
+   "longestRun": {
+    "cells": 9,
+    "x0": 16,
+    "z0": 18,
+    "x1": 24,
+    "z1": 18
+   },
+   "emptiest": {
+    "cells": 42,
+    "x0": 16,
+    "z0": 12,
+    "x1": 24,
+    "z1": 20
+   }
+  },
+  {
+   "name": "8 · THE WOMB",
    "walkable": 621,
    "props": 0,
    "decor": 0,

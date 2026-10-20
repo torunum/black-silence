@@ -448,13 +448,13 @@ describe("nothing of the dead run is left running", () => {
   });
 
   it("is also true of a level with a boss and a plate, and of one a long way from the dungeon", () => {
-    for (const lvl of [2, 7]) {
+    for (const lvl of [2, 8]) {
       start(lvl); pass(1);
       dieAndWait(); rise();
       const base = census();
       for (let n = 0; n < 3; n++) { dieAndWait(); rise(); expect(census(), `level ${lvl} death ${n + 1}`).toEqual(base); }
     }
-    expect(LEVELS.length).toBe(8);
+    expect(LEVELS.length).toBe(9);
   });
 });
 

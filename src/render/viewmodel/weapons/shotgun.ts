@@ -31,7 +31,7 @@ function hull(b: Builder, x: number, y: number, z: number): void {
 
 export const sawedOff: WeaponArt = {
   name: "SAWED-OFF SHOTGUN",
-  hold: { x: 0.08, y: -0.132, z: 0.29, pitch: 0.12, yaw: -0.2, roll: 0.14 },
+  hold: { x: 0.03, y: -0.1255, z: 0.36, pitch: 0.25, yaw: 0, roll: 0 },  // straight ahead, centred: Doom/Blood (owner, 2026-10-20)
   kick: { back: 0.08, lift: 0.08 },
   // p runs over the 0.35 s fire window; the pump's back end sits at p≈0.86 (0.30 s)
   action: (p) => hump(p, ...SAWED_OFF.pump),
