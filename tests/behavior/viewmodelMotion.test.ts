@@ -60,7 +60,7 @@ describe("the sprint pose", () => {
     expect(outs.at(-1)).toBe(0);
   });
 
-  it("at full strength it is the whole sprint pose: lowered, dipped, turned in and canted", () => {
+  it("at full strength it is the whole sprint pose: lowered and dipped — and, Doom-style, never turned or canted (owner, 2026-10-20)", () => {
     const b = new Body();
     let c = b.step(DT, REST);
     for (let i = 0; i < 60; i++) c = b.step(DT, { ...REST, sprinting: true });
@@ -68,7 +68,7 @@ describe("the sprint pose", () => {
     expect(c.pitch).toBeCloseTo(SPRINT_POSE.pitch, 12);
     expect(c.yaw).toBeCloseTo(SPRINT_POSE.yaw, 12);
     expect(c.roll).toBeCloseTo(SPRINT_POSE.roll, 12);
-    expect(Math.abs(SPRINT_POSE.roll)).toBeGreaterThan(0.3);   // a real cant, not a sliver
+    expect([SPRINT_POSE.yaw, SPRINT_POSE.roll]).toEqual([0, 0]);   // the gun stays square to the screen: the owner saw a cant as "crooked"
     expect(SPRINT_POSE.y).toBeLessThan(0);                     // and lowered
   });
 
@@ -85,7 +85,7 @@ describe("the sprint pose", () => {
   });
 });
 
-describe("the stride: a figure-eight on bobT", () => {
+describe("the stride: Doom's U on bobT (owner, 2026-10-20: it was a figure-eight)", () => {
   /** Samples the stride over `cycles` footstep periods (ph = bobT*4 over 2π each). */
   function sample(cycles: number, n = 4000): Array<{ ph: number; x: number; y: number }> {
     const out = [];
@@ -105,22 +105,22 @@ describe("the stride: a figure-eight on bobT", () => {
     const s = sample(8);
     const xs = crossings(s.map((p) => p.x), 0);
     const ys = crossings(s.map((p) => p.y), STRIDE_Y / 2);
-    expect(xs).toBe(8);   // one horizontal cycle per two footsteps
+    expect(Math.abs(xs - 8)).toBeLessThanOrEqual(1);   // one horizontal cycle per two footsteps (the U starts in its middle, on a crossing)
     expect(ys).toBe(16);  // one vertical cycle per footstep
   });
 
-  it("is a figure-eight, not a U: it crosses the centre at mid-height, and dips to the bottom on both sides", () => {
+  it("is Doom's U, not a figure-eight: it dips to the bottom through the middle and rides up to the top at either side", () => {
     const s = sample(4);
     for (let i = 1; i < s.length; i++) {
-      if (s[i - 1].x * s[i].x < 0) expect(Math.abs(s[i].y - STRIDE_Y / 2)).toBeLessThan(STRIDE_Y * 0.02);
+      if (s[i - 1].x * s[i].x < 0) expect(s[i].y).toBeGreaterThan(STRIDE_Y * 0.99);   // through the middle at the bottom
     }
-    const bottoms = s.filter((p) => p.y > STRIDE_Y * 0.999);
-    expect(bottoms.some((p) => p.x > STRIDE_X * 0.6)).toBe(true);
-    expect(bottoms.some((p) => p.x < -STRIDE_X * 0.6)).toBe(true);
+    const tops = s.filter((p) => p.y < STRIDE_Y * 0.001);
+    expect(tops.some((p) => p.x > STRIDE_X * 0.99)).toBe(true);
+    expect(tops.some((p) => p.x < -STRIDE_X * 0.99)).toBe(true);
     expect(Math.min(...s.map((p) => p.y))).toBeGreaterThanOrEqual(0); // it only ever lowers the weapon
   });
 
-  it("every footstep lands at the bottom of a stride, alternately on the right and the left", () => {
+  it("every footstep lands at the bottom of a stride, in the middle, the swing going alternately right and left between them", () => {
     // Player.ts: bobT += spd*dt*rate; a footstep where sin(bobT*4) crosses zero going up.
     // 10 s at 60 fps: 20 steps walking (2.0/s), 30 sprinting (3.0/s).
     for (const [spd, want] of [[7, 20], [10.5, 30]]) {
@@ -139,7 +139,7 @@ describe("the stride: a figure-eight on bobT", () => {
       // the phase moves at most spd*DT*RATE*4 rad a frame, so a footstep frame is within that of the bottom
       const slack = (1 - Math.cos(spd * DT * RATE * 4)) / 2 * STRIDE_Y;
       for (const st of steps) expect(st.y).toBeGreaterThanOrEqual(STRIDE_Y - slack - 1e-9);
-      for (let i = 1; i < steps.length; i++) expect(Math.sign(steps[i].x)).toBe(-Math.sign(steps[i - 1].x));
+      for (const st of steps) expect(Math.abs(st.x)).toBeLessThan(STRIDE_X * 0.2);   // the bottom of the U is its middle
       // and the stride's bottoms happen nowhere else: as many local maxima of y as footsteps (give or take the ends)
       let peaks = 0;
       for (let i = 1; i < ys.length - 1; i++) if (ys[i] >= ys[i - 1] && ys[i] > ys[i + 1]) peaks++;
@@ -186,8 +186,9 @@ describe("the stride: a figure-eight on bobT", () => {
     expect(sawSprint).toBeGreaterThan(95);
     expect(peak(stride, 7, RATE, 0.28)).toBeLessThan(sawWalk * 0.4);
     expect(peak(stride, 10.5, RATE, 0.38)).toBeLessThan(sawSprint * 0.4);
-    // and not smaller than it was: slower wants a little more travel, not less
-    expect(stride(Math.PI / 8, 1).x).toBeGreaterThan(was(Math.PI / 8, 1).x);
+    // and not smaller than it was: slower wants a little more travel, not less (the swing's full width, the U's against the eight's)
+    const width = (f: Stride) => { let lo = Infinity, hi = -Infinity; for (let i = 0; i < 400; i++) { const x = f(i / 400 * Math.PI, 1).x; lo = Math.min(lo, x); hi = Math.max(hi, x); } return hi - lo; };
+    expect(width(stride)).toBeGreaterThan(width(was));
   });
 
   it("through the body: the stride fades out in the air and the walk-to-sprint amount blends rather than switches", () => {
@@ -257,7 +258,7 @@ describe("weight: the weapon trails the mouse and the strafe, then settles", () 
     expect([c.sx, c.sy, c.roll].map((n) => n + 0)).toEqual([0, 0, 0]); // (+0: -0 is rest too)
   });
 
-  it("trails a strafe, leaning a quantized step or more, overshoots a little on the stop, and settles exactly back", () => {
+  it("trails a strafe without leaning (Doom: the gun never tips), overshoots a little on the stop, and settles exactly back", () => {
     const b = new Body();
     b.step(DT, REST);
     // facing yaw=π/2: Player.ts's right vector is (cos yaw, -sin yaw) = (0,-1), so moving along -z is a strafe right
@@ -267,7 +268,7 @@ describe("weight: the weapon trails the mouse and the strafe, then settles", () 
     for (let i = 0; i < 60; i++) c = b.step(DT, right);
     expect(c.sx).toBeLessThan(-1.5);           // left behind, to the left
     expect(c.sx).toBeLessThan(firstSx * 3);
-    expect(c.roll).toBeLessThan(0);            // leaning with it
+    expect(c.roll + 0).toBe(0);                // square to the screen: no lean (owner, 2026-10-20)
     let over = 0;
     for (let i = 0; i < 60; i++) { c = b.step(DT, { ...REST, yaw: Math.PI / 2 }); over = Math.max(over, c.sx); }
     expect(over).toBeGreaterThan(0.05);        // swings past rest: it has mass

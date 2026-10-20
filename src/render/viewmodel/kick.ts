@@ -137,7 +137,7 @@ export function aside(t: number): number {
   return 1 - smooth(span(t, 0.2, KICK_ANIM));
 }
 /** The weapon's rig offsets at full `aside`: down and out to the right, rolled onto its side, muzzle dropped. */
-export const ASIDE = { x: 0.045, y: -0.038, pitch: -0.22, yaw: 0.22, roll: 0.6 };
+export const ASIDE = { x: 0, y: -0.06, pitch: -0.22, yaw: 0, roll: 0 };   // straight down out of the leg's way, never twisted (owner, 2026-10-20)
 
 /**
  * The view leaning into the kick, 0..1: it builds through the strike, peaks

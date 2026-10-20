@@ -26,7 +26,7 @@ const CORE_Y = 0.04, CORE_Z = 0.32, CORE_R = 0.058;
 
 export const soulReaper: WeaponArt = {
   name: "SOUL REAPER",
-  hold: { x: 0.03, y: -0.1013, z: 0.3, pitch: 0.1, yaw: 0, roll: 0 },  // straight ahead, centred: Doom/Blood (owner, 2026-10-20)
+  hold: { x: 0, y: -0.1013, z: 0.3, pitch: 0.1, yaw: 0, roll: 0 },  // straight ahead, centred: Doom/Blood (owner, 2026-10-20)
   kick: { back: 0.07, lift: 0.06 },
   action: (p) => p,
   spinRate: 5,

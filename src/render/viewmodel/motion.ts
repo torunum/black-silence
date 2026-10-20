@@ -67,8 +67,10 @@ export const STRIDE_X = 9, STRIDE_Y = 6;
  * weapon from where it rests, never lifts it into the line of fire.
  */
 export function stride(bobT: number, amt: number): { x: number; y: number } {
-  const ph = bobT * 4;
-  return { x: Math.sin(ph / 2 + Math.PI / 4) * STRIDE_X * amt, y: (1 + Math.cos(ph)) / 2 * STRIDE_Y * amt };
+  // Doom's bob (owner, 2026-10-20: "Blood veya Doom gibi"): x = cos a, y = |sin a| — a U, the weapon swinging from side to side over
+  // the top and dipping through the middle. a = ph/2 + π/2 puts the bottom of the U, the middle, on every footstep (ph ≡ 0 mod 2π).
+  const a = bobT * 2 + Math.PI / 2;
+  return { x: Math.cos(a) * STRIDE_X * amt, y: Math.abs(Math.sin(a)) * STRIDE_Y * amt };
 }
 
 /**
@@ -82,7 +84,7 @@ export function stride(bobT: number, amt: number): { x: number; y: number } {
  * its cross and the rifle only its top edge, so the carry read as "gone"
  * rather than "running".
  */
-export const SPRINT_POSE = { y: -0.012, pitch: -0.12, yaw: -0.23, roll: -0.32 };
+export const SPRINT_POSE = { y: -0.012, pitch: -0.12, yaw: 0, roll: 0 };   // Doom/Blood (owner, 2026-10-20): lowered and dipped, never turned or canted
 /** Seconds to ease into the sprint pose, and back out of it (out is quicker: you want to aim). */
 export const SPRINT_IN = 0.3, SPRINT_OUT = 0.2;
 /** After a shot the weapon stays up at the aim this long before a held sprint lowers it again. */
@@ -93,7 +95,7 @@ export const LIFT = 34;
 /** Landing: downward kick per m/s of fall speed above LAND_MIN, capped at LAND_CAP m/s. */
 export const LAND_K = 12, LAND_MIN = 1, LAND_CAP = 16;
 /** Lag: overlay units per unit of mouse sway (swayX/swayY) and per m/s of strafe; lean, radians per m/s, in steps. */
-export const LAG_TURN = 0.4, LAG_PITCH = 0.22, LAG_STRAFE = 0.24, LEAN = 0.008, LEAN_STEP = 0.015;
+export const LAG_TURN = 0.4, LAG_PITCH = 0.22, LAG_STRAFE = 0.24, LEAN = 0, LEAN_STEP = 0.015;   // no strafe lean: a Doom gun never tips
 
 /** What the body's motion reads from the frame. */
 export interface CarryInput {

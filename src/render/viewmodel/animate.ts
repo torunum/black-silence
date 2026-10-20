@@ -74,7 +74,7 @@ export const WALK_BOB_AMT = 0.28, SPRINT_BOB_AMT = 0.38;
  * down (y, on e²), muzzle dropped, turned in and rolled onto its side. The reference only slid it down
  * (y -e²·.2, pitch -e·.55, roll e·.4); round 2 Task 4 asked for a rotation and an arc.
  */
-export const SWITCH = { x: 0.075, y: -0.2, pitch: -0.6, yaw: 0.4, roll: 1.0 };
+export const SWITCH = { x: 0, y: -0.2, pitch: -0.3, yaw: 0, roll: 0 };   // Doom/Blood (owner, 2026-10-20): straight down out of the frame and straight back up
 
 /** How long the fire state lasts — WeaponState.ts's weaponTick leaves "fire" at min(.35, rate). */
 export function fireWindow(w: WeaponStats): number {
@@ -128,7 +128,8 @@ export class Animator {
     p.yaw = SWITCH.yaw * arc + c.yaw + ASIDE.yaw * a + r.yaw;
     // (the reference also rolled the sprite by swayX*.0008 — a sliver of a degree; dropped, because a
     // term that changes with every mouse movement would re-rasterize the model every frame for nothing)
-    p.roll = SWITCH.roll * e + v.kickRot * 0.013 + c.roll + ASIDE.roll * a + r.roll;
+    // (the shot's own roll, kickRot·.013, is gone too: a Doom gun kicks up and back, it never twists — owner, 2026-10-20)
+    p.roll = SWITCH.roll * e + c.roll + ASIDE.roll * a + r.roll;
 
     // firing: recoil from the runtime's own decaying kick; the mechanism from progress through the fire state
     p.recoil = w.kick > 0 ? clamp(v.kickAmt / w.kick, 0, 1) : 0;

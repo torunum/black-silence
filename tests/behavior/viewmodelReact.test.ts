@@ -71,36 +71,38 @@ describe("hurt flinch", () => {
     }
   });
 
-  it("scales with the damage and alternates sides from hit to hit", () => {
-    const peakRoll = (hits: number, amt: number) => {
+  it("scales with the damage, and never tips the gun over: a Doom gun drops, it does not cant (owner, 2026-10-20)", () => {
+    const peak = (hits: number, amt: number) => {
       const r = new Reactions(); r.step(DT, QUIET);
-      return run(r, 6, { ...QUIET, hurt: hits, hurtAmt: amt }).reduce((a, b) => (Math.abs(b.roll) > Math.abs(a) ? b.roll : a), 0);
+      const f = run(r, 6, { ...QUIET, hurt: hits, hurtAmt: amt });
+      for (const x of f) expect([x.roll + 0, x.yaw + 0, x.x + 0]).toEqual([0, 0, 0]);
+      return f.reduce((a, b) => Math.min(a, b.pitch), 0);
     };
-    expect(Math.abs(peakRoll(1, 40))).toBeGreaterThan(Math.abs(peakRoll(1, 5)) * 1.4);
-    expect(Math.sign(peakRoll(1, 20))).toBe(-Math.sign(peakRoll(2, 20)));
+    expect(Math.abs(peak(1, 40))).toBeGreaterThan(Math.abs(peak(1, 5)) * 1.4);
   });
 });
 
 describe("dry fire", () => {
-  it("jerks with the squeeze and cants the empty weapon over to look at it — readable — then comes back to exactly rest", () => {
+  it("jerks with the squeeze and drops the empty weapon a little — readable, never canted — then comes back to exactly rest", () => {
     for (const slot of [0, 1, 3, 6]) {
       const r = new Reactions(); r.step(DT, QUIET);
       const f = run(r, 60, { ...QUIET, dryFire: 1 });
       expect(Math.min(...f.slice(0, 6).map((x) => x.pitch))).toBeLessThan(-0.05); // the jerk
-      expect(Math.min(...f.map((x) => x.roll))).toBeLessThan(-0.3);                // the cant
+      expect(Math.min(...f.map((x) => x.y))).toBeLessThan(-0.01);                  // the drop
+      expect(Math.max(...f.map((x) => Math.abs(x.roll) + Math.abs(x.yaw)))).toBe(0); // and never a cant
       expect(mostPixels(slot, f.slice(0, 30)), `slot ${slot}`).toBeGreaterThan(400);
       expect(f[59]).toEqual(ZERO);
     }
   });
 
-  it("held down (the game clicks every .3 s), the cant holds instead of snapping back and restarting", () => {
+  it("held down (the game clicks every .3 s), the drop holds instead of snapping back and restarting", () => {
     const r = new Reactions(); r.step(DT, QUIET);
     let dry = 0;
-    const rolls: number[] = [];
-    for (let i = 0; i < 90; i++) { if (i % 18 === 0) dry++; rolls.push(r.step(DT, { ...QUIET, dryFire: dry }).roll); }
-    // once canted, it never comes more than a fifth of the way back between clicks
-    const full = Math.min(...rolls);
-    for (let i = 20; i < 90; i++) expect(rolls[i]).toBeLessThan(full * 0.8);
+    const ys: number[] = [];
+    for (let i = 0; i < 90; i++) { if (i % 18 === 0) dry++; ys.push(r.step(DT, { ...QUIET, dryFire: dry }).y); }
+    // once lowered, it never comes more than a fifth of the way back between clicks
+    const full = Math.min(...ys);
+    for (let i = 20; i < 90; i++) expect(ys[i]).toBeLessThan(full * 0.8);
   });
 });
 
@@ -157,18 +159,19 @@ describe("idle fidget", () => {
       equipT: 0.24, unequipT: 0.16, kickAmt: 0, kickRot: 0, kickAnim: 0, swayX: 0, swayY: 0, muzzle: 0,
       cueHurt: 0, cueHurtAmt: 0, cuePickup: 0, cueDryFire: 0, cueInput: 0, paused: true,
     };
-    /** The most the hands turn over `secs` seconds of no input at all. */
+    /** The most the hands move (the fidget's dip: y and pitch, never a turn) over `secs` seconds of no input at all. */
     const most = (paused: boolean, secs: number) => {
       let m = 0;
       for (let i = 0; i < secs / DT; i++) {
         const p = a.step(DT, 0, { ...frame, paused }, WEAPON_STATS[2], WEAPON_ART[2]);
-        m = Math.max(m, Math.abs(p.roll) + Math.abs(p.yaw));
+        m = Math.max(m, Math.abs(p.pitch) + Math.abs(p.y) * 10);
+        expect(Math.abs(p.roll) + Math.abs(p.yaw)).toBe(0);
       }
       return m;
     };
     expect(most(true, FIDGET_AFTER * 2 + FIDGET_LEN)).toBe(0);
     expect(most(false, FIDGET_AFTER - 0.5)).toBe(0);                     // unpaused, it waits the whole six seconds again
-    expect(most(false, FIDGET_LEN + 1)).toBeGreaterThan(0.2);            // and then plays
+    expect(most(false, FIDGET_LEN + 1)).toBeGreaterThan(0.08);           // and then plays
   });
 
   it("alternates between two different fidgets — deterministic, no Math.random", () => {
@@ -181,8 +184,9 @@ describe("idle fidget", () => {
       const two = run(r, Math.ceil((FIDGET_AFTER + FIDGET_LEN) / DT) + 5, QUIET).filter((f) => f.fidget > 0);
       expect(one.length).toBeGreaterThan(60);
       expect(two.length).toBeGreaterThan(60);
-      expect(Math.min(...one.map((f) => f.roll))).toBeLessThan(-0.4);    // the inspect: rolled well over
-      expect(Math.min(...two.map((f) => f.roll))).toBeGreaterThan(-0.3); // the re-grip rocks rather than rolls over
+      expect(Math.min(...one.map((f) => f.pitch))).toBeLessThan(-0.07);   // the inspect: tipped back toward the eye (pitch only: no roll, owner 2026-10-20)
+      expect(JSON.stringify(one)).not.toBe(JSON.stringify(two.slice(0, one.length)));   // and the re-grip is another motion
+      for (const f of [...one, ...two]) expect(Math.abs(f.roll) + Math.abs(f.yaw)).toBe(0);
       const again = new Reactions(); again.step(DT, QUIET);
       expect(run(again, Math.ceil((FIDGET_AFTER + FIDGET_LEN) / DT) + 5, QUIET).filter((f) => f.fidget > 0)).toEqual(one);
     } finally {
@@ -192,13 +196,13 @@ describe("idle fidget", () => {
   });
 });
 
-describe("switching weapons: a rotation and an arc, not a slide", () => {
+describe("switching weapons: straight down out of the frame and straight back up, as Doom does (owner, 2026-10-20)", () => {
   const base: AnimInput = {
     cur: 2, vx: 0, vz: 0, vy: 0, grounded: true, yaw: 0, sprintKey: false, bobT: 0, wstate: "idle", wtime: 1,
     equipT: 0.24, unequipT: 0.16, kickAmt: 0, kickRot: 0, kickAnim: 0, swayX: 0, swayY: 0, muzzle: 0,
     cueHurt: 0, cueHurtAmt: 0, cuePickup: 0, cueDryFire: 0, cueInput: 0, paused: false,
   };
-  it("going down it rolls over onto its side and turns, and its muzzle travels a curve — out to the side first, then down", () => {
+  it("going down it drops and dips without turning or rolling, its muzzle travelling down the middle of the screen", () => {
     for (const slot of [0, 2, 3, 5]) {
       const a = new Animator();
       const path: Array<[number, number]> = [];
@@ -209,24 +213,21 @@ describe("switching weapons: a rotation and an arc, not a slide", () => {
         const r = new Raster();
         path.push(renderWeapon(r, WEAPON_ART[slot], p, 160, 110).muzzle);
       }
-      expect(mid!.roll).toBeGreaterThan(SWITCH.roll * 0.4);
-      expect(mid!.yaw).toBeGreaterThan(0.2);
-      // the path bows away from the straight line between its ends: an arc
-      const [ax, ay] = path[0], [bx, by] = path[path.length - 1];
-      const len = Math.hypot(bx - ax, by - ay);
-      const bow = Math.max(...path.map(([x, y]) => Math.abs((bx - ax) * (ay - y) - (ax - x) * (by - ay)) / len));
-      expect(bow, `slot ${slot}`).toBeGreaterThan(10);
-      // out to the side before down: halfway through, it has done more of its sideways travel than of its fall
-      const [mx, my] = path[4];
-      expect(Math.abs(mx - ax) / Math.abs(bx - ax)).toBeGreaterThan(Math.abs(my - ay) / Math.abs(by - ay));
+      expect([mid!.roll + 0, mid!.yaw + 0, mid!.x + 0]).toEqual([0, 0, 0]);
+      expect(mid!.y).toBeLessThan(SWITCH.y * 0.2);
+      // straight down: the muzzle keeps to the screen's middle column while it falls
+      const [ax, ay] = path[0], [, by] = path[path.length - 1];
+      for (const [x] of path) expect(Math.abs(x - ax), `slot ${slot}`).toBeLessThan(1.5);
+      expect(by - ay, `slot ${slot}`).toBeGreaterThan(20);
     }
   });
 
-  it("the new weapon comes up the same arc and lands exactly on the aim", () => {
+  it("the new weapon comes straight back up and lands exactly on the aim", () => {
     const a = new Animator();
     const at = (k: number) => a.step(DT, 0, { ...base, cueInput: k, wstate: "equip", wtime: base.equipT * k }, WEAPON_STATS[2], WEAPON_ART[2]);
     const half = at(0.5);
-    expect(half.roll).toBeGreaterThan(0.3);
+    expect(half.y).toBeLessThan(0);
+    expect(half.roll + 0).toBe(0);
     const done = at(1);
     expect([done.x, done.y, done.pitch, done.yaw, done.roll]).toEqual([0, 0, 0, 0, 0]);
   });

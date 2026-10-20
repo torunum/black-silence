@@ -39,7 +39,7 @@ function pinnacle(b: Builder, x: number, y: number, z: number): void {
 
 export const crossLauncher: WeaponArt = {
   name: "HOLY CROSS LAUNCHER",
-  hold: { x: 0.03, y: -0.0988, z: 0.26, pitch: -0.2, yaw: 0, roll: 0 },  // straight ahead, centred: Doom/Blood (owner, 2026-10-20)
+  hold: { x: 0, y: -0.0988, z: 0.26, pitch: -0.2, yaw: 0, roll: 0 },  // straight ahead, centred: Doom/Blood (owner, 2026-10-20)
   kick: { back: 0.07, lift: 0.05 },
   action: (p) => p,
   draw(b: Builder, pose: Pose) {

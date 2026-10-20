@@ -35,7 +35,7 @@ function hopper(b: Builder): void {
 
 export const nailCannon: WeaponArt = {
   name: "NAIL CANNON",
-  hold: { x: 0.03, y: -0.1657, z: 0.36, pitch: 0.25, yaw: 0, roll: 0 },  // straight ahead, centred: Doom/Blood (owner, 2026-10-20)
+  hold: { x: 0, y: -0.1864, z: 0.4, pitch: 0.3, yaw: 0, roll: 0 },  // straight ahead, centred: Doom/Blood (owner, 2026-10-20)
   kick: { back: 0.012, lift: 0.03 },
   action: (p) => p,
   spinRate: 26,
