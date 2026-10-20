@@ -63,6 +63,13 @@ export interface WeaponArt {
   spinRate?: number;
   /** Radians per second it turns at rest (the reaper's rune ring idles round). */
   idleSpin?: number;
+  /**
+   * Where a reload brings the weapon up to (metres up, radians of muzzle lift, radians of roll, top to the left), eased in over the
+   * first sixth of the reload and out over the last (owner, 2026-10-20: "silah reload vs animasyonlarında sorun var gibi"): held
+   * square and low under the line of fire, every magazine, drum, hopper and breech worked below the bottom of the screen, and a reload
+   * read as the gun dipping and nothing happening. Brought up and turned, the hands are seen doing it, as in Doom's and Blood's.
+   */
+  present?: { y: number; pitch: number; roll: number };
   /** Draws weapon, hands and sleeves in weapon space. Must call b.anchor("muzzle", ...) at the barrel tip. */
   draw(b: Builder, pose: Pose): void;
 }

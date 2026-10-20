@@ -7,7 +7,7 @@ import type { WeaponStats } from "../../weapons/definitions";
 import { Animator } from "./animate";
 import { WEAPON_ART } from "./arts";
 import { Raster, RW, RH, toRGBA } from "./raster";
-import { renderWeapon, CLEAR_BELOW } from "./rig";
+import { renderWeapon, CLEAR_BELOW, RELOAD_CLEAR } from "./rig";
 import type { Pose } from "./pose";
 
 export { WALK_BOB_AMT, SPRINT_BOB_AMT } from "./animate";
@@ -222,7 +222,8 @@ export function drawViewmodel(dt: number, tNow: number, v: ViewmodelFrame, weapo
   // tilt, a recoil — can carry the muzzle up past it too, so the ceiling holds the finished image under the line
   // whatever lifted it: screen motion is clamped, and a rig pose that rose is lowered until its top sits on the line.
   let sy=pose.sy;
-  if(painted)sy=Math.max(sy,VH/2+CLEAR_BELOW*VH-(top0+vm.topRow*s));
+  // (while reloading, only to just under the crosshair: nothing is fired then, and the reload is brought up into view — pose.ts's `present`)
+  if(painted)sy=Math.max(sy,VH/2+(v.wstate==="reload"?RELOAD_CLEAR:CLEAR_BELOW)*VH-(top0+vm.topRow*s));
   const left=(VW-RW*s)/2+pose.sx, top=top0+sy;
   if(painted){
     fg.save();

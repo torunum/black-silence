@@ -33,6 +33,8 @@ export const AIM_DX = 0, AIM_DY = 40;
 export const WEAPON_FOCAL = 280;
 /** How far below the crosshair, as a fraction of screen height, the weapon's topmost pixel must stay. */
 export const CLEAR_BELOW = 0.1;
+/** While reloading nothing is fired, and the reload is brought up into view (pose.ts's `present`): the weapon may then rise to just under the crosshair, never over it. */
+export const RELOAD_CLEAR = 0.02;
 
 export function renderWeapon(r: Raster, art: WeaponArt | null, pose: Pose, cx: number, cy: number): Record<string, [number, number]> {
   r.clear();

@@ -1,6 +1,6 @@
 import { clamp } from "../../utils/math";
 import type { WeaponStats } from "../../weapons/definitions";
-import { restPose, type Pose, type WeaponArt } from "./pose";
+import { ramp, restPose, type Pose, type WeaponArt } from "./pose";
 import { Body } from "./motion";
 import { ASIDE, aside, kickElapsed } from "./kick";
 import { Reactions } from "./react";
@@ -136,6 +136,10 @@ export class Animator {
     if (v.wstate === "fire") p.action = clamp(art.action(clamp(v.wtime / fireWindow(w), 0, 1)), 0, 1);
     p.heat = clamp(v.muzzle / 0.4, 0, 1);
     if (v.wstate === "reload") p.reload = clamp(v.wtime / w.reload, 0, 1);
+    if (v.wstate === "reload" && art.present) {   // up into view for the reload (pose.ts's `present`)
+      const k = Math.min(ramp(p.reload, 0, 0.16), 1 - ramp(p.reload, 0.84, 1));
+      p.y += art.present.y * k; p.pitch += art.present.pitch * k; p.roll += art.present.roll * k;
+    }
 
     // rotating parts: spin up while firing, wind down after
     const rate = art.spinRate ?? 0;

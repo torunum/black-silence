@@ -908,6 +908,13 @@ import { MONOLOGUE } from "../../src/content/monologue";
  *    - **the wailer's texture name — 14 changes in 14 frames**: walking `s.a` -> `s.walk0` (3), `walk2` (3), `s.b` (3), `walk4` (2), `walk5` (2), `walk1` (1). No colour changed anywhere.
  *    - **one flying part — 24 frames, 24 sprites removed and 24 added at the same x and z, every one .0082 m higher**: a severed limb is now the monster's own, drawn at true size in the legacy crop's box
  *      (`PartArt.phys`: its physics are the legacy part's exactly, thrown from the legacy height; only the sprite's offset in its box differs, as in the ghoul's regeneration above).
+ *
+ * ## The owner's round, 2026-10-20 — regeneration: the pickups redrawn (digest only, 110 of 110 frames)
+ *
+ * Every pickup has its own picture now (`src/render/PickupArt.ts`), and each weapon pickup its own icon (`ITEMTEX.w1`..`w8`) where all
+ * of them were `ITEMTEX.gun`. Painted `quietly`, so no seeded draw moves. Against the previous fixture, field by field, every sampled frame:
+ * `camera` — **identical**; `hud` — **identical**; `scene.count` — **identical**; `scene.digest` — differs in 110 of 110: the weapon pickups'
+ * texture names (`item.gun` -> `item.w<slot>`), which the digest hashes; nothing moved.
   */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

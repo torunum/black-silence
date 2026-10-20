@@ -515,6 +515,8 @@ describe("the weapon stays out of the player's line of fire (Task 1 fix round)",
           for (let k = 0; k <= 4; k++) frames.push([`equip ${k / 4}`, { ...base, wstate: "equip", wtime: base.equipT * k / 4 }]);
           for (const [name, frame] of frames) {
             const top = topRow(frame);
+            // a reload is brought up into view (the owner's round, 2026-10-20: pose.ts's `present`): it may rise to just under the crosshair
+            if (frame.wstate === "reload") { if (top < vh / 2 + Rig.RELOAD_CLEAR * vh - 0.5) breaches.push(`${stats.name} ${name}: top ${top.toFixed(1)} over the crosshair`); continue; }
             if (top < line - 0.5) breaches.push(`${stats.name} ${name}: top ${top.toFixed(1)} above the line ${line.toFixed(1)}`);
           }
           const height = (vh - topRow(base)) / vh;

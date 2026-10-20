@@ -933,6 +933,13 @@ import { world } from "../../src/world/WorldState";
  * `Math.random` (`LevelLoader.ts`), so the seeded stream does not move. Against the previous fixture, field by field, all 512 sampled frames:
  * `camera` — **identical in all 512**; `hud` — **identical in all 512** (the run still ends `HEALTH3661` / `THE CORRUPTED PRIEST — PHASE 3`);
  * `scene.count` — **+2 in all 512** (the two sprites, never reached by the run's path); `scene.digest` — differs in all 512, by those two children.
+ *
+ * ## The owner's round, 2026-10-20 — regeneration: the pickups redrawn (digest only, 512 of 512 frames)
+ *
+ * Every pickup has its own picture now (`src/render/PickupArt.ts`), and each weapon pickup its own icon (`ITEMTEX.w1`..`w8`) where all
+ * of them were `ITEMTEX.gun`. Painted `quietly`, so no seeded draw moves. Against the previous fixture, field by field, every sampled frame:
+ * `camera` — **identical**; `hud` — **identical**; `scene.count` — **identical**; `scene.digest` — differs in 512 of 512: the weapon
+ * pickups' texture names (`item.gun` -> `item.w<slot>`), which the digest hashes; nothing moved.
   */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

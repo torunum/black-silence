@@ -1,5 +1,21 @@
 # Where this project stands
 
+## Owner's round, 2026-10-20 (evening): the pickups redrawn, the reloads brought into view
+
+"can silah mermisi vs simgelerini daha güzel yapalım ... pompalı mermisi vs simgesi hepsinin farklı olsun" — **every pickup is its own
+picture** (`src/render/PickupArt.ts`, the rows in `src/render/pickups/`): a medical kit, a steel breastplate, an open box of pistol
+rounds, three red shotgun shells with brass heads, two rifle rounds on a clip, a gold cross, a tin of nails, a burning green skull,
+loose dynamite, the red key; and **every weapon pickup its own side-on silhouette** (`ITEMTEX.w1`..`w8`, which also fixes a respawned
+weapon pickup that had no texture). Painted over the reference's under the same keys, quietly (no seeded draw). The HUD shows the
+same icons by HEALTH, ARMOR and AMMO, and the equipped weapon's (`src/ui/HudIcons.ts`). The traces' fixtures moved in their scene
+digests only (the weapon pickups' texture names); headers say so.
+
+"silah reload vs animasyonlarında sorun var gibi" — rendered frame by frame, every reload worked its magazine, drum, hopper or breech
+below the bottom of the screen: the gun dipped and nothing seemed to happen. **A reload now brings the weapon up into view**
+(`WeaponArt.present`, eased in over the first sixth and out over the last), the rifle and the sniper turned to show their side, and the
+ceiling lets it rise to just under the crosshair (`RELOAD_CLEAR`) while nothing can be fired. The tommy gun's left arm racks the knob
+from low on the left instead of across the eye. `tests/render/reloadPresent.test.ts`.
+
 ## Owner's round, 2026-10-20 (later still): dynamite
 
 "ilk dinamit eklensin" — **DYNAMITE is slot 8, the ninth weapon, key `9`** (`src/weapons/Dynamite.ts`, its art

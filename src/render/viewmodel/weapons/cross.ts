@@ -40,6 +40,7 @@ function pinnacle(b: Builder, x: number, y: number, z: number): void {
 export const crossLauncher: WeaponArt = {
   name: "HOLY CROSS LAUNCHER",
   hold: { x: 0.048, y: -0.105, z: 0.3, pitch: -0.15, yaw: 0, roll: 0 },  // a little right of centre, square to the screen, looking ahead (owner, 2026-10-20: option 3, "biraz daha dik")
+  present: { y: 0.06, pitch: 0.1, roll: 0 },   // the reload brought up into view (pose.ts)
   kick: { back: 0.07, lift: 0.05 },
   action: (p) => p,
   draw(b: Builder, pose: Pose) {

@@ -35,6 +35,7 @@ function drum(b: Builder): void {
 export const tommyGun: WeaponArt = {
   name: "TOMMY GUN",
   hold: { x: 0.038, y: -0.0672, z: 0.33, pitch: 0.16, yaw: 0, roll: 0 },  // a little right of centre, square to the screen, looking ahead (owner, 2026-10-20: option 3, "biraz daha dik")
+  present: { y: 0.045, pitch: 0.3, roll: 0 },   // the reload brought up into view (pose.ts)
   kick: { back: 0.016, lift: 0.05 },
   action: (p) => hump(p, 0.0, 1.0, 0.45),
   draw(b: Builder, pose: Pose) {
@@ -88,7 +89,7 @@ export const tommyGun: WeaponArt = {
     if (handAway >= 0.05 && r > 0.74) {                  // left hand racks the knob
       b.push(); b.translate(-0.02, 0.07, 0.03 - 0.08 * knob); b.roll(-1.6); b.pitch(0.4);
       fist(b, -1, { w: 0.008, fingers: 4 });
-      forearm(b, -0.01, -0.05, -0.045, [-0.7, -0.5, -1], 0.03);
+      forearm(b, -0.01, -0.05, -0.045, [-1, -0.85, -0.45], 0.03);   // from low on the left, not across the eye
       b.pop();
     }
 
