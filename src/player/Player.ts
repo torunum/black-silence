@@ -118,14 +118,9 @@ function damagePlayer(d: number, silent?: boolean): void {
  * reason `src/render/viewmodel/draw.ts` exports its own
  * `WALK_BOB_AMT`/`SPRINT_BOB_AMT`.
  */
-export const WALK_BOB_RATE=0.35, SPRINT_BOB_RATE=0.35;
-/**
- * **Doom/Blood speed (owner, 2026-10-20: "Blood veya Doom oyununa benzesin oynanış").** The player walks at 9 and runs at 13
- * (it was 7 and 10.5): both games are played at a run, and the old pace read as a stroll through the levels. The bob rate came
- * down with it, 0.45 to 0.35, so the cadence the owner tuned in round 2 holds: 9·0.35·2/π = **2.0 steps/s walking**, 13·0.35·2/π =
- * **2.9 running**, and the weapon's sideways swing stays near 1 and 1.5 Hz.
- */
-export const WALK_SPEED=9, SPRINT_SPEED=13;
+export const WALK_BOB_RATE=0.45, SPRINT_BOB_RATE=0.45;
+/** Walking and running speed, m/s. (Raised to 9 and 13 for a Doom pace on 2026-10-20 and put back the same day: the owner liked the pace as it was.) */
+export const WALK_SPEED=7, SPRINT_SPEED=10.5;
 function accelerate(wx_: number, wz_: number, maxs: number, acc: number, dt: number): void {
   const cur=player.vx*wx_+player.vz*wz_,add=maxs-cur;if(add<=0)return;
   let a=acc*maxs*dt;if(a>add)a=add;player.vx+=wx_*a;player.vz+=wz_*a;}

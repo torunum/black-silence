@@ -93,21 +93,21 @@ beforeEach(() => { steps.length = 0; });
 const cadence = (spd: number, rate: number) => spd * rate * 4 / (2 * Math.PI);
 
 describe("player.bobT rate (footstep cadence, camera bob and the weapon's stride)", () => {
-  it("pins WALK_BOB_RATE/SPRINT_BOB_RATE at 0.35 (round 2's 0.45, scaled down with the Doom speed of 2026-10-20) and the speeds at 9 and 13", () => {
-    expect(Player.WALK_BOB_RATE).toBe(0.35);
-    expect(Player.SPRINT_BOB_RATE).toBe(0.35);
-    expect([Player.WALK_SPEED, Player.SPRINT_SPEED]).toEqual([9, 13]);
+  it("pins WALK_BOB_RATE/SPRINT_BOB_RATE at their round-2 values (2026-09-28), and the speeds at 7 and 10.5", () => {
+    expect(Player.WALK_BOB_RATE).toBe(0.45);
+    expect(Player.SPRINT_BOB_RATE).toBe(0.45);
+    expect([Player.WALK_SPEED, Player.SPRINT_SPEED]).toEqual([7, 10.5]);
   });
 
   it("gives about two steps a second walking and three sprinting — and the old 1.6 gave seven and eleven", () => {
-    expect(cadence(9, Player.WALK_BOB_RATE)).toBeCloseTo(2.005, 3);
-    expect(cadence(13, Player.SPRINT_BOB_RATE)).toBeCloseTo(2.897, 3);
+    expect(cadence(7, Player.WALK_BOB_RATE)).toBeCloseTo(2.005, 3);
+    expect(cadence(10.5, Player.SPRINT_BOB_RATE)).toBeCloseTo(3.008, 3);
     // the numbers the owner played, for the record
     expect(cadence(7, 1.6)).toBeCloseTo(7.13, 2);
     expect(cadence(10.5, 1.6)).toBeCloseTo(10.70, 2);
     // the stride sways sideways once per two steps
-    expect(cadence(9, Player.WALK_BOB_RATE) / 2).toBeCloseTo(1.0, 1);
-    expect(cadence(13, Player.SPRINT_BOB_RATE) / 2).toBeCloseTo(1.45, 1);
+    expect(cadence(7, Player.WALK_BOB_RATE) / 2).toBeCloseTo(1.0, 1);
+    expect(cadence(10.5, Player.SPRINT_BOB_RATE) / 2).toBeCloseTo(1.5, 1);
   });
 
   it("gives sprint no cadence bump beyond its own speed increase — sprint and walk share one rate", () => {
@@ -141,16 +141,16 @@ describe("the cadence through the real playerTick", () => {
     return { perSec: steps.length / secs, speed: Math.hypot(player.vx, player.vz), found: [...steps] };
   }
 
-  it("walks at 9 m/s (Doom pace, 2026-10-20; it was 7) and steps about twice a second", () => {
+  it("walks at 7 m/s and steps about twice a second", () => {
     const { perSec, speed } = walk(false, 6);
-    expect(speed).toBeCloseTo(9, 6);
+    expect(speed).toBeCloseTo(7, 6);                 // movement speed untouched
     expect(perSec).toBeGreaterThanOrEqual(1.8);
     expect(perSec).toBeLessThanOrEqual(2.2);
   });
 
-  it("sprints at 13 m/s and steps about three times a second — nearly half again as often as walking", () => {
+  it("sprints at 10.5 m/s and steps about three times a second — half again as often as walking", () => {
     const run = walk(true, 6), stroll = walk(false, 6);
-    expect(run.speed).toBeCloseTo(13, 6);
+    expect(run.speed).toBeCloseTo(10.5, 6);
     expect(run.perSec).toBeGreaterThanOrEqual(2.7);
     expect(run.perSec).toBeLessThanOrEqual(3.3);
     expect(run.found.every((s) => s.sprinting)).toBe(true);
@@ -163,7 +163,7 @@ describe("the cadence through the real playerTick", () => {
       const { found } = walk(sprint, 4);
       expect(found.length).toBeGreaterThanOrEqual(7);
       // bobT*4 moves spd*DT*rate*4 rad a frame, so the footstep frame is at most that past the bottom
-      const slack = (1 - Math.cos((sprint ? 13 : 9) * DT * Player.WALK_BOB_RATE * 4)) / 2 * STRIDE_Y;
+      const slack = (1 - Math.cos((sprint ? 10.5 : 7) * DT * Player.WALK_BOB_RATE * 4)) / 2 * STRIDE_Y;
       for (const s of found) expect(stride(s.bobT, 1).y).toBeGreaterThanOrEqual(STRIDE_Y - slack - 1e-9);
       for (const s of found) expect(Math.abs(stride(s.bobT, 1).x)).toBeLessThan(STRIDE_X * 0.25);
     }
