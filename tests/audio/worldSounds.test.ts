@@ -83,7 +83,7 @@ describe("footsteps", () => {
   });
 
   it("the floor follows the level's theme: ash in hell, marble on level 1, stone in the church and the necropolis, dirt, water, metal, flesh", () => {
-    expect(LEVELS.map((l) => surfaceFor(l))).toEqual(["ash", "marble", "stone", "stone", "dirt", "water", "metal", "stone", "flesh"]);
+    expect(LEVELS.map((l) => surfaceFor(l))).toEqual(["ash", "marble", "stone", "stone", "dirt", "water", "metal", "stone", "flesh", "stone"]);   // 9: the monastery, a church
     // …and it is read through the room the level loader already sets (tests/integration/worldSoundWiring.test.ts drives that)
     for (const l of LEVELS) expect(roomFor(l)).toBeTruthy();
   });

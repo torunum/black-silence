@@ -1,4 +1,5 @@
 import { game } from "./Game";
+import { scriptTick } from "../world/script/ScriptRun";
 import { time, tickScheduled } from "./Time";
 import { S } from "./State";
 import { screenShake } from "../fx/ShakeState";
@@ -125,7 +126,7 @@ function loop(t: number){
     playerTick(dt);zoneTick(dt);weaponTick(dt);
     anyAware=enemyTick(dt)||false;
     projTick(dt);ringTick(dt);strikeTick(dt);poisonTick(dt);
-    itemsTick(dt);doorTick(dt);propTick(dt);
+    itemsTick(dt);doorTick(dt);scriptTick(dt);propTick(dt);
     eventTick(dt);ambience(dt);vitalsAudio(dt);
     chatterTick(dt,anyAware);
     musicTick(dt,anyAware);

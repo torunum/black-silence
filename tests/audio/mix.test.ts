@@ -211,7 +211,7 @@ describe("the room", () => {
 describe("each level's theme picks its room", () => {
   it("prologue is hell, the womb is flesh, dungeon/church/necropolis are the stone hall, and the others their own", () => {
     const rooms = LEVELS.map((l) => roomFor(l));
-    expect(rooms).toEqual(["hell", "hall", "hall", "hall", "graveyard", "sewer", "factory", "hall", "flesh"]);   // 7, the bone cathedral, is necropolis stone
+    expect(rooms).toEqual(["hell", "hall", "hall", "hall", "graveyard", "sewer", "factory", "hall", "flesh", "hall"]);   // 7, the bone cathedral, is necropolis stone; 9, the monastery, a church (its zones have their own)
     // Every room is used by some level.
     expect(new Set(rooms)).toEqual(new Set(ROOM_NAMES));
   });

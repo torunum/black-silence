@@ -49,7 +49,7 @@ describe("every theme has a vocabulary", () => {
 
   it("gives every themed level of the game a theme, and hell and the prologue none", () => {
     const themed = LEVELS.map((l) => themeOf(l.sub));
-    expect(themed.slice(1)).toEqual(["dungeon", "church", "necropolis", "graveyard", "sewers", "factory", "necropolis", "womb"]);   // 7, the bone cathedral, is of the necropolis's stone
+    expect(themed.slice(1)).toEqual(["dungeon", "church", "necropolis", "graveyard", "sewers", "factory", "necropolis", "womb", "church"]);   // 7, the bone cathedral, is of the necropolis's stone; 9, the monastery, a church
     expect(themed[0]).toBeUndefined();
   });
 

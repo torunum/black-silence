@@ -40,6 +40,7 @@ export const PICKUP_PAL: Readonly<Record<string, string>> = {
   "b": "#4e3818",
   "c": "#8a6a24",
   "f": "#ff8a2a",
+  "g": "#5a5246",
   "h": "#8c7450",
   "k": "#2c2e34",
   "l": "#3c9a2c",

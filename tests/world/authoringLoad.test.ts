@@ -38,9 +38,9 @@ beforeAll(async () => {
   LEVELS.push(def("THE WELL", buildWell), def("THE CHARNEL STAIR", buildCharnel));
 });
 
-afterAll(() => { LEVELS.length = 9; });
+afterAll(() => { LEVELS.length = 10; });
 
-describe.each([[9, "the well", buildWell], [10, "the charnel stair", buildCharnel]] as const)("level %i, %s", (idx, _name, build) => {
+describe.each([[10, "the well", buildWell], [11, "the charnel stair", buildCharnel]] as const)("level %i, %s", (idx, _name, build) => {
   it("loads, and the game makes what the plan placed", () => {
     const L = build(), s = analyse(L), d = measureLevel(L);
     loadLevel(idx);

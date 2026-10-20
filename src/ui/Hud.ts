@@ -1,5 +1,6 @@
 import { S } from "../core/State";
 import { hudIcons } from "./HudIcons";
+import { sealLine } from "../world/script/ScriptRun";
 import { world } from "../world/WorldState";
 import { weaponRuntime } from "../weapons/WeaponRuntime";
 import { WEAPONS } from "../weapons/WeaponState";
@@ -50,7 +51,7 @@ export function hud(): void {
   el("wname").textContent=
     w.name+(weaponRuntime.wstate==="reload"?" — RELOADING":"");
   hudIcons(S.cur,w.ammo);   // the pictures beside the numbers (./HudIcons.ts)
-  el("keys").textContent=S.key?"■ RED KEY":"";
+  el("keys").textContent=[S.key?"■ RED KEY":"",sealLine()].filter(Boolean).join("   ");
   const enemies: readonly BossEnemy[] = world.enemies;   // checked widening, not a cast
   const boss=enemies&&enemies.find(e=>e.boss&&!e.dead&&!e.dormant);
   const bb=el("bossbar");

@@ -8,6 +8,7 @@ import { buildLevel5 } from "./level5";
 import { buildLevel6 } from "./level6";
 import { buildLevel7 } from "./level7";
 import { buildCathedral } from "./cathedral";
+import { buildMonastery } from "./monastery";
 
 /**
  * The nine level tables (the bone cathedral, index 7, was added 2026-10-20 between the factory and the womb). Grid characters (also used by LevelBuilder.ts's
@@ -59,4 +60,22 @@ export const LEVELS: LevelDef[] = [
   fog:0x0e0c0a,fogD:.045,amb:0x5a5046,ambI:.5,floor:"church",sub:"necropolis"},
  {name:"LEVEL 8 — THE WOMB",build:buildLevel7,
   fog:0x1a0606,fogD:.06,amb:0x6e2a28,ambI:.5,floor:"flesh",sub:"womb",flesh:true},
+ {name:"LEVEL 1 — THE ASH BELL MONASTERY",build:buildMonastery,   // new (owner, 2026-10-20): ./monastery.ts — played straight after the prologue (PLAY_ORDER)
+  fog:0x0d1016,fogD:.04,amb:0x5a6680,ambI:.6,floor:"church",sub:"church"},
 ];
+
+/**
+ * The order the levels are PLAYED in, by index (owner, 2026-10-20: the monastery "prologue sonrası ilk bölüm olsun"). The monastery is
+ * appended to `LEVELS` (index 9) so every other level keeps its index — the traces, the tests and the saved games all name levels by
+ * index — and is played second. A level's shown number is its place here (`titleOf`); `save.maxLevel` counts places, not indices.
+ */
+export const PLAY_ORDER: readonly number[] = [0, 9, 1, 2, 3, 4, 5, 6, 7, 8];
+/** Where level `i` is played (0 = the prologue), or -1. */
+export function playPos(i: number): number { return PLAY_ORDER.indexOf(i); }
+/** The level played after `i`, or -1 after the last. */
+export function nextLevel(i: number): number { const p = playPos(i); return p >= 0 && p + 1 < PLAY_ORDER.length ? PLAY_ORDER[p + 1] : -1; }
+/** The level's name as shown, numbered by where it is played. */
+export function titleOf(i: number): string {
+  const n = LEVELS[i]?.name ?? "", p = playPos(i);
+  return p > 0 ? n.replace(/^LEVEL \d+/, "LEVEL " + p) : n;
+}

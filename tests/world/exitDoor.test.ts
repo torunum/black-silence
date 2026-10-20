@@ -12,7 +12,7 @@ import { game } from "../../src/core/Game";
 import { S } from "../../src/core/State";
 import { save } from "../../src/save/SaveGame";
 import { CELL } from "../../src/world/Grid";
-import { LEVELS } from "../../src/world/levels/index";
+import { PLAY_ORDER, LEVELS } from "../../src/world/levels/index";
 import { DOOR_STYLES, STYLES, buildRig, pose, styleFor, type DoorStyle, type Rig } from "../../src/world/DoorKit";
 import { EXIT_BOSSES, EXIT_CELLS, doors, doorClaims, exitCell, siteDoor, against } from "../../src/world/ExitDoor";
 import { resetTransition, trans } from "../../src/world/TransitionState";
@@ -61,7 +61,9 @@ afterAll(() => { clearAllTimers(); clearScheduled(); });
 
 beforeEach(() => { resetTransition(); S.won = false; S.dead = false; game.inputLock = false; });
 
-const LAST = LEVELS.length - 1;
+/** The last level PLAYED (the womb): the monastery is appended at index 9 but played second (levels/index.ts PLAY_ORDER). */
+const LAST = PLAY_ORDER[PLAY_ORDER.length - 1];
+const ALL = LEVELS.length - 1;
 const deadAll = (): void => { for (const e of world.enemies) e.dead = true; };
 /** The player standing at the door's cell, `out` in front of it, looking at it. */
 function standAt(d: NonNullable<typeof doors.exit>, out: number, across = 0): void {
@@ -70,7 +72,7 @@ function standAt(d: NonNullable<typeof doors.exit>, out: number, across = 0): vo
 }
 
 describe("every level has the doors it should", () => {
-  for (let i = 0; i <= LAST; i++) {
+  for (let i = 0; i <= ALL; i++) {
     it(`level ${i} ${LEVELS[i].name.replace(/^.* — /, "")}: ${i === LAST ? "no exit" : "an exit"}, ${i === 0 ? "no entrance (a grave)" : "an entrance"}`, () => {
       loadLevel(i);
       expect(doors.exit !== null, "an exit door").toBe(i !== LAST);
@@ -85,7 +87,7 @@ describe("every level has the doors it should", () => {
 
 describe("each theme has its own door", () => {
   // the bone cathedral (7, new on 2026-10-20) is of the necropolis's stone and shares its tomb door: nine levels, eight styles
-  const EXPECT: DoorStyle[] = ["crypt", "iron", "church", "tomb", "cemetery", "sluice", "freight", "tomb", "sphincter"];
+  const EXPECT: DoorStyle[] = ["crypt", "iron", "church", "tomb", "cemetery", "sluice", "freight", "tomb", "sphincter", "church"];   // 9, the monastery, a church's
 
   it("gives the levels eight different styles, the crypt door to the prologue and the sphincter to the womb (the bone cathedral shares the tomb's)", () => {
     // MUTATION TARGET: make styleFor answer one style for every level
@@ -96,7 +98,7 @@ describe("each theme has its own door", () => {
 
   it("builds each level's door in its style, and the eight are different buildings, not one with another colour", () => {
     const sig = new Map<DoorStyle, string>();
-    for (let i = 0; i <= LAST; i++) {
+    for (let i = 0; i <= ALL; i++) {
       loadLevel(i);
       const d = doors.entrance ?? doors.exit!;   // the womb has only an entrance
       expect(d.rig.style, LEVELS[i].name).toBe(EXPECT[i]);
@@ -162,7 +164,7 @@ describe("a door stands in a wall, in front of floor the player can reach", () =
   });
 
   it("is reached on foot: from the spawn, over the game's step-up of 1.2, to the cell in front of every exit", () => {
-    for (let i = 0; i < LAST; i++) {
+    for (const i of PLAY_ORDER.slice(0, -1)) {
       loadLevel(i);
       const start = [player.px / CELL | 0, player.pz / CELL | 0] as const, d = doors.exit!;
       const seen = new Set<string>([start.join(",")]), stack = [start];
@@ -185,7 +187,7 @@ describe("a door stands in a wall, in front of floor the player can reach", () =
   });
 
   it("lets the entrance walk be walked: no wall or mass between the entrance's cell and the spawn", () => {
-    for (let i = 1; i <= LAST; i++) {
+    for (let i = 1; i <= ALL; i++) {
       loadLevel(i);
       const e = doors.entrance!, x0 = (e.site.sx + .5) * CELL, z0 = (e.site.sz + .5) * CELL;
       for (let t = 0; t <= 1; t += .05) {
@@ -213,10 +215,10 @@ describe("the exit is where it always was", () => {
     expect(EXIT_BOSSES).toBe("QZNHV");
   });
 
-  it("goes by the boss glyphs the grid writes: Q Z N H V on levels 2-7 (a sealed door), and on no other level", () => {
-    for (let i = 0; i <= LAST; i++) {
+  it("goes by the boss glyphs the grid writes: Q Z N H V on levels 2-7 and the monastery (a sealed door), and on no other level", () => {
+    for (let i = 0; i <= ALL; i++) {
       const g = LEVELS[i].build().g.flat().join("");
-      expect([...EXIT_BOSSES].some((c) => g.includes(c)), LEVELS[i].name).toBe(i >= 2 && i <= 7);
+      expect([...EXIT_BOSSES].some((c) => g.includes(c)), LEVELS[i].name).toBe((i >= 2 && i <= 7) || i === 9);
     }
   });
 });
@@ -317,13 +319,13 @@ describe("opening the exit", () => {
   it("saves maxLevel at the moment the door is taken, as the pad did, and not before", () => {
     loadLevel(1);
     deadAll();
-    save.maxLevel = 1;
+    save.maxLevel = 2;   // places in the play order: the dungeon is played third, after the prologue and the monastery
     standAt(doors.exit!, 3); exitTick();
-    expect(save.maxLevel, "walking up to the door is not taking it").toBe(1);
+    expect(save.maxLevel, "walking up to the door is not taking it").toBe(2);
     // MUTATION TARGET: move the save out of leaveLevel
     expect(leaveLevel()).toBe(true);
-    expect(save.maxLevel, "taking it is").toBe(2);
-    expect(JSON.parse(localStorage.getItem("blacksilence.save") || "{}").maxLevel, "and it is on disk").toBe(2);
+    expect(save.maxLevel, "taking it is").toBe(3);
+    expect(JSON.parse(localStorage.getItem("blacksilence.save") || "{}").maxLevel, "and it is on disk").toBe(3);
   });
 
   it("claims the cells in front of it from the dressing: no wall piece or bulky one where it stands, nor a bulky one at the exit cell", () => {

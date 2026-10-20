@@ -38,7 +38,7 @@ const EXIT_OPENING_BOSSES = ["Q", "Z", "N", "H", "V"];
 const FINALE_BOSS = "G";
 
 it("builds every declared level", () => {
-  expect(built).toHaveLength(9);   // the reference's eight, and the bone cathedral (2026-10-20)
+  expect(built).toHaveLength(10);   // the reference's eight, the bone cathedral and the Ash Bell Monastery (both 2026-10-20)
 });
 
 describe.each(built)("$name", ({ grid }) => {
@@ -200,6 +200,7 @@ it("pins how many ambiguous tiles each level grid contains (KNOWN-4)", () => {
     "LEVEL 6 — THE FACTORY": { C: 3, V: 1 },
     "LEVEL 7 — THE BONE CATHEDRAL": { C: 0, V: 0 },
     "LEVEL 8 — THE WOMB": { C: 2, V: 0 },
+    "LEVEL 1 — THE ASH BELL MONASTERY": { C: 0, V: 0 },
   });
 });
 
@@ -226,6 +227,7 @@ it("level 2's pews are props, not enemies, and `v` is claimed by no enemy def (K
     "LEVEL 6 — THE FACTORY": 0,
     "LEVEL 7 — THE BONE CATHEDRAL": 6,   // new: two rows of pews down the nave
     "LEVEL 8 — THE WOMB": 0,
+    "LEVEL 1 — THE ASH BELL MONASTERY": 0,
   });
 });
 
@@ -279,8 +281,9 @@ it("every armour tile the authors wrote reaches the item table (KNOWN-11)", () =
     "LEVEL 6 — THE FACTORY": 4,
     "LEVEL 7 — THE BONE CATHEDRAL": 10,     // new (2026-10-20): the nave, the triforium, both secrets, both vaults, the charnel vault and the sanctuary
     "LEVEL 8 — THE WOMB": 4,
+    "LEVEL 1 — THE ASH BELL MONASTERY": 6,     // new (2026-10-20): the crypt's niche, the sealed tomb, the drawer room, the reading room, the rampart's hoard and the rite chapel
   });
-  expect(Object.values(counts).reduce((a, b) => a + b, 0)).toBe(37);   // the reference's twenty, levels 1 and 2 (rebuilt) have five and five where they had one and two, and the cathedral ten
+  expect(Object.values(counts).reduce((a, b) => a + b, 0)).toBe(43);   // the reference's twenty, levels 1 and 2 (rebuilt) have five and five where they had one and two, the cathedral ten, the monastery six
 });
 
 /**
@@ -311,6 +314,7 @@ it("no level contains an exit-opening boss other than its own (KNOWN-4)", () => 
     "LEVEL 6 — THE FACTORY": ["V"],
     "LEVEL 7 — THE BONE CATHEDRAL": ["Z"],   // the Sovereign again, on its own throne
     "LEVEL 8 — THE WOMB": [],
+    "LEVEL 1 — THE ASH BELL MONASTERY": ["N"],   // the Gravedigger, under the courtyard: his death opens the great gate out
   });
 });
 

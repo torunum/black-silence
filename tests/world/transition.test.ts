@@ -13,7 +13,7 @@ import { S } from "../../src/core/State";
 import { save } from "../../src/save/SaveGame";
 import { weaponRuntime } from "../../src/weapons/WeaponRuntime";
 import { CELL, EYE } from "../../src/world/Grid";
-import { LEVELS } from "../../src/world/levels/index";
+import { LEVELS, PLAY_ORDER, titleOf } from "../../src/world/levels/index";
 import { CHAPTER_LINES } from "../../src/content/monologue";
 import { doors, against } from "../../src/world/ExitDoor";
 import { T, resetTransition, trans } from "../../src/world/TransitionState";
@@ -120,11 +120,11 @@ describe("the walk through the exit door", () => {
   });
 
   it("saves maxLevel when the door is opened, and the walk saves nothing more", () => {
-    save.maxLevel = 1;
+    save.maxLevel = 2;   // places in the play order (levels/index.ts): the dungeon is the third played, after the monastery
     leaveLevel1();
-    expect(save.maxLevel).toBe(2);
+    expect(save.maxLevel).toBe(3);
     run(T.walk + 1);
-    expect(save.maxLevel).toBe(2);
+    expect(save.maxLevel).toBe(3);
   });
 });
 
@@ -173,11 +173,12 @@ describe("the chapter card", () => {
   });
 
   it("has a line from ADEM for every level that has an exit, two each, and none for the womb", () => {
-    for (let i = 0; i < LEVELS.length - 1; i++) {
+    const last = PLAY_ORDER[PLAY_ORDER.length - 1];   // the womb: the monastery is appended at 9 but played second
+    for (const i of PLAY_ORDER.slice(0, -1)) {
       expect(CHAPTER_LINES[i], LEVELS[i].name).toHaveLength(2);
       for (const l of CHAPTER_LINES[i]) expect(l.length).toBeGreaterThan(30);
     }
-    expect(CHAPTER_LINES[LEVELS.length - 1]).toBeUndefined();
+    expect(CHAPTER_LINES[last]).toBeUndefined();
   });
 
   it("stacks above the HUD and the black below the card: the fade is over everything but the card", () => {
@@ -253,9 +254,9 @@ describe("the arrival", () => {
     expect(renderState.camera.position.x).toBeCloseTo(x, 3);
     expect(renderState.camera.position.z).toBeCloseTo(z, 3);
     expect(renderState.camera.position.y).toBeCloseTo(floorHeightAt(x, z) + EYE, 3);
-    expect(el("lvltitle").textContent).toBe(LEVELS[2].name);
+    expect(el("lvltitle").textContent).toBe(titleOf(2));   // numbered by where it is played: LEVEL 3 since the monastery
     expect(el("lvltitle").style.opacity).toBe("1");
-    expect(el("msg").textContent).toBe(LEVELS[2].name);
+    expect(el("msg").textContent).toBe(titleOf(2));
   });
 
   it("lifts the black while the camera walks in from the door to the spawn, shuts the door behind, and ends where the level begins", () => {
@@ -305,7 +306,7 @@ describe("the arrival", () => {
 
 describe("the end of the game", () => {
   it("has no exit door on the last level: nothing to open, and its boss shows the win screen as it always did", () => {
-    loadLevel(LEVELS.length - 1);
+    loadLevel(PLAY_ORDER[PLAY_ORDER.length - 1]);
     expect(doors.exit).toBeNull();
     expect(leaveLevel()).toBe(false);
     expect(S.won).toBe(false);

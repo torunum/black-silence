@@ -2,7 +2,7 @@ import { S } from "../core/State";
 import { game } from "../core/Game";
 import { save } from "../save/SaveGame";
 import { flushSave } from "../save/persist";
-import { LEVELS } from "./levels/index";
+import { LEVELS, PLAY_ORDER, nextLevel, playPos } from "./levels/index";
 import { loadLevel } from "./LevelLoader";
 import { world } from "./WorldState";
 import { doors, against } from "./ExitDoor";
@@ -116,7 +116,7 @@ export function leaveLevel(): boolean {
   if (world.enemies.some((e) => e.boss && !e.dead)) { showMsg("SOMETHING STILL BREATHES HERE", 1.5); return false; }
   S.won = true;
   // the same save, at the same moment, as `endLevel` made it: the level is done when its exit is taken
-  save.maxLevel = Math.max(save.maxLevel, Math.min(S.level + 1, LEVELS.length - 1));
+  save.maxLevel = Math.max(save.maxLevel, Math.min(playPos(S.level) + 1, PLAY_ORDER.length - 1));   // places in the play order (levels/index.ts)
   flushSave();
   stopBossMusic();
   const grade = gradeOf();
@@ -177,7 +177,7 @@ function walk(): void {
 
 /** The card's words, set when it comes up. */
 function showCard(): void {
-  const done = nameOf(S.level), next = nameOf(S.level + 1);
+  const done = nameOf(S.level), next = nameOf(nextLevel(S.level));
   el("letitle").innerHTML = `<span class="done"></span> <b>CLEARED</b>`;
   el("letitle").firstElementChild!.textContent = done;
   el("legrade").textContent = trans.grade;
@@ -197,7 +197,7 @@ function card(dt: number): void {
 function proceed(): void {
   if (trans.phase !== "card" || trans.card < T.cardAfter) return;
   el("levelend").classList.add("hidden");
-  const next = S.level + 1;
+  const next = nextLevel(S.level);   // the play order (levels/index.ts): the prologue opens on the monastery
   loadLevel(next);
   renderState.renderer.domElement.requestPointerLock?.();
   beginArrival();

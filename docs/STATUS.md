@@ -1,5 +1,27 @@
 # Where this project stands
 
+## Owner's round, 2026-10-20 (night): LEVEL 1 — THE ASH BELL MONASTERY, blockout
+
+The owner's brief ("Kül Çanı Manastırı": an old monastery, its graveyard and funeral houses over a forbidden rite) built blockout-first,
+as the brief asks: the whole level playable in plain geometry, its ways, fights and length checked, the dressing after.
+`src/world/levels/monastery.ts` (geometry), `monasteryPop.ts` (twelve fights, the weapons on the way, six secrets' rewards, the light,
+six shrines), `monasteryZones.ts` (eleven regions, the graveyard, the courtyard and the cloister open to the sky),
+`monasteryScript.ts`. **Played straight after the prologue**: appended to `LEVELS` at index 9 so no other level moves, and
+`PLAY_ORDER` (`levels/index.ts`) puts it second; every later level's shown number (`titleOf`) counts one more, the chapter select lists
+the levels in play order, and `save.maxLevel` counts places in it.
+
+**A level script** (`src/world/script/`): data beside the grid, run at play — two seals (`J`, `M`: the Ash Seal, the Bell Seal), the
+gate under the courtyard that wants both (its two marks over the door light as each is taken), the crematorium's service door barred on
+the courtyard's side, four courtyard niches that will not move until the great bell is rung, the bell's lever at the top of the tower,
+and a freight lift from the bell chamber (6.0) to the courtyard (1.2), chained at the top until the bell. The structure suite reads the
+script (`analyse.ts`'s `scriptView`): the gate as a locked door, the last seal its key, the other a goal on the way — so the critical
+path is the real one through both wings (297 steps), and the monastery is in `REBUILT`, meeting every target.
+`tests/integration/monastery.test.ts` drives each piece through the real game.
+
+**Length, measured not guessed:** the main route is 328 cells of walking (656 m, about 1.6 minutes at walking speed) with 79 enemies;
+a first run is estimated at 12-20 minutes against the brief's 25-35. The next pass widens the regions into their sub-spaces (the brief's
+"birkaç alt mekân") and adds encounters, not corridor.
+
 ## Owner's round, 2026-10-20 (evening): the pickups redrawn, the reloads brought into view
 
 "can silah mermisi vs simgelerini daha güzel yapalım ... pompalı mermisi vs simgesi hepsinin farklı olsun" — **every pickup is its own

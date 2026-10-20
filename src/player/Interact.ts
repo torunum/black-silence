@@ -22,6 +22,7 @@ import { requestSwitch, WEAPONS } from "../weapons/WeaponState";
 import { openPiano } from "../ui/Piano";
 import { animCues } from "../core/AnimCues";
 import { tryExit } from "../world/Transition";
+import { doorRule, gateOpens, scriptInteract, takeSeal } from "../world/script/ScriptRun";
 
 /**
  * Interaction and pickups — opening doors, the piano-proximity check,
@@ -96,15 +97,18 @@ export function interact(){
   if(!game.started||game.inputLock)return;
   if(world.pianoPos&&Math.hypot(player.px-(world.pianoPos as unknown as PianoPos).x,player.pz-(world.pianoPos as unknown as PianoPos).z)<1.9){openPiano();return;}
   if(tryExit())return;   // the exit door: E at it, facing it (src/world/Transition.ts)
+  if(scriptInteract())return;   // a level's lever or lift (src/world/script/ScriptRun.ts)
   const dir=new THREE.Vector3();renderState.camera.getWorldDirection(dir);
   for(let t=.4;t<2.6;t+=.2){
     const wx_=player.px+dir.x*t,wz_=player.pz+dir.z*t;
     const gx=wx_/CELL|0,gz=wz_/CELL|0,d=world.doors[gx+","+gz] as unknown as Door;
     if(d&&!d.open){
+      const rule=doorRule(gx,gz);   // a scripted door: a gate's seals, a barred side, a niche before the bell
+      if(rule.block){showMsg(rule.block,2.6);at(wx_,WALLH/2,wz_,()=>lockedDoor());return;}
       if(d.locked&&!S.key){showMsg("IT WANTS THE RED KEY",2.2);
         say("locked");at(wx_,WALLH/2,wz_,()=>lockedDoor());return;}
       d.open=true;
-      at(wx_,WALLH/2,wz_,()=>doorOpens(d.flesh?"flesh":d.secret?"secret":d.locked?"gate":"stone"));
+      if(rule.gate)gateOpens(gx,gz);else at(wx_,WALLH/2,wz_,()=>doorOpens(d.flesh?"flesh":d.secret?"secret":d.locked?"gate":"stone"));
       alertSound(wx_,wz_,8);
       if(d.secret){S.secrets++;S.totSecrets++;say("secret",true);
         showMsg("SECRET FOUND — "+S.secrets+"/"+S.secretsTotal,3);
@@ -128,6 +132,7 @@ export function itemsTick(dt: number){
         case "nails":S.ammo.nails+=40;showMsg("+40 NAILS");break;
         case "souls":S.ammo.souls+=3;showMsg("+3 SOULS");break;
         case "tnt":S.ammo.tnt+=3;showMsg("+3 DYNAMITE");break;
+        case "seal_ash":case "seal_bell":takeSeal(it.kind);break;   // the monastery's two seals (src/world/script/)
         case "key":S.key=true;say("key",true);showMsg("RED KEY — IT IS WARM",3);break;
         default:{
           const wi=+it.kind[1];

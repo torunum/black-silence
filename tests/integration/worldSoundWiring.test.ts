@@ -85,7 +85,7 @@ beforeEach(() => { heard.length = 0; });
  * its churchyard, dirt underfoot; its hell is ash, and
  * tests/world/zones.test.ts walks the player down there and hears it.
  */
-const FLOORS: Surface[] = ["dirt", "marble", "stone", "stone", "dirt", "water", "metal", "stone", "flesh"];
+const FLOORS: Surface[] = ["dirt", "marble", "stone", "stone", "dirt", "water", "metal", "stone", "flesh", "stone"];   // 9: the monastery wakes in its family crypt
 
 describe("a footstep's floor follows the level", () => {
   it("covers every level", () => expect(FLOORS).toHaveLength(LEVELS.length));

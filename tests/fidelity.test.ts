@@ -164,7 +164,9 @@ const ARMOUR_CELLS: Readonly<Record<string, ReadonlyArray<readonly [number, numb
 const NEW_LEVEL = "LEVEL 7 — THE BONE CATHEDRAL";
 /** A port level's name as the reference spells it: the womb moved from 7 to 8 when the cathedral went in. */
 const refName = (name: string): string => (name === "LEVEL 8 — THE WOMB" ? "LEVEL 7 — THE WOMB" : name);
-const PORTED = LEVELS.filter((d) => d.name !== NEW_LEVEL);
+/** The levels the port added: the bone cathedral (index 7) and the Ash Bell Monastery (index 9, played second: levels/index.ts PLAY_ORDER). */
+const NEW_MONASTERY = "LEVEL 1 — THE ASH BELL MONASTERY";
+const PORTED = LEVELS.filter((d) => d.name !== NEW_LEVEL && d.name !== NEW_MONASTERY);
 
 /**
  * The third deliberate divergence, and the only whole-level one: the
@@ -224,7 +226,8 @@ describe("LEVELS vs. reference", () => {
     const meta = (defs: ReadonlyArray<{ build: unknown; name: string }>) =>
       defs.map(({ build, name, ...rest }) => ({ name: refName(name), ...rest }));
     expect(meta(PORTED)).toEqual(meta(refLevels));
-    expect(LEVELS).toHaveLength(refLevels.length + 1);
+    expect(LEVELS).toHaveLength(refLevels.length + 2);
+    expect(LEVELS.findIndex((d) => d.name === NEW_MONASTERY), "the monastery is appended, so no other level moves").toBe(9);
     expect(LEVELS.findIndex((d) => d.name === NEW_LEVEL), "the cathedral is level 7, between the factory and the womb").toBe(7);
   });
 

@@ -207,7 +207,7 @@ export const SHADOW_POLICY: Readonly<Record<string, ShadowRule>> = {
      have put every wall's shadow at the origin. */
   wall: { cast: true, receive: true },
   pillar: { cast: true, receive: true },
-  platform: { cast: true, receive: true },
+  platform: { cast: true, receive: true }, lift: { cast: true, receive: true },   // lift: the monastery's freight lift (src/world/script/ScriptRun.ts), a platform that rides
   wallSeg: { cast: true, receive: true },
   /* Gothic trim (`src/world/Trim.ts`) takes the policy of what it decorates:
      the wall courses a wall's, the pillar bases and capitals a pillar's. A

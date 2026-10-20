@@ -1,3 +1,4 @@
+import type { LevelScript } from "./script/LevelScript";
 /**
  * Level builder DSL — pure, validated offline. Two families of helpers:
  * a room-lattice builder (emptyGrid/link/put/putAbs) for grid-of-rooms
@@ -48,6 +49,8 @@ export interface BuiltLevel {
   lift?: boolean;
   /** The cell the player wakes in: the level opens with the rise from the grave (`src/world/Opening.ts`). Only the prologue has one. */
   grave?: { x: number; z: number };
+  /** What the grid cannot say: seals, a gate, a barred door, the bell, a lift (`src/world/script/`). Only the monastery has one. */
+  script?: LevelScript;
 }
 
 /**

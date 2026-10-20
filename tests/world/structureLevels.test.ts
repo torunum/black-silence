@@ -84,7 +84,7 @@ describe("REBUILT: the levels held to the targets", () => {
   it("names real levels, once each, in order, with no waiver", () => {
     expect([...REBUILT]).toEqual([...new Set(REBUILT)].sort((a, b) => a - b));
     for (const i of REBUILT) {
-      expect(i >= 1 && i <= 8, `level ${i}`).toBe(true);
+      expect(i >= 1 && i <= 9, `level ${i}`).toBe(true);   // 9: the monastery (2026-10-20), written to the targets from the start
       expect(LEGACY_PROBLEMS[i], `level ${i} is rebuilt: it has no waiver`).toBeUndefined();
     }
   });

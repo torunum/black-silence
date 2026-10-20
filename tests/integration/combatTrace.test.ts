@@ -915,6 +915,12 @@ import { MONOLOGUE } from "../../src/content/monologue";
  * of them were `ITEMTEX.gun`. Painted `quietly`, so no seeded draw moves. Against the previous fixture, field by field, every sampled frame:
  * `camera` — **identical**; `hud` — **identical**; `scene.count` — **identical**; `scene.digest` — differs in 110 of 110: the weapon pickups'
  * texture names (`item.gun` -> `item.w<slot>`), which the digest hashes; nothing moved.
+ *
+ * ## The owner's round, 2026-10-20 — regeneration: the level's number (hud only, 110 of 110 frames)
+ *
+ * The Ash Bell Monastery is played straight after the prologue (`src/world/levels/index.ts`'s `PLAY_ORDER`), so every later level's shown
+ * title counts one more (`titleOf`). Against the previous fixture: `camera`, `scene.count` and `scene.digest` **identical in every sampled
+ * frame**; `hud` differs in `lvltitle` and `msg` only, in all 110 (`LEVEL n` -> `LEVEL n+1`), every other field identical.
   */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

@@ -12,9 +12,10 @@ import { el } from "../ui/dom";
 import { weaponRaise } from "../audio/sounds/foley";
 import { WALLH } from "./Grid";
 import { world } from "./WorldState";
-import { LEVELS } from "./levels/index";
+import { titleOf } from "./levels/index";
 import { loadLevel } from "./LevelLoader";
 import { applyInventory, igniteMark } from "./Checkpoints";
+import { scriptReplay } from "./script/ScriptRun";
 import { checkpoint as CP, RISE_MIN_HP, type Facts, type Snapshot } from "./CheckpointState";
 
 /**
@@ -110,6 +111,7 @@ export function riseAgain(): boolean {
   Object.assign(S, snap.tallies);
   S.deaths = deaths; S.levelT0 = t0 + away;
   replay(snap.facts);
+  scriptReplay();   // the seals and the bell the facts imply (src/world/script/)
   snap.lit.forEach((i) => { const m = CP.marks[i]; if (m && !m.lit) igniteMark(m, i); });
   settle();
   showMsg("YOU RISE AGAIN", 2.6);
@@ -125,6 +127,6 @@ export function restartLevel(): boolean {
   if (entry) applyInventory(entry);
   S.deaths = deaths;
   settle();
-  showMsg(LEVELS[S.level].name, 3);
+  showMsg(titleOf(S.level), 3);
   return true;
 }

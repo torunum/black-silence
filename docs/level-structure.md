@@ -31,6 +31,7 @@ same code as hard validation and fails if this file is out of date.
 | 6 · THE FACTORY | 619 | 44 | optional | 8 | 9 | 3 | 3 | 1 | 1 | 0 | 1 / 1 / 10 | 1 (5) | 91%, 84% | 20 (1171 + 4150 boss hp) | 1 | wall |
 | 7 · THE BONE CATHEDRAL | 998 | 112 | required, 24 steps off the way | 11 | 9 | 1 | 3 | 2 | 19 | 28 | 1 / 1 / 5 | 2 (6, 4) | 15% forced, 44% forced, 83% forced | 33 (1360 + 3100 boss hp) | 2 | wall |
 | 8 · THE WOMB | 621 | 32 | optional | 7 | 8 | 3 | 3 | 1 | 1 | 0 | 1 / 1 / 9 | 1 (4) | 53%, 97% | 26 (1373 + 4550 boss hp) | 2 | n/a |
+| 9 · THE ASH BELL MONASTERY | 3792 | 297 | required, 74 steps off the way | 18 | 20 | 3 | 3 | 6 | 39 | 98 | 1 / 1 / 18 | 6 (4, 5, 3, 3, 3, 3) | 6%, 19%, 34% forced, 60% forced, 82% forced, 95% | 79 (3470 + 1500 boss hp) | 4 | wall |
 
 The prologue is one open cavern (hell) and one yard (the zones of `prologue.ts`), so "rooms" says little there. Levels 4-6 share a critical path of exactly 44: the same building with different wallpaper
 (`docs/level-density.md`). Levels 3-7 have a key and a locked door but no key on the way: the door guards a side chamber, so there is no key hunt.
@@ -146,6 +147,25 @@ Regions with enemies, in reading order. *ratio* is ammunition-worth over hit poi
 | x 1-8, z 13-23 | room | 78 | 3 | 180 | 0 | 1443 | 50 | 50 | 8.01 |
 | x 9-23, z 19-23 | room | 75 | 5 | 345 | 3000 | 2491 | 75 | 150 | 0.74 |
 
+### 9 · THE ASH BELL MONASTERY
+
+| region | kind | cells | enemies | hp | boss hp | ammo worth | health | armour | ratio |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| x 26-39, z 2-24 | room | 316 | 7 | 370 | 0 | 7617 | 425 | 0 | 20.59 |
+| x 43-60, z 4-17 | room | 227 | 7 | 260 | 0 | 7392 | 400 | 0 | 28.43 |
+| x 6-24, z 6-26 | room | 358 | 5 | 160 | 1500 | 8580 | 500 | 50 | 5.17 |
+| x 65-90, z 25-42 | room | 404 | 9 | 425 | 0 | 3720 | 175 | 0 | 8.75 |
+| x 34-73, z 28-82 | room | 1278 | 19 | 820 | 0 | 3288 | 175 | 0 | 4.01 |
+| x 18-26, z 30-36 | room | 63 | 3 | 145 | 0 | 5916 | 225 | 0 | 40.80 |
+| x 28-36, z 30-36 | room | 63 | 1 | 50 | 0 | 3945 | 200 | 0 | 78.90 |
+| x 24-36, z 39-46 | room | 104 | 4 | 190 | 0 | 3198 | 125 | 0 | 16.83 |
+| x 68-86, z 44-58 | room | 271 | 5 | 190 | 0 | 3198 | 175 | 0 | 16.83 |
+| x 10-34, z 50-66 | room | 341 | 10 | 485 | 0 | 3648 | 175 | 0 | 7.52 |
+| x 64-66, z 53-54 | passage | 5 | 2 | 100 | 0 | 2676 | 125 | 0 | 26.76 |
+| x 42-43, z 58-60 | passage | 5 | 2 | 85 | 0 | 2676 | 75 | 0 | 31.48 |
+| x 58-59, z 58-60 | passage | 5 | 2 | 60 | 0 | 2676 | 75 | 0 | 44.60 |
+| x 76-90, z 62-70 | room | 123 | 3 | 130 | 0 | 1326 | 25 | 0 | 10.20 |
+
 ## Hard failures
 
 Every level passes the hard validation (`analyse().problems`: reachability, key before door, no softlock, everything reachable, secrets behind secret doors, the exit door sited) except for these, which the old
@@ -161,17 +181,17 @@ A level listed in `REBUILT` (`src/world/structure/targets.ts`) must meet every n
 
 | target | number | measured today |
 | --- | --- | --- |
-| critical path | 1.8-3x the old level's, and at least 80 steps | 1: 123, 2: 168, 3: 44, 4: 44, 5: 44, 6: 44, 7: 112, 8: 32 |
-| loops | at least 1 | 1: 1, 2: 1, 3: 3, 4: 4, 5: 3, 6: 3, 7: 1, 8: 3 |
-| key hunt | a key, a locked door on the way, the key at least 20 steps off it | 1: 26, 2: 88, 3: none, 4: none, 5: none, 6: none, 7: 24, 8: none |
-| secrets | at least 2, each with at least 2 pickups behind it | 1: 2, 2: 2, 3: 1, 4: 1, 5: 1, 6: 1, 7: 2, 8: 1 |
-| arena | at least 1 | 1: 1, 2: 2, 3: 0, 4: 2, 5: 3, 6: 1, 7: 2, 8: 2 |
-| verticality | at least 3 floor heights and 2 transitions | 1: 15/28, 2: 39/46, 3: 6/49, 4: 1/0, 5: 1/0, 6: 1/0, 7: 19/28, 8: 1/0 |
-| rooms, branch points | at least 8 rooms, 2 branch points | 1: 14/3, 2: 13/2, 3: 13/4, 4: 6/2, 5: 5/3, 6: 8/3, 7: 11/3, 8: 7/3 |
-| checkpoint | one that every route passes, between 40% and 60% of the critical path | 1: yes, 2: yes, 3: no, 4: no, 5: no, 6: no, 7: yes, 8: no |
+| critical path | 1.8-3x the old level's, and at least 80 steps | 1: 123, 2: 168, 3: 44, 4: 44, 5: 44, 6: 44, 7: 112, 8: 32, 9: 297 |
+| loops | at least 1 | 1: 1, 2: 1, 3: 3, 4: 4, 5: 3, 6: 3, 7: 1, 8: 3, 9: 3 |
+| key hunt | a key, a locked door on the way, the key at least 20 steps off it | 1: 26, 2: 88, 3: none, 4: none, 5: none, 6: none, 7: 24, 8: none, 9: 74 |
+| secrets | at least 2, each with at least 2 pickups behind it | 1: 2, 2: 2, 3: 1, 4: 1, 5: 1, 6: 1, 7: 2, 8: 1, 9: 6 |
+| arena | at least 1 | 1: 1, 2: 2, 3: 0, 4: 2, 5: 3, 6: 1, 7: 2, 8: 2, 9: 4 |
+| verticality | at least 3 floor heights and 2 transitions | 1: 15/28, 2: 39/46, 3: 6/49, 4: 1/0, 5: 1/0, 6: 1/0, 7: 19/28, 8: 1/0, 9: 39/98 |
+| rooms, branch points | at least 8 rooms, 2 branch points | 1: 14/3, 2: 13/2, 3: 13/4, 4: 6/2, 5: 5/3, 6: 8/3, 7: 11/3, 8: 7/3, 9: 18/3 |
+| checkpoint | one that every route passes, between 40% and 60% of the critical path | 1: yes, 2: yes, 3: no, 4: no, 5: no, 6: no, 7: yes, 8: no, 9: yes |
 | fights | ammunition worth at least 2x the rank-and-file hit points of a region; 0.6x all of them before a boss, with 50 health and 50 armour on the way | see the tables above |
 
-Old critical paths (the 1x of "about twice"): 1: 42, 2: 66, 3: 44, 4: 44, 5: 44, 6: 44, 7: 44, 8: 32. `REBUILT` is 1, 2, 7.
+Old critical paths (the 1x of "about twice"): 1: 42, 2: 66, 3: 44, 4: 44, 5: 44, 6: 44, 7: 44, 8: 32, 9: 110. `REBUILT` is 1, 2, 7, 9.
 
 What the levels as built miss, by the targets (a rebuilt level starts from none of these):
 
@@ -183,3 +203,4 @@ What the levels as built miss, by the targets (a rebuilt level starts from none 
 - 6: 6 unmet
 - 7: 0 unmet
 - 8: 8 unmet
+- 9: 0 unmet

@@ -1,7 +1,8 @@
 import * as THREE from "three";
+import { loadScript, setScriptDef } from "./script/ScriptRun";
 import { resetDynamite } from "../weapons/DynamiteState";
 import { pick, rnd } from "../utils/math";
-import { LEVELS } from "./levels/index";
+import { LEVELS, titleOf } from "./levels/index";
 import { ENEMY_DEFS as EDEF } from "../enemies/EnemyDefs";
 import { TEX } from "../render/ProcTextures";
 import { bandFor } from "../render/BandTextures";
@@ -205,6 +206,7 @@ export function loadLevel(idx: number, resume?: Resume): void {
   setRoom(roomFor(look));   // the level's reverb (src/audio/Room.ts) — player feedback round 2 Task 2
   world.grid=L.g;world.GW=L.W;world.GH=L.H;
   world.heightMap=L.hmap||null;
+  setScriptDef(L.script);   // before the meshes: the lift's cells are its own mesh, not a platform (src/world/script/)
   world.ceilMap=L.cmap||null;
   world.zones=L.zones||null;
   world.masses=massMap(L.decor);   // the solid dressing (src/world/decor/masses.ts), which `solidAt` reads
@@ -355,7 +357,7 @@ export function loadLevel(idx: number, resume?: Resume): void {
       // every glyph free in all five tables has such a twin. See
       // docs/known-issues.md KNOWN-11 for the full glyph derivation.
       const map2:Record<string,string>={h:"health",A:"armor",r:"armor",a:"bullets",b:"shells",o:"slugs",c:"crosses",K:"key",
-        "2":"w1","3":"w2","4":"w3","5":"w4","6":"w5","7":"w6","8":"w7","9":"nails","0":"souls",d:"w8",e:"tnt"};
+        "2":"w1","3":"w2","4":"w3","5":"w4","6":"w5","7":"w6","8":"w7","9":"nails","0":"souls",d:"w8",e:"tnt",J:"seal_ash",M:"seal_bell"};
       const k=map2[ch];if(!k)continue;
       const tex=(ITEMTEX[k]??(k==="w8"?ITEMTEX.tnt:ITEMTEX.gun)) as THREE.CanvasTexture;   // each weapon its own icon once src/render/PickupArt.ts has painted them
       // dynamite (2026-10-20) bobs from where it lies, not from Math.random: the seeded traces must not see it
@@ -369,14 +371,15 @@ export function loadLevel(idx: number, resume?: Resume): void {
   // policy is one decision living in one file (src/render/Shadows.ts); a
   // scene child whose name is not in `SHADOW_POLICY` keeps three's defaults.
   applyShadowFlags(renderState.scene);
+  loadScript();   // a level's seals, gate, bell and lift, once its meshes are built (src/world/script/)
   if(resume?.at){player.px=resume.at.x;player.pz=resume.at.z;}   // a rise: where the shrine caught the player
   player.vx=player.vy=player.vz=0;player.pyy=EYE+floorHeightAt(player.px,player.pz);input.yaw=resume?.at?resume.at.yaw:Math.PI;input.pitch=0;player.grounded=true;
   enterZones();   // the start zone's fog, light and room, snapped — src/world/Zones.ts
   const lt=document.getElementById("lvltitle") as HTMLElement;
   if(resume){lt.style.opacity="0";return;}   // a death's reload tells the player itself (src/world/Respawn.ts): no title, no opening, no level line
-  lt.textContent=Ldef.name;lt.style.opacity="1";
+  lt.textContent=titleOf(idx);lt.style.opacity="1";
   after(()=>lt.style.opacity="0",5000);
-  showMsg(Ldef.name,3.4);
+  showMsg(titleOf(idx),3.4);
   // A level that opens in a grave says its line at the end of the rise (src/world/Opening.ts); the rest after 1.4 s.
   if(L.grave)beginOpening(L.grave,"lvl"+idx);
   else after(()=>say("lvl"+idx,true),1400);}

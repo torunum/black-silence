@@ -364,7 +364,7 @@ describe("the bridge over the pit", () => {
 });
 
 describe("the exit", () => {
-  it("leads to level 1: the crypt door ends the prologue, the card comes up over black, and a deliberate key loads the dungeon", async () => {
+  it("leads to level 1: the crypt door ends the prologue, the card comes up over black, and a deliberate key loads the monastery (played second: levels/index.ts PLAY_ORDER)", async () => {
     const { doors } = await import("../../src/world/ExitDoor");
     const { transitionTick } = await import("../../src/world/Transition");
     const { trans, T } = await import("../../src/world/TransitionState");
@@ -379,13 +379,13 @@ describe("the exit", () => {
     expect(document.getElementById("levelend")!.classList.contains("hidden"), "no panel while the door opens").toBe(true);
     for (let i = 0; i < Math.ceil((T.walk + T.hold + .1) * 60); i++) transitionTick(1 / 60);
     expect(document.getElementById("levelend")!.classList.contains("hidden")).toBe(false);
-    expect(document.getElementById("lebtn")!.textContent).toContain("THE GOTHIC DUNGEON");
+    expect(document.getElementById("lebtn")!.textContent).toContain("THE ASH BELL MONASTERY");
     expect(document.getElementById("letitle")!.textContent).toContain("OUT OF THE PIT");
     for (let i = 0; i < 70; i++) transitionTick(1 / 60);   // past T.cardAfter
     expect(trans.phase).toBe("card");
     window.dispatchEvent(new KeyboardEvent("keydown", { code: "Space" }));
-    expect(S.level).toBe(1);
-    expect(world.zones).toBeNull();
+    expect(S.level).toBe(9);
+    expect(world.zones, "the monastery has its own regions").not.toBeNull();
     for (let i = 0; i < Math.ceil((T.arrive + .1) * 60); i++) transitionTick(1 / 60);   // the arrival
     expect(trans.phase).toBe("idle");
   });
