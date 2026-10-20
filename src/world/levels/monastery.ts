@@ -3,6 +3,7 @@ import type { MonasteryRooms } from "./monasteryPop";
 import { LevelPlan } from "../authoring/Plan";
 import { MONASTERY_SCRIPT } from "./monasteryScript";
 import { populateMonastery } from "./monasteryPop";
+import { moreMonastery } from "./monasteryMore";
 import { monasteryZones } from "./monasteryZones";
 
 /**
@@ -76,8 +77,8 @@ export function buildMonastery(): BuiltLevel {
   lv.door(44, 27, "secret");                                                    // SECRET 7: off the rampart's west end
   // the four niches the bell opens: two in the south wall, two in the east
   const niches = [lv.room("niche sw", { x: 42, z: 59, w: 2, h: 2, floor: G }), lv.room("niche se", { x: 58, z: 59, w: 2, h: 2, floor: G }),
-    lv.room("niche e1", { x: 65, z: 41, w: 2, h: 2, floor: G }), lv.room("niche e2", { x: 65, z: 53, w: 2, h: 2, floor: G })];
-  lv.door(42, 58, "plain").door(58, 58, "plain").door(64, 41, "plain").door(64, 53, "plain");
+    lv.room("niche e1", { x: 65, z: 43, w: 2, h: 2, floor: G }), lv.room("niche e2", { x: 65, z: 53, w: 2, h: 2, floor: G })];
+  lv.door(42, 58, "plain").door(58, 58, "plain").door(64, 43, "plain").door(64, 53, "plain");
 
   // ---- 4. THE TOWER (in the courtyard's corner): flight east up to the north landing (3.0), flight west up to the bell chamber (6.0)
   lv.carve(62, 29, 63, 37, G).stairs(62, 37, 63, 29, { from: G, to: UPPER });
@@ -95,7 +96,7 @@ export function buildMonastery(): BuiltLevel {
   lv.door(37, 33, "plain");                                                     // the courtyard -> the morgue
   lv.door(27, 33, "plain");                                                     // reception -> cold room
   lv.door(17, 32, "secret");                                                    // SECRET 4: a drawer that is a door
-  lv.corridor([32, 36], [32, 39], { door: "plain" });                           // reception -> autopsy
+  // (no door from the reception to the autopsy: the way goes round, through the cold room and the embalming room: ./monasteryMore.ts)
   lv.window(37, 43); lv.window(37, 44);                                         // the autopsy looks out on the courtyard
   const furnaces = [[14, 54, 17, 57], [21, 54, 24, 57], [14, 60, 17, 63], [21, 60, 24, 63], [28, 56, 31, 60]] as const;
   carveAround(lv, 10, 50, 34, 66, G, furnaces);
@@ -106,12 +107,12 @@ export function buildMonastery(): BuiltLevel {
   lv.corridor([34, 52], [38, 52], { door: "plain" });                           // THE SERVICE DOOR: barred on the courtyard's side
 
   // ---- 6. THE EAST WING (1.2): the cloister round its garth, the library and its gallery (3.0)
-  lv.corridor([63, 50], [68, 50], { door: "plain" });                           // the courtyard -> the cloister
+  lv.corridor([63, 50], [68, 50], { door: "plain", grade: false });   // the courtyard -> the cloister (level: the cloister is carved after it)
   const cloister = lv.room("cloister", { x: 68, z: 44, w: 19, h: 15, floor: G });
   for (let x = 71; x <= 83; x += 3) { lv.put("I", x, 47); lv.put("I", x, 55); }
   for (const z of [50, 52]) { lv.put("I", 71, z); lv.put("I", 83, z); }
   const library = lv.room("library", { x: 66, z: 25, w: 25, h: 16, floor: G, ceil: 7 });
-  lv.corridor([76, 44], [76, 40], { door: "plain" });                           // the cloister -> the library
+  // (the cloister does not open on the library: the way goes through the chapter house: ./monasteryMore.ts)
   lv.carve(66, 25, 90, 26, UPPER).carve(89, 25, 90, 40, UPPER).stairs(89, 40, 90, 33, { from: G, to: UPPER });
   const reading = lv.room("reading room", { x: 76, z: 19, w: 5, h: 5, floor: UPPER });
   lv.door(78, 24, "secret");                                                    // SECRET 6: seen from the gallery, a door in the shelves
@@ -134,6 +135,7 @@ export function buildMonastery(): BuiltLevel {
   for (const z of [13, 16, 19]) { lv.put("I", 10, z); lv.put("I", 22, z); }
 
   const rooms: MonasteryRooms = { cell, hall, niche, gchapel, tomb, hoard, niches, bellroom, reception, cold, drawers, autopsy, ashes, cloister, library, reading, ossuary, cistern, chapel };
+  moreMonastery(lv);   // the side spaces each region was missing (./monasteryMore.ts)
   populateMonastery(lv, rooms);
   const level = lv.build();
   // the lift's shaft and the bell chamber stand open to the top of the tower

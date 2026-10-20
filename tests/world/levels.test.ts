@@ -281,9 +281,9 @@ it("every armour tile the authors wrote reaches the item table (KNOWN-11)", () =
     "LEVEL 6 — THE FACTORY": 4,
     "LEVEL 7 — THE BONE CATHEDRAL": 10,     // new (2026-10-20): the nave, the triforium, both secrets, both vaults, the charnel vault and the sanctuary
     "LEVEL 8 — THE WOMB": 4,
-    "LEVEL 1 — THE ASH BELL MONASTERY": 6,     // new (2026-10-20): the crypt's niche, the sealed tomb, the drawer room, the reading room, the rampart's hoard and the rite chapel
+    "LEVEL 1 — THE ASH BELL MONASTERY": 7,     // new (2026-10-20): the crypt's niche, the sealed tomb, the drawer room, the embalming room, the reading room, the rampart's hoard and the rite chapel
   });
-  expect(Object.values(counts).reduce((a, b) => a + b, 0)).toBe(43);   // the reference's twenty, levels 1 and 2 (rebuilt) have five and five where they had one and two, the cathedral ten, the monastery six
+  expect(Object.values(counts).reduce((a, b) => a + b, 0)).toBe(44);   // the reference's twenty, levels 1 and 2 (rebuilt) have five and five where they had one and two, the cathedral ten, the monastery seven
 });
 
 /**

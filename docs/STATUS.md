@@ -18,9 +18,13 @@ script (`analyse.ts`'s `scriptView`): the gate as a locked door, the last seal i
 path is the real one through both wings (297 steps), and the monastery is in `REBUILT`, meeting every target.
 `tests/integration/monastery.test.ts` drives each piece through the real game.
 
-**Length, measured not guessed:** the main route is 328 cells of walking (656 m, about 1.6 minutes at walking speed) with 79 enemies;
-a first run is estimated at 12-20 minutes against the brief's 25-35. The next pass widens the regions into their sub-spaces (the brief's
-"birkaç alt mekân") and adds encounters, not corridor.
+**Length, measured not guessed:** the blockout's main route was 328 cells of walking with 79 enemies (a first run estimated at 12-20
+minutes against the brief's 25-35). The second pass (`monasteryMore.ts`) gave each region the side space it was missing — the family
+vault, a ruined bone chapel with a gallery and a way down into the coal store under the crematorium, the embalming room (now on the
+way through the morgue), the chapter house (now on the way to the library), the archive stacks on the gallery's floor, a bone chapel
+off the ossuary, and a pump room that is a second way into the rite chapel. The main route is now 396 cells (the critical path the suite
+measures, 347 steps), with 115 enemies in the level and about 95 on the way: a first run estimated at 20-30 minutes, explorers more.
+Estimated, not played: the owner's runs are the measure.
 
 ## Owner's round, 2026-10-20 (evening): the pickups redrawn, the reloads brought into view
 

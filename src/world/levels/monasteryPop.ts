@@ -105,6 +105,7 @@ export function populateMonastery(lv: LevelPlan, r: MonasteryRooms): void {
   lv.checkpoint([79, 62], { side: "n" });     // the crypt hall, on the way up
   lv.checkpoint([52, 60], { side: "e" });     // the gatehouse, into the courtyard
   lv.checkpoint([13, 50], { side: "n" });     // the top of the ash platform's stair: every way to the Ash Seal
+  lv.checkpoint([90, 41], { side: "e" });     // the stair up from the chapter house: every way to the library
   lv.checkpoint([65, 36], { side: "n" });     // the tower's foot: the one way up to the bell
   lv.checkpoint([41, 15], { side: "e" });     // the foot of the gate's stair
   lv.checkpoint([26, 22], { side: "w" });     // the cistern, before the chapel
