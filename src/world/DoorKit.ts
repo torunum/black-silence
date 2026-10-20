@@ -2,7 +2,9 @@ import * as THREE from "three";
 import { TEX } from "../render/ProcTextures";
 import { DOORTEX } from "../render/DoorTextures";
 import { track } from "../render/DisposeRegistry";
-import type { DoorKind } from "../audio/sounds/doors";
+import { buildWellRig, ROPE_SPEC, WELL_SPEC } from "./WellKit";
+import type { DoorStyle, Rig, StyleSpec } from "./DoorTypes";
+export type { DoorStyle, OpenMove, Rig, StyleSpec, Leaf } from "./DoorTypes";
 
 /**
  * THE GREAT DOORS — one per level theme, built from boxes, cylinders and one
@@ -41,24 +43,8 @@ import type { DoorKind } from "../audio/sounds/doors";
  * Nothing here draws from `Math.random`: a door is the same every build.
  */
 
-export type DoorStyle = "crypt" | "iron" | "church" | "tomb" | "cemetery" | "sluice" | "freight" | "sphincter";
+/** The eight doors of the level themes. The well and the rope (`./WellKit.ts`) are ways a level is given by name, not by theme. */
 export const DOOR_STYLES: readonly DoorStyle[] = ["crypt", "iron", "church", "tomb", "cemetery", "sluice", "freight", "sphincter"];
-export type OpenMove = "swing" | "slide" | "roll" | "iris" | "sink";
-
-export interface StyleSpec {
-  /** Clear opening, world units. */
-  w: number; h: number;
-  /** Height of a pointed arch above the leaves (0 = square head). */
-  rise: number;
-  move: OpenMove;
-  /** The colour of the way on. */
-  glow: number;
-  /** The sound the door makes opening (`src/audio/sounds/doors.ts`). */
-  sound: DoorKind;
-  /** What the player calls it, for the hint. */
-  name: string;
-}
-
 export const STYLES: Readonly<Record<DoorStyle, StyleSpec>> = {
   crypt:     { w: 1.4, h: 2.3, rise: 0,   move: "sink",  glow: 0x8fb4e8, sound: "stone",  name: "THE CRYPT DOOR" },
   iron:      { w: 1.4, h: 2.4, rise: 0,   move: "swing", glow: 0xff9238, sound: "gate",   name: "THE IRON DOOR" },
@@ -68,6 +54,7 @@ export const STYLES: Readonly<Record<DoorStyle, StyleSpec>> = {
   sluice:    { w: 1.3, h: 2.2, rise: 0,   move: "swing", glow: 0x88c040, sound: "gate",   name: "THE SLUICE DOOR" },
   freight:   { w: 1.7, h: 2.4, rise: 0,   move: "roll",  glow: 0xffc040, sound: "gate",   name: "THE FREIGHT DOOR" },
   sphincter: { w: 1.1, h: 2.2, rise: 0,   move: "iris",  glow: 0xff5040, sound: "flesh",  name: "THE WOMB'S MOUTH" },
+  well: WELL_SPEC, rope: ROPE_SPEC,
 };
 
 /** The door a level wears, by the same `sub` string the level table carries. */
@@ -87,23 +74,6 @@ export function styleFor(def: { sub?: string; hell?: boolean; flesh?: boolean })
 
 /** How deep the porch stands off the wall, and the width of a jamb. */
 export const PORCH = 0.34, JAMB = 0.28;
-
-interface Leaf { node: THREE.Object3D; side: -1 | 0 | 1; home: THREE.Vector3 }
-
-/** A built door, in its own frame, ready to be placed and posed. */
-export interface Rig {
-  style: DoorStyle;
-  spec: StyleSpec;
-  group: THREE.Group;
-  glow: THREE.Group;
-  leaves: Leaf[];
-  /** Spun with the opening (the sluice's wheel). */
-  wheel: THREE.Object3D | null;
-  /** The light in the crack, shown only while the door is nearly shut. */
-  seam: THREE.Object3D[];
-  /** 0 shut .. 1 open. */
-  open: number;
-}
 
 const lambert = (map: THREE.Texture | undefined, color = 0xffffff): THREE.MeshLambertMaterial =>
   track(new THREE.MeshLambertMaterial(map ? { map, color } : { color }));
@@ -179,6 +149,7 @@ function lamp(color: number, w: number, h: number, d: number, x: number, y: numb
 
 /** Builds the door `style` in its own frame; `name` is the scene name of its solid group. */
 export function buildRig(style: DoorStyle, name: string): Rig {
+  if (style === "well" || style === "rope") return buildWellRig(style, name);
   const s = STYLES[style], g = new THREE.Group(), gl = new THREE.Group();
   g.name = name; gl.name = "doorGlow";
   const rig: Rig = { style, spec: s, group: g, glow: gl, leaves: [], wheel: null, seam: [], open: 0 };

@@ -7,6 +7,7 @@ import { loadLevel } from "./LevelLoader";
 import { world } from "./WorldState";
 import { doors, against } from "./ExitDoor";
 import { pose, setLit } from "./DoorKit";
+import { WELL_DEPTH, WELL_OUT } from "./WellKit";
 import { floorHeightAt } from "./Collision";
 import { EYE, CELL } from "./Grid";
 import { trans, T, smooth, setFade, showHud } from "./TransitionState";
@@ -159,9 +160,26 @@ export function exitTick(): void {
   if (!hinted) { hinted = true; showMsg("PRESS E — " + d.rig.spec.name, 2.2); }
 }
 
+/** The well (the dungeon's way out: `WellKit.ts`): to its rim, a look down, and down the rope into the dark. */
+function descend(): void {
+  const d = doors.exit!, t = trans.t, f = trans.from;
+  cue("walk", .2, exitWalkthrough);
+  const tx = d.x + d.nx * WELL_OUT, tz = d.z + d.nz * WELL_OUT, p = smooth(.05, .6, t), look = smooth(0, .45, t);
+  const wx = tx - f.x, wz = tz - f.z;
+  const yaw = Math.hypot(wx, wz) > .05 ? f.yaw + turn(f.yaw, yawOf(wx, wz)) * look : f.yaw;
+  const y = f.y + .3 * smooth(.35, .6, t) - WELL_DEPTH * smooth(.6, 1.5, t);
+  placeCamera(mix(f.x, tx, p), y, mix(f.z, tz, p), yaw, mix(f.pitch, -1.0, smooth(.3, .7, t)));
+  setFade(smooth(.85, 1.45, t));
+}
+
 function walk(): void {
   const d = doors.exit!, t = trans.t, f = trans.from;
   pose(d.rig, smooth(0, .8, t));
+  if (d.rig.style === "well") {
+    descend();
+    if (t >= T.walk) { trans.phase = "card"; trans.t = 0; setFade(1); document.exitPointerLock(); }
+    return;
+  }
   cue("walk", .25, exitWalkthrough);
   const tx = d.x + d.nx * .15, tz = d.z + d.nz * .15, p = smooth(.2, 1.4, t), look = smooth(0, .6, t);
   const wx = tx - f.x, wz = tz - f.z;
@@ -208,16 +226,30 @@ function beginArrival(): void {
   trans.phase = "arrive"; trans.t = 0; trans.cued.clear(); hinted = false;
   game.inputLock = true; input.firing = false;
   setFade(1);
-  if (e) {
+  if (e && e.rig.style === "rope") { setLit(e.rig, true); arriveByRope(); }
+  else if (e) {
     pose(e.rig, 1); setLit(e.rig, true);
     const x = (e.site.sx + .5) * CELL, z = (e.site.sz + .5) * CELL;
     placeCamera(x, floorHeightAt(x, z) + EYE, z, yawOf(player.px - x, player.pz - z), 0);
   } else placeCamera(player.px, player.pyy, player.pz, input.yaw, 0);
 }
 
+/** The rope (the church's way in: `WellKit.ts`): down it from the light above, then to where the level begins. */
+function arriveByRope(): void {
+  const e = doors.entrance!, t = trans.t;
+  const x0 = e.x + e.nx * .55, z0 = e.z + e.nz * .55, y0 = floorHeightAt(x0, z0) + EYE;
+  const down = smooth(0, 1.1, t), p = smooth(1.0, 1.7, t), wx = player.px - x0, wz = player.pz - z0;
+  const ahead = Math.hypot(wx, wz) > .05 ? yawOf(wx, wz) : input.yaw, face = yawOf(-e.nx, -e.nz);
+  const yaw = t < 1.0 ? face + turn(face, ahead) * smooth(.7, 1.0, t) : ahead + turn(ahead, input.yaw) * smooth(1.7, 2.2, t);
+  placeCamera(mix(x0, player.px, p), mix(y0 + WELL_DEPTH, y0, down) + (player.pyy - y0) * p, mix(z0, player.pz, p), yaw, -.35 * (1 - smooth(.6, 1.1, t)));
+  const lx = x0, lz = z0;
+  cue("land", 1.05, () => at(lx, y0, lz, () => doorShutsBehind()));
+}
+
 function arrive(): void {
   const e = doors.entrance, t = trans.t;
   setFade(1 - smooth(.1, 1.3, t));
+  if (e && e.rig.style === "rope") { arriveByRope(); if (t >= T.arrive) finishArrival(); return; }
   if (e) {
     const x0 = (e.site.sx + .5) * CELL, z0 = (e.site.sz + .5) * CELL, y0 = floorHeightAt(x0, z0) + EYE;
     const p = smooth(.15, 1.0, t), wx = player.px - x0, wz = player.pz - z0;
@@ -235,7 +267,7 @@ function arrive(): void {
 
 function finishArrival(): void {
   const e = doors.entrance;
-  if (e) { pose(e.rig, 0); setLit(e.rig, false); }
+  if (e) { pose(e.rig, 0); setLit(e.rig, e.rig.style === "rope"); }   // the shaft's grey light stays; a door's goes out as it shuts
   trans.phase = "idle"; trans.t = 0;
   setFade(0);
   placeCamera(player.px, player.pyy, player.pz, input.yaw, input.pitch);

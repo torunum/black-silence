@@ -223,8 +223,8 @@ function gridDiff(ours: string[][], ref: string[][]): string[] {
 
 describe("LEVELS vs. reference", () => {
   it("declares the same eight levels, in order, with identical metadata, and the new bone cathedral before the womb", () => {
-    const meta = (defs: ReadonlyArray<{ build: unknown; name: string }>) =>
-      defs.map(({ build, name, ...rest }) => ({ name: refName(name), ...rest }));
+    const meta = (defs: ReadonlyArray<{ build: unknown; name: string; exitStyle?: unknown; entranceStyle?: unknown }>) =>
+      defs.map(({ build, name, exitStyle, entranceStyle, ...rest }) => ({ name: refName(name), ...rest }));   // the well and the rope (2026-10-21) are the port's own
     expect(meta(PORTED)).toEqual(meta(refLevels));
     expect(LEVELS).toHaveLength(refLevels.length + 2);
     expect(LEVELS.findIndex((d) => d.name === NEW_MONASTERY), "the monastery is appended, so no other level moves").toBe(9);

@@ -100,7 +100,7 @@ describe("each theme has its own door", () => {
     const sig = new Map<DoorStyle, string>();
     for (let i = 0; i <= ALL; i++) {
       loadLevel(i);
-      const d = doors.entrance ?? doors.exit!;   // the womb has only an entrance
+      const d = i === 2 ? doors.exit! : doors.entrance ?? doors.exit!;   // the womb has only an entrance; the church comes in by the well's rope (its exit is its own door)
       expect(d.rig.style, LEVELS[i].name).toBe(EXPECT[i]);
       let meshes = 0, tris = 0;
       const maps = new Set<string>();
@@ -311,7 +311,7 @@ describe("opening the exit", () => {
     standAt(doors.exit!, 3); exitTick();
     expect(msg.textContent).toBe("");
     standAt(doors.exit!, 1.6); exitTick();
-    expect(msg.textContent).toBe("PRESS E — THE IRON DOOR");
+    expect(msg.textContent).toBe("PRESS E — THE WELL");   // the dungeon ends down its well (2026-10-20)
     msg.textContent = ""; exitTick();
     expect(msg.textContent, "not again while he stands there").toBe("");
   });
@@ -397,5 +397,26 @@ describe("draws nothing from Math.random", () => {
       loadLevel(1); deadAll(); standAt(doors.exit!, .4); playerTick(1 / 60);
     } finally { Math.random = real; }
     expect(from).toEqual([]);
+  });
+});
+
+describe("the well and the rope (owner, 2026-10-20: the dungeon ends down a well, the church begins at its bottom)", () => {
+  it("are what the dungeon's exit and the church's entrance are built as, and every other way stays its theme's door", () => {
+    for (let i = 0; i < LEVELS.length; i++) {
+      loadLevel(i);
+      if (doors.exit) expect(doors.exit.rig.style, LEVELS[i].name).toBe(i === 1 ? "well" : styleFor(LEVELS[i]));
+      if (doors.entrance) expect(doors.entrance.rig.style, LEVELS[i].name).toBe(i === 2 ? "rope" : styleFor(LEVELS[i]));
+    }
+  });
+
+  it("the well has a lid that slides off, a winch and a rope; the rope's foot stands under its shaft's light", () => {
+    loadLevel(1);
+    const w = doors.exit!;
+    expect(w.rig.leaves).toHaveLength(1);
+    pose(w.rig, 1);
+    expect(w.rig.leaves[0].node.position.x).not.toBeCloseTo(w.rig.leaves[0].home.x, 3);
+    pose(w.rig, 0);
+    loadLevel(2);
+    expect(doors.entrance!.rig.glow.children.length).toBeGreaterThan(0);
   });
 });

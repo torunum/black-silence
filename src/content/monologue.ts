@@ -134,8 +134,8 @@ export const MONOLOGUE: Record<string, string[]> = {
 export const CHAPTER_LINES: Readonly<Record<number, readonly [string, string]>> = {
   0: ["Out of the pit, through a door, and not one soul held it for me. Onward.",
       "I left a trail the whole way up. Somebody will have to mop hell."],
-  1: ["Cells empty, chains still swinging. Housekeeping would be proud, if housekeeping were alive.",
-      "That went worse than it looked. Everything goes worse than it looks. Next door."],
+  1: ["Cells empty, chains still swinging, and the only way on is down a well. Of course it is.",
+      "That went worse than it looked. Everything goes worse than it looks. Down the rope."],
   2: ["The bell can stop now. I'd say a prayer, but the line's been busy since the funeral.",
       "If anyone upstairs is keeping score, I'd like a recount."],
   3: ["Down here the dead keep better order than the living. I'm leaving before they notice.",

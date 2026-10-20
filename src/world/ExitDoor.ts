@@ -149,9 +149,10 @@ function lightExit(d: PlacedDoor, scene: THREE.Scene): void {
  * level opens in a grave, the entrance at the spawn. `def` is the level's
  * `LevelDef`, whose `sub` picks the door; `scene` is the level's.
  */
-export function buildLevelDoors(scene: THREE.Scene, def: { sub?: string; hell?: boolean; flesh?: boolean }, hasBossExit: boolean, hasEntrance: boolean): void {
+export function buildLevelDoors(scene: THREE.Scene, def: { sub?: string; hell?: boolean; flesh?: boolean; exitStyle?: DoorStyle; entranceStyle?: DoorStyle }, hasBossExit: boolean, hasEntrance: boolean): void {
   doors.exit = doors.entrance = null;
-  const style = styleFor(def);
+  // the level's own way out and in, where it has one (the dungeon's well, the church's rope: levels/index.ts), else its theme's door
+  const style = def.exitStyle ?? styleFor(def), inStyle = def.entranceStyle ?? styleFor(def);
   const ex = world.exitPos as { x: number; z: number } | null;
   if (ex) {
     const cx = ex.x / CELL | 0, cz = ex.z / CELL | 0;
@@ -163,7 +164,7 @@ export function buildLevelDoors(scene: THREE.Scene, def: { sub?: string; hell?: 
   }
   if (hasEntrance) {
     const cx = player.px / CELL | 0, cz = player.pz / CELL | 0, s = siteDoor(cx, cz, ENTRANCE_REACH, BEHIND);
-    if (s) doors.entrance = place(style, "entranceDoor", s, { cx, cz }, scene);
+    if (s) doors.entrance = place(inStyle, "entranceDoor", s, { cx, cz }, scene);
   }
 }
 
@@ -172,10 +173,10 @@ export function buildLevelDoors(scene: THREE.Scene, def: { sub?: string; hell?: 
  * was not built at load (a test calling `openExit` on a bare level) gets it
  * built now, from the same cell.
  */
-export function unsealExit(scene: THREE.Scene, def: { sub?: string; hell?: boolean; flesh?: boolean }): void {
+export function unsealExit(scene: THREE.Scene, def: { sub?: string; hell?: boolean; flesh?: boolean; exitStyle?: DoorStyle }): void {
   if (!doors.exit) {
     const [cx, cz] = exitCell();
-    doors.exit = place(styleFor(def), "exitDoor", exitSite(cx, cz), { cx, cz }, scene);
+    doors.exit = place(def.exitStyle ?? styleFor(def), "exitDoor", exitSite(cx, cz), { cx, cz }, scene);
   }
   lightExit(doors.exit, scene);
 }

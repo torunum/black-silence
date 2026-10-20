@@ -1,5 +1,16 @@
 # Where this project stands
 
+## Owner's round, 2026-10-21: the dungeon ends down a well, the church begins at its bottom
+
+"ilk bölüm büyük bir kapıdan geçerek bitebilir ... diğer bölümde de kuyuya inebilir iple. 3. bölümde kuyu icinden başlar" — the
+monastery ends through its great gate (the Gravedigger's exit door); the dungeon (played second) now ends **down a well on a rope**,
+and the church (played third) **begins at the well's bottom**. `src/world/WellKit.ts` builds both as door rigs (`DoorStyle` "well" and
+"rope"; the eight theme doors are unchanged), so `ExitDoor.ts` sites them and the hint, the touch and `E` work as at any door; a level
+names them with `LevelDef.exitStyle`/`entranceStyle`. `Transition.ts`: through the well the camera goes to the rim, looks down and
+climbs down into the black (`descend`); into the church it comes down the rope from the shaft's grey light, lands, and walks to the
+spawn (`arriveByRope`). The door-walk's own test now walks the prologue's crypt door. `tests/world/transition.test.ts`,
+`tests/world/exitDoor.test.ts`.
+
 ## Owner's round, 2026-10-20 (night): LEVEL 1 — THE ASH BELL MONASTERY, blockout
 
 The owner's brief ("Kül Çanı Manastırı": an old monastery, its graveyard and funeral houses over a forbidden rite) built blockout-first,

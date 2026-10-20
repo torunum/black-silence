@@ -12,12 +12,13 @@ import { game } from "../../src/core/Game";
 import { S } from "../../src/core/State";
 import { save } from "../../src/save/SaveGame";
 import { weaponRuntime } from "../../src/weapons/WeaponRuntime";
-import { CELL, EYE } from "../../src/world/Grid";
+import { EYE } from "../../src/world/Grid";
 import { LEVELS, PLAY_ORDER, titleOf } from "../../src/world/levels/index";
 import { CHAPTER_LINES } from "../../src/content/monologue";
 import { doors, against } from "../../src/world/ExitDoor";
 import { T, resetTransition, trans } from "../../src/world/TransitionState";
 import { floorHeightAt } from "../../src/world/Collision";
+import { WELL_DEPTH, WELL_OUT } from "../../src/world/WellKit";
 
 /**
  * THE TRANSITION (the transitions plan, Task 2): the exit door opens, the camera walks into the dark
@@ -91,9 +92,14 @@ describe("the walk through the exit door", () => {
     expect(leaveLevel(), "a second press while it happens does nothing").toBe(false);
   });
 
-  it("opens the door, walks the camera up to the dark and stops short of it, and goes to black on the way", () => {
-    leaveLevel1();
-    const d = doors.exit!, fades: number[] = [], outs: number[] = [];
+  it("opens the door, walks the camera up to the dark and stops short of it, and goes to black on the way (the prologue's crypt door)", () => {
+    loadLevel(0);
+    for (const e of world.enemies) e.dead = true;
+    S.won = false; game.inputLock = false;
+    const d = doors.exit!;
+    player.px = d.x + d.nx * 2; player.pz = d.z + d.nz * 2; input.yaw = Math.atan2(d.nx, d.nz);
+    expect(leaveLevel()).toBe(true);
+    const fades: number[] = [], outs: number[] = [];
     let seenOpen = false;
     run(T.walk - .01, () => {
       fades.push(fade());
@@ -109,6 +115,21 @@ describe("the walk through the exit door", () => {
     expect(outs[0], "and began where the player stood").toBeGreaterThan(1.5);
     expect(cardUp(), "no panel yet").toBe(false);
     expect(trans.cued.has("walk"), "the walk's sound").toBe(true);
+  });
+
+  it("the dungeon ends down its well (owner, 2026-10-20): the lid slides off, the camera goes to the rim, looks down and climbs down into the black", () => {
+    leaveLevel1();
+    const d = doors.exit!, y0 = renderState.camera.position.y, fades: number[] = [], ys: number[] = [];
+    expect(d.rig.style).toBe("well");
+    let seenOpen = false;
+    run(T.walk - .01, () => { fades.push(fade()); ys.push(renderState.camera.position.y); if (d.rig.open >= .999) seenOpen = true; });
+    expect(seenOpen, "the lid comes off").toBe(true);
+    expect(fades[fades.length - 1], "black by the end").toBeGreaterThan(.95);
+    for (let i = 1; i < fades.length; i++) expect(fades[i]).toBeGreaterThanOrEqual(fades[i - 1]);
+    expect(Math.min(...ys), "down the rope, deep").toBeLessThan(y0 - 3);
+    const a = against(d, renderState.camera.position.x, renderState.camera.position.z, 0);
+    expect(a.out, "over the well's mouth").toBeCloseTo(WELL_OUT, 1);
+    expect(renderState.camera.rotation.x, "looking down").toBeLessThan(-.5);
   });
 
   it("does not load the next level during it", () => {
@@ -242,51 +263,46 @@ describe("continuing the card is deliberate", () => {
 });
 
 describe("the arrival", () => {
-  it("starts black, with the camera at the entrance door, the door open and the title coming up", () => {
+  it("the church begins at the well's bottom (owner, 2026-10-20): black, the camera high up the shaft over the rope's foot, the title coming up", () => {
     toCard();
     key("Space");
     const e = doors.entrance!;
+    expect(e.rig.style).toBe("rope");
     expect(S.won, "the new level is live").toBe(false);
     expect(game.inputLock, "but the player is not free yet").toBe(true);
     expect(fade()).toBe(1);
-    expect(e.rig.open).toBe(1);
-    const x = (e.site.sx + .5) * CELL, z = (e.site.sz + .5) * CELL;
+    const x = e.x + e.nx * .55, z = e.z + e.nz * .55;
     expect(renderState.camera.position.x).toBeCloseTo(x, 3);
     expect(renderState.camera.position.z).toBeCloseTo(z, 3);
-    expect(renderState.camera.position.y).toBeCloseTo(floorHeightAt(x, z) + EYE, 3);
+    expect(renderState.camera.position.y, "up the rope").toBeCloseTo(floorHeightAt(x, z) + EYE + WELL_DEPTH, 3);
     expect(el("lvltitle").textContent).toBe(titleOf(2));   // numbered by where it is played: LEVEL 3 since the monastery
     expect(el("lvltitle").style.opacity).toBe("1");
     expect(el("msg").textContent).toBe(titleOf(2));
   });
 
-  it("lifts the black while the camera walks in from the door to the spawn, shuts the door behind, and ends where the level begins", () => {
+  it("lifts the black as the camera comes down the rope, lands, walks to the spawn and ends where the level begins", () => {
     toCard();
     key("Space");
-    const e = doors.entrance!, x0 = (e.site.sx + .5) * CELL, z0 = (e.site.sz + .5) * CELL;
-    const fades: number[] = [], dists: number[] = [], opens: number[] = [];
+    const e = doors.entrance!;
+    const fades: number[] = [], ys: number[] = [], dists: number[] = [];
     run(T.arrive - .01, () => {
-      fades.push(fade());
+      fades.push(fade()); ys.push(renderState.camera.position.y);
       dists.push(Math.hypot(renderState.camera.position.x - player.px, renderState.camera.position.z - player.pz));
-      opens.push(e.rig.open);
     });
-    // MUTATION TARGET: never lift the fade, or never walk
     expect(fades[2]).toBeGreaterThan(.95);
     expect(fades[fades.length - 1], "clear at the end").toBeLessThan(.01);
     for (let i = 1; i < fades.length; i++) expect(fades[i]).toBeLessThanOrEqual(fades[i - 1] + 1e-9);
-    expect(dists[0], "begins as far from the spawn as the door").toBeCloseTo(Math.hypot(x0 - player.px, z0 - player.pz), 2);
-    expect(dists[0], "just inside the door, not across the level").toBeLessThan(4.5);
+    for (let i = 1; i < ys.length; i++) expect(ys[i], "only ever down").toBeLessThanOrEqual(ys[i - 1] + 1e-9);
+    expect(ys[0] - ys[ys.length - 1], "the whole climb down").toBeGreaterThan(WELL_DEPTH - .5);
     expect(dists[dists.length - 1], "ends at the spawn").toBeLessThan(.01);
-    for (let i = 1; i < dists.length; i++) expect(dists[i]).toBeLessThanOrEqual(dists[i - 1] + 1e-9);
-    expect(opens[0]).toBe(1);
-    expect(opens[opens.length - 1], "the door is shut behind").toBeCloseTo(0, 6);
-    expect(trans.cued.has("shut"), "with its sound").toBe(true);
+    expect(trans.cued.has("land"), "a landing").toBe(true);
     run(.05);
     expect(trans.phase).toBe("idle");
     expect(game.inputLock, "control").toBe(false);
     expect(fade()).toBe(0);
     expect(el("hud").style.opacity, "the HUD is back").toBe("");
     expect(weaponRuntime.wstate, "and the hands come up").toBe("equip");
-    expect(e.rig.glow.visible, "the entrance door is dark again").toBe(false);
+    expect(e.rig.glow.visible, "the shaft's grey light stays").toBe(true);
     expect(input.yaw, "looking the way every level starts").toBeCloseTo(Math.PI, 6);
   });
 

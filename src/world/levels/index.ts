@@ -1,4 +1,5 @@
 import type { BuiltLevel } from "../LevelBuilder";
+import type { DoorStyle } from "../DoorKit";
 import { buildPrologue } from "./prologue";
 import { buildLevel1 } from "./level1";
 import { buildLevel2 } from "./level2";
@@ -39,15 +40,19 @@ export interface LevelDef {
   hell?: boolean;
   dungeon?: boolean;
   flesh?: boolean;
+  /** A way out that is not the theme's door (owner, 2026-10-20: the dungeon ends down a well on a rope). */
+  exitStyle?: DoorStyle;
+  /** A way in that is not the theme's door (the church begins at the well's bottom). */
+  entranceStyle?: DoorStyle;
 }
 
 export const LEVELS: LevelDef[] = [
  {name:"PROLOGUE — OUT OF THE PIT",build:buildPrologue,
   fog:0x180604,fogD:.07,amb:0x6e2a14,ambI:.6,floor:"hell",sub:"hell",hell:true},
  {name:"LEVEL 1 — THE GOTHIC DUNGEON",build:buildLevel1,
-  fog:0x07080b,fogD:.05,amb:0x3a4250,ambI:.5,floor:"dungeon",sub:"dungeon",dungeon:true},
+  fog:0x07080b,fogD:.05,amb:0x3a4250,ambI:.5,floor:"dungeon",sub:"dungeon",dungeon:true,exitStyle:"well"},
  {name:"LEVEL 2 — THE ABANDONED CHURCH",build:buildLevel2,
-  fog:0x0b070d,fogD:.042,amb:0x453a50,ambI:.5,floor:"church",sub:"church"},
+  fog:0x0b070d,fogD:.042,amb:0x453a50,ambI:.5,floor:"church",sub:"church",entranceStyle:"rope"},
  {name:"LEVEL 3 — THE NECROPOLIS",build:buildLevel3,
   fog:0x0a0a07,fogD:.046,amb:0x4a4636,ambI:.46,floor:"church",sub:"necropolis"},
  {name:"LEVEL 4 — THE GRAVEYARD",build:buildLevel4,
