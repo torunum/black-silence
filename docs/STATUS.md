@@ -1,5 +1,16 @@
 # Where this project stands
 
+## Owner's round, 2026-10-20 (later): recorded guns and monsters
+
+"gerçekçi sesler koyamaz mıyız ? korkunc sesler olsun istiyorum. silah sesleri de gerçekçi degil." The guns and the monsters now
+play real recordings, all CC0 (`docs/assets.md`, `THIRD-PARTY-NOTICES.md`): 60 short mono MP3s in `assets/sfx/` (about 660 KB),
+inlined into the bundle as data URLs so the single file still opens from `file://`. `src/audio/Samples.ts` decodes them when the
+game starts; `src/audio/sounds/weapons.ts`'s six firearms (1911, Model 12, AK-47, Carl Gustav M45, Mosin-Nagant, AR-15) and
+`src/audio/SampleVoice.ts` (every `speak`, by voice family and event, pitched by each kind's fundamental) play them, and a loop of
+ambient horror runs under the oscillator drones. Every one falls back to the synthesized sound when its clip is not decoded — which
+is always so in the tests, so no fixture moved. The relic launcher and the soul-eater keep their synthesized character.
+`tests/audio/samples.test.ts`.
+
 ## Owner's round, 2026-10-20: the X goes, the guns stand straight, a map, a new chapter
 
 Four asks, in the owner's words: remove the X that shows when a shot hits an enemy; the weapon models stand crooked and should be

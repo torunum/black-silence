@@ -4,6 +4,7 @@ import { soundRandom, soundRnd } from "../SoundRandom";
 import { lv } from "../Levels";
 import { jit, play, type Glue, type Layer } from "../Layers";
 import { bell } from "../Material";
+import { hasSample, playSample } from "../Samples";
 
 /**
  * THE SOUND CATALOGUE — WEAPONS. What the player's weapons sound like when
@@ -174,13 +175,23 @@ const GLUE: readonly Glue[] = [
 /** Each slot's report design, in `WEAPON_STATS` order — exported so tests can read a design without playing it. */
 export const REPORT_DESIGNS: readonly (() => Layer[])[] = [flare, shotgun, rifle, tommy, sniper, cross, nail, reaper];
 
-export function flarePistolFire(): void { lv("flarePistolFire", () => { play(flare(), GLUE[0]); }); }
-export function shotgunFire(): void { lv("shotgunFire", () => { play(shotgun(), GLUE[1]); }); }
-export function combatRifleFire(): void { lv("combatRifleFire", () => { play(rifle(), GLUE[2]); }); }
-export function tommyGunFire(): void { lv("tommyGunFire", () => { play(tommy(), GLUE[3]); }); }
-export function sniperFire(): void { lv("sniperFire", () => { play(sniper(), GLUE[4]); }); }
+/**
+ * The recorded reports (owner, 2026-10-20: "silah sesleri de gerçekçi degil") — real guns, CC0 (`../Samples.ts`): a
+ * 1911 for the pistol, a Model 12 for the sawed-off, an AK-47 for the rifle, a Carl Gustav M45 for the tommy gun, a
+ * Mosin-Nagant for the sniper, an AR-15 pitched up and cut short for the nail cannon. Each falls back to its
+ * synthesized design until its clip is decoded. The flare pistol keeps its fizz over the shot; the relic launcher and
+ * the soul-eater are not guns and keep their own sounds.
+ */
+const FLARE_FIZZ = (): Layer[] => flare().slice(-1);
+const shot = (bank: string, rate: number, o: { dur?: number; extra?: readonly Layer[] } = {}): boolean =>
+  hasSample(bank) && playSample(bank, { rate: rate * jit(0.03), echo: true, ...o });
+export function flarePistolFire(): void { lv("flarePistolFire", () => { if (!(hasSample("gun.pistol") && shot("gun.pistol", 0.94, { extra: FLARE_FIZZ() }))) play(flare(), GLUE[0]); }); }
+export function shotgunFire(): void { lv("shotgunFire", () => { if (!shot("gun.shotgun", 0.97)) play(shotgun(), GLUE[1]); }); }
+export function combatRifleFire(): void { lv("combatRifleFire", () => { if (!shot("gun.rifle", 1, { dur: 0.5 })) play(rifle(), GLUE[2]); }); }
+export function tommyGunFire(): void { lv("tommyGunFire", () => { if (!shot("gun.smg", 1, { dur: 0.32 })) play(tommy(), GLUE[3]); }); }
+export function sniperFire(): void { lv("sniperFire", () => { if (!shot("gun.sniper", 0.98)) play(sniper(), GLUE[4]); }); }
 export function crossLauncherFire(): void { lv("crossLauncherFire", () => { play(cross(), GLUE[5]); }); }
-export function nailCannonFire(): void { lv("nailCannonFire", () => { play(nail(), GLUE[6]); }); }
+export function nailCannonFire(): void { lv("nailCannonFire", () => { if (!shot("gun.nail", 1.18, { dur: 0.22 })) play(nail(), GLUE[6]); }); }
 export function soulReaperFire(): void { lv("soulReaperFire", () => { play(reaper(), GLUE[7]); }); }
 
 /** Each weapon slot's firing sound, in `WEAPON_STATS` order — what `WEAPONS[i].snd` is. */
