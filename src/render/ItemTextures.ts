@@ -25,4 +25,6 @@ export function buildItemTex(): void {
   // nails and souls (KNOWN-20, closed 2026-10-20): the two pickups the item table named and nothing ever drew, so they lay on the floor as flat colour; drawn last, after everything the reference drew, so its call log is ours up to here (tests/behavior/textures.test.ts)
   ITEMTEX.nails=pickupTex(["........",".kkkkkk.",".k....k.",".kn.n.k.",".kn.n.k.",".k.n.nk.",".kkkkkk.","........"],{".":"#101216","k":"#5a4630","n":"#c8c2b2"});
   ITEMTEX.souls=pickupTex(["...gg...","..gGGg..",".gGWWGg.",".gGWWGg.","..gGGg..","...gg...","..g..g..","........"],{".":"#00000000","g":"#3c9a2c","G":"#8ae060","W":"#e8ffd0"});
+  // dynamite (2026-10-20): three red sticks, black tape, a lit fuse — the bundle pickup and the weapon itself both lie as this
+  ITEMTEX.tnt=pickupTex(["......Y.",".....y..","...kk...",".RRRRRR.",".kkkkkk.",".RRRRRR.",".RRRRRR.","........"],{".":"#00000000","R":"#a8281a","k":"#1a1612","y":"#5a4630","Y":"#ffd060"});
 }

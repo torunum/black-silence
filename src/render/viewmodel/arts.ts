@@ -7,8 +7,9 @@ import { bmgSniper } from "./weapons/sniper";
 import { crossLauncher } from "./weapons/cross";
 import { nailCannon } from "./weapons/nailgun";
 import { soulReaper } from "./weapons/reaper";
+import { dynamite } from "./weapons/dynamite";
 
-/** The eight weapons' art, in WEAPON_STATS slot order (tests pin that each name matches its slot). */
+/** The nine weapons' art, in WEAPON_STATS slot order (tests pin that each name matches its slot). */
 export const WEAPON_ART: readonly WeaponArt[] = [
-  flarePistol, sawedOff, combatRifle, tommyGun, bmgSniper, crossLauncher, nailCannon, soulReaper,
+  flarePistol, sawedOff, combatRifle, tommyGun, bmgSniper, crossLauncher, nailCannon, soulReaper, dynamite,
 ];

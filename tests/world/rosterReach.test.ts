@@ -387,6 +387,7 @@ const PROP_CHARS = new Set(["x", "T", "C", "F", "V", "O", "v"]); // LevelLoader.
 const ITEM_CHARS = new Set([
   "h", "A", "r", "a", "b", "o", "c", "K", // LevelLoader.ts:341 map2
   "2", "3", "4", "5", "6", "7", "8", "9", "0", // LevelLoader.ts:342 map2
+  "d", "e", // map2: dynamite and its bundles (2026-10-20)
 ]);
 const ENEMY_CHARS = new Set(Object.keys(ENEMY_DEFS));
 

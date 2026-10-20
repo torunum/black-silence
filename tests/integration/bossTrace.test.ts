@@ -926,6 +926,13 @@ import { world } from "../../src/world/WorldState";
  *      `unnamed#9` (1,430), `unnamed#8` (2), `#10` (2), `#11` (1), then `unnamed#9` -> `unnamed#13` (273) and `unnamed#8` -> `#12` (1): the same textures, numbered by first sight in a later frame; the wailer `s.a` -> `s.walk0` (6), `walk2` (6), `walk4` (5), `walk1` (1).
  *    - **one flying part — 430 frames, 1,440 sprites removed and 1,440 added at the same x and z, every one .0265 m higher** (the head of a sprinter and the like, in the legacy crop's box; the same
  *      mechanism as the ghoul's). No colour changed anywhere.
+ *
+ * ## The owner's round, 2026-10-20 — regeneration: two dynamite pickups in level 2 (scene count +2 only)
+ *
+ * DYNAMITE (slot 8) lies in level 2's north chapel (`d`, [30, 8]) with a box of bundles in the nave (`e`, [31, 22]). Their bob phase comes from the cell, not
+ * `Math.random` (`LevelLoader.ts`), so the seeded stream does not move. Against the previous fixture, field by field, all 512 sampled frames:
+ * `camera` — **identical in all 512**; `hud` — **identical in all 512** (the run still ends `HEALTH3661` / `THE CORRUPTED PRIEST — PHASE 3`);
+ * `scene.count` — **+2 in all 512** (the two sprites, never reached by the run's path); `scene.digest` — differs in all 512, by those two children.
   */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

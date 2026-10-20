@@ -27,12 +27,12 @@ in a straight line. **Emptiest** = the biggest four-way connected bare region. S
 |---|---:|---:|---:|---:|---:|---:|---:|---|---|
 | 0 prologue · OUT OF THE PIT | 668 | 2 | 322 | 4 | 8 | 17 | 51 (8%) | 5 cells (x 12-16, z 26-26) | 8 cells (x 8-11, z 18-21) |
 | 1 · THE GOTHIC DUNGEON | 1099 | 3 | 380 | 43 | 23 | 14 | 36 (3%) | 4 cells (x 28-31, z 11-11) | 4 cells (x 5-6, z 5-6) |
-| 2 · THE ABANDONED CHURCH | 1260 | 14 | 460 | 73 | 35 | 16 | 29 (2%) | 5 cells (x 31-31, z 30-34) | 6 cells (x 38-42, z 39-40) |
+| 2 · THE ABANDONED CHURCH | 1260 | 14 | 458 | 75 | 35 | 16 | 30 (2%) | 5 cells (x 31-31, z 30-34) | 6 cells (x 38-42, z 39-40) |
 | 3 · THE NECROPOLIS | 590 | 14 | 211 | 18 | 21 | 17 | 1 (0%) | 1 cells (x 19-19, z 1-1) | 1 cells (x 19-19, z 1-1) |
 | 4 · THE GRAVEYARD | 623 | 13 | 245 | 18 | 20 | 17 | 6 (1%) | 2 cells (x 12-12, z 12-13) | 2 cells (x 12-12, z 12-13) |
 | 5 · THE SEWERS | 632 | 11 | 309 | 18 | 22 | 17 | 5 (1%) | 3 cells (x 6-6, z 6-8) | 5 cells (x 6-7, z 6-8) |
 | 6 · THE FACTORY | 619 | 10 | 280 | 22 | 20 | 17 | 2 (0%) | 1 cells (x 11-11, z 10-10) | 1 cells (x 11-11, z 10-10) |
-| 7 · THE BONE CATHEDRAL | 998 | 9 | 236 | 77 | 33 | 16 | 61 (6%) | 8 cells (x 17-24, z 18-18) | 36 cells (x 16-24, z 14-20) |
+| 7 · THE BONE CATHEDRAL | 998 | 9 | 233 | 80 | 33 | 16 | 61 (6%) | 8 cells (x 17-24, z 18-18) | 36 cells (x 16-24, z 14-20) |
 | 8 · THE WOMB | 621 | 0 | 289 | 21 | 26 | 17 | 7 (1%) | 3 cells (x 22-22, z 12-14) | 5 cells (x 21-22, z 12-14) |
 
 ## 0 prologue · OUT OF THE PIT
@@ -143,10 +143,10 @@ in a straight line. **Emptiest** = the biggest four-way connected bare region. S
 
 ## 2 · THE ABANDONED CHURCH
 
-- walkable cells: 1260; bare: 29
+- walkable cells: 1260; bare: 30
 - breakable props: barrel 1, crate 1, pew 9, piano 1, shelf 2
-- decor pieces: 460 (altar 4, banner 46, bench 3, bonesLoose 49, bonestack 2, brazier 12, candelabra 19, chainLoose 7, fallenstatue 1, font 2, glass 100, lectern 9, niche 6, rubble 159, sarcophagus 3, sconce 8, shrine 3, skullpile 4, urn 4, votive 19)
-- pickups: armor 5, bullets 24, crosses 4, health 22, key 1, shells 7, slugs 7, weapon 3
+- decor pieces: 458 (altar 4, banner 46, bench 3, bonesLoose 49, bonestack 2, brazier 12, candelabra 18, chainLoose 7, fallenstatue 1, font 2, glass 99, lectern 9, niche 6, rubble 159, sarcophagus 3, sconce 8, shrine 3, skullpile 4, urn 4, votive 19)
+- pickups: armor 5, bullets 24, crosses 4, health 22, key 1, shells 7, slugs 7, tnt 1, weapon 4
 - enemies: 35 (2 boss); torches 7, candles 8, lights 16
 - longest bare run: 5 cells, x 31-31, z 30-34
 - emptiest region: 6 cells, x 38-42, z 39-40
@@ -175,7 +175,7 @@ in a straight line. **Emptiest** = the biggest four-way connected bare region. S
 ##############+++++++++++#++++++++++.+++++++++++++####++++++++##
 ##############+++++++++++#++++++++++.+++++++++++++####++++++++##
 ##############+++++++++++#++++++++++.+++++++++++++####++++++++##
-###################+######++++++++++++++.+++++++++++++++++++++##
+###################+######+++.++++++++++.+++++++++++++++++++++##
 ###################+######++++++++++++++++++++++++####++++++++##
 ###################.######++#++#++#++#++#++#++#+++####++++++++##
 ###################+######++++++++++++++++++++++++####++++++++##
@@ -356,8 +356,8 @@ in a straight line. **Emptiest** = the biggest four-way connected bare region. S
 
 - walkable cells: 998; bare: 61
 - breakable props: barrel 2, crate 1, pew 6
-- decor pieces: 236 (altar 1, banner 18, bonesLoose 68, brazier 2, candelabra 8, niche 5, ossuarylamp 3, rubble 64, sarcophagus 3, skullpile 52, votive 12)
-- pickups: armor 10, bullets 20, crosses 6, health 23, key 1, shells 9, slugs 5, weapon 3
+- decor pieces: 233 (altar 1, banner 18, bonesLoose 67, brazier 2, candelabra 8, niche 5, ossuarylamp 3, rubble 63, sarcophagus 3, skullpile 51, votive 12)
+- pickups: armor 10, bullets 20, crosses 6, health 23, key 1, shells 9, slugs 5, tnt 2, weapon 4
 - enemies: 33 (2 boss); torches 11, candles 6, lights 16
 - longest bare run: 8 cells, x 17-24, z 18-18
 - emptiest region: 36 cells, x 16-24, z 14-20

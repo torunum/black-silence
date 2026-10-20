@@ -1,5 +1,16 @@
 # Where this project stands
 
+## Owner's round, 2026-10-20 (later still): dynamite
+
+"ilk dinamit eklensin" — **DYNAMITE is slot 8, the ninth weapon, key `9`** (`src/weapons/Dynamite.ts`, its art
+`src/render/viewmodel/weapons/dynamite.ts`): a bundle of three sticks with a lit fuse, held up in the right hand with a brass lighter
+in the left, as Blood's Caleb holds his. Thrown underhand along the aim with a lob; it bounces off floors and walls, rolls to a stop,
+and goes off when its 1.7 s fuse burns down — not on contact — for 150 at the centre to nothing at 5.5 m, knocking bodies back,
+breaking props, setting off barrels, and hurting the thrower inside 4.5 m. One in the hand; the next is lit in 0.75 s (the reload:
+it comes up from below, the lighter crosses to the fuse). Glyphs `d` (the weapon) and `e` (+3 bundles): level 2's north chapel and
+nave, and the bone cathedral's porch, vault and nave; their bob phase is from the cell, not `Math.random`, so the boss trace's
+fight is unchanged (its fixture regenerated: scene count +2 only, header note). `tests/integration/dynamite.test.ts`.
+
 ## Owner's round, 2026-10-20 (later): recorded guns and monsters
 
 "gerçekçi sesler koyamaz mıyız ? korkunc sesler olsun istiyorum. silah sesleri de gerçekçi degil." The guns and the monsters now

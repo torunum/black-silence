@@ -16,6 +16,7 @@ import { world } from "../world/WorldState";
 import { ceilHeightAt, floorHeightAt, solidAt } from "../world/Collision";
 import { breakProp, explodeBarrel, type Prop } from "../world/Props";
 import type { Enemy } from "../enemies/Enemy";
+import { sticks } from "./DynamiteState";
 
 /**
  * DYNAMITE (owner, 2026-10-20: "ilk dinamit eklensin") — slot 8, the game's ninth weapon, after Blood's own: a bundle of three
@@ -37,16 +38,7 @@ export const BLAST_R = 5.5;       // the blast's reach, world units
 export const BLAST_DMG = 150;     // at the centre, falling to nothing at the edge (plus 30 to anything in it)
 export const SELF_R = 4.5, SELF_DMG = 55;
 
-interface Stick { m: THREE.Object3D; x: number; y: number; z: number; vx: number; vy: number; vz: number; fuse: number; spin: number }
-const sticks: Stick[] = [];
-
-/** How many bundles are in flight or on the floor, fuses burning (for tests). */
-export function sticksLive(): number { return sticks.length; }
-/** Drops every bundle without a bang (a level change, a restart). */
-export function resetDynamite(): void {
-  for (const s of sticks) renderState.scene?.remove(s.m);
-  sticks.length = 0;
-}
+export { resetDynamite, sticksLive } from "./DynamiteState";
 
 const stickMat = new THREE.MeshLambertMaterial({ color: 0xa8281a });
 const tapeMat = new THREE.MeshLambertMaterial({ color: 0x1a1612 });

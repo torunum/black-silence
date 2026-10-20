@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { resetDynamite } from "../weapons/DynamiteState";
 import { pick, rnd } from "../utils/math";
 import { LEVELS } from "./levels/index";
 import { ENEMY_DEFS as EDEF } from "../enemies/EnemyDefs";
@@ -195,7 +196,7 @@ export function spawnEnemy(ch: string, wx: number, wz: number, summoned?: boolea
   return e;}
 
 export function loadLevel(idx: number, resume?: Resume): void {
-  clearAllTimers();clearScheduled();disposeAll();stopMusic();resetOpening();
+  clearAllTimers();clearScheduled();disposeAll();stopMusic();resetOpening();resetDynamite();
   S.level=idx;
   const Ldef=LEVELS[idx],L=Ldef.build();
   // The look it starts with: the level's own, or on a zoned level the spawn
@@ -354,10 +355,11 @@ export function loadLevel(idx: number, resume?: Resume): void {
       // every glyph free in all five tables has such a twin. See
       // docs/known-issues.md KNOWN-11 for the full glyph derivation.
       const map2:Record<string,string>={h:"health",A:"armor",r:"armor",a:"bullets",b:"shells",o:"slugs",c:"crosses",K:"key",
-        "2":"w1","3":"w2","4":"w3","5":"w4","6":"w5","7":"w6","8":"w7","9":"nails","0":"souls"};
+        "2":"w1","3":"w2","4":"w3","5":"w4","6":"w5","7":"w6","8":"w7","9":"nails","0":"souls",d:"w8",e:"tnt"};
       const k=map2[ch];if(!k)continue;
-      const tex=(k[0]==="w"?ITEMTEX.gun:ITEMTEX[k]) as THREE.CanvasTexture;
-      world.items.push({kind:k,x:wx,z:wz,sp:addSprite(tex,wx,wz,.55,.55,.5),bob:Math.random()*6});}
+      const tex=(k==="w8"?ITEMTEX.tnt:k[0]==="w"?ITEMTEX.gun:ITEMTEX[k]) as THREE.CanvasTexture;
+      // dynamite (2026-10-20) bobs from where it lies, not from Math.random: the seeded traces must not see it
+      world.items.push({kind:k,x:wx,z:wz,sp:addSprite(tex,wx,wz,.55,.55,.5),bob:k==="w8"||k==="tnt"?(x*7+z*3)%6:Math.random()*6});}
     world.grid[z][x]=".";}
   buildLevelDoors(renderState.scene as THREE.Scene,Ldef,bossExit,!L.grave);   // the exit and the entrance — src/world/ExitDoor.ts
   dressLevel(renderState.scene as THREE.Scene,L);   // set dressing, and what stands on raised ground — src/world/Decor.ts

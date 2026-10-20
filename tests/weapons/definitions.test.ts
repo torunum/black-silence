@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { WEAPON_STATS } from "../../src/weapons/definitions";
 
 describe("WEAPON_STATS", () => {
-  it("has eight slots in the reference order", () => {
+  it("has the reference's eight slots in order, and DYNAMITE ninth (2026-10-20)", () => {
     expect(WEAPON_STATS.map((w) => w.name)).toEqual([
       "FLARE PISTOL",
       "SAWED-OFF SHOTGUN",
@@ -12,6 +12,7 @@ describe("WEAPON_STATS", () => {
       "HOLY CROSS LAUNCHER",
       "NAIL CANNON",
       "SOUL REAPER",
+      "DYNAMITE",
     ]);
   });
 
@@ -25,7 +26,7 @@ describe("WEAPON_STATS", () => {
   });
 
   it("draws every ammo type from the player's pool", () => {
-    const pools = new Set(["bullets", "shells", "slugs", "crosses", "nails", "souls"]);
+    const pools = new Set(["bullets", "shells", "slugs", "crosses", "nails", "souls", "tnt"]);
     for (const w of WEAPON_STATS) expect(pools.has(w.ammo), w.name).toBe(true);
   });
 

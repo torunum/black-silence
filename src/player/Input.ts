@@ -96,15 +96,15 @@ addEventListener("keydown", e => {
   if (e.code === "KeyE") hooks.interact();
   if (e.code === "KeyR") hooks.startReload();
   if (e.code === "KeyZ" && hooks.currentWeapon() === 4) input.zoomOn = !input.zoomOn;
-  if (/^Digit[1-8]$/.test(e.code)) hooks.requestSwitch(+e.code[5] - 1);
+  if (/^Digit[1-9]$/.test(e.code)) hooks.requestSwitch(+e.code[5] - 1);
 }, false);
 addEventListener("keyup", e => keys[e.code] = false);
 addEventListener("wheel", e => {
   animCues.input++;
   if (!hooks) return;
   if (!hooks.isStarted() || hooks.isPianoOpen()) return;
-  let i = hooks.currentWeapon(); for (let k = 0; k < 8; k++) {
-    i = (i + (e.deltaY > 0 ? 1 : 7)) % 8;
+  let i = hooks.currentWeapon(); for (let k = 0; k < 9; k++) {
+    i = (i + (e.deltaY > 0 ? 1 : 8)) % 9;
     if (hooks.ownsWeapon(i)) { hooks.requestSwitch(i); break; }
   }
 });

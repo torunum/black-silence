@@ -36,7 +36,7 @@ export const PUNCH_RATE = { lunge: 15, pitch: 13, roll: 11 };
  * are solid, the automatic weapons barely move the view (their stream is
  * the feel, not each round).
  */
-export const FIRE_STRENGTH: Readonly<Record<number, number>> = { 0: 0.45, 1: 1, 2: 0.2, 3: 0.1, 4: 1, 5: 0.6, 6: 0.06, 7: 0.7 };
+export const FIRE_STRENGTH: Readonly<Record<number, number>> = { 0: 0.45, 1: 1, 2: 0.2, 3: 0.1, 4: 1, 5: 0.6, 6: 0.06, 7: 0.7, 8: 0.08 };
 
 const clampTo = (v: number, m: number): number => (v > m ? m : v < -m ? -m : v);
 

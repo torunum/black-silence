@@ -1,4 +1,5 @@
 import type * as THREE from "three";
+import { dynamiteTick } from "../weapons/Dynamite";
 import { rnd } from "../utils/math";
 import { fleshHitsPlayer, fleshSplat } from "../audio/sounds/monsters";
 import { spawnP, blood, smoke3d } from "./Particles";
@@ -74,6 +75,7 @@ interface Orb {
 type Enemy = Pick<EnemyShape, "dead" | "dormant" | "x" | "z" | "w" | "h">;
 
 export function projTick(dt: number){
+  dynamiteTick(dt);   // the thrown bundles: flight, bounces, fuses (src/weapons/Dynamite.ts)
   const nails=projectiles.nails as unknown as Nail[];
   for(let i=nails.length-1;i>=0;i--){const n=nails[i];
     n.life-=dt;

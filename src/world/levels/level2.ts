@@ -102,6 +102,7 @@ export function buildLevel2(): BuiltLevel {
   lv.pickup("a", [48, 15], [28, 16], [28, 26]).pickup("h", [48, 27], [27, 22]).pickup("r", [27, 21]).pickup("b", [47, 21]);   // the nave
   lv.pickup("a", [28, 10]).pickup("h", [34, 6]).pickup("b", [28, 6]);                    // the north chapel
   lv.pickup("h", [39, 6]).pickup("a", [45, 10]).pickup("b", [39, 10]);                   // the lady chapel
+  lv.pickup("d", [30, 8]).pickup("e", [31, 22]);   // DYNAMITE (2026-10-20): the bundle in the north chapel, more in the nave
   lv.pickup("4", [49, 8]).pickup("r", [49, 6]).pickup("c", [49, 10]).pickup("h", [48, 7]);   // the reliquary
   lv.pickup("a", [15, 5]).pickup("h", [23, 5]).pickup("b", [23, 9]);                     // the choir loft
   lv.pickup("6", [15, 20]).pickup("c", [16, 21], [22, 15]).pickup("h", [22, 21], [24, 21], [24, 19], [17, 22]).pickup("r", [15, 22]).pickup("o", [23, 20]).pickup("a", [22, 16], [15, 16], [20, 15], [24, 17]).pickup("b", [23, 17]);   // the chancel

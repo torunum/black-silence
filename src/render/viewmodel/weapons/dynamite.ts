@@ -40,9 +40,15 @@ function lighter(b: Builder, flame: boolean): void {
   if (flame) { b.ball(0, 0.034, 0, 0.007, MAT.FLAME, 6); b.cbox(-0.003, 0.03, -0.003, 0.003, 0.05, 0.003, 0.002, MAT.FLAME); }
 }
 
+/** How far the bundle leans away from the eye (radians): upright it would stand taller than the whole frame under the crosshair. */
+export const TILT = 0.5;
+/** Where the right hand closes on the bundle, and where the lighter rests, in the bundle's frame (metres). */
+const F_Y = -0.025;
+const LY = 0;
+
 export const dynamite: WeaponArt = {
   name: "DYNAMITE",
-  hold: { x: 0.04, y: -0.1, z: 0.3, pitch: 0.15, yaw: 0, roll: 0 },
+  hold: { x: 0.05, y: -0.09, z: 0.42, pitch: 0.1, yaw: 0, roll: 0 },
   kick: { back: 0.02, lift: 0.04 },
   // the throw: the bundle is out of the hand from 0.45 on
   action: (p) => ramp(p, 0, 1),
@@ -58,19 +64,21 @@ export const dynamite: WeaponArt = {
     b.push();
     b.translate(0, -0.12 * up - 0.03 * back + 0.02 * fwd, -0.05 * back + 0.08 * fwd);
     b.pitch(0.5 * back - 0.6 * fwd);
+    b.push(); b.pitch(-TILT);   // the bundle leans away, top first, as a hand holds it ready to throw
     if (!thrown || r >= 0) {
       if (r < 0 || up < 0.98) sticks(b, lit, Math.sin(pose.spin * 4) * 0.5 + 0.5);
     }
     b.anchor("muzzle", 0, 0.1, 0.01);
-    // the right hand round the bundle's lower half, and the arm
-    b.push(); b.translate(0.004, -0.045, -0.004); b.pitch(-0.2); fist(b, 1, { w: 0.022, fingers: 4 }); b.pop();
-    forearm(b, 0.016, -0.075, -0.05, [0.2, -0.5, -1], 0.031);
+    // the right hand round the bundle's lower half, fingers across its front, and the arm down out of the frame
+    if (!thrown || r >= 0) { b.push(); b.translate(0, F_Y, 0); fist(b, 1, { w: 0.032, fingers: 3 }); b.pop(); }
+    b.pop();
+    forearm(b, 0.03, -0.07, -0.06, [0.25, -0.6, -1], 0.034);
     b.pop();
 
     // the left hand and its lighter, low on the left; across to the fuse while lighting
     b.push();
-    b.translate(-0.075 + 0.07 * light, -0.06 + 0.11 * light, 0.02 - 0.012 * light);
-    lighter(b, r < 0 ? true : light > 0.05 || r < 0.4);
+    b.translate(-0.085 + 0.08 * light, LY + 0.09 * light, 0.01 - 0.012 * light);
+    lighter(b, true);   // the lighter stays lit: the next bundle is lit from it
     b.push(); b.translate(0, -0.03, -0.006); fist(b, -1, { w: 0.012, fingers: 3 }); b.pop();
     forearm(b, -0.01, -0.06, -0.05, [-0.35, -0.55, -1], 0.03);
     b.pop();

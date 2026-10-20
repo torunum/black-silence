@@ -228,9 +228,9 @@ describe("round 1's six firearm reports (the board's old ones) are gunshot() at 
     expectCallLogEqual(recordModuleSound(P.OLD_FIRE[slot], 7), recordModuleSound(() => P.gunshot(P.OLD_REPORTS[slot]), 7), `slot ${slot}`);
   });
 
-  it("the game's slots are the eight catalogue reports, in slot order", () => {
+  it("the game's slots are the catalogue reports, in slot order (DYNAMITE's throw ninth, 2026-10-20)", () => {
     expect(W.WEAPON_FIRE_SOUNDS).toEqual([
-      W.flarePistolFire, W.shotgunFire, W.combatRifleFire, W.tommyGunFire, W.sniperFire, W.crossLauncherFire, W.nailCannonFire, W.soulReaperFire,
+      W.flarePistolFire, W.shotgunFire, W.combatRifleFire, W.tommyGunFire, W.sniperFire, W.crossLauncherFire, W.nailCannonFire, W.soulReaperFire, W.dynamiteThrow,
     ]);
   });
 });

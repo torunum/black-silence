@@ -166,14 +166,25 @@ function reaper(): Layer[] {
   ];
 }
 
+/** Slot 8 — not a report: the bundle thrown, a heavy underhand whoosh, and the lit fuse spitting as it goes. */
+function toss(): Layer[] {
+  const p = jit(0.05);
+  return [
+    { noise: "pink", filters: [{ type: "bandpass", f: 380 * p, q: 1.6, to: 1500 * p, over: 0.22 }], env: { a: 0.06, h: 0.05, d: 0.2 }, drive: 1.3, level: 0.9 },
+    { tone: "sine", f: 140 * p, to: 70, over: 0.1, env: { a: 0.004, h: 0.01, d: 0.08 }, level: 0.25 },
+    { at: 0.03, noise: "white", filters: [{ type: "highpass", f: 3000 }], am: { rate: 37, depth: 0.5, type: "square" }, env: { a: 0.02, h: 0.15, d: 0.35 }, level: 0.25 },
+  ];
+}
+
 /** How hard each slot's report is saturated as a whole (`../Layers.ts`'s `Glue`) — hardest for the rapid ones, whose every shot must be loud and short. */
 const GLUE: readonly Glue[] = [
   { pre: 0.6, drive: 1.8 }, { pre: 0.5, drive: 1.6 }, { pre: 0.7, drive: 2.4 }, { pre: 0.7, drive: 2.4 },
   { pre: 0.5, drive: 1.6 }, { pre: 0.6, drive: 1.2 }, { pre: 0.8, drive: 2.6 }, { pre: 0.6, drive: 1.6 },
+  { pre: 0.7, drive: 1.1 },
 ];
 
 /** Each slot's report design, in `WEAPON_STATS` order — exported so tests can read a design without playing it. */
-export const REPORT_DESIGNS: readonly (() => Layer[])[] = [flare, shotgun, rifle, tommy, sniper, cross, nail, reaper];
+export const REPORT_DESIGNS: readonly (() => Layer[])[] = [flare, shotgun, rifle, tommy, sniper, cross, nail, reaper, toss];
 
 /**
  * The recorded reports (owner, 2026-10-20: "silah sesleri de gerçekçi degil") — real guns, CC0 (`../Samples.ts`): a
@@ -193,11 +204,12 @@ export function sniperFire(): void { lv("sniperFire", () => { if (!shot("gun.sni
 export function crossLauncherFire(): void { lv("crossLauncherFire", () => { play(cross(), GLUE[5]); }); }
 export function nailCannonFire(): void { lv("nailCannonFire", () => { if (!shot("gun.nail", 1.18, { dur: 0.22 })) play(nail(), GLUE[6]); }); }
 export function soulReaperFire(): void { lv("soulReaperFire", () => { play(reaper(), GLUE[7]); }); }
+export function dynamiteThrow(): void { lv("dynamiteThrow", () => { play(toss(), GLUE[8]); }); }
 
 /** Each weapon slot's firing sound, in `WEAPON_STATS` order — what `WEAPONS[i].snd` is. */
 export const WEAPON_FIRE_SOUNDS: readonly (() => void)[] = [
   flarePistolFire, shotgunFire, combatRifleFire, tommyGunFire,
-  sniperFire, crossLauncherFire, nailCannonFire, soulReaperFire,
+  sniperFire, crossLauncherFire, nailCannonFire, soulReaperFire, dynamiteThrow,
 ];
 
 // The power kick's swing and impact are world sounds since player feedback round 2 Task 5

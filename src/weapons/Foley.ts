@@ -81,6 +81,8 @@ export const RELOAD_CUES: readonly (readonly Cue[])[] = [
     { at: REAPER.dying[0], play: F.reaperGutter }, { at: REAPER.pluck[0], play: F.reaperPluck },
     { at: REAPER.press[0], play: F.reaperCharge }, { at: home(REAPER.claws), play: F.reaperClawsClose },
   ],
+  // 8 DYNAMITE: the lighter's flint, the fuse catching
+  [{ at: 0.6, play: F.fuseLit }],
 ];
 
 /** The fire window's cues per slot, phase = `wtime / min(.35, rate)` — the mechanisms that run after a shot. */
@@ -96,6 +98,7 @@ export const FIRE_CUES: readonly (readonly Cue[])[] = [
   [{ at: CROSS.rise[0], play: F.crossRises }],
   [],
   [{ at: home(REAPER.spent) - REAPER.spent[2], play: F.reaperCharge }],
+  [],
 ];
 
 /** The raise's one cue: the weapon arriving in the hands at the end of it. Phase = `wtime / EQUIP_T`. */

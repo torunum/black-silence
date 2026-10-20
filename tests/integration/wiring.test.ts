@@ -408,7 +408,7 @@ describe("the ViewmodelFrame main.ts builds", () => {
   it("passes the weapon table, with an entry for the equipped slot", () => {
     const weapons = restFrame.weapons as Array<{ name: string }>;
     expect(Array.isArray(weapons)).toBe(true);
-    expect(weapons.length).toBe(8);
+    expect(weapons.length).toBe(9);   // DYNAMITE, the ninth (2026-10-20)
     expect(weapons[restFrame.vm.cur as number]).toBeDefined();
     expect(typeof weapons[restFrame.vm.cur as number].name).toBe("string");
   });

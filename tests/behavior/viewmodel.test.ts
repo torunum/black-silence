@@ -289,7 +289,8 @@ describe("sprint/walk weapon-bob amplitude constants", () => {
 });
 
 describe("drawViewmodel keeps the reference's Math.random draw count, per weapon (the trace fixtures depend on it)", () => {
-  WEAPON_STATS.forEach((weapon, cur) => {
+  // the reference's eight slots; DYNAMITE (slot 8, 2026-10-20) has no reference to count against, and its throw lights no flash (WeaponState.ts's `fire`)
+  WEAPON_STATS.slice(0, 8).forEach((weapon, cur) => {
     it(`weapon ${cur} (${weapon.name}): the same number of draws as the reference, firing and not`, () => {
       for (const [label, scenario, seed] of [["fire", fireScenario(cur), 500 + cur], ["idle", idleScenario(cur), 600 + cur]] as const) {
         refKitAndDrawWindow(seed, toRefGlobals(scenario), (fns) => fns.drawViewmodel(0.016, 1234.5));

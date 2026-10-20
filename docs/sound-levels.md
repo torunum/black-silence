@@ -114,6 +114,8 @@ A trim never pushes one sound on its own past -1.5 dBFS peak, or above +18 dB: t
 | `reaperPluck` | foley | -5.6 | -26 | -26.0 | -7.5 | -0.0 | — | -5.6 |
 | `reaperCharge` | foley | -11.6 | -26 | -26.0 | -15.7 | -0.0 | — | -11.6 |
 | `reaperClawsClose` | foley | -9.1 | -26 | -26.0 | -7.9 | -0.0 | — | -9.1 |
+| `dynamiteThrow` | foley | 0 | -26 | — (not yet measured, 2026-10-20) | — | — | — | 0 |
+| `fuseLit` | foley | 0 | -26 | — (not yet measured, 2026-10-20) | — | — | — | 0 |
 | `barrelExplosion` | explosion | -18.6 | -19 | -19.0 | -12.0 | +0.0 | — | -18.6 |
 | `holyCrossExplosion` | explosion | -17.8 | -19 | -19.0 | -11.6 | -0.0 | — | -17.8 |
 | `afritDeathExplosion` | explosion | -18.1 | -19 | -19.0 | -12.1 | +0.0 | — | -18.1 |

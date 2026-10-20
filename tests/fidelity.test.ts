@@ -332,7 +332,9 @@ describe("WEAPON_STATS vs. reference", () => {
 
   it("matches every field except snd, slot for slot, in order", () => {
     const stripped = refWeapons.map(({ snd, ...rest }) => rest);
-    expect(WEAPON_STATS).toEqual(stripped);
+    // the owner's round, 2026-10-20: DYNAMITE is a ninth slot the reference never had, appended — the eight it had are untouched
+    expect(WEAPON_STATS.slice(0, stripped.length)).toEqual(stripped);
+    expect(WEAPON_STATS.map((w) => w.name).slice(stripped.length)).toEqual(["DYNAMITE"]);
   });
 });
 
@@ -599,7 +601,7 @@ describe("ItemTextures (pickupTex/buildItemTex) vs. reference", () => {
   });
 
   // KNOWN-20, closed 2026-10-20: the port draws the two pickups the reference named and never drew, nails and souls
-  const NEW_ITEMTEX = ["nails", "souls"];
+  const NEW_ITEMTEX = ["nails", "souls", "tnt"];   // + dynamite, 2026-10-20
   it("produces the reference's ITEMTEX key set, and the two it lacked (nails, souls: KNOWN-20)", () => {
     expect(Object.keys(ITEMTEX).filter((k) => !NEW_ITEMTEX.includes(k)).sort()).toEqual(Object.keys(refModule.ITEMTEX).sort());
     for (const k of NEW_ITEMTEX) { expect(ITEMTEX[k], k).toBeDefined(); expect(refModule.ITEMTEX[k], `the reference never drew ${k}`).toBeUndefined(); }
@@ -1004,6 +1006,7 @@ describe("viewmodel kit (SKIN/SLEEVE/.../HOLY, VM, MUZ) vs. reference", () => {
   });
 
   it("matches MUZ, the per-weapon muzzle-flash alignment table, slot for slot", () => {
-    expect(Kit.MUZ).toEqual(ref.MUZ);
+    expect(Kit.MUZ.slice(0, ref.MUZ.length)).toEqual(ref.MUZ);   // slot 8 (DYNAMITE, 2026-10-20) is new and flashes nothing
+    expect(Kit.MUZ.slice(ref.MUZ.length)).toEqual([{ y: -80, r: 0 }]);
   });
 });

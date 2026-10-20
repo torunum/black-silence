@@ -301,10 +301,17 @@ describe("keyboard", () => {
       ["R", (a) => a.keyDown("KeyR")],
       ["1", (a) => a.keyDown("Digit1")],
       ["8", (a) => a.keyDown("Digit8")],
-      ["9 — outside the Digit1-8 range", (a) => a.keyDown("Digit9")],
       ["an unbound key", (a) => a.keyDown("KeyP")],
     ]);
-    expect(snaps[5].calls).toEqual(["interact", "startReload", "requestSwitch(0)", "requestSwitch(7)"]);
+    expect(snaps[4].calls).toEqual(["interact", "startReload", "requestSwitch(0)", "requestSwitch(7)"]);
+  });
+
+  it("routes 9 to the ninth slot, DYNAMITE (the owner's round, 2026-10-20 — the reference had eight and ignored it)", () => {
+    const steps: readonly Step[] = [["9", (a) => a.keyDown("Digit9")], ["0 — still unbound", (a) => a.keyDown("Digit0")]];
+    const mod = run(moduleSide(), steps);
+    const ref = run(referenceSide(), steps);
+    expect(mod[1].calls).toEqual(["requestSwitch(8)"]);
+    expect(ref[1].calls).toEqual([]);
   });
 
   it("toggles the sniper zoom on Z only while the sniper is equipped", () => {

@@ -53,7 +53,7 @@ describe("every level-grid character resolves to a known tile", () => {
   // KNOWN-11. Like `v` above it is deliberately NOT in ENEMY_DEFS, which is
   // the whole point of it. `A` stays listed because `loadLevel`'s item map
   // still holds it, unreachably; no level places it any more.
-  const PICKUP_CHARS = ["h", "A", "r", "a", "b", "o", "c", "K", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
+  const PICKUP_CHARS = ["h", "A", "r", "a", "b", "o", "c", "K", "2", "3", "4", "5", "6", "7", "8", "9", "0", "d", "e"];   // d, e: dynamite (2026-10-20)
   const KNOWN_NON_ENEMY = new Set([...SKIP_CHARS, ...NAMED_CHARS, ...PROP_CHARS, ...PICKUP_CHARS]);
 
   const built = LEVELS.map((def) => [def.name, def.build().g] as const);

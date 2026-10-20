@@ -99,6 +99,7 @@ const FIRE_DETAIL = [
   "launch whoosh and a bell",
   "pneumatic thwack, twenty a second",
   "crackling discharge and a choir sliding down",
+  "an underhand whoosh and the lit fuse spitting",
 ];
 
 /**
@@ -182,6 +183,7 @@ const ENTRIES: Entry[] = [
   { id: "reaper-pluck", name: "Soul reaper: husk plucked out", category: "Weapons", play: F.reaperPluck },
   { id: "reaper-charge", name: "Soul reaper: charge", category: "Weapons", detail: "as the core re-forms after each shot, and as a fresh soul goes in", play: F.reaperCharge },
   { id: "reaper-claws", name: "Soul reaper: claws close", category: "Weapons", play: F.reaperClawsClose },
+  { id: "fuse-lit", name: "Dynamite: the fuse lit", category: "Weapons", play: F.fuseLit },
   { id: "casing", name: "Shell casing lands", category: "Weapons", detail: "comes 0.25-0.45 s after the click", play: W.casingTinkle },
   { id: "kick-swing", name: "Kick: swing", category: "Weapons", detail: "the whoosh — all a kick into the air makes", play: W.kickSwing },
   { id: "kick-impact", name: "Kick: connects with a monster", category: "Weapons", detail: "110 ms after the swing, as the game resolves it", play: () => W.kickImpact("flesh") },

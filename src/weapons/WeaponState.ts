@@ -32,6 +32,7 @@ import { puntHeads } from "../enemies/Death";
 import { kickResolved, type KickMet } from "./KickFx";
 import { after } from "../core/Timers";
 import { hitscan } from "./Hitscan";
+import { throwDynamite } from "./Dynamite";
 import { schedule } from "../core/Time";
 import { track } from "../render/DisposeRegistry";
 import type { Enemy } from "../enemies/Enemy";
@@ -162,6 +163,13 @@ export function weaponTick(dt: number){
   weaponRuntime.kickAnim=Math.max(0,weaponRuntime.kickAnim-dt);
   motorFoley(S.cur,weaponRuntime.wstate);}
 export function fire(w: typeof WEAPONS[number]){
+  if(w.kind==="tnt"){   // DYNAMITE: thrown, not fired — no flash, no smoke, no shot counted, and a throw is quiet (./Dynamite.ts)
+    S.mag[S.cur]--;weaponRuntime.wCool=w.rate;weaponRuntime.wstate="fire";weaponRuntime.wtime=0;
+    weaponRuntime.kickAmt=w.kick;weaponRuntime.kickRot=0;shake(w.trauma);
+    w.snd();
+    const dir=new THREE.Vector3();renderState.camera.getWorldDirection(dir);
+    throwDynamite(dir);
+    return;}
   S.mag[S.cur]--;weaponRuntime.wCool=w.rate;weaponRuntime.wstate="fire";weaponRuntime.wtime=0;
   S.shots++;
   weaponRuntime.kickAmt=w.kick;weaponRuntime.kickRot=(Math.random()-.5)*w.kick*.25;
