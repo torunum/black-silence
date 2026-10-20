@@ -8,13 +8,21 @@ more like Doom and Blood; add a new chapter; add a minimap ("mini map önemli. y
 - **The hit marker is not drawn.** `Overlay2D.ts`'s `fxTick` no longer calls `drawHitMarker`; the marker's state still runs (the
   hit-stop, the punch and the confirming sound are the feedback). `tests/behavior/hitMarkerOverlay.test.ts` now holds that nothing of
   it is drawn, idle or after a kill.
-- **The weapons are held straight ahead, centred, seen from behind and a little above** — no cant (`roll`), no swing across the
-  screen (`yaw`), the lens no longer shifted right (`AIM_DX` 0). The guns have their own, longer lens (`rig.ts`'s `WEAPON_FOCAL`
-  400; the leg keeps `FOCAL` 170) so a gun held that way reads big and flat, the way Doom's and Blood's sprites do. The line of fire
-  moved from 15% to 6% of the screen under the crosshair (`CLEAR_BELOW`; Doom's own guns come that close), and `draw.ts`'s ceiling
-  now holds the finished image under it whatever lifted it, rig motion included. The cross launcher's muzzle anchor is the cross
-  itself (it is what flies). Seen from behind, the combat rifle's and the sniper's bolts sit below the frame: their shot reads as
-  the recoil, and `viewmodel.test.ts` exempts those two from the "mechanism moves" check.
+- **The weapons are held square to the screen** — no cant (`roll`), no swing across it (`yaw`), the lens no longer shifted right
+  (`AIM_DX` 0). The owner was shown three framings (the old one, dead centre seen end-on as Doom's, and the old models held straight)
+  and chose the third, "a bit more upright": each gun a little right of centre (its old `x` times 0.38), pointing straight ahead,
+  so its side still shows. The guns have their own, longer lens (`rig.ts`'s `WEAPON_FOCAL` 280; the leg keeps `FOCAL` 170), and the
+  line of fire is 10% of the screen under the crosshair (`CLEAR_BELOW`, was 15%); `draw.ts`'s ceiling now holds the finished image
+  under it whatever lifted it, rig motion included. **Nothing in the motion turns or cants the gun any more** (the owner's "yamuk"
+  was as much the sprint cant, the strafe lean, the flinch, the dry-fire cant, the fidget, the switch's roll-over and the kick's
+  swing as the rest pose): those reactions drop and dip it instead, the switch goes straight down and up, and the walk's bob is
+  Doom's U (side to side over the top, dipping through the middle on each footstep) instead of a figure-eight. The cross launcher's
+  muzzle anchor is the cross itself (it is what flies). The combat rifle's and the sniper's bolts sit below the frame: their shot
+  reads as the recoil, and `viewmodel.test.ts` exempts those two from the "mechanism moves" check.
+- **`Esc` pauses** (`src/ui/Pause.ts`): losing a held mouse lock in play brings up `#pause` and stops the loop; a click takes the
+  mouse back and resumes. **KNOWN-20 is closed**: the nails and souls pickups have icons. A faster player (9/13) and sound carried
+  through the grid to wake the next room were tried the same day and taken back: the owner liked the pace as it was, and the
+  hearing changed the trace fixtures' fights beyond what this round should re-record.
 - **The minimap** (`src/ui/Minimap.ts`): a round corner map, top left, that turns with the player (the facing is always up; a red N
   on the rim), and a full automap, north up, on `M` or held `Tab`. Only what the player has seen is drawn — a fan of rays through
   the grid every tenth of a second, stopped by walls and closed doors; a secret door is a wall until it opens; the key is marked

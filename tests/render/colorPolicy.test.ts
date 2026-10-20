@@ -201,8 +201,9 @@ describe("colour policy", () => {
     // keep a module-scope `new THREE.Color()` scratch to tint instances with)
     // src/fx/GoreChunks.ts and src/fx/Splats.ts — derived independently by hand, not copied
     // from whatever the scan happens to return (that circularity is exactly
-    // what let the multi-line miss above go unnoticed).
-    expect(checked).toBe(6);
+    // what let the multi-line miss above go unnoticed). And a seventh since 2026-10-20: src/weapons/Dynamite.ts, whose bundle's
+    // stick, tape and spark materials are module-scope.
+    expect(checked).toBe(7);
     expect(offenders).toEqual([]);
   });
 

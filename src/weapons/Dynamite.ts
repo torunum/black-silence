@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import "../render/ColorPolicy";
 import { at } from "../audio/AudioEngine";
 import { barrelExplosion } from "../audio/sounds/explosions";
 import { fireP, smoke3d, sparks, spawnP } from "../fx/Particles";

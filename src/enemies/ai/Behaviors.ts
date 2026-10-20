@@ -19,7 +19,7 @@ import { addWallDecal, splatMat } from "../../fx/Decals";
 import { solidAt, wallNormal, floorHeightAt } from "../../world/Collision";
 import { EYE } from "../../world/Grid";
 import { world } from "../../world/WorldState";
-import { los, soundStep } from "./Perception";
+import { los } from "./Perception";
 import { moveEnemy } from "./Locomotion";
 import { fireOrb, throwFlesh } from "./Attacks";
 import { wakeBoss, roarFor, priestThink } from "../Boss";
@@ -333,12 +333,8 @@ export function enemyTick(dt: number){
       if(dist<1.55&&e.cool<=0&&Math.abs((e.fy||0)-(player.pyy-EYE))<1.3){e.cool=1.0;e.atkAnim=.22;damagePlayer(e.mel);
         at(e.x,e.h*.6+(e.fy||0),e.z,()=>monsterClaw(e.key));}
     }else if(e.alertX>=0){
-      // a noise: walk down the flood toward it, cell by cell, round corners and through doors (Perception.ts's soundStep);
-      // off the flood (another alert, a bare world) straight at it, as before
-      const ad=Math.hypot(e.alertX-e.x,e.alertZ-e.z);
-      const st=soundStep(e.x,e.z,e.alertX,e.alertZ);
-      const tx=st?st.x-e.x:e.alertX-e.x,tz=st?st.z-e.z:e.alertZ-e.z,td=Math.hypot(tx,tz);
-      if(ad>1&&td>.01){moving=moveEnemy(e,tx/td,tz/td,spd*(st?.9:.7),dt);}
+      const ax=e.alertX-e.x,az=e.alertZ-e.z,ad=Math.hypot(ax,az);
+      if(ad>1){moving=moveEnemy(e,ax/ad,az/ad,spd*.7,dt);}
       else e.alertX=-1;}
     const rigged=!!PX[e.key].rig;
     if(rigged)rigLive(e,dt,moving,false);   // a monster with a rig: the walk cycle, the attack's three phases, pain and the idle (src/enemies/RigAnim.ts)

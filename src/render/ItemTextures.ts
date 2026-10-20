@@ -18,11 +18,11 @@ export function buildItemTex(): void {
   ITEMTEX.crosses=pickupTex(["...yy...","...yy...",".yyyyyy.",".yyyyyy.","...yy...","...yy...","...yy...","........"],{".":"#00000000","y":"#d8c87a"});
   ITEMTEX.armor=pickupTex(["...AA...","..AAAA..",".AAAAAA.",".A.AA.A.",".AAAAAA.","..AAAA..","...AA...","........"],{".":"#101216","A":"#4a6b8a"});
   ITEMTEX.key=pickupTex(["..RR....",".R..R...",".R..R...","..RR....","...R....","...RR...","...R....","...RR..."],{".":"#00000000","R":"#c83a20"});
-  // nails and souls (KNOWN-20, closed 2026-10-20): the two pickups the item table named and nothing ever drew, so they lay on the floor as flat colour
-  ITEMTEX.nails=pickupTex(["........",".kkkkkk.",".k....k.",".kn.n.k.",".kn.n.k.",".k.n.nk.",".kkkkkk.","........"],{".":"#101216","k":"#5a4630","n":"#c8c2b2"});
-  ITEMTEX.souls=pickupTex(["...gg...","..gGGg..",".gGWWGg.",".gGWWGg.","..gGGg..","...gg...","..g..g..","........"],{".":"#00000000","g":"#3c9a2c","G":"#8ae060","W":"#e8ffd0"});
   ITEMTEX.gun=pickupTex(["........","..gggg..",".gggggg.",".gg..gg.",".gggggg.","..g..g..","..g..g..","........"],{".":"#101216","g":"#5c6068"});
   ITEMTEX.torch=[texFromPx(["..yy.",".yYYy","yYOYy",".yOy.","..w..","..w..","..w.."],{".":"#00000000","y":"#e8a83a","Y":"#f8e87a","O":"#c85a1e","w":"#3a2c1e"}),
     texFromPx([".yy..","yYYy.","yYOYy",".yOy.","..w..","..w..","..w.."],{".":"#00000000","y":"#e8a83a","Y":"#f8e87a","O":"#c85a1e","w":"#3a2c1e"})];
   ITEMTEX.candle=texFromPx(["..y..",".yYy.","..w..",".www.",".www."],{".":"#00000000","y":"#e8c85a","Y":"#f8f0a0","w":"#b8b2a6"});
+  // nails and souls (KNOWN-20, closed 2026-10-20): the two pickups the item table named and nothing ever drew, so they lay on the floor as flat colour; drawn last, after everything the reference drew, so its call log is ours up to here (tests/behavior/textures.test.ts)
+  ITEMTEX.nails=pickupTex(["........",".kkkkkk.",".k....k.",".kn.n.k.",".kn.n.k.",".k.n.nk.",".kkkkkk.","........"],{".":"#101216","k":"#5a4630","n":"#c8c2b2"});
+  ITEMTEX.souls=pickupTex(["...gg...","..gGGg..",".gGWWGg.",".gGWWGg.","..gGGg..","...gg...","..g..g..","........"],{".":"#00000000","g":"#3c9a2c","G":"#8ae060","W":"#e8ffd0"});
 }
