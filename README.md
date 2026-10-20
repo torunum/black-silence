@@ -89,7 +89,7 @@ Use a keyboard and mouse; touch controls are not implemented.
 | Toggle sniper zoom | `Z` with the sniper equipped |
 | Map (full automap) | `M` to toggle, or hold `Tab`; a corner map is always up |
 
-`Esc` releases the mouse; it does **not** pause the action.
+`Esc` releases the mouse and pauses the game; click to return.
 Chapter unlocks and settings are saved locally, not mid-level progress.
 
 ## Development

@@ -1,3 +1,4 @@
+import { pointerLockChanged } from "../ui/Pause";
 import { clamp } from "../utils/math";
 import { el } from "../ui/dom";
 import { animCues } from "../core/AnimCues";
@@ -120,6 +121,7 @@ document.addEventListener("mousemove", e => {
 document.addEventListener("pointerlockchange", () => {
   if (!hooks) return;
   input.locked = document.pointerLockElement === hooks.canvas();
+  pointerLockChanged(input.locked, overlayOpen());   // Esc in play pauses the game (src/ui/Pause.ts)
 });
 addEventListener("mousedown", e => {
   animCues.input++;

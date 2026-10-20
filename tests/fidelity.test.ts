@@ -598,12 +598,15 @@ describe("ItemTextures (pickupTex/buildItemTex) vs. reference", () => {
     buildItemTex();
   });
 
-  it("produces the identical ITEMTEX key set as the reference", () => {
-    expect(Object.keys(ITEMTEX).sort()).toEqual(Object.keys(refModule.ITEMTEX).sort());
+  // KNOWN-20, closed 2026-10-20: the port draws the two pickups the reference named and never drew, nails and souls
+  const NEW_ITEMTEX = ["nails", "souls"];
+  it("produces the reference's ITEMTEX key set, and the two it lacked (nails, souls: KNOWN-20)", () => {
+    expect(Object.keys(ITEMTEX).filter((k) => !NEW_ITEMTEX.includes(k)).sort()).toEqual(Object.keys(refModule.ITEMTEX).sort());
+    for (const k of NEW_ITEMTEX) { expect(ITEMTEX[k], k).toBeDefined(); expect(refModule.ITEMTEX[k], `the reference never drew ${k}`).toBeUndefined(); }
   });
 
   it("keeps ITEMTEX.torch a two-frame array and every other entry a single texture, matching the reference", () => {
-    for (const key of Object.keys(ITEMTEX)) {
+    for (const key of Object.keys(ITEMTEX).filter((k) => !NEW_ITEMTEX.includes(k))) {
       const ours = ITEMTEX[key];
       const ref = refModule.ITEMTEX[key];
       expect(ref, `reference ITEMTEX.${key} missing`).toBeDefined();
@@ -619,7 +622,7 @@ describe("ItemTextures (pickupTex/buildItemTex) vs. reference", () => {
       expect(ours.magFilter, `${label} magFilter`).toBe(ref.magFilter);
       expect(ours.minFilter, `${label} minFilter`).toBe(ref.minFilter);
     };
-    for (const key of Object.keys(ITEMTEX)) {
+    for (const key of Object.keys(ITEMTEX).filter((k) => !NEW_ITEMTEX.includes(k))) {
       const ours = ITEMTEX[key];
       const ref = refModule.ITEMTEX[key];
       if (Array.isArray(ours) && Array.isArray(ref)) {

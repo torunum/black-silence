@@ -29,7 +29,7 @@ function magazine(b: Builder): void {
 
 export const combatRifle: WeaponArt = {
   name: "COMBAT RIFLE",
-  hold: { x: 0, y: -0.184, z: 0.36, pitch: 0.3, yaw: 0, roll: 0 },  // straight ahead, centred: Doom/Blood (owner, 2026-10-20)
+  hold: { x: 0.049, y: -0.1147, z: 0.32, pitch: 0.15, yaw: 0, roll: 0 },  // a little right of centre, square to the screen, looking ahead (owner, 2026-10-20: option 3, "biraz daha dik")
   kick: { back: 0.025, lift: 0.08 },
   action: (p) => hump(p, 0.0, 0.9, 0.3),
   draw(b: Builder, pose: Pose) {

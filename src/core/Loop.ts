@@ -37,6 +37,7 @@ import { weaponRuntime } from "../weapons/WeaponRuntime";
 import { player } from "../player/PlayerState";
 import { hud } from "../ui/Hud";
 import { minimapTick } from "../ui/Minimap";
+import { pauseOpen } from "../ui/Pause";
 import { animCues } from "./AnimCues";
 
 /**
@@ -116,7 +117,7 @@ function loop(t: number){
   if(!game.started){return;}
   if(screenShake.hitStop>0){screenShake.hitStop-=dt;dt*=.08;}
   time.scaledDt=dt;
-  const paused=game.pianoOpen||overlayOpen()&&!game.pianoOpen;
+  const paused=game.pianoOpen||overlayOpen()&&!game.pianoOpen||pauseOpen();   // pauseOpen: Esc in play (src/ui/Pause.ts)
   let anyAware=false;
   if(!S.dead)transitionTick(dt);   // the walk through an exit door runs with the game stopped (S.won), the card with an overlay up
   if(!paused&&!S.dead&&!S.won){

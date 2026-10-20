@@ -26,13 +26,13 @@ export const FOCAL = 170;
 export const AIM_DX = 0, AIM_DY = 40;
 /**
  * The weapons' own lens, longer than the leg's FOCAL (owner, 2026-10-20: the weapons stood crooked, "daha Doom Blood gibi").
- * Every gun is now held straight ahead, centred under the crosshair and seen from behind and a little above, as Doom's and
- * Blood's are: no cant, no swing across the screen. A long lens keeps a gun held that way big and flat instead of a stub
- * foreshortened to nothing.
+ * Every gun is now held square to the screen — no cant, no swing across it — a little right of the crosshair and pointing
+ * straight ahead, so it reads as looking where the player looks while its side still shows (the owner chose this over a gun dead
+ * centre, seen end-on: "option 3, a bit more upright"). A longer lens keeps it big and flat, as Doom's and Blood's sprites are.
  */
-export const WEAPON_FOCAL = 400;
+export const WEAPON_FOCAL = 280;
 /** How far below the crosshair, as a fraction of screen height, the weapon's topmost pixel must stay. */
-export const CLEAR_BELOW = 0.06;
+export const CLEAR_BELOW = 0.1;
 
 export function renderWeapon(r: Raster, art: WeaponArt | null, pose: Pose, cx: number, cy: number): Record<string, [number, number]> {
   r.clear();
