@@ -6,7 +6,7 @@ import { rnd } from "../../utils/math";
 import type { WeaponStats } from "../../weapons/definitions";
 import { Animator } from "./animate";
 import { WEAPON_ART } from "./arts";
-import { Raster, RW, RH, toRGBA } from "./raster";
+import { Raster, RW, RH, VM_RES, toRGBA } from "./raster";
 import { renderWeapon, CLEAR_BELOW, RELOAD_CLEAR } from "./rig";
 import type { Pose } from "./pose";
 
@@ -225,7 +225,7 @@ export function drawViewmodel(dt: number, tNow: number, v: ViewmodelFrame, weapo
   // Scaled with the screen's height: exactly 1:1 on a 16:9 overlay (VH 180), smaller on a wider
   // screen, larger on a taller one, so the weapon is always the same share of the height and its
   // clearance below the crosshair (rig.ts's CLEAR_BELOW) holds at every aspect ratio.
-  const s=VH/VIEW_H;
+  const s=VH/VIEW_H/VM_RES;   // screen pixels per raster pixel (VM_RES raster pixels to an overlay unit)
   const top0=VH-RH*s;
   const cy=Math.round((VH/2-top0)/s);  // the crosshair's row in the raster: the model aims there
   const painted=paint(scoped?-1:v.cur,pose,cy);
@@ -251,7 +251,7 @@ export function drawViewmodel(dt: number, tNow: number, v: ViewmodelFrame, weapo
   if(scoped)return;
   const glow=vm.anchors.glow;
   if(glow){ // the soul core's light spilling past its cage
-    const gx=left+glow[0]*s, gy=top+glow[1]*s, gr=(14+10*pose.heat)*s;
+    const gx=left+glow[0]*s, gy=top+glow[1]*s, gr=(14+10*pose.heat)*s*VM_RES;
     const g=fg.createRadialGradient(gx,gy,1,gx,gy,gr);
     g.addColorStop(0,`rgba(150,240,110,${.35+.4*pose.heat})`);g.addColorStop(1,"rgba(60,160,40,0)");
     fg.fillStyle=g;fg.beginPath();fg.arc(gx,gy,gr,0,7);fg.fill();}
@@ -259,7 +259,7 @@ export function drawViewmodel(dt: number, tNow: number, v: ViewmodelFrame, weapo
   if(v.muzzle>0){
     const m=vm.anchors.muzzle??[RW/2,RH/2];
     const cx=left+m[0]*s, my=top+m[1]*s;
-    const r=(10+Math.random()*10)*(MUZ[v.cur].r)*s;
+    const r=(10+Math.random()*10)*(MUZ[v.cur].r)*s*VM_RES;
     const col=v.cur===5?["255,250,220","235,210,140","220,180,90"]:v.cur===7?["230,255,200","150,240,110","60,160,40"]:["255,240,190","255,170,80","255,120,40"];
     fg.save();fg.translate(cx,my);
     fg.fillStyle=`rgba(${col[0]},${Math.min(1,v.muzzle*2.2)})`;

@@ -27,8 +27,11 @@ import { cellOf, idx, terrainOf, walk } from "../../src/world/structure/walk";
  * was found; it is recorded in `docs/STATUS.md` as an open question for a player. The default is a seed that wins on the present code and no more than that; it is moved when a change to what the game does
  * moves the lottery, with the reason here.
  * **The impact plan's Task 3 moved it again** (a legless monster is a smaller target now, and its hitbox with it: a recorded change to what the game does, `docs/STATUS.md`): seed 10 now reaches the priest's third phase and does not kill him inside 54,000 frames (stuck at waypoint 169 with the priest on 318 hp), seeds 1 and 3 die before the priest does (frames 10587 and 11434), and **seed 5 wins** (hp 100, frame 10815, the priest dead). Seeds 2, 4, 6, 7 and 8 were not finished. The default is 5.
+ * **The owner's round of 2026-10-21 (night) moved it again**: the boss-like enemies became rigs, KNOWN-15 was closed (the church's
+ * cultists fire their orbs now) and a shot got its own wall test. Seed 5 now dies fighting the priest in his third phase (hp 0 at frame
+ * ~10500, the priest on 122); **seed 1 wins**. The default is 1.
  */
-const SEED = Number(process.env.BOT_SEED ?? 5);
+const SEED = Number(process.env.BOT_SEED ?? 1);
 const SKILL_NAME = (process.env.BOT_SKILL ?? "usual") as keyof typeof DUNGEON_SKILL;
 const FRAMES = Number(process.env.BOT_FRAMES ?? 60 * 900);   // a quarter of an hour of game
 

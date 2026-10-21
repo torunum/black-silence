@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { Reactions, FIDGET_AFTER, FIDGET_CANCEL, FIDGET_LEN, type CueInput, type Reaction } from "../../src/render/viewmodel/react";
 import { Animator, SWITCH, type AnimInput } from "../../src/render/viewmodel/animate";
-import { Raster } from "../../src/render/viewmodel/raster";
+import { Raster, RW, VM_RES } from "../../src/render/viewmodel/raster";
 import { renderWeapon } from "../../src/render/viewmodel/rig";
 import { WEAPON_ART } from "../../src/render/viewmodel/arts";
 import { WEAPON_STATS } from "../../src/weapons/definitions";
@@ -37,7 +37,7 @@ function run(r: Reactions, frames: number, c: CueInput, dt = DT): Reaction[] {
 function pixelsMoved(slot: number, rx: Omit<Reaction, "fidget">): number {
   const rest = new Raster(), moved = new Raster();
   const p0: Pose = { x: 0, y: 0, z: 0, pitch: 0, yaw: 0, roll: 0, sx: 0, sy: 0, recoil: 0, action: 0, spin: 0, reload: -1, heat: 0, kick: -1, empty: 0 };
-  renderWeapon(rest, WEAPON_ART[slot], p0, 160, 110);
+  renderWeapon(rest, WEAPON_ART[slot], p0, RW / 2, 110 * VM_RES);
   renderWeapon(moved, WEAPON_ART[slot], { ...p0, ...rx }, 160, 110);
   let n = 0;
   for (let i = 0; i < rest.col.length; i++) if (rest.col[i] !== moved.col[i]) n++;
@@ -211,14 +211,14 @@ describe("switching weapons: straight down out of the frame and straight back up
         const p = a.step(DT, 0, { ...base, cur: slot, cueInput: k, wstate: "unequip", wtime: base.unequipT * k / 8 }, WEAPON_STATS[slot], WEAPON_ART[slot]);
         if (k === 4) mid = p;
         const r = new Raster();
-        path.push(renderWeapon(r, WEAPON_ART[slot], p, 160, 110).muzzle);
+        path.push(renderWeapon(r, WEAPON_ART[slot], p, RW / 2, 110 * VM_RES).muzzle);
       }
       expect([mid!.roll + 0, mid!.yaw + 0, mid!.x + 0]).toEqual([0, 0, 0]);
       expect(mid!.y).toBeLessThan(SWITCH.y * 0.2);
       // straight down: the muzzle keeps to the screen's middle column while it falls
       const [ax, ay] = path[0], [, by] = path[path.length - 1];
-      for (const [x] of path) expect(Math.abs(x - ax), `slot ${slot}`).toBeLessThan(4);   // (a gun held right of centre drifts a pixel or two toward the vanishing point as it drops)
-      expect(by - ay, `slot ${slot}`).toBeGreaterThan(20);
+      for (const [x] of path) expect(Math.abs(x - ax), `slot ${slot}`).toBeLessThan(5 * VM_RES);   // (a gun held right of centre drifts a few pixels toward the vanishing point as it drops: more since it stands lower right, 2026-10-22)
+      expect(by - ay, `slot ${slot}`).toBeGreaterThan(20 * VM_RES);
     }
   });
 

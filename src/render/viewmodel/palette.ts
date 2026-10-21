@@ -75,6 +75,11 @@ export interface Palette {
   lut: Uint8Array;
   /** Materials that take a rim of light, by id. */
   rim: boolean[];
+  /**
+   * Round things (a barrel, a drum, a knuckle) are lit pixel by pixel from their own curved surface, not face by face (`builder.ts`):
+   * the weapons' palette, since the viewmodel went to twice the resolution (2026-10-21). The monsters' rigs keep their facets.
+   */
+  smooth?: boolean;
 }
 
 export function makePalette(materials: Record<number, Material>): Palette {
@@ -95,7 +100,7 @@ export function makePalette(materials: Record<number, Material>): Palette {
 }
 
 /** The viewmodel's palette: every weapon, glove and sleeve. */
-export const VIEW_PALETTE: Palette = makePalette(MATERIALS);
+export const VIEW_PALETTE: Palette = { ...makePalette(MATERIALS), smooth: true };
 
 /** Tones in a material's ramp. */
 export function toneCount(mat: number, pal: Palette = VIEW_PALETTE): number {

@@ -1,5 +1,5 @@
 import { Builder } from "./builder";
-import { finish, type Raster } from "./raster";
+import { finish, VM_RES, type Raster } from "./raster";
 import type { Pose, WeaponArt } from "./pose";
 import { drawLeg, legPose } from "./kick";
 
@@ -22,15 +22,17 @@ import { drawLeg, legPose } from "./kick";
  * and reloading, and at more than one aspect ratio, stays below a line 15%
  * of the screen's height under the crosshair (CLEAR_BELOW).
  */
-export const FOCAL = 170;
-export const AIM_DX = 0, AIM_DY = 40;
+export const FOCAL = 170 * VM_RES;
+export const AIM_DX = 0, AIM_DY = 40 * VM_RES;
 /**
  * The weapons' own lens, longer than the leg's FOCAL (owner, 2026-10-20: the weapons stood crooked, "daha Doom Blood gibi").
  * Every gun is now held square to the screen — no cant, no swing across it — a little right of the crosshair and pointing
  * straight ahead, so it reads as looking where the player looks while its side still shows (the owner chose this over a gun dead
  * centre, seen end-on: "option 3, a bit more upright"). A longer lens keeps it big and flat, as Doom's and Blood's sprites are.
  */
-export const WEAPON_FOCAL = 280;
+export const WEAPON_FOCAL = 280 * VM_RES;
+/** Where every weapon stands, over its own hold (owner, 2026-10-22: "Blood gibi sağ-alt"): moved right and down from the straight-ahead stance. */
+export const STANCE = { x: 0.065, y: 0.01, z: 0.08, yaw: -0.07, pitch: -0.12, roll: 0 };
 /** How far below the crosshair, as a fraction of screen height, the weapon's topmost pixel must stay. */
 export const CLEAR_BELOW = 0.1;
 /** While reloading nothing is fired, and the reload is brought up into view (pose.ts's `present`): the weapon may then rise to just under the crosshair, never over it. */
@@ -40,9 +42,11 @@ export function renderWeapon(r: Raster, art: WeaponArt | null, pose: Pose, cx: n
   r.clear();
   const b = new Builder(r, WEAPON_FOCAL, cx + AIM_DX, cy + AIM_DY);
   if (art) { // null: the scoped-in sniper, hidden, while a kick still shows the leg
-    const h = art.hold;
-    b.translate(h.x + pose.x, h.y + pose.y, h.z + pose.z);
-    b.yaw(h.yaw + pose.yaw);
+    const h = art.hold, st = STANCE;
+    b.translate(h.x + st.x + pose.x, h.y + st.y + pose.y, h.z + st.z + pose.z);
+    b.yaw(h.yaw + st.yaw + pose.yaw);
+    b.pitch(st.pitch);
+    b.roll(st.roll);
     b.pitch(h.pitch + pose.pitch);
     b.roll(h.roll + pose.roll);
     // recoil: straight back into the hand, muzzle rising about the grip

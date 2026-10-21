@@ -229,9 +229,9 @@ describe("drawKickStreaks (the reference's drawKickBoot): the reference's boot i
     const drive = streaksAt(0.09);
     expect(drive.strokes).toBe(5);   // five streaks since 2026-10-21 (owner: three faint ones read as nothing)
     expect(drive.foot).toBeDefined();
-    const s = VH / Draw.VIEW_H, left = (VW - RasterM.RW * s) / 2, top = VH - RasterM.RH * s;
+    const so = VH / Draw.VIEW_H, s = so / RasterM.VM_RES, left = (VW - RasterM.RW * s) / 2, top = VH - RasterM.RH * s;   // overlay units, and raster pixels (VM_RES to a unit)
     const [fx, fy] = [left + drive.foot[0] * s, top + drive.foot[1] * s];
-    for (const m of drive.moves) expect(Math.hypot((m.args[0] as number) - fx, (m.args[1] as number) - fy)).toBeLessThan(55 * s);   // five streaks fan wider and lower than three did (2026-10-21)
+    for (const m of drive.moves) expect(Math.hypot((m.args[0] as number) - fx, (m.args[1] as number) - fy)).toBeLessThan(50 * so);   // five streaks fan wider than three did (2026-10-21), and the finished image's own screen motion (sx, sy) moves the foot with it
     expect(streaksAt(0.2).strokes).toBe(0);     // recovery
     Draw.drawViewmodel(0.016, 0, frame(0), WEAPON_STATS);
   });
@@ -537,7 +537,8 @@ describe("the weapon stays out of the player's line of fire (Task 1 fix round)",
             if (top < line - 0.5) breaches.push(`${stats.name} ${name}: top ${top.toFixed(1)} above the line ${line.toFixed(1)}`);
           }
           const height = (vh - topRow(base)) / vh;
-          if (height < 0.3 || height > 0.45) breaches.push(`${stats.name} at rest is ${(height * 100).toFixed(0)}% of the screen's height`);
+          // (0.3 until 2026-10-22: the guns stand lower and further right since, as Blood's do — "Blood gibi sağ-alt" — so a little smaller)
+          if (height < 0.25 || height > 0.45) breaches.push(`${stats.name} at rest is ${(height * 100).toFixed(0)}% of the screen's height`);
         });
         expect(breaches).toEqual([]);
       } finally {
@@ -695,7 +696,7 @@ describe("drawViewmodel with the new art", () => {
       const scenario = stillScenario(slot, { wstate: "fire", wtime: 0.01, kickAmt: 0, muzzle: 0.4 });
       const calls = moduleWindow(800 + slot, () => Draw.drawViewmodel(0.016, 0, toViewmodelFrame(scenario), WEAPON_STATS));
       const m = Draw.lastAnchors().muzzle;
-      const s = VH / Draw.VIEW_H;
+      const s = VH / Draw.VIEW_H / RasterM.VM_RES;   // screen pixels per raster pixel (the viewmodel at twice the resolution since 2026-10-21)
       const left = (VW - RasterM.RW * s) / 2, top = VH - RasterM.RH * s;
       const flash = calls.filter((c) => c.method === "translate").at(-1)!;
       expect(flash.args[0] as number).toBeCloseTo(left + m[0] * s, 6);

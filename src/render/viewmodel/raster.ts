@@ -17,8 +17,14 @@ import { MAT, VIEW_PALETTE, toneCount, type Palette } from "./palette";
  * part ever needs sorting against another.
  */
 
-/** Logical resolution: the overlay's 320-wide space, 1:1 — one art pixel is one overlay unit (two canvas pixels at the overlay's 640 backing width). 200 rows covers the lower 200 of a 16:9 overlay's 180 and a 16:10's 200. */
-export const RW = 320, RH = 200;
+/**
+ * Raster pixels per overlay unit (owner, 2026-10-21: "silahları geliştirelim … kesinlikle daha kaliteli olmaları gerekiyor"). The weapons were
+ * drawn at one art pixel per overlay unit, two canvas pixels at the overlay's 640 backing width; at 2 they are drawn at the backing's own
+ * resolution, so a weapon has four times the pixels to be drawn in — the chequering of a grip, the bands on a barrel, a hand's knuckles.
+ */
+export const VM_RES = 2;
+/** Logical resolution: the overlay's 320 x 200 space, `VM_RES` raster pixels to an overlay unit. 200 units covers the lower 200 of a 16:9 overlay's 180 and a 16:10's 200. */
+export const RW = 320 * VM_RES, RH = 200 * VM_RES;
 
 export class Raster {
   readonly w: number;
