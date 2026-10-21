@@ -13,6 +13,9 @@ the owner chose "Blood gibi sağ-alt" —
 - **Held lower and to the right, turned a little toward the crosshair** (`rig.ts`'s `STANCE`, over every weapon's own hold; the sniper,
   the stake gun and the cross launcher moved back toward the middle): the side of each weapon shows — the tommy's drum, the scope, the
   nail cannon's barrels. A weapon at rest is 25-45% of the screen's height (was 30-45%).
+- **A broad sheen along round metal** (the per-pixel shading adds a wide specular along a barrel's curve), and three weapons drawn
+  closer: the flare pistol held nearer, the soul core swirling (`soulTex`) under a fainter halo, the tommy's and the rifle's receivers
+  machined (seams, an ejection port, pins) where they were flat grey boxes.
 - **The particles are round** (`Particles.ts`: a soft disc texture on the one `Points` material): the muzzle's smoke half a metre in front of
   the eye was a grey square over the crosshair.
 
