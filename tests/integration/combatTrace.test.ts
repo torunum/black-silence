@@ -954,6 +954,11 @@ import { MONOLOGUE } from "../../src/content/monologue";
  * their orbs, the fliers hover); a shot has its own wall test (`shotSolidAt`: a pillar is its round column, a mass stops a shot only below its
  * top); and the kick hits harder (knockback 21, a longer hit-stop). Against the previous fixture, field by field over every sampled frame:
  * `scene.digest` differs in 73, `scene.count` in 54, `hud.hp` in 54 and `hud.ar` in 52 (the cultists' orbs land), `camera` in 12.
+ *
+ * ## The owner's round, 2026-10-22 — regeneration: the particles are round (digest only, 110 of 110 frames)
+ *
+ * The particles' one `PointsMaterial` carries a soft disc texture and is transparent (`src/fx/Particles.ts`). Against the previous fixture:
+ * `camera`, `hud` and `scene.count` **identical in every sampled frame**; `scene.digest` differs in all 110 — the material is hashed.
   */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

@@ -119,4 +119,4 @@ export function buildNecropolis(): BuiltLevel {
   return L;
 }
 
-export const PINNERS: readonly string[] = ["sarcophagus@26,19"];
+export const PINNERS: readonly string[] = ["sarcophagus@26,19", "tombfree@38,9"];

@@ -1,5 +1,21 @@
 # Where this project stands
 
+## Owner's round, 2026-10-22: the weapons, first pass
+
+"silahları geliştirelim … kesinlikle daha kaliteli olmaları gerekiyor. animasyon cizim vs. oyuna uygun olmaları gerekiyor"; asked which way,
+the owner chose "Blood gibi sağ-alt" —
+
+- **Twice the resolution** (`raster.ts`'s `VM_RES = 2`: the raster is 640 x 400, the lenses and the aim shift doubled, `draw.ts` maps
+  raster pixels to the overlay at half the scale): a weapon has four times the pixels to be drawn in.
+- **Round parts lit pixel by pixel** (`builder.ts`: a cylinder's or a ball's facets carry the normal of the curve they stand for, shaded per
+  pixel when the palette asks for it, `Palette.smooth`, on the weapons' palette only — the monsters' rigs keep their facets): barrels,
+  drums, scopes and knuckles read round, with a glint along them.
+- **Held lower and to the right, turned a little toward the crosshair** (`rig.ts`'s `STANCE`, over every weapon's own hold; the sniper,
+  the stake gun and the cross launcher moved back toward the middle): the side of each weapon shows — the tommy's drum, the scope, the
+  nail cannon's barrels. A weapon at rest is 25-45% of the screen's height (was 30-45%).
+- **The particles are round** (`Particles.ts`: a soft disc texture on the one `Points` material): the muzzle's smoke half a metre in front of
+  the eye was a grey square over the crosshair.
+
 ## Owner's round, 2026-10-21 (night): the bosses redrawn, five levels rebuilt, shots past pillars, a harder kick, a better map
 
 "bosslara benzeyenler kötü … yeniden çiz hepsini … zombiler vs kalsın"; "sütunlar vs yakınında düşmanlara sıkınca gitmiyor … kısa

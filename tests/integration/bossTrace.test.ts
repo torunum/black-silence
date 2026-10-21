@@ -1077,6 +1077,11 @@ const REV = (2 * Math.PI) / SENS;
  * checks said so. Measured with the run taken on to 20000: the phase-3 swap at **9519** (the priest dead by 20000). **`TOTAL_FRAMES` =
  * 10080** (561 frames of live phase 3; at the cutoff `phase = 3`, alive, `hp = 458` of 1800, 25%), and **`EVERY` stays 16**: 16 x 595 =
  * **9520** falls inside the swap's window. 10080/16 = 630 recorded frames.
+ *
+ * ## The owner's round, 2026-10-22 — regeneration: the particles are round (digest only, 630 of 630 frames)
+ *
+ * The particles' one `PointsMaterial` carries a soft disc texture and is transparent (`src/fx/Particles.ts`). Against the previous fixture:
+ * `camera`, `hud` and `scene.count` **identical in every sampled frame**; `scene.digest` differs in all 630 — the material is hashed.
  */
 const TOTAL_FRAMES = 10080;
 const EVERY = 16;

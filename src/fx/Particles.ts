@@ -74,11 +74,28 @@ export function buildParticles(): void {
   pPos = new Float32Array(PMAX * 3); pCol = new Float32Array(PMAX * 3);
   pGeo.setAttribute("position", new THREE.BufferAttribute(pPos, 3));
   pGeo.setAttribute("color", new THREE.BufferAttribute(pCol, 3));
-  const pMat = track(new THREE.PointsMaterial({ size: .09, vertexColors: true, sizeAttenuation: true }));
+  // a soft round disc, not the square a bare point is (owner, 2026-10-22: the muzzle's smoke half a metre in front of the eye was a
+  // grey square the size of a fist over the crosshair); the colour, size and every count are the reference's
+  const pMat = track(new THREE.PointsMaterial({ size: .09, vertexColors: true, sizeAttenuation: true, map: discTexture(), transparent: true, alphaTest: .02, depthWrite: false }));
   points = new THREE.Points(pGeo, pMat); points.frustumCulled = false; scene.add(points);
   parts = Array.from({ length: PMAX }, () => ({ life: 0 } as Particle));
   pNext = 0;
   for (let i = 0; i < PMAX; i++) pPos[i * 3 + 1] = -100;
+}
+
+let disc: THREE.Texture | null = null;
+/** The particles' round soft disc: white, opaque in the middle, fading to nothing at its rim. Built once, drawn with no dice. */
+function discTexture(): THREE.Texture | null {
+  if (disc) return disc;
+  const c = typeof document !== "undefined" ? document.createElement("canvas") : null;
+  const g = c?.getContext?.("2d") as CanvasRenderingContext2D | null | undefined;
+  if (!c || !g || typeof g.createRadialGradient !== "function") return null;
+  c.width = c.height = 32;
+  const grd = g.createRadialGradient(16, 16, 0, 16, 16, 16);
+  grd.addColorStop(0, "rgba(255,255,255,1)"); grd.addColorStop(.45, "rgba(255,255,255,.85)"); grd.addColorStop(1, "rgba(255,255,255,0)");
+  g.fillStyle = grd; g.fillRect(0, 0, 32, 32);
+  disc = new THREE.CanvasTexture(c);
+  return disc;
 }
 
 export function spawnP(

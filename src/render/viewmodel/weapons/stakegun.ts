@@ -32,7 +32,7 @@ function stake(b: Builder, z0: number): void {
 
 export const stakeGun: WeaponArt = {
   name: "STAKE GUN",
-  hold: { x: 0.049, y: -0.1185, z: 0.32, pitch: 0.15, yaw: 0, roll: 0 },  // a little right of centre, square to the screen, looking ahead, as the others
+  hold: { x: 0.022, y: -0.1185, z: 0.32, pitch: 0.15, yaw: 0, roll: 0 },  // a little right of centre, square to the screen, looking ahead, as the others
   present: { y: 0.07, pitch: 0.2, roll: -0.45 },   // the reload brought up into view, its left side turned to the eye (pose.ts)
   kick: { back: 0.06, lift: 0.1 },
   action: (p) => hump(p, ...STAKE.ram),

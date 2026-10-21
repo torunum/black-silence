@@ -692,6 +692,11 @@ const WRITE = process.env.WRITE_TRACE === "1";
  *
  * The same four changes `combatTrace.test.ts`'s header records for level 1 (the rigs, KNOWN-15, `shotSolidAt`, the kick). Against the previous
  * fixture, field by field over every sampled frame: `scene.digest` differs in 64, `scene.count` in 27, `hud.hp` in 25, `camera` in 8.
+ *
+ * ## The owner's round, 2026-10-22 — regeneration: the particles are round (digest only, 90 of 90 frames)
+ *
+ * The particles' one `PointsMaterial` carries a soft disc texture and is transparent (`src/fx/Particles.ts`). Against the previous fixture:
+ * `camera`, `hud` and `scene.count` **identical in every sampled frame**; `scene.digest` differs in all 90 — the material is hashed.
  */
 const FIGHT_START = 260;
 
