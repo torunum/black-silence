@@ -10,6 +10,7 @@ import { buildLevel6 } from "./level6";
 import { buildLevel7 } from "./level7";
 import { buildCathedral } from "./cathedral";
 import { buildMonastery } from "./monastery";
+import { buildVillage } from "./village";
 
 /**
  * The nine level tables (the bone cathedral, index 7, was added 2026-10-20 between the factory and the womb). Grid characters (also used by LevelBuilder.ts's
@@ -58,7 +59,7 @@ export const LEVELS: LevelDef[] = [
  {name:"LEVEL 2 — THE ABANDONED CHURCH",build:buildLevel2,
   fog:0x0b070d,fogD:.042,amb:0x453a50,ambI:.5,floor:"church",sub:"church",entranceStyle:"rope"},
  {name:"LEVEL 3 — THE NECROPOLIS",build:buildLevel3,
-  fog:0x0a0a07,fogD:.046,amb:0x4a4636,ambI:.46,floor:"church",sub:"necropolis"},
+  fog:0x0a0a07,fogD:.046,amb:0x4a4636,ambI:.46,floor:"church",sub:"necropolis",entranceStyle:"cemetery"},   // in through the village's cemetery gate (2026-10-21)
  {name:"LEVEL 4 — THE GRAVEYARD",build:buildLevel4,
   fog:0x10120e,fogD:.04,amb:0x3e463a,ambI:.52,floor:"dungeon",sub:"graveyard"},
  {name:"LEVEL 5 — THE SEWERS",build:buildLevel5,
@@ -71,6 +72,8 @@ export const LEVELS: LevelDef[] = [
   fog:0x1a0606,fogD:.06,amb:0x6e2a28,ambI:.5,floor:"flesh",sub:"womb",flesh:true},
  {name:"LEVEL 1 — THE ASH BELL MONASTERY",build:buildMonastery,   // new (owner, 2026-10-20): ./monastery.ts — played straight after the prologue (PLAY_ORDER)
   fog:0x0d1016,fogD:.04,amb:0x5a6680,ambI:.6,floor:"church",sub:"church",entranceStyle:"hatch",exitStyle:"gate"},
+ {name:"LEVEL 4 — THE HOLLOW VILLAGE",build:buildVillage,   // new (owner, 2026-10-21: "açık havada geçen, Blood tarzı bölümler"): ./village.ts — out of the church, played after it
+  fog:0x0b1018,fogD:.032,amb:0x5e6e8c,ambI:.8,floor:"dungeon",sub:"graveyard",dungeon:true,entranceStyle:"church",exitStyle:"cemetery"},
 ];
 
 /**
@@ -78,7 +81,7 @@ export const LEVELS: LevelDef[] = [
  * appended to `LEVELS` (index 9) so every other level keeps its index — the traces, the tests and the saved games all name levels by
  * index — and is played second. A level's shown number is its place here (`titleOf`); `save.maxLevel` counts places, not indices.
  */
-export const PLAY_ORDER: readonly number[] = [0, 9, 1, 2, 3, 4, 5, 6, 7, 8];
+export const PLAY_ORDER: readonly number[] = [0, 9, 1, 2, 10, 3, 4, 5, 6, 7, 8];   // 10, the hollow village (2026-10-21), after the church it lies round
 /** Where level `i` is played (0 = the prologue), or -1. */
 export function playPos(i: number): number { return PLAY_ORDER.indexOf(i); }
 /** The level played after `i`, or -1 after the last. */

@@ -38,9 +38,11 @@ beforeAll(async () => {
   LEVELS.push(def("THE WELL", buildWell), def("THE CHARNEL STAIR", buildCharnel));
 });
 
-afterAll(() => { LEVELS.length = 10; });
+/** The game's own levels: the two of this file go after them (the hollow village, 2026-10-21, is the eleventh). */
+const N = LEVELS.length;
+afterAll(() => { LEVELS.length = N; });
 
-describe.each([[10, "the well", buildWell], [11, "the charnel stair", buildCharnel]] as const)("level %i, %s", (idx, _name, build) => {
+describe.each([[N, "the well", buildWell], [N + 1, "the charnel stair", buildCharnel]] as const)("level %i, %s", (idx, _name, build) => {
   it("loads, and the game makes what the plan placed", () => {
     const L = build(), s = analyse(L), d = measureLevel(L);
     loadLevel(idx);

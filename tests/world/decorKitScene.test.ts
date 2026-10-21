@@ -39,7 +39,9 @@ beforeAll(async () => {
   if (!newGame) throw new Error("the NEW GAME menu row is gone — this file drives the game through it");
   (newGame as HTMLElement).click();
 });
-afterAll(() => { LEVELS.length = 10; });
+/** The game's own levels; the slot after them is this file's scratch level (the hollow village, 2026-10-21, is the eleventh). */
+const N = LEVELS.length;
+afterAll(() => { LEVELS.length = N; });
 
 /** Level `i` of the game with the theme's clutter laid along its walls, in the slot the loader will be asked for. */
 function dressed(i: number, density = .4): LevelDef {
@@ -50,19 +52,19 @@ const mapsOf = (m: THREE.Mesh) => (Array.isArray(m.material) ? m.material : [m.m
 describe("what the loader builds from a decor list", () => {
   it("merges a dressed level into a handful of meshes: a hundred and more pieces add at most 28 scene children", () => {
     for (let i = 1; i <= 8; i++) {
-      LEVELS.length = 10;
+      LEVELS.length = N;
       // the level as the game builds it, with its decor list stripped (levels 1-4 are dressed by their builders now)
-      LEVELS[10] = { ...LEVELS[i], build: () => { const L = LEVELS[i].build(); L.decor = undefined; return L; } }; loadLevel(10);
+      LEVELS[N] = { ...LEVELS[i], build: () => { const L = LEVELS[i].build(); L.decor = undefined; return L; } }; loadLevel(N);
       const bare = renderState.scene.children.length;
       expect(decorMeshes(), `level ${i} undressed`).toHaveLength(0);
-      LEVELS[10] = dressed(i); loadLevel(10);
+      LEVELS[N] = dressed(i); loadLevel(N);
       // the breakable dressing (src/world/decor/breakable.ts, 2026-10-21) stands as a piece of its own each, on purpose: it is counted apart
       const soft = (): number => (world.props as unknown as Array<{ soft?: boolean }>).filter((p) => p.soft).length;
       const added = renderState.scene.children.length - bare - soft();
       expect(decorMeshes().length, `level ${i}`).toBeGreaterThan(3);
       expect(added, `level ${i} gained ${added} scene children`).toBeLessThanOrEqual(28);
       if (i <= 4) {   // the real level: its own hand dressing, merged the same way
-        LEVELS[10] = LEVELS[i]; loadLevel(10);
+        LEVELS[N] = LEVELS[i]; loadLevel(N);
         expect(renderState.scene.children.length - bare - soft(), `level ${i} as built`).toBeLessThanOrEqual(28);
         expect(decorMeshes().length, `level ${i} as built`).toBeGreaterThan(3);
       }
@@ -71,14 +73,14 @@ describe("what the loader builds from a decor list", () => {
 
   it("lets the masses cast a shadow and the small clutter not, and every piece of decor receive one", () => {
     for (const i of [2, 3, 6]) {   // the levels whose vocabularies have casters: a sarcophagus, a machine
-      LEVELS[10] = dressed(i, .9); loadLevel(10);
+      LEVELS[N] = dressed(i, .9); loadLevel(N);
       const casters = kids("decor"), clutter = kids("decorClutter");
       expect(clutter.length, `level ${i} clutter`).toBeGreaterThan(0);
       for (const m of casters) expect(m.castShadow, `level ${i} decor casts`).toBe(true);
       for (const m of clutter) expect(m.castShadow, `level ${i} clutter must not cast`).toBe(false);
       for (const m of decorMeshes()) expect(m.receiveShadow, "decor receives").toBe(true);
     }
-    LEVELS[10] = dressed(6, .9); loadLevel(10);
+    LEVELS[N] = dressed(6, .9); loadLevel(N);
     expect(kids("decor").length, "the factory has machines and crate piles: casters").toBeGreaterThan(0);
   });
 
@@ -86,7 +88,7 @@ describe("what the loader builds from a decor list", () => {
     const known = new Set<THREE.Texture | null>([...Object.values(TEX), ...Object.values(DRESSTEX), ...Object.values(BANDTEX), null]);
     const used = new Set<THREE.Texture | null | undefined>();
     for (const t of THEMES) {
-      LEVELS[10] = galleryDef(t); loadLevel(10);
+      LEVELS[N] = galleryDef(t); loadLevel(N);
       for (const m of decorMeshes()) for (const map of mapsOf(m)) { expect(known.has(map ?? null), `${t}: an unknown texture`).toBe(true); used.add(map); }
     }
     for (const k of ["straw", "rust", "sludge", "banner"] as const) expect(used.has(DRESSTEX[k]), `nothing wears DRESSTEX.${k}`).toBe(true);
@@ -94,9 +96,9 @@ describe("what the loader builds from a decor list", () => {
 
   it("is visual only: a dressed level has the enemies, props, items and torches its bare one has, on the same grid", () => {
     for (const i of [1, 4, 8]) {
-      LEVELS.length = 10; loadLevel(i);
+      LEVELS.length = N; loadLevel(i);
       const bare = [world.enemies.length, (world.props as unknown as Array<{ soft?: boolean }>).filter((p) => !p.soft).length, world.items.length, world.torches.length, world.GW, world.GH];
-      LEVELS[10] = dressed(i); loadLevel(10);
+      LEVELS[N] = dressed(i); loadLevel(N);
       expect(decorMeshes().length).toBeGreaterThan(0);
       const hard = (world.props as unknown as Array<{ soft?: boolean }>).filter((p) => !p.soft).length;   // the breakable dressing aside
       expect([world.enemies.length, hard, world.items.length, world.torches.length, world.GW, world.GH], `level ${i}`).toEqual(bare);
@@ -104,7 +106,7 @@ describe("what the loader builds from a decor list", () => {
   });
 
   it("leaves the prologue's own dressing as it was: its meshes are `decor` and `decorGrass`, and the one clutter mesh per material that hell's small pieces make (stalactites, spikes, stakes, ribs)", () => {
-    LEVELS.length = 10; loadLevel(0);
+    LEVELS.length = N; loadLevel(0);
     expect(kids("decorClutter").length).toBeGreaterThan(0);
     expect(kids("decorClutter").length, "one per material, not one per piece").toBeLessThanOrEqual(8);
     for (const m of kids("decorClutter")) expect(m.castShadow).toBe(false);

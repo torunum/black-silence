@@ -6,6 +6,7 @@ import { PIPE_PIECES as PIP } from "./pipes";
 import { WOMB_PIECES as WOM } from "./womb";
 import { HELL_PIECES as HEL } from "./hell";
 import { CHECKPOINT_PIECES as CKP } from "./checkpoint";
+import { VILLAGE_PIECES as VIL } from "./village";
 
 /**
  * THE KIT: every piece, how it stands, which mesh it merges into, and the
@@ -95,6 +96,16 @@ export const PIECES: Record<string, PieceInfo> = {
   opengrave: P(SAC.opengrave, "flat"),
   tombfree: P(PRO.tomb, "free", "decor", { mass: [-.58, .58, -.94, .94] }),   // the prologue's table tomb, standing free
   deadtree: P(SAC.deadtree, "free", "decor", { mass: [-.25, .25, -.25, .25] }),
+  // the hollow village (2026-10-21): roofs against the sky, the well, the gallows, a farm's things, the dead corn
+  houseroof: P(VIL.houseroof, "cover", "decor", { fixed: true }),
+  villagewell: P(VIL.villagewell, "free", "decor", { mass: [-.9, .9, -.9, .9] }),
+  gallows: P(VIL.gallows, "free", "decor", { mass: [-.3, .3, -1.3, 1.3] }),
+  cart: P(VIL.cart, "free", "decor", { mass: [-.85, .85, -.6, .6] }),
+  haybale: P(VIL.haybale, "free", "clutter", { mass: [-.5, .5, -.32, .32] }),
+  woodpile: P(VIL.woodpile, "edge", "clutter"),
+  scarecrow: P(VIL.scarecrow, "free", "clutter"),
+  signpost: P(VIL.signpost, "free", "clutter"),
+  corn: P(VIL.corn, "cover", "clutter"),
   // sewers and factory
   pipe: P(PIP.pipe, "wall", "clutter", { fixed: true }),
   pipedrop: P(PIP.pipedrop, "wall", "clutter", { fixed: true }),

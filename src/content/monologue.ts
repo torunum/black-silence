@@ -148,6 +148,8 @@ export const CHAPTER_LINES: Readonly<Record<number, readonly [string, string]>> 
       "The machines ran the whole time and never once looked up. Rude."],
   7: ["A whole cathedral made of people. Lovely acoustics. The stairs down are warm, which is never good news.",
       "The Sovereign got back up twice. I got back up more. Somebody keep count, I'm going downstairs."],
+  10: ["A whole village and not one door answered politely. The gate's open. The graveyard's next. It always is.",
+      "Corn, dogs, a butcher in a barn and a gallows on the green. Lovely place. I'll write to the tourist board."],
   9: ["Rang their bell, broke their seals, buried their gravedigger. The great gate's open. Whatever they kept behind it, I'm next.",
       "I came for a quiet monastery and left it louder than I found it. The gate's open. So is everything else."],
 };
