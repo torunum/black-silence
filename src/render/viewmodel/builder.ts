@@ -116,7 +116,7 @@ export class Builder {
         const n = nrm(x, y, z);
         const cx = M[0] * n[0] + M[1] * n[1] + M[2] * n[2], cy = M[4] * n[0] + M[5] * n[1] + M[6] * n[2], cz = M[8] * n[0] + M[9] * n[1] + M[10] * n[2];
         const P: V3 = [M[0] * x + M[1] * y + M[2] * z + M[3], M[4] * x + M[5] * y + M[6] * z + M[7], M[8] * x + M[9] * y + M[10] * z + M[11]];
-        return shade(pal, mat, cx, cy, cz, P) - tone + (user ? user(x, y, z) : 0);
+        return shade(pal, mat, cx, cy, cz, P, true) - tone + (user ? user(x, y, z) : 0);
       };
     }
     fillFace(this.r, {
@@ -238,7 +238,7 @@ export class Builder {
 }
 
 /** Continuous tone for a face: Lambert against the key light, plus a hard specular glint for polished materials. */
-function shade(pal: Palette, mat: number, nx: number, ny: number, nz: number, p: V3): number {
+function shade(pal: Palette, mat: number, nx: number, ny: number, nz: number, p: V3, soft = false): number {
   const M = pal.materials[mat], top = toneCount(mat, pal) - 1;
   if (!M) return 0;
   if (M.emissive) return top - 0.2;
@@ -251,6 +251,9 @@ function shade(pal: Palette, mat: number, nx: number, ny: number, nz: number, p:
     const hl = Math.hypot(hx, hy, hz) || 1; hx /= hl; hy /= hl; hz /= hl;
     const s = Math.max(0, nx * hx + ny * hy + nz * hz);
     v += M.spec * Math.pow(s, 24) * 0.8;
+    // a round surface lit pixel by pixel also takes a broad sheen along its curve, as polished metal in Blood's weapons does: the glint
+    // above only ever lands on a face turned square to the half-vector, which a barrel seen from behind never has
+    if (soft) v += M.spec * Math.pow(s, 5) * 0.45;
   }
   return Math.min(top, v * top);
 }
