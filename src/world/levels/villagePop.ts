@@ -14,7 +14,7 @@ export interface VillageRooms {
  *   E3  the street: the dead down its length, quick ones among them, dogs loosed from the gate end, a cultist at the far end
  *   E4  the field: dogs and crawlers in the corn, where nothing can be seen coming until it is out of it
  *   E5  the barn: the dead on its floor; THE BUTCHER (an ettin) on the hayloft with THE RED KEY, a cultist with him
- *   E6  the graveyard: the last of them out of the graves, gargoyles off the mausoleum, a brute by the gate out
+ *   E6  the graveyard: the last of them out of the graves, gargoyles off the mausoleum, an ettin by the gate out
  *   and in the houses off the way: the undertaker's, the burned house, the smithy, the cottage, the store and its cellar, the mill.
  */
 export function populateVillage(lv: LevelPlan, r: VillageRooms): void {
@@ -73,11 +73,11 @@ export function populateVillage(lv: LevelPlan, r: VillageRooms): void {
   lv.pickup("h", [17, 47]).pickup("a", [17, 58]).pickup("b", [3, 47]).pickup("r", [7, 48]).pickup("e", [12, 51]);
 
   // ---- E6 the graveyard
-  lv.enemy("y", [30, 50], [44, 58]).enemy("j", [26, 48], [46, 47], [33, 60]).enemy("z", [32, 52], [38, 55], [25, 58], [46, 56]).enemy("m", [36, 48], [42, 56]).enemy("B", [34, 57]);
+  lv.enemy("y", [30, 50], [44, 58]).enemy("j", [26, 48], [46, 47], [33, 60]).enemy("z", [32, 52], [38, 55], [25, 58], [46, 56]).enemy("m", [36, 48], [42, 56]).enemy("n", [34, 57]);
   lv.pickup("h", [24, 46], [24, 61]).pickup("a", [47, 46]).pickup("b", [47, 61]).pickup("r", [38, 47]).pickup("e", [29, 47]);
 
   // ---- the light: lanterns on posts in the open where the eye needs a mark, candles in the houses
-  lv.light("i", [29, 4], [42, 4], [26, 12], [45, 12], [32, 32], [39, 24], [51, 30], [19, 20], [10, 48], [35, 47], [24, 52], [47, 52], [59, 20], [24, 14]);
+  lv.light("i", [29, 4], [42, 4], [26, 12], [45, 12], [32, 32], [39, 24], [51, 30], [19, 20], [10, 48], [35, 47], [24, 52], [47, 52], [59, 20]);   // thirteen: with the window, the exit, the smithy's furnace and the player's four, a margin of one under the budget
   lv.light("l", [20, 5], [26, 28], [18, 1], [44, 33], [51, 5], [16, 52]);
 
   // ---- the dressing: each place its own (./dressVillage.ts) — and no theme clutter over it: the graveyard kit's stones belong in the graveyard

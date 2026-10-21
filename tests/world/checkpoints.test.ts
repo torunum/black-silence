@@ -457,7 +457,7 @@ describe("nothing of the dead run is left running", () => {
       const base = census();
       for (let n = 0; n < 3; n++) { dieAndWait(); rise(); expect(census(), `level ${lvl} death ${n + 1}`).toEqual(base); }
     }
-    expect(LEVELS.length).toBe(10);   // the monastery (2026-10-20) appended
+    expect(LEVELS.length).toBe(11);   // the monastery (2026-10-20) and the hollow village (2026-10-21) appended
   });
 });
 

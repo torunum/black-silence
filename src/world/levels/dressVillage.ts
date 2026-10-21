@@ -57,7 +57,7 @@ export function dressVillage(d: Decorator): void {
   // ---- the field: the corn higher than a man, fences round it, scarecrows, the way to the barn's doors left clear
   for (let z = 17; z <= 44; z++) for (let x = 3; x <= 19; x++) {
     if (x >= 9 && x <= 11 && z >= 38) continue;   // the cart track to the barn
-    if (hash(x, z, 4) < 46) may("corn", x, z);
+    if (hash(x, z, 4) < 38) may("corn", x, z);
   }
   for (let z = 18; z <= 44; z += 2) may("fence", 3, z, { side: "w" });
   may("scarecrow", 6, 26); may("scarecrow", 15, 36);

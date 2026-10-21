@@ -87,7 +87,7 @@ describe("every level has the doors it should", () => {
 
 describe("each theme has its own door", () => {
   // the bone cathedral (7, new on 2026-10-20) is of the necropolis's stone and shares its tomb door: nine levels, eight styles
-  const EXPECT: DoorStyle[] = ["crypt", "iron", "church", "tomb", "cemetery", "sluice", "freight", "tomb", "sphincter", "church"];   // 9, the monastery, a church's
+  const EXPECT: DoorStyle[] = ["crypt", "iron", "church", "tomb", "cemetery", "sluice", "freight", "tomb", "sphincter", "church", "cemetery"];   // 9, the monastery, a church's; 10, the hollow village, a graveyard's
 
   it("gives the levels eight different styles, the crypt door to the prologue and the sphincter to the womb (the bone cathedral shares the tomb's)", () => {
     // MUTATION TARGET: make styleFor answer one style for every level
@@ -406,7 +406,8 @@ describe("draws nothing from Math.random", () => {
 describe("the well and the rope (owner, 2026-10-20: the dungeon ends down a well, the church begins at its bottom)", () => {
   // and since 2026-10-21 ("prologue u da diğer bölüme bağla"): the prologue climbs a ladder out of hell into the monastery's crypt floor,
   // and the monastery's great gate is the dungeon's way in
-  const OUT: Record<number, DoorStyle> = { 0: "ladder", 1: "well", 9: "gate" }, IN: Record<number, DoorStyle> = { 9: "hatch", 1: "gate", 2: "rope" };
+  // and the hollow village (2026-10-21): in through the church's doors, out through its cemetery gate into the necropolis
+  const OUT: Record<number, DoorStyle> = { 0: "ladder", 1: "well", 9: "gate", 10: "cemetery" }, IN: Record<number, DoorStyle> = { 9: "hatch", 1: "gate", 2: "rope", 10: "church", 3: "cemetery" };
   it("are what the levels' named ways out and in are built as, and every other way stays its theme's door", () => {
     for (let i = 0; i < LEVELS.length; i++) {
       loadLevel(i);
@@ -417,7 +418,9 @@ describe("the well and the rope (owner, 2026-10-20: the dungeon ends down a well
   });
 
   it("a way out runs into the next level's way in: the ladder up to the hatch, the gate to the gate, the well down to the rope", () => {
-    const pairs: Array<[DoorStyle, DoorStyle]> = [["ladder", "hatch"], ["gate", "gate"], ["well", "rope"]];
+    const pairs: Array<[DoorStyle, DoorStyle]> = [["ladder", "hatch"], ["gate", "gate"], ["well", "rope"], ["cemetery", "cemetery"]];
+    expect(nextLevel(2), "the church opens on the village").toBe(10);
+    expect(LEVELS[10].entranceStyle, "out of the church's own doors").toBe(styleFor(LEVELS[2]));
     for (const [out, inn] of pairs) {
       const from = Number(Object.keys(OUT).find((k) => OUT[+k] === out)), to = nextLevel(from);
       expect(IN[to], `${LEVELS[from].name} -> ${LEVELS[to].name}`).toBe(inn);

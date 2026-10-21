@@ -168,12 +168,12 @@ describe("zones and words", () => {
     expect(ZONES[0].line, "the churchyard has the level's own opening line, lvl0").toBeUndefined();
   });
 
-  it("is the only level with zones but the monastery (its regions: graveyard and courtyard open to the sky), and the only one dressed by hand for its own scene", () => {
+  it("is the only level with zones but the monastery and the hollow village (their regions open to the sky), and the only one dressed by hand for its own scene", () => {
     // levels 1-4 carry a decor list since the levels-feel-full plan's Task 2 and 5-7 since its Task 3
     // (tests/world/levelDressing.test.ts and levelDressing567.test.ts hold them to it): none but the prologue has zones
     for (let i = 1; i < LEVELS.length; i++) {
       const b = LEVELS[i].build();
-      if (i !== 9) expect(b.zones, LEVELS[i].name).toBeUndefined();
+      if (i !== 9 && i !== 10) expect(b.zones, LEVELS[i].name).toBeUndefined();
       expect(b.decor!.length, LEVELS[i].name).toBeGreaterThan(100);
     }
   });

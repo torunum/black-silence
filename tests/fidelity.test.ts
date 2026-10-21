@@ -166,7 +166,9 @@ const NEW_LEVEL = "LEVEL 7 — THE BONE CATHEDRAL";
 const refName = (name: string): string => (name === "LEVEL 8 — THE WOMB" ? "LEVEL 7 — THE WOMB" : name);
 /** The levels the port added: the bone cathedral (index 7) and the Ash Bell Monastery (index 9, played second: levels/index.ts PLAY_ORDER). */
 const NEW_MONASTERY = "LEVEL 1 — THE ASH BELL MONASTERY";
-const PORTED = LEVELS.filter((d) => d.name !== NEW_LEVEL && d.name !== NEW_MONASTERY);
+/** The hollow village (2026-10-21): the port's own as well, appended after the monastery. */
+const NEW_VILLAGE = "LEVEL 4 — THE HOLLOW VILLAGE";
+const PORTED = LEVELS.filter((d) => d.name !== NEW_LEVEL && d.name !== NEW_MONASTERY && d.name !== NEW_VILLAGE);
 
 /**
  * The third deliberate divergence, and the only whole-level one: the
@@ -226,7 +228,8 @@ describe("LEVELS vs. reference", () => {
     const meta = (defs: ReadonlyArray<{ build: unknown; name: string; exitStyle?: unknown; entranceStyle?: unknown }>) =>
       defs.map(({ build, name, exitStyle, entranceStyle, ...rest }) => ({ name: refName(name), ...rest }));   // the well and the rope (2026-10-21) are the port's own
     expect(meta(PORTED)).toEqual(meta(refLevels));
-    expect(LEVELS).toHaveLength(refLevels.length + 2);
+    expect(LEVELS).toHaveLength(refLevels.length + 3);
+    expect(LEVELS.findIndex((d) => d.name === NEW_VILLAGE), "the village is appended after the monastery").toBe(10);
     expect(LEVELS.findIndex((d) => d.name === NEW_MONASTERY), "the monastery is appended, so no other level moves").toBe(9);
     expect(LEVELS.findIndex((d) => d.name === NEW_LEVEL), "the cathedral is level 7, between the factory and the womb").toBe(7);
   });

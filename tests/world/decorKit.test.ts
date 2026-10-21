@@ -49,7 +49,7 @@ describe("every theme has a vocabulary", () => {
 
   it("gives every themed level of the game a theme, and hell and the prologue none", () => {
     const themed = LEVELS.map((l) => themeOf(l.sub));
-    expect(themed.slice(1)).toEqual(["dungeon", "church", "necropolis", "graveyard", "sewers", "factory", "necropolis", "womb", "church"]);   // 7, the bone cathedral, is of the necropolis's stone; 9, the monastery, a church
+    expect(themed.slice(1)).toEqual(["dungeon", "church", "necropolis", "graveyard", "sewers", "factory", "necropolis", "womb", "church", "graveyard"]);   // 7, the bone cathedral, is of the necropolis's stone; 9, the monastery, a church; 10, the hollow village, the graveyard's
     expect(themed[0]).toBeUndefined();
   });
 
@@ -92,6 +92,7 @@ describe("each piece is cheap, and stays where it says", () => {
     for (const k of kit) {
       const { boxes } = build(k), mode = PIECES[k].mode;
       if (mode === "hang") continue;   // hung from the ceiling on the cell's axis
+      if (k === "houseroof") continue;   // a roof over a whole house (the hollow village, 2026-10-21): placed at the house's middle, the size of it
       expect(boxes.min.x, `${k} min x`).toBeGreaterThanOrEqual(-1.05);
       expect(boxes.max.x, `${k} max x`).toBeLessThanOrEqual(1.05);
       expect(boxes.max.z, `${k} max z`).toBeLessThanOrEqual(1.1);
@@ -122,7 +123,8 @@ describe("each piece is cheap, and stays where it says", () => {
     expect(kit.filter((k) => PIECES[k].cls === "decor").sort(), "the casters").toEqual(
       ["cratepile", "conveyor", "fallenstatue", "machine", "sarcophagus",
         "altar", "deadtree", "maiden", "rack", "sarcofree", "slab", "stocks", "tombfree",
-        "outcrop", "stalagmite", "basaltcol", "pyre"].sort());   // the masses of size: the level builders' set-pieces are casters too (and hell's four, hand-placed in the prologue)
+        "outcrop", "stalagmite", "basaltcol", "pyre",
+        "cart", "gallows", "houseroof", "villagewell"].sort());   // (the hollow village's, 2026-10-21: its cart, gallows, roofs and well) the masses of size: the level builders' set-pieces are casters too (and hell's four, hand-placed in the prologue)
   });
 
   it("leaves the prologue's own pieces as they were: casters, but the grass", () => {

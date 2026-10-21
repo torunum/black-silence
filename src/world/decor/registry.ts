@@ -99,8 +99,8 @@ export const PIECES: Record<string, PieceInfo> = {
   // the hollow village (2026-10-21): roofs against the sky, the well, the gallows, a farm's things, the dead corn
   houseroof: P(VIL.houseroof, "cover", "decor", { fixed: true }),
   villagewell: P(VIL.villagewell, "free", "decor", { mass: [-.9, .9, -.9, .9] }),
-  gallows: P(VIL.gallows, "free", "decor", { mass: [-.3, .3, -1.3, 1.3] }),
-  cart: P(VIL.cart, "free", "decor", { mass: [-.85, .85, -.6, .6] }),
+  gallows: P(VIL.gallows, "free", "decor", { mass: [-.3, .3, -.95, .95] }),
+  cart: P(VIL.cart, "free", "decor", { mass: [-.55, .95, -.6, .6] }),
   haybale: P(VIL.haybale, "free", "clutter", { mass: [-.5, .5, -.32, .32] }),
   woodpile: P(VIL.woodpile, "edge", "clutter"),
   scarecrow: P(VIL.scarecrow, "free", "clutter"),

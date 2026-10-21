@@ -84,7 +84,9 @@ describe("a mass's box", () => {
       // levels 5-7 (Task 3): the sewers' pump and tank, the factory's press and furnace, the womb's tumour
       "furnace", "pump", "press", "tank", "tumor",
       // hell (the prologue's rework): the rock outcrops, stalagmites and basalt columns, and the burning pyres
-      "outcrop", "stalagmite", "basaltcol", "pyre"].sort());
+      "outcrop", "stalagmite", "basaltcol", "pyre",
+      // the hollow village (2026-10-21): the square's well and gallows, a cart, the hay bales
+      "cart", "gallows", "haybale", "villagewell"].sort());
   });
 
   it("stays inside its own cell at every yaw a rule allows (a wall side, or a quarter turn), so a flood fill may treat the cell as a wall", () => {

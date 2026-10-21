@@ -36,12 +36,12 @@ export const VILLAGE_PIECES: Record<string, Piece> = {
     for (const sd of [-1, 1]) box("slate", 1.2, .08, 1.9, loc(sd * .42, 2.45, 0, 0, 0, sd * -.55));
     cyl("iron", .14, .11, .22, loc(.55, .93, .5), 6);
   },
-  /** A gallows: two posts, the beam, a brace, and a rope with its noose. */
+  /** A gallows, standing in its cell: two posts, the beam, a brace, and a rope with its noose over the step. */
   gallows: (box) => {
-    box("wood", .4, .5, 2.6, loc(0, .25, 0));   // the platform's step
-    for (const z of [-1.1, 1.1]) box("wood", .16, 3.1, .16, loc(-.1, 1.55, z));
-    box("wood", .16, .16, 2.6, loc(-.1, 3.05, 0));
-    box("wood", .1, .9, .1, loc(-.1, 2.7, .75, .7, 0, 0));
+    box("wood", .4, .45, 1.9, loc(0, .22, 0));   // the step
+    for (const z of [-.85, .85]) box("wood", .16, 3.1, .16, loc(-.1, 1.55, z));
+    box("wood", .16, .16, 1.9, loc(-.1, 3.05, 0));
+    box("wood", .1, .8, .1, loc(-.1, 2.72, .55, .7, 0, 0));
     box("canvas", .03, .9, .03, loc(.05, 2.55, 0));
     box("canvas", .2, .05, .2, loc(.05, 2.1, 0));
   },
@@ -51,7 +51,7 @@ export const VILLAGE_PIECES: Record<string, Piece> = {
     for (const sd of [-1, 1]) box("wood", 1.5, .3, .06, loc(0, .8, sd * .5));
     box("wood", .06, .3, 1.0, loc(-.75, .8, 0));
     for (const sd of [-1, 1]) cyl("wood", .5, .5, .08, loc(.1, .5, sd * .58, Math.PI / 2, 0, 0), 10);
-    for (const sd of [-1, 1]) box("wood", 1.4, .07, .07, loc(1.35, .35, sd * .35, 0, 0, -.35));
+    for (const sd of [-1, 1]) box("wood", .5, .07, .07, loc(.78, .4, sd * .35, 0, 0, -.35));   // the shafts, short: it stands in its cell
     box("canvas", .6, .4, .5, loc(-.2, .87, .05, 0, .3, 0));
   },
   haybale: (box, _c, d) => {
@@ -61,7 +61,7 @@ export const VILLAGE_PIECES: Record<string, Piece> = {
   },
   /** Split logs stacked against a wall, an axe in the block. */
   woodpile: (box, cyl) => {
-    for (let row = 0; row < 3; row++) for (let i = 0; i < 6 - row; i++) cyl("bark", .11, .11, .6, loc(-.6 + i * .24 + row * .12, .12 + row * .2, -.65, Math.PI / 2, 0, 0), 6);
+    for (let row = 0; row < 3; row++) for (let i = 0; i < 6 - row; i++) cyl("bark", .11, .11, .6, loc(-.6 + i * .24 + row * .12, .12 + row * .2, -.65, Math.PI / 2, 0, 0), 5);
     cyl("wood", .22, .24, .45, loc(.7, .22, -.3), 8);
     box("iron", .05, .14, .2, loc(.7, .5, -.3, 0, 0, .3));
     box("wood", .04, .5, .04, loc(.6, .62, -.3, 0, 0, .9));
@@ -84,12 +84,11 @@ export const VILLAGE_PIECES: Record<string, Piece> = {
   },
   /** A clump of dead corn, higher than a man: thin stalks, some leaning, ragged leaves. Walked through, and hides what is in it. */
   corn: (box, _c, d) => {
-    for (let i = 0; i < 9; i++) {
+    for (let i = 0; i < 6; i++) {   // six stalks a clump, a leaf each: a field of them is cheap enough to draw (the whole field ~20,000 triangles)
       const x = (hash(d.x + i, d.z, 5) - .5) * 1.7, z = (hash(d.x, d.z + i, 6) - .5) * 1.7, h = 1.7 + hash(d.x + i, d.z + i, 7) * .7;
       const lean = (hash(d.x - i, d.z, 8) - .5) * .3, base = loc(x, 0, z, lean, 0, (hash(d.x, d.z - i, 9) - .5) * .3);
-      box("straw", .035, h, .035, within(base, 0, h / 2, 0));
-      box("straw", .32, .03, .09, within(base, .1, h * .55, 0, 0, i, .5));
-      box("straw", .28, .03, .08, within(base, -.08, h * .75, 0, 0, i + 2, -.4));
+      box("straw", .04, h, .04, within(base, 0, h / 2, 0));
+      box("straw", .34, .03, .1, within(base, i % 2 ? .1 : -.1, h * (.55 + (i % 3) * .1), 0, 0, i, i % 2 ? .5 : -.4));
     }
   },
 };
