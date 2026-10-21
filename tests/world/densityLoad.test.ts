@@ -39,7 +39,8 @@ describe.each(LEVELS.map((l, i) => ({ i, name: l.name })))("$name", ({ i }) => {
     const d = measureLevel(LEVELS[i].build());   // the builder's own grid, before `loadLevel` empties it
     loadLevel(i);
     expect(world.enemies.length, "enemies").toBe(d.enemies);
-    expect(world.props.length, "props (the piano is one)").toBe(d.propsTotal);
+    const hard = (world.props as unknown as Array<{ soft?: boolean }>).filter((p) => !p.soft).length;   // the breakable dressing is the decor list's, not the grid's (src/world/decor/breakable.ts)
+    expect(hard, "props (the piano is one)").toBe(d.propsTotal);
     expect(world.items.length, "pickups").toBe(d.pickupsTotal);
     expect(world.torches.length, "torches").toBe(d.torches);
     expect(world.candles.length, "candles").toBe(d.candles);

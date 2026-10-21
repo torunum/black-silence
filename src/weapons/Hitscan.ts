@@ -143,7 +143,7 @@ export function hitscan(dir: THREE.Vector3,dmg: number,wIdx: number){
     damageEnemy(e,dmg*(head?2:1),{head,leg,arm,armSide,lateral,wIdx,dir:{x:dir.x,z:dir.z},dist:c.t,hx,hy,hz});
     used++;if(used>=pierce)return;}
   if(wallT<45){
-    if(hitWindow(wx,wy,wz))return;   // the glass breaks (src/world/Windows.ts): no hole, no spark on it
+    hitWindow(wx,wy,wz);   // if it is a window's glass, it breaks (src/world/Windows.ts); the spark and the mark go on as before, hidden by the pane
     const n=wallNormal(wx,wz,dir);
     sparks(wx-dir.x*.05,clamp(wy,.1,WALLH-.1),wz-dir.z*.05,4);
     addWallDecal(wx,clamp(wy,.15,WALLH-.15),wz,n.x,n.z,.08,holeMat);

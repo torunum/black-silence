@@ -934,6 +934,12 @@ import { MONOLOGUE } from "../../src/content/monologue";
  * on its cell's own floor; the prologue's exit is the ladder up into the monastery and the dungeon's entrance the monastery's great gate
  * (`src/world/HatchKit.ts`, `GateKit.ts`). Against the previous fixture: `camera`, `hud` and `scene.count` **identical in every sampled
  * frame**; `scene.digest` differs in all 110 — the doors' children are hashed with every frame. Nothing moved.
+ *
+ * ## The owner's round, 2026-10-21 — regeneration: the dressing that breaks (scene only, 110 of 110 frames)
+ *
+ * The level kit's benches, crate piles and bone stacks stand as pieces of their own in `world.props` now, to be broken
+ * (`src/world/decor/breakable.ts`), rather than merged into the dressing. Against the previous fixture: `camera` and `hud` **identical in
+ * every sampled frame**; `scene.count` +8 (223 -> 231, the eight pieces the dungeon's dressing has), `scene.digest` with it.
   */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

@@ -14,7 +14,7 @@ import { addPiece, merge, partMaterial, type Parts } from "./parts";
 
 /**
  * THE DRESSING THAT BREAKS (owner: "daha fazla kırılabilir eşya"). The level kit's urns, benches, lecterns, crate piles, bone stacks
- * and skull heaps, and the womb's egg-sacs, tumours and growths are built as pieces of their own rather than merged into the level's
+ * and the womb's egg-sacs, tumours and growths are built as pieces of their own rather than merged into the level's
  * dressing, and stand in `world.props` beside the crates and barrels — so a shot, a stake, a kick of a blast, a boss's falling
  * debris breaks them, as Blood's do: clay into shards and a puff of ash, wood into splinters, bone into a clatter, flesh into a burst.
  *
@@ -32,7 +32,6 @@ export const BREAKABLE: Readonly<Record<string, Breakable>> = {
   bench: { hp: 16, stuff: "wood" },
   lectern: { hp: 14, stuff: "wood" },
   cratepile: { hp: 30, stuff: "wood" },
-  skullpile: { hp: 8, stuff: "bone" },
   bonestack: { hp: 14, stuff: "bone" },
   pod: { hp: 10, stuff: "flesh" },
   tumor: { hp: 18, stuff: "flesh" },

@@ -1,5 +1,21 @@
 # Where this project stands
 
+## Owner's round, 2026-10-21 (later still): windows that break, and more that breaks
+
+"kırılabilir cam pencereler ve daha fazla kırılabilir eşya" —
+
+- **The stained-glass windows break** (`src/world/Windows.ts`, which now builds them for `loadLevel` exactly as it did): a bullet into
+  the glass, a stake, a dynamite or barrel blast or a cross's burst nearby. A crash and a long rain of tinkling pieces
+  (`glassShatters`), coloured shards thrown into the room, the pane left a ragged ring of glass in the lead round a hole onto the night,
+  and its coloured light turned the cold grey of the moon. A wall hit makes the same draws it always did, so nothing else moves.
+- **The level kit's urns, benches, lecterns, crate piles and bone stacks, and the womb's egg-sacs, tumours and growths break**
+  (`src/world/decor/breakable.ts`): built as pieces of their own and entered in `world.props`, so shots, stakes, kicks, blasts and a
+  boss's falling debris and shock rings break them — clay into shards and a puff of ash (`potteryBreaks`), wood into splinters, bone
+  into a clatter, flesh into a burst. They are never in anyone's way (walked past as before; only a boss or a brute smashes through)
+  and break without a draw from the game's dice; nothing drops out of them.
+- Traces: the dungeon's gains its eight pieces (scene only); the boss's fight is a different fight from frame 672, where a shot of its
+  sweep meets a lectern — every property it is held to still holds (header note).
+
 ## Owner's round, 2026-10-21 (later): the levels run into each other, and the doors are remade
 
 "bölümleri geliştirmeye devam et. prologue u da diğer bölüme bağla. kapıları yeniden yapabilirsin" —

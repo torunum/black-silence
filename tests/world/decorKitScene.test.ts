@@ -56,12 +56,14 @@ describe("what the loader builds from a decor list", () => {
       const bare = renderState.scene.children.length;
       expect(decorMeshes(), `level ${i} undressed`).toHaveLength(0);
       LEVELS[10] = dressed(i); loadLevel(10);
-      const added = renderState.scene.children.length - bare;
+      // the breakable dressing (src/world/decor/breakable.ts, 2026-10-21) stands as a piece of its own each, on purpose: it is counted apart
+      const soft = (): number => (world.props as unknown as Array<{ soft?: boolean }>).filter((p) => p.soft).length;
+      const added = renderState.scene.children.length - bare - soft();
       expect(decorMeshes().length, `level ${i}`).toBeGreaterThan(3);
       expect(added, `level ${i} gained ${added} scene children`).toBeLessThanOrEqual(28);
       if (i <= 4) {   // the real level: its own hand dressing, merged the same way
         LEVELS[10] = LEVELS[i]; loadLevel(10);
-        expect(renderState.scene.children.length - bare, `level ${i} as built`).toBeLessThanOrEqual(28);
+        expect(renderState.scene.children.length - bare - soft(), `level ${i} as built`).toBeLessThanOrEqual(28);
         expect(decorMeshes().length, `level ${i} as built`).toBeGreaterThan(3);
       }
     }
@@ -93,10 +95,11 @@ describe("what the loader builds from a decor list", () => {
   it("is visual only: a dressed level has the enemies, props, items and torches its bare one has, on the same grid", () => {
     for (const i of [1, 4, 8]) {
       LEVELS.length = 10; loadLevel(i);
-      const bare = [world.enemies.length, world.props.length, world.items.length, world.torches.length, world.GW, world.GH];
+      const bare = [world.enemies.length, (world.props as unknown as Array<{ soft?: boolean }>).filter((p) => !p.soft).length, world.items.length, world.torches.length, world.GW, world.GH];
       LEVELS[10] = dressed(i); loadLevel(10);
       expect(decorMeshes().length).toBeGreaterThan(0);
-      expect([world.enemies.length, world.props.length, world.items.length, world.torches.length, world.GW, world.GH], `level ${i}`).toEqual(bare);
+      const hard = (world.props as unknown as Array<{ soft?: boolean }>).filter((p) => !p.soft).length;   // the breakable dressing aside
+      expect([world.enemies.length, hard, world.items.length, world.torches.length, world.GW, world.GH], `level ${i}`).toEqual(bare);
     }
   });
 

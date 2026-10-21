@@ -47,7 +47,7 @@ describe.each([[10, "the well", buildWell], [11, "the charnel stair", buildCharn
     expect(world.enemies.length, "enemies").toBe(s.enemies);
     expect(world.enemies.length).toBe(d.enemies);
     expect(world.items.length, "pickups").toBe(d.pickupsTotal);
-    expect(world.props.length, "props").toBe(d.propsTotal);
+    expect((world.props as unknown as Array<{ soft?: boolean }>).filter((p) => !p.soft).length, "props (the breakable dressing aside: the decor list's)").toBe(d.propsTotal);
     expect(S.enemiesTotal).toBe(s.enemies);
     expect(world.GW).toBe(L.W);
     expect(world.GH).toBe(L.H);

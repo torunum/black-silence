@@ -953,6 +953,16 @@ import { world } from "../../src/world/WorldState";
  * on its cell's own floor; the prologue's exit is the ladder up into the monastery and the dungeon's entrance the monastery's great gate
  * (`src/world/HatchKit.ts`, `GateKit.ts`). Against the previous fixture: `camera`, `hud` and `scene.count` **identical in every sampled
  * frame**; `scene.digest` differs in all 512 — the doors' children are hashed with every frame. Nothing moved.
+ *
+ * ## The owner's round, 2026-10-21 — regeneration: the dressing that breaks (a different fight from frame 672)
+ *
+ * The church's urns, benches, lecterns and bone stacks stand as pieces of their own in `world.props` now (`src/world/decor/breakable.ts`),
+ * and so they are things a shot can strike, a debris strike or a shock ring can break. They break without a draw from the seeded stream,
+ * and the windows break without changing the draws a wall hit makes, so the run is the same run until a shot of the sweep meets a lectern
+ * instead of what was behind it: from frame 672 (health 49 -> 59 there: a cultist lived a little longer and struck a little later) `camera`
+ * and `hud` differ (351 and 470 of 512 frames); `scene.count` differs from the first frame (the pieces are children of their own, and
+ * the boss's rings and strikes break them as the fight goes on). Every property the run is held to below still holds — the priest wakes,
+ * reaches phase 3 inside a sampled frame, ends awake, hurt and alive.
   */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");
