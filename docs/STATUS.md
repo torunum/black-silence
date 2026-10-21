@@ -1,5 +1,18 @@
 # Where this project stands
 
+## Owner's round, 2026-10-21 (evening): THE HOLLOW VILLAGE, an open-air level
+
+"açık havada geçen, Blood tarzı bölümler" — **a new level, played after the abandoned church** (`src/world/levels/village.ts`,
+`villagePop.ts`, `villageZones.ts`, `dressVillage.ts`; index 10, `PLAY_ORDER` `[0, 9, 1, 2, 10, 3, …]`, shown as LEVEL 4). The village
+round the church, at night, under the open sky: ADEM comes out through the church's own doors onto its square (the well, the gallows,
+the inn, the store), down the street (the undertaker's, the burned house, the smithy, the cottage), finds the town gate locked, crosses
+the dead cornfield (dogs and crawlers in the corn) to the barn, takes THE RED KEY from the hayloft where an ettin keeps it, and goes on
+through the gate into the graveyard and out by the cemetery gate — which the necropolis now begins at. Off the way: the store's
+cellar and the tunnel up into the mill and its loft, the east lane, and three secrets (the inn's wine cellar, the miller's hoard, the
+undertaker's hidden coffin). Three floors (1.2 ground, 0 cellars, 3.6 galleries and lofts), 79 enemies, five shrines; it meets every
+structure target (`REBUILT`, measured against 80). New pieces for it (`src/world/decor/village.ts`): slate gable roofs with chimneys over
+every house, the well, the gallows, a cart, hay bales, woodpiles, scarecrows, fingerposts and the corn.
+
 ## Owner's round, 2026-10-21 (later still): windows that break, and more that breaks
 
 "kırılabilir cam pencereler ve daha fazla kırılabilir eşya" —
