@@ -61,7 +61,7 @@ function broken(): THREE.CanvasTexture {
       while (edge < 14 && inArch(x - edge, y) && inArch(x + edge, y) && inArch(x, y + edge) && inArch(x, y - edge)) edge++;
       const ragged = 4 + grain(x >> 1, y >> 2, 7) * 7;
       if (edge < ragged) g.fillStyle = cols[(grain(x >> 2, y >> 2, 9) * cols.length) | 0];
-      else g.fillStyle = grain(x, y, 11) > .985 ? "#c8d0e0" : `rgb(${8 + (y >> 3)},${12 + (y >> 3)},${30 + (y >> 2)})`;
+      else g.fillStyle = grain(x, y, 11) > .985 ? "#c8d0e0" : `rgb(${22 + (y >> 2)},${30 + (y >> 2)},${62 + (y >> 1)})`;
       g.fillRect(x, y, 1, 1);
     }
     g.strokeStyle = "#23262b"; g.lineWidth = 4;
