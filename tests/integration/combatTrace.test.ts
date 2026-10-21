@@ -940,6 +940,12 @@ import { MONOLOGUE } from "../../src/content/monologue";
  * The level kit's benches, crate piles and bone stacks stand as pieces of their own in `world.props` now, to be broken
  * (`src/world/decor/breakable.ts`), rather than merged into the dressing. Against the previous fixture: `camera` and `hud` **identical in
  * every sampled frame**; `scene.count` +8 (223 -> 231, the eight pieces the dungeon's dressing has), `scene.digest` with it.
+ *
+ * ## The owner's round, 2026-10-21 — regeneration: doors on raised floors (digest only, 110 of 110 frames)
+ *
+ * A door cell's ceiling is the passage's now, and a secret door's block stands floor to ceiling on its own floor (`src/world/LevelDoors.ts`'s
+ * `fitDoorCeilings`, `sinkingDoor`). Against the previous fixture: `camera`, `hud` and `scene.count` **identical in every sampled frame**;
+ * `scene.digest` differs in all 110 — the ceiling over the raised doorways and the secret door's block are hashed with every frame.
   */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

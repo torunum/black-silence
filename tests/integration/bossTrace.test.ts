@@ -963,6 +963,12 @@ import { world } from "../../src/world/WorldState";
  * and `hud` differ (351 and 470 of 512 frames); `scene.count` differs from the first frame (the pieces are children of their own, and
  * the boss's rings and strikes break them as the fight goes on). Every property the run is held to below still holds — the priest wakes,
  * reaches phase 3 inside a sampled frame, ends awake, hurt and alive.
+ *
+ * ## The owner's round, 2026-10-21 — regeneration: doors on raised floors (digest only, 512 of 512 frames)
+ *
+ * A door cell's ceiling is the passage's now, and a secret door's block stands floor to ceiling on its own floor (`src/world/LevelDoors.ts`'s
+ * `fitDoorCeilings`, `sinkingDoor`). Against the previous fixture: `camera`, `hud` and `scene.count` **identical in every sampled frame**;
+ * `scene.digest` differs in all 512 — the ceiling over the raised doorways and the secret door's block are hashed with every frame.
   */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

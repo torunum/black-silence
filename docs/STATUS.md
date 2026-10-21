@@ -1,5 +1,21 @@
 # Where this project stands
 
+## Owner's round, 2026-10-21 (evening, later): what was found wrong, and fixed
+
+"eksiklikleri bul ve düzelt" —
+
+- **Doors on raised floors.** A secret door (and a door with no arch over it) was a block at the grid's own 0 to 3.4, whatever floor
+  its cell had: on the monastery's and the village's 1.2 floors it stood with its foot in the floor, and on a 3.6 loft (the miller's
+  hoard) it was entirely under the floor — the secret was an open hole in the wall. And a door cell kept the default 3.4 ceiling while
+  the rooms either side had theirs a storey up, so the doorway was squashed under a lintel (and on a loft, its ceiling was below its
+  floor). Now a door cell takes the lower of its passage's ceilings, and the sinking block stands floor to ceiling on its own floor and
+  sinks into it (`src/world/LevelDoors.ts`: `fitDoorCeilings`, `sinkingDoor`, `sunkY`); the arched doors' leaves fit the taller opening.
+- **The arrival lines.** `loadLevel` said `lvl<index>`, the reference's numbering: since the bone cathedral took index 7, it opened on
+  the womb's "the walls are breathing", and the womb, the monastery and the village opened on nothing. Each level now has its own
+  (`src/content/monologue.ts`: `arrivalLine`, and the port's own lines in `PORT_LINES`, beside the reference's untouched `MONOLOGUE`).
+- **The gauntlet** (KNOWN-21, wired since the reference and placed in no level) is in the village, in the east lane's yard; its plate
+  and light stand on the floor they are on. ADEM has a word for the cornfield, the barn and the graveyard (zone lines).
+
 ## Owner's round, 2026-10-21 (evening): THE HOLLOW VILLAGE, an open-air level
 
 "açık havada geçen, Blood tarzı bölümler" — **a new level, played after the abandoned church** (`src/world/levels/village.ts`,

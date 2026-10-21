@@ -7,7 +7,7 @@ import { installDomStubs, loadGameHtml } from "../support/domStubs";
 import { renderState } from "../../src/render/Renderer";
 import { world } from "../../src/world/WorldState";
 import { CELL, EYE, WALLH } from "../../src/world/Grid";
-import { solidAt } from "../../src/world/Collision";
+import { ceilHeightAtCell, solidAt } from "../../src/world/Collision";
 import { LEVELS } from "../../src/world/levels/index";
 import { SHADOW_POLICY } from "../../src/render/Shadows";
 import { BANDTEX } from "../../src/render/BandTextures";
@@ -137,11 +137,13 @@ describe("a closed door hides it", () => {
     for (let k = 0; k < m.count; k++) {
       const c = cellOf(m, k);
       const x0 = c.x * CELL, z0 = c.z * CELL;
+      // on the door cell's own floor, squeezed under a low ceiling (2026-10-21: the doors stand on their floors)
+      const fl = world.heightMap?.[c.z]?.[c.x] || 0, sy = Math.min(1, (ceilHeightAtCell(c.x, c.z) - fl) / WALLH);
       for (const t of worldTriangles(m, k)) for (const p of t.p) {
         verts++;
         const across = c.axis === "z" ? p.x - x0 : p.z - z0, along = c.axis === "z" ? p.z - z0 : p.x - x0;
         expect(across).toBeGreaterThanOrEqual(-1e-6); expect(across).toBeLessThanOrEqual(CELL + 1e-6);
-        expect(p.y).toBeGreaterThanOrEqual(A.ARCH_SPRING - 1e-6); expect(p.y).toBeLessThanOrEqual(WALLH + 1e-6);
+        expect(p.y).toBeGreaterThanOrEqual(fl + A.ARCH_SPRING * sy - 1e-5); expect(p.y).toBeLessThanOrEqual(fl + WALLH * sy + 1e-5);
         expect(Math.min(along, CELL - along), "inset from the door's passage faces").toBeGreaterThanOrEqual(.03);
       }
     }
