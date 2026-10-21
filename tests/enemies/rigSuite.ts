@@ -53,12 +53,18 @@ const legacyLook = (key: string): Look => {
 };
 const newLook = (b: Bitmap): Look => look({ w: b.w, h: b.h, at: (x, y) => { const o = (y * b.w + x) * 4; return [b.data[o], b.data[o + 1], b.data[o + 2], b.data[o + 3]]; } });
 
-export interface SuiteOpts { head: Record<string, boolean>; fill: Record<string, number>; width?: Record<string, number>; boss?: Record<string, boolean> }
+export interface SuiteOpts {
+  head: Record<string, boolean>; fill: Record<string, number>; width?: Record<string, number>; boss?: Record<string, boolean>;
+  /** A priest boss's second form, by its key, naming its first (`Q2: "Q"`): it is never spawned, only worn (`formKey`). */
+  form?: Record<string, string>;
+}
 export interface SuiteHelpers { standing(key: string): Enemy; map(e: Enemy): unknown; px(): Record<string, Record<string, unknown>>; tick(dt: number): boolean }
 
 export function rigSuite(keys: readonly string[], o: SuiteOpts): SuiteHelpers {
   describe.each(keys)("%s: the rig", (key) => {
-    const rig = RIGS[key], def = ENEMY_DEFS[key], f = rig.frame;
+    const rig = RIGS[key], f = rig.frame, of = o.form?.[key];
+    // a boss's second form has no def of its own: its sprite is its first form's, grown as `Boss.ts` grows it (w x1.35, h x1.15)
+    const def = of ? { w: ENEMY_DEFS[of].w * 1.35, h: ENEMY_DEFS[of].h * 1.15 } : ENEMY_DEFS[key];
 
     it("has the animation the plan asks for: a walk of 6, an idle, an attack of 3, pain of 2, death of 5, and the same for the legless one (a crawl of 4)", () => {
       expect(rig.key).toBe(key);
@@ -222,7 +228,7 @@ export function rigSuite(keys: readonly string[], o: SuiteOpts): SuiteHelpers {
   const standing = (key: string): Enemy => { const e = spawnEnemy(key, 5, 30, true); e.cool = 9999; e.plate = 0; e.dormant = false; return e; };   // a boss is awake (no cinematic)
   const map = (e: Enemy): unknown => e.sp.material.map;
 
-  describe.each(keys)("%s: the game selects its frames", (key) => {
+  describe.each(keys.filter((k) => !o.form?.[k]))("%s: the game selects its frames", (key) => {
     it("PX is the rig's, with its legacy roles and its new ones all textures, and a headless frame only where there is a head", () => {
       const P = PX[key];
       expect(P.rig).toBeTruthy();
