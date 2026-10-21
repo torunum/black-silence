@@ -946,6 +946,14 @@ import { MONOLOGUE } from "../../src/content/monologue";
  * A door cell's ceiling is the passage's now, and a secret door's block stands floor to ceiling on its own floor (`src/world/LevelDoors.ts`'s
  * `fitDoorCeilings`, `sinkingDoor`). Against the previous fixture: `camera`, `hud` and `scene.count` **identical in every sampled frame**;
  * `scene.digest` differs in all 110 — the ceiling over the raised doorways and the secret door's block are hashed with every frame.
+ *
+ * ## The owner's round, 2026-10-21 (night) — regeneration: the boss-like enemies are rigs, the ten enemy fields reach the enemy, shots pass pillars, the kick (110 of 110 frames)
+ *
+ * Four changes at once, each a change to what the game does: the cultist and the other boss-like enemies are rigs (`src/enemies/rig/`, their
+ * frames baked, the legacy bake's draws still burned); KNOWN-15 closed (`spawnEnemy` copies `orb`, `fly`, `burst` and the rest: the cultists fire
+ * their orbs, the fliers hover); a shot has its own wall test (`shotSolidAt`: a pillar is its round column, a mass stops a shot only below its
+ * top); and the kick hits harder (knockback 21, a longer hit-stop). Against the previous fixture, field by field over every sampled frame:
+ * `scene.digest` differs in 73, `scene.count` in 54, `hud.hp` in 54 and `hud.ar` in 52 (the cultists' orbs land), `camera` in 12.
   */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

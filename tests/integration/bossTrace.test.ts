@@ -1069,8 +1069,16 @@ const REV = (2 * Math.PI) / SENS;
  * 2808** (567 frames of live phase 3, priest at 194 hp) and **`EVERY` stays
  * 18**. 2808/18 = 156 recorded frames. The module doc comment's last
  * section has the measurement and the field-by-field account.
+ *
+ * ### Re-measured, the owner's round of 2026-10-21 (night) — 8192 -> 10080
+ *
+ * The boss-like enemies became rigs, KNOWN-15 was closed (the church's cultists fire their orbs; ten authored fields reach every enemy)
+ * and a shot got its own wall test (`shotSolidAt`): the fight moved. At 8192 the priest ended the run in phase 2, and the four phase-3
+ * checks said so. Measured with the run taken on to 20000: the phase-3 swap at **9519** (the priest dead by 20000). **`TOTAL_FRAMES` =
+ * 10080** (561 frames of live phase 3; at the cutoff `phase = 3`, alive, `hp = 458` of 1800, 25%), and **`EVERY` stays 16**: 16 x 595 =
+ * **9520** falls inside the swap's window. 10080/16 = 630 recorded frames.
  */
-const TOTAL_FRAMES = 8192;
+const TOTAL_FRAMES = 10080;
 const EVERY = 16;
 /**
  * The fifth knob the structural guard depends on, alongside `TOTAL_FRAMES`
