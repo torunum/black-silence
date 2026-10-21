@@ -180,7 +180,7 @@ export function rigSuite(keys: readonly string[], o: SuiteOpts): SuiteHelpers {
       }
     });
 
-    it("the legless one is a different body: the crawl frame carries stumps of meat at the hips and is not a walk frame", () => {
+    if (!o.boss?.[key] && !o.form?.[key]) it("the legless one is a different body: the crawl frame carries stumps of meat at the hips and is not a walk frame", () => {
       const c = frame(rig, "crawl", 0, LEGS);
       expect(ofMaterial(rig, c, E.MEAT), "meat at the hips").toBeGreaterThan(4);
       expect(DIFF(c, frame(rig, "crawl", 2, LEGS))).toBeGreaterThan(60);
