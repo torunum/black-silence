@@ -129,3 +129,38 @@ export function isSwing<D>(d: D): d is D & SwingDoor { return !!d && Array.isArr
 
 /** A count, for the tests: the doors of the loaded level that swing. */
 export function swingingDoors(): number { return Object.values(world.doors).filter(isSwing).length; }
+
+/**
+ * A door cell's ceiling, fitted to the passage it stands in (2026-10-21). The authors leave every solid cell at the default ceiling, and
+ * a door cell is solid until it opens — so on a raised floor its ceiling stayed at the grid's 3.4 while the rooms either side had theirs
+ * a storey up: a 2.2 doorway under a lintel on the monastery's 1.2 floor, and on the village's 3.6 lofts a ceiling *under the floor*. Now
+ * a door cell takes the lower of the ceilings of the two cells it joins, when that is higher than its own. A level with no ceiling map,
+ * or a door between two rooms of the default height, is left as it was.
+ */
+export function fitDoorCeilings(): void {
+  const cm = world.ceilMap as number[][] | null;
+  if (!cm) return;
+  const open = (x: number, z: number): boolean => { const c = world.grid[z]?.[x]; return c !== undefined && !"#WI+DS".includes(c); };
+  const ceilOf = (x: number, z: number): number => cm[z]?.[x] || WALLH;
+  for (let z = 1; z < world.GH - 1; z++) for (let x = 1; x < world.GW - 1; x++) {
+    if (!"+DS".includes(world.grid[z][x])) continue;
+    const ends = open(x - 1, z) && open(x + 1, z) ? [[x - 1, z], [x + 1, z]] : open(x, z - 1) && open(x, z + 1) ? [[x, z - 1], [x, z + 1]] : null;
+    if (!ends) continue;
+    const want = Math.min(ceilOf(ends[0][0], ends[0][1]), ceilOf(ends[1][0], ends[1][1])), floor = world.heightMap?.[z]?.[x] || 0;
+    if (want > ceilOf(x, z) && want - floor > 1.5) cm[z][x] = want;
+  }
+}
+
+/**
+ * A door that sinks — a secret door, drawn as the wall it hides in, or one with no arch over it: a block from its cell's floor to its
+ * cell's ceiling (before 2026-10-21 it stood at the grid's own 0 to 3.4, whatever floor the cell had). `y0` is the floor it sinks into.
+ */
+export function sinkingDoor(scene: THREE.Scene, x: number, z: number, mat: THREE.Material, wallGeo: THREE.BufferGeometry, floor: number, ceil: number): { mesh: THREE.Mesh; y0: number; h: number } {
+  const h = floor === 0 && ceil === WALLH ? WALLH : Math.max(1, ceil - floor);
+  const m = new THREE.Mesh(h === WALLH ? wallGeo : track(new THREE.BoxGeometry(CELL, h, CELL)), mat);
+  m.name = "door"; m.position.set((x + .5) * CELL, floor + h / 2, (z + .5) * CELL); scene.add(m);
+  return { mesh: m, y0: floor, h };
+}
+
+/** How low a sinking door goes: its top a hair over the floor it sinks into. */
+export function sunkY(d: { y0?: number; h?: number }): number { return (d.y0 ?? 0) - (d.h ?? WALLH) / 2; }

@@ -63,6 +63,9 @@ export function populateVillage(lv: LevelPlan, r: VillageRooms): void {
   lv.pickup("h", [48, 33]).pickup("b", [41, 39]);
   lv.enemy("g", [54, 20], [53, 34], [56, 40]).enemy("z", [52, 26], [55, 30]);
   lv.pickup("a", [51, 43]).pickup("h", [57, 17]).pickup("1", [57, 44]);
+  // THE GAUNTLET's plate (KNOWN-21: wired since the reference and placed in no level until now), in the lane's yard behind the cottage:
+  // step on it and five come out of the dark round it; kill them for armour, crosses and bullets
+  lv.plate([54, 38]);
 
   // ---- E4 the field
   lv.enemy("g", [8, 20], [15, 25], [6, 33], [12, 40]).enemy("w", [10, 28], [16, 33], [5, 42]).enemy("z", [13, 22], [7, 37]).enemy("j", [18, 42]);
@@ -77,7 +80,7 @@ export function populateVillage(lv: LevelPlan, r: VillageRooms): void {
   lv.pickup("h", [24, 46], [24, 61]).pickup("a", [47, 46]).pickup("b", [47, 61]).pickup("r", [38, 47]).pickup("e", [29, 47]);
 
   // ---- the light: lanterns on posts in the open where the eye needs a mark, candles in the houses
-  lv.light("i", [29, 4], [42, 4], [26, 12], [45, 12], [32, 32], [39, 24], [51, 30], [19, 20], [10, 48], [35, 47], [24, 52], [47, 52], [59, 20]);   // thirteen: with the window, the exit, the smithy's furnace and the player's four, a margin of one under the budget
+  lv.light("i", [29, 4], [42, 4], [26, 12], [45, 12], [32, 32], [39, 24], [51, 30], [19, 20], [10, 48], [35, 47], [47, 52], [59, 20]);   // twelve: with the window, the exit, the smithy's furnace, the gauntlet's plate and the player's four, a margin of one under the budget
   lv.light("l", [20, 5], [26, 28], [18, 1], [44, 33], [51, 5], [16, 52]);
 
   // ---- the dressing: each place its own (./dressVillage.ts) — and no theme clutter over it: the graveyard kit's stones belong in the graveyard

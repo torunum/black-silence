@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { arrivalLine } from "../content/monologue";
 import { loadScript, setScriptDef } from "./script/ScriptRun";
 import { resetDynamite } from "../weapons/DynamiteState";
 import { resetStakes } from "../weapons/StakeState";
@@ -30,7 +31,7 @@ import { ceilHeightAtCell, floorHeightAt } from "./Collision";
 import { buildCeiling } from "./Ceiling";
 import { buildTrim } from "./Trim";
 import { buildArches } from "./Arches";
-import { buildLevelDoor, resetLevelDoors } from "./LevelDoors";
+import { buildLevelDoor, fitDoorCeilings, resetLevelDoors, sinkingDoor } from "./LevelDoors";
 import { addWindow, resetWindows } from "./Windows";
 import { wallMaterials, addInstanced, groupPush, buildFloor, buildPlatforms } from "./LevelMeshes";
 import { themeTex, shellAt } from "./ZoneLook";
@@ -258,6 +259,7 @@ export function loadLevel(idx: number, resume?: Resume): void {
   // object to hand them, and doors don't even share one material the way
   // walls do (locked/flesh/plain textures, vs. secrets sharing the wall's).
   const wallMats=new Map<THREE.Material,THREE.Matrix4[]>(),pilMats=new Map<THREE.Material,THREE.Matrix4[]>();
+  fitDoorCeilings();   // a door cell's ceiling, the passage's (src/world/LevelDoors.ts)
   for(let z=0;z<world.GH;z++)for(let x=0;x<world.GW;x++){
     const ch=world.grid[z][x],wx=(x+.5)*CELL,wz=(z+.5)*CELL;
     if(ch==="#"||ch==="W"){
@@ -275,8 +277,8 @@ export function loadLevel(idx: number, resume?: Resume): void {
       if(sw){world.doors[x+","+z]={...sw,locked:ch==="D",secret:false,flesh:!!flesh&&ch!=="D"};continue;}
       let mat;if(ch==="S"){mat=matWallAt(x,z);S.secretsTotal++;}
       else mat=track(new THREE.MeshLambertMaterial({map:ch==="D"?TEX.doorLocked:(flesh?TEX.fleshDoor:TEX.door)}));
-      const m=new THREE.Mesh(wallGeo,mat);m.name="door";m.position.set(wx,WALLH/2,wz);renderState.scene.add(m);
-      world.doors[x+","+z]={mesh:m,open:false,locked:ch==="D",secret:ch==="S",flesh:flesh&&ch!=="D"};}}
+      const sk=sinkingDoor(renderState.scene as THREE.Scene,x,z,mat,wallGeo,world.heightMap?.[z]?.[x]||0,ceilHeightAtCell(x,z));   // floor to ceiling, on its own floor
+      world.doors[x+","+z]={mesh:sk.mesh,y0:sk.y0,h:sk.h,open:false,locked:ch==="D",secret:ch==="S",flesh:flesh&&ch!=="D"};}}
   addInstanced(renderState.scene as THREE.Scene,wallGeo,wallMats,"wall");
   addInstanced(renderState.scene as THREE.Scene,pilGeo,pilMats,"pillar");
   buildFloor(renderState.scene as THREE.Scene,Ldef);   // src/world/LevelMeshes.ts
@@ -326,9 +328,10 @@ export function loadLevel(idx: number, resume?: Resume): void {
     else if(ch==="Y"){world.challenge={x:wx,z:wz,state:0,spawned:[]};
       const plate=new THREE.Mesh(track(new THREE.CircleGeometry(.9,10)),
         track(new THREE.MeshBasicMaterial({color:0x6a4ab8,transparent:true,opacity:.5})));
-      plate.rotation.x=-Math.PI/2;plate.position.set(wx,.02,wz);renderState.scene.add(plate);
+      const pfy=floorHeightAt(wx,wz);   // on the floor it is on (the village's plate is at 1.2: 2026-10-21)
+      plate.rotation.x=-Math.PI/2;plate.position.set(wx,pfy+.02,wz);renderState.scene.add(plate);
       // decay:1 explicit — same restoration, reference/sonsurum.html:2933.
-      const gl=track(new THREE.PointLight(0x6a4ab8,.7,5,1));gl.position.set(wx,.8,wz);renderState.scene.add(gl);
+      const gl=track(new THREE.PointLight(0x6a4ab8,.7,5,1));gl.position.set(wx,pfy+.8,wz);renderState.scene.add(gl);
       (world.challenge as Record<string, unknown>).plate=plate;(world.challenge as Record<string, unknown>).light=gl;}
     else if(EDEF[ch])spawnEnemy(ch,wx,wz);
     // KNOWN-4 lives on this line and the one above it: `C` and `V` are in both
@@ -377,5 +380,5 @@ export function loadLevel(idx: number, resume?: Resume): void {
   after(()=>lt.style.opacity="0",5000);
   showMsg(titleOf(idx),3.4);
   // A level that opens in a grave says its line at the end of the rise (src/world/Opening.ts); the rest after 1.4 s.
-  if(L.grave)beginOpening(L.grave,"lvl"+idx);
-  else after(()=>say("lvl"+idx,true),1400);}
+  if(L.grave)beginOpening(L.grave,arrivalLine(idx));
+  else after(()=>say(arrivalLine(idx),true),1400);}   // the level's own opening line (src/content/monologue.ts)

@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { isSwing, poseLevelDoor } from "./LevelDoors";
+import { isSwing, poseLevelDoor, sunkY } from "./LevelDoors";
 import { S } from "../core/State";
 import { game } from "../core/Game";
 import { input } from "../player/Input";
@@ -11,7 +11,6 @@ import { ITEMTEX } from "../render/ItemTextures";
 import { showMsg } from "../ui/HudMessages";
 import { el } from "../ui/dom";
 import { weaponRaise } from "../audio/sounds/foley";
-import { WALLH } from "./Grid";
 import { world } from "./WorldState";
 import { titleOf } from "./levels/index";
 import { loadLevel } from "./LevelLoader";
@@ -79,7 +78,7 @@ function replay(f: Facts): void {
     const d = world.doors[k] as unknown as Rec | undefined;
     if (!d) continue;
     if (isSwing(d)) { d.open = true; d.k = 1; poseLevelDoor(d); continue; }   // its leaves swung right back (src/world/LevelDoors.ts)
-    d.open = true; d.mesh!.position.y = -WALLH / 2;   // all the way down, as `doorTick` leaves one
+    d.open = true; d.mesh!.position.y = sunkY(d as { y0?: number; h?: number });   // all the way down, as `doorTick` leaves one
   }
   for (const i of f.broken) {
     const p = world.props[i] as unknown as Rec | undefined;

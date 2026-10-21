@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { isSwing, swingAway, swingTick } from "../world/LevelDoors";
+import { isSwing, sunkY, swingAway, swingTick } from "../world/LevelDoors";
 import { rnd } from "../utils/math";
 import { ACHIEVEMENTS } from "../content/achievements";
 import { ach } from "../ui/Toasts";
@@ -52,6 +52,8 @@ import { doorRule, gateOpens, scriptInteract, takeSeal } from "../world/script/S
 interface Door {
   mesh: THREE.Object3D;
   open: boolean;
+  /** A sinking door's floor and height (src/world/LevelDoors.ts's `sinkingDoor`). */
+  y0?: number; h?: number;
   locked?: boolean;
   secret?: boolean;
   flesh?: boolean;
@@ -156,7 +158,7 @@ export function itemsTick(dt: number){
     showMsg("SCRAP SMG ASSEMBLED FROM THE DEAD",3);scrapSmgAssembled();animCues.pickup++;}}
 export function doorTick(dt: number){for(const k in world.doors){const d=world.doors[k] as unknown as Door;
   if(isSwing(d)){swingTick(d,dt);continue;}   // two leaves on their hinges (src/world/LevelDoors.ts)
-  if(d.open&&d.mesh.position.y>-WALLH/2+.1)d.mesh.position.y-=dt*2.6;}}
+  if(d.open&&d.mesh.position.y>sunkY(d)+.1)d.mesh.position.y-=dt*2.6;}}   // into the floor it stands on
 export function propTick(dt: number){for(const p of world.props as unknown as Prop[]){
   if(p.dead||p.fuse!<0)continue;
   p.fuse!-=dt;if(p.fuse!<=0)explodeBarrel(p);}}
