@@ -160,7 +160,8 @@ export function rigSuite(keys: readonly string[], o: SuiteOpts): SuiteHelpers {
     const changed = (a: Bitmap, b: Bitmap, region: Bitmap): number => { let n = 0; for (let i = 0; i < a.data.length; i += 4) if (region.data[i + 3] && (a.data[i] !== b.data[i] || a.data[i + 1] !== b.data[i + 1] || a.data[i + 2] !== b.data[i + 2] || a.data[i + 3] !== b.data[i + 3])) n++; return n; };
     const cases = [["left arm", L_ARM, "lArm"], ["right arm", R_ARM, "rArm"], ["legs", LEGS, "legs"], ...(o.head[key] ? [["head", HEAD, "head"]] : [])] as Array<[string, number, "head" | "lArm" | "rArm" | "legs"]>;
 
-    it.each(cases)("without its %s the part is gone and wet meat is at its joint", (_n, mask, group) => {
+    // a boss is never torn apart (`Damage.ts`), so its stumps are never seen: the bosses are held to everything else
+    if (!o.boss?.[key] && !o.form?.[key]) it.each(cases)("without its %s the part is gone and wet meat is at its joint", (_n, mask, group) => {
       const m = frame(rig, "idle", 0, mask), region = only(group);
       expect(OPAQUE(region), "the part covers something").toBeGreaterThan(60);
       expect(DIFF(m, whole), "the figure is different").toBeGreaterThan(100);
