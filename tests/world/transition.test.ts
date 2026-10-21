@@ -12,13 +12,14 @@ import { game } from "../../src/core/Game";
 import { S } from "../../src/core/State";
 import { save } from "../../src/save/SaveGame";
 import { weaponRuntime } from "../../src/weapons/WeaponRuntime";
-import { EYE } from "../../src/world/Grid";
+import { CELL, EYE } from "../../src/world/Grid";
 import { LEVELS, PLAY_ORDER, titleOf } from "../../src/world/levels/index";
 import { CHAPTER_LINES } from "../../src/content/monologue";
 import { doors, against } from "../../src/world/ExitDoor";
 import { T, resetTransition, trans } from "../../src/world/TransitionState";
 import { floorHeightAt } from "../../src/world/Collision";
 import { WELL_DEPTH, WELL_OUT } from "../../src/world/WellKit";
+import { SHAFT_OUT } from "../../src/world/HatchKit";
 
 /**
  * THE TRANSITION (the transitions plan, Task 2): the exit door opens, the camera walks into the dark
@@ -92,11 +93,13 @@ describe("the walk through the exit door", () => {
     expect(leaveLevel(), "a second press while it happens does nothing").toBe(false);
   });
 
-  it("opens the door, walks the camera up to the dark and stops short of it, and goes to black on the way (the prologue's crypt door)", () => {
-    loadLevel(0);
+  it("opens the door, walks the camera up to the dark and stops short of it, and goes to black on the way (the necropolis's tomb gate)", () => {
+    // (the prologue's crypt door was this case until 2026-10-21, when the prologue's way out became the ladder up into the monastery)
+    loadLevel(3);
     for (const e of world.enemies) e.dead = true;
     S.won = false; game.inputLock = false;
     const d = doors.exit!;
+    world.exitPos = { x: (d.from.cx + .5) * CELL, z: (d.from.cz + .5) * CELL };   // as its boss's death leaves it
     player.px = d.x + d.nx * 2; player.pz = d.z + d.nz * 2; input.yaw = Math.atan2(d.nx, d.nz);
     expect(leaveLevel()).toBe(true);
     const fades: number[] = [], outs: number[] = [];
@@ -115,6 +118,26 @@ describe("the walk through the exit door", () => {
     expect(outs[0], "and began where the player stood").toBeGreaterThan(1.5);
     expect(cardUp(), "no panel yet").toBe(false);
     expect(trans.cued.has("walk"), "the walk's sound").toBe(true);
+  });
+
+  it("the prologue ends up a ladder (owner, 2026-10-21: \"prologue u da diğer bölüme bağla\"): to its foot, up it looking up, the slab shouldered off, black", () => {
+    loadLevel(0);
+    for (const e of world.enemies) e.dead = true;
+    S.won = false; game.inputLock = false;
+    const d = doors.exit!;
+    expect(d.rig.style).toBe("ladder");
+    player.px = d.x + d.nx * 2; player.pz = d.z + d.nz * 2; input.yaw = Math.atan2(d.nx, d.nz);
+    expect(leaveLevel()).toBe(true);
+    const y0 = renderState.camera.position.y, ys: number[] = [], fades: number[] = [];
+    let seenOpen = false;
+    run(T.walk - .01, () => { ys.push(renderState.camera.position.y); fades.push(fade()); if (d.rig.open >= .999) seenOpen = true; });
+    expect(seenOpen, "the slab comes off").toBe(true);
+    expect(Math.max(...ys), "up the ladder").toBeGreaterThan(y0 + 1.5);
+    expect(Math.max(...ys), "and not through the roof").toBeLessThan(floorHeightAt(d.x + d.nx, d.z + d.nz) + d.rig.spec.h);
+    expect(renderState.camera.rotation.x, "looking up at the slab").toBeGreaterThan(.8);
+    expect(against(d, renderState.camera.position.x, renderState.camera.position.z, 0).out, "at the ladder's foot").toBeLessThan(1);
+    expect(fades[fades.length - 1], "black by the end").toBeGreaterThan(.95);
+    expect(trans.cued.has("slab"), "the slab's grinding").toBe(true);
   });
 
   it("the dungeon ends down its well (owner, 2026-10-20): the lid slides off, the camera goes to the rim, looks down and climbs down into the black", () => {
@@ -263,6 +286,35 @@ describe("continuing the card is deliberate", () => {
 });
 
 describe("the arrival", () => {
+  it("the monastery begins coming up out of the crypt's floor, where the prologue's ladder led: the slab pushed off, out, a look back as it goes back over", () => {
+    loadLevel(0);
+    for (const e of world.enemies) e.dead = true;
+    S.won = false; game.inputLock = false;
+    const x = doors.exit!;
+    player.px = x.x + x.nx * 2; player.pz = x.z + x.nz * 2; input.yaw = Math.atan2(x.nx, x.nz);
+    expect(leaveLevel()).toBe(true);
+    run(T.walk + T.hold + .05); run(T.cardAfter + .1);
+    key("Space");
+    expect(S.level, "the monastery").toBe(9);
+    const e = doors.entrance!;
+    expect(e.rig.style).toBe("hatch");
+    const fl = floorHeightAt(e.x + e.nx * SHAFT_OUT, e.z + e.nz * SHAFT_OUT);
+    expect(renderState.camera.position.y, "head down in the shaft").toBeLessThan(fl + .5);
+    expect(renderState.camera.rotation.x, "looking up at the crypt's vault").toBeGreaterThan(.5);
+    let opened = false;
+    const ys: number[] = [];
+    run(T.arrive - .01, () => { ys.push(renderState.camera.position.y); if (e.rig.open > .99) opened = true; });
+    expect(opened, "the slab pushed off").toBe(true);
+    expect(Math.max(...ys), "up out of it").toBeGreaterThan(fl + EYE - .05);
+    expect(e.rig.open, "and dragged back over").toBe(0);
+    expect(trans.cued.has("push") && trans.cued.has("shut")).toBe(true);
+    run(.05);
+    expect(trans.phase).toBe("idle");
+    expect(game.inputLock).toBe(false);
+    expect(Math.hypot(renderState.camera.position.x - player.px, renderState.camera.position.z - player.pz), "at the spawn").toBeLessThan(.01);
+    expect(e.rig.glow.visible, "hell's glow is shut in").toBe(false);
+  });
+
   it("the church begins at the well's bottom (owner, 2026-10-20): black, the camera high up the shaft over the rope's foot, the title coming up", () => {
     toCard();
     key("Space");

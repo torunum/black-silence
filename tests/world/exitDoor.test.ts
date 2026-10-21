@@ -12,7 +12,7 @@ import { game } from "../../src/core/Game";
 import { S } from "../../src/core/State";
 import { save } from "../../src/save/SaveGame";
 import { CELL } from "../../src/world/Grid";
-import { PLAY_ORDER, LEVELS } from "../../src/world/levels/index";
+import { PLAY_ORDER, LEVELS, nextLevel } from "../../src/world/levels/index";
 import { DOOR_STYLES, STYLES, buildRig, pose, styleFor, type DoorStyle, type Rig } from "../../src/world/DoorKit";
 import { EXIT_BOSSES, EXIT_CELLS, doors, doorClaims, exitCell, siteDoor, against } from "../../src/world/ExitDoor";
 import { resetTransition, trans } from "../../src/world/TransitionState";
@@ -100,18 +100,21 @@ describe("each theme has its own door", () => {
     const sig = new Map<DoorStyle, string>();
     for (let i = 0; i <= ALL; i++) {
       loadLevel(i);
-      const d = i === 2 ? doors.exit! : doors.entrance ?? doors.exit!;   // the womb has only an entrance; the church comes in by the well's rope (its exit is its own door)
-      expect(d.rig.style, LEVELS[i].name).toBe(EXPECT[i]);
+      // the level's theme door, where it has one standing; a level whose ways in and out are both named ones (the prologue's ladder,
+      // the monastery's hatch and gate) has its theme's door built here to be looked at
+      const d = [doors.entrance, doors.exit].find((x) => x?.rig.style === EXPECT[i]);
+      const rig = d?.rig ?? buildRig(EXPECT[i], "probe");
+      expect(rig.style, LEVELS[i].name).toBe(EXPECT[i]);
       let meshes = 0, tris = 0;
       const maps = new Set<string>();
-      d.rig.group.traverse((o) => {
+      rig.group.traverse((o) => {
         const m = o as THREE.Mesh;
         if (!m.isMesh) return;
         meshes++; tris += m.geometry.index ? m.geometry.index.count / 3 : (m.geometry.attributes.position.count / 3);
         const mat = m.material as THREE.MeshLambertMaterial;
         if (mat.map) maps.add(String((mat.map.image as { width?: number } | undefined)?.width ?? "?"));
       });
-      sig.set(EXPECT[i], `${meshes}/${Math.round(tris)}/${d.rig.leaves.length}/${d.rig.spec.move}/${[...maps].sort().join(",")}`);
+      sig.set(EXPECT[i], `${meshes}/${Math.round(tris)}/${rig.leaves.length}/${rig.spec.move}/${[...maps].sort().join(",")}`);
     }
     expect(new Set(sig.values()).size, [...sig].map(([k, v]) => `${k} ${v}`).join("; ")).toBe(8);
   });
@@ -401,11 +404,36 @@ describe("draws nothing from Math.random", () => {
 });
 
 describe("the well and the rope (owner, 2026-10-20: the dungeon ends down a well, the church begins at its bottom)", () => {
-  it("are what the dungeon's exit and the church's entrance are built as, and every other way stays its theme's door", () => {
+  // and since 2026-10-21 ("prologue u da diğer bölüme bağla"): the prologue climbs a ladder out of hell into the monastery's crypt floor,
+  // and the monastery's great gate is the dungeon's way in
+  const OUT: Record<number, DoorStyle> = { 0: "ladder", 1: "well", 9: "gate" }, IN: Record<number, DoorStyle> = { 9: "hatch", 1: "gate", 2: "rope" };
+  it("are what the levels' named ways out and in are built as, and every other way stays its theme's door", () => {
     for (let i = 0; i < LEVELS.length; i++) {
       loadLevel(i);
-      if (doors.exit) expect(doors.exit.rig.style, LEVELS[i].name).toBe(i === 1 ? "well" : styleFor(LEVELS[i]));
-      if (doors.entrance) expect(doors.entrance.rig.style, LEVELS[i].name).toBe(i === 2 ? "rope" : styleFor(LEVELS[i]));
+      if (doors.exit) expect(doors.exit.rig.style, LEVELS[i].name).toBe(OUT[i] ?? styleFor(LEVELS[i]));
+      if (doors.entrance) expect(doors.entrance.rig.style, LEVELS[i].name).toBe(IN[i] ?? styleFor(LEVELS[i]));
+    }
+    expect(doors.exit === null || doors.exit.rig.style !== "ladder").toBe(true);
+  });
+
+  it("a way out runs into the next level's way in: the ladder up to the hatch, the gate to the gate, the well down to the rope", () => {
+    const pairs: Array<[DoorStyle, DoorStyle]> = [["ladder", "hatch"], ["gate", "gate"], ["well", "rope"]];
+    for (const [out, inn] of pairs) {
+      const from = Number(Object.keys(OUT).find((k) => OUT[+k] === out)), to = nextLevel(from);
+      expect(IN[to], `${LEVELS[from].name} -> ${LEVELS[to].name}`).toBe(inn);
+      expect(LEVELS[from].exitStyle).toBe(out); expect(LEVELS[to].entranceStyle).toBe(inn);
+    }
+  });
+
+  it("the ladder's slab and the hatch's slide clear of their shaft; the gate's two leaves swing", () => {
+    for (const style of ["ladder", "hatch", "gate"] as const) {
+      const rig = buildRig(style, "probe");
+      pose(rig, 0);
+      const shut = rig.leaves.map((l) => l.node.position.x + l.node.rotation.y);
+      pose(rig, 1);
+      const open = rig.leaves.map((l) => l.node.position.x + l.node.rotation.y);
+      expect(rig.leaves.length, style).toBe(style === "gate" ? 2 : 1);
+      for (let k = 0; k < shut.length; k++) expect(Math.abs(open[k] - shut[k]), style).toBeGreaterThan(.9);
     }
   });
 

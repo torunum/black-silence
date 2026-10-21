@@ -106,7 +106,7 @@ describe("buildTextureIndex — the unnamed# fallback", () => {
     buildDoorTextures();
     const texName = await buildTextureIndex();
     const keys = Object.keys(DOORTEX);
-    expect(keys.length).toBe(8);
+    expect(keys.length).toBe(12);   // + the doors inside a level, the great gate and the crypt slab (2026-10-21)
     for (const key of keys) expect(texName(DOORTEX[key as keyof typeof DOORTEX]), key).toBe(`door.${key}`);
     expect(texName(DOORTEX.church!.clone())).toBe("door.church~clone");
     expect(texName({ isTexture: true })).toBe("unnamed#1");

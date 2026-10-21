@@ -148,11 +148,12 @@ describe("a closed door hides it", () => {
     expect(verts).toBeGreaterThan(1000);
   });
 
-  it("stays where it is while the door sinks past it", () => {
+  it("stays where it is while the door opens under it", () => {
     loadLevel(2);
     const m = arches()!;
     const before = [...m.instanceMatrix.array];
-    for (const d of Object.values(world.doors)) { d.open = true; if (!d.secret) expect((d.mesh as THREE.Object3D).children).toEqual([]); }
+    // (since 2026-10-21 an arched door is two leaves under it, src/world/LevelDoors.ts, not a block sinking past it: its children are the leaves)
+    for (const d of Object.values(world.doors)) d.open = true;
     doorTick(0.5);
     expect([...m.instanceMatrix.array]).toEqual(before);
     expect(m.parent).toBe(renderState.scene);

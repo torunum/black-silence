@@ -12,12 +12,12 @@ import type { Rig, StyleSpec } from "./DoorTypes";
  * arch's head, the monastery's bronze bell hangs in a niche; two iron braziers on posts either side. It opens as the church doors do,
  * both leaves swung in on their hinges.
  *
- * The frame is a great door's (`./DoorKit.ts`): origin on the floor at the middle of the wall face, `+z` into the room. Wider than a
- * cell (the porch stands in front of the wall, so it may), and its head stays under the lowest ceiling a level's spawn has (`WALLH`).
+ * The frame is a great door's (`./DoorKit.ts`): origin on the floor at the middle of the wall face, `+z` into the room. Inside its cell like
+ * every great door, and its head stays under the lowest ceiling a level's spawn has (`WALLH`).
  * Nothing here gives light or draws from `Math.random`.
  */
 
-export const GATE_SPEC: StyleSpec = { w: 1.8, h: 2.3, rise: 0.6, move: "swing", glow: 0xffc070, sound: "gate", name: "THE GREAT GATE" };
+export const GATE_SPEC: StyleSpec = { w: 1.5, h: 2.0, rise: 0.5, move: "swing", glow: 0xffc070, sound: "gate", name: "THE GREAT GATE" };
 
 /** Builds the great gate as a door rig; `name` is the scene name of its solid group. */
 export function buildGateRig(name: string): Rig {
@@ -33,8 +33,8 @@ export function buildGateRig(name: string): Rig {
   const course = new THREE.Mesh(track(new THREE.ExtrudeGeometry(outer, { depth: PORCH * .6, bevelEnabled: false })), stone);
   g.add(course);   // a second, shallower order of the arch round the first
   g.add(slab(.36, .44, PORCH + .12, stone, 0, top + JAMB * .7, (PORCH + .12) / 2));   // the keystone
-  for (const sd of [-1, 1]) g.add(slab(JAMB + .3, .5, PORCH + .2, stone, sd * (hw + JAMB / 2 + .08), .25, (PORCH + .2) / 2));
-  g.add(slab(s.w + 2 * JAMB + .5, .06, PORCH + .3, stone, 0, .03, (PORCH + .3) / 2));
+  for (const sd of [-1, 1]) g.add(slab(JAMB + .16, .5, PORCH + .2, stone, sd * (hw + JAMB / 2 + .04), .25, (PORCH + .2) / 2));
+  g.add(slab(s.w + 2 * JAMB + .3, .06, PORCH + .3, stone, 0, .03, (PORCH + .3) / 2));
 
   // ---- the dark beyond the leaves, the bloom in it, the lit threshold
   const plane = (): THREE.PlaneGeometry => track(new THREE.PlaneGeometry(s.w + .02, top));
@@ -70,10 +70,10 @@ export function buildGateRig(name: string): Rig {
 
   // ---- the braziers: iron bowls on posts, burning whether the gate is open or not
   for (const sd of [-1, 1]) {
-    const x = sd * (hw + JAMB + .62);
+    const x = sd * (hw + JAMB / 2 + .04);   // standing before the jambs, on the plinths
     const bowl = new THREE.Mesh(track(new THREE.CylinderGeometry(.2, .1, .14, 8, 1, true)), iron);
-    bowl.position.set(x, 1.15, .45); g.add(bowl);
-    flame(0xffa040, x, 1.32, .45, iron, g, .16);   // the stem is the post
+    bowl.position.set(x, 1.15, PORCH + .22); g.add(bowl);
+    flame(0xffa040, x, 1.32, PORCH + .22, iron, g, .16);   // the stem is the post
   }
 
   // ---- light through the crack while it is shut: down the seam, along the sill, a halo round the arch
