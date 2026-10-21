@@ -73,7 +73,7 @@ export const LEVELS: LevelDef[] = [
  {name:"LEVEL 1 — THE ASH BELL MONASTERY",build:buildMonastery,   // new (owner, 2026-10-20): ./monastery.ts — played straight after the prologue (PLAY_ORDER)
   fog:0x0d1016,fogD:.04,amb:0x5a6680,ambI:.6,floor:"church",sub:"church",entranceStyle:"hatch",exitStyle:"gate"},
  {name:"LEVEL 4 — THE HOLLOW VILLAGE",build:buildVillage,   // new (owner, 2026-10-21: "açık havada geçen, Blood tarzı bölümler"): ./village.ts — out of the church, played after it
-  fog:0x0b1018,fogD:.032,amb:0x5e6e8c,ambI:.8,floor:"dungeon",sub:"graveyard",dungeon:true,entranceStyle:"church",exitStyle:"cemetery"},
+  fog:0x0b1018,fogD:.032,amb:0x5e6e8c,ambI:.8,floor:"dungeon",sub:"graveyard",entranceStyle:"church",exitStyle:"cemetery"},
 ];
 
 /**
