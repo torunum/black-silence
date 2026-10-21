@@ -182,6 +182,7 @@ export function spawnEnemy(ch: string, wx: number, wz: number, summoned?: boolea
     pain:d.pain,kbRes:d.kbRes||0,boss:!!d.boss,priest:!!d.priest,stone:!!d.stone,
     charge:!!d.charge,slam:!!d.slam,lunge:!!d.lunge,dodge:!!d.dodge,
     scream:!!d.scream,toxic:!!d.toxic,range:d.range||0,plate:d.plate||0,
+    orb:d.orb,fly:!!d.fly,flyH:d.flyH||0,twin:!!d.twin,burst:!!d.burst,charger:!!d.charger,fling:!!d.fling,shield:!!d.shield,sovereign:!!d.sovereign,title:d.title,   // KNOWN-15, closed (owner, 2026-10-21): the def's behaviours, delivered
     sp:addSprite(PX[ch].a,wx,wz,ew,eh),
     blob:addBlob(wx,wz,ew*1.25),elite,summoned:!!summoned,
     cool:0,hurt:0,stun:0,kx:0,kz:0,flung:0,flungT:0,

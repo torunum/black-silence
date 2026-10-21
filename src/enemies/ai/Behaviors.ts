@@ -1,3 +1,4 @@
+import { hoverLift, hoverY } from "../Hover";
 import * as THREE from "three";
 import { clamp, rnd } from "../../utils/math";
 import { player } from "../../player/PlayerState";
@@ -165,7 +166,7 @@ export function enemyTick(dt: number){
     if(e.gone)continue;
     /* during a boss cinematic, nothing moves or attacks — just hold position */
     if(world.cine&&!e.dead){
-      const cy=e.fly?(e.flyH||1.5):e.h/2+(e.fy||0);
+      const cy=hoverY(e);
       e.sp.position.set(e.x,cy,e.z);e.blob.position.set(e.x,(e.fy||0)+.012,e.z);
       e.cool=Math.max(e.cool||0,.4);
       continue;}
@@ -192,7 +193,7 @@ export function enemyTick(dt: number){
       if(air&&blocked){e.flung=0;corpseSlam(e,nx,nz);e.kx=0;e.kz=0;}
       if(!air){const sv=Math.hypot(e.kx,e.kz);if(sv>1.5&&Math.floor(e.deathT*14)!==Math.floor((e.deathT-dt)*14))smearFloor(e.x,e.z,e.kx,e.kz,Math.min(1.2,sv*.14));}   // a smear where it slid
       e.fy=floorHeightAt(e.x,e.z);   // the corpse lies on the floor it was knocked onto, not on floor 0
-      e.sp.position.y=e.h/2*(1-tf)+e.h*.18*tf+e.fy+(air?liftAt(e.flungT):0);
+      e.sp.position.y=e.h/2*(1-tf)+e.h*.18*tf+e.fy+(air?liftAt(e.flungT):0)+hoverLift(e)*(1-tf);   // a flier comes down from where it hung (src/enemies/Hover.ts)
       if(air)e.sp.material.rotation+=tumbleAt(e.flungT,spinFor(e.kx,e.kz))-tumbleAt(e.flungT-dt,spinFor(e.kx,e.kz));
       else if(e.flungT>0&&e.flung<=0){e.flungT=0;landFx(e.x,e.fy,e.z,e.kx,e.kz);}   // it came down this frame
       e.sp.position.x=e.x;e.sp.position.z=e.z;
@@ -234,19 +235,19 @@ export function enemyTick(dt: number){
         e.sp.material.rotation=e.flung>0?tumbleAt(e.flungT,spinFor(e.kx,e.kz)):0;
         trailFx(e.x,e.h*.5+(e.fy||0)+liftAt(e.flungT),e.z,e.kx,e.kz,pt,e.flungT);
         if(e.flung<=0){landFx(e.x,e.fy||0,e.z,e.kx,e.kz);e.flungT=0;}}
-      e.sp.position.set(e.x,e.h/2+(e.fy||0)+(e.flung>0?liftAt(e.flungT):0),e.z);
+      e.sp.position.set(e.x,hoverY(e)+(e.flung>0?liftAt(e.flungT):0),e.z);
       e.blob.position.set(e.x,(e.fy||0)+.012,e.z);
       continue;}
     if(Math.abs(e.kx)+Math.abs(e.kz)>.05){
       const nx=e.x+e.kx*dt,nz=e.z+e.kz*dt;
       if(!solidAt(nx,e.z))e.x=nx;if(!solidAt(e.x,nz))e.z=nz;
-      skidFx(e.x,e.fy||0,e.z,e.kx,e.kz);
+      if(!e.fly)skidFx(e.x,e.fy||0,e.z,e.kx,e.kz);
       e.kx*=Math.exp(-6*dt);e.kz*=Math.exp(-6*dt);}
     const dx=player.px-e.x,dz=player.pz-e.z,dist=Math.hypot(dx,dz);
-    if(dist>30){e.sp.position.set(e.x,e.h/2+(e.fy||0),e.z);e.blob.position.set(e.x,(e.fy||0)+.012,e.z);continue;}
+    if(dist>30){e.sp.position.set(e.x,hoverY(e),e.z);e.blob.position.set(e.x,(e.fy||0)+.012,e.z);continue;}
     if(e.stun>0){e.stun-=dt;
       if(PX[e.key].rig)rigLive(e,dt,false,true);   // held: the pain frames while it is hurt, then standing
-      e.sp.position.set(e.x+rnd(-.03,.03),e.h/2+(e.fy||0),e.z+rnd(-.03,.03));
+      e.sp.position.set(e.x+rnd(-.03,.03),hoverY(e),e.z+rnd(-.03,.03));
       e.blob.position.set(e.x,(e.fy||0)+.012,e.z);continue;}
     const seen=los(e.x,e.z,player.px,player.pz)&&dist<22;
     e.cool-=dt;e.dodgeT-=dt;e.lungeT-=dt;e.slamT-=dt;e.screamT-=dt;e.flingCD-=dt;
@@ -361,9 +362,10 @@ export function enemyTick(dt: number){
     const ldx=dist>0.01?(player.px-e.x)/dist:0,ldz=dist>0.01?(player.pz-e.z)/dist:0;
     const lx=e.x+ldx*lunge*0.35, lz=e.z+ldz*lunge*0.35;
     if(e.fly){
-      const hov=(e.flyH||1.5)+Math.sin(performance.now()/420+e.x)*.18;
+      e.fy=floorHeightAt(e.x,e.z);
+      const hov=hoverY(e)+Math.sin(performance.now()/420+e.x)*.18;   // over the floor under it, under the ceiling over it (src/enemies/Hover.ts)
       e.sp.position.set(lx,hov,lz);
-      e.blob.position.set(e.x,floorHeightAt(e.x,e.z)+.012,e.z);e.blob.material.opacity=.3;
+      e.blob.position.set(e.x,e.fy+.012,e.z);e.blob.material.opacity=.3;
     }else{
       e.fy=floorHeightAt(e.x,e.z);
       e.sp.position.set(lx,e.h/2+(e.fy||0)+Math.sin(performance.now()/300+e.x)*.03,lz);

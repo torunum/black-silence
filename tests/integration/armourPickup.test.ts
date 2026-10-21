@@ -192,7 +192,7 @@ describe("armour exists: a level's own grid puts armour on the floor and the pla
  * to observe before this task, because `S.armor` could never leave 0.
  * `reference/sonsurum.html` has both, byte-identical, so they are faithful
  * port behaviour and not drift — pinned here on purpose, exactly the way
- * `tests/enemies/deadDefFields.test.ts` (KNOWN-15) pins its ten fields: a
+ * KNOWN-15's ten fields were pinned until the owner decided (2026-10-21): a
  * green run means the surprising behaviour is still exactly as surprising as
  * it was when found. **Do not add an at-cap guard to the armour case, and do
  * not make `loadLevel` reset `S.armor`, to make either test below pass in a

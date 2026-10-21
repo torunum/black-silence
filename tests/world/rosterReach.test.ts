@@ -309,9 +309,9 @@ const UNREACHABLE: Record<string, string> = {
   // six glyphs, carries no such comment — level 7 is the only exception).
   // It converts anyway, because `docs/direction.md` cuts Mancubus from the
   // roster for IP reasons regardless of any one tile's authorial intent, and
-  // its two signature behaviours (`twin`, `orb`) are KNOWN-15 fields that
-  // never reach a spawned enemy, so what actually left the game is a 260 hp
-  // melee sponge. The def is **kept** rather than deleted, the same call
+  // its two signature behaviours (`twin`, `orb`) were KNOWN-15 fields that
+  // never reached a spawned enemy (delivered since 2026-10-21), so what left
+  // the game then was a 260 hp melee sponge. The def is **kept** rather than deleted, the same call
   // KNOWN-18 made for `B`/`q`: deleting an `ENEMY_DEFS` row is a
   // roster-composition decision that belongs to the project owner. This
   // entry is what fails if a tile drifts back to `A`.

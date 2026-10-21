@@ -37,9 +37,10 @@ import type { Enemy } from "../../src/enemies/Enemy";
  *
  * The optional half is pinned too, by the second `describe`: `Enemy`'s
  * optional fields are exactly the ones that are *not* there at spawn — the
- * six written later by the AI/damage code, and the ten KNOWN-15 fields that
- * are never written at all (pinned from the other side by
- * `tests/enemies/deadDefFields.test.ts`). If one of them were present on a fresh enemy it
+ * ones written later by the AI/damage code. (The ten KNOWN-15 fields were
+ * optional and never written until 2026-10-21; `spawnEnemy` now builds them,
+ * so they are group 1 — `tests/enemies/defFields.test.ts`.) If one of the
+ * optional ones were present on a fresh enemy it
  * would belong in group 1, non-optional, and the declaration would be
  * describing the object more loosely than the producer does — the exact
  * looseness this task exists to remove.

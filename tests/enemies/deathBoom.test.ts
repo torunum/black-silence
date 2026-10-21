@@ -12,9 +12,9 @@ import { ENEMY_DEFS } from "../../src/enemies/EnemyDefs";
  * `if(e.key==="q")` instead of consulting the flag, so the *behavior* is not
  * missing, only the data-driven route to it.
  *
- * This is the opposite class from KNOWN-15's ten fields (`tests/enemies/deadDefFields.test.ts`):
- * those are read everywhere and delivered nowhere (authored -> declared on
- * `Enemy` -> read by AI/damage/boss code -> never copied by `spawnEnemy`).
+ * This is the opposite class from KNOWN-15's ten fields (`tests/enemies/defFields.test.ts`):
+ * those were read everywhere and delivered nowhere until 2026-10-21 (authored -> declared on
+ * `Enemy` -> read by AI/damage/boss code -> not copied by `spawnEnemy`; copied now).
  * `deathBoom` is authored and then touched by nothing at all — not even
  * declared on `Enemy`, because nothing needs to read it there.
  *
@@ -28,12 +28,12 @@ import { ENEMY_DEFS } from "../../src/enemies/EnemyDefs";
  * ---
  *
  * The "authored on exactly one def" half is derived from `ENEMY_DEFS` at run
- * time, not hardcoded, for the same reason `deadDefFields.test.ts` derives
+ * time, not hardcoded, for the same reason `defFields.test.ts` derives
  * its counts: a hardcoded count goes stale silently the moment the roster
  * changes.
  *
  * The "read by nothing" half needs a source scan, and deliberately does NOT
- * reuse `deadDefFields.test.ts`'s write-scan regex (`\.field\s*=(?![=>])`).
+ * reuse `defFields.test.ts`'s write-scan regex (`\.field\s*=(?![=>])`).
  * That regex is narrow on purpose: those ten fields have many *legitimate*
  * reads, so the scan has to isolate writes specifically, and dot-notation
  * assignment is the only form this codebase's authors use for that — the
@@ -79,7 +79,7 @@ describe("KNOWN-16 (second half) — deathBoom is authored once and read nowhere
     const hits: string[] = [];
     for (const f of files) {
       const text = readFileSync(f, "utf8");
-      // Comments stripped first, same as deadDefFields.test.ts: this file's
+      // Comments stripped first, same as defFields.test.ts: this file's
       // own prose (and EnemyDefs.ts's, and known-issues.md's) says
       // "deathBoom" at length.
       const code = text.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/[^\n]*/g, "");

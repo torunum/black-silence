@@ -1,3 +1,4 @@
+import { hoverY } from "../enemies/Hover";
 import type * as THREE from "three";
 import { renderState } from "../render/Renderer";
 import { world } from "../world/WorldState";
@@ -88,7 +89,7 @@ export function hitscan(dir: THREE.Vector3,dmg: number,wIdx: number){
   const cands: HitCandidate[]=[];
   const enemies: readonly HitscanEnemy[] = world.enemies;   // checked widening, not a cast
   enemies.forEach(e=>{if(e.dead||e.dormant)return;
-    const ecy=e.fly?(e.flyH||1.5):e.h*.5+(e.fy||0);   // sprite center height
+    const ecy=hoverY(e);   // sprite center height (a flier's where it hangs: src/enemies/Hover.ts)
     const ex=e.x-o.x,ez=e.z-o.z,ey=ecy-o.y;
     const t=ex*dir.x+ez*dir.z+ey*dir.y;if(t<0)return;
     const cx=o.x+dir.x*t,cz=o.z+dir.z*t,cy=o.y+dir.y*t;
@@ -121,7 +122,7 @@ export function hitscan(dir: THREE.Vector3,dmg: number,wIdx: number){
     const e=c.e;
     weaponRuntime.volleyHit=true;
     // vertical fraction up the sprite (0 feet .. 1 head)
-    const ecy0=e.fly?(e.flyH||1.5):e.h*.5+(e.fy||0);   // the sprite's centre, on the floor it stands on: a zombie on a raised floor was one long head
+    const ecy0=hoverY(e);   // the sprite's centre, on the floor it stands on: a zombie on a raised floor was one long head
     const frac=clamp((c.cy-(ecy0-e.h*.5))/e.h,0,1);
     // horizontal: project hit point onto camera-right axis, normalized to half-width
     const rightX=Math.cos(input.yaw),rightZ=-Math.sin(input.yaw);

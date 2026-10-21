@@ -115,7 +115,7 @@ function srcFiles(dir: string): string[] {
 /**
  * Every 6-digit hex literal the game authors, derived from `src/` at run
  * time rather than hand-copied — the same discipline
- * `tests/enemies/deadDefFields.test.ts` uses, and for the same reason: a
+ * `tests/enemies/defFields.test.ts` uses, and for the same reason: a
  * hand-written list of this project's colours has been wrong before.
  */
 function authoredColours(): number[] {

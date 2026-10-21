@@ -34,10 +34,8 @@ import type * as THREE from "three";
  *      Tightening that is the point of the consolidation.
  *   2. Assigned after spawn — **optional**, each with the site that writes
  *      it. These genuinely are absent on a freshly spawned enemy.
- *   3. The KNOWN-15 ten — **optional**, and always `undefined` at runtime.
- *      See the block above them. `title` is the one whose absence is
- *      harmless: its sole read (`src/enemies/Boss.ts`) falls back to
- *      `EDEF[e.key].title`.
+ *   3. (Retired 2026-10-21.) The KNOWN-15 ten were optional and always
+ *      `undefined`; `spawnEnemy` now builds them, so they are group 1.
  *
  * `tests/enemies/enemyShape.test.ts` pins group 1 against the producer by
  * parsing this file and comparing the non-optional names to the own-keys of
@@ -155,63 +153,33 @@ export interface Enemy {
   /** How far the sprite leans away from the last hit at the start of the flinch, radians (signed). Written by `src/enemies/HitReact.ts`. */
   lean?: number;
 
-  /* ---- group 3: KNOWN-15 — authored, read, never delivered ------------
+  /* ---- group 1, continued: the def's behaviours (KNOWN-15, closed) ----
    *
-   * These ten are authored on `ENEMY_DEFS` entries (`src/enemies/EnemyDefs.ts`)
-   * and read by the AI, but `spawnEnemy`'s literal **never copies them onto
-   * the spawned enemy** — no spread, no assignment by name, and no
-   * `e.<field> =` anywhere in `src/`. So every read of them at runtime sees
-   * `undefined`, on every enemy, always. The frozen reference
-   * (`reference/sonsurum.html`) does exactly the same thing, so this is
-   * faithful port behavior and not drift: no enemy fires a projectile, no
-   * flying enemy flies, the shield never absorbs, the sovereign bosses use
-   * the lower numbers.
-   *
-   * They are declared here — optional, matching what a read actually gets —
-   * so that the interface documents the gap instead of hiding it. Turning
-   * any of them on is a combat-balance change that belongs to the roster
-   * work. **Do not make `spawnEnemy` copy them, and do not delete the read
-   * sites.**
-   *
-   * `title` below is the tenth, with the identical gap but a harmless
-   * consequence — it is not a combat field and its one read already
-   * tolerates the gap with a fallback — so it is described separately below
-   * rather than counted among the nine combat behaviors.
-   *
-   * `tests/enemies/deadDefFields.test.ts` pins all ten, deriving the
-   * authoring defs from `ENEMY_DEFS` itself so no count here or there can go
-   * stale. **Read that file's header before changing anything in this
-   * block.** See also KNOWN-15 in `docs/known-issues.md`.
+   * These ten are authored on `ENEMY_DEFS` entries (`src/enemies/EnemyDefs.ts`). Until 2026-10-21 `spawnEnemy` never copied
+   * them, as the frozen reference never did, and every read saw `undefined`: no enemy fired the projectile it names, no flier
+   * flew, the shield absorbed nothing. The owner turned them on (2026-10-21: "bahsettiğin şeyler iyimiş. Onlar da
+   * yapılabilir"); the literal now writes every one on every enemy, so they are group 1. `tests/enemies/defFields.test.ts`
+   * holds each equal to its def. See KNOWN-15 in `docs/known-issues.md`.
    */
 
-  /** Projectile kind. Read at `ai/Behaviors.ts`, `ai/Attacks.ts`. Always `undefined`. */
-  orb?: string;
-  /** Read at `ai/Attacks.ts`, `ai/Behaviors.ts`, `weapons/Hitscan.ts`. Always `undefined`. */
-  fly?: boolean;
-  /** Hover height. Same read sites as `fly`. Always `undefined`. */
-  flyH?: number;
-  /** Mancubus second barrel. Read at `ai/Behaviors.ts`. Always `undefined`. */
-  twin?: boolean;
-  /** Afrit spread. Read at `ai/Behaviors.ts`. Always `undefined`. */
-  burst?: boolean;
-  /** Charge lunge. Read at `ai/Behaviors.ts`. Always `undefined`. */
-  charger?: boolean;
-  /** Fling attack. Read at `ai/Behaviors.ts`. Always `undefined`. */
-  fling?: boolean;
-  /** Directional shield absorption. Read at `enemies/Damage.ts`. Always `undefined`. */
-  shield?: boolean;
-  /** Sovereign boss stat block. Read at `enemies/Boss.ts`. Always `undefined`. */
-  sovereign?: boolean;
-  /**
-   * Boss subtitle line, e.g. "warden of the dungeon". Authored on **twelve**
-   * `ENEMY_DEFS` entries — 8 boss (`E,U,Q,Z,N,H,V,G`) and 4 non-boss
-   * (`k,q,R,y`) — but `spawnEnemy`'s literal never copies it, the same gap
-   * as the other nine. Read at `src/enemies/Boss.ts` as
-   * `e.title||EDEF[e.key].title`; the `||` fallback to the def's own `title`
-   * is why the boss title bar works anyway, and is why this one is harmless
-   * today where the others are silently-dead features. That read site is
-   * boss-only, so the four non-boss titles are dead data even if the
-   * mechanism worked.
-   */
-  title?: string;
+  /** Projectile kind (`caco`, `manc`, `cult`, `centaur`, `afrit`, `reiver`, `garg`), or none. Read at `ai/Behaviors.ts`, `ai/Attacks.ts`. */
+  orb: string | undefined;
+  /** It flies: hovers `flyH` over the floor (`src/enemies/Hover.ts`). Read at `ai/Attacks.ts`, `ai/Behaviors.ts`, `weapons/Hitscan.ts`. */
+  fly: boolean;
+  /** Where a flier's sprite centre hovers above the floor, metres (0 for one that does not fly). */
+  flyH: number;
+  /** Mancubus second barrel. Read at `ai/Behaviors.ts`. */
+  twin: boolean;
+  /** Afrit spread. Read at `ai/Behaviors.ts`. */
+  burst: boolean;
+  /** Lost soul's charge. Read at `ai/Behaviors.ts`. */
+  charger: boolean;
+  /** Tears off its own flesh and throws it. Read at `ai/Behaviors.ts`. */
+  fling: boolean;
+  /** Directional shield absorption. Read at `enemies/Damage.ts`. */
+  shield: boolean;
+  /** Sovereign boss stat block. Read at `enemies/Boss.ts`. */
+  sovereign: boolean;
+  /** Boss subtitle line, e.g. "warden of the dungeon". Read at `src/enemies/Boss.ts`. */
+  title: string | undefined;
 }

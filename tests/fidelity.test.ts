@@ -543,6 +543,9 @@ describe("SpriteBaker (texFromPx/buildSprites) vs. reference", () => {
           expect(ref, `${key}.${f} should be null to match ours`).toBeNull();
           continue;
         }
+        // DIVERGENCE (the roster redrawn, 2026-10-21): a rigged monster has a strike and two falling frames whether or not its
+        // legacy art drew them (the cultist's and the bosses' did not); the frames the reference has, it still agrees with.
+        if (ref == null && RIGS[key] && (f === "atk" || f === "die1" || f === "die2")) continue;
         expect(ref, `reference ${key}.${f} missing`).toBeDefined();
         expect(ours.magFilter, `${key}.${f} magFilter`).toBe(ref!.magFilter);
         expect(ours.minFilter, `${key}.${f} minFilter`).toBe(ref!.minFilter);
