@@ -309,13 +309,17 @@ describe("raised ground", () => {
 });
 
 describe("raised ground on an unzoned level is left where the reference put it", () => {
-  it("level 3's torches, candles and items on its raised tomb are not lifted (Decor.ts's `!world.zones` guard)", () => {
-    loadLevel(3);
+  it("a hand-written level's torches, candles and items on raised ground are not lifted (Decor.ts's `!world.zones` guard)", () => {
+    // (it was the old level 3's raised tomb; since the rebuilds of 2026-10-21 every unzoned level is written with `LevelPlan` and asks to be
+    // lifted, so the branch is held with the necropolis built as a hand-written level would be: its grid and floors, no `lift`)
+    const real = LEVELS[3].build;
+    LEVELS[3].build = () => { const L = real(); delete L.lift; return L; };
+    try { loadLevel(3); } finally { LEVELS[3].build = real; }
     expect(world.zones).toBeNull();
     type Lifted = { x: number; z: number; sp: THREE.Object3D; L?: THREE.Object3D; y?: number; y0?: number };
     const torches = world.torches as unknown as Lifted[], candles = world.candles as unknown as Lifted[], items = world.items as unknown as Lifted[];
     const raised = (a: Lifted[]) => a.filter((t) => floorHeightAt(t.x, t.z) > 0);
-    // the premise: level 3 does stand something on raised ground, or this proves nothing
+    // the premise: the level does stand something on raised ground, or this proves nothing
     expect(raised(torches).length + raised(candles).length + raised(items).length).toBeGreaterThan(0);
     for (const t of torches) {
       expect(t.L!.position.y, "torch light").toBe(1.45);

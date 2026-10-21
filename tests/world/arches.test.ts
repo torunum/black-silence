@@ -121,8 +121,9 @@ describe("which doorways get an arch", () => {
     }
     expect(total, "the case is void without arches").toBeGreaterThan(50);
     expect(secrets, "the case is void without secret doors").toBeGreaterThan(3);
-    // (two of them were level 1's, a free-standing and a walled-in door, until that level was rebuilt with every door in a wall line)
-    expect(skipped, "a free-standing or walled-in door somewhere is meant to be skipped").toBeGreaterThanOrEqual(1);
+    // (two of them were level 1's, a free-standing and a walled-in door, until that level was rebuilt with every door in a wall line; the last
+    // was the old necropolis's, rebuilt on 2026-10-21: every level is now written with the toolkit, which refuses a door out of a wall line)
+    expect(skipped, "no door outside a wall line is left to skip").toBe(0);
   });
 });
 

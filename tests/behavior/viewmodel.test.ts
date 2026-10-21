@@ -215,7 +215,8 @@ describe("drawKickStreaks (the reference's drawKickBoot): the reference's boot i
     expect(moduleDraws).toBe(0);
   });
 
-  it("draws streaks trailing the foot only while the leg is being driven out — none in the wind-up or the recovery", () => {
+  it("draws streaks trailing the foot only while the leg is being driven out — none in the wind-up or the recovery", async () => {
+    (await import("../../src/weapons/WeaponRuntime")).kickShow.met = false;   // the streaks alone: the burst at the sole is the next case's
     const frame = (kickAnim: number) => ({ ...toViewmodelFrame(stillScenario(2)), kickAnim });
     const streaksAt = (t: number) => {
       Draw.drawViewmodel(0.016, 0, frame(0.32 - t), WEAPON_STATS);            // renders the leg, so the foot's place is known
@@ -230,7 +231,7 @@ describe("drawKickStreaks (the reference's drawKickBoot): the reference's boot i
     expect(drive.foot).toBeDefined();
     const s = VH / Draw.VIEW_H, left = (VW - RasterM.RW * s) / 2, top = VH - RasterM.RH * s;
     const [fx, fy] = [left + drive.foot[0] * s, top + drive.foot[1] * s];
-    for (const m of drive.moves) expect(Math.hypot((m.args[0] as number) - fx, (m.args[1] as number) - fy)).toBeLessThan(45 * s);   // five streaks fan wider than three did (2026-10-21)
+    for (const m of drive.moves) expect(Math.hypot((m.args[0] as number) - fx, (m.args[1] as number) - fy)).toBeLessThan(55 * s);   // five streaks fan wider and lower than three did (2026-10-21)
     expect(streaksAt(0.2).strokes).toBe(0);     // recovery
     Draw.drawViewmodel(0.016, 0, frame(0), WEAPON_STATS);
   });

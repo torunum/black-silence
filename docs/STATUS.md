@@ -1,9 +1,9 @@
 # Where this project stands
 
-## Owner's round, 2026-10-21 (night): the bosses redrawn, shots past pillars, a harder kick, a better map
+## Owner's round, 2026-10-21 (night): the bosses redrawn, five levels rebuilt, shots past pillars, a harder kick, a better map
 
 "bosslara benzeyenler kötü … yeniden çiz hepsini … zombiler vs kalsın"; "sütunlar vs yakınında düşmanlara sıkınca gitmiyor … kısa
-cisimlerin üzerinden mermi gitmiyor"; "tekme … gerçekten sağlam bir tekme atıyormuş hissi versin"; "minimap i de geliştir" —
+cisimlerin üzerinden mermi gitmiyor"; "tekme … gerçekten sağlam bir tekme atıyormuş hissi versin"; "minimap i de geliştir"; "bölümleri de geliştirelim. hala zayıf duruyorlar" —
 
 - **Every boss and boss-like enemy is a rig now** (`src/enemies/rig/`): the cultist, gargoyle, cacodemon, lost soul, reiver,
   slaughtaur, ettin, the guardian, the executioner, and the six bosses with their last forms as rigs of their own (`Q2`, `Z2`, `N2`,
@@ -16,6 +16,13 @@ cisimlerin üzerinden mermi gitmiyor"; "tekme … gerçekten sağlam bir tekme a
   still collides with the whole cell.
 - **The kick**: a bigger boot and leg, a deeper lean into it, five streaks, a burst at the sole when it meets something
   (`kickShow.met`), a heavier punch and shake, more knockback (21; a boss 4), a light foe flung, a longer hit-stop.
+- **The five lattice levels rebuilt** — the necropolis (3), the graveyard (4), the sewers (5), the factory (6) and the womb (8): they were the
+  reference's 33 x 25 lattice of seven-by-five rooms under other names, 44 steps through (the womb 32), their keys opening side rooms. Each
+  is now its own place written with `LevelPlan` (`necropolis.ts`, `graveyard.ts`, `sewers.ts`, `factory.ts`, `womb.ts` and their dress
+  files), on three floors, with a key hunt (the key 24-64 steps off the way), a loop, two secrets, an arena, a forced shrine near the
+  middle, its boss in a room of its own at the end (the exit at (16,16) for the four that open one), and is held to every structure
+  target (`REBUILT` is now every level but the prologue). The old `level3-7.ts` / `dress3-7.ts` are gone; `levelDressing567.test.ts` is
+  `levelDressingRebuilt.test.ts`, and the fidelity test pins the five as rebuilt.
 - **The minimap redrawn** (`src/ui/MinimapDraw.ts`): walls as bright lines with a glow, doors as bars across their doorways, pillars
   as discs, windows dashed, steps between heights; health, armour, ammunition, weapons, the key, the seals and the exit marked by
   kind; a trail of where the player walked; a brass rim ticked at eight points with N in red and a view cone; the automap framed on

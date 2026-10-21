@@ -7,6 +7,8 @@ import { addPiece, partMaterial, type Parts } from "../../src/world/decor/parts"
 import { validateDecor } from "../../src/world/decor/place";
 import { findAll, isWalkable } from "../../src/world/analysis";
 import { decorCell } from "../../src/world/density";
+import { analyse } from "../../src/world/structure/analyse";
+import { REBUILT } from "../../src/world/structure/targets";
 
 /**
  * THE CHECKPOINT MARKERS AS DATA (deeper-levels plan, Task 1): one piece per theme in the decor kit, thin and
@@ -97,7 +99,7 @@ describe("the levels place them on the way through", () => {
     for (let i = 1; i <= 8; i++) {
       const L = LEVELS[i].build(), here = L.decor!.filter((d) => isCheckpointKind(d.k));
       expect(here.length, `level ${i}`).toBeGreaterThanOrEqual(1);
-      expect(here.length, `level ${i}`).toBeLessThanOrEqual(i === 2 || i === 7 ? 3 : 2);   // the church, rebuilt, has three: the grand doors, the head of the way down, the way to the chancel; the bone cathedral three: the stair top, the bone passage, the vestry stair
+      expect(here.length, `level ${i}`).toBeLessThanOrEqual(i === 1 ? 2 : 3);   // since the rebuilds of 2026-10-21 the rebuilt levels have up to three: at the way in, near the middle, before the boss   // the church, rebuilt, has three: the grand doors, the head of the way down, the way to the chancel; the bone cathedral three: the stair top, the bone passage, the vestry stair
       for (const d of here) expect(markers(themeOf(LEVELS[i].sub)!), `level ${i}`).toContain(d.k);
       expect(validateDecor(L), `level ${i}`).toEqual([]);
     }
@@ -105,7 +107,8 @@ describe("the levels place them on the way through", () => {
 
   it("stands each within two cells of a shortest route from the spawn to the end, so the player passes it", () => {
     for (let i = 1; i <= 8; i++) {
-      const path = route(i), cells = [...path].map((k) => k.split(",").map(Number));
+      // a rebuilt level's way is its critical path (the key hunt and the boss included), as the structure analysis walks it; the old flood to the far end otherwise
+      const path = REBUILT.includes(i) ? new Set(analyse(LEVELS[i].build()).critical.cells.map((c) => c.x + "," + c.z)) : route(i), cells = [...path].map((k) => k.split(",").map(Number));
       for (const d of LEVELS[i].build().decor!.filter((s) => isCheckpointKind(s.k))) {
         const c = decorCell(d), near = Math.min(...cells.map(([x, z]) => Math.hypot(x - c.x, z - c.z)));
         expect(near, `level ${i}: ${d.k} at (${c.x},${c.z})`).toBeLessThanOrEqual(2);

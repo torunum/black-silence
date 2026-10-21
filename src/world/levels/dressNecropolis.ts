@@ -41,6 +41,7 @@ export function dressNecropolis(d: Decorator, r: NecropolisRooms): void {
   SET_PIECES.ossuary(d, church, "necropolis");
   for (const x of [33, 37, 43, 47]) may("banner", x, 16, { side: "s" });
   for (const [x, z] of [[36, 10], [42, 10], [36, 11], [42, 11]]) may("candelabra", x, z);
+  may("tombfree", 38, 9); may("tombfree", 41, 12);   // the founders' tombs, against the arcade's columns
 
   // THE TOMBS, THE CRYPT, THE RELIQUARY: the dead along the walls
   for (const q of [tombA, tombB, crypt, reliquary]) {

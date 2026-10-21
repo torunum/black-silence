@@ -235,7 +235,10 @@ describe("who casts and who receives", () => {
     // flips FrontSide to BackSide for shadows — is a good way to put the whole
     // scene in shadow. The ceiling starts at WALLH=3.4 and the lamp sits at
     // about 1.4, so ceiling geometry could only throw a shadow upward.
-    loadLevel(4);   // (level 1 until it was rebuilt with tiers and a ceiling map of its own)
+    // (level 1, then level 4, until each was rebuilt with a ceiling map of its own: level 4 is built here without it, as a level that never opted in)
+    const real = LEVELS[4].build;
+    LEVELS[4].build = () => { const L = real(); delete L.cmap; return L; };
+    try { loadLevel(4); } finally { LEVELS[4].build = real; }
     for (const name of ["floor", "ceiling"]) {
       const o = childNamed(name);
       expect(o.receiveShadow, `${name}.receiveShadow`).toBe(true);
@@ -343,6 +346,11 @@ describe("the policy is total", () => {
       loadLevel(i);
       for (const name of namedChildren()) seen.add(name);
     }
+    // the flat ceiling plane: every level opts into a ceiling map since the rebuilds of 2026-10-21, so the plane is built for a level that
+    // does not — held here with level 4 built without its map, which is what a hand-written level that never opted in builds
+    const real = LEVELS[4].build;
+    LEVELS[4].build = () => { const L = real(); delete L.cmap; return L; };
+    try { loadLevel(4); for (const name of namedChildren()) seen.add(name); } finally { LEVELS[4].build = real; }
     const unreached = Object.keys(SHADOW_POLICY).filter((n) => !seen.has(n)).sort();
     expect(unreached).toEqual(["wallSeg"]);
   });
