@@ -115,8 +115,8 @@ export interface ViewmodelFrame {
  */
 export function drawKickStreaks(kickAnim: number): void {
   const t=kickElapsed(kickAnim),k=streaks(t);
-  const foot=vm.footAt;
-  if(!foot)return;
+  const foot=vm.footAt,b=burst(t);
+  if(!foot||(k<=0&&!(b>0&&kickShow.met)))return;   // nothing to draw: no save/restore either (the reference's early return)
   const fg=getFx(),s=getVH()/VIEW_H;
   fg.save();
   if(k>0){   // the drive: five streaks off the boot (owner, 2026-10-21: three faint ones read as nothing)
@@ -124,7 +124,6 @@ export function drawKickStreaks(kickAnim: number): void {
     for(let i=0;i<5;i++){fg.beginPath();
       fg.moveTo(foot[0]+(i*9-14)*s,foot[1]+(8+i*4)*s);
       fg.lineTo(foot[0]+(i*11-6)*s,foot[1]+(8+i*4+62*k)*s);fg.stroke();}}
-  const b=burst(t);
   if(b>0&&kickShow.met){   // the blow landing: a flat white burst at the sole, gone in under a tenth of a second
     const r=(10+26*(1-b))*s;
     fg.fillStyle=`rgba(255,246,222,${(.5*b).toFixed(3)})`;fg.beginPath();fg.arc(foot[0],foot[1]-6*s,r*.55,0,Math.PI*2);fg.fill();

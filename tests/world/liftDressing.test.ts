@@ -35,7 +35,7 @@ afterAll(() => { clearAllTimers(); clearScheduled(); });
 describe("level 1's torches, items and props stand on the floor under them", () => {
   it("asks for it: the level carries `lift`, and a hand-written level with a height map does not", () => {
     expect(LEVELS[1].build().lift).toBe(true);
-    expect(LEVELS[3].build().lift).toBeUndefined();
+    expect(LEVELS[0].build().lift).toBeUndefined();   // the prologue: hand-written, with a height map, and its own placing
   });
 
   it("lifts every torch (its light, flame and post), item and prop by its floor, on all three tiers", () => {

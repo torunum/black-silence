@@ -105,7 +105,7 @@ it can only claim with a human's eyes.
   mutation of both `priestThink` `material.map` sites, *before* either boss
   brain is rewritten.
 - Exactly the four §7 fields (`fly`, `flyH`, `orb`, `shield`) reach a spawned
-  enemy, each landed as its own commit; `tests/enemies/deadDefFields.test.ts`
+  enemy, each landed as its own commit; `tests/enemies/defFields.test.ts`
   is rewritten, not deleted, to keep proving the other six stay dead or gone
   with their defs.
 - `tests/world/rosterReach.test.ts` is extended per §10 to fail when a level
@@ -320,7 +320,7 @@ Ten `ENEMY_DEFS` fields are authored, are read at real sites, and **never reach
 a spawned enemy**: `spawnEnemy` builds its object with an explicit literal and
 omits them, and nothing writes them afterwards. Every read sees `undefined`, on
 every enemy, always. It is faithful — the frozen reference does the same — and
-it is pinned by `tests/enemies/deadDefFields.test.ts`.
+it is pinned by `tests/enemies/defFields.test.ts`.
 
 KNOWN-15 says plainly: **do not fix this with a spread.** Ten fields is ten
 balance changes in one commit, in a game this environment cannot render. The
@@ -484,7 +484,7 @@ is the proof the cut landed:
 
 | File | What it pins | What the cut does to it |
 |---|---|---|
-| `tests/enemies/deadDefFields.test.ts` | KNOWN-15's ten fields, every count derived at run time | Four fields stop being dead; the rest disappear with their defs. The file must keep proving the remaining ones are still dead |
+| `tests/enemies/defFields.test.ts` | KNOWN-15's ten fields, every count derived at run time | Four fields stop being dead; the rest disappear with their defs. The file must keep proving the remaining ones are still dead |
 | `tests/enemies/deathBoom.test.ts` | `deathBoom` authored once, read nowhere | The field goes; the file retires with it, and `Death.ts`'s hardcoded key check goes in the same commit |
 | `tests/world/rosterReach.test.ts` | Every letter is placed, summoned, or recorded unreachable — and the three summon literals | The `UNREACHABLE` set empties as `B` and `q` are deleted; the summon-literal guard is what catches a rename that forgets the priest's flock |
 | `tests/enemies/enemyShape.test.ts` | `Enemy`'s non-optional fields equal exactly what `spawnEnemy` builds | Every field turned on in §7 must be added to `Enemy` in the same commit or this goes red — which is the point |
@@ -494,7 +494,7 @@ in this project have at some point reported success while examining nothing, and
 the tell was always a number nobody read. The roster phase adds one more shape
 of that risk: a test that iterates `ENEMY_DEFS` becomes *cheaper to pass* as the
 table shrinks. A loop over nine entries that would also pass over zero is
-vacuous, and needs the same non-emptiness guard `deadDefFields.test.ts` already
+vacuous, and needs the same non-emptiness guard `defFields.test.ts` already
 carries.
 
 Two additions this phase should make:

@@ -3,11 +3,11 @@ import type { DoorStyle } from "../DoorKit";
 import { buildPrologue } from "./prologue";
 import { buildLevel1 } from "./level1";
 import { buildLevel2 } from "./level2";
-import { buildLevel3 } from "./level3";
-import { buildLevel4 } from "./level4";
-import { buildLevel5 } from "./level5";
-import { buildLevel6 } from "./level6";
-import { buildLevel7 } from "./level7";
+import { buildNecropolis } from "./necropolis";
+import { buildGraveyard } from "./graveyard";
+import { buildSewers } from "./sewers";
+import { buildFactory } from "./factory";
+import { buildWomb } from "./womb";
 import { buildCathedral } from "./cathedral";
 import { buildMonastery } from "./monastery";
 import { buildVillage } from "./village";
@@ -58,17 +58,22 @@ export const LEVELS: LevelDef[] = [
   fog:0x07080b,fogD:.05,amb:0x3a4250,ambI:.5,floor:"dungeon",sub:"dungeon",dungeon:true,exitStyle:"well",entranceStyle:"gate"},
  {name:"LEVEL 2 — THE ABANDONED CHURCH",build:buildLevel2,
   fog:0x0b070d,fogD:.042,amb:0x453a50,ambI:.5,floor:"church",sub:"church",entranceStyle:"rope"},
- {name:"LEVEL 3 — THE NECROPOLIS",build:buildLevel3,
+ {name:"LEVEL 3 — THE NECROPOLIS",build:buildNecropolis,   // rebuilt (2026-10-21): ./necropolis.ts
+
   fog:0x0a0a07,fogD:.046,amb:0x4a4636,ambI:.46,floor:"church",sub:"necropolis",entranceStyle:"cemetery"},   // in through the village's cemetery gate (2026-10-21)
- {name:"LEVEL 4 — THE GRAVEYARD",build:buildLevel4,
+ {name:"LEVEL 4 — THE GRAVEYARD",build:buildGraveyard,   // rebuilt (2026-10-21): ./graveyard.ts
+ 
   fog:0x10120e,fogD:.04,amb:0x3e463a,ambI:.52,floor:"dungeon",sub:"graveyard"},
- {name:"LEVEL 5 — THE SEWERS",build:buildLevel5,
+ {name:"LEVEL 5 — THE SEWERS",build:buildSewers,   // rebuilt (2026-10-21): ./sewers.ts
+ 
   fog:0x0a0e0a,fogD:.055,amb:0x36443a,ambI:.44,floor:"church",sub:"sewers"},
- {name:"LEVEL 6 — THE FACTORY",build:buildLevel6,
+ {name:"LEVEL 6 — THE FACTORY",build:buildFactory,   // rebuilt (2026-10-21): ./factory.ts
+ 
   fog:0x0c0a08,fogD:.05,amb:0x4a4038,ambI:.5,floor:"dungeon",sub:"factory"},
  {name:"LEVEL 7 — THE BONE CATHEDRAL",build:buildCathedral,   // new (owner, 2026-10-20): ./cathedral.ts
   fog:0x0e0c0a,fogD:.045,amb:0x5a5046,ambI:.5,floor:"church",sub:"necropolis"},
- {name:"LEVEL 8 — THE WOMB",build:buildLevel7,
+ {name:"LEVEL 8 — THE WOMB",build:buildWomb,   // rebuilt (2026-10-21): ./womb.ts
+ 
   fog:0x1a0606,fogD:.06,amb:0x6e2a28,ambI:.5,floor:"flesh",sub:"womb",flesh:true},
  {name:"LEVEL 1 — THE ASH BELL MONASTERY",build:buildMonastery,   // new (owner, 2026-10-20): ./monastery.ts — played straight after the prologue (PLAY_ORDER)
   fog:0x0d1016,fogD:.04,amb:0x5a6680,ambI:.6,floor:"church",sub:"church",entranceStyle:"hatch",exitStyle:"gate"},

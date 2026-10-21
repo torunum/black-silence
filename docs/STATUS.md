@@ -1,5 +1,26 @@
 # Where this project stands
 
+## Owner's round, 2026-10-21 (night): the bosses redrawn, shots past pillars, a harder kick, a better map
+
+"bosslara benzeyenler kötü … yeniden çiz hepsini … zombiler vs kalsın"; "sütunlar vs yakınında düşmanlara sıkınca gitmiyor … kısa
+cisimlerin üzerinden mermi gitmiyor"; "tekme … gerçekten sağlam bir tekme atıyormuş hissi versin"; "minimap i de geliştir" —
+
+- **Every boss and boss-like enemy is a rig now** (`src/enemies/rig/`): the cultist, gargoyle, cacodemon, lost soul, reiver,
+  slaughtaur, ettin, the guardian, the executioner, and the six bosses with their last forms as rigs of their own (`Q2`, `Z2`, `N2`,
+  `H2`, `V2`, `G2`: a boss's phase-3 form is worn through `RigAnim`'s `formKey`). The horde the owner liked (ghoul, bloat, sprinter,
+  horror, wailer, hound, dragger) is untouched. Every rig is held to the same suite (`tests/enemies/rigSuite.ts`): frame aspect, the
+  legacy regions, brightness, the punch of its emissives, the head zone. Only `B`, `q` and `A`, placed in no level, are legacy art.
+- **KNOWN-15 closed** (approved): the ten authored enemy fields reach the enemy; fliers hover (`src/enemies/Hover.ts`).
+- **A shot has its own wall test** (`shotSolidAt`, `src/world/Collision.ts`): a pillar is its round column (r .62), not its whole
+  cell, and a solid mass (a crate pile, a bench) stops a shot only below its top. Hitscan, nails, orbs and stakes use it; the body
+  still collides with the whole cell.
+- **The kick**: a bigger boot and leg, a deeper lean into it, five streaks, a burst at the sole when it meets something
+  (`kickShow.met`), a heavier punch and shake, more knockback (21; a boss 4), a light foe flung, a longer hit-stop.
+- **The minimap redrawn** (`src/ui/MinimapDraw.ts`): walls as bright lines with a glow, doors as bars across their doorways, pillars
+  as discs, windows dashed, steps between heights; health, armour, ammunition, weapons, the key, the seals and the exit marked by
+  kind; a trail of where the player walked; a brass rim ticked at eight points with N in red and a view cone; the automap framed on
+  what has been explored, with the level's name, kills and secrets, and a legend.
+
 ## Owner's round, 2026-10-21 (evening, later): what was found wrong, and fixed
 
 "eksiklikleri bul ve düzelt" —
@@ -1125,7 +1146,7 @@ into `world.enemies` — and nothing kept them agreeing. They are now
 | `spawnEnemy` returns `Enemy`; `world.enemies` is `Enemy[]` | reading an undeclared field off an element is now `tsc` error TS2339 |
 | The fifteen `as unknown as SomeEnemy[]` casts gone | replaced by `readonly SomePick[]` bindings — a *checked* widening |
 | `severKey`'s contradiction resolved | `string` in the writer vs `boolean` in the reader → the real union, guarded both directions |
-| KNOWN-15 found and pinned | `tests/enemies/deadDefFields.test.ts`, four mutations |
+| KNOWN-15 found and pinned | `tests/enemies/defFields.test.ts`, four mutations |
 | The walk-frame hole closed | `tests/enemies/walkFrames.test.ts` |
 
 The direction is the finding. Consolidating the *consumers* would have
@@ -1177,7 +1198,7 @@ already sixteen.
 
 None of them changed a decision, and that is the point: they were quoted as
 evidence and would have been baked into a doc row that outlives the phase. So
-**every count in the new tests is derived at run time** — `deadDefFields.test.ts`
+**every count in the new tests is derived at run time** — `defFields.test.ts`
 reads `ENEMY_DEFS` and spawns every authoring enemy; `enemyShape.test.ts` parses
 `Enemy.ts` and compares sets. Neither asserts a number. The numbers that do
 appear, in `docs/known-issues.md`, are descriptive and dated to a commit.
@@ -1830,7 +1851,7 @@ omission.
   flesh; the Slaughtaur's shield absorbs nothing; and the five sovereign
   bosses use the non-sovereign stat block. Identical in the frozen reference,
   so it is faithful, not drift. Found by Phase 3 Part A's enemy-shape
-  consolidation and pinned by `tests/enemies/deadDefFields.test.ts`. **Do not
+  consolidation and pinned by `tests/enemies/defFields.test.ts`. **Do not
   fix it with a spread in `spawnEnemy`**: switching ten behaviors on in one
   commit is a balance change that needs a human at the game, one field at a
   time.

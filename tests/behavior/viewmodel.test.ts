@@ -226,12 +226,28 @@ describe("drawKickStreaks (the reference's drawKickBoot): the reference's boot i
     };
     expect(streaksAt(0.03).strokes).toBe(0);    // wind-up
     const drive = streaksAt(0.09);
-    expect(drive.strokes).toBe(3);
+    expect(drive.strokes).toBe(5);   // five streaks since 2026-10-21 (owner: three faint ones read as nothing)
     expect(drive.foot).toBeDefined();
     const s = VH / Draw.VIEW_H, left = (VW - RasterM.RW * s) / 2, top = VH - RasterM.RH * s;
     const [fx, fy] = [left + drive.foot[0] * s, top + drive.foot[1] * s];
     for (const m of drive.moves) expect(Math.hypot((m.args[0] as number) - fx, (m.args[1] as number) - fy)).toBeLessThan(30 * s);
     expect(streaksAt(0.2).strokes).toBe(0);     // recovery
+    Draw.drawViewmodel(0.016, 0, frame(0), WEAPON_STATS);
+  });
+
+  it("a burst at the sole for under a tenth of a second after the hit — only when the boot met something (owner, 2026-10-21: the kick should feel as solid as the shotgun)", async () => {
+    const R = await import("../../src/weapons/WeaponRuntime");
+    const frame = (kickAnim: number) => ({ ...toViewmodelFrame(stillScenario(2)), kickAnim });
+    const fillsAt = (t: number, met: boolean) => {
+      R.kickShow.met = met;
+      Draw.drawViewmodel(0.016, 0, frame(0.32 - t), WEAPON_STATS);
+      return moduleWindow(205, () => Draw.drawKickStreaks(0.32 - t)).filter((c) => c.method === "arc").length;
+    };
+    const hit = R.KICK_HIT_T + 0.02;
+    expect(fillsAt(hit, true)).toBe(1);
+    expect(fillsAt(hit, false)).toBe(0);              // a kick at the air: no burst
+    expect(fillsAt(R.KICK_HIT_T + 0.1, true)).toBe(0); // gone after .085 s
+    R.kickShow.met = false;
     Draw.drawViewmodel(0.016, 0, frame(0), WEAPON_STATS);
   });
 

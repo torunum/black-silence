@@ -247,7 +247,7 @@ and why — a cast that survives is information about a seam, not a failure.
 
 ### Step 2: pin KNOWN-15
 
-`tests/enemies/deadDefFields.test.ts`. Assert the **current, broken** state,
+`tests/enemies/defFields.test.ts`. Assert the **current, broken** state,
 so that Phase 3 turning these on is a deliberate, visible act:
 
 - `ENEMY_DEFS` authors each of the nine fields on at least one enemy (assert

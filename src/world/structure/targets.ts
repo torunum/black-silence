@@ -6,7 +6,7 @@ import type { Structure } from "./analyse";
  * `tests/world/structureLevels.test.ts` then holds that level to `checkTargets` as well as to the hard validation every
  * level passes. Level 1 (Task 3) is the first.
  */
-export const REBUILT: readonly number[] = [1, 2, 7, 9, 10];
+export const REBUILT: readonly number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];   // 3-6 and 8 rebuilt 2026-10-21: every level but the prologue
 
 /**
  * The critical path of levels 1-7 as built before any rebuild, in steps (`scripts/level-structure.ts`, 2026-10-05). "About twice
@@ -21,14 +21,11 @@ export const OLD_CRITICAL: Readonly<Record<number, number>> = { 1: 42, 2: 66, 3:
 
 /**
  * Hard failures the levels as they were built already have, by level, each recorded and argued so a rebuilt level starts clean
- * (`tests/world/structureLevels.test.ts` fails when a level has a problem not listed here *or* lists one it no longer has).
- *  - level 3 `unreachable`: the barrel at (18,17) stands on the south gallery's 2.3 stretch, which the ramps' lowered cells and the shelves
- *    on them cut off from every step (the galleries were meant to snipe from; they cannot be walked to); `exit-door`: the nave's exit
- *    is on the pit's 0.6 step and the wall behind it stands on a 2.3 gallery (`ExitDoor.ts`'s freestanding door).
+ * (`tests/world/structureLevels.test.ts` fails when a level has a problem not listed here *or* lists one it no longer has). Empty since
+ * 2026-10-21: level 3's two (a barrel on a gallery no step reached, and an exit door with no wall of its own floor) went with the old
+ * necropolis when it was rebuilt.
  */
-export const LEGACY_PROBLEMS: Readonly<Record<number, readonly string[]>> = {
-  3: ["exit-door", "unreachable"],
-};
+export const LEGACY_PROBLEMS: Readonly<Record<number, readonly string[]>> = {};
 
 export interface Targets {
   /** The critical path as a multiple of the level's old one: at least, and at most. */
