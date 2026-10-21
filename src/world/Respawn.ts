@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { isSwing, poseLevelDoor } from "./LevelDoors";
 import { S } from "../core/State";
 import { game } from "../core/Game";
 import { input } from "../player/Input";
@@ -77,6 +78,7 @@ function replay(f: Facts): void {
   for (const k of f.opened) {
     const d = world.doors[k] as unknown as Rec | undefined;
     if (!d) continue;
+    if (isSwing(d)) { d.open = true; d.k = 1; poseLevelDoor(d); continue; }   // its leaves swung right back (src/world/LevelDoors.ts)
     d.open = true; d.mesh!.position.y = -WALLH / 2;   // all the way down, as `doorTick` leaves one
   }
   for (const i of f.broken) {

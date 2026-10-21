@@ -40,7 +40,11 @@ export interface LevelDef {
   hell?: boolean;
   dungeon?: boolean;
   flesh?: boolean;
-  /** A way out that is not the theme's door (owner, 2026-10-20: the dungeon ends down a well on a rope). */
+  /**
+   * A way out that is not the theme's door (owner, 2026-10-20: the dungeon ends down a well on a rope). The levels run into each other:
+   * the prologue climbs a ladder out of hell and the monastery begins coming up through its crypt's floor; the monastery ends at its great
+   * gate and the dungeon begins coming in through it; the dungeon goes down its well and the church begins at the well's bottom.
+   */
   exitStyle?: DoorStyle;
   /** A way in that is not the theme's door (the church begins at the well's bottom). */
   entranceStyle?: DoorStyle;
@@ -48,9 +52,9 @@ export interface LevelDef {
 
 export const LEVELS: LevelDef[] = [
  {name:"PROLOGUE — OUT OF THE PIT",build:buildPrologue,
-  fog:0x180604,fogD:.07,amb:0x6e2a14,ambI:.6,floor:"hell",sub:"hell",hell:true},
+  fog:0x180604,fogD:.07,amb:0x6e2a14,ambI:.6,floor:"hell",sub:"hell",hell:true,exitStyle:"ladder"},   // up a ladder out of hell, into the monastery's crypt (2026-10-21)
  {name:"LEVEL 1 — THE GOTHIC DUNGEON",build:buildLevel1,
-  fog:0x07080b,fogD:.05,amb:0x3a4250,ambI:.5,floor:"dungeon",sub:"dungeon",dungeon:true,exitStyle:"well"},
+  fog:0x07080b,fogD:.05,amb:0x3a4250,ambI:.5,floor:"dungeon",sub:"dungeon",dungeon:true,exitStyle:"well",entranceStyle:"gate"},
  {name:"LEVEL 2 — THE ABANDONED CHURCH",build:buildLevel2,
   fog:0x0b070d,fogD:.042,amb:0x453a50,ambI:.5,floor:"church",sub:"church",entranceStyle:"rope"},
  {name:"LEVEL 3 — THE NECROPOLIS",build:buildLevel3,
@@ -66,7 +70,7 @@ export const LEVELS: LevelDef[] = [
  {name:"LEVEL 8 — THE WOMB",build:buildLevel7,
   fog:0x1a0606,fogD:.06,amb:0x6e2a28,ambI:.5,floor:"flesh",sub:"womb",flesh:true},
  {name:"LEVEL 1 — THE ASH BELL MONASTERY",build:buildMonastery,   // new (owner, 2026-10-20): ./monastery.ts — played straight after the prologue (PLAY_ORDER)
-  fog:0x0d1016,fogD:.04,amb:0x5a6680,ambI:.6,floor:"church",sub:"church"},
+  fog:0x0d1016,fogD:.04,amb:0x5a6680,ambI:.6,floor:"church",sub:"church",entranceStyle:"hatch",exitStyle:"gate"},
 ];
 
 /**

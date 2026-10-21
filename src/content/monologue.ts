@@ -132,8 +132,8 @@ export const MONOLOGUE: Record<string, string[]> = {
  * reference's. The womb (8) has none; its end is the win screen.
  */
 export const CHAPTER_LINES: Readonly<Record<number, readonly [string, string]>> = {
-  0: ["Out of the pit, through a door, and not one soul held it for me. Onward.",
-      "I left a trail the whole way up. Somebody will have to mop hell."],
+  0: ["Out of the pit, up a ladder, and there's a floor over hell. Somebody built a monastery on the lid. Of course they did.",
+      "I left a trail the whole way up. Somebody will have to mop hell. Up the ladder before it notices."],
   1: ["Cells empty, chains still swinging, and the only way on is down a well. Of course it is.",
       "That went worse than it looked. Everything goes worse than it looks. Down the rope."],
   2: ["The bell can stop now. I'd say a prayer, but the line's been busy since the funeral.",
@@ -148,6 +148,6 @@ export const CHAPTER_LINES: Readonly<Record<number, readonly [string, string]>> 
       "The machines ran the whole time and never once looked up. Rude."],
   7: ["A whole cathedral made of people. Lovely acoustics. The stairs down are warm, which is never good news.",
       "The Sovereign got back up twice. I got back up more. Somebody keep count, I'm going downstairs."],
-  9: ["Rang their bell, broke their seals, buried their gravedigger. Monks should really lock the back door.",
+  9: ["Rang their bell, broke their seals, buried their gravedigger. The great gate's open. Whatever they kept behind it, I'm next.",
       "I came for a quiet monastery and left it louder than I found it. The gate's open. So is everything else."],
 };

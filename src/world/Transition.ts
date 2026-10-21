@@ -8,6 +8,7 @@ import { world } from "./WorldState";
 import { doors, against } from "./ExitDoor";
 import { pose, setLit } from "./DoorKit";
 import { WELL_DEPTH, WELL_OUT } from "./WellKit";
+import { SHAFT_OUT } from "./HatchKit";
 import { floorHeightAt } from "./Collision";
 import { EYE, CELL } from "./Grid";
 import { trans, T, smooth, setFade, showHud } from "./TransitionState";
@@ -129,7 +130,7 @@ export function leaveLevel(): boolean {
   showMsg("", 0); el("subt").innerHTML = "";   // "PRESS E", and whatever ADEM was saying, do not hang over the walk
   trans.phase = "walk"; trans.t = 0; trans.card = -T.hold; trans.cued.clear();
   trans.from = { x: player.px, y: player.pyy, z: player.pz, yaw: input.yaw, pitch: input.pitch };
-  at(d.x, d.y + 1.2, d.z, () => doorOpens(d.rig.spec.sound));
+  if (d.rig.style !== "ladder") at(d.x, d.y + 1.2, d.z, () => doorOpens(d.rig.spec.sound));   // the ladder's slab grinds when it is reached (`climb`)
   return true;
 }
 
@@ -172,8 +173,27 @@ function descend(): void {
   setFade(smooth(.85, 1.45, t));
 }
 
+/** The ladder (the prologue's way out: `HatchKit.ts`): to its foot, facing the wall, up it, and the slab shouldered off at the top. */
+function climb(): void {
+  const d = doors.exit!, t = trans.t, f = trans.from;
+  cue("walk", .2, exitWalkthrough);
+  const tx = d.x + d.nx * .8, tz = d.z + d.nz * .8, p = smooth(.05, .55, t), face = yawOf(-d.nx, -d.nz);
+  const yaw = f.yaw + turn(f.yaw, face) * smooth(0, .5, t);
+  const up = smooth(.45, 1.5, t), rung = Math.sin(t * 15) * .035 * smooth(.45, .6, t);
+  pose(d.rig, smooth(.75, 1.15, t));
+  const sx = d.x + d.nx * SHAFT_OUT, sz = d.z + d.nz * SHAFT_OUT, sy = d.y + d.rig.spec.h;
+  cue("slab", .75, () => at(sx, sy, sz, () => doorOpens(d.rig.spec.sound)));
+  placeCamera(mix(f.x, tx, p), f.y + 2.1 * up + rung, mix(f.z, tz, p), yaw, mix(f.pitch, 1.1, smooth(.2, .75, t)));
+  setFade(smooth(.85, 1.35, t));
+}
+
 function walk(): void {
   const d = doors.exit!, t = trans.t, f = trans.from;
+  if (d.rig.style === "ladder") {
+    climb();
+    if (t >= T.walk) { trans.phase = "card"; trans.t = 0; setFade(1); document.exitPointerLock(); }
+    return;
+  }
   pose(d.rig, smooth(0, .8, t));
   if (d.rig.style === "well") {
     descend();
@@ -227,6 +247,7 @@ function beginArrival(): void {
   game.inputLock = true; input.firing = false;
   setFade(1);
   if (e && e.rig.style === "rope") { setLit(e.rig, true); arriveByRope(); }
+  else if (e && e.rig.style === "hatch") { pose(e.rig, 0); setLit(e.rig, true); arriveByHatch(); }
   else if (e) {
     pose(e.rig, 1); setLit(e.rig, true);
     const x = (e.site.sx + .5) * CELL, z = (e.site.sz + .5) * CELL;
@@ -246,10 +267,29 @@ function arriveByRope(): void {
   cue("land", 1.05, () => at(lx, y0, lz, () => doorShutsBehind()));
 }
 
+/**
+ * The hatch (the monastery's way in: `HatchKit.ts`): up out of the shaft in the crypt's floor — the slab pushed off from below, the
+ * head and shoulders up into the crypt looking up at its vault, out onto the floor and a step on, a look back down as the slab is
+ * dragged back over hell, then to where the level begins.
+ */
+function arriveByHatch(): void {
+  const e = doors.entrance!, t = trans.t;
+  const x0 = e.x + e.nx * SHAFT_OUT, z0 = e.z + e.nz * SHAFT_OUT, fl = floorHeightAt(x0, z0);
+  pose(e.rig, smooth(.05, .45, t) * (1 - smooth(1.25, 1.7, t)));
+  const rise = fl + mix(.2, EYE, smooth(.3, 1.0, t)), p = smooth(.95, 1.45, t);
+  const wx = player.px - x0, wz = player.pz - z0, ahead = Math.hypot(wx, wz) > .05 ? yawOf(wx, wz) : input.yaw, back = ahead + Math.PI;
+  const yaw = t < 1.8 ? ahead + turn(ahead, back) * smooth(1.05, 1.4, t) : back + turn(back, input.yaw) * smooth(1.8, 2.3, t);
+  const pitch = mix(.75, 0, smooth(.35, 1.0, t)) - .45 * Math.min(smooth(1.1, 1.4, t), 1 - smooth(1.7, 2.1, t));
+  placeCamera(mix(x0, player.px, p), mix(rise, player.pyy, p), mix(z0, player.pz, p), yaw, pitch);
+  cue("push", .08, () => at(x0, fl, z0, () => doorOpens(e.rig.spec.sound)));
+  cue("shut", 1.65, () => at(x0, fl, z0, () => doorShutsBehind()));
+}
+
 function arrive(): void {
   const e = doors.entrance, t = trans.t;
   setFade(1 - smooth(.1, 1.3, t));
   if (e && e.rig.style === "rope") { arriveByRope(); if (t >= T.arrive) finishArrival(); return; }
+  if (e && e.rig.style === "hatch") { arriveByHatch(); if (t >= T.arrive) finishArrival(); return; }
   if (e) {
     const x0 = (e.site.sx + .5) * CELL, z0 = (e.site.sz + .5) * CELL, y0 = floorHeightAt(x0, z0) + EYE;
     const p = smooth(.15, 1.0, t), wx = player.px - x0, wz = player.pz - z0;

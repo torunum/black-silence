@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { isSwing, swingAway, swingTick } from "../world/LevelDoors";
 import { rnd } from "../utils/math";
 import { ACHIEVEMENTS } from "../content/achievements";
 import { ach } from "../ui/Toasts";
@@ -108,6 +109,7 @@ export function interact(){
       if(d.locked&&!S.key){showMsg("IT WANTS THE RED KEY",2.2);
         say("locked");at(wx_,WALLH/2,wz_,()=>lockedDoor());return;}
       d.open=true;
+      if(isSwing(d))d.dir=swingAway(d,player.px,player.pz);   // the leaves swing away from whoever opens them
       if(rule.gate)gateOpens(gx,gz);else at(wx_,WALLH/2,wz_,()=>doorOpens(d.flesh?"flesh":d.secret?"secret":d.locked?"gate":"stone"));
       alertSound(wx_,wz_,8);
       if(d.secret){S.secrets++;S.totSecrets++;say("secret",true);
@@ -153,6 +155,7 @@ export function itemsTick(dt: number){
   if(!S.weapons[3]&&S.totKills>=8){S.weapons[3]=true;S.mag[3]=36;
     showMsg("SCRAP SMG ASSEMBLED FROM THE DEAD",3);scrapSmgAssembled();animCues.pickup++;}}
 export function doorTick(dt: number){for(const k in world.doors){const d=world.doors[k] as unknown as Door;
+  if(isSwing(d)){swingTick(d,dt);continue;}   // two leaves on their hinges (src/world/LevelDoors.ts)
   if(d.open&&d.mesh.position.y>-WALLH/2+.1)d.mesh.position.y-=dt*2.6;}}
 export function propTick(dt: number){for(const p of world.props as unknown as Prop[]){
   if(p.dead||p.fuse!<0)continue;

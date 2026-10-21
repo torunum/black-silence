@@ -2,7 +2,7 @@ import type * as THREE from "three";
 import type { DoorKind } from "../audio/sounds/doors";
 
 /** The great doors' types (`./DoorKit.ts` builds them; `./WellKit.ts` builds the well and the rope to the same shape). */
-export type DoorStyle = "crypt" | "iron" | "church" | "tomb" | "cemetery" | "sluice" | "freight" | "sphincter" | "well" | "rope";
+export type DoorStyle = "crypt" | "iron" | "church" | "tomb" | "cemetery" | "sluice" | "freight" | "sphincter" | "well" | "rope" | "gate" | "ladder" | "hatch";
 export type OpenMove = "swing" | "slide" | "roll" | "iris" | "sink";
 
 export interface StyleSpec {

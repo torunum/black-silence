@@ -3,6 +3,7 @@ import { CELL, WALLH } from "./Grid";
 import { world } from "./WorldState";
 import { COURSE_H, isOpenCell } from "./Trim";
 import { track } from "../render/DisposeRegistry";
+import { ceilHeightAtCell } from "./Collision";
 
 /**
  * POINTED ARCHES over the plain and locked doorways — the last piece of the
@@ -187,11 +188,15 @@ export function archGeometry(): THREE.BufferGeometry {
   return g;
 }
 
-/** The arch's transform for a door cell: at the cell's centre, turned a quarter so local z runs along an x passage. */
-export function archMatrix(x: number, z: number, axis: "x" | "z"): THREE.Matrix4 {
-  const at = new THREE.Vector3((x + .5) * CELL, 0, (z + .5) * CELL);
+/**
+ * The arch's transform for a door cell: at the cell's centre, turned a quarter so local z runs along an x passage — standing on the
+ * cell's `floor` and squeezed by `sy` under a low ceiling (2026-10-21: the doors stand on their own floors now, `./LevelDoors.ts`, and
+ * the arch they hang under with them; on the levels with no raised floor both are 0 and 1, as before).
+ */
+export function archMatrix(x: number, z: number, axis: "x" | "z", floor = 0, sy = 1): THREE.Matrix4 {
+  const at = new THREE.Vector3((x + .5) * CELL, floor, (z + .5) * CELL);
   const turn = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), axis === "x" ? Math.PI / 2 : 0);
-  return new THREE.Matrix4().compose(at, turn, new THREE.Vector3(1, 1, 1));
+  return new THREE.Matrix4().compose(at, turn, new THREE.Vector3(1, sy, 1));
 }
 
 /**
@@ -205,7 +210,9 @@ export function buildArches(scene: THREE.Scene, bandTex: THREE.Texture): void {
   const mats: THREE.Matrix4[] = [];
   for (let z = 0; z < world.GH; z++) for (let x = 0; x < world.GW; x++) {
     const axis = archAxis(x, z);
-    if (axis) mats.push(archMatrix(x, z, axis));
+    if (!axis) continue;
+    const floor = world.heightMap?.[z]?.[x] || 0, ceil = ceilHeightAtCell(x, z);
+    mats.push(archMatrix(x, z, axis, floor, Math.min(1, (ceil - floor) / WALLH)));
   }
   if (!mats.length) return;
   const mesh = new THREE.InstancedMesh(track(archGeometry()), track(new THREE.MeshLambertMaterial({ map: bandTex })), mats.length);

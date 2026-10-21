@@ -26,10 +26,11 @@ import { input } from "../player/Input";
 import { player } from "../player/PlayerState";
 import { S } from "../core/State";
 import { CELL, WALLH, EYE } from "./Grid";
-import { floorHeightAt } from "./Collision";
+import { ceilHeightAtCell, floorHeightAt } from "./Collision";
 import { buildCeiling } from "./Ceiling";
 import { buildTrim } from "./Trim";
 import { buildArches } from "./Arches";
+import { buildLevelDoor, resetLevelDoors } from "./LevelDoors";
 import { wallMaterials, addInstanced, groupPush, buildFloor, buildPlatforms } from "./LevelMeshes";
 import { themeTex, shellAt } from "./ZoneLook";
 import { buildHell } from "./HellShell";
@@ -198,7 +199,7 @@ export function spawnEnemy(ch: string, wx: number, wz: number, summoned?: boolea
   return e;}
 
 export function loadLevel(idx: number, resume?: Resume): void {
-  clearAllTimers();clearScheduled();disposeAll();stopMusic();resetOpening();resetDynamite();resetStakes();
+  clearAllTimers();clearScheduled();disposeAll();stopMusic();resetOpening();resetDynamite();resetStakes();resetLevelDoors();
   S.level=idx;
   const Ldef=LEVELS[idx],L=Ldef.build();
   // The look it starts with: the level's own, or on a zoned level the spawn
@@ -278,6 +279,9 @@ export function loadLevel(idx: number, resume?: Resume): void {
     else if(ch==="I"){
       groupPush(pilMats,matPil,new THREE.Matrix4().setPosition(wx,WALLH/2,wz));}
     else if(ch==="+"||ch==="D"||ch==="S"){
+      // a plain or locked door under an arch: two leaves that swing (src/world/LevelDoors.ts); a secret door, or one with no arch, the sinking block
+      const sw=ch==="S"?null:buildLevelDoor(renderState.scene as THREE.Scene,x,z,ch==="D"?"locked":flesh?"flesh":"plain",world.heightMap?.[z]?.[x]||0,ceilHeightAtCell(x,z),matWallAt(x,z));
+      if(sw){world.doors[x+","+z]={...sw,locked:ch==="D",secret:false,flesh:!!flesh&&ch!=="D"};continue;}
       let mat;if(ch==="S"){mat=matWallAt(x,z);S.secretsTotal++;}
       else mat=track(new THREE.MeshLambertMaterial({map:ch==="D"?TEX.doorLocked:(flesh?TEX.fleshDoor:TEX.door)}));
       const m=new THREE.Mesh(wallGeo,mat);m.name="door";m.position.set(wx,WALLH/2,wz);renderState.scene.add(m);

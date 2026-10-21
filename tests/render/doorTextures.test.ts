@@ -13,7 +13,7 @@ import { buildTextures } from "../../src/render/ProcTextures";
  * gameplay draw after it and move every trace fixture's camera and HUD.
  */
 
-const KEYS: DoorTexKey[] = ["church", "crypt", "tomb", "sluice", "freight", "hazard", "glow", "sigil"];
+const KEYS: DoorTexKey[] = ["church", "crypt", "tomb", "sluice", "freight", "hazard", "glow", "sigil", "oak", "ironLeaf", "gate", "slab"];   // the last four: the doors inside a level, the great gate and the crypt slab (2026-10-21)
 
 function recordBuild(seed: number): DrawCall[] {
   const { ctx, calls } = recordingCanvas();
