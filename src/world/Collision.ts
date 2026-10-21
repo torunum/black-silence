@@ -61,6 +61,32 @@ export function solidAt(wx: number,wz: number){
     if(ms)for(const m of ms)if(wx>=m.x0&&wx<m.x1&&wz>=m.z0&&wz<m.z1)return true;}
   return false;}
 
+/** How far from its cell's centre a pillar (`I`) stops a shot: its shaft (.46-.55) and the course round its foot and head (`Trim.ts`). */
+export const PILLAR_R=.62;
+
+/**
+ * IS A SHOT STOPPED HERE (owner, 2026-10-21: "sütunlar yakınında düşmanlara sıkınca gitmiyor ... kısa cisimlerin üzerinden mermi
+ * gitmiyor"). `solidAt` is the walker's question: a pillar's whole 2 m cell and a crate pile to the ceiling. A shot asks this
+ * instead: a pillar stops it only where the column is (within `PILLAR_R` of the cell's centre), a solid piece of dressing only
+ * below its top (`MassBox.y1` over the floor it stands on); a wall, a window-wall and a shut door as before.
+ */
+export function shotSolidAt(wx: number,wy: number,wz: number){
+  const gx=wx/CELL|0,gz=wz/CELL|0;
+  const row=world.grid[gz];if(!row)return true;
+  const ch=row[gx];if(ch===undefined)return true;
+  if(ch==="#"||ch==="W")return true;
+  if(ch==="I")return Math.hypot(wx-(gx+.5)*CELL,wz-(gz+.5)*CELL)<PILLAR_R;
+  if(ch==="+"||ch==="D"||ch==="S"){const d=world.doors[gx+","+gz];return !!(d&&!d.open);}
+  if(world.masses.size){const ms=world.masses.get(gz*4096+gx);
+    if(ms)for(const m of ms)if(wx>=m.x0&&wx<m.x1&&wz>=m.z0&&wz<m.z1&&wy<floorHeightAt(wx,wz)+m.y1)return true;}
+  return false;}
+
+/** The face a shot hit at (x, z): a pillar's is round (out from its centre), a wall's the grid's (`wallNormal`). */
+export function shotNormal(x: number,z: number,dir: { x: number; z: number }){
+  const gx=x/CELL|0,gz=z/CELL|0,row=world.grid[gz];
+  if(row&&row[gx]==="I"){const dx=x-(gx+.5)*CELL,dz=z-(gz+.5)*CELL,l=Math.hypot(dx,dz)||1;return{x:dx/l,z:dz/l};}
+  return wallNormal(x,z,dir);}
+
 /* ===== arbitrary (non-orthogonal) wall segments — the Doom/Blood look =====
    Each seg: {x1,z1,x2,z2}. Rendered as angled wall meshes; collided against
    with a point-to-segment distance test; line-of-sight blocked by crossing. */

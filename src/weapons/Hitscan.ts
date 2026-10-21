@@ -3,7 +3,7 @@ import type * as THREE from "three";
 import { renderState } from "../render/Renderer";
 import { world } from "../world/WorldState";
 import { clamp, rnd } from "../utils/math";
-import { solidAt, segBlocked, wallNormal } from "../world/Collision";
+import { segBlocked, shotNormal, shotSolidAt } from "../world/Collision";
 import { WALLH } from "../world/Grid";
 import { WEAPON_STATS } from "./definitions";
 import { weaponRuntime } from "./WeaponRuntime";
@@ -103,7 +103,8 @@ export function hitscan(dir: THREE.Vector3,dmg: number,wIdx: number){
   let wallT=1e9,wx=0,wz=0,wy=0;
   for(let t=0;t<46;t+=.1){
     const sx=o.x+dir.x*t,sz=o.z+dir.z*t;
-    if(solidAt(sx,sz)||(world.wallSegs.length&&segBlocked(sx,sz,.12))){wallT=t;wx=sx;wz=sz;wy=o.y+dir.y*t;break;}}
+    const sy=o.y+dir.y*t;
+    if(shotSolidAt(sx,sy,sz)||(world.wallSegs.length&&segBlocked(sx,sz,.12))){wallT=t;wx=sx;wz=sz;wy=sy;break;}}   // a shot's own test: past a pillar's column, over a crate (src/world/Collision.ts)
   cands.sort((a,b)=>a.t-b.t);
   const pierce=WEAPON_STATS[wIdx]&&WEAPON_STATS[wIdx].pierce||1;
   let used=0;
@@ -137,7 +138,7 @@ export function hitscan(dir: THREE.Vector3,dmg: number,wIdx: number){
     else{blood(hx,hy,hz,head?10:5,head?2.6:1.8);at(hx,hy,hz,()=>bulletHitsFlesh(e));}   // Task 5: and the flesh, at the blood
     for(let t2=c.t;t2<c.t+6;t2+=.2){
       const sx=o.x+dir.x*t2,sz=o.z+dir.z*t2;
-      if(solidAt(sx,sz)){const n=wallNormal(sx,sz,dir);
+      if(shotSolidAt(sx,hy,sz)){const n=shotNormal(sx,sz,dir);
         if(Math.random()<.5&&e.plate<=0)
           addWallDecal(sx-dir.x*.06,clamp(hy+rnd(-.3,.3),.2,WALLH-.2),sz-dir.z*.06,n.x,n.z,rnd(.2,.45),splatMat);
         break;}}
@@ -145,7 +146,7 @@ export function hitscan(dir: THREE.Vector3,dmg: number,wIdx: number){
     used++;if(used>=pierce)return;}
   if(wallT<45){
     hitWindow(wx,wy,wz);   // if it is a window's glass, it breaks (src/world/Windows.ts); the spark and the mark go on as before, hidden by the pane
-    const n=wallNormal(wx,wz,dir);
+    const n=shotNormal(wx,wz,dir);
     sparks(wx-dir.x*.05,clamp(wy,.1,WALLH-.1),wz-dir.z*.05,4);
     addWallDecal(wx,clamp(wy,.15,WALLH-.15),wz,n.x,n.z,.08,holeMat);
     at(wx,clamp(wy,.1,WALLH-.1),wz,()=>bulletHitsWall());   // player feedback round 2 Task 5: the wall is heard, at the spark

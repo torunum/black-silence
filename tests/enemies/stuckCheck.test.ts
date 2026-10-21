@@ -193,7 +193,7 @@ describe("the check itself", () => {
   it("sees a mass that has been placed in an enemy's way: a wall of crates across the level 5 tunnel in front of its first enemy", () => {
     // level 5: enemies w(14,2) and t(11,3) in the main tunnel; the player at the spawn (2,2). A wall of mass across
     // the whole tunnel between them (x 6..7, z 0..6 cells) is one no straight-line walker can get round.
-    const wall: MassBox = { x0: 7 * CELL, x1: 7.9 * CELL, z0: 1 * CELL, z1: 6 * CELL };
+    const wall: MassBox = { x0: 7 * CELL, x1: 7.9 * CELL, z0: 1 * CELL, z1: 6 * CELL, y1: 2 };
     const o = check(5, [2, 2], [wall]);
     expect(o.pinnedByMass, "enemies the planted wall pinned").toBeGreaterThan(0);
   }, 600000);

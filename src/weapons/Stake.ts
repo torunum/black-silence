@@ -9,7 +9,7 @@ import { renderState } from "../render/Renderer";
 import { S } from "../core/State";
 import { damageEnemy } from "../enemies/Damage";
 import { world } from "../world/WorldState";
-import { ceilHeightAt, floorHeightAt, solidAt } from "../world/Collision";
+import { ceilHeightAt, floorHeightAt, shotSolidAt } from "../world/Collision";
 import { breakProp, explodeBarrel, type Prop } from "../world/Props";
 import type { Enemy } from "../enemies/Enemy";
 import { flying, stuck, STUCK_MAX, type FlyingStake } from "./StakeState";
@@ -98,7 +98,7 @@ type Body = Pick<Enemy, "dead" | "dormant" | "x" | "z" | "w" | "h" | "fy" | "kx"
 
 /** What the point meets at (x,y,z): a wall or floor or beam ("hard"), a prop, a body, or nothing. */
 function meets(s: FlyingStake, x: number, y: number, z: number): "hard" | Prop | Body | null {
-  if (solidAt(x, z) || y < floorHeightAt(x, z) + .02 || y > ceilHeightAt(x, z) - .02) return "hard";
+  if (shotSolidAt(x, y, z) || y < floorHeightAt(x, z) + .02 || y > ceilHeightAt(x, z) - .02) return "hard";
   for (const p of world.props as unknown as Prop[]) if (!p.dead && Math.hypot(x - p.x, z - p.z) < p.r + .05 && y < p.hgt) return p;
   for (const e of world.enemies as readonly Body[]) {
     if (e.dead || e.dormant || s.hit.has(e)) continue;
