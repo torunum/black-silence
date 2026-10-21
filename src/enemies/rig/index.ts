@@ -20,6 +20,10 @@ import { GRAVEDIGGER } from "./gravedigger";
 import { GRAVEDIGGER2 } from "./gravedigger2";
 import { LEVIATHAN } from "./leviathan";
 import { LEVIATHAN2 } from "./leviathan2";
+import { FOREMAN } from "./foreman";
+import { FOREMAN2 } from "./foreman2";
+import { HEART } from "./heart";
+import { HEART2 } from "./heart2";
 import { GUARDIAN } from "./guardian";
 import { EXECUTIONER } from "./executioner";
 import { ETTIN } from "./ettin";
@@ -33,6 +37,6 @@ import { ETTIN } from "./ettin";
  * `tests/enemies/legacyDraws.test.ts` holds that the seeded stream the
  * fixtures are recorded under still moves exactly as the legacy bake moved it.
  */
-export const RIGS: Readonly<Record<string, Rig>> = { z: GHOUL, t: BLOAT, f: SPRINTER, m: HORROR, s: WAILER, g: HOUND, w: DRAGGER, j: CULTIST, y: GARGOYLE, C: CACODEMON, L: LOST_SOUL, R: REIVER, k: SLAUGHTAUR, n: ETTIN, U: GUARDIAN, E: EXECUTIONER, Q: PRIEST, Q2: PRIEST2, Z: SOVEREIGN, Z2: SOVEREIGN2, N: GRAVEDIGGER, N2: GRAVEDIGGER2, H: LEVIATHAN, H2: LEVIATHAN2 };
+export const RIGS: Readonly<Record<string, Rig>> = { z: GHOUL, t: BLOAT, f: SPRINTER, m: HORROR, s: WAILER, g: HOUND, w: DRAGGER, j: CULTIST, y: GARGOYLE, C: CACODEMON, L: LOST_SOUL, R: REIVER, k: SLAUGHTAUR, n: ETTIN, U: GUARDIAN, E: EXECUTIONER, Q: PRIEST, Q2: PRIEST2, Z: SOVEREIGN, Z2: SOVEREIGN2, N: GRAVEDIGGER, N2: GRAVEDIGGER2, H: LEVIATHAN, H2: LEVIATHAN2, V: FOREMAN, V2: FOREMAN2, G: HEART, G2: HEART2 };
 
 export function rigFor(key: string): Rig | undefined { return RIGS[key]; }
