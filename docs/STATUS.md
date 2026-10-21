@@ -1,5 +1,27 @@
 # Where this project stands
 
+## Owner's round, 2026-10-21 (later): the levels run into each other, and the doors are remade
+
+"bölümleri geliştirmeye devam et. prologue u da diğer bölüme bağla. kapıları yeniden yapabilirsin" —
+
+- **The prologue runs straight into the monastery.** Its way out is a **ladder** at the top of the climb (`src/world/HatchKit.ts`):
+  ADEM walks to its foot, climbs looking up, shoulders the slab over the shaft aside, and the screen goes black. The monastery begins
+  with him coming **up out of a hatch** in the family crypt's floor: the slab pushed off from below (hell's red glow under it), head and
+  shoulders up into the crypt, out, a look back as the slab is dragged back over the shaft, and on. (`Transition.ts`'s `climb` and
+  `arriveByHatch`; ADEM's card lines say where he has come up.)
+- **The monastery ends at its great gate, and the dungeon begins coming in through it** (`src/world/GateKit.ts`): two tall braced
+  oak leaves with iron studs and rings under a pointed arch of two orders with a keystone, the monastery's bronze bell in the arch's
+  head, iron braziers burning either side. With the dungeon's well and the church's rope, the first four levels are one way down.
+- **The doors inside every level are remade** (`src/world/LevelDoors.ts`): the reference's door was a cell-sized textured box sunk into
+  the floor, built at the grid's own height — on the monastery's raised floors it stood with its foot in the floor and a gap over its
+  head. A plain or locked door is now a pair of gothic leaves under the doorway's pointed arch, each cut to the arch's curve and hung on
+  its jamb, an iron ring either face; opened, they swing away from whoever opened them and come to rest against the passage's walls.
+  Oak with strap hinges (plain), riveted black iron with the red lock plate (locked: the red key's), the flesh door's skin on the womb.
+  The arch and the leaves stand on the door cell's own floor and fit its own ceiling (`Arches.ts`'s `archMatrix` takes both now; on a
+  level with no raised floor they are where they always were). Secret doors keep the sinking block (they are drawn as wall on purpose).
+  Built `quietly`; collision unchanged (a door's cell is solid until opened); a checkpoint puts opened doors back open.
+- New door surfaces in `DOORTEX`: `oak`, `ironLeaf`, `gate`, `slab`. The door parts the kits share moved to `src/world/DoorParts.ts`.
+
 ## Owner's round, 2026-10-21: the stake gun
 
 "sonra kazık eklensin" — **the STAKE GUN is slot 9, the tenth weapon, key `0`** (`src/weapons/Stake.ts`, its art
