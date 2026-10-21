@@ -212,6 +212,8 @@ export const SOUND_LEVELS = {
   hitKill: { category: "explosion", trim: -13.8 },
   bulletRicochet: { category: "impact", trim: -5 },
   propBreaks: { category: "impact", trim: -16.8 },
+  glassShatters: { category: "impact", trim: -8 },
+  potteryBreaks: { category: "impact", trim: -12 },
   playerHurt: { category: "impact", trim: 4.4 },
   // footsteps
   // (player feedback round 2 Task 5: one entry per floor, each levelled from its walk and its run together, so every

@@ -17,6 +17,7 @@ import { ceilHeightAt, floorHeightAt, solidAt } from "../world/Collision";
 import { breakProp, explodeBarrel, type Prop } from "../world/Props";
 import type { Enemy } from "../enemies/Enemy";
 import { sticks } from "./DynamiteState";
+import { blastWindows } from "../world/Windows";
 
 /**
  * DYNAMITE (owner, 2026-10-20: "ilk dinamit eklensin") — slot 8, the game's ninth weapon, after Blood's own: a bundle of three
@@ -124,5 +125,6 @@ export function dynamiteBlast(x: number, y: number, z: number): void {
     if (p.dead || Math.hypot(p.x - x, p.z - z) >= BLAST_R - .8) continue;
     if (p.explosive) explodeBarrel(p); else breakProp(p);
   }
+  blastWindows(x, z, BLAST_R + 1);   // and the glass in the walls round it (../world/Windows.ts)
   alertSound(x, z, 26);
 }

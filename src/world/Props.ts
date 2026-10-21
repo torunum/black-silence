@@ -20,6 +20,8 @@ import { damageEnemy } from "../enemies/Damage";
 import { damagePlayer } from "../player/Player";
 import { world } from "./WorldState";
 import { floorHeightAt } from "./Collision";
+import { blastWindows } from "./Windows";
+import { breakDressing, isSoft } from "./decor/breakable";
 import type { Enemy } from "../enemies/Enemy";
 
 /**
@@ -66,6 +68,7 @@ export interface Prop {
 type DamageableEnemy = Pick<Enemy, "x" | "z" | "dead" | "kx" | "kz">;
 
 export function breakProp(p: Prop): void {
+  if(isSoft(p)){breakDressing(p);return;}   // an urn, a bench, a bone heap, a sac: src/world/decor/breakable.ts
   if(p.dead)return;p.dead=true;renderState.scene.remove(p.m);S.propsBroken++;
   const fy=floorHeightAt(p.x,p.z);   // a prop on a raised floor breaks on that floor
   woodP(p.x,.5+fy,p.z,12);spawnGibs(p.x,.55+fy,p.z,6,3.4,true);
@@ -92,6 +95,7 @@ export function explodeBarrel(b: Prop): void {
     if(dd<5){const f=Math.max(dd,.2);
       e.kx+=(e.x-b.x)/f*9;e.kz+=(e.z-b.z)/f*9;
       damageEnemy(e,70*(1-dd/5),{explosive:true,dir:{x:(e.x-b.x)/f,z:(e.z-b.z)/f}});}}
+  blastWindows(b.x,b.z,4.5);   // the glass in the walls round it (src/world/Windows.ts)
   for(const o of world.props as unknown as Prop[]){if(!o.dead&&o!==b&&Math.hypot(o.x-b.x,o.z-b.z)<4){
     if(o.explosive&&o.fuse!<0)o.fuse=rnd(.15,.4);else breakProp(o);}}
   alertSound(b.x,b.z,22);}

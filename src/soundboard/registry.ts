@@ -275,6 +275,8 @@ const ENTRIES: Entry[] = [
   { id: "bullet-prop", name: "Bullet hits a crate or pew", category: "World", play: WO.bulletHitsProp },
   { id: "ricochet", name: "Bullet ricochet", category: "World", detail: "3 in 10 wall hits", play: WO.bulletRicochet },
   { id: "prop-breaks", name: "Crate, pew or chair breaks", category: "World", play: WO.propBreaks },
+  { id: "pottery-breaks", name: "A clay urn smashed", category: "World", play: WO.potteryBreaks },
+  { id: "glass-shatters", name: "A window's glass breaks", category: "World", detail: "a shot, a stake or a blast", play: WO.glassShatters },
   { id: "stinger-scream", name: "Ambience: distant scream", category: "World", play: WO.distantScream },
   { id: "stinger-machinery", name: "Ambience: machinery", category: "World", play: WO.machinery },
   { id: "stinger-static", name: "Ambience: static", category: "World", play: WO.staticCrackle },

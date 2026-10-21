@@ -20,7 +20,7 @@ import { lv } from "../Levels";
  */
 
 export { footstep, landing, jump } from "./steps";
-export { bulletHitsWall, bulletHitsFlesh, bulletHitsProp, ricochetRoll, bulletRicochet, propBreaks } from "./impacts";
+export { bulletHitsWall, bulletHitsFlesh, bulletHitsProp, ricochetRoll, bulletRicochet, propBreaks, glassShatters, potteryBreaks } from "./impacts";
 export { hitFlesh, hitHead, hitArmour, hitKill } from "./hits";
 export { doorOpens, lockedDoor, exitOpens, exitWalkthrough, chapterToll, doorShutsBehind, shrineLights } from "./doors";
 export { itemPickup } from "./pickups";

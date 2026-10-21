@@ -13,6 +13,7 @@ import { ceilHeightAt, floorHeightAt, solidAt } from "../world/Collision";
 import { breakProp, explodeBarrel, type Prop } from "../world/Props";
 import type { Enemy } from "../enemies/Enemy";
 import { flying, stuck, STUCK_MAX, type FlyingStake } from "./StakeState";
+import { hitWindow } from "../world/Windows";
 
 /**
  * THE STAKE GUN (owner, 2026-10-20: "sonra kazık eklensin") — slot 9, key 0, the tenth weapon: a pneumatic launcher that drives a
@@ -137,7 +138,7 @@ export function stakeTick(dt: number): void {
     for (let k = 0; k < n && !ended; k++) {
       const x = s.x + s.vx * dt / n, y = s.y + s.vy * dt / n, z = s.z + s.vz * dt / n;
       const what = meets(s, x, y, z);
-      if (what === "hard") { driveIn(s, i); ended = true; break; }
+      if (what === "hard") { if (hitWindow(x, y, z)) { gone(s, i); ended = true; break; } driveIn(s, i); ended = true; break; }   // through the glass and gone into the night, or into the stone
       s.x = x; s.y = y; s.z = z;
       if (what === null) continue;
       if ("hgt" in what) {

@@ -43,6 +43,8 @@ interface CollProp {
   x: number;
   z: number;
   r: number;
+  /** Breakable dressing (`decor/breakable.ts`): never in the way. */
+  soft?: boolean;
   dead?: unknown;
 }
 
@@ -120,6 +122,6 @@ export function collides(x: number, z: number): boolean {
   for(const[ox,oz]of[[R,R],[R,-R],[-R,R],[-R,-R],[R,0],[-R,0],[0,R],[0,-R]])
     if(solidAt(x+ox,z+oz))return true;
   if(world.wallSegs.length&&segBlocked(x,z,R+.05))return true;
-  for(const p of world.props as unknown as CollProp[]){if(p.dead)continue;
+  for(const p of world.props as unknown as CollProp[]){if(p.dead||p.soft)continue;   // the breakable dressing is walked past, as it always was
     if(Math.hypot(x-p.x,z-p.z)<p.r+R)return true;}
   return false;}

@@ -174,6 +174,8 @@ A trim never pushes one sound on its own past -1.5 dBFS peak, or above +18 dB: t
 | `hitKill` | explosion | -13.8 | -19 | -19.0 | -6.5 | +0.0 | — | -13.8 |
 | `bulletRicochet` | impact | -5 | -23 | -23.0 | -10.2 | -0.0 | — | -5 |
 | `propBreaks` | impact | -16.8 | -23 | -23.0 | -8.4 | +0.0 | — | -16.8 |
+| `glassShatters` | impact | -8 | -23 | — (not yet measured, 2026-10-21) | — | — | — | -8 |
+| `potteryBreaks` | impact | -12 | -23 | — (not yet measured, 2026-10-21) | — | — | — | -12 |
 | `playerHurt` | impact | 4.4 | -23 | -23.0 | -8.0 | -0.0 | — | 4.4 |
 | `footstepStone` | footstep | -12.1 | -29 | -29.0 | -10.1 | +0.0 | — | -12.1 |
 | `footstepMarble` | footstep | -10.9 | -29 | -29.0 | -8.6 | +0.0 | — | -10.9 |

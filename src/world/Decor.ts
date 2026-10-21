@@ -11,6 +11,7 @@ import { makeMat } from "./decor/kit";
 import { addPiece, merge, partClass, partMaterial, type Parts } from "./decor/parts";
 import { addLamps } from "./decor/lamps";
 import { PIECES } from "./decor/registry";
+import { placeBreakables } from "./decor/breakable";
 import { decorCell } from "./density";
 import { doorClaims } from "./ExitDoor";
 
@@ -54,7 +55,8 @@ import { doorClaims } from "./ExitDoor";
 
 const MESH_NAME = { decor: "decor", clutter: "decorClutter", grass: "decorGrass" } as const;
 
-function buildPieces(scene: THREE.Scene, specs: DecorSpec[]): void {
+function buildPieces(scene: THREE.Scene, all: DecorSpec[]): void {
+  const specs = placeBreakables(scene, all);   // the urns, benches, bones and sacs that break stand alone (./decor/breakable.ts)
   const parts: Parts = new Map();
   const emitters: Emitter[] = [], lights: THREE.PointLight[] = [];
   for (const d of specs) {
@@ -127,7 +129,8 @@ function liftDressing(scene: THREE.Scene, L: BuiltLevel): void {
     it.y0 = .5 + floorHeightAt(it.x, it.z); it.sp.position.y = it.y0;
   }
   if (world.zones) return;
-  for (const p of world.props as unknown as Array<{ x: number; z: number; m: THREE.Object3D; hgt: number }>) {
+  for (const p of world.props as unknown as Array<{ x: number; z: number; m: THREE.Object3D; hgt: number; soft?: boolean }>) {
+    if (p.soft) continue;   // the breakable dressing was built on its floor already
     const fy = floorHeightAt(p.x, p.z);
     if (fy > 0) { p.m.position.y += fy; p.hgt += fy; }
   }

@@ -18,6 +18,7 @@ import { flashHoly } from "../ui/HudMessages";
 import { screenShake, shake } from "../fx/ShakeState";
 import { breakProp, explodeBarrel, type Prop } from "../world/Props";
 import { alertSound } from "../enemies/ai/Perception";
+import { blastWindows, hitWindow } from "../world/Windows";
 import { damageEnemy } from "../enemies/Damage";
 import type { Enemy } from "../enemies/Enemy";
 
@@ -113,7 +114,7 @@ export function hitscan(dir: THREE.Vector3,dmg: number,wIdx: number){
         sparks(o.x+dir.x*c.t,o.y+dir.y*c.t,o.z+dir.z*c.t,5);
         if(c.p.hp<=0)explodeBarrel(c.p);}
       else{c.p.hp-=dmg;
-        spawnGibs(o.x+dir.x*c.t,o.y+dir.y*c.t,o.z+dir.z*c.t,1,2,true);
+        if(!(c.p as { soft?: boolean }).soft)spawnGibs(o.x+dir.x*c.t,o.y+dir.y*c.t,o.z+dir.z*c.t,1,2,true);   // the breakable dressing takes no dice (src/world/decor/breakable.ts)
         at(o.x+dir.x*c.t,o.y+dir.y*c.t,o.z+dir.z*c.t,()=>bulletHitsProp());
         if(c.p.hp<=0)breakProp(c.p);}
       used++;if(used>=pierce)return;continue;}
@@ -142,6 +143,7 @@ export function hitscan(dir: THREE.Vector3,dmg: number,wIdx: number){
     damageEnemy(e,dmg*(head?2:1),{head,leg,arm,armSide,lateral,wIdx,dir:{x:dir.x,z:dir.z},dist:c.t,hx,hy,hz});
     used++;if(used>=pierce)return;}
   if(wallT<45){
+    if(hitWindow(wx,wy,wz))return;   // the glass breaks (src/world/Windows.ts): no hole, no spark on it
     const n=wallNormal(wx,wz,dir);
     sparks(wx-dir.x*.05,clamp(wy,.1,WALLH-.1),wz-dir.z*.05,4);
     addWallDecal(wx,clamp(wy,.15,WALLH-.15),wz,n.x,n.z,.08,holeMat);
@@ -161,4 +163,5 @@ export function crossExplode(x: number,y: number,z: number){
       damageEnemy(e,dd,{explosive:true,dir:{x:(e.x-x)/Math.max(.2,d),z:(e.z-z)/Math.max(.2,d)}});}}
   for(const p of world.props as unknown as Prop[]){if(p.dead)continue;
     if(Math.hypot(p.x-x,p.z-z)<3){p.explosive?explodeBarrel(p):breakProp(p);}}
+  blastWindows(x,z,3.4);
   alertSound(x,z,20);}

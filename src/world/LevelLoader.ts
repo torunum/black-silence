@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { loadScript, setScriptDef } from "./script/ScriptRun";
 import { resetDynamite } from "../weapons/DynamiteState";
 import { resetStakes } from "../weapons/StakeState";
-import { pick, rnd } from "../utils/math";
+import { rnd } from "../utils/math";
 import { LEVELS, titleOf } from "./levels/index";
 import { ENEMY_DEFS as EDEF } from "../enemies/EnemyDefs";
 import { TEX } from "../render/ProcTextures";
@@ -31,6 +31,7 @@ import { buildCeiling } from "./Ceiling";
 import { buildTrim } from "./Trim";
 import { buildArches } from "./Arches";
 import { buildLevelDoor, resetLevelDoors } from "./LevelDoors";
+import { addWindow, resetWindows } from "./Windows";
 import { wallMaterials, addInstanced, groupPush, buildFloor, buildPlatforms } from "./LevelMeshes";
 import { themeTex, shellAt } from "./ZoneLook";
 import { buildHell } from "./HellShell";
@@ -199,7 +200,7 @@ export function spawnEnemy(ch: string, wx: number, wz: number, summoned?: boolea
   return e;}
 
 export function loadLevel(idx: number, resume?: Resume): void {
-  clearAllTimers();clearScheduled();disposeAll();stopMusic();resetOpening();resetDynamite();resetStakes();resetLevelDoors();
+  clearAllTimers();clearScheduled();disposeAll();stopMusic();resetOpening();resetDynamite();resetStakes();resetLevelDoors();resetWindows();
   S.level=idx;
   const Ldef=LEVELS[idx],L=Ldef.build();
   // The look it starts with: the level's own, or on a zoned level the spawn
@@ -265,17 +266,7 @@ export function loadLevel(idx: number, resume?: Resume): void {
         if(r&&r[x+dx]&&"#W".indexOf(r[x+dx])<0){open=true;dx0=dx;dz0=dz;break;}}
       if(!open)continue;
       if(!shellAt(x,z))groupPush(wallMats,matWallAt(x,z),new THREE.Matrix4().setPosition(wx,WALLH/2,wz));   // a shell zone's walls are built world-mapped (HellShell.ts)
-      if(ch==="W"){
-        const gm=new THREE.Mesh(track(new THREE.PlaneGeometry(1.6,2.6)),matWin);
-        gm.position.set(wx+dx0*(CELL/2+.02),WALLH*.56,wz+dz0*(CELL/2+.02));
-        gm.lookAt(wx+dx0*4,WALLH*.56,wz+dz0*4);gm.name="window";renderState.scene.add(gm);
-        const col=pick([0x5a3a8e,0x3a5a9e,0x9e3a3a]);
-        const wl=track(new THREE.PointLight(col,1.1,9,1.5));
-        wl.position.set(wx+dx0*1.7,WALLH*.6,wz+dz0*1.7);renderState.scene.add(wl);
-        const cone=new THREE.Mesh(track(new THREE.ConeGeometry(1.2,WALLH-.6,8,1,true)),
-          track(new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:.05,
-            side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending})));
-        cone.position.set(wx+dx0*1.7,(WALLH-.6)/2,wz+dz0*1.7);cone.name="windowCone";renderState.scene.add(cone);}}
+      if(ch==="W")addWindow(renderState.scene as THREE.Scene,x,z,wx,wz,dx0,dz0,matWin);}   // its glass, light and beam: src/world/Windows.ts, where it also breaks
     else if(ch==="I"){
       groupPush(pilMats,matPil,new THREE.Matrix4().setPosition(wx,WALLH/2,wz));}
     else if(ch==="+"||ch==="D"||ch==="S"){
