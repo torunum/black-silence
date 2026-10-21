@@ -26,7 +26,7 @@ export const DIGGER2_PALETTE = enemyPalette({
   [BONE2]: { ramp: ["#34322a", "#55524a", "#787468", "#9c9688", "#bcb6a6", "#d8d2c2"], amb: .5, spec: .2, rim: true },
   // the legacy R / M: the green
   [GLOW]:  { ramp: ["#2a6a10", "#40961a", "#5ec026", "#7fd05a", "#b4ee60"], emissive: true },
-  [CORE]:  { ramp: ["#a8d83a", "#c8e848", "#e0f478", "#f2fcb0"], emissive: true },
+  [CORE]:  { ramp: ["#8ad030", "#a8e03a", "#c4ee48", "#dcf860"], emissive: true },
   // the legacy S / s
   [IRON]:  { ramp: ["#161616", "#262624", "#393835", "#4e4c48", "#66635d", "#807c75"], amb: .44, spec: .5, rim: true },
   [HAFT]:  { ramp: ["#1a120a", "#2c1f12", "#40301c", "#544027", "#6a5233"], amb: .38, spec: .2 },
@@ -73,7 +73,8 @@ const parts: RigPart[] = [
     const b = c.b, sw = c.x("sway");
     b.cbox(-0.25, 0, -0.1, 0.25, 0.34, 0.12, 0.05, COAT, { tex: rot });
     b.prz([[-0.12, 0.04], [0.12, 0.04], [0.16, 0.18], [0.1, 0.32], [-0.1, 0.32], [-0.16, 0.18]], -0.115, -0.08, E.CAVITY);   // the chest broken open
-    b.ball(0, 0.17, -0.1, 0.07, GLOW, 7); b.ball(0, 0.17, -0.12, 0.035, CORE, 5);                                       // the light in it
+    b.ball(0, 0.17, -0.1, 0.1, GLOW, 7); b.ball(0, 0.17, -0.14, 0.03, CORE, 5);                                         // the light in it
+    for (const [x, y, a] of [[-0.17, 0.26, 0.7], [0.18, 0.08, -0.6], [-0.15, 0.05, -0.4], [0.16, 0.28, 0.5]] as const) { b.push(); b.translate(x, y, -0.13); b.roll(a); b.box(-0.012, -0.06, -0.006, 0.012, 0.06, 0.006, GLOW); b.pop(); }   // and it shows through the rot
     for (let k = 0; k < 4; k++) for (const s of [-1, 1]) { b.push(); b.translate(s * 0.15, 0.08 + k * 0.065, -0.12); b.roll(s * (0.3 + k * 0.05)); b.cbox(s > 0 ? -0.11 : 0, -0.012, -0.014, s > 0 ? 0 : 0.11, 0.012, 0.008, 0.005, BONE2); b.pop(); }
     for (let i = 0; i < 5; i++) rag(b, -0.3 + i * 0.15, 0.36, 0.13, 0.08, 0.5 + 0.15 * Math.sin(i * 1.7), sw);   // the coat, in ribbons off his back
     roots(b, -0.22, 0.02, -0.06, 3, 0.25, sw); roots(b, 0.24, 0.05, -0.04, 3, 0.2, sw + 1);
