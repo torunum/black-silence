@@ -229,7 +229,12 @@ describe("doors", () => {
     loadLevel(1);
     const plain = Object.values(world.doors).filter((d) => !d.secret);
     expect(plain.length).toBeGreaterThan(0);
-    for (const d of plain) expect((d.mesh as THREE.Object3D).children).toEqual([]);
+    // (since 2026-10-21 a door under an arch is two leaves on hinges, src/world/LevelDoors.ts: its children are those, and no course)
+    for (const d of plain) {
+      const names: string[] = [];
+      (d.mesh as THREE.Object3D).traverse((o) => names.push(o.name));
+      expect(names.filter((n) => /course/i.test(n))).toEqual([]);
+    }
   });
 
   it("gives each secret door the course its neighbours have, riding down with the door", () => {

@@ -680,6 +680,13 @@ const WRITE = process.env.WRITE_TRACE === "1";
  * through fire/reload cycles and the FX firing produces (muzzle flashes,
  * casings, impact decals) — it does not exercise shot resolution: the sweep
  * never finds the two enemies that come up behind it (12 shots, 0 hits).
+ *
+ * ## The owner's round, 2026-10-21 — regeneration: the doors are remade, and the levels run into each other (digest only, 90 of 90 frames)
+ *
+ * A plain or locked door under an arch is two leaves on hinges now (`src/world/LevelDoors.ts`), not a cell-sized box, and the arch stands
+ * on its cell's own floor; the prologue's exit is the ladder up into the monastery and the dungeon's entrance the monastery's great gate
+ * (`src/world/HatchKit.ts`, `GateKit.ts`). Against the previous fixture: `camera`, `hud` and `scene.count` **identical in every sampled
+ * frame**; `scene.digest` differs in all 90 — the doors' children are hashed with every frame. Nothing moved.
  */
 const FIGHT_START = 260;
 

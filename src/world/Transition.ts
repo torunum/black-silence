@@ -274,15 +274,15 @@ function arriveByRope(): void {
  */
 function arriveByHatch(): void {
   const e = doors.entrance!, t = trans.t;
-  const x0 = e.x + e.nx * SHAFT_OUT, z0 = e.z + e.nz * SHAFT_OUT, fl = floorHeightAt(x0, z0);
+  const hx = e.x + e.nx * SHAFT_OUT, hz = e.z + e.nz * SHAFT_OUT, fl = floorHeightAt(hx, hz);
   pose(e.rig, smooth(.05, .45, t) * (1 - smooth(1.25, 1.7, t)));
   const rise = fl + mix(.2, EYE, smooth(.3, 1.0, t)), p = smooth(.95, 1.45, t);
-  const wx = player.px - x0, wz = player.pz - z0, ahead = Math.hypot(wx, wz) > .05 ? yawOf(wx, wz) : input.yaw, back = ahead + Math.PI;
+  const wx = player.px - hx, wz = player.pz - hz, ahead = Math.hypot(wx, wz) > .05 ? yawOf(wx, wz) : input.yaw, back = ahead + Math.PI;
   const yaw = t < 1.8 ? ahead + turn(ahead, back) * smooth(1.05, 1.4, t) : back + turn(back, input.yaw) * smooth(1.8, 2.3, t);
   const pitch = mix(.75, 0, smooth(.35, 1.0, t)) - .45 * Math.min(smooth(1.1, 1.4, t), 1 - smooth(1.7, 2.1, t));
-  placeCamera(mix(x0, player.px, p), mix(rise, player.pyy, p), mix(z0, player.pz, p), yaw, pitch);
-  cue("push", .08, () => at(x0, fl, z0, () => doorOpens(e.rig.spec.sound)));
-  cue("shut", 1.65, () => at(x0, fl, z0, () => doorShutsBehind()));
+  placeCamera(mix(hx, player.px, p), mix(rise, player.pyy, p), mix(hz, player.pz, p), yaw, pitch);
+  cue("push", .08, () => at(hx, fl, hz, () => doorOpens(e.rig.spec.sound)));
+  cue("shut", 1.65, () => at(hx, fl, hz, () => doorShutsBehind()));
 }
 
 function arrive(): void {

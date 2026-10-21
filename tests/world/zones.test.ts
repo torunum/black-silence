@@ -364,14 +364,14 @@ describe("the bridge over the pit", () => {
 });
 
 describe("the exit", () => {
-  it("leads to level 1: the crypt door ends the prologue, the card comes up over black, and a deliberate key loads the monastery (played second: levels/index.ts PLAY_ORDER)", async () => {
+  it("leads to level 1: the ladder up out of hell ends the prologue (2026-10-21; a crypt door before), the card comes up over black, and a deliberate key loads the monastery (played second: levels/index.ts PLAY_ORDER)", async () => {
     const { doors } = await import("../../src/world/ExitDoor");
     const { transitionTick } = await import("../../src/world/Transition");
     const { trans, T } = await import("../../src/world/TransitionState");
     loadLevel(0);
     skipOpening();   // the opening locks input, and playerTick with it (src/world/Opening.ts)
     S.won = false;
-    expect(doors.exit!.rig.style, "the prologue's exit is a crypt door").toBe("crypt");
+    expect(doors.exit!.rig.style, "the prologue's exit is the ladder up into the monastery").toBe("ladder");
     const d = doors.exit!;
     player.px = d.x + d.nx * .5; player.pz = d.z + d.nz * .5; player.pyy = EYE + floorHeightAt(player.px, player.pz);
     playerTick(1 / 60);

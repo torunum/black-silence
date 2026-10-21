@@ -927,6 +927,13 @@ import { MONOLOGUE } from "../../src/content/monologue";
  * The dungeon ends down a well on a rope (`src/world/WellKit.ts`), so its exit is the well's rig, not the iron door's. Against the previous
  * fixture: `camera`, `hud` and `scene.count` **identical in every sampled frame**; `scene.digest` differs in all 110 — the exit's children
  * (the well's ring, winch, rope and lid in place of the iron door's leaves and frame) are hashed with every frame. Nothing moved.
+ *
+ * ## The owner's round, 2026-10-21 — regeneration: the doors are remade, and the levels run into each other (digest only, 110 of 110 frames)
+ *
+ * A plain or locked door under an arch is two leaves on hinges now (`src/world/LevelDoors.ts`), not a cell-sized box, and the arch stands
+ * on its cell's own floor; the prologue's exit is the ladder up into the monastery and the dungeon's entrance the monastery's great gate
+ * (`src/world/HatchKit.ts`, `GateKit.ts`). Against the previous fixture: `camera`, `hud` and `scene.count` **identical in every sampled
+ * frame**; `scene.digest` differs in all 110 — the doors' children are hashed with every frame. Nothing moved.
   */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

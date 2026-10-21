@@ -301,11 +301,14 @@ describe("rising again at the last shrine", () => {
     expect(world.items[ipb].taken, "taken after: there to take again").toBeFalsy();
     expect(renderState.scene.children.includes(world.items[ipb].sp as never)).toBe(true);
     expect(world.items.slice(CPbase()).filter((it) => !it.taken), "the drop that was lying at the shrine lies there again").toHaveLength(1);
-    const A = world.doors[da] as { open: boolean; mesh: { position: { y: number } } }, B = world.doors[db] as typeof A;
+    const A = world.doors[da] as { open: boolean; mesh: { position: { y: number } }; k?: number; leaves?: unknown[] }, B = world.doors[db] as typeof A;
+    // a door under an arch swings its two leaves (src/world/LevelDoors.ts, 2026-10-21): all the way, or not at all; any other still sinks
+    const swung = (d: typeof A): boolean => (d.leaves ? d.k === 1 : d.mesh.position.y === -WALLH / 2);
+    const shut = (d: typeof A): boolean => (d.leaves ? d.k === 0 : d.mesh.position.y === WALLH / 2);
     expect(A.open, "opened before: still open").toBe(true);
-    expect(A.mesh.position.y).toBe(-WALLH / 2);
+    expect(swung(A), "and all the way open").toBe(true);
     expect(B.open, "opened after: shut again").toBe(false);
-    expect(B.mesh.position.y).toBe(WALLH / 2);
+    expect(shut(B), "and all the way shut").toBe(true);
     expect(S.kills, "and the tally is the shrine's").toBe(1);
   });
 });
