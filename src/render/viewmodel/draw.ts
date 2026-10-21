@@ -251,9 +251,9 @@ export function drawViewmodel(dt: number, tNow: number, v: ViewmodelFrame, weapo
   if(scoped)return;
   const glow=vm.anchors.glow;
   if(glow){ // the soul core's light spilling past its cage
-    const gx=left+glow[0]*s, gy=top+glow[1]*s, gr=(14+10*pose.heat)*s*VM_RES;
+    const gx=left+glow[0]*s, gy=top+glow[1]*s, gr=(10+10*pose.heat)*s*VM_RES;
     const g=fg.createRadialGradient(gx,gy,1,gx,gy,gr);
-    g.addColorStop(0,`rgba(150,240,110,${.35+.4*pose.heat})`);g.addColorStop(1,"rgba(60,160,40,0)");
+    g.addColorStop(0,`rgba(150,240,110,${.16+.4*pose.heat})`);   // a halo, not a lid over the core it comes from (2026-10-22)g.addColorStop(1,"rgba(60,160,40,0)");
     fg.fillStyle=g;fg.beginPath();fg.arc(gx,gy,gr,0,7);fg.fill();}
   /* muzzle flash, anchored to this weapon's barrel tip */
   if(v.muzzle>0){

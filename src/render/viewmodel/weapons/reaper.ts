@@ -22,7 +22,10 @@ const ribTex = (_x: number, y: number, z: number): number =>
 const runeTex = (x: number, y: number): number =>
   (Math.floor((Math.atan2(y, x) + 4) * 5) % 3) === 0 ? 2 : 0;
 
-const CORE_Y = 0.04, CORE_Z = 0.32, CORE_R = 0.058;
+const CORE_Y = 0.04, CORE_Z = 0.32, CORE_R = 0.05;
+/** The soul in the core: wisps of it turning in the glow, darker streaks over a bright heart (2026-10-22: it was one flat green disc). */
+const soulTex = (x: number, y: number, z: number): number =>
+  Math.sin(x * 140 + Math.sin(y * 110 + z * 60) * 2.4) > 0.35 ? -2 : Math.sin(y * 170 - x * 80) > 0.8 ? -1 : 0;
 
 export const soulReaper: WeaponArt = {
   name: "SOUL REAPER",
@@ -72,7 +75,7 @@ export const soulReaper: WeaponArt = {
     b.anchor("muzzle", 0, CORE_Y, CORE_Z);
     if (r < 0) {
       const spent = hump(a, ...REAPER.spent);
-      b.ball(0, CORE_Y, CORE_Z, CORE_R * (1 - 0.6 * spent) * (1 + 0.2 * pose.heat), MAT.SOUL, 10);
+      b.ball(0, CORE_Y, CORE_Z, CORE_R * (1 - 0.6 * spent) * (1 + 0.2 * pose.heat), MAT.SOUL, 10, { tex: soulTex });
       b.anchor("glow", 0, CORE_Y, CORE_Z);
     } else {
       const dying = ramp(r, ...REAPER.dying);
@@ -83,13 +86,13 @@ export const soulReaper: WeaponArt = {
       const inHand = r > 0.16 && r < 0.62;
       const fresh = r >= 0.38;
       if (!inHand) {
-        if (fresh) { b.ball(0, CORE_Y, CORE_Z, CORE_R, MAT.SOUL, 10); b.anchor("glow", 0, CORE_Y, CORE_Z); }
+        if (fresh) { b.ball(0, CORE_Y, CORE_Z, CORE_R, MAT.SOUL, 10, { tex: soulTex }); b.anchor("glow", 0, CORE_Y, CORE_Z); }
         else b.ball(0, CORE_Y, CORE_Z, CORE_R * (1 - 0.35 * dying), dying > 0.5 ? MAT.DEADSOUL : MAT.SOUL, 10);
       }
       if (r > 0.12 && r < 0.7) {
         b.push(); b.translate(hx, hy, hz);
         if (inHand) {
-          if (fresh) { b.ball(0, 0, 0, CORE_R, MAT.SOUL, 10); b.anchor("glow", 0, 0, 0); }
+          if (fresh) { b.ball(0, 0, 0, CORE_R, MAT.SOUL, 10, { tex: soulTex }); b.anchor("glow", 0, 0, 0); }
           else b.ball(0, 0, 0, CORE_R * 0.6, MAT.DEADSOUL, 10);
         }
         b.translate(0.0, -0.035, -0.03); b.roll(-0.5); b.pitch(0.9);
