@@ -113,5 +113,10 @@ export function buildNecropolis(): BuiltLevel {
   lv.checkpoint([30, 38], { side: "s" });   // the street's end, above the plaza: every route
   lv.checkpoint([34, 19], { side: "w" });   // the church stair: every route to the key
   lv.checkpoint([29, 19], { side: "e" });   // the bone road, the last before the Sovereign
-  return lv.build();
+  const L = lv.build();
+  // masses an enemy walking at a player was found pinned against (tests/enemies/stuckCheck.test.ts), taken out
+  L.decor = L.decor!.filter((s) => !PINNERS.includes(`${s.k}@${Math.floor(s.x + .5)},${Math.floor(s.z + .5)}`));
+  return L;
 }
+
+export const PINNERS: readonly string[] = ["sarcophagus@26,19"];

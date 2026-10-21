@@ -98,5 +98,10 @@ export function buildSewers(): BuiltLevel {
   lv.checkpoint([34, 38], { side: "n" });   // the drain's end, before the overflow: every route
   lv.checkpoint([37, 17], { side: "n" });   // the stair up to the valve room: every route to the key
   lv.checkpoint([26, 22], { side: "n" });   // the culvert, the last before the Leviathan
-  return lv.build();
+  const L = lv.build();
+  // masses an enemy walking at a player was found pinned against (tests/enemies/stuckCheck.test.ts), taken out
+  L.decor = L.decor!.filter((s) => !PINNERS.includes(`${s.k}@${Math.floor(s.x + .5)},${Math.floor(s.z + .5)}`));
+  return L;
 }
+
+export const PINNERS: readonly string[] = ["pump@42,15"];

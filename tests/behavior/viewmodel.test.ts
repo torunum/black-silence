@@ -230,7 +230,7 @@ describe("drawKickStreaks (the reference's drawKickBoot): the reference's boot i
     expect(drive.foot).toBeDefined();
     const s = VH / Draw.VIEW_H, left = (VW - RasterM.RW * s) / 2, top = VH - RasterM.RH * s;
     const [fx, fy] = [left + drive.foot[0] * s, top + drive.foot[1] * s];
-    for (const m of drive.moves) expect(Math.hypot((m.args[0] as number) - fx, (m.args[1] as number) - fy)).toBeLessThan(30 * s);
+    for (const m of drive.moves) expect(Math.hypot((m.args[0] as number) - fx, (m.args[1] as number) - fy)).toBeLessThan(45 * s);   // five streaks fan wider than three did (2026-10-21)
     expect(streaksAt(0.2).strokes).toBe(0);     // recovery
     Draw.drawViewmodel(0.016, 0, frame(0), WEAPON_STATS);
   });

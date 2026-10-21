@@ -190,16 +190,16 @@ describe("enemies on levels 0-7 with the masses in", () => {
 });
 
 describe("the check itself", () => {
-  it("sees a mass that has been placed in an enemy's way: a wall of crates across the level 5 tunnel in front of its first enemy", () => {
-    // level 5: enemies w(14,2) and t(11,3) in the main tunnel; the player at the spawn (2,2). A wall of mass across
-    // the whole tunnel between them (x 6..7, z 0..6 cells) is one no straight-line walker can get round.
-    const wall: MassBox = { x0: 7 * CELL, x1: 7.9 * CELL, z0: 1 * CELL, z1: 6 * CELL, y1: 2 };
-    const o = check(5, [2, 2], [wall]);
+  it("sees a mass that has been placed in an enemy's way: a wall of crates across the level 5 drain in front of its first enemy", () => {
+    // level 5 (rebuilt 2026-10-21): the main drain is x 11-32, z 37-40, its first enemies t(17,38) and z(21,37); the player at the drain's
+    // mouth (12,38). A wall of mass across the whole drain just in front of them (x 15.6-16.4, z 37..40) is one no straight-line walker can get round.
+    const wall: MassBox = { x0: 15.6 * CELL, x1: 16.4 * CELL, z0: 36.5 * CELL, z1: 41 * CELL, y1: 2 };
+    const o = check(5, [12, 38], [wall]);
     expect(o.pinnedByMass, "enemies the planted wall pinned").toBeGreaterThan(0);
   }, 600000);
 
-  it("does not blame a mass for a wall: the level 5 tunnel without any planted mass pins nobody on a mass", () => {
-    const o = check(5, [2, 2]);
+  it("does not blame a mass for a wall: the level 5 drain without any planted mass pins nobody on a mass", () => {
+    const o = check(5, [12, 38]);
     expect(o.pinnedByMass).toBe(0);
   }, 600000);
 });
@@ -216,16 +216,8 @@ const PINNERS: Record<number, readonly string[]> = {
   1: ["cratepile@49,26", "cratepile@24,29", "cratepile@40,11"],
   // level 2 as rebuilt (deeper-levels plan, Task 4): its first sweep (STUCK_PLACES=999) found the four fallen saints along the nave's aisle walls and a sarcophagus at the crypt's west end; the church's own list went with them
   2: ["fallenstatue@33,14", "fallenstatue@38,14", "fallenstatue@33,28", "fallenstatue@38,28", "sarcophagus@9,36"],
-  3: ["sarcophagus@3,19"],
-  4: ["tombfree@20,14", "tombfree@12,10", "deadtree@14,22", "gravestone@24,1", "gravecross@14,19", "gravestone@17,19", "gravecross@9,1", "gravestone@12,1",
-    "gravestone@18,23", "gravestone@6,5", "gravestone@22,5", "gravestone@15,23", "gravecross@8,1", "gravestone@22,1", "gravestone@8,5", "gravecross@16,23",
-    "gravecross@19,19", "gravestone@4,1", "gravestone@24,7", "gravestone@11,19", "gravestone@1,17", "gravestone@13,23", "gravestone@1,18"],
-  5: ["pump@26,23", "tank@10,1", "pump@15,1", "pump@19,19", "pump@25,19", "pump@24,23", "pump@11,5", "pump@1,9", "tank@14,7", "pump@14,1", "tank@23,11",
-    "tank@9,1", "tank@1,6", "tank@1,14", "pump@1,12", "tank@14,17", "pump@13,19", "tank@21,23", "tank@22,23", "tank@31,23", "tank@18,7"],
-  6: ["machine@17,1", "conveyor@18,1", "drum@18,23", "press@14,7", "machine@16,7", "press@20,23", "machine@7,7", "conveyor@25,10", "press@21,19",
-    "conveyor@14,1", "drum@7,4", "machine@21,5", "press@18,7", "machine@25,14", "conveyor@1,18", "drum@13,1", "press@20,1", "machine@19,23", "cratepile@7,6", "machine@17,7"],
-  7: ["tumor@19,1", "tumor@19,23", "tumor@13,5", "tumor@27,17", "tumor@13,1", "tumor@19,19", "tumor@7,4", "tumor@18,7", "tumor@26,7", "tumor@13,19", "tumor@13,23",
-    "tumor@27,7", "tumor@19,17"],
+  // levels 3-6 and 8 were rebuilt on 2026-10-21 (owner: "bölümleri de geliştirelim"): the lattice levels' lists went with them, and the rebuilt
+  // levels stand no mass free on an open floor (their dress files keep the masses against walls, columns and obelisks); 7, the bone cathedral, has none listed
 };
 
 describe("the masses the exhaustive sweep found pinning enemies stay out", () => {

@@ -95,5 +95,10 @@ export function buildWomb(): BuiltLevel {
   lv.checkpoint([23, 31], { side: "n" });   // the ventricle's stair up into the gut: every route
   lv.checkpoint([37, 21], { side: "s" });   // the stair up into the lung: every route to the key
   lv.checkpoint([25, 16], { side: "w" });   // the spine at the valve, the last before the heart
-  return lv.build();
+  const L = lv.build();
+  // masses an enemy walking at a player was found pinned against (tests/enemies/stuckCheck.test.ts), taken out
+  L.decor = L.decor!.filter((s) => !PINNERS.includes(`${s.k}@${Math.floor(s.x + .5)},${Math.floor(s.z + .5)}`));
+  return L;
 }
+
+export const PINNERS: readonly string[] = [];

@@ -32,8 +32,7 @@ export function dressNecropolis(d: Decorator, r: NecropolisRooms): void {
 
   // THE PLAZA (x 32-50, z 22-38)
   // the tombs stand against the obelisks, never free on the open floor (an enemy walking at a player behind one would stay there)
-  for (const [x, z] of [[41, 28], [40, 31]]) may("tombfree", x, z);
-  for (const [x, z] of [[37, 26], [46, 34]]) may("sarcofree", x, z);
+  may("tombfree", 41, 28); may("sarcofree", 37, 26);   // (a tomb at (40,31) and a sarcophagus at (46,34) pinned enemies: tests/enemies/stuckCheck.test.ts)
   for (const [x, z] of [[37, 26], [45, 26], [37, 33], [45, 33], [42, 29], [40, 30]]) may("votive", x, z);
   for (const [x, z] of [[32, 22], [50, 22], [32, 38], [50, 38]]) may("skullpile", x, z);
   d.clutter({ density: .3, seed: 331, kinds: ["bonesLoose", "rubble"], interior: true, where: inside(plaza) });

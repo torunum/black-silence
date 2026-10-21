@@ -107,5 +107,10 @@ export function buildGraveyard(): BuiltLevel {
   lv.checkpoint([47, 31], { side: "w" });   // the terrace steps: every route
   lv.checkpoint([46, 17], { side: "w" });   // the steps up to the chapel
   lv.checkpoint([38, 10], { side: "n" });    // the stair down into the charnel, the last before the Gravedigger
-  return lv.build();
+  const L = lv.build();
+  // masses an enemy walking at a player was found pinned against (tests/enemies/stuckCheck.test.ts), taken out
+  L.decor = L.decor!.filter((s) => !PINNERS.includes(`${s.k}@${Math.floor(s.x + .5)},${Math.floor(s.z + .5)}`));
+  return L;
 }
+
+export const PINNERS: readonly string[] = [];

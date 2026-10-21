@@ -99,5 +99,10 @@ export function buildFactory(): BuiltLevel {
   lv.checkpoint([29, 36], { side: "n" });   // the boiler house door, up into the press hall: every route
   lv.checkpoint([46, 34], { side: "n" });   // the stair up to the office: every route to the key
   lv.checkpoint([31, 18], { side: "n" });   // the runner, the last before the Foreman
-  return lv.build();
+  const L = lv.build();
+  // masses an enemy walking at a player was found pinned against (tests/enemies/stuckCheck.test.ts), taken out
+  L.decor = L.decor!.filter((s) => !PINNERS.includes(`${s.k}@${Math.floor(s.x + .5)},${Math.floor(s.z + .5)}`));
+  return L;
 }
+
+export const PINNERS: readonly string[] = ["drum@45,12"];

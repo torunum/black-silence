@@ -211,6 +211,18 @@ const REBUILT_LEVEL_1 = "LEVEL 1 — THE GOTHIC DUNGEON";
  */
 const REBUILT_LEVEL_2 = "LEVEL 2 — THE ABANDONED CHURCH";
 
+/**
+ * The sixth deliberate divergence: the five lattice levels — THE NECROPOLIS, THE GRAVEYARD, THE SEWERS, THE FACTORY and THE WOMB — rebuilt on
+ * 2026-10-21 (owner: "bölümleri de geliştirelim. hala zayıf duruyorlar. cok gelişmeleri lazım"). Each was the reference's 33 x 25 lattice of
+ * seven-by-five rooms with its own names on it, 44 steps through (the womb 32), its key opening a side room; each is rebuilt with the
+ * level-design toolkit to the numbers a rebuilt level must meet (`src/world/structure/targets.ts`). Pinned in their place: the frozen
+ * reference's are still that lattice; the port's are other maps, on three floors, each with one red key and its gate, two secrets, its boss
+ * and its Guardian and Executioner, and no `A` or `V` (KNOWN-4, KNOWN-11; the factory's and the womb's `C` are Cacodemons, as they were).
+ */
+const REBUILT_LATTICE: Record<string, string> = {
+  "LEVEL 3 — THE NECROPOLIS": "Z", "LEVEL 4 — THE GRAVEYARD": "N", "LEVEL 5 — THE SEWERS": "H", "LEVEL 6 — THE FACTORY": "V", "LEVEL 8 — THE WOMB": "G",
+};
+
 /** Every cell where two grids disagree, as `x,z ref->ours` strings. */
 function gridDiff(ours: string[][], ref: string[][]): string[] {
   const out: string[] = [];
@@ -250,7 +262,7 @@ describe("LEVELS vs. reference", () => {
   });
 
   it.each(PORTED.map((def, i) => [def.name, def, refLevels[i]] as const))(
-    "%s builds the reference grid, cell for cell, apart from the armour tiles of levels 3-7; the prologue and levels 1 and 2 are rebuilt and pinned instead",
+    "%s: the prologue and every level of the reference are rebuilt and pinned instead of compared cell for cell",
     (name, def, refDef) => {
       const built = def.build();
       const refBuilt = refDef.build();
@@ -306,6 +318,25 @@ describe("LEVELS vs. reference", () => {
         expect(count(built.g, "v"), "pews, and spelt v").toBeGreaterThanOrEqual(8);
         expect(built.zones).toBeUndefined();
         expect(built.segs).toBeUndefined();
+        return;
+      }
+      if (REBUILT_LATTICE[name]) {
+        const count = (g: string[][], ch: string): number => g.flat().filter((c) => c === ch).length, boss = REBUILT_LATTICE[name];
+        expect([refBuilt.W, refBuilt.H], `the frozen reference's ${name} is the lattice`).toEqual([33, 25]);
+        expect(gridDiff(built.g, refBuilt.g).length, "the port's is a different map").toBeGreaterThan(300);
+        const heights = new Set(built.hmap!.flat());
+        expect([...heights].filter((h) => [0, 1.2, 2.4].includes(h)).sort(), "three floors").toEqual([0, 1.2, 2.4]);
+        expect(count(built.g, "K"), "one red key").toBe(1);
+        expect(count(built.g, "D"), "and its gate").toBe(1);
+        expect(count(built.g, "S"), "two secrets").toBe(2);
+        expect(count(built.g, boss), `its boss, ${boss}`).toBe(1);
+        expect(count(built.g, "U"), "one Guardian").toBe(1);
+        expect(count(built.g, "E"), "one Executioner").toBe(1);
+        expect(count(built.g, "A"), "no Mancubus (KNOWN-11)").toBe(0);
+        if (boss !== "V") expect(count(built.g, "V"), "no Foreman but the factory's (KNOWN-4)").toBe(0);
+        else expect(count(built.g, "V"), "the factory's one Foreman").toBe(1);
+        for (const c of new Set(built.g.flat())) if (/[A-Za-z]/.test(c) && !"PKXDSWIilpTxOFv".includes(c) && !"hrabocdeu".includes(c) && !"0123456789".includes(c)) expect(ENEMY_DEFS[c], `${c} is an enemy`).toBeDefined();
+        expect(built.zones).toBeUndefined();
         return;
       }
       expect(built.zones, `${name} has no zones`).toBeUndefined();
