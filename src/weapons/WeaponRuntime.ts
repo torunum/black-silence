@@ -57,3 +57,5 @@ export const weaponRuntime = {
  * strike's full extension exactly on KICK_HIT_T.
  */
 export const KICK_ANIM = 0.32, KICK_HIT_T = 0.110;
+/** Whether the kick under way met something (a body, a head, a prop, a wall): `KickFx.kickResolved` says, `doKick` clears it; the overlay's impact burst reads it (`draw.ts`). Presentation only. */
+export const kickShow = { met: false };

@@ -5,7 +5,7 @@ import * as THREE from "three";
 import "../render/ColorPolicy";
 import { rnd } from "../utils/math";
 import { WEAPON_STATS } from "./definitions";
-import { weaponRuntime } from "./WeaponRuntime";
+import { kickShow, weaponRuntime } from "./WeaponRuntime";
 import { animCues } from "../core/AnimCues";
 import { WEAPON_FIRE_SOUNDS, kickSwing, kickImpact } from "../audio/sounds/weapons";
 import type { KickTarget } from "../audio/sounds/impacts";
@@ -222,7 +222,7 @@ const reapTailMat=new THREE.MeshBasicMaterial({color:0x4fa030,transparent:true,o
 /* ---------- POWER KICK ---------- */
 export function doKick(){
   if(!game.started||S.dead||game.inputLock||S.kickCd>0||game.pianoOpen)return;
-  S.kickCd=KICK_CD;weaponRuntime.kickAnim=.32;
+  S.kickCd=KICK_CD;weaponRuntime.kickAnim=.32;kickShow.met=false;
   shake(.3);kickSwing();
   schedule(()=>{
     const dir=new THREE.Vector3();renderState.camera.getWorldDirection(dir);
@@ -234,10 +234,10 @@ export function doKick(){
       const dot=(dx*dir.x+dz*dir.z)/d;
       if(dot<.55)continue;
       hitAny=true;hitFoe=true;
-      const kb=e.boss?3:16;
+      const kb=e.boss?4:21;   // (owner, 2026-10-21: a kick that sends them; it was 3 and 16)
       e.kx+=dx/d*kb;e.kz+=dz/d*kb;
       e.stun=Math.max(e.stun,e.boss?.25:.9);
-      if(!e.boss&&e.maxhp<=60){e.flung=.9;e.flungT=0;}
+      if(!e.boss&&e.maxhp<=70){e.flung=.9;e.flungT=0;}
       blood(e.x,e.h*.6+(e.fy||0),e.z,4,2);
       damageEnemy(e,15,{dir:{x:dx/d,z:dz/d},wIdx:-1});}
     let hitProp=false;
@@ -252,7 +252,7 @@ export function doKick(){
     // Player feedback round 2 Task 5: what the boot met decides the sound — a monster, a prop or a wall,
     // or the air (which is the swing alone). The wall is only looked at, never changed; nothing else moved.
     kickImpact(kickTarget(hitFoe||hitHead,hitAny||hitHead,dir));
-    if(hitAny||hitHead){shake(.15);screenShake.hitStop=Math.max(screenShake.hitStop,.03);}
+    if(hitAny||hitHead){shake(.28);screenShake.hitStop=Math.max(screenShake.hitStop,.04);}
     // what the boot met, for the screen and the air (src/weapons/KickFx.ts): a body, a head, a prop, a wall, or nothing
     const met:KickMet=hitFoe?"body":hitHead?"head":hitProp?"prop":kickTarget(false,false,dir)==="stone"?"wall":"air";
     kickResolved(met,dir.x,dir.z,S.shots);

@@ -1136,7 +1136,7 @@ let pewShapes: Array<Record<string, unknown>> = [];
  * module doc comment, "The form swap is pinned by exactly one sampled
  * frame", for what it proves and why.
  */
-let mapWrites: Array<{ frame: number; phase: number }>;
+let mapWrites: Array<{ frame: number; phase: number; map: unknown }>;
 
 beforeAll(async () => {
   // Pre-boot seeding, the `combatTrace` way: loadLevel never touches the
@@ -1214,7 +1214,7 @@ beforeAll(async () => {
         get(): unknown { return currentMap; },
         set(v: unknown): void {
           currentMap = v;
-          mapWrites.push({ frame: Math.round((performance.now() - t0) / DT_MS), phase: priest.phase });
+          mapWrites.push({ frame: Math.round((performance.now() - t0) / DT_MS), phase: priest.phase, map: v });
         },
       });
     },
@@ -1317,39 +1317,20 @@ describe("the recorded run actually fights a priest boss", () => {
     expect(priest.formKey).toBe("Q2");
   });
 
-  it("the phase-3 form swap always lands inside a sampled frame — structural guard, review round 1", () => {
-    // See the module doc comment's "The form swap is pinned by exactly one
-    // sampled frame" section. `mapWrites` is every write to the priest's
-    // material.map, in order; the first one recorded with phase===3 is
-    // necessarily the form swap itself (`Boss.ts`'s phase transition sets
-    // `e.phase=3` and performs the swap in the same call, before any
-    // phase-3 walk-cycle write can exist), and the very next write after it
-    // is the walk cycle overwriting it. Whatever that half-open window is,
-    // a sampled frame (a multiple of EVERY) has to fall inside it, or this
-    // site's coverage is gone regardless of what the fixture comparison says.
-    const phase3Writes = mapWrites.filter((w) => w.phase === 3);
-    expect(phase3Writes.length, "the priest never reached phase 3 — nothing to check the window against").toBeGreaterThan(0);
-
-    const swap = phase3Writes[0]!;
-    const swapIdx = mapWrites.indexOf(swap);
-    const overwrite = mapWrites[swapIdx + 1];
-    expect(
-      overwrite,
-      "nothing ever overwrote the phase-3 form swap's material.map — the window is open-ended, " +
-      "which this test cannot check a sample against",
-    ).toBeDefined();
-
-    const lo = swap.frame, hi = overwrite!.frame;
-    let sampledFrameInWindow = -1;
-    for (let f = EVERY; f <= TOTAL_FRAMES; f += EVERY) {
-      if (f >= lo && f < hi) { sampledFrameInWindow = f; break; }
-    }
-    expect(
-      sampledFrameInWindow,
-      `the form swap's visible window is [${lo},${hi}) and no multiple of EVERY(${EVERY}) falls in ` +
-      "it — a retune of TOTAL_FRAMES/EVERY/DT_MS/the sweep/the seed has silently moved this site's " +
-      "coverage out of the sampled frames",
-    ).toBeGreaterThan(0);
+  it("the phase-3 form shows in the sampled frames — structural guard, review round 1 (rigged since 2026-10-21)", async () => {
+    // The priest is a rig now (`src/enemies/rig/priest.ts`), and so is his last form (`priest2.ts`): `Boss.ts` swaps the form in
+    // (`formKey`) and the rig's frames follow it the same call (`RigAnim.rigLive`), so the legacy swap's one-frame window is gone.
+    // What has to hold is what the window stood for: once he is in phase 3, a sampled frame shows a frame of the second form's
+    // rig. `mapWrites` is every write to his material.map, in order, with what was written.
+    const { PX } = await import("../../src/enemies/SpriteBaker");
+    const form = (PX as unknown as Record<string, { rig?: { all(): unknown[] } }>).Q2.rig!;
+    const phase3 = mapWrites.findIndex((w) => w.phase === 3);
+    expect(phase3, "the priest never reached phase 3 — nothing to check").toBeGreaterThanOrEqual(0);
+    const swapFrame = mapWrites[phase3].frame;
+    const shownAt = (f: number): unknown => { let m: unknown = undefined; for (const w of mapWrites) { if (w.frame > f) break; m = w.map; } return m; };
+    let seen = -1;
+    for (let f = EVERY; f <= TOTAL_FRAMES; f += EVERY) if (f >= swapFrame && form.all().includes(shownAt(f))) { seen = f; break; }
+    expect(seen, `no sampled frame (every ${EVERY}) after the form swap at ${swapFrame} shows the second form's rig`).toBeGreaterThan(0);
   });
 
   it("the weapon state machine left idle (NOT boss-specific — see the module doc comment)", () => {

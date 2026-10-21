@@ -1,7 +1,7 @@
 import { getFx, getVW, getVH, spawnPuff } from "../Overlay2D";
 import { MUZ } from "./kit";
 import { kickElapsed, KICK_CHAMBER, KICK_HOLD } from "./kick";
-import { KICK_HIT_T } from "../../weapons/WeaponRuntime";
+import { KICK_HIT_T, kickShow } from "../../weapons/WeaponRuntime";
 import { rnd } from "../../utils/math";
 import type { WeaponStats } from "../../weapons/definitions";
 import { Animator } from "./animate";
@@ -114,16 +114,28 @@ export interface ViewmodelFrame {
  * boot, it draws nothing from Math.random.
  */
 export function drawKickStreaks(kickAnim: number): void {
-  const k=streaks(kickElapsed(kickAnim));
+  const t=kickElapsed(kickAnim),k=streaks(t);
   const foot=vm.footAt;
-  if(k<=0||!foot)return;
+  if(!foot)return;
   const fg=getFx(),s=getVH()/VIEW_H;
   fg.save();
-  fg.strokeStyle=`rgba(180,178,166,${(.32*k).toFixed(3)})`;fg.lineWidth=1.5*s;
-  for(let i=0;i<3;i++){fg.beginPath();
-    fg.moveTo(foot[0]+(i*10-4)*s,foot[1]+(10+i*5)*s);
-    fg.lineTo(foot[0]+(i*10+10)*s,foot[1]+(10+i*5+44*k)*s);fg.stroke();}
+  if(k>0){   // the drive: five streaks off the boot (owner, 2026-10-21: three faint ones read as nothing)
+    fg.strokeStyle=`rgba(200,196,182,${(.45*k).toFixed(3)})`;fg.lineWidth=2*s;
+    for(let i=0;i<5;i++){fg.beginPath();
+      fg.moveTo(foot[0]+(i*9-14)*s,foot[1]+(8+i*4)*s);
+      fg.lineTo(foot[0]+(i*11-6)*s,foot[1]+(8+i*4+62*k)*s);fg.stroke();}}
+  const b=burst(t);
+  if(b>0&&kickShow.met){   // the blow landing: a flat white burst at the sole, gone in under a tenth of a second
+    const r=(10+26*(1-b))*s;
+    fg.fillStyle=`rgba(255,246,222,${(.5*b).toFixed(3)})`;fg.beginPath();fg.arc(foot[0],foot[1]-6*s,r*.55,0,Math.PI*2);fg.fill();
+    fg.strokeStyle=`rgba(255,236,200,${(.85*b).toFixed(3)})`;fg.lineWidth=2.5*s;
+    for(let i=0;i<8;i++){const a=i/8*Math.PI*2+.2;fg.beginPath();
+      fg.moveTo(foot[0]+Math.cos(a)*r*.6,foot[1]-6*s+Math.sin(a)*r*.6);fg.lineTo(foot[0]+Math.cos(a)*r*1.25,foot[1]-6*s+Math.sin(a)*r*1.25);fg.stroke();}}
   fg.restore();
+}
+/** 1..0 over the .085 s after the hit resolves: the burst at the boot. */
+function burst(t: number): number {
+  return t>=KICK_HIT_T-1e-9&&t<KICK_HIT_T+.085?1-(t-KICK_HIT_T)/.085:0;
 }
 /** 0..1: the streaks show while the foot is travelling — the strike's drive — and fade as it plants. */
 function streaks(t: number): number {

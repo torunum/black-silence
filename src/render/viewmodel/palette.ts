@@ -60,7 +60,7 @@ export const MATERIALS: Record<number, Material> = {
   [MAT.DEADSOUL]: { ramp: ["#0c100c", "#162016", "#223022", "#2f4230", "#3e563f"], amb: .3, spec: .5 },
   // the kicking leg (Task 3): heavy dark-brown canvas trousers, and an oiled black-brown leather boot
   [MAT.TROUSER]: { ramp: ["#100e0c", "#1a1714", "#25211c", "#322c25", "#413930", "#52483c"], amb: .24 },
-  [MAT.BOOT]:   { ramp: ["#0a0706", "#120c08", "#1b130d", "#271b12", "#35251a", "#473224", "#5e4431"], amb: .18, spec: .45, rim: true },
+  [MAT.BOOT]:   { ramp: ["#0c0806", "#160f0a", "#22170f", "#302116", "#422d1e", "#583c28", "#735036", "#8e6646"], amb: .22, spec: .5, rim: true },   // a shade lighter (2026-10-21): the boot has to read against a dark corridor
 };
 
 /**

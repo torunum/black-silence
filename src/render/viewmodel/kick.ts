@@ -126,7 +126,7 @@ export function legPose(t: number): LegPose | null {
   if (t < 0 || t >= KICK_ANIM) return null;
   const r = raised(t), e = extension(t), c = coil(t);
   const k = (key: "thigh" | "knee" | "ankle" | "hz"): number => lerp(lerp(HANG[key], CHAMBER[key], r) + COIL[key] * c, STRUCK[key], e);
-  return { hx: 0.075, hy: -0.33, hz: k("hz") - recoil(t), yaw: -0.2 - 0.06 * e, thigh: k("thigh"), knee: k("knee"), ankle: k("ankle"), twist: 0.3 - 0.1 * e, turn: -0.3 - 0.65 * e };
+  return { hx: 0.075, hy: -0.33, hz: k("hz") - recoil(t), yaw: -0.2 - 0.06 * e, thigh: k("thigh"), knee: k("knee"), ankle: k("ankle"), twist: 0.3 - 0.1 * e, turn: -0.3 - 0.8 * e };   // turned further as it strikes: the sole and the heel's iron to the eye
 }
 
 /** The weapon swung out of the way: 0 at the aim, 1 fully aside. Out during the wind-up, back over the recovery. */
@@ -150,7 +150,7 @@ export function leanAmount(t: number): number {
   return 1 - smooth(span(t, KICK_HOLD, KICK_ANIM));
 }
 /** The lean at full strength: the head dips forward and down (pitch, radians; drop and forward push, metres) and the body cants a little. */
-export const LEAN = { pitch: -0.08, roll: -0.04, drop: 0.05, fwd: 0.11 };   // (impact plan, Task 2: was -.05, -.03, .03, .07)
+export const LEAN = { pitch: -0.11, roll: -0.05, drop: 0.06, fwd: 0.16 };   // (impact plan, Task 2: was -.05, -.03, .03, .07; owner, 2026-10-21: -.08, -.04, .05, .11 — the body behind the boot)
 
 /** The slice of a three.js camera withKickLean touches. */
 export interface LeanCamera {
@@ -232,8 +232,8 @@ const L_THIGH = 0.27, L_SHIN = 0.3;
 const twill = (x: number, y: number, z: number): number =>
   ((Math.floor((x + z) * 90) + Math.floor((y - z) * 90)) & 3) === 0 ? -0.6 : 0;
 
-/** The boot is drawn this much larger than life: at the distance the kick lands it has to read at 320x200. */
-const BK = 1.3;
+/** The boot is drawn this much larger than life: at the distance the kick lands it has to read at 320x200 (owner, 2026-10-21: "gerçekten sağlam bir tekme" — it was 1.3, a boot you could miss). */
+const BK = 1.75;
 /** Laces up the instep and a polished toe cap, in the boot's own space (z toward the toe, y up from the sole), before BK. */
 const bootTex = (x: number, y: number, z: number): number => {
   x /= BK; y /= BK; z /= BK;
@@ -287,12 +287,12 @@ export function drawLeg(b: Builder, lp: LegPose): void {
   b.yaw(lp.yaw);
   b.pitch(lp.thigh);
   b.roll(lp.twist);
-  b.cyl(0, 0, -0.25, L_THIGH, 0.1, 0.074, 8, MAT.TROUSER, { tex: twill });          // thigh
+  b.cyl(0, 0, -0.25, L_THIGH, 0.115, 0.085, 8, MAT.TROUSER, { tex: twill });        // thigh
   b.translate(0, 0, L_THIGH);
-  b.ball(0, 0, 0, 0.072, MAT.TROUSER, 8);                                            // knee
+  b.ball(0, 0, 0, 0.082, MAT.TROUSER, 8);                                            // knee
   b.pitch(-lp.knee);
-  b.cyl(0, 0, 0, L_SHIN - 0.07, 0.07, 0.06, 8, MAT.TROUSER, { tex: twill });         // shin
-  b.cyl(0, 0, L_SHIN - 0.1, L_SHIN - 0.065, 0.068, 0.066, 8, MAT.TROUSER);           // the trouser's hem over the boot
+  b.cyl(0, 0, 0, L_SHIN - 0.07, 0.08, 0.07, 8, MAT.TROUSER, { tex: twill });         // shin
+  b.cyl(0, 0, L_SHIN - 0.1, L_SHIN - 0.065, 0.078, 0.076, 8, MAT.TROUSER);           // the trouser's hem over the boot
   b.translate(0, 0, L_SHIN);
   // the foot, square to the shin: its toe along the shin's "up", its sole facing down the shin;
   // then turned about its own length so the outside of the boot — sole, heel — shows to the eye
