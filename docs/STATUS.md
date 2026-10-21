@@ -1,5 +1,18 @@
 # Where this project stands
 
+## Owner's round, 2026-10-21: the stake gun
+
+"sonra kazık eklensin" — **the STAKE GUN is slot 9, the tenth weapon, key `0`** (`src/weapons/Stake.ts`, its art
+`src/render/viewmodel/weapons/stakegun.ts`): a pneumatic launcher of dark oak and iron with a copper air tank, driving a sharpened ash
+stake with an iron point out of an open trough. The stake is a real projectile, not a hitscan: 46 m/s with a slight drop, 120 to a
+body (x1.5 in the top fifth of it); after 0.28 s in the air it catches fire and strikes x1.5 harder (the reward for range); it goes
+through what it kills (up to three, keeping 70% each time) and stops in what it does not, shoving it back; it is driven into the wall,
+floor or beam it reaches and stays there (the oldest of 40 pulled out), and breaks props and sets off barrels. One stake in the trough;
+the next is laid in and the lever pumped in 0.8 s. Glyphs `u` (the weapon, with six stakes) and `1` (+6 stakes): the monastery's bone
+chapel, cistern and rite chapel, and the bone cathedral's east vault, west vault and nave (bob phase from the cell, as the dynamite's).
+The viewmodel now knows when the magazine is empty (`Pose.empty`), so the stake gun's trough and the dynamite's hand are drawn empty
+between the shot and the reload. `tests/integration/stake.test.ts`.
+
 ## Owner's round, 2026-10-21: the dungeon ends down a well, the church begins at its bottom
 
 "ilk bölüm büyük bir kapıdan geçerek bitebilir ... diğer bölümde de kuyuya inebilir iple. 3. bölümde kuyu icinden başlar" — the

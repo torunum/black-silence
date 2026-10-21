@@ -72,6 +72,7 @@ export function moreMonastery(lv: LevelPlan): void {
   for (const x of [65, 68, 71]) { lv.put("I", x, 6); lv.put("I", x, 13); }
   lv.enemy("w", bones.at(2, 2), bones.at(10, 9), bones.at(11, 1)).enemy("s", bones.at(6, 6)).enemy("t", bones.at(1, 10));
   lv.pickup("h", bones.at(12, 11)).pickup("b", bones.at(12, 0)).pickup("e", bones.at(0, 0));
+  lv.pickup("u", bones.at(12, 5)).pickup("1", bones.at(12, 6));   // THE STAKE GUN (2026-10-21) on the chapel's east step, with a bundle of stakes
   lv.light("l", bones.at(6, 0));
 
   // ---- the pump room (0), over the rite chapel: from the cistern, and down into the chapel's north side

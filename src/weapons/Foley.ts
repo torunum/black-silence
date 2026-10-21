@@ -1,5 +1,5 @@
 import * as F from "../audio/sounds/foley";
-import { CROSS, FLARE, home, NAIL, out, REAPER, RIFLE, SAWED_OFF, SNIPER, TOMMY } from "../render/viewmodel/phases";
+import { CROSS, FLARE, home, NAIL, out, REAPER, RIFLE, SAWED_OFF, SNIPER, STAKE, TOMMY } from "../render/viewmodel/phases";
 import { after } from "../core/Timers";
 
 /**
@@ -83,6 +83,8 @@ export const RELOAD_CUES: readonly (readonly Cue[])[] = [
   ],
   // 8 DYNAMITE: the lighter's flint, the fuse catching
   [{ at: 0.6, play: F.fuseLit }],
+  // 9 STAKE GUN: a stake laid in the trough, the lever pumped back
+  [{ at: STAKE.lay[1], play: F.stakeSeat }, { at: home(STAKE.pump) - 0.06, play: F.stakeCock }],
 ];
 
 /** The fire window's cues per slot, phase = `wtime / min(.35, rate)` — the mechanisms that run after a shot. */
@@ -98,6 +100,7 @@ export const FIRE_CUES: readonly (readonly Cue[])[] = [
   [{ at: CROSS.rise[0], play: F.crossRises }],
   [],
   [{ at: home(REAPER.spent) - REAPER.spent[2], play: F.reaperCharge }],
+  [],
   [],
 ];
 

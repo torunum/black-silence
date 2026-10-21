@@ -33,6 +33,7 @@ import { kickResolved, type KickMet } from "./KickFx";
 import { after } from "../core/Timers";
 import { hitscan } from "./Hitscan";
 import { throwDynamite } from "./Dynamite";
+import { fireStake } from "./Stake";
 import { schedule } from "../core/Time";
 import { track } from "../render/DisposeRegistry";
 import type { Enemy } from "../enemies/Enemy";
@@ -181,7 +182,7 @@ export function fire(w: typeof WEAPONS[number]){
   w.snd();
   if(S.cur===2||S.cur===3)ejectCasing(0);
   if(S.cur===1)after(()=>{ejectCasing(2);shotgunPump();},300); // pump
-  weaponRuntime.recoilPitch+=(S.cur===1?.04:S.cur===4?.05:S.cur===0?.022:S.cur===5?.03:.006);
+  weaponRuntime.recoilPitch+=(S.cur===1?.04:S.cur===4?.05:S.cur===0?.022:S.cur===5?.03:S.cur===9?.04:.006);
   alertSound(player.px,player.pz,18);
   const dir=new THREE.Vector3();renderState.camera.getWorldDirection(dir);
   weaponRuntime.volleyHit=false;
@@ -190,6 +191,7 @@ export function fire(w: typeof WEAPONS[number]){
     d.x+=(Math.random()-.5)*w.spread*2;d.y+=(Math.random()-.5)*w.spread*2;d.z+=(Math.random()-.5)*w.spread*2;
     d.normalize();
     if(w.kind==="hit")hitscan(d,w.dmg,S.cur);
+    else if(w.kind==="stake")fireStake(d,w.dmg);   // a stake is a thing that flies, not a hitscan (./Stake.ts)
     else if(w.kind==="reap"){
       hitscan(d,w.dmg,S.cur);
       // green energy bolt + glow tracer

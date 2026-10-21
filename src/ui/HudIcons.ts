@@ -3,7 +3,7 @@ import { ITEMTEX } from "../render/ItemTextures";
 /**
  * The HUD's icons (owner, 2026-10-20): the same pictures as the pickups (`src/render/PickupArt.ts`) beside the numbers — the medical
  * kit by HEALTH, the breastplate by ARMOR, the current weapon's own ammunition by AMMO (pistol rounds, red shells, rifle rounds, a
- * cross, nails, a soul, dynamite), and the weapon itself over its name. Drawn only when what they show changes. A no-op where the
+ * cross, nails, a soul, dynamite, stakes), and the weapon itself over its name. Drawn only when what they show changes. A no-op where the
  * canvases or the textures are missing (the tests' DOM, a call before the pickups are painted).
  */
 

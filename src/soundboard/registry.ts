@@ -100,6 +100,7 @@ const FIRE_DETAIL = [
   "pneumatic thwack, twenty a second",
   "crackling discharge and a choir sliding down",
   "an underhand whoosh and the lit fuse spitting",
+  "the ram's pneumatic slam, and the stake whipping out of its trough",
 ];
 
 /**
@@ -184,6 +185,9 @@ const ENTRIES: Entry[] = [
   { id: "reaper-charge", name: "Soul reaper: charge", category: "Weapons", detail: "as the core re-forms after each shot, and as a fresh soul goes in", play: F.reaperCharge },
   { id: "reaper-claws", name: "Soul reaper: claws close", category: "Weapons", play: F.reaperClawsClose },
   { id: "fuse-lit", name: "Dynamite: the fuse lit", category: "Weapons", play: F.fuseLit },
+  { id: "stake-seat", name: "Stake gun: a stake laid in", category: "Weapons", play: F.stakeSeat },
+  { id: "stake-cock", name: "Stake gun: the lever pumped", category: "Weapons", play: F.stakeCock },
+  { id: "stake-thunk", name: "Stake gun: a stake driven into a wall", category: "Weapons", detail: "where it strikes", play: F.stakeThunk },
   { id: "casing", name: "Shell casing lands", category: "Weapons", detail: "comes 0.25-0.45 s after the click", play: W.casingTinkle },
   { id: "kick-swing", name: "Kick: swing", category: "Weapons", detail: "the whoosh — all a kick into the air makes", play: W.kickSwing },
   { id: "kick-impact", name: "Kick: connects with a monster", category: "Weapons", detail: "110 ms after the swing, as the game resolves it", play: () => W.kickImpact("flesh") },

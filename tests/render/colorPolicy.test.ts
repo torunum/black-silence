@@ -202,8 +202,8 @@ describe("colour policy", () => {
     // src/fx/GoreChunks.ts and src/fx/Splats.ts — derived independently by hand, not copied
     // from whatever the scan happens to return (that circularity is exactly
     // what let the multi-line miss above go unnoticed). And a seventh since 2026-10-20: src/weapons/Dynamite.ts, whose bundle's
-    // stick, tape and spark materials are module-scope.
-    expect(checked).toBe(7);
+    // stick, tape and spark materials are module-scope. And an eighth since 2026-10-21: src/weapons/Stake.ts (the stake's wood, iron and char).
+    expect(checked).toBe(8);
     expect(offenders).toEqual([]);
   });
 

@@ -84,7 +84,7 @@ Use a keyboard and mouse; touch controls are not implemented.
 | Sprint / jump | `Shift` / `Space` |
 | Fire / power kick | Left / right mouse button |
 | Reload | `R` |
-| Switch acquired weapons | `1`–`9` / mouse wheel (`9`: dynamite — thrown, goes off when its fuse burns down) |
+| Switch acquired weapons | `1`–`9`, `0` / mouse wheel (`9`: dynamite — thrown, goes off when its fuse burns down; `0`: the stake gun) |
 | Open doors / interact / leave piano | `E` |
 | Toggle sniper zoom | `Z` with the sniper equipped |
 | Map (full automap) | `M` to toggle, or hold `Tab`; a corner map is always up |

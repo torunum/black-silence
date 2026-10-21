@@ -36,7 +36,7 @@ function run(r: Reactions, frames: number, c: CueInput, dt = DT): Reaction[] {
 /** Pixels that differ between the weapon at rest and the weapon with a reaction's rig terms added. */
 function pixelsMoved(slot: number, rx: Omit<Reaction, "fidget">): number {
   const rest = new Raster(), moved = new Raster();
-  const p0: Pose = { x: 0, y: 0, z: 0, pitch: 0, yaw: 0, roll: 0, sx: 0, sy: 0, recoil: 0, action: 0, spin: 0, reload: -1, heat: 0, kick: -1 };
+  const p0: Pose = { x: 0, y: 0, z: 0, pitch: 0, yaw: 0, roll: 0, sx: 0, sy: 0, recoil: 0, action: 0, spin: 0, reload: -1, heat: 0, kick: -1, empty: 0 };
   renderWeapon(rest, WEAPON_ART[slot], p0, 160, 110);
   renderWeapon(moved, WEAPON_ART[slot], { ...p0, ...rx }, 160, 110);
   let n = 0;

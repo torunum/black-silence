@@ -85,6 +85,7 @@ export function buildCathedral(): BuiltLevel {
   lv.pickup("h", porch.at(1, 1), porch.at(6, 1)).pickup("a", porch.at(1, 6)).pickup("b", porch.at(6, 6));
   lv.pickup("a", [55, 28]).pickup("h", [52, 21]);
   lv.pickup("d", [56, 34]).pickup("e", [41, 37], [30, 25]);   // DYNAMITE: a bundle on the porch, more in the vault and the nave
+  lv.pickup("u", cryptE.at(2, 4)).pickup("1", cryptW.at(10, 4), nave.at(4, 7));   // THE STAKE GUN (2026-10-21) in the east vault, stakes in the west vault and the nave
   lv.pickup("a", nave.at(1, 1), nave.at(19, 1), nave.at(1, 13), nave.at(19, 13)).pickup("h", nave.at(10, 1), nave.at(10, 13), nave.at(19, 7))
     .pickup("b", nave.at(1, 7), nave.at(7, 13)).pickup("o", nave.at(13, 1)).pickup("r", nave.at(19, 10)).pickup("c", nave.at(16, 13));
   lv.pickup("a", chapelN.at(0, 0), chapelN.at(8, 4)).pickup("h", chapelN.at(4, 0)).pickup("b", chapelN.at(0, 4));

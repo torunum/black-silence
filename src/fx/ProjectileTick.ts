@@ -1,5 +1,6 @@
 import type * as THREE from "three";
 import { dynamiteTick } from "../weapons/Dynamite";
+import { stakeTick } from "../weapons/Stake";
 import { rnd } from "../utils/math";
 import { fleshHitsPlayer, fleshSplat } from "../audio/sounds/monsters";
 import { spawnP, blood, smoke3d } from "./Particles";
@@ -76,6 +77,7 @@ type Enemy = Pick<EnemyShape, "dead" | "dormant" | "x" | "z" | "w" | "h">;
 
 export function projTick(dt: number){
   dynamiteTick(dt);   // the thrown bundles: flight, bounces, fuses (src/weapons/Dynamite.ts)
+  stakeTick(dt);      // the stakes: flight, fire, what they strike and stay in (src/weapons/Stake.ts)
   const nails=projectiles.nails as unknown as Nail[];
   for(let i=nails.length-1;i>=0;i--){const n=nails[i];
     n.life-=dt;

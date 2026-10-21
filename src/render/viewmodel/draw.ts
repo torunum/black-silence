@@ -100,6 +100,8 @@ export interface ViewmodelFrame {
   swayX: number;
   swayY: number;
   muzzle: number;
+  /** S.mag[S.cur] is 0: the dynamite's hand and the stake gun's trough are drawn empty until the reload (pose.ts's `empty`). */
+  empty?: boolean;
 }
 
 /**
@@ -156,7 +158,7 @@ const vm = {
  */
 export function poseKey(cur: number, p: Pose, cy: number): string {
   const r = (n: number) => Math.round(n * 1e4);
-  return [cur, cy, r(p.x), r(p.y), r(p.z), r(p.pitch), r(p.yaw), r(p.roll), r(p.recoil), r(p.action), r(p.spin), r(p.reload), r(p.heat), r(p.kick)].join(",");
+  return [cur, cy, r(p.x), r(p.y), r(p.z), r(p.pitch), r(p.yaw), r(p.roll), r(p.recoil), r(p.action), r(p.spin), r(p.reload), r(p.heat), r(p.kick), p.empty].join(",");
 }
 
 /**

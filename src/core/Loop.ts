@@ -142,7 +142,7 @@ function loop(t: number){
       (fdt,ft)=>drawViewmodel(fdt,ft,{
         started:game.started,dead:S.dead,pianoOpen:game.pianoOpen,zoomLerp:weaponRuntime.zoomLerp,cur:S.cur,vx:player.vx,vz:player.vz,vy:player.vy,grounded:player.grounded,yaw:input.yaw,
         sprintKey:!!(keys.ShiftLeft||keys.ShiftRight),bobT:player.bobT,wstate:weaponRuntime.wstate,wtime:weaponRuntime.wtime,
-        equipT:EQUIP_T,unequipT:UNEQUIP_T,kickAmt:weaponRuntime.kickAmt,kickRot:weaponRuntime.kickRot,kickAnim:kick,swayX:input.swayX,swayY:input.swayY,muzzle:weaponRuntime.muzzle,
+        equipT:EQUIP_T,unequipT:UNEQUIP_T,kickAmt:weaponRuntime.kickAmt,kickRot:weaponRuntime.kickRot,kickAnim:kick,swayX:input.swayX,swayY:input.swayY,muzzle:weaponRuntime.muzzle,empty:S.mag[S.cur]<=0,
         cueHurt:animCues.hurt,cueHurtAmt:animCues.hurtAmt,cuePickup:animCues.pickup,cueDryFire:animCues.dryFire,cueInput:animCues.input,paused,hidden:openingHidesWeapon()||transitionHidesHands(),
       },WEAPONS));
     hud();

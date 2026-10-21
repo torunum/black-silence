@@ -45,7 +45,7 @@ export function verticality(t: Terrain): { heights: number; transitions: number 
  * What a pickup is worth. The amounts mirror `itemsTick` (`src/player/Interact.ts`) and are pinned to it by a test
  * that reads the source: ammunition by kind, health +25 (only below 100), armour +50.
  */
-export const AMMO_AMOUNT: Readonly<Record<string, number>> = { bullets: 18, shells: 6, slugs: 4, crosses: 3, nails: 40, souls: 3, tnt: 3 };
+export const AMMO_AMOUNT: Readonly<Record<string, number>> = { bullets: 18, shells: 6, slugs: 4, crosses: 3, nails: 40, souls: 3, tnt: 3, stakes: 6 };
 export const HEALTH_AMOUNT = 25, ARMOUR_AMOUNT = 50;
 /** What the player walks in with (`State.ts`): 60 bullets for the flare pistol. */
 export const START_AMMO: Readonly<Record<string, number>> = { bullets: 60 };

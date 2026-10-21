@@ -1,4 +1,4 @@
-/** Every weapon side-on, by slot (`w0`..`w8`), 24x24 (dynamite's bundle 16x16): the pickup and the HUD icon. */
+/** Every weapon side-on, by slot (`w0`..`w9`), 24x24 (dynamite's bundle 16x16); the stake gun its trough, the stake in it and the copper tank under: the pickup and the HUD icon. */
 export const GUN_ART: Readonly<Record<string, readonly string[]>> = {
   w0: [
     "                        ",
@@ -225,5 +225,31 @@ export const GUN_ART: Readonly<Record<string, readonly string[]>> = {
     "   oWWwoWWwo    ",
     "    oooooooo    ",
     "                ",
+  ],
+  w9: [
+    "                        ",
+    "                        ",
+    "                        ",
+    "                        ",
+    "                        ",
+    "                        ",
+    "   ooooooooooooooooo    ",
+    "  oSHHHHHHHHHHHHHHHKoo  ",
+    "  oShhhhhhhhhhhhhhhKNNo ",
+    " ooKKKKKKKKKKKKKKKKKKKoo",
+    " oBBBBKBBBBBBKBBBBKKKKo ",
+    " obbbbKbbbbbbKbbbbKoooo ",
+    " oooooPPPPPPPPPPPPPo    ",
+    "   obboPPpPPPPpPPPpo    ",
+    "   obbooppppppppppo     ",
+    "  obbbo oooooooooo      ",
+    "  obbo                  ",
+    "  obbo                  ",
+    "  oooo                  ",
+    "                        ",
+    "                        ",
+    "                        ",
+    "                        ",
+    "                        ",
   ],
 };

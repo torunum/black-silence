@@ -87,12 +87,12 @@ export function populateMonastery(lv: LevelPlan, r: MonasteryRooms): void {
 
   // ---- E11 the cistern
   lv.enemy("j", [30, 10], [33, 4]).enemy("z", [28, 17], [37, 22], [37, 3]).enemy("t", [28, 3], [35, 16]);
-  lv.pickup("h", cistern.at(0, 22), cistern.at(13, 0)).pickup("b", cistern.at(13, 22)).pickup("a", cistern.at(0, 0)).pickup("e", [32, 3]);
+  lv.pickup("h", cistern.at(0, 22), cistern.at(13, 0)).pickup("b", cistern.at(13, 22)).pickup("a", cistern.at(0, 0)).pickup("e", [32, 3]).pickup("1", cistern.at(13, 11));
 
   // ---- E12 the rite chapel: the Gravedigger (his death opens the gate out, at (16,16))
   lv.enemy("N", [16, 14]);
   lv.enemy("j", [8, 7], chapel.at(16, 10)).enemy("f", [22, 7], chapel.at(2, 10));
-  lv.pickup("h", chapel.at(18, 12), [24, 6], chapel.at(0, 12)).pickup("b", [6, 6]).pickup("r", chapel.at(18, 4)).pickup("e", chapel.at(0, 4));
+  lv.pickup("h", chapel.at(18, 12), [24, 6], chapel.at(0, 12)).pickup("b", [6, 6]).pickup("r", chapel.at(18, 4)).pickup("e", chapel.at(0, 4)).pickup("1", chapel.at(18, 8));
 
   // ---- the light: torches where the eye needs a mark, candles where the dead are kept
   lv.light("i", hall.at(7, 0), [55, 69], [72, 76], [38, 31], [51, 57], reception.at(4, 0), [20, 50], cloister.at(9, 0), library.at(0, 8),

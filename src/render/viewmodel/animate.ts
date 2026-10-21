@@ -43,6 +43,8 @@ export interface AnimInput {
   paused: boolean;
   swayX: number; swayY: number;
   muzzle: number;
+  /** The slot's magazine is empty (pose.ts's `empty`). */
+  empty?: boolean;
 }
 
 /**
@@ -135,6 +137,7 @@ export class Animator {
     p.recoil = w.kick > 0 ? clamp(v.kickAmt / w.kick, 0, 1) : 0;
     if (v.wstate === "fire") p.action = clamp(art.action(clamp(v.wtime / fireWindow(w), 0, 1)), 0, 1);
     p.heat = clamp(v.muzzle / 0.4, 0, 1);
+    p.empty = v.empty && v.wstate !== "reload" ? 1 : 0;
     if (v.wstate === "reload") p.reload = clamp(v.wtime / w.reload, 0, 1);
     if (v.wstate === "reload" && art.present) {   // up into view for the reload (pose.ts's `present`)
       const k = Math.min(ramp(p.reload, 0, 0.16), 1 - ramp(p.reload, 0.84, 1));

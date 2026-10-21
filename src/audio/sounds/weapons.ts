@@ -3,7 +3,7 @@ import { after } from "../../core/Timers";
 import { soundRandom, soundRnd } from "../SoundRandom";
 import { lv } from "../Levels";
 import { jit, play, type Glue, type Layer } from "../Layers";
-import { bell } from "../Material";
+import { bell, clack } from "../Material";
 import { hasSample, playSample } from "../Samples";
 
 /**
@@ -176,15 +176,27 @@ function toss(): Layer[] {
   ];
 }
 
+/** Slot 9 — the stake gun: the pneumatic slam of the ram, a heavy wooden shaft whipping out of the trough, the air after it. */
+function stake(): Layer[] {
+  const p = jit(0.04);
+  return [
+    { noise: "white", filters: [{ type: "bandpass", f: 1100 * p, q: 1.4 }], env: { a: 0.0006, h: 0.008, d: 0.06 }, drive: 2.4, level: 0.85 },
+    { tone: "sine", f: 160 * p, to: 55, over: 0.09, env: { a: 0.001, h: 0.015, d: 0.16 }, drive: 1.8, level: 0.85 },
+    ...clack(0.002, [740 * p, 1290 * p, 2010 * p], 0.07, 0.35),
+    { at: 0.01, noise: "pink", filters: [{ type: "bandpass", f: 900 * p, q: 2.2, to: 2800 * p, over: 0.2 }], env: { a: 0.02, h: 0.04, d: 0.22 }, level: 0.6 },
+    { at: 0.004, noise: "white", filters: [{ type: "highpass", f: 4200 }], env: { a: 0.001, h: 0.01, d: 0.14 }, level: 0.22 },
+  ];
+}
+
 /** How hard each slot's report is saturated as a whole (`../Layers.ts`'s `Glue`) — hardest for the rapid ones, whose every shot must be loud and short. */
 const GLUE: readonly Glue[] = [
   { pre: 0.6, drive: 1.8 }, { pre: 0.5, drive: 1.6 }, { pre: 0.7, drive: 2.4 }, { pre: 0.7, drive: 2.4 },
   { pre: 0.5, drive: 1.6 }, { pre: 0.6, drive: 1.2 }, { pre: 0.8, drive: 2.6 }, { pre: 0.6, drive: 1.6 },
-  { pre: 0.7, drive: 1.1 },
+  { pre: 0.7, drive: 1.1 }, { pre: 0.6, drive: 1.8 },
 ];
 
 /** Each slot's report design, in `WEAPON_STATS` order — exported so tests can read a design without playing it. */
-export const REPORT_DESIGNS: readonly (() => Layer[])[] = [flare, shotgun, rifle, tommy, sniper, cross, nail, reaper, toss];
+export const REPORT_DESIGNS: readonly (() => Layer[])[] = [flare, shotgun, rifle, tommy, sniper, cross, nail, reaper, toss, stake];
 
 /**
  * The recorded reports (owner, 2026-10-20: "silah sesleri de gerçekçi degil") — real guns, CC0 (`../Samples.ts`): a
@@ -205,11 +217,12 @@ export function crossLauncherFire(): void { lv("crossLauncherFire", () => { play
 export function nailCannonFire(): void { lv("nailCannonFire", () => { if (!shot("gun.nail", 1.18, { dur: 0.22 })) play(nail(), GLUE[6]); }); }
 export function soulReaperFire(): void { lv("soulReaperFire", () => { play(reaper(), GLUE[7]); }); }
 export function dynamiteThrow(): void { lv("dynamiteThrow", () => { play(toss(), GLUE[8]); }); }
+export function stakeGunFire(): void { lv("stakeGunFire", () => { play(stake(), GLUE[9]); }); }
 
 /** Each weapon slot's firing sound, in `WEAPON_STATS` order — what `WEAPONS[i].snd` is. */
 export const WEAPON_FIRE_SOUNDS: readonly (() => void)[] = [
   flarePistolFire, shotgunFire, combatRifleFire, tommyGunFire,
-  sniperFire, crossLauncherFire, nailCannonFire, soulReaperFire, dynamiteThrow,
+  sniperFire, crossLauncherFire, nailCannonFire, soulReaperFire, dynamiteThrow, stakeGunFire,
 ];
 
 // The power kick's swing and impact are world sounds since player feedback round 2 Task 5

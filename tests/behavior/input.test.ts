@@ -306,11 +306,11 @@ describe("keyboard", () => {
     expect(snaps[4].calls).toEqual(["interact", "startReload", "requestSwitch(0)", "requestSwitch(7)"]);
   });
 
-  it("routes 9 to the ninth slot, DYNAMITE (the owner's round, 2026-10-20 — the reference had eight and ignored it)", () => {
-    const steps: readonly Step[] = [["9", (a) => a.keyDown("Digit9")], ["0 — still unbound", (a) => a.keyDown("Digit0")]];
+  it("routes 9 to the ninth slot, DYNAMITE, and 0 to the tenth, the STAKE GUN (the owner's rounds, 2026-10-20/21 — the reference had eight and ignored both)", () => {
+    const steps: readonly Step[] = [["9", (a) => a.keyDown("Digit9")], ["0", (a) => a.keyDown("Digit0")]];
     const mod = run(moduleSide(), steps);
     const ref = run(referenceSide(), steps);
-    expect(mod[1].calls).toEqual(["requestSwitch(8)"]);
+    expect(mod[1].calls).toEqual(["requestSwitch(8)", "requestSwitch(9)"]);
     expect(ref[1].calls).toEqual([]);
   });
 

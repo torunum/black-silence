@@ -101,6 +101,7 @@ export const SOUND_LEVELS = {
   nailCannonFire: { category: "weapon", trim: -6.7, room: 1 },
   soulReaperFire: { category: "weapon", trim: -10, room: 2.2 },
   dynamiteThrow: { category: "foley", trim: 0 },
+  stakeGunFire: { category: "weapon", trim: -6, room: 1.6 },
   // weapon foley: the switch, the dry click, the kick's swing, casings, the jump
   weaponLower: { category: "foley", trim: 0 },
   weaponRaise: { category: "foley", trim: 1.1 },
@@ -145,6 +146,9 @@ export const SOUND_LEVELS = {
   reaperCharge: { category: "foley", trim: -11.6 },
   reaperClawsClose: { category: "foley", trim: -9.1 },
   fuseLit: { category: "foley", trim: 0 },
+  stakeSeat: { category: "foley", trim: 0 },
+  stakeCock: { category: "foley", trim: 0 },
+  stakeThunk: { category: "foley", trim: 0 },
   // explosions
   // (player feedback round 2 Task 5: layered, with a long tail — and 2.2 times a plain sound's share of the room)
   barrelExplosion: { category: "explosion", trim: -18.6, room: 2.2 },

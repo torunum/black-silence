@@ -92,7 +92,7 @@ interface Candle {
   seed: number;
 }
 
-const WNAMES: Record<string, string> = {w1:"SAWED-OFF SHOTGUN",w2:"COMBAT RIFLE",w3:"TOMMY GUN",w4:"BMG SNIPER",w5:"HOLY CROSS LAUNCHER",w6:"NAIL CANNON",w7:"SOUL REAPER",w8:"DYNAMITE"};
+const WNAMES: Record<string, string> = {w1:"SAWED-OFF SHOTGUN",w2:"COMBAT RIFLE",w3:"TOMMY GUN",w4:"BMG SNIPER",w5:"HOLY CROSS LAUNCHER",w6:"NAIL CANNON",w7:"SOUL REAPER",w8:"DYNAMITE",w9:"STAKE GUN"};
 export function interact(){
   if(!game.started||game.inputLock)return;
   if(world.pianoPos&&Math.hypot(player.px-(world.pianoPos as unknown as PianoPos).x,player.pz-(world.pianoPos as unknown as PianoPos).z)<1.9){openPiano();return;}
@@ -132,6 +132,7 @@ export function itemsTick(dt: number){
         case "nails":S.ammo.nails+=40;showMsg("+40 NAILS");break;
         case "souls":S.ammo.souls+=3;showMsg("+3 SOULS");break;
         case "tnt":S.ammo.tnt+=3;showMsg("+3 DYNAMITE");break;
+        case "stakes":S.ammo.stakes+=6;showMsg("+6 STAKES");break;
         case "seal_ash":case "seal_bell":takeSeal(it.kind);break;   // the monastery's two seals (src/world/script/)
         case "key":S.key=true;say("key",true);showMsg("RED KEY — IT IS WARM",3);break;
         default:{
@@ -140,7 +141,7 @@ export function itemsTick(dt: number){
           const w=WEAPONS[wi];
           const fill=Math.min(w.magSize,4);
           S.mag[wi]=Math.max(S.mag[wi],fill);
-          S.ammo[w.ammo]+=w.magSize;
+          S.ammo[w.ammo]+=w.magSize+(it.kind==="w9"?5:0);   // the stake gun comes with a bundle of six
           requestSwitch(wi);
           showMsg(WNAMES[it.kind]+" ACQUIRED",2.6);
           if(it.kind==="w1")say("w2",true);

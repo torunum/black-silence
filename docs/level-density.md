@@ -32,9 +32,9 @@ in a straight line. **Emptiest** = the biggest four-way connected bare region. S
 | 4 · THE GRAVEYARD | 623 | 13 | 245 | 18 | 20 | 17 | 6 (1%) | 2 cells (x 12-12, z 12-13) | 2 cells (x 12-12, z 12-13) |
 | 5 · THE SEWERS | 632 | 11 | 309 | 18 | 22 | 17 | 5 (1%) | 3 cells (x 6-6, z 6-8) | 5 cells (x 6-7, z 6-8) |
 | 6 · THE FACTORY | 619 | 10 | 280 | 22 | 20 | 17 | 2 (0%) | 1 cells (x 11-11, z 10-10) | 1 cells (x 11-11, z 10-10) |
-| 7 · THE BONE CATHEDRAL | 998 | 9 | 233 | 80 | 33 | 16 | 61 (6%) | 8 cells (x 17-24, z 18-18) | 36 cells (x 16-24, z 14-20) |
+| 7 · THE BONE CATHEDRAL | 998 | 9 | 233 | 83 | 33 | 16 | 61 (6%) | 8 cells (x 17-24, z 18-18) | 36 cells (x 16-24, z 14-20) |
 | 8 · THE WOMB | 621 | 0 | 289 | 21 | 26 | 17 | 7 (1%) | 3 cells (x 22-22, z 12-14) | 5 cells (x 21-22, z 12-14) |
-| 1 · THE ASH BELL MONASTERY | 4741 | 46 | 751 | 103 | 115 | 16 | 884 (19%) | 18 cells (x 58-58, z 39-56) | 333 cells (x 38-63, z 30-57) |
+| 1 · THE ASH BELL MONASTERY | 4741 | 46 | 751 | 107 | 115 | 16 | 880 (19%) | 18 cells (x 58-58, z 39-56) | 333 cells (x 38-63, z 30-57) |
 
 ## 0 prologue · OUT OF THE PIT
 
@@ -358,7 +358,7 @@ in a straight line. **Emptiest** = the biggest four-way connected bare region. S
 - walkable cells: 998; bare: 61
 - breakable props: barrel 2, crate 1, pew 6
 - decor pieces: 233 (altar 1, banner 18, bonesLoose 67, brazier 2, candelabra 8, niche 5, ossuarylamp 3, rubble 63, sarcophagus 3, skullpile 51, votive 12)
-- pickups: armor 10, bullets 20, crosses 6, health 23, key 1, shells 9, slugs 5, tnt 2, weapon 4
+- pickups: armor 10, bullets 20, crosses 6, health 23, key 1, shells 9, slugs 5, stakes 2, tnt 2, weapon 5
 - enemies: 33 (2 boss); torches 11, candles 6, lights 16
 - longest bare run: 8 cells, x 17-24, z 18-18
 - emptiest region: 36 cells, x 16-24, z 14-20
@@ -452,10 +452,10 @@ in a straight line. **Emptiest** = the biggest four-way connected bare region. S
 
 ## 1 · THE ASH BELL MONASTERY
 
-- walkable cells: 4741; bare: 884
+- walkable cells: 4741; bare: 880
 - breakable props: barrel 3, crate 3, shelf 36, table 4
-- decor pieces: 751 (banner 52, bench 21, bonesLoose 74, bonestack 7, candelabra 55, chainLoose 19, debris 22, drum 1, fallenstatue 10, fence 4, font 3, glass 71, grate 23, gravecross 8, gravestone 22, hook 19, lectern 9, machine 7, mound 12, niche 8, opengrave 15, pipe 6, pipedrop 6, pump 2, rack 2, rubble 82, sapling 6, sarcophagus 4, sconce 17, shrine 7, skullpile 49, slab 4, sludge 12, tank 3, tombfree 16, urn 73)
-- pickups: armor 7, bullets 22, health 35, seal_ash 1, seal_bell 1, shells 23, slugs 1, tnt 9, weapon 4
+- decor pieces: 751 (banner 52, bench 20, bonesLoose 74, bonestack 7, candelabra 55, chainLoose 19, debris 22, drum 1, fallenstatue 10, fence 4, font 3, glass 71, grate 23, gravecross 8, gravestone 22, hook 19, lectern 9, machine 7, mound 12, niche 8, opengrave 15, pipe 6, pipedrop 6, pump 2, rack 2, rubble 83, sapling 6, sarcophagus 4, sconce 17, shrine 7, skullpile 49, slab 4, sludge 12, tank 3, tombfree 16, urn 73)
+- pickups: armor 7, bullets 22, health 35, seal_ash 1, seal_bell 1, shells 23, slugs 1, stakes 3, tnt 9, weapon 5
 - enemies: 115 (1 boss); torches 13, candles 13, lights 16
 - longest bare run: 18 cells, x 58-58, z 39-56
 - emptiest region: 333 cells, x 38-63, z 30-57
@@ -474,8 +474,8 @@ in a straight line. **Emptiest** = the biggest four-way connected bare region. S
 ######++++++++#####....++#++++++....++++###++++#+.+++#+++#++++++..+++++++++#######+++++++++++++++###
 ######+++++++.#####....++#...+++....++++###++++++++++++++++++#+++++++++++++#######+++++++++++++++###
 ######++++++++#####++++++#..+++++++...++###++++#+++++#+++#+++#.++++++++++++#######+++++++++++++++###
-######++++#+++#####+++#++#.+++++++++++..#++++++++++++++++++++#+++#++#++#+++#######+++++++++++++++###
-######+++++++++++++++++++#+++#++++++#+..#+#++++++++++++++++++#+++++++++++++#######+++++++++++++++###
+######++++#+++#####+++#++#.+++++++++++++#++++++++++++++++++++#+++#++#++#+++#######+++++++++++++++###
+######+++++++++++++++++++#+++#++++++#+++#+#++++++++++++++++++#+++++++++++++#######+++++++++++++++###
 ######++.+++++++++.++++++#+++++...++++..#+#++#+#+#+#+#+#+#+#+#+++++++++++++#######+++++++++++++++###
 ######++.+#+++.....+++#++++++++++.+++.++#+#++++++++++++++++++#####################+++++++++++++++###
 ######++.+++++.....++++++#+++++++.+++.++#+#++++..++++.+++++++#####################+++++++++++++++###

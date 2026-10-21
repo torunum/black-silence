@@ -56,7 +56,7 @@ export const dynamite: WeaponArt = {
     const r = pose.reload, a = pose.action;
     // the throw: drawn back and down (to 0.3), swung up and forward (to 0.7), and back to the aim
     const back = r < 0 ? hump(a, 0, 0.55, 0.25) : 0, fwd = r < 0 ? hump(a, 0.3, 1, 0.25) : 0;
-    const thrown = r < 0 && a > 0.45;
+    const thrown = r < 0 && (a > 0.45 || (pose.empty === 1 && a === 0));   // and gone from the hand until the next comes up
     // the next bundle comes up from below at the start of the reload, and the lighter lights it at 60%
     const up = r < 0 ? 0 : 1 - ramp(r, 0, 0.35);
     const light = r < 0 ? 0 : hump(r, 0.4, 0.82, 0.14);

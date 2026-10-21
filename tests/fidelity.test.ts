@@ -337,7 +337,7 @@ describe("WEAPON_STATS vs. reference", () => {
     const stripped = refWeapons.map(({ snd, ...rest }) => rest);
     // the owner's round, 2026-10-20: DYNAMITE is a ninth slot the reference never had, appended — the eight it had are untouched
     expect(WEAPON_STATS.slice(0, stripped.length)).toEqual(stripped);
-    expect(WEAPON_STATS.map((w) => w.name).slice(stripped.length)).toEqual(["DYNAMITE"]);
+    expect(WEAPON_STATS.map((w) => w.name).slice(stripped.length)).toEqual(["DYNAMITE", "STAKE GUN"]);   // and the STAKE GUN tenth, 2026-10-21
   });
 });
 
@@ -1009,7 +1009,7 @@ describe("viewmodel kit (SKIN/SLEEVE/.../HOLY, VM, MUZ) vs. reference", () => {
   });
 
   it("matches MUZ, the per-weapon muzzle-flash alignment table, slot for slot", () => {
-    expect(Kit.MUZ.slice(0, ref.MUZ.length)).toEqual(ref.MUZ);   // slot 8 (DYNAMITE, 2026-10-20) is new and flashes nothing
-    expect(Kit.MUZ.slice(ref.MUZ.length)).toEqual([{ y: -80, r: 0 }]);
+    expect(Kit.MUZ.slice(0, ref.MUZ.length)).toEqual(ref.MUZ);   // slot 8 (DYNAMITE, 2026-10-20) is new and flashes nothing; slot 9 (the STAKE GUN, 2026-10-21) is new
+    expect(Kit.MUZ.slice(ref.MUZ.length)).toEqual([{ y: -80, r: 0 }, { y: -96, r: 1.2 }]);
   });
 });
