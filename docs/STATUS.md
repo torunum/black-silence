@@ -1,5 +1,12 @@
 # Where this project stands
 
+## Owner's round, 2026-10-22 (morning): the graveyard under the sky
+
+"geliştirmeye devam et" — the rebuilt graveyard was roofed over like a cellar. It is zoned now (`graveyardZones.ts`), as the village is: the
+lychgate, the yew walk, the potter's field, the terraces and the new graves under the night sky, with the yard's earth underfoot and its
+own air; the gravekeeper's cottage and loft, the chapel of rest and its bell loft, the charnel and the family vault under their roofs. The
+tests that used it as the level with no zones and no ceiling map use the factory (6) now.
+
 ## Owner's round, 2026-10-22: the weapons, first pass
 
 "silahları geliştirelim … kesinlikle daha kaliteli olmaları gerekiyor. animasyon cizim vs. oyuna uygun olmaları gerekiyor"; asked which way,

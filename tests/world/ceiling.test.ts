@@ -91,7 +91,7 @@ describe("a level with no ceiling map builds the single flat plane it always bui
   it("a level without one gets exactly one ceiling child, a PlaneGeometry Mesh at y=WALLH", () => {
     // (it was level 1, then level 4, until each was rebuilt with tiers, which have ceilings of their own; since 2026-10-21 every level
     // opts in, so the branch is held with level 4's grid built without its ceiling map — what a level that never opted in builds)
-    flatLevel(4, () => loadLevel(4));
+    flatLevel(6, () => loadLevel(6));
     expect(world.ceilMap).toBeNull();
 
     const ceil = named("ceiling");
@@ -276,7 +276,7 @@ describe("the riser strips close every height transition", () => {
   });
 
   it("a level without a ceiling map has no risers to build", () => {
-    flatLevel(4, () => loadLevel(4));
+    flatLevel(6, () => loadLevel(6));
     expect(named("ceilingRisers").length).toBe(0);
   });
 });

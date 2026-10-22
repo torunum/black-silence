@@ -142,8 +142,9 @@ describe("the prologue's zones dress the right cells", () => {
   });
 });
 
-describe("the other seven levels are unzoned and build what they always built", () => {
-  it.each([1, 2, 3, 4, 5, 6, 7])("level %i: one wall mesh, one floor plane, no zone meshes, its own textures", (i) => {
+describe("the other unzoned levels build what they always built", () => {
+  it.each([1, 2, 3, 5, 6, 7, 8])   // (4, the graveyard, has been zoned since 2026-10-22: its yards are under the sky)
+("level %i: one wall mesh, one floor plane, no zone meshes, its own textures", (i) => {
     loadLevel(i);
     const def = LEVELS[i];
     expect(world.zones).toBeNull();

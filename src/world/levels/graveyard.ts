@@ -1,6 +1,7 @@
 import type { BuiltLevel } from "../LevelBuilder";
 import { LevelPlan } from "../authoring/Plan";
 import { dressGraveyard } from "./dressGraveyard";
+import { graveyardZones } from "./graveyardZones";
 
 /**
  * LEVEL 4 — THE GRAVEYARD, rebuilt (owner, 2026-10-21: "bölümleri de geliştirelim. hala zayıf duruyorlar"). The reference's
@@ -108,6 +109,7 @@ export function buildGraveyard(): BuiltLevel {
   lv.checkpoint([46, 17], { side: "w" });   // the steps up to the chapel
   lv.checkpoint([38, 10], { side: "n" });    // the stair down into the charnel, the last before the Gravedigger
   const L = lv.build();
+  L.zones = graveyardZones(W, H);   // under the sky but for its roofs (2026-10-22: it was roofed over like a cellar)
   // masses an enemy walking at a player was found pinned against (tests/enemies/stuckCheck.test.ts), taken out
   L.decor = L.decor!.filter((s) => !PINNERS.includes(`${s.k}@${Math.floor(s.x + .5)},${Math.floor(s.z + .5)}`));
   return L;
