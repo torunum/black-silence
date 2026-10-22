@@ -1,5 +1,15 @@
 # Where this project stands
 
+## Owner's round, 2026-10-22: the flare pistol, made frightening
+
+"pistol olan silahı daha iyi modeller misin daha korkutucu olsun". The orange-and-brass signal pistol is a cursed thing now
+(`weapons/flare.ts`): a fat barrel of hammered black iron with riveted bands, its muzzle a bell ringed with bone fangs, three barbs
+along the rib, and slits along its top and side where the flare smoulders red while it is loaded and goes dark when it is spent. On the
+breech, staring back at the man who holds it, a horned bone skull with embers in its sockets, a dried tear of blood and bared teeth; it
+is the hammer — its jaw drops as the shot goes and shuts as the gun is cocked. Blued iron frame, a bone grip bound in black cord, an iron
+skull for a butt cap. A new emissive palette material, `EMBER` (a coal's red, not a flame's white). The choreography and every timing are
+unchanged; the hold is 8 mm lower, so the horns clear the crosshair line.
+
 ## Owner's round, 2026-10-22 (morning): water in the sewers
 
 The rebuilt sewers had no water in them, only pools of scum dressed on dry stone. Standing sewage now floods the main drain's channel,
