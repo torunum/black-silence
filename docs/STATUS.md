@@ -1,5 +1,15 @@
 # Where this project stands
 
+## Owner's round, 2026-10-22: the flare pistol's animations, redone
+
+"animasyonları da yenile, daha kaliteli olmasını istiyorum". Every timing the foley follows is unchanged (`FLARE` in `phases.ts`); what
+moves between them is new (`weapons/flare.ts`'s header has the whole choreography). Fire: the skull-hammer falls forward at the shot,
+jaw dropped, its eyes and the slits flaring white with the flash; the right thumb (drawn by the weapon now: `fist(..., { thumb: false })`,
+`THUMB`) comes up onto its crown and rolls it back as the gun is cocked. Reload: the wrist snaps down to break it, the barrel flops once
+on its hinge, the embers die, the spent shell kicks up out of the red-hot bore tumbling over the shoulder, the left hand pinches a fresh
+shell by its rim (fingers, not a fist, which hid the breech) and pushes it home, lets go and drops away; the barrel snaps shut speeding
+into the stop, the wrist flicks up, the teeth chatter, and the slits light back to front, the eyes last. Ends exactly on the idle pose.
+
 ## Owner's round, 2026-10-22: the flare pistol, made frightening
 
 "pistol olan silahı daha iyi modeller misin daha korkutucu olsun". The orange-and-brass signal pistol is a cursed thing now

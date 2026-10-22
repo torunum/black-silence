@@ -69,14 +69,17 @@ export function cup(b: Builder, w: number, h: number): void {
   forearm(b, -0.004, -h - 0.018, -0.05, [-0.4, -0.55, -1], 0.029);
 }
 
+/** Where the thumb grows from, for a hand of `side` round a grip of half width `w`; it points along +z. */
+export const THUMB = (side: 1 | -1, w = 0.014): [number, number, number] => [side * (-w - 0.007), -0.002, -0.034];
+
 /**
  * A fist closed around a grip. The grip runs down local -y from the
  * origin, its front is +z. `side` is +1 for the right hand (back of the
  * hand outward on +x, thumb over the -x side) and -1 for the left.
  * `trigger` lays the index finger along the frame instead of round the grip.
- * `w` is the grip's half width.
+ * `w` is the grip's half width. `thumb: false` leaves the thumb to the caller (`THUMB` is where it grows from).
  */
-export function fist(b: Builder, side: 1 | -1, o: { trigger?: boolean; w?: number; fingers?: number } = {}): void {
+export function fist(b: Builder, side: 1 | -1, o: { trigger?: boolean; w?: number; fingers?: number; thumb?: boolean } = {}): void {
   const s = side, w = o.w ?? 0.014;
   const X = (a: number, c: number): [number, number] => (s > 0 ? [a, c] : [-c, -a]);
   // the palm and the back of the hand: a rounded block behind and outside the grip
@@ -97,7 +100,8 @@ export function fist(b: Builder, side: 1 | -1, o: { trigger?: boolean; w?: numbe
     // index finger laid along the frame to the trigger
     b.push(); b.translate(s * (w + 0.006), -0.012, -0.004); b.cyl(0, 0, 0, 0.05, 0.0095, 0.008, 6, MAT.GLOVE); b.pop();
   }
-  // thumb over the far side, pointing forward
+  // thumb over the far side, pointing forward (unless the weapon draws its own, moving: the flare pistol's, cocking the skull)
+  if (o.thumb === false) return;
   b.push(); b.translate(s * (-w - 0.007), -0.002, -0.034); b.yaw(s * 0.12);
   b.cyl(0, 0, 0, 0.052, 0.0115, 0.0095, 6, MAT.GLOVE); b.pop();
 }
