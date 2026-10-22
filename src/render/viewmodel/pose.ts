@@ -42,12 +42,18 @@ export interface Pose {
   heat: number;
   /** Seconds since the power kick started (./kick.ts draws the leg for it), or -1 when no kick is running. */
   kick: number;
+  /** 1 while the kick under way is the running drop kick (both boots: ./kick.ts), else 0. */
+  drop: number;
+  /** Seconds into a finish by hand (`src/player/Execution.ts`; the hands are drawn by ./execute.ts in place of the weapon), or -1. */
+  exec: number;
+  /** Which finish: 0 the head, 1 the skull, 2 the arm. */
+  execKind: number;
   /** 1 when the slot's magazine is empty outside a reload (a one-shot weapon between its shot and its reload: nothing in the hand or the trough), else 0. */
   empty: number;
 }
 
 export function restPose(): Pose {
-  return { x: 0, y: 0, z: 0, pitch: 0, yaw: 0, roll: 0, sx: 0, sy: 0, recoil: 0, action: 0, spin: 0, reload: -1, heat: 0, kick: -1, empty: 0 };
+  return { x: 0, y: 0, z: 0, pitch: 0, yaw: 0, roll: 0, sx: 0, sy: 0, recoil: 0, action: 0, spin: 0, reload: -1, heat: 0, kick: -1, empty: 0, drop: 0, exec: -1, execKind: 0 };
 }
 
 /** Where a weapon rests: its origin (the top of the right hand's grip) in camera space, and its aim. */

@@ -56,10 +56,12 @@ export function renderWeapon(r: Raster, art: WeaponArt | null, pose: Pose, cx: n
   }
   // the kicking leg (./kick.ts): same raster, depth buffer and light, but projected from the true eye
   // (no AIM shift) — the kick is aimed at the crosshair, which the weapons deliberately are not
-  const leg = legPose(pose.kick);
+  const leg = legPose(pose.kick, pose.drop > 0);
   if (leg) {
     const lb = new Builder(r, FOCAL, cx, cy, LEG_PART);
     drawLeg(lb, leg);
+    const other = pose.drop > 0 ? legPose(pose.kick, true, true) : null;   // the drop kick's other boot, beside the first
+    if (other) { const foot = lb.anchors.foot; drawLeg(lb, other); if (foot) lb.anchors.foot = foot; }
     Object.assign(b.anchors, lb.anchors);
   }
   finish(r);

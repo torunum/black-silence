@@ -21,7 +21,11 @@ const NEAR = 0.04;
 /** Key light, pointing from the surface toward the light: above, a little left, a little toward the viewer. */
 const LX = -0.42, LY = 0.86, LZ = -0.29;
 
-export interface PrimOpts { tex?: TexFn; }
+export interface PrimOpts {
+  tex?: TexFn;
+  /** Draw as part of an existing primitive (`part()`): no contour line between them, so overlapping rounded masses read as one surface. */
+  part?: number;
+}
 
 export class Builder {
   /** Current model->camera transform, row-major 3x4. */
@@ -127,7 +131,7 @@ export class Builder {
 
   /** Axis-aligned box in local space. */
   box(x0: number, y0: number, z0: number, x1: number, y1: number, z1: number, mat: number, o?: PrimOpts): void {
-    const p = this.part(), inv = o?.tex ? this.inverse() : undefined;
+    const p = o?.part ?? this.part(), inv = o?.tex ? this.inverse() : undefined;
     const A: V3 = [x0, y0, z0], B: V3 = [x1, y0, z0], C: V3 = [x1, y1, z0], D: V3 = [x0, y1, z0];
     const E: V3 = [x0, y0, z1], G: V3 = [x1, y0, z1], H: V3 = [x1, y1, z1], I: V3 = [x0, y1, z1];
     this.face([A, B, C, D], [0, 0, -1], mat, p, o, inv);
@@ -143,7 +147,7 @@ export class Builder {
    * tapering to r1 at z1, `n` sides, rotated `a0` about its axis.
    */
   cyl(x: number, y: number, z0: number, z1: number, r0: number, r1: number, n: number, mat: number, o?: PrimOpts & { a0?: number; caps?: boolean }): void {
-    const p = this.part(), inv = o?.tex ? this.inverse() : undefined;
+    const p = o?.part ?? this.part(), inv = o?.tex ? this.inverse() : undefined;
     const a0 = o?.a0 ?? Math.PI / n;
     const ring = (z: number, r: number): V3[] => {
       const out: V3[] = [];
@@ -171,7 +175,7 @@ export class Builder {
    * simple polygon; the caps are filled even-odd, so concave is fine.
    */
   ext(profile: Array<[number, number]>, x0: number, x1: number, mat: number, o?: PrimOpts): void {
-    const p = this.part(), inv = o?.tex ? this.inverse() : undefined;
+    const p = o?.part ?? this.part(), inv = o?.tex ? this.inverse() : undefined;
     let area = 0;
     for (let i = 0, j = profile.length - 1; i < profile.length; j = i++) area += profile[j][0] * profile[i][1] - profile[i][0] * profile[j][1];
     const ccw = area > 0; // counter-clockwise in (z,y)
@@ -194,7 +198,7 @@ export class Builder {
    * about (0,0) for a taper.
    */
   prz(profile: Array<[number, number]>, z0: number, z1: number, mat: number, o?: PrimOpts & { r1?: number }): void {
-    const p = this.part(), inv = o?.tex ? this.inverse() : undefined, k1 = o?.r1 ?? 1;
+    const p = o?.part ?? this.part(), inv = o?.tex ? this.inverse() : undefined, k1 = o?.r1 ?? 1;
     let area = 0;
     for (let i = 0, j = profile.length - 1; i < profile.length; j = i++) area += profile[j][0] * profile[i][1] - profile[i][0] * profile[j][1];
     const ccw = area > 0;
@@ -222,7 +226,7 @@ export class Builder {
 
   /** A low-poly sphere (lat/long), for soul cores and knuckles. */
   ball(x: number, y: number, z: number, r: number, mat: number, seg = 6, o?: PrimOpts): void {
-    const p = this.part(), inv = o?.tex ? this.inverse() : undefined;
+    const p = o?.part ?? this.part(), inv = o?.tex ? this.inverse() : undefined;
     const ballNormal = (px: number, py: number, pz: number): V3 => { const dx = px - x, dy = py - y, dz = pz - z, l = Math.hypot(dx, dy, dz) || 1; return [dx / l, dy / l, dz / l]; };
     const rows = Math.max(3, seg - 2), pt = (i: number, j: number): V3 => {
       const th = Math.PI * i / rows, ph = 2 * Math.PI * j / seg;
@@ -234,6 +238,31 @@ export class Builder {
       const quad = [pt(i, j), pt(i, j + 1), pt(i + 1, j + 1), pt(i + 1, j)];
       this.face(i === 0 ? [quad[0], quad[2], quad[3]] : i === rows - 1 ? [quad[0], quad[1], quad[2]] : quad, n, mat, p, o, inv, ballNormal);
     }
+  }
+  /** An ellipsoid, radii (rx, ry, rz) along the local axes: a palm, the ball of a thumb, a boot's toe box. Lit round, as a ball is. */
+  ell(x: number, y: number, z: number, rx: number, ry: number, rz: number, mat: number, seg = 8, o?: PrimOpts): void {
+    const p = o?.part ?? this.part(), inv = o?.tex ? this.inverse() : undefined;
+    const nrm = (px: number, py: number, pz: number): V3 => { const dx = (px - x) / (rx * rx), dy = (py - y) / (ry * ry), dz = (pz - z) / (rz * rz), l = Math.hypot(dx, dy, dz) || 1; return [dx / l, dy / l, dz / l]; };
+    const rows = Math.max(3, seg - 2), pt = (i: number, j: number): V3 => {
+      const th = Math.PI * i / rows, ph = 2 * Math.PI * j / seg;
+      return [x + rx * Math.sin(th) * Math.cos(ph), y + ry * Math.cos(th), z + rz * Math.sin(th) * Math.sin(ph)];
+    };
+    for (let i = 0; i < rows; i++) for (let j = 0; j < seg; j++) {
+      const th = Math.PI * (i + 0.5) / rows, ph = 2 * Math.PI * (j + 0.5) / seg;
+      const ux = Math.sin(th) * Math.cos(ph) / rx, uy = Math.cos(th) / ry, uz = Math.sin(th) * Math.sin(ph) / rz, l = Math.hypot(ux, uy, uz) || 1;
+      const quad = [pt(i, j), pt(i, j + 1), pt(i + 1, j + 1), pt(i + 1, j)];
+      this.face(i === 0 ? [quad[0], quad[2], quad[3]] : i === rows - 1 ? [quad[0], quad[1], quad[2]] : quad, [ux / l, uy / l, uz / l], mat, p, o, inv, nrm);
+    }
+  }
+
+  /** A capsule from local point `a` to `b`, radius `r0` at `a` tapering to `r1` at `b`, its ends rounded: a finger's joint, a strap. */
+  limb(a: readonly number[], b: readonly number[], r0: number, r1: number, mat: number, n = 8, o?: PrimOpts): void {
+    const dx = b[0] - a[0], dy = b[1] - a[1], dz = b[2] - a[2], len = Math.hypot(dx, dy, dz);
+    if (len < 1e-6) return;
+    this.push(); this.translate(a[0], a[1], a[2]); this.yaw(Math.atan2(dx, dz)); this.pitch(Math.atan2(dy, Math.hypot(dx, dz)));
+    this.cyl(0, 0, 0, len, r0, r1, n, mat, { ...o, caps: false });
+    this.pop();
+    this.ball(b[0], b[1], b[2], r1, mat, n, o);
   }
 }
 

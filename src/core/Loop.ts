@@ -24,6 +24,8 @@ import { partTick } from "../fx/Particles";
 import { fireTick } from "../fx/HellFire";
 import { lavaTick } from "../fx/Lava";
 import { waterTick } from "../fx/Water";
+import { executionTick } from "../player/Execution";
+import { hands } from "../player/HandsState";
 import { gibTick } from "../fx/Gibs";
 import { feelTick } from "../fx/HitFeel";
 import { goreTick } from "../fx/GoreFx";
@@ -124,7 +126,7 @@ function loop(t: number){
   if(!S.dead)transitionTick(dt);   // the walk through an exit door runs with the game stopped (S.won), the card with an overlay up
   if(!paused&&!S.dead&&!S.won){
     cineTick(dt);openingTick(dt);
-    playerTick(dt);zoneTick(dt);weaponTick(dt);
+    playerTick(dt);executionTick(dt);zoneTick(dt);weaponTick(dt);   // (executionTick: a finish by hand under way, and the prompt for one: src/player/Execution.ts)
     anyAware=enemyTick(dt)||false;
     projTick(dt);ringTick(dt);strikeTick(dt);poisonTick(dt);
     itemsTick(dt);doorTick(dt);scriptTick(dt);propTick(dt);
@@ -144,11 +146,11 @@ function loop(t: number){
         started:game.started,dead:S.dead,pianoOpen:game.pianoOpen,zoomLerp:weaponRuntime.zoomLerp,cur:S.cur,vx:player.vx,vz:player.vz,vy:player.vy,grounded:player.grounded,yaw:input.yaw,
         sprintKey:!!(keys.ShiftLeft||keys.ShiftRight),bobT:player.bobT,wstate:weaponRuntime.wstate,wtime:weaponRuntime.wtime,
         equipT:EQUIP_T,unequipT:UNEQUIP_T,kickAmt:weaponRuntime.kickAmt,kickRot:weaponRuntime.kickRot,kickAnim:kick,swayX:input.swayX,swayY:input.swayY,muzzle:weaponRuntime.muzzle,empty:S.mag[S.cur]<=0,
-        cueHurt:animCues.hurt,cueHurtAmt:animCues.hurtAmt,cuePickup:animCues.pickup,cueDryFire:animCues.dryFire,cueInput:animCues.input,paused,hidden:openingHidesWeapon()||transitionHidesHands(),
+        cueHurt:animCues.hurt,cueHurtAmt:animCues.hurtAmt,cuePickup:animCues.pickup,cueDryFire:animCues.dryFire,cueInput:animCues.input,paused,hidden:openingHidesWeapon()||transitionHidesHands(),drop:hands.drop,exec:hands.exec,
       },WEAPONS));
     hud();
     minimapTick(dt,t,game.started&&!S.dead&&!S.won&&!paused&&!openingHidesWeapon());   // the corner map and the automap (src/ui/Minimap.ts)
-    withKickLean(renderState.camera,kick,()=>withViewPunch(renderState.camera,()=>renderState.renderer.render(renderState.scene,renderState.camera)));}}
+    withKickLean(renderState.camera,kick,()=>withViewPunch(renderState.camera,()=>renderState.renderer.render(renderState.scene,renderState.camera)),hands.drop);}}
 
 /** Kicks off the frame loop. Called once, from `main.ts`, at boot. */
 export function startLoop(): void { requestAnimationFrame(loop); }

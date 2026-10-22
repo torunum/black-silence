@@ -204,7 +204,7 @@ describe("a door stands in a wall, in front of floor the player can reach", () =
 describe("the exit is where it always was", () => {
   it("keeps world.exitPos at the X cell on the two levels that write one", () => {
     loadLevel(0);
-    expect(world.exitPos).toEqual({ x: 25.5 * CELL, z: 9.5 * CELL });
+    expect(world.exitPos).toEqual({ x: 53.5 * CELL, z: 9.5 * CELL });   // the landing at the top of the climb (moved 2026-10-22, when the prologue grew)
     loadLevel(1);
     expect(world.exitPos).toEqual({ x: 31.5 * CELL, z: 36.5 * CELL });   // (31.5, 33.5 before level 1 was rebuilt)
   });

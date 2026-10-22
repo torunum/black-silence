@@ -116,10 +116,11 @@ describe("the only way out is down through hell", () => {
 describe("the hell crossing is a first level", () => {
   const enemies = L.g.flatMap((row, z) => row.map((ch, x) => ({ ch, x, z }))).filter((c) => ENEMY_DEFS[c.ch]);
 
-  it("places only the weakest melee enemies — zombies and crawlers — and only in hell", () => {
+  it("places only the weakest melee enemies — zombies and crawlers — and only in hell, more of them as hell goes on", () => {
+    // (2026-10-22, the prologue made a level in its own right: eight in the burning pit, seven in the field of pyres, six in the throne hall)
     expect(new Set(enemies.map((e) => e.ch))).toEqual(new Set(["z", "w"]));
-    expect(enemies.length).toBeGreaterThanOrEqual(4);
-    expect(enemies.length).toBeLessThanOrEqual(8);
+    expect(enemies.length).toBeGreaterThanOrEqual(16);
+    expect(enemies.length).toBeLessThanOrEqual(24);
     for (const e of enemies) {
       expect(zoneId(e.x, e.z)).toBe("hell");
       const d = ENEMY_DEFS[e.ch];
@@ -183,17 +184,20 @@ describe("the prologue plan's Task 3: hell burns, the churchyard is inhabited", 
   const zoneOf = (x: number, z: number) => L.zones.themes[L.zones.map[z][x]];
   const decor = (k: string) => L.decor.filter((d) => d.k === k);
 
-  it("bridges the pit with one stone deck per cell, not two laid on each other", () => {
+  it("bridges the fire with one stone deck per cell, not two laid on each other, every deck over a bridge cell at the banks' height", () => {
     const deck = decor("bridge");
-    expect(deck).toHaveLength(7);
-    expect(new Set(deck.map((d) => `${d.x},${d.z}`)).size).toBe(7);
+    expect(deck.length).toBe(7 + 2 + 6 + 8);   // the pit's, the river's, the moat's north and east bridges
+    expect(new Set(deck.map((d) => `${d.x},${d.z}`)).size).toBe(deck.length);
+    for (const d of deck) expect(L.hmap[d.z][d.x], `deck at ${d.x},${d.z}`).toBe(2.1);
   });
 
-  it("gives the first step of the climb the climb's stone, not hell's veined rock", () => {
-    for (const x of [24, 25]) {
-      expect(L.hmap[18][x]).toBeGreaterThan(2.1);   // the first step up out of hell
-      expect(zoneOf(x, 18).id).toBe("climb");
+  it("gives every step of the climb the climb's stone, not hell's veined rock", () => {
+    let steps = 0;
+    for (let z = 15; z <= 53; z++) for (let x = 55; x <= 57; x++) {
+      expect(zoneOf(x, z).id).toBe("climb");
+      if (L.hmap[z][x] > 2.1) steps++;
     }
+    expect(steps).toBeGreaterThan(60);
   });
 
   it("puts the churchyard on earth — its own ground and grave walls — with the dead in it", () => {
@@ -205,9 +209,10 @@ describe("the prologue plan's Task 3: hell burns, the churchyard is inhabited", 
     for (const d of [...decor("mound"), ...decor("hand"), ...decor("grass")]) expect(zoneOf(Math.floor(d.x), Math.floor(d.z)).id).toBe("churchyard");
   });
 
-  it("lights the fire in hell alone: burning cells in the pit and five braziers on the banks", () => {
+  it("lights the fire in hell alone: burning cells in the fire, five braziers with a torch in the pit and the rest fire alone", () => {
     const fire = [...decor("ember"), ...decor("bowl")];
-    expect(decor("bowl")).toHaveLength(5);
+    expect(decor("bowl").filter((d) => L.g[d.z][d.x] === "i")).toHaveLength(5);
+    expect(decor("bowl").length).toBeGreaterThan(10);
     expect(decor("ember").length).toBeGreaterThan(40);
     for (const d of fire) expect(zoneOf(d.x, d.z).id).toBe("hell");
   });
@@ -219,7 +224,7 @@ describe("hell, reworked: the dressing breaks up the cavern, and none of it is i
   const HELL_KINDS = ["outcrop", "stalagmite", "basaltcol", "spikes", "shards", "skullpole", "stalactite", "pyre", "ribs", "lavafall"];
 
   it("has rock outcrops, fangs, columns, a pyre, stakes, ribs, spikes, shards, stalactites and two falls of lava, all in hell", () => {
-    const want: Record<string, number> = { outcrop: 4, stalagmite: 2, basaltcol: 2, pyre: 1, skullpole: 6, ribs: 2, spikes: 5, shards: 10, stalactite: 15, lavafall: 2 };
+    const want: Record<string, number> = { outcrop: 6, stalagmite: 2, basaltcol: 8, pyre: 4, skullpole: 15, ribs: 6, spikes: 15, shards: 25, stalactite: 30, lavafall: 5 };
     for (const [k, n] of Object.entries(want)) expect(decor(k).length, k).toBeGreaterThanOrEqual(n);
     for (const k of HELL_KINDS) for (const d of decor(k)) expect(zoneOf(Math.floor(d.x + .5), Math.floor(d.z + .5)).id, `${k} at ${d.x},${d.z}`).toBe("hell");
   });
@@ -253,14 +258,18 @@ describe("hell, reworked: the dressing breaks up the cavern, and none of it is i
     for (const ch of "haXzw") for (const c of find(ch)) expect(near(c.x, c.z, 1), `a mass beside '${ch}' at ${c.x},${c.z}`).toBe(false);
     // the way from the bridge's west end to the crypt stair's foot (x 8-10, z 18-27), where the zombie at the stair and the crawlers out of the pit walk
     for (let z = 18; z <= 27; z++) for (let x = 8; x <= 10; x++) expect(cells.has(`${x},${z}`), `a mass at ${x},${z}`).toBe(false);
-    // the zombie's own ground by the stair, and the climb's mouth on the east bank, and the steps out of the pit
+    // the zombie's own ground by the stair, and the cleft out of the east bank into the field of pyres, and the steps out of the pit
     for (let z = 18; z <= 22; z++) for (let x = 3; x <= 7; x++) expect(cells.has(`${x},${z}`), `a mass at ${x},${z}`).toBe(false);
-    for (let z = 18; z <= 23; z++) for (let x = 23; x <= 26; x++) expect(cells.has(`${x},${z}`), `a mass at ${x},${z}`).toBe(false);
+    for (let z = 20; z <= 24; z++) for (let x = 26; x <= 31; x++) expect(cells.has(`${x},${z}`), `a mass at ${x},${z}`).toBe(false);
+    // the bridges and their ends, the passages between the caverns, and the stairs out of the river and the moat
+    for (const [x0, z0, x1, z1] of [[39, 26, 41, 31], [37, 40, 42, 45], [33, 45, 36, 50], [41, 51, 46, 54], [50, 50, 54, 54], [32, 27, 36, 30], [43, 27, 48, 30], [24, 59, 29, 60], [41, 46, 46, 48]])
+      for (let z = z0; z <= z1; z++) for (let x = x0; x <= x1; x++) expect(cells.has(`${x},${z}`), `a mass at ${x},${z}`).toBe(false);
     for (const x of [10, 12, 16, 18]) for (const z of [19, 20, 21, 22, 31, 32, 33, 34]) expect(cells.has(`${x},${z}`), `a mass at the pit's steps ${x},${z}`).toBe(false);
   });
 
-  it("burns in a corner of the west bank, on open floor: the pyre", () => {
-    expect(decor("pyre")).toHaveLength(1);
+  it("burns its pyres on open floor: one in a corner of the pit's west bank, two in the field, one before the throne", () => {
+    expect(decor("pyre")).toHaveLength(4);
+    expect(decor("pyre").filter((d) => d.x <= 10 && d.z >= 19 && d.z <= 34)).toHaveLength(1);
     for (const d of decor("pyre")) expect(L.g[Math.floor(d.z)][Math.floor(d.x)]).toBe(".");
   });
 });

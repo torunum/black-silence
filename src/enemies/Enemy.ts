@@ -152,6 +152,14 @@ export interface Enemy {
   stumbleZ?: number;
   /** How far the sprite leans away from the last hit at the start of the flinch, radians (signed). Written by `src/enemies/HitReact.ts`. */
   lean?: number;
+  /** Seconds left reeling at the last of its health (`src/enemies/Stagger.ts`); 0 or absent when it is not. */
+  stagger?: number;
+  /** It has had its one chance to reel. */
+  staggerTried?: boolean;
+  /** Seconds it has been reeling, for its sway and its pulse. */
+  reelT?: number;
+  /** The player is finishing it with their hands (`src/player/Execution.ts`): it is held, and the stagger does not run out. */
+  executing?: boolean;
 
   /* ---- group 1, continued: the def's behaviours (KNOWN-15, closed) ----
    *

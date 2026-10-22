@@ -34,6 +34,7 @@ import { dropAmmo } from "../Death";
 import { rigDead, rigLive } from "../RigAnim";
 import { schedule } from "../../core/Time";
 import type { Enemy as EnemyShape } from "../Enemy";
+import { staggerHeld } from "../Stagger";
 
 /**
  * Behaviors — the per-frame enemy brain: state-machine housekeeping (dead/
@@ -245,6 +246,7 @@ export function enemyTick(dt: number){
       e.kx*=Math.exp(-6*dt);e.kz*=Math.exp(-6*dt);}
     const dx=player.px-e.x,dz=player.pz-e.z,dist=Math.hypot(dx,dz);
     if(dist>30){e.sp.position.set(e.x,hoverY(e),e.z);e.blob.position.set(e.x,(e.fy||0)+.012,e.z);continue;}
+    if(staggerHeld(e,dt))continue;   // reeling at the last of its health, open to the player's hands (src/enemies/Stagger.ts)
     if(e.stun>0){e.stun-=dt;
       if(PX[e.key].rig)rigLive(e,dt,false,true);   // held: the pain frames while it is hurt, then standing
       e.sp.position.set(e.x+rnd(-.03,.03),hoverY(e),e.z+rnd(-.03,.03));

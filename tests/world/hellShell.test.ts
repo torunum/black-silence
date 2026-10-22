@@ -105,7 +105,7 @@ describe("the shell is built from the grid", () => {
     for (const m of kids("floorCells") as unknown as THREE.InstancedMesh[]) for (const c of cellsOf(m)) expect(zoneAt(c.x, c.z).shell, `a floor quad in hell at ${c.x},${c.z}`).toBeFalsy();
     const platforms: string[] = [];
     for (const m of kids("platform") as unknown as THREE.InstancedMesh[]) for (const c of cellsOf(m)) { platforms.push(c.x + "," + c.z); expect(zoneAt(c.x, c.z).shell, `a platform in hell at ${c.x},${c.z}`).toBeFalsy(); }
-    expect(platforms).toEqual(expect.arrayContaining(["24,18", "25,18"]));
+    expect(platforms).toEqual(expect.arrayContaining(["55,47", "56,40", "57,20"]));   // the climb's stair (since 2026-10-22, north out of the throne hall)
     expect(kids("ceilingRisers").length).toBeGreaterThan(0);
   });
 
@@ -199,7 +199,7 @@ describe("the lake", () => {
     expect(crust.position.y).toBeLessThan(.1);
     expect(sheet.castShadow || sheet.receiveShadow || crust.castShadow || crust.receiveShadow).toBe(false);
     for (const f of kids("lavafall")) expect((f.material as THREE.MeshBasicMaterial).isMeshBasicMaterial).toBe(true);
-    expect(kids("lavafall")).toHaveLength(2);
+    expect(kids("lavafall")).toHaveLength(5);   // the pit's two, the river's, the throne hall's two
   });
 
   it("covers the pit and nothing else: every lava vertex is at floor level over a floor-0 cell of hell", () => {

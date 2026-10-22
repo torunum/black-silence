@@ -37,6 +37,8 @@ import { wallMaterials, addInstanced, groupPush, buildFloor, buildPlatforms } fr
 import { themeTex, shellAt } from "./ZoneLook";
 import { buildHell } from "./HellShell";
 import { buildWater } from "../fx/Water";
+import { TOUGHNESS } from "../enemies/EnemyDefs";
+import { resetHands } from "../player/HandsState";
 import { levelLook, enterZones } from "./Zones";
 import { dressLevel } from "./Decor";
 import { massMap } from "./decor/masses";
@@ -176,7 +178,7 @@ export function spawnEnemy(ch: string, wx: number, wz: number, summoned?: boolea
   const d=EDEF[ch];
   const elite=!d.boss&&!summoned&&Math.random()<.11;
   const SZ=1.18;                       // overall sprite presence bump
-  const mul=elite?2:1;
+  const mul=(elite?2:1)*(d.boss?1:TOUGHNESS);   // (owner, 2026-10-22: "canları biraz daha olsun, biraz daha zor ölsünler")
   const ew=d.w*(elite?1.15:1)*SZ, eh=d.h*(elite?1.15:1)*SZ;
   const e: Enemy={key:ch,name:d.name,x:wx,z:wz,hp:d.hp*mul,maxhp:d.hp*mul,
     speed:d.sp*(elite?1.15:1),mel:d.mel,w:ew,h:eh,
@@ -229,7 +231,7 @@ export function loadLevel(idx: number, resume?: Resume): void {
   renderState.muzzleLight=track(new THREE.PointLight(0xffc878,0,14,1.4));renderState.scene.add(renderState.muzzleLight);
   renderState.boomLight=track(new THREE.PointLight(0xff7830,0,20,1.4));renderState.scene.add(renderState.boomLight);
   buildParticles();
-  resetDecals();resetGibs();resetScreenFx();resetImpactFx();
+  resetDecals();resetGibs();resetScreenFx();resetImpactFx();resetHands();   // (a finish by hand, a drop kick: src/player/HandsState.ts)
   world.doors={};world.enemies=[];world.props=[];world.items=[];world.torches=[];world.candles=[];
   world.poisonZones=[];world.rings=[];world.strikes=[];projectiles.nails=[];projectiles.orbs=[];headPool.heads=[];
   world.exitPos=null;world.pianoPos=null;world.challenge=null;world.bossRef=null;world.cine=null;

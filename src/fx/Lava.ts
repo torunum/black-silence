@@ -34,7 +34,7 @@ interface Heat { m: THREE.MeshLambertMaterial; seed: number }
 const lava = {
   t: 0,
   sheet: null as THREE.Texture | null, crust: null as THREE.Texture | null, sheetMat: null as THREE.MeshBasicMaterial | null,
-  fall: null as THREE.Texture | null,
+  falls: [] as THREE.Texture[],
   heat: [] as Heat[],
 };
 
@@ -47,7 +47,8 @@ export function heatMaterial(m: THREE.MeshLambertMaterial): void {
 
 /** Drops the last level's lake. Called by every level load whether it has lava or not. */
 export function clearLava(): void {
-  lava.sheet = lava.crust = lava.sheetMat = lava.fall = null;
+  lava.sheet = lava.crust = lava.sheetMat = null;
+  lava.falls = [];
   lava.t = 0;   // every load starts the fire at the same moment: the lake is a pure function of the clock since the level began
 }
 
@@ -94,9 +95,10 @@ export function buildLava(scene: THREE.Scene, cells: ReadonlyArray<readonly [num
 export function buildLavafall(scene: THREE.Scene, d: DecorSpec): void {
   if (!HELLTEX.fall) return;
   const w = d.s || 2, h = d.h || 6;
-  lava.fall = own(HELLTEX.fall);
-  lava.fall.repeat.set(w / 2, h / 8);                       // 32 texels a unit across, 32 down: the texture is 2 x 8 units
-  const m = new THREE.Mesh(track(new THREE.PlaneGeometry(w, h)), track(new THREE.MeshBasicMaterial({ map: lava.fall, fog: false })));   // a beacon: the far wall's glow carries through the haze
+  const fall = own(HELLTEX.fall);
+  fall.repeat.set(w / 2, h / 8);                            // 32 texels a unit across, 32 down: the texture is 2 x 8 units
+  lava.falls.push(fall);                                    // every fall flows (there was one slot, and only the last fall built moved)
+  const m = new THREE.Mesh(track(new THREE.PlaneGeometry(w, h)), track(new THREE.MeshBasicMaterial({ map: fall, fog: false })));   // a beacon: the far wall's glow carries through the haze
   m.name = "lavafall";
   m.position.set((d.x + .5) * CELL, h / 2, (d.z + .5) * CELL);
   m.rotation.y = d.r || 0;
@@ -111,7 +113,7 @@ export function lavaTick(dt: number): void {
     lava.crust.offset.set(-t * .004 + .015 * Math.sin(t * .2), t * .007 + .01 * Math.sin(t * .27 + 1));
     lava.sheetMat.color.setScalar(.9 + .1 * Math.sin(t * 1.3) * Math.sin(t * .7 + 1) + .03 * Math.sin(t * 5.1));
   }
-  if (lava.fall) lava.fall.offset.set(.05 * Math.sin(t * .4), -t * .16);
+  for (let i = 0; i < lava.falls.length; i++) lava.falls[i].offset.set(.05 * Math.sin(t * .4 + i), -t * .16);
   for (const h of lava.heat) h.m.emissiveIntensity = .95 + .17 * Math.sin(t * 1.7 + h.seed) + .06 * Math.sin(t * 6.3 + 2 * h.seed);
 }
 

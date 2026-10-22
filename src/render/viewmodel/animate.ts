@@ -45,6 +45,10 @@ export interface AnimInput {
   muzzle: number;
   /** The slot's magazine is empty (pose.ts's `empty`). */
   empty?: boolean;
+  /** The kick under way is the running drop kick (`src/player/HandsState.ts`). */
+  drop?: boolean;
+  /** A finish by hand under way: seconds into it and which (`src/player/HandsState.ts`). */
+  exec?: { t: number; kind: number } | null;
 }
 
 /**
@@ -138,6 +142,8 @@ export class Animator {
     if (v.wstate === "fire") p.action = clamp(art.action(clamp(v.wtime / fireWindow(w), 0, 1)), 0, 1);
     p.heat = clamp(v.muzzle / 0.4, 0, 1);
     p.empty = v.empty && v.wstate !== "reload" ? 1 : 0;
+    p.drop = v.drop && p.kick >= 0 ? 1 : 0;
+    if (v.exec) { p.exec = v.exec.t; p.execKind = v.exec.kind; p.recoil = 0; p.action = 0; p.reload = -1; }
     if (v.wstate === "reload") p.reload = clamp(v.wtime / w.reload, 0, 1);
     if (v.wstate === "reload" && art.present) {   // up into view for the reload (pose.ts's `present`)
       const k = Math.min(ramp(p.reload, 0, 0.16), 1 - ramp(p.reload, 0.84, 1));

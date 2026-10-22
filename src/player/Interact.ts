@@ -1,3 +1,4 @@
+import { tryExecute } from "./Execution";
 import * as THREE from "three";
 import { isSwing, sunkY, swingAway, swingTick } from "../world/LevelDoors";
 import { rnd } from "../utils/math";
@@ -99,6 +100,7 @@ const WNAMES: Record<string, string> = {w1:"SAWED-OFF SHOTGUN",w2:"COMBAT RIFLE"
 export function interact(){
   if(!game.started||game.inputLock)return;
   if(world.pianoPos&&Math.hypot(player.px-(world.pianoPos as unknown as PianoPos).x,player.pz-(world.pianoPos as unknown as PianoPos).z)<1.9){openPiano();return;}
+  if(tryExecute())return;   // a monster reeling at the last of its health, finished by hand (src/player/Execution.ts)
   if(tryExit())return;   // the exit door: E at it, facing it (src/world/Transition.ts)
   if(scriptInteract())return;   // a level's lever or lift (src/world/script/ScriptRun.ts)
   const dir=new THREE.Vector3();renderState.camera.getWorldDirection(dir);

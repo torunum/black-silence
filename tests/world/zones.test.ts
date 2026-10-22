@@ -205,7 +205,7 @@ describe("crossing into hell", () => {
     loadLevel(0);
     const spy = vi.spyOn(Math, "random");
     try {
-      for (const [x, z] of [[9.5, 4.5], [9.5, 10.5], [9.5, 15.5], [10, 20.5], [14.5, 26.5], [24.5, 16.5], [25.5, 9.5]]) {
+      for (const [x, z] of [[9.5, 4.5], [9.5, 10.5], [9.5, 15.5], [10, 20.5], [14.5, 26.5], [40.5, 28.5], [35.5, 52.5], [56.5, 30.5], [53.5, 9.5]]) {
         player.px = x * CELL; player.pz = z * CELL;
         for (let k = 0; k < 20; k++) zoneTick(1 / 60);
       }
@@ -338,7 +338,7 @@ describe("room tones follow the player (src/world/ZoneBed.ts)", () => {
     const { currentBed } = await import("../../src/world/Zones");
     const { ambience } = await import("../../src/world/Ambience");
     const { ambienceState } = await import("../../src/world/AmbienceState");
-    const where: Array<[number, number, string | null]> = [[9.5, 4.5, "yard"], [9.5, 10.5, null], [10, 20.5, "hell"], [25.5, 9.5, null]];
+    const where: Array<[number, number, string | null]> = [[9.5, 4.5, "yard"], [9.5, 10.5, null], [10, 20.5, "hell"], [40.5, 35.5, "hell"], [53.5, 9.5, null]];
     loadLevel(0);
     for (const [x, z, bed] of where) {
       player.px = x * CELL; player.pz = z * CELL; zoneTick(1 / 60);

@@ -6,6 +6,7 @@ import { rnd } from "../../utils/math";
 import type { WeaponStats } from "../../weapons/definitions";
 import { Animator } from "./animate";
 import { WEAPON_ART } from "./arts";
+import { EXEC_ART } from "./execute";
 import { Raster, RW, RH, VM_RES, toRGBA } from "./raster";
 import { renderWeapon, CLEAR_BELOW, RELOAD_CLEAR } from "./rig";
 import type { Pose } from "./pose";
@@ -104,6 +105,10 @@ export interface ViewmodelFrame {
   muzzle: number;
   /** S.mag[S.cur] is 0: the dynamite's hand and the stake gun's trough are drawn empty until the reload (pose.ts's `empty`). */
   empty?: boolean;
+  /** The kick under way is the running drop kick: both boots (./kick.ts). */
+  drop?: boolean;
+  /** A finish by hand under way (`src/player/Execution.ts`): the hands are drawn (./execute.ts) in place of the weapon. */
+  exec?: { t: number; kind: number } | null;
 }
 
 /**
@@ -171,7 +176,7 @@ const vm = {
  */
 export function poseKey(cur: number, p: Pose, cy: number): string {
   const r = (n: number) => Math.round(n * 1e4);
-  return [cur, cy, r(p.x), r(p.y), r(p.z), r(p.pitch), r(p.yaw), r(p.roll), r(p.recoil), r(p.action), r(p.spin), r(p.reload), r(p.heat), r(p.kick), p.empty].join(",");
+  return [cur, cy, r(p.x), r(p.y), r(p.z), r(p.pitch), r(p.yaw), r(p.roll), r(p.recoil), r(p.action), r(p.spin), r(p.reload), r(p.heat), r(p.kick), p.empty, p.drop, r(p.exec), p.execKind].join(",");
 }
 
 /**
@@ -194,7 +199,7 @@ function paint(cur: number, pose: Pose, cy: number): boolean {
   if (key !== vm.lastKey) {
     vm.lastKey = key;
     const prev = { x0: vm.raster.x0, y0: vm.raster.y0, x1: vm.raster.x1, y1: vm.raster.y1 };
-    vm.anchors = renderWeapon(vm.raster, WEAPON_ART[cur] ?? null, pose, RW / 2, cy);
+    vm.anchors = renderWeapon(vm.raster, pose.exec >= 0 ? EXEC_ART : WEAPON_ART[cur] ?? null, pose, RW / 2, cy);   // a finish by hand: the hands, not the gun (./execute.ts)
     vm.topRow = topOpaqueRow(vm.raster);
     toRGBA(vm.raster, vm.image.data, prev);
     vm.ctx.putImageData(vm.image, 0, 0);
@@ -238,7 +243,7 @@ export function drawViewmodel(dt: number, tNow: number, v: ViewmodelFrame, weapo
   // whatever lifted it: screen motion is clamped, and a rig pose that rose is lowered until its top sits on the line.
   let sy=pose.sy;
   // (while reloading, only to just under the crosshair: nothing is fired then, and the reload is brought up into view — pose.ts's `present`)
-  if(painted)sy=Math.max(sy,VH/2+(v.wstate==="reload"?RELOAD_CLEAR:CLEAR_BELOW)*VH-(top0+vm.topRow*s));
+  if(painted&&!(pose.exec>=0))sy=Math.max(sy,VH/2+(v.wstate==="reload"?RELOAD_CLEAR:CLEAR_BELOW)*VH-(top0+vm.topRow*s));
   const left=(VW-RW*s)/2+pose.sx, top=top0+sy;
   if(painted){
     fg.save();
