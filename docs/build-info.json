@@ -1,0 +1,154 @@
+{
+  "file": "THE-BLACK-SILENCE.html",
+  "bytes": 2289458,
+  "sha256": "9e0a2ac7f16a5271eb60ceda9be8b76ebbda46da5840993ef6cf606af76c7e73",
+  "engineSha256": "6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899",
+  "moduleHashes": {
+    "materials.js": "05e43b45ce521b52cf4d7b172177984699670d9de1261de5f88bf11f42b45517",
+    "combat.js": "a0644449f03a77ec7c121104ab2c6850e0caf6ceb0b17c553b8c6c273c08374c",
+    "enemy-animation.js": "593a5fae641f13ea9f6312409db4a3c3f5b75d5d9e6b31f90a6588dde00370d8",
+    "viewmodels.js": "2c35882398c52876b003a20f98486a4be485327d8121829dce882bcc3952c071",
+    "finishers.js": "8c2c7bdf13e17005c3383054560b155986d8e706b5bfda81e9f1a8224ee3c5b0",
+    "reload-audio-data.js": "2f48b10a1225d1c007ee282d3c18f82c5022bb0267ed86d65feadf819ec1be30",
+    "reload-audio.js": "93963d58a605323c34548136726e1e75b140156f60fc1c7fe0cb7a6a0c94a48b",
+    "prologue.js": "3f053324630bf5bd42aca5eb87b8206b8a34e42c6fdb912e3129757ee3aaccb4",
+    "render-warmup.js": "9418307e9d71b28411b36e86e1ed3f4eb2eecda6b00d58144ce5bc79d110838c"
+  },
+  "oneUpgradeBlock": true,
+  "sourceMatches": true,
+  "originalPreserved": true,
+  "idempotent": true,
+  "testedHtmlSha256": "9e0a2ac7f16a5271eb60ceda9be8b76ebbda46da5840993ef6cf606af76c7e73",
+  "verifiedAt": "2026-10-22T14:29:27.517Z",
+  "checks": {
+    "combat": 35,
+    "enemyAnimation": 16,
+    "wallDeterministic": 76,
+    "wallRAF": 3,
+    "reloadAudio": 42,
+    "reloadRAFWeapons": 2,
+    "navigationCheckpoints": 15,
+    "mapLaunches": 11,
+    "laterChapterInvariants": 2,
+    "browserErrors": 0
+  },
+  "media": {
+    "combat-preview.webm": {
+      "bytes": 6063400,
+      "sha256": "0bf678f1801923ac8ac40b47b13ce1ecb7bf6ce26eb2728e74262e8277e228ab"
+    },
+    "prologue.png": {
+      "bytes": 442457,
+      "sha256": "15463094768cbc14976022defcbf2eed376fb928d5fd3876617287d116accae0"
+    },
+    "shotgun.png": {
+      "bytes": 439562,
+      "sha256": "10028b37d002cb8b5449f00a267b046e6bedc0b31aec4baf74312dcf0b2509d5"
+    },
+    "pistol-reload.png": {
+      "bytes": 453116,
+      "sha256": "da2fe744138210850718e49716ffcb5cbdfeec2cd22b8c654f0b2234ff79330c"
+    },
+    "shotgun-reload.png": {
+      "bytes": 435492,
+      "sha256": "9bbe2cec20657fc9b9afb7bc4168f574a1533f83c7d8f3ea136391992da16939"
+    },
+    "dropkick.png": {
+      "bytes": 500796,
+      "sha256": "ba3e1e822147c8958d49fef3960bb5ad260abd618442cb5d15f6668df57b81dd"
+    },
+    "finisher.png": {
+      "bytes": 440346,
+      "sha256": "79335de0ee21c92c3bf0541989f8f45d9fe50b06a2c056216f51c8ba3791bc3a"
+    },
+    "chapel.png": {
+      "bytes": 314382,
+      "sha256": "583b94a5ce4534c8236694d5cdcf67d0f4f8fa0748bc9254d1d68037a67005ac"
+    },
+    "chapel-altar.png": {
+      "bytes": 288054,
+      "sha256": "42fae4ea35ab020717fdb4e568b976d4113b8f595395d647ed5a7a36cf0066a6"
+    },
+    "crypt.png": {
+      "bytes": 499651,
+      "sha256": "d5d95bfc0397d1de6e35f377b8e31ba446ba5409235621b8a25c899e288bfd82"
+    },
+    "bridge.png": {
+      "bytes": 491785,
+      "sha256": "563e645dd59af967b4e1b510d654da32b0d2a46b8615d2894f12964fce6ff97f"
+    },
+    "arena.png": {
+      "bytes": 407413,
+      "sha256": "f356e46eb4fe9d6c6cbda9f4e7420215ea3d8336d63501cc96d8295f5d003b9b"
+    },
+    "ascent.png": {
+      "bytes": 400014,
+      "sha256": "ffebb8544eae3895738e32406d653317b2d4d4b03265b813496297b3604efe3f"
+    },
+    "boot-sole.png": {
+      "bytes": 441391,
+      "sha256": "99cf11f9ab8c23470f66191578619630485c62270f545f093971abf9b20f124c"
+    },
+    "monastery-crypt.png": {
+      "bytes": 363568,
+      "sha256": "3dbd127e46f035930c7e90d99275f99eaa5ba8ef20b3e076f697147dd68a5848"
+    },
+    "dungeon-gallery.png": {
+      "bytes": 319727,
+      "sha256": "f0dab5295930ff313aafecb3e6d1a41ad6b2562b43bdd10841470981f7471d25"
+    },
+    "audio/reload-audit.wav": {
+      "bytes": 326444,
+      "sha256": "0c4a4f7c2c7c7e18b0dc095a1345c07d0f9c8814a1007018f961c77da6d1f81e"
+    },
+    "audio/reload-timeline.json": {
+      "bytes": 3921,
+      "sha256": "334457b104356ede878e2ab8c360f89454970dbd657bc874ff9a538f82359369"
+    },
+    "audio-sources.json": {
+      "bytes": 5479,
+      "sha256": "59991bfe2f030521cc4f49f83f3bfd9afce6b07c96714a4ad0b59984e559cad0"
+    }
+  },
+  "mediaCapture": {
+    "htmlSha256": "9e0a2ac7f16a5271eb60ceda9be8b76ebbda46da5840993ef6cf606af76c7e73",
+    "exceptions": {
+      "boot-sole.png": "Retained earlier capture of unchanged boot geometry."
+    },
+    "video": {
+      "videoCodec": "VP9",
+      "audioCodec": "Opus",
+      "bytes": 6063400,
+      "actualGameAudio": true,
+      "recordedAudioSeconds": 17.049700000017882,
+      "markerFrames": 7,
+      "syncScope": "Audio starts when the preroll marker is removed; trim uses the first non-marker video frame. Video frame granularity is 40ms; physical audio-output latency is not measured.",
+      "scope": "Actual post-volume WebAudio mixed output, recorded alongside real game animation. QA stages nearby targets."
+    }
+  },
+  "performance": {
+    "optimizationShipped": false,
+    "note": "No general smoothness improvement is claimed. Earlier cache/copy/warmup experiment was rejected; final smoke measurements are machine-specific.",
+    "dropkick": {
+      "frames": 35,
+      "meanMs": 26.18,
+      "p95Ms": 49.7,
+      "maxMs": 100,
+      "approximateFPS": 38.2
+    },
+    "finisher": {
+      "frames": 68,
+      "meanMs": 21.57,
+      "p95Ms": 33.4,
+      "maxMs": 50,
+      "approximateFPS": 46.4
+    }
+  },
+  "previewServer": {
+    "url": "http://127.0.0.1:8765/",
+    "status": 200,
+    "bytes": 2289458,
+    "sha256": "9e0a2ac7f16a5271eb60ceda9be8b76ebbda46da5840993ef6cf606af76c7e73",
+    "checkedAt": "2026-10-22T14:28:47.635Z"
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "sampleRate": 32000,
+  "processing": "mono, 85Hz highpass, 7.2kHz lowpass, onset trim, 0.75ms attack / 12ms tail fade, peak scaling, PCM16",
+  "selections": [
+    {
+      "name": "latch",
+      "file": "shotgun/ShotgunSounds/Shell in Chamber.mp3",
+      "from": 0.684,
+      "to": 0.795,
+      "peak": 0.55,
+      "sourceSHA256": "ca91beab4d3f05ea536e420583a91df316711833c3d474338103d9b2ba3080a7",
+      "outputSHA256": "2993cbbebf672a57401dc18612dd9f8e6ef271391a1fba4b07e13a4bc22bc174",
+      "duration": 0.101375,
+      "rms": 0.05621017856086241,
+      "dc": 6.931116601675048e-7,
+      "clipped": 0
+    },
+    {
+      "name": "hinge",
+      "file": "shotgun/ShotgunSounds/Rack.mp3",
+      "from": 0.621,
+      "to": 0.827,
+      "peak": 0.53,
+      "sourceSHA256": "c97f10056f123dce481e249457263329aa95237ecd7a77ee1fa96f8eaed0bf91",
+      "outputSHA256": "d250cbf5f3ef99fab64633a895ca822eeea4855cd2598d0609696a9592b9d997",
+      "duration": 0.1964375,
+      "rms": 0.13867025260972848,
+      "dc": 0.0000015175951202631547,
+      "clipped": 0
+    },
+    {
+      "name": "eject",
+      "file": "singlebullet1.wav",
+      "from": 0.106,
+      "to": 0.252,
+      "peak": 0.42,
+      "sourceSHA256": "422bb2b92072cf8ecb77fda83e70d27bdcb7fa8cee33415ef66985a8cc14dde2",
+      "outputSHA256": "65ba1a41d7bff4cfefadf8ebc8b280972067edecd2ab8d007dde8c60c53ba84f",
+      "duration": 0.14190625,
+      "rms": 0.02635883530575275,
+      "dc": -0.000015396430732581723,
+      "clipped": 0
+    },
+    {
+      "name": "slide",
+      "file": "shotgun/ShotgunSounds/First Shell.mp3",
+      "from": 0.358,
+      "to": 0.585,
+      "peak": 0.36,
+      "sourceSHA256": "0e3a8da11bb98a92700b30b809e939bfd2002a629176269ce24b8a9291bdd095",
+      "outputSHA256": "e684353f2ed35c6db1654e3b57c5162d1b6e108b348c04f5639a3fc81760d039",
+      "duration": 0.218875,
+      "rms": 0.047599279493349106,
+      "dc": -2.800771613660727e-7,
+      "clipped": 0
+    },
+    {
+      "name": "seat",
+      "file": "shotgun/ShotgunSounds/Subsequent Shells.mp3",
+      "from": 1.025,
+      "to": 1.218,
+      "peak": 0.49999999999999994,
+      "sourceSHA256": "47bae369718bfe74979dbc419ee11c561b53a66385c9b0281a0a3d588719ca1e",
+      "outputSHA256": "f5e07113828c096bf6bd10a26eaa20222a734fc3d096e0f20df99d3399da6a6a",
+      "duration": 0.193,
+      "rms": 0.059144714994951955,
+      "dc": 8.595509787683485e-8,
+      "clipped": 0
+    },
+    {
+      "name": "close",
+      "file": "shotgun/ShotgunSounds/Rack.mp3",
+      "from": 0.831,
+      "to": 1.055,
+      "peak": 0.6699999999999999,
+      "sourceSHA256": "c97f10056f123dce481e249457263329aa95237ecd7a77ee1fa96f8eaed0bf91",
+      "outputSHA256": "ee32d30df4ae62898ad223fb9b6546228c59071b1c5e90bd7d82b9a922b01273",
+      "duration": 0.224,
+      "rms": 0.18897542509498133,
+      "dc": 0.000005247759301899392,
+      "clipped": 0
+    }
+  ]
+}

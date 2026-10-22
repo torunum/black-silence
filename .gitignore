@@ -1,0 +1,10 @@
+# Local dependencies, experiment captures and rollback copies
+.dream-loop/
+node_modules/
+_to_delete/
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+*.log

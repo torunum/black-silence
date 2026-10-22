@@ -1,0 +1,2 @@
+# Preserve exact release/source bytes used by docs/build-info.json checksums.
+* -text

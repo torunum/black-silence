@@ -1,0 +1,25 @@
+{
+  "name": "the-black-silence",
+  "version": "1.1.0",
+  "private": true,
+  "description": "Standalone retro horror FPS — combat and prologue upgrade",
+  "scripts": {
+    "start": "node tools/serve.cjs",
+    "build": "node tools/build-game.cjs",
+    "materials": "node tools/compile-materials.cjs",
+    "audio": "node tools/compile-reload-audio.cjs",
+    "test": "node tools/combat-tests.cjs && node tools/prologue-tests.cjs",
+    "test:smoke": "node tools/smoke-tests.cjs",
+    "test:compatibility": "node tools/compatibility-tests.cjs",
+    "test:enemies": "node tools/enemy-animation-tests.cjs",
+    "test:navigation": "node tools/prologue-navigation-test.cjs",
+    "test:walls": "node tools/wall-impact-tests.cjs",
+    "test:visual": "node tools/prologue-render-test.cjs",
+    "test:levels": "node tools/level-detail-tests.cjs",
+    "test:audio": "node tools/reload-audio-tests.cjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.56.0",
+    "pngjs": "^7.0.0"
+  }
+}

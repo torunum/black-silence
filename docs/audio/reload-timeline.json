@@ -1,0 +1,168 @@
+{
+  "label": "Flare pistol first (start 0.15s); shotgun second (start 2.70s). Native effects master volume 0.5; actual sample settings; no ambience or gunshots.",
+  "sampleRate": 32000,
+  "seconds": 5.1,
+  "metrics": {
+    "peak": 0.24362808465957642,
+    "rms": 0.02085646824513187,
+    "dc": -5.6582778900822934e-8,
+    "clipped": 0
+  },
+  "events": [
+    {
+      "weapon": 0,
+      "event": "release",
+      "phase": 0.1,
+      "reloadSeconds": 2,
+      "clip": "latch",
+      "atSeconds": 0.35,
+      "duration": 0.09283424908424909,
+      "rate": 1.092,
+      "gain": 0.276
+    },
+    {
+      "weapon": 0,
+      "event": "open",
+      "phase": 0.14,
+      "reloadSeconds": 2,
+      "clip": "hinge",
+      "atSeconds": 0.43000000000000005,
+      "duration": 0.18888221153846152,
+      "rate": 1.04,
+      "gain": 0.34040000000000004
+    },
+    {
+      "weapon": 0,
+      "event": "eject",
+      "phase": 0.27,
+      "reloadSeconds": 2,
+      "clip": "eject",
+      "atSeconds": 0.6900000000000001,
+      "duration": 0.1364483173076923,
+      "rate": 1.04,
+      "gain": 0.3312
+    },
+    {
+      "weapon": 0,
+      "event": "insert",
+      "phase": 0.46,
+      "reloadSeconds": 2,
+      "clip": "slide",
+      "atSeconds": 1.07,
+      "duration": 0.21045673076923074,
+      "rate": 1.04,
+      "gain": 0.25760000000000005
+    },
+    {
+      "weapon": 0,
+      "event": "seat",
+      "phase": 0.59,
+      "reloadSeconds": 2,
+      "clip": "seat",
+      "atSeconds": 1.3299999999999998,
+      "duration": 0.18193815987933637,
+      "rate": 1.0608,
+      "gain": 0.3864
+    },
+    {
+      "weapon": 0,
+      "event": "close",
+      "phase": 0.86,
+      "reloadSeconds": 2,
+      "clip": "close",
+      "atSeconds": 1.8699999999999999,
+      "duration": 0.21538461538461537,
+      "rate": 1.04,
+      "gain": 0.41400000000000003
+    },
+    {
+      "weapon": 0,
+      "event": "latch",
+      "phase": 0.87,
+      "reloadSeconds": 2,
+      "clip": "latch",
+      "atSeconds": 1.89,
+      "duration": 0.10369783142389526,
+      "rate": 0.9776,
+      "gain": 0.24840000000000004
+    },
+    {
+      "weapon": 1,
+      "event": "release",
+      "phase": 0.1,
+      "reloadSeconds": 2.1,
+      "clip": "latch",
+      "atSeconds": 2.91,
+      "duration": 0.10609628466771323,
+      "rate": 0.9555000000000001,
+      "gain": 0.324
+    },
+    {
+      "weapon": 1,
+      "event": "open",
+      "phase": 0.14,
+      "reloadSeconds": 2.1,
+      "clip": "hinge",
+      "atSeconds": 2.994,
+      "duration": 0.2158653846153846,
+      "rate": 0.91,
+      "gain": 0.3996
+    },
+    {
+      "weapon": 1,
+      "event": "eject",
+      "phase": 0.27,
+      "reloadSeconds": 2.1,
+      "clip": "eject",
+      "atSeconds": 3.2670000000000003,
+      "duration": 0.15594093406593407,
+      "rate": 0.91,
+      "gain": 0.38880000000000003
+    },
+    {
+      "weapon": 1,
+      "event": "insert",
+      "phase": 0.46,
+      "reloadSeconds": 2.1,
+      "clip": "slide",
+      "atSeconds": 3.6660000000000004,
+      "duration": 0.240521978021978,
+      "rate": 0.91,
+      "gain": 0.30240000000000006
+    },
+    {
+      "weapon": 1,
+      "event": "seat",
+      "phase": 0.59,
+      "reloadSeconds": 2.1,
+      "clip": "seat",
+      "atSeconds": 3.939,
+      "duration": 0.2079293255763844,
+      "rate": 0.9282,
+      "gain": 0.4536
+    },
+    {
+      "weapon": 1,
+      "event": "close",
+      "phase": 0.86,
+      "reloadSeconds": 2.1,
+      "clip": "close",
+      "atSeconds": 4.506,
+      "duration": 0.24615384615384614,
+      "rate": 0.91,
+      "gain": 0.48600000000000004
+    },
+    {
+      "weapon": 1,
+      "event": "latch",
+      "phase": 0.87,
+      "reloadSeconds": 2.1,
+      "clip": "latch",
+      "atSeconds": 4.527,
+      "duration": 0.1185118073415946,
+      "rate": 0.8553999999999999,
+      "gain": 0.2916
+    }
+  ],
+  "listeningStatus": "Prepared for human listening; current agent environment does not support audio input."
+}
