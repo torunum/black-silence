@@ -66,7 +66,12 @@ describe("legacyDraws derives what the legacy bake draws", () => {
     expect(legacyDraws(PXDEF[key])).toEqual({ stumps, textures });
     expect(Object.keys(RIGS), "and it is a rig").toContain(key);
   });
-  it("every creature with a rig is in that table", () => { expect(Object.keys(RIGS).sort()).toEqual(["f", "g", "m", "s", "t", "w", "z"]); });
+  // the horde is in that table; the bosses and the boss-like creatures redrawn on 2026-10-21 (owner: "bosslara benzeyenler kötü … yeniden çiz") are not held to
+  // a number here — each is measured against its real legacy bake by the burn test below, which is the claim that matters. A boss's last form (`Q2`, `Z2`, …)
+  // has no legacy row of its own: it is worn over its boss's (`RigAnim`'s `formKey`), so it burns nothing.
+  it("every creature with a rig is the horde or one of the redrawn bosses and boss-like creatures", () => {
+    expect(Object.keys(RIGS).sort()).toEqual(["C", "E", "G", "G2", "H", "H2", "L", "N", "N2", "Q", "Q2", "R", "U", "V", "V2", "Z", "Z2", "f", "g", "j", "k", "m", "n", "s", "t", "w", "y", "z"]);
+  });
 });
 
 describe("burnLegacySpriteDraws consumes exactly that", () => {

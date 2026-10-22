@@ -1,7 +1,6 @@
 import { rnd } from "../utils/math";
 import { ctx } from "../audio/AudioEngine";
 import { casingTinkle } from "../audio/sounds/weapons";
-import { drawHitMarker } from "../fx/HitMarker";
 
 /**
  * 2D LAYER — viewmodels, kick, casings, smoke, blood. The `fx2d`
@@ -129,5 +128,6 @@ export function fxTick(
     fg.moveTo(VW/2,VH/2-r);fg.lineTo(VW/2,VH/2+r);fg.stroke();}
   drawKick();
   drawVm(dt,t);
-  drawHitMarker(fg,VW,VH,dt);   // last, so neither the weapon nor the leg covers it (src/fx/HitMarker.ts)
+  // The hit marker (src/fx/HitMarker.ts) is no longer drawn: the owner asked for the X at the crosshair to go
+  // (2026-10-20). Its state still runs — the hit-stop, the punch and the sound are the feedback now.
 }

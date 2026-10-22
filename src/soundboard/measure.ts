@@ -80,7 +80,7 @@ export const MAX_TRIM = 18;
  * far quieter than the stream of them the trigger actually makes. Their
  * entry is levelled by one second of fire at the weapon's own rate.
  */
-const FIRE_ENTRIES = ["flarePistolFire", "shotgunFire", "combatRifleFire", "tommyGunFire", "sniperFire", "crossLauncherFire", "nailCannonFire", "soulReaperFire"];
+const FIRE_ENTRIES = ["flarePistolFire", "shotgunFire", "combatRifleFire", "tommyGunFire", "sniperFire", "crossLauncherFire", "nailCannonFire", "soulReaperFire", "dynamiteThrow", "stakeGunFire"];
 const AUTOMATIC: ReadonlyArray<readonly [string, () => void, number]> = W.WEAPON_FIRE_SOUNDS
   .map((fire, slot) => [FIRE_ENTRIES[slot], fire, WEAPON_STATS[slot].rate] as const)
   .filter(([, , rate]) => rate < 0.2);

@@ -104,4 +104,4 @@ export function vTrigger(x: number, y: number): void { /* guard loop + blade */
   fg.fillStyle=VM.S4;fg.fillRect(x-1.2,y-3,2.4,5);
 }
 /* per-weapon muzzle tip (flash alignment) */
-export const MUZ=[{y:-90,r:1},{y:-82,r:1.7},{y:-101,r:1},{y:-90,r:1.2},{y:-109,r:1.6},{y:-91,r:1.4},{y:-95,r:1.3},{y:-92,r:2}];
+export const MUZ=[{y:-90,r:1},{y:-82,r:1.7},{y:-101,r:1},{y:-90,r:1.2},{y:-109,r:1.6},{y:-91,r:1.4},{y:-95,r:1.3},{y:-92,r:2},{y:-80,r:0},{y:-96,r:1.2}];

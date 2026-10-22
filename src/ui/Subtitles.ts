@@ -1,5 +1,5 @@
 import { pick } from "../utils/math";
-import { MONOLOGUE as M } from "../content/monologue";
+import { LINES as M } from "../content/monologue";
 import { el } from "./dom";
 
 /**

@@ -35,7 +35,8 @@ function hopper(b: Builder): void {
 
 export const nailCannon: WeaponArt = {
   name: "NAIL CANNON",
-  hold: { x: 0.13, y: -0.112, z: 0.32, pitch: -0.03, yaw: -0.2, roll: 0.1 },
+  hold: { x: 0.049, y: -0.1236, z: 0.32, pitch: 0.15, yaw: 0, roll: 0 },  // a little right of centre, square to the screen, looking ahead (owner, 2026-10-20: option 3, "biraz daha dik")
+  present: { y: 0.05, pitch: 0.15, roll: 0 },   // the reload brought up into view (pose.ts)
   kick: { back: 0.012, lift: 0.03 },
   action: (p) => p,
   spinRate: 26,

@@ -42,10 +42,18 @@ export interface Pose {
   heat: number;
   /** Seconds since the power kick started (./kick.ts draws the leg for it), or -1 when no kick is running. */
   kick: number;
+  /** 1 while the kick under way is the running drop kick (both boots: ./kick.ts), else 0. */
+  drop: number;
+  /** Seconds into a finish by hand (`src/player/Execution.ts`; the hands are drawn by ./execute.ts in place of the weapon), or -1. */
+  exec: number;
+  /** Which finish: 0 the head, 1 the skull, 2 the arm. */
+  execKind: number;
+  /** 1 when the slot's magazine is empty outside a reload (a one-shot weapon between its shot and its reload: nothing in the hand or the trough), else 0. */
+  empty: number;
 }
 
 export function restPose(): Pose {
-  return { x: 0, y: 0, z: 0, pitch: 0, yaw: 0, roll: 0, sx: 0, sy: 0, recoil: 0, action: 0, spin: 0, reload: -1, heat: 0, kick: -1 };
+  return { x: 0, y: 0, z: 0, pitch: 0, yaw: 0, roll: 0, sx: 0, sy: 0, recoil: 0, action: 0, spin: 0, reload: -1, heat: 0, kick: -1, empty: 0, drop: 0, exec: -1, execKind: 0 };
 }
 
 /** Where a weapon rests: its origin (the top of the right hand's grip) in camera space, and its aim. */
@@ -63,6 +71,13 @@ export interface WeaponArt {
   spinRate?: number;
   /** Radians per second it turns at rest (the reaper's rune ring idles round). */
   idleSpin?: number;
+  /**
+   * Where a reload brings the weapon up to (metres up, radians of muzzle lift, radians of roll, top to the left), eased in over the
+   * first sixth of the reload and out over the last (owner, 2026-10-20: "silah reload vs animasyonlarında sorun var gibi"): held
+   * square and low under the line of fire, every magazine, drum, hopper and breech worked below the bottom of the screen, and a reload
+   * read as the gun dipping and nothing happening. Brought up and turned, the hands are seen doing it, as in Doom's and Blood's.
+   */
+  present?: { y: number; pitch: number; roll: number };
   /** Draws weapon, hands and sleeves in weapon space. Must call b.anchor("muzzle", ...) at the barrel tip. */
   draw(b: Builder, pose: Pose): void;
 }

@@ -196,13 +196,14 @@ describe("the leg, drawn", () => {
 });
 
 describe("the weapon gets out of the way, and comes back", () => {
-  it("through the real Animator: swung down and aside during the kick, exactly at rest once it ends", () => {
+  it("through the real Animator: dropped straight down during the kick (no twist: owner, 2026-10-20), exactly at rest once it ends", () => {
     for (const slot of [0, 2, 5]) {
       const [rest, windup, hit, recover, after] = animated(slot, [0, 0.32 - 0.04, 0.32 - KICK_HIT_T, 0.32 - 0.3, 0]);
       expect(windup.y).toBeLessThan(rest.y);
-      expect(hit.roll - rest.roll).toBeCloseTo(ASIDE.roll, 12);          // fully aside while the leg is out
+      expect(hit.y - rest.y).toBeCloseTo(ASIDE.y, 12);                   // fully down while the leg is out
       expect(hit.pitch - rest.pitch).toBeCloseTo(ASIDE.pitch, 12);
-      expect(Math.abs(recover.roll - rest.roll)).toBeLessThan(Math.abs(ASIDE.roll) * 0.2); // mostly back
+      expect([ASIDE.yaw, ASIDE.roll, hit.roll - rest.roll + 0]).toEqual([0, 0, 0]);   // and never twisted
+      expect(Math.abs(recover.pitch - rest.pitch)).toBeLessThan(Math.abs(ASIDE.pitch) * 0.2); // mostly back
       expect(after).toEqual(rest);
       const r0 = render(slot, rest).anchors.muzzle, r1 = render(slot, { ...hit, kick: -1 }).anchors.muzzle;
       expect(r1[1] - r0[1]).toBeGreaterThan(8);                             // the muzzle drops away

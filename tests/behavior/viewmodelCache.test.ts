@@ -102,8 +102,8 @@ describe("the render cache's key", () => {
   it("an unchanged pose skips the render; a changed one renders once", () => {
     const frame = settle(2);
     expect(renders(1, frame)).toBe(0);
-    expect(renders(1, { ...frame, kickRot: 5 })).toBe(1); // a rasterized term (roll) moved
-    expect(renders(1, { ...frame, kickRot: 5 })).toBe(0);
+    expect(renders(1, { ...frame, kickAmt: 0.05 })).toBe(1); // a rasterized term (the recoil) moved
+    expect(renders(1, { ...frame, kickAmt: 0.05 })).toBe(0);
   });
 });
 

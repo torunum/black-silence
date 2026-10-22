@@ -25,9 +25,16 @@ import { grain } from "./BandTextures";
  *   (the way on) and over the floor in front of it (the lit threshold);
  * - `sigil` — the tomb's carved mark on a black ground, the one part of a
  *   door that is drawn glowing even when the gate is shut.
+ *
+ * And since 2026-10-21 (owner: "kapıları yeniden yapabilirsin"), the leaves of the doors inside a level and of the new ways between
+ * them (`src/world/LevelDoors.ts`, `src/world/GateKit.ts`, `src/world/HatchKit.ts`):
+ * - `oak` — a plain door: worn oak planks, two long iron strap hinges with their nails, a darker foot where hands and boots wore it;
+ * - `ironLeaf` — the locked door: riveted black iron plates and a red-painted lock plate with its keyhole (the red of the red key);
+ * - `gate` — the great gate's leaf: thick oak boards, a diagonal brace, four rows of iron studs;
+ * - `slab` — a crypt floor slab: grey flagstone, a carved cross, a chiselled border.
  */
 
-export type DoorTexKey = "church" | "crypt" | "tomb" | "sluice" | "freight" | "hazard" | "glow" | "sigil";
+export type DoorTexKey = "church" | "crypt" | "tomb" | "sluice" | "freight" | "hazard" | "glow" | "sigil" | "oak" | "ironLeaf" | "gate" | "slab";
 
 export const DOORTEX: Partial<Record<DoorTexKey, THREE.CanvasTexture>> = {};
 
@@ -142,6 +149,68 @@ function glow(): THREE.CanvasTexture {
   });
 }
 
+/** Worn oak planks, two strap hinges nailed across them, the foot of the door darker. */
+function oak(): THREE.CanvasTexture {
+  const W = 32, H = 64;
+  return paint(W, H, (x, y) => {
+    const plank = Math.floor(x / 8), seam = x % 8 === 0;
+    const strap = (y >= 9 && y < 13) || (y >= 50 && y < 54);
+    const strapEnd = strap && x > 26;
+    const nail = strap && x % 6 === 3 && (y === 11 || y === 52);
+    if (nail) return [150, 150, 146];
+    if (strap) return shade(strapEnd ? [44, 40, 36] : [36, 34, 32], noise(x, y, 101, 14));
+    if (seam) return [18, 11, 7];
+    const foot = y > 56 ? -14 : 0;
+    const knot = grain(x >> 1, y >> 2, 102 + plank) > .93 ? -18 : 0;
+    return shade([96 + (grain(plank, 0, 103) - .5) * 18, 66, 40], noise(x, y, 104, 16) + (grain(plank, y >> 2, 105) - .5) * 10 + foot + knot);
+  });
+}
+
+/** Riveted black iron plates, and the red lock plate with its keyhole. */
+function ironLeaf(): THREE.CanvasTexture {
+  const W = 32, H = 64;
+  return paint(W, H, (x, y) => {
+    const plateEdge = y % 16 === 0 || x === 0 || x === W - 1;
+    const rivet = (x % 8 === 4) && (y % 16 === 3 || y % 16 === 13);
+    const lock = x >= 19 && x < 29 && y >= 27 && y < 39;
+    const hole = (Math.hypot(x - 24, y - 31) < 1.6) || (x >= 23 && x < 25 && y >= 31 && y < 36);
+    if (lock) return hole ? [6, 4, 4] : shade([150, 40, 28], noise(x, y, 111, 18));
+    if (rivet) return [92, 96, 102];
+    if (plateEdge) return [12, 12, 14];
+    return shade([38, 38, 42], noise(x, y, 112, 12) + (grain(x >> 3, y >> 4, 113) - .5) * 10);
+  });
+}
+
+/** The great gate: thick boards, a diagonal brace from corner to corner, four rows of iron studs. */
+function gate(): THREE.CanvasTexture {
+  const W = 32, H = 96;
+  return paint(W, H, (x, y) => {
+    const board = Math.floor(x / 6.4), seam = Math.floor(x % 6.4) === 0;
+    const rail = [6, 46, 86].some((r) => y >= r && y < r + 5);
+    const brace = Math.abs((y - 11) - (x * 35 / 32)) < 2.2 || Math.abs((y - 51) - (x * 35 / 32)) < 2.2;
+    const stud = (x % 8 === 4) && [8, 48, 88, 28, 68].includes(y);
+    if (stud) return [176, 170, 156];
+    if (rail) return shade([40, 38, 36], noise(x, y, 121, 12));
+    if (brace) return shade([70, 44, 26], noise(x, y, 122, 16));
+    if (seam) return [16, 10, 6];
+    return shade([84 + (grain(board, 0, 123) - .5) * 16, 56, 34], noise(x, y, 124, 16) + (grain(board, y >> 3, 125) - .5) * 10);
+  });
+}
+
+/** A crypt's floor slab: grey flagstone with a chiselled border and a cross cut into it. */
+function slabTex(): THREE.CanvasTexture {
+  const S = 64;
+  return paint(S, S, (x, y) => {
+    const border = x < 4 || y < 4 || x >= S - 4 || y >= S - 4;
+    const groove = x === 7 || y === 7 || x === S - 8 || y === S - 8;
+    const cross = (Math.abs(x - 31.5) < 3 && y > 14 && y < 52) || (Math.abs(y - 26) < 3 && x > 19 && x < 44);
+    let v = noise(x, y, 131, 16) + (grain(x >> 3, y >> 3, 132) - .5) * 14;
+    if (groove || cross) v -= 30;
+    if (border) v -= 8;
+    return [104 + v, 104 + v, 100 + v];
+  });
+}
+
 /** Builds every door texture into `DOORTEX`. Called once at boot, by `startGame`, beside `buildHellTextures`. */
 export function buildDoorTextures(): void {
   DOORTEX.church = church();
@@ -152,4 +221,8 @@ export function buildDoorTextures(): void {
   DOORTEX.hazard = hazard();
   DOORTEX.glow = glow();
   DOORTEX.sigil = sigil();
+  DOORTEX.oak = oak();
+  DOORTEX.ironLeaf = ironLeaf();
+  DOORTEX.gate = gate();
+  DOORTEX.slab = slabTex();
 }

@@ -111,6 +111,16 @@ export const REAPER = {
   claws: [0.1, 0.72, 0.1] as Hump,
 } as const;
 
+/** Slot 9. */
+export const STAKE = {
+  /** Fire: the ram slams forward behind the stake and is drawn back — `action = hump(p, ...ram)`. */
+  ram: [0.0, 0.9, 0.12] as Hump,
+  /** Reload: the left hand brings a stake up from below and lays it in the trough (seated at the end). */
+  lay: [0.16, 0.5] as Ramp,
+  /** Reload: the left hand pumps the lever back, and lets it home. */
+  pump: [0.56, 0.96, 0.16] as Hump,
+} as const;
+
 /**
  * The rotating parts (`./animate.ts`): the spin eases toward its target at
  * `up` per second while firing and `down` per second after — a first-order

@@ -49,7 +49,8 @@ export const FEEL: Readonly<Record<number, FeelRow>> = {
   4: { hit: 0.085, kill: 0.150, punch: 0.8, killPunch: 1.0, flash: 0.09 },     // BMG sniper
   6: { hit: 0, kill: 0.035, punch: 0.05, killPunch: 0.22, flash: 0.02 },       // nail cannon: a stream
   7: { hit: 0.060, kill: 0.120, punch: 0.6, killPunch: 0.9, flash: 0.08 },     // soul reaper
-  [-1]: { hit: 0.060, kill: 0.100, punch: 0.9, killPunch: 1.0, flash: 0.08 },  // the kick
+  9: { hit: 0.070, kill: 0.130, punch: 0.7, killPunch: 1.0, flash: 0.09 },     // stake gun: one heavy strike
+  [-1]: { hit: 0.075, kill: 0.115, punch: 1.0, killPunch: 1.0, flash: 0.09 },  // the kick: the heaviest blow after the sniper's (owner, 2026-10-21: "pompalıda çok iyiydi his, bunda da öyle olsun")
   [-2]: { hit: 0.050, kill: 0.090, punch: 0.6, killPunch: 0.8, flash: 0.08 },  // a body into a wall
   [EXPLOSIVE]: { hit: 0.020, kill: 0.060, punch: 0.5, killPunch: 0.7, flash: 0.08 },   // a blast, the cross
 };

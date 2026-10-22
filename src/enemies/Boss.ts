@@ -6,6 +6,7 @@ import { input } from "../player/Input";
 import { game } from "../core/Game";
 import { ENEMY_DEFS as EDEF } from "./EnemyDefs";
 import { PX } from "./SpriteBaker";
+import { rigLive } from "./RigAnim";
 import { at } from "../audio/AudioEngine";
 import { bossWakes, bossRoar, priestVanish, priestAppear, priestSummons } from "../audio/sounds/monsters";
 import { startBossMusic } from "../audio/Ambient";
@@ -79,6 +80,11 @@ interface Cine { t: number; dur: number; e: { x: number; z: number; h: number; k
 /** world.enemies elements, cast for wakeBoss/priestTeleport/priestThink — the boss brain. */
 type BossBrainEnemy = Pick<
   Enemy,
+  | "deathKind"
+  | "deathT"
+  | "deathDir"
+  | "hurt"
+  | "sever"
   | "x"
   | "z"
   | "key"
@@ -209,7 +215,8 @@ export function priestThink(enemy: unknown,dt: number,dist: number,dx: number,dz
           ne.aware=true;smoke3d(nx,.6,nz,10);}}}
     if(dist>1.7){moving=moveEnemy(e,dx/dist,dz/dist,e.speed,dt);}
     if(dist<2&&e.cool<=0&&Math.abs((e.fy||0)-(player.pyy-EYE))<1.3){e.cool=.95;e.atkAnim=.22;damagePlayer(e.mel);}}
-  if(moving){e.animT+=dt;
+  if(PX[e.key].rig)rigLive(e,dt,moving,false);   // a rigged priest: its walk, its cast, its pain — in its second form's frames once it has taken it (src/enemies/RigAnim.ts)
+  else if(moving){e.animT+=dt;
     if(e.animT>.25){e.animT=0;e.frame=1-e.frame;
       const bk=e.key,fk=e.formKey||(e.key+"2");
       const set=e.phase===3?[PX[fk].a,PX[fk].b]:[PX[bk].a,PX[bk].b];

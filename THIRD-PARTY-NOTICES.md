@@ -5,6 +5,16 @@ notice below. Other development dependencies retain their own licenses in
 their npm packages. This notice does not assign a license to the game's
 original code or artwork.
 
+## Sound recordings (CC0)
+
+The recorded gun reports, monster voices and ambience in `assets/sfx/` are
+public-domain dedications (CC0 1.0) from OpenGameArt.org: The Free Firearm
+Sound Library (Still North Media), 80 CC0 creature SFX and #2 (rubberduck),
+16 Monster Growls (starninjas), Undead Moans (antumdeluge), Zombie / Skeleton /
+Monster Voice Effects (arcadeparty), Zombie moans (darsycho) and Ambient
+horror (techiew). No attribution is required; it is given anyway. Sources and
+edits are listed in `docs/assets.md`.
+
 ## Three.js
 
 The MIT License

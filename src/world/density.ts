@@ -34,10 +34,10 @@ const SOLID = "#WI";
 /** Decor that covers ground or sky rather than furnishing a place. */
 const COVER = new Set(["grass", "ember", "bridge", "roof", "light"]);
 
-/** `loadLevel`'s item table (`map2`), by glyph. Weapons are `w1`..`w7`. */
+/** `loadLevel`'s item table (`map2`), by glyph. Weapons are `w1`..`w9`. */
 export const ITEM_KIND: Readonly<Record<string, string>> = {
   h: "health", A: "armor", r: "armor", a: "bullets", b: "shells", o: "slugs", c: "crosses", K: "key",
-  "2": "w1", "3": "w2", "4": "w3", "5": "w4", "6": "w5", "7": "w6", "8": "w7", "9": "nails", "0": "souls",
+  "2": "w1", "3": "w2", "4": "w3", "5": "w4", "6": "w5", "7": "w6", "8": "w7", "9": "nails", "0": "souls", d: "w8", e: "tnt", u: "w9", "1": "stakes", J: "seal_ash", M: "seal_bell",
 };
 
 /** The prop string `loadLevel` hands `spawnProp`, and what each glyph builds. `C` and `V` are enemies first (KNOWN-4). */

@@ -2,7 +2,8 @@ import type { Enemy } from "../enemies/Enemy";
 import type { ZoneMap } from "./LevelBuilder";
 
 /** A solid mass of set dressing (a sarcophagus, a machine): an axis-aligned box in world units, `[x0, x1) x [z0, z1)`. See `src/world/decor/masses.ts`. */
-export interface MassBox { x0: number; x1: number; z0: number; z1: number }
+/** A solid piece of dressing's footprint, world units, and `y1` how tall it stands over its floor (what a shot clears: `shotSolidAt`). */
+export interface MassBox { x0: number; x1: number; z0: number; z1: number; y1: number }
 
 /**
  * Everything loadLevel() builds and the systems read for the rest of the

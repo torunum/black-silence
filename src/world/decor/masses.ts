@@ -1,4 +1,5 @@
-import { CELL } from "../Grid";
+import * as THREE from "three";
+import { CELL, WALLH } from "../Grid";
 import type { DecorSpec } from "../LevelBuilder";
 import type { MassBox } from "../WorldState";
 import { PIECES } from "./registry";
@@ -11,11 +12,13 @@ import { PIECES } from "./registry";
  *
  * That one call is what the player (`collides` samples eight points round the
  * player's radius through it), every enemy's step, a projectile, a hitscan ray and
- * an enemy's line of sight all ask, so a mass stops all of them. **Shots stop on
- * a mass, at any height**: `solidAt` has no height, and a knee-high fallen statue
- * is as much cover as a machine. That is the trade for one rule instead of five,
- * and it is why the placement rules (`place.ts`) keep a mass out of every
- * corridor, doorway and junction: what a mass may not do is cut the level in two.
+ * an enemy's line of sight all ask, so a mass stops all of them. A shot is the
+ * exception (owner, 2026-10-21: "kısa cisimlerin üzerinden mermi gitmiyor"): a mass
+ * knows how tall it stands (`y1`, measured off the piece's own parts), and
+ * `shotSolidAt` lets a bullet, a nail, a stake or an orb pass over one it clears —
+ * a crate pile is cover to crouch behind, not a wall to the ceiling. The placement
+ * rules (`place.ts`) keep a mass out of every corridor, doorway and junction: what
+ * a mass may not do is cut the level in two.
  *
  * Boxes are the axis-aligned bounds of the footprint after the spec's yaw and
  * size. A wall piece's yaw is a multiple of 90 degrees, so its box is exact; a
@@ -36,7 +39,24 @@ export function massBox(d: DecorSpec): MassBox | null {
     const x = wx + (lx * cos + lz * sin) * k, z = wz + (-lx * sin + lz * cos) * k;
     x0 = Math.min(x0, x); x1 = Math.max(x1, x); z0 = Math.min(z0, z); z1 = Math.max(z1, z);
   }
-  return { x0, x1, z0, z1 };
+  return { x0, x1, z0, z1, y1: pieceTop(d) * k };
+}
+
+const tops = new Map<string, number>();
+/** How tall a piece stands over its floor, before its scale: the highest corner of any of its parts (measured once a kind). */
+export function pieceTop(d: DecorSpec): number {
+  const info = PIECES[d.k], id = d.k + "|" + (d.h ?? "");
+  let top = tops.get(id);
+  if (top !== undefined) return top;
+  top = 0;
+  const v = new THREE.Vector3();
+  const take = (m: THREE.Matrix4, hx: number, hy: number, hz: number): void => {
+    for (const sx of [-1, 1]) for (const sy of [-1, 1]) for (const sz of [-1, 1]) { v.set(sx * hx, sy * hy, sz * hz).applyMatrix4(m); if (v.y > top!) top = v.y; }
+  };
+  const spec = info.h !== undefined && d.h === undefined ? { ...d, h: info.h } : d;
+  info.build((_m, w, h, dd, m) => take(m, w / 2, h / 2, dd / 2), (_m, r0, r1, h, m) => take(m, Math.max(r0, r1), h / 2, Math.max(r0, r1)), spec, WALLH, (_m, r, m) => take(m, r, r, r));
+  tops.set(id, top);
+  return top;
 }
 
 /** Every mass of a decor list. */

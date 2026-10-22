@@ -44,6 +44,8 @@ export interface GameState {
     crosses: number;
     nails: number;
     souls: number;
+    tnt: number;
+    stakes: number;
   };
   mag: number[];
   weapons: boolean[];
@@ -93,6 +95,6 @@ export interface GameState {
 export const S: GameState = {hp:100,armor:0,key:false,dead:false,won:false,level:0,
   kills:0,gibs:0,secrets:0,secretsTotal:0,shots:0,hitsLanded:0,propsBroken:0,deaths:0,
   totKills:0,totGibs:0,totSecrets:0,t0:0,levelT0:0,
-  ammo:{bullets:60,shells:0,slugs:0,crosses:0,nails:0,souls:0},
-  mag:[6,0,0,0,0,0,0,0],weapons:[true,false,false,false,false,false,false,false],cur:0,
+  ammo:{bullets:60,shells:0,slugs:0,crosses:0,nails:0,souls:0,tnt:0,stakes:0},
+  mag:[6,0,0,0,0,0,0,0,0,0],weapons:[true,false,false,false,false,false,false,false,false,false],cur:0,
   kickCd:0,pianoNotes:0,ach:{}};

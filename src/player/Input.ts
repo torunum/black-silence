@@ -1,3 +1,4 @@
+import { pointerLockChanged } from "../ui/Pause";
 import { clamp } from "../utils/math";
 import { el } from "../ui/dom";
 import { animCues } from "../core/AnimCues";
@@ -95,15 +96,15 @@ addEventListener("keydown", e => {
   if (e.code === "KeyE") hooks.interact();
   if (e.code === "KeyR") hooks.startReload();
   if (e.code === "KeyZ" && hooks.currentWeapon() === 4) input.zoomOn = !input.zoomOn;
-  if (/^Digit[1-8]$/.test(e.code)) hooks.requestSwitch(+e.code[5] - 1);
+  if (/^Digit[0-9]$/.test(e.code)) hooks.requestSwitch(e.code === "Digit0" ? 9 : +e.code[5] - 1);   // 0 is the tenth, the stake gun
 }, false);
 addEventListener("keyup", e => keys[e.code] = false);
 addEventListener("wheel", e => {
   animCues.input++;
   if (!hooks) return;
   if (!hooks.isStarted() || hooks.isPianoOpen()) return;
-  let i = hooks.currentWeapon(); for (let k = 0; k < 8; k++) {
-    i = (i + (e.deltaY > 0 ? 1 : 7)) % 8;
+  let i = hooks.currentWeapon(); for (let k = 0; k < 10; k++) {
+    i = (i + (e.deltaY > 0 ? 1 : 9)) % 10;
     if (hooks.ownsWeapon(i)) { hooks.requestSwitch(i); break; }
   }
 });
@@ -120,6 +121,7 @@ document.addEventListener("mousemove", e => {
 document.addEventListener("pointerlockchange", () => {
   if (!hooks) return;
   input.locked = document.pointerLockElement === hooks.canvas();
+  pointerLockChanged(input.locked, overlayOpen());   // Esc in play pauses the game (src/ui/Pause.ts)
 });
 addEventListener("mousedown", e => {
   animCues.input++;

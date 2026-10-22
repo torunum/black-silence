@@ -204,13 +204,13 @@ describe("wall courses go on the faces that can be seen, and only those", () => 
   });
 
   it("hangs each cornice under the vault it faces on the level that raises its ceiling", () => {
-    // Level 3 is the one level with a ceiling map. A cornice left at WALLH
-    // there would be a line halfway up the wall with the real cornice line
-    // (where the riser meets the vault) bare.
+    // Level 3 (the necropolis, rebuilt 2026-10-21) vaults its court, its plaza and its church. A cornice left at WALLH there would be a
+    // line halfway up the wall with the real cornice line (where the riser meets the vault) bare. (Its raised floors' ceilings, three
+    // over the floor, are less than a metre over WALLH: only the faces under a vault a metre and more above it are held here.)
     loadLevel(3);
     expect(world.ceilMap).not.toBeNull();
     const cornices = children("wallCourse").flatMap((c) => placed(c)).filter((p) => p.up.y < 0);
-    const raised = cornices.filter((p) => { const f = faceOf(p); return ceilHeightAtCell(f.nx, f.nz) > WALLH; });
+    const raised = cornices.filter((p) => { const f = faceOf(p); return ceilHeightAtCell(f.nx, f.nz) > WALLH + 1; });
     expect(raised.length, "level 3 has wall faces under a raised vault").toBeGreaterThan(20);
     for (const p of raised) expect(p.pos.y).toBeGreaterThan(WALLH + 1);
   });
@@ -229,7 +229,12 @@ describe("doors", () => {
     loadLevel(1);
     const plain = Object.values(world.doors).filter((d) => !d.secret);
     expect(plain.length).toBeGreaterThan(0);
-    for (const d of plain) expect((d.mesh as THREE.Object3D).children).toEqual([]);
+    // (since 2026-10-21 a door under an arch is two leaves on hinges, src/world/LevelDoors.ts: its children are those, and no course)
+    for (const d of plain) {
+      const names: string[] = [];
+      (d.mesh as THREE.Object3D).traverse((o) => names.push(o.name));
+      expect(names.filter((n) => /course/i.test(n))).toEqual([]);
+    }
   });
 
   it("gives each secret door the course its neighbours have, riding down with the door", () => {

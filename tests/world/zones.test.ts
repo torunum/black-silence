@@ -142,8 +142,9 @@ describe("the prologue's zones dress the right cells", () => {
   });
 });
 
-describe("the other seven levels are unzoned and build what they always built", () => {
-  it.each([1, 2, 3, 4, 5, 6, 7])("level %i: one wall mesh, one floor plane, no zone meshes, its own textures", (i) => {
+describe("the other unzoned levels build what they always built", () => {
+  it.each([1, 2, 3, 5, 6, 7, 8])   // (4, the graveyard, has been zoned since 2026-10-22: its yards are under the sky)
+("level %i: one wall mesh, one floor plane, no zone meshes, its own textures", (i) => {
     loadLevel(i);
     const def = LEVELS[i];
     expect(world.zones).toBeNull();
@@ -204,7 +205,7 @@ describe("crossing into hell", () => {
     loadLevel(0);
     const spy = vi.spyOn(Math, "random");
     try {
-      for (const [x, z] of [[9.5, 4.5], [9.5, 10.5], [9.5, 15.5], [10, 20.5], [14.5, 26.5], [24.5, 16.5], [25.5, 9.5]]) {
+      for (const [x, z] of [[9.5, 4.5], [9.5, 10.5], [9.5, 15.5], [10, 20.5], [14.5, 26.5], [40.5, 28.5], [35.5, 52.5], [56.5, 30.5], [53.5, 9.5]]) {
         player.px = x * CELL; player.pz = z * CELL;
         for (let k = 0; k < 20; k++) zoneTick(1 / 60);
       }
@@ -309,13 +310,17 @@ describe("raised ground", () => {
 });
 
 describe("raised ground on an unzoned level is left where the reference put it", () => {
-  it("level 3's torches, candles and items on its raised tomb are not lifted (Decor.ts's `!world.zones` guard)", () => {
-    loadLevel(3);
+  it("a hand-written level's torches, candles and items on raised ground are not lifted (Decor.ts's `!world.zones` guard)", () => {
+    // (it was the old level 3's raised tomb; since the rebuilds of 2026-10-21 every unzoned level is written with `LevelPlan` and asks to be
+    // lifted, so the branch is held with the necropolis built as a hand-written level would be: its grid and floors, no `lift`)
+    const real = LEVELS[3].build;
+    LEVELS[3].build = () => { const L = real(); delete L.lift; return L; };
+    try { loadLevel(3); } finally { LEVELS[3].build = real; }
     expect(world.zones).toBeNull();
     type Lifted = { x: number; z: number; sp: THREE.Object3D; L?: THREE.Object3D; y?: number; y0?: number };
     const torches = world.torches as unknown as Lifted[], candles = world.candles as unknown as Lifted[], items = world.items as unknown as Lifted[];
     const raised = (a: Lifted[]) => a.filter((t) => floorHeightAt(t.x, t.z) > 0);
-    // the premise: level 3 does stand something on raised ground, or this proves nothing
+    // the premise: the level does stand something on raised ground, or this proves nothing
     expect(raised(torches).length + raised(candles).length + raised(items).length).toBeGreaterThan(0);
     for (const t of torches) {
       expect(t.L!.position.y, "torch light").toBe(1.45);
@@ -333,7 +338,7 @@ describe("room tones follow the player (src/world/ZoneBed.ts)", () => {
     const { currentBed } = await import("../../src/world/Zones");
     const { ambience } = await import("../../src/world/Ambience");
     const { ambienceState } = await import("../../src/world/AmbienceState");
-    const where: Array<[number, number, string | null]> = [[9.5, 4.5, "yard"], [9.5, 10.5, null], [10, 20.5, "hell"], [25.5, 9.5, null]];
+    const where: Array<[number, number, string | null]> = [[9.5, 4.5, "yard"], [9.5, 10.5, null], [10, 20.5, "hell"], [40.5, 35.5, "hell"], [53.5, 9.5, null]];
     loadLevel(0);
     for (const [x, z, bed] of where) {
       player.px = x * CELL; player.pz = z * CELL; zoneTick(1 / 60);
@@ -364,14 +369,14 @@ describe("the bridge over the pit", () => {
 });
 
 describe("the exit", () => {
-  it("leads to level 1: the crypt door ends the prologue, the card comes up over black, and a deliberate key loads the dungeon", async () => {
+  it("leads to level 1: the ladder up out of hell ends the prologue (2026-10-21; a crypt door before), the card comes up over black, and a deliberate key loads the monastery (played second: levels/index.ts PLAY_ORDER)", async () => {
     const { doors } = await import("../../src/world/ExitDoor");
     const { transitionTick } = await import("../../src/world/Transition");
     const { trans, T } = await import("../../src/world/TransitionState");
     loadLevel(0);
     skipOpening();   // the opening locks input, and playerTick with it (src/world/Opening.ts)
     S.won = false;
-    expect(doors.exit!.rig.style, "the prologue's exit is a crypt door").toBe("crypt");
+    expect(doors.exit!.rig.style, "the prologue's exit is the ladder up into the monastery").toBe("ladder");
     const d = doors.exit!;
     player.px = d.x + d.nx * .5; player.pz = d.z + d.nz * .5; player.pyy = EYE + floorHeightAt(player.px, player.pz);
     playerTick(1 / 60);
@@ -379,13 +384,13 @@ describe("the exit", () => {
     expect(document.getElementById("levelend")!.classList.contains("hidden"), "no panel while the door opens").toBe(true);
     for (let i = 0; i < Math.ceil((T.walk + T.hold + .1) * 60); i++) transitionTick(1 / 60);
     expect(document.getElementById("levelend")!.classList.contains("hidden")).toBe(false);
-    expect(document.getElementById("lebtn")!.textContent).toContain("THE GOTHIC DUNGEON");
+    expect(document.getElementById("lebtn")!.textContent).toContain("THE ASH BELL MONASTERY");
     expect(document.getElementById("letitle")!.textContent).toContain("OUT OF THE PIT");
     for (let i = 0; i < 70; i++) transitionTick(1 / 60);   // past T.cardAfter
     expect(trans.phase).toBe("card");
     window.dispatchEvent(new KeyboardEvent("keydown", { code: "Space" }));
-    expect(S.level).toBe(1);
-    expect(world.zones).toBeNull();
+    expect(S.level).toBe(9);
+    expect(world.zones, "the monastery has its own regions").not.toBeNull();
     for (let i = 0; i < Math.ceil((T.arrive + .1) * 60); i++) transitionTick(1 / 60);   // the arrival
     expect(trans.phase).toBe("idle");
   });

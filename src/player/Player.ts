@@ -119,6 +119,8 @@ function damagePlayer(d: number, silent?: boolean): void {
  * `WALK_BOB_AMT`/`SPRINT_BOB_AMT`.
  */
 export const WALK_BOB_RATE=0.45, SPRINT_BOB_RATE=0.45;
+/** Walking and running speed, m/s. (Raised to 9 and 13 for a Doom pace on 2026-10-20 and put back the same day: the owner liked the pace as it was.) */
+export const WALK_SPEED=7, SPRINT_SPEED=10.5;
 function accelerate(wx_: number, wz_: number, maxs: number, acc: number, dt: number): void {
   const cur=player.vx*wx_+player.vz*wz_,add=maxs-cur;if(add<=0)return;
   let a=acc*maxs*dt;if(a>add)a=add;player.vx+=wx_*a;player.vz+=wz_*a;}
@@ -149,7 +151,7 @@ function playerTick(dt: number): void {
   const standY=EYE+fh;
   if(player.grounded){
     const fr=Math.exp(-8*dt);player.vx*=fr;player.vz*=fr;
-    accelerate(wx_,wz_,sprint?10.5:7,9,dt);
+    accelerate(wx_,wz_,sprint?SPRINT_SPEED:WALK_SPEED,9,dt);
     if(keys.Space){player.vy=7.4;player.grounded=false;jump();}
   }else accelerate(wx_,wz_,1.4,70,dt);
   player.vy-=20*dt;player.pyy+=player.vy*dt;

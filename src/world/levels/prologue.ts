@@ -1,4 +1,5 @@
 import type { BuiltLevel, DecorSpec, ZoneTheme } from "../LevelBuilder";
+import { BANK, burningPit, climbOut, fieldOfPyres, STEP, throneOfBones, YARD, type Carve } from "./prologueHell";
 
 /**
  * PROLOGUE — OUT OF THE PIT: out of the grave, down through hell, and up.
@@ -107,7 +108,7 @@ import type { BuiltLevel, DecorSpec, ZoneTheme } from "../LevelBuilder";
  * raised ground: a shot finds a prop between y=0 and its height.
  */
 export function buildPrologue(): BuiltLevel {
-  const W = 30, H = 36;
+  const W = 64, H = 62;
   const g = Array.from({ length: H }, () => Array(W).fill("#"));
   const hm = Array.from({ length: H }, () => Array(W).fill(0));
   const cm = Array.from({ length: H }, () => Array(W).fill(0));
@@ -122,11 +123,11 @@ export function buildPrologue(): BuiltLevel {
   const d = (k: string, x: number, z: number, o: Partial<DecorSpec> = {}) => decor.push({ k, x, z, ...o });
   /** A solid cell with a piece standing on it: an `I` buried in the raised ground, the decor on top. */
   const stone = (k: string, x: number, z: number, o: Partial<DecorSpec> = {}) => { g[z][x] = "I"; d(k, x, z, o); };
-  const STEP = .42, YARD = 4.2, BANK = 2.1;
+  const c: Carve = { g, hm, cm, zm, open, rect, zone, d, stone };
 
   /* ---- 1. the churchyard ---------------------------------------------- */
-  zone(0, 0, 21, 12, YARDZ);
-  open(1, 1, 20, 11, YARD, YARD + 3.4);
+  zone(0, 0, 37, 13, YARDZ);
+  open(1, 1, 35, 11, YARD, YARD + 3.4);
   // the grave, dug up, and ADEM beside it; the mound of its earth; his stone at its head
   g[3][9] = "."; hm[3][9] = YARD - 2 * STEP;
   hm[3][10] = YARD + STEP;
@@ -134,7 +135,7 @@ export function buildPrologue(): BuiltLevel {
   stone("headstone", 9, 2, { h: -.08 });
   d("coffin", 9, 3, { r: .06 });
   d("lid", 10, 3, { r: -1.4 });
-  // the rows: headstones, crosses, a table tomb, two dead trees
+  // the rows: headstones, crosses, a table tomb, dead trees
   for (const [x, z, k, lean] of [
     [2, 2, "headstone", .05], [4, 2, "cross", 0], [6, 2, "headstone", -.12], [13, 2, "headstone", .1],
     [15, 2, "cross", .15], [17, 2, "headstone", 0], [19, 2, "headstone", -.06],
@@ -142,10 +143,12 @@ export function buildPrologue(): BuiltLevel {
     [16, 5, "cross", 0], [18, 5, "headstone", .08],
     [2, 8, "headstone", 0], [4, 8, "cross", .2], [15, 8, "headstone", -.1], [19, 8, "cross", -.05],
     [14, 10, "headstone", .06], [18, 10, "headstone", 0], [4, 10, "headstone", -.15],
+    [21, 2, "cross", .1], [21, 5, "headstone", -.08], [21, 8, "headstone", .12],
   ] as const) stone(k, x, z, { h: lean, r: (x * 7 + z * 3) % 5 * .05 - .1 });
   stone("tomb", 13, 5);
   stone("tree", 16, 9, { s: 1.25, r: .4 });
   stone("tree", 2, 10, { s: .9, r: 2.1 });
+  stone("tree", 35, 1, { s: 1.4, r: 1.2 });
   // lanterns at the mausoleum door and by the grave, candles on the graves
   g[4][7] = "i"; g[7][8] = "i"; g[7][11] = "i"; g[3][18] = "i";
   g[3][8] = "l"; g[3][4] = "l"; g[3][14] = "l"; g[6][16] = "l"; g[9][3] = "l"; g[11][19] = "l";
@@ -154,12 +157,13 @@ export function buildPrologue(): BuiltLevel {
   d("shovel", 10.2, 2.7, { r: .6, h: .3 });
   // the other dead: filled graves before the stones, and some of them are not staying down either
   for (const [x, z, hand] of [[2, 3, 0], [6, 3, .4], [15, 3, 0], [17, 3, 0], [19, 3, 0], [4, 6, 0], [14, 6, .5], [18, 6, 0],
-    [2, 9, .3], [15, 9, 0], [19, 9, .45], [14, 11, 0], [18, 11, 0]] as const) {
+    [2, 9, .3], [15, 9, 0], [19, 9, .45], [14, 11, 0], [18, 11, 0], [21, 3, .35], [21, 6, 0], [21, 9, 0]] as const) {
     d("mound", x, z, { h: ((x * 5 + z) % 3) - 1 });
     if (hand) d("hand", x + .15, z + .1, { h: hand, r: x * 1.3 });
   }
   d("bones", 16, 7, { r: 1.2, s: .8 });
   d("bones", 7, 10, { r: 3.3 });
+  chapelRuin(c);
 
   /* ---- 2. the mausoleum and the crypt stair ---------------------------- */
   zone(7, 8, 12, 17, CRYPT);
@@ -176,87 +180,43 @@ export function buildPrologue(): BuiltLevel {
   d("chain", 9, 16, { h: 1.6 });
 
   // dead grass over the yard, off the path worn from the grave to the mausoleum door
-  rect(1, 1, 20, 11, (x, z) => {
+  rect(1, 1, 35, 11, (x, z) => {
     if (g[z][x] === "." && hm[z][x] === YARD && zm[z][x] === YARDZ && !(x >= 8 && x <= 11 && z >= 3 && z <= 7) && (x * 7 + z * 13) % 5 < 3) d("grass", x, z);
   });
 
-  /* ---- 3. hell --------------------------------------------------------- */
-  open(1, 19, 10, 34, BANK, BANK + 5.2);         // west bank
-  open(18, 19, 27, 34, BANK, BANK + 5.2);        // east bank
-  open(11, 19, 17, 34, 0, 9.0);                  // the burning pit
-  open(11, 26, 17, 26, BANK, 9.0);               // the bridge
-  for (let x = 11; x <= 17; x++) d("bridge", x, 26);
-  open(9, 18, 10, 18, BANK, BANK + 3.4);         // the crypt stair's mouth
-  // steps out of the pit along both walls, in both halves the bridge cuts it into
-  for (let i = 0; i < 4; i++) for (const x of [11, 17]) { hm[31 + i][x] = (i + 1) * STEP; hm[22 - i][x] = (i + 1) * STEP; }
-  rect(11, 19, 17, 34, (x, z) => { if (hm[z][x] === 0) d("ember", x, z); });
-  // the lake's own light, four glows low over the lava: the cavern's walls are lit from below by the fire, not by ambient
-  for (const z of [21, 24, 29, 32]) d("light", 14, z, { s: 2.2, h: 15, r: 2.4 });
-  // braziers: a torch in an iron bowl
-  for (const [x, z] of [[10, 25], [18, 27], [3, 20], [26, 33], [4, 32]] as const) { g[z][x] = "i"; d("bowl", x, z); }
-  // the damned: zombies on the banks, crawlers in the fire
-  g[19][5] = "z"; g[25][19] = "z"; g[29][22] = "z"; g[32][24] = "z";
-  g[23][13] = "w"; g[32][15] = "w"; g[20][26] = "w"; g[22][27] = "w";
-  g[30][13] = "O"; g[21][16] = "O";                // barrels, on the pit floor
-  g[22][4] = "a"; g[28][2] = "h"; g[31][20] = "a"; g[24][26] = "h";
-  for (const [x, z, r] of [[6, 20, .4], [2, 26, 1.9], [8, 31, 3], [13, 28, .7], [16, 24, 2.2], [12, 33, 4.1],
-    [20, 20, 1.3], [25, 27, 5], [21, 34, .2], [15, 19, 2.8]] as const) d("bones", x, z, { r });
-  for (const [x, z, h] of [[12, 22, 3.2], [16, 29, 4.2], [14, 20, 2.6], [15, 33, 3.6], [5, 28, 2.2], [23, 25, 2.0]] as const)
-    d("chain", x, z, { h });
-  hellDressing(d);
+  /* ---- 3. hell: the burning pit, the field of pyres, the throne of bones (./prologueHell.ts) ---- */
+  burningPit(c);
+  fieldOfPyres(c);
+  throneOfBones(c);
 
   /* ---- 4. the climb out ------------------------------------------------ */
-  zone(22, 0, 29, 17, CLIMB);
-  zone(24, 18, 25, 18, CLIMB);                    // the first step up is the climb's stone, not hell's veined rock
-  open(24, 18, 25, 18, BANK + STEP, BANK + STEP + 3.0);   // first step, the cavern's mouth
-  for (let i = 1; i < 6; i++) { const f = Math.min(YARD, BANK + (i + 1) * STEP); open(24, 18 - i, 25, 18 - i, f, f + 3.2); }
-  open(23, 8, 27, 12, YARD, YARD + 3.4);          // the landing
-  g[9][25] = "X";
-  g[8][23] = "i"; g[8][27] = "i"; g[12][23] = "l"; g[12][27] = "l";
-  d("bones", 24, 15, { r: 1.7, s: .8 });
-  d("bones", 27, 11, { r: 2.6 });
-  stone("tomb", 23, 10, { r: Math.PI / 2 });
-  d("chain", 26, 10, { h: 1.3 });
+  climbOut(c, CLIMB);
 
   return { g, W, H, hmap: hm, cmap: cm, zones: { map: zm, themes: ZONES }, decor, grave: { x: 9, z: 3 } };
 }
 
 /**
- * The cavern's dressing (`src/world/decor/hell.ts`): outcrops against the walls, fangs and columns on the
- * banks' far sides, stakes and pyres between, spikes along the pit's lip, ribs, falls of lava down the pit's
- * two ends, and stalactites in the roof. The masses stay out of x 8-10 and z 18-27 on the west bank (the way
- * from the bridge to the crypt stair, which the zombie at the foot and the crawlers out of the pit take),
- * out of x 23-26 and z 18-23 on the east (the climb's mouth), and out of every cell beside a pickup. Freestanding
- * masses are few and sit in the banks' corners: `tests/enemies/stuckCheck.test.ts` (which runs this level) found the
- * first layout's twelve crawlers pinned against fangs, columns and a pyre standing in the open, and against
- * outcrops at the ends of the wall rows the crawlers walk, so those were moved or made walk-over (`shards`).
+ * The ruined chapel in the churchyard's east end (2026-10-22): its walls stand to the height of the yard's, its roof is long gone
+ * (the yard is a sky zone: the night is its ceiling), its door is a gap in the west wall and its south wall has fallen in. The altar
+ * is still against the north wall, its candelabra beside it; a grave has been opened in the nave and left, a statue lies
+ * where it fell, and whoever kept the place left a box of flares behind the altar.
  */
-function hellDressing(d: (k: string, x: number, z: number, o?: Partial<DecorSpec>) => void): void {
-  const W = Math.PI / 2, S = Math.PI;
-  // outcrops, backs to the walls: west wall (x 1), south wall (z 34). The fourth stood at (22, 34), the end of the south
-  // wall row the crawlers walk to a player on the east bank, and `stuckCheck.test.ts` pinned a crawler on it as soon as
-  // the exit's door (src/world/ExitDoor.ts) replaced the pad and so changed the dice a level load takes (every
-  // three.js object draws its UUID from the seeded stream, and the door is not the pad's four objects). It is in the
-  // north-west corner of the bank now, where nothing walks along the wall: tried at (27, 26), (19, 19), (5, 19) and
-  // (22, 19) and pinned a crawler or a zombie at each, so the cell is a measured one.
-  for (const [x, z, r] of [[1, 23, W], [1, 31, W], [6, 34, S], [1, 19, W]] as const) d("outcrop", x, z, { r });
-  // fangs, columns, a pyre: freestanding masses, in the corners of the banks and well off the straight lines between a crawler and a player
-  for (const [x, z] of [[4, 25], [25, 28]] as const) d("stalagmite", x, z);
-  for (const [x, z, r] of [[2, 33, 1.1], [26, 31, .7]] as const) d("basaltcol", x, z, { r });
-  d("pyre", 7, 33);
-  // splinters of rock underfoot, walked over
-  for (const [x, z] of [[3, 22], [8, 29], [5, 27], [9, 33], [2, 26], [21, 21], [20, 24], [22, 27], [25, 22], [20, 28], [24, 34], [19, 32], [27, 25], [26, 29], [27, 33]] as const) d("shards", x, z, { r: x * 2 + z });
-  // stakes and ribs and spikes: dressing you walk past
-  for (const [x, z] of [[7, 23], [5, 30], [9, 31], [22, 22], [25, 25], [19, 29]] as const) d("skullpole", x, z, { r: (x * 3 + z) % 7 });
-  d("ribs", 3, 27, { r: .6 }); d("ribs", 24, 30, { r: 2.4 });
-  for (const [x, z] of [[10, 29], [10, 32], [18, 24], [18, 30], [10, 21]] as const) d("spikes", x, z, { r: x + z });
-  // lava down the pit's two ends: the south wall's wide, the north wall's narrower
-  d("lavafall", 14, 34.45, { r: Math.PI, s: 3.4, h: 9 });
-  d("lavafall", 13, 18.55, { r: 0, s: 1.8, h: 8.6 });
-  // the roof: fangs of rock over the banks and the pit
-  for (const [x, z, h] of [[3, 22, 2.2], [7, 27, 1.6], [2, 30, 2.4], [8, 32, 1.8], [5, 24, 1.4], [20, 22, 2], [24, 26, 2.2], [21, 30, 1.8],
-    [26, 31, 2.4], [19, 33, 1.6], [23, 21, 2.4], [12, 21, 3], [16, 23, 2.6], [13, 28, 3.2], [15, 31, 2.8], [12, 33, 2.4], [16, 20, 2.2],
-    [14, 24, 2.8], [12, 30, 3]] as const) d("stalactite", x, z, { h });
+function chapelRuin(c: Carve): void {
+  const { g, rect, d } = c;
+  rect(24, 2, 34, 10, (x, z) => { if (x === 24 || x === 34 || z === 2 || z === 10) g[z][x] = "#"; });
+  for (const [x, z] of [[24, 5], [24, 6], [28, 10], [29, 10], [30, 10]] as const) g[z][x] = ".";   // the door; the fallen south wall
+  d("altar", 29, 3, { r: 0 });
+  d("candelabra", 27, 4); d("candelabra", 31, 4);
+  d("banner", 25, 4, { r: Math.PI / 2 }); d("banner", 33, 4, { r: -Math.PI / 2 });
+  d("opengrave", 29, 6, { r: Math.PI / 2 });
+  d("fallenstatue", 33, 7, { r: -Math.PI / 2 });
+  d("lectern", 25, 7, { r: Math.PI / 2 });
+  for (const [x, z] of [[25, 9], [27, 6], [31, 6], [33, 9], [28, 9]] as const) d("rubble", x, z, { r: x * z });
+  for (const [x, z] of [[26, 3], [32, 3], [30, 7]] as const) d("glass", x, z, { r: x + z });
+  g[3][33] = "a"; g[9][27] = "h";
+  // outside it: the yard's east end, its stones and lamps, the gravel path round to the fallen wall
+  for (const [x, z] of [[23, 11], [22, 4], [22, 7], [22, 1]] as const) d("gravelampDim", x, z, { r: x });
+  for (const [x, z] of [[26, 11], [32, 11], [35, 8]] as const) d("bones", x, z, { r: x * .7 });
 }
 
 /** Zone indices into `ZONES`. */

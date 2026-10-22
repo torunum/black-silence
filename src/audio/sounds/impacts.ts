@@ -187,3 +187,39 @@ export function propBreaks(): void {
     ]);
   });
 }
+
+/**
+ * A window's glass broken (owner: "kırılabilir cam pencereler"): the crack and crash of the pane going — a hard bright burst — then
+ * its pieces raining onto the stone for most of a second, each a short glassy ring at its own pitch, thinning out as they fall.
+ */
+export function glassShatters(): void {
+  const p = jit(0.05);
+  const bits: Layer[] = [];
+  for (let i = 0; i < 16; i++) {
+    const t = 0.05 + i * i * 0.0028 + soundRandom() * 0.03, f = (2600 + soundRandom() * 3400) * p;
+    bits.push({ at: t, tone: "sine", f: [f, f * 2.76, f * 5.4], env: { a: 0.0005, h: 0.002, d: 0.05 + soundRandom() * 0.06 }, level: 0.16 * (1 - i / 20) });
+  }
+  lv("glassShatters", () => {
+    play([
+      { noise: "white", filters: [{ type: "highpass", f: 2400 * p }], env: { a: 0.0004, h: 0.015, d: 0.16 }, drive: 2.2, level: 0.9 },
+      { noise: "white", filters: [{ type: "bandpass", f: 5200 * p, q: 1.2 }], env: { a: 0.001, h: 0.05, d: 0.3 }, level: 0.45 },
+      { tone: "sine", f: 220 * p, to: 110, over: 0.05, env: { a: 0.001, h: 0.004, d: 0.06 }, level: 0.3 },
+      ...bits,
+    ]);
+  });
+}
+
+/** A clay urn smashed: a dull pottery crack, the pieces clattering out over the stone, and the dry hiss of what was in it spilling. */
+export function potteryBreaks(): void {
+  const p = jit(0.06);
+  const bits: Layer[] = [];
+  for (let i = 0; i < 7; i++) bits.push(...clack(0.03 + i * 0.045 + soundRandom() * 0.03, [900 * p * (1 + 0.4 * soundRandom()), 1650 * p], 0.03, 0.22 * (1 - i * 0.1)));
+  lv("potteryBreaks", () => {
+    play([
+      { noise: "white", filters: [{ type: "bandpass", f: 1100 * p, q: 1.3 }], env: { a: 0.0005, h: 0.008, d: 0.07 }, drive: 2.5, level: 0.9 },
+      { tone: "sine", f: 300 * p, to: 140, over: 0.05, env: { a: 0.001, h: 0.005, d: 0.08 }, level: 0.4 },
+      ...bits,
+      { at: 0.05, noise: "pink", filters: [{ type: "highpass", f: 1800 }], env: { a: 0.05, h: 0.1, d: 0.25 }, level: 0.18 },
+    ]);
+  });
+}

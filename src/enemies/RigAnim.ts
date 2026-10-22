@@ -36,6 +36,8 @@ export { DEATH_AT };
 interface Sprite { map: THREE.Texture | null; needsUpdate: boolean }
 export interface RigShape {
   key: string;
+  /** A priest boss's second form (`Q2`, `Z2`...: `Boss.ts` sets it in its last phase): its frames are that rig's, where it has one. */
+  formKey?: string;
   sp: { material: Sprite };
   sever?: { lArm?: boolean; rArm?: boolean; legs?: boolean };
   deathKind: number; deathT: number; deathDir: number;
@@ -48,6 +50,12 @@ export interface RigShape {
 export function rigMask(e: Pick<RigShape, "sever" | "deathKind">, dead = false): number {
   const s = e.sever;
   return (s?.lArm ? L_ARM : 0) | (s?.rArm ? R_ARM : 0) | (s?.legs ? LEGS : 0) | (dead && e.deathKind === 2 ? HEAD : 0);
+}
+
+/** The rig whose frames `e` shows: its second form's once it has taken it (and that form has a rig), else its own. */
+function rigOf(e: RigShape): NonNullable<(typeof PX)[string]["rig"]> {
+  const f = e.formKey ? PX[e.formKey]?.rig : undefined;
+  return f ?? PX[e.key].rig!;
 }
 
 function show(e: RigShape, tex: THREE.Texture): void {
@@ -66,7 +74,7 @@ export function phaseAt(t: number, split: readonly [number, number]): number { r
 
 /** The frame of a living rigged monster this tick. `moving`: it stepped. `stunned`: it is held (a hit's stun), so it neither walks nor strikes. */
 export function rigLive(e: RigShape, dt: number, moving: boolean, stunned: boolean): void {
-  const set = PX[e.key].rig!, mask = rigMask(e), crawl = (mask & LEGS) !== 0;
+  const set = rigOf(e), mask = rigMask(e), crawl = (mask & LEGS) !== 0;
   let role: Role, i = 0;
   if (e.hurt > 0) { role = crawl ? "crawlPain" : "pain"; i = e.hurt > HURT_LEN * 0.5 ? 0 : 1; }
   else if (!stunned && (e.atkAnim ?? 0) > 0) { role = crawl ? "crawlAtk" : "atk"; i = attackPhase(e.atkAnim ?? 0); }
@@ -84,7 +92,7 @@ export function rigLive(e: RigShape, dt: number, moving: boolean, stunned: boole
 
 /** The frame of a rigged corpse this tick (and of a monster the moment it dies). */
 export function rigDead(e: RigShape): void {
-  const set = PX[e.key].rig!, mask = rigMask(e, true), crawl = (mask & LEGS) !== 0;
+  const set = rigOf(e), mask = rigMask(e, true), crawl = (mask & LEGS) !== 0;
   const tf = fallT(e.deathKind, e.deathT);
   if (e.deathKind === 2 && tf <= 0) { show(e, set.tex(crawl ? "crawlIdle" : "idle", 0, mask)); return; }   // a headless body still on its feet
   let i = 0;

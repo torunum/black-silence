@@ -145,6 +145,12 @@ describe("PARTICLES/DECALS/GIBS behavioral parity with reference", () => {
       modSnapshots[i] = { ...m, geometry: r.geometry, material: { ...m.material!, color: r.material!.color, vertexColors: r.material!.vertexColors } };
     }
     expect(lumps, "and the flesh gibs of the script (two in three of 115 calls, a pool of 110)").toBeGreaterThan(40);
+    // DIVERGENCE (the owner's round, 2026-10-22): the particles are round, a soft disc texture on their one material, transparent and not
+    // writing depth — the muzzle's smoke half a metre before the eye was a grey square over the crosshair. The Points object is checked to be
+    // that and is otherwise compared whole (its size, its vertex colours, where it stands).
+    const pts = modSnapshots.findIndex((x) => x.type === "Points");
+    expect(modSnapshots[pts].material, "the particles are a soft disc, drawn over what is behind them").toEqual(expect.objectContaining({ transparent: true, depthWrite: false }));
+    modSnapshots[pts] = { ...modSnapshots[pts], material: { ...modSnapshots[pts].material!, transparent: refSnapshots[pts].material!.transparent, depthWrite: refSnapshots[pts].material!.depthWrite } };
 
     // A recorder that can pass on an empty (or trivially short) log proves
     // nothing (see tests/behavior/textures.test.ts's identical caveat).

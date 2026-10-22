@@ -41,6 +41,13 @@ export interface EnemyDef {
  * Keyed by the level-grid character that spawns the enemy.
  * Copied verbatim from reference/sonsurum.html lines 2678-2716.
  */
+/**
+ * How much tougher every monster but a boss is than its def says, at spawn (`spawnEnemy`): owner, 2026-10-22, "canları biraz daha
+ * olsun, biraz daha zor ölsünler". The defs keep the reference's numbers (the fidelity suite compares them); this is the one place the
+ * game's balance departs from them, and the bosses keep theirs.
+ */
+export const TOUGHNESS = 1.4;
+
 export const ENEMY_DEFS: Record<string, EnemyDef> = {
   z: { hp: 50, sp: 2.4, mel: 12, w: 1.0, h: 1.4, pain: 170, fling: true },
   f: { hp: 35, sp: 5.2, mel: 10, w: 0.9, h: 1.25, pain: 260, dodge: true },

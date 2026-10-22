@@ -245,8 +245,10 @@ function sourcesReaching(events: AudioEvent[], target: string): string[] {
   return sources.filter((id) => reaches.has(id)).sort();
 }
 
-const BALLISTIC = WEAPON_STATS.map((w, i) => ({ ...w, i })).filter((w) => w.kind === "hit");
-const UNCHANGED = WEAPON_STATS.map((w, i) => ({ ...w, i })).filter((w) => w.kind !== "hit");
+/** The reference's eight slots: DYNAMITE (slot 8, the owner's round 2026-10-20) has no reference closure to compare with. */
+const REF_STATS = WEAPON_STATS.slice(0, 8);
+const BALLISTIC = REF_STATS.map((w, i) => ({ ...w, i })).filter((w) => w.kind === "hit");
+const UNCHANGED = REF_STATS.map((w, i) => ({ ...w, i })).filter((w) => w.kind !== "hit");
 
 describe("which weapon reports diverge from the reference at all", () => {
   it("is exactly the six kind:\"hit\" slots — derived from WEAPON_STATS, not written down", () => {
@@ -255,7 +257,7 @@ describe("which weapon reports diverge from the reference at all", () => {
     // data. So "every firearm changed, and only firearms changed" is
     // checked rather than asserted, and a seventh slot quietly picking up a
     // gunshot() (or a sixth quietly losing one) fails here by name.
-    const diverged = WEAPON_STATS.map((_w, slot) => slot).filter((slot) => {
+    const diverged = REF_STATS.map((_w, slot) => slot).filter((slot) => {
       // Compared with the noise source set aside: since round 2 Task 1 every
       // slot plays shared noise, so a raw comparison would call all eight
       // "diverged" and prove nothing. compareSoundLogs is what the
@@ -277,7 +279,7 @@ describe("which weapon reports diverge from the reference at all", () => {
   });
 
   it("guard: the reference really does define all eight snd closures, so the loop above cannot be vacuous", () => {
-    for (let slot = 0; slot < WEAPON_STATS.length; slot++) {
+    for (let slot = 0; slot < REF_STATS.length; slot++) {
       expect(recordReference(slot).length).toBeGreaterThan(5);
     }
   });

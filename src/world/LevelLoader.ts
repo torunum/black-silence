@@ -1,6 +1,10 @@
 import * as THREE from "three";
-import { pick, rnd } from "../utils/math";
-import { LEVELS } from "./levels/index";
+import { arrivalLine } from "../content/monologue";
+import { loadScript, setScriptDef } from "./script/ScriptRun";
+import { resetDynamite } from "../weapons/DynamiteState";
+import { resetStakes } from "../weapons/StakeState";
+import { rnd } from "../utils/math";
+import { LEVELS, titleOf } from "./levels/index";
 import { ENEMY_DEFS as EDEF } from "../enemies/EnemyDefs";
 import { TEX } from "../render/ProcTextures";
 import { bandFor } from "../render/BandTextures";
@@ -23,13 +27,18 @@ import { input } from "../player/Input";
 import { player } from "../player/PlayerState";
 import { S } from "../core/State";
 import { CELL, WALLH, EYE } from "./Grid";
-import { floorHeightAt } from "./Collision";
+import { ceilHeightAtCell, floorHeightAt } from "./Collision";
 import { buildCeiling } from "./Ceiling";
 import { buildTrim } from "./Trim";
 import { buildArches } from "./Arches";
+import { buildLevelDoor, fitDoorCeilings, resetLevelDoors, sinkingDoor } from "./LevelDoors";
+import { addWindow, resetWindows } from "./Windows";
 import { wallMaterials, addInstanced, groupPush, buildFloor, buildPlatforms } from "./LevelMeshes";
 import { themeTex, shellAt } from "./ZoneLook";
 import { buildHell } from "./HellShell";
+import { buildWater } from "../fx/Water";
+import { TOUGHNESS } from "../enemies/EnemyDefs";
+import { resetHands } from "../player/HandsState";
 import { levelLook, enterZones } from "./Zones";
 import { dressLevel } from "./Decor";
 import { massMap } from "./decor/masses";
@@ -169,13 +178,14 @@ export function spawnEnemy(ch: string, wx: number, wz: number, summoned?: boolea
   const d=EDEF[ch];
   const elite=!d.boss&&!summoned&&Math.random()<.11;
   const SZ=1.18;                       // overall sprite presence bump
-  const mul=elite?2:1;
+  const mul=(elite?2:1)*(d.boss?1:TOUGHNESS);   // (owner, 2026-10-22: "canları biraz daha olsun, biraz daha zor ölsünler")
   const ew=d.w*(elite?1.15:1)*SZ, eh=d.h*(elite?1.15:1)*SZ;
   const e: Enemy={key:ch,name:d.name,x:wx,z:wz,hp:d.hp*mul,maxhp:d.hp*mul,
     speed:d.sp*(elite?1.15:1),mel:d.mel,w:ew,h:eh,
     pain:d.pain,kbRes:d.kbRes||0,boss:!!d.boss,priest:!!d.priest,stone:!!d.stone,
     charge:!!d.charge,slam:!!d.slam,lunge:!!d.lunge,dodge:!!d.dodge,
     scream:!!d.scream,toxic:!!d.toxic,range:d.range||0,plate:d.plate||0,
+    orb:d.orb,fly:!!d.fly,flyH:d.flyH||0,twin:!!d.twin,burst:!!d.burst,charger:!!d.charger,fling:!!d.fling,shield:!!d.shield,sovereign:!!d.sovereign,title:d.title,   // KNOWN-15, closed (owner, 2026-10-21): the def's behaviours, delivered
     sp:addSprite(PX[ch].a,wx,wz,ew,eh),
     blob:addBlob(wx,wz,ew*1.25),elite,summoned:!!summoned,
     cool:0,hurt:0,stun:0,kx:0,kz:0,flung:0,flungT:0,
@@ -195,7 +205,7 @@ export function spawnEnemy(ch: string, wx: number, wz: number, summoned?: boolea
   return e;}
 
 export function loadLevel(idx: number, resume?: Resume): void {
-  clearAllTimers();clearScheduled();disposeAll();stopMusic();resetOpening();
+  clearAllTimers();clearScheduled();disposeAll();stopMusic();resetOpening();resetDynamite();resetStakes();resetLevelDoors();resetWindows();
   S.level=idx;
   const Ldef=LEVELS[idx],L=Ldef.build();
   // The look it starts with: the level's own, or on a zoned level the spawn
@@ -204,6 +214,7 @@ export function loadLevel(idx: number, resume?: Resume): void {
   setRoom(roomFor(look));   // the level's reverb (src/audio/Room.ts) — player feedback round 2 Task 2
   world.grid=L.g;world.GW=L.W;world.GH=L.H;
   world.heightMap=L.hmap||null;
+  setScriptDef(L.script);   // before the meshes: the lift's cells are its own mesh, not a platform (src/world/script/)
   world.ceilMap=L.cmap||null;
   world.zones=L.zones||null;
   world.masses=massMap(L.decor);   // the solid dressing (src/world/decor/masses.ts), which `solidAt` reads
@@ -220,7 +231,7 @@ export function loadLevel(idx: number, resume?: Resume): void {
   renderState.muzzleLight=track(new THREE.PointLight(0xffc878,0,14,1.4));renderState.scene.add(renderState.muzzleLight);
   renderState.boomLight=track(new THREE.PointLight(0xff7830,0,20,1.4));renderState.scene.add(renderState.boomLight);
   buildParticles();
-  resetDecals();resetGibs();resetScreenFx();resetImpactFx();
+  resetDecals();resetGibs();resetScreenFx();resetImpactFx();resetHands();   // (a finish by hand, a drop kick: src/player/HandsState.ts)
   world.doors={};world.enemies=[];world.props=[];world.items=[];world.torches=[];world.candles=[];
   world.poisonZones=[];world.rings=[];world.strikes=[];projectiles.nails=[];projectiles.orbs=[];headPool.heads=[];
   world.exitPos=null;world.pianoPos=null;world.challenge=null;world.bossRef=null;world.cine=null;
@@ -252,6 +263,7 @@ export function loadLevel(idx: number, resume?: Resume): void {
   // object to hand them, and doors don't even share one material the way
   // walls do (locked/flesh/plain textures, vs. secrets sharing the wall's).
   const wallMats=new Map<THREE.Material,THREE.Matrix4[]>(),pilMats=new Map<THREE.Material,THREE.Matrix4[]>();
+  fitDoorCeilings();   // a door cell's ceiling, the passage's (src/world/LevelDoors.ts)
   for(let z=0;z<world.GH;z++)for(let x=0;x<world.GW;x++){
     const ch=world.grid[z][x],wx=(x+.5)*CELL,wz=(z+.5)*CELL;
     if(ch==="#"||ch==="W"){
@@ -260,24 +272,17 @@ export function loadLevel(idx: number, resume?: Resume): void {
         if(r&&r[x+dx]&&"#W".indexOf(r[x+dx])<0){open=true;dx0=dx;dz0=dz;break;}}
       if(!open)continue;
       if(!shellAt(x,z))groupPush(wallMats,matWallAt(x,z),new THREE.Matrix4().setPosition(wx,WALLH/2,wz));   // a shell zone's walls are built world-mapped (HellShell.ts)
-      if(ch==="W"){
-        const gm=new THREE.Mesh(track(new THREE.PlaneGeometry(1.6,2.6)),matWin);
-        gm.position.set(wx+dx0*(CELL/2+.02),WALLH*.56,wz+dz0*(CELL/2+.02));
-        gm.lookAt(wx+dx0*4,WALLH*.56,wz+dz0*4);gm.name="window";renderState.scene.add(gm);
-        const col=pick([0x5a3a8e,0x3a5a9e,0x9e3a3a]);
-        const wl=track(new THREE.PointLight(col,1.1,9,1.5));
-        wl.position.set(wx+dx0*1.7,WALLH*.6,wz+dz0*1.7);renderState.scene.add(wl);
-        const cone=new THREE.Mesh(track(new THREE.ConeGeometry(1.2,WALLH-.6,8,1,true)),
-          track(new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:.05,
-            side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending})));
-        cone.position.set(wx+dx0*1.7,(WALLH-.6)/2,wz+dz0*1.7);cone.name="windowCone";renderState.scene.add(cone);}}
+      if(ch==="W")addWindow(renderState.scene as THREE.Scene,x,z,wx,wz,dx0,dz0,matWin);}   // its glass, light and beam: src/world/Windows.ts, where it also breaks
     else if(ch==="I"){
       groupPush(pilMats,matPil,new THREE.Matrix4().setPosition(wx,WALLH/2,wz));}
     else if(ch==="+"||ch==="D"||ch==="S"){
+      // a plain or locked door under an arch: two leaves that swing (src/world/LevelDoors.ts); a secret door, or one with no arch, the sinking block
+      const sw=ch==="S"?null:buildLevelDoor(renderState.scene as THREE.Scene,x,z,ch==="D"?"locked":flesh?"flesh":"plain",world.heightMap?.[z]?.[x]||0,ceilHeightAtCell(x,z),matWallAt(x,z));
+      if(sw){world.doors[x+","+z]={...sw,locked:ch==="D",secret:false,flesh:!!flesh&&ch!=="D"};continue;}
       let mat;if(ch==="S"){mat=matWallAt(x,z);S.secretsTotal++;}
       else mat=track(new THREE.MeshLambertMaterial({map:ch==="D"?TEX.doorLocked:(flesh?TEX.fleshDoor:TEX.door)}));
-      const m=new THREE.Mesh(wallGeo,mat);m.name="door";m.position.set(wx,WALLH/2,wz);renderState.scene.add(m);
-      world.doors[x+","+z]={mesh:m,open:false,locked:ch==="D",secret:ch==="S",flesh:flesh&&ch!=="D"};}}
+      const sk=sinkingDoor(renderState.scene as THREE.Scene,x,z,mat,wallGeo,world.heightMap?.[z]?.[x]||0,ceilHeightAtCell(x,z));   // floor to ceiling, on its own floor
+      world.doors[x+","+z]={mesh:sk.mesh,y0:sk.y0,h:sk.h,open:false,locked:ch==="D",secret:ch==="S",flesh:flesh&&ch!=="D"};}}
   addInstanced(renderState.scene as THREE.Scene,wallGeo,wallMats,"wall");
   addInstanced(renderState.scene as THREE.Scene,pilGeo,pilMats,"pillar");
   buildFloor(renderState.scene as THREE.Scene,Ldef);   // src/world/LevelMeshes.ts
@@ -287,6 +292,7 @@ export function loadLevel(idx: number, resume?: Resume): void {
   buildArches(renderState.scene as THREE.Scene,band);
   buildPlatforms(renderState.scene as THREE.Scene,Ldef);   // raised floor platforms (verticality) — LevelMeshes.ts
   buildHell(renderState.scene as THREE.Scene);   // hell's walls, cliffs, ground and lava, world-mapped — src/world/HellShell.ts
+  buildWater(renderState.scene as THREE.Scene,L.g,L.water,world.heightMap,L.fluid);   // the sewers' standing water, the womb's blood — src/fx/Water.ts
   /* angled wall meshes from arbitrary segments — non-orthogonal Doom/Blood walls */
   if(world.wallSegs.length){
     const segMat=track(new THREE.MeshLambertMaterial({map:wallTex}));
@@ -327,9 +333,10 @@ export function loadLevel(idx: number, resume?: Resume): void {
     else if(ch==="Y"){world.challenge={x:wx,z:wz,state:0,spawned:[]};
       const plate=new THREE.Mesh(track(new THREE.CircleGeometry(.9,10)),
         track(new THREE.MeshBasicMaterial({color:0x6a4ab8,transparent:true,opacity:.5})));
-      plate.rotation.x=-Math.PI/2;plate.position.set(wx,.02,wz);renderState.scene.add(plate);
+      const pfy=floorHeightAt(wx,wz);   // on the floor it is on (the village's plate is at 1.2: 2026-10-21)
+      plate.rotation.x=-Math.PI/2;plate.position.set(wx,pfy+.02,wz);renderState.scene.add(plate);
       // decay:1 explicit — same restoration, reference/sonsurum.html:2933.
-      const gl=track(new THREE.PointLight(0x6a4ab8,.7,5,1));gl.position.set(wx,.8,wz);renderState.scene.add(gl);
+      const gl=track(new THREE.PointLight(0x6a4ab8,.7,5,1));gl.position.set(wx,pfy+.8,wz);renderState.scene.add(gl);
       (world.challenge as Record<string, unknown>).plate=plate;(world.challenge as Record<string, unknown>).light=gl;}
     else if(EDEF[ch])spawnEnemy(ch,wx,wz);
     // KNOWN-4 lives on this line and the one above it: `C` and `V` are in both
@@ -354,10 +361,11 @@ export function loadLevel(idx: number, resume?: Resume): void {
       // every glyph free in all five tables has such a twin. See
       // docs/known-issues.md KNOWN-11 for the full glyph derivation.
       const map2:Record<string,string>={h:"health",A:"armor",r:"armor",a:"bullets",b:"shells",o:"slugs",c:"crosses",K:"key",
-        "2":"w1","3":"w2","4":"w3","5":"w4","6":"w5","7":"w6","8":"w7","9":"nails","0":"souls"};
+        "2":"w1","3":"w2","4":"w3","5":"w4","6":"w5","7":"w6","8":"w7","9":"nails","0":"souls",d:"w8",e:"tnt",u:"w9","1":"stakes",J:"seal_ash",M:"seal_bell"};
       const k=map2[ch];if(!k)continue;
-      const tex=(k[0]==="w"?ITEMTEX.gun:ITEMTEX[k]) as THREE.CanvasTexture;
-      world.items.push({kind:k,x:wx,z:wz,sp:addSprite(tex,wx,wz,.55,.55,.5),bob:Math.random()*6});}
+      const tex=(ITEMTEX[k]??(k==="w8"?ITEMTEX.tnt:ITEMTEX.gun)) as THREE.CanvasTexture;   // each weapon its own icon once src/render/PickupArt.ts has painted them
+      // dynamite (2026-10-20) bobs from where it lies, not from Math.random: the seeded traces must not see it
+      world.items.push({kind:k,x:wx,z:wz,sp:addSprite(tex,wx,wz,k[0]==="w"?.8:.55,k[0]==="w"?.8:.55,.5),bob:k==="w8"||k==="tnt"||k==="w9"||k==="stakes"?(x*7+z*3)%6:Math.random()*6});}
     world.grid[z][x]=".";}
   buildLevelDoors(renderState.scene as THREE.Scene,Ldef,bossExit,!L.grave);   // the exit and the entrance — src/world/ExitDoor.ts
   dressLevel(renderState.scene as THREE.Scene,L);   // set dressing, and what stands on raised ground — src/world/Decor.ts
@@ -367,14 +375,15 @@ export function loadLevel(idx: number, resume?: Resume): void {
   // policy is one decision living in one file (src/render/Shadows.ts); a
   // scene child whose name is not in `SHADOW_POLICY` keeps three's defaults.
   applyShadowFlags(renderState.scene);
+  loadScript();   // a level's seals, gate, bell and lift, once its meshes are built (src/world/script/)
   if(resume?.at){player.px=resume.at.x;player.pz=resume.at.z;}   // a rise: where the shrine caught the player
   player.vx=player.vy=player.vz=0;player.pyy=EYE+floorHeightAt(player.px,player.pz);input.yaw=resume?.at?resume.at.yaw:Math.PI;input.pitch=0;player.grounded=true;
   enterZones();   // the start zone's fog, light and room, snapped — src/world/Zones.ts
   const lt=document.getElementById("lvltitle") as HTMLElement;
   if(resume){lt.style.opacity="0";return;}   // a death's reload tells the player itself (src/world/Respawn.ts): no title, no opening, no level line
-  lt.textContent=Ldef.name;lt.style.opacity="1";
+  lt.textContent=titleOf(idx);lt.style.opacity="1";
   after(()=>lt.style.opacity="0",5000);
-  showMsg(Ldef.name,3.4);
+  showMsg(titleOf(idx),3.4);
   // A level that opens in a grave says its line at the end of the rise (src/world/Opening.ts); the rest after 1.4 s.
-  if(L.grave)beginOpening(L.grave,"lvl"+idx);
-  else after(()=>say("lvl"+idx,true),1400);}
+  if(L.grave)beginOpening(L.grave,arrivalLine(idx));
+  else after(()=>say(arrivalLine(idx),true),1400);}   // the level's own opening line (src/content/monologue.ts)

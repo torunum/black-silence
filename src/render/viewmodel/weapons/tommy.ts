@@ -24,6 +24,12 @@ const drumTex = (x: number, y: number): number => {
   return Math.abs(d - 0.034) < 0.003 || Math.abs(d - 0.056) < 0.0025 ? -1.2 : d < 0.009 ? 1 : 0;
 };
 
+/** The receiver's machining: the seams of its panels, the ejection port on its right side, the takedown pin (2026-10-22: it was one flat grey box). */
+const receiverTex = (x: number, y: number, z: number): number =>
+  x > 0.019 && y > 0.016 && y < 0.036 && z > 0.0 && z < 0.07 ? -2.5 :                      // the ejection port
+  Math.abs(z - 0.085) < 0.0022 || Math.abs(z + 0.045) < 0.0022 || Math.abs(y - 0.012) < 0.0018 ? -1.4 :   // panel seams
+  Math.abs(x) > 0.019 && Math.hypot(y - 0.035, z + 0.065) < 0.006 ? 1 : 0;              // the takedown pin's head
+
 /** The drum: a fat disc whose axis runs along local x, hung from its top edge at the origin. */
 function drum(b: Builder): void {
   b.push(); b.translate(0, -0.068, 0.0); b.yaw(Math.PI / 2);
@@ -34,7 +40,8 @@ function drum(b: Builder): void {
 
 export const tommyGun: WeaponArt = {
   name: "TOMMY GUN",
-  hold: { x: 0.1, y: -0.07, z: 0.33, pitch: -0.02, yaw: -0.1, roll: 0.26 },
+  hold: { x: 0.038, y: -0.0672, z: 0.33, pitch: 0.16, yaw: 0, roll: 0 },  // a little right of centre, square to the screen, looking ahead (owner, 2026-10-20: option 3, "biraz daha dik")
+  present: { y: 0.045, pitch: 0.3, roll: 0 },   // the reload brought up into view (pose.ts)
   kick: { back: 0.016, lift: 0.05 },
   action: (p) => hump(p, 0.0, 1.0, 0.45),
   draw(b: Builder, pose: Pose) {
@@ -43,7 +50,7 @@ export const tommyGun: WeaponArt = {
     b.translate(0, -0.01 * tilt, 0); b.roll(0.3 * tilt); b.pitch(-0.04 * tilt);
 
     // receiver with the knob slot, rear sight, stock
-    b.cbox(-0.022, 0.0, -0.08, 0.022, 0.05, 0.13, 0.006, MAT.IRON);
+    b.cbox(-0.022, 0.0, -0.08, 0.022, 0.05, 0.13, 0.006, MAT.IRON, { tex: receiverTex });
     b.box(-0.004, 0.049, -0.06, 0.004, 0.051, 0.06, MAT.BLACK);
     const knob = Math.max(pose.action, r < 0 ? 0 : hump(r, ...TOMMY.knob));
     b.ball(0, 0.06, 0.05 - 0.08 * knob, 0.011, MAT.IRON, 6);
@@ -88,7 +95,7 @@ export const tommyGun: WeaponArt = {
     if (handAway >= 0.05 && r > 0.74) {                  // left hand racks the knob
       b.push(); b.translate(-0.02, 0.07, 0.03 - 0.08 * knob); b.roll(-1.6); b.pitch(0.4);
       fist(b, -1, { w: 0.008, fingers: 4 });
-      forearm(b, -0.01, -0.05, -0.045, [-0.7, -0.5, -1], 0.03);
+      forearm(b, -0.01, -0.05, -0.045, [-1, -0.85, -0.45], 0.03);   // from low on the left, not across the eye
       b.pop();
     }
 

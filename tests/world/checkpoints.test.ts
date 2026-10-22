@@ -301,11 +301,14 @@ describe("rising again at the last shrine", () => {
     expect(world.items[ipb].taken, "taken after: there to take again").toBeFalsy();
     expect(renderState.scene.children.includes(world.items[ipb].sp as never)).toBe(true);
     expect(world.items.slice(CPbase()).filter((it) => !it.taken), "the drop that was lying at the shrine lies there again").toHaveLength(1);
-    const A = world.doors[da] as { open: boolean; mesh: { position: { y: number } } }, B = world.doors[db] as typeof A;
+    const A = world.doors[da] as { open: boolean; mesh: { position: { y: number } }; k?: number; leaves?: unknown[] }, B = world.doors[db] as typeof A;
+    // a door under an arch swings its two leaves (src/world/LevelDoors.ts, 2026-10-21): all the way, or not at all; any other still sinks
+    const swung = (d: typeof A): boolean => (d.leaves ? d.k === 1 : d.mesh.position.y === -WALLH / 2);
+    const shut = (d: typeof A): boolean => (d.leaves ? d.k === 0 : d.mesh.position.y === WALLH / 2);
     expect(A.open, "opened before: still open").toBe(true);
-    expect(A.mesh.position.y).toBe(-WALLH / 2);
+    expect(swung(A), "and all the way open").toBe(true);
     expect(B.open, "opened after: shut again").toBe(false);
-    expect(B.mesh.position.y).toBe(WALLH / 2);
+    expect(shut(B), "and all the way shut").toBe(true);
     expect(S.kills, "and the tally is the shrine's").toBe(1);
   });
 });
@@ -448,13 +451,13 @@ describe("nothing of the dead run is left running", () => {
   });
 
   it("is also true of a level with a boss and a plate, and of one a long way from the dungeon", () => {
-    for (const lvl of [2, 7]) {
+    for (const lvl of [2, 8]) {
       start(lvl); pass(1);
       dieAndWait(); rise();
       const base = census();
       for (let n = 0; n < 3; n++) { dieAndWait(); rise(); expect(census(), `level ${lvl} death ${n + 1}`).toEqual(base); }
     }
-    expect(LEVELS.length).toBe(8);
+    expect(LEVELS.length).toBe(11);   // the monastery (2026-10-20) and the hollow village (2026-10-21) appended
   });
 });
 

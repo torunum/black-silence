@@ -180,12 +180,18 @@ describe("doors stay individual meshes — instancing must not swallow them", ()
     expect(doors.length).toBeGreaterThanOrEqual(2); // need a second door as a control
     const [, target] = doors[0];
     const [, control] = doors[1];
-    const targetY0 = target.mesh.position.y, controlY0 = control.mesh.position.y;
+    // a door's pose: its height (a sinking door), and the turn of each of its leaves (a swinging one, src/world/LevelDoors.ts, 2026-10-21)
+    const poseOf = (d: { mesh: THREE.Object3D }): string => {
+      const parts = [d.mesh.position.y.toFixed(3)];
+      d.mesh.traverse((o) => { if (o !== d.mesh) parts.push(o.rotation.y.toFixed(3)); });
+      return parts.join(",");
+    };
+    const target0 = poseOf(target), control0 = poseOf(control);
 
     target.open = true; // what interact() sets on the door the player faces
     doorTick(1); // what src/core/Loop.ts calls every gameplay frame
 
-    expect(target.mesh.position.y).toBeLessThan(targetY0); // src/player/Interact.ts's doorTick lowers an open door
-    expect(control.mesh.position.y).toBe(controlY0); // untouched — proves per-door independence
+    expect(poseOf(target)).not.toBe(target0); // src/player/Interact.ts's doorTick lowers an open door, or swings its leaves
+    expect(poseOf(control)).toBe(control0); // untouched — proves per-door independence
   });
 });

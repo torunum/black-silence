@@ -115,7 +115,7 @@ function srcFiles(dir: string): string[] {
 /**
  * Every 6-digit hex literal the game authors, derived from `src/` at run
  * time rather than hand-copied — the same discipline
- * `tests/enemies/deadDefFields.test.ts` uses, and for the same reason: a
+ * `tests/enemies/defFields.test.ts` uses, and for the same reason: a
  * hand-written list of this project's colours has been wrong before.
  */
 function authoredColours(): number[] {
@@ -201,8 +201,9 @@ describe("colour policy", () => {
     // keep a module-scope `new THREE.Color()` scratch to tint instances with)
     // src/fx/GoreChunks.ts and src/fx/Splats.ts — derived independently by hand, not copied
     // from whatever the scan happens to return (that circularity is exactly
-    // what let the multi-line miss above go unnoticed).
-    expect(checked).toBe(6);
+    // what let the multi-line miss above go unnoticed). And a seventh since 2026-10-20: src/weapons/Dynamite.ts, whose bundle's
+    // stick, tape and spark materials are module-scope. And an eighth since 2026-10-21: src/weapons/Stake.ts (the stake's wood, iron and char).
+    expect(checked).toBe(8);
     expect(offenders).toEqual([]);
   });
 

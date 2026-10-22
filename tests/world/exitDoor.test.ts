@@ -12,7 +12,7 @@ import { game } from "../../src/core/Game";
 import { S } from "../../src/core/State";
 import { save } from "../../src/save/SaveGame";
 import { CELL } from "../../src/world/Grid";
-import { LEVELS } from "../../src/world/levels/index";
+import { PLAY_ORDER, LEVELS, nextLevel } from "../../src/world/levels/index";
 import { DOOR_STYLES, STYLES, buildRig, pose, styleFor, type DoorStyle, type Rig } from "../../src/world/DoorKit";
 import { EXIT_BOSSES, EXIT_CELLS, doors, doorClaims, exitCell, siteDoor, against } from "../../src/world/ExitDoor";
 import { resetTransition, trans } from "../../src/world/TransitionState";
@@ -26,7 +26,7 @@ import { floorHeightAt, solidAt, ceilHeightAt } from "../../src/world/Collision"
  * 1. every level but the last has an exit door, every level but the prologue (which has its grave) an
  *    entrance, and the womb has no exit (its end is the win screen);
  * 2. each theme has a door of its own: eight levels, eight styles, eight different pieces of building;
- * 3. a door stands in a wall with floor the player can reach in front of it (level 3's brings a wall of its
+ * 3. a door stands in a wall with floor the player can reach in front of it (the old level 3's brought a wall of its
  *    own, and is the only one that does: level 1's did, at the grid's edge, until it was rebuilt), under the ceiling, in its cell, with the
  *    exit *cell* where it always was;
  * 4. the five boss levels' doors are sealed — dark, no light, nothing to touch — until the boss dies;
@@ -61,7 +61,9 @@ afterAll(() => { clearAllTimers(); clearScheduled(); });
 
 beforeEach(() => { resetTransition(); S.won = false; S.dead = false; game.inputLock = false; });
 
-const LAST = LEVELS.length - 1;
+/** The last level PLAYED (the womb): the monastery is appended at index 9 but played second (levels/index.ts PLAY_ORDER). */
+const LAST = PLAY_ORDER[PLAY_ORDER.length - 1];
+const ALL = LEVELS.length - 1;
 const deadAll = (): void => { for (const e of world.enemies) e.dead = true; };
 /** The player standing at the door's cell, `out` in front of it, looking at it. */
 function standAt(d: NonNullable<typeof doors.exit>, out: number, across = 0): void {
@@ -70,7 +72,7 @@ function standAt(d: NonNullable<typeof doors.exit>, out: number, across = 0): vo
 }
 
 describe("every level has the doors it should", () => {
-  for (let i = 0; i <= LAST; i++) {
+  for (let i = 0; i <= ALL; i++) {
     it(`level ${i} ${LEVELS[i].name.replace(/^.* — /, "")}: ${i === LAST ? "no exit" : "an exit"}, ${i === 0 ? "no entrance (a grave)" : "an entrance"}`, () => {
       loadLevel(i);
       expect(doors.exit !== null, "an exit door").toBe(i !== LAST);
@@ -84,31 +86,35 @@ describe("every level has the doors it should", () => {
 });
 
 describe("each theme has its own door", () => {
-  const EXPECT: DoorStyle[] = ["crypt", "iron", "church", "tomb", "cemetery", "sluice", "freight", "sphincter"];
+  // the bone cathedral (7, new on 2026-10-20) is of the necropolis's stone and shares its tomb door: nine levels, eight styles
+  const EXPECT: DoorStyle[] = ["crypt", "iron", "church", "tomb", "cemetery", "sluice", "freight", "tomb", "sphincter", "church", "cemetery"];   // 9, the monastery, a church's; 10, the hollow village, a graveyard's
 
-  it("gives the eight levels eight different styles, the crypt door to the prologue and the sphincter to the womb", () => {
+  it("gives the levels eight different styles, the crypt door to the prologue and the sphincter to the womb (the bone cathedral shares the tomb's)", () => {
     // MUTATION TARGET: make styleFor answer one style for every level
     expect(LEVELS.map((l) => styleFor(l))).toEqual(EXPECT);
     expect(new Set(EXPECT).size).toBe(8);
-    expect([...DOOR_STYLES].sort()).toEqual([...EXPECT].sort());
+    expect([...DOOR_STYLES].sort()).toEqual([...new Set(EXPECT)].sort());
   });
 
   it("builds each level's door in its style, and the eight are different buildings, not one with another colour", () => {
     const sig = new Map<DoorStyle, string>();
-    for (let i = 0; i <= LAST; i++) {
+    for (let i = 0; i <= ALL; i++) {
       loadLevel(i);
-      const d = doors.entrance ?? doors.exit!;   // the womb has only an entrance
-      expect(d.rig.style, LEVELS[i].name).toBe(EXPECT[i]);
+      // the level's theme door, where it has one standing; a level whose ways in and out are both named ones (the prologue's ladder,
+      // the monastery's hatch and gate) has its theme's door built here to be looked at
+      const d = [doors.entrance, doors.exit].find((x) => x?.rig.style === EXPECT[i]);
+      const rig = d?.rig ?? buildRig(EXPECT[i], "probe");
+      expect(rig.style, LEVELS[i].name).toBe(EXPECT[i]);
       let meshes = 0, tris = 0;
       const maps = new Set<string>();
-      d.rig.group.traverse((o) => {
+      rig.group.traverse((o) => {
         const m = o as THREE.Mesh;
         if (!m.isMesh) return;
         meshes++; tris += m.geometry.index ? m.geometry.index.count / 3 : (m.geometry.attributes.position.count / 3);
         const mat = m.material as THREE.MeshLambertMaterial;
         if (mat.map) maps.add(String((mat.map.image as { width?: number } | undefined)?.width ?? "?"));
       });
-      sig.set(EXPECT[i], `${meshes}/${Math.round(tris)}/${d.rig.leaves.length}/${d.rig.spec.move}/${[...maps].sort().join(",")}`);
+      sig.set(EXPECT[i], `${meshes}/${Math.round(tris)}/${rig.leaves.length}/${rig.spec.move}/${[...maps].sort().join(",")}`);
     }
     expect(new Set(sig.values()).size, [...sig].map(([k, v]) => `${k} ${v}`).join("; ")).toBe(8);
   });
@@ -156,12 +162,12 @@ describe("a door stands in a wall, in front of floor the player can reach", () =
     });
   }
 
-  it("brings a wall of its own at level 3's ledge, and nowhere else (level 1's grid edge went with the rebuild: its exit stands in a wall)", () => {
-    expect([...new Set(slabs)].sort()).toEqual([3]);
+  it("brings a wall of its own nowhere: every level's exit stands in a wall (level 3's ledge went with its rebuild on 2026-10-21, as level 1's grid edge went with its own)", () => {
+    expect([...new Set(slabs)].sort()).toEqual([]);
   });
 
   it("is reached on foot: from the spawn, over the game's step-up of 1.2, to the cell in front of every exit", () => {
-    for (let i = 0; i < LAST; i++) {
+    for (const i of PLAY_ORDER.slice(0, -1)) {
       loadLevel(i);
       const start = [player.px / CELL | 0, player.pz / CELL | 0] as const, d = doors.exit!;
       const seen = new Set<string>([start.join(",")]), stack = [start];
@@ -184,7 +190,7 @@ describe("a door stands in a wall, in front of floor the player can reach", () =
   });
 
   it("lets the entrance walk be walked: no wall or mass between the entrance's cell and the spawn", () => {
-    for (let i = 1; i <= LAST; i++) {
+    for (let i = 1; i <= ALL; i++) {
       loadLevel(i);
       const e = doors.entrance!, x0 = (e.site.sx + .5) * CELL, z0 = (e.site.sz + .5) * CELL;
       for (let t = 0; t <= 1; t += .05) {
@@ -198,7 +204,7 @@ describe("a door stands in a wall, in front of floor the player can reach", () =
 describe("the exit is where it always was", () => {
   it("keeps world.exitPos at the X cell on the two levels that write one", () => {
     loadLevel(0);
-    expect(world.exitPos).toEqual({ x: 25.5 * CELL, z: 9.5 * CELL });
+    expect(world.exitPos).toEqual({ x: 53.5 * CELL, z: 9.5 * CELL });   // the landing at the top of the climb (moved 2026-10-22, when the prologue grew)
     loadLevel(1);
     expect(world.exitPos).toEqual({ x: 31.5 * CELL, z: 36.5 * CELL });   // (31.5, 33.5 before level 1 was rebuilt)
   });
@@ -212,16 +218,16 @@ describe("the exit is where it always was", () => {
     expect(EXIT_BOSSES).toBe("QZNHV");
   });
 
-  it("goes by the boss glyphs the grid writes: Q Z N H V on levels 2-6 (a sealed door), and on no other level", () => {
-    for (let i = 0; i <= LAST; i++) {
+  it("goes by the boss glyphs the grid writes: Q Z N H V on levels 2-7 and the monastery (a sealed door), and on no other level", () => {
+    for (let i = 0; i <= ALL; i++) {
       const g = LEVELS[i].build().g.flat().join("");
-      expect([...EXIT_BOSSES].some((c) => g.includes(c)), LEVELS[i].name).toBe(i >= 2 && i <= 6);
+      expect([...EXIT_BOSSES].some((c) => g.includes(c)), LEVELS[i].name).toBe((i >= 2 && i <= 7) || i === 9);
     }
   });
 });
 
 describe("a boss level's door is sealed until the boss dies", () => {
-  for (let i = 2; i <= 6; i++) {
+  for (let i = 2; i <= 7; i++) {
     it(`level ${i}: dark, lightless and untouchable at the start, lit with its light when openExit runs`, () => {
       loadLevel(i);
       const d = doors.exit!;
@@ -308,7 +314,7 @@ describe("opening the exit", () => {
     standAt(doors.exit!, 3); exitTick();
     expect(msg.textContent).toBe("");
     standAt(doors.exit!, 1.6); exitTick();
-    expect(msg.textContent).toBe("PRESS E — THE IRON DOOR");
+    expect(msg.textContent).toBe("PRESS E — THE WELL");   // the dungeon ends down its well (2026-10-20)
     msg.textContent = ""; exitTick();
     expect(msg.textContent, "not again while he stands there").toBe("");
   });
@@ -316,13 +322,13 @@ describe("opening the exit", () => {
   it("saves maxLevel at the moment the door is taken, as the pad did, and not before", () => {
     loadLevel(1);
     deadAll();
-    save.maxLevel = 1;
+    save.maxLevel = 2;   // places in the play order: the dungeon is played third, after the prologue and the monastery
     standAt(doors.exit!, 3); exitTick();
-    expect(save.maxLevel, "walking up to the door is not taking it").toBe(1);
+    expect(save.maxLevel, "walking up to the door is not taking it").toBe(2);
     // MUTATION TARGET: move the save out of leaveLevel
     expect(leaveLevel()).toBe(true);
-    expect(save.maxLevel, "taking it is").toBe(2);
-    expect(JSON.parse(localStorage.getItem("blacksilence.save") || "{}").maxLevel, "and it is on disk").toBe(2);
+    expect(save.maxLevel, "taking it is").toBe(3);
+    expect(JSON.parse(localStorage.getItem("blacksilence.save") || "{}").maxLevel, "and it is on disk").toBe(3);
   });
 
   it("claims the cells in front of it from the dressing: no wall piece or bulky one where it stands, nor a bulky one at the exit cell", () => {
@@ -394,5 +400,54 @@ describe("draws nothing from Math.random", () => {
       loadLevel(1); deadAll(); standAt(doors.exit!, .4); playerTick(1 / 60);
     } finally { Math.random = real; }
     expect(from).toEqual([]);
+  });
+});
+
+describe("the well and the rope (owner, 2026-10-20: the dungeon ends down a well, the church begins at its bottom)", () => {
+  // and since 2026-10-21 ("prologue u da diğer bölüme bağla"): the prologue climbs a ladder out of hell into the monastery's crypt floor,
+  // and the monastery's great gate is the dungeon's way in
+  // and the hollow village (2026-10-21): in through the church's doors, out through its cemetery gate into the necropolis
+  const OUT: Record<number, DoorStyle> = { 0: "ladder", 1: "well", 9: "gate", 10: "cemetery" }, IN: Record<number, DoorStyle> = { 9: "hatch", 1: "gate", 2: "rope", 10: "church", 3: "cemetery" };
+  it("are what the levels' named ways out and in are built as, and every other way stays its theme's door", () => {
+    for (let i = 0; i < LEVELS.length; i++) {
+      loadLevel(i);
+      if (doors.exit) expect(doors.exit.rig.style, LEVELS[i].name).toBe(OUT[i] ?? styleFor(LEVELS[i]));
+      if (doors.entrance) expect(doors.entrance.rig.style, LEVELS[i].name).toBe(IN[i] ?? styleFor(LEVELS[i]));
+    }
+    expect(doors.exit === null || doors.exit.rig.style !== "ladder").toBe(true);
+  });
+
+  it("a way out runs into the next level's way in: the ladder up to the hatch, the gate to the gate, the well down to the rope", () => {
+    const pairs: Array<[DoorStyle, DoorStyle]> = [["ladder", "hatch"], ["gate", "gate"], ["well", "rope"], ["cemetery", "cemetery"]];
+    expect(nextLevel(2), "the church opens on the village").toBe(10);
+    expect(LEVELS[10].entranceStyle, "out of the church's own doors").toBe(styleFor(LEVELS[2]));
+    for (const [out, inn] of pairs) {
+      const from = Number(Object.keys(OUT).find((k) => OUT[+k] === out)), to = nextLevel(from);
+      expect(IN[to], `${LEVELS[from].name} -> ${LEVELS[to].name}`).toBe(inn);
+      expect(LEVELS[from].exitStyle).toBe(out); expect(LEVELS[to].entranceStyle).toBe(inn);
+    }
+  });
+
+  it("the ladder's slab and the hatch's slide clear of their shaft; the gate's two leaves swing", () => {
+    for (const style of ["ladder", "hatch", "gate"] as const) {
+      const rig = buildRig(style, "probe");
+      pose(rig, 0);
+      const shut = rig.leaves.map((l) => l.node.position.x + l.node.rotation.y);
+      pose(rig, 1);
+      const open = rig.leaves.map((l) => l.node.position.x + l.node.rotation.y);
+      expect(rig.leaves.length, style).toBe(style === "gate" ? 2 : 1);
+      for (let k = 0; k < shut.length; k++) expect(Math.abs(open[k] - shut[k]), style).toBeGreaterThan(.9);
+    }
+  });
+
+  it("the well has a lid that slides off, a winch and a rope; the rope's foot stands under its shaft's light", () => {
+    loadLevel(1);
+    const w = doors.exit!;
+    expect(w.rig.leaves).toHaveLength(1);
+    pose(w.rig, 1);
+    expect(w.rig.leaves[0].node.position.x).not.toBeCloseTo(w.rig.leaves[0].home.x, 3);
+    pose(w.rig, 0);
+    loadLevel(2);
+    expect(doors.entrance!.rig.glow.children.length).toBeGreaterThan(0);
   });
 });

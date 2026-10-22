@@ -1,3 +1,4 @@
+import { hoverY } from "../Hover";
 import * as THREE from "three";
 // Side-effect import: this module builds `ringMatBase` (a coloured material)
 // at module scope, so THREE.ColorManagement has to be settled before its
@@ -80,7 +81,7 @@ export function fireOrb(enemy: unknown,spreadA: number,tox?: boolean){
   else if(ot==="reiver"){col=0x9fd048;dmg=15;spd=12;}    // Reiver green bolt
   else if(ot==="garg"){col=0x5ab0e0;dmg=14;spd=11;}      // Gargoyle blue energy (Cheogh)
   const mat=track(new THREE.MeshBasicMaterial({color:col}));
-  const oy=e.fly?(e.flyH||1.5):e.h*.6+(e.fy||0);
+  const oy=e.fly?hoverY(e):e.h*.6+(e.fy||0);
   const m=new THREE.Mesh(orbGeo,mat);m.position.set(e.x,oy,e.z);
   if(ot==="manc")m.scale.setScalar(1.6);
   projectiles.orbs.push({m,vx:Math.sin(a)*spd,vz:Math.cos(a)*spd,
@@ -91,7 +92,7 @@ export function throwFlesh(enemy: unknown){
   const e=enemy as AttackEnemy;
   const dx=player.px-e.x,dz=player.pz-e.z,dist=Math.hypot(dx,dz);
   const a=Math.atan2(dx,dz)+rnd(-.05,.05);
-  const oy=e.fly?(e.flyH||1.5):e.h*.55+(e.fy||0);
+  const oy=e.fly?hoverY(e):e.h*.55+(e.fy||0);
   const m=new THREE.Mesh(gibGeo,track(gibMatsFlesh[0].clone()));
   m.position.set(e.x,oy,e.z);m.scale.setScalar(1.9);
   const spd=10;

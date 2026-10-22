@@ -79,11 +79,19 @@ afterAll(() => {
   clearScheduled();
 });
 
+
+/** Runs `f` with level `i` built as a level that never opted in to a ceiling map: its grid and floors, no `cmap`. */
+function flatLevel(i: number, f: () => void): void {
+  const real = LEVELS[i].build;
+  LEVELS[i].build = () => { const L = real(); delete L.cmap; return L; };
+  try { f(); expect(LEVELS[i].build().cmap).toBeUndefined(); } finally { LEVELS[i].build = real; }
+}
+
 describe("a level with no ceiling map builds the single flat plane it always built", () => {
-  it("level 4 gets exactly one ceiling child, a PlaneGeometry Mesh at y=WALLH", () => {
-    // (it was level 1 until that level was rebuilt with tiers, which have ceilings of their own: it opts in now)
-    loadLevel(4);
-    expect(LEVELS[4].build().cmap).toBeUndefined(); // the premise: level 4 never opted in
+  it("a level without one gets exactly one ceiling child, a PlaneGeometry Mesh at y=WALLH", () => {
+    // (it was level 1, then level 4, until each was rebuilt with tiers, which have ceilings of their own; since 2026-10-21 every level
+    // opts in, so the branch is held with level 4's grid built without its ceiling map — what a level that never opted in builds)
+    flatLevel(6, () => loadLevel(6));
     expect(world.ceilMap).toBeNull();
 
     const ceil = named("ceiling");
@@ -99,12 +107,12 @@ describe("a level with no ceiling map builds the single flat plane it always bui
     expect(named("ceilingRisers").length).toBe(0);
   });
 
-  it("level 5 is in that branch too", () => {
+  it("and so does another (level 5's grid, built without its ceiling map)", () => {
     // Was "the prologue is in that branch too", then "level 2 — the boss trace fixture's level". The rebuilt prologue (the
     // prologue plan, Task 1) opts in with a ceiling map and zones — see the
     // next describe — and so did level 2 when it was rebuilt (deeper-levels plan, Task 4: a nave with a vault of its own), so the
     // unchanged-branch guard moved to a level that never opted in.
-    loadLevel(5);
+    flatLevel(5, () => loadLevel(5));
     expect(world.ceilMap).toBeNull();
     expect(named("ceiling").length).toBe(1);
     expect(named("ceilingCells").length).toBe(0);
@@ -193,19 +201,20 @@ describe("a level with a ceiling map builds geometry matching the map, cell for 
     expect(raised).toBeGreaterThan(50);
   });
 
-  it("the authored vault really is three tiers above the default, not one flat raise", () => {
+  it("the authored vaults really are tiers above the default, not one flat raise", () => {
+    // the necropolis rebuilt (2026-10-21): the court of the sovereign is vaulted at 7, the plaza of the dead at 8, the street at 6;
+    // the raised floors keep three of headroom over them (`headroom(3)`); the passages at floor 0 keep the default
     loadLevel(3);
     const heights = new Set<number>();
     for (let z = 0; z < world.GH; z++) for (let x = 0; x < world.GW; x++) heights.add(ceilHeightAtCell(x, z));
-    expect(heights.has(WALLH)).toBe(true);      // the corridors outside the tomb
-    expect(heights.size).toBeGreaterThanOrEqual(4); // WALLH + the three authored tiers
-    // The crown, directly over the sovereign's cell — an authored number, so
-    // that a level3.ts edit which silently flattens the vault is visible here.
-    expect(ceilHeightAtCell(16, 11)).toBeCloseTo(8.6, 6);
-    // A solid cell inside the same region deliberately keeps the wall height:
-    // (16,12) is the tomb's centre pillar, and raising its ceiling would open
-    // a gap above a WALLH-tall pillar.
-    expect(ceilHeightAtCell(16, 12)).toBe(WALLH);
+    expect(heights.has(WALLH)).toBe(true);
+    expect(heights.size).toBeGreaterThanOrEqual(4);
+    // authored numbers, so that an edit which silently flattens a vault is visible here
+    expect(ceilHeightAtCell(20, 17)).toBeCloseTo(7, 6);    // the court, over the Sovereign
+    expect(ceilHeightAtCell(40, 30)).toBeCloseTo(8, 6);    // the plaza
+    // a solid cell inside the same room deliberately keeps the wall height: (19,14) is one of the court's columns, and raising
+    // its ceiling would open a gap above a WALLH-tall pillar
+    expect(ceilHeightAtCell(19, 14)).toBe(WALLH);
   });
 });
 
@@ -267,7 +276,7 @@ describe("the riser strips close every height transition", () => {
   });
 
   it("a level without a ceiling map has no risers to build", () => {
-    loadLevel(4);
+    flatLevel(6, () => loadLevel(6));
     expect(named("ceilingRisers").length).toBe(0);
   });
 });

@@ -25,7 +25,7 @@ import { PrologueBot, ROUTE, SKILL, type BotEyes } from "../support/prologueBot"
 
 const SEED = Number(process.env.BOT_SEED ?? 20260928);
 const SKILL_NAME = (process.env.BOT_SKILL ?? "poor") as keyof typeof SKILL;
-const FRAMES = 60 * 150;   // two and a half minutes of game
+const FRAMES = 60 * 360;   // six minutes of game (the prologue grew on 2026-10-22: two more caverns and a long climb)
 
 let bot: PrologueBot;
 const stages: Array<{ frame: number; zone: string; hp: number }> = [];

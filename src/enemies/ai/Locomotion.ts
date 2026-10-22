@@ -49,6 +49,7 @@ export function moveEnemy(enemy: unknown, sx: number, sz: number, spd: number, d
   const smash=e.boss||e.key==="B";
   const nx=e.x+sx*spd*dt,nz=e.z+sz*spd*dt,rr=e.r;
   for(const p of world.props as unknown as Prop[]){if(p.dead||p.kind==="piano")continue;
+    if((p as { soft?: boolean }).soft&&!smash)continue;   // the breakable dressing is walked past; only a boss or a brute goes through it
     if(Math.hypot(nx-p.x,nz-p.z)<rr+p.r){
       if(smash){p.explosive?explodeBarrel(p):breakProp(p);}
       else return false;}}

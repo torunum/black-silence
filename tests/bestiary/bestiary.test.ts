@@ -119,7 +119,7 @@ describe("it shows every enemy, the old art and the new side by side", () => {
   it("an enemy re-rigged can do all eight; a legacy enemy cannot be hurt (it has no pain frames) and some cannot attack", () => {
     const z = root.querySelector<HTMLElement>('.card[data-key="z"]')!;
     for (const b of z.querySelectorAll<HTMLButtonElement>("button.play")) expect(b.disabled, `z ${b.dataset.clip}`).toBe(false);
-    const j = root.querySelector<HTMLElement>('.card[data-key="j"]')!;
+    const j = root.querySelector<HTMLElement>('.card[data-key="B"]')!;
     expect(j.querySelector<HTMLButtonElement>('button[data-clip="pain"]')!.disabled).toBe(true);
     expect(j.querySelector<HTMLButtonElement>('button[data-clip="walk"]')!.disabled).toBe(false);
   });
@@ -156,7 +156,7 @@ describe("its buttons play things", () => {
     expect(newFrames.size).toBe(6);
     expect(oldFrames.size).toBe(2);
     for (const f of newFrames) expect(oldFrames.has(f)).toBe(false);
-    expect(api.frameOf("j", "new", 0), "a legacy enemy has no new column").toBeNull();
+    expect(api.frameOf("B", "new", 0), "a legacy enemy has no new column").toBeNull();
   });
 
   it("every dismemberment plays frames of its own: the ghoul without its head, an arm, the other, or its legs", () => {

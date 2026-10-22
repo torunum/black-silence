@@ -23,14 +23,17 @@ open it in your desktop browser, and claw your way out of the ground.
   lid, and claws out into a churchyard at night: stars, a moon, headstones,
   a mausoleum. Its crypt stair leads down into hell: cracked basalt with
   glowing fissures, a real flowing lava pit with a lava fall, a stone bridge,
-  fire and embers. Then you climb back out. Seven chapters follow: the gothic
+  fire and embers. Then you climb back out. Eight chapters follow: the gothic
   dungeon, an abandoned church, a necropolis, a graveyard, sewers, a factory,
-  and The Womb.
+  the Bone Cathedral, and The Womb.
 - **Eight weapons to acquire:** a flare pistol, a sawed-off shotgun, a combat
   rifle, a tommy gun, a scoped sniper, the Holy Cross Launcher, a nail cannon,
   and the Soul Reaper. Each is a small 3D rig, posed and drawn down to pixel
   art every frame, with mechanisms that move: the pump, the break-open
   barrels, the drum, the spinning cluster.
+- **A map that knows where you've been:** a round corner map turns with you
+  (the way you face is always up, north is marked on its rim) and draws only
+  what you have seen; `M` (or holding `Tab`) opens the whole level's automap.
 - **Close-range impact:** sprint, jump, and power-kick enemies into walls.
   The sprint has its own pose, the stride is a human two or three steps a
   second, and the kick is a real leg.
@@ -81,11 +84,12 @@ Use a keyboard and mouse; touch controls are not implemented.
 | Sprint / jump | `Shift` / `Space` |
 | Fire / power kick | Left / right mouse button |
 | Reload | `R` |
-| Switch acquired weapons | `1`–`8` / mouse wheel |
+| Switch acquired weapons | `1`–`9`, `0` / mouse wheel (`9`: dynamite — thrown, goes off when its fuse burns down; `0`: the stake gun) |
 | Open doors / interact / leave piano | `E` |
 | Toggle sniper zoom | `Z` with the sniper equipped |
+| Map (full automap) | `M` to toggle, or hold `Tab`; a corner map is always up |
 
-`Esc` releases the mouse; it does **not** pause the action.
+`Esc` releases the mouse and pauses the game; click to return.
 Chapter unlocks and settings are saved locally, not mid-level progress.
 
 ## Development
@@ -96,7 +100,7 @@ still have known issues; see [project status](docs/STATUS.md) and
 
 The game is written in TypeScript with Three.js and Vite. Its tests include
 behavior comparisons against the frozen original and scripted gameplay traces.
-Use Node.js 24.15 or later within Node 24. The publication build passes 2462 tests.
+Use Node.js 24.15 or later within Node 24. The publication build passes 2486 tests.
 
 ```sh
 npm ci
@@ -155,8 +159,8 @@ THE BLACK SILENCE: The Hollow Parish, gotik atmosferi retro FPS aksiyonuyla
 birleştiren, geliştirme aşamasında oynanabilir bir oyun. Ön bölümde ADEM, gece
 bir mezarlıkta tabutunu yarıp mezarından çıkıyor; mezarlıktaki mozolenin mahzen
 merdiveni onu cehenneme indiriyor: parlayan çatlaklı bazalt, akan gerçek bir
-lav havuzu, taş bir köprü, ateş ve kor. Sonra yedi bölüm boyunca sekiz silahı
-keşfet. Silahların hepsi baştan çizildi; her biri hareketli mekanizmalarıyla
+lav havuzu, taş bir köprü, ateş ve kor. Sonra sekiz bölüm (yenisi: Kemik Katedrali) boyunca sekiz silahı
+keşfet; köşedeki mini harita yönünü gösterir, `M` tüm haritayı açar. Silahların hepsi baştan çizildi; her biri hareketli mekanizmalarıyla
 küçük bir 3B düzenek. Koş, zıpla ve yaklaşan düşmanları tekmeyle savur. İşkence
 salonu, şamdanlı kilise nefi, lahitler ve et kütleleriyle döşenmiş
 bölümlerde, gizli kapılar, bölüm sonu karşılaşmaları ve çalınabilir bir piyano
