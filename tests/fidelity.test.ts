@@ -336,7 +336,8 @@ describe("LEVELS vs. reference", () => {
         if (boss !== "V") expect(count(built.g, "V"), "no Foreman but the factory's (KNOWN-4)").toBe(0);
         else expect(count(built.g, "V"), "the factory's one Foreman").toBe(1);
         for (const c of new Set(built.g.flat())) if (/[A-Za-z]/.test(c) && !"PKXDSWIilpTxOFv".includes(c) && !"hrabocdeu".includes(c) && !"0123456789".includes(c)) expect(ENEMY_DEFS[c], `${c} is an enemy`).toBeDefined();
-        expect(built.zones).toBeUndefined();
+        if (name === "LEVEL 4 — THE GRAVEYARD") expect(built.zones?.themes.find((t) => t.sky), "the graveyard is under the sky (2026-10-22)").toBeDefined();
+        else expect(built.zones).toBeUndefined();
         return;
       }
       expect(built.zones, `${name} has no zones`).toBeUndefined();

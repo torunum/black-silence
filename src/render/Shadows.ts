@@ -310,9 +310,8 @@ export const SHADOW_POLICY: Readonly<Record<string, ShadowRule>> = {
      light, like the pit's glow: neither throws a shadow nor takes one. */
   hellRock: { cast: true, receive: true },
   hellGround: { cast: false, receive: true },
-  lava: { cast: false, receive: false },
-  lavaCrust: { cast: false, receive: false },
-  lavafall: { cast: false, receive: false },
+  lava: { cast: false, receive: false }, lavaCrust: { cast: false, receive: false }, lavafall: { cast: false, receive: false },
+  water: { cast: false, receive: true }, waterScum: { cast: false, receive: true },   // the sewers' water, the womb's blood (`src/fx/Water.ts`): lit, a floor over the floor, it takes the lamp's shadow as the floor would
   /* Hell's flames and embers (`src/fx/HellFire.ts`): additive points of light,
      like the particle pool's. */
   fireFlames: { cast: false, receive: false }, fireEmbers: { cast: false, receive: false },

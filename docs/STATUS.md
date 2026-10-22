@@ -1,5 +1,14 @@
 # Where this project stands
 
+## Owner's round, 2026-10-22 (morning): water in the sewers
+
+The rebuilt sewers had no water in them, only pools of scum dressed on dry stone. Standing sewage now floods the main drain's channel,
+the flooded store, the overflow chamber and the great cistern (a dry rim along their walls) and the settling tanks' two basins
+(`BuiltLevel.water`, `src/fx/Water.ts`, painted by `src/render/SewerWater.ts`): two world-mapped layers like hell's lava — dark water with
+the light on its ripples (Phong: the torches glint on it) and the scum riding on it, alpha-tested — 6 cm deep over whatever floor it covers,
+flowing from a clock (4 numbers a frame, no allocation, no `Math.random`). Dressing only: no cell, mass or height changes. The womb has the same flood in its own colours (`BuiltLevel.fluid = "blood"`): a lake of
+blood in the great ventricle and round the heart, and the sac full of it. `tests/fx/water.test.ts`.
+
 ## Owner's round, 2026-10-22 (morning): the graveyard under the sky
 
 "geliştirmeye devam et" — the rebuilt graveyard was roofed over like a cellar. It is zoned now (`graveyardZones.ts`), as the village is: the

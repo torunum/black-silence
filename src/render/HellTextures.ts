@@ -73,7 +73,8 @@ function blit(g: CanvasRenderingContext2D, b: Bitmap): void {
   }
 }
 
-const canvasOf = (b: Bitmap): THREE.CanvasTexture => makeTex((g) => blit(g, b), b.w, b.h);
+/** A painted bitmap as a canvas texture (also `src/fx/Water.ts`'s, for the sewers' water). */
+export const canvasOf = (b: Bitmap): THREE.CanvasTexture => makeTex((g) => blit(g, b), b.w, b.h);
 
 /** A colour map and (when it glows) its emissive map, into the registry. */
 function addPainted(key: "rock" | "scorch" | "vault" | "chunk", p: Painted): void {

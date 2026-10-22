@@ -23,6 +23,7 @@ import { tickMessage } from "../ui/HudMessages";
 import { partTick } from "../fx/Particles";
 import { fireTick } from "../fx/HellFire";
 import { lavaTick } from "../fx/Lava";
+import { waterTick } from "../fx/Water";
 import { gibTick } from "../fx/Gibs";
 import { feelTick } from "../fx/HitFeel";
 import { goreTick } from "../fx/GoreFx";
@@ -134,7 +135,7 @@ function loop(t: number){
     tickScheduled(dt);}
   if(renderState.scene){
     updateListener();
-    partTick(dt);fireTick(dt);lavaTick(dt);gibTick(dt);poolTick(dt);headTick(dt);torchTick(dt,t);
+    partTick(dt);fireTick(dt);lavaTick(dt);waterTick(dt);gibTick(dt);poolTick(dt);headTick(dt);torchTick(dt,t);
     goreTick(dt);feelTick(time.dt);punchTick(dt);   // this frame's blows become one stop, punch, marker and sound (src/fx/HitFeel.ts); the punch ages with the game's clock, so it holds through a freeze
     const kick=kickShown.shown(weaponRuntime.kickAnim,S.dead||S.won,renderState.scene);
     fxTick(dt,t,weaponRuntime.zoomLerp,

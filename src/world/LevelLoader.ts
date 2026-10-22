@@ -36,6 +36,7 @@ import { addWindow, resetWindows } from "./Windows";
 import { wallMaterials, addInstanced, groupPush, buildFloor, buildPlatforms } from "./LevelMeshes";
 import { themeTex, shellAt } from "./ZoneLook";
 import { buildHell } from "./HellShell";
+import { buildWater } from "../fx/Water";
 import { levelLook, enterZones } from "./Zones";
 import { dressLevel } from "./Decor";
 import { massMap } from "./decor/masses";
@@ -289,6 +290,7 @@ export function loadLevel(idx: number, resume?: Resume): void {
   buildArches(renderState.scene as THREE.Scene,band);
   buildPlatforms(renderState.scene as THREE.Scene,Ldef);   // raised floor platforms (verticality) — LevelMeshes.ts
   buildHell(renderState.scene as THREE.Scene);   // hell's walls, cliffs, ground and lava, world-mapped — src/world/HellShell.ts
+  buildWater(renderState.scene as THREE.Scene,L.g,L.water,world.heightMap,L.fluid);   // the sewers' standing water, the womb's blood — src/fx/Water.ts
   /* angled wall meshes from arbitrary segments — non-orthogonal Doom/Blood walls */
   if(world.wallSegs.length){
     const segMat=track(new THREE.MeshLambertMaterial({map:wallTex}));

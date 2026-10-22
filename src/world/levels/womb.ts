@@ -18,6 +18,7 @@ import { dressWomb } from "./dressWomb";
  *     into the lung (the key: the key hunt) -> back -> the valve (locked: the key opens it) -> THE LIVING HEART. Its
  *     death is the end of the game.
  *   - THE WING: the sac, up from the lung: the Executioner, and what it was growing.
+ *   - THE BLOOD: a lake of it in the ventricle and round the heart, and the sac full of it (`src/fx/Water.ts`).
  *   - Its Cacodemons are `C` on purpose (KNOWN-4); no `V`, no `A` (KNOWN-11): armour is `r`.
  */
 export const W = 50, H = 42;
@@ -96,6 +97,9 @@ export function buildWomb(): BuiltLevel {
   lv.checkpoint([37, 21], { side: "s" });   // the stair up into the lung: every route to the key
   lv.checkpoint([25, 16], { side: "w" });   // the spine at the valve, the last before the heart
   const L = lv.build();
+  // the blood (2026-10-22, `src/fx/Water.ts`): a lake in the ventricle and round the heart, a dry rim along their walls; the sac full
+  L.water = [[10, 27, 20, 35], [7, 5, 22, 14], [41, 4, 46, 8]];
+  L.fluid = "blood";
   // masses an enemy walking at a player was found pinned against (tests/enemies/stuckCheck.test.ts), taken out
   L.decor = L.decor!.filter((s) => !PINNERS.includes(`${s.k}@${Math.floor(s.x + .5)},${Math.floor(s.z + .5)}`));
   return L;

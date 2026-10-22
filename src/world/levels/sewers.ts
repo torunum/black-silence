@@ -19,6 +19,7 @@ import { dressSewers } from "./dressSewers";
  *     (the loop) -> the valve room (the key: the key hunt) -> back down -> the sluice gate (locked: the key opens it) -> the culvert ->
  *     the great cistern -> THE HOLLOW LEVIATHAN. Its death opens the exit at (16,16), in the cistern (`DoorSite.ts`'s `EXIT_CELLS`).
  *   - THE WING: the settling tanks, north of the station: the Executioner and what he keeps.
+ *   - THE WATER: standing sewage down the drain's channel, over the store, the overflow, the cistern and the tanks' basins (`src/fx/Water.ts`).
  *   - No `C`, no `V`, no `A` (KNOWN-4, KNOWN-11): armour is `r`.
  */
 export const W = 58, H = 46;
@@ -99,6 +100,9 @@ export function buildSewers(): BuiltLevel {
   lv.checkpoint([37, 17], { side: "n" });   // the stair up to the valve room: every route to the key
   lv.checkpoint([26, 22], { side: "n" });   // the culvert, the last before the Leviathan
   const L = lv.build();
+  // the standing water (2026-10-22, `src/fx/Water.ts`): down the drain's channel, the store drowned, the overflow and the cistern flooded
+  // but for a dry rim along their walls, and the settling tanks' two basins
+  L.water = [[11, 38, 32, 39], [14, 42, 21, 44], [36, 30, 46, 40], [40, 5, 45, 9], [47, 5, 52, 9], [15, 10, 25, 19]];
   // masses an enemy walking at a player was found pinned against (tests/enemies/stuckCheck.test.ts), taken out
   L.decor = L.decor!.filter((s) => !PINNERS.includes(`${s.k}@${Math.floor(s.x + .5)},${Math.floor(s.z + .5)}`));
   return L;
