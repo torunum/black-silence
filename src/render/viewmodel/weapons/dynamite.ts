@@ -34,10 +34,19 @@ function sticks(b: Builder, lit: boolean, spark: number): void {
   b.pop();
 }
 
+/** A brass trench lighter, its lid thrown back and its flame up (2026-10-22: drawn bigger, the flame a tongue of fire and not a white bead). */
 function lighter(b: Builder, flame: boolean): void {
-  b.cbox(-0.012, -0.03, -0.008, 0.012, 0.012, 0.008, 0.003, MAT.BRASS);   // the case
-  b.cbox(-0.012, 0.012, -0.008, 0.012, 0.02, 0.008, 0.002, MAT.SILVER);   // the chimney
-  if (flame) { b.ball(0, 0.034, 0, 0.007, MAT.FLAME, 6); b.cbox(-0.003, 0.03, -0.003, 0.003, 0.05, 0.003, 0.002, MAT.FLAME); }
+  b.cbox(-0.016, -0.04, -0.01, 0.016, 0.014, 0.01, 0.004, MAT.BRASS);   // the case
+  b.cbox(-0.016, 0.014, -0.01, 0.016, 0.026, 0.01, 0.003, MAT.SILVER, { tex: (x, y) => (Math.floor(x * 400) & 1) && y > 0.016 ? -1.5 : 0 });   // the chimney, its holes
+  b.push(); b.translate(-0.016, 0.014, 0); b.roll(0.5);
+  b.cbox(-0.026, 0.0, -0.01, 0.0, 0.03, 0.01, 0.004, MAT.BRASS);       // the lid, thrown back
+  b.pop();
+  b.ball(0.012, 0.03, 0, 0.003, MAT.IRON, 5);                           // the wheel
+  if (flame) {
+    b.ball(0, 0.036, 0, 0.01, MAT.FLAME, 6, { tex: () => -2.6 });                    // the flame's orange body
+    b.push(); b.translate(0, 0.036, 0); b.pitch(Math.PI / 2); b.cyl(0, 0, 0.0, 0.034, 0.009, 0.001, 6, MAT.FLAME, { tex: (_x, _y, z) => (z > 0.018 ? -3.4 : -1.8) }); b.pop();   // the tongue, a cone pointing up
+    b.ball(0, 0.034, 0, 0.005, MAT.FLAME, 6);
+  }
 }
 
 /** How far the bundle leans away from the eye (radians): upright it would stand taller than the whole frame under the crosshair. */
@@ -77,7 +86,7 @@ export const dynamite: WeaponArt = {
 
     // the left hand and its lighter, low on the left; across to the fuse while lighting
     b.push();
-    b.translate(-0.085 + 0.08 * light, LY + 0.09 * light, 0.01 - 0.012 * light);
+    b.translate(-0.065 + 0.06 * light, LY + 0.045 + 0.05 * light, 0.01 - 0.012 * light);
     lighter(b, true);   // the lighter stays lit: the next bundle is lit from it
     b.push(); b.translate(0, -0.03, -0.006); fist(b, -1, { w: 0.012, fingers: 3 }); b.pop();
     forearm(b, -0.01, -0.06, -0.05, [-0.35, -0.55, -1], 0.03);

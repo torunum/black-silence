@@ -34,8 +34,10 @@ export const VIEW_H = 180;
  * What is kept from the reference: this function's outer contract
  * (ViewmodelFrame, the call in src/core/Loop.ts), the early returns (not
  * started, dead, piano open, sniper scoped in), the walk/sprint bob amounts
- * and the breathing formula (./animate.ts), the flash's shape
- * and colours, and — exactly — its Math.random draws: one for the flash
+ * and the breathing formula (./animate.ts), the flash's colours (its shape
+ * is the port's own since 2026-10-22: petals of fire round a white core,
+ * re-cut each frame from the frame number, where the reference drew one
+ * four-pointed star), and — exactly — its Math.random draws: one for the flash
  * radius and one for the puff chance (plus rnd's three when a puff spawns),
  * per frame with the flash up, in the same order. Those are per-frame
  * visual noise the reference already drew (KNOWN-22), and keeping their
@@ -253,7 +255,8 @@ export function drawViewmodel(dt: number, tNow: number, v: ViewmodelFrame, weapo
   if(glow){ // the soul core's light spilling past its cage
     const gx=left+glow[0]*s, gy=top+glow[1]*s, gr=(10+10*pose.heat)*s*VM_RES;
     const g=fg.createRadialGradient(gx,gy,1,gx,gy,gr);
-    g.addColorStop(0,`rgba(150,240,110,${.16+.4*pose.heat})`);   // a halo, not a lid over the core it comes from (2026-10-22)g.addColorStop(1,"rgba(60,160,40,0)");
+    // a halo, not a lid over the core it comes from (2026-10-22)
+    g.addColorStop(0,`rgba(150,240,110,${.16+.4*pose.heat})`);g.addColorStop(1,"rgba(60,160,40,0)");
     fg.fillStyle=g;fg.beginPath();fg.arc(gx,gy,gr,0,7);fg.fill();}
   /* muzzle flash, anchored to this weapon's barrel tip */
   if(v.muzzle>0){
@@ -262,15 +265,24 @@ export function drawViewmodel(dt: number, tNow: number, v: ViewmodelFrame, weapo
     const r=(10+Math.random()*10)*(MUZ[v.cur].r)*s*VM_RES;
     const col=v.cur===5?["255,250,220","235,210,140","220,180,90"]:v.cur===7?["230,255,200","150,240,110","60,160,40"]:["255,240,190","255,170,80","255,120,40"];
     fg.save();fg.translate(cx,my);
-    fg.fillStyle=`rgba(${col[0]},${Math.min(1,v.muzzle*2.2)})`;
-    fg.beginPath();
-    fg.moveTo(0,-r*1.5);fg.lineTo(r*.22,-r*.22);fg.lineTo(r*1.4,0);
-    fg.lineTo(r*.22,r*.22);fg.lineTo(0,r*1.2);fg.lineTo(-r*.22,r*.22);
-    fg.lineTo(-r*1.4,0);fg.lineTo(-r*.22,-r*.22);fg.closePath();fg.fill();
+    // the glow first, then the flame over it: petals of fire round the bore, each its own length, turned and re-cut every frame from the
+    // frame's own number (no dice: the two draws above are the reference's, and the trace fixtures count them), an orange outer
+    // flame, a yellow inner one and a white-hot core (2026-10-22: it was one four-pointed star)
     const grd=fg.createRadialGradient(0,0,2,0,0,r*1.3);
     grd.addColorStop(0,`rgba(${col[1]},${v.muzzle})`);
     grd.addColorStop(1,`rgba(${col[2]},0)`);
     fg.fillStyle=grd;fg.beginPath();fg.arc(0,0,r*1.3,0,7);fg.fill();
+    const a=Math.min(1,v.muzzle*2.2), fk=Math.floor(tNow*60);
+    const h=(i:number)=>{const x=Math.sin(i*12.9898+fk*78.233)*43758.5453;return x-Math.floor(x);};
+    const rot=h(99)*Math.PI;
+    const petals=(n:number,len:number,w:number,colour:string,alpha:number,seed:number)=>{
+      fg.fillStyle=`rgba(${colour},${alpha})`;fg.beginPath();
+      for(let i=0;i<n;i++){const ang=rot+i*Math.PI*2/n+(h(seed+i)-.5)*.5, L=len*(.6+.5*h(seed+i+20));
+        fg.lineTo(Math.cos(ang-w)*len*.45,Math.sin(ang-w)*len*.45);fg.lineTo(Math.cos(ang)*L,Math.sin(ang)*L);fg.lineTo(Math.cos(ang+w)*len*.45,Math.sin(ang+w)*len*.45);}
+      fg.closePath();fg.fill();};
+    petals(7,r*1.5,.5,col[2],a*.85,1);
+    petals(5,r*1.05,.6,col[1],a,40);
+    fg.fillStyle=`rgba(${col[0]},${a})`;fg.beginPath();fg.arc(0,0,r*.38,0,7);fg.fill();
     fg.restore();
     if(Math.random()<.6)spawnPuff(cx+rnd(-5,5),my,rnd(-6,6),3,rnd(.5,1));}
 }

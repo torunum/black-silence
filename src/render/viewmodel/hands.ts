@@ -90,6 +90,8 @@ export function fist(b: Builder, side: 1 | -1, o: { trigger?: boolean; w?: numbe
     rodX(b, ...X(-w - 0.01, w + 0.016), y, 0.008 - i * 0.001, 0.0105, MAT.GLOVE);
     const [tx0, tx1] = X(-w - 0.014, -w - 0.002);
     b.box(tx0, y - 0.008, -0.014, tx1, y + 0.008, 0.004, MAT.GLOVE);
+    // the knuckle where the finger leaves the back of the hand: a rounded bump, lit round (2026-10-22: the fist read as a block)
+    b.ball(s * (w + 0.015), y, 0.004 - i * 0.001, 0.0115, MAT.GLOVE, 6);
   }
   if (o.trigger) {
     // index finger laid along the frame to the trigger

@@ -19,6 +19,12 @@ import { CROSS } from "../phases";
 const ivoryTex = (x: number, y: number, z: number): number =>
   Math.abs(Math.sin(z * 95) * 0.004 + Math.sin(x * 400) * 0.002 - (y - 0.03)) < 0.0018 ? -1.2 : 0; // carved vine
 
+/** The roof's carved tiles: courses along it, the joints staggered course by course. */
+const roofTex = (x: number, y: number, z: number): number => {
+  const course = Math.floor(y * 220), off = course & 1 ? 0.5 : 0;
+  return (y * 220) % 1 < 0.18 || ((z * 60 + off + Math.abs(x) * 20) % 1) < 0.1 ? -1.1 : 0;
+};
+
 /** Pointed-arch cross-section, (x,y), as seen from behind. */
 const ARCH: Array<[number, number]> = [[-0.032, 0.0], [0.032, 0.0], [0.032, 0.042], [0.022, 0.066], [0.0, 0.086], [-0.022, 0.066], [-0.032, 0.042]];
 const ROOF_SPLIT = 0.042;
@@ -53,7 +59,7 @@ export const crossLauncher: WeaponArt = {
     b.push(); b.translate(0, 0.0, 0.0);
     b.prz(ARCH.filter(([, y]) => y <= ROOF_SPLIT), -0.06, 0.22, MAT.BONE, { tex: ivoryTex });
     b.push(); b.translate(-0.032, ROOF_SPLIT, 0); b.roll(-1.4 * lid); b.translate(0.032, -ROOF_SPLIT, 0);
-    b.prz(ARCH.filter(([, y]) => y >= ROOF_SPLIT), -0.06, 0.22, MAT.BONE);
+    b.prz(ARCH.filter(([, y]) => y >= ROOF_SPLIT), -0.06, 0.22, MAT.BONE, { tex: roofTex });   // its tiles carved in the ivory (2026-10-22: a plain slab)
     for (const z of [-0.06, 0.07, 0.2]) b.prz(ARCH.filter(([, y]) => y >= ROOF_SPLIT).map(([x, y]) => [x * 1.12, (y - ROOF_SPLIT) * 1.12 + ROOF_SPLIT]), z, z + 0.018, MAT.GOLD);
     b.pop();
     for (const z of [-0.06, 0.07, 0.2]) b.prz([[-0.035, -0.004], [0.035, -0.004], [0.035, ROOF_SPLIT], [-0.035, ROOF_SPLIT]], z, z + 0.018, MAT.GOLD);

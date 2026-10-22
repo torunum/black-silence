@@ -18,6 +18,9 @@ the owner chose "Blood gibi sağ-alt" —
   machined (seams, an ejection port, pins) where they were flat grey boxes.
 - **The particles are round** (`Particles.ts`: a soft disc texture on the one `Points` material): the muzzle's smoke half a metre in front of
   the eye was a grey square over the crosshair.
+- **Second pass**: the muzzle flash is petals of fire round a white-hot core, re-cut each frame from the frame number (no new dice: the two
+  draws are still the reference's), where it was one four-pointed star; the gloves have knuckles; the lighter in the dynamite's left hand is
+  a trench lighter with its lid thrown back and a tongue of flame, bigger and nearer; the cross launcher's roof is carved in tiles.
 
 ## Owner's round, 2026-10-21 (night): the bosses redrawn, five levels rebuilt, shots past pillars, a harder kick, a better map
 
