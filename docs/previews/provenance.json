@@ -1,0 +1,61 @@
+{
+  "inputHtmlSha256": "5c071b1892db41b162542460dc447586c4919df3d730bcf07164dea9dfe1e932",
+  "records": [
+    {
+      "from": ".dream-loop/arsenal-final-integration/model-6-idle.png",
+      "to": "arsenal-nail-idle.png",
+      "scope": "Actual game scene with deterministic idle weapon pose; QA supplies weapon. Final source, preview helper appended.",
+      "sha256": "a44a2c68076bea046ffe4559010d1359770975d91ee3121ddfbc886d60df75ba",
+      "inputHtmlSha256": "5c071b1892db41b162542460dc447586c4919df3d730bcf07164dea9dfe1e932"
+    },
+    {
+      "from": ".dream-loop/arsenal-final-qa/navigation/arena.png",
+      "to": "arsenal-hell-arena.png",
+      "scope": "Actual final game scene from navigation test; QA stages camera and weapon.",
+      "sha256": "d7b2068f811ca2053955dc28fedee5244b5ccda00c7e5e04fa8d4b4300a3f98b",
+      "inputHtmlSha256": "5c071b1892db41b162542460dc447586c4919df3d730bcf07164dea9dfe1e932"
+    },
+    {
+      "from": ".dream-loop/arsenal-final-qa/runtime/weapon-6-phase-0.5.png",
+      "to": "arsenal-nail-reload-raster.png",
+      "scope": "Isolated native weapon raster sampled from real R/RAF reload, not a full scene screenshot.",
+      "sha256": "145870f765c81a091a8c5c2694fc5f3a528356cd12611dafce3ca0b1eef5a4c7",
+      "inputHtmlSha256": "5c071b1892db41b162542460dc447586c4919df3d730bcf07164dea9dfe1e932"
+    },
+    {
+      "from": ".dream-loop/arsenal-video/screens/prologue.png",
+      "to": "arsenal-pistol-idle.png",
+      "sha256": "957780e2f2498962ce0a30767912b69713038cae7c1b5ce346a825bf3e9911fd",
+      "inputHtmlSha256": "5c071b1892db41b162542460dc447586c4919df3d730bcf07164dea9dfe1e932",
+      "scope": "Actual shipped main HTML, real RAF/input flow; reload screenshots captured during real R reload. QA grants the second weapon and ammunition; no fixed view pose."
+    },
+    {
+      "from": ".dream-loop/arsenal-video/screens/shotgun.png",
+      "to": "arsenal-shotgun-idle.png",
+      "sha256": "2fd871402303d2b142f82aa898947064b5e2dc79628e4cc4b1483a85da5a179f",
+      "inputHtmlSha256": "5c071b1892db41b162542460dc447586c4919df3d730bcf07164dea9dfe1e932",
+      "scope": "Actual shipped main HTML, real RAF/input flow; reload screenshots captured during real R reload. QA grants the second weapon and ammunition; no fixed view pose."
+    },
+    {
+      "from": ".dream-loop/arsenal-video/screens/pistol-reload.png",
+      "to": "arsenal-pistol-reload.png",
+      "sha256": "cf1d6d98fb7fda3f81d1217c38ec38a014e5ce3ce2f39633ffc59db49c27e7fc",
+      "inputHtmlSha256": "5c071b1892db41b162542460dc447586c4919df3d730bcf07164dea9dfe1e932",
+      "scope": "Actual shipped main HTML, real RAF/input flow; reload screenshots captured during real R reload. QA grants the second weapon and ammunition; no fixed view pose."
+    },
+    {
+      "from": ".dream-loop/arsenal-video/screens/shotgun-reload.png",
+      "to": "arsenal-shotgun-reload.png",
+      "sha256": "3f5ecacd282ad33bce9aec0cb811814ef47ff6a3f41a937d617398205dcf4230",
+      "inputHtmlSha256": "5c071b1892db41b162542460dc447586c4919df3d730bcf07164dea9dfe1e932",
+      "scope": "Actual shipped main HTML, real RAF/input flow; reload screenshots captured during real R reload. QA grants the second weapon and ammunition; no fixed view pose."
+    },
+    {
+      "to": "arsenal-reload.webm",
+      "sha256": "7eee32e1b564d79bda0fde9ea1aea1bd3112a7d3abbd78023c64cdb357e3d398",
+      "inputHtmlSha256": "5c071b1892db41b162542460dc447586c4919df3d730bcf07164dea9dfe1e932",
+      "scope": "6.888 seconds of actual RAF weapon idle/fire/reload, game WebAudio; no scripted view pose. 25fps video, synchronization precision one 40ms frame."
+    }
+  ],
+  "mainMatchesCandidate": true
+}

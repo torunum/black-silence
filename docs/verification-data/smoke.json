@@ -1,0 +1,242 @@
+{
+  "viewport": "1280x720",
+  "maps": [
+    {
+      "level": 0,
+      "width": 64,
+      "height": 62,
+      "enemies": 21,
+      "finitePlayer": true,
+      "performance": {
+        "frames": 32,
+        "meanMs": 17.94,
+        "p95Ms": 18.2,
+        "maxMs": 18.6,
+        "approximateFPS": 55.7
+      }
+    },
+    {
+      "level": 1,
+      "width": 58,
+      "height": 44,
+      "enemies": 23,
+      "finitePlayer": true,
+      "performance": {
+        "frames": 32,
+        "meanMs": 17.88,
+        "p95Ms": 18.2,
+        "maxMs": 18.2,
+        "approximateFPS": 55.9
+      }
+    },
+    {
+      "level": 2,
+      "width": 64,
+      "height": 46,
+      "enemies": 35,
+      "finitePlayer": true,
+      "performance": {
+        "frames": 32,
+        "meanMs": 17.9,
+        "p95Ms": 18.1,
+        "maxMs": 18.1,
+        "approximateFPS": 55.9
+      }
+    },
+    {
+      "level": 3,
+      "width": 54,
+      "height": 46,
+      "enemies": 37,
+      "finitePlayer": true,
+      "performance": {
+        "frames": 32,
+        "meanMs": 17.86,
+        "p95Ms": 18.1,
+        "maxMs": 18.1,
+        "approximateFPS": 56
+      }
+    },
+    {
+      "level": 4,
+      "width": 62,
+      "height": 46,
+      "enemies": 36,
+      "finitePlayer": true,
+      "performance": {
+        "frames": 32,
+        "meanMs": 17.76,
+        "p95Ms": 18.1,
+        "maxMs": 18.1,
+        "approximateFPS": 56.3
+      }
+    },
+    {
+      "level": 5,
+      "width": 58,
+      "height": 46,
+      "enemies": 34,
+      "finitePlayer": true,
+      "performance": {
+        "frames": 32,
+        "meanMs": 17.63,
+        "p95Ms": 18.2,
+        "maxMs": 18.3,
+        "approximateFPS": 56.7
+      }
+    },
+    {
+      "level": 6,
+      "width": 58,
+      "height": 46,
+      "enemies": 33,
+      "finitePlayer": true,
+      "performance": {
+        "frames": 32,
+        "meanMs": 17.83,
+        "p95Ms": 18.1,
+        "maxMs": 18.1,
+        "approximateFPS": 56.1
+      }
+    },
+    {
+      "level": 7,
+      "width": 62,
+      "height": 46,
+      "enemies": 33,
+      "finitePlayer": true,
+      "performance": {
+        "frames": 32,
+        "meanMs": 17.91,
+        "p95Ms": 18.2,
+        "maxMs": 18.5,
+        "approximateFPS": 55.8
+      }
+    },
+    {
+      "level": 8,
+      "width": 50,
+      "height": 42,
+      "enemies": 29,
+      "finitePlayer": true,
+      "performance": {
+        "frames": 32,
+        "meanMs": 17.9,
+        "p95Ms": 18.2,
+        "maxMs": 18.5,
+        "approximateFPS": 55.9
+      }
+    },
+    {
+      "level": 9,
+      "width": 100,
+      "height": 86,
+      "enemies": 115,
+      "finitePlayer": true,
+      "performance": {
+        "frames": 32,
+        "meanMs": 17.93,
+        "p95Ms": 18.1,
+        "maxMs": 18.1,
+        "approximateFPS": 55.8
+      }
+    },
+    {
+      "level": 10,
+      "width": 72,
+      "height": 64,
+      "enemies": 79,
+      "finitePlayer": true,
+      "performance": {
+        "frames": 32,
+        "meanMs": 17.9,
+        "p95Ms": 18.2,
+        "maxMs": 18.2,
+        "approximateFPS": 55.9
+      }
+    }
+  ],
+  "actions": {
+    "dropkick": {
+      "x": 3,
+      "z": 9,
+      "y": 5.2,
+      "ex": 3,
+      "ez": 7,
+      "distance": 6.649309808518081,
+      "jump": 0.6759707811199993,
+      "enemyDistance": 4.54898708984374,
+      "airborne": true,
+      "finisherSeen": false,
+      "hp": 172,
+      "frames": {
+        "frames": 39,
+        "meanMs": 21.57,
+        "p95Ms": 36.2,
+        "maxMs": 54.2,
+        "approximateFPS": 46.4
+      }
+    },
+    "finisher": {
+      "x": 3,
+      "z": 9,
+      "y": 5.2,
+      "ex": 3,
+      "ez": 7,
+      "distance": 0.8499999999999996,
+      "jump": 0,
+      "enemyDistance": 0.7285735852921515,
+      "airborne": false,
+      "finisherSeen": true,
+      "dead": true,
+      "frames": {
+        "frames": 81,
+        "meanMs": 17.85,
+        "p95Ms": 18.1,
+        "maxMs": 18.4,
+        "approximateFPS": 56
+      }
+    },
+    "warmFinishers": [
+      {
+        "requestedKind": 0,
+        "actualKind": 1,
+        "frames": 79,
+        "meanMs": 18.08,
+        "p95Ms": 18.2,
+        "maxMs": 35.3,
+        "approximateFPS": 55.3
+      },
+      {
+        "requestedKind": 1,
+        "actualKind": 2,
+        "frames": 77,
+        "meanMs": 18.78,
+        "p95Ms": 35.5,
+        "maxMs": 36.2,
+        "approximateFPS": 53.3
+      },
+      {
+        "requestedKind": 2,
+        "actualKind": 1,
+        "frames": 78,
+        "meanMs": 18.61,
+        "p95Ms": 18.6,
+        "maxMs": 36.6,
+        "approximateFPS": 53.7
+      }
+    ],
+    "restart": {
+      "melee": true,
+      "busy": false,
+      "exec": null,
+      "level": 0
+    }
+  },
+  "ordinaryLaunch": {
+    "offline": true,
+    "qaAbsent": true,
+    "viewport": "1920x1080"
+  },
+  "errors": []
+}

@@ -1,0 +1,880 @@
+{
+  "results": [
+    {
+      "path": ".dream-loop/weapon-reference-work/combined-v3/candidate.html",
+      "indices": [
+        0
+      ],
+      "extras": [
+        {
+          "index": -1,
+          "reload": -1,
+          "kick": 0.11,
+          "drop": 0
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "kick": 0.11,
+          "drop": 1
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "kick": 0.21,
+          "drop": 0
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "kick": 0.21,
+          "drop": 1
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.25,
+          "execKind": 0
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.55,
+          "execKind": 0
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.85,
+          "execKind": 0
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.25,
+          "execKind": 1
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.55,
+          "execKind": 1
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.85,
+          "execKind": 1
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.25,
+          "execKind": 2
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.55,
+          "execKind": 2
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.85,
+          "execKind": 2
+        }
+      ],
+      "records": [
+        {
+          "index": 0,
+          "reload": -1,
+          "key": "{\"index\":0,\"reload\":-1}",
+          "sha": "a646e8da746c02fd4adef0d3f73756e1439f503f435891e3f1940e29ecda4921"
+        },
+        {
+          "index": 0,
+          "reload": 0.55,
+          "key": "{\"index\":0,\"reload\":0.55}",
+          "sha": "515bb511914bb084aeb33a9c6d79c00e27565c73859383def4e09adc7876fbfd"
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "kick": 0.11,
+          "drop": 0,
+          "key": "{\"index\":-1,\"reload\":-1,\"kick\":0.11,\"drop\":0}",
+          "sha": "b2167218aa8eb52da3f50797383807db432cf78fda5fe3a7881c465708bf5510"
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "kick": 0.11,
+          "drop": 1,
+          "key": "{\"index\":-1,\"reload\":-1,\"kick\":0.11,\"drop\":1}",
+          "sha": "16fc44951774766feb478581401d4e4037df5cd546f68b68334c5769c397e0c4"
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "kick": 0.21,
+          "drop": 0,
+          "key": "{\"index\":-1,\"reload\":-1,\"kick\":0.21,\"drop\":0}",
+          "sha": "4f8db71114a589ed7793e031fdc697aba37bb13834aaf38ab0273ae49d5e8aff"
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "kick": 0.21,
+          "drop": 1,
+          "key": "{\"index\":-1,\"reload\":-1,\"kick\":0.21,\"drop\":1}",
+          "sha": "9d55373eaffe7ff0484b8090a289ba48346907c41f6e295a329db21b94598491"
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.25,
+          "execKind": 0,
+          "key": "{\"index\":-1,\"reload\":-1,\"exec\":0.25,\"execKind\":0}",
+          "sha": "01f1a64b03a3cbe86fac5ab410d6ec3c360a810e6571596300ccba90e4eb4ed5"
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.55,
+          "execKind": 0,
+          "key": "{\"index\":-1,\"reload\":-1,\"exec\":0.55,\"execKind\":0}",
+          "sha": "f420a517999968df1cc18c95b0c332fd70feeff2ee56b580295c155677f22604"
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.85,
+          "execKind": 0,
+          "key": "{\"index\":-1,\"reload\":-1,\"exec\":0.85,\"execKind\":0}",
+          "sha": "a68dc3732d34d5162fe614e5f7828ecb82789bc89a955c1790abbf1e91cc5582"
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.25,
+          "execKind": 1,
+          "key": "{\"index\":-1,\"reload\":-1,\"exec\":0.25,\"execKind\":1}",
+          "sha": "9b50bc53f1164f926c4a347e43f764c758ed7e006c055bcf9bcacc9f51bda8fc"
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.55,
+          "execKind": 1,
+          "key": "{\"index\":-1,\"reload\":-1,\"exec\":0.55,\"execKind\":1}",
+          "sha": "5b7bf2a55fe9cc2b2daeb41f1c470076b9f79c43b718316c993f905b305e58d5"
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.85,
+          "execKind": 1,
+          "key": "{\"index\":-1,\"reload\":-1,\"exec\":0.85,\"execKind\":1}",
+          "sha": "e845c371437bea0f50cbd26ed4958d4952568f9bc5a0c8ecd7c59c7f7cb10014"
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.25,
+          "execKind": 2,
+          "key": "{\"index\":-1,\"reload\":-1,\"exec\":0.25,\"execKind\":2}",
+          "sha": "fb982e66588f74ef6e2fb5689430b8b987de1b41666f61471241eac8237f7663"
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.55,
+          "execKind": 2,
+          "key": "{\"index\":-1,\"reload\":-1,\"exec\":0.55,\"execKind\":2}",
+          "sha": "25719dca978cda91ae6409a8b661678c6c59004c15331505ac8fe8205914139f"
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.85,
+          "execKind": 2,
+          "key": "{\"index\":-1,\"reload\":-1,\"exec\":0.85,\"execKind\":2}",
+          "sha": "aa2ad4bffc79ea29d4c420429b69c9abe5886d051adf96d4fc02ddd86be67e86"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "path": ".dream-loop/shotgun-art-rebuild/candidate.html",
+      "indices": [
+        1
+      ],
+      "records": [
+        {
+          "index": 1,
+          "reload": -1,
+          "key": "{\"index\":1,\"reload\":-1}",
+          "sha": "1546845c73f4123ee2784e5d3e07aa452864923f52d855954c6b8da18a72b343"
+        },
+        {
+          "index": 1,
+          "reload": 0.55,
+          "key": "{\"index\":1,\"reload\":0.55}",
+          "sha": "98dbb5d411aa6023598d4e4af906afef251732ff66a81b2221e0d5fb59f01bd2"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "path": ".dream-loop/firearm-rebuild-work/candidate.html",
+      "indices": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "records": [
+        {
+          "index": 2,
+          "reload": -1,
+          "key": "{\"index\":2,\"reload\":-1}",
+          "sha": "5c7aaba7bb1af465a6ae48753d29c268551fb5d4434f9323fa55650b790d156a"
+        },
+        {
+          "index": 2,
+          "reload": 0.55,
+          "key": "{\"index\":2,\"reload\":0.55}",
+          "sha": "918e448dde78f4bacae084d1dc7830efa77c756f4518c375a9c052ee7186e592"
+        },
+        {
+          "index": 3,
+          "reload": -1,
+          "key": "{\"index\":3,\"reload\":-1}",
+          "sha": "79c0ae328227a64af67d4a25e7bd4a516b1b7b741e1ddcbbeed7716cd860aa23"
+        },
+        {
+          "index": 3,
+          "reload": 0.55,
+          "key": "{\"index\":3,\"reload\":0.55}",
+          "sha": "cc31414c7fc88830870bb53616502c45902b0fd81ebb07247d133ffac686ce44"
+        },
+        {
+          "index": 4,
+          "reload": -1,
+          "key": "{\"index\":4,\"reload\":-1}",
+          "sha": "4d7837fb76018e39ed3d31dce71d88a16b0e2ea4ba2ae2980b541c7eb3e893bc"
+        },
+        {
+          "index": 4,
+          "reload": 0.55,
+          "key": "{\"index\":4,\"reload\":0.55}",
+          "sha": "f69b75cef7051726a3e4856ee72192f49f53f18556bffc9c82a72b26c70a54c5"
+        },
+        {
+          "index": 5,
+          "reload": -1,
+          "key": "{\"index\":5,\"reload\":-1}",
+          "sha": "7265311a6695c84cb8794e3f9b16406227ee77e9483a6d6425d388618b12b58f"
+        },
+        {
+          "index": 5,
+          "reload": 0.55,
+          "key": "{\"index\":5,\"reload\":0.55}",
+          "sha": "b53562b952be6d3ac50159b2a49ad3759e736bf953ba587e7a30501ffbcd4f1f"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "path": ".dream-loop/weapon-rebuild-prototype/candidate.html",
+      "indices": [
+        6
+      ],
+      "records": [
+        {
+          "index": 6,
+          "reload": -1,
+          "key": "{\"index\":6,\"reload\":-1}",
+          "sha": "d2bb4b690b57571d937dacead888e9428e5ecf80dfc67ad76b387679a3aa7c0f"
+        },
+        {
+          "index": 6,
+          "reload": 0.55,
+          "key": "{\"index\":6,\"reload\":0.55}",
+          "sha": "8c808aec4d42a47ff62d40f9245b8e892642fe2caec191085c3e2011a884184a"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "path": ".dream-loop/weapon-rebuild-7-9/candidate.html",
+      "indices": [
+        7,
+        8,
+        9
+      ],
+      "records": [
+        {
+          "index": 7,
+          "reload": -1,
+          "key": "{\"index\":7,\"reload\":-1}",
+          "sha": "9eab8f4a71ce04a3119766dec1d9386139faf92c996760f56382c41d210c5713"
+        },
+        {
+          "index": 7,
+          "reload": 0.55,
+          "key": "{\"index\":7,\"reload\":0.55}",
+          "sha": "09c1d43e0e25613c1fdf95e87cb38a29fd14c4aad818931770fab50d4375c9d9"
+        },
+        {
+          "index": 8,
+          "reload": -1,
+          "key": "{\"index\":8,\"reload\":-1}",
+          "sha": "dab90d3bc2bb6f8e9a086f9939c1195259eb327ed0144343b633aff130cf6360"
+        },
+        {
+          "index": 8,
+          "reload": 0.55,
+          "key": "{\"index\":8,\"reload\":0.55}",
+          "sha": "0fd0acf9da87c4108c84cf99e469c931aa0bc65a3023739ed463098548d999a5"
+        },
+        {
+          "index": 9,
+          "reload": -1,
+          "key": "{\"index\":9,\"reload\":-1}",
+          "sha": "90b65344972b3b61af04ce7bbc2dc8164574caee6e530e5dedfb7e2c1ff27b3b"
+        },
+        {
+          "index": 9,
+          "reload": 0.55,
+          "key": "{\"index\":9,\"reload\":0.55}",
+          "sha": "ba95aa49bbf4119c6e6d3aa92c2043ae0987c5415cc2c4853f4de9f015a3dfa5"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "path": ".dream-loop/arsenal-final-integration/candidate.html",
+      "indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "extras": [
+        {
+          "index": -1,
+          "reload": -1,
+          "kick": 0.11,
+          "drop": 0
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "kick": 0.11,
+          "drop": 1
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "kick": 0.21,
+          "drop": 0
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "kick": 0.21,
+          "drop": 1
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.25,
+          "execKind": 0
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.55,
+          "execKind": 0
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.85,
+          "execKind": 0
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.25,
+          "execKind": 1
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.55,
+          "execKind": 1
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.85,
+          "execKind": 1
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.25,
+          "execKind": 2
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.55,
+          "execKind": 2
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.85,
+          "execKind": 2
+        }
+      ],
+      "records": [
+        {
+          "index": 0,
+          "reload": -1,
+          "key": "{\"index\":0,\"reload\":-1}",
+          "sha": "a646e8da746c02fd4adef0d3f73756e1439f503f435891e3f1940e29ecda4921"
+        },
+        {
+          "index": 0,
+          "reload": 0.55,
+          "key": "{\"index\":0,\"reload\":0.55}",
+          "sha": "515bb511914bb084aeb33a9c6d79c00e27565c73859383def4e09adc7876fbfd"
+        },
+        {
+          "index": 1,
+          "reload": -1,
+          "key": "{\"index\":1,\"reload\":-1}",
+          "sha": "1546845c73f4123ee2784e5d3e07aa452864923f52d855954c6b8da18a72b343"
+        },
+        {
+          "index": 1,
+          "reload": 0.55,
+          "key": "{\"index\":1,\"reload\":0.55}",
+          "sha": "98dbb5d411aa6023598d4e4af906afef251732ff66a81b2221e0d5fb59f01bd2"
+        },
+        {
+          "index": 2,
+          "reload": -1,
+          "key": "{\"index\":2,\"reload\":-1}",
+          "sha": "5c7aaba7bb1af465a6ae48753d29c268551fb5d4434f9323fa55650b790d156a"
+        },
+        {
+          "index": 2,
+          "reload": 0.55,
+          "key": "{\"index\":2,\"reload\":0.55}",
+          "sha": "918e448dde78f4bacae084d1dc7830efa77c756f4518c375a9c052ee7186e592"
+        },
+        {
+          "index": 3,
+          "reload": -1,
+          "key": "{\"index\":3,\"reload\":-1}",
+          "sha": "79c0ae328227a64af67d4a25e7bd4a516b1b7b741e1ddcbbeed7716cd860aa23"
+        },
+        {
+          "index": 3,
+          "reload": 0.55,
+          "key": "{\"index\":3,\"reload\":0.55}",
+          "sha": "cc31414c7fc88830870bb53616502c45902b0fd81ebb07247d133ffac686ce44"
+        },
+        {
+          "index": 4,
+          "reload": -1,
+          "key": "{\"index\":4,\"reload\":-1}",
+          "sha": "4d7837fb76018e39ed3d31dce71d88a16b0e2ea4ba2ae2980b541c7eb3e893bc"
+        },
+        {
+          "index": 4,
+          "reload": 0.55,
+          "key": "{\"index\":4,\"reload\":0.55}",
+          "sha": "f69b75cef7051726a3e4856ee72192f49f53f18556bffc9c82a72b26c70a54c5"
+        },
+        {
+          "index": 5,
+          "reload": -1,
+          "key": "{\"index\":5,\"reload\":-1}",
+          "sha": "7265311a6695c84cb8794e3f9b16406227ee77e9483a6d6425d388618b12b58f"
+        },
+        {
+          "index": 5,
+          "reload": 0.55,
+          "key": "{\"index\":5,\"reload\":0.55}",
+          "sha": "b53562b952be6d3ac50159b2a49ad3759e736bf953ba587e7a30501ffbcd4f1f"
+        },
+        {
+          "index": 6,
+          "reload": -1,
+          "key": "{\"index\":6,\"reload\":-1}",
+          "sha": "d2bb4b690b57571d937dacead888e9428e5ecf80dfc67ad76b387679a3aa7c0f"
+        },
+        {
+          "index": 6,
+          "reload": 0.55,
+          "key": "{\"index\":6,\"reload\":0.55}",
+          "sha": "8c808aec4d42a47ff62d40f9245b8e892642fe2caec191085c3e2011a884184a"
+        },
+        {
+          "index": 7,
+          "reload": -1,
+          "key": "{\"index\":7,\"reload\":-1}",
+          "sha": "9eab8f4a71ce04a3119766dec1d9386139faf92c996760f56382c41d210c5713"
+        },
+        {
+          "index": 7,
+          "reload": 0.55,
+          "key": "{\"index\":7,\"reload\":0.55}",
+          "sha": "09c1d43e0e25613c1fdf95e87cb38a29fd14c4aad818931770fab50d4375c9d9"
+        },
+        {
+          "index": 8,
+          "reload": -1,
+          "key": "{\"index\":8,\"reload\":-1}",
+          "sha": "dab90d3bc2bb6f8e9a086f9939c1195259eb327ed0144343b633aff130cf6360"
+        },
+        {
+          "index": 8,
+          "reload": 0.55,
+          "key": "{\"index\":8,\"reload\":0.55}",
+          "sha": "0fd0acf9da87c4108c84cf99e469c931aa0bc65a3023739ed463098548d999a5"
+        },
+        {
+          "index": 9,
+          "reload": -1,
+          "key": "{\"index\":9,\"reload\":-1}",
+          "sha": "90b65344972b3b61af04ce7bbc2dc8164574caee6e530e5dedfb7e2c1ff27b3b"
+        },
+        {
+          "index": 9,
+          "reload": 0.55,
+          "key": "{\"index\":9,\"reload\":0.55}",
+          "sha": "ba95aa49bbf4119c6e6d3aa92c2043ae0987c5415cc2c4853f4de9f015a3dfa5"
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "kick": 0.11,
+          "drop": 0,
+          "key": "{\"index\":-1,\"reload\":-1,\"kick\":0.11,\"drop\":0}",
+          "sha": "b2167218aa8eb52da3f50797383807db432cf78fda5fe3a7881c465708bf5510"
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "kick": 0.11,
+          "drop": 1,
+          "key": "{\"index\":-1,\"reload\":-1,\"kick\":0.11,\"drop\":1}",
+          "sha": "16fc44951774766feb478581401d4e4037df5cd546f68b68334c5769c397e0c4"
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "kick": 0.21,
+          "drop": 0,
+          "key": "{\"index\":-1,\"reload\":-1,\"kick\":0.21,\"drop\":0}",
+          "sha": "4f8db71114a589ed7793e031fdc697aba37bb13834aaf38ab0273ae49d5e8aff"
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "kick": 0.21,
+          "drop": 1,
+          "key": "{\"index\":-1,\"reload\":-1,\"kick\":0.21,\"drop\":1}",
+          "sha": "9d55373eaffe7ff0484b8090a289ba48346907c41f6e295a329db21b94598491"
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.25,
+          "execKind": 0,
+          "key": "{\"index\":-1,\"reload\":-1,\"exec\":0.25,\"execKind\":0}",
+          "sha": "01f1a64b03a3cbe86fac5ab410d6ec3c360a810e6571596300ccba90e4eb4ed5"
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.55,
+          "execKind": 0,
+          "key": "{\"index\":-1,\"reload\":-1,\"exec\":0.55,\"execKind\":0}",
+          "sha": "f420a517999968df1cc18c95b0c332fd70feeff2ee56b580295c155677f22604"
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.85,
+          "execKind": 0,
+          "key": "{\"index\":-1,\"reload\":-1,\"exec\":0.85,\"execKind\":0}",
+          "sha": "a68dc3732d34d5162fe614e5f7828ecb82789bc89a955c1790abbf1e91cc5582"
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.25,
+          "execKind": 1,
+          "key": "{\"index\":-1,\"reload\":-1,\"exec\":0.25,\"execKind\":1}",
+          "sha": "9b50bc53f1164f926c4a347e43f764c758ed7e006c055bcf9bcacc9f51bda8fc"
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.55,
+          "execKind": 1,
+          "key": "{\"index\":-1,\"reload\":-1,\"exec\":0.55,\"execKind\":1}",
+          "sha": "5b7bf2a55fe9cc2b2daeb41f1c470076b9f79c43b718316c993f905b305e58d5"
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.85,
+          "execKind": 1,
+          "key": "{\"index\":-1,\"reload\":-1,\"exec\":0.85,\"execKind\":1}",
+          "sha": "e845c371437bea0f50cbd26ed4958d4952568f9bc5a0c8ecd7c59c7f7cb10014"
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.25,
+          "execKind": 2,
+          "key": "{\"index\":-1,\"reload\":-1,\"exec\":0.25,\"execKind\":2}",
+          "sha": "fb982e66588f74ef6e2fb5689430b8b987de1b41666f61471241eac8237f7663"
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.55,
+          "execKind": 2,
+          "key": "{\"index\":-1,\"reload\":-1,\"exec\":0.55,\"execKind\":2}",
+          "sha": "25719dca978cda91ae6409a8b661678c6c59004c15331505ac8fe8205914139f"
+        },
+        {
+          "index": -1,
+          "reload": -1,
+          "exec": 0.85,
+          "execKind": 2,
+          "key": "{\"index\":-1,\"reload\":-1,\"exec\":0.85,\"execKind\":2}",
+          "sha": "aa2ad4bffc79ea29d4c420429b69c9abe5886d051adf96d4fc02ddd86be67e86"
+        }
+      ],
+      "errors": []
+    }
+  ],
+  "comparisons": [
+    {
+      "key": "{\"index\":0,\"reload\":-1}",
+      "identical": true,
+      "before": "a646e8da746c02fd4adef0d3f73756e1439f503f435891e3f1940e29ecda4921",
+      "after": "a646e8da746c02fd4adef0d3f73756e1439f503f435891e3f1940e29ecda4921"
+    },
+    {
+      "key": "{\"index\":0,\"reload\":0.55}",
+      "identical": true,
+      "before": "515bb511914bb084aeb33a9c6d79c00e27565c73859383def4e09adc7876fbfd",
+      "after": "515bb511914bb084aeb33a9c6d79c00e27565c73859383def4e09adc7876fbfd"
+    },
+    {
+      "key": "{\"index\":-1,\"reload\":-1,\"kick\":0.11,\"drop\":0}",
+      "identical": true,
+      "before": "b2167218aa8eb52da3f50797383807db432cf78fda5fe3a7881c465708bf5510",
+      "after": "b2167218aa8eb52da3f50797383807db432cf78fda5fe3a7881c465708bf5510"
+    },
+    {
+      "key": "{\"index\":-1,\"reload\":-1,\"kick\":0.11,\"drop\":1}",
+      "identical": true,
+      "before": "16fc44951774766feb478581401d4e4037df5cd546f68b68334c5769c397e0c4",
+      "after": "16fc44951774766feb478581401d4e4037df5cd546f68b68334c5769c397e0c4"
+    },
+    {
+      "key": "{\"index\":-1,\"reload\":-1,\"kick\":0.21,\"drop\":0}",
+      "identical": true,
+      "before": "4f8db71114a589ed7793e031fdc697aba37bb13834aaf38ab0273ae49d5e8aff",
+      "after": "4f8db71114a589ed7793e031fdc697aba37bb13834aaf38ab0273ae49d5e8aff"
+    },
+    {
+      "key": "{\"index\":-1,\"reload\":-1,\"kick\":0.21,\"drop\":1}",
+      "identical": true,
+      "before": "9d55373eaffe7ff0484b8090a289ba48346907c41f6e295a329db21b94598491",
+      "after": "9d55373eaffe7ff0484b8090a289ba48346907c41f6e295a329db21b94598491"
+    },
+    {
+      "key": "{\"index\":-1,\"reload\":-1,\"exec\":0.25,\"execKind\":0}",
+      "identical": true,
+      "before": "01f1a64b03a3cbe86fac5ab410d6ec3c360a810e6571596300ccba90e4eb4ed5",
+      "after": "01f1a64b03a3cbe86fac5ab410d6ec3c360a810e6571596300ccba90e4eb4ed5"
+    },
+    {
+      "key": "{\"index\":-1,\"reload\":-1,\"exec\":0.55,\"execKind\":0}",
+      "identical": true,
+      "before": "f420a517999968df1cc18c95b0c332fd70feeff2ee56b580295c155677f22604",
+      "after": "f420a517999968df1cc18c95b0c332fd70feeff2ee56b580295c155677f22604"
+    },
+    {
+      "key": "{\"index\":-1,\"reload\":-1,\"exec\":0.85,\"execKind\":0}",
+      "identical": true,
+      "before": "a68dc3732d34d5162fe614e5f7828ecb82789bc89a955c1790abbf1e91cc5582",
+      "after": "a68dc3732d34d5162fe614e5f7828ecb82789bc89a955c1790abbf1e91cc5582"
+    },
+    {
+      "key": "{\"index\":-1,\"reload\":-1,\"exec\":0.25,\"execKind\":1}",
+      "identical": true,
+      "before": "9b50bc53f1164f926c4a347e43f764c758ed7e006c055bcf9bcacc9f51bda8fc",
+      "after": "9b50bc53f1164f926c4a347e43f764c758ed7e006c055bcf9bcacc9f51bda8fc"
+    },
+    {
+      "key": "{\"index\":-1,\"reload\":-1,\"exec\":0.55,\"execKind\":1}",
+      "identical": true,
+      "before": "5b7bf2a55fe9cc2b2daeb41f1c470076b9f79c43b718316c993f905b305e58d5",
+      "after": "5b7bf2a55fe9cc2b2daeb41f1c470076b9f79c43b718316c993f905b305e58d5"
+    },
+    {
+      "key": "{\"index\":-1,\"reload\":-1,\"exec\":0.85,\"execKind\":1}",
+      "identical": true,
+      "before": "e845c371437bea0f50cbd26ed4958d4952568f9bc5a0c8ecd7c59c7f7cb10014",
+      "after": "e845c371437bea0f50cbd26ed4958d4952568f9bc5a0c8ecd7c59c7f7cb10014"
+    },
+    {
+      "key": "{\"index\":-1,\"reload\":-1,\"exec\":0.25,\"execKind\":2}",
+      "identical": true,
+      "before": "fb982e66588f74ef6e2fb5689430b8b987de1b41666f61471241eac8237f7663",
+      "after": "fb982e66588f74ef6e2fb5689430b8b987de1b41666f61471241eac8237f7663"
+    },
+    {
+      "key": "{\"index\":-1,\"reload\":-1,\"exec\":0.55,\"execKind\":2}",
+      "identical": true,
+      "before": "25719dca978cda91ae6409a8b661678c6c59004c15331505ac8fe8205914139f",
+      "after": "25719dca978cda91ae6409a8b661678c6c59004c15331505ac8fe8205914139f"
+    },
+    {
+      "key": "{\"index\":-1,\"reload\":-1,\"exec\":0.85,\"execKind\":2}",
+      "identical": true,
+      "before": "aa2ad4bffc79ea29d4c420429b69c9abe5886d051adf96d4fc02ddd86be67e86",
+      "after": "aa2ad4bffc79ea29d4c420429b69c9abe5886d051adf96d4fc02ddd86be67e86"
+    },
+    {
+      "key": "{\"index\":1,\"reload\":-1}",
+      "identical": true,
+      "before": "1546845c73f4123ee2784e5d3e07aa452864923f52d855954c6b8da18a72b343",
+      "after": "1546845c73f4123ee2784e5d3e07aa452864923f52d855954c6b8da18a72b343"
+    },
+    {
+      "key": "{\"index\":1,\"reload\":0.55}",
+      "identical": true,
+      "before": "98dbb5d411aa6023598d4e4af906afef251732ff66a81b2221e0d5fb59f01bd2",
+      "after": "98dbb5d411aa6023598d4e4af906afef251732ff66a81b2221e0d5fb59f01bd2"
+    },
+    {
+      "key": "{\"index\":2,\"reload\":-1}",
+      "identical": true,
+      "before": "5c7aaba7bb1af465a6ae48753d29c268551fb5d4434f9323fa55650b790d156a",
+      "after": "5c7aaba7bb1af465a6ae48753d29c268551fb5d4434f9323fa55650b790d156a"
+    },
+    {
+      "key": "{\"index\":2,\"reload\":0.55}",
+      "identical": true,
+      "before": "918e448dde78f4bacae084d1dc7830efa77c756f4518c375a9c052ee7186e592",
+      "after": "918e448dde78f4bacae084d1dc7830efa77c756f4518c375a9c052ee7186e592"
+    },
+    {
+      "key": "{\"index\":3,\"reload\":-1}",
+      "identical": true,
+      "before": "79c0ae328227a64af67d4a25e7bd4a516b1b7b741e1ddcbbeed7716cd860aa23",
+      "after": "79c0ae328227a64af67d4a25e7bd4a516b1b7b741e1ddcbbeed7716cd860aa23"
+    },
+    {
+      "key": "{\"index\":3,\"reload\":0.55}",
+      "identical": true,
+      "before": "cc31414c7fc88830870bb53616502c45902b0fd81ebb07247d133ffac686ce44",
+      "after": "cc31414c7fc88830870bb53616502c45902b0fd81ebb07247d133ffac686ce44"
+    },
+    {
+      "key": "{\"index\":4,\"reload\":-1}",
+      "identical": true,
+      "before": "4d7837fb76018e39ed3d31dce71d88a16b0e2ea4ba2ae2980b541c7eb3e893bc",
+      "after": "4d7837fb76018e39ed3d31dce71d88a16b0e2ea4ba2ae2980b541c7eb3e893bc"
+    },
+    {
+      "key": "{\"index\":4,\"reload\":0.55}",
+      "identical": true,
+      "before": "f69b75cef7051726a3e4856ee72192f49f53f18556bffc9c82a72b26c70a54c5",
+      "after": "f69b75cef7051726a3e4856ee72192f49f53f18556bffc9c82a72b26c70a54c5"
+    },
+    {
+      "key": "{\"index\":5,\"reload\":-1}",
+      "identical": true,
+      "before": "7265311a6695c84cb8794e3f9b16406227ee77e9483a6d6425d388618b12b58f",
+      "after": "7265311a6695c84cb8794e3f9b16406227ee77e9483a6d6425d388618b12b58f"
+    },
+    {
+      "key": "{\"index\":5,\"reload\":0.55}",
+      "identical": true,
+      "before": "b53562b952be6d3ac50159b2a49ad3759e736bf953ba587e7a30501ffbcd4f1f",
+      "after": "b53562b952be6d3ac50159b2a49ad3759e736bf953ba587e7a30501ffbcd4f1f"
+    },
+    {
+      "key": "{\"index\":6,\"reload\":-1}",
+      "identical": true,
+      "before": "d2bb4b690b57571d937dacead888e9428e5ecf80dfc67ad76b387679a3aa7c0f",
+      "after": "d2bb4b690b57571d937dacead888e9428e5ecf80dfc67ad76b387679a3aa7c0f"
+    },
+    {
+      "key": "{\"index\":6,\"reload\":0.55}",
+      "identical": true,
+      "before": "8c808aec4d42a47ff62d40f9245b8e892642fe2caec191085c3e2011a884184a",
+      "after": "8c808aec4d42a47ff62d40f9245b8e892642fe2caec191085c3e2011a884184a"
+    },
+    {
+      "key": "{\"index\":7,\"reload\":-1}",
+      "identical": true,
+      "before": "9eab8f4a71ce04a3119766dec1d9386139faf92c996760f56382c41d210c5713",
+      "after": "9eab8f4a71ce04a3119766dec1d9386139faf92c996760f56382c41d210c5713"
+    },
+    {
+      "key": "{\"index\":7,\"reload\":0.55}",
+      "identical": true,
+      "before": "09c1d43e0e25613c1fdf95e87cb38a29fd14c4aad818931770fab50d4375c9d9",
+      "after": "09c1d43e0e25613c1fdf95e87cb38a29fd14c4aad818931770fab50d4375c9d9"
+    },
+    {
+      "key": "{\"index\":8,\"reload\":-1}",
+      "identical": true,
+      "before": "dab90d3bc2bb6f8e9a086f9939c1195259eb327ed0144343b633aff130cf6360",
+      "after": "dab90d3bc2bb6f8e9a086f9939c1195259eb327ed0144343b633aff130cf6360"
+    },
+    {
+      "key": "{\"index\":8,\"reload\":0.55}",
+      "identical": true,
+      "before": "0fd0acf9da87c4108c84cf99e469c931aa0bc65a3023739ed463098548d999a5",
+      "after": "0fd0acf9da87c4108c84cf99e469c931aa0bc65a3023739ed463098548d999a5"
+    },
+    {
+      "key": "{\"index\":9,\"reload\":-1}",
+      "identical": true,
+      "before": "90b65344972b3b61af04ce7bbc2dc8164574caee6e530e5dedfb7e2c1ff27b3b",
+      "after": "90b65344972b3b61af04ce7bbc2dc8164574caee6e530e5dedfb7e2c1ff27b3b"
+    },
+    {
+      "key": "{\"index\":9,\"reload\":0.55}",
+      "identical": true,
+      "before": "ba95aa49bbf4119c6e6d3aa92c2043ae0987c5415cc2c4853f4de9f015a3dfa5",
+      "after": "ba95aa49bbf4119c6e6d3aa92c2043ae0987c5415cc2c4853f4de9f015a3dfa5"
+    }
+  ]
+}

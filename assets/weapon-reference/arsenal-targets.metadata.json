@@ -1,0 +1,35 @@
+{
+  "generatedBy": "OpenAI built-in image_gen",
+  "purpose": "Generated model reference boards, not existing runtime screenshots",
+  "status": "Parent accepted modeling direction",
+  "files": [
+    "arsenal-target-2-5-v1.png",
+    "arsenal-target-6-9-v1.png"
+  ],
+  "reference": "assets/hand-reference/original-target.png",
+  "provenance": "AI generated for this project using its approved original hand/material target and existing game screenshots. No external game asset extraction or independent CC0 claim.",
+  "requests": [
+    {
+      "prompt": "Generate a 2x2 grid of four readable first-person gameplay target frames for THE BLACK SILENCE retro gothic horror FPS. This is a modeling reference board. Image1 defines exact gothic pixel-art quality, worn dark charcoal steel/bronze materials, chapel setting and approved compact dark brown leather gloved hand: back dominant, short curled fingers, diagonal stitched cuff/small brass button. Images2–5 identify each existing weapon function. Redesign crude silhouettes into crafted volumetric weapons, preserving functional identity. Each frame close first-person three-quarter weapon in lower right, pointing upper left/into distance, right glove at grip and left glove naturally at foreend. Weapon occupies 60% of panel for readable mechanisms. Subtle dark stone chapel background. No HUD/text. Native retro pixel raster appearance, no photographic product rendering, no cinematic blur, no glossy plastic, no smooth concept painting. TOP LEFT COMBAT RIFLE: beveled steel receiver, sculpted magazine well, charging slot/chamber detail, long ribbed foreend and straight box magazine. TOP RIGHT TOMMY GUN: 1930s drum-fed silhouette, shaped walnut stock/grips with long grain, blued receiver, cooling ribs, substantial drum with latch/fasteners. BOTTOM LEFT BMG SNIPER: long rifle, solid bolt handle, scope held by two split rings/screws, deep blue-green glass recessed inside eyecup/turrets, layered receiver. BOTTOM RIGHT HOLY CROSS LAUNCHER: compact gothic ivory reliquary launcher, articulated hinged pitched lid, carved tracery, aged brass framework, inset red gem, cross projectile cradle; no modern gun.",
+      "referenced_image_paths": [
+        "C:/Users/tehlike47/game/assets/hand-reference/original-target.png",
+        "C:/Users/tehlike47/game/.dream-loop/weapon-reference-work/model-2-idle.png",
+        "C:/Users/tehlike47/game/.dream-loop/weapon-reference-work/model-3-idle.png",
+        "C:/Users/tehlike47/game/.dream-loop/weapon-reference-work/model-4-idle.png",
+        "C:/Users/tehlike47/game/.dream-loop/weapon-reference-work/model-5-idle.png"
+      ],
+      "transparent_background": false
+    },
+    {
+      "prompt": "Generate a 2x2 grid of four readable first-person gameplay target frames for THE BLACK SILENCE retro gothic horror FPS. This is a modeling reference board. Image1 defines exact gothic pixel-art quality, worn dark charcoal steel/bronze materials, chapel setting and approved compact dark brown leather gloved hand: back dominant, short curled fingers, diagonal stitched cuff/small brass button. Images2–5 identify each existing weapon function. Redesign crude silhouettes into crafted volumetric weapons, preserving functional identity. Each frame close first-person three-quarter weapon in lower right, pointing upper left/into distance, right glove at grip and left glove naturally at foreend. Weapon occupies 60% of panel for readable mechanisms. Subtle dark stone chapel background. No HUD/text. Native retro pixel raster appearance, no photographic product rendering, no cinematic blur, no glossy plastic, no smooth concept painting. TOP LEFT NAIL CANNON: multibarrel industrial gun, copper pressure chamber with thick collars, side removable brass feed canister, steel barrel clamps/bolts/pipe fittings. TOP RIGHT SOUL REAPER: compact bone-and-metal relic weapon, worn articulated claws around deep multilayer green soul orb, muted outer membrane/bright inner core, dark recesses and bone cage; no plastic fluorescent ball. BOTTOM LEFT DYNAMITE: three aged red paper-wrapped sticks, uneven folded ends, small blank cream labels, two woven black bindings, braided fuse/brass cap; left glove holds ornate brass flip lighter with knurled wheel. BOTTOM RIGHT STAKE GUN: carved walnut pneumatic stake launcher, long twin steel guide rails, copper cylinder, articulated cocking lever, sharpened wooden stake in channel/fitted steel bands. Don't change ammunition mechanics.",
+      "referenced_image_paths": [
+        "C:/Users/tehlike47/game/assets/hand-reference/original-target.png",
+        "C:/Users/tehlike47/game/.dream-loop/weapon-reference-work/model-6-idle.png",
+        "C:/Users/tehlike47/game/.dream-loop/weapon-reference-work/model-7-idle.png",
+        "C:/Users/tehlike47/game/.dream-loop/weapon-reference-work/model-8-idle.png",
+        "C:/Users/tehlike47/game/.dream-loop/weapon-reference-work/model-9-idle.png"
+      ],
+      "transparent_background": false
+    }
+  ]
+}

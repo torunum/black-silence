@@ -1,0 +1,12 @@
+{
+  "file": "C:\\Users\\tehlike47\\game\\docs\\combat-preview.webm",
+  "videoCodec": "VP9",
+  "audioCodec": "Opus",
+  "fps": 25,
+  "trimStart": 13.92,
+  "markerFrames": 8,
+  "audioSource": "C:\\Users\\tehlike47\\game\\.dream-loop\\reference-final\\video\\game-output.webm",
+  "audioDuration": 6.894,
+  "bytes": 2139862,
+  "syncScope": "Audio starts when the preroll marker is removed; trim uses the first non-marker video frame. Video frame granularity is 40ms; physical audio-output latency is not measured."
+}

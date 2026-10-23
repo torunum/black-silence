@@ -1,0 +1,63 @@
+{
+  "generated": true,
+  "tool": "Built-in image_gen",
+  "reference": "assets/weapon-reference/arsenal-target-6-9-v1.png",
+  "asset": "assets/weapon-reference/arsenal-mechanical-atlas-v1.png",
+  "width": 1774,
+  "height": 887,
+  "sha256": "1f8fb188a7c5ca78dad8ab372054770ff44979ecbd0fd44b639d303a7976ed5f",
+  "generationOutput": "C:/Users/tehlike47/.codex/generated_images/01a16433-0bab-7bb3-a84e-04a7f48c7a93/exec-338bfb08-136a-44ca-88a8-f56926e4b729.png",
+  "purpose": "Eight separate flat UV materials applied to actual moving geometry, not whole-weapon image overlays.",
+  "requestedLayout": "4 columns by 2 rows landscape texture atlas",
+  "tiles": {
+    "copper": [
+      8,
+      8,
+      435,
+      430
+    ],
+    "plate": [
+      451,
+      8,
+      885,
+      430
+    ],
+    "cap": [
+      897,
+      8,
+      1322,
+      430
+    ],
+    "collar": [
+      1338,
+      8,
+      1766,
+      430
+    ],
+    "paper": [
+      8,
+      443,
+      435,
+      879
+    ],
+    "rope": [
+      451,
+      443,
+      885,
+      879
+    ],
+    "lighter": [
+      897,
+      443,
+      1322,
+      879
+    ],
+    "shaft": [
+      1338,
+      443,
+      1766,
+      879
+    ]
+  },
+  "promptSummary": "Derive a gothic pixel-art production texture atlas from the supplied weapon target. Orthographic flat UV surfaces, four columns by two rows, black gutters, no labels/text/hands/background. Top row: burnished copper pressure surface, blued-steel armored side plate with brass edges and recessed slot, round pressure cap with bolts and gothic cross, brass/steel collar strip. Bottom row: aged red dynamite paper with ivory label, black-brown braided cord, engraved brass lighter plate, long carved walnut grain. Match rich worn reference materials, selective polished wear and dark contact seams; no whole weapon silhouette."
+}

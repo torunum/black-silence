@@ -1,0 +1,86 @@
+{
+  "file": "glove-idle-v1.png",
+  "status": "accepted-in-runtime-preview",
+  "generatedBy": "OpenAI built-in image_gen",
+  "mode": "reference-image edit with transparent_background=true",
+  "sourceReference": "assets/hand-reference/original-target.png",
+  "sourceReferenceSHA256": "9977bc41024f5c89c78b9cddae5d0c7e39a33756923bb483f1a63d0877b397ea",
+  "provenance": "AI-generated reconstruction from the earlier project concept image. Not a photograph or an extracted third-party game asset. No independent third-party CC0 license is claimed.",
+  "width": 1254,
+  "height": 1254,
+  "alphaBBoxAtThreshold8": {
+    "x": 226,
+    "y": 472,
+    "width": 1028,
+    "height": 782
+  },
+  "coordinateSystem": "Top-left origin in the full 1254x1254 PNG; x rightward, y downward. Bboxes use x,y,width,height, not x0,y0,x1,y1. Visible bounds reach the right and bottom image edges.",
+  "approximateLandmarks": {
+    "gripContact": {
+      "x": 375,
+      "y": 655,
+      "u": 0.299,
+      "v": 0.5223
+    },
+    "handBackCenter": {
+      "x": 565,
+      "y": 790,
+      "u": 0.4506,
+      "v": 0.63
+    },
+    "wristCenter": {
+      "x": 680,
+      "y": 960,
+      "u": 0.5423,
+      "v": 0.7656
+    },
+    "cuffCenter": {
+      "x": 790,
+      "y": 1045,
+      "u": 0.63,
+      "v": 0.8333
+    },
+    "forearmCenter": {
+      "x": 1010,
+      "y": 1190,
+      "u": 0.8054,
+      "v": 0.949
+    },
+    "upperDigitTip": {
+      "x": 338,
+      "y": 500,
+      "u": 0.2695,
+      "v": 0.3987
+    }
+  },
+  "approximateVisibleFingerRegion": {
+    "x": 225,
+    "y": 680,
+    "width": 245,
+    "height": 380
+  },
+  "landmarkNote": "Manually estimated on the generated sprite, not semantic ground truth. Grip contact should be aligned to the separate gun grip and refined against the actual depth-composited frame. Upper digit may require occlusion by the gun body; do not leave it floating visibly above the receiver.",
+  "alphaNote": "Original generated alpha preserved. Very faint pixels below alpha 8 extend outside the visible silhouette. No image post-processing performed.",
+  "reviewNotes": "Leather back and cuff match the direction. Raised upper-left index and approximately 40-degree silhouette need visual review against the compact 25-30-degree reference grip before integration.",
+  "prompt": "Use case: background-extraction / precise-object-edit. Asset type: actual transparent RGBA first-person game hand sprite, not a screenshot, not a new concept. Input image is the edit target. Extract and carefully reconstruct ONLY the brown leather gloved RIGHT hand and diagonal cuff/forearm visible at the bottom-right of the supplied image. The user specifically wants THIS hand appearance. Keep its exact visible visual identity: flattened broad back of glove, compact curled gripping fingers, short wrist, small thumb curling around the left side of an imaginary pistol grip, rich very dark brown leather, narrow stitched seams, restrained warm highlights, diagonal cuff seam and one small brass cuff button. Preserve the original angle: sleeve enters from bottom-right and narrows toward the gripping hand at upper-left; we see the BACK of the hand from the player's eye, NOT a frontal fist and NOT a palm. Match the supplied pixel-painted late-1990s gothic FPS texture style and pixel-scale surface grain. The existing gun is removed completely; fill only tiny previously occluded hand areas naturally so the hand can grip a separately rendered pistol. Preserve the compact tucked finger anatomy rather than spreading or extending fingers. No gun, weapon, metal barrel, skull, scenery, HUD, text, second hand, cast shadow, new accessories or white fringe. Isolate the single hand+cuff+forearm on genuinely transparent background. Frame it as one large isolated asset on a 1024x1024 square canvas, keeping the whole visible glove and cuff silhouette, with the sleeve cut off cleanly at the lower-right/bottom border. Do not reimagine the glove, do not make it lighter, glossy, oversized or photorealistic. Retain the original source glove proportions, diagonal placement and silhouette as closely as possible.",
+  "originalGenerationReference": ".dream-loop/target.png",
+  "runtimePlacement": {
+    "anchor": [
+      0.2990430622,
+      0.5223285486
+    ],
+    "bounds": [
+      0.18022,
+      0.3764,
+      1,
+      1
+    ],
+    "extend": [
+      0.75,
+      0.66
+    ],
+    "rearDigit": true
+  },
+  "runtimeReview": "Accepted in actual weapon idle/reload previews; derived from the reference, not pixel-identical. Original candidate notes are retained as generation history.",
+  "sha256": "b73d5a12db1a3caa6435f726a729d21d9071f7de811d603924ee093b1063d265"
+}

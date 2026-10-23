@@ -22,7 +22,7 @@ const extension = fs.readFileSync(
   path.join(root, "src", "prologue.js"),
   "utf8",
 );
-const context = vm.createContext({ assert, console });
+const context = vm.createContext({ assert, console, atob: text=>Buffer.from(text,'base64').toString('binary') });
 vm.runInContext(
   mapCode +
     `
@@ -34,6 +34,13 @@ const T = {level:0, dead:false, won:false, weapons:[]};
 const Be = {started:true, inputLock:false, pianoOpen:false}, oo = {busy:false};
 const P = 2, C = {px:19, pz:9}, v = {grid:null, enemies:[]};
 const di = {votive:{build(){},mode:'free'}};
+const Ft = {};
+function Z(value) {return value;}
+function Ew(value) {return value;}
+function e0(draw,w=64,h=64) {
+  draw({createImageData:(a,b)=>({data:new Uint8ClampedArray(a*b*4)}),putImageData(){},drawImage(){},fillRect(){}},w,h);
+  return {image:{}};
+}
 function iR(name) { return {name}; }
 function F$(dt) { doorTicks++; }
 function FJ(scene,map) {}
@@ -42,8 +49,18 @@ function lm() { return true; }
 ${extension}
 const result = gV[0].build(); v.grid = result.g;
 assert.deepEqual(result.hmap, baseline.hmap, 'Floor elevations preserved');
-assert.deepEqual(result.cmap, baseline.cmap, 'Ceilings preserved');
-assert.deepEqual(result.zones, baseline.zones, 'Lighting zones preserved');
+assert.deepEqual(result.zones.map, baseline.zones.map, 'Zone boundaries preserved');
+for(let z=0;z<result.H;z++)for(let x=0;x<result.W;x++) {
+  const lifted=z>=18&&baseline.zones.map[z][x]===2&&!'#WI'.includes(result.g[z][x]);
+  assert.equal(result.cmap[z][x],lifted?Math.max(baseline.cmap[z][x],14.8):baseline.cmap[z][x], 'Only open hell roof is raised '+x+','+z);
+}
+result.zones.themes.forEach((theme,i)=>{
+  if(theme.id!=='hell')assert.deepEqual(theme,baseline.zones.themes[i],'Other chapter themes preserved');
+  else {
+    for(const key of ['wall','ceil','side','ground'])assert(theme[key].startsWith('hellAsh'),'Scoped generated hell material '+key);
+    for(const key of ['shell','lava','bed','line'])assert.equal(theme[key],baseline.zones.themes[i][key],'Hell behavior '+key);
+  }
+});
 assert.deepEqual(result.grave, baseline.grave, 'Starting grave preserved');
 assert.equal(result.W, baseline.W); assert.equal(result.H, baseline.H);
 for (let z=0; z<result.H; z++) for (let x=0; x<result.W; x++) {
@@ -71,7 +88,7 @@ for (let q=0; q<queue.length; q++) {
 for (const key of ['29,4','30,4','3,24','29,22','53,9']) assert(reachable.has(key), 'Reachable '+key);
 const added = result.decor.slice(baseline.decor.length);
 for (const prop of added) {
-  if (prop.k==='light') continue;
+  if (prop.k==='light'||['hellVaultShell','hellLavaOutlet'].includes(prop.k)) continue;
   const cell=result.g[Math.floor(prop.z+.5)]?.[Math.floor(prop.x+.5)];
   assert(cell && !'#WI'.includes(cell), 'Decoration sits on an open tile instead of inside masonry: '+prop.k+' at '+prop.x+','+prop.z);
 }

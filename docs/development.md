@@ -1,6 +1,8 @@
 # Sonraki geliştirmeler için
 
-Bu teslimatın başlangıcı derlenmiş, kendi motorunu ve varlıklarını içeren tek HTML dosyasıydı. Asıl düzenleme yeri `src/`; `tools/build-game.cjs` bu dosyaları oyunun başlatma çağrılarından hemen önce ekler. Derleme sırasında önceki ekleme bloğu çıkarılır. Aynı dosyayı tekrar derlemek eklemeleri çoğaltmaz.
+Bu teslimatın başlangıcı derlenmiş, kendi motorunu ve varlıklarını içeren tek HTML dosyasıydı. Asıl düzenleme yeri `src/`; `tools/build-game.cjs` bu dosyaları oyunun başlatma çağrılarından hemen önce ekler. Derleme sırasında önceki ekleme blokları çıkarılır. Aynı dosyayı tekrar derlemek eklemeleri çoğaltmaz.
+
+23 Ekim devir paketinin ana HTML'si (`f923f85c2fe03649ba8e24871612dd531d385feb5cdeb3ea7cb8b10307c320bd`) yeni başlangıç olarak alındı. Bu dosya, önceki `9e0a2ac7…` teslimatı ve ayrı Village sunum bloğundan oluşur. İlk değişikliksiz derlemenin devir paketiyle bayt düzeyinde eşleştiği doğrulandı. Derleyici sırası **özgün motor → geliştirme bloğu → Village sunum bloğu → başlangıç çağrıları** olmalıdır; blokların yer değiştirmesi fonksiyon sarmalayıcılarının sırasını değiştirir.
 
 ## Modül sırası ve sorumluluklar
 
@@ -13,10 +15,17 @@ Bu teslimatın başlangıcı derlenmiş, kendi motorunu ve varlıklarını içer
 7. `reload-audio.js`: ilk iki silahın ortak animasyon zamanlarına bağlı doldurma sesleri; özgün effects ses yolu ve ses ayarları.
 8. `prologue.js`: ilk haritanın dekor, eşya ve yönlendirmeleri; manastır mezar hücresi ve zindan galerisinin çarpışmasız mimari ayrıntıları.
 9. `render-warmup.js`: yeni bölüm yüklendiğinde özgün yakın dövüş efektinin vertex-color Lambert shader'ını özel bir sahnede hazırlama.
+10. `village-presentation.js`: devir paketinden değiştirilmeden alınan ayrı Village sunum bloğu; köyün sis/ışık dengesi, çatı/cephe ayrıntıları ve HUD sunumu.
 
 İki modül aynı motor fonksiyonuna dokunuyorsa bu sıra önemlidir. Özellikle bitirici ellerinin son uygulaması `finishers.js` içindedir.
 
+`npm run test:build`, kaynakların teslim HTML'siyle eşleşmesini, Village bloğunun devir paketiyle aynı kalmasını, özgün motor SHA-256 değerini ve iki ardışık derlemenin birebir aynı sonucu üretmesini kontrol eder. Eksik veya yinelenen blok işaretlerinin kaynak dosyaya yazılmadan reddedilmesi de geçici kopyalarda sınanır. Test için `.dream-loop/original.html` veya eski deney klasörleri gerekmez.
+
 Koyu deri manşetler 27 numaralı malzeme yuvasını kullanır; palet `viewmodels.js` içinde tanımlanır ve `finishers.js` tarafından da kullanılır. Diğer silahların özgün mont malzemesi global olarak yeniden renklendirilmez.
+
+23 Ekim referans el çizimi: ilk iki silahın sağ ve sol elleri `viewmodels.js` içinde gömülü iki PNG'den çözülür. Şeffaf pikseller silahın mevcut derinlik tamponuyla birleştirilir; ayrı bir HTML/CSS bindirmesi değildir. El pozu silahın dönüşümünü izler. Diğer silahlar, tekme/drop kick ve bitirici elleri kendi çizim yollarını korur. Ana referans ve üretim promptları `assets/hand-reference/` altındadır. Kaynak PNG değişirse gömülü veri de eşleştirilmeli ve çevrimdışı çözülme tekrar doğrulanmalıdır.
+
+`npm run test:hands`, geçici bir HTML kopyasına inceleme yardımcısı ekleyerek iki elin yüklenmesini, 48 doldurma pozunu ve silah değişiminde iz kalmamasını denetler. Önceki sürümle 20 piksel eşliği denemesi için `node tools/grip-reference-tests.cjs THE-BLACK-SILENCE.html önceki-sürüm.html` kullanılabilir; önceki HTML verilmezse sürümler arası eşlik kontrolü açıkça atlanır. `npm run test:hand-extremes`, 168 uç poz ile normal/4 kat CPU yavaşlatmalı ilk kontrol edilebilir kareyi denetler. Bu süre giriş akışını da içerir; yalnızca PNG çözülme süresi değildir.
 
 ## Motor bağlantıları
 

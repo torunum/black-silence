@@ -1,0 +1,14 @@
+{
+  "file": "C:\\Users\\tehlike47\\game\\docs\\previews\\arsenal-reload.webm",
+  "videoCodec": "VP9",
+  "audioCodec": "Opus",
+  "fps": 25,
+  "trimStart": 13.2,
+  "markerFrames": 7,
+  "audioSource": "C:\\Users\\tehlike47\\game\\.dream-loop\\arsenal-video\\game-output.webm",
+  "audioDuration": 6.888,
+  "bytes": 2364104,
+  "syncScope": "Audio starts when the preroll marker is removed; trim uses the first non-marker video frame. Video frame granularity is 40ms; physical audio-output latency is not measured.",
+  "input": "THE-BLACK-SILENCE.html",
+  "sha256": "5c071b1892db41b162542460dc447586c4919df3d730bcf07164dea9dfe1e932"
+}

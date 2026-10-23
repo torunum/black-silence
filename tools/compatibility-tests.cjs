@@ -5,11 +5,16 @@ const path = require("node:path");
 const { pathToFileURL } = require("node:url");
 const { chromium } = require("playwright");
 const root = path.resolve(__dirname, "..");
+const input = path.resolve(process.env.GAME_HTML || path.join(root, "THE-BLACK-SILENCE.html"));
+const output = path.resolve(process.env.QA_OUTPUT_DIR || path.join(root, ".dream-loop"));
 
 (async () => {
   const browser = await chromium.launch({ headless: true, channel: "chrome" });
   const errors = [];
+  const network = [];
   const report = {
+    input,
+    sha256: require("node:crypto").createHash("sha256").update(fs.readFileSync(input)).digest("hex"),
     legacySave: false,
     settingsPersist: false,
     chapterStarts: false,
@@ -19,8 +24,9 @@ const root = path.resolve(__dirname, "..");
       viewport: { width: 1280, height: 720 },
     });
     page.on("pageerror", (error) => errors.push(error.message));
+    await page.route(/^https?:/, route => { network.push(route.request().url()); return route.abort(); });
     await page.goto(
-      pathToFileURL(path.join(root, "THE-BLACK-SILENCE.html")).href,
+      pathToFileURL(input).href,
     );
     // A v1 save created by the original game contains progression/settings only.
     await page.evaluate(() =>
@@ -73,14 +79,16 @@ const root = path.resolve(__dirname, "..");
     );
     report.chapterStarts = true;
     report.errors = errors;
+    report.network = network;
+    assert.deepEqual(network, [], "Standalone file must not request network resources");
     assert.deepEqual(
       errors,
       [],
       "Legacy chapter start must have no runtime errors",
     );
-    fs.mkdirSync(path.join(root, ".dream-loop"), { recursive: true });
+    fs.mkdirSync(output, { recursive: true });
     fs.writeFileSync(
-      path.join(root, ".dream-loop", "compatibility-report.json"),
+      path.join(output, "compatibility-report.json"),
       JSON.stringify(report, null, 2),
     );
     console.log(JSON.stringify(report, null, 2));

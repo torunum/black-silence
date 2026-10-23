@@ -1,0 +1,9 @@
+{
+  "tool": "built-in image_gen",
+  "skill": "C:/Users/tehlike47/.codex/skills/.system/imagegen/SKILL.md",
+  "reference": "assets/hell/material-atlas-v1.png",
+  "output": "assets/hell/material-atlas-v2.png",
+  "use": "Use only the upper-right paving quadrant from v2. Keep the other three runtime material quadrants sourced from v1; generative edits do not guarantee identical unrelated pixels.",
+  "prompt": "Use case: precise-object-edit. Edit target: this existing 2x2 game material atlas. Preserve the canvas dimensions, quadrant boundaries and the TOP LEFT stone wall, BOTTOM LEFT bronze gothic trim, and BOTTOM RIGHT lava quadrants exactly unchanged. Modify ONLY the TOP RIGHT quadrant. Replace its large diamond/rune floor design with simple matte dark basalt paving: broad rectangular slabs, narrow understated mortar seams, a few sparse small natural hairline cracks. Flat orthographic tileable floor texture, charcoal black and muted warm dark gray, low contrast rough matte surface, no symbol, no diamond, no rune, no border, no emblem, no central decorative motif, no bright speckles. Match the existing hand-painted pixel-art resolution and retro horror material style. The other three quadrants must remain intact and visually identical. No labels or watermark.",
+  "review": "Upper-right quadrant now contains broad dark rectangular paving with sparse cracks and no diamond/rune. Original v1 remains intact. Source/compiler not modified by asset generator."
+}

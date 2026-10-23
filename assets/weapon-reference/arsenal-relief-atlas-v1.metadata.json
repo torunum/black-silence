@@ -1,0 +1,49 @@
+{
+  "generatedBy": "OpenAI built-in image_gen",
+  "purpose": "RGBA relief atlas for native animated weapon meshes",
+  "sourceReference": [
+    "original-target.png",
+    "arsenal-target-2-5-v1.png",
+    "arsenal-target-6-9-v1.png"
+  ],
+  "provenance": "AI generated project artwork; not extracted third-party assets. SourcePNG preserved unedited; runtime samples its quadrants.",
+  "request": {
+    "prompt": "Create a production GAME MATERIAL/RELIEF ATLAS for the pixel-raster gothic FPS illustrated by the three references. Reference1 is original style; references2/3 show accepted weapon designs. Output a precisely aligned 2x2 square atlas: four equal square tiles with no borders, gutters or labels. Each tile fills its exact quadrant. NOT a weapon concept sheet, no hands, no background scene, no full weapons, no perspective tilt. Orthographic front-facing surface artwork, detailed hand-pixeled shading and worn tactile material in the same pixel-art aesthetic, not blurry noise, not vector. TOP LEFT: a charcoal blackened steel rifle side plate, recessed horizontal ejection chamber with a brass bolt-cylinder visible deep inside, layered beveled steel edges, four small screws, restrained worn bronze edges. This is only a flat receiver-side relief surface. TOP RIGHT: rich aged walnut long-grain surface, fine flowing grain lines, dark pores and polished edge-wear, no planks/gaps; entirely wood texture. BOTTOM LEFT: antique ivory-and-brass reliquary side relief panel containing three deeply recessed pointed Gothic arches, carved column/leaf motifs and layered brass border, dark carved recesses and aged ivory. BOTTOM RIGHT: a perfectly round dark green translucent SOUL ORB on truly transparent surrounding area, no cage/no claws/no stand; convincing spherical shaded glass with dark outer rim, luminous pale-green focus deep inside, swirled trapped ghostly energy and subtle specular glints. It must read as a deep sphere rather than flat disk or neon oval. Orb occupies 90% of this quadrant, centered exactly. Keep all four quadrants separate and aligned to 50% edges. Other three square tiles opaque, orb corners transparent. Texture assets for actual native animated meshes, each tile readable at small resolution.",
+    "referenced_image_paths": [
+      "C:/Users/tehlike47/game/assets/hand-reference/original-target.png",
+      "C:/Users/tehlike47/game/assets/weapon-reference/arsenal-target-2-5-v1.png",
+      "C:/Users/tehlike47/game/assets/weapon-reference/arsenal-target-6-9-v1.png"
+    ],
+    "transparent_background": true
+  },
+  "width": 1774,
+  "height": 887,
+  "pixelRects": {
+    "receiver": [
+      2,
+      2,
+      884,
+      412
+    ],
+    "wood": [
+      890,
+      2,
+      1772,
+      412
+    ],
+    "relic": [
+      2,
+      418,
+      884,
+      885
+    ],
+    "soul": [
+      1100,
+      411,
+      1558,
+      874
+    ]
+  },
+  "actualLayoutNote": "Generator returned a landscape atlas rather than the requested square; exact pixel rectangles define runtime UVs.",
+  "sourceSHA256": "8f6ea1a8600e865e202f09c02d568618293a07737baa314905fb2ed0789f15a9"
+}

@@ -1,0 +1,1018 @@
+{
+  "errors": [],
+  "network": [],
+  "scenes": [
+    {
+      "index": 0,
+      "name": "idle",
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 386,
+        "y0": 153,
+        "x1": 640,
+        "y1": 330
+      },
+      "triangles": 2,
+      "screenshot": "C:\\Users\\tehlike47\\game\\.dream-loop\\grip-independent-qa\\0-idle.png"
+    },
+    {
+      "index": 0,
+      "name": "eject",
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 352,
+        "y0": 149,
+        "x1": 640,
+        "y1": 250
+      },
+      "triangles": 2,
+      "screenshot": "C:\\Users\\tehlike47\\game\\.dream-loop\\grip-independent-qa\\0-eject.png"
+    },
+    {
+      "index": 0,
+      "name": "insert",
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 174,
+        "y0": 59,
+        "x1": 640,
+        "y1": 400
+      },
+      "triangles": 4,
+      "screenshot": "C:\\Users\\tehlike47\\game\\.dream-loop\\grip-independent-qa\\0-insert.png"
+    },
+    {
+      "index": 0,
+      "name": "close",
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 245,
+        "y0": 130,
+        "x1": 640,
+        "y1": 400
+      },
+      "triangles": 4,
+      "screenshot": "C:\\Users\\tehlike47\\game\\.dream-loop\\grip-independent-qa\\0-close.png"
+    },
+    {
+      "index": 0,
+      "name": "fire",
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 404,
+        "y0": 176,
+        "x1": 640,
+        "y1": 356
+      },
+      "triangles": 2,
+      "screenshot": "C:\\Users\\tehlike47\\game\\.dream-loop\\grip-independent-qa\\0-fire.png"
+    },
+    {
+      "index": 1,
+      "name": "idle",
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 150,
+        "y0": 110,
+        "x1": 640,
+        "y1": 349
+      },
+      "triangles": 4,
+      "screenshot": "C:\\Users\\tehlike47\\game\\.dream-loop\\grip-independent-qa\\1-idle.png"
+    },
+    {
+      "index": 1,
+      "name": "eject",
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 253,
+        "y0": 166,
+        "x1": 640,
+        "y1": 400
+      },
+      "triangles": 4,
+      "screenshot": "C:\\Users\\tehlike47\\game\\.dream-loop\\grip-independent-qa\\1-eject.png"
+    },
+    {
+      "index": 1,
+      "name": "insert",
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 64,
+        "y0": 48,
+        "x1": 640,
+        "y1": 400
+      },
+      "triangles": 4,
+      "screenshot": "C:\\Users\\tehlike47\\game\\.dream-loop\\grip-independent-qa\\1-insert.png"
+    },
+    {
+      "index": 1,
+      "name": "close",
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 213,
+        "y0": 144,
+        "x1": 640,
+        "y1": 400
+      },
+      "triangles": 4,
+      "screenshot": "C:\\Users\\tehlike47\\game\\.dream-loop\\grip-independent-qa\\1-close.png"
+    },
+    {
+      "index": 1,
+      "name": "fire",
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 139,
+        "y0": 93,
+        "x1": 640,
+        "y1": 396
+      },
+      "triangles": 4,
+      "screenshot": "C:\\Users\\tehlike47\\game\\.dream-loop\\grip-independent-qa\\1-fire.png"
+    }
+  ],
+  "phases": [
+    {
+      "index": 0,
+      "reload": -1,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 386,
+        "y0": 153,
+        "x1": 640,
+        "y1": 330
+      },
+      "triangles": 2
+    },
+    {
+      "index": 0,
+      "reload": 0.05,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 375,
+        "y0": 149,
+        "x1": 640,
+        "y1": 303
+      },
+      "triangles": 2
+    },
+    {
+      "index": 0,
+      "reload": 0.1,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 356,
+        "y0": 146,
+        "x1": 640,
+        "y1": 262
+      },
+      "triangles": 2
+    },
+    {
+      "index": 0,
+      "reload": 0.14,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 350,
+        "y0": 146,
+        "x1": 640,
+        "y1": 247
+      },
+      "triangles": 2
+    },
+    {
+      "index": 0,
+      "reload": 0.18,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 351,
+        "y0": 147,
+        "x1": 640,
+        "y1": 248
+      },
+      "triangles": 2
+    },
+    {
+      "index": 0,
+      "reload": 0.23,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 351,
+        "y0": 149,
+        "x1": 640,
+        "y1": 250
+      },
+      "triangles": 2
+    },
+    {
+      "index": 0,
+      "reload": 0.27,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 352,
+        "y0": 149,
+        "x1": 640,
+        "y1": 250
+      },
+      "triangles": 2
+    },
+    {
+      "index": 0,
+      "reload": 0.3,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 352,
+        "y0": 149,
+        "x1": 640,
+        "y1": 250
+      },
+      "triangles": 2
+    },
+    {
+      "index": 0,
+      "reload": 0.32,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 352,
+        "y0": 149,
+        "x1": 640,
+        "y1": 250
+      },
+      "triangles": 2
+    },
+    {
+      "index": 0,
+      "reload": 0.37,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 134,
+        "y0": 149,
+        "x1": 640,
+        "y1": 400
+      },
+      "triangles": 4
+    },
+    {
+      "index": 0,
+      "reload": 0.43,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 126,
+        "y0": 54,
+        "x1": 640,
+        "y1": 400
+      },
+      "triangles": 4
+    },
+    {
+      "index": 0,
+      "reload": 0.46,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 132,
+        "y0": 21,
+        "x1": 640,
+        "y1": 400
+      },
+      "triangles": 4
+    },
+    {
+      "index": 0,
+      "reload": 0.5,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 146,
+        "y0": 33,
+        "x1": 640,
+        "y1": 400
+      },
+      "triangles": 4
+    },
+    {
+      "index": 0,
+      "reload": 0.55,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 174,
+        "y0": 59,
+        "x1": 640,
+        "y1": 400
+      },
+      "triangles": 4
+    },
+    {
+      "index": 0,
+      "reload": 0.59,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 184,
+        "y0": 69,
+        "x1": 640,
+        "y1": 400
+      },
+      "triangles": 4
+    },
+    {
+      "index": 0,
+      "reload": 0.625,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 172,
+        "y0": 76,
+        "x1": 640,
+        "y1": 400
+      },
+      "triangles": 4
+    },
+    {
+      "index": 0,
+      "reload": 0.64,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 166,
+        "y0": 79,
+        "x1": 640,
+        "y1": 400
+      },
+      "triangles": 4
+    },
+    {
+      "index": 0,
+      "reload": 0.7,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 219,
+        "y0": 123,
+        "x1": 640,
+        "y1": 400
+      },
+      "triangles": 4
+    },
+    {
+      "index": 0,
+      "reload": 0.74,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 241,
+        "y0": 141,
+        "x1": 640,
+        "y1": 400
+      },
+      "triangles": 4
+    },
+    {
+      "index": 0,
+      "reload": 0.81,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 245,
+        "y0": 130,
+        "x1": 640,
+        "y1": 400
+      },
+      "triangles": 4
+    },
+    {
+      "index": 0,
+      "reload": 0.86,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 250,
+        "y0": 114,
+        "x1": 640,
+        "y1": 385
+      },
+      "triangles": 4
+    },
+    {
+      "index": 0,
+      "reload": 0.9,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 253,
+        "y0": 113,
+        "x1": 640,
+        "y1": 382
+      },
+      "triangles": 4
+    },
+    {
+      "index": 0,
+      "reload": 0.95,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 176,
+        "y0": 147,
+        "x1": 640,
+        "y1": 400
+      },
+      "triangles": 4
+    },
+    {
+      "index": 0,
+      "reload": 1,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 386,
+        "y0": 153,
+        "x1": 640,
+        "y1": 330
+      },
+      "triangles": 2
+    },
+    {
+      "index": 1,
+      "reload": -1,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 150,
+        "y0": 110,
+        "x1": 640,
+        "y1": 349
+      },
+      "triangles": 4
+    },
+    {
+      "index": 1,
+      "reload": 0.05,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 173,
+        "y0": 114,
+        "x1": 640,
+        "y1": 332
+      },
+      "triangles": 4
+    },
+    {
+      "index": 1,
+      "reload": 0.1,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 218,
+        "y0": 118,
+        "x1": 640,
+        "y1": 356
+      },
+      "triangles": 4
+    },
+    {
+      "index": 1,
+      "reload": 0.14,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 241,
+        "y0": 149,
+        "x1": 640,
+        "y1": 394
+      },
+      "triangles": 4
+    },
+    {
+      "index": 1,
+      "reload": 0.18,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 271,
+        "y0": 162,
+        "x1": 640,
+        "y1": 400
+      },
+      "triangles": 4
+    },
+    {
+      "index": 1,
+      "reload": 0.23,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 260,
+        "y0": 165,
+        "x1": 640,
+        "y1": 400
+      },
+      "triangles": 4
+    },
+    {
+      "index": 1,
+      "reload": 0.27,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 253,
+        "y0": 166,
+        "x1": 640,
+        "y1": 400
+      },
+      "triangles": 4
+    },
+    {
+      "index": 1,
+      "reload": 0.3,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 253,
+        "y0": 166,
+        "x1": 640,
+        "y1": 400
+      },
+      "triangles": 4
+    },
+    {
+      "index": 1,
+      "reload": 0.32,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 330,
+        "y0": 166,
+        "x1": 640,
+        "y1": 285
+      },
+      "triangles": 2
+    },
+    {
+      "index": 1,
+      "reload": 0.37,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 0,
+        "y0": 166,
+        "x1": 640,
+        "y1": 400
+      },
+      "triangles": 4
+    },
+    {
+      "index": 1,
+      "reload": 0.43,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 0,
+        "y0": 23,
+        "x1": 640,
+        "y1": 400
+      },
+      "triangles": 4
+    },
+    {
+      "index": 1,
+      "reload": 0.46,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 0,
+        "y0": 0,
+        "x1": 640,
+        "y1": 399
+      },
+      "triangles": 4
+    },
+    {
+      "index": 1,
+      "reload": 0.5,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 17,
+        "y0": 13,
+        "x1": 640,
+        "y1": 400
+      },
+      "triangles": 4
+    },
+    {
+      "index": 1,
+      "reload": 0.55,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 64,
+        "y0": 48,
+        "x1": 640,
+        "y1": 400
+      },
+      "triangles": 4
+    },
+    {
+      "index": 1,
+      "reload": 0.59,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 81,
+        "y0": 61,
+        "x1": 640,
+        "y1": 400
+      },
+      "triangles": 4
+    },
+    {
+      "index": 1,
+      "reload": 0.625,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 65,
+        "y0": 67,
+        "x1": 640,
+        "y1": 400
+      },
+      "triangles": 4
+    },
+    {
+      "index": 1,
+      "reload": 0.64,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 58,
+        "y0": 70,
+        "x1": 640,
+        "y1": 400
+      },
+      "triangles": 4
+    },
+    {
+      "index": 1,
+      "reload": 0.7,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 153,
+        "y0": 134,
+        "x1": 640,
+        "y1": 400
+      },
+      "triangles": 4
+    },
+    {
+      "index": 1,
+      "reload": 0.74,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 197,
+        "y0": 166,
+        "x1": 640,
+        "y1": 400
+      },
+      "triangles": 4
+    },
+    {
+      "index": 1,
+      "reload": 0.81,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 213,
+        "y0": 144,
+        "x1": 640,
+        "y1": 400
+      },
+      "triangles": 4
+    },
+    {
+      "index": 1,
+      "reload": 0.86,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 230,
+        "y0": 122,
+        "x1": 640,
+        "y1": 378
+      },
+      "triangles": 4
+    },
+    {
+      "index": 1,
+      "reload": 0.9,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 237,
+        "y0": 119,
+        "x1": 640,
+        "y1": 367
+      },
+      "triangles": 4
+    },
+    {
+      "index": 1,
+      "reload": 0.95,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 191,
+        "y0": 116,
+        "x1": 640,
+        "y1": 344
+      },
+      "triangles": 4
+    },
+    {
+      "index": 1,
+      "reload": 1,
+      "visible": true,
+      "finite": true,
+      "bounds": {
+        "x0": 380,
+        "y0": 167,
+        "x1": 640,
+        "y1": 349
+      },
+      "triangles": 2
+    }
+  ],
+  "parity": [
+    {
+      "index": 2,
+      "reload": -1,
+      "kick": -1,
+      "drop": 0,
+      "identical": true,
+      "triangles": 0,
+      "bounds": null
+    },
+    {
+      "index": 2,
+      "reload": 0.5,
+      "kick": -1,
+      "drop": 0,
+      "identical": true,
+      "triangles": 0,
+      "bounds": null
+    },
+    {
+      "index": 3,
+      "reload": -1,
+      "kick": -1,
+      "drop": 0,
+      "identical": true,
+      "triangles": 0,
+      "bounds": null
+    },
+    {
+      "index": 3,
+      "reload": 0.5,
+      "kick": -1,
+      "drop": 0,
+      "identical": true,
+      "triangles": 0,
+      "bounds": null
+    },
+    {
+      "index": 4,
+      "reload": -1,
+      "kick": -1,
+      "drop": 0,
+      "identical": true,
+      "triangles": 0,
+      "bounds": null
+    },
+    {
+      "index": 4,
+      "reload": 0.5,
+      "kick": -1,
+      "drop": 0,
+      "identical": true,
+      "triangles": 0,
+      "bounds": null
+    },
+    {
+      "index": 5,
+      "reload": -1,
+      "kick": -1,
+      "drop": 0,
+      "identical": true,
+      "triangles": 0,
+      "bounds": null
+    },
+    {
+      "index": 5,
+      "reload": 0.5,
+      "kick": -1,
+      "drop": 0,
+      "identical": true,
+      "triangles": 0,
+      "bounds": null
+    },
+    {
+      "index": 6,
+      "reload": -1,
+      "kick": -1,
+      "drop": 0,
+      "identical": true,
+      "triangles": 0,
+      "bounds": null
+    },
+    {
+      "index": 6,
+      "reload": 0.5,
+      "kick": -1,
+      "drop": 0,
+      "identical": true,
+      "triangles": 0,
+      "bounds": null
+    },
+    {
+      "index": 7,
+      "reload": -1,
+      "kick": -1,
+      "drop": 0,
+      "identical": true,
+      "triangles": 0,
+      "bounds": null
+    },
+    {
+      "index": 7,
+      "reload": 0.5,
+      "kick": -1,
+      "drop": 0,
+      "identical": true,
+      "triangles": 0,
+      "bounds": null
+    },
+    {
+      "index": 8,
+      "reload": -1,
+      "kick": -1,
+      "drop": 0,
+      "identical": true,
+      "triangles": 0,
+      "bounds": null
+    },
+    {
+      "index": 8,
+      "reload": 0.5,
+      "kick": -1,
+      "drop": 0,
+      "identical": true,
+      "triangles": 0,
+      "bounds": null
+    },
+    {
+      "index": 9,
+      "reload": -1,
+      "kick": -1,
+      "drop": 0,
+      "identical": true,
+      "triangles": 0,
+      "bounds": null
+    },
+    {
+      "index": 9,
+      "reload": 0.5,
+      "kick": -1,
+      "drop": 0,
+      "identical": true,
+      "triangles": 0,
+      "bounds": null
+    },
+    {
+      "index": -1,
+      "reload": -1,
+      "kick": 0.11,
+      "drop": 0,
+      "identical": true,
+      "triangles": 0,
+      "bounds": null
+    },
+    {
+      "index": -1,
+      "reload": -1,
+      "kick": 0.11,
+      "drop": 1,
+      "identical": true,
+      "triangles": 0,
+      "bounds": null
+    },
+    {
+      "index": -1,
+      "reload": -1,
+      "kick": 0.21,
+      "drop": 0,
+      "identical": true,
+      "triangles": 0,
+      "bounds": null
+    },
+    {
+      "index": -1,
+      "reload": -1,
+      "kick": 0.21,
+      "drop": 1,
+      "identical": true,
+      "triangles": 0,
+      "bounds": null
+    }
+  ],
+  "ghosting": [
+    {
+      "name": "flare",
+      "index": 0,
+      "triangles": 2,
+      "bounds": {
+        "x0": 386,
+        "y0": 153,
+        "x1": 640,
+        "y1": 330
+      },
+      "sha256": "60a0e9a23da3a5a0388e3c284d8dd645ade0040a74f5ad4af39de969e633ae61"
+    },
+    {
+      "name": "other",
+      "index": 2,
+      "triangles": 0,
+      "bounds": null,
+      "sha256": "a222ec42158c3213e8f6a86633f4ebd13033c6ba30d84b0e43514ccbc84026d2",
+      "cleanMatch": true
+    },
+    {
+      "name": "kick",
+      "index": -1,
+      "triangles": 0,
+      "bounds": null,
+      "sha256": "2d636dba88edea25e64ee5d3b88974d2ed607bbde7078eec801a30cf31ae232d"
+    },
+    {
+      "name": "shotgun",
+      "index": 1,
+      "triangles": 4,
+      "bounds": {
+        "x0": 150,
+        "y0": 110,
+        "x1": 640,
+        "y1": 349
+      },
+      "sha256": "69c4bd065f19580adf68539917b234e458dbc853fa1df37e42cdcda921aa72c3"
+    },
+    {
+      "name": "other-return",
+      "index": 2,
+      "triangles": 0,
+      "bounds": null,
+      "sha256": "a222ec42158c3213e8f6a86633f4ebd13033c6ba30d84b0e43514ccbc84026d2",
+      "cleanMatch": true
+    }
+  ],
+  "assets": [
+    {
+      "name": "right",
+      "embedded": true,
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "name": "left",
+      "embedded": true,
+      "width": 1254,
+      "height": 1254
+    }
+  ],
+  "pass": true
+}

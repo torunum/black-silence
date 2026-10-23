@@ -2,6 +2,7 @@
 .dream-loop/
 node_modules/
 _to_delete/
+dist/
 
 # Local configuration and credentials
 .env

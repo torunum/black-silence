@@ -1,83 +1,41 @@
-# Doğrulama — 22 Ekim 2026
+# Doğrulama — Arsenal / Hell
 
-Son teslim: `THE-BLACK-SILENCE.html`, **2.289.458 bayt**.
+Dosya: `THE-BLACK-SILENCE.html`, **22.632.339 bayt**. SHA256: `5c071b1892db41b162542460dc447586c4919df3d730bcf07164dea9dfe1e932`.
 
-Test edilen HTML'nin SHA256 değeri: `9e0a2ac7f16a5271eb60ceda9be8b76ebbda46da5840993ef6cf606af76c7e73`. Aşağıdaki bütün son entegrasyon kontrolleri bu dosya üzerinde çalıştırıldı. Kaynak ve dosya kimlikleri `docs/build-info.json`, yerel test kayıtlarının kimlikleri `.dream-loop/final-test-provenance.json` içinde tutulur.
+On silahın model/tutuş görünümü ve hareketli doldurma parçaları ile yeni prologue cehennem ayrıntıları tek dosyada birleştirildi. Oyun istatistikleri ve özgün motor korunur. Village sunumu kullanıcı devir paketindekiyle birebir aynıdır.
 
-## Son düzeltmeler
+## Test kapsamı
 
-- İlk iki silahın sağ eli basık, çapraz deri el sırtı ve kabzayı arkadan kavrayan parmaklarla yeniden kuruldu; önkol bileğe doğru daralır. Doldurma sırasında hazneye yerleşen fişek korunur, destek eli kapanış boyunca görünür. Kameraya doğru büyüyen kovan ve bunun silahı kadrajdan aşağı itmesi düzeltildi.
-- Doldurma hareketleri ile kayıt kaynaklı kilit, menteşe, kovan ve fişek temasları ortak olay zamanlarını kullanır. Özgün effects ses yolu, ses ayarları ve diğer silahların sesleri korunur. CC0 kayıt kökenleri ve işleme bilgisi docs/audio-sources.json içindedir.
-- Kript cephesindeki taş kaide/kornişler kararmış mezar levhalarını çerçeveler; şapelde kırık taş altar çerçevesi bulunur. Manastırda mühürlü levhalar ve açık kemik rafları, zindanda alçak taş kuşaklar ile kontrollü su izleri duvar kompozisyonlarını güçlendirir.
-- Bu turdaki çevre çalışması [Atari'nin resmi Blood görsellerindeki](https://atari.com/products/blood-refreshed-supply) bağlı mimari ve malzeme bölgelerini tasarım referansı aldı. Ticari görsel/varlık kopyalanmadı. Yeni detaylar mevcut atlas ve özgün küçük su izi dokusu kullanır; yeni pointlight veya collider eklenmedi.
-
-## Korunan içerik
-
-Eklenen kaynak bloğu ve iki yeni kontrol satırı çıkarıldığında dosya `.dream-loop/original.html` ile birebir eşleşiyor. Özgün motor, harita tanımları, sesler ve diğer gömülü içerik korunuyor; yeni davranışlar başlangıçtan önce eklenen modüllerle uygulanıyor.
-
-Gömülü modül metni dondurulmuş `src/` kaynaklarıyla birebir eşleşiyor. Arka arkaya derleme aynı HTML'yi üretiyor. Önceki çalışan oyuna kesin geri dönüş dosyası `.dream-loop/before-polish-5/THE-BLACK-SILENCE.html`; o klasördeki kaynak/araç/belge kopyaları yalnız çalışma anı snapshotıdır.
-
-## Son entegrasyon kontrolleri
-
-| Kontrol | Sonuç |
+| Kontrol | Kanıt ve kapsam |
 | --- | --- |
-| Dövüş | 35 doğrulama geçti: gerçek silah isabeti, can/stagger, E hedefi, bitirici iptali/tamamlanması, kamera geçişi, tek ölüm sayımı, silah kilitleri ve tekme çarpışmaları |
-| Düşman animasyonları | 16 doğrulama geçti: mesafeye bağlı adım, yavaşlama, saldırı hazırlığı, değişmeyen hasar/hitbox, yönlü tepki, stagger ve animasyon öncelikleri |
-| Duvar/iniş | 72 geometri matrisi vakası + 4 regresyon ve 3 gerçek animasyon döngüsü vakası geçti; tarayıcı hatası yok |
-| Prologue yapısı | Geçişler, yükseklikler, çıkışlar, 21 düşman, erişilebilir eşyalar, dekor zemini ve bağlamsal ipuçları doğrulandı |
-| Prologue yürüyüşü | Gerçek hareketle 15 kontrol noktası, şapelde tüfek alımı ve E ile çıkış animasyonu geçti; tarayıcı hatası yok |
-| Kript ışığı | Başlangıç görüntüsündeki ölçüm bölgesinde 4.412 kızıl piksel; derinlik testi açık, başka bölüme sahne nesnesi taşınmıyor |
-| Gerçek dövüş döngüsü | Drop kick oyuncuyu yaklaşık 6,63 m, hazırlanmış test düşmanını yaklaşık 4,55 m ilerletti; E girdisi bitiriciyi tamamladı |
-| Bölüm açılışları | 11 bölüm açılıp kare çizdi; geçerli oyuncu konumu ve sıfır tarayıcı hatası |
-| Sonraki iki bölüm | Zindan ve manastır harita/dekor korunumu, geçerli zemin, sıfır ek collider/ışık ve yeniden yükleme kontrolü geçti; sabit kamera görselleri alındı |
-| Doldurma sesi | 42 gerçek WebAudio/native silah doğrulaması; iki gerçek RAF doldurmada 7 + 7 olay, geride aktif ses kalmadı. Son HTML’den audit WAV üretildi |
-| Eski kayıt | v1 ayar ve bölüm ilerlemesi yüklendi; ses ayarı yeniden açılışta korundu; önceden açılmış bölüm başlatıldı |
-| Çevrimdışı açılış | 1920×1080 normal açılış geçti; QA arayüzü olmadan oyun başladı |
+| Derleme | Kaynak modüller gömülü metinlerle birebir; art arda iki build aynı dosya. Sekiz bozuk marker girdisi yazılmadan reddedilir. Motor ve Village hashleri korunur. |
+| Görsel entegrasyon | On silahın idle/insert pozları ile bot/drop kick/bitiricilerden toplam 33 ham piksel karşılaştırması birebir. Bu, diğer silahların eski teslimattaki haliyle aynı olduğu anlamına gelmez; onaylanan yeni ayrı modellerin birleşimde korunduğunu doğrular. |
+| Çizim optimizasyonu | Üçgen/satır sabitlerini dışarı alan değişiklik; 116 opak/yarı şeffaf, derinlik örtüşmesi, silah/poz/geçiş ve yakın dövüş durumu için hem ham RGBA hem canvas çıktısında birebir eşit. Bu test son Cross yüzey düzeltmesinden önceki ortak adayda çalıştı; son entegrasyon ayrıca yukarıdaki 33 pozla doğrulandı. |
+| Silahlar | Gerçek R/RAF akışıyla on silahın doldurma, ateş, cephane, silah değiştirme, iptal, tekme ve kalıntı temizleme kontrolleri. |
+| Cehennem bölümü | 15 navigasyon noktası, gerçek E çıkışı, başka bölümde dekor temizliği ve cehenneme iki dönüş. Cehennem arenasında on silahın 20 idle/insert pozu görünür ve sonlu. |
+| Çevrimdışı / kayıt | Normal `file://` açılışı, kayıt uyumluluğu ve ayarlar. Görseller HTML içine gömülüdür. |
+| Ses | İlk iki silah için 42 ses kontrolü ve gerçek R/RAF ses zamanlaması. Bu kayıt tabanlı ses kapsamı tüm on silah için yeni ses kaydı yapıldığı anlamına gelmez. |
 
-Duvar testi normal zombi ve hazırlanmış geometri kullanır. Gerçek animasyon döngüsündeki üç deneme, aynı özel duvara yaklaşan canlı, duvarda ölen ve tekmede ölen hedefleri sınar. Bu, bütün düşman türleri ve bütün haritalar için performans garantisi değildir.
+Final dosyanın raporları `verification-data/arsenal-final-5c071b18-*.json` adıyla tutulur. `arsenal-milestone-650ecdc7-*` ara sürüm ölçümüdür; final sonuç olarak kullanılmaz. Önceki teslimatın kökteki eski test raporları bu tur yeniden koşulmuş gibi sunulmaz. Testler tam kampanya oynanışı değildir.
 
-Prologue'da şapele ve ilk karşılaşmaya kadar AI çalıştı; oyuncu ilk düşmana 100 canla ulaştı. Sonraki köprüler, arena, doğu merdivenleri, yan sığınak ve çıkış, çarpışma/yükseklik denetimi için AI durdurularak geçildi. Oyuncu geçişler boyunca ışınlanmadı. Bu bölüm tam kampanya oynanışı veya kapsamlı zorluk dengesi testi değildir.
+## Görsel yöntem ve ölçüm sınırları
 
-Bot tabanı yan/alt/topuk incelemesi önceki turda yapıldı; bu tur bot geometrisi değiştirilmedi. Eski bot tabanı görseli bu değişmeyen modeli gösterir.
+Yeni silahların çoğu, gerçek hacimli arka/yan yüzeylere ve hareketli mekanizmalara bağlı perspektifli resim yüzeyleri kullanır. Eller ayrı derinlik sınamasıyla çizilir. Bu yöntem tam serbest açılı 3B model değildir; resimlerin bazı ışık ve perspektif bilgileri sabittir. Cehennem mimarisinde bazı ışık vurguları da statiktir.
 
-## Ölçülen performans
+Sabit üçgen hesaplarını piksel döngüsünün dışına taşımak görüntüyü değiştirmeden compositor maliyetini azaltmıştır. Yerel seri ABBA ölçümünde başlangıç turu ısınma/değişken işlemci hızından etkilenmiştir; tek sayıdan genel FPS garantisi çıkarılmaz. Son çalışma zamanı ölçümünün ham sonuçları ayrıca kaydedilir. Daha ayrıntılı modellerin maliyeti sahne ve silaha göre değişir.
 
-Windows/Chrome, 1280×720 tarayıcı alanı, varsayılan oyun iç çözünürlüğü. Diğer test tarayıcıları kapalıyken son smoke çalıştırmasının kısa pencerelerinde:
+Son seri ABBA, önceki `3807e06b` teslimatı ile bu dosyayı aynı bilgisayarda ve bölüm 0 başlangıç kamerasında karşılaştırdı. Aşağıdaki değerler doldurma sırasında havuzlanmış sonuçlardır; cehennem arenasının veya bütün kampanyanın ölçümü değildir.
 
-- İlk drop kick: yaklaşık 38.2 FPS; en uzun kare 100 ms. Ekran görüntüsü alımı bu aralığa dahildir.
-- İlk bitirici: yaklaşık 46.4 FPS; en uzun kare 50 ms.
-- Isınmış bitiriciler: yaklaşık 48.3–59.3 FPS.
-- Bölüm açılışı sonrasındaki kısa ölçümler: yaklaşık 60–60 FPS.
+| Silah | Silah çizim CPU, önce → yeni | Gerçek RAF FPS, önce → yeni |
+| --- | --- | --- |
+| Çift namlulu | 14,56 → 15,76 ms | 51,18 → 51,45 |
+| Nail | 15,53 → 10,69 ms | 46,81 → 55,91 |
+| Soul | 8,71 → 16,16 ms | 55,67 → 49,78 |
+| TNT | 12,10 → 11,45 ms | 52,42 → 55,93 |
+| Stake | 11,62 → 11,06 ms | 52,72 → 53,49 |
 
-Bu değerler bu bilgisayardaki kısa ölçümlerdir. Bölüm yüklemesindeki shader hazırlığı ve çizim önbellekleri ilk kullanım maliyetini azaltır; bütün donanımlarda kesintisiz çalışma iddiası yoktur.
+Soul'un yeni kavisli yüzeyi belirgin ek çizim maliyeti taşır: ölçülen p95 kare süresi 18,2 ms'den 36 ms'ye çıktı. Görsel ayrıntı korunmuştur; bu silahta akıcılık sorununun tamamen çözüldüğü iddia edilmez. Ham ABBA turları ve özet `arsenal-final-5c071b18-performance*.json` içindedir.
 
-Önceki tur yapılan CPU profilinde viewmodel çizimi temel darboğazdı. Cache/copy/warmup adayı 141 görüntü ve tampon eşitliği karşılaştırmasını geçse de dört gerçek animasyon döngüsü A/B koşusunda tutarlı hız kazancı vermediği için teslim sürümüne alınmadı. Deney sonuçları `.dream-loop/performance-experiments/README.txt` ve `provenance.json` içindedir; bu deney yayınlanmış oyunun hızlandığına kanıt sayılmaz. Akıcılık sorunu çözülmüş değildir.
+Güncel gerçek oyun medya kayıtları `previews/` içinde kaynak HTML hashleriyle listelenir. Tasarım hedefleri `assets/` içinde ayrı tutulur. Eski `docs/` kök görselleri bu sürümün kanıtı değildir.
 
-Silah görsel çalışmasında 76 sabit poz renderı ve diğer sekiz silahın 16 pozuyla dört tekme/drop kick pozu, son kovan düzeltmesinden önce denetlendi. Dar kovan düzeltmesi sonrası dört çıkarma/hizalama pozu ve diğer silahların 16 pozu tekrar kontrol edildi. Son viewmodel kaynağı 2c35882398c52876b003a20f98486a4be485327d8121829dce882bcc3952c071; nihai teslimde ayrıca gerçek doldurma ve sesli video kaydı çalıştırıldı. Bu görüntü incelemesi belirli referansla birebir eşleşme iddiası değildir.
-
-## Görsel kanıt ve yeniden çalıştırma
-
-[Giriş](prologue.png), [şapel](chapel.png), [altar kompozisyonu](chapel-altar.png), [kript](crypt.png), [köprü](bridge.png), [arena](arena.png), [çıkış yönündeki dönüş](ascent.png), [bot tabanı](boot-sole.png), [manastır mezar hücresi](monastery-crypt.png), [zindan galerisi](dungeon-gallery.png), [drop kick](dropkick.png), [bitirici](finisher.png).
-
-`docs/combat-preview.webm` son teslim HTML'sinden alınan VP9 + Opus kaydıdır; iki gerçek doldurma, ateş, idle tutuş ve kısa yakın dövüş gösterir. Ses aynı oturumda gerçek WebAudio çıkışından, ses seviyesi ve effects/ambience karışımı sonrasında kaydedildi. Düşman, mühimmat ve başlangıç konumları QA ile hazırlanmıştır; saldırı ve animasyonlar gerçek döngüdedir. Preroll senkron işareti son videodan tamamen kesildi; video 25 FPS olduğu için hizalama çözünürlüğü 40 ms'dir. Fiziksel ekran/hoparlör gecikmesi ölçülmedi.
-
-`docs/audio/reload-audit.wav`, aynı final örnek ve zamanlamanın native effects yolu üzerinden offline dinleme çıktısıdır. Gerçek RAF kontrolü, olayların faz sınırını izlediğini ve iki doldurmada 7 + 7 olay üretildiğini denetler. Teknik testler öznel ses kalitesi onayı değildir; dinleme dosyası kullanıcı incelemesi için bırakıldı.
-
-```sh
-npm ci
-npm run build
-npm test
-npm run test:enemies
-npm run test:walls
-npm run test:visual
-npm run test:levels
-npm run test:audio
-node tools/reload-audio-raf-tests.cjs
-npm run test:compatibility
-npm run test:navigation
-npm run test:smoke
-```
-
-Testler kurulu Google Chrome kullanır. Ayrıntılı yerel raporlar `.dream-loop/` altındadır. Navigation ve wall testleri varsayılan olarak teslim HTML'sini okur; özellik kaynaklarını yeniden derlemez.
-
-Sonraki iki bölümün görüntüleri inceleme için konumlandırılmış kameralardır; bu kontrol tam bölüm oynanışı veya zorluk dengesi testi değildir. Test aracı, son teslim HTML içindeki özgün üreticileri ve eklenmiş sürümleri karşılaştırır; güncel kaynakları yeniden enjekte etmez.
+[Doldurma videosu](previews/arsenal-reload.webm) doğrudan son ana HTML'den 6,888 saniye gerçek RAF/klavye R ve oyun WebAudio çıkışı kaydeder. QA yalnız ikinci silahı ve cephaneyi verir; poz sabitlemesi kullanılmaz. Video 25 FPS, ses eşleme hassasiyeti bir kare (40 ms); fiziksel hoparlör gecikmesi ölçülmez. Nail idle görseli kontrollü pozla, cehennem arenası görseli navigasyon kamerasıyla çekilmiştir; bu ayrım `previews/provenance.json` içinde açıkça belirtilir.

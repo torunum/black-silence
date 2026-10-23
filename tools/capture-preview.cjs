@@ -8,6 +8,7 @@ const root = path.resolve(__dirname, "..");
 const game = path.resolve(process.argv[2] || path.join(root, "THE-BLACK-SILENCE.html"));
 const docs = path.resolve(process.argv[3] || path.join(root, "docs"));
 const out = path.resolve(process.argv[4] || path.join(root, ".dream-loop", "video"));
+const handsOnly = process.argv.includes("--hands-only");
 fs.mkdirSync(out, { recursive: true });
 fs.mkdirSync(docs, { recursive: true });
 let browser;
@@ -94,7 +95,7 @@ let browser;
     return window.__startPreviewAudio();
   });
   await page.screenshot({ path: path.join(docs, "prologue.png") });
-  await page.waitForTimeout(1300);
+  await page.waitForTimeout(handsOnly ? 450 : 1300);
   // A shot followed by the full mechanical reload.
   await page.evaluate(() => {
     window.__BLACK_SILENCE_QA.Ct.firing = true;
@@ -121,11 +122,11 @@ let browser;
   await page.evaluate(() => {
     const q = window.__BLACK_SILENCE_QA;
     q.T.weapons[1] = true;
-    q.T.mag[1] = 5;
+    q.T.mag[1] = q.weapons[1].magSize;
     q.T.ammo.shells = 12;
   });
   await page.keyboard.press("2");
-  await page.waitForTimeout(800);
+  await page.waitForTimeout(handsOnly ? 500 : 800);
   await waitForDialogue();
   await page.screenshot({ path: path.join(docs, "shotgun.png") });
   await page.evaluate(() => {
@@ -150,6 +151,7 @@ let browser;
   await page.waitForFunction(
     () => window.__BLACK_SILENCE_QA.St.wstate === "idle",
   );
+  if (!handsOnly) {
   await page.keyboard.press("1");
   await page.waitForTimeout(700);
   await waitForDialogue();
@@ -220,6 +222,7 @@ let browser;
   await page.screenshot({ path: path.join(docs, "finisher.png") });
   await page.waitForFunction(() => !window.__BLACK_SILENCE_QA.oo.busy);
   await page.waitForTimeout(1000);
+  }
   const audio = await page.evaluate(() => window.__stopPreviewAudio());
   const audioFile = path.join(out, "game-output.webm");
   fs.writeFileSync(audioFile, Buffer.from(audio.base64, "base64"));
@@ -231,7 +234,7 @@ let browser;
   if (errors.length) throw new Error(errors.join("; "));
   fs.writeFileSync(
     path.join(out, "capture.json"),
-    JSON.stringify({ file, trimStart, syncMarker:true, errors, audio:{file:audioFile,bytes:audio.bytes,duration:audio.duration,...audioStart}, scope:"Actual post-volume WebAudio mixed output, recorded alongside real game animation. QA stages nearby targets." }, null, 2),
+    JSON.stringify({ file, trimStart, syncMarker:true, errors, audio:{file:audioFile,bytes:audio.bytes,duration:audio.duration,...audioStart}, scope: handsOnly ? "Actual RAF weapon idle/fire/reload and post-volume WebAudio output. QA supplies the second weapon and ammunition; no scripted view pose." : "Actual post-volume WebAudio mixed output, recorded alongside real game animation. QA stages nearby targets." }, null, 2),
   );
   console.log(JSON.stringify({ file, trimStart, errors, audioFile, audioBytes:audio.bytes, audioDuration:audio.duration }));
 })().catch(async (error) => {

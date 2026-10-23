@@ -1,0 +1,7 @@
+{
+  "tool": "image_gen built-in",
+  "reference": "../hand-reference/original-target.png",
+  "role": "128x128 luminance atlas sampled on volumetric native gunmetal faces",
+  "source": "forged-charcoal-v1.png",
+  "prompt": "Seamless aged near-black charcoal blued steel, warm worn oxidized bronze scratches, tiny irregular pitting, painterly pixel-friendly detail from reference weapon. No green or teal; no object, gun, skull, hand, border or text."
+}

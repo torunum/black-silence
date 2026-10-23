@@ -1,0 +1,40 @@
+{
+  "testedHTMLSha256": "3807e06bd8a5d40e76786582860f532dfab2c16cf7950d143feb6d646b0f25ed",
+  "results": [
+    {
+      "name": "build",
+      "script": "tools/build-integrity-tests.cjs",
+      "exitCode": 0,
+      "seconds": 2.186,
+      "logSha256": "50153fd7673a55296b95da48dbef1327c137650ee4e1f81f72b2a7067700927d"
+    },
+    {
+      "name": "audio",
+      "script": "tools/reload-audio-tests.cjs",
+      "exitCode": 0,
+      "seconds": 8.028,
+      "logSha256": "d801f31fd4f5ff4474de3adfdb48d82c161f69c05076a02b86c2063cee468db6"
+    },
+    {
+      "name": "audio-raf",
+      "script": "tools/reload-audio-raf-tests.cjs",
+      "exitCode": 0,
+      "seconds": 11.569,
+      "logSha256": "0efcc252477bb2966670be74ee9b0b21f9bf21de677950485ae5a780747e5b62"
+    },
+    {
+      "name": "compatibility",
+      "script": "tools/compatibility-tests.cjs",
+      "exitCode": 0,
+      "seconds": 8.245,
+      "logSha256": "0caaa9d5778f5c7b5070cc458be890600dcd093face48b219ff60e972f7d3672"
+    },
+    {
+      "name": "smoke",
+      "script": "tools/smoke-tests.cjs",
+      "exitCode": 0,
+      "seconds": 51.101,
+      "logSha256": "2bbf56874fb41f346c32a4e894657abc0e3f733135d1a30e72bc9b244f6460e9"
+    }
+  ]
+}

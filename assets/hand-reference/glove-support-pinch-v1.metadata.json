@@ -1,0 +1,88 @@
+{
+  "file": "glove-support-pinch-v1.png",
+  "sha256": "cfd198370669ec3e0e2c73cfd5ab4ebb1e890de159d63924cfa546959d58320c",
+  "status": "accepted-in-runtime-preview",
+  "generatedBy": "OpenAI built-in image_gen",
+  "mode": "reference-image edit with transparent_background=true",
+  "sourceReferences": [
+    "assets/hand-reference/glove-idle-v1.png",
+    "assets/hand-reference/original-target.png"
+  ],
+  "provenance": "AI-generated left-hand pose variation using the generated right-hand asset and earlier project concept image. Not a photograph or third-party game asset. No independent third-party CC0 license is claimed.",
+  "width": 1254,
+  "height": 1254,
+  "alphaBBoxAtThreshold8": {
+    "x": 0,
+    "y": 169,
+    "width": 1187,
+    "height": 1085
+  },
+  "coordinateSystem": "Top-left origin in full 1254x1254 PNG. x right, y down. Bboxes use x,y,width,height. Sleeve reaches the bottom and left image edges.",
+  "approximateLandmarks": {
+    "pinchContact": {
+      "x": 1104,
+      "y": 311,
+      "u": 0.8804,
+      "v": 0.248
+    },
+    "indexPad": {
+      "x": 1072,
+      "y": 282,
+      "u": 0.8549,
+      "v": 0.2249
+    },
+    "thumbPad": {
+      "x": 1124,
+      "y": 335,
+      "u": 0.8963,
+      "v": 0.2671
+    },
+    "handBackCenter": {
+      "x": 668,
+      "y": 612,
+      "u": 0.5327,
+      "v": 0.488
+    },
+    "palmCenter": {
+      "x": 753,
+      "y": 608,
+      "u": 0.6005,
+      "v": 0.4848
+    },
+    "wristCenter": {
+      "x": 523,
+      "y": 850,
+      "u": 0.4171,
+      "v": 0.6778
+    },
+    "cuffCenter": {
+      "x": 458,
+      "y": 926,
+      "u": 0.3652,
+      "v": 0.7384
+    }
+  },
+  "landmarkNote": "Manual estimates for initial mapping, not a validated skeletal rig. Pinch contact is the transparent gap between upper-right index and thumb tips. PalmCenter is an approximate anatomical center beneath the visible glove back; this is a back/side view. Render with the separate cartridge, then refine attachment points and depth occlusion.",
+  "alphaNote": "Original generated alpha preserved. No crop, resize, recolor or other image processing performed.",
+  "reviewNotes": "Material matches right-hand asset; actual forearm angle is roughly 45 degrees rather than the requested 30, so composition should be checked in the game before acceptance. No cartridge is drawn in the asset.",
+  "prompt": "Use case: precise-object-edit. Asset: transparent RGBA LEFT hand sprite for reloading in a first-person gothic pixel-art game. Image 1 is the matching glove asset to edit; Image 2 is the original visual style reference. Keep the exact leather texture, dark brown palette, compact proportions, warm restrained light, narrow stitched glove-back panel, diagonal cuff band and single small brass button from image 1. Change ONLY the hand side and pose to an anatomically correct LEFT support/reload hand. The forearm enters from the BOTTOM LEFT, diagonally toward UPPER RIGHT. We see mostly the BACK and outer side of the left hand, not a frontal palm. At the upper-right end, thumb and index form a small close pinch with a narrow transparent gap for a separately rendered cartridge to sit between their pads; don't render the cartridge. The index must be SHORT and bent at its two joints, not extended or pointing. Thumb curves toward it. Other three fingers curl compactly into the hand beneath/behind this pinch, with small subtle finger lobes: exactly five digits total, no extra finger, no long finger rows. Wrist is short, hand-back broad and flattened like the reference. Keep hand and forearm in a modest roughly 30-degree diagonal from bottom-left to upper-right. One single left hand and cuff asset with clean alpha cutout on a genuinely transparent square canvas; use most of the canvas while leaving a little clear space around the fingers. Sleeve may extend to bottom-left border. Preserve coarse hand-painted pixel texture and color separation of the input rather than photoreal smooth skin or glossy plastic. No right hand, weapon, shell, bullet, scene, HUD, text, labels, cast shadow, checkerboard painted into image or opaque background.",
+  "originalGenerationReference": ".dream-loop/target.png",
+  "runtimePlacement": {
+    "anchor": [
+      0.82935,
+      0.29107
+    ],
+    "bounds": [
+      0,
+      0.13477,
+      0.94657,
+      1
+    ],
+    "extend": [
+      -0.75,
+      0.66
+    ],
+    "rearDigit": false
+  },
+  "runtimeReview": "Accepted in actual weapon idle/reload previews; derived from the reference, not pixel-identical. Original candidate notes are retained as generation history."
+}

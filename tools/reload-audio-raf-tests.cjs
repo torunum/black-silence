@@ -5,6 +5,7 @@ const fs = require("node:fs"),
 const { pathToFileURL } = require("node:url");
 const { chromium } = require("playwright");
 const root = path.resolve(__dirname, "..");
+const output = path.resolve(process.env.QA_OUTPUT_DIR || path.join(root, ".dream-loop"));
 (async () => {
   const browser = await chromium.launch({
     channel: "chrome",
@@ -115,10 +116,13 @@ const root = path.resolve(__dirname, "..");
       runs.push(run);
     }
     if (errors.length) throw new Error(errors.join("\n"));
+    fs.mkdirSync(output, { recursive: true });
     fs.writeFileSync(
-      path.join(root, ".dream-loop/reload-audio-raf-results.json"),
+      path.join(output, "reload-audio-raf-results.json"),
       JSON.stringify(
         {
+          input: path.resolve(process.env.GAME_HTML || path.join(root, "THE-BLACK-SILENCE.html")),
+          sha256: require("node:crypto").createHash("sha256").update(fs.readFileSync(path.resolve(process.env.GAME_HTML || path.join(root, "THE-BLACK-SILENCE.html")))).digest("hex"),
           viewport: "1280x720",
           scope:
             "real keyboard R, actual RAF/native reload; speaker/display physical latency not measured",

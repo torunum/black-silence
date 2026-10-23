@@ -1,0 +1,15 @@
+{
+  "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\reference-final\\video\\page@f1d3acdef8d0e58263a0f58b622957d9.webm",
+  "trimStart": 13.411,
+  "syncMarker": true,
+  "errors": [],
+  "audio": {
+    "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\reference-final\\video\\game-output.webm",
+    "bytes": 110637,
+    "duration": 6.894,
+    "startedAt": 13417.40000000596,
+    "sampleRate": 48000,
+    "contexts": 1
+  },
+  "scope": "Actual RAF weapon idle/fire/reload and post-volume WebAudio output. QA supplies the second weapon and ammunition; no scripted view pose."
+}

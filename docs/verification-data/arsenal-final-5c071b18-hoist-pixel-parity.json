@@ -1,0 +1,3241 @@
+{
+  "cases": 116,
+  "failures": [],
+  "results": {
+    "before": {
+      "errors": [],
+      "records": [
+        {
+          "index": 0,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "a646e8da746c02fd4adef0d3f73756e1439f503f435891e3f1940e29ecda4921",
+          "canvas": "2e203032ebac7c1e4ac39546101d81b9499a77cb851ad8d1e8578f4c38e68bbc"
+        },
+        {
+          "index": 0,
+          "patch": {
+            "reload": 0.12,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "de8709016e3b1f4ff731f6f9ef2ab50065ccd7c9bddd57488edeed3c1e21645d",
+          "canvas": "de8709016e3b1f4ff731f6f9ef2ab50065ccd7c9bddd57488edeed3c1e21645d"
+        },
+        {
+          "index": 0,
+          "patch": {
+            "reload": 0.26,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "bfaca116b59974a0b493967cf27c9afa5a0d2d9d6f95b1dea86d7804ff4f5063",
+          "canvas": "bfaca116b59974a0b493967cf27c9afa5a0d2d9d6f95b1dea86d7804ff4f5063"
+        },
+        {
+          "index": 0,
+          "patch": {
+            "reload": 0.43,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "bc23dbb24a9519b803ff9f05c047fa8084da69cb343e8a6f21cf7a7e3353bedf",
+          "canvas": "bc23dbb24a9519b803ff9f05c047fa8084da69cb343e8a6f21cf7a7e3353bedf"
+        },
+        {
+          "index": 0,
+          "patch": {
+            "reload": 0.55,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "515bb511914bb084aeb33a9c6d79c00e27565c73859383def4e09adc7876fbfd",
+          "canvas": "515bb511914bb084aeb33a9c6d79c00e27565c73859383def4e09adc7876fbfd"
+        },
+        {
+          "index": 0,
+          "patch": {
+            "reload": 0.59,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "72b972f7337f0ffc921a4437a4d3ceca211a3b9686e5f1a014fd41daede48d30",
+          "canvas": "72b972f7337f0ffc921a4437a4d3ceca211a3b9686e5f1a014fd41daede48d30"
+        },
+        {
+          "index": 0,
+          "patch": {
+            "reload": 0.74,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "ef6026742d2a6afa56d74b6ad8269f512be35be0e01f5de9a556b5067ed53886",
+          "canvas": "ef6026742d2a6afa56d74b6ad8269f512be35be0e01f5de9a556b5067ed53886"
+        },
+        {
+          "index": 0,
+          "patch": {
+            "reload": 0.86,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "6dfeae87d2f36feaff647767312c98a9683a6fcd1c0c8c7fbfb56fd17c9e2e6b",
+          "canvas": "6dfeae87d2f36feaff647767312c98a9683a6fcd1c0c8c7fbfb56fd17c9e2e6b"
+        },
+        {
+          "index": 0,
+          "patch": {
+            "reload": 0.99,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "2ff516473e2c8e3590dce5fe5fbd07661c3aaedf997a373c9459d0663793b2cc",
+          "canvas": "2ff516473e2c8e3590dce5fe5fbd07661c3aaedf997a373c9459d0663793b2cc"
+        },
+        {
+          "index": 1,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "1546845c73f4123ee2784e5d3e07aa452864923f52d855954c6b8da18a72b343",
+          "canvas": "1546845c73f4123ee2784e5d3e07aa452864923f52d855954c6b8da18a72b343"
+        },
+        {
+          "index": 1,
+          "patch": {
+            "reload": 0.12,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "cdd3e057529d8854565dc9738a11732c04e56bef4ed8b321ebc6ddb073a5497c",
+          "canvas": "cdd3e057529d8854565dc9738a11732c04e56bef4ed8b321ebc6ddb073a5497c"
+        },
+        {
+          "index": 1,
+          "patch": {
+            "reload": 0.26,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "5cf9e62094fd14935c836f8ecbb63e1ed240cad2e0f8f26204afc9a6a1a0df04",
+          "canvas": "5cf9e62094fd14935c836f8ecbb63e1ed240cad2e0f8f26204afc9a6a1a0df04"
+        },
+        {
+          "index": 1,
+          "patch": {
+            "reload": 0.43,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "6943654adc80cbb4c6f46693bf768f49a692df36899ff59339df258058aed0f4",
+          "canvas": "6943654adc80cbb4c6f46693bf768f49a692df36899ff59339df258058aed0f4"
+        },
+        {
+          "index": 1,
+          "patch": {
+            "reload": 0.55,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "98dbb5d411aa6023598d4e4af906afef251732ff66a81b2221e0d5fb59f01bd2",
+          "canvas": "98dbb5d411aa6023598d4e4af906afef251732ff66a81b2221e0d5fb59f01bd2"
+        },
+        {
+          "index": 1,
+          "patch": {
+            "reload": 0.59,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "075e5cb83873924bea0f986c563fce719c8def49681ad9fd9e70c2aa840c6f86",
+          "canvas": "075e5cb83873924bea0f986c563fce719c8def49681ad9fd9e70c2aa840c6f86"
+        },
+        {
+          "index": 1,
+          "patch": {
+            "reload": 0.74,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "653977f961d78e01f084cfd6bdb69f45aab912e5eed5ad45b75c0ee0df0f953a",
+          "canvas": "653977f961d78e01f084cfd6bdb69f45aab912e5eed5ad45b75c0ee0df0f953a"
+        },
+        {
+          "index": 1,
+          "patch": {
+            "reload": 0.86,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "899e2d270cb25b6d284696b707fcc9bf7ca011e03b41f71a14f5c822bd6348b1",
+          "canvas": "899e2d270cb25b6d284696b707fcc9bf7ca011e03b41f71a14f5c822bd6348b1"
+        },
+        {
+          "index": 1,
+          "patch": {
+            "reload": 0.99,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "8a9b38733ff96e1b03717e88653eaa33b0d1576433a07eed7e25e7a31f8f8512",
+          "canvas": "8a9b38733ff96e1b03717e88653eaa33b0d1576433a07eed7e25e7a31f8f8512"
+        },
+        {
+          "index": 2,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "5c7aaba7bb1af465a6ae48753d29c268551fb5d4434f9323fa55650b790d156a",
+          "canvas": "5c7aaba7bb1af465a6ae48753d29c268551fb5d4434f9323fa55650b790d156a"
+        },
+        {
+          "index": 2,
+          "patch": {
+            "reload": 0.12,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "1eabea922c3666f4772e25cda8e812c50a9c4b57bd1851b7e33558a1e8412a04",
+          "canvas": "1eabea922c3666f4772e25cda8e812c50a9c4b57bd1851b7e33558a1e8412a04"
+        },
+        {
+          "index": 2,
+          "patch": {
+            "reload": 0.26,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "38bb6e9d3aca4dd319929879d2cb9e07467e667ac5b5625145bcfd24564769e4",
+          "canvas": "38bb6e9d3aca4dd319929879d2cb9e07467e667ac5b5625145bcfd24564769e4"
+        },
+        {
+          "index": 2,
+          "patch": {
+            "reload": 0.43,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "38bb6e9d3aca4dd319929879d2cb9e07467e667ac5b5625145bcfd24564769e4",
+          "canvas": "38bb6e9d3aca4dd319929879d2cb9e07467e667ac5b5625145bcfd24564769e4"
+        },
+        {
+          "index": 2,
+          "patch": {
+            "reload": 0.55,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "918e448dde78f4bacae084d1dc7830efa77c756f4518c375a9c052ee7186e592",
+          "canvas": "918e448dde78f4bacae084d1dc7830efa77c756f4518c375a9c052ee7186e592"
+        },
+        {
+          "index": 2,
+          "patch": {
+            "reload": 0.59,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "f73bb07b81b9a13562a0a51c327f038d9a0fbc7a36ecb2a8aa696d570f4e74e4",
+          "canvas": "f73bb07b81b9a13562a0a51c327f038d9a0fbc7a36ecb2a8aa696d570f4e74e4"
+        },
+        {
+          "index": 2,
+          "patch": {
+            "reload": 0.74,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "ca1803c24eca914c93bc691f91fb9eca689f5f7e06bb4fd116abc40dd68001b6",
+          "canvas": "ca1803c24eca914c93bc691f91fb9eca689f5f7e06bb4fd116abc40dd68001b6"
+        },
+        {
+          "index": 2,
+          "patch": {
+            "reload": 0.86,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "750baf8c567604b6f9c7944be3711e39a5bd046ce6d933c225763a767b3c1eb2",
+          "canvas": "750baf8c567604b6f9c7944be3711e39a5bd046ce6d933c225763a767b3c1eb2"
+        },
+        {
+          "index": 2,
+          "patch": {
+            "reload": 0.99,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "5c7aaba7bb1af465a6ae48753d29c268551fb5d4434f9323fa55650b790d156a",
+          "canvas": "5c7aaba7bb1af465a6ae48753d29c268551fb5d4434f9323fa55650b790d156a"
+        },
+        {
+          "index": 3,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "79c0ae328227a64af67d4a25e7bd4a516b1b7b741e1ddcbbeed7716cd860aa23",
+          "canvas": "79c0ae328227a64af67d4a25e7bd4a516b1b7b741e1ddcbbeed7716cd860aa23"
+        },
+        {
+          "index": 3,
+          "patch": {
+            "reload": 0.12,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "879625fd230e08d6454436a248414604cb5e1c5b09b816320c142dc9490aee13",
+          "canvas": "879625fd230e08d6454436a248414604cb5e1c5b09b816320c142dc9490aee13"
+        },
+        {
+          "index": 3,
+          "patch": {
+            "reload": 0.26,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "4c9484d2ad593980a07444b9fd7e2c533682d72a3ae90a9018691d4af4896699",
+          "canvas": "4c9484d2ad593980a07444b9fd7e2c533682d72a3ae90a9018691d4af4896699"
+        },
+        {
+          "index": 3,
+          "patch": {
+            "reload": 0.43,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "4c9484d2ad593980a07444b9fd7e2c533682d72a3ae90a9018691d4af4896699",
+          "canvas": "4c9484d2ad593980a07444b9fd7e2c533682d72a3ae90a9018691d4af4896699"
+        },
+        {
+          "index": 3,
+          "patch": {
+            "reload": 0.55,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "cc31414c7fc88830870bb53616502c45902b0fd81ebb07247d133ffac686ce44",
+          "canvas": "cc31414c7fc88830870bb53616502c45902b0fd81ebb07247d133ffac686ce44"
+        },
+        {
+          "index": 3,
+          "patch": {
+            "reload": 0.59,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "b353466e8e97779d047dacb6860505956a7ec5ac71b54bcaec42e61f65d8686e",
+          "canvas": "b353466e8e97779d047dacb6860505956a7ec5ac71b54bcaec42e61f65d8686e"
+        },
+        {
+          "index": 3,
+          "patch": {
+            "reload": 0.74,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "870548e84087e8bd5587a88e77219f17c2ec5ed849c45abd285a335df80f3c9c",
+          "canvas": "870548e84087e8bd5587a88e77219f17c2ec5ed849c45abd285a335df80f3c9c"
+        },
+        {
+          "index": 3,
+          "patch": {
+            "reload": 0.86,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "e033c953663ed5db8c3d4e6366a68a92c47dd46b7945d4bd76f710cce49255e0",
+          "canvas": "e033c953663ed5db8c3d4e6366a68a92c47dd46b7945d4bd76f710cce49255e0"
+        },
+        {
+          "index": 3,
+          "patch": {
+            "reload": 0.99,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "79c0ae328227a64af67d4a25e7bd4a516b1b7b741e1ddcbbeed7716cd860aa23",
+          "canvas": "79c0ae328227a64af67d4a25e7bd4a516b1b7b741e1ddcbbeed7716cd860aa23"
+        },
+        {
+          "index": 4,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "4d7837fb76018e39ed3d31dce71d88a16b0e2ea4ba2ae2980b541c7eb3e893bc",
+          "canvas": "4d7837fb76018e39ed3d31dce71d88a16b0e2ea4ba2ae2980b541c7eb3e893bc"
+        },
+        {
+          "index": 4,
+          "patch": {
+            "reload": 0.12,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "7d96a6d4dcfee4b275f7cf287155b0036c4cf611cf6a276527069fd4af243f8c",
+          "canvas": "7d96a6d4dcfee4b275f7cf287155b0036c4cf611cf6a276527069fd4af243f8c"
+        },
+        {
+          "index": 4,
+          "patch": {
+            "reload": 0.26,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "5f5874ec36d03c91e6b536e5a6cfbc9f83f667449d75f9cd3804a6fb0f40cd16",
+          "canvas": "5f5874ec36d03c91e6b536e5a6cfbc9f83f667449d75f9cd3804a6fb0f40cd16"
+        },
+        {
+          "index": 4,
+          "patch": {
+            "reload": 0.43,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "cb51036e05ae0cc638f1e4cdafe541e2effa48261ae9b721cd5bdf4133425717",
+          "canvas": "cb51036e05ae0cc638f1e4cdafe541e2effa48261ae9b721cd5bdf4133425717"
+        },
+        {
+          "index": 4,
+          "patch": {
+            "reload": 0.55,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "f69b75cef7051726a3e4856ee72192f49f53f18556bffc9c82a72b26c70a54c5",
+          "canvas": "f69b75cef7051726a3e4856ee72192f49f53f18556bffc9c82a72b26c70a54c5"
+        },
+        {
+          "index": 4,
+          "patch": {
+            "reload": 0.59,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "d406e635bf8d85ec2f06836d10cc883398b7cc5c809872f65cc54c01cb56b42e",
+          "canvas": "d406e635bf8d85ec2f06836d10cc883398b7cc5c809872f65cc54c01cb56b42e"
+        },
+        {
+          "index": 4,
+          "patch": {
+            "reload": 0.74,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "63f079533b6da2fc23139fa38a87b61ed5822a505a92ce999c698f9718a7c6ee",
+          "canvas": "63f079533b6da2fc23139fa38a87b61ed5822a505a92ce999c698f9718a7c6ee"
+        },
+        {
+          "index": 4,
+          "patch": {
+            "reload": 0.86,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "f84b15d95054305eabbc00a32c9a4884913759cefa8ae91237e493700bdd32f7",
+          "canvas": "f84b15d95054305eabbc00a32c9a4884913759cefa8ae91237e493700bdd32f7"
+        },
+        {
+          "index": 4,
+          "patch": {
+            "reload": 0.99,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "4d7837fb76018e39ed3d31dce71d88a16b0e2ea4ba2ae2980b541c7eb3e893bc",
+          "canvas": "4d7837fb76018e39ed3d31dce71d88a16b0e2ea4ba2ae2980b541c7eb3e893bc"
+        },
+        {
+          "index": 5,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "df792f6e83c3ef495961fff2063ccb2440efe93a62c13c2b1f04bee747589fd1",
+          "canvas": "df792f6e83c3ef495961fff2063ccb2440efe93a62c13c2b1f04bee747589fd1"
+        },
+        {
+          "index": 5,
+          "patch": {
+            "reload": 0.12,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "aaf7a50cceb9f69c429735ba3ff9dfb820b09ff940f7f89c0bd28f1232083b6f",
+          "canvas": "aaf7a50cceb9f69c429735ba3ff9dfb820b09ff940f7f89c0bd28f1232083b6f"
+        },
+        {
+          "index": 5,
+          "patch": {
+            "reload": 0.26,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "3a232a2ab3d7dbea11b3b57a8689bc5167300023ff6ddd0569fe09243945587c",
+          "canvas": "3a232a2ab3d7dbea11b3b57a8689bc5167300023ff6ddd0569fe09243945587c"
+        },
+        {
+          "index": 5,
+          "patch": {
+            "reload": 0.43,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "99cef39fb3b308fd71381285868db5d8767766fe49fb3ad92f591415ae58b071",
+          "canvas": "99cef39fb3b308fd71381285868db5d8767766fe49fb3ad92f591415ae58b071"
+        },
+        {
+          "index": 5,
+          "patch": {
+            "reload": 0.55,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "99cef39fb3b308fd71381285868db5d8767766fe49fb3ad92f591415ae58b071",
+          "canvas": "99cef39fb3b308fd71381285868db5d8767766fe49fb3ad92f591415ae58b071"
+        },
+        {
+          "index": 5,
+          "patch": {
+            "reload": 0.59,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "8469ae10d9626ea53d3be553b909c8a3193d62aaf3ed97b32f1bc8f4e43374ef",
+          "canvas": "8469ae10d9626ea53d3be553b909c8a3193d62aaf3ed97b32f1bc8f4e43374ef"
+        },
+        {
+          "index": 5,
+          "patch": {
+            "reload": 0.74,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "b73463e4d91f704cd999672648330226d9424aa7c2ccb32e3fa8d1bd4d3f9405",
+          "canvas": "b73463e4d91f704cd999672648330226d9424aa7c2ccb32e3fa8d1bd4d3f9405"
+        },
+        {
+          "index": 5,
+          "patch": {
+            "reload": 0.86,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "b359ab0c5d10303629499a8aee540fcb67864ea90721671a31d2549e26015115",
+          "canvas": "b359ab0c5d10303629499a8aee540fcb67864ea90721671a31d2549e26015115"
+        },
+        {
+          "index": 5,
+          "patch": {
+            "reload": 0.99,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "df792f6e83c3ef495961fff2063ccb2440efe93a62c13c2b1f04bee747589fd1",
+          "canvas": "df792f6e83c3ef495961fff2063ccb2440efe93a62c13c2b1f04bee747589fd1"
+        },
+        {
+          "index": 6,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "d2bb4b690b57571d937dacead888e9428e5ecf80dfc67ad76b387679a3aa7c0f",
+          "canvas": "d2bb4b690b57571d937dacead888e9428e5ecf80dfc67ad76b387679a3aa7c0f"
+        },
+        {
+          "index": 6,
+          "patch": {
+            "reload": 0.12,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "6c33e2ffb67a21242698a4e791af9751cab50f9a6becef37728460ba1c4147d4",
+          "canvas": "6c33e2ffb67a21242698a4e791af9751cab50f9a6becef37728460ba1c4147d4"
+        },
+        {
+          "index": 6,
+          "patch": {
+            "reload": 0.26,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "662d067e0505413563f92c5fae06cc6a47a25d8a7e8f0000bb1e674312d021fe",
+          "canvas": "662d067e0505413563f92c5fae06cc6a47a25d8a7e8f0000bb1e674312d021fe"
+        },
+        {
+          "index": 6,
+          "patch": {
+            "reload": 0.43,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "662d067e0505413563f92c5fae06cc6a47a25d8a7e8f0000bb1e674312d021fe",
+          "canvas": "662d067e0505413563f92c5fae06cc6a47a25d8a7e8f0000bb1e674312d021fe"
+        },
+        {
+          "index": 6,
+          "patch": {
+            "reload": 0.55,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "8c808aec4d42a47ff62d40f9245b8e892642fe2caec191085c3e2011a884184a",
+          "canvas": "8c808aec4d42a47ff62d40f9245b8e892642fe2caec191085c3e2011a884184a"
+        },
+        {
+          "index": 6,
+          "patch": {
+            "reload": 0.59,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "7040c77f350926410f185411d529ca7bcd8cbbe21c9bd2565291ab78499e76d4",
+          "canvas": "7040c77f350926410f185411d529ca7bcd8cbbe21c9bd2565291ab78499e76d4"
+        },
+        {
+          "index": 6,
+          "patch": {
+            "reload": 0.74,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "a10d961dca1748fe1391d74ca0e55d4645c2954a84f848fb51e62599f5bfd521",
+          "canvas": "a10d961dca1748fe1391d74ca0e55d4645c2954a84f848fb51e62599f5bfd521"
+        },
+        {
+          "index": 6,
+          "patch": {
+            "reload": 0.86,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "8d1f2b2a59090cf094fc5a8db220d2750b1e876a0ff07b09c4130a0bfc76108e",
+          "canvas": "8d1f2b2a59090cf094fc5a8db220d2750b1e876a0ff07b09c4130a0bfc76108e"
+        },
+        {
+          "index": 6,
+          "patch": {
+            "reload": 0.99,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "d2bb4b690b57571d937dacead888e9428e5ecf80dfc67ad76b387679a3aa7c0f",
+          "canvas": "d2bb4b690b57571d937dacead888e9428e5ecf80dfc67ad76b387679a3aa7c0f"
+        },
+        {
+          "index": 7,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "9eab8f4a71ce04a3119766dec1d9386139faf92c996760f56382c41d210c5713",
+          "canvas": "9eab8f4a71ce04a3119766dec1d9386139faf92c996760f56382c41d210c5713"
+        },
+        {
+          "index": 7,
+          "patch": {
+            "reload": 0.12,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "0f22dd79940e4605c759a6895e333faa3d187215227475598d1661960b0cba93",
+          "canvas": "0f22dd79940e4605c759a6895e333faa3d187215227475598d1661960b0cba93"
+        },
+        {
+          "index": 7,
+          "patch": {
+            "reload": 0.26,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "312e3654d7950947151614d8e89918eb764f8b00b4028acc381eeb329034138e",
+          "canvas": "312e3654d7950947151614d8e89918eb764f8b00b4028acc381eeb329034138e"
+        },
+        {
+          "index": 7,
+          "patch": {
+            "reload": 0.43,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "70915ef03633aa3bc2a39693310e7a7141eca85d59454f7f7af5cf74ff987e9f",
+          "canvas": "70915ef03633aa3bc2a39693310e7a7141eca85d59454f7f7af5cf74ff987e9f"
+        },
+        {
+          "index": 7,
+          "patch": {
+            "reload": 0.55,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "09c1d43e0e25613c1fdf95e87cb38a29fd14c4aad818931770fab50d4375c9d9",
+          "canvas": "09c1d43e0e25613c1fdf95e87cb38a29fd14c4aad818931770fab50d4375c9d9"
+        },
+        {
+          "index": 7,
+          "patch": {
+            "reload": 0.59,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "25a2eddbbbaa7907eb89d976ba06667b35a5891a4ceb00d9f65e43a55a2c0351",
+          "canvas": "25a2eddbbbaa7907eb89d976ba06667b35a5891a4ceb00d9f65e43a55a2c0351"
+        },
+        {
+          "index": 7,
+          "patch": {
+            "reload": 0.74,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "06933dd28313ddf1a81a1a58e3be572fbfdca1e8940304d4d731546f9522a720",
+          "canvas": "06933dd28313ddf1a81a1a58e3be572fbfdca1e8940304d4d731546f9522a720"
+        },
+        {
+          "index": 7,
+          "patch": {
+            "reload": 0.86,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "2592c5bc18a18a6f8aeb2747430c1c7de3627ee6d5a094a68527ee234355149c",
+          "canvas": "2592c5bc18a18a6f8aeb2747430c1c7de3627ee6d5a094a68527ee234355149c"
+        },
+        {
+          "index": 7,
+          "patch": {
+            "reload": 0.99,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "9eab8f4a71ce04a3119766dec1d9386139faf92c996760f56382c41d210c5713",
+          "canvas": "9eab8f4a71ce04a3119766dec1d9386139faf92c996760f56382c41d210c5713"
+        },
+        {
+          "index": 8,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "dab90d3bc2bb6f8e9a086f9939c1195259eb327ed0144343b633aff130cf6360",
+          "canvas": "dab90d3bc2bb6f8e9a086f9939c1195259eb327ed0144343b633aff130cf6360"
+        },
+        {
+          "index": 8,
+          "patch": {
+            "reload": 0.12,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "ad22369faf7d6320e3ab5074562c7351c62055750a4d9c4c171863cae70bf62f",
+          "canvas": "ad22369faf7d6320e3ab5074562c7351c62055750a4d9c4c171863cae70bf62f"
+        },
+        {
+          "index": 8,
+          "patch": {
+            "reload": 0.26,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "213df7416399b0f74ee5e92872ae9119d6bc65895dc89650d627b12e473b27c8",
+          "canvas": "213df7416399b0f74ee5e92872ae9119d6bc65895dc89650d627b12e473b27c8"
+        },
+        {
+          "index": 8,
+          "patch": {
+            "reload": 0.43,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "67757d352b4d4c52d2abe831dbfb27fff070e5380f6808f430a34a21a5266bd6",
+          "canvas": "67757d352b4d4c52d2abe831dbfb27fff070e5380f6808f430a34a21a5266bd6"
+        },
+        {
+          "index": 8,
+          "patch": {
+            "reload": 0.55,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "0fd0acf9da87c4108c84cf99e469c931aa0bc65a3023739ed463098548d999a5",
+          "canvas": "0fd0acf9da87c4108c84cf99e469c931aa0bc65a3023739ed463098548d999a5"
+        },
+        {
+          "index": 8,
+          "patch": {
+            "reload": 0.59,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "0fd0acf9da87c4108c84cf99e469c931aa0bc65a3023739ed463098548d999a5",
+          "canvas": "0fd0acf9da87c4108c84cf99e469c931aa0bc65a3023739ed463098548d999a5"
+        },
+        {
+          "index": 8,
+          "patch": {
+            "reload": 0.74,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "89a8e926545fbb6cf73611d844318b0482556ff4c99e67bf4aaba0b70403a5bb",
+          "canvas": "89a8e926545fbb6cf73611d844318b0482556ff4c99e67bf4aaba0b70403a5bb"
+        },
+        {
+          "index": 8,
+          "patch": {
+            "reload": 0.86,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "dab90d3bc2bb6f8e9a086f9939c1195259eb327ed0144343b633aff130cf6360",
+          "canvas": "dab90d3bc2bb6f8e9a086f9939c1195259eb327ed0144343b633aff130cf6360"
+        },
+        {
+          "index": 8,
+          "patch": {
+            "reload": 0.99,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "dab90d3bc2bb6f8e9a086f9939c1195259eb327ed0144343b633aff130cf6360",
+          "canvas": "dab90d3bc2bb6f8e9a086f9939c1195259eb327ed0144343b633aff130cf6360"
+        },
+        {
+          "index": 9,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "90b65344972b3b61af04ce7bbc2dc8164574caee6e530e5dedfb7e2c1ff27b3b",
+          "canvas": "90b65344972b3b61af04ce7bbc2dc8164574caee6e530e5dedfb7e2c1ff27b3b"
+        },
+        {
+          "index": 9,
+          "patch": {
+            "reload": 0.12,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "b5a0db509e13dc159cb31805dd758a5aa148717933790d737a344e266215f635",
+          "canvas": "b5a0db509e13dc159cb31805dd758a5aa148717933790d737a344e266215f635"
+        },
+        {
+          "index": 9,
+          "patch": {
+            "reload": 0.26,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "8801608c7026d9d2448e749a9a0043b3bc5f59022419216ba24eb597b190e47e",
+          "canvas": "8801608c7026d9d2448e749a9a0043b3bc5f59022419216ba24eb597b190e47e"
+        },
+        {
+          "index": 9,
+          "patch": {
+            "reload": 0.43,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "f68478cdbea531d1da009a95b48e335e2a6914d73365117f0be37fcce307b7d1",
+          "canvas": "f68478cdbea531d1da009a95b48e335e2a6914d73365117f0be37fcce307b7d1"
+        },
+        {
+          "index": 9,
+          "patch": {
+            "reload": 0.55,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "ba95aa49bbf4119c6e6d3aa92c2043ae0987c5415cc2c4853f4de9f015a3dfa5",
+          "canvas": "ba95aa49bbf4119c6e6d3aa92c2043ae0987c5415cc2c4853f4de9f015a3dfa5"
+        },
+        {
+          "index": 9,
+          "patch": {
+            "reload": 0.59,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "dac8947a0039555e87c62923c45a144933a12c6af44c0f3f432e9448f9448e7d",
+          "canvas": "dac8947a0039555e87c62923c45a144933a12c6af44c0f3f432e9448f9448e7d"
+        },
+        {
+          "index": 9,
+          "patch": {
+            "reload": 0.74,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "72703e2e588a9c7d501bb72f80737ca17634243873dd6991c9c60fd16f828248",
+          "canvas": "72703e2e588a9c7d501bb72f80737ca17634243873dd6991c9c60fd16f828248"
+        },
+        {
+          "index": 9,
+          "patch": {
+            "reload": 0.86,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "1a2cee4942ba0e1aa35776aee9d4e50c3c4fa0bbeff48d483eb7956248fe38e9",
+          "canvas": "1a2cee4942ba0e1aa35776aee9d4e50c3c4fa0bbeff48d483eb7956248fe38e9"
+        },
+        {
+          "index": 9,
+          "patch": {
+            "reload": 0.99,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "90b65344972b3b61af04ce7bbc2dc8164574caee6e530e5dedfb7e2c1ff27b3b",
+          "canvas": "90b65344972b3b61af04ce7bbc2dc8164574caee6e530e5dedfb7e2c1ff27b3b"
+        },
+        {
+          "index": 0,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "a646e8da746c02fd4adef0d3f73756e1439f503f435891e3f1940e29ecda4921",
+          "canvas": "a646e8da746c02fd4adef0d3f73756e1439f503f435891e3f1940e29ecda4921"
+        },
+        {
+          "index": 7,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "9eab8f4a71ce04a3119766dec1d9386139faf92c996760f56382c41d210c5713",
+          "canvas": "9eab8f4a71ce04a3119766dec1d9386139faf92c996760f56382c41d210c5713"
+        },
+        {
+          "index": 1,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "1546845c73f4123ee2784e5d3e07aa452864923f52d855954c6b8da18a72b343",
+          "canvas": "1546845c73f4123ee2784e5d3e07aa452864923f52d855954c6b8da18a72b343"
+        },
+        {
+          "index": 8,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "dab90d3bc2bb6f8e9a086f9939c1195259eb327ed0144343b633aff130cf6360",
+          "canvas": "dab90d3bc2bb6f8e9a086f9939c1195259eb327ed0144343b633aff130cf6360"
+        },
+        {
+          "index": 2,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "5c7aaba7bb1af465a6ae48753d29c268551fb5d4434f9323fa55650b790d156a",
+          "canvas": "5c7aaba7bb1af465a6ae48753d29c268551fb5d4434f9323fa55650b790d156a"
+        },
+        {
+          "index": 0,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "a646e8da746c02fd4adef0d3f73756e1439f503f435891e3f1940e29ecda4921",
+          "canvas": "a646e8da746c02fd4adef0d3f73756e1439f503f435891e3f1940e29ecda4921"
+        },
+        {
+          "index": 0,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "force": false,
+          "raw": "a646e8da746c02fd4adef0d3f73756e1439f503f435891e3f1940e29ecda4921",
+          "canvas": "a646e8da746c02fd4adef0d3f73756e1439f503f435891e3f1940e29ecda4921"
+        },
+        {
+          "index": -1,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": 0.11,
+            "drop": 0,
+            "exec": -1
+          },
+          "raw": "b2167218aa8eb52da3f50797383807db432cf78fda5fe3a7881c465708bf5510",
+          "canvas": "b2167218aa8eb52da3f50797383807db432cf78fda5fe3a7881c465708bf5510"
+        },
+        {
+          "index": -1,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": 0.11,
+            "drop": 1,
+            "exec": -1
+          },
+          "raw": "16fc44951774766feb478581401d4e4037df5cd546f68b68334c5769c397e0c4",
+          "canvas": "16fc44951774766feb478581401d4e4037df5cd546f68b68334c5769c397e0c4"
+        },
+        {
+          "index": -1,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": 0.21,
+            "drop": 0,
+            "exec": -1
+          },
+          "raw": "4f8db71114a589ed7793e031fdc697aba37bb13834aaf38ab0273ae49d5e8aff",
+          "canvas": "4f8db71114a589ed7793e031fdc697aba37bb13834aaf38ab0273ae49d5e8aff"
+        },
+        {
+          "index": -1,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": 0.21,
+            "drop": 1,
+            "exec": -1
+          },
+          "raw": "9d55373eaffe7ff0484b8090a289ba48346907c41f6e295a329db21b94598491",
+          "canvas": "9d55373eaffe7ff0484b8090a289ba48346907c41f6e295a329db21b94598491"
+        },
+        {
+          "index": -1,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": 0.5,
+            "drop": 0,
+            "exec": -1
+          },
+          "raw": "7b331c02e313c7599d5a90212e17e6d3cb729bd2e1c9b873c302a63c95a2f9bf",
+          "canvas": "7b331c02e313c7599d5a90212e17e6d3cb729bd2e1c9b873c302a63c95a2f9bf"
+        },
+        {
+          "index": -1,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": 0.5,
+            "drop": 1,
+            "exec": -1
+          },
+          "raw": "7b331c02e313c7599d5a90212e17e6d3cb729bd2e1c9b873c302a63c95a2f9bf",
+          "canvas": "7b331c02e313c7599d5a90212e17e6d3cb729bd2e1c9b873c302a63c95a2f9bf"
+        },
+        {
+          "index": -1,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": 0.25,
+            "execKind": 0
+          },
+          "raw": "01f1a64b03a3cbe86fac5ab410d6ec3c360a810e6571596300ccba90e4eb4ed5",
+          "canvas": "01f1a64b03a3cbe86fac5ab410d6ec3c360a810e6571596300ccba90e4eb4ed5"
+        },
+        {
+          "index": -1,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": 0.55,
+            "execKind": 0
+          },
+          "raw": "f420a517999968df1cc18c95b0c332fd70feeff2ee56b580295c155677f22604",
+          "canvas": "f420a517999968df1cc18c95b0c332fd70feeff2ee56b580295c155677f22604"
+        },
+        {
+          "index": -1,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": 0.85,
+            "execKind": 0
+          },
+          "raw": "a68dc3732d34d5162fe614e5f7828ecb82789bc89a955c1790abbf1e91cc5582",
+          "canvas": "a68dc3732d34d5162fe614e5f7828ecb82789bc89a955c1790abbf1e91cc5582"
+        },
+        {
+          "index": -1,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": 0.25,
+            "execKind": 1
+          },
+          "raw": "9b50bc53f1164f926c4a347e43f764c758ed7e006c055bcf9bcacc9f51bda8fc",
+          "canvas": "9b50bc53f1164f926c4a347e43f764c758ed7e006c055bcf9bcacc9f51bda8fc"
+        },
+        {
+          "index": -1,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": 0.55,
+            "execKind": 1
+          },
+          "raw": "5b7bf2a55fe9cc2b2daeb41f1c470076b9f79c43b718316c993f905b305e58d5",
+          "canvas": "5b7bf2a55fe9cc2b2daeb41f1c470076b9f79c43b718316c993f905b305e58d5"
+        },
+        {
+          "index": -1,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": 0.85,
+            "execKind": 1
+          },
+          "raw": "e845c371437bea0f50cbd26ed4958d4952568f9bc5a0c8ecd7c59c7f7cb10014",
+          "canvas": "e845c371437bea0f50cbd26ed4958d4952568f9bc5a0c8ecd7c59c7f7cb10014"
+        },
+        {
+          "index": -1,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": 0.25,
+            "execKind": 2
+          },
+          "raw": "fb982e66588f74ef6e2fb5689430b8b987de1b41666f61471241eac8237f7663",
+          "canvas": "fb982e66588f74ef6e2fb5689430b8b987de1b41666f61471241eac8237f7663"
+        },
+        {
+          "index": -1,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": 0.55,
+            "execKind": 2
+          },
+          "raw": "25719dca978cda91ae6409a8b661678c6c59004c15331505ac8fe8205914139f",
+          "canvas": "25719dca978cda91ae6409a8b661678c6c59004c15331505ac8fe8205914139f"
+        },
+        {
+          "index": -1,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": 0.85,
+            "execKind": 2
+          },
+          "raw": "aa2ad4bffc79ea29d4c420429b69c9abe5886d051adf96d4fc02ddd86be67e86",
+          "canvas": "aa2ad4bffc79ea29d4c420429b69c9abe5886d051adf96d4fc02ddd86be67e86"
+        },
+        {
+          "synthetic": true,
+          "rear": false,
+          "overlap": false,
+          "raw": "59bdf5e23f2aa18982e0c40db8f05659a4b2d62ea605df81f1511a74d5f36f59",
+          "canvas": "e86d5786b8ec7558b2e8ea9ac7a10368d605d91146385e0d602cb554b8250ad4"
+        },
+        {
+          "synthetic": true,
+          "rear": false,
+          "overlap": true,
+          "raw": "c29acc8b19cce94eb111a466434263e2b04415a0293c7a933cf8060bf3659cc9",
+          "canvas": "a2226cc8a0ffbc3b5772c90cd0d87b4393f974b50f27a5678a4457b46f79b6f8"
+        },
+        {
+          "synthetic": true,
+          "rear": true,
+          "overlap": false,
+          "raw": "59bdf5e23f2aa18982e0c40db8f05659a4b2d62ea605df81f1511a74d5f36f59",
+          "canvas": "e86d5786b8ec7558b2e8ea9ac7a10368d605d91146385e0d602cb554b8250ad4"
+        },
+        {
+          "synthetic": true,
+          "rear": true,
+          "overlap": true,
+          "raw": "9be732c6dacda2efac49a562c8f6436168b440ba4f43a07dc7c5788b57fb1477",
+          "canvas": "b95cb2e9e0d6a9a7e8dde967f19b31bf727b3174b73c019bc6430b406e839f20"
+        }
+      ]
+    },
+    "after": {
+      "errors": [],
+      "records": [
+        {
+          "index": 0,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "a646e8da746c02fd4adef0d3f73756e1439f503f435891e3f1940e29ecda4921",
+          "canvas": "2e203032ebac7c1e4ac39546101d81b9499a77cb851ad8d1e8578f4c38e68bbc"
+        },
+        {
+          "index": 0,
+          "patch": {
+            "reload": 0.12,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "de8709016e3b1f4ff731f6f9ef2ab50065ccd7c9bddd57488edeed3c1e21645d",
+          "canvas": "de8709016e3b1f4ff731f6f9ef2ab50065ccd7c9bddd57488edeed3c1e21645d"
+        },
+        {
+          "index": 0,
+          "patch": {
+            "reload": 0.26,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "bfaca116b59974a0b493967cf27c9afa5a0d2d9d6f95b1dea86d7804ff4f5063",
+          "canvas": "bfaca116b59974a0b493967cf27c9afa5a0d2d9d6f95b1dea86d7804ff4f5063"
+        },
+        {
+          "index": 0,
+          "patch": {
+            "reload": 0.43,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "bc23dbb24a9519b803ff9f05c047fa8084da69cb343e8a6f21cf7a7e3353bedf",
+          "canvas": "bc23dbb24a9519b803ff9f05c047fa8084da69cb343e8a6f21cf7a7e3353bedf"
+        },
+        {
+          "index": 0,
+          "patch": {
+            "reload": 0.55,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "515bb511914bb084aeb33a9c6d79c00e27565c73859383def4e09adc7876fbfd",
+          "canvas": "515bb511914bb084aeb33a9c6d79c00e27565c73859383def4e09adc7876fbfd"
+        },
+        {
+          "index": 0,
+          "patch": {
+            "reload": 0.59,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "72b972f7337f0ffc921a4437a4d3ceca211a3b9686e5f1a014fd41daede48d30",
+          "canvas": "72b972f7337f0ffc921a4437a4d3ceca211a3b9686e5f1a014fd41daede48d30"
+        },
+        {
+          "index": 0,
+          "patch": {
+            "reload": 0.74,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "ef6026742d2a6afa56d74b6ad8269f512be35be0e01f5de9a556b5067ed53886",
+          "canvas": "ef6026742d2a6afa56d74b6ad8269f512be35be0e01f5de9a556b5067ed53886"
+        },
+        {
+          "index": 0,
+          "patch": {
+            "reload": 0.86,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "6dfeae87d2f36feaff647767312c98a9683a6fcd1c0c8c7fbfb56fd17c9e2e6b",
+          "canvas": "6dfeae87d2f36feaff647767312c98a9683a6fcd1c0c8c7fbfb56fd17c9e2e6b"
+        },
+        {
+          "index": 0,
+          "patch": {
+            "reload": 0.99,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "2ff516473e2c8e3590dce5fe5fbd07661c3aaedf997a373c9459d0663793b2cc",
+          "canvas": "2ff516473e2c8e3590dce5fe5fbd07661c3aaedf997a373c9459d0663793b2cc"
+        },
+        {
+          "index": 1,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "1546845c73f4123ee2784e5d3e07aa452864923f52d855954c6b8da18a72b343",
+          "canvas": "1546845c73f4123ee2784e5d3e07aa452864923f52d855954c6b8da18a72b343"
+        },
+        {
+          "index": 1,
+          "patch": {
+            "reload": 0.12,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "cdd3e057529d8854565dc9738a11732c04e56bef4ed8b321ebc6ddb073a5497c",
+          "canvas": "cdd3e057529d8854565dc9738a11732c04e56bef4ed8b321ebc6ddb073a5497c"
+        },
+        {
+          "index": 1,
+          "patch": {
+            "reload": 0.26,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "5cf9e62094fd14935c836f8ecbb63e1ed240cad2e0f8f26204afc9a6a1a0df04",
+          "canvas": "5cf9e62094fd14935c836f8ecbb63e1ed240cad2e0f8f26204afc9a6a1a0df04"
+        },
+        {
+          "index": 1,
+          "patch": {
+            "reload": 0.43,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "6943654adc80cbb4c6f46693bf768f49a692df36899ff59339df258058aed0f4",
+          "canvas": "6943654adc80cbb4c6f46693bf768f49a692df36899ff59339df258058aed0f4"
+        },
+        {
+          "index": 1,
+          "patch": {
+            "reload": 0.55,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "98dbb5d411aa6023598d4e4af906afef251732ff66a81b2221e0d5fb59f01bd2",
+          "canvas": "98dbb5d411aa6023598d4e4af906afef251732ff66a81b2221e0d5fb59f01bd2"
+        },
+        {
+          "index": 1,
+          "patch": {
+            "reload": 0.59,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "075e5cb83873924bea0f986c563fce719c8def49681ad9fd9e70c2aa840c6f86",
+          "canvas": "075e5cb83873924bea0f986c563fce719c8def49681ad9fd9e70c2aa840c6f86"
+        },
+        {
+          "index": 1,
+          "patch": {
+            "reload": 0.74,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "653977f961d78e01f084cfd6bdb69f45aab912e5eed5ad45b75c0ee0df0f953a",
+          "canvas": "653977f961d78e01f084cfd6bdb69f45aab912e5eed5ad45b75c0ee0df0f953a"
+        },
+        {
+          "index": 1,
+          "patch": {
+            "reload": 0.86,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "899e2d270cb25b6d284696b707fcc9bf7ca011e03b41f71a14f5c822bd6348b1",
+          "canvas": "899e2d270cb25b6d284696b707fcc9bf7ca011e03b41f71a14f5c822bd6348b1"
+        },
+        {
+          "index": 1,
+          "patch": {
+            "reload": 0.99,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "8a9b38733ff96e1b03717e88653eaa33b0d1576433a07eed7e25e7a31f8f8512",
+          "canvas": "8a9b38733ff96e1b03717e88653eaa33b0d1576433a07eed7e25e7a31f8f8512"
+        },
+        {
+          "index": 2,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "5c7aaba7bb1af465a6ae48753d29c268551fb5d4434f9323fa55650b790d156a",
+          "canvas": "5c7aaba7bb1af465a6ae48753d29c268551fb5d4434f9323fa55650b790d156a"
+        },
+        {
+          "index": 2,
+          "patch": {
+            "reload": 0.12,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "1eabea922c3666f4772e25cda8e812c50a9c4b57bd1851b7e33558a1e8412a04",
+          "canvas": "1eabea922c3666f4772e25cda8e812c50a9c4b57bd1851b7e33558a1e8412a04"
+        },
+        {
+          "index": 2,
+          "patch": {
+            "reload": 0.26,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "38bb6e9d3aca4dd319929879d2cb9e07467e667ac5b5625145bcfd24564769e4",
+          "canvas": "38bb6e9d3aca4dd319929879d2cb9e07467e667ac5b5625145bcfd24564769e4"
+        },
+        {
+          "index": 2,
+          "patch": {
+            "reload": 0.43,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "38bb6e9d3aca4dd319929879d2cb9e07467e667ac5b5625145bcfd24564769e4",
+          "canvas": "38bb6e9d3aca4dd319929879d2cb9e07467e667ac5b5625145bcfd24564769e4"
+        },
+        {
+          "index": 2,
+          "patch": {
+            "reload": 0.55,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "918e448dde78f4bacae084d1dc7830efa77c756f4518c375a9c052ee7186e592",
+          "canvas": "918e448dde78f4bacae084d1dc7830efa77c756f4518c375a9c052ee7186e592"
+        },
+        {
+          "index": 2,
+          "patch": {
+            "reload": 0.59,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "f73bb07b81b9a13562a0a51c327f038d9a0fbc7a36ecb2a8aa696d570f4e74e4",
+          "canvas": "f73bb07b81b9a13562a0a51c327f038d9a0fbc7a36ecb2a8aa696d570f4e74e4"
+        },
+        {
+          "index": 2,
+          "patch": {
+            "reload": 0.74,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "ca1803c24eca914c93bc691f91fb9eca689f5f7e06bb4fd116abc40dd68001b6",
+          "canvas": "ca1803c24eca914c93bc691f91fb9eca689f5f7e06bb4fd116abc40dd68001b6"
+        },
+        {
+          "index": 2,
+          "patch": {
+            "reload": 0.86,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "750baf8c567604b6f9c7944be3711e39a5bd046ce6d933c225763a767b3c1eb2",
+          "canvas": "750baf8c567604b6f9c7944be3711e39a5bd046ce6d933c225763a767b3c1eb2"
+        },
+        {
+          "index": 2,
+          "patch": {
+            "reload": 0.99,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "5c7aaba7bb1af465a6ae48753d29c268551fb5d4434f9323fa55650b790d156a",
+          "canvas": "5c7aaba7bb1af465a6ae48753d29c268551fb5d4434f9323fa55650b790d156a"
+        },
+        {
+          "index": 3,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "79c0ae328227a64af67d4a25e7bd4a516b1b7b741e1ddcbbeed7716cd860aa23",
+          "canvas": "79c0ae328227a64af67d4a25e7bd4a516b1b7b741e1ddcbbeed7716cd860aa23"
+        },
+        {
+          "index": 3,
+          "patch": {
+            "reload": 0.12,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "879625fd230e08d6454436a248414604cb5e1c5b09b816320c142dc9490aee13",
+          "canvas": "879625fd230e08d6454436a248414604cb5e1c5b09b816320c142dc9490aee13"
+        },
+        {
+          "index": 3,
+          "patch": {
+            "reload": 0.26,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "4c9484d2ad593980a07444b9fd7e2c533682d72a3ae90a9018691d4af4896699",
+          "canvas": "4c9484d2ad593980a07444b9fd7e2c533682d72a3ae90a9018691d4af4896699"
+        },
+        {
+          "index": 3,
+          "patch": {
+            "reload": 0.43,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "4c9484d2ad593980a07444b9fd7e2c533682d72a3ae90a9018691d4af4896699",
+          "canvas": "4c9484d2ad593980a07444b9fd7e2c533682d72a3ae90a9018691d4af4896699"
+        },
+        {
+          "index": 3,
+          "patch": {
+            "reload": 0.55,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "cc31414c7fc88830870bb53616502c45902b0fd81ebb07247d133ffac686ce44",
+          "canvas": "cc31414c7fc88830870bb53616502c45902b0fd81ebb07247d133ffac686ce44"
+        },
+        {
+          "index": 3,
+          "patch": {
+            "reload": 0.59,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "b353466e8e97779d047dacb6860505956a7ec5ac71b54bcaec42e61f65d8686e",
+          "canvas": "b353466e8e97779d047dacb6860505956a7ec5ac71b54bcaec42e61f65d8686e"
+        },
+        {
+          "index": 3,
+          "patch": {
+            "reload": 0.74,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "870548e84087e8bd5587a88e77219f17c2ec5ed849c45abd285a335df80f3c9c",
+          "canvas": "870548e84087e8bd5587a88e77219f17c2ec5ed849c45abd285a335df80f3c9c"
+        },
+        {
+          "index": 3,
+          "patch": {
+            "reload": 0.86,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "e033c953663ed5db8c3d4e6366a68a92c47dd46b7945d4bd76f710cce49255e0",
+          "canvas": "e033c953663ed5db8c3d4e6366a68a92c47dd46b7945d4bd76f710cce49255e0"
+        },
+        {
+          "index": 3,
+          "patch": {
+            "reload": 0.99,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "79c0ae328227a64af67d4a25e7bd4a516b1b7b741e1ddcbbeed7716cd860aa23",
+          "canvas": "79c0ae328227a64af67d4a25e7bd4a516b1b7b741e1ddcbbeed7716cd860aa23"
+        },
+        {
+          "index": 4,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "4d7837fb76018e39ed3d31dce71d88a16b0e2ea4ba2ae2980b541c7eb3e893bc",
+          "canvas": "4d7837fb76018e39ed3d31dce71d88a16b0e2ea4ba2ae2980b541c7eb3e893bc"
+        },
+        {
+          "index": 4,
+          "patch": {
+            "reload": 0.12,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "7d96a6d4dcfee4b275f7cf287155b0036c4cf611cf6a276527069fd4af243f8c",
+          "canvas": "7d96a6d4dcfee4b275f7cf287155b0036c4cf611cf6a276527069fd4af243f8c"
+        },
+        {
+          "index": 4,
+          "patch": {
+            "reload": 0.26,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "5f5874ec36d03c91e6b536e5a6cfbc9f83f667449d75f9cd3804a6fb0f40cd16",
+          "canvas": "5f5874ec36d03c91e6b536e5a6cfbc9f83f667449d75f9cd3804a6fb0f40cd16"
+        },
+        {
+          "index": 4,
+          "patch": {
+            "reload": 0.43,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "cb51036e05ae0cc638f1e4cdafe541e2effa48261ae9b721cd5bdf4133425717",
+          "canvas": "cb51036e05ae0cc638f1e4cdafe541e2effa48261ae9b721cd5bdf4133425717"
+        },
+        {
+          "index": 4,
+          "patch": {
+            "reload": 0.55,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "f69b75cef7051726a3e4856ee72192f49f53f18556bffc9c82a72b26c70a54c5",
+          "canvas": "f69b75cef7051726a3e4856ee72192f49f53f18556bffc9c82a72b26c70a54c5"
+        },
+        {
+          "index": 4,
+          "patch": {
+            "reload": 0.59,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "d406e635bf8d85ec2f06836d10cc883398b7cc5c809872f65cc54c01cb56b42e",
+          "canvas": "d406e635bf8d85ec2f06836d10cc883398b7cc5c809872f65cc54c01cb56b42e"
+        },
+        {
+          "index": 4,
+          "patch": {
+            "reload": 0.74,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "63f079533b6da2fc23139fa38a87b61ed5822a505a92ce999c698f9718a7c6ee",
+          "canvas": "63f079533b6da2fc23139fa38a87b61ed5822a505a92ce999c698f9718a7c6ee"
+        },
+        {
+          "index": 4,
+          "patch": {
+            "reload": 0.86,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "f84b15d95054305eabbc00a32c9a4884913759cefa8ae91237e493700bdd32f7",
+          "canvas": "f84b15d95054305eabbc00a32c9a4884913759cefa8ae91237e493700bdd32f7"
+        },
+        {
+          "index": 4,
+          "patch": {
+            "reload": 0.99,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "4d7837fb76018e39ed3d31dce71d88a16b0e2ea4ba2ae2980b541c7eb3e893bc",
+          "canvas": "4d7837fb76018e39ed3d31dce71d88a16b0e2ea4ba2ae2980b541c7eb3e893bc"
+        },
+        {
+          "index": 5,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "df792f6e83c3ef495961fff2063ccb2440efe93a62c13c2b1f04bee747589fd1",
+          "canvas": "df792f6e83c3ef495961fff2063ccb2440efe93a62c13c2b1f04bee747589fd1"
+        },
+        {
+          "index": 5,
+          "patch": {
+            "reload": 0.12,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "aaf7a50cceb9f69c429735ba3ff9dfb820b09ff940f7f89c0bd28f1232083b6f",
+          "canvas": "aaf7a50cceb9f69c429735ba3ff9dfb820b09ff940f7f89c0bd28f1232083b6f"
+        },
+        {
+          "index": 5,
+          "patch": {
+            "reload": 0.26,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "3a232a2ab3d7dbea11b3b57a8689bc5167300023ff6ddd0569fe09243945587c",
+          "canvas": "3a232a2ab3d7dbea11b3b57a8689bc5167300023ff6ddd0569fe09243945587c"
+        },
+        {
+          "index": 5,
+          "patch": {
+            "reload": 0.43,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "99cef39fb3b308fd71381285868db5d8767766fe49fb3ad92f591415ae58b071",
+          "canvas": "99cef39fb3b308fd71381285868db5d8767766fe49fb3ad92f591415ae58b071"
+        },
+        {
+          "index": 5,
+          "patch": {
+            "reload": 0.55,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "99cef39fb3b308fd71381285868db5d8767766fe49fb3ad92f591415ae58b071",
+          "canvas": "99cef39fb3b308fd71381285868db5d8767766fe49fb3ad92f591415ae58b071"
+        },
+        {
+          "index": 5,
+          "patch": {
+            "reload": 0.59,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "8469ae10d9626ea53d3be553b909c8a3193d62aaf3ed97b32f1bc8f4e43374ef",
+          "canvas": "8469ae10d9626ea53d3be553b909c8a3193d62aaf3ed97b32f1bc8f4e43374ef"
+        },
+        {
+          "index": 5,
+          "patch": {
+            "reload": 0.74,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "b73463e4d91f704cd999672648330226d9424aa7c2ccb32e3fa8d1bd4d3f9405",
+          "canvas": "b73463e4d91f704cd999672648330226d9424aa7c2ccb32e3fa8d1bd4d3f9405"
+        },
+        {
+          "index": 5,
+          "patch": {
+            "reload": 0.86,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "b359ab0c5d10303629499a8aee540fcb67864ea90721671a31d2549e26015115",
+          "canvas": "b359ab0c5d10303629499a8aee540fcb67864ea90721671a31d2549e26015115"
+        },
+        {
+          "index": 5,
+          "patch": {
+            "reload": 0.99,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "df792f6e83c3ef495961fff2063ccb2440efe93a62c13c2b1f04bee747589fd1",
+          "canvas": "df792f6e83c3ef495961fff2063ccb2440efe93a62c13c2b1f04bee747589fd1"
+        },
+        {
+          "index": 6,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "d2bb4b690b57571d937dacead888e9428e5ecf80dfc67ad76b387679a3aa7c0f",
+          "canvas": "d2bb4b690b57571d937dacead888e9428e5ecf80dfc67ad76b387679a3aa7c0f"
+        },
+        {
+          "index": 6,
+          "patch": {
+            "reload": 0.12,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "6c33e2ffb67a21242698a4e791af9751cab50f9a6becef37728460ba1c4147d4",
+          "canvas": "6c33e2ffb67a21242698a4e791af9751cab50f9a6becef37728460ba1c4147d4"
+        },
+        {
+          "index": 6,
+          "patch": {
+            "reload": 0.26,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "662d067e0505413563f92c5fae06cc6a47a25d8a7e8f0000bb1e674312d021fe",
+          "canvas": "662d067e0505413563f92c5fae06cc6a47a25d8a7e8f0000bb1e674312d021fe"
+        },
+        {
+          "index": 6,
+          "patch": {
+            "reload": 0.43,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "662d067e0505413563f92c5fae06cc6a47a25d8a7e8f0000bb1e674312d021fe",
+          "canvas": "662d067e0505413563f92c5fae06cc6a47a25d8a7e8f0000bb1e674312d021fe"
+        },
+        {
+          "index": 6,
+          "patch": {
+            "reload": 0.55,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "8c808aec4d42a47ff62d40f9245b8e892642fe2caec191085c3e2011a884184a",
+          "canvas": "8c808aec4d42a47ff62d40f9245b8e892642fe2caec191085c3e2011a884184a"
+        },
+        {
+          "index": 6,
+          "patch": {
+            "reload": 0.59,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "7040c77f350926410f185411d529ca7bcd8cbbe21c9bd2565291ab78499e76d4",
+          "canvas": "7040c77f350926410f185411d529ca7bcd8cbbe21c9bd2565291ab78499e76d4"
+        },
+        {
+          "index": 6,
+          "patch": {
+            "reload": 0.74,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "a10d961dca1748fe1391d74ca0e55d4645c2954a84f848fb51e62599f5bfd521",
+          "canvas": "a10d961dca1748fe1391d74ca0e55d4645c2954a84f848fb51e62599f5bfd521"
+        },
+        {
+          "index": 6,
+          "patch": {
+            "reload": 0.86,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "8d1f2b2a59090cf094fc5a8db220d2750b1e876a0ff07b09c4130a0bfc76108e",
+          "canvas": "8d1f2b2a59090cf094fc5a8db220d2750b1e876a0ff07b09c4130a0bfc76108e"
+        },
+        {
+          "index": 6,
+          "patch": {
+            "reload": 0.99,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "d2bb4b690b57571d937dacead888e9428e5ecf80dfc67ad76b387679a3aa7c0f",
+          "canvas": "d2bb4b690b57571d937dacead888e9428e5ecf80dfc67ad76b387679a3aa7c0f"
+        },
+        {
+          "index": 7,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "9eab8f4a71ce04a3119766dec1d9386139faf92c996760f56382c41d210c5713",
+          "canvas": "9eab8f4a71ce04a3119766dec1d9386139faf92c996760f56382c41d210c5713"
+        },
+        {
+          "index": 7,
+          "patch": {
+            "reload": 0.12,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "0f22dd79940e4605c759a6895e333faa3d187215227475598d1661960b0cba93",
+          "canvas": "0f22dd79940e4605c759a6895e333faa3d187215227475598d1661960b0cba93"
+        },
+        {
+          "index": 7,
+          "patch": {
+            "reload": 0.26,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "312e3654d7950947151614d8e89918eb764f8b00b4028acc381eeb329034138e",
+          "canvas": "312e3654d7950947151614d8e89918eb764f8b00b4028acc381eeb329034138e"
+        },
+        {
+          "index": 7,
+          "patch": {
+            "reload": 0.43,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "70915ef03633aa3bc2a39693310e7a7141eca85d59454f7f7af5cf74ff987e9f",
+          "canvas": "70915ef03633aa3bc2a39693310e7a7141eca85d59454f7f7af5cf74ff987e9f"
+        },
+        {
+          "index": 7,
+          "patch": {
+            "reload": 0.55,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "09c1d43e0e25613c1fdf95e87cb38a29fd14c4aad818931770fab50d4375c9d9",
+          "canvas": "09c1d43e0e25613c1fdf95e87cb38a29fd14c4aad818931770fab50d4375c9d9"
+        },
+        {
+          "index": 7,
+          "patch": {
+            "reload": 0.59,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "25a2eddbbbaa7907eb89d976ba06667b35a5891a4ceb00d9f65e43a55a2c0351",
+          "canvas": "25a2eddbbbaa7907eb89d976ba06667b35a5891a4ceb00d9f65e43a55a2c0351"
+        },
+        {
+          "index": 7,
+          "patch": {
+            "reload": 0.74,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "06933dd28313ddf1a81a1a58e3be572fbfdca1e8940304d4d731546f9522a720",
+          "canvas": "06933dd28313ddf1a81a1a58e3be572fbfdca1e8940304d4d731546f9522a720"
+        },
+        {
+          "index": 7,
+          "patch": {
+            "reload": 0.86,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "2592c5bc18a18a6f8aeb2747430c1c7de3627ee6d5a094a68527ee234355149c",
+          "canvas": "2592c5bc18a18a6f8aeb2747430c1c7de3627ee6d5a094a68527ee234355149c"
+        },
+        {
+          "index": 7,
+          "patch": {
+            "reload": 0.99,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "9eab8f4a71ce04a3119766dec1d9386139faf92c996760f56382c41d210c5713",
+          "canvas": "9eab8f4a71ce04a3119766dec1d9386139faf92c996760f56382c41d210c5713"
+        },
+        {
+          "index": 8,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "dab90d3bc2bb6f8e9a086f9939c1195259eb327ed0144343b633aff130cf6360",
+          "canvas": "dab90d3bc2bb6f8e9a086f9939c1195259eb327ed0144343b633aff130cf6360"
+        },
+        {
+          "index": 8,
+          "patch": {
+            "reload": 0.12,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "ad22369faf7d6320e3ab5074562c7351c62055750a4d9c4c171863cae70bf62f",
+          "canvas": "ad22369faf7d6320e3ab5074562c7351c62055750a4d9c4c171863cae70bf62f"
+        },
+        {
+          "index": 8,
+          "patch": {
+            "reload": 0.26,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "213df7416399b0f74ee5e92872ae9119d6bc65895dc89650d627b12e473b27c8",
+          "canvas": "213df7416399b0f74ee5e92872ae9119d6bc65895dc89650d627b12e473b27c8"
+        },
+        {
+          "index": 8,
+          "patch": {
+            "reload": 0.43,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "67757d352b4d4c52d2abe831dbfb27fff070e5380f6808f430a34a21a5266bd6",
+          "canvas": "67757d352b4d4c52d2abe831dbfb27fff070e5380f6808f430a34a21a5266bd6"
+        },
+        {
+          "index": 8,
+          "patch": {
+            "reload": 0.55,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "0fd0acf9da87c4108c84cf99e469c931aa0bc65a3023739ed463098548d999a5",
+          "canvas": "0fd0acf9da87c4108c84cf99e469c931aa0bc65a3023739ed463098548d999a5"
+        },
+        {
+          "index": 8,
+          "patch": {
+            "reload": 0.59,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "0fd0acf9da87c4108c84cf99e469c931aa0bc65a3023739ed463098548d999a5",
+          "canvas": "0fd0acf9da87c4108c84cf99e469c931aa0bc65a3023739ed463098548d999a5"
+        },
+        {
+          "index": 8,
+          "patch": {
+            "reload": 0.74,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "89a8e926545fbb6cf73611d844318b0482556ff4c99e67bf4aaba0b70403a5bb",
+          "canvas": "89a8e926545fbb6cf73611d844318b0482556ff4c99e67bf4aaba0b70403a5bb"
+        },
+        {
+          "index": 8,
+          "patch": {
+            "reload": 0.86,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "dab90d3bc2bb6f8e9a086f9939c1195259eb327ed0144343b633aff130cf6360",
+          "canvas": "dab90d3bc2bb6f8e9a086f9939c1195259eb327ed0144343b633aff130cf6360"
+        },
+        {
+          "index": 8,
+          "patch": {
+            "reload": 0.99,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "dab90d3bc2bb6f8e9a086f9939c1195259eb327ed0144343b633aff130cf6360",
+          "canvas": "dab90d3bc2bb6f8e9a086f9939c1195259eb327ed0144343b633aff130cf6360"
+        },
+        {
+          "index": 9,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "90b65344972b3b61af04ce7bbc2dc8164574caee6e530e5dedfb7e2c1ff27b3b",
+          "canvas": "90b65344972b3b61af04ce7bbc2dc8164574caee6e530e5dedfb7e2c1ff27b3b"
+        },
+        {
+          "index": 9,
+          "patch": {
+            "reload": 0.12,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "b5a0db509e13dc159cb31805dd758a5aa148717933790d737a344e266215f635",
+          "canvas": "b5a0db509e13dc159cb31805dd758a5aa148717933790d737a344e266215f635"
+        },
+        {
+          "index": 9,
+          "patch": {
+            "reload": 0.26,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "8801608c7026d9d2448e749a9a0043b3bc5f59022419216ba24eb597b190e47e",
+          "canvas": "8801608c7026d9d2448e749a9a0043b3bc5f59022419216ba24eb597b190e47e"
+        },
+        {
+          "index": 9,
+          "patch": {
+            "reload": 0.43,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "f68478cdbea531d1da009a95b48e335e2a6914d73365117f0be37fcce307b7d1",
+          "canvas": "f68478cdbea531d1da009a95b48e335e2a6914d73365117f0be37fcce307b7d1"
+        },
+        {
+          "index": 9,
+          "patch": {
+            "reload": 0.55,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "ba95aa49bbf4119c6e6d3aa92c2043ae0987c5415cc2c4853f4de9f015a3dfa5",
+          "canvas": "ba95aa49bbf4119c6e6d3aa92c2043ae0987c5415cc2c4853f4de9f015a3dfa5"
+        },
+        {
+          "index": 9,
+          "patch": {
+            "reload": 0.59,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "dac8947a0039555e87c62923c45a144933a12c6af44c0f3f432e9448f9448e7d",
+          "canvas": "dac8947a0039555e87c62923c45a144933a12c6af44c0f3f432e9448f9448e7d"
+        },
+        {
+          "index": 9,
+          "patch": {
+            "reload": 0.74,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "72703e2e588a9c7d501bb72f80737ca17634243873dd6991c9c60fd16f828248",
+          "canvas": "72703e2e588a9c7d501bb72f80737ca17634243873dd6991c9c60fd16f828248"
+        },
+        {
+          "index": 9,
+          "patch": {
+            "reload": 0.86,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "1a2cee4942ba0e1aa35776aee9d4e50c3c4fa0bbeff48d483eb7956248fe38e9",
+          "canvas": "1a2cee4942ba0e1aa35776aee9d4e50c3c4fa0bbeff48d483eb7956248fe38e9"
+        },
+        {
+          "index": 9,
+          "patch": {
+            "reload": 0.99,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "90b65344972b3b61af04ce7bbc2dc8164574caee6e530e5dedfb7e2c1ff27b3b",
+          "canvas": "90b65344972b3b61af04ce7bbc2dc8164574caee6e530e5dedfb7e2c1ff27b3b"
+        },
+        {
+          "index": 0,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "a646e8da746c02fd4adef0d3f73756e1439f503f435891e3f1940e29ecda4921",
+          "canvas": "a646e8da746c02fd4adef0d3f73756e1439f503f435891e3f1940e29ecda4921"
+        },
+        {
+          "index": 7,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "9eab8f4a71ce04a3119766dec1d9386139faf92c996760f56382c41d210c5713",
+          "canvas": "9eab8f4a71ce04a3119766dec1d9386139faf92c996760f56382c41d210c5713"
+        },
+        {
+          "index": 1,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "1546845c73f4123ee2784e5d3e07aa452864923f52d855954c6b8da18a72b343",
+          "canvas": "1546845c73f4123ee2784e5d3e07aa452864923f52d855954c6b8da18a72b343"
+        },
+        {
+          "index": 8,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "dab90d3bc2bb6f8e9a086f9939c1195259eb327ed0144343b633aff130cf6360",
+          "canvas": "dab90d3bc2bb6f8e9a086f9939c1195259eb327ed0144343b633aff130cf6360"
+        },
+        {
+          "index": 2,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "5c7aaba7bb1af465a6ae48753d29c268551fb5d4434f9323fa55650b790d156a",
+          "canvas": "5c7aaba7bb1af465a6ae48753d29c268551fb5d4434f9323fa55650b790d156a"
+        },
+        {
+          "index": 0,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "raw": "a646e8da746c02fd4adef0d3f73756e1439f503f435891e3f1940e29ecda4921",
+          "canvas": "a646e8da746c02fd4adef0d3f73756e1439f503f435891e3f1940e29ecda4921"
+        },
+        {
+          "index": 0,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": -1
+          },
+          "force": false,
+          "raw": "a646e8da746c02fd4adef0d3f73756e1439f503f435891e3f1940e29ecda4921",
+          "canvas": "a646e8da746c02fd4adef0d3f73756e1439f503f435891e3f1940e29ecda4921"
+        },
+        {
+          "index": -1,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": 0.11,
+            "drop": 0,
+            "exec": -1
+          },
+          "raw": "b2167218aa8eb52da3f50797383807db432cf78fda5fe3a7881c465708bf5510",
+          "canvas": "b2167218aa8eb52da3f50797383807db432cf78fda5fe3a7881c465708bf5510"
+        },
+        {
+          "index": -1,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": 0.11,
+            "drop": 1,
+            "exec": -1
+          },
+          "raw": "16fc44951774766feb478581401d4e4037df5cd546f68b68334c5769c397e0c4",
+          "canvas": "16fc44951774766feb478581401d4e4037df5cd546f68b68334c5769c397e0c4"
+        },
+        {
+          "index": -1,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": 0.21,
+            "drop": 0,
+            "exec": -1
+          },
+          "raw": "4f8db71114a589ed7793e031fdc697aba37bb13834aaf38ab0273ae49d5e8aff",
+          "canvas": "4f8db71114a589ed7793e031fdc697aba37bb13834aaf38ab0273ae49d5e8aff"
+        },
+        {
+          "index": -1,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": 0.21,
+            "drop": 1,
+            "exec": -1
+          },
+          "raw": "9d55373eaffe7ff0484b8090a289ba48346907c41f6e295a329db21b94598491",
+          "canvas": "9d55373eaffe7ff0484b8090a289ba48346907c41f6e295a329db21b94598491"
+        },
+        {
+          "index": -1,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": 0.5,
+            "drop": 0,
+            "exec": -1
+          },
+          "raw": "7b331c02e313c7599d5a90212e17e6d3cb729bd2e1c9b873c302a63c95a2f9bf",
+          "canvas": "7b331c02e313c7599d5a90212e17e6d3cb729bd2e1c9b873c302a63c95a2f9bf"
+        },
+        {
+          "index": -1,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": 0.5,
+            "drop": 1,
+            "exec": -1
+          },
+          "raw": "7b331c02e313c7599d5a90212e17e6d3cb729bd2e1c9b873c302a63c95a2f9bf",
+          "canvas": "7b331c02e313c7599d5a90212e17e6d3cb729bd2e1c9b873c302a63c95a2f9bf"
+        },
+        {
+          "index": -1,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": 0.25,
+            "execKind": 0
+          },
+          "raw": "01f1a64b03a3cbe86fac5ab410d6ec3c360a810e6571596300ccba90e4eb4ed5",
+          "canvas": "01f1a64b03a3cbe86fac5ab410d6ec3c360a810e6571596300ccba90e4eb4ed5"
+        },
+        {
+          "index": -1,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": 0.55,
+            "execKind": 0
+          },
+          "raw": "f420a517999968df1cc18c95b0c332fd70feeff2ee56b580295c155677f22604",
+          "canvas": "f420a517999968df1cc18c95b0c332fd70feeff2ee56b580295c155677f22604"
+        },
+        {
+          "index": -1,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": 0.85,
+            "execKind": 0
+          },
+          "raw": "a68dc3732d34d5162fe614e5f7828ecb82789bc89a955c1790abbf1e91cc5582",
+          "canvas": "a68dc3732d34d5162fe614e5f7828ecb82789bc89a955c1790abbf1e91cc5582"
+        },
+        {
+          "index": -1,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": 0.25,
+            "execKind": 1
+          },
+          "raw": "9b50bc53f1164f926c4a347e43f764c758ed7e006c055bcf9bcacc9f51bda8fc",
+          "canvas": "9b50bc53f1164f926c4a347e43f764c758ed7e006c055bcf9bcacc9f51bda8fc"
+        },
+        {
+          "index": -1,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": 0.55,
+            "execKind": 1
+          },
+          "raw": "5b7bf2a55fe9cc2b2daeb41f1c470076b9f79c43b718316c993f905b305e58d5",
+          "canvas": "5b7bf2a55fe9cc2b2daeb41f1c470076b9f79c43b718316c993f905b305e58d5"
+        },
+        {
+          "index": -1,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": 0.85,
+            "execKind": 1
+          },
+          "raw": "e845c371437bea0f50cbd26ed4958d4952568f9bc5a0c8ecd7c59c7f7cb10014",
+          "canvas": "e845c371437bea0f50cbd26ed4958d4952568f9bc5a0c8ecd7c59c7f7cb10014"
+        },
+        {
+          "index": -1,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": 0.25,
+            "execKind": 2
+          },
+          "raw": "fb982e66588f74ef6e2fb5689430b8b987de1b41666f61471241eac8237f7663",
+          "canvas": "fb982e66588f74ef6e2fb5689430b8b987de1b41666f61471241eac8237f7663"
+        },
+        {
+          "index": -1,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": 0.55,
+            "execKind": 2
+          },
+          "raw": "25719dca978cda91ae6409a8b661678c6c59004c15331505ac8fe8205914139f",
+          "canvas": "25719dca978cda91ae6409a8b661678c6c59004c15331505ac8fe8205914139f"
+        },
+        {
+          "index": -1,
+          "patch": {
+            "reload": -1,
+            "recoil": 0,
+            "action": 0,
+            "heat": 0,
+            "spin": 0,
+            "kick": -1,
+            "exec": 0.85,
+            "execKind": 2
+          },
+          "raw": "aa2ad4bffc79ea29d4c420429b69c9abe5886d051adf96d4fc02ddd86be67e86",
+          "canvas": "aa2ad4bffc79ea29d4c420429b69c9abe5886d051adf96d4fc02ddd86be67e86"
+        },
+        {
+          "synthetic": true,
+          "rear": false,
+          "overlap": false,
+          "raw": "59bdf5e23f2aa18982e0c40db8f05659a4b2d62ea605df81f1511a74d5f36f59",
+          "canvas": "e86d5786b8ec7558b2e8ea9ac7a10368d605d91146385e0d602cb554b8250ad4"
+        },
+        {
+          "synthetic": true,
+          "rear": false,
+          "overlap": true,
+          "raw": "c29acc8b19cce94eb111a466434263e2b04415a0293c7a933cf8060bf3659cc9",
+          "canvas": "a2226cc8a0ffbc3b5772c90cd0d87b4393f974b50f27a5678a4457b46f79b6f8"
+        },
+        {
+          "synthetic": true,
+          "rear": true,
+          "overlap": false,
+          "raw": "59bdf5e23f2aa18982e0c40db8f05659a4b2d62ea605df81f1511a74d5f36f59",
+          "canvas": "e86d5786b8ec7558b2e8ea9ac7a10368d605d91146385e0d602cb554b8250ad4"
+        },
+        {
+          "synthetic": true,
+          "rear": true,
+          "overlap": true,
+          "raw": "9be732c6dacda2efac49a562c8f6436168b440ba4f43a07dc7c5788b57fb1477",
+          "canvas": "b95cb2e9e0d6a9a7e8dde967f19b31bf727b3174b73c019bc6430b406e839f20"
+        }
+      ]
+    }
+  },
+  "sourceSha": "3e636349ac5e6b5b62e91fc135cc1b5d9ef3675b1aab714f78d5c672bbdfa50e"
+}

@@ -1,0 +1,68 @@
+{
+  "releaseHTMLSha256": "3807e06bd8a5d40e76786582860f532dfab2c16cf7950d143feb6d646b0f25ed",
+  "independentQA": {
+    "instrumentedCandidateSHA256": "09575fd643eae17ef949115447e4e6d1a200761748662759b8492dc4df014837",
+    "helpersRemovedBytes": 293,
+    "normalizedCandidateSHA256": "3807e06bd8a5d40e76786582860f532dfab2c16cf7950d143feb6d646b0f25ed",
+    "sourceSHA256": "68a064c934f5d1a4c3e3a578ce53dc7acd906eaa5dd669d391e75f8a1be9e288",
+    "baselineSHA256": "ca4086d8158c85c8d710ec67a87352c689d5a19503ea87ee240faf53898c7498",
+    "reports": [
+      "verification-data/hands.json",
+      "verification-data/hand-extremes.json"
+    ],
+    "scripts": [
+      "tools/grip-reference-tests.cjs",
+      "tools/grip-extremes-tests.cjs"
+    ],
+    "portableScriptsSyntaxChecked": true,
+    "portableScriptsRerun": false
+  },
+  "releaseTests": [
+    {
+      "name": "build",
+      "script": "tools/build-integrity-tests.cjs",
+      "exitCode": 0,
+      "seconds": 2.186,
+      "logSha256": "50153fd7673a55296b95da48dbef1327c137650ee4e1f81f72b2a7067700927d"
+    },
+    {
+      "name": "audio",
+      "script": "tools/reload-audio-tests.cjs",
+      "exitCode": 0,
+      "seconds": 8.028,
+      "logSha256": "d801f31fd4f5ff4474de3adfdb48d82c161f69c05076a02b86c2063cee468db6"
+    },
+    {
+      "name": "audio-raf",
+      "script": "tools/reload-audio-raf-tests.cjs",
+      "exitCode": 0,
+      "seconds": 11.569,
+      "logSha256": "0efcc252477bb2966670be74ee9b0b21f9bf21de677950485ae5a780747e5b62"
+    },
+    {
+      "name": "compatibility",
+      "script": "tools/compatibility-tests.cjs",
+      "exitCode": 0,
+      "seconds": 8.245,
+      "logSha256": "0caaa9d5778f5c7b5070cc458be890600dcd093face48b219ff60e972f7d3672"
+    },
+    {
+      "name": "smoke",
+      "script": "tools/smoke-tests.cjs",
+      "exitCode": 0,
+      "seconds": 51.101,
+      "logSha256": "2bbf56874fb41f346c32a4e894657abc0e3f733135d1a30e72bc9b244f6460e9"
+    }
+  ],
+  "unchangedModules": {
+    "materials.js": "05e43b45ce521b52cf4d7b172177984699670d9de1261de5f88bf11f42b45517",
+    "combat.js": "a0644449f03a77ec7c121104ab2c6850e0caf6ceb0b17c553b8c6c273c08374c",
+    "enemy-animation.js": "593a5fae641f13ea9f6312409db4a3c3f5b75d5d9e6b31f90a6588dde00370d8",
+    "finishers.js": "8c2c7bdf13e17005c3383054560b155986d8e706b5bfda81e9f1a8224ee3c5b0",
+    "reload-audio-data.js": "2f48b10a1225d1c007ee282d3c18f82c5022bb0267ed86d65feadf819ec1be30",
+    "reload-audio.js": "93963d58a605323c34548136726e1e75b140156f60fc1c7fe0cb7a6a0c94a48b",
+    "prologue.js": "3f053324630bf5bd42aca5eb87b8206b8a34e42c6fdb912e3129757ee3aaccb4",
+    "render-warmup.js": "9418307e9d71b28411b36e86e1ed3f4eb2eecda6b00d58144ce5bc79d110838c"
+  },
+  "scope": "Independent QA used the same release source plus inspection-only helpers; final release tests run on uninstrumented shipped HTML. Earlier wide combat/wall/navigation suites were not rerun because their modules and native engine are unchanged."
+}

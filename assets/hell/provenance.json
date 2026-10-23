@@ -1,0 +1,30 @@
+{
+  "workflow": "DreamLoop Pro: existing screenshot, generated in-engine target, iterative implementation and independent visual review",
+  "workflowSource": "https://github.com/achimala/dream-loop/blob/main/SKILL.md",
+  "tool": "built-in image_gen",
+  "target": {
+    "reference": ".dream-loop/hell/baseline-bridge.png",
+    "output": "assets/hell/reference-target.png",
+    "workingCopy": ".dream-loop/hell/target.png",
+    "originalOutput": "C:/Users/tehlike47/.codex/generated_images/01a168e4-e41c-7580-bea8-1fb8df7d652f/exec-9296650f-4033-4224-b898-d7e7ed5a003c.png",
+    "promptSummary": "Preserve the existing camera, FOV, retro pixel rendering, HUD, hands, weapon and walkable bridge. Render a volcanic cathedral with a centered basalt gothic arch, three lancets, outer lava piers, ribbed vault, low amber lava and readable charcoal stone. Target is an in-engine game screenshot. This is a summary, not the verbatim prompt."
+  },
+  "atlasV1": {
+    "reference": ".dream-loop/hell/target.png",
+    "output": "assets/hell/material-atlas-v1.png",
+    "originalOutput": "C:/Users/tehlike47/.codex/generated_images/01a168e4-e41c-7580-bea8-1fb8df7d652f/exec-dd140bb4-6866-4b05-aa9f-2ffae0818fe5.png",
+    "promptSummary": "Four-quadrant game material atlas matching the target: basalt masonry, paving, bronze trim and orange glowing glass. This is a summary, not the verbatim prompt."
+  },
+  "atlasV2": {
+    "output": "assets/hell/material-atlas-v2.png",
+    "provenance": "assets/hell/material-atlas-v2.provenance.json",
+    "runtimeUse": "Upper-right paving only; v1 supplies the remaining three quadrants."
+  },
+  "runtime": {
+    "compiler": "tools/compile-hell-materials.cjs",
+    "embeddedIn": "src/prologue.js",
+    "encoding": "Four 128x128 RGB base64 buffers, box-area averaged from atlas quadrants, decoded synchronously offline",
+    "geometry": "Native procedural scene meshes; no downloaded third-party 3D assets",
+    "lightingLimitation": "Tagged static hell surfaces use baked vertex illumination and do not respond to dynamic muzzle lights. Other normally lit objects retain native lighting."
+  }
+}

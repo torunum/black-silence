@@ -24,7 +24,7 @@ window.__PROLOGUE_NAV = {
     V5(true);
   },
   reload: Bm,
-  exit: () => ({x:z0.exit.x,z:z0.exit.z,nx:z0.exit.nx,nz:z0.exit.nz,phase:oe.phase}),
+  exit: () => ({x:z0.exit.x,z:z0.exit.z,nx:z0.exit.nx,nz:z0.exit.nz,phase:oe.phase,nextLevel:hR(T.level)}),
 };
 `;
 const fixture = path.join(output, "navigation-study.html");
@@ -45,6 +45,14 @@ fs.writeFileSync(fixture, source.replace(anchor, study + anchor));
       return q?.Be.started && !q.Be.inputLock && q.C.px === 19;
     }, null, { timeout: 30000 });
     await page.waitForTimeout(1000);
+    const initialHellMaterials = await page.evaluate(() => {
+      let count=0;
+      window.__BLACK_SILENCE_QA.J.scene.traverse(o=>{
+        const materials=Array.isArray(o.material)?o.material:[o.material];
+        if(materials.some(m=>m?.userData?.hellBaked))count++;
+      });
+      return count;
+    });
     await page.evaluate(() => {
       const q = window.__BLACK_SILENCE_QA, study = window.__PROLOGUE_NAV;
       q.pause(true);
@@ -160,8 +168,39 @@ fs.writeFileSync(fixture, source.replace(anchor, study + anchor));
     await page.keyboard.press("KeyE");
     await page.waitForFunction(()=>window.__PROLOGUE_NAV.exit().phase!=="idle",null,{timeout:4000});
     const exitPhase=await page.evaluate(()=>window.__PROLOGUE_NAV.exit().phase);
+    await page.waitForFunction(()=>window.__PROLOGUE_NAV.exit().phase==="card",null,{timeout:15000});
+    await page.waitForTimeout(1500);
+    await page.keyboard.press("Space");
+    await page.waitForFunction(nextLevel=>{
+      const q=window.__BLACK_SILENCE_QA;
+      return q.T.level===nextLevel&&!q.Be.inputLock;
+    },exit.nextLevel,{timeout:30000});
+    const materialScope=await page.evaluate(()=>{
+      const q=window.__BLACK_SILENCE_QA;
+      const inspect=()=>{
+        const result={level:q.T.level,bakedMeshes:0,scopedTextures:0,emberObjects:0};
+        q.J.scene.traverse(o=>{
+          if(o.name.startsWith("prologueEmber"))result.emberObjects++;
+          for(const m of Array.isArray(o.material)?o.material:[o.material]){
+            if(m?.userData?.hellBaked)result.bakedMeshes++;
+            if(m?.map?.name?.startsWith("prologueHell"))result.scopedTextures++;
+          }
+        });
+        return result;
+      };
+      q.pause(true);
+      const nextLevel=inspect();
+      q.load(0);const returned=inspect();
+      q.load(0);const rebuilt=inspect();
+      return {nextLevel,returned,rebuilt};
+    });
+    assert.equal(materialScope.nextLevel.bakedMeshes,0,"Static hell light materials do not leak into next level");
+    assert.equal(materialScope.nextLevel.scopedTextures,0,"Hell surface maps do not leak into next level");
+    assert.equal(materialScope.nextLevel.emberObjects,0,"Crypt ember objects do not leak into next level");
+    assert.equal(materialScope.returned.bakedMeshes,initialHellMaterials,"Hell materials restored after returning");
+    assert.deepEqual(materialScope.returned,materialScope.rebuilt,"No accumulation on repeated prologue load");
     assert.deepEqual(errors,[],"No runtime errors during traversal");
-    const report={passed:true,scope:"Live AI through first encounter; remaining route validates movement, collision, elevation and E exit interaction",results,exitPhase,errors};
+    const report={passed:true,scope:"Live AI through first encounter; remaining route validates movement, collision, elevation, E exit, next-level arrival and material scope",results,exitPhase,initialHellMaterials,materialScope,errors};
     fs.writeFileSync(path.join(output,"navigation-results.json"),JSON.stringify(report,null,2));
     console.log(JSON.stringify({passed:true,checkpoints:results.length,exitPhase,errors}));
   } finally { await browser.close(); }

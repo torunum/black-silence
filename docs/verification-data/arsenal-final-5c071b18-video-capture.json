@@ -1,0 +1,17 @@
+{
+  "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\arsenal-video\\page@30ebced25a6a1f869963d6e047610448.webm",
+  "trimStart": 13.36,
+  "syncMarker": true,
+  "errors": [],
+  "audio": {
+    "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\arsenal-video\\game-output.webm",
+    "bytes": 110637,
+    "duration": 6.888,
+    "startedAt": 13363.20000000298,
+    "sampleRate": 48000,
+    "contexts": 1
+  },
+  "scope": "Actual RAF weapon idle/fire/reload and post-volume WebAudio output. QA supplies the second weapon and ammunition; no scripted view pose.",
+  "input": "THE-BLACK-SILENCE.html",
+  "sha256": "5c071b1892db41b162542460dc447586c4919df3d730bcf07164dea9dfe1e932"
+}

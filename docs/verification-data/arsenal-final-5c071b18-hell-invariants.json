@@ -1,0 +1,36 @@
+{
+  "input": "C:/Users/tehlike47/game/.dream-loop/arsenal-final-qa/candidate-5c071b18.html",
+  "sha256": "5c071b1892db41b162542460dc447586c4919df3d730bcf07164dea9dfe1e932",
+  "passed": true,
+  "exactKeys": [
+    "g",
+    "W",
+    "H",
+    "hmap",
+    "grave"
+  ],
+  "gridExact": true,
+  "floorExact": true,
+  "zoneMapExact": true,
+  "otherThemesExact": true,
+  "roofChanges": 1338,
+  "gridCounts": {
+    "2": 1,
+    "#": 2028,
+    ".": 1831,
+    "I": 29,
+    "l": 19,
+    "i": 12,
+    "a": 9,
+    "P": 1,
+    "b": 3,
+    "h": 9,
+    "X": 1,
+    "r": 2,
+    "O": 2,
+    "z": 12,
+    "w": 9
+  },
+  "beforeDecor": 714,
+  "afterDecor": 787
+}

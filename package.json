@@ -6,6 +6,9 @@
   "scripts": {
     "start": "node tools/serve.cjs",
     "build": "node tools/build-game.cjs",
+    "test:build": "node tools/build-integrity-tests.cjs",
+    "test:hands": "node tools/grip-reference-tests.cjs",
+    "test:hand-extremes": "node tools/grip-extremes-tests.cjs",
     "materials": "node tools/compile-materials.cjs",
     "audio": "node tools/compile-reload-audio.cjs",
     "test": "node tools/combat-tests.cjs && node tools/prologue-tests.cjs",

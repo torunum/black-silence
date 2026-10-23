@@ -1,0 +1,125 @@
+{
+  "errors": [],
+  "records": [
+    {
+      "index": 0,
+      "name": "idle",
+      "visible": true,
+      "finite": true
+    },
+    {
+      "index": 0,
+      "name": "insert",
+      "visible": true,
+      "finite": true
+    },
+    {
+      "index": 1,
+      "name": "idle",
+      "visible": true,
+      "finite": true
+    },
+    {
+      "index": 1,
+      "name": "insert",
+      "visible": true,
+      "finite": true
+    },
+    {
+      "index": 2,
+      "name": "idle",
+      "visible": true,
+      "finite": true
+    },
+    {
+      "index": 2,
+      "name": "insert",
+      "visible": true,
+      "finite": true
+    },
+    {
+      "index": 3,
+      "name": "idle",
+      "visible": true,
+      "finite": true
+    },
+    {
+      "index": 3,
+      "name": "insert",
+      "visible": true,
+      "finite": true
+    },
+    {
+      "index": 4,
+      "name": "idle",
+      "visible": true,
+      "finite": true
+    },
+    {
+      "index": 4,
+      "name": "insert",
+      "visible": true,
+      "finite": true
+    },
+    {
+      "index": 5,
+      "name": "idle",
+      "visible": true,
+      "finite": true
+    },
+    {
+      "index": 5,
+      "name": "insert",
+      "visible": true,
+      "finite": true
+    },
+    {
+      "index": 6,
+      "name": "idle",
+      "visible": true,
+      "finite": true
+    },
+    {
+      "index": 6,
+      "name": "insert",
+      "visible": true,
+      "finite": true
+    },
+    {
+      "index": 7,
+      "name": "idle",
+      "visible": true,
+      "finite": true
+    },
+    {
+      "index": 7,
+      "name": "insert",
+      "visible": true,
+      "finite": true
+    },
+    {
+      "index": 8,
+      "name": "idle",
+      "visible": true,
+      "finite": true
+    },
+    {
+      "index": 8,
+      "name": "insert",
+      "visible": true,
+      "finite": true
+    },
+    {
+      "index": 9,
+      "name": "idle",
+      "visible": true,
+      "finite": true
+    },
+    {
+      "index": 9,
+      "name": "insert",
+      "visible": true,
+      "finite": true
+    }
+  ]
+}
