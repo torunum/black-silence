@@ -19,9 +19,11 @@ Gotik piksel FPS oyununun on silah, deri eldiven ve prologue cehennem bölümü 
 
 ## Bu sürüm
 
-Rifle doldururken şarjör ve sol elin ekranın altına kaybolması düzeltildi. Silah, şarjör ve el birlikte daha görünür bir konuma gelir; temas ilişkisi, cephane ve doldurma süresi korunur. [Gerçek doldurma videosu ve doğrulama](docs/rifle-reload-oct24c.md).
+Tommy, Sniper ve Nail doldururken tambur/şarjör/kap ile yükleme elinin ekranın altına kaybolması düzeltildi. Yükleme hareketi boyunca bütün silah ve eller birlikte daha görünür konuma gelir; Tommy tamburunun çıkarma yolu da kısaltıldı. Geç kapama/kol çekme, cephane, süreler ve diğer silahlar korunur. [Gerçek doldurma görüntüleri ve kontroller](docs/reload-framing-oct24d.md).
 
-Son ortam rötuşunda cehennem arenasındaki iki ritüel direğinin açık renk başlıkları ve kaburgaları eskimiş kemik dokusu, kaideleri mevcut bazalt malzemesi kazandı. Lav akışlarında küçük bir yatay doku değişimi düz şerit görünümünü hafifçe kırıyor. Yerleşim, ışıklar, geometri ve zırh alımı korunur. [Eşleşmiş görüntüler ve kapsam](docs/ritual-ivory-oct24c.md).
+Önceki turda Rifle doldururken şarjör ve sol elin ekranın altına kaybolması düzeltildi. Silah, şarjör ve el birlikte daha görünür bir konuma gelir; temas ilişkisi, cephane ve doldurma süresi korunur. [Gerçek doldurma videosu ve doğrulama](docs/rifle-reload-oct24c.md).
+
+Önceki ortam rötuşunda cehennem arenasındaki iki ritüel direğinin açık renk başlıkları ve kaburgaları eskimiş kemik dokusu, kaideleri mevcut bazalt malzemesi kazandı. Lav akışlarında küçük bir yatay doku değişimi düz şerit görünümünü hafifçe kırıyor. Yerleşim, ışıklar, geometri ve zırh alımı korunur. [Eşleşmiş görüntüler ve kapsam](docs/ritual-ivory-oct24c.md).
 
 Önceki animasyon turunda Sniper'ın eli kaldırılan sürgüyle birlikte döner; Soul'un doldurma sırasında sönen ve yenilenen enerjisi keskin parlaklık sıçraması yapmaz. Bazı doldurma pozlarında ekranda kesilen kol uçları, mevcut deri yüzeyi ve derinlik ilişkisi korunarak devam ettirildi. Silah ve eldiven tasarımı korunur. [Silah hareketleri ve kanıtları](docs/weapon-animation-oct24b.md).
 
@@ -57,4 +59,4 @@ npm run test:build
 
 `tools/build-game.cjs` modülleri mevcut motorun önüne yerleştirir; aynı kaynaklarla tekrar derleme aynı HTML'yi üretir. `src/viewmodels.js` tüm on silahı ve el/bot çizimini, `src/prologue.js` bölüm ayrıntılarını, `src/reload-audio.js` doldurma seslerini içerir. Diğer test komutları `package.json` içindedir. Yerel sunucu tercih edilirse `npm start` kullanılabilir; tek HTML'yi açmak için sunucu gerekmez.
 
-Teslim ZIP'i yalnız HTML, kaynaklar, görsel varlıklar, belgeler ve araçları içerir; `.git`, `.dream-loop`, bağımlılık klasörleri ve geçici dosyalar dahil edilmez. Son paket `THE-BLACK-SILENCE-2026-10-24-POLISH.zip` adıyla ayrı tutulur; önceki ZIP'ler değiştirilmez. GitHub'daki ana HTML güncel kaynaklarla birlikte sürümlenir.
+Teslim ZIP'i yalnız HTML, kaynaklar, görsel varlıklar, belgeler ve araçları içerir; `.git`, `.dream-loop`, bağımlılık klasörleri ve geçici dosyalar dahil edilmez. Son paket `THE-BLACK-SILENCE-2026-10-24-RELOADS.zip` adıyla ayrı tutulur; önceki ZIP'ler değiştirilmez. GitHub'daki ana HTML güncel kaynaklarla birlikte sürümlenir.

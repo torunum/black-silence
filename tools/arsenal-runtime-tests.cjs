@@ -19,7 +19,9 @@ const draw=h0t;h0t=function(index,pose,...args){const result=draw.call(this,inde
  r.samples.push({index,state:St.wstate,phase,finite,ready:window.__BLACK_SILENCE_QA.paintedGloves.ready(),visible:!!Te.image?.data.some((v,j)=>j%4===3&&v>0)});
  if(phase>=0)for(const target of [.18,.50,.88])if(phase>=target&&!r.captures.some(c=>c.target===target))r.captures.push({target,phase,png:Te.canvas.toDataURL()});
  }return result;};
-r.exact=(index,pose)=>{Te.lastKey='';h0t(index,pose,90);return Te.canvas.toDataURL();};
+r.snapshot=()=>JSON.stringify({image:Te.canvas.toDataURL(),topRow:Te.topRow});
+r.exact=(index,pose)=>{Te.lastKey='';h0t(index,pose,90);return r.snapshot();};
+r.cached=(index,pose)=>{h0t(index,pose,90);return r.snapshot();};
 const frame=now=>{if(r.active&&r.last)r.frames.push(now-r.last);r.last=r.active?now:0;requestAnimationFrame(frame);};requestAnimationFrame(frame);
 })();`;
 const fixture=path.join(out,'runtime-fixture.html');fs.writeFileSync(fixture,source.replace(anchor,()=>seam+anchor));
@@ -81,8 +83,9 @@ for(const index of selected){
 // Same frozen pose before/after unrelated weapon, reload and two-foot draw.
 await page.evaluate(()=>{const q=window.__BLACK_SILENCE_QA;q.pause(true);q.Be.inputLock=true;window.__arsenalRuntime.active=false;});
 for(const index of cancelOnly?[]:selected){
- const result=await page.evaluate(index=>{const q=window.__BLACK_SILENCE_QA,r=window.__arsenalRuntime,p={...q.pose(),reload:-1,recoil:0,action:0,heat:0};q.T.cur=index;q.St.wstate='idle';const before=r.exact(index,p);r.exact((index+1)%10,{...p,reload:.52});r.exact(index,{...p,kick:.5,drop:1});q.T.cur=index;q.St.wstate='idle';return{before,after:r.exact(index,p)};},index);
+ const result=await page.evaluate(index=>{const q=window.__BLACK_SILENCE_QA,r=window.__arsenalRuntime,p={...q.pose(),reload:-1,recoil:0,action:0,heat:0};q.T.cur=index;q.St.wstate='idle';const before=r.exact(index,p);r.exact((index+1)%10,{...p,reload:.52});r.exact(index,{...p,kick:.5,drop:1});q.T.cur=index;q.St.wstate='idle';const after=r.exact(index,p),cached=r.cached(index,p),cachedAgain=r.cached(index,p);const loading={...p,reload:.52,kick:-1,exec:-1},freshReload=r.exact(index,loading),cachedReload=r.cached(index,loading),cachedReloadAgain=r.cached(index,loading);return{before,after,cached,cachedAgain,freshReload,cachedReload,cachedReloadAgain};},index);
  const match=sha(result.before)===sha(result.after);report.ghosting.push({index,match,before:sha(result.before),after:sha(result.after)});assert(match,`weapon ${index} no cached switch/kick pixels`);
+ const cachedStable=result.after===result.cached&&result.cached===result.cachedAgain&&result.freshReload===result.cachedReload&&result.cachedReload===result.cachedReloadAgain;report.ghosting.at(-1).presentationAndCacheStable=cachedStable;assert(cachedStable,`weapon ${index} cached presentation hint must not accumulate`);
 }
 assert.equal(report.errors.length,0);assert.equal(report.network.length,0);report.pass=true;fs.writeFileSync(path.join(out,'report.json'),JSON.stringify(report,null,2));console.log(cancelOnly?'Partial-magazine fire cancellation and first controllable frame PASS':`Weapons ${selected.join(',')}: reload/fire/switch/kick/cache PASS`);
 }finally{await browser.close();}})().catch(error=>{report.pass=false;report.failure=error.stack;fs.writeFileSync(path.join(out,'report.json'),JSON.stringify(report,null,2));console.error(error);process.exitCode=1;});

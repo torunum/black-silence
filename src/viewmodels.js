@@ -576,6 +576,13 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
     // topRow is the native presentation hint consumed by u0t, not a depth or
     // clipping bound. Keep the full raster, but let this long gun sit at .537
     // screen height instead of the pistol's .60. Apply once per fresh raster.
+    // Native reload framing otherwise pushes the loading hand below the viewport.
+    // Offset the complete presentation once per redraw; retain depth, scale and shared part rigs.
+    if(pose.reload>=0&&pose.exec<0&&pose.kick<0){
+      if(index===3)Te.topRow+=.12*Qe(pose.reload,.02,.76,.12)*Dk*_r;
+      if(index===6)Te.topRow+=.10*Qe(pose.reload,.02,.84,.12)*Dk*_r;
+      if(index===4)Te.topRow+=.10*Qe(pose.reload,.25,.76,.12)*Dk*_r;
+    }
     if(pose.reload<0&&pose.exec<0&&pose.kick<0)Te.topRow+=([0,.063,.05,.04,.06,.05,.04,.05,.03,.05][index]||0)*Dk*_r;
     return result;
   };
@@ -1845,13 +1852,13 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       a.hull(m,[[1409,211],[1430,210],[1454,218],[1455,246],[1409,237]],.014,.010);
       a.hull(m,[[1475,289],[1546,319],[1670,385],[1670,466],[1526,413],[1466,350]],.016,.029);
       // The drum has real thickness and rotates slightly during removal.
-      m.push();a.move(m,-.025*out,.075*out,.012*out);m.roll(-.13*out);
+      m.push();a.move(m,-.025*out,.045*out,.012*out);m.roll(-.13*out);
       a.hull(m,[[1113,252],[1145,223],[1179,215],[1219,230],[1247,265],[1274,315],[1277,382],[1258,418],[1228,442],[1181,449],[1135,430],[1105,394],[1095,345],[1100,292]],-.012,.036);
       m.pop();
       m.push();a.move(m,.035*knob,0,0);a.hull(m,[[1152,177],[1167,173],[1178,182],[1176,196],[1164,201],[1154,192]],-.019,.012);m.pop();
       const reach=t<0?0:Qe(t,.02,.78,.10),support=[1056,254,-.048],load=[1177,356,-.055],knobReach=t<0?0:Qe(t,.72,.98,.075),knobContact=[1165,187,-.050];
       const contact=support.map((v,i)=>{const atDrum=v+(load[i]-v)*reach;return atDrum+(knobContact[i]-atDrum)*knobReach;});
-      m.push();a.move(m,-.025*out+.035*knob*knobReach,.075*out,.012*out);m.roll(-.13*out);a.left(m,contact,.175);m.pop();
+      m.push();a.move(m,-.025*out+.035*knob*knobReach,.045*out,.012*out);m.roll(-.13*out);a.left(m,contact,.175);m.pop();
       a.right(m,[1305,338,-.050]);a.anchor(m,969,141,.035);
     } finally {arsenalIndex=previous;}
   };

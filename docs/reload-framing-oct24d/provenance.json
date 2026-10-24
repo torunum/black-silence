@@ -1,0 +1,100 @@
+{
+  "finalInputSHA256": "6dd69003987fadb8c4b405d3e94d3833e303d37a86484e33c4ed2fb556c75c99",
+  "sourceSHA256": "7f847d1bda53689395130c52abcb05ea87564f82f6b7c33ecfa55882ac0bc77c",
+  "scope": "Actual native keyboard-R/RAF screenshots and game WebAudio clip. Historical before frames retain original input identities. Tommy/Nail artwork and movement are unchanged between the intermediate clip and final build; final additionally changes only Sniper middle-reload presentation.",
+  "media": [
+    {
+      "file": "docs/reload-framing-oct24d/tommy-before.png",
+      "inputSHA256": "d5a41a6872cb7b58f0e7f4b95c58e55d466f520070a64adfa2cf66cc1df564df",
+      "sha256": "5077e1fae21f0d94c75952a5dd892130df838f9299a19711422ad7514b6336d3"
+    },
+    {
+      "file": "docs/reload-framing-oct24d/tommy-after.png",
+      "inputSHA256": "824314e95021af3cc6de116507a05310e6783df15fa0b0eec2c19deddfb782bd",
+      "sha256": "324684cdd6c12f1c94d70cab357f67a8b429728f67b27bfed9c489e5b4bcfb01"
+    },
+    {
+      "file": "docs/reload-framing-oct24d/nail-before.png",
+      "inputSHA256": "9cecdb74a11b616d9bfe12c031f2ff1c3e543f103cbc21dba6f280fdecd0e1f9",
+      "sha256": "3c811050d473b94da208f26bb0a75d52ab8d0d4655dd23d9afe4d0790b70e424"
+    },
+    {
+      "file": "docs/reload-framing-oct24d/nail-after.png",
+      "inputSHA256": "824314e95021af3cc6de116507a05310e6783df15fa0b0eec2c19deddfb782bd",
+      "sha256": "f9c3281a019ae578742628a961c1ea71ea91f16210044f68642914b6d0571d00"
+    },
+    {
+      "file": "docs/reload-framing-oct24d/sniper-before.png",
+      "inputSHA256": "9cecdb74a11b616d9bfe12c031f2ff1c3e543f103cbc21dba6f280fdecd0e1f9",
+      "sha256": "2d674b20bb0d32f88307c82e4cbd1c394c4668a45d9700ffde9d4090ed0509cd"
+    },
+    {
+      "file": "docs/reload-framing-oct24d/sniper-after.png",
+      "inputSHA256": "6dd69003987fadb8c4b405d3e94d3833e303d37a86484e33c4ed2fb556c75c99",
+      "sha256": "d476dcbd1ace62bcc005a88e30b2460f949013645c641008f430ac6c82c08890"
+    },
+    {
+      "file": "docs/reload-framing-oct24d/tommy-nail-reload.webm",
+      "inputSHA256": "824314e95021af3cc6de116507a05310e6783df15fa0b0eec2c19deddfb782bd",
+      "sha256": "492be5b6987700b8ef13ae584d1bbabfc0fcdbfda7515e37ca594b4097db76d6"
+    }
+  ],
+  "video": {
+    "file": "C:\\Users\\tehlike47\\game\\docs\\reload-framing-oct24d\\tommy-nail-reload.webm",
+    "videoCodec": "VP9",
+    "audioCodec": "Opus",
+    "fps": 25,
+    "trimStart": 20.64,
+    "markerFrames": 9,
+    "audioSource": "C:\\Users\\tehlike47\\game\\.dream-loop\\tommy-reload-oct24d\\video\\game-output.webm",
+    "audioDuration": 6.163299999982119,
+    "bytes": 2229694,
+    "syncScope": "Audio starts when the preroll marker is removed; trim uses the first non-marker video frame. Video frame granularity is 40ms; physical audio-output latency is not measured."
+  },
+  "reports": [
+    {
+      "file": "docs/verification-data/nail-framing-oct24d-824314e9.json",
+      "sha256": "dd4e165af8004ae4be602ba304166af0d0ea46a1901926b14ace0ee261239082"
+    },
+    {
+      "file": "docs/verification-data/reload-framing-oct24d-build.json",
+      "sha256": "46313f305ad44a61b552a6b872c86b7ef228ca56e12b24a3939734dd1f63725b"
+    },
+    {
+      "file": "docs/verification-data/reload-framing-oct24d-kernel.json",
+      "sha256": "fd85170cc0c1872aa8d94c5d9a4c08117bdf96b60d46c46f114f5329e155eefa"
+    },
+    {
+      "file": "docs/verification-data/reload-framing-oct24d-parity.json",
+      "sha256": "088108542e58c488d86356c8bb5029bd3e0c1c7efd4c8e94d01e380926f2020d"
+    },
+    {
+      "file": "docs/verification-data/reload-framing-oct24d-performance-3-6-summary.json",
+      "sha256": "203b49ff43c12a8f23c02a8876272aca2263ac560fd97a6c4bd72bc5c5af11de"
+    },
+    {
+      "file": "docs/verification-data/reload-framing-oct24d-performance-3-6.json",
+      "sha256": "48aa77be41c73d2ba0cf911c14605cf0ede3588d6dbe91a7b4872a682adbf49d"
+    },
+    {
+      "file": "docs/verification-data/reload-framing-oct24d-performance-4-6-summary.json",
+      "sha256": "449716565fdad3bac98086c531e457f803b4332ae8afd18d28eb04bee7ac69b3"
+    },
+    {
+      "file": "docs/verification-data/reload-framing-oct24d-performance-4-6.json",
+      "sha256": "ca090758baad8adb0f6e3520db8e6af991c52c17c16cf5421433d08c1b412911"
+    },
+    {
+      "file": "docs/verification-data/reload-framing-oct24d-runtime.json",
+      "sha256": "1aa3eeee78ccd86df72e3d60d3600e1ba6dece4d8f71b16bc051ac3cd1e6bc69"
+    },
+    {
+      "file": "docs/verification-data/sniper-framing-oct24d-6dd69003.json",
+      "sha256": "6a2b50c22997b937a380e2ad0bba2e46a6507d2ddcdb324cc3d6060efb9f7faf"
+    },
+    {
+      "file": "docs/verification-data/tommy-framing-oct24d-824314e9.json",
+      "sha256": "5c5c359df177d8c1e2079dd86f89e3cb6667dfc0152f2a041b938aeddaa5577c"
+    }
+  ]
+}

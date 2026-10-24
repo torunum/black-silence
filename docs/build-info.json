@@ -1,14 +1,14 @@
 {
   "passed": true,
-  "bytes": 22647573,
-  "sha256": "d5a41a6872cb7b58f0e7f4b95c58e55d466f520070a64adfa2cf66cc1df564df",
+  "bytes": 22648018,
+  "sha256": "6dd69003987fadb8c4b405d3e94d3833e303d37a86484e33c4ed2fb556c75c99",
   "engineSha256": "6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899",
   "villageSha256": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627",
   "moduleHashes": {
     "materials.js": "05e43b45ce521b52cf4d7b172177984699670d9de1261de5f88bf11f42b45517",
     "combat.js": "a0644449f03a77ec7c121104ab2c6850e0caf6ceb0b17c553b8c6c273c08374c",
     "enemy-animation.js": "5dbcfaf8908f8bde69d7c1625bce9ef163e874aab3ff22ded58d08040f1cec54",
-    "viewmodels.js": "e9e098dc1cd5d0627c1ab47c4da255e5bb93f2e581326ceb5a849b60927a95e6",
+    "viewmodels.js": "7f847d1bda53689395130c52abcb05ea87564f82f6b7c33ecfa55882ac0bc77c",
     "finishers.js": "8c2c7bdf13e17005c3383054560b155986d8e706b5bfda81e9f1a8224ee3c5b0",
     "reload-audio-data.js": "2f48b10a1225d1c007ee282d3c18f82c5022bb0267ed86d65feadf819ec1be30",
     "reload-audio.js": "6b63eec006c8f7ee98392f323f630879140948f24165ab72b308bfb4b4d6be16",
@@ -19,78 +19,58 @@
   "idempotentBuilds": 2,
   "invalidInputsRefusedWithoutWrite": 8,
   "file": "THE-BLACK-SILENCE.html",
-  "verifiedAt": "2026-10-24T19:11:08.537Z",
-  "scope": "Combat Rifle reload framing; ritual-standard ivory materials and minor lavafall U variation. Compositor, other weapon models, enemy/combat logic, native engine, audio timing and Village unchanged.",
-  "previousRelease": "9cecdb74a11b616d9bfe12c031f2ff1c3e543f103cbc21dba6f280fdecd0e1f9",
+  "verifiedAt": "2026-10-24T20:52:11.443Z",
+  "scope": "Tommy Gun, Nail Cannon and Sniper loading-hand visibility; Tommy shared drum/hand extraction shortened. Compositor, native engine, environment, weapon stats, audio timing and Village unchanged.",
+  "previousRelease": "d5a41a6872cb7b58f0e7f4b95c58e55d466f520070a64adfa2cf66cc1df564df",
   "verificationReports": [
     {
-      "file": "docs/verification-data/lava-flow-oct24c-after.json",
-      "sha256": "aa2dd5fe3fd80cef9637a29a593ac7c8dda901de24f23597d4d2e689f3f46e31"
+      "file": "docs/verification-data/nail-framing-oct24d-824314e9.json",
+      "sha256": "dd4e165af8004ae4be602ba304166af0d0ea46a1901926b14ace0ee261239082"
     },
     {
-      "file": "docs/verification-data/lava-flow-oct24c-before.json",
-      "sha256": "c5c586425d11a49e30d87688144e8d3122e90091dfbb1507a359c4728a54ac7c"
+      "file": "docs/verification-data/reload-framing-oct24d-build.json",
+      "sha256": "46313f305ad44a61b552a6b872c86b7ef228ca56e12b24a3939734dd1f63725b"
     },
     {
-      "file": "docs/verification-data/lava-flow-oct24c.json",
-      "sha256": "4ccb47233b531bc9617a1df2a60dc0432274bc8bd115ff573214031efc551cb0"
+      "file": "docs/verification-data/reload-framing-oct24d-kernel.json",
+      "sha256": "fd85170cc0c1872aa8d94c5d9a4c08117bdf96b60d46c46f114f5329e155eefa"
     },
     {
-      "file": "docs/verification-data/oct24c-build.json",
-      "sha256": "7295975a980c39bebedd8e5fcd352e5edbd5c8ac6508fce288b8d0bd5f2a3d59"
+      "file": "docs/verification-data/reload-framing-oct24d-parity.json",
+      "sha256": "088108542e58c488d86356c8bb5029bd3e0c1c7efd4c8e94d01e380926f2020d"
     },
     {
-      "file": "docs/verification-data/renderer-oct24c-guards.json",
-      "sha256": "3ab64210bfda58f2fd73b68d54c0fac317628ecf56e17cdc4667788f19334e05"
+      "file": "docs/verification-data/reload-framing-oct24d-performance-3-6-summary.json",
+      "sha256": "203b49ff43c12a8f23c02a8876272aca2263ac560fd97a6c4bd72bc5c5af11de"
     },
     {
-      "file": "docs/verification-data/renderer-oct24c-kernel.json",
-      "sha256": "3bd8cf4f1f9fcc300b4f701dda4273b159cf4a4d062ede8a954a8b6959b51950"
+      "file": "docs/verification-data/reload-framing-oct24d-performance-3-6.json",
+      "sha256": "48aa77be41c73d2ba0cf911c14605cf0ede3588d6dbe91a7b4872a682adbf49d"
     },
     {
-      "file": "docs/verification-data/renderer-oct24c-negative-control.json",
-      "sha256": "30ec7a40555b4185ffc918798d50193db357e21dec5d7e946ea002d99630620b"
+      "file": "docs/verification-data/reload-framing-oct24d-performance-4-6-summary.json",
+      "sha256": "449716565fdad3bac98086c531e457f803b4332ae8afd18d28eb04bee7ac69b3"
     },
     {
-      "file": "docs/verification-data/rifle-oct24c-aspects.json",
-      "sha256": "f8f317bd059112bef20a9984c19485c77fb5f7a8d0f65de92a03778fa9889b14"
+      "file": "docs/verification-data/reload-framing-oct24d-performance-4-6.json",
+      "sha256": "ca090758baad8adb0f6e3520db8e6af991c52c17c16cf5421433d08c1b412911"
     },
     {
-      "file": "docs/verification-data/rifle-oct24c-kernel.json",
-      "sha256": "9ddce9a2245f5c0158aa2cccb09c64cbc8b457bf39d9b4700dafa993cc8f880d"
+      "file": "docs/verification-data/reload-framing-oct24d-runtime.json",
+      "sha256": "1aa3eeee78ccd86df72e3d60d3600e1ba6dece4d8f71b16bc051ac3cd1e6bc69"
     },
     {
-      "file": "docs/verification-data/rifle-oct24c-parity.json",
-      "sha256": "e8127c85cb253b31d17973265156aa021355a36cb91bed44f315303d6a2aead4"
+      "file": "docs/verification-data/sniper-framing-oct24d-6dd69003.json",
+      "sha256": "6a2b50c22997b937a380e2ad0bba2e46a6507d2ddcdb324cc3d6060efb9f7faf"
     },
     {
-      "file": "docs/verification-data/rifle-oct24c-performance-summary.json",
-      "sha256": "6e3f13abe60d3bc5f56a65689edb93a4da954ce10835422c65004bc62022a17e"
-    },
-    {
-      "file": "docs/verification-data/rifle-oct24c-performance.json",
-      "sha256": "4e96cc1df3bee980d1265bfe5331102bc59cf8ded65ca9a8420b188163e8a9ce"
-    },
-    {
-      "file": "docs/verification-data/rifle-oct24c-runtime.json",
-      "sha256": "c183376d079c6585c4ad796a845bb0824f9634be8b3d34cbaefc222997e64b50"
-    },
-    {
-      "file": "docs/verification-data/ritual-ivory-oct24c-after.json",
-      "sha256": "7d981c68cec592175c6cf0fedd2886b7969bae32410048013d424efb1c7d05a7"
-    },
-    {
-      "file": "docs/verification-data/ritual-ivory-oct24c-before.json",
-      "sha256": "e095f0d231f0f81daab3a338918611fdd9eac6dff8cab704648a9a5dfff5dc24"
-    },
-    {
-      "file": "docs/verification-data/ritual-ivory-oct24c-invariants.json",
-      "sha256": "971aa0cf7416352656ccf804660c29f0fc5876aa2b12e6627d024c94ff2eb1bc"
+      "file": "docs/verification-data/tommy-framing-oct24d-824314e9.json",
+      "sha256": "5c5c359df177d8c1e2079dd86f89e3cb6667dfc0152f2a041b938aeddaa5577c"
     }
   ],
   "limitations": [
-    "Short Rifle-only ABBA uses this host and the chapter-0 starting camera; no general FPS guarantee.",
-    "Reference-driven weapon parts use articulated textured surfaces with native depth and backing, not fully sculpted 3D anatomy.",
-    "Hell lighting remains primarily authored/static; prior source-identical historical tests keep their original build hashes."
+    "Short serial ABBA on this host had inconsistent Nail slow trials in both baseline and candidate; no general speed gain or repeatable regression is established.",
+    "Sniper magazine remains close to the lower edge in the middle loading phase; the loading hand is more readable. Only tested .12/.82 bolt poses are claimed pixel-identical, not every bolt-reach phase.",
+    "Reference-driven weapon parts use articulated textured surfaces and native depth/backing, not fully sculpted 3D anatomy."
   ]
 }

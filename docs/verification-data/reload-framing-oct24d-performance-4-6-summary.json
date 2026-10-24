@@ -1,0 +1,262 @@
+{
+  "inputs": [
+    {
+      "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\tommy-reload-oct24d\\baseline.html",
+      "sha256": "d5a41a6872cb7b58f0e7f4b95c58e55d466f520070a64adfa2cf66cc1df564df"
+    },
+    {
+      "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\final-oct24d\\THE-BLACK-SILENCE.html",
+      "sha256": "6dd69003987fadb8c4b405d3e94d3833e303d37a86484e33c4ed2fb556c75c99"
+    }
+  ],
+  "order": [
+    0,
+    1,
+    1,
+    0
+  ],
+  "scope": "Serial ABBA, same chapter 0 starting camera, enemies removed equally, real RAF and keyboard reload. Whole-build observation including changed scenery; headless Chrome/shared host, not a hardware-independent FPS guarantee.",
+  "complete": true,
+  "groups": [
+    {
+      "index": 4,
+      "variant": 0,
+      "kind": "first",
+      "reloads": 2,
+      "raster": {
+        "count": 270,
+        "meanMs": 10.403703704586736,
+        "p50Ms": 10.400000005960464,
+        "p95Ms": 13.399999976158142,
+        "fps": 96.1196155133796
+      },
+      "frame": {
+        "count": 268,
+        "meanMs": 17.87723880597015,
+        "p50Ms": 18,
+        "p95Ms": 18.100000000000364,
+        "fps": 55.937049946776305
+      }
+    },
+    {
+      "index": 4,
+      "variant": 0,
+      "kind": "warm",
+      "reloads": 2,
+      "raster": {
+        "count": 270,
+        "meanMs": 10.194814815123875,
+        "p50Ms": 10.299999982118607,
+        "p95Ms": 12.5,
+        "fps": 98.08907941285142
+      },
+      "frame": {
+        "count": 268,
+        "meanMs": 17.95223880597015,
+        "p50Ms": 18,
+        "p95Ms": 18.100000000000364,
+        "fps": 55.70335882939807
+      }
+    },
+    {
+      "index": 4,
+      "variant": 0,
+      "kind": "all",
+      "reloads": 4,
+      "raster": {
+        "count": 540,
+        "meanMs": 10.299259259855306,
+        "p50Ms": 10.300000011920929,
+        "p95Ms": 13.100000023841858,
+        "fps": 97.09436132924854
+      },
+      "frame": {
+        "count": 536,
+        "meanMs": 17.914738805970153,
+        "p50Ms": 18,
+        "p95Ms": 18.100000000000364,
+        "fps": 55.81995980129759
+      }
+    },
+    {
+      "index": 4,
+      "variant": 1,
+      "kind": "first",
+      "reloads": 2,
+      "raster": {
+        "count": 271,
+        "meanMs": 10.315867158759565,
+        "p50Ms": 10.400000005960464,
+        "p95Ms": 12.900000005960464,
+        "fps": 96.93804549924482
+      },
+      "frame": {
+        "count": 269,
+        "meanMs": 17.83828996282528,
+        "p50Ms": 18,
+        "p95Ms": 18.100000000000364,
+        "fps": 56.0591851620298
+      }
+    },
+    {
+      "index": 4,
+      "variant": 1,
+      "kind": "warm",
+      "reloads": 2,
+      "raster": {
+        "count": 270,
+        "meanMs": 10.598148147596254,
+        "p50Ms": 10.400000005960464,
+        "p95Ms": 14.699999988079071,
+        "fps": 94.35610694183475
+      },
+      "frame": {
+        "count": 268,
+        "meanMs": 18.010074626865674,
+        "p50Ms": 18,
+        "p95Ms": 18.100000000000364,
+        "fps": 55.52447842211034
+      }
+    },
+    {
+      "index": 4,
+      "variant": 1,
+      "kind": "all",
+      "reloads": 4,
+      "raster": {
+        "count": 541,
+        "meanMs": 10.45674676501817,
+        "p50Ms": 10.400000005960464,
+        "p95Ms": 13.5,
+        "fps": 95.63203761856256
+      },
+      "frame": {
+        "count": 537,
+        "meanMs": 17.924022346368716,
+        "p50Ms": 18,
+        "p95Ms": 18.100000000000364,
+        "fps": 55.79104849769355
+      }
+    },
+    {
+      "index": 6,
+      "variant": 0,
+      "kind": "first",
+      "reloads": 2,
+      "raster": {
+        "count": 195,
+        "meanMs": 14.033846153051424,
+        "p50Ms": 13.5,
+        "p95Ms": 20.099999994039536,
+        "fps": 71.25630344626279
+      },
+      "frame": {
+        "count": 193,
+        "meanMs": 20.810362694300526,
+        "p50Ms": 18,
+        "p95Ms": 35.80000000000291,
+        "fps": 48.052982770640355
+      }
+    },
+    {
+      "index": 6,
+      "variant": 0,
+      "kind": "warm",
+      "reloads": 2,
+      "raster": {
+        "count": 194,
+        "meanMs": 15.411855671362778,
+        "p50Ms": 15.200000017881393,
+        "p95Ms": 19.19999998807907,
+        "fps": 64.8851132091854
+      },
+      "frame": {
+        "count": 192,
+        "meanMs": 20.87187499999999,
+        "p50Ms": 18.099999999998545,
+        "p95Ms": 36.19999999999709,
+        "fps": 47.91136397664324
+      }
+    },
+    {
+      "index": 6,
+      "variant": 0,
+      "kind": "all",
+      "reloads": 4,
+      "raster": {
+        "count": 389,
+        "meanMs": 14.721079691746548,
+        "p50Ms": 14.799999982118607,
+        "p95Ms": 19.69999998807907,
+        "fps": 67.92980005132745
+      },
+      "frame": {
+        "count": 385,
+        "meanMs": 20.841038961038958,
+        "p50Ms": 18.099999999998545,
+        "p95Ms": 36.099999999998545,
+        "fps": 47.98225279792618
+      }
+    },
+    {
+      "index": 6,
+      "variant": 1,
+      "kind": "first",
+      "reloads": 2,
+      "raster": {
+        "count": 222,
+        "meanMs": 10.433333332205677,
+        "p50Ms": 10.099999994039536,
+        "p95Ms": 13,
+        "fps": 95.84664537777144
+      },
+      "frame": {
+        "count": 220,
+        "meanMs": 18.056363636363642,
+        "p50Ms": 18,
+        "p95Ms": 18.200000000000728,
+        "fps": 55.382136743530346
+      }
+    },
+    {
+      "index": 6,
+      "variant": 1,
+      "kind": "warm",
+      "reloads": 2,
+      "raster": {
+        "count": 223,
+        "meanMs": 11.096412556053812,
+        "p50Ms": 10.299999982118607,
+        "p95Ms": 15.699999988079071,
+        "fps": 90.11921600323298
+      },
+      "frame": {
+        "count": 221,
+        "meanMs": 17.993212669683256,
+        "p50Ms": 18,
+        "p95Ms": 18.200000000000728,
+        "fps": 55.57651200804728
+      }
+    },
+    {
+      "index": 6,
+      "variant": 1,
+      "kind": "all",
+      "reloads": 4,
+      "raster": {
+        "count": 445,
+        "meanMs": 10.76561797696553,
+        "p50Ms": 10.199999988079071,
+        "p95Ms": 14.900000005960464,
+        "fps": 92.8883044280071
+      },
+      "frame": {
+        "count": 441,
+        "meanMs": 18.024716553287984,
+        "p50Ms": 18,
+        "p95Ms": 18.200000000000728,
+        "fps": 55.47937450464843
+      }
+    }
+  ]
+}
