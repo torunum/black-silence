@@ -4,6 +4,8 @@ const fs = require("node:fs"),
 const { pathToFileURL } = require("node:url");
 const { chromium } = require("playwright");
 const root = path.resolve(__dirname, "..");
+const input = path.resolve(process.env.GAME_HTML || path.join(root, "THE-BLACK-SILENCE.html"));
+const output = path.resolve(process.env.QA_OUTPUT_DIR || path.join(root, ".dream-loop"));
 (async () => {
   const browser = await chromium.launch({
     channel: "chrome",
@@ -22,13 +24,15 @@ const root = path.resolve(__dirname, "..");
         window.__oscillators++;
         return native.apply(this, a);
       };
+      window.__bufferStops = [];
+      const stop = AudioBufferSourceNode.prototype.stop;
+      AudioBufferSourceNode.prototype.stop = function (...args) {
+        window.__bufferStops.push({ source: this, when: args[0] });
+        return stop.apply(this, args);
+      };
     });
     await page.goto(
-      pathToFileURL(
-        path.resolve(
-          process.env.GAME_HTML || path.join(root, "THE-BLACK-SILENCE.html"),
-        ),
-      ).href + "?qa=1",
+      pathToFileURL(input).href + "?qa=1",
     );
     await page.locator("#mNew").click();
     await page.waitForFunction(
@@ -52,6 +56,9 @@ const root = path.resolve(__dirname, "..");
         q.Be.pianoOpen = false;
         q.v.cine = null;
         q.T.dead = q.T.won = false;
+        q.T.hp = 100;
+        q.T.armor = 0;
+        q.C.spawnGuard = 100;
         q.T.cur = index;
         q.T.weapons[index] = true;
         q.T.mag[index] = 0;
@@ -210,10 +217,40 @@ const root = path.resolve(__dirname, "..");
       setup(0);
       a.start();
       advance(0.3);
-      q.T.dead = true;
-      q.weaponStep(0.01);
+      assert(a.active() > 0, "death fixture has active reload voices");
+      q.C.spawnGuard = 0;
+      const damageStops = window.__bufferStops.length;
+      const damageResults = [
+        a.damagePlayer(5, true),
+        a.damagePlayer(5, true),
+        a.damagePlayer(5, true),
+      ];
+      assert(
+        !q.T.dead && q.T.hp === 85 && window.__bufferStops.length === damageStops,
+        "repeated nonlethal native damage preserves reload audio",
+      );
+      assert(damageResults.every(value => value === undefined), "native damage return value preserved");
+      const deathTime = q.St.wtime;
+      a.damagePlayer(1000, true);
+      assert(q.T.dead, "lethal native damage enters death state");
       await wait(60);
-      assert(a.active() === 0, "death releases active foley");
+      assert(
+        a.active() === 0 && q.St.wtime === deathTime,
+        "death releases foley without a subsequent weapon update",
+      );
+      setup(0);
+      a.start();
+      advance(0.3);
+      assert(a.active() > 0, "repeated-stop fixture has active voices");
+      a.stop("first-cancel");
+      const firstStops = window.__bufferStops.length;
+      for (let i = 0; i < 120; i++) a.stop("repeated-state-check");
+      assert(
+        window.__bufferStops.length === firstStops,
+        "repeated state checks cannot postpone an already scheduled stop",
+      );
+      await wait(60);
+      assert(a.active() === 0, "idempotent release still disconnects its voices");
       setup(0);
       a.start();
       advance(0.3);
@@ -284,13 +321,15 @@ const root = path.resolve(__dirname, "..");
     });
     if (errors.length) throw new Error(errors.join("\n"));
     const report = {
+      input,
+      sha256: require("node:crypto").createHash("sha256").update(fs.readFileSync(input)).digest("hex"),
       checks: checks.length,
       results: checks,
       pageErrors: errors,
     };
-    fs.mkdirSync(path.join(root, ".dream-loop"), { recursive: true });
+    fs.mkdirSync(output, { recursive: true });
     fs.writeFileSync(
-      path.join(root, ".dream-loop/reload-audio-test-results.json"),
+      path.join(output, "reload-audio-test-results.json"),
       JSON.stringify(report, null, 2),
     );
     console.log(JSON.stringify(report, null, 2));

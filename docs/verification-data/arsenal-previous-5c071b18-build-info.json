@@ -1,0 +1,91 @@
+{
+  "file": "THE-BLACK-SILENCE.html",
+  "bytes": 22632339,
+  "sha256": "5c071b1892db41b162542460dc447586c4919df3d730bcf07164dea9dfe1e932",
+  "verifiedAt": "2026-10-23T17:16:11.301Z",
+  "engineSha256": "6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899",
+  "villageSha256": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627",
+  "moduleHashes": {
+    "combat.js": "a0644449f03a77ec7c121104ab2c6850e0caf6ceb0b17c553b8c6c273c08374c",
+    "enemy-animation.js": "593a5fae641f13ea9f6312409db4a3c3f5b75d5d9e6b31f90a6588dde00370d8",
+    "finishers.js": "8c2c7bdf13e17005c3383054560b155986d8e706b5bfda81e9f1a8224ee3c5b0",
+    "materials.js": "05e43b45ce521b52cf4d7b172177984699670d9de1261de5f88bf11f42b45517",
+    "prologue.js": "d2ba561ba361d9764cdefd1fc7731c2c0697bb208a41e12f4c739a52c15e9084",
+    "reload-audio-data.js": "2f48b10a1225d1c007ee282d3c18f82c5022bb0267ed86d65feadf819ec1be30",
+    "reload-audio.js": "93963d58a605323c34548136726e1e75b140156f60fc1c7fe0cb7a6a0c94a48b",
+    "render-warmup.js": "9418307e9d71b28411b36e86e1ed3f4eb2eecda6b00d58144ce5bc79d110838c",
+    "viewmodels.js": "2830ab4dfb61df8fa334cadb7ed417ed7821c26b1488f387f84a78568e284251",
+    "village-presentation.js": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627"
+  },
+  "idempotentBuilds": 2,
+  "invalidInputsRefusedWithoutWrite": 8,
+  "scope": "Ten reference-based weapon appearances and native reload mechanisms, approved gloves, prologue hell; existing gameplay/ammo/audio/boots/finishers preserved.",
+  "methodLimitations": [
+    "Articulated perspective-textured surfaces with volumetric backing, not arbitrary-view full 3D assets.",
+    "Some surface lighting is baked into artwork; hell architectural highlights include static illumination.",
+    "Tests cover specified flows, not a complete campaign playthrough or a universal FPS guarantee."
+  ],
+  "verificationReports": [
+    {
+      "file": "docs/verification-data/arsenal-final-5c071b18-runtime.json",
+      "sha256": "f3d0f108f54a6bf3add35b5501e2150fc9141820b1f9d5ce3fffd4aaa5f2aa80"
+    },
+    {
+      "file": "docs/verification-data/arsenal-final-5c071b18-navigation.json",
+      "sha256": "cb03d73e1ab5012a6223429a4762ea1cd71d02c69ebffd10007274fa826a34df"
+    },
+    {
+      "file": "docs/verification-data/arsenal-final-5c071b18-hell-invariants.json",
+      "sha256": "0b8c347074178cc1ae164335c9f5dfa8f33d5a763222b03c1a99f3f10372e360"
+    },
+    {
+      "file": "docs/verification-data/arsenal-final-5c071b18-compatibility.json",
+      "sha256": "deec098c874784b60cd7e3d15d9cbabc43cc481678c90ae44a0d96ae99cf5ed7"
+    },
+    {
+      "file": "docs/verification-data/arsenal-final-5c071b18-audio.json",
+      "sha256": "bcedbf7dff75e6ea44da3072f5fea518207ef48fb822087fe3d4ffc5583dbaf1"
+    },
+    {
+      "file": "docs/verification-data/arsenal-final-5c071b18-audio-raf.json",
+      "sha256": "d0a0818172f0f1717213a09dd01297cb490a1ded6f0e257addaa939bd62f1ef9"
+    },
+    {
+      "file": "docs/verification-data/arsenal-final-5c071b18-build-integrity.json",
+      "sha256": "53212031ad1a3b84541beb083b4c8175a3116501c367eff3ff69ab48aab5ef7d"
+    },
+    {
+      "file": "docs/verification-data/arsenal-final-5c071b18-installation-parity.json",
+      "sha256": "e1edf3fd86f38b9fcec254b0abf138d506ee346a5a7242b8d2cae7e1709a4e7f"
+    },
+    {
+      "file": "docs/verification-data/arsenal-final-5c071b18-model-poses.json",
+      "sha256": "9d5ce1e16ab4fb34231dc0eb49a3d00d87103ea566f0d6bbf398786110dc6f03"
+    },
+    {
+      "file": "docs/verification-data/arsenal-final-5c071b18-hoist-pixel-parity.json",
+      "sha256": "7720aadf7b6da9470282040b7cf44e7b99b7694007853279afbc5dd0886bb13c"
+    },
+    {
+      "file": "docs/verification-data/arsenal-final-5c071b18-hoist-profile.json",
+      "sha256": "a614a2f8c04b9b9b1004b270f935ae94f84de3793b14f8055075ec73b3d27a70"
+    },
+    {
+      "file": "docs/verification-data/arsenal-final-5c071b18-video-capture.json",
+      "sha256": "90925f1c8f722755f1b4ddc6ea2c95e74e0754c1da7b6405fe2edb190c199fb8"
+    },
+    {
+      "file": "docs/verification-data/arsenal-final-5c071b18-video-encoded.json",
+      "sha256": "53db207d81e1d2c7cae4057c0980ca7555c1a59459fa7d55b09869f3a5fc9b44"
+    },
+    {
+      "file": "docs/verification-data/arsenal-final-5c071b18-performance.json",
+      "sha256": "99a763aebc736f734fe9793457bd1f0c888ca3af70de4e7ece52f4ad820e7982"
+    },
+    {
+      "file": "docs/verification-data/arsenal-final-5c071b18-performance-summary.json",
+      "sha256": "669db365df30c30a438a419fa91f39ee1920b7fbaf96c5935662ef0ca5e77f72"
+    }
+  ],
+  "mediaManifest": "docs/previews/provenance.json"
+}

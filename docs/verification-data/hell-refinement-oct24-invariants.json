@@ -1,0 +1,39 @@
+{
+  "beforeHTML": "5c071b1892db41b162542460dc447586c4919df3d730bcf07164dea9dfe1e932",
+  "afterHTML": "80d9f77f5209f2da0c5d1a108ffc6d1c6244360fea6cb6cbb5c7f437c5235632",
+  "beforePrologue": "d2ba561ba361d9764cdefd1fc7731c2c0697bb208a41e12f4c739a52c15e9084",
+  "afterPrologue": "7d94d4e54dbc0df11a2f29650e9129c9690d722bed0ffc556ac923d9f5200109",
+  "scope": "Only prologue module changed in this private candidate; weapon/combat modules are the previous release.",
+  "passed": true,
+  "exactKeys": [
+    "g",
+    "W",
+    "H",
+    "hmap",
+    "grave"
+  ],
+  "gridExact": true,
+  "floorExact": true,
+  "zoneMapExact": true,
+  "otherThemesExact": true,
+  "roofChanges": 0,
+  "gridCounts": {
+    "2": 1,
+    "#": 2028,
+    ".": 1831,
+    "I": 29,
+    "l": 19,
+    "i": 12,
+    "a": 9,
+    "P": 1,
+    "b": 3,
+    "h": 9,
+    "X": 1,
+    "r": 2,
+    "O": 2,
+    "z": 12,
+    "w": 9
+  },
+  "beforeDecor": 787,
+  "afterDecor": 787
+}

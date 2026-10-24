@@ -1,0 +1,12 @@
+# 24 October final integration functional checks
+
+Tested immutable candidate SHA-256: `41f9646703cce0a5da5b6b063df10bf60de84c9c821ffb5f65255ce0a6443448`. Reports below identify this candidate; they do not implicitly certify any later build.
+
+- All 10 weapons: actual R input and RAF reload completion, ammunition conservation, fire, switch/kick interruption and restored-frame cache/ghost checks passed. Fire cancellation of a partly loaded magazine applies to weapons 0–7; capacity-one weapons 8–9 use the empty-reload interruption cases. Initial controllable frame had decoded, visible artwork. No page errors or remote requests.
+- Display changes: 36 fixed-pose cases across 1024×768, 1280×720 and 1680×720 viewports, native render-width settings 320/800, and Shotgun/Soul/Stake idle/insert poses were finite and visible. Two actual reloads (Shotgun and Soul) survived native viewport, resolution and shadow-setting changes with correct ammunition. Soul's fixed-pose raster was pixel-identical after settings/weapon switches and chapter restart. No FOV setting was invented or tested.
+- Visual review of the three full-scene Soul insert screenshots found the orb, retaining frame and HUD readable at all tested aspect ratios. Hands meet the lower viewport edge as intended. These are controlled poses, not actual-R recordings.
+- Prologue: actual movement across 15 checkpoints, optional shotgun pickup, native E exit and next-chapter arrival passed. AI remained live through the first encounter; subsequent checkpoints isolate route/collision/elevation. All 20 hell-arena weapon idle/insert checks were finite and visible. Hell material/object counts were zero in the next chapter and stable on return/rebuild; no script errors.
+
+Reports: `verification-data/oct24-final-41f96467-runtime.json`, `verification-data/oct24-final-41f96467-display.json`, and `verification-data/oct24-final-41f96467-navigation.json`. Reproducers: `tools/arsenal-runtime-tests.cjs`, `tools/arsenal-display-tests.cjs`, `tools/arsenal-hell-navigation-tests.cjs`, each accepting input HTML and output directory.
+
+Final candidate screenshots are in `docs/oct24-final-previews/`. Earlier same-camera flame before/after images and the five-return texture-disposal audit are documented separately in `hell-environment.md` and `hell-refinement-oct24/provenance.json`; the prologue module is identical in this candidate. Functional RAF durations include capture work and concurrent functional checks and are not performance benchmarks. Exclusive performance results are recorded separately.

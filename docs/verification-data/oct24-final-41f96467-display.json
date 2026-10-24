@@ -1,0 +1,1706 @@
+{
+  "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\final-oct24-qa\\candidate-41f96467.html",
+  "sha256": "41f9646703cce0a5da5b6b063df10bf60de84c9c821ffb5f65255ce0a6443448",
+  "fixtureSHA256": "be7cc07468eeff080bcc7844c452b38e09cd70930dd3623d64687f3e8ae64666",
+  "scope": "Native resize/graphics handlers; actual R for two representatives, fixed-pose display/cache checks separately. No FPS claim.",
+  "poses": [
+    {
+      "width": 1024,
+      "height": 768,
+      "renderWidth": 320,
+      "index": 1,
+      "reload": -1,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 113,
+        "y0": 92,
+        "x1": 640,
+        "y1": 325
+      },
+      "rasterSHA256": "046958e091946f067dcfbc66db9ddf1d292dd64ef79fc0e29726449ef1679fbf"
+    },
+    {
+      "width": 1024,
+      "height": 768,
+      "renderWidth": 320,
+      "index": 1,
+      "reload": 0.55,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 282,
+        "y0": 75,
+        "x1": 640,
+        "y1": 373
+      },
+      "rasterSHA256": "54823b5e25c6b8dec926a5d15b51c9a49e92350fc7a251c0a511c8830447b177"
+    },
+    {
+      "width": 1024,
+      "height": 768,
+      "renderWidth": 320,
+      "index": 7,
+      "reload": -1,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 57,
+        "y0": 6,
+        "x1": 640,
+        "y1": 336
+      },
+      "rasterSHA256": "973b3929f0fbe6a6a0ac0e091a7e2323bf815131f445b7fabd5b9e2d4c7bde25"
+    },
+    {
+      "width": 1024,
+      "height": 768,
+      "renderWidth": 320,
+      "index": 7,
+      "reload": 0.55,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 106,
+        "y0": 41,
+        "x1": 640,
+        "y1": 400
+      },
+      "rasterSHA256": "96ea798311bb80ea621917e2e6f9aa5ce7a6b7c849c8ced6568aa018debc31dc"
+    },
+    {
+      "width": 1024,
+      "height": 768,
+      "renderWidth": 320,
+      "index": 9,
+      "reload": -1,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 76,
+        "y0": 38,
+        "x1": 640,
+        "y1": 303
+      },
+      "rasterSHA256": "13b4145ccfb34031aa9ffcb3996becf3bf649c5425b4bd77b6c3de9d89e37184"
+    },
+    {
+      "width": 1024,
+      "height": 768,
+      "renderWidth": 320,
+      "index": 9,
+      "reload": 0.55,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 145,
+        "y0": 87,
+        "x1": 640,
+        "y1": 368
+      },
+      "rasterSHA256": "7b56352ad0d583fae74f84d7bae02af098253c44d5f11db9875a82c88b488c60"
+    },
+    {
+      "width": 1024,
+      "height": 768,
+      "renderWidth": 800,
+      "index": 1,
+      "reload": -1,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 113,
+        "y0": 92,
+        "x1": 640,
+        "y1": 325
+      },
+      "rasterSHA256": "046958e091946f067dcfbc66db9ddf1d292dd64ef79fc0e29726449ef1679fbf"
+    },
+    {
+      "width": 1024,
+      "height": 768,
+      "renderWidth": 800,
+      "index": 1,
+      "reload": 0.55,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 282,
+        "y0": 75,
+        "x1": 640,
+        "y1": 373
+      },
+      "rasterSHA256": "54823b5e25c6b8dec926a5d15b51c9a49e92350fc7a251c0a511c8830447b177"
+    },
+    {
+      "width": 1024,
+      "height": 768,
+      "renderWidth": 800,
+      "index": 7,
+      "reload": -1,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 57,
+        "y0": 6,
+        "x1": 640,
+        "y1": 336
+      },
+      "rasterSHA256": "973b3929f0fbe6a6a0ac0e091a7e2323bf815131f445b7fabd5b9e2d4c7bde25"
+    },
+    {
+      "width": 1024,
+      "height": 768,
+      "renderWidth": 800,
+      "index": 7,
+      "reload": 0.55,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 106,
+        "y0": 41,
+        "x1": 640,
+        "y1": 400
+      },
+      "rasterSHA256": "96ea798311bb80ea621917e2e6f9aa5ce7a6b7c849c8ced6568aa018debc31dc"
+    },
+    {
+      "width": 1024,
+      "height": 768,
+      "renderWidth": 800,
+      "index": 9,
+      "reload": -1,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 76,
+        "y0": 38,
+        "x1": 640,
+        "y1": 303
+      },
+      "rasterSHA256": "13b4145ccfb34031aa9ffcb3996becf3bf649c5425b4bd77b6c3de9d89e37184"
+    },
+    {
+      "width": 1024,
+      "height": 768,
+      "renderWidth": 800,
+      "index": 9,
+      "reload": 0.55,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 145,
+        "y0": 87,
+        "x1": 640,
+        "y1": 368
+      },
+      "rasterSHA256": "7b56352ad0d583fae74f84d7bae02af098253c44d5f11db9875a82c88b488c60"
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "renderWidth": 320,
+      "index": 1,
+      "reload": -1,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 113,
+        "y0": 92,
+        "x1": 640,
+        "y1": 325
+      },
+      "rasterSHA256": "046958e091946f067dcfbc66db9ddf1d292dd64ef79fc0e29726449ef1679fbf"
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "renderWidth": 320,
+      "index": 1,
+      "reload": 0.55,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 282,
+        "y0": 75,
+        "x1": 640,
+        "y1": 373
+      },
+      "rasterSHA256": "54823b5e25c6b8dec926a5d15b51c9a49e92350fc7a251c0a511c8830447b177"
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "renderWidth": 320,
+      "index": 7,
+      "reload": -1,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 57,
+        "y0": 6,
+        "x1": 640,
+        "y1": 336
+      },
+      "rasterSHA256": "973b3929f0fbe6a6a0ac0e091a7e2323bf815131f445b7fabd5b9e2d4c7bde25"
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "renderWidth": 320,
+      "index": 7,
+      "reload": 0.55,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 106,
+        "y0": 41,
+        "x1": 640,
+        "y1": 400
+      },
+      "rasterSHA256": "96ea798311bb80ea621917e2e6f9aa5ce7a6b7c849c8ced6568aa018debc31dc"
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "renderWidth": 320,
+      "index": 9,
+      "reload": -1,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 76,
+        "y0": 38,
+        "x1": 640,
+        "y1": 303
+      },
+      "rasterSHA256": "13b4145ccfb34031aa9ffcb3996becf3bf649c5425b4bd77b6c3de9d89e37184"
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "renderWidth": 320,
+      "index": 9,
+      "reload": 0.55,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 145,
+        "y0": 87,
+        "x1": 640,
+        "y1": 368
+      },
+      "rasterSHA256": "7b56352ad0d583fae74f84d7bae02af098253c44d5f11db9875a82c88b488c60"
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "renderWidth": 800,
+      "index": 1,
+      "reload": -1,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 113,
+        "y0": 92,
+        "x1": 640,
+        "y1": 325
+      },
+      "rasterSHA256": "046958e091946f067dcfbc66db9ddf1d292dd64ef79fc0e29726449ef1679fbf"
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "renderWidth": 800,
+      "index": 1,
+      "reload": 0.55,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 282,
+        "y0": 75,
+        "x1": 640,
+        "y1": 373
+      },
+      "rasterSHA256": "54823b5e25c6b8dec926a5d15b51c9a49e92350fc7a251c0a511c8830447b177"
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "renderWidth": 800,
+      "index": 7,
+      "reload": -1,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 57,
+        "y0": 6,
+        "x1": 640,
+        "y1": 336
+      },
+      "rasterSHA256": "973b3929f0fbe6a6a0ac0e091a7e2323bf815131f445b7fabd5b9e2d4c7bde25"
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "renderWidth": 800,
+      "index": 7,
+      "reload": 0.55,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 106,
+        "y0": 41,
+        "x1": 640,
+        "y1": 400
+      },
+      "rasterSHA256": "96ea798311bb80ea621917e2e6f9aa5ce7a6b7c849c8ced6568aa018debc31dc"
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "renderWidth": 800,
+      "index": 9,
+      "reload": -1,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 76,
+        "y0": 38,
+        "x1": 640,
+        "y1": 303
+      },
+      "rasterSHA256": "13b4145ccfb34031aa9ffcb3996becf3bf649c5425b4bd77b6c3de9d89e37184"
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "renderWidth": 800,
+      "index": 9,
+      "reload": 0.55,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 145,
+        "y0": 87,
+        "x1": 640,
+        "y1": 368
+      },
+      "rasterSHA256": "7b56352ad0d583fae74f84d7bae02af098253c44d5f11db9875a82c88b488c60"
+    },
+    {
+      "width": 1680,
+      "height": 720,
+      "renderWidth": 320,
+      "index": 1,
+      "reload": -1,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 113,
+        "y0": 92,
+        "x1": 640,
+        "y1": 325
+      },
+      "rasterSHA256": "046958e091946f067dcfbc66db9ddf1d292dd64ef79fc0e29726449ef1679fbf"
+    },
+    {
+      "width": 1680,
+      "height": 720,
+      "renderWidth": 320,
+      "index": 1,
+      "reload": 0.55,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 282,
+        "y0": 75,
+        "x1": 640,
+        "y1": 373
+      },
+      "rasterSHA256": "54823b5e25c6b8dec926a5d15b51c9a49e92350fc7a251c0a511c8830447b177"
+    },
+    {
+      "width": 1680,
+      "height": 720,
+      "renderWidth": 320,
+      "index": 7,
+      "reload": -1,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 57,
+        "y0": 6,
+        "x1": 640,
+        "y1": 336
+      },
+      "rasterSHA256": "973b3929f0fbe6a6a0ac0e091a7e2323bf815131f445b7fabd5b9e2d4c7bde25"
+    },
+    {
+      "width": 1680,
+      "height": 720,
+      "renderWidth": 320,
+      "index": 7,
+      "reload": 0.55,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 106,
+        "y0": 41,
+        "x1": 640,
+        "y1": 400
+      },
+      "rasterSHA256": "96ea798311bb80ea621917e2e6f9aa5ce7a6b7c849c8ced6568aa018debc31dc"
+    },
+    {
+      "width": 1680,
+      "height": 720,
+      "renderWidth": 320,
+      "index": 9,
+      "reload": -1,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 76,
+        "y0": 38,
+        "x1": 640,
+        "y1": 303
+      },
+      "rasterSHA256": "13b4145ccfb34031aa9ffcb3996becf3bf649c5425b4bd77b6c3de9d89e37184"
+    },
+    {
+      "width": 1680,
+      "height": 720,
+      "renderWidth": 320,
+      "index": 9,
+      "reload": 0.55,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 145,
+        "y0": 87,
+        "x1": 640,
+        "y1": 368
+      },
+      "rasterSHA256": "7b56352ad0d583fae74f84d7bae02af098253c44d5f11db9875a82c88b488c60"
+    },
+    {
+      "width": 1680,
+      "height": 720,
+      "renderWidth": 800,
+      "index": 1,
+      "reload": -1,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 113,
+        "y0": 92,
+        "x1": 640,
+        "y1": 325
+      },
+      "rasterSHA256": "046958e091946f067dcfbc66db9ddf1d292dd64ef79fc0e29726449ef1679fbf"
+    },
+    {
+      "width": 1680,
+      "height": 720,
+      "renderWidth": 800,
+      "index": 1,
+      "reload": 0.55,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 282,
+        "y0": 75,
+        "x1": 640,
+        "y1": 373
+      },
+      "rasterSHA256": "54823b5e25c6b8dec926a5d15b51c9a49e92350fc7a251c0a511c8830447b177"
+    },
+    {
+      "width": 1680,
+      "height": 720,
+      "renderWidth": 800,
+      "index": 7,
+      "reload": -1,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 57,
+        "y0": 6,
+        "x1": 640,
+        "y1": 336
+      },
+      "rasterSHA256": "973b3929f0fbe6a6a0ac0e091a7e2323bf815131f445b7fabd5b9e2d4c7bde25"
+    },
+    {
+      "width": 1680,
+      "height": 720,
+      "renderWidth": 800,
+      "index": 7,
+      "reload": 0.55,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 106,
+        "y0": 41,
+        "x1": 640,
+        "y1": 400
+      },
+      "rasterSHA256": "96ea798311bb80ea621917e2e6f9aa5ce7a6b7c849c8ced6568aa018debc31dc"
+    },
+    {
+      "width": 1680,
+      "height": 720,
+      "renderWidth": 800,
+      "index": 9,
+      "reload": -1,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 76,
+        "y0": 38,
+        "x1": 640,
+        "y1": 303
+      },
+      "rasterSHA256": "13b4145ccfb34031aa9ffcb3996becf3bf649c5425b4bd77b6c3de9d89e37184"
+    },
+    {
+      "width": 1680,
+      "height": 720,
+      "renderWidth": 800,
+      "index": 9,
+      "reload": 0.55,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 145,
+        "y0": 87,
+        "x1": 640,
+        "y1": 368
+      },
+      "rasterSHA256": "7b56352ad0d583fae74f84d7bae02af098253c44d5f11db9875a82c88b488c60"
+    }
+  ],
+  "reloadResize": [
+    {
+      "index": 1,
+      "mag": 5,
+      "reserve": 25,
+      "samples": [
+        {
+          "index": 1,
+          "reload": -1,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.016999999999999477,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.03423809523809506,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.05804761904761887,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.06661904761904744,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.08385714285714303,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.0924285714285716,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.1091904761904767,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.11776190476190526,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.13499999999999998,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.14357142857142857,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.16738095238095235,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.18457142857142786,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.20838095238095164,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.22533333333333191,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.24233333333333223,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.26614285714285607,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.2745238095238086,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.29157142857142815,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.3002380952380943,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.31714285714285617,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.325761904761904,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.34295238095238034,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.35995238095237986,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.3685238095238084,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.37714285714285617,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.3940476190476181,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.40266666666666584,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.41123809523809446,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.42819047619047557,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.43657142857142817,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.45376190476190364,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.46233333333333226,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.47928571428571337,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.4965714285714282,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.5137142857142853,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.5307142857142849,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.5388571428571421,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.5558095238095233,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.5727619047619044,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.5813333333333329,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.5983333333333324,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.6069523809523802,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.6239047619047614,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.6409047619047609,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.6581428571428565,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.666714285714285,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.6836666666666661,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.7008571428571425,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.7094761904761894,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.7264285714285705,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.7345714285714278,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.7518095238095234,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.7601428571428567,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.7773333333333322,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.7859999999999991,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.8029999999999995,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.8268095238095233,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.8437619047619044,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.8609523809523808,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.8779523809523804,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.8951904761904759,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.9037619047619044,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.920761904761904,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.9379523809523804,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.9551428571428568,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.9635238095238093,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.9807142857142856,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": 0.9976666666666659,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": -1,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 1,
+          "reload": -1,
+          "finite": true,
+          "visible": true
+        }
+      ],
+      "renderer": [
+        320,
+        240
+      ]
+    },
+    {
+      "index": 7,
+      "mag": 4,
+      "reserve": 26,
+      "samples": [
+        {
+          "index": 7,
+          "reload": 0.006730769230769231,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.013307692307692449,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.027038461538461955,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.040730769230769785,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.04773076923076936,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.06157692307692321,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.0683846153846158,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.0821153846153846,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.0890769230769232,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.09580769230769243,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.10934615384615425,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.12311538461538474,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.12988461538461563,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.14911538461538487,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.1683461538461541,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.1875769230769233,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.20126923076923114,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.20826923076923143,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.22215384615384695,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.2360384615384618,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.24296153846153873,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.2499230769230773,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.2638461538461545,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.27076923076923143,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.2846923076923079,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.2914230769230771,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.2981538461538464,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.30511538461538495,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.3120384615384619,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.325692307692308,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.3324615384615389,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.3393846153846159,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.3463076923076928,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.3533076923076931,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.3600384615384623,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.3737307692307694,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.38065384615384634,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.38757692307692326,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.3943076923076925,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.40126923076923116,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.41496153846153894,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.42173076923076985,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.4286538461538468,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.4356153846153854,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.4493076923076925,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.4560384615384618,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.4630000000000004,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.46992307692307733,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.47684615384615425,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.4838076923076929,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.4976538461538468,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.5046153846153854,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.511576923076924,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.5183076923076932,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.5250769230769234,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.5390000000000007,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.5459230769230776,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.5526538461538468,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.5595769230769237,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.5663461538461546,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.5802307692307702,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.5871538461538471,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.594115384615385,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.601038461538462,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.6078076923076928,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.621461538461539,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.6284230769230776,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.6353461538461546,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.6421153846153848,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.6490384615384617,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.6627307692307702,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.6696538461538472,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.6765769230769241,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.6905000000000013,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.6974615384615391,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.704384615384616,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.7183076923076933,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.7252307692307702,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.7387692307692321,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.745692307692309,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.7524615384615392,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.7592307692307694,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.7731538461538465,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.7798461538461549,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.7868076923076929,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.8008846153846167,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.8078076923076936,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.8145769230769238,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.821346153846154,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.8282692307692309,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.8350769230769235,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.848769230769232,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.85573076923077,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.8695769230769239,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.8763461538461541,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.8900000000000001,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.8969615384615395,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.9039230769230774,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.9106538461538467,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.9243846153846162,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.9313076923076931,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.938269230769231,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.9452307692307703,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.9589230769230775,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.9659615384615388,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.9795769230769239,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": 0.9933461538461543,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": -1,
+          "finite": true,
+          "visible": true
+        },
+        {
+          "index": 7,
+          "reload": -1,
+          "finite": true,
+          "visible": true
+        }
+      ],
+      "renderer": [
+        800,
+        343
+      ]
+    }
+  ],
+  "cache": [
+    {
+      "stage": "after-display-settings",
+      "match": true,
+      "sha256": "973b3929f0fbe6a6a0ac0e091a7e2323bf815131f445b7fabd5b9e2d4c7bde25"
+    },
+    {
+      "stage": "after-chapter-restart",
+      "match": true,
+      "sha256": "973b3929f0fbe6a6a0ac0e091a7e2323bf815131f445b7fabd5b9e2d4c7bde25"
+    }
+  ],
+  "errors": [],
+  "network": [],
+  "baselineSoulHash": "973b3929f0fbe6a6a0ac0e091a7e2323bf815131f445b7fabd5b9e2d4c7bde25",
+  "passed": true,
+  "testedCandidateSHA256": "41f9646703cce0a5da5b6b063df10bf60de84c9c821ffb5f65255ce0a6443448",
+  "testedCandidate": "C:\\Users\\tehlike47\\game\\.dream-loop\\final-oct24-qa\\candidate-41f96467.html"
+}

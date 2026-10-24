@@ -1,25 +1,25 @@
 {
   "file": "THE-BLACK-SILENCE.html",
-  "bytes": 22632339,
-  "sha256": "5c071b1892db41b162542460dc447586c4919df3d730bcf07164dea9dfe1e932",
-  "verifiedAt": "2026-10-23T17:16:11.301Z",
+  "bytes": 22638198,
+  "sha256": "41f9646703cce0a5da5b6b063df10bf60de84c9c821ffb5f65255ce0a6443448",
+  "verifiedAt": "2026-10-24T13:12:57.614Z",
   "engineSha256": "6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899",
   "villageSha256": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627",
   "moduleHashes": {
+    "materials.js": "05e43b45ce521b52cf4d7b172177984699670d9de1261de5f88bf11f42b45517",
     "combat.js": "a0644449f03a77ec7c121104ab2c6850e0caf6ceb0b17c553b8c6c273c08374c",
     "enemy-animation.js": "593a5fae641f13ea9f6312409db4a3c3f5b75d5d9e6b31f90a6588dde00370d8",
+    "viewmodels.js": "47e65ce26a3f7d642ddcdd9d4cf59747d1e533c87a34aa7a7517db1f4914a236",
     "finishers.js": "8c2c7bdf13e17005c3383054560b155986d8e706b5bfda81e9f1a8224ee3c5b0",
-    "materials.js": "05e43b45ce521b52cf4d7b172177984699670d9de1261de5f88bf11f42b45517",
-    "prologue.js": "d2ba561ba361d9764cdefd1fc7731c2c0697bb208a41e12f4c739a52c15e9084",
     "reload-audio-data.js": "2f48b10a1225d1c007ee282d3c18f82c5022bb0267ed86d65feadf819ec1be30",
-    "reload-audio.js": "93963d58a605323c34548136726e1e75b140156f60fc1c7fe0cb7a6a0c94a48b",
+    "reload-audio.js": "6b63eec006c8f7ee98392f323f630879140948f24165ab72b308bfb4b4d6be16",
+    "prologue.js": "7d94d4e54dbc0df11a2f29650e9129c9690d722bed0ffc556ac923d9f5200109",
     "render-warmup.js": "9418307e9d71b28411b36e86e1ed3f4eb2eecda6b00d58144ce5bc79d110838c",
-    "viewmodels.js": "2830ab4dfb61df8fa334cadb7ed417ed7821c26b1488f387f84a78568e284251",
     "village-presentation.js": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627"
   },
   "idempotentBuilds": 2,
   "invalidInputsRefusedWithoutWrite": 8,
-  "scope": "Ten reference-based weapon appearances and native reload mechanisms, approved gloves, prologue hell; existing gameplay/ammo/audio/boots/finishers preserved.",
+  "scope": "Pixel-identical renderer optimization; native-death reload audio cleanup; scoped amber hell flames and reusable environment materials. Existing weapon gameplay and appearance preserved.",
   "methodLimitations": [
     "Articulated perspective-textured surfaces with volumetric backing, not arbitrary-view full 3D assets.",
     "Some surface lighting is baked into artwork; hell architectural highlights include static illumination.",
@@ -27,65 +27,95 @@
   ],
   "verificationReports": [
     {
-      "file": "docs/verification-data/arsenal-final-5c071b18-runtime.json",
-      "sha256": "f3d0f108f54a6bf3add35b5501e2150fc9141820b1f9d5ce3fffd4aaa5f2aa80"
+      "file": "docs/verification-data/audio-lifecycle-2026-10-24-checks.json",
+      "sha256": "823d9bad61edf2e65c664e73cb0a79732f3c1cb337a4ffb38de385310a5da470"
     },
     {
-      "file": "docs/verification-data/arsenal-final-5c071b18-navigation.json",
-      "sha256": "cb03d73e1ab5012a6223429a4762ea1cd71d02c69ebffd10007274fa826a34df"
+      "file": "docs/verification-data/audio-lifecycle-2026-10-24-raf.json",
+      "sha256": "32bd77c13fa11bac36367a53ddd4e312a2cf79d3b2f2995716294391b8587986"
     },
     {
-      "file": "docs/verification-data/arsenal-final-5c071b18-hell-invariants.json",
-      "sha256": "0b8c347074178cc1ae164335c9f5dfa8f33d5a763222b03c1a99f3f10372e360"
+      "file": "docs/verification-data/hell-refinement-oct24-after-resources.json",
+      "sha256": "f7ed9ce85a279cf267cec276a3048dbccc08a2236f5f7941bc96e0587ec375e2"
     },
     {
-      "file": "docs/verification-data/arsenal-final-5c071b18-compatibility.json",
-      "sha256": "deec098c874784b60cd7e3d15d9cbabc43cc481678c90ae44a0d96ae99cf5ed7"
+      "file": "docs/verification-data/hell-refinement-oct24-before-resources.json",
+      "sha256": "ea15b1fc82b8bec4aba11df090b71e3097fb07c47d5a84c9b6b20cdae3d0e444"
     },
     {
-      "file": "docs/verification-data/arsenal-final-5c071b18-audio.json",
-      "sha256": "bcedbf7dff75e6ea44da3072f5fea518207ef48fb822087fe3d4ffc5583dbaf1"
+      "file": "docs/verification-data/hell-refinement-oct24-invariants.json",
+      "sha256": "191bf0170f0247acde7379b80166a8463430b4e86b912e6dc996752a100d70f5"
     },
     {
-      "file": "docs/verification-data/arsenal-final-5c071b18-audio-raf.json",
-      "sha256": "d0a0818172f0f1717213a09dd01297cb490a1ded6f0e257addaa939bd62f1ef9"
+      "file": "docs/verification-data/hell-refinement-oct24-navigation.json",
+      "sha256": "787055b10384737a6f580f5079f7efee4a59bb41f2294f381f1a175ffe24f27f"
     },
     {
-      "file": "docs/verification-data/arsenal-final-5c071b18-build-integrity.json",
-      "sha256": "53212031ad1a3b84541beb083b4c8175a3116501c367eff3ff69ab48aab5ef7d"
+      "file": "docs/verification-data/hell-refinement-oct24-scope.json",
+      "sha256": "61f4bcf50d5171e29890a3b70b48b2c0d24d867dd24d9389c5eff1138fa91b96"
     },
     {
-      "file": "docs/verification-data/arsenal-final-5c071b18-installation-parity.json",
-      "sha256": "e1edf3fd86f38b9fcec254b0abf138d506ee346a5a7242b8d2cae7e1709a4e7f"
+      "file": "docs/verification-data/oct24-final-41f96467-display.json",
+      "sha256": "83af145cb7c5a1018c7d5cea12aaf86405d0466920e5c2d909086f75084320a1"
     },
     {
-      "file": "docs/verification-data/arsenal-final-5c071b18-model-poses.json",
-      "sha256": "9d5ce1e16ab4fb34231dc0eb49a3d00d87103ea566f0d6bbf398786110dc6f03"
+      "file": "docs/verification-data/oct24-final-41f96467-navigation.json",
+      "sha256": "49c432c0527e2e3b56f39caa9ab6f445ae9f57046165eb613f2d4698945fd915"
     },
     {
-      "file": "docs/verification-data/arsenal-final-5c071b18-hoist-pixel-parity.json",
-      "sha256": "7720aadf7b6da9470282040b7cf44e7b99b7694007853279afbc5dd0886bb13c"
+      "file": "docs/verification-data/oct24-final-41f96467-performance-summary.json",
+      "sha256": "a0f96522ba709ebddd483c77cf4b1ecf6d7ad1cccbc5567d4b7e18fd14fee477"
     },
     {
-      "file": "docs/verification-data/arsenal-final-5c071b18-hoist-profile.json",
-      "sha256": "a614a2f8c04b9b9b1004b270f935ae94f84de3793b14f8055075ec73b3d27a70"
+      "file": "docs/verification-data/oct24-final-41f96467-performance.json",
+      "sha256": "64156592eba4a6b5c60da0b951fbb92390b72b362667c9dedc57df48c8793025"
     },
     {
-      "file": "docs/verification-data/arsenal-final-5c071b18-video-capture.json",
-      "sha256": "90925f1c8f722755f1b4ddc6ea2c95e74e0754c1da7b6405fe2edb190c199fb8"
+      "file": "docs/verification-data/oct24-final-41f96467-runtime.json",
+      "sha256": "c3a5e469cc1d4bf9861d55d4cee1620b15a162568e3e68c6bc8216c0a1d49eda"
     },
     {
-      "file": "docs/verification-data/arsenal-final-5c071b18-video-encoded.json",
-      "sha256": "53db207d81e1d2c7cae4057c0980ca7555c1a59459fa7d55b09869f3a5fc9b44"
+      "file": "docs/verification-data/oct24-final-41f96467-stake-repeat-summary.json",
+      "sha256": "1fd7ed7b2ba0a115e49ed38fe4360936e2afbebe9e6b3fb089b85a62ecb05b95"
     },
     {
-      "file": "docs/verification-data/arsenal-final-5c071b18-performance.json",
-      "sha256": "99a763aebc736f734fe9793457bd1f0c888ca3af70de4e7ece52f4ad820e7982"
+      "file": "docs/verification-data/oct24-final-41f96467-stake-repeat.json",
+      "sha256": "e9568feed92897db5b9ccf7d4d3a38841264f500db614b299081279999ecbcd2"
     },
     {
-      "file": "docs/verification-data/arsenal-final-5c071b18-performance-summary.json",
-      "sha256": "669db365df30c30a438a419fa91f39ee1920b7fbaf96c5935662ef0ca5e77f72"
+      "file": "docs/verification-data/renderer-20261024-build-integrity.json",
+      "sha256": "1031ed16bc63fd69b1e5e2830e646e2e5567803b344605d82d7ec4d39a19ff4d"
+    },
+    {
+      "file": "docs/verification-data/renderer-20261024-final-parity.json",
+      "sha256": "a12bfbb9beaad65bc198a3365deb38488529603d18babf5d32f167cbdffb618e"
+    },
+    {
+      "file": "docs/verification-data/renderer-20261024-kernel.json",
+      "sha256": "f51d5fa9d5764ef1d6308b413e1e60354ffb0de7e343a5d73108cda1d8df220f"
+    },
+    {
+      "file": "docs/verification-data/renderer-20261024-model-parity.json",
+      "sha256": "9f5e7cdecd7f38af939b13a4e6e3a59c397b167b62219bc680085e4de4a99f3c"
+    },
+    {
+      "file": "docs/verification-data/renderer-20261024-output-guards.json",
+      "sha256": "e938a7b15927d170bfb6cc1120e51e76b2a4556901ef68941a7b25fdafcd42ce"
+    },
+    {
+      "file": "docs/verification-data/renderer-20261024-provenance.json",
+      "sha256": "bca699cddbc88eea592bb816c8e1827df2ff6028eeaa34662de4efc24e3bb623"
+    },
+    {
+      "file": "docs/verification-data/renderer-20261024-soul-balanced-raw.json",
+      "sha256": "f98e99024193e3f2c2fda7bc924fbb97017b932476786218e30c7574860544e8"
+    },
+    {
+      "file": "docs/verification-data/renderer-20261024-soul-balanced-summary.json",
+      "sha256": "38dcb0cba030dfdcf98d48d72b72c1ae7c66a36ffa867271f96c316d14a40a6b"
     }
   ],
-  "mediaManifest": "docs/previews/provenance.json"
+  "previousRelease": "5c071b1892db41b162542460dc447586c4919df3d730bcf07164dea9dfe1e932",
+  "mediaManifest": "docs/previews/provenance.json",
+  "mediaNote": "23 October weapon media retained; current display/hell captures in docs/oct24-final-previews. Existing dated provenance is not relabelled."
 }

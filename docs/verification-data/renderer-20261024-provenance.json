@@ -1,0 +1,30 @@
+{
+  "baselineHtml": "5c071b1892db41b162542460dc447586c4919df3d730bcf07164dea9dfe1e932",
+  "variants": {
+    "combined": {
+      "sourceSha256": "47e65ce26a3f7d642ddcdd9d4cf59747d1e533c87a34aa7a7517db1f4914a236",
+      "htmlSha256": "ebe87d7f5b9f3418d3c61ba0753402f4fe3e75d04286929349f8ef8031411435",
+      "exactReplacement": true
+    },
+    "packed": {
+      "sourceSha256": "b175646931d4c79a61d38ebb82f8c32ae21386a79813a8b1f4faec4a9ff0e361",
+      "htmlSha256": "7d6b51687d186d487a364103935cf1384c6704ae28a1946651da080a775d2d50",
+      "exactReplacement": true
+    },
+    "cull": {
+      "sourceSha256": "0d9d734768a66ec143a74bed4da14cf7a99d1a70293502e325a36ca32f2e5faf",
+      "htmlSha256": "4736570ac3049a6920d16f794abcc6622b442c109b057e6e0c401b83db6830fe",
+      "exactReplacement": true
+    },
+    "second": {
+      "sourceSha256": "b25c083ed6613985a504bb238e07e5fd39adf83ac86368e6ee829786e1d537ff",
+      "htmlSha256": "d222f1e9e15c1406066194d6d2f5e09ff0be41bae012289300b875914ec22d08",
+      "exactReplacement": true
+    },
+    "native-face": {
+      "sourceSha256": "6d001aed9a2a233558042b50376eb5927e41e37542c7c8fa23e2ef84be6600b6",
+      "htmlSha256": "046893c41572f5dabbcae0a0d9ba7e56132983307733646d1c3755b89b57f8a5",
+      "exactReplacement": true
+    }
+  }
+}

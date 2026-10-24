@@ -1,0 +1,24 @@
+{
+  "beforeHTML": "5c071b1892db41b162542460dc447586c4919df3d730bcf07164dea9dfe1e932",
+  "afterHTML": "80d9f77f5209f2da0c5d1a108ffc6d1c6244360fea6cb6cbb5c7f437c5235632",
+  "beforePrologue": "d2ba561ba361d9764cdefd1fc7731c2c0697bb208a41e12f4c739a52c15e9084",
+  "afterPrologue": "7d94d4e54dbc0df11a2f29650e9129c9690d722bed0ffc556ac923d9f5200109",
+  "scope": "Only prologue module changed in this private candidate; weapon/combat modules are the previous release.",
+  "images": {
+    "before-arena.png": "4179017a1ea5e8bea1e4e04a503581a5e7e41efb623884319b24c85e3c9664b3",
+    "before-pyre.png": "c8ace7f344b44c1ff53d1e8b208c3c22e2780b96db8e15cf18b71a01cfada553",
+    "before-bridge.png": "52797f490d227a4b59ff3261e6f27191267af26bb4ac02bd03f105f51988dfd4",
+    "after-arena.png": "0e9c0d16c1d6c71d0e8f7b35f37083a26a94ad11f898f5ee14d89d6514604481",
+    "after-pyre.png": "078430182f09e2471edabd8b2ddd8564ad6ea70885901177ef98ae7272c139ce",
+    "after-bridge.png": "605124510478f1dcbee178f637f5b02359dac26631ea132b85fb5eb87481ce9c"
+  },
+  "captures": "Identical 1280x720 cameras, deterministic random seed, paused native world, normal visible shotgun. Flame texture is static; native particles retain motion in gameplay.",
+  "privateTests": [
+    "capture.cjs before",
+    "capture.cjs after",
+    "scope-audit.cjs",
+    "tools/arsenal-hell-navigation-tests.cjs",
+    "tools/prologue-tests.cjs",
+    "tools/hell-invariants-test.cjs"
+  ]
+}

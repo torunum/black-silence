@@ -115,6 +115,58 @@ const output = path.resolve(process.env.QA_OUTPUT_DIR || path.join(root, ".dream
         throw new Error("Voices survived reload completion");
       runs.push(run);
     }
+    // Native Fk intentionally stops calling v$ after death. Exercise that path
+    // with real R/RAF input; manually stepping v$ here would hide the bug.
+    await page.evaluate(() => {
+      const q = window.__BLACK_SILENCE_QA;
+      q.resetCombat();
+      q.pause(false);
+      q.Be.inputLock = q.Be.pianoOpen = false;
+      q.v.cine = null;
+      q.T.dead = q.T.won = false;
+      q.T.cur = 0;
+      q.T.hp = 100;
+      q.T.armor = 0;
+      q.T.mag[0] = 0;
+      q.T.ammo[q.weapons[0].ammo] = 30;
+      q.C.spawnGuard = 100;
+      q.Ct.firing = false;
+      q.St.wstate = "idle";
+      q.St.wtime = q.St.wCool = 0;
+      for (const id of ["dead", "win", "levelend"])
+        document.getElementById(id).classList.add("hidden");
+      q.reloadAudio.history.length = 0;
+    });
+    await page.keyboard.press("r");
+    await page.waitForFunction(() => {
+      const q = window.__BLACK_SILENCE_QA;
+      return q.St.wstate === "reload" && q.reloadAudio.active() > 0;
+    });
+    const deathStart = await page.evaluate(() => {
+      const q = window.__BLACK_SILENCE_QA;
+      q.C.spawnGuard = 0;
+      q.reloadAudio.damagePlayer(1000, true);
+      return {
+        dead: q.T.dead,
+        wtime: q.St.wtime,
+        events: q.reloadAudio.history.filter(e => e.type === "play").length,
+        scheduledStop: q.reloadAudio.history.some(e => e.type === "stop" && e.reason === "death"),
+      };
+    });
+    await page.waitForTimeout(120);
+    const deathEnd = await page.evaluate(() => {
+      const q = window.__BLACK_SILENCE_QA;
+      return {
+        dead: q.T.dead,
+        wtime: q.St.wtime,
+        voices: q.reloadAudio.active(),
+        events: q.reloadAudio.history.filter(e => e.type === "play").length,
+      };
+    });
+    if (!deathStart.dead || !deathEnd.dead || !deathStart.scheduledStop ||
+        deathEnd.voices !== 0 || deathStart.wtime !== deathEnd.wtime ||
+        deathStart.events !== deathEnd.events)
+      throw new Error("Real R/native lethal damage did not release foley with weapon updates stopped");
     if (errors.length) throw new Error(errors.join("\n"));
     fs.mkdirSync(output, { recursive: true });
     fs.writeFileSync(
@@ -127,6 +179,7 @@ const output = path.resolve(process.env.QA_OUTPUT_DIR || path.join(root, ".dream
           scope:
             "real keyboard R, actual RAF/native reload; speaker/display physical latency not measured",
           runs,
+          deathLifecycle: { start: deathStart, end: deathEnd },
           pageErrors: errors,
         },
         null,

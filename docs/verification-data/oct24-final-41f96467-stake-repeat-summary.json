@@ -1,0 +1,118 @@
+{
+  "inputs": [
+    {
+      "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\renderer-20261024\\baseline.html",
+      "sha256": "5c071b1892db41b162542460dc447586c4919df3d730bcf07164dea9dfe1e932",
+      "target": "C:\\Users\\tehlike47\\game\\.dream-loop\\renderer-20261024\\stake-repeat-performance\\variant-0.html"
+    },
+    {
+      "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\renderer-20261024\\final-build\\THE-BLACK-SILENCE.html",
+      "sha256": "41f9646703cce0a5da5b6b063df10bf60de84c9c821ffb5f65255ce0a6443448",
+      "target": "C:\\Users\\tehlike47\\game\\.dream-loop\\renderer-20261024\\stake-repeat-performance\\variant-1.html"
+    }
+  ],
+  "order": [
+    0,
+    1,
+    1,
+    0
+  ],
+  "results": [
+    {
+      "variant": 0,
+      "mode": "all",
+      "cpu": {
+        "n": 358,
+        "meanMs": 9.867877095521495,
+        "p95Ms": 15.199999988079071,
+        "fps": 101.33891923459879
+      },
+      "frames": {
+        "n": 350,
+        "meanMs": 18.132285714285718,
+        "p95Ms": 18.19999999999891,
+        "fps": 55.15024502466002
+      }
+    },
+    {
+      "variant": 0,
+      "mode": "first",
+      "cpu": {
+        "n": 90,
+        "meanMs": 9.58777777949969,
+        "p95Ms": 12.199999988079071,
+        "fps": 104.29945530633502
+      },
+      "frames": {
+        "n": 88,
+        "meanMs": 17.867045454545465,
+        "p95Ms": 18.100000000000364,
+        "fps": 55.96896266615782
+      }
+    },
+    {
+      "variant": 0,
+      "mode": "warm",
+      "cpu": {
+        "n": 268,
+        "meanMs": 9.961940298663146,
+        "p95Ms": 15.5,
+        "fps": 100.38205108840053
+      },
+      "frames": {
+        "n": 262,
+        "meanMs": 18.221374045801525,
+        "p95Ms": 18.200000000000728,
+        "fps": 54.880603267700046
+      }
+    },
+    {
+      "variant": 1,
+      "mode": "all",
+      "cpu": {
+        "n": 363,
+        "meanMs": 8.808815427227126,
+        "p95Ms": 10.200000017881393,
+        "fps": 113.52264197852355
+      },
+      "frames": {
+        "n": 355,
+        "meanMs": 17.894647887323956,
+        "p95Ms": 18.100000000000364,
+        "fps": 55.88263073387271
+      }
+    },
+    {
+      "variant": 1,
+      "mode": "first",
+      "cpu": {
+        "n": 90,
+        "meanMs": 8.831111111243565,
+        "p95Ms": 10.5,
+        "fps": 113.23603422074751
+      },
+      "frames": {
+        "n": 88,
+        "meanMs": 17.93636363636365,
+        "p95Ms": 18.100000000000364,
+        "fps": 55.75266092245307
+      }
+    },
+    {
+      "variant": 1,
+      "mode": "warm",
+      "cpu": {
+        "n": 273,
+        "meanMs": 8.8014652017272,
+        "p95Ms": 10.199999988079071,
+        "fps": 113.61744630925313
+      },
+      "frames": {
+        "n": 267,
+        "meanMs": 17.880898876404505,
+        "p95Ms": 18.100000000000364,
+        "fps": 55.92560010054037
+      }
+    }
+  ]
+}

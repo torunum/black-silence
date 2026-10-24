@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "inputsUnchanged": true,
+  "tests": [
+    {
+      "tool": "tools/viewmodel-kernel-tests.cjs",
+      "refused": true
+    },
+    {
+      "tool": "tools/viewmodel-renderer-parity.cjs",
+      "refused": true
+    }
+  ]
+}

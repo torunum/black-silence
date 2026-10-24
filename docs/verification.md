@@ -1,41 +1,40 @@
-# Doğrulama — Arsenal / Hell
+# Doğrulama — 24 Ekim 2026
 
-Dosya: `THE-BLACK-SILENCE.html`, **22.632.339 bayt**. SHA256: `5c071b1892db41b162542460dc447586c4919df3d730bcf07164dea9dfe1e932`.
+Dosya: `THE-BLACK-SILENCE.html`, **22.638.198 bayt**. SHA256: `41f9646703cce0a5da5b6b063df10bf60de84c9c821ffb5f65255ce0a6443448`.
 
-On silahın model/tutuş görünümü ve hareketli doldurma parçaları ile yeni prologue cehennem ayrıntıları tek dosyada birleştirildi. Oyun istatistikleri ve özgün motor korunur. Village sunumu kullanıcı devir paketindekiyle birebir aynıdır.
+Bu tur onaylanan silah/el görünümünü koruyarak çizim işini azaltır, ölümde devam eden doldurma sesini durdurur ve cehennem alevleriyle malzeme yaşam döngüsünü iyileştirir. Motor, Village sunumu, silah istatistikleri, botlar ve bitiriciler korunur.
 
-## Test kapsamı
+## Son dosyada test edilenler
 
 | Kontrol | Kanıt ve kapsam |
 | --- | --- |
-| Derleme | Kaynak modüller gömülü metinlerle birebir; art arda iki build aynı dosya. Sekiz bozuk marker girdisi yazılmadan reddedilir. Motor ve Village hashleri korunur. |
-| Görsel entegrasyon | On silahın idle/insert pozları ile bot/drop kick/bitiricilerden toplam 33 ham piksel karşılaştırması birebir. Bu, diğer silahların eski teslimattaki haliyle aynı olduğu anlamına gelmez; onaylanan yeni ayrı modellerin birleşimde korunduğunu doğrular. |
-| Çizim optimizasyonu | Üçgen/satır sabitlerini dışarı alan değişiklik; 116 opak/yarı şeffaf, derinlik örtüşmesi, silah/poz/geçiş ve yakın dövüş durumu için hem ham RGBA hem canvas çıktısında birebir eşit. Bu test son Cross yüzey düzeltmesinden önceki ortak adayda çalıştı; son entegrasyon ayrıca yukarıdaki 33 pozla doğrulandı. |
-| Silahlar | Gerçek R/RAF akışıyla on silahın doldurma, ateş, cephane, silah değiştirme, iptal, tekme ve kalıntı temizleme kontrolleri. |
-| Cehennem bölümü | 15 navigasyon noktası, gerçek E çıkışı, başka bölümde dekor temizliği ve cehenneme iki dönüş. Cehennem arenasında on silahın 20 idle/insert pozu görünür ve sonlu. |
-| Çevrimdışı / kayıt | Normal `file://` açılışı, kayıt uyumluluğu ve ayarlar. Görseller HTML içine gömülüdür. |
-| Ses | İlk iki silah için 42 ses kontrolü ve gerçek R/RAF ses zamanlaması. Bu kayıt tabanlı ses kapsamı tüm on silah için yeni ses kaydı yapıldığı anlamına gelmez. |
+| Derleme | Canlı kaynaklar gömülü metinlerle birebir; iki tekrar build aynı dosya. Sekiz bozuk marker girdisi yazılmadan reddedilir. Motor ve Village SHA korunur. |
+| Piksel eşitliği | Önceki teslimatla 594 silah/animasyon/geçiş/tekme/bitirici durumunda ham RGBA ve canvas birebir. Ayrıca 1.800 dejenere/ekran dışı/alpha/derinlik compositor vakası birebir. |
+| On silah | Gerçek R/RAF doldurma, cephane, ateş, geçiş, tekme/iptal ve çizim kalıntısı kontrolleri. |
+| Ekran ayarları | Üç ekran oranı ve iki native çözünürlükte 36 poz; iki gerçek doldurma sırasında yeniden boyutlandırma/ayar değişimi. Soul cache geri dönüşünde piksel eşitliği. |
+| Ses | 49 yaşam döngüsü kontrolü, ilk iki silahın gerçek R/RAF ses zaman çizelgeleri ve native ölümden sonra ses durması. |
+| Bölüm | 15 hareket noktası, gerçek E çıkışı, sonraki bölümde malzeme temizliği, dönüşte kararlılık ve cehennemde 20 silah pozu. |
 
-Final dosyanın raporları `verification-data/arsenal-final-5c071b18-*.json` adıyla tutulur. `arsenal-milestone-650ecdc7-*` ara sürüm ölçümüdür; final sonuç olarak kullanılmaz. Önceki teslimatın kökteki eski test raporları bu tur yeniden koşulmuş gibi sunulmaz. Testler tam kampanya oynanışı değildir.
+Raporlar `verification-data/oct24-final-41f96467-*.json`, `renderer-20261024-*.json` ve `audio-lifecycle-2026-10-24-*.json` içindedir. Önceki `arsenal-final-5c071b18-*` raporları tarihsel teslimata aittir; yeniden koşulmuş gibi sunulmaz. Testler tam kampanya oynanışı veya tüm hataların bulunmuş olduğu anlamına gelmez.
 
-## Görsel yöntem ve ölçüm sınırları
+## Performans
 
-Yeni silahların çoğu, gerçek hacimli arka/yan yüzeylere ve hareketli mekanizmalara bağlı perspektifli resim yüzeyleri kullanır. Eller ayrı derinlik sınamasıyla çizilir. Bu yöntem tam serbest açılı 3B model değildir; resimlerin bazı ışık ve perspektif bilgileri sabittir. Cehennem mimarisinde bazı ışık vurguları da statiktir.
+Son seri ABBA önceki **5c071b18** teslimatıyla aynı bilgisayarda, bölüm 0 başlangıç kamerasında, gerçek klavye R ve RAF üzerinden karşılaştırıldı. Bütün turlar korunur; tablo doldurma karelerinin havuzlanmış sonuçlarıdır.
 
-Sabit üçgen hesaplarını piksel döngüsünün dışına taşımak görüntüyü değiştirmeden compositor maliyetini azaltmıştır. Yerel seri ABBA ölçümünde başlangıç turu ısınma/değişken işlemci hızından etkilenmiştir; tek sayıdan genel FPS garantisi çıkarılmaz. Son çalışma zamanı ölçümünün ham sonuçları ayrıca kaydedilir. Daha ayrıntılı modellerin maliyeti sahne ve silaha göre değişir.
+| Silah | Çizim CPU önce → yeni | RAF FPS önce → yeni | Kare p95 önce → yeni |
+| --- | --- | --- | --- |
+| Çift namlulu | 18,60 → 14,22 ms | 43,50 → 53,94 | 36,10 → 18,20 ms |
+| Nail | 12,53 → 11,38 ms | 54,18 → 55,16 | 18,20 → 18,20 ms |
+| Soul | 15,57 → 13,52 ms | 51,83 → 55,79 | 35,60 → 18,10 ms |
+| TNT | 12,37 → 11,37 ms | 53,12 → 55,16 | 35,10 → 18,20 ms |
+| Stake | 9,29 → 10,92 ms | 55,86 → 50,86 | 18,10 → 36,10 ms |
 
-Son seri ABBA, önceki `3807e06b` teslimatı ile bu dosyayı aynı bilgisayarda ve bölüm 0 başlangıç kamerasında karşılaştırdı. Aşağıdaki değerler doldurma sırasında havuzlanmış sonuçlardır; cehennem arenasının veya bütün kampanyanın ölçümü değildir.
+Stake'in ilk yeni turunda FPS 46,11, ikinci turunda 55,82 ölçüldü; bu kuyruk havuzlanmış sonucu kötüleştirir ve saklanmamıştır. Stake için ardından değişmeyen aynı dosyalarla yapılan dar ABBA tekrarında sıcak CPU 9,96 → 8,80 ms, FPS 54,88 → 55,93 ve kare p95 18,2 → 18,1 ms ölçüldü; önceki kuyruk tekrarlanmadı. Bu tekrar ayrı raw/summary raporuyla korunur; ilk tabloyu değiştirmez. Soul için ayrı dengeli sıcak tekrar CPU 14,61 → 13,68 ms, FPS 54,24 → 55,61 ve aynı 18,2 ms p95 verdi. Dolayısıyla iyileşme ölçülüdür; her silahta/her sahnede akıcılığın tamamen çözüldüğü veya sabit FPS garanti edildiği iddia edilmez. Cehennem arenasının tamamı için bir FPS ölçümü değildir. [Yöntem ve seçim](renderer-performance-2026-10-24.md).
 
-| Silah | Silah çizim CPU, önce → yeni | Gerçek RAF FPS, önce → yeni |
-| --- | --- | --- |
-| Çift namlulu | 14,56 → 15,76 ms | 51,18 → 51,45 |
-| Nail | 15,53 → 10,69 ms | 46,81 → 55,91 |
-| Soul | 8,71 → 16,16 ms | 55,67 → 49,78 |
-| TNT | 12,10 → 11,45 ms | 52,42 → 55,93 |
-| Stake | 11,62 → 11,06 ms | 52,72 → 53,49 |
+## Görsel yöntem ve medya
 
-Soul'un yeni kavisli yüzeyi belirgin ek çizim maliyeti taşır: ölçülen p95 kare süresi 18,2 ms'den 36 ms'ye çıktı. Görsel ayrıntı korunmuştur; bu silahta akıcılık sorununun tamamen çözüldüğü iddia edilmez. Ham ABBA turları ve özet `arsenal-final-5c071b18-performance*.json` içindedir.
+Silahlar gerçek hacimli arka/yan yüzeylere ve hareketli parçalara bağlı perspektifli resim yüzeyleri kullanır; tam serbest açılı 3B varlık değildir. Bazı yüzey ışıkları resimde sabittir. Cehennem mimarisinin statik ışıkları dinamik namlu parlamasına tepki vermez; normal karakter/nesne ışıkları korunur.
 
-Güncel gerçek oyun medya kayıtları `previews/` içinde kaynak HTML hashleriyle listelenir. Tasarım hedefleri `assets/` içinde ayrı tutulur. Eski `docs/` kök görselleri bu sürümün kanıtı değildir.
+24 Ekim gerçek bölüm ve ekran oranı görüntüleri [son işlevsel kontrol notlarında](oct24-final-functional-qa.md) listelenir. `docs/previews/arsenal-reload.webm` ve eski silah görüntüleri **23 Ekim 5c071b18** teslimatından korunmuştur; yeni çekim gibi etiketlenmez. Silah piksellerinin eşitliği bu tur ayrıca doğrulanmıştır. Tasarım hedefleri `assets/` içinde ayrı tutulur.
 
-[Doldurma videosu](previews/arsenal-reload.webm) doğrudan son ana HTML'den 6,888 saniye gerçek RAF/klavye R ve oyun WebAudio çıkışı kaydeder. QA yalnız ikinci silahı ve cephaneyi verir; poz sabitlemesi kullanılmaz. Video 25 FPS, ses eşleme hassasiyeti bir kare (40 ms); fiziksel hoparlör gecikmesi ölçülmez. Nail idle görseli kontrollü pozla, cehennem arenası görseli navigasyon kamerasıyla çekilmiştir; bu ayrım `previews/provenance.json` içinde açıkça belirtilir.
+Tarihsiz `dist/THE-BLACK-SILENCE-ARSENAL-HELL.zip` eski 23 Ekim paketidir. Yeni paket tarihli ayrı dosyaya yazılır; ZIP içindeki HTML hash'i ana dosyayla karşılaştırılır.

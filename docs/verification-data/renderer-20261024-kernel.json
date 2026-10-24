@@ -1,0 +1,15 @@
+{
+  "cases": 1800,
+  "passed": true,
+  "inputs": [
+    {
+      "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\renderer-20261024\\baseline.html",
+      "sha256": "5c071b1892db41b162542460dc447586c4919df3d730bcf07164dea9dfe1e932"
+    },
+    {
+      "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\renderer-20261024\\final-build\\THE-BLACK-SILENCE.html",
+      "sha256": "41f9646703cce0a5da5b6b063df10bf60de84c9c821ffb5f65255ce0a6443448"
+    }
+  ],
+  "failures": []
+}

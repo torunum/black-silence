@@ -1,4 +1,7 @@
-param([Parameter(Mandatory=$true)][ValidatePattern('^[a-fA-F0-9]{64}$')][string]$ExpectedHtmlSha256)
+param(
+  [Parameter(Mandatory=$true)][ValidatePattern('^[a-fA-F0-9]{64}$')][string]$ExpectedHtmlSha256,
+  [ValidatePattern('^[A-Za-z0-9][A-Za-z0-9_-]*\.zip$')][string]$OutputName = 'THE-BLACK-SILENCE-ARSENAL-HELL.zip'
+)
 $ErrorActionPreference = 'Stop'
 $workspace = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $htmlPath = Join-Path $workspace 'THE-BLACK-SILENCE.html'
@@ -8,7 +11,7 @@ $buildInfo = Get-Content -LiteralPath (Join-Path $workspace 'docs/build-info.jso
 if ($buildInfo.sha256 -ne $actual) { throw 'Build metadata is stale.' }
 $dist = Join-Path $workspace 'dist'
 [IO.Directory]::CreateDirectory($dist) | Out-Null
-$destination = [IO.Path]::GetFullPath((Join-Path $dist 'THE-BLACK-SILENCE-ARSENAL-HELL.zip'))
+$destination = [IO.Path]::GetFullPath((Join-Path $dist $OutputName))
 if (-not $destination.StartsWith($workspace + [IO.Path]::DirectorySeparatorChar, [StringComparison]::OrdinalIgnoreCase)) { throw 'Output escaped workspace.' }
 if (Test-Path -LiteralPath $destination) { throw 'Release ZIP already exists; refusing to replace it.' }
 $files = [Collections.Generic.List[IO.FileInfo]]::new()

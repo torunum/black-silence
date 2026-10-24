@@ -457,7 +457,16 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       const top=Math.max(0,Math.floor(Math.min(ay,by,cy))),bottom=Math.min(height-1,Math.ceil(Math.max(ay,by,cy)));
       for(let y=top;y<=bottom;y++) {
         const pyMinusCy=y+.5-cy,rowA=cxMinusBx*pyMinusCy,rowB=axMinusCx*pyMinusCy,rowPixel=y*width;
-        for(let x=left;x<=right;x++) {
+        // Conservative half-plane bounds skip empty triangle bounding-box pixels.
+        // Two guard pixels retain the original epsilon/rounding boundary test below.
+        let rowLeft=left,rowRight=right;
+        const slopeA=byMinusCy;
+        if(Math.abs(slopeA)>1e-12){const edge=cx-.5+(-.00001*denominator-(rowA))/slopeA;if(Number.isFinite(edge)){if((slopeA>0)===(denominator>0))rowLeft=Math.max(rowLeft,Math.floor(edge)-2);else rowRight=Math.min(rowRight,Math.ceil(edge)+2);}}
+        const slopeB=cyMinusAy;
+        if(Math.abs(slopeB)>1e-12){const edge=cx-.5+(-.00001*denominator-(rowB))/slopeB;if(Number.isFinite(edge)){if((slopeB>0)===(denominator>0))rowLeft=Math.max(rowLeft,Math.floor(edge)-2);else rowRight=Math.min(rowRight,Math.ceil(edge)+2);}}
+        const slopeC=-byMinusCy-cyMinusAy;
+        if(Math.abs(slopeC)>1e-12){const edge=cx-.5+(-.00001*denominator-(denominator-rowA-rowB))/slopeC;if(Number.isFinite(edge)){if((slopeC>0)===(denominator>0))rowLeft=Math.max(rowLeft,Math.floor(edge)-2);else rowRight=Math.min(rowRight,Math.ceil(edge)+2);}}
+        for(let x=rowLeft;x<=rowRight;x++) {
         const pxMinusCx=x+.5-cx;
         const wa=(byMinusCy*pxMinusCx+rowA)/denominator;
         const wb=(cyMinusAy*pxMinusCx+rowB)/denominator,wc=1-wa-wb;
@@ -2009,33 +2018,50 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       const depth=(anchor[0]-x)*.00024+extra,s=scale*(1+depth/.65),o=[0,.045,-.040];
       return o.map((a,i)=>a+u[i]*(x-anchor[0])*s+v[i]*(y-anchor[1])*s+w[i]*depth);
     };
+    const hullGeometry=new Map(),orbGeometry=new Map(),rimGeometry=new Map();
+    const hullTone={tex:(x,y,z)=>steel(x,y,z)*.15};
     function hull(m,poly,depth=0,thick=.026,mat=WORN,sourcePoly=poly){
-      const front=poly.map(p=>point(...p,depth)),back=poly.map(p=>point(...p,depth+thick)),part=m.part(),inv=m.inverse();
-      for(let i=0;i<poly.length;i++){
-        const j=(i+1)%poly.length,a=front[i],b=front[j],c=back[j],ab=b.map((v,k)=>v-a[k]),ac=c.map((v,k)=>v-a[k]);
-        const n=[ab[1]*ac[2]-ab[2]*ac[1],ab[2]*ac[0]-ab[0]*ac[2],ab[0]*ac[1]-ab[1]*ac[0]],len=Math.hypot(...n)||1;
-        m.face([a,b,c,back[i]],n.map(v=>v/len),mat,part,{tex:(x,y,z)=>steel(x,y,z)*.15},inv);
+      const key=depth+':'+thick+':'+poly.map(p=>p.join(',')).join(';')+':'+(sourcePoly===poly?'same':sourcePoly.map(p=>p.join(',')).join(';'));
+      let shape=hullGeometry.get(key);
+      if(!shape){
+        const front=poly.map(p=>point(...p,depth)),back=poly.map(p=>point(...p,depth+thick));
+        shape={walls:[],backs:[],fronts:[]};
+        for(let i=0;i<poly.length;i++){
+          const j=(i+1)%poly.length,a=front[i],b=front[j],c=back[j],ab=b.map((v,k)=>v-a[k]),ac=c.map((v,k)=>v-a[k]);
+          const n=[ab[1]*ac[2]-ab[2]*ac[1],ab[2]*ac[0]-ab[0]*ac[2],ab[0]*ac[1]-ab[1]*ac[0]],len=Math.hypot(...n)||1;
+          shape.walls.push({vertices:[a,b,c,back[i]],normal:n.map(v=>v/len)});
+        }
+        for(const indices of r79Triangles(poly)){
+          shape.backs.push(indices.map(i=>back[i]).reverse());
+          shape.fronts.push({vertices:indices.map(i=>front[i]),uv:indices.map(i=>[sourcePoly[i][0]/1672,sourcePoly[i][1]/941])});
+        }
+        hullGeometry.set(key,shape);
       }
-      for(const indices of r79Triangles(poly)){
-        m.face(indices.map(i=>back[i]).reverse(),w,mat,part,{tex:(x,y,z)=>steel(x,y,z)*.15},inv);
-        paintedSurface(m,'relicSource',indices.map(i=>front[i]),indices.map(i=>[sourcePoly[i][0]/1672,sourcePoly[i][1]/941]),1);
+      const part=m.part(),inv=m.inverse();
+      for(const wall of shape.walls)m.face(wall.vertices,wall.normal,mat,part,hullTone,inv);
+      for(let i=0;i<shape.backs.length;i++){
+        m.face(shape.backs[i],w,mat,part,hullTone,inv);
+        const front=shape.fronts[i];paintedSurface(m,'relicSource',front.vertices,front.uv,1);
       }
     }
     function support(m,x,y,depth=-.055,width=.174){paintedHand(m,'right',point(x,y,depth),width,{u:u.map(a=>-a),v});}
     function grip(m,x,y,depth=-.055){m.push();m.translate(...point(x,y,depth));m.pitch(-.25);b0(m,1,{trigger:index!==8,w:index===8?.026:.017});m.pop();}
     function pivot(m,x,y,angle){const p=point(x,y);m.translate(...p);m.roll(angle);m.translate(...p.map(a=>-a));}
     function orb(m,cx,cy,rx,ry,depth=-.016,light=1){
+      const key=[cx,cy,rx,ry,depth].join(',');let shape=orbGeometry.get(key);
+      if(!shape){
+      shape={back:[],front:[]};
       const main=rx>50,segments=main?28:16,rings=main?4:3,radius=Math.max(rx,ry)*scale;
       const uvInset=main?.58:.88,uvCx=cx-(main?8:0),uvCy=cy-(main?4:0);
       // Only the rear half is native geometry. A complete sphere can intersect
       // the slightly perspective-compensated artwork and expose a flat wedge.
-      const back=(r,angle)=>point(cx+rx*r*Math.cos(angle),cy+ry*r*Math.sin(angle),depth+radius*Math.sqrt(Math.max(0,1-r*r))+.006),part=m.part(),inv=m.inverse();
+      const back=(r,angle)=>point(cx+rx*r*Math.cos(angle),cy+ry*r*Math.sin(angle),depth+radius*Math.sqrt(Math.max(0,1-r*r))+.006);
       for(let row=0;row<3;row++)for(let k=0;k<20;k++){
         const r0=Math.sin(row/3*Math.PI/2),r1=Math.sin((row+1)/3*Math.PI/2),a0=k*Math.PI/10,a1=(k+1)*Math.PI/10;
         const vertices=row===0?[back(0,0),back(r1,a0),back(r1,a1)]:[back(r0,a0),back(r1,a0),back(r1,a1),back(r0,a1)];
         const ab=vertices[1].map((v,i)=>v-vertices[0][i]),ac=vertices[2].map((v,i)=>v-vertices[0][i]);
         const n=[ab[1]*ac[2]-ab[2]*ac[1],ab[2]*ac[0]-ab[0]*ac[2],ab[0]*ac[1]-ab[1]*ac[0]],length=Math.hypot(...n)||1;
-        m.face(vertices,n.map(v=>v/length),O.DEADSOUL,part,{},inv);
+        shape.back.push({vertices,normal:n.map(v=>v/length)});
       }
       const vertex=(r,angle)=>{
         const x=Math.cos(angle)*r,y=Math.sin(angle)*r,z=-radius*Math.sqrt(Math.max(0,1-r*r))-.002;
@@ -2046,16 +2072,22 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       for(let row=0;row<rings;row++)for(let k=0;k<segments;k++){
         const r0=Math.sin(row/rings*Math.PI/2),r1=Math.sin((row+1)/rings*Math.PI/2),a0=k*Math.PI*2/segments,a1=(k+1)*Math.PI*2/segments;
         const vertices=row===0?[vertex(0,0),vertex(r1,a0),vertex(r1,a1)]:[vertex(r0,a0),vertex(r1,a0),vertex(r1,a1),vertex(r0,a1)];
-        const r=(r0+r1)*.5,glassLight=light*(.96-.63*Math.pow(r,1.55))*(.95-.08*Math.cos((a0+a1)*.5));
-        paintedSurface(m,'relicSource',vertices.map(v=>v.p),vertices.map(v=>v.uv),glassLight);
+        const r=(r0+r1)*.5,light0=.96-.63*Math.pow(r,1.55),light1=.95-.08*Math.cos((a0+a1)*.5);
+        shape.front.push({vertices:vertices.map(v=>v.p),uv:vertices.map(v=>v.uv),light0,light1});
       }
+      orbGeometry.set(key,shape);
+      }
+      const part=m.part(),inv=m.inverse();
+      for(const face of shape.back)m.face(face.vertices,face.normal,O.DEADSOUL,part,{},inv);
+      for(const face of shape.front)paintedSurface(m,'relicSource',face.vertices,face.uv,light*face.light0*face.light1);
     }
     function retainingRim(m,cx,cy,rx,ry){
-      for(let k=0;k<28;k++){
+      const key=[cx,cy,rx,ry].join(',');let shape=rimGeometry.get(key);
+      if(!shape){shape=[];for(let k=0;k<28;k++){
         const a=k*Math.PI/14,b=(k+1)*Math.PI/14;
-        m.limb(point(cx+rx*Math.cos(a),cy+ry*Math.sin(a),.005),point(cx+rx*Math.cos(b),cy+ry*Math.sin(b),.005),.0040,.0040,WORN,6,{tex:steel});
-        m.limb(point(cx+(rx+3)*Math.cos(a),cy+(ry+3)*Math.sin(a),.003),point(cx+(rx+3)*Math.cos(b),cy+(ry+3)*Math.sin(b),.003),.0012,.0012,BRONZE,5,{tex:steel});
-      }
+        shape.push([point(cx+rx*Math.cos(a),cy+ry*Math.sin(a),.005),point(cx+rx*Math.cos(b),cy+ry*Math.sin(b),.005),point(cx+(rx+3)*Math.cos(a),cy+(ry+3)*Math.sin(a),.003),point(cx+(rx+3)*Math.cos(b),cy+(ry+3)*Math.sin(b),.003)]);
+      }rimGeometry.set(key,shape);}
+      for(const [a,b,c,d]of shape){m.limb(a,b,.0040,.0040,WORN,6,{tex:steel});m.limb(c,d,.0012,.0012,BRONZE,5,{tex:steel});}
     }
     return {point,hull,support,grip,pivot,orb,retainingRim,u,v,w};
   }

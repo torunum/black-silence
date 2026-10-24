@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "bytes": 22638198,
+  "sha256": "41f9646703cce0a5da5b6b063df10bf60de84c9c821ffb5f65255ce0a6443448",
+  "engineSha256": "6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899",
+  "villageSha256": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627",
+  "moduleHashes": {
+    "materials.js": "05e43b45ce521b52cf4d7b172177984699670d9de1261de5f88bf11f42b45517",
+    "combat.js": "a0644449f03a77ec7c121104ab2c6850e0caf6ceb0b17c553b8c6c273c08374c",
+    "enemy-animation.js": "593a5fae641f13ea9f6312409db4a3c3f5b75d5d9e6b31f90a6588dde00370d8",
+    "viewmodels.js": "47e65ce26a3f7d642ddcdd9d4cf59747d1e533c87a34aa7a7517db1f4914a236",
+    "finishers.js": "8c2c7bdf13e17005c3383054560b155986d8e706b5bfda81e9f1a8224ee3c5b0",
+    "reload-audio-data.js": "2f48b10a1225d1c007ee282d3c18f82c5022bb0267ed86d65feadf819ec1be30",
+    "reload-audio.js": "6b63eec006c8f7ee98392f323f630879140948f24165ab72b308bfb4b4d6be16",
+    "prologue.js": "7d94d4e54dbc0df11a2f29650e9129c9690d722bed0ffc556ac923d9f5200109",
+    "render-warmup.js": "9418307e9d71b28411b36e86e1ed3f4eb2eecda6b00d58144ce5bc79d110838c",
+    "village-presentation.js": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627"
+  },
+  "idempotentBuilds": 2,
+  "invalidInputsRefusedWithoutWrite": 8,
+  "fixture": "C:\\Users\\tehlike47\\game\\.dream-loop\\build-integrity-J9N0ay"
+}

@@ -39,6 +39,7 @@
     Wk() ||
     document.hidden;
   function stop(reason) {
+    let stopped = 0;
     for (const voice of voices) {
       if (voice.context.state !== "running") {
         // A suspended context cannot advance a 15ms fade or fire onended.
@@ -50,8 +51,14 @@
         voice.source.disconnect();
         voice.gain.disconnect();
         voices.delete(voice);
+        stopped++;
         continue;
       }
+      // State checks run every frame. A second stop() replaces the source's
+      // scheduled stop time, so do not keep postponing an existing release.
+      if (voice.stopping) continue;
+      voice.stopping = true;
+      stopped++;
       // A short gain release prevents discontinuity clicks during cancellation.
       const now = voice.context.currentTime;
       voice.gain.gain.cancelScheduledValues(now);
@@ -60,8 +67,8 @@
         voice.source.stop(now + 0.015);
       } catch (_) {}
     }
-    if (qa && voices.size)
-      history.push({ type: "stop", reason, serial, count: voices.size });
+    if (qa && stopped)
+      history.push({ type: "stop", reason, serial, count: stopped });
     token = null;
     weapon = -1;
   }
@@ -182,6 +189,14 @@
     if (value) stop("pause");
     return pause(value);
   };
+  // The native frame loop skips weapon updates after death. Stop at the real
+  // damage transition rather than waiting for a v$ call that will never run.
+  const damagePlayer = ta;
+  ta = function (...args) {
+    const result = damagePlayer(...args);
+    if (T.dead) stop("death");
+    return result;
+  };
   const volume = p5;
   p5 = function (value) {
     if (value <= 0) stop("mute");
@@ -246,6 +261,7 @@
       },
       prepare,
       stop,
+      damagePlayer: (...args) => ta(...args),
       start: () => Bm(),
       switch: (index) => Ik(index),
       originalEvents,
