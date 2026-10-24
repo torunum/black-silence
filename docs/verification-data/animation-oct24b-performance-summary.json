@@ -1,0 +1,149 @@
+{
+  "scope": "Serial ABBA, same chapter 0 starting camera, enemies removed equally, real RAF and keyboard reload. Whole-build observation including changed scenery; headless Chrome/shared host, not a hardware-independent FPS guarantee.",
+  "targets": [
+    {
+      "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\animation-20261024b\\baseline.html",
+      "sha256": "41f9646703cce0a5da5b6b063df10bf60de84c9c821ffb5f65255ce0a6443448",
+      "target": "C:\\Users\\tehlike47\\game\\.dream-loop\\animation-20261024b\\release-performance\\variant-0.html"
+    },
+    {
+      "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\animation-20261024b\\final-build\\THE-BLACK-SILENCE.html",
+      "sha256": "9cecdb74a11b616d9bfe12c031f2ff1c3e543f103cbc21dba6f280fdecd0e1f9",
+      "target": "C:\\Users\\tehlike47\\game\\.dream-loop\\animation-20261024b\\release-performance\\variant-1.html"
+    }
+  ],
+  "rows": [
+    {
+      "index": 4,
+      "variants": [
+        {
+          "frames": {
+            "meanMs": 18.463461538461544,
+            "p50": 18,
+            "p95": 18.400000000001455,
+            "fps": 54.16102489324027
+          },
+          "cpu": {
+            "meanMs": 11.14503816839393,
+            "p50": 10.199999988079071,
+            "p95": 16.69999998807907,
+            "fps": 89.72602739359719
+          }
+        },
+        {
+          "frames": {
+            "meanMs": 19.685714285714287,
+            "p50": 18,
+            "p95": 35.599999999998545,
+            "fps": 50.79825834542815
+          },
+          "cpu": {
+            "meanMs": 13.77246963712368,
+            "p50": 13.699999988079071,
+            "p95": 18.700000017881393,
+            "fps": 72.60861895854183
+          }
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "variants": [
+        {
+          "frames": {
+            "meanMs": 18.78736462093862,
+            "p50": 18,
+            "p95": 34.80000000000291,
+            "fps": 53.227263119463515
+          },
+          "cpu": {
+            "meanMs": 14.534050179425106,
+            "p50": 13.900000005960464,
+            "p95": 18.900000005960464,
+            "fps": 68.80394574498125
+          }
+        },
+        {
+          "frames": {
+            "meanMs": 18.498226950354624,
+            "p50": 18,
+            "p95": 18.200000000000728,
+            "fps": 54.05923511933285
+          },
+          "cpu": {
+            "meanMs": 14.273943661594055,
+            "p50": 13.700000017881393,
+            "p95": 17.899999976158142,
+            "fps": 70.05772361920084
+          }
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "variants": [
+        {
+          "frames": {
+            "meanMs": 17.85631578947367,
+            "p50": 18,
+            "p95": 18.100000000002183,
+            "fps": 56.00259380434467
+          },
+          "cpu": {
+            "meanMs": 10.945312499379119,
+            "p50": 10.900000005960464,
+            "p95": 13.400000005960464,
+            "fps": 91.36331192523976
+          }
+        },
+        {
+          "frames": {
+            "meanMs": 17.880104712041877,
+            "p50": 18,
+            "p95": 18.100000000002183,
+            "fps": 55.92808409709821
+          },
+          "cpu": {
+            "meanMs": 11.951295336911098,
+            "p50": 11.799999982118607,
+            "p95": 14.900000005960464,
+            "fps": 83.67293852336992
+          }
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "variants": [
+        {
+          "frames": {
+            "meanMs": 18.25311203319502,
+            "p50": 18,
+            "p95": 18.100000000002183,
+            "fps": 54.78517844964765
+          },
+          "cpu": {
+            "meanMs": 13.73909465042652,
+            "p50": 13.900000005960464,
+            "p95": 17,
+            "fps": 72.78499969930375
+          }
+        },
+        {
+          "frames": {
+            "meanMs": 19.00608695652173,
+            "p50": 18,
+            "p95": 35.60000000000218,
+            "fps": 52.61472297204559
+          },
+          "cpu": {
+            "meanMs": 14.541810345546953,
+            "p50": 14.199999988079071,
+            "p95": 19.799999982118607,
+            "fps": 68.76722885512145
+          }
+        }
+      ]
+    }
+  ]
+}

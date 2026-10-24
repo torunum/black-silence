@@ -1,0 +1,269 @@
+{
+  "metadata": {
+    "baselineSHA256": "41f9646703cce0a5da5b6b063df10bf60de84c9c821ffb5f65255ce0a6443448",
+    "candidateSHA256": "011c6789104a8db4d99ea7e6c604ea626d21c239db0e61f65ee6d8dce815258e",
+    "sourceSHA256": "5dbcfaf8908f8bde69d7c1625bce9ef163e874aab3ff22ded58d08040f1cec54",
+    "combatUnchanged": true,
+    "scope": "Private candidate changes enemy-animation.js only. Fixed-time scene uses controlled native flight state; separate video/trace uses actual Shift+W and RMB through native input/RAF.",
+    "physicsParity": {
+      "frames": 10,
+      "fields": [
+        "t",
+        "x",
+        "z",
+        "fy",
+        "h",
+        "flung",
+        "stun",
+        "hp"
+      ],
+      "passed": true,
+      "finalSpriteYAndRollIdentical": true
+    },
+    "limits": "No new stun, damage, health, collision or sound. Screenshots demonstrate controlled timing; live capture is separate. No FPS claim."
+  },
+  "result": {
+    "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\enemy-landing-oct24\\before.html",
+    "sha256": "41f9646703cce0a5da5b6b063df10bf60de84c9c821ffb5f65255ce0a6443448",
+    "frames": [
+      {
+        "t": 0.15,
+        "x": 19,
+        "z": 8,
+        "y": 6.0022384130145054,
+        "fy": 4.2,
+        "h": 1.652,
+        "flung": 0.9000000000000006,
+        "rotation": -0.9873576911282207,
+        "stun": 1.5,
+        "hp": 88,
+        "animation": {
+          "gait": 0,
+          "moving": 0,
+          "recoil": 0,
+          "attack": 0,
+          "staggered": false,
+          "recover": 0,
+          "anticipation": false,
+          "pose": "idle"
+        },
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78"
+      },
+      {
+        "t": 0.52,
+        "x": 19,
+        "z": 8,
+        "y": 7.275748229073115,
+        "fy": 4.2,
+        "h": 1.652,
+        "flung": 0.5300000000000022,
+        "rotation": -3.4228399959111666,
+        "stun": 1.5,
+        "hp": 88,
+        "animation": {
+          "gait": 0,
+          "moving": 0,
+          "recoil": 0,
+          "attack": 0,
+          "staggered": false,
+          "recover": 0,
+          "anticipation": false,
+          "pose": "idle"
+        },
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78"
+      },
+      {
+        "t": 0.94,
+        "x": 19,
+        "z": 8,
+        "y": 5.753221729272547,
+        "fy": 4.2,
+        "h": 1.652,
+        "flung": 0.11000000000000212,
+        "rotation": -6.187441531070172,
+        "stun": 1.5,
+        "hp": 88,
+        "animation": {
+          "gait": 0,
+          "moving": 0,
+          "recoil": 0,
+          "attack": 0,
+          "staggered": false,
+          "recover": 0,
+          "anticipation": false,
+          "pose": "idle"
+        },
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78"
+      },
+      {
+        "t": 1.035,
+        "x": 19,
+        "z": 8,
+        "y": 5.126945868288674,
+        "fy": 4.2,
+        "h": 1.652,
+        "flung": 0.015000000000002154,
+        "rotation": -6.812768068784709,
+        "stun": 1.5,
+        "hp": 88,
+        "animation": {
+          "gait": 0,
+          "moving": 0,
+          "recoil": 0,
+          "attack": 0,
+          "staggered": false,
+          "recover": 0,
+          "anticipation": false,
+          "pose": "idle"
+        },
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78"
+      },
+      {
+        "t": 1.06,
+        "x": 19,
+        "z": 8,
+        "y": 5.022096416545953,
+        "fy": 4.2,
+        "h": 1.652,
+        "flung": 0,
+        "rotation": 0,
+        "stun": 1.4916666666666667,
+        "hp": 88,
+        "animation": {
+          "gait": 0,
+          "moving": 0,
+          "recoil": 0,
+          "attack": 0,
+          "staggered": false,
+          "recover": 0,
+          "anticipation": false,
+          "pose": "idle"
+        },
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78"
+      },
+      {
+        "t": 1.1,
+        "x": 19,
+        "z": 8,
+        "y": 5.0224924795087285,
+        "fy": 4.2,
+        "h": 1.652,
+        "flung": 0,
+        "rotation": 0,
+        "stun": 1.4516666666666669,
+        "hp": 88,
+        "animation": {
+          "gait": 0,
+          "moving": 0,
+          "recoil": 0,
+          "attack": 0,
+          "staggered": false,
+          "recover": 0,
+          "anticipation": false,
+          "pose": "idle"
+        },
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78"
+      },
+      {
+        "t": 1.15,
+        "x": 19,
+        "z": 8,
+        "y": 5.023021996920786,
+        "fy": 4.2,
+        "h": 1.652,
+        "flung": 0,
+        "rotation": 0,
+        "stun": 1.4016666666666673,
+        "hp": 88,
+        "animation": {
+          "gait": 0,
+          "moving": 0,
+          "recoil": 0,
+          "attack": 0,
+          "staggered": false,
+          "recover": 0,
+          "anticipation": false,
+          "pose": "idle"
+        },
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78"
+      },
+      {
+        "t": 1.22,
+        "x": 19,
+        "z": 8,
+        "y": 5.023817052385703,
+        "fy": 4.2,
+        "h": 1.652,
+        "flung": 0,
+        "rotation": 0,
+        "stun": 1.3316666666666674,
+        "hp": 88,
+        "animation": {
+          "gait": 0,
+          "moving": 0,
+          "recoil": 0,
+          "attack": 0,
+          "staggered": false,
+          "recover": 0,
+          "anticipation": false,
+          "pose": "idle"
+        },
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78"
+      },
+      {
+        "t": 1.34,
+        "x": 19,
+        "z": 8,
+        "y": 5.025279519110828,
+        "fy": 4.2,
+        "h": 1.652,
+        "flung": 0,
+        "rotation": 0,
+        "stun": 1.2116666666666678,
+        "hp": 88,
+        "animation": {
+          "gait": 0,
+          "moving": 0,
+          "recoil": 0,
+          "attack": 0,
+          "staggered": false,
+          "recover": 0,
+          "anticipation": false,
+          "pose": "idle"
+        },
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78"
+      },
+      {
+        "t": 1.5,
+        "x": 19,
+        "z": 8,
+        "y": 5.027283773685507,
+        "fy": 4.2,
+        "h": 1.652,
+        "flung": 0,
+        "rotation": 0,
+        "stun": 1.0516666666666683,
+        "hp": 88,
+        "animation": {
+          "gait": 0,
+          "moving": 0,
+          "recoil": 0,
+          "attack": 0,
+          "staggered": false,
+          "recover": 0,
+          "anticipation": false,
+          "pose": "idle"
+        },
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78"
+      }
+    ],
+    "errors": [],
+    "setup": {
+      "x": 19,
+      "z": 8,
+      "floor": 4.2,
+      "h": 1.652,
+      "hp": 88
+    }
+  }
+}

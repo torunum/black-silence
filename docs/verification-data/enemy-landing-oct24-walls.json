@@ -1,0 +1,681 @@
+{
+  "metadata": {
+    "baselineSHA256": "41f9646703cce0a5da5b6b063df10bf60de84c9c821ffb5f65255ce0a6443448",
+    "candidateSHA256": "011c6789104a8db4d99ea7e6c604ea626d21c239db0e61f65ee6d8dce815258e",
+    "sourceSHA256": "5dbcfaf8908f8bde69d7c1625bce9ef163e874aab3ff22ded58d08040f1cec54",
+    "combatUnchanged": true,
+    "scope": "Private candidate changes enemy-animation.js only. Fixed-time scene uses controlled native flight state; separate video/trace uses actual Shift+W and RMB through native input/RAF.",
+    "physicsParity": {
+      "frames": 10,
+      "fields": [
+        "t",
+        "x",
+        "z",
+        "fy",
+        "h",
+        "flung",
+        "stun",
+        "hp"
+      ],
+      "passed": true,
+      "finalSpriteYAndRollIdentical": true
+    },
+    "limits": "No new stun, damage, health, collision or sound. Screenshots demonstrate controlled timing; live capture is separate. No FPS claim."
+  },
+  "result": {
+    "deterministic": [
+      {
+        "name": "grid/alive/0.0069",
+        "wallDamage": 40,
+        "landedAt": 0.222,
+        "fallFrames": 24,
+        "recovered": "alive",
+        "playerHP": 76
+      },
+      {
+        "name": "grid/alive/0.0167",
+        "wallDamage": 40,
+        "landedAt": 0.217,
+        "fallFrames": 10,
+        "recovered": "alive",
+        "playerHP": 64
+      },
+      {
+        "name": "grid/alive/0.1000",
+        "wallDamage": 40,
+        "landedAt": 0.2,
+        "fallFrames": 2,
+        "recovered": "alive",
+        "playerHP": 76
+      },
+      {
+        "name": "grid/wall-kill/0.0069",
+        "wallDamage": 40,
+        "landedAt": 0.222,
+        "fallFrames": 24,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "grid/wall-kill/0.0167",
+        "wallDamage": 40,
+        "landedAt": 0.217,
+        "fallFrames": 10,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "grid/wall-kill/0.1000",
+        "wallDamage": 40,
+        "landedAt": 0.2,
+        "fallFrames": 2,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "grid/dead-on-kick/0.0069",
+        "wallDamage": 0,
+        "landedAt": 0.215,
+        "fallFrames": 23,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "grid/dead-on-kick/0.0167",
+        "wallDamage": 0,
+        "landedAt": 0.217,
+        "fallFrames": 10,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "grid/dead-on-kick/0.1000",
+        "wallDamage": 0,
+        "landedAt": 0.2,
+        "fallFrames": 2,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "thin/alive/0.0069",
+        "wallDamage": 40,
+        "landedAt": 0.222,
+        "fallFrames": 24,
+        "recovered": "alive",
+        "playerHP": 76
+      },
+      {
+        "name": "thin/alive/0.0167",
+        "wallDamage": 40,
+        "landedAt": 0.217,
+        "fallFrames": 10,
+        "recovered": "alive",
+        "playerHP": 64
+      },
+      {
+        "name": "thin/alive/0.1000",
+        "wallDamage": 40,
+        "landedAt": 0.2,
+        "fallFrames": 2,
+        "recovered": "alive",
+        "playerHP": 76
+      },
+      {
+        "name": "thin/wall-kill/0.0069",
+        "wallDamage": 40,
+        "landedAt": 0.222,
+        "fallFrames": 24,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "thin/wall-kill/0.0167",
+        "wallDamage": 40,
+        "landedAt": 0.217,
+        "fallFrames": 10,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "thin/wall-kill/0.1000",
+        "wallDamage": 40,
+        "landedAt": 0.2,
+        "fallFrames": 2,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "thin/dead-on-kick/0.0069",
+        "wallDamage": 0,
+        "landedAt": 0.215,
+        "fallFrames": 23,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "thin/dead-on-kick/0.0167",
+        "wallDamage": 0,
+        "landedAt": 0.217,
+        "fallFrames": 10,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "thin/dead-on-kick/0.1000",
+        "wallDamage": 0,
+        "landedAt": 0.2,
+        "fallFrames": 2,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "grid-corner/alive/0.0069",
+        "wallDamage": 40,
+        "landedAt": 0.285,
+        "fallFrames": 29,
+        "recovered": "alive",
+        "playerHP": 76
+      },
+      {
+        "name": "grid-corner/alive/0.0167",
+        "wallDamage": 40,
+        "landedAt": 0.283,
+        "fallFrames": 12,
+        "recovered": "alive",
+        "playerHP": 76
+      },
+      {
+        "name": "grid-corner/alive/0.1000",
+        "wallDamage": 40,
+        "landedAt": 0.2,
+        "fallFrames": 2,
+        "recovered": "alive",
+        "playerHP": 76
+      },
+      {
+        "name": "grid-corner/wall-kill/0.0069",
+        "wallDamage": 40,
+        "landedAt": 0.285,
+        "fallFrames": 29,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "grid-corner/wall-kill/0.0167",
+        "wallDamage": 40,
+        "landedAt": 0.283,
+        "fallFrames": 12,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "grid-corner/wall-kill/0.1000",
+        "wallDamage": 40,
+        "landedAt": 0.2,
+        "fallFrames": 2,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "grid-corner/dead-on-kick/0.0069",
+        "wallDamage": 0,
+        "landedAt": 0.278,
+        "fallFrames": 28,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "grid-corner/dead-on-kick/0.0167",
+        "wallDamage": 0,
+        "landedAt": 0.267,
+        "fallFrames": 11,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "grid-corner/dead-on-kick/0.1000",
+        "wallDamage": 0,
+        "landedAt": 0.2,
+        "fallFrames": 2,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "thin-corner/alive/0.0069",
+        "wallDamage": 40,
+        "landedAt": 0.285,
+        "fallFrames": 29,
+        "recovered": "alive",
+        "playerHP": 76
+      },
+      {
+        "name": "thin-corner/alive/0.0167",
+        "wallDamage": 40,
+        "landedAt": 0.283,
+        "fallFrames": 12,
+        "recovered": "alive",
+        "playerHP": 76
+      },
+      {
+        "name": "thin-corner/alive/0.1000",
+        "wallDamage": 40,
+        "landedAt": 0.2,
+        "fallFrames": 2,
+        "recovered": "alive",
+        "playerHP": 76
+      },
+      {
+        "name": "thin-corner/wall-kill/0.0069",
+        "wallDamage": 40,
+        "landedAt": 0.285,
+        "fallFrames": 29,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "thin-corner/wall-kill/0.0167",
+        "wallDamage": 40,
+        "landedAt": 0.283,
+        "fallFrames": 12,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "thin-corner/wall-kill/0.1000",
+        "wallDamage": 40,
+        "landedAt": 0.2,
+        "fallFrames": 2,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "thin-corner/dead-on-kick/0.0069",
+        "wallDamage": 0,
+        "landedAt": 0.278,
+        "fallFrames": 28,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "thin-corner/dead-on-kick/0.0167",
+        "wallDamage": 0,
+        "landedAt": 0.267,
+        "fallFrames": 11,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "thin-corner/dead-on-kick/0.1000",
+        "wallDamage": 0,
+        "landedAt": 0.2,
+        "fallFrames": 2,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "thin-endpoint/alive/0.0069",
+        "wallDamage": 40,
+        "landedAt": 0.222,
+        "fallFrames": 24,
+        "recovered": "alive",
+        "playerHP": 76
+      },
+      {
+        "name": "thin-endpoint/alive/0.0167",
+        "wallDamage": 40,
+        "landedAt": 0.217,
+        "fallFrames": 10,
+        "recovered": "alive",
+        "playerHP": 76
+      },
+      {
+        "name": "thin-endpoint/alive/0.1000",
+        "wallDamage": 40,
+        "landedAt": 0.2,
+        "fallFrames": 2,
+        "recovered": "alive",
+        "playerHP": 76
+      },
+      {
+        "name": "thin-endpoint/wall-kill/0.0069",
+        "wallDamage": 40,
+        "landedAt": 0.222,
+        "fallFrames": 24,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "thin-endpoint/wall-kill/0.0167",
+        "wallDamage": 40,
+        "landedAt": 0.217,
+        "fallFrames": 10,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "thin-endpoint/wall-kill/0.1000",
+        "wallDamage": 40,
+        "landedAt": 0.2,
+        "fallFrames": 2,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "thin-endpoint/dead-on-kick/0.0069",
+        "wallDamage": 0,
+        "landedAt": 0.222,
+        "fallFrames": 24,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "thin-endpoint/dead-on-kick/0.0167",
+        "wallDamage": 0,
+        "landedAt": 0.217,
+        "fallFrames": 10,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "thin-endpoint/dead-on-kick/0.1000",
+        "wallDamage": 0,
+        "landedAt": 0.2,
+        "fallFrames": 2,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "mass/alive/0.0069",
+        "wallDamage": 40,
+        "landedAt": 0.222,
+        "fallFrames": 24,
+        "recovered": "alive",
+        "playerHP": 76
+      },
+      {
+        "name": "mass/alive/0.0167",
+        "wallDamage": 40,
+        "landedAt": 0.217,
+        "fallFrames": 10,
+        "recovered": "alive",
+        "playerHP": 64
+      },
+      {
+        "name": "mass/alive/0.1000",
+        "wallDamage": 40,
+        "landedAt": 0.2,
+        "fallFrames": 2,
+        "recovered": "alive",
+        "playerHP": 76
+      },
+      {
+        "name": "mass/wall-kill/0.0069",
+        "wallDamage": 40,
+        "landedAt": 0.222,
+        "fallFrames": 24,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "mass/wall-kill/0.0167",
+        "wallDamage": 40,
+        "landedAt": 0.217,
+        "fallFrames": 10,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "mass/wall-kill/0.1000",
+        "wallDamage": 40,
+        "landedAt": 0.2,
+        "fallFrames": 2,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "mass/dead-on-kick/0.0069",
+        "wallDamage": 0,
+        "landedAt": 0.215,
+        "fallFrames": 23,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "mass/dead-on-kick/0.0167",
+        "wallDamage": 0,
+        "landedAt": 0.217,
+        "fallFrames": 10,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "mass/dead-on-kick/0.1000",
+        "wallDamage": 0,
+        "landedAt": 0.2,
+        "fallFrames": 2,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "lower-floor/alive/0.0069",
+        "wallDamage": 40,
+        "landedAt": 0.611,
+        "fallFrames": 80,
+        "recovered": "alive",
+        "playerHP": 76
+      },
+      {
+        "name": "lower-floor/alive/0.0167",
+        "wallDamage": 40,
+        "landedAt": 0.6,
+        "fallFrames": 33,
+        "recovered": "alive",
+        "playerHP": 76
+      },
+      {
+        "name": "lower-floor/alive/0.1000",
+        "wallDamage": 40,
+        "landedAt": 0.6,
+        "fallFrames": 6,
+        "recovered": "alive",
+        "playerHP": 76
+      },
+      {
+        "name": "lower-floor/wall-kill/0.0069",
+        "wallDamage": 40,
+        "landedAt": 0.611,
+        "fallFrames": 80,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "lower-floor/wall-kill/0.0167",
+        "wallDamage": 40,
+        "landedAt": 0.6,
+        "fallFrames": 33,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "lower-floor/wall-kill/0.1000",
+        "wallDamage": 40,
+        "landedAt": 0.6,
+        "fallFrames": 6,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "lower-floor/dead-on-kick/0.0069",
+        "wallDamage": 0,
+        "landedAt": 0.611,
+        "fallFrames": 80,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "lower-floor/dead-on-kick/0.0167",
+        "wallDamage": 0,
+        "landedAt": 0.6,
+        "fallFrames": 33,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "lower-floor/dead-on-kick/0.1000",
+        "wallDamage": 0,
+        "landedAt": 0.6,
+        "fallFrames": 6,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "open-lower-floor/alive/0.0069",
+        "wallDamage": 0,
+        "landedAt": 1.583,
+        "fallFrames": 77,
+        "recovered": "alive",
+        "playerHP": 100
+      },
+      {
+        "name": "open-lower-floor/alive/0.0167",
+        "wallDamage": 0,
+        "landedAt": 1.583,
+        "fallFrames": 32,
+        "recovered": "alive",
+        "playerHP": 100
+      },
+      {
+        "name": "open-lower-floor/alive/0.1000",
+        "wallDamage": 0,
+        "landedAt": 1.5,
+        "fallFrames": 5,
+        "recovered": "alive",
+        "playerHP": 100
+      },
+      {
+        "name": "open-lower-floor/wall-kill/0.0069",
+        "wallDamage": 0,
+        "landedAt": 1.583,
+        "fallFrames": 77,
+        "recovered": "alive",
+        "playerHP": 100
+      },
+      {
+        "name": "open-lower-floor/wall-kill/0.0167",
+        "wallDamage": 0,
+        "landedAt": 1.583,
+        "fallFrames": 32,
+        "recovered": "alive",
+        "playerHP": 100
+      },
+      {
+        "name": "open-lower-floor/wall-kill/0.1000",
+        "wallDamage": 0,
+        "landedAt": 1.5,
+        "fallFrames": 5,
+        "recovered": "alive",
+        "playerHP": 100
+      },
+      {
+        "name": "open-lower-floor/dead-on-kick/0.0069",
+        "wallDamage": 0,
+        "landedAt": 1.583,
+        "fallFrames": 77,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "open-lower-floor/dead-on-kick/0.0167",
+        "wallDamage": 0,
+        "landedAt": 1.583,
+        "fallFrames": 32,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "open-lower-floor/dead-on-kick/0.1000",
+        "wallDamage": 0,
+        "landedAt": 1.5,
+        "fallFrames": 5,
+        "recovered": "corpse grounded",
+        "playerHP": 100
+      },
+      {
+        "name": "overkill-gib-cleanup",
+        "hp": -28,
+        "kills": 1
+      },
+      {
+        "name": "pistol-knockback-during-landing",
+        "hp": 54,
+        "initialHeight": 1.812288341282835
+      },
+      {
+        "name": "landing-corpse-spin-matches-native-pose"
+      },
+      {
+        "name": "extended-fall-rotation-stays-settled",
+        "floor": -4
+      }
+    ],
+    "raf": [
+      {
+        "life": "alive",
+        "wall": 26,
+        "x": 23.918193460937523,
+        "maxX": 25.548993460937513,
+        "radius": 0.45,
+        "y": 4.99577458568149,
+        "floor": 4.2,
+        "height": 1.652,
+        "landedX": 25.548993460937513,
+        "flung": 0,
+        "flungT": 0,
+        "kx": 0,
+        "dead": false,
+        "hp": 122,
+        "playerHP": 88,
+        "frames": 148,
+        "p95Ms": 18.599999999998545
+      },
+      {
+        "life": "wall-kill",
+        "wall": 26,
+        "x": 25.54899332421875,
+        "maxX": 25.54899332421875,
+        "radius": 0.45,
+        "y": 4.4973600000000005,
+        "floor": 4.2,
+        "height": 1.652,
+        "landedX": 25.54899332421875,
+        "flung": 0,
+        "flungT": 0,
+        "kx": 0,
+        "dead": true,
+        "hp": -8,
+        "playerHP": 100,
+        "frames": 105,
+        "p95Ms": 18.200000000000728
+      },
+      {
+        "life": "dead-on-kick",
+        "wall": 26,
+        "x": 25.548986862196188,
+        "maxX": 25.548986862196188,
+        "radius": 0.45,
+        "y": 4.4973600000000005,
+        "floor": 4.2,
+        "height": 1.652,
+        "landedX": 25.548986862196188,
+        "flung": 0,
+        "flungT": 0,
+        "kx": 0,
+        "dead": true,
+        "hp": -13,
+        "playerHP": 100,
+        "frames": 100,
+        "p95Ms": 18.100000000000364
+      }
+    ]
+  }
+}

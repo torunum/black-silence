@@ -1,15 +1,15 @@
 {
   "file": "THE-BLACK-SILENCE.html",
-  "bytes": 22638198,
-  "sha256": "41f9646703cce0a5da5b6b063df10bf60de84c9c821ffb5f65255ce0a6443448",
-  "verifiedAt": "2026-10-24T13:12:57.614Z",
+  "passed": true,
+  "bytes": 22645527,
+  "sha256": "9cecdb74a11b616d9bfe12c031f2ff1c3e543f103cbc21dba6f280fdecd0e1f9",
   "engineSha256": "6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899",
   "villageSha256": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627",
   "moduleHashes": {
     "materials.js": "05e43b45ce521b52cf4d7b172177984699670d9de1261de5f88bf11f42b45517",
     "combat.js": "a0644449f03a77ec7c121104ab2c6850e0caf6ceb0b17c553b8c6c273c08374c",
-    "enemy-animation.js": "593a5fae641f13ea9f6312409db4a3c3f5b75d5d9e6b31f90a6588dde00370d8",
-    "viewmodels.js": "47e65ce26a3f7d642ddcdd9d4cf59747d1e533c87a34aa7a7517db1f4914a236",
+    "enemy-animation.js": "5dbcfaf8908f8bde69d7c1625bce9ef163e874aab3ff22ded58d08040f1cec54",
+    "viewmodels.js": "18b4702798eb4f7e8ebcac6316f097ab400add66e056f3895f2dadac4f4b355b",
     "finishers.js": "8c2c7bdf13e17005c3383054560b155986d8e706b5bfda81e9f1a8224ee3c5b0",
     "reload-audio-data.js": "2f48b10a1225d1c007ee282d3c18f82c5022bb0267ed86d65feadf819ec1be30",
     "reload-audio.js": "6b63eec006c8f7ee98392f323f630879140948f24165ab72b308bfb4b4d6be16",
@@ -19,103 +19,101 @@
   },
   "idempotentBuilds": 2,
   "invalidInputsRefusedWithoutWrite": 8,
-  "scope": "Pixel-identical renderer optimization; native-death reload audio cleanup; scoped amber hell flames and reusable environment materials. Existing weapon gameplay and appearance preserved.",
-  "methodLimitations": [
-    "Articulated perspective-textured surfaces with volumetric backing, not arbitrary-view full 3D assets.",
-    "Some surface lighting is baked into artwork; hell architectural highlights include static illumination.",
-    "Tests cover specified flows, not a complete campaign playthrough or a universal FPS guarantee."
-  ],
+  "verifiedAt": "2026-10-24T15:12:24.771Z",
+  "scope": "Sniper bolt-hand shared motion; continuous Soul charge; viewport-aware distal sleeves; enemy landing recovery. Native engine, weapon stats, audio event timing and Village preserved.",
+  "previousRelease": "41f9646703cce0a5da5b6b063df10bf60de84c9c821ffb5f65255ce0a6443448",
   "verificationReports": [
     {
-      "file": "docs/verification-data/audio-lifecycle-2026-10-24-checks.json",
-      "sha256": "823d9bad61edf2e65c664e73cb0a79732f3c1cb337a4ffb38de385310a5da470"
+      "file": "docs/verification-data/animation-oct24b-aspects.json",
+      "sha256": "4d904f463351d9f2c4dd6c54f664c53a9432601b416f939ff802410e4c5f59b4"
     },
     {
-      "file": "docs/verification-data/audio-lifecycle-2026-10-24-raf.json",
-      "sha256": "32bd77c13fa11bac36367a53ddd4e312a2cf79d3b2f2995716294391b8587986"
+      "file": "docs/verification-data/animation-oct24b-build.json",
+      "sha256": "b6dac0b413990820b8d97e7c3fcd633ad88c415239bd034dba24aae1ed731722"
     },
     {
-      "file": "docs/verification-data/hell-refinement-oct24-after-resources.json",
-      "sha256": "f7ed9ce85a279cf267cec276a3048dbccc08a2236f5f7941bc96e0587ec375e2"
+      "file": "docs/verification-data/animation-oct24b-contact-parity.json",
+      "sha256": "4d7afeb353aec95ffd13990d179191dc96490591020d873e64a59be7d2a4c635"
     },
     {
-      "file": "docs/verification-data/hell-refinement-oct24-before-resources.json",
-      "sha256": "ea15b1fc82b8bec4aba11df090b71e3097fb07c47d5a84c9b6b20cdae3d0e444"
+      "file": "docs/verification-data/animation-oct24b-intermediate-audio.json",
+      "sha256": "86e971463520839d642d47f74c0c4f8167ec3cdf1763e47de5996006e082f622"
     },
     {
-      "file": "docs/verification-data/hell-refinement-oct24-invariants.json",
-      "sha256": "191bf0170f0247acde7379b80166a8463430b4e86b912e6dc996752a100d70f5"
+      "file": "docs/verification-data/animation-oct24b-performance-summary.json",
+      "sha256": "e89e125dffe61124e73a83817760e9ba44eaf342e6856c830810b1a2e74b2f72"
     },
     {
-      "file": "docs/verification-data/hell-refinement-oct24-navigation.json",
-      "sha256": "787055b10384737a6f580f5079f7efee4a59bb41f2294f381f1a175ffe24f27f"
+      "file": "docs/verification-data/animation-oct24b-performance.json",
+      "sha256": "2c8b301f8a27a9671c909168a04c78e20fb0de29cb115f4eef0dfd0ee3001717"
     },
     {
-      "file": "docs/verification-data/hell-refinement-oct24-scope.json",
-      "sha256": "61f4bcf50d5171e29890a3b70b48b2c0d24d867dd24d9389c5eff1138fa91b96"
+      "file": "docs/verification-data/animation-oct24b-runtime.json",
+      "sha256": "745e9a4f68c64d5f80e71bfdcbfb1a4d786b620cef275c29826181b5dbe39b01"
     },
     {
-      "file": "docs/verification-data/oct24-final-41f96467-display.json",
-      "sha256": "83af145cb7c5a1018c7d5cea12aaf86405d0466920e5c2d909086f75084320a1"
+      "file": "docs/verification-data/animation-oct24b-sleeve-extremes.json",
+      "sha256": "2d2e11dbd3e7961c5025d94b26a8eaff8b1264989d5ff945bef811283bd1df01"
     },
     {
-      "file": "docs/verification-data/oct24-final-41f96467-navigation.json",
-      "sha256": "49c432c0527e2e3b56f39caa9ab6f445ae9f57046165eb613f2d4698945fd915"
+      "file": "docs/verification-data/enemy-landing-oct24-after.json",
+      "sha256": "9e62718eb1c4289198174e100e27e4d3fe42b3acbfe5732960ebcb2fb010a802"
     },
     {
-      "file": "docs/verification-data/oct24-final-41f96467-performance-summary.json",
-      "sha256": "a0f96522ba709ebddd483c77cf4b1ecf6d7ad1cccbc5567d4b7e18fd14fee477"
+      "file": "docs/verification-data/enemy-landing-oct24-before.json",
+      "sha256": "0b0874580c412e6b457e646473df1322aa24a36a143ee0dec46ba3286ff7dc97"
     },
     {
-      "file": "docs/verification-data/oct24-final-41f96467-performance.json",
-      "sha256": "64156592eba4a6b5c60da0b951fbb92390b72b362667c9dedc57df48c8793025"
+      "file": "docs/verification-data/enemy-landing-oct24-combat.json",
+      "sha256": "b7b133a335e7fd64720c6afea7c7476cc4ecd3c0837fafd817d824f372eae15a"
     },
     {
-      "file": "docs/verification-data/oct24-final-41f96467-runtime.json",
-      "sha256": "c3a5e469cc1d4bf9861d55d4cee1620b15a162568e3e68c6bc8216c0a1d49eda"
+      "file": "docs/verification-data/enemy-landing-oct24-combined-791b-capture.json",
+      "sha256": "a5232f60d5eb5892561e1728cb38609f48123555798ebe939a648ab3e6f12549"
     },
     {
-      "file": "docs/verification-data/oct24-final-41f96467-stake-repeat-summary.json",
-      "sha256": "1fd7ed7b2ba0a115e49ed38fe4360936e2afbebe9e6b3fb089b85a62ecb05b95"
+      "file": "docs/verification-data/enemy-landing-oct24-combined-791b-live.json",
+      "sha256": "4b509449b7889b929b314f94050e64ab75c074fba8f9d351ec67d4398de864c7"
     },
     {
-      "file": "docs/verification-data/oct24-final-41f96467-stake-repeat.json",
-      "sha256": "e9568feed92897db5b9ccf7d4d3a38841264f500db614b299081279999ecbcd2"
+      "file": "docs/verification-data/enemy-landing-oct24-enemy.json",
+      "sha256": "42a6a6670d51f933b1256c14641925e24b16f01f2fa260a48f7233fcf1e8443e"
     },
     {
-      "file": "docs/verification-data/renderer-20261024-build-integrity.json",
-      "sha256": "1031ed16bc63fd69b1e5e2830e646e2e5567803b344605d82d7ec4d39a19ff4d"
+      "file": "docs/verification-data/enemy-landing-oct24-live-after.json",
+      "sha256": "4cb2171a9c960b5e873d0c83e0e4f1ff46a4be5ca29107a9912f3cc729e9e8d1"
     },
     {
-      "file": "docs/verification-data/renderer-20261024-final-parity.json",
-      "sha256": "a12bfbb9beaad65bc198a3365deb38488529603d18babf5d32f167cbdffb618e"
+      "file": "docs/verification-data/enemy-landing-oct24-live-before.json",
+      "sha256": "5721423c636ad78385bad9aa959b69c062600c10f0401a74241036489d598653"
     },
     {
-      "file": "docs/verification-data/renderer-20261024-kernel.json",
-      "sha256": "f51d5fa9d5764ef1d6308b413e1e60354ffb0de7e343a5d73108cda1d8df220f"
+      "file": "docs/verification-data/enemy-landing-oct24-tool-guards.json",
+      "sha256": "4c5bdb1265c0d1267539ccf4bb8f6319673fa0dcb6ed8fb33e59a9c7d6a187d9"
     },
     {
-      "file": "docs/verification-data/renderer-20261024-model-parity.json",
-      "sha256": "9f5e7cdecd7f38af939b13a4e6e3a59c397b167b62219bc680085e4de4a99f3c"
+      "file": "docs/verification-data/enemy-landing-oct24-walls.json",
+      "sha256": "9d1ad30a9095874757f5f785c6b9f55c0dfc17da76db16a0ff0f5359735761bc"
     },
     {
-      "file": "docs/verification-data/renderer-20261024-output-guards.json",
-      "sha256": "e938a7b15927d170bfb6cc1120e51e76b2a4556901ef68941a7b25fdafcd42ce"
+      "file": "docs/verification-data/prologue-capture-guards-oct24.json",
+      "sha256": "2e8bfaa8b86aaa284a0d1045fb1d2ddf283f6927f3e040e11b56a2baa376067b"
     },
     {
-      "file": "docs/verification-data/renderer-20261024-provenance.json",
-      "sha256": "bca699cddbc88eea592bb816c8e1827df2ff6028eeaa34662de4efc24e3bb623"
+      "file": "docs/verification-data/prologue-capture-zone-oct24.json",
+      "sha256": "e78ab8e437e23c26397ba128ff57a3ccf719b00a5a4d8f639fb50290703e1718"
     },
     {
-      "file": "docs/verification-data/renderer-20261024-soul-balanced-raw.json",
-      "sha256": "f98e99024193e3f2c2fda7bc924fbb97017b932476786218e30c7574860544e8"
-    },
-    {
-      "file": "docs/verification-data/renderer-20261024-soul-balanced-summary.json",
-      "sha256": "38dcb0cba030dfdcf98d48d72b72c1ae7c66a36ffa867271f96c316d14a40a6b"
+      "file": "docs/verification-data/sniper-native-9a06bd19.json",
+      "sha256": "40419c723cfd1d6e9b6effabd6e802f514af477e879f0e39483772b510e307b2"
     }
   ],
-  "previousRelease": "5c071b1892db41b162542460dc447586c4919df3d730bcf07164dea9dfe1e932",
-  "mediaManifest": "docs/previews/provenance.json",
-  "mediaNote": "23 October weapon media retained; current display/hell captures in docs/oct24-final-previews. Existing dated provenance is not relabelled."
+  "mediaManifest": "docs/weapon-animation-oct24b/provenance.json",
+  "mediaNote": "Motion clip and16:9 screenshots are actual intermediate b86 captures; final ultrawide screenshot is9cec. Provenance is explicit. Existing earlier media retained.",
+  "methodLimitations": [
+    "Articulated perspective-textured surfaces with volumetric backing, not arbitrary-view full3D anatomy.",
+    "Additional sleeve coverage has measurable reload rendering cost; Sniper/Cross p95frame increased in local1280x720ABBA. No overall smoothness gain claimed.",
+    "Ultrawide functional checks passed; performance comparison covers1280x720 only.",
+    "Audio49 checks were run on intermediate791b; unchanged audio/native code retained. Tests are not a full campaign playthrough."
+  ]
 }

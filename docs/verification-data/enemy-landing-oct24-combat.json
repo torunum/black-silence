@@ -1,0 +1,69 @@
+{
+  "metadata": {
+    "baselineSHA256": "41f9646703cce0a5da5b6b063df10bf60de84c9c821ffb5f65255ce0a6443448",
+    "candidateSHA256": "011c6789104a8db4d99ea7e6c604ea626d21c239db0e61f65ee6d8dce815258e",
+    "sourceSHA256": "5dbcfaf8908f8bde69d7c1625bce9ef163e874aab3ff22ded58d08040f1cec54",
+    "combatUnchanged": true,
+    "scope": "Private candidate changes enemy-animation.js only. Fixed-time scene uses controlled native flight state; separate video/trace uses actual Shift+W and RMB through native input/RAF.",
+    "physicsParity": {
+      "frames": 10,
+      "fields": [
+        "t",
+        "x",
+        "z",
+        "fy",
+        "h",
+        "flung",
+        "stun",
+        "hp"
+      ],
+      "passed": true,
+      "finalSpriteYAndRollIdentical": true
+    },
+    "limits": "No new stun, damage, health, collision or sound. Screenshots demonstrate controlled timing; live capture is separate. No FPS claim."
+  },
+  "result": {
+    "passed": 35,
+    "results": [
+      "spawn health receives the intended 25 percent increase",
+      "healthy enemies cannot stagger",
+      "failed critical-health roll cannot be retried",
+      "successful critical-health roll enables close-range finisher",
+      "airborne player cannot start finisher",
+      "wall blocks finisher selection",
+      "E action starts finisher on a valid target",
+      "finisher hides the interaction prompt during its animation",
+      "other attacks cannot steal a committed finisher kill",
+      "finisher suppresses movement and jumping without losing held input",
+      "finisher does not kill before contact frames",
+      "finisher final contact kills target and restores 15 health",
+      "finisher recovery releases combat lock",
+      "finisher final recovery frame preserves the head framing",
+      "level reset clears active finisher and target execution state",
+      "standing kick damage waits for boot contact",
+      "standing kick delivers its contact damage once",
+      "kick recovery cannot damage the same enemy again",
+      "forward sprint produces airborne dropkick",
+      "dropkick cancels reload and zoom",
+      "swept dropkick catches enemy crossed before contact and launches it",
+      "dropkick multi-frame contact cannot hit one target twice",
+      "thin authored walls stop launched enemies and apply collision damage",
+      "standing kick cannot damage through a wall",
+      "kick cannot break a prop on a different floor",
+      "sideways sprint remains a standing kick",
+      "paused game blocks new kicks",
+      "real first pistol bodyshot leaves 54HP without a stagger roll",
+      "real second pistol bodyshot can stagger a naturally damaged zombie",
+      "naturally wounded pistol target can be finished without editing its HP",
+      "natural pistol-to-finisher flow reaches a clean kill and recovery",
+      "real pistol headshot also exposes the occasional finisher window",
+      "real eight-pellet shotgun volley can stagger a naturally damaged zombie",
+      "real weapon damage still respects a failed stagger chance",
+      "a final ordinary shot kills normally instead of forcing a finisher"
+    ],
+    "arena": {
+      "px": 3,
+      "pz": 9
+    }
+  }
+}

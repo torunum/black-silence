@@ -1,0 +1,15 @@
+{
+  "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\animation-20261024b\\final-motion-video\\page@ce54493c1c63942a5193b09e42beae7b.webm",
+  "trimStart": 14.176,
+  "syncMarker": true,
+  "errors": [],
+  "audio": {
+    "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\animation-20261024b\\final-motion-video\\game-output.webm",
+    "bytes": 131969,
+    "duration": 8.265,
+    "startedAt": 14188.200000017881,
+    "sampleRate": 48000,
+    "contexts": 1
+  },
+  "scope": "Actual RAF weapon idle/fire/reload and post-volume WebAudio output. QA supplies weapons 4 and 7 and ammunition and removes enemies; real weapon switching, firing/reload, no scripted view pose."
+}

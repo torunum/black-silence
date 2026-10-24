@@ -1,40 +1,36 @@
-# Doğrulama — 24 Ekim 2026
+# Doğrulama — 24 Ekim 2026, animasyon turu
 
-Dosya: `THE-BLACK-SILENCE.html`, **22.638.198 bayt**. SHA256: `41f9646703cce0a5da5b6b063df10bf60de84c9c821ffb5f65255ce0a6443448`.
+Teslim dosyası: `THE-BLACK-SILENCE.html`, **22.645.527 bayt**. SHA256: `9cecdb74a11b616d9bfe12c031f2ff1c3e543f103cbc21dba6f280fdecd0e1f9`.
 
-Bu tur onaylanan silah/el görünümünü koruyarak çizim işini azaltır, ölümde devam eden doldurma sesini durdurur ve cehennem alevleriyle malzeme yaşam döngüsünü iyileştirir. Motor, Village sunumu, silah istatistikleri, botlar ve bitiriciler korunur.
+Ana HTML, derleme bilgisi ve teslim paketi aynı doğrulanmış sürümü içerir.
 
-## Son dosyada test edilenler
+Bu tur Sniper'ın sürgüyle temas eden elini, Soul'un doldurma sırasındaki enerji geçişini, bazı pozlarda görüntü içinde kesilen deri kol uçlarını ve savrulmadan sağ çıkan düşmanların iniş tepkisini düzeltir. Silah/karakter tasarımı yeniden yapılmadı. Hasar, cephane, doldurma süreleri, düşman sağlıkları, stagger olasılığı, AI, çarpışmalar ve bölüm yerleşimi korunur.
 
-| Kontrol | Kanıt ve kapsam |
-| --- | --- |
-| Derleme | Canlı kaynaklar gömülü metinlerle birebir; iki tekrar build aynı dosya. Sekiz bozuk marker girdisi yazılmadan reddedilir. Motor ve Village SHA korunur. |
-| Piksel eşitliği | Önceki teslimatla 594 silah/animasyon/geçiş/tekme/bitirici durumunda ham RGBA ve canvas birebir. Ayrıca 1.800 dejenere/ekran dışı/alpha/derinlik compositor vakası birebir. |
-| On silah | Gerçek R/RAF doldurma, cephane, ateş, geçiş, tekme/iptal ve çizim kalıntısı kontrolleri. |
-| Ekran ayarları | Üç ekran oranı ve iki native çözünürlükte 36 poz; iki gerçek doldurma sırasında yeniden boyutlandırma/ayar değişimi. Soul cache geri dönüşünde piksel eşitliği. |
-| Ses | 49 yaşam döngüsü kontrolü, ilk iki silahın gerçek R/RAF ses zaman çizelgeleri ve native ölümden sonra ses durması. |
-| Bölüm | 15 hareket noktası, gerçek E çıkışı, sonraki bölümde malzeme temizliği, dönüşte kararlılık ve cehennemde 20 silah pozu. |
+## Derleme ve kaynak sınırları
 
-Raporlar `verification-data/oct24-final-41f96467-*.json`, `renderer-20261024-*.json` ve `audio-lifecycle-2026-10-24-*.json` içindedir. Önceki `arsenal-final-5c071b18-*` raporları tarihsel teslimata aittir; yeniden koşulmuş gibi sunulmaz. Testler tam kampanya oynanışı veya tüm hataların bulunmuş olduğu anlamına gelmez.
+Standart derlemenin iki tekrarı aynı adayı üretir; sekiz bozuk marker girdisi yazılmadan reddedilir. Motor SHA256 `6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899`, Village SHA256 `d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627` korunur. Ayrıntılı modül/rapor hashleri [build bilgisinde](build-info.json) bulunur.
 
-## Performans
+Önceki teslimat `41f9646703cce0a5da5b6b063df10bf60de84c9c821ffb5f65255ce0a6443448` idi. `791b9d33…` ara adayı kol devamı düzeltmesinden önceki kontrolleri içerir; son dosyayla karıştırılmaz.
 
-Son seri ABBA önceki **5c071b18** teslimatıyla aynı bilgisayarda, bölüm 0 başlangıç kamerasında, gerçek klavye R ve RAF üzerinden karşılaştırıldı. Bütün turlar korunur; tablo doldurma karelerinin havuzlanmış sonuçlarıdır.
+## Kontrol kapsamı
 
-| Silah | Çizim CPU önce → yeni | RAF FPS önce → yeni | Kare p95 önce → yeni |
-| --- | --- | --- | --- |
-| Çift namlulu | 18,60 → 14,22 ms | 43,50 → 53,94 | 36,10 → 18,20 ms |
-| Nail | 12,53 → 11,38 ms | 54,18 → 55,16 | 18,20 → 18,20 ms |
-| Soul | 15,57 → 13,52 ms | 51,83 → 55,79 | 35,60 → 18,10 ms |
-| TNT | 12,37 → 11,37 ms | 53,12 → 55,16 | 35,10 → 18,20 ms |
-| Stake | 9,29 → 10,92 ms | 55,86 → 50,86 | 18,10 → 36,10 ms |
+- Sniper'da el ve sürgü ortak pivotu paylaşır. Soul'da enerji söndürme/yenileme geçişi devamlıdır. Kol devamı mevcut el/manşet UV'lerini değiştirmeden yalnız bitmap dışındaki deri yüzeyi uzatır; native derinlik ve kamera kırpması kullanılır. Geniş ekranlarda native silah tuvalinin dışında kalan yalnız kol devamı, ortası şeffaf ayrı bir kenar tamponunda çizilir; silah ölçeği ve kadrajı değişmez.
+- Yaşayan düşmanın havadaki rig'i ve 0,32 saniyelik görsel inişi; native saldırı/stagger önceliği, uzak aktörde texture bırakma, ölüm ve reset davranışlarıyla kontrol edilir. Yeni stun süresi eklenmez. [Ayrıntılı düşman kanıtı](enemy-landing-oct24.md).
+- On silah için gerçek R/RAF doldurma, cephane, ateş, geçiş, tekme/iptal ve çizim kalıntısı kontrolleri son 9cec adayında geçti; sayfa hatası yok. İşlevsel test kare süreleri FPS karşılaştırması değildir.
+- Görünüm değişiklikleri amaçlıdır: önceki sürümle tüm silah piksellerinin birebir aynı olduğu iddia edilmez. İlk iki hareket düzeltmesinin 616 karşılaştırmasında 579 eşit/37 amaçlı fark vardı; bu ara sonuç sonraki kol devamının final eşitlik iddiası değildir.
 
-Stake'in ilk yeni turunda FPS 46,11, ikinci turunda 55,82 ölçüldü; bu kuyruk havuzlanmış sonucu kötüleştirir ve saklanmamıştır. Stake için ardından değişmeyen aynı dosyalarla yapılan dar ABBA tekrarında sıcak CPU 9,96 → 8,80 ms, FPS 54,88 → 55,93 ve kare p95 18,2 → 18,1 ms ölçüldü; önceki kuyruk tekrarlanmadı. Bu tekrar ayrı raw/summary raporuyla korunur; ilk tabloyu değiştirmez. Soul için ayrı dengeli sıcak tekrar CPU 14,61 → 13,68 ms, FPS 54,24 → 55,61 ve aynı 18,2 ms p95 verdi. Dolayısıyla iyileşme ölçülüdür; her silahta/her sahnede akıcılığın tamamen çözüldüğü veya sabit FPS garanti edildiği iddia edilmez. Cehennem arenasının tamamı için bir FPS ölçümü değildir. [Yöntem ve seçim](renderer-performance-2026-10-24.md).
+## Değişmeyen bölüm ve ses
 
-## Görsel yöntem ve medya
+Prologue kaynağı `7d94d4e54dbc0df11a2f29650e9129c9690d722bed0ffc556ac923d9f5200109` olarak aynen korunur. Yeni ışık, dekor, rota veya düşman yerleşimi eklenmedi. Görsel doğrulama aracının duraklatılmış kamera konumunda yanlış bölge ambiyansını koruması düzeltildi: native göz yüksekliği ve native zone geçişi kullanılır. Önceki 41f sürümünde üç kamera ve beş bölüm ayrılış/dönüşü; sıfır texture reuse/leak ve kaynak byte korunumu doğrulandı. Bu test fixture düzeltmesidir, oyunu aydınlatma değişikliği değildir. [Yöntem ve kanıt](hell-environment.md).
+
+Doldurma kayıtları, ses zaman çizelgeleri ve önceki native ölümde ses durdurma düzeltmesi korunur. 49 ses kontrolü 791b ara adayında geçti; o testin girdisi son sürüm gibi etiketlenmez. Sonraki değişiklikler yalnız görsel kol devamını etkiler; ses kaynağı ve native zaman çizelgesi byte olarak aynıdır. Önceki 15 noktalı gerçek bölüm yürüyüşü/E çıkışı kanıtı tarihsel olarak korunur; değişmeyen bölüm için bu tur yeniden yürünmüş gibi sunulmaz.
+
+## Görsel yöntem, medya ve ölçüm sınırları
 
 Silahlar gerçek hacimli arka/yan yüzeylere ve hareketli parçalara bağlı perspektifli resim yüzeyleri kullanır; tam serbest açılı 3B varlık değildir. Bazı yüzey ışıkları resimde sabittir. Cehennem mimarisinin statik ışıkları dinamik namlu parlamasına tepki vermez; normal karakter/nesne ışıkları korunur.
 
-24 Ekim gerçek bölüm ve ekran oranı görüntüleri [son işlevsel kontrol notlarında](oct24-final-functional-qa.md) listelenir. `docs/previews/arsenal-reload.webm` ve eski silah görüntüleri **23 Ekim 5c071b18** teslimatından korunmuştur; yeni çekim gibi etiketlenmez. Silah piksellerinin eşitliği bu tur ayrıca doğrulanmıştır. Tasarım hedefleri `assets/` içinde ayrı tutulur.
+[Son silah hareket kanıtları](weapon-animation-oct24b.md) ve kayıtları `docs/weapon-animation-oct24b/`, düşman inişi kanıtı `docs/enemy-landing-oct24/` içindedir. Sabit zamanlı kontrollü sahneler ile gerçek klavye/fare/RAF kayıtları ayrı etiketlenir. `docs/previews/arsenal-reload.webm` ve eski silah görüntüleri 23 Ekim teslimatından korunmuştur; yeni çekim değildir. Tasarım hedefleri `assets/` içinde ayrı tutulur.
 
-Tarihsiz `dist/THE-BLACK-SILENCE-ARSENAL-HELL.zip` eski 23 Ekim paketidir. Yeni paket tarihli ayrı dosyaya yazılır; ZIP içindeki HTML hash'i ana dosyayla karşılaştırılır.
+[Önceki renderer ölçümleri](renderer-performance-2026-10-24.md) 5c071→41f karşılaştırmasına aittir; 9cec sürümünün FPS kazancı olarak kullanılmaz. Son 41f→9cec seri ABBA doldurma ölçümünde ortalama kare hızı Sniper için 54,16→50,80; Soul için 53,23→54,06; rifle için 56,00→55,93; Cross için 54,79→52,61 FPS oldu. Sniper/Cross tarafındaki ek çizim maliyeti ölçümde görünür; [ham süre özeti](verification-data/animation-oct24b-performance-summary.json) korunur. Bunlar aynı sahnede headless Chrome ve bu makinedeki kısa ölçümlerdir. Bu tur için sabit FPS veya bütün cihazlarda performans iyileşmesi iddiası yoktur. Testler belirtilen akışları doğrular; tam kampanya oynanışı veya bütün hataların bulunmuş olduğu anlamına gelmez.
+
+Son paket `dist/THE-BLACK-SILENCE-2026-10-24-ANIMATIONS.zip` adıyla ayrı oluşturulur. ZIP içindeki HTML ve build-info hashleri ana dosyayla eşleştirilir; önceki ZIP'ler değiştirilmez.

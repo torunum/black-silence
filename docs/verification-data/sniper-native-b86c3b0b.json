@@ -1,0 +1,458 @@
+{
+  "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\animation-20261024b\\final-build\\THE-BLACK-SILENCE.html",
+  "sha256": "b86c3b0be4da2fa1482c72cff0d6cf7c6072d5efb4403cca4f205796aa65d78b",
+  "scope": "Nine controlled native reload states (St.wstate/wtime), native presentation transform preserved; not actual R capture or performance measurement.",
+  "poses": [
+    {
+      "width": 1024,
+      "height": 768,
+      "reload": 0.12,
+      "nativePose": {
+        "index": 4,
+        "x": 0,
+        "y": 0.050624999999999996,
+        "z": 0,
+        "pitch": 0.16875,
+        "yaw": 0,
+        "roll": 0.50625,
+        "sx": 0,
+        "sy": -0.6638646688458977,
+        "recoil": 0,
+        "action": 0,
+        "spin": 0,
+        "reload": 0.12,
+        "heat": 0,
+        "kick": -1,
+        "empty": 0,
+        "drop": 0,
+        "exec": -1,
+        "execKind": 0
+      },
+      "state": "reload",
+      "wtime": 0.288,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 0,
+        "y0": 119,
+        "x1": 640,
+        "y1": 400
+      },
+      "anchors": {
+        "muzzle": [
+          304.1116960690625,
+          122.74982874697966
+        ]
+      },
+      "file": "sniper-1024x768-0.12.png"
+    },
+    {
+      "width": 1024,
+      "height": 768,
+      "reload": 0.2,
+      "nativePose": {
+        "index": 4,
+        "x": 0,
+        "y": 0.06,
+        "z": 0,
+        "pitch": 0.2,
+        "yaw": 0,
+        "roll": 0.6,
+        "sx": 0,
+        "sy": -0.6970547366032592,
+        "recoil": 0,
+        "action": 0,
+        "spin": 0,
+        "reload": 0.2,
+        "heat": 0,
+        "kick": -1,
+        "empty": 0,
+        "drop": 0,
+        "exec": -1,
+        "execKind": 0
+      },
+      "state": "reload",
+      "wtime": 0.48,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 0,
+        "y0": 106,
+        "x1": 640,
+        "y1": 376
+      },
+      "anchors": {
+        "muzzle": [
+          315.66375623989404,
+          108.87855920199937
+        ]
+      },
+      "file": "sniper-1024x768-0.20.png"
+    },
+    {
+      "width": 1024,
+      "height": 768,
+      "reload": 0.82,
+      "nativePose": {
+        "index": 4,
+        "x": 0,
+        "y": 0.06,
+        "z": 0,
+        "pitch": 0.2,
+        "yaw": 0,
+        "roll": 0.6,
+        "sx": 0,
+        "sy": -0.6252961729675114,
+        "recoil": 0,
+        "action": 0,
+        "spin": 0,
+        "reload": 0.82,
+        "heat": 0,
+        "kick": -1,
+        "empty": 0,
+        "drop": 0,
+        "exec": -1,
+        "execKind": 0
+      },
+      "state": "reload",
+      "wtime": 1.9679999999999997,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 0,
+        "y0": 92,
+        "x1": 640,
+        "y1": 376
+      },
+      "anchors": {
+        "muzzle": [
+          315.66375623989404,
+          108.87855920199937
+        ]
+      },
+      "file": "sniper-1024x768-0.82.png"
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "reload": 0.12,
+      "nativePose": {
+        "index": 4,
+        "x": 0,
+        "y": 0.050624999999999996,
+        "z": 0,
+        "pitch": 0.16875,
+        "yaw": 0,
+        "roll": 0.50625,
+        "sx": 0,
+        "sy": -0.45746133424006435,
+        "recoil": 0,
+        "action": 0,
+        "spin": 0,
+        "reload": 0.12,
+        "heat": 0,
+        "kick": -1,
+        "empty": 0,
+        "drop": 0,
+        "exec": -1,
+        "execKind": 0
+      },
+      "state": "reload",
+      "wtime": 0.288,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 0,
+        "y0": 119,
+        "x1": 640,
+        "y1": 400
+      },
+      "anchors": {
+        "muzzle": [
+          304.1116960690625,
+          122.74982874697966
+        ]
+      },
+      "file": "sniper-1280x720-0.12.png"
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "reload": 0.2,
+      "nativePose": {
+        "index": 4,
+        "x": 0,
+        "y": 0.06,
+        "z": 0,
+        "pitch": 0.2,
+        "yaw": 0,
+        "roll": 0.6,
+        "sx": 0,
+        "sy": -0.22185083331709776,
+        "recoil": 0,
+        "action": 0,
+        "spin": 0,
+        "reload": 0.2,
+        "heat": 0,
+        "kick": -1,
+        "empty": 0,
+        "drop": 0,
+        "exec": -1,
+        "execKind": 0
+      },
+      "state": "reload",
+      "wtime": 0.48,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 0,
+        "y0": 106,
+        "x1": 640,
+        "y1": 376
+      },
+      "anchors": {
+        "muzzle": [
+          315.66375623989404,
+          108.87855920199937
+        ]
+      },
+      "file": "sniper-1280x720-0.20.png"
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "reload": 0.82,
+      "nativePose": {
+        "index": 4,
+        "x": 0,
+        "y": 0.06,
+        "z": 0,
+        "pitch": 0.2,
+        "yaw": 0,
+        "roll": 0.6,
+        "sx": 0,
+        "sy": 0.006719466749671067,
+        "recoil": 0,
+        "action": 0,
+        "spin": 0,
+        "reload": 0.82,
+        "heat": 0,
+        "kick": -1,
+        "empty": 0,
+        "drop": 0,
+        "exec": -1,
+        "execKind": 0
+      },
+      "state": "reload",
+      "wtime": 1.9679999999999997,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 0,
+        "y0": 92,
+        "x1": 640,
+        "y1": 376
+      },
+      "anchors": {
+        "muzzle": [
+          315.66375623989404,
+          108.87855920199937
+        ]
+      },
+      "file": "sniper-1280x720-0.82.png"
+    },
+    {
+      "width": 1680,
+      "height": 720,
+      "reload": 0.12,
+      "nativePose": {
+        "index": 4,
+        "x": 0,
+        "y": 0.050624999999999996,
+        "z": 0,
+        "pitch": 0.16875,
+        "yaw": 0,
+        "roll": 0.50625,
+        "sx": 0,
+        "sy": 0.20958376714342908,
+        "recoil": 0,
+        "action": 0,
+        "spin": 0,
+        "reload": 0.12,
+        "heat": 0,
+        "kick": -1,
+        "empty": 0,
+        "drop": 0,
+        "exec": -1,
+        "execKind": 0
+      },
+      "state": "reload",
+      "wtime": 0.288,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 0,
+        "y0": 119,
+        "x1": 640,
+        "y1": 400
+      },
+      "anchors": {
+        "muzzle": [
+          304.1116960690625,
+          122.74982874697966
+        ]
+      },
+      "file": "sniper-1680x720-0.12.png"
+    },
+    {
+      "width": 1680,
+      "height": 720,
+      "reload": 0.2,
+      "nativePose": {
+        "index": 4,
+        "x": 0,
+        "y": 0.06,
+        "z": 0,
+        "pitch": 0.2,
+        "yaw": 0,
+        "roll": 0.6,
+        "sx": 0,
+        "sy": 0.40244572706201187,
+        "recoil": 0,
+        "action": 0,
+        "spin": 0,
+        "reload": 0.2,
+        "heat": 0,
+        "kick": -1,
+        "empty": 0,
+        "drop": 0,
+        "exec": -1,
+        "execKind": 0
+      },
+      "state": "reload",
+      "wtime": 0.48,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 0,
+        "y0": 106,
+        "x1": 640,
+        "y1": 376
+      },
+      "anchors": {
+        "muzzle": [
+          315.66375623989404,
+          108.87855920199937
+        ]
+      },
+      "file": "sniper-1680x720-0.20.png"
+    },
+    {
+      "width": 1680,
+      "height": 720,
+      "reload": 0.82,
+      "nativePose": {
+        "index": 4,
+        "x": 0,
+        "y": 0.06,
+        "z": 0,
+        "pitch": 0.2,
+        "yaw": 0,
+        "roll": 0.6,
+        "sx": 0,
+        "sy": 0.5495924664645251,
+        "recoil": 0,
+        "action": 0,
+        "spin": 0,
+        "reload": 0.82,
+        "heat": 0,
+        "kick": -1,
+        "empty": 0,
+        "drop": 0,
+        "exec": -1,
+        "execKind": 0
+      },
+      "state": "reload",
+      "wtime": 1.9679999999999997,
+      "finite": true,
+      "visible": true,
+      "bounds": {
+        "x0": 0,
+        "y0": 92,
+        "x1": 640,
+        "y1": 376
+      },
+      "anchors": {
+        "muzzle": [
+          315.66375623989404,
+          108.87855920199937
+        ]
+      },
+      "file": "sniper-1680x720-0.82.png"
+    }
+  ],
+  "errors": [],
+  "zoom": [
+    {
+      "width": 1024,
+      "height": 768,
+      "scoped": {
+        "zoom": true,
+        "fov": 32.22114378267018,
+        "skipped": true,
+        "state": "reload"
+      },
+      "restored": {
+        "fov": 74.66745509142606,
+        "state": "reload",
+        "finite": true,
+        "visible": true,
+        "index": 4
+      }
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "scoped": {
+        "zoom": true,
+        "fov": 32.19635630630657,
+        "skipped": true,
+        "state": "reload"
+      },
+      "restored": {
+        "fov": 74.74444916445955,
+        "state": "reload",
+        "finite": true,
+        "visible": true,
+        "index": 4
+      }
+    },
+    {
+      "width": 1680,
+      "height": 720,
+      "scoped": {
+        "zoom": true,
+        "fov": 32.17321330410763,
+        "skipped": true,
+        "state": "reload"
+      },
+      "restored": {
+        "fov": 74.7376627403311,
+        "state": "reload",
+        "finite": true,
+        "visible": true,
+        "index": 4
+      }
+    }
+  ],
+  "passed": true,
+  "visualReview": {
+    "inspected": [
+      "1024x768 phase 0.20",
+      "1280x720 phase 0.12",
+      "1680x720 phase 0.82"
+    ],
+    "status": "partial",
+    "finding": "Ultrawide 1680x720 phase 0.82 still exposes a straight left sleeve end at approximately x=198. Functional finite/zoom checks pass; this is not full visual acceptance."
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "purpose": "Correct native camera-height and zone lighting validation; no prologue art/source changes",
+  "input": "THE-BLACK-SILENCE.html",
+  "inputSHA256": "41f9646703cce0a5da5b6b063df10bf60de84c9c821ffb5f65255ce0a6443448",
+  "prologueSHA256": "7d94d4e54dbc0df11a2f29650e9129c9690d722bed0ffc556ac923d9f5200109",
+  "tool": "tools/hell-material-resource-tests.cjs",
+  "toolSHA256": "d564f85db45d01eb3f17c12af0e51d15f09ca6487412d600aeb37166c3076a72",
+  "cameraMethod": "Paused fixed viewpoints; native standing Yo and original TR(0,true) zone settling. Full movement proof is separate.",
+  "files": {
+    "arena.png": "34730a04d50e3ae90b1e5516358b075f0bdd443e09e8cd631c9102b9b26a9ce2",
+    "pyre.png": "084d90e01567962f6b10ea512babf95efcf4c63f7a49c6321aeadf888fb27a06",
+    "bridge.png": "8daa2d8de697b23bb4af38cd5ed220a27b668ceb8982a2948c342d9ba788daf5"
+  }
+}

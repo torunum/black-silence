@@ -1,0 +1,41 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "tool": "capture",
+      "output": "C:\\Users\\tehlike47\\game\\.dream-loop\\enemy-proof-guards",
+      "refused": true,
+      "inputUnchanged": true
+    },
+    {
+      "tool": "capture",
+      "output": "C:\\USERS\\TEHLIKE47\\GAME\\.DREAM-LOOP\\ENEMY-PROOF-GUARDS",
+      "refused": true,
+      "inputUnchanged": true
+    },
+    {
+      "tool": "capture",
+      "output": "C:\\Users\\tehlike47\\game\\.dream-loop\\enemy-proof-guards-alias",
+      "refused": true,
+      "inputUnchanged": true
+    },
+    {
+      "tool": "live-test",
+      "output": "C:\\Users\\tehlike47\\game\\.dream-loop\\enemy-proof-guards",
+      "refused": true,
+      "inputUnchanged": true
+    },
+    {
+      "tool": "live-test",
+      "output": "C:\\USERS\\TEHLIKE47\\GAME\\.DREAM-LOOP\\ENEMY-PROOF-GUARDS",
+      "refused": true,
+      "inputUnchanged": true
+    },
+    {
+      "tool": "live-test",
+      "output": "C:\\Users\\tehlike47\\game\\.dream-loop\\enemy-proof-guards-alias",
+      "refused": true,
+      "inputUnchanged": true
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "input": ".dream-loop/animation-20261024b/final-build/THE-BLACK-SILENCE.html",
+  "inputSHA256": "b86c3b0be4da2fa1482c72cff0d6cf7c6072d5efb4403cca4f205796aa65d78b",
+  "sourceSHA256": "2f6f00dd7bdfbc63c3a95236476a9cbcabe8252a27d22a8e0e367beba47cfa28",
+  "capture": "Actual RAF/native reload/fire/switch; QA inventory and enemy isolation only.",
+  "files": [
+    {
+      "file": "sniper-bolt.png",
+      "sha256": "c008e0c62b56a7782b1f9a4edd02f9de18689983455a7b1a7aead8897e129604",
+      "bytes": 477317,
+      "inputSHA256": "b86c3b0be4da2fa1482c72cff0d6cf7c6072d5efb4403cca4f205796aa65d78b"
+    },
+    {
+      "file": "sniper-idle.png",
+      "sha256": "8b1599328309c9984419dd1538f18ed9010921cbe8dc6937046e713f24bf941d",
+      "bytes": 519471,
+      "inputSHA256": "b86c3b0be4da2fa1482c72cff0d6cf7c6072d5efb4403cca4f205796aa65d78b"
+    },
+    {
+      "file": "sniper-sleeve-before.png",
+      "sha256": "c3d6928d612418c908d06ab937f56633040f2466779fceb7e04d2e4e0a156427",
+      "bytes": 487203,
+      "inputSHA256": "791b9d33e267ccdd78346c772e2860927fdb2ec324a472da5afa40eaf80efe42"
+    },
+    {
+      "file": "sniper-soul-motion.webm",
+      "sha256": "3c22547117d65ebffc9c7a6e9bbb7b75e9a9a9379f5614172da9699992945d95",
+      "bytes": 2711991,
+      "inputSHA256": "b86c3b0be4da2fa1482c72cff0d6cf7c6072d5efb4403cca4f205796aa65d78b"
+    },
+    {
+      "file": "soul-idle.png",
+      "sha256": "f33d792b08758af0aaed0e8c1aa78b041757a6cab87b8c3200956e795f87cb78",
+      "bytes": 529459,
+      "inputSHA256": "b86c3b0be4da2fa1482c72cff0d6cf7c6072d5efb4403cca4f205796aa65d78b"
+    },
+    {
+      "file": "soul-renew.png",
+      "sha256": "ac87b871e833f54665fc3c304d73af69ba1373c3ef5e6b0e3d83dcbcbe5c267b",
+      "bytes": 520843,
+      "inputSHA256": "b86c3b0be4da2fa1482c72cff0d6cf7c6072d5efb4403cca4f205796aa65d78b"
+    },
+    {
+      "file": "sniper-ultrawide-final.png",
+      "sha256": "ac28bb035b935bd23a16845a04f6c47f6aad252406d8d346d24f27446ccced2b",
+      "bytes": 624764,
+      "inputSHA256": "9cecdb74a11b616d9bfe12c031f2ff1c3e543f103cbc21dba6f280fdecd0e1f9"
+    },
+    {
+      "file": "sniper-ultrawide-9a06bd19.png",
+      "sha256": "3c124022108d0f7f00c0c6361ecce75bafe67a846f6306d5beca9fc1c48bd49c",
+      "bytes": 624966,
+      "inputSHA256": "9a06bd19e7a0f4d8905931d3868c2b59732934e7c8aa1d3f11b07c6903c93360"
+    },
+    {
+      "file": "sniper-resize-9a06bd19.png",
+      "sha256": "3306749a384a87a6c16a186a3e955bdc1c8b2e2666555c00d1043645f8eb9a32",
+      "bytes": 589440,
+      "inputSHA256": "9a06bd19e7a0f4d8905931d3868c2b59732934e7c8aa1d3f11b07c6903c93360"
+    }
+  ],
+  "finalReleaseSHA256": "9cecdb74a11b616d9bfe12c031f2ff1c3e543f103cbc21dba6f280fdecd0e1f9",
+  "finalSourceSHA256": "18b4702798eb4f7e8ebcac6316f097ab400add66e056f3895f2dadac4f4b355b"
+}

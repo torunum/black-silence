@@ -1,0 +1,61 @@
+{
+  "metadata": {
+    "baselineSHA256": "41f9646703cce0a5da5b6b063df10bf60de84c9c821ffb5f65255ce0a6443448",
+    "candidateSHA256": "011c6789104a8db4d99ea7e6c604ea626d21c239db0e61f65ee6d8dce815258e",
+    "sourceSHA256": "5dbcfaf8908f8bde69d7c1625bce9ef163e874aab3ff22ded58d08040f1cec54",
+    "combatUnchanged": true,
+    "scope": "Private candidate changes enemy-animation.js only. Fixed-time scene uses controlled native flight state; separate video/trace uses actual Shift+W and RMB through native input/RAF.",
+    "physicsParity": {
+      "frames": 10,
+      "fields": [
+        "t",
+        "x",
+        "z",
+        "fy",
+        "h",
+        "flung",
+        "stun",
+        "hp"
+      ],
+      "passed": true,
+      "finalSpriteYAndRollIdentical": true
+    },
+    "limits": "No new stun, damage, health, collision or sound. Screenshots demonstrate controlled timing; live capture is separate. No FPS claim."
+  },
+  "result": {
+    "passed": 27,
+    "tests": [
+      "native gait and body weight advance while actually moving",
+      "slow movement halves gait cadence without changing stride length",
+      "stunned actors do not walk in place",
+      "ready melee attack shows native anticipation frame before damage",
+      "anticipation does not apply or reschedule damage",
+      "contact has recovery motion without inflating the sprite",
+      "directional recoil responds to the actual hit without changing damage",
+      "stagger visibly settles weight below the standing pose",
+      "stagger animation preserves position and hitbox dimensions",
+      "stagger expiry blends into recovery",
+      "flung trajectory and spin retain priority",
+      "living throw uses native reeling rig instead of a frozen walk frame",
+      "landing starts bounded presentation recovery after physical flight ends",
+      "landing weight changes sprite only, preserving root, hitbox and health",
+      "zero game time does not advance landing recovery",
+      "repeated hit does not restart landing or retain a body offset",
+      "death immediately returns landing sprite ownership to native corpse animation",
+      "short remaining throw still enters landing recovery",
+      "far actor releases the impact texture even when native distance culling skips its rig",
+      "landing preserves an urgent attack telegraph without advancing its damage",
+      "native contact still damages on its normal cooldown during landing recovery",
+      "stagger cue takes priority over ongoing landing weight and pain frames",
+      "finisher starts with enemy animation module installed",
+      "execution retains its own target rotation",
+      "boss silhouette and dormant animation remain native",
+      "death owns the sprite and clears living recoil",
+      "scene reset discards transient animation state"
+    ],
+    "arena": {
+      "px": 3,
+      "pz": 7
+    }
+  }
+}

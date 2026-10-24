@@ -21,6 +21,9 @@
         staggered: false,
         recover: 0,
         anticipation: false,
+        landing: 0,
+        landingRotation: 0,
+        landingMap: null,
         visual: null,
         pose: "idle",
       };
@@ -174,6 +177,11 @@
       state.beforeX = enemy.x;
       state.beforeZ = enemy.z;
       state.beforeAttack = enemy.atkAnim || 0;
+      state.beforeFlight = enemy.flung > 0;
+      state.beforeRotation = state.beforeFlight ? Math.atan2(
+        Math.sin(enemy.sp.material.rotation),
+        Math.cos(enemy.sp.material.rotation),
+      ) : 0;
       state.walked = 0;
       state.anticipation = anticipate(enemy);
     }
@@ -182,7 +190,19 @@
       const state = stateFor(enemy);
       if (!ownsPose(enemy)) {
         state.recoil = state.attack = state.recover = state.moving = 0;
+        state.landing = 0;
+        state.landingMap = null;
         state.staggered = false;
+        // Native flight owns trajectory/spin. Its early return otherwise leaves
+        // the last walking/idle frame frozen throughout the throw.
+        if (
+          enemy.flung > 0 && !enemy.dead && !enemy.gone && !enemy.boss &&
+          !enemy.executing && !enemy.dormant && !v.cine
+        ) {
+          rigPose(enemy, enemy.sever?.legs ? "crawlPain" : "pain",
+            enemy.flungT < Lu.secs * 0.5 ? 0 : 1);
+          state.pose = "airborne";
+        }
         continue;
       }
       // The original melee scale ballooned the whole sprite by 22%. Keep the
@@ -192,6 +212,22 @@
       state.recoil = Math.max(0, state.recoil - seconds);
       state.attack = Math.max(0, state.attack - seconds);
       state.recover = Math.max(0, state.recover - seconds);
+      state.landing = Math.max(0, state.landing - seconds);
+      if (!state.landing && state.landingMap) {
+        // Distant actors skip native rig updates. Release our last pose there
+        // too; do not leave a recovered actor frozen in the impact frame.
+        if (enemy.sp.material.map === state.landingMap) {
+          originalRigUpdate(enemy, 0, false, true);
+          state.pose = "native";
+        }
+        state.landingMap = null;
+      }
+      if (state.beforeFlight && !enemy.fly) {
+        state.landing = 0.32;
+        // Keep the final visible roll through contact, then settle it quickly.
+        // Ground collision, hitbox, stun and AI timers remain native.
+        state.landingRotation = clamp(state.beforeRotation, -0.65, 0.65);
+      }
       if ((enemy.atkAnim || 0) > state.beforeAttack + 0.001)
         state.attack = 0.31;
 
@@ -268,6 +304,21 @@
         z += state.recoilZ * pulse;
         rotation -= state.hitSide * pulse * 0.075;
       }
+      if (state.landing > 0 && !(enemy.stagger > 0)) {
+        const elapsed = 0.32 - state.landing;
+        const compress = elapsed < 0.065
+          ? elapsed / 0.065
+          : Math.pow(Math.max(0, 1 - (elapsed - 0.065) / 0.255), 2);
+        const roll = Math.pow(Math.max(0, 1 - elapsed / 0.14), 2);
+        rotation += state.landingRotation * roll;
+        y -= compress * (crawling ? 0.018 : 0.04);
+        if (!state.anticipation && !(enemy.hurt > 0) && !(enemy.atkAnim > 0)) {
+          if (rigPose(enemy, crawling ? "crawlPain" : "pain", elapsed < 0.11 ? 1 : 0)) {
+            state.landingMap = enemy.sp.material.map;
+            state.pose = "landing";
+          }
+        }
+      }
       const visual = {
         basex: enemy.sp.position.x,
         basey: enemy.sp.position.y,
@@ -306,6 +357,7 @@
             staggered: state.staggered,
             recover: state.recover,
             anticipation: state.anticipation,
+            landing: state.landing,
             pose: state.pose,
           }
         : null;

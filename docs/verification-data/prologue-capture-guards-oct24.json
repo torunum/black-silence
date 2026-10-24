@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "tool": "tools/hell-material-resource-tests.cjs",
+  "toolSHA256": "d564f85db45d01eb3f17c12af0e51d15f09ca6487412d600aeb37166c3076a72",
+  "input": "THE-BLACK-SILENCE.html",
+  "inputSHA256": "41f9646703cce0a5da5b6b063df10bf60de84c9c821ffb5f65255ce0a6443448",
+  "checks": [
+    {
+      "output": "C:\\Users\\tehlike47\\game",
+      "rejected": true,
+      "inputUnchanged": true
+    },
+    {
+      "output": "C:\\USERS\\TEHLIKE47\\GAME",
+      "rejected": true,
+      "inputUnchanged": true
+    }
+  ]
+}

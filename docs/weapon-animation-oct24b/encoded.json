@@ -1,0 +1,12 @@
+{
+  "file": "C:\\Users\\tehlike47\\game\\docs\\weapon-animation-oct24b\\sniper-soul-motion.webm",
+  "videoCodec": "VP9",
+  "audioCodec": "Opus",
+  "fps": 25,
+  "trimStart": 13.88,
+  "markerFrames": 7,
+  "audioSource": "C:\\Users\\tehlike47\\game\\.dream-loop\\animation-20261024b\\final-motion-video\\game-output.webm",
+  "audioDuration": 8.265,
+  "bytes": 2711991,
+  "syncScope": "Audio starts when the preroll marker is removed; trim uses the first non-marker video frame. Video frame granularity is 40ms; physical audio-output latency is not measured."
+}

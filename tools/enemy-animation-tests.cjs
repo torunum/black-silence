@@ -4,7 +4,7 @@ const path = require("node:path");
 const { pathToFileURL } = require("node:url");
 const { chromium } = require("playwright");
 const root = path.resolve(__dirname, "..");
-const target = path.join(root, "THE-BLACK-SILENCE.html");
+const target = path.resolve(process.env.GAME_HTML || path.join(root, "THE-BLACK-SILENCE.html"));
 (async () => {
   const browser = await chromium.launch({
     channel: "chrome",
@@ -170,6 +170,61 @@ const target = path.join(root, "THE-BLACK-SILENCE.html");
             Math.abs(flying.sp.material.rotation) > 0.01,
           "flung trajectory and spin retain priority",
         );
+        check(q.enemyAnimation(flying).pose === "airborne",
+          "living throw uses native reeling rig instead of a frozen walk frame");
+        for (let i = 0; i < 160 && flying.flung > 0; i++) q.enemyStep(1 / 120);
+        check(!flying.flung && q.enemyAnimation(flying).landing > 0,
+          "landing starts bounded presentation recovery after physical flight ends");
+        const landingPhysical = [flying.x, flying.z, flying.h, flying.w, flying.hp];
+        flying.stun = 1;
+        q.enemyStep(0.06);
+        check(q.enemyAnimation(flying).pose === "landing" &&
+          flying.sp.position.y < flying.fy + flying.h / 2 &&
+          landingPhysical.every((n,i)=>n === [flying.x,flying.z,flying.h,flying.w,flying.hp][i]),
+          "landing weight changes sprite only, preserving root, hitbox and health");
+        const remaining = q.enemyAnimation(flying).landing;
+        q.enemyStep(0);
+        check(q.enemyAnimation(flying).landing === remaining,
+          "zero game time does not advance landing recovery");
+        q.damage(flying, 1, {wIdx:0,dir:{x:1,z:0}});
+        q.enemyStep(0.32);
+        check(q.enemyAnimation(flying).landing === 0 &&
+          Math.abs(flying.sp.position.y - flying.fy - flying.h/2) < 0.007,
+          "repeated hit does not restart landing or retain a body offset");
+        const landingCorpse = reset(2);
+        landingCorpse.flung=0.04; landingCorpse.flungT=1;
+        q.enemyStep(0.05);
+        q.damage(landingCorpse,landingCorpse.hp+1,{wIdx:0});
+        q.enemyStep(0.01);
+        check(landingCorpse.dead && q.enemyAnimation(landingCorpse).landing===0,
+          "death immediately returns landing sprite ownership to native corpse animation");
+        const distant = reset(2);
+        distant.stun=2; q.enemyStep(0.01);
+        const restingMap=distant.sp.material.map;
+        distant.flung=0.04; distant.flungT=1.01;
+        q.enemyStep(0.05);
+        check(q.enemyAnimation(distant).landing>0,"short remaining throw still enters landing recovery");
+        q.C.px+=40;
+        q.enemyStep(0.4);
+        check(q.enemyAnimation(distant).landing===0 && distant.sp.material.map===restingMap,
+          "far actor releases the impact texture even when native distance culling skips its rig");
+        const urgent = reset(1.4);
+        urgent.stun=2; urgent.flung=0.04; urgent.flungT=1.01;
+        q.enemyStep(0.05);
+        urgent.stun=0; urgent.cool=0.15;
+        q.C.spawnGuard=0; q.T.armor=0;
+        const hpBeforeUrgent=q.T.hp;
+        q.enemyStep(0.03);
+        check(q.enemyAnimation(urgent).landing>0 && q.enemyAnimation(urgent).anticipation &&
+          q.enemyAnimation(urgent).pose==='atk' && q.T.hp===hpBeforeUrgent,
+          "landing preserves an urgent attack telegraph without advancing its damage");
+        q.enemyStep(0.13);
+        check(urgent.atkAnim>0 && q.enemyAnimation(urgent).pose==='atk' && q.T.hp<hpBeforeUrgent,
+          "native contact still damages on its normal cooldown during landing recovery");
+        urgent.stagger=1; q.enemyStep(0.01);
+        check(q.enemyAnimation(urgent).staggered && q.enemyAnimation(urgent).pose==='pain' &&
+          Math.abs(urgent.sp.material.rotation)<0.04 && urgent.sp.material.color.r===1,
+          "stagger cue takes priority over ongoing landing weight and pain frames");
         const executed = reset(2);
         executed.stagger = 4;
         check(

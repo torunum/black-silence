@@ -4,7 +4,7 @@ const path = require("node:path");
 const { pathToFileURL } = require("node:url");
 const { chromium } = require("playwright");
 const root = path.resolve(__dirname, "..");
-const output = path.join(root, "THE-BLACK-SILENCE.html");
+const output = path.resolve(process.env.GAME_HTML || path.join(root, "THE-BLACK-SILENCE.html"));
 (async () => {
   const browser = await chromium.launch({
     headless: true,
