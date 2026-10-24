@@ -1,0 +1,16 @@
+{
+  "purpose": "Expected rejection of a private, unshipped reciprocal prototype",
+  "cases": 3600,
+  "differences": 156,
+  "expectedRejection": true,
+  "inputs": {
+    "baseline": {
+      "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\sleeve-perf-oct24c\\baseline.html",
+      "sha256": "9cecdb74a11b616d9bfe12c031f2ff1c3e543f103cbc21dba6f280fdecd0e1f9"
+    },
+    "candidate": {
+      "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\sleeve-perf-oct24c\\reciprocal.html",
+      "sha256": "65afe6cd0ddcbbee25a8131d9b1ecb2a69e3fed41da29885b1b17827fe8e55a2"
+    }
+  }
+}

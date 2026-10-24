@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "beforeSHA256": "7d94d4e54dbc0df11a2f29650e9129c9690d722bed0ffc556ac923d9f5200109",
+  "afterSHA256": "34e26edbff17862cb40142b3a167187f9379ec8ef25d414773da28a63847561a",
+  "entireMapExact": true,
+  "geometryTransformsExact": true,
+  "globalMaterialRoutesExact": true,
+  "ritualStandards": 2,
+  "alteredMaterialCalls": 28,
+  "texture": {
+    "width": 32,
+    "height": 64,
+    "shared": true,
+    "opaque": true,
+    "reset": true
+  },
+  "inputs": [
+    {
+      "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\ritual-ivory-20261024\\baseline.html",
+      "sha256": "9cecdb74a11b616d9bfe12c031f2ff1c3e543f103cbc21dba6f280fdecd0e1f9"
+    },
+    {
+      "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\ritual-ivory-20261024\\before-prologue.js",
+      "sha256": "7d94d4e54dbc0df11a2f29650e9129c9690d722bed0ffc556ac923d9f5200109"
+    },
+    {
+      "file": "C:\\Users\\tehlike47\\game\\src\\prologue.js",
+      "sha256": "34e26edbff17862cb40142b3a167187f9379ec8ef25d414773da28a63847561a"
+    }
+  ]
+}

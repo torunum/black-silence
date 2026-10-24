@@ -1,0 +1,22 @@
+{
+  "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\sleeve-perf-oct24c\\baseline.html",
+  "inputSHA256": "9cecdb74a11b616d9bfe12c031f2ff1c3e543f103cbc21dba6f280fdecd0e1f9",
+  "cases": [
+    {
+      "output": "C:\\Users\\tehlike47\\game\\.dream-loop\\sleeve-perf-oct24c\\baseline.html",
+      "refused": true,
+      "unchanged": true
+    },
+    {
+      "output": "C:\\USERS\\TEHLIKE47\\GAME\\.DREAM-LOOP\\SLEEVE-PERF-OCT24C\\BASELINE.HTML",
+      "refused": true,
+      "unchanged": true
+    },
+    {
+      "output": "C:\\Users\\tehlike47\\game\\.dream-loop\\sleeve-perf-oct24c\\input-alias\\baseline.html",
+      "refused": true,
+      "unchanged": true
+    }
+  ],
+  "passed": true
+}

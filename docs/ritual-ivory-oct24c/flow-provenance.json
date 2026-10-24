@@ -1,0 +1,11 @@
+{
+  "baselineSourceSHA256": "34e26edbff17862cb40142b3a167187f9379ec8ef25d414773da28a63847561a",
+  "sourceSHA256": "c7614fb312a6171350279bc2cd7cfbc27984c60e13d8d5ddfdf944ffb36176c7",
+  "baselineSHA256": "4d3c15d980075a7c2b25d0bfc6d7912d8ead03fb0d55f07d5eaae2b5a5b4db86",
+  "candidateSHA256": "2d7f02ef8a0d30b007529ab685a7cb67383c04af7b328d422dec6b850701166a",
+  "method": "Matched native camera/zone at controlled native animation times 0, 0.5 and 1; separate unpaused real RAF check verifies offsets advance. Shipped paired PNGs show phase 0.5. Not a real-time video.",
+  "files": {
+    "before-flow.png": "bcac3e70de89b73a9b721ed720bea3350993158c54d53677e6ca2707633ba870",
+    "after-flow.png": "447c8024ef3b683de8d95780a11db9eb1f948406b661235f5af75aca6c7947da"
+  }
+}

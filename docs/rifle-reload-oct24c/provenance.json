@@ -1,0 +1,93 @@
+{
+  "inputSHA256": "d5a41a6872cb7b58f0e7f4b95c58e55d466f520070a64adfa2cf66cc1df564df",
+  "sourceSHA256": "e9e098dc1cd5d0627c1ab47c4da255e5bb93f2e581326ceb5a849b60927a95e6",
+  "scope": "Actual keyboard R/native RAF firing and reload with game WebAudio; enemies removed. Contact sheet samples 0.5, 1, 1.5 and 2 seconds of the encoded actual clip. No rendered game asset was changed to make these evidence images.",
+  "video": {
+    "file": "C:\\Users\\tehlike47\\game\\docs\\rifle-reload-oct24c\\rifle-reload.webm",
+    "videoCodec": "VP9",
+    "audioCodec": "Opus",
+    "fps": 25,
+    "trimStart": 13.32,
+    "markerFrames": 7,
+    "audioSource": "C:\\Users\\tehlike47\\game\\.dream-loop\\rifle-reload-oct24c\\video\\game-output.webm",
+    "audioDuration": 2.756800000011921,
+    "bytes": 943712,
+    "syncScope": "Audio starts when the preroll marker is removed; trim uses the first non-marker video frame. Video frame granularity is 40ms; physical audio-output latency is not measured."
+  },
+  "files": [
+    {
+      "file": "docs/rifle-reload-oct24c/rifle-reload.webm",
+      "sha256": "302dcac7ac9779a514186975cf282439ebb8e9c9d1cf559f916b4d7fc0d12dd7"
+    },
+    {
+      "file": "docs/rifle-reload-oct24c/contact-sheet.png",
+      "sha256": "eb2398fcb0d651e7eddc508e67a771ea1c0a799f028eeafd930a53d9a1ba0cd0"
+    }
+  ],
+  "reports": [
+    {
+      "file": "docs/verification-data/lava-flow-oct24c-after.json",
+      "sha256": "aa2dd5fe3fd80cef9637a29a593ac7c8dda901de24f23597d4d2e689f3f46e31"
+    },
+    {
+      "file": "docs/verification-data/lava-flow-oct24c-before.json",
+      "sha256": "c5c586425d11a49e30d87688144e8d3122e90091dfbb1507a359c4728a54ac7c"
+    },
+    {
+      "file": "docs/verification-data/lava-flow-oct24c.json",
+      "sha256": "4ccb47233b531bc9617a1df2a60dc0432274bc8bd115ff573214031efc551cb0"
+    },
+    {
+      "file": "docs/verification-data/oct24c-build.json",
+      "sha256": "7295975a980c39bebedd8e5fcd352e5edbd5c8ac6508fce288b8d0bd5f2a3d59"
+    },
+    {
+      "file": "docs/verification-data/renderer-oct24c-guards.json",
+      "sha256": "3ab64210bfda58f2fd73b68d54c0fac317628ecf56e17cdc4667788f19334e05"
+    },
+    {
+      "file": "docs/verification-data/renderer-oct24c-kernel.json",
+      "sha256": "3bd8cf4f1f9fcc300b4f701dda4273b159cf4a4d062ede8a954a8b6959b51950"
+    },
+    {
+      "file": "docs/verification-data/renderer-oct24c-negative-control.json",
+      "sha256": "30ec7a40555b4185ffc918798d50193db357e21dec5d7e946ea002d99630620b"
+    },
+    {
+      "file": "docs/verification-data/rifle-oct24c-aspects.json",
+      "sha256": "f8f317bd059112bef20a9984c19485c77fb5f7a8d0f65de92a03778fa9889b14"
+    },
+    {
+      "file": "docs/verification-data/rifle-oct24c-kernel.json",
+      "sha256": "9ddce9a2245f5c0158aa2cccb09c64cbc8b457bf39d9b4700dafa993cc8f880d"
+    },
+    {
+      "file": "docs/verification-data/rifle-oct24c-parity.json",
+      "sha256": "e8127c85cb253b31d17973265156aa021355a36cb91bed44f315303d6a2aead4"
+    },
+    {
+      "file": "docs/verification-data/rifle-oct24c-performance-summary.json",
+      "sha256": "6e3f13abe60d3bc5f56a65689edb93a4da954ce10835422c65004bc62022a17e"
+    },
+    {
+      "file": "docs/verification-data/rifle-oct24c-performance.json",
+      "sha256": "4e96cc1df3bee980d1265bfe5331102bc59cf8ded65ca9a8420b188163e8a9ce"
+    },
+    {
+      "file": "docs/verification-data/rifle-oct24c-runtime.json",
+      "sha256": "c183376d079c6585c4ad796a845bb0824f9634be8b3d34cbaefc222997e64b50"
+    },
+    {
+      "file": "docs/verification-data/ritual-ivory-oct24c-after.json",
+      "sha256": "7d981c68cec592175c6cf0fedd2886b7969bae32410048013d424efb1c7d05a7"
+    },
+    {
+      "file": "docs/verification-data/ritual-ivory-oct24c-before.json",
+      "sha256": "e095f0d231f0f81daab3a338918611fdd9eac6dff8cab704648a9a5dfff5dc24"
+    },
+    {
+      "file": "docs/verification-data/ritual-ivory-oct24c-invariants.json",
+      "sha256": "971aa0cf7416352656ccf804660c29f0fc5876aa2b12e6627d024c94ff2eb1bc"
+    }
+  ]
+}

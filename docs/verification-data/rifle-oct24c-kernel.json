@@ -1,0 +1,16 @@
+{
+  "cases": 3600,
+  "passed": true,
+  "scope": "Exact rawRGBA, simulated canvas upload, Float32 depth and dirty bounds; main and side buffers, empty/degenerate triangles, texel and alpha boundaries, signed and zero sleeve directions.",
+  "inputs": {
+    "baseline": {
+      "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\sleeve-perf-oct24c\\baseline.html",
+      "sha256": "9cecdb74a11b616d9bfe12c031f2ff1c3e543f103cbc21dba6f280fdecd0e1f9"
+    },
+    "candidate": {
+      "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\rifle-reload-oct24c\\candidate.html",
+      "sha256": "d5a41a6872cb7b58f0e7f4b95c58e55d466f520070a64adfa2cf66cc1df564df"
+    }
+  },
+  "failures": []
+}

@@ -1,119 +1,96 @@
 {
-  "file": "THE-BLACK-SILENCE.html",
   "passed": true,
-  "bytes": 22645527,
-  "sha256": "9cecdb74a11b616d9bfe12c031f2ff1c3e543f103cbc21dba6f280fdecd0e1f9",
+  "bytes": 22647573,
+  "sha256": "d5a41a6872cb7b58f0e7f4b95c58e55d466f520070a64adfa2cf66cc1df564df",
   "engineSha256": "6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899",
   "villageSha256": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627",
   "moduleHashes": {
     "materials.js": "05e43b45ce521b52cf4d7b172177984699670d9de1261de5f88bf11f42b45517",
     "combat.js": "a0644449f03a77ec7c121104ab2c6850e0caf6ceb0b17c553b8c6c273c08374c",
     "enemy-animation.js": "5dbcfaf8908f8bde69d7c1625bce9ef163e874aab3ff22ded58d08040f1cec54",
-    "viewmodels.js": "18b4702798eb4f7e8ebcac6316f097ab400add66e056f3895f2dadac4f4b355b",
+    "viewmodels.js": "e9e098dc1cd5d0627c1ab47c4da255e5bb93f2e581326ceb5a849b60927a95e6",
     "finishers.js": "8c2c7bdf13e17005c3383054560b155986d8e706b5bfda81e9f1a8224ee3c5b0",
     "reload-audio-data.js": "2f48b10a1225d1c007ee282d3c18f82c5022bb0267ed86d65feadf819ec1be30",
     "reload-audio.js": "6b63eec006c8f7ee98392f323f630879140948f24165ab72b308bfb4b4d6be16",
-    "prologue.js": "7d94d4e54dbc0df11a2f29650e9129c9690d722bed0ffc556ac923d9f5200109",
+    "prologue.js": "c7614fb312a6171350279bc2cd7cfbc27984c60e13d8d5ddfdf944ffb36176c7",
     "render-warmup.js": "9418307e9d71b28411b36e86e1ed3f4eb2eecda6b00d58144ce5bc79d110838c",
     "village-presentation.js": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627"
   },
   "idempotentBuilds": 2,
   "invalidInputsRefusedWithoutWrite": 8,
-  "verifiedAt": "2026-10-24T15:12:24.771Z",
-  "scope": "Sniper bolt-hand shared motion; continuous Soul charge; viewport-aware distal sleeves; enemy landing recovery. Native engine, weapon stats, audio event timing and Village preserved.",
-  "previousRelease": "41f9646703cce0a5da5b6b063df10bf60de84c9c821ffb5f65255ce0a6443448",
+  "file": "THE-BLACK-SILENCE.html",
+  "verifiedAt": "2026-10-24T19:11:08.537Z",
+  "scope": "Combat Rifle reload framing; ritual-standard ivory materials and minor lavafall U variation. Compositor, other weapon models, enemy/combat logic, native engine, audio timing and Village unchanged.",
+  "previousRelease": "9cecdb74a11b616d9bfe12c031f2ff1c3e543f103cbc21dba6f280fdecd0e1f9",
   "verificationReports": [
     {
-      "file": "docs/verification-data/animation-oct24b-aspects.json",
-      "sha256": "4d904f463351d9f2c4dd6c54f664c53a9432601b416f939ff802410e4c5f59b4"
+      "file": "docs/verification-data/lava-flow-oct24c-after.json",
+      "sha256": "aa2dd5fe3fd80cef9637a29a593ac7c8dda901de24f23597d4d2e689f3f46e31"
     },
     {
-      "file": "docs/verification-data/animation-oct24b-build.json",
-      "sha256": "b6dac0b413990820b8d97e7c3fcd633ad88c415239bd034dba24aae1ed731722"
+      "file": "docs/verification-data/lava-flow-oct24c-before.json",
+      "sha256": "c5c586425d11a49e30d87688144e8d3122e90091dfbb1507a359c4728a54ac7c"
     },
     {
-      "file": "docs/verification-data/animation-oct24b-contact-parity.json",
-      "sha256": "4d7afeb353aec95ffd13990d179191dc96490591020d873e64a59be7d2a4c635"
+      "file": "docs/verification-data/lava-flow-oct24c.json",
+      "sha256": "4ccb47233b531bc9617a1df2a60dc0432274bc8bd115ff573214031efc551cb0"
     },
     {
-      "file": "docs/verification-data/animation-oct24b-intermediate-audio.json",
-      "sha256": "86e971463520839d642d47f74c0c4f8167ec3cdf1763e47de5996006e082f622"
+      "file": "docs/verification-data/oct24c-build.json",
+      "sha256": "7295975a980c39bebedd8e5fcd352e5edbd5c8ac6508fce288b8d0bd5f2a3d59"
     },
     {
-      "file": "docs/verification-data/animation-oct24b-performance-summary.json",
-      "sha256": "e89e125dffe61124e73a83817760e9ba44eaf342e6856c830810b1a2e74b2f72"
+      "file": "docs/verification-data/renderer-oct24c-guards.json",
+      "sha256": "3ab64210bfda58f2fd73b68d54c0fac317628ecf56e17cdc4667788f19334e05"
     },
     {
-      "file": "docs/verification-data/animation-oct24b-performance.json",
-      "sha256": "2c8b301f8a27a9671c909168a04c78e20fb0de29cb115f4eef0dfd0ee3001717"
+      "file": "docs/verification-data/renderer-oct24c-kernel.json",
+      "sha256": "3bd8cf4f1f9fcc300b4f701dda4273b159cf4a4d062ede8a954a8b6959b51950"
     },
     {
-      "file": "docs/verification-data/animation-oct24b-runtime.json",
-      "sha256": "745e9a4f68c64d5f80e71bfdcbfb1a4d786b620cef275c29826181b5dbe39b01"
+      "file": "docs/verification-data/renderer-oct24c-negative-control.json",
+      "sha256": "30ec7a40555b4185ffc918798d50193db357e21dec5d7e946ea002d99630620b"
     },
     {
-      "file": "docs/verification-data/animation-oct24b-sleeve-extremes.json",
-      "sha256": "2d2e11dbd3e7961c5025d94b26a8eaff8b1264989d5ff945bef811283bd1df01"
+      "file": "docs/verification-data/rifle-oct24c-aspects.json",
+      "sha256": "f8f317bd059112bef20a9984c19485c77fb5f7a8d0f65de92a03778fa9889b14"
     },
     {
-      "file": "docs/verification-data/enemy-landing-oct24-after.json",
-      "sha256": "9e62718eb1c4289198174e100e27e4d3fe42b3acbfe5732960ebcb2fb010a802"
+      "file": "docs/verification-data/rifle-oct24c-kernel.json",
+      "sha256": "9ddce9a2245f5c0158aa2cccb09c64cbc8b457bf39d9b4700dafa993cc8f880d"
     },
     {
-      "file": "docs/verification-data/enemy-landing-oct24-before.json",
-      "sha256": "0b0874580c412e6b457e646473df1322aa24a36a143ee0dec46ba3286ff7dc97"
+      "file": "docs/verification-data/rifle-oct24c-parity.json",
+      "sha256": "e8127c85cb253b31d17973265156aa021355a36cb91bed44f315303d6a2aead4"
     },
     {
-      "file": "docs/verification-data/enemy-landing-oct24-combat.json",
-      "sha256": "b7b133a335e7fd64720c6afea7c7476cc4ecd3c0837fafd817d824f372eae15a"
+      "file": "docs/verification-data/rifle-oct24c-performance-summary.json",
+      "sha256": "6e3f13abe60d3bc5f56a65689edb93a4da954ce10835422c65004bc62022a17e"
     },
     {
-      "file": "docs/verification-data/enemy-landing-oct24-combined-791b-capture.json",
-      "sha256": "a5232f60d5eb5892561e1728cb38609f48123555798ebe939a648ab3e6f12549"
+      "file": "docs/verification-data/rifle-oct24c-performance.json",
+      "sha256": "4e96cc1df3bee980d1265bfe5331102bc59cf8ded65ca9a8420b188163e8a9ce"
     },
     {
-      "file": "docs/verification-data/enemy-landing-oct24-combined-791b-live.json",
-      "sha256": "4b509449b7889b929b314f94050e64ab75c074fba8f9d351ec67d4398de864c7"
+      "file": "docs/verification-data/rifle-oct24c-runtime.json",
+      "sha256": "c183376d079c6585c4ad796a845bb0824f9634be8b3d34cbaefc222997e64b50"
     },
     {
-      "file": "docs/verification-data/enemy-landing-oct24-enemy.json",
-      "sha256": "42a6a6670d51f933b1256c14641925e24b16f01f2fa260a48f7233fcf1e8443e"
+      "file": "docs/verification-data/ritual-ivory-oct24c-after.json",
+      "sha256": "7d981c68cec592175c6cf0fedd2886b7969bae32410048013d424efb1c7d05a7"
     },
     {
-      "file": "docs/verification-data/enemy-landing-oct24-live-after.json",
-      "sha256": "4cb2171a9c960b5e873d0c83e0e4f1ff46a4be5ca29107a9912f3cc729e9e8d1"
+      "file": "docs/verification-data/ritual-ivory-oct24c-before.json",
+      "sha256": "e095f0d231f0f81daab3a338918611fdd9eac6dff8cab704648a9a5dfff5dc24"
     },
     {
-      "file": "docs/verification-data/enemy-landing-oct24-live-before.json",
-      "sha256": "5721423c636ad78385bad9aa959b69c062600c10f0401a74241036489d598653"
-    },
-    {
-      "file": "docs/verification-data/enemy-landing-oct24-tool-guards.json",
-      "sha256": "4c5bdb1265c0d1267539ccf4bb8f6319673fa0dcb6ed8fb33e59a9c7d6a187d9"
-    },
-    {
-      "file": "docs/verification-data/enemy-landing-oct24-walls.json",
-      "sha256": "9d1ad30a9095874757f5f785c6b9f55c0dfc17da76db16a0ff0f5359735761bc"
-    },
-    {
-      "file": "docs/verification-data/prologue-capture-guards-oct24.json",
-      "sha256": "2e8bfaa8b86aaa284a0d1045fb1d2ddf283f6927f3e040e11b56a2baa376067b"
-    },
-    {
-      "file": "docs/verification-data/prologue-capture-zone-oct24.json",
-      "sha256": "e78ab8e437e23c26397ba128ff57a3ccf719b00a5a4d8f639fb50290703e1718"
-    },
-    {
-      "file": "docs/verification-data/sniper-native-9a06bd19.json",
-      "sha256": "40419c723cfd1d6e9b6effabd6e802f514af477e879f0e39483772b510e307b2"
+      "file": "docs/verification-data/ritual-ivory-oct24c-invariants.json",
+      "sha256": "971aa0cf7416352656ccf804660c29f0fc5876aa2b12e6627d024c94ff2eb1bc"
     }
   ],
-  "mediaManifest": "docs/weapon-animation-oct24b/provenance.json",
-  "mediaNote": "Motion clip and16:9 screenshots are actual intermediate b86 captures; final ultrawide screenshot is9cec. Provenance is explicit. Existing earlier media retained.",
-  "methodLimitations": [
-    "Articulated perspective-textured surfaces with volumetric backing, not arbitrary-view full3D anatomy.",
-    "Additional sleeve coverage has measurable reload rendering cost; Sniper/Cross p95frame increased in local1280x720ABBA. No overall smoothness gain claimed.",
-    "Ultrawide functional checks passed; performance comparison covers1280x720 only.",
-    "Audio49 checks were run on intermediate791b; unchanged audio/native code retained. Tests are not a full campaign playthrough."
+  "limitations": [
+    "Short Rifle-only ABBA uses this host and the chapter-0 starting camera; no general FPS guarantee.",
+    "Reference-driven weapon parts use articulated textured surfaces with native depth and backing, not fully sculpted 3D anatomy.",
+    "Hell lighting remains primarily authored/static; prior source-identical historical tests keep their original build hashes."
   ]
 }

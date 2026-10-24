@@ -1792,6 +1792,8 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
     const previous=arsenalIndex;arsenalIndex=2;
     try {
       const a=firearmArt[2],t=pose.reload,inspect=t<0?0:Qe(t,0,.99,.14),out=t<0?0:Qe(t,.10,.62,.13),charge=t<0?0:Qe(t,.81,.96,.055);
+      // Raise the complete reload assembly, retaining the shared magazine/hand rig.
+      a.move(m,0,-.09*inspect,0);
       m.roll(.19*inspect);m.pitch(-.06*inspect);
       // A continuous receiver chassis joins the outlined cosmetic surfaces.
       a.hull(m,[[367,182],[693,278],[693,359],[387,293]],.020,.029,null,false);
@@ -1815,12 +1817,12 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       const port=a.point(488,253,.007);m.push();m.translate(...port);m.box(-.0155,-.004,-.002,.0155,.004,.002,WORN);m.pop();
       m.push();a.move(m,charge*.035,0,.001);a.hull(m,[[459,231],[526,251],[523,272],[458,253]],-.006,.012);m.pop();
       // Magazine follows its own extraction/seat motion; hand uses that rig.
-      m.push();a.move(m,-.012*out,.108*out,.005*out);m.roll(-.07*out);
+      m.push();a.move(m,-.012*out,.065*out,.005*out);m.roll(-.07*out);
       a.hull(m,[[392,297],[480,323],[472,466],[366,442]],-.008,.028);m.pop();
       const reach=t<0?0:Qe(t,.025,.79,.10),support=[285,210,-.046],load=[414,383,-.049];
       const chargeReach=t<0?0:Qe(t,.72,.98,.075),boltContact=[491,250,-.050];
       const contact=support.map((v,i)=>{const atMag=v+(load[i]-v)*reach;return atMag+(boltContact[i]-atMag)*chargeReach;});
-      m.push();a.move(m,-.012*out+.035*charge*chargeReach,.108*out,.005*out);m.roll(-.07*out);a.left(m,contact,.172);m.pop();
+      m.push();a.move(m,-.012*out+.035*charge*chargeReach,.065*out,.005*out);m.roll(-.07*out);a.left(m,contact,.172);m.pop();
       a.right(m,[537,349,-.048]);a.anchor(m,145,153,.035);
     } finally {arsenalIndex=previous;}
   };

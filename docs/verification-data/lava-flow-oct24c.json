@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "beforeSHA256": "4d3c15d980075a7c2b25d0bfc6d7912d8ead03fb0d55f07d5eaae2b5a5b4db86",
+  "afterSHA256": "2d7f02ef8a0d30b007529ab685a7cb67383c04af7b328d422dec6b850701166a",
+  "falls": 5,
+  "maxU": 0.03938776254653931,
+  "verticesExact": true,
+  "vExact": true,
+  "repeatExact": true,
+  "nativePhaseOffsetsExact": true,
+  "nativeRAFProgress": true,
+  "nextChapterFallsExact": true,
+  "returnUVExact": true,
+  "resourcesExact": true,
+  "drawCallsBefore": 199,
+  "drawCallsAfter": 199,
+  "errors": []
+}

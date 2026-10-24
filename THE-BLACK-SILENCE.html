@@ -6829,6 +6829,8 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
     const previous=arsenalIndex;arsenalIndex=2;
     try {
       const a=firearmArt[2],t=pose.reload,inspect=t<0?0:Qe(t,0,.99,.14),out=t<0?0:Qe(t,.10,.62,.13),charge=t<0?0:Qe(t,.81,.96,.055);
+      // Raise the complete reload assembly, retaining the shared magazine/hand rig.
+      a.move(m,0,-.09*inspect,0);
       m.roll(.19*inspect);m.pitch(-.06*inspect);
       // A continuous receiver chassis joins the outlined cosmetic surfaces.
       a.hull(m,[[367,182],[693,278],[693,359],[387,293]],.020,.029,null,false);
@@ -6852,12 +6854,12 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       const port=a.point(488,253,.007);m.push();m.translate(...port);m.box(-.0155,-.004,-.002,.0155,.004,.002,WORN);m.pop();
       m.push();a.move(m,charge*.035,0,.001);a.hull(m,[[459,231],[526,251],[523,272],[458,253]],-.006,.012);m.pop();
       // Magazine follows its own extraction/seat motion; hand uses that rig.
-      m.push();a.move(m,-.012*out,.108*out,.005*out);m.roll(-.07*out);
+      m.push();a.move(m,-.012*out,.065*out,.005*out);m.roll(-.07*out);
       a.hull(m,[[392,297],[480,323],[472,466],[366,442]],-.008,.028);m.pop();
       const reach=t<0?0:Qe(t,.025,.79,.10),support=[285,210,-.046],load=[414,383,-.049];
       const chargeReach=t<0?0:Qe(t,.72,.98,.075),boltContact=[491,250,-.050];
       const contact=support.map((v,i)=>{const atMag=v+(load[i]-v)*reach;return atMag+(boltContact[i]-atMag)*chargeReach;});
-      m.push();a.move(m,-.012*out+.035*charge*chargeReach,.108*out,.005*out);m.roll(-.07*out);a.left(m,contact,.172);m.pop();
+      m.push();a.move(m,-.012*out+.035*charge*chargeReach,.065*out,.005*out);m.roll(-.07*out);a.left(m,contact,.172);m.pop();
       a.right(m,[537,349,-.048]);a.anchor(m,145,153,.035);
     } finally {arsenalIndex=previous;}
   };
@@ -8443,7 +8445,30 @@ const BLACK_SILENCE_RELOAD_PCM = {"latch":{"pcm":"AAD+//3/+v/9/wgADwAIACIAHAAHAD
     material.userData.hellRoof=roof;
     return material;
   }
+  // Both arena standards share one map-owned, native-pixel ivory surface.
+  // Broad grain and sparse hairline stains keep the large caps from reading
+  // as flat white polygons. Ground bones and other chapters stay unchanged.
+  function ritualIvoryTexture() {
+    if(hellTextureCache.has("ritualIvory"))return hellTextureCache.get("ritualIvory");
+    const texture=Z(e0((ctx,width,height)=>{
+      const image=ctx.createImageData(width,height);
+      for(let y=0;y<height;y++)for(let x=0;x<width;x++){
+        const grain=Math.sin(x*.52+Math.sin(y*.09)*.65)*10+Math.sin(y*.13)*5;
+        const edge=Math.min(x,width-1-x),patina=Math.max(0,4-edge)*5;
+        const seam=(x===7+Math.floor(Math.sin(y*.15)*1.4)&&y>9&&y<48)||
+          (x===23+Math.floor(Math.sin(y*.11)*1.1)&&y>33&&y<58);
+        const pore=((x*37+y*19+x*y*3)%157===0)?14:0;
+        const lower=Math.pow(y/(height-1),1.7)*34; const stain=(seam?58:patina+pore)+lower,i=(y*width+x)*4;
+        image.data[i]=173+grain-stain;image.data[i+1]=149+grain-stain;
+        image.data[i+2]=110+grain*.7-stain*.75;image.data[i+3]=255;
+      }
+      ctx.putImageData(image,0,0);
+    },32,64));
+    texture.name="prologueRitualIvory";
+    hellTextureCache.set("ritualIvory",texture);return texture;
+  }
   iR = function (name) {
+    if(name === "prologueRitualIvory")return new Wt({map:ritualIvoryTexture()});
     if (name === "hellPyreFlame") {
       const material = new $e({map:hellFlameTexture(),alphaTest:.15,toneMapped:false});
       material.userData.hellPyreFlame = true;
@@ -8808,17 +8833,17 @@ const BLACK_SILENCE_RELOAD_PCM = {"latch":{"pcm":"AAD+//3/+v/9/wgADwAIACIAHAAHAD
     cls: "decor",
     build(box, cylinder, spec) {
       const side = spec.h < 0 ? -1 : 1;
-      box("rock", 0.78, 0.15, 0.65, E(0, 0.075, 0));
+      box("hellBasalt", 0.78, 0.15, 0.65, E(0, 0.075, 0));
       box("char", 0.15, 2.45, 0.15, E(0, 1.27, 0, 0, 0, side * 0.045));
       for (let index = 0; index < 4; index++) {
         const y = 0.8 + index * 0.44;
-        box("oldbone", 0.23, 0.17, 0.2, E(side * 0.06, y, 0.035));
+        box("prologueRitualIvory", 0.23, 0.17, 0.2, E(side * 0.06, y, 0.035));
         for (const rib of [-1, 1]) {
-          box("oldbone", 0.56 - index * 0.06, 0.075, 0.08,
+          box("prologueRitualIvory", 0.56 - index * 0.06, 0.075, 0.08,
             E(rib * (0.27 - index * 0.03), y - 0.08, 0.06, 0, rib * 0.12, rib * 0.37));
         }
       }
-      box("bone", 0.28, 0.32, 0.25, E(side * 0.12, 2.58, 0, 0, side * 0.2, -side * 0.12));
+      box("prologueRitualIvory", 0.28, 0.32, 0.25, E(side * 0.12, 2.58, 0, 0, side * 0.2, -side * 0.12));
       for (const eye of [-1, 1])
         box("dark", 0.065, 0.07, 0.025, E(side * 0.12 + eye * 0.075, 2.62, 0.132));
       box("cloth", 0.31, 0.69, 0.025, E(side * 0.21, 1.57, -0.08, 0, 0, side * 0.13));
@@ -9350,6 +9375,15 @@ const BLACK_SILENCE_RELOAD_PCM = {"latch":{"pcm":"AAD+//3/+v/9/wgADwAIACIAHAAHAD
           position.setX(i,position.getX(i)*(.7+.24*(1-t)+.07*Math.sin(t*19))+.05*Math.sin(t*11));
           position.setZ(i,.13*Math.sin(t*8));
         }
+        // Keep the native scrolling V coordinate and fall dimensions. A small
+        // static U shear bends the existing molten strands between the same
+        // rows, with zero perturbation at each end and no per-frame work.
+        const uv=flow.attributes.uv,phase=Math.sin(mesh.position.x*.37+mesh.position.z*.11)*Math.PI;
+        for(let i=0;i<position.count;i++){
+          const t=(position.getY(i)+height/2)/height;
+          uv.setX(i,uv.getX(i)+.04*Math.sin(Math.PI*t)*Math.sin(t*11+phase));
+        }
+        uv.needsUpdate=true;
         position.needsUpdate=true;flow.computeVertexNormals();mesh.geometry=flow;
       }
     bakeHellIllumination(scene);

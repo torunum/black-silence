@@ -1,26 +1,22 @@
-// Pixel-equivalence stress test for the RGBA compositor, without a browser.
-// Usage: node tools/viewmodel-kernel-tests.cjs baseline.html candidate.html report.json
-const fs=require('node:fs'),crypto=require('node:crypto'),path=require('node:path');
-const inputs=process.argv.slice(2,4);if(inputs.length!==2)throw Error('Two immutable source/HTML inputs required');
-const out=path.resolve(process.argv[4]||'.dream-loop/kernel-parity.json');
-if(inputs.some(input=>path.resolve(input).toLowerCase()===out.toLowerCase()))throw Error('Output must not overwrite an input');
+const fs=require('fs'),path=require('path'),crypto=require('crypto');
+// Exact compositor RGBA, depth, dirty rectangle and canvas-upload regression test.
+// Usage: node tools/viewmodel-kernel-tests.cjs before.html after.html report.json
+const inputs=process.argv.slice(2,4).map(p=>path.resolve(p));if(inputs.length!==2)throw Error('Two immutable inputs required');
+const output=path.resolve(process.argv[4]||'.dream-loop/kernel-parity.json');
+function resolvedTarget(target){let cursor=target,tail=[];while(!fs.existsSync(cursor)){tail.unshift(path.basename(cursor));const parent=path.dirname(cursor);if(parent===cursor)throw Error('Cannot resolve output ancestry');cursor=parent;}return path.join(fs.realpathSync(cursor),...tail);}
+if(inputs.some(input=>resolvedTarget(input).toLowerCase()===resolvedTarget(output).toLowerCase()))throw Error('Output must not overwrite an input');
 const hash=a=>crypto.createHash('sha256').update(a).digest('hex');
-const make=file=>{const s=fs.readFileSync(file,'utf8'),a=s.indexOf('  function compositePaintedGloves()'),b=s.indexOf('  const nativePaintedRaster',a);if(a<0||b<0)throw Error('Compositor missing');return{sha256:hash(s),run:new Function('Te','gloveTriangles',`let gloveDepth=null,glovePreviousBounds=null;${s.slice(a,b)};compositePaintedGloves();return glovePreviousBounds;`)};};
-const before=make(inputs[0]),after=make(inputs[1]);
-let seed=243776,random=()=>{seed^=seed<<13;seed^=seed>>>17;seed^=seed<<5;return(seed>>>0)/4294967296;};
-const w=96,h=64,data=new Uint8ClampedArray(13*17*4);for(let i=0;i<data.length;i++)data[i]=(i%4===3?[0,15,16,63,128,254,255][Math.floor(i/4)%7]:random()*255);
-const failures=[];
-for(let test=0;test<1800;test++){
- const asset={width:13,height:17,data,rearDigit:test%3===0,...(test%4===0?{extend:[.75,.66]}:{})},tri=[];
- for(let t=0;t<1+test%4;t++){
-  const magnitude=test%10===0?1e7:test%7===0?.00001:180;
-  const p=Array.from({length:3},()=>({x:(random()-.45)*magnitude+32,y:(random()-.45)*magnitude+20,z:.08+random(),u:random()*1.5-.2,v:random()*1.6-.2}));
-  if(test%11===0){p[1].y=p[0].y;p[2].y=p[0].y+(test%22?1e-8:0);}
-  tri.push({v:p,asset,light:test%5?1:.87});
- }
- const image=new Uint8ClampedArray(w*h*4),z=new Float32Array(w*h);for(let i=0;i<z.length;i++){z[i]=i%3?Infinity:.31;image[i*4]=i%251;image[i*4+3]=i%2?255:128;}
- const te=()=>({image:{data:image.slice()},raster:{z:z.slice(),w,h},ctx:{putImageData(){}}}),A=te(),B=te();
- const ba=before.run(A,tri),bb=after.run(B,tri);if(hash(A.image.data)!==hash(B.image.data)||JSON.stringify(ba)!==JSON.stringify(bb))failures.push({test,triangles:tri.map(x=>x.v)});
+function make(file){const s=fs.readFileSync(file,'utf8'),a=s.indexOf('  function compositePaintedGloves('),b=s.indexOf('  const nativePaintedRaster',a);if(a<0||b<=a||s.split('  function compositePaintedGloves(').length!==2||s.split('  const nativePaintedRaster=h0t;').length!==2)throw Error('Expected unique ordered compositor seams');return{sha256:hash(s),run:new Function('Te','gloveTriangles','surface','sleeveMargin','Wr',`let gloveDepth=null,glovePreviousBounds=null;${s.slice(a,b)};compositePaintedGloves(surface);return {bounds:glovePreviousBounds,depth:surface?surface.depth:gloveDepth};`)};}
+const variants={baseline:make(inputs[0]),candidate:make(inputs[1])};
+let seed=243776;const random=()=>{seed^=seed<<13;seed^=seed>>>17;seed^=seed<<5;return(seed>>>0)/4294967296;};
+const w=96,h=64,margin=16,core=64,data=new Uint8ClampedArray(13*17*4);for(let i=0;i<data.length;i++)data[i]=i%4===3?[0,15,16,63,128,254,255][Math.floor(i/4)%7]:random()*255;
+const failures=[];let cases=0;
+for(let test=0;test<1800;test++)for(const side of[false,true]){
+ const directions=[[.75,.66],[-.63,.78],[0,.66],[.75,-.66]];
+ const asset={width:13,height:17,data,rearDigit:test%3===0,...(test%4===0?{extend:directions[Math.floor(test/4)%directions.length]}:{})},tri=[];
+ for(let t=0;t<(test%19===0?0:1+test%4);t++){const magnitude=test%10===0?1e7:test%7===0?.00001:180,p=Array.from({length:3},()=>({x:(random()-.45)*magnitude+32,y:(random()-.45)*magnitude+20,z:.08+random(),u:random()*1.5-.2,v:random()*1.6-.2}));if(test%13===0)for(const vertex of p){vertex.u=(Math.floor(test/13)%14)/13;vertex.v=(test%17)/17;}if(test%23===0)for(const vertex of p)vertex.z=[.5,1,2][test%3];if(test%11===0){p[1].y=p[0].y;p[2].y=p[0].y+(test%22?1e-8:0);}tri.push({v:p,asset,light:test%5?1:.87});}
+ const initial=new Uint8ClampedArray(w*h*4),z=new Float32Array(w*h);for(let i=0;i<z.length;i++){z[i]=side&&i%w>=margin&&i%w<margin+core?-Infinity:i%3?Infinity:.31;if(!side||z[i]!==-Infinity){initial[i*4]=i%251;initial[i*4+3]=i%2?255:128;}}
+ const outputs={};for(const[label,variant]of Object.entries(variants)){const image={data:initial.slice()},canvas=initial.slice(),te={image,raster:{z:z.slice(),w,h},depth:new Float32Array(w*h),triangles:tri,ctx:{putImageData(img,dx,dy,x=0,y=0,width=w,height=h){for(let row=y;row<y+height;row++)canvas.set(img.data.subarray((row*w+x)*4,(row*w+x+width)*4),(row*w+x)*4);}}};const result=variant.run(te,tri,side?te:null,margin,core);outputs[label]={image:hash(image.data),canvas:hash(canvas),bounds:result.bounds,depth:hash(new Uint8Array(result.depth.buffer))};}
+ for(const label of['candidate']){cases++;if(JSON.stringify(outputs.baseline)!==JSON.stringify(outputs[label]))failures.push({test,side,label,outputs});}
 }
-const report={cases:1800,passed:!failures.length,inputs:inputs.map((input,i)=>({input:path.resolve(input),sha256:i?after.sha256:before.sha256})),failures};
-fs.mkdirSync(path.dirname(out),{recursive:true});fs.writeFileSync(out,JSON.stringify(report,null,2));console.log(JSON.stringify({cases:report.cases,passed:report.passed,failures:failures.length}));if(failures.length)process.exitCode=1;
+const report={cases,passed:!failures.length,scope:'Exact rawRGBA, simulated canvas upload, Float32 depth and dirty bounds; main and side buffers, empty/degenerate triangles, texel and alpha boundaries, signed and zero sleeve directions.',inputs:Object.fromEntries(Object.entries(variants).map(([k,v],i)=>[k,{input:inputs[i],sha256:v.sha256}])),failures};for(const [i,label]of ['baseline','candidate'].entries())if(hash(fs.readFileSync(inputs[i]))!==variants[label].sha256)throw Error('Immutable input changed');fs.mkdirSync(path.dirname(output),{recursive:true});fs.writeFileSync(output,JSON.stringify(report,null,2));console.log(JSON.stringify({cases,passed:report.passed,failures:failures.length}));if(failures.length)process.exitCode=1;

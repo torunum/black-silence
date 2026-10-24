@@ -1,0 +1,24 @@
+{
+  "baselineHTMLSHA256": "9cecdb74a11b616d9bfe12c031f2ff1c3e543f103cbc21dba6f280fdecd0e1f9",
+  "environmentCandidateSHA256": "4d3c15d980075a7c2b25d0bfc6d7912d8ead03fb0d55f07d5eaae2b5a5b4db86",
+  "prologueSHA256": "34e26edbff17862cb40142b3a167187f9379ec8ef25d414773da28a63847561a",
+  "method": "Native eye height and zone/fog/ambient synchronization; paused camera, actual game renderer. Environment-only prototype, not the later combined release.",
+  "textureOrigin": "Original deterministic native canvas code, 32x64 opaque pixels; no external image asset",
+  "detail": {
+    "source": "after-arena.png",
+    "rect": [
+      947,
+      195,
+      95,
+      80
+    ],
+    "scale": 4,
+    "filter": "nearest-neighbor",
+    "purpose": "Inspection enlargement, no image-generation/editing of the game scene"
+  },
+  "files": {
+    "before-arena.png": "a0d1a7c4851cf1487f125f0cc07176ccb1cd9a5aaf8bce79d41574190e0d4b02",
+    "after-arena.png": "92f9cc2148c3b712c2735af511e3842d6b688ca6f7fb6d7ac333ff195f1aafd9",
+    "after-detail.png": "19e3b631c2fa3d0bd5268a19eeb1517a667431c31ceb35d999fd0edfc9e6db91"
+  }
+}

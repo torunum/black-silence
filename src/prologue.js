@@ -92,7 +92,30 @@
     material.userData.hellRoof=roof;
     return material;
   }
+  // Both arena standards share one map-owned, native-pixel ivory surface.
+  // Broad grain and sparse hairline stains keep the large caps from reading
+  // as flat white polygons. Ground bones and other chapters stay unchanged.
+  function ritualIvoryTexture() {
+    if(hellTextureCache.has("ritualIvory"))return hellTextureCache.get("ritualIvory");
+    const texture=Z(e0((ctx,width,height)=>{
+      const image=ctx.createImageData(width,height);
+      for(let y=0;y<height;y++)for(let x=0;x<width;x++){
+        const grain=Math.sin(x*.52+Math.sin(y*.09)*.65)*10+Math.sin(y*.13)*5;
+        const edge=Math.min(x,width-1-x),patina=Math.max(0,4-edge)*5;
+        const seam=(x===7+Math.floor(Math.sin(y*.15)*1.4)&&y>9&&y<48)||
+          (x===23+Math.floor(Math.sin(y*.11)*1.1)&&y>33&&y<58);
+        const pore=((x*37+y*19+x*y*3)%157===0)?14:0;
+        const lower=Math.pow(y/(height-1),1.7)*34; const stain=(seam?58:patina+pore)+lower,i=(y*width+x)*4;
+        image.data[i]=173+grain-stain;image.data[i+1]=149+grain-stain;
+        image.data[i+2]=110+grain*.7-stain*.75;image.data[i+3]=255;
+      }
+      ctx.putImageData(image,0,0);
+    },32,64));
+    texture.name="prologueRitualIvory";
+    hellTextureCache.set("ritualIvory",texture);return texture;
+  }
   iR = function (name) {
+    if(name === "prologueRitualIvory")return new Wt({map:ritualIvoryTexture()});
     if (name === "hellPyreFlame") {
       const material = new $e({map:hellFlameTexture(),alphaTest:.15,toneMapped:false});
       material.userData.hellPyreFlame = true;
@@ -457,17 +480,17 @@
     cls: "decor",
     build(box, cylinder, spec) {
       const side = spec.h < 0 ? -1 : 1;
-      box("rock", 0.78, 0.15, 0.65, E(0, 0.075, 0));
+      box("hellBasalt", 0.78, 0.15, 0.65, E(0, 0.075, 0));
       box("char", 0.15, 2.45, 0.15, E(0, 1.27, 0, 0, 0, side * 0.045));
       for (let index = 0; index < 4; index++) {
         const y = 0.8 + index * 0.44;
-        box("oldbone", 0.23, 0.17, 0.2, E(side * 0.06, y, 0.035));
+        box("prologueRitualIvory", 0.23, 0.17, 0.2, E(side * 0.06, y, 0.035));
         for (const rib of [-1, 1]) {
-          box("oldbone", 0.56 - index * 0.06, 0.075, 0.08,
+          box("prologueRitualIvory", 0.56 - index * 0.06, 0.075, 0.08,
             E(rib * (0.27 - index * 0.03), y - 0.08, 0.06, 0, rib * 0.12, rib * 0.37));
         }
       }
-      box("bone", 0.28, 0.32, 0.25, E(side * 0.12, 2.58, 0, 0, side * 0.2, -side * 0.12));
+      box("prologueRitualIvory", 0.28, 0.32, 0.25, E(side * 0.12, 2.58, 0, 0, side * 0.2, -side * 0.12));
       for (const eye of [-1, 1])
         box("dark", 0.065, 0.07, 0.025, E(side * 0.12 + eye * 0.075, 2.62, 0.132));
       box("cloth", 0.31, 0.69, 0.025, E(side * 0.21, 1.57, -0.08, 0, 0, side * 0.13));
@@ -999,6 +1022,15 @@
           position.setX(i,position.getX(i)*(.7+.24*(1-t)+.07*Math.sin(t*19))+.05*Math.sin(t*11));
           position.setZ(i,.13*Math.sin(t*8));
         }
+        // Keep the native scrolling V coordinate and fall dimensions. A small
+        // static U shear bends the existing molten strands between the same
+        // rows, with zero perturbation at each end and no per-frame work.
+        const uv=flow.attributes.uv,phase=Math.sin(mesh.position.x*.37+mesh.position.z*.11)*Math.PI;
+        for(let i=0;i<position.count;i++){
+          const t=(position.getY(i)+height/2)/height;
+          uv.setX(i,uv.getX(i)+.04*Math.sin(Math.PI*t)*Math.sin(t*11+phase));
+        }
+        uv.needsUpdate=true;
         position.needsUpdate=true;flow.computeVertexNormals();mesh.geometry=flow;
       }
     bakeHellIllumination(scene);
