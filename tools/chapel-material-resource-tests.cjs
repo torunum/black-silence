@@ -1,5 +1,5 @@
 // Native-eye chapel material captures plus five next-chapter/return pairs.
-// node tools/chapel-material-resource-tests.cjs game.html output-directory [before|after]
+// node tools/chapel-material-resource-tests.cjs game.html output-directory [before|after] [glass|altar|crypt]
 // Before mode only captures the baseline. Resource counts are not FPS claims.
 const fs=require('fs'),{chromium}=require('playwright'),{pathToFileURL}=require('url');
 const path=require('node:path'),crypto=require('node:crypto'),assert=require('node:assert/strict');
@@ -7,6 +7,12 @@ const input=path.resolve(process.argv[2]||'THE-BLACK-SILENCE.html');
 const dir=path.resolve(process.argv[3]||'.dream-loop/chapel-material-resources');
 const stage=process.argv[4]||'after';
 assert(['before','after'].includes(stage),'Stage must be before or after');
+const preset=process.argv[5]||'glass';
+assert(['glass','altar','crypt'].includes(preset),'Camera preset must be glass, altar or crypt');
+const cameraPoints=preset==='altar'
+  ?[['altar-front',59,12,59,7,6.9],['altar-side',55.5,11,59,7,6.7],['altar-wide',59,19,59,7,6.8]]
+  :preset==='crypt'?[['crypt-entry',19,20,19,28,1.2],['crypt-deeper',19,25,19,32,1.2],['crypt-wall',19,29,18,29,1.2],['crypt-enemy',19,34,17,45,1.2]]
+  :[['chapel-wide',59,18,59,7,6.2],['chapel-near',59,10.5,59,7,5.8]];
 const canonical=p=>fs.realpathSync(p).toLowerCase();
 const isWithin=(file,directory)=>{const rel=path.relative(directory,file);return rel===''||(!rel.startsWith('..'+path.sep)&&rel!=='..'&&!path.isAbsolute(rel));};
 // No fixture, report or PNG may overwrite an input within the output tree.
@@ -33,9 +39,10 @@ const fixture=path.join(dir,'capture-'+sha256.slice(0,16)+'.html');
 fs.writeFileSync(fixture,source.replace(anchor,()=>seam+anchor));
 const fixtureSHA256=hash(fs.readFileSync(fixture));
 (async()=>{const browser=await chromium.launch({channel:'chrome',headless:true});try{const page=await browser.newPage({viewport:{width:1280,height:720}}),errors=[];page.on('pageerror',e=>errors.push(e.message));await page.addInitScript(()=>{let seed=123456;Math.random=()=>{seed^=seed<<13;seed^=seed>>>17;seed^=seed<<5;return(seed>>>0)/4294967296;};});await page.goto(pathToFileURL(fixture).href+'?qa=1');await page.locator('#mNew').click();await page.waitForFunction(()=>{const q=window.__BLACK_SILENCE_QA;return q?.Be.started&&!q.Be.inputLock&&q.paintedGloves.ready();});await page.evaluate(()=>{const q=window.__BLACK_SILENCE_QA;q.pause(true);q.T.cur=0;q.T.weapons[0]=true;q.T.mag[0]=6;q.St.wstate='idle';q.viewPose={...q.pose(),reload:-1,recoil:0,action:0,heat:0};document.getElementById('pause').classList.add('hidden');document.getElementById('subt').textContent='';});
-const records=[];for(const[name,x,z,tx,tz,ty]of[['chapel-wide',59,18,59,7,6.2],['chapel-near',59,10.5,59,7,5.8]]){const zone=await page.evaluate(({x,z,tx,tz,ty})=>{const q=window.__BLACK_SILENCE_QA;q.C.px=x;q.C.pz=z;q.C.pyy=q.floor(x,z)+q.eyeHeight;q.C.vx=q.C.vz=q.C.vy=0;q.Ct.yaw=Math.atan2(tx-x,tz-z)+Math.PI;q.Ct.pitch=Math.atan2(ty-q.C.pyy,Math.hypot(tx-x,tz-z));q.setCamera();return window.__HELL_CAPTURE.syncZone();}, {x,z,tx,tz,ty});
+const records=[];for(const[name,x,z,tx,tz,ty]of cameraPoints){const zone=await page.evaluate(({x,z,tx,tz,ty,relativeY})=>{const q=window.__BLACK_SILENCE_QA;q.C.px=x;q.C.pz=z;q.C.pyy=q.floor(x,z)+q.eyeHeight;q.C.vx=q.C.vz=q.C.vy=0;q.Ct.yaw=Math.atan2(tx-x,tz-z)+Math.PI;q.Ct.pitch=Math.atan2((relativeY?q.floor(tx,tz)+ty:ty)-q.C.pyy,Math.hypot(tx-x,tz-z));q.setCamera();return window.__HELL_CAPTURE.syncZone();}, {x,z,tx,tz,ty,relativeY:preset==='crypt'});
 assert.equal(zone.active,zone.index,name+': native zone matches player position');
-assert.equal(zone.index,0,name+': expected churchyard zone');
+assert.equal(zone.index,preset==='crypt'?1:0,name+': expected native zone');
+assert.equal(zone.id,preset==='crypt'?'crypt':'churchyard',name+': expected native theme');
 assert(Math.abs(zone.player[1]-zone.expectedEyeY)<1e-10,name+': native standing eye height');
 for(const [actual,expected] of [[zone.player,zone.camera],[zone.fog,zone.expectedFog],[zone.ambient,zone.expectedAmbient]])
   actual.forEach((value,index)=>assert(Math.abs(value-expected[index])<1e-10,name+': camera/zone color aligned'));

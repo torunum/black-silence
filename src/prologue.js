@@ -437,12 +437,28 @@
       box("prologuePatinatedStone", 6.15, 0.24, 0.27, E(0, 0.13, -0.86));
       box("slate", 6.3, 0.1, 0.31, E(0, 0.3, -0.83));
       for (const side of [-1, 1]) {
-        box("prologuePatinatedStone", 0.29, 2.62, 0.29, E(side * 2.8, 1.61, -0.83));
+        box("prologuePatinatedStone", 0.44, 2.62, 0.40, E(side * 2.8, 1.61, -0.83));
         box("stone", 0.43, 0.18, 0.38, E(side * 2.8, 0.42, -0.78));
         box("stone", 0.44, 0.16, 0.37, E(side * 2.8, 2.92, -0.78));
         box("prologueWatermark", 1.15, side < 0 ? 1.7 : 0.85, 0.009,
           E(side * 2.04, side < 0 ? 1.98 : 2.38, -0.94));
       }
+      // A complete pointed arch binds the existing piers into one altar
+      // bay; the missing right inner moulding and fallen stone mark the ruin.
+      // This is scenery, not a doorway/collision surface. Existing batches only.
+      const shoulder=[[2.8,2.98],[2.56,3.49],[2.08,4.02],[1.36,4.52],[0,5.18]];
+      for(const side of [-1,1]) {
+        const count=4;
+        for(let i=0;i<count;i++) {
+          const a=shoulder[i],b=shoulder[i+1],dx=side*(b[0]-a[0]),dy=b[1]-a[1];
+          box("prologuePatinatedStone",.38,Math.hypot(dx,dy)+.045,.44,
+            E(side*(a[0]+b[0])*.5,(a[1]+b[1])*.5,-.82,0,0,-Math.atan2(dx,dy)));
+          if(side<0||i<2)box("slate",.12,Math.hypot(dx,dy)+.04,.50,
+            E(side*((a[0]+b[0])*.5-.23),(a[1]+b[1])*.5-.13,-.76,0,0,-Math.atan2(dx,dy)));
+        }
+        box("stone",.62,.14,.53,E(side*2.8,2.99,-.76));
+      }
+      box("prologuePatinatedStone",.55,.24,.39,E(1.92,.13,-.35,.07,.37,.12));
       // The broken cornice leaves a gap beside the right-hand window shoulder.
       box("slate", 1.78, 0.14, 0.3, E(-2.01, 3.06, -0.82));
       box("slate", 0.73, 0.14, 0.3, E(2.6, 3.06, -0.82));
@@ -793,9 +809,9 @@
     place("prologueVotive", 9.3, 11, { s: 1.15 });
     // Original light decorator: s = intensity, h = range, r = height above floor.
     // Its ember-red color is already part of the game's lighting palette.
-    place("light", 9.5, 10.5, { s: 4.2, h: 12, r: 0.8 });
-    place("light", 9.5, 13, { s: 2.4, h: 10, r: 0.7 });
-    place("light", 9.5, 15, { s: 1.2, h: 8, r: 1.1 });
+    place("light", 9.5, 10.5, { s: 2.3, h: 10, r: 0.8 });
+    place("light", 9.5, 13, { s: 1.55, h: 9, r: 0.7 });
+    place("light", 9.5, 15, { s: 0.9, h: 8, r: 1.1 });
     place("bones", 9.8, 16.5, { r: 0.4, s: 0.45 });
     // The crypt changes from individual memorials to exposed communal bones.
     // Recesses sit on the side walls, leaving the entire stair width intact.

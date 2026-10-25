@@ -1,0 +1,66 @@
+{
+  "baseline": "b823d85f6dd70b4eb795c4e17cde96cc455b3f11e1c44856a70e78444b9f2103",
+  "source": "a7081298c0d62fa843a766956544986ce860327fae4a661fa1b3f2734c193630",
+  "candidate": "eee23be98f92a85ba032e678c3bae53d0ec405657f91895b2612ee0befcf78bf",
+  "scope": "Native idle, mouse fire, keyboard R and RAF. Setup via QA only; no viewPose override. Screenshots have independent background RNG and are not pixel-difference evidence.",
+  "soleSourceChange": "Soul right-grip artwork anchor1460,347 to1365,350. Basis, depth, geometry and all other sourcebytes unchanged.",
+  "media": [
+    {
+      "file": "soul-before.png",
+      "inputSHA256": "b823d85f6dd70b4eb795c4e17cde96cc455b3f11e1c44856a70e78444b9f2103",
+      "sha256": "d3c36d01df85a735ee9223b4e69d148552512a7795db19ed95427e713f28e127"
+    },
+    {
+      "file": "soul-after.png",
+      "inputSHA256": "38b1a9aa2933d1523ba2607f3ae39d6d977b926b4d483d031112e085eb078b95",
+      "sha256": "2a8a250cdeb74a08f1485f211d780ddc11cf246f602a48648be701db84d8ce78",
+      "scope": "Final combined native mouse fire/idle RAF capture"
+    },
+    {
+      "file": "soul-reload.png",
+      "inputSHA256": "eee23be98f92a85ba032e678c3bae53d0ec405657f91895b2612ee0befcf78bf",
+      "sha256": "68d59c740d598573e1d7dba94f2dada6cce0b87e95aa200927b68fe68efaaee5"
+    },
+    {
+      "file": "soul-fire.png",
+      "inputSHA256": "38b1a9aa2933d1523ba2607f3ae39d6d977b926b4d483d031112e085eb078b95",
+      "sha256": "8fb63bd0475c481758b974bb144974bcffa9b39ce0594e9b38e91ff0f803600f",
+      "scope": "Final combined native mouse fire/idle RAF capture"
+    },
+    {
+      "file": "soul-fire-reload.webm",
+      "inputSHA256": "38b1a9aa2933d1523ba2607f3ae39d6d977b926b4d483d031112e085eb078b95",
+      "sha256": "5e6e0d42c06913317e88d7c35c26c30f80fdd294bd11ddf6813c42520a65f33f",
+      "scope": "Final combined actual mouse fire, keyboard R, native RAF and game WebAudio"
+    }
+  ],
+  "finalBuild": {
+    "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\weapon-contact-oct25b\\combined-final\\THE-BLACK-SILENCE.html",
+    "sha256": "38b1a9aa2933d1523ba2607f3ae39d6d977b926b4d483d031112e085eb078b95",
+    "bytes": 22653664,
+    "moduleHashes": {
+      "combat.js": "6c6a13264859ecdf05f9740d8d161f8eb265f9e8a04dc05b1675b6bdb1164e54",
+      "enemy-animation.js": "5dbcfaf8908f8bde69d7c1625bce9ef163e874aab3ff22ded58d08040f1cec54",
+      "finishers.js": "8c2c7bdf13e17005c3383054560b155986d8e706b5bfda81e9f1a8224ee3c5b0",
+      "materials.js": "05e43b45ce521b52cf4d7b172177984699670d9de1261de5f88bf11f42b45517",
+      "prologue.js": "a887a17a74c59f11a7b689e20fec314286349d984cdec4007f719d69b3d1c089",
+      "reload-audio-data.js": "2f48b10a1225d1c007ee282d3c18f82c5022bb0267ed86d65feadf819ec1be30",
+      "reload-audio.js": "6b63eec006c8f7ee98392f323f630879140948f24165ab72b308bfb4b4d6be16",
+      "render-warmup.js": "84db971283d86b0cbea7d0181eb3d48d40924936c5d577ab05fd31ca4b7e755c",
+      "viewmodels.js": "a7081298c0d62fa843a766956544986ce860327fae4a661fa1b3f2734c193630",
+      "village-presentation.js": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627"
+    }
+  },
+  "video": {
+    "file": "C:\\Users\\tehlike47\\game\\docs\\soul-grip-oct25b\\soul-fire-reload.webm",
+    "videoCodec": "VP9",
+    "audioCodec": "Opus",
+    "fps": 25,
+    "trimStart": 14.2,
+    "markerFrames": 9,
+    "audioSource": "C:\\Users\\tehlike47\\game\\.dream-loop\\weapon-contact-oct25b\\final-motion\\game-output.webm",
+    "audioDuration": 5.6755,
+    "bytes": 1544301,
+    "syncScope": "Audio starts when the preroll marker is removed; trim uses the first non-marker video frame. Video frame granularity is 40ms; physical audio-output latency is not measured."
+  }
+}

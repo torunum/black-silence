@@ -94,7 +94,8 @@ for (const prop of added) {
 }
 assert(added.filter(p=>p.k==='prologueVotive').length >= 7, 'Low votives guide the crypt approach');
 assert(!added.some(p=>p.k==='candelabra' && p.x<15 && p.z<18), 'No tall approach candelabras');
-assert(added.some(p=>p.k==='light' && p.x===9.5 && p.z===10.5 && p.s>=4 && p.r<1), 'Low warm crypt light');
+for (const [z,s,h,r] of [[10.5,2.3,10,.8],[13,1.55,9,.7],[15,.9,8,1.1]])
+  assert(added.some(p=>p.k==='light' && p.x===9.5 && p.z===z && p.s===s && p.h===h && p.r===r), 'Scoped crypt candle light balance at '+z);
 assert.equal(gV[0].build().decor.length, result.decor.length, 'No accumulating decoration on reload');
 v.grid=gV[0].build().g;
 function step(dt) { mf=Math.max(0,mf-dt); F$(dt); }

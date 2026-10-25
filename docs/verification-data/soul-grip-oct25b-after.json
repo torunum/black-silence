@@ -1,0 +1,88 @@
+{
+  "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\weapon-contact-oct25b\\candidate.html",
+  "sha256": "eee23be98f92a85ba032e678c3bae53d0ec405657f91895b2612ee0befcf78bf",
+  "scope": "Actual mouse fire and keyboard R/native RAF; pause only freezes screenshots; no viewPose.",
+  "frames": [
+    {
+      "index": 7,
+      "state": "idle",
+      "time": 0.10689999999999965,
+      "phase": 0.04111538461538448,
+      "mag": 4,
+      "file": "weapon-7-idle.png"
+    },
+    {
+      "index": 7,
+      "state": "fire",
+      "time": 0.035700000000000724,
+      "phase": 0.013730769230769508,
+      "mag": 3,
+      "file": "weapon-7-fire.png"
+    },
+    {
+      "index": 7,
+      "state": "reload",
+      "time": 0.34,
+      "phase": 0.13076923076923078,
+      "mag": 0,
+      "file": "weapon-7-0.12.png"
+    },
+    {
+      "index": 7,
+      "state": "reload",
+      "time": 0.5196999999999989,
+      "phase": 0.19988461538461497,
+      "mag": 0,
+      "file": "weapon-7-0.18.png"
+    },
+    {
+      "index": 7,
+      "state": "reload",
+      "time": 1.0230999999999983,
+      "phase": 0.39349999999999935,
+      "mag": 0,
+      "file": "weapon-7-0.38.png"
+    },
+    {
+      "index": 7,
+      "state": "reload",
+      "time": 1.3450999999999984,
+      "phase": 0.5173461538461532,
+      "mag": 0,
+      "file": "weapon-7-0.5.png"
+    },
+    {
+      "index": 7,
+      "state": "reload",
+      "time": 1.578699999999999,
+      "phase": 0.6071923076923074,
+      "mag": 0,
+      "file": "weapon-7-0.6.png"
+    },
+    {
+      "index": 7,
+      "state": "reload",
+      "time": 1.6850000000000003,
+      "phase": 0.6480769230769231,
+      "mag": 0,
+      "file": "weapon-7-0.64.png"
+    },
+    {
+      "index": 7,
+      "state": "reload",
+      "time": 2.1516000000000006,
+      "phase": 0.8275384615384618,
+      "mag": 0,
+      "file": "weapon-7-0.82.png"
+    },
+    {
+      "index": 7,
+      "state": "reload",
+      "time": 2.5263999999999998,
+      "phase": 0.9716923076923075,
+      "mag": 0,
+      "file": "weapon-7-0.96.png"
+    }
+  ],
+  "errors": []
+}

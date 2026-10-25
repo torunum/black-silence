@@ -1,0 +1,41 @@
+{
+  "passed": true,
+  "syntaxChecks": 3,
+  "cases": [
+    {
+      "tool": "chapel-architecture-tests.cjs",
+      "case": "same input",
+      "refused": true
+    },
+    {
+      "tool": "chapel-architecture-tests.cjs",
+      "case": "case alias",
+      "refused": true
+    },
+    {
+      "tool": "crypt-lighting-tests.cjs",
+      "case": "same input",
+      "refused": true
+    },
+    {
+      "tool": "crypt-lighting-tests.cjs",
+      "case": "case alias",
+      "refused": true
+    },
+    {
+      "tool": "chapel-material-resource-tests.cjs",
+      "case": "Input must be outside output directory",
+      "refused": true
+    },
+    {
+      "tool": "chapel-material-resource-tests.cjs",
+      "case": "Camera preset must be glass, altar or crypt",
+      "refused": true
+    }
+  ],
+  "immutableInputHashes": [
+    "e2d734d2fdc3732e1daffbfd18e80e3c7452dd1fe9caf6b9fb4a1a0c3d3e23c7",
+    "26e7d667df97cb05b40be4542c9c6f8ba67b8bc336d8591e3b84ae23eb9a188d",
+    "a887a17a74c59f11a7b689e20fec314286349d984cdec4007f719d69b3d1c089"
+  ]
+}

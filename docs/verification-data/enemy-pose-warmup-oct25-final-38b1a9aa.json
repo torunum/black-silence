@@ -1,0 +1,91 @@
+{
+  "pass": true,
+  "htmlSHA256": "38b1a9aa2933d1523ba2607f3ae39d6d977b926b4d483d031112e085eb078b95",
+  "sourceSHA256": "84db971283d86b0cbea7d0181eb3d48d40924936c5d577ab05fd31ca4b7e755c",
+  "scope": "Final combined functional native first-hit/second-hit and chapter-return cache smoke; not a performance comparison.",
+  "shots": [
+    {
+      "stage": "first",
+      "before": {
+        "mag": 6,
+        "hp": 88
+      },
+      "after": {
+        "hp": 54,
+        "mag": 5,
+        "hurt": -0.008655999999999352
+      }
+    },
+    {
+      "stage": "repeat",
+      "before": {
+        "mag": 5,
+        "hp": 88
+      },
+      "after": {
+        "hp": 54,
+        "mag": 4,
+        "hurt": -0.00828000000000146
+      }
+    }
+  ],
+  "errors": [],
+  "startup": {
+    "frames": 38,
+    "rawRGBABytes": 1092584
+  },
+  "warmLoads": [
+    {
+      "rngCalls": 0,
+      "stateSame": true,
+      "cacheFrames": 38
+    },
+    {
+      "rngCalls": 0,
+      "stateSame": true,
+      "cacheFrames": 77
+    },
+    {
+      "rngCalls": 0,
+      "stateSame": true,
+      "cacheFrames": 77
+    }
+  ],
+  "firstContactPainAttackNewBakes": 0,
+  "repeatNewBakes": 0,
+  "returnCacheExact": true,
+  "fivePosePNGsEqualBaseline": true,
+  "textureProof": [
+    {
+      "key": "pain0:0",
+      "pngSHA256": "3d6fc62688222d0835b436fd07a636aa5552ce1d274568e2ad51eab0b43095b0"
+    },
+    {
+      "key": "pain1:0",
+      "pngSHA256": "2710c7459c12a0469fe945f30b8fd51ce90e3c1024b64086e51a1aed464c2a56"
+    },
+    {
+      "key": "atk0:0",
+      "pngSHA256": "b832ff2b1484dc1318245136dbaeab5772f6cc2060cc41f49bc9560160ec0f63"
+    },
+    {
+      "key": "atk1:0",
+      "pngSHA256": "4b37344f79750981407d878b0ed1ab05daf4b019831ef85057ee1d7060d4ad42"
+    },
+    {
+      "key": "atk2:0",
+      "pngSHA256": "97d56bd9a72ed107fb0e988a8c64f60218f86ee90d1c80ddeedb6bc118c0e913"
+    }
+  ],
+  "vmContract": {
+    "pass": true,
+    "sourcePath": "C:\\Users\\tehlike47\\game\\src\\render-warmup.js",
+    "sourceSHA256": "84db971283d86b0cbea7d0181eb3d48d40924936c5d577ab05fd31ca4b7e755c",
+    "checks": [
+      "native return/arguments; five frames per unique present rig; pose bounds; gameplay state/RNG preserved",
+      "global native cache objects reused on repeated load",
+      "throwing optional rig retains partial cache, deduplicates and continues next unique rig",
+      "native load exceptions still propagate; no warmup after failed load"
+    ]
+  }
+}

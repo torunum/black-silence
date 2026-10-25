@@ -1,127 +1,106 @@
 {
   "passed": true,
-  "bytes": 22651858,
-  "sha256": "b823d85f6dd70b4eb795c4e17cde96cc455b3f11e1c44856a70e78444b9f2103",
+  "bytes": 22653664,
+  "sha256": "38b1a9aa2933d1523ba2607f3ae39d6d977b926b4d483d031112e085eb078b95",
   "engineSha256": "6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899",
   "villageSha256": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627",
   "moduleHashes": {
     "materials.js": "05e43b45ce521b52cf4d7b172177984699670d9de1261de5f88bf11f42b45517",
     "combat.js": "6c6a13264859ecdf05f9740d8d161f8eb265f9e8a04dc05b1675b6bdb1164e54",
     "enemy-animation.js": "5dbcfaf8908f8bde69d7c1625bce9ef163e874aab3ff22ded58d08040f1cec54",
-    "viewmodels.js": "ad2e2482ae2c01865833289dd5143d8ce5a0672ef297271d62d20865e6cf13fb",
+    "viewmodels.js": "a7081298c0d62fa843a766956544986ce860327fae4a661fa1b3f2734c193630",
     "finishers.js": "8c2c7bdf13e17005c3383054560b155986d8e706b5bfda81e9f1a8224ee3c5b0",
     "reload-audio-data.js": "2f48b10a1225d1c007ee282d3c18f82c5022bb0267ed86d65feadf819ec1be30",
     "reload-audio.js": "6b63eec006c8f7ee98392f323f630879140948f24165ab72b308bfb4b4d6be16",
-    "prologue.js": "b0107518140492cc18c4cd7bd41b1e342359ceccf558e9ed1dee22942add3773",
-    "render-warmup.js": "9418307e9d71b28411b36e86e1ed3f4eb2eecda6b00d58144ce5bc79d110838c",
+    "prologue.js": "a887a17a74c59f11a7b689e20fec314286349d984cdec4007f719d69b3d1c089",
+    "render-warmup.js": "84db971283d86b0cbea7d0181eb3d48d40924936c5d577ab05fd31ca4b7e755c",
     "village-presentation.js": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627"
   },
   "idempotentBuilds": 2,
   "invalidInputsRefusedWithoutWrite": 8,
   "file": "THE-BLACK-SILENCE.html",
-  "verifiedAt": "2026-10-25T13:07:26.818Z",
-  "previousRelease": "6dd69003987fadb8c4b405d3e94d3833e303d37a86484e33c4ed2fb556c75c99",
-  "scope": "Stake loading-hand contact and right grip in all poses, with scoped ultrawide sleeve continuation; execution-glove dark leather material; one held/released arm during tear execution with cancellation cleanup; chapel glass surface detail and scoped texture disposal. Native weapon stats/timings, engine and Village preserved.",
+  "verifiedAt": "2026-10-25T14:29:56.041Z",
+  "previousRelease": "b823d85f6dd70b4eb795c4e17cde96cc455b3f11e1c44856a70e78444b9f2103",
+  "scope": "Soul Reaper right-hand grip contact; chapel altar pointed-arch connection; three existing crypt lights balanced; native intact attack/pain pose textures prepared during chapter loading. Native weapon stats/timings, audio, combat, engine and Village preserved.",
   "verificationReports": [
     {
-      "file": "docs/verification-data/chapel-glass-oct25-before.json",
-      "sha256": "bd1d7e1cd400c49ddee0b680b3bdd9a8ce909f3fbe5a50b0870fd1b5df3e6b86"
+      "file": "docs/verification-data/chapel-architecture-oct25b-final-invariants.json",
+      "sha256": "b9f431320a0d9dda738fcd21081755516a430101e75cdaa24e9b39bd4a05f467"
     },
     {
-      "file": "docs/verification-data/chapel-glass-oct25-invariants.json",
-      "sha256": "0aa1582f5cb374eeffa6a887f9bb22f84ae112306e6917174324c9c9823d75b6"
+      "file": "docs/verification-data/chapel-architecture-oct25b-final-lifecycle.json",
+      "sha256": "5c4fd8bc5ce63ffe1b9a896c6d2fa9d0e53782d72f1d3011a5e12b9620a73765"
     },
     {
-      "file": "docs/verification-data/chapel-glass-oct25-lifecycle.json",
-      "sha256": "2d0cca5f4c831b440a36545e2c6ce0629d35a447c4e759c6c2e26064814255da"
+      "file": "docs/verification-data/chapel-architecture-oct25b-invariants.json",
+      "sha256": "9c707681f4812d4af9505333236900344be407ae2c93e5da25cacf56efa479a8"
     },
     {
-      "file": "docs/verification-data/chapel-glass-oct25-output-guards.json",
-      "sha256": "7e4c4e05fef44353514bdad3bae0b207001f72021bfb564f876882345c7ad83f"
+      "file": "docs/verification-data/chapel-architecture-oct25b-lifecycle.json",
+      "sha256": "281c0459846e7d9a84bac2e4238095683d29db6570dad6bec50aee259282aedb"
     },
     {
-      "file": "docs/verification-data/execution-lifecycle-oct25-697219ab.json",
-      "sha256": "1b71edccf4de7c2a605506701f526b0dc3cf1943086f5deb305c8229f5cf7103"
+      "file": "docs/verification-data/chapel-architecture-oct25b-navigation.json",
+      "sha256": "00cd893a79e25579612018166ff847993e9b140e619d32641a5994a2d2f4f6e8"
     },
     {
-      "file": "docs/verification-data/execution-native-oct25-697219ab.json",
-      "sha256": "7e4b75296d2d122f525349e88f029429541b46a7bd3b11a974d60f3603488960"
+      "file": "docs/verification-data/chapel-architecture-oct25b-render.json",
+      "sha256": "c8e3ebe242d2355fe38e68b432d8dfeed1ae58686055ef5f8b9c446003e09a07"
     },
     {
-      "file": "docs/verification-data/execution-sanity-oct25-b823d85f.json",
-      "sha256": "6b50251e8cd0ea53cf6480be7da584b45c0a66fb7e0a13881b007aa3d326f58c"
+      "file": "docs/verification-data/chapel-architecture-oct25b-tool-guards.json",
+      "sha256": "94118aaabd476a4e134089fbcaf75fc30ee0338f6285d5d17c61eb912f2b706f"
     },
     {
-      "file": "docs/verification-data/finisher-oct25-after.json",
-      "sha256": "cafac4a034bc9d0effa683b4a94262ffdfb816f01adb71105cc6155706ff8abc"
+      "file": "docs/verification-data/crypt-lighting-oct25b-invariants.json",
+      "sha256": "cf526478f7f0552452b01311739a6b9d58b80fdf520181001468623469a7ebf1"
     },
     {
-      "file": "docs/verification-data/finisher-oct25-before.json",
-      "sha256": "4ebde7abeb02069e59587057f886cfd80582153fb0ff7ed919e993c504ed9e9e"
+      "file": "docs/verification-data/enemy-pose-warmup-oct25-final-38b1a9aa.json",
+      "sha256": "ebcdf36909cb25fdf65f9824e1b444abd372fffe09906458dcdda03302fd141b"
     },
     {
-      "file": "docs/verification-data/finisher-oct25-material-scope.json",
-      "sha256": "6ba7be6071d4b64aafd5bc3dbc52abc8f39df6b1c9c385fac6f111fc901050fe"
+      "file": "docs/verification-data/enemy-pose-warmup-oct25-measurement.json",
+      "sha256": "3d958640a7683b9f7838d2195d4588cc34a23326bcfaf9a2ca6e4d1c0b1e76d5"
     },
     {
-      "file": "docs/verification-data/finisher-oct25-output-guard.json",
-      "sha256": "b7e2588f1dc1a28c8f01d4177104b351cc36dd7c8c0b1a0c2c43cc5e6a943477"
+      "file": "docs/verification-data/soul-grip-oct25b-after.json",
+      "sha256": "2c65e7b335f388a48e7b4167717b20412a5a83670dad72ba7d7b9c9d18b808ef"
     },
     {
-      "file": "docs/verification-data/polish-oct25-build.json",
-      "sha256": "5405bbb41c8ea94c0fdb895fd8f3ce6f872eb6a53e5e021a4d6ba7bceb99a4da"
+      "file": "docs/verification-data/soul-grip-oct25b-aspects.json",
+      "sha256": "f21fff2ac5752dd48438c14b1ab77d70ace273fe75ab45e263434f0868b2f4a2"
     },
     {
-      "file": "docs/verification-data/polish-oct25-kernel.json",
-      "sha256": "2888fc4589244da00d96a266470392675cd437c65c7b635e2ab33b5c57db9926"
+      "file": "docs/verification-data/soul-grip-oct25b-before.json",
+      "sha256": "4f921aa2673fa00706f50909ac6cbd568c77b73ea20ad74ceba04c338596d321"
     },
     {
-      "file": "docs/verification-data/polish-oct25-runtime.json",
-      "sha256": "1e65f64c931674bfe363fa294305904755277a02d3375ec0d3bb88a15abec013"
+      "file": "docs/verification-data/soul-grip-oct25b-final-build.json",
+      "sha256": "a8a5211a8e4681ff4c376073adad85cba12e0c7783943ed7298b91492de51091"
     },
     {
-      "file": "docs/verification-data/stake-contact-oct25-aspects.json",
-      "sha256": "2164387653c791621f997101132b39ae087fdfcd4890e47aa157f0057956dd61"
+      "file": "docs/verification-data/soul-grip-oct25b-final-runtime.json",
+      "sha256": "b1e3c4a963a2b62f80e476eee24d8be49f078bdd63abc34d15220d03cbf7fbcc"
     },
     {
-      "file": "docs/verification-data/stake-contact-oct25-parity.json",
-      "sha256": "8cbcc665584f3c0e1cd892968648a6f1012aef12a51fd9e58e384be2ea84c1fc"
-    },
-    {
-      "file": "docs/verification-data/stake-finisher-oct25-parity.json",
-      "sha256": "7fbced1f8fb3ddc14b0682b7191ec594522c4265d095a0a55ce633dc12b4d6cb"
-    },
-    {
-      "file": "docs/verification-data/stake-right-grip-oct25-b823-aspects.json",
-      "sha256": "471a7e2fc24596927c0e8d4049ca98701645b38a40a60749b14000a9bec53b6b"
-    },
-    {
-      "file": "docs/verification-data/stake-right-grip-oct25-b823-build.json",
-      "sha256": "d5132bdeaac2f31e49cca73aae7c290acb42d054f09a00d16ce5e83dabbeec1e"
-    },
-    {
-      "file": "docs/verification-data/stake-right-grip-oct25-b823-parity.json",
-      "sha256": "36544fb7dc426346365f5db25a7697713832442c7956997f745011c033553875"
-    },
-    {
-      "file": "docs/verification-data/stake-right-grip-oct25-b823-runtime.json",
-      "sha256": "b1cb597dfbfe52aed5559bfe8df96770f81650cc15b6c579ca86e43ffbe54623"
+      "file": "docs/verification-data/soul-grip-oct25b-parity.json",
+      "sha256": "791d7b1f0b097b2fd7b61dc1eecfb69288afdf20f08e40979f40424e53b0b039"
     }
   ],
-  "limitations": [
-    "No FPS improvement is claimed; this pass makes scoped animation, material and lifecycle corrections.",
-    "Weapon assets remain articulated textured surfaces with native depth/backing; execution hands retain procedural geometry.",
-    "Actual before/after execution screenshots have different background RNG; exact material isolation is demonstrated by the deterministic depth/part/glove-mask test.",
-    "Intermediate media and test reports retain their exact input identities rather than being relabelled as final-build captures.",
-    "Validation covers the documented flows, not every campaign state."
-  ],
-  "finalRightGripParity": {
-    "baselineSHA256": "697219aba3391120a1e0b74b5056050b9dbce774513385a3773485b6e76199b9",
-    "candidateSHA256": "b823d85f6dd70b4eb795c4e17cde96cc455b3f11e1c44856a70e78444b9f2103",
+  "viewmodelParity": {
+    "baselineSHA256": "b823d85f6dd70b4eb795c4e17cde96cc455b3f11e1c44856a70e78444b9f2103",
+    "candidateSHA256": "eee23be98f92a85ba032e678c3bae53d0ec405657f91895b2612ee0befcf78bf",
+    "sourceSHA256": "a7081298c0d62fa843a766956544986ce860327fae4a661fa1b3f2734c193630",
     "comparisons": 660,
     "exact": 600,
-    "expectedStakeDifferences": 60,
-    "unexpectedDifferences": 0,
-    "scope": "Other nine weapons, boots and finishers exact. Stake right grip changes all poses; existing left loading path unchanged."
-  }
+    "expectedSoulDifferences": 60,
+    "unexpectedDifferences": 0
+  },
+  "limitations": [
+    "No general FPS improvement is claimed. Pose prewarming moves bounded first-contact bake work into chapter loading and retains native global cache lifetime.",
+    "Weapon artwork remains articulated textured surfaces with native depth/backing; the Soul change only relocates its existing right hand.",
+    "Screenshots retain their actual input provenance and may have different background RNG; intermediate reports are not relabelled as final tests.",
+    "Validation covers documented flows, not every campaign state."
+  ]
 }

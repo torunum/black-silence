@@ -1,0 +1,93 @@
+{
+  "passed": true,
+  "beforeSHA256": "b0107518140492cc18c4cd7bd41b1e342359ceccf558e9ed1dee22942add3773",
+  "afterSHA256": "a887a17a74c59f11a7b689e20fec314286349d984cdec4007f719d69b3d1c089",
+  "entireMapExact": false,
+  "entireMapExactExceptApprovedCryptLights": true,
+  "lightChanges": [
+    {
+      "before": {
+        "k": "light",
+        "x": 9.5,
+        "z": 10.5,
+        "s": 4.2,
+        "h": 12,
+        "r": 0.8
+      },
+      "after": {
+        "k": "light",
+        "x": 9.5,
+        "z": 10.5,
+        "s": 2.3,
+        "h": 10,
+        "r": 0.8
+      }
+    },
+    {
+      "before": {
+        "k": "light",
+        "x": 9.5,
+        "z": 13,
+        "s": 2.4,
+        "h": 10,
+        "r": 0.7
+      },
+      "after": {
+        "k": "light",
+        "x": 9.5,
+        "z": 13,
+        "s": 1.55,
+        "h": 9,
+        "r": 0.7
+      }
+    },
+    {
+      "before": {
+        "k": "light",
+        "x": 9.5,
+        "z": 15,
+        "s": 1.2,
+        "h": 8,
+        "r": 1.1
+      },
+      "after": {
+        "k": "light",
+        "x": 9.5,
+        "z": 15,
+        "s": 0.9,
+        "h": 8,
+        "r": 1.1
+      }
+    }
+  ],
+  "unchangedOriginalElementsExceptTwoPierDimensions": true,
+  "addedStaticPrimitives": 17,
+  "newMaterialBatches": 0,
+  "windowGeometryExact": true,
+  "globalMaterialRoutesExact": true,
+  "glassColorsExact": true,
+  "chapelWindows": 1,
+  "glassMaterialGroups": 3,
+  "texture": {
+    "width": 32,
+    "height": 64,
+    "shared": true,
+    "opaque": true,
+    "name": "prologueChapelGlass",
+    "reset": true
+  },
+  "inputs": [
+    {
+      "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\environment-oct25b\\baseline.html",
+      "sha256": "b823d85f6dd70b4eb795c4e17cde96cc455b3f11e1c44856a70e78444b9f2103"
+    },
+    {
+      "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\environment-oct25b\\baseline-prologue.js",
+      "sha256": "b0107518140492cc18c4cd7bd41b1e342359ceccf558e9ed1dee22942add3773"
+    },
+    {
+      "file": "C:\\Users\\tehlike47\\game\\src\\prologue.js",
+      "sha256": "a887a17a74c59f11a7b689e20fec314286349d984cdec4007f719d69b3d1c089"
+    }
+  ]
+}

@@ -1,0 +1,168 @@
+{
+  "input": "C:\\Users\\tehlike47\\game\\THE-BLACK-SILENCE.html",
+  "sha256": "b823d85f6dd70b4eb795c4e17cde96cc455b3f11e1c44856a70e78444b9f2103",
+  "scope": "Actual mouse fire and keyboard R/native RAF; pause only freezes screenshots; no viewPose.",
+  "frames": [
+    {
+      "index": 5,
+      "state": "idle",
+      "time": 0.1075,
+      "phase": 0.04886363636363636,
+      "mag": 3,
+      "file": "weapon-5-idle.png"
+    },
+    {
+      "index": 5,
+      "state": "fire",
+      "time": 0.07089999999999963,
+      "phase": 0.032227272727272556,
+      "mag": 2,
+      "file": "weapon-5-fire.png"
+    },
+    {
+      "index": 5,
+      "state": "reload",
+      "time": 0.2862999999999993,
+      "phase": 0.1301363636363633,
+      "mag": 0,
+      "file": "weapon-5-0.12.png"
+    },
+    {
+      "index": 5,
+      "state": "reload",
+      "time": 0.4471000000000003,
+      "phase": 0.20322727272727284,
+      "mag": 0,
+      "file": "weapon-5-0.18.png"
+    },
+    {
+      "index": 5,
+      "state": "reload",
+      "time": 0.8764000000000013,
+      "phase": 0.3983636363636369,
+      "mag": 0,
+      "file": "weapon-5-0.38.png"
+    },
+    {
+      "index": 5,
+      "state": "reload",
+      "time": 1.112908000000002,
+      "phase": 0.5058672727272736,
+      "mag": 0,
+      "file": "weapon-5-0.5.png"
+    },
+    {
+      "index": 5,
+      "state": "reload",
+      "time": 1.346608000000003,
+      "phase": 0.6120945454545468,
+      "mag": 0,
+      "file": "weapon-5-0.6.png"
+    },
+    {
+      "index": 5,
+      "state": "reload",
+      "time": 1.434908000000002,
+      "phase": 0.65223090909091,
+      "mag": 0,
+      "file": "weapon-5-0.64.png"
+    },
+    {
+      "index": 5,
+      "state": "reload",
+      "time": 1.8252080000000017,
+      "phase": 0.8296400000000007,
+      "mag": 0,
+      "file": "weapon-5-0.82.png"
+    },
+    {
+      "index": 5,
+      "state": "reload",
+      "time": 2.164208000000002,
+      "phase": 0.98373090909091,
+      "mag": 0,
+      "file": "weapon-5-0.96.png"
+    },
+    {
+      "index": 7,
+      "state": "idle",
+      "time": 0.108,
+      "phase": 0.04153846153846154,
+      "mag": 4,
+      "file": "weapon-7-idle.png"
+    },
+    {
+      "index": 7,
+      "state": "fire",
+      "time": 0.08940000000000145,
+      "phase": 0.034384615384615944,
+      "mag": 3,
+      "file": "weapon-7-fire.png"
+    },
+    {
+      "index": 7,
+      "state": "reload",
+      "time": 0.3577999999999993,
+      "phase": 0.13761538461538433,
+      "mag": 0,
+      "file": "weapon-7-0.12.png"
+    },
+    {
+      "index": 7,
+      "state": "reload",
+      "time": 0.5187999999999993,
+      "phase": 0.19953846153846125,
+      "mag": 0,
+      "file": "weapon-7-0.18.png"
+    },
+    {
+      "index": 7,
+      "state": "reload",
+      "time": 1.0195999999999985,
+      "phase": 0.3921538461538456,
+      "mag": 0,
+      "file": "weapon-7-0.38.png"
+    },
+    {
+      "index": 7,
+      "state": "reload",
+      "time": 1.3225999999999984,
+      "phase": 0.5086923076923071,
+      "mag": 0,
+      "file": "weapon-7-0.5.png"
+    },
+    {
+      "index": 7,
+      "state": "reload",
+      "time": 1.5914999999999961,
+      "phase": 0.6121153846153831,
+      "mag": 0,
+      "file": "weapon-7-0.6.png"
+    },
+    {
+      "index": 7,
+      "state": "reload",
+      "time": 1.6987999999999954,
+      "phase": 0.6533846153846136,
+      "mag": 0,
+      "file": "weapon-7-0.64.png"
+    },
+    {
+      "index": 7,
+      "state": "reload",
+      "time": 2.162799999999995,
+      "phase": 0.8318461538461519,
+      "mag": 0,
+      "file": "weapon-7-0.82.png"
+    },
+    {
+      "index": 7,
+      "state": "reload",
+      "time": 2.5049999999999915,
+      "phase": 0.9634615384615351,
+      "mag": 0,
+      "file": "weapon-7-0.96.png"
+    }
+  ],
+  "errors": []
+}

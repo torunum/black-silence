@@ -1,0 +1,38 @@
+{
+  "type": "Actual native renderer captures; no postprocessed pixels",
+  "sourceSHA256": "a887a17a74c59f11a7b689e20fec314286349d984cdec4007f719d69b3d1c089",
+  "altarSourceSHA256": "26e7d667df97cb05b40be4542c9c6f8ba67b8bc336d8591e3b84ae23eb9a188d",
+  "camera": "Native standing eye and original TR zone lighting; seeded scene; Flare pistol; 1280x720",
+  "files": [
+    {
+      "file": "before-front.png",
+      "sha256": "6b1fa6a6bc04577e1748ea5e9e56d94adbaf668192d911797e8a55ff92827033",
+      "inputSHA256": "b823d85f6dd70b4eb795c4e17cde96cc455b3f11e1c44856a70e78444b9f2103"
+    },
+    {
+      "file": "before-side.png",
+      "sha256": "6b37682da3d1eee07f2ee11cb866cd77a6aa7054f64ecd87cae33d2d59bf0973",
+      "inputSHA256": "b823d85f6dd70b4eb795c4e17cde96cc455b3f11e1c44856a70e78444b9f2103"
+    },
+    {
+      "file": "after-front.png",
+      "sha256": "659f1b3f6b70729da6b9f295d828f5ba12f674393abf77adeb0b477376624b6e",
+      "inputSHA256": "911050d928dabd7496a11742dedc8deda0f4b246a624d6cfd49c9fc23ed30755"
+    },
+    {
+      "file": "after-side.png",
+      "sha256": "7eb1baac202db3656c1f4d1bcb2b5a30ef87e3bc24e3431c687089b2cc570caa",
+      "inputSHA256": "911050d928dabd7496a11742dedc8deda0f4b246a624d6cfd49c9fc23ed30755"
+    },
+    {
+      "file": "crypt-before.png",
+      "sha256": "4c542db2c7ccbb448ed72cc1c3fbe8c58adba04cc61fa65fb2896dbea3359bed",
+      "inputSHA256": "911050d928dabd7496a11742dedc8deda0f4b246a624d6cfd49c9fc23ed30755"
+    },
+    {
+      "file": "crypt-after.png",
+      "sha256": "0ff75c25a1dd3106c6b31a56976d13d667d3b8183fbafb0ce001978eb1076a21",
+      "inputSHA256": "e2d734d2fdc3732e1daffbfd18e80e3c7452dd1fe9caf6b9fb4a1a0c3d3e23c7"
+    }
+  ]
+}

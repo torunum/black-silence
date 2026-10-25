@@ -1,0 +1,156 @@
+{
+  "scope": "One controlled baseline/private-prototype comparison; native held input, matched fresh zombie rig, intact default mirror. Not steady FPS benchmark.",
+  "baselineSourceSHA256": "9418307e9d71b28411b36e86e1ed3f4eb2eecda6b00d58144ce5bc79d110838c",
+  "prototypeSourceSHA256": "4ee19cf44a893f1e9dd91b778a2fdd6868d9c174daddbf6fc066628896178c13",
+  "finalGuardedSourceSHA256": "84db971283d86b0cbea7d0181eb3d48d40924936c5d577ab05fd31ca4b7e755c",
+  "baseline": {
+    "htmlSHA256": "b823d85f6dd70b4eb795c4e17cde96cc455b3f11e1c44856a70e78444b9f2103",
+    "firstContactBakes": [
+      {
+        "action": "walk",
+        "frame": 0,
+        "ms": 4.799999982118607
+      },
+      {
+        "action": "walk",
+        "frame": 1,
+        "ms": 5.399999976158142
+      },
+      {
+        "action": "walk",
+        "frame": 2,
+        "ms": 5.699999988079071
+      },
+      {
+        "action": "walk",
+        "frame": 3,
+        "ms": 3.7000000178813934
+      },
+      {
+        "action": "atk",
+        "frame": 0,
+        "ms": 4
+      },
+      {
+        "action": "pain",
+        "frame": 0,
+        "ms": 3.7999999821186066
+      },
+      {
+        "action": "pain",
+        "frame": 1,
+        "ms": 9
+      },
+      {
+        "action": "atk",
+        "frame": 1,
+        "ms": 5.0999999940395355
+      },
+      {
+        "action": "atk",
+        "frame": 2,
+        "ms": 5.0999999940395355
+      }
+    ],
+    "repeatBakes": 0,
+    "startupFrames": 28,
+    "startupRawRGBABytes": 870564,
+    "warmLoads": [],
+    "posePNG": [
+      {
+        "key": "atk0:0",
+        "sha256": "b832ff2b1484dc1318245136dbaeab5772f6cc2060cc41f49bc9560160ec0f63"
+      },
+      {
+        "key": "pain0:0",
+        "sha256": "3d6fc62688222d0835b436fd07a636aa5552ce1d274568e2ad51eab0b43095b0"
+      },
+      {
+        "key": "pain1:0",
+        "sha256": "2710c7459c12a0469fe945f30b8fd51ce90e3c1024b64086e51a1aed464c2a56"
+      },
+      {
+        "key": "atk1:0",
+        "sha256": "4b37344f79750981407d878b0ed1ab05daf4b019831ef85057ee1d7060d4ad42"
+      },
+      {
+        "key": "atk2:0",
+        "sha256": "97d56bd9a72ed107fb0e988a8c64f60218f86ee90d1c80ddeedb6bc118c0e913"
+      }
+    ],
+    "errors": []
+  },
+  "prototype": {
+    "htmlSHA256": "d45ae0c4c74ccee1e348b3650418fbc8e3094590aa65db1164f466dae5a6c861",
+    "firstContactBakes": [
+      {
+        "action": "walk",
+        "frame": 0,
+        "ms": 10
+      },
+      {
+        "action": "walk",
+        "frame": 1,
+        "ms": 4.4000000059604645
+      },
+      {
+        "action": "walk",
+        "frame": 2,
+        "ms": 5.5
+      },
+      {
+        "action": "walk",
+        "frame": 3,
+        "ms": 4.299999982118607
+      }
+    ],
+    "repeatBakes": 0,
+    "startupFrames": 38,
+    "startupRawRGBABytes": 1092584,
+    "warmLoads": [
+      {
+        "ms": 36.599999994039536,
+        "rngCalls": 0,
+        "stateSame": true,
+        "frames": 38
+      },
+      {
+        "ms": 78,
+        "rngCalls": 0,
+        "stateSame": true,
+        "frames": 77
+      },
+      {
+        "ms": 0,
+        "rngCalls": 0,
+        "stateSame": true,
+        "frames": 77
+      }
+    ],
+    "posePNG": [
+      {
+        "key": "pain0:0",
+        "sha256": "3d6fc62688222d0835b436fd07a636aa5552ce1d274568e2ad51eab0b43095b0"
+      },
+      {
+        "key": "pain1:0",
+        "sha256": "2710c7459c12a0469fe945f30b8fd51ce90e3c1024b64086e51a1aed464c2a56"
+      },
+      {
+        "key": "atk0:0",
+        "sha256": "b832ff2b1484dc1318245136dbaeab5772f6cc2060cc41f49bc9560160ec0f63"
+      },
+      {
+        "key": "atk1:0",
+        "sha256": "4b37344f79750981407d878b0ed1ab05daf4b019831ef85057ee1d7060d4ad42"
+      },
+      {
+        "key": "atk2:0",
+        "sha256": "97d56bd9a72ed107fb0e988a8c64f60218f86ee90d1c80ddeedb6bc118c0e913"
+      }
+    ],
+    "errors": []
+  },
+  "memoryScope": "Raw RGBA estimate excludes canvas/GPU/driver overhead; native global cache retained intentionally.",
+  "potentialAll28RigTypesAdditionalRGBABytes": 4352820
+}

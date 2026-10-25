@@ -1,0 +1,36 @@
+{
+  "passed": true,
+  "beforeSHA256": "b0107518140492cc18c4cd7bd41b1e342359ceccf558e9ed1dee22942add3773",
+  "afterSHA256": "26e7d667df97cb05b40be4542c9c6f8ba67b8bc336d8591e3b84ae23eb9a188d",
+  "entireMapExact": true,
+  "unchangedOriginalElementsExceptTwoPierDimensions": true,
+  "addedStaticPrimitives": 17,
+  "newMaterialBatches": 0,
+  "windowGeometryExact": true,
+  "globalMaterialRoutesExact": true,
+  "glassColorsExact": true,
+  "chapelWindows": 1,
+  "glassMaterialGroups": 3,
+  "texture": {
+    "width": 32,
+    "height": 64,
+    "shared": true,
+    "opaque": true,
+    "name": "prologueChapelGlass",
+    "reset": true
+  },
+  "inputs": [
+    {
+      "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\environment-oct25b\\baseline.html",
+      "sha256": "b823d85f6dd70b4eb795c4e17cde96cc455b3f11e1c44856a70e78444b9f2103"
+    },
+    {
+      "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\environment-oct25b\\baseline-prologue.js",
+      "sha256": "b0107518140492cc18c4cd7bd41b1e342359ceccf558e9ed1dee22942add3773"
+    },
+    {
+      "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\environment-oct25b\\prologue.js",
+      "sha256": "26e7d667df97cb05b40be4542c9c6f8ba67b8bc336d8591e3b84ae23eb9a188d"
+    }
+  ]
+}

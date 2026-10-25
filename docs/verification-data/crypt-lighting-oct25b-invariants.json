@@ -1,0 +1,89 @@
+{
+  "passed": true,
+  "beforeSHA256": "26e7d667df97cb05b40be4542c9c6f8ba67b8bc336d8591e3b84ae23eb9a188d",
+  "afterSHA256": "a887a17a74c59f11a7b689e20fec314286349d984cdec4007f719d69b3d1c089",
+  "entireMapExactExceptThreeCryptLightIntensityRange": true,
+  "changedLights": [
+    {
+      "before": {
+        "k": "light",
+        "x": 9.5,
+        "z": 10.5,
+        "s": 4.2,
+        "h": 12,
+        "r": 0.8
+      },
+      "after": {
+        "k": "light",
+        "x": 9.5,
+        "z": 10.5,
+        "s": 2.3,
+        "h": 10,
+        "r": 0.8
+      }
+    },
+    {
+      "before": {
+        "k": "light",
+        "x": 9.5,
+        "z": 13,
+        "s": 2.4,
+        "h": 10,
+        "r": 0.7
+      },
+      "after": {
+        "k": "light",
+        "x": 9.5,
+        "z": 13,
+        "s": 1.55,
+        "h": 9,
+        "r": 0.7
+      }
+    },
+    {
+      "before": {
+        "k": "light",
+        "x": 9.5,
+        "z": 15,
+        "s": 1.2,
+        "h": 8,
+        "r": 1.1
+      },
+      "after": {
+        "k": "light",
+        "x": 9.5,
+        "z": 15,
+        "s": 0.9,
+        "h": 8,
+        "r": 1.1
+      }
+    }
+  ],
+  "geometryTransformsExact": true,
+  "globalMaterialRoutesExact": true,
+  "glassColorsExact": true,
+  "chapelWindows": 1,
+  "glassMaterialGroups": 3,
+  "texture": {
+    "width": 32,
+    "height": 64,
+    "shared": true,
+    "opaque": true,
+    "name": "prologueChapelGlass",
+    "reset": true
+  },
+  "inputs": [
+    {
+      "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\environment-oct25b\\candidate.html",
+      "sha256": "911050d928dabd7496a11742dedc8deda0f4b246a624d6cfd49c9fc23ed30755"
+    },
+    {
+      "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\environment-oct25b\\prologue.js",
+      "sha256": "26e7d667df97cb05b40be4542c9c6f8ba67b8bc336d8591e3b84ae23eb9a188d"
+    },
+    {
+      "file": "C:\\Users\\tehlike47\\game\\src\\prologue.js",
+      "sha256": "a887a17a74c59f11a7b689e20fec314286349d984cdec4007f719d69b3d1c089"
+    }
+  ]
+}

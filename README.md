@@ -19,6 +19,12 @@ Gotik piksel FPS oyununun on silah, deri eldiven ve prologue cehennem bölümü 
 
 ## Bu sürüm
 
+Soul Reaper'ın sağ eli normal duruş, ateş ve doldurma boyunca aşağı uzanan kabzaya oturtuldu. Yalnız elin sabit temas noktası değişir; silah, enerji ve diğer el hareketleri korunur. [Gerçek görüntüler ve karşılaştırma](docs/soul-grip-oct25b.md).
+
+Şapel altarına mevcut taş malzemeleriyle okunur bir sivri kemer eklendi; kırık vitray ve harabe açıklıkları korunur. Crypt içindeki üç mevcut sıcak ışık dengelenerek geniş taş yüzeylerindeki aşırı parlaklık azaltıldı. Rota, eşyalar, düşmanlar ve çarpışmalar korunur. [Önce/sonra ve kapsam](docs/chapel-architecture-oct25b.md).
+
+Düşmanların ilk darbe alma/saldırı kareleri bölüm yüklenirken mevcut cache'e hazırlanır; ilk temasta bu kareleri üretme işi azaltılır. Bu tercih yükleme sırasında küçük ek iş ve bellek kullanır, sürekli FPS artışı iddiası değildir. [Ölçüm ve sınırlar](docs/enemy-pose-warmup-oct25.md).
+
 Stake doldurmanın erken taşıma aşamasında sol elin kazıktan ayrılması düzeltildi; sağ el de normal duruş, ateş ve doldurma boyunca kabzaya oturtuldu. Bitirici animasyonlarının eldivenleri mevcut koyu deri renkleriyle uyumlu hale getirildi. Kol koparma bitiricisinde elde tutulan kol artık aynı anda dünyaya ikinci bir parça olarak fırlamaz; normal bitişte bırakılır, ölüm veya bölüm değişiminde bekleyen parça iptal edilir. [Temas ve eldiven kontrolleri](docs/stake-contact-oct25.md).
 
 Şapelin kırık vitrayına mevcut renkleri, delikleri ve silueti koruyan yüzey kırıkları ve ton farkları eklendi. Tek ortak küçük doku kullanılır; geometri veya yeni ışık eklenmez. [Eşleşmiş görüntüler ve kaynak temizliği](docs/chapel-glass-oct25.md).
