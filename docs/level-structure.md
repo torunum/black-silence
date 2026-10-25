@@ -25,11 +25,14 @@ same code as hard validation and fails if this file is out of date.
 | 0 · prologue · OUT OF THE PIT | 668 | 45 | - | 1 | 0 | 0 | 0 | 0 | 12 | 59 | 0 / 0 / 0 | 0 (-) | - | 8 (320 + 0 boss hp) | 1 | wall |
 | 1 · THE GOTHIC DUNGEON | 1099 | 123 | required, 26 steps off the way | 14 | 12 | 1 | 3 | 4 | 15 | 28 | 1 / 1 / 7 | 2 (4, 4) | 55% forced, 79% forced | 23 (1010 + 700 boss hp) | 1 | wall |
 | 2 · THE ABANDONED CHURCH | 1260 | 168 | required, 88 steps off the way | 13 | 11 | 1 | 2 | 3 | 39 | 46 | 1 / 1 / 5 | 2 (4, 5) | 58% forced, 73%, 92% forced | 35 (1440 + 2500 boss hp) | 2 | wall |
-| 3 · THE NECROPOLIS | 590 | 44 | optional | 13 | 14 | 3 | 4 | 2 | 6 | 49 | 1 / 1 / 15 | 1 (5) | 91%, 84% | 21 (1500 + 3950 boss hp) | 0 | freestanding |
-| 4 · THE GRAVEYARD | 623 | 44 | optional | 6 | 8 | 4 | 2 | 0 | 1 | 0 | 1 / 1 / 9 | 1 (5) | 91%, 84% | 20 (725 + 3050 boss hp) | 2 | wall |
-| 5 · THE SEWERS | 632 | 44 | optional | 5 | 6 | 3 | 3 | 0 | 1 | 0 | 1 / 1 / 8 | 1 (4) | 91%, 84% | 22 (925 + 3750 boss hp) | 3 | wall |
-| 6 · THE FACTORY | 619 | 44 | optional | 8 | 9 | 3 | 3 | 1 | 1 | 0 | 1 / 1 / 10 | 1 (5) | 91%, 84% | 20 (1171 + 4150 boss hp) | 1 | wall |
-| 7 · THE WOMB | 621 | 32 | optional | 7 | 8 | 3 | 3 | 1 | 1 | 0 | 1 / 1 / 9 | 1 (4) | 53%, 97% | 26 (1373 + 4550 boss hp) | 2 | n/a |
+| 3 · THE NECROPOLIS | 1117 | 119 | required, 52 steps off the way | 11 | 9 | 1 | 2 | 1 | 13 | 26 | 1 / 1 / 3 | 2 (4, 4) | 23% forced, 42% forced, 87% forced | 37 (1865 + 3950 boss hp) | 3 | wall |
+| 4 · THE GRAVEYARD | 1261 | 130 | required, 24 steps off the way | 12 | 10 | 1 | 2 | 1 | 15 | 21 | 1 / 1 / 4 | 2 (4, 4) | 55% forced, 67% forced, 78% forced | 36 (1400 + 3050 boss hp) | 1 | wall |
+| 5 · THE SEWERS | 864 | 116 | required, 30 steps off the way | 9 | 7 | 1 | 2 | 2 | 24 | 40 | 1 / 1 / 4 | 2 (4, 4) | 26% forced, 52% forced, 83% forced | 34 (1515 + 3750 boss hp) | 3 | wall |
+| 6 · THE FACTORY | 944 | 109 | required, 32 steps off the way | 9 | 7 | 1 | 2 | 2 | 19 | 21 | 1 / 1 / 4 | 2 (4, 4) | 24% forced, 41% forced, 84% forced | 33 (1759 + 4150 boss hp) | 3 | wall |
+| 7 · THE BONE CATHEDRAL | 998 | 112 | required, 24 steps off the way | 11 | 9 | 1 | 3 | 2 | 19 | 28 | 1 / 1 / 5 | 2 (6, 4) | 15% forced, 44% forced, 83% forced | 33 (1360 + 3100 boss hp) | 2 | wall |
+| 8 · THE WOMB | 766 | 94 | required, 40 steps off the way | 9 | 7 | 1 | 2 | 1 | 17 | 18 | 1 / 1 / 3 | 2 (4, 4) | 20% forced, 46% forced, 85% forced | 29 (1534 + 4550 boss hp) | 2 | n/a |
+| 9 · THE ASH BELL MONASTERY | 4741 | 347 | required, 122 steps off the way | 26 | 30 | 4 | 5 | 9 | 41 | 109 | 1 / 1 / 28 | 6 (4, 5, 3, 3, 3, 3) | 5%, 16%, 29% forced, 57% forced, 66% forced, 85% forced, 96% | 115 (5105 + 1500 boss hp) | 3 | wall |
+| 10 · THE HOLLOW VILLAGE | 2481 | 174 | required, 114 steps off the way | 14 | 13 | 3 | 2 | 5 | 25 | 61 | 1 / 1 / 11 | 3 (4, 4, 3) | 12%, 16%, 38% forced, 49% forced, 87%, 92% | 79 (3750 + 0 boss hp) | 2 | wall |
 
 The prologue is one open cavern (hell) and one yard (the zones of `prologue.ts`), so "rooms" says little there. Levels 4-6 share a critical path of exactly 44: the same building with different wallpaper
 (`docs/level-density.md`). Levels 3-7 have a key and a locked door but no key on the way: the door guards a side chamber, so there is no key hunt.
@@ -62,83 +65,144 @@ Regions with enemies, in reading order. *ratio* is ammunition-worth over hit poi
 | region | kind | cells | enemies | hp | boss hp | ammo worth | health | armour | ratio |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | x 52-61, z 2-5 | room | 40 | 3 | 155 | 0 | 2884 | 100 | 0 | 18.61 |
-| x 14-24, z 4-9 | room | 65 | 2 | 95 | 0 | 6412 | 325 | 100 | 67.49 |
-| x 27-35, z 6-10 | room | 45 | 2 | 90 | 0 | 5584 | 225 | 50 | 62.04 |
-| x 38-46, z 6-10 | room | 45 | 2 | 95 | 0 | 4144 | 150 | 0 | 43.62 |
+| x 14-24, z 4-9 | room | 65 | 2 | 95 | 0 | 6637 | 325 | 100 | 69.86 |
+| x 27-35, z 6-10 | room | 45 | 2 | 90 | 0 | 5809 | 225 | 50 | 64.54 |
+| x 38-46, z 6-10 | room | 45 | 2 | 95 | 0 | 4369 | 150 | 0 | 45.99 |
 | x 53-60, z 6-10 | passage | 19 | 2 | 65 | 0 | 1632 | 50 | 0 | 25.11 |
 | x 52-61, z 11-13 | room | 30 | 3 | 145 | 0 | 1632 | 50 | 0 | 11.26 |
-| x 14-24, z 14-22 | room | 99 | 1 | 0 | 1800 | 10842 | 475 | 200 | 6.02 |
-| x 26-49, z 14-28 | room | 346 | 8 | 320 | 0 | 4018 | 150 | 50 | 12.56 |
-| x 14-24, z 27-32 | room | 66 | 3 | 140 | 0 | 8186 | 375 | 150 | 58.47 |
+| x 14-24, z 14-22 | room | 99 | 1 | 0 | 1800 | 11067 | 475 | 200 | 6.15 |
+| x 26-49, z 14-28 | room | 346 | 8 | 320 | 0 | 4243 | 150 | 50 | 13.26 |
+| x 14-24, z 27-32 | room | 66 | 3 | 140 | 0 | 8411 | 375 | 150 | 60.08 |
 | x 38-46, z 32-37 | room | 54 | 2 | 115 | 0 | 3928 | 150 | 0 | 34.16 |
-| x 4-34, z 36-43 | room | 248 | 7 | 220 | 700 | 6300 | 300 | 100 | 6.85 |
+| x 4-34, z 36-43 | room | 248 | 7 | 220 | 700 | 6525 | 300 | 100 | 7.09 |
 
 ### 3 · THE NECROPOLIS
 
 | region | kind | cells | enemies | hp | boss hp | ammo worth | health | armour | ratio |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| x 9-15, z 1-5 | room | 35 | 2 | 165 | 0 | 1020 | 25 | 0 | 6.18 |
-| x 17-23, z 1-5 | room | 35 | 2 | 240 | 0 | 1326 | 0 | 0 | 5.53 |
-| x 25-31, z 1-5 | room | 35 | 1 | 90 | 0 | 2168 | 75 | 50 | 24.09 |
-| x 1-7, z 7-11 | room | 35 | 3 | 155 | 0 | 1020 | 0 | 0 | 6.58 |
-| x 25-31, z 7-11 | room | 35 | 3 | 230 | 700 | 2168 | 75 | 50 | 2.33 |
-| x 1-8, z 13-17 | room | 36 | 3 | 170 | 0 | 1020 | 25 | 0 | 6.00 |
-| x 24-31, z 13-17 | room | 36 | 1 | 0 | 850 | 2600 | 75 | 50 | 3.06 |
-| x 1-7, z 19-23 | room | 35 | 1 | 35 | 0 | 1542 | 50 | 50 | 44.06 |
-| x 9-15, z 19-23 | room | 35 | 2 | 250 | 0 | 2064 | 50 | 50 | 8.26 |
-| x 17-23, z 19-23 | room | 35 | 2 | 165 | 0 | 2690 | 75 | 100 | 16.30 |
-| x 16-16, z 20-21 | passage | 2 | 1 | 0 | 2400 | 2384 | 75 | 50 | 0.99 |
+| x 2-18, z 3-10 | room | 136 | 5 | 365 | 850 | 9387 | 375 | 150 | 7.73 |
+| x 20-28, z 5-10 | room | 54 | 2 | 125 | 0 | 8235 | 300 | 50 | 65.88 |
+| x 32-47, z 5-16 | room | 184 | 5 | 170 | 700 | 7263 | 225 | 100 | 8.35 |
+| x 14-26, z 12-22 | room | 139 | 4 | 125 | 2400 | 9999 | 475 | 200 | 3.96 |
+| x 27-31, z 17-27 | passage | 15 | 2 | 60 | 0 | 9333 | 400 | 150 | 155.55 |
+| x 32-50, z 22-38 | room | 317 | 11 | 595 | 0 | 6371 | 200 | 50 | 10.71 |
+| x 11-17, z 29-34 | room | 42 | 2 | 90 | 0 | 2676 | 75 | 0 | 29.73 |
+| x 20-26, z 29-34 | room | 42 | 2 | 95 | 0 | 4049 | 100 | 0 | 42.62 |
+| x 11-28, z 37-40 | room | 72 | 3 | 130 | 0 | 2676 | 75 | 0 | 20.58 |
 
 ### 4 · THE GRAVEYARD
 
 | region | kind | cells | enemies | hp | boss hp | ammo worth | health | armour | ratio |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| x 1-15, z 1-5 | room | 75 | 2 | 100 | 0 | 1020 | 25 | 0 | 10.20 |
-| x 17-31, z 1-5 | room | 75 | 3 | 120 | 0 | 1646 | 25 | 0 | 13.72 |
-| x 1-31, z 7-17 | room | 277 | 6 | 160 | 1550 | 1236 | 0 | 0 | 0.72 |
-| x 1-7, z 13-23 | room | 77 | 4 | 145 | 0 | 1542 | 25 | 50 | 10.63 |
-| x 9-23, z 19-23 | room | 75 | 5 | 200 | 1500 | 2370 | 50 | 100 | 1.39 |
+| x 29-37, z 3-10 | room | 72 | 2 | 30 | 850 | 8797 | 450 | 200 | 10.00 |
+| x 2-9, z 4-31 | room | 224 | 5 | 190 | 0 | 2370 | 125 | 50 | 12.47 |
+| x 40-53, z 4-15 | room | 162 | 4 | 130 | 700 | 7915 | 400 | 200 | 9.54 |
+| x 14-27, z 10-21 | room | 168 | 4 | 130 | 1500 | 9639 | 550 | 250 | 5.91 |
+| x 45-57, z 21-29 | room | 117 | 4 | 155 | 0 | 6475 | 325 | 150 | 41.77 |
+| x 34-41, z 27-31 | room | 40 | 2 | 90 | 0 | 4355 | 200 | 100 | 48.39 |
+| x 11-30, z 33-42 | room | 200 | 10 | 420 | 0 | 2595 | 75 | 50 | 6.18 |
+| x 45-57, z 33-41 | room | 117 | 4 | 190 | 0 | 4989 | 250 | 150 | 26.26 |
+| x 34-41, z 35-41 | room | 56 | 1 | 65 | 0 | 3549 | 200 | 100 | 54.60 |
 
 ### 5 · THE SEWERS
 
 | region | kind | cells | enemies | hp | boss hp | ammo worth | health | armour | ratio |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| x 1-23, z 1-17 | room | 362 | 11 | 510 | 0 | 1326 | 50 | 0 | 2.60 |
-| x 25-31, z 1-5 | room | 35 | 1 | 55 | 0 | 1646 | 75 | 0 | 29.93 |
-| x 24-31, z 7-17 | room | 78 | 4 | 95 | 1550 | 1862 | 75 | 0 | 1.13 |
-| x 9-31, z 19-23 | room | 115 | 6 | 265 | 2200 | 2168 | 75 | 100 | 0.88 |
+| x 38-53, z 3-11 | room | 144 | 5 | 210 | 850 | 6835 | 325 | 150 | 6.45 |
+| x 14-26, z 9-20 | room | 152 | 4 | 145 | 2200 | 8073 | 450 | 200 | 3.44 |
+| x 28-35, z 14-19 | room | 48 | 2 | 65 | 0 | 5683 | 275 | 50 | 87.43 |
+| x 38-52, z 15-24 | room | 147 | 5 | 205 | 700 | 5503 | 250 | 100 | 6.08 |
+| x 20-37, z 21-22 | passage | 19 | 2 | 95 | 0 | 7447 | 375 | 150 | 78.39 |
+| x 35-47, z 29-41 | room | 164 | 11 | 535 | 0 | 4571 | 175 | 50 | 8.54 |
+| x 11-32, z 37-40 | room | 88 | 5 | 260 | 0 | 2676 | 100 | 0 | 10.29 |
 
 ### 6 · THE FACTORY
 
 | region | kind | cells | enemies | hp | boss hp | ammo worth | health | armour | ratio |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| x 1-7, z 1-11 | room | 77 | 2 | 48 | 0 | 1020 | 0 | 0 | 21.25 |
-| x 9-23, z 1-5 | room | 75 | 4 | 234 | 0 | 1326 | 25 | 0 | 5.67 |
-| x 25-31, z 1-5 | room | 35 | 1 | 55 | 0 | 1736 | 100 | 100 | 31.56 |
-| x 9-23, z 7-17 | room | 156 | 2 | 175 | 0 | 1020 | 0 | 0 | 5.83 |
-| x 24-31, z 7-17 | room | 78 | 4 | 69 | 1550 | 1952 | 100 | 100 | 1.21 |
-| x 1-8, z 13-23 | room | 78 | 3 | 295 | 0 | 1110 | 50 | 50 | 3.76 |
-| x 9-23, z 19-23 | room | 75 | 4 | 295 | 2600 | 1938 | 100 | 150 | 0.67 |
+| x 36-51, z 2-9 | room | 128 | 5 | 254 | 850 | 7388 | 350 | 200 | 6.69 |
+| x 14-26, z 10-21 | room | 152 | 4 | 210 | 2600 | 8432 | 475 | 250 | 3.00 |
+| x 36-51, z 12-23 | room | 186 | 5 | 234 | 700 | 5826 | 275 | 150 | 6.24 |
+| x 27-35, z 18-18 | passage | 9 | 2 | 69 | 0 | 7694 | 400 | 200 | 111.50 |
+| x 31-44, z 30-41 | room | 164 | 6 | 365 | 0 | 4795 | 200 | 100 | 13.14 |
+| x 48-55, z 32-37 | room | 48 | 2 | 154 | 0 | 5421 | 225 | 100 | 35.20 |
+| x 12-27, z 33-41 | room | 138 | 9 | 473 | 0 | 2815 | 100 | 50 | 5.95 |
 
-### 7 · THE WOMB
+### 7 · THE BONE CATHEDRAL
 
 | region | kind | cells | enemies | hp | boss hp | ammo worth | health | armour | ratio |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| x 1-7, z 1-11 | room | 77 | 3 | 135 | 0 | 1020 | 0 | 0 | 7.56 |
-| x 9-23, z 1-5 | room | 75 | 6 | 354 | 0 | 1326 | 25 | 0 | 3.75 |
-| x 25-31, z 1-5 | room | 35 | 1 | 55 | 0 | 1849 | 100 | 100 | 33.61 |
-| x 9-31, z 7-17 | room | 237 | 8 | 304 | 1550 | 1456 | 0 | 0 | 0.79 |
-| x 1-8, z 13-23 | room | 78 | 3 | 180 | 0 | 1443 | 50 | 50 | 8.01 |
-| x 9-23, z 19-23 | room | 75 | 5 | 345 | 3000 | 2491 | 75 | 150 | 0.74 |
+| x 51-59, z 3-8 | room | 54 | 3 | 110 | 0 | 5426 | 250 | 150 | 49.33 |
+| x 30-38, z 6-10 | room | 45 | 2 | 90 | 0 | 5543 | 225 | 100 | 61.59 |
+| x 41-47, z 6-10 | room | 35 | 2 | 95 | 0 | 3392 | 125 | 50 | 35.71 |
+| x 14-26, z 12-22 | room | 143 | 3 | 85 | 2400 | 11664 | 500 | 400 | 4.69 |
+| x 28-47, z 14-27 | room | 270 | 9 | 420 | 0 | 4499 | 150 | 50 | 10.71 |
+| x 48-55, z 21-31 | passage | 18 | 2 | 80 | 0 | 1326 | 25 | 0 | 16.57 |
+| x 12-31, z 33-40 | room | 160 | 6 | 195 | 700 | 9508 | 350 | 250 | 10.62 |
+| x 37-47, z 33-40 | room | 88 | 4 | 195 | 0 | 4229 | 150 | 100 | 21.69 |
+| x 14-22, z 42-44 | room | 27 | 2 | 90 | 0 | 9814 | 425 | 250 | 109.04 |
+
+### 8 · THE WOMB
+
+| region | kind | cells | enemies | hp | boss hp | ammo worth | health | armour | ratio |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| x 40-47, z 3-9 | room | 56 | 4 | 154 | 850 | 6952 | 350 | 150 | 6.92 |
+| x 6-23, z 4-15 | room | 212 | 5 | 298 | 3000 | 7803 | 475 | 300 | 2.37 |
+| x 25-36, z 14-21 | room | 90 | 4 | 120 | 700 | 5187 | 250 | 100 | 6.33 |
+| x 38-45, z 20-33 | room | 112 | 4 | 208 | 0 | 6232 | 300 | 100 | 29.96 |
+| x 9-21, z 26-36 | room | 139 | 9 | 514 | 0 | 3216 | 75 | 50 | 6.26 |
+| x 24-34, z 29-34 | room | 66 | 3 | 240 | 0 | 3963 | 175 | 50 | 16.51 |
+
+### 9 · THE ASH BELL MONASTERY
+
+| region | kind | cells | enemies | hp | boss hp | ammo worth | health | armour | ratio |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| x 7-24, z 1-3 | room | 54 | 3 | 165 | 0 | 12455 | 625 | 50 | 75.48 |
+| x 26-39, z 2-24 | room | 316 | 7 | 370 | 0 | 11132 | 600 | 50 | 30.09 |
+| x 43-60, z 4-17 | room | 227 | 7 | 260 | 0 | 10547 | 575 | 50 | 40.57 |
+| x 62-74, z 4-15 | room | 150 | 5 | 195 | 0 | 11708 | 600 | 50 | 60.04 |
+| x 82-96, z 4-18 | room | 225 | 6 | 270 | 0 | 9197 | 450 | 50 | 34.06 |
+| x 6-24, z 6-26 | room | 358 | 5 | 160 | 1500 | 13040 | 675 | 100 | 7.86 |
+| x 66-90, z 25-40 | room | 400 | 7 | 320 | 0 | 8661 | 375 | 50 | 27.07 |
+| x 34-73, z 28-82 | room | 1294 | 19 | 820 | 0 | 3810 | 200 | 0 | 4.65 |
+| x 18-26, z 30-36 | room | 63 | 3 | 145 | 0 | 7527 | 325 | 0 | 51.91 |
+| x 28-36, z 30-36 | room | 63 | 1 | 50 | 0 | 5430 | 225 | 0 | 108.60 |
+| x 12-22, z 38-46 | room | 99 | 4 | 185 | 0 | 5826 | 250 | 50 | 31.49 |
+| x 24-36, z 39-46 | room | 104 | 4 | 190 | 0 | 4242 | 200 | 0 | 22.33 |
+| x 64-66, z 43-44 | passage | 5 | 2 | 105 | 0 | 3720 | 175 | 0 | 35.43 |
+| x 68-86, z 44-58 | room | 271 | 5 | 190 | 0 | 4026 | 225 | 0 | 21.19 |
+| x 88-96, z 44-58 | room | 129 | 6 | 270 | 0 | 6042 | 275 | 0 | 22.38 |
+| x 10-34, z 50-66 | room | 341 | 10 | 485 | 0 | 4476 | 225 | 0 | 9.23 |
+| x 64-66, z 53-54 | passage | 5 | 2 | 100 | 0 | 3198 | 150 | 0 | 31.98 |
+| x 42-43, z 58-60 | passage | 5 | 2 | 85 | 0 | 3198 | 100 | 0 | 37.62 |
+| x 58-59, z 58-60 | passage | 5 | 2 | 60 | 0 | 2676 | 100 | 0 | 44.60 |
+| x 76-90, z 62-70 | room | 123 | 3 | 130 | 0 | 1326 | 25 | 0 | 10.20 |
+| x 13-22, z 68-74 | room | 70 | 4 | 195 | 0 | 4161 | 175 | 0 | 21.34 |
+| x 24-32, z 69-81 | room | 114 | 5 | 225 | 0 | 3720 | 175 | 0 | 16.53 |
+| x 88-96, z 72-80 | room | 77 | 3 | 130 | 0 | 1542 | 25 | 0 | 11.86 |
+
+### 10 · THE HOLLOW VILLAGE
+
+| region | kind | cells | enemies | hp | boss hp | ammo worth | health | armour | ratio |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| x 3-57, z 4-44 | room | 1254 | 32 | 1300 | 0 | 3918 | 125 | 0 | 3.01 |
+| x 60-68, z 4-11 | room | 72 | 2 | 60 | 0 | 4179 | 125 | 0 | 69.65 |
+| x 14-24, z 5-14 | room | 110 | 5 | 225 | 0 | 2370 | 50 | 50 | 10.53 |
+| x 47-55, z 5-12 | room | 72 | 2 | 105 | 0 | 2730 | 50 | 0 | 26.00 |
+| x 61-61, z 12-19 | passage | 8 | 1 | 65 | 0 | 4634 | 150 | 0 | 71.29 |
+| x 59-68, z 20-31 | room | 120 | 4 | 190 | 0 | 6745 | 250 | 50 | 35.50 |
+| x 22-30, z 22-28 | room | 63 | 4 | 190 | 0 | 3432 | 125 | 0 | 18.06 |
+| x 41-48, z 22-28 | room | 56 | 3 | 165 | 0 | 3887 | 100 | 0 | 23.56 |
+| x 22-30, z 33-40 | room | 72 | 4 | 140 | 0 | 5156 | 200 | 0 | 36.83 |
+| x 41-48, z 33-39 | room | 56 | 3 | 120 | 0 | 5687 | 225 | 0 | 47.39 |
+| x 24-47, z 46-61 | room | 343 | 12 | 795 | 0 | 9868 | 375 | 150 | 12.41 |
+| x 3-17, z 47-59 | room | 195 | 7 | 395 | 0 | 8905 | 300 | 100 | 22.54 |
 
 ## Hard failures
 
 Every level passes the hard validation (`analyse().problems`: reachability, key before door, no softlock, everything reachable, secrets behind secret doors, the exit door sited) except for these, which the old
 levels already had and which a rebuilt level must not (`LEGACY_PROBLEMS`, `src/world/structure/targets.ts`):
 
-- **3 · LEVEL 3 — THE NECROPOLIS**
-  - `unreachable`: 'O' (prop) stranded at (18,17)
-  - `exit-door`: the exit door at (16,16) has no wall within 3 cells on its own floor (freestanding)
 
 ## The targets a rebuilt level is held to
 
@@ -146,24 +210,27 @@ A level listed in `REBUILT` (`src/world/structure/targets.ts`) must meet every n
 
 | target | number | measured today |
 | --- | --- | --- |
-| critical path | 1.8-3x the old level's, and at least 80 steps | 1: 123, 2: 168, 3: 44, 4: 44, 5: 44, 6: 44, 7: 32 |
-| loops | at least 1 | 1: 1, 2: 1, 3: 3, 4: 4, 5: 3, 6: 3, 7: 3 |
-| key hunt | a key, a locked door on the way, the key at least 20 steps off it | 1: 26, 2: 88, 3: none, 4: none, 5: none, 6: none, 7: none |
-| secrets | at least 2, each with at least 2 pickups behind it | 1: 2, 2: 2, 3: 1, 4: 1, 5: 1, 6: 1, 7: 1 |
-| arena | at least 1 | 1: 1, 2: 2, 3: 0, 4: 2, 5: 3, 6: 1, 7: 2 |
-| verticality | at least 3 floor heights and 2 transitions | 1: 15/28, 2: 39/46, 3: 6/49, 4: 1/0, 5: 1/0, 6: 1/0, 7: 1/0 |
-| rooms, branch points | at least 8 rooms, 2 branch points | 1: 14/3, 2: 13/2, 3: 13/4, 4: 6/2, 5: 5/3, 6: 8/3, 7: 7/3 |
-| checkpoint | one that every route passes, between 40% and 60% of the critical path | 1: yes, 2: yes, 3: no, 4: no, 5: no, 6: no, 7: no |
+| critical path | 1.8-3x the old level's, and at least 80 steps | 1: 123, 2: 168, 3: 119, 4: 130, 5: 116, 6: 109, 7: 112, 8: 94, 9: 347, 10: 174 |
+| loops | at least 1 | 1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1, 7: 1, 8: 1, 9: 4, 10: 3 |
+| key hunt | a key, a locked door on the way, the key at least 20 steps off it | 1: 26, 2: 88, 3: 52, 4: 24, 5: 30, 6: 32, 7: 24, 8: 40, 9: 122, 10: 114 |
+| secrets | at least 2, each with at least 2 pickups behind it | 1: 2, 2: 2, 3: 2, 4: 2, 5: 2, 6: 2, 7: 2, 8: 2, 9: 6, 10: 3 |
+| arena | at least 1 | 1: 1, 2: 2, 3: 3, 4: 1, 5: 3, 6: 3, 7: 2, 8: 2, 9: 3, 10: 2 |
+| verticality | at least 3 floor heights and 2 transitions | 1: 15/28, 2: 39/46, 3: 13/26, 4: 15/21, 5: 24/40, 6: 19/21, 7: 19/28, 8: 17/18, 9: 41/109, 10: 25/61 |
+| rooms, branch points | at least 8 rooms, 2 branch points | 1: 14/3, 2: 13/2, 3: 11/2, 4: 12/2, 5: 9/2, 6: 9/2, 7: 11/3, 8: 9/2, 9: 26/5, 10: 14/2 |
+| checkpoint | one that every route passes, between 40% and 60% of the critical path | 1: yes, 2: yes, 3: yes, 4: yes, 5: yes, 6: yes, 7: yes, 8: yes, 9: yes, 10: yes |
 | fights | ammunition worth at least 2x the rank-and-file hit points of a region; 0.6x all of them before a boss, with 50 health and 50 armour on the way | see the tables above |
 
-Old critical paths (the 1x of "about twice"): 1: 42, 2: 66, 3: 44, 4: 44, 5: 44, 6: 44, 7: 32. `REBUILT` is 1, 2.
+Old critical paths (the 1x of "about twice"): 1: 42, 2: 66, 3: 44, 4: 44, 5: 44, 6: 44, 7: 44, 8: 32, 9: 125, 10: 80. `REBUILT` is 1, 2, 3, 4, 5, 6, 7, 8, 9, 10.
 
 What the levels as built miss, by the targets (a rebuilt level starts from none of these):
 
 - 1: 0 unmet
 - 2: 0 unmet
-- 3: 5 unmet
-- 4: 8 unmet
-- 5: 8 unmet
-- 6: 6 unmet
-- 7: 8 unmet
+- 3: 0 unmet
+- 4: 0 unmet
+- 5: 0 unmet
+- 6: 0 unmet
+- 7: 0 unmet
+- 8: 0 unmet
+- 9: 0 unmet
+- 10: 0 unmet

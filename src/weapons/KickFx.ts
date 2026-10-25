@@ -5,6 +5,7 @@ import { at } from "../audio/AudioEngine";
 import { kickSlamFlesh, kickSlamStone, kickWhiff } from "../audio/sounds/kick";
 import { player } from "../player/PlayerState";
 import { EYE } from "../world/Grid";
+import { kickShow } from "./WeaponRuntime";
 
 /**
  * WHAT THE KICK DOES TO THE SCREEN AND THE AIR WHEN IT LANDS, OR DOESN'T —
@@ -28,7 +29,7 @@ import { EYE } from "../world/Grid";
  */
 
 /** Seconds of hit-stop when the boot meets a wall, a prop or a head (a body asks for its own, `HitFeel.FEEL[-1]`). */
-export const OBJECT_STOP = 0.05;
+export const OBJECT_STOP = 0.065;
 /** How far ahead of the player, and how high, the contact is drawn. */
 const REACH = 1.45, CONTACT_Y = -0.45;
 
@@ -36,6 +37,7 @@ export type KickMet = "body" | "head" | "prop" | "wall" | "air";
 
 /** The kick's hit has resolved against `met`, along the unit vector (`dx`,`dz`). `flip` alternates the whiff's tilt kick to kick. */
 export function kickResolved(met: KickMet, dx: number, dz: number, flip: number): void {
+  kickShow.met = met !== "air";   // the overlay's burst at the boot (src/render/viewmodel/draw.ts)
   if (met === "air") {
     addWhiffPunch(flip);
     at(player.px + dx * 0.8, player.pyy - 0.5, player.pz + dz * 0.8, () => kickWhiff());
@@ -57,7 +59,7 @@ export function kickResolved(met: KickMet, dx: number, dz: number, flip: number)
     at(x, y, z, () => kickSlamStone());
   }
   // no body to report the blow: the punch and the stop are asked for here
-  addHitPunch(0.85, 0);
+  addHitPunch(1.0, 0);
   screenShake.hitStop = Math.max(screenShake.hitStop, OBJECT_STOP);
-  shake(0.1);
+  shake(0.22);
 }

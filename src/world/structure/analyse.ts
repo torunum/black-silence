@@ -78,7 +78,26 @@ const near = (t: Terrain, c: number, wx: number, wz: number, floor: number): boo
   return Math.hypot((x + .5) * CELL - wx, (z + .5) * CELL - wz) <= LIT_RADIUS && Math.abs(t.floor[c] - floor) <= 1.6;
 };
 
-export function analyse(L: Pick<BuiltLevel, "g" | "hmap" | "decor">): Structure {
+/**
+ * A level with a script (the monastery's seals and gate: `src/world/script/`) as the walk understands one: the gate is a locked door, the
+ * last seal it wants is its key, and every seal before it is a goal on the way (taken first). So the critical path goes through both
+ * wings, as the player must.
+ */
+function scriptView(L: Pick<BuiltLevel, "g" | "hmap" | "decor" | "script">): { L: Pick<BuiltLevel, "g" | "hmap" | "decor">; goals: Array<readonly [number, number]> } {
+  const gate = L.script?.gates?.[0];
+  if (!gate) return { L, goals: [] };
+  const glyph: Record<string, string> = { seal_ash: "J", seal_bell: "M" };
+  const g = L.g.map((r) => [...r]);
+  const where = (ch: string): Array<readonly [number, number]> => g.flatMap((r, z) => r.flatMap((c, x) => (c === ch ? [[x, z] as const] : [])));
+  const seals = gate.needs.map((k) => where(glyph[k] ?? "")[0]).filter(Boolean);
+  g[gate.at[1]][gate.at[0]] = "D";
+  const last = seals[seals.length - 1];
+  if (last) g[last[1]][last[0]] = "K";
+  return { L: { ...L, g }, goals: seals.slice(0, -1) };
+}
+
+export function analyse(L0: Pick<BuiltLevel, "g" | "hmap" | "decor" | "script">): Structure {
+  const { L, goals } = scriptView(L0);
   const t = terrainOf(L, massBlocked(L.decor)), N = t.W * t.H, problems: Problem[] = [];
   const say = (code: string, message: string): void => { problems.push({ code, message }); };
   const at = (c: number): string => { const p = cellOf(t, c); return `(${p.x},${p.z})`; };
@@ -101,7 +120,7 @@ export function analyse(L: Pick<BuiltLevel, "g" | "hmap" | "decor">): Structure 
     } else if (cells("G").length) { exitKind = "finale"; exitCell = cells("G")[0]; }
     else say("no-exit", "no exit pad (X), no boss whose death opens an exit, and no finale boss (G)");
   }
-  const waypoints = exitKind === "boss" ? [bossCell, exitCell].filter((c) => c >= 0) : exitCell >= 0 ? [exitCell] : [];
+  const waypoints = [...goals.map(([x, z]) => idx(t, x, z)), ...(exitKind === "boss" ? [bossCell, exitCell].filter((c) => c >= 0) : exitCell >= 0 ? [exitCell] : [])];
   const keyCells = cells("K"), locked = cells("D"), secretDoors = cells("S"), plain = cells("+");
 
   // ---- reachability: everything a state reaches with every secret open

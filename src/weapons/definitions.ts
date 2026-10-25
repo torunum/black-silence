@@ -1,12 +1,12 @@
 export interface WeaponStats {
   name: string;
-  ammo: "bullets" | "shells" | "slugs" | "crosses" | "nails" | "souls";
+  ammo: "bullets" | "shells" | "slugs" | "crosses" | "nails" | "souls" | "tnt" | "stakes";
   dmg: number;
   /** Seconds between shots. */
   rate: number;
   pellets: number;
   spread: number;
-  kind: "hit" | "cross" | "reap";
+  kind: "hit" | "cross" | "reap" | "tnt" | "stake";
   magSize: number;
   /** Seconds for a full reload. */
   reload: number;
@@ -20,7 +20,7 @@ export interface WeaponStats {
 }
 
 /**
- * Slot order is gameplay: it is the 1-8 hotkey binding and the index into
+ * Slot order is gameplay: it is the 1-9 and 0 hotkey binding and the index into
  * S.mag and S.weapons. Do not reorder.
  * Copied from reference/sonsurum.html lines 1919-1944, minus the snd closures
  * (those stay in legacy.js as WEAPON_SOUNDS until Plan 0B extracts the audio
@@ -43,4 +43,11 @@ export const WEAPON_STATS: WeaponStats[] = [
     kind: "hit", magSize: 50, reload: 2.0, trauma: 0.05, kick: 5 },
   { name: "SOUL REAPER", ammo: "souls", dmg: 75, rate: 1.3, pellets: 1, spread: 0,
     kind: "reap", magSize: 4, reload: 2.6, trauma: 0.4, kick: 22, pierce: 3 },
+  // owner, 2026-10-20: "ilk dinamit eklensin" — thrown, not fired: one bundle in the hand, the next lit in 0.75 s (./Dynamite.ts)
+  { name: "DYNAMITE", ammo: "tnt", dmg: 150, rate: 0.9, pellets: 1, spread: 0,
+    kind: "tnt", magSize: 1, reload: 0.75, trauma: 0.05, kick: 4 },
+  // owner, 2026-10-20: "sonra kazık eklensin" — a pneumatic stake gun, one stake laid in at a time; the stake flies, catches fire
+  // after a moment in the air, goes through what it kills and stays where it strikes (./Stake.ts)
+  { name: "STAKE GUN", ammo: "stakes", dmg: 120, rate: 0.45, pellets: 1, spread: 0,
+    kind: "stake", magSize: 1, reload: 0.8, trauma: 0.3, kick: 14 },
 ];

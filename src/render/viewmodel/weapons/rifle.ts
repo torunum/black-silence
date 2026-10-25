@@ -27,9 +27,15 @@ function magazine(b: Builder): void {
   b.ext([[0.0, -0.118], [0.05, -0.122], [0.052, -0.13], [0.0, -0.137]], -0.012, 0.012, MAT.IRON); // base plate
 }
 
+/** The receiver's machining: its two halves' seam, the pins through it, the forward assist's housing (2026-10-22: it was one flat grey box). */
+const receiverTex = (x: number, y: number, z: number): number =>
+  Math.abs(y - 0.026) < 0.0016 || Math.abs(z - 0.11) < 0.002 ? -1.4 :
+  Math.abs(x) > 0.017 && (Math.hypot(y - 0.012, z + 0.06) < 0.005 || Math.hypot(y - 0.012, z - 0.09) < 0.005) ? 1 : 0;
+
 export const combatRifle: WeaponArt = {
   name: "COMBAT RIFLE",
-  hold: { x: 0.13, y: -0.097, z: 0.32, pitch: -0.03, yaw: -0.2, roll: 0.06 },
+  hold: { x: 0.049, y: -0.1147, z: 0.32, pitch: 0.15, yaw: 0, roll: 0 },  // a little right of centre, square to the screen, looking ahead (owner, 2026-10-20: option 3, "biraz daha dik")
+  present: { y: 0.08, pitch: 0.2, roll: 0.5 },   // the reload brought up into view (pose.ts)
   kick: { back: 0.025, lift: 0.08 },
   action: (p) => hump(p, 0.0, 0.9, 0.3),
   draw(b: Builder, pose: Pose) {
@@ -38,7 +44,7 @@ export const combatRifle: WeaponArt = {
     b.translate(0, -0.01 * tilt, 0); b.roll(0.35 * tilt); b.pitch(-0.04 * tilt); b.yaw(-0.06 * tilt);
 
     // receiver, carry handle, rear sight
-    b.cbox(-0.02, 0.0, -0.09, 0.02, 0.05, 0.14, 0.006, MAT.IRON);
+    b.cbox(-0.02, 0.0, -0.09, 0.02, 0.05, 0.14, 0.006, MAT.IRON, { tex: receiverTex });
     b.cbox(-0.009, 0.05, -0.1, 0.009, 0.064, 0.09, 0.003, MAT.IRON);                 // handle rail
     b.box(-0.008, 0.042, -0.1, 0.008, 0.066, -0.07, MAT.IRON);                       // handle rear post
     b.box(-0.008, 0.042, 0.07, 0.008, 0.066, 0.09, MAT.IRON);                        // handle front post

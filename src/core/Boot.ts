@@ -3,6 +3,9 @@ import { S } from "./State";
 import { renderState } from "../render/Renderer";
 import { el } from "../ui/dom";
 import { audioInit } from "../audio/AudioEngine";
+import { loadSamples } from "../audio/Samples";
+import { devHook } from "./DevHook";
+import { paintPickups } from "../render/PickupArt";
 import { buildTextures } from "../render/ProcTextures";
 import { buildBandTextures } from "../render/BandTextures";
 import { buildDressTextures } from "../render/DressTextures";
@@ -41,8 +44,9 @@ export function startGame(idx: number){
   el("chapsel").classList.add("hidden");
   el("settings").classList.add("hidden");
   game.started=true;
-  audioInit();
-  buildTextures();buildBandTextures();buildDressTextures();buildHellTextures();buildDoorTextures();buildSprites();buildItemTex();buildPiano();
+  audioInit();loadSamples();
+  buildTextures();buildBandTextures();buildDressTextures();buildHellTextures();buildDoorTextures();buildSprites();buildItemTex();paintPickups();buildPiano();
   loadLevel(idx||0);
+  devHook();
   S.t0=performance.now();
   renderState.renderer.domElement.requestPointerLock();}

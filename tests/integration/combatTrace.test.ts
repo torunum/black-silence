@@ -908,6 +908,57 @@ import { MONOLOGUE } from "../../src/content/monologue";
  *    - **the wailer's texture name — 14 changes in 14 frames**: walking `s.a` -> `s.walk0` (3), `walk2` (3), `s.b` (3), `walk4` (2), `walk5` (2), `walk1` (1). No colour changed anywhere.
  *    - **one flying part — 24 frames, 24 sprites removed and 24 added at the same x and z, every one .0082 m higher**: a severed limb is now the monster's own, drawn at true size in the legacy crop's box
  *      (`PartArt.phys`: its physics are the legacy part's exactly, thrown from the legacy height; only the sprite's offset in its box differs, as in the ghoul's regeneration above).
+ *
+ * ## The owner's round, 2026-10-20 — regeneration: the pickups redrawn (digest only, 110 of 110 frames)
+ *
+ * Every pickup has its own picture now (`src/render/PickupArt.ts`), and each weapon pickup its own icon (`ITEMTEX.w1`..`w8`) where all
+ * of them were `ITEMTEX.gun`. Painted `quietly`, so no seeded draw moves. Against the previous fixture, field by field, every sampled frame:
+ * `camera` — **identical**; `hud` — **identical**; `scene.count` — **identical**; `scene.digest` — differs in 110 of 110: the weapon pickups'
+ * texture names (`item.gun` -> `item.w<slot>`), which the digest hashes; nothing moved.
+ *
+ * ## The owner's round, 2026-10-20 — regeneration: the level's number (hud only, 110 of 110 frames)
+ *
+ * The Ash Bell Monastery is played straight after the prologue (`src/world/levels/index.ts`'s `PLAY_ORDER`), so every later level's shown
+ * title counts one more (`titleOf`). Against the previous fixture: `camera`, `scene.count` and `scene.digest` **identical in every sampled
+ * frame**; `hud` differs in `lvltitle` and `msg` only, in all 110 (`LEVEL n` -> `LEVEL n+1`), every other field identical.
+ *
+ * ## The owner's round, 2026-10-21 — regeneration: the dungeon's exit is a well (digest only, 110 of 110 frames)
+ *
+ * The dungeon ends down a well on a rope (`src/world/WellKit.ts`), so its exit is the well's rig, not the iron door's. Against the previous
+ * fixture: `camera`, `hud` and `scene.count` **identical in every sampled frame**; `scene.digest` differs in all 110 — the exit's children
+ * (the well's ring, winch, rope and lid in place of the iron door's leaves and frame) are hashed with every frame. Nothing moved.
+ *
+ * ## The owner's round, 2026-10-21 — regeneration: the doors are remade, and the levels run into each other (digest only, 110 of 110 frames)
+ *
+ * A plain or locked door under an arch is two leaves on hinges now (`src/world/LevelDoors.ts`), not a cell-sized box, and the arch stands
+ * on its cell's own floor; the prologue's exit is the ladder up into the monastery and the dungeon's entrance the monastery's great gate
+ * (`src/world/HatchKit.ts`, `GateKit.ts`). Against the previous fixture: `camera`, `hud` and `scene.count` **identical in every sampled
+ * frame**; `scene.digest` differs in all 110 — the doors' children are hashed with every frame. Nothing moved.
+ *
+ * ## The owner's round, 2026-10-21 — regeneration: the dressing that breaks (scene only, 110 of 110 frames)
+ *
+ * The level kit's benches, crate piles and bone stacks stand as pieces of their own in `world.props` now, to be broken
+ * (`src/world/decor/breakable.ts`), rather than merged into the dressing. Against the previous fixture: `camera` and `hud` **identical in
+ * every sampled frame**; `scene.count` +8 (223 -> 231, the eight pieces the dungeon's dressing has), `scene.digest` with it.
+ *
+ * ## The owner's round, 2026-10-21 — regeneration: doors on raised floors (digest only, 110 of 110 frames)
+ *
+ * A door cell's ceiling is the passage's now, and a secret door's block stands floor to ceiling on its own floor (`src/world/LevelDoors.ts`'s
+ * `fitDoorCeilings`, `sinkingDoor`). Against the previous fixture: `camera`, `hud` and `scene.count` **identical in every sampled frame**;
+ * `scene.digest` differs in all 110 — the ceiling over the raised doorways and the secret door's block are hashed with every frame.
+ *
+ * ## The owner's round, 2026-10-21 (night) — regeneration: the boss-like enemies are rigs, the ten enemy fields reach the enemy, shots pass pillars, the kick (110 of 110 frames)
+ *
+ * Four changes at once, each a change to what the game does: the cultist and the other boss-like enemies are rigs (`src/enemies/rig/`, their
+ * frames baked, the legacy bake's draws still burned); KNOWN-15 closed (`spawnEnemy` copies `orb`, `fly`, `burst` and the rest: the cultists fire
+ * their orbs, the fliers hover); a shot has its own wall test (`shotSolidAt`: a pillar is its round column, a mass stops a shot only below its
+ * top); and the kick hits harder (knockback 21, a longer hit-stop). Against the previous fixture, field by field over every sampled frame:
+ * `scene.digest` differs in 73, `scene.count` in 54, `hud.hp` in 54 and `hud.ar` in 52 (the cultists' orbs land), `camera` in 12.
+ *
+ * ## The owner's round, 2026-10-22 — regeneration: the particles are round (digest only, 110 of 110 frames)
+ *
+ * The particles' one `PointsMaterial` carries a soft disc texture and is transparent (`src/fx/Particles.ts`). Against the previous fixture:
+ * `camera`, `hud` and `scene.count` **identical in every sampled frame**; `scene.digest` differs in all 110 — the material is hashed.
   */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");

@@ -1,3 +1,4 @@
+import type { LevelScript } from "./script/LevelScript";
 /**
  * Level builder DSL — pure, validated offline. Two families of helpers:
  * a room-lattice builder (emptyGrid/link/put/putAbs) for grid-of-rooms
@@ -48,6 +49,12 @@ export interface BuiltLevel {
   lift?: boolean;
   /** The cell the player wakes in: the level opens with the rise from the grave (`src/world/Opening.ts`). Only the prologue has one. */
   grave?: { x: number; z: number };
+  /** Rectangles of the grid (x0, z0, x1, z1, inclusive) flooded with standing water (`src/fx/Water.ts`): dressing, no gameplay. The sewers' and the womb's. */
+  water?: Array<[number, number, number, number]>;
+  /** What the water is: the sewers' sewage (the default) or the womb's blood (`src/render/SewerWater.ts`'s `TONES`). */
+  fluid?: "sewage" | "blood";
+  /** What the grid cannot say: seals, a gate, a barred door, the bell, a lift (`src/world/script/`). Only the monastery has one. */
+  script?: LevelScript;
 }
 
 /**

@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { isLiftCell } from "./script/ScriptRun";
 import { CELL } from "./Grid";
 import { world } from "./WorldState";
 import { track } from "../render/DisposeRegistry";
@@ -99,7 +100,7 @@ export function buildPlatforms(scene: THREE.Scene, level: ThemeFlags): void {
   const faces = new Map<string, THREE.Material[]>(), groups = new Map<THREE.Material[], THREE.Matrix4[]>();
   for (let z = 0; z < world.GH; z++) for (let x = 0; x < world.GW; x++) {
     const hgt = world.heightMap[z] && world.heightMap[z][x] || 0;
-    if (hgt <= 0 || shellAt(x, z)) continue;   // (a shell zone's raised ground is HellShell.ts's)
+    if (hgt <= 0 || shellAt(x, z) || isLiftCell(x, z)) continue;   // (a shell zone's raised ground is HellShell.ts's; a lift is its own mesh: script/ScriptRun.ts)
     const look = lookAt(x, z, level), key = surfaceKey(look, true);
     let pm = faces.get(key);
     if (!pm) {

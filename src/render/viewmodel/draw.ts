@@ -1,13 +1,14 @@
 import { getFx, getVW, getVH, spawnPuff } from "../Overlay2D";
 import { MUZ } from "./kit";
 import { kickElapsed, KICK_CHAMBER, KICK_HOLD } from "./kick";
-import { KICK_HIT_T } from "../../weapons/WeaponRuntime";
+import { KICK_HIT_T, kickShow } from "../../weapons/WeaponRuntime";
 import { rnd } from "../../utils/math";
 import type { WeaponStats } from "../../weapons/definitions";
 import { Animator } from "./animate";
 import { WEAPON_ART } from "./arts";
-import { Raster, RW, RH, toRGBA } from "./raster";
-import { renderWeapon, CLEAR_BELOW } from "./rig";
+import { EXEC_ART } from "./execute";
+import { Raster, RW, RH, VM_RES, toRGBA } from "./raster";
+import { renderWeapon, CLEAR_BELOW, RELOAD_CLEAR } from "./rig";
 import type { Pose } from "./pose";
 
 export { WALK_BOB_AMT, SPRINT_BOB_AMT } from "./animate";
@@ -34,8 +35,10 @@ export const VIEW_H = 180;
  * What is kept from the reference: this function's outer contract
  * (ViewmodelFrame, the call in src/core/Loop.ts), the early returns (not
  * started, dead, piano open, sniper scoped in), the walk/sprint bob amounts
- * and the breathing formula (./animate.ts), the flash's shape
- * and colours, and — exactly — its Math.random draws: one for the flash
+ * and the breathing formula (./animate.ts), the flash's colours (its shape
+ * is the port's own since 2026-10-22: petals of fire round a white core,
+ * re-cut each frame from the frame number, where the reference drew one
+ * four-pointed star), and — exactly — its Math.random draws: one for the flash
  * radius and one for the puff chance (plus rnd's three when a puff spawns),
  * per frame with the flash up, in the same order. Those are per-frame
  * visual noise the reference already drew (KNOWN-22), and keeping their
@@ -100,6 +103,12 @@ export interface ViewmodelFrame {
   swayX: number;
   swayY: number;
   muzzle: number;
+  /** S.mag[S.cur] is 0: the dynamite's hand and the stake gun's trough are drawn empty until the reload (pose.ts's `empty`). */
+  empty?: boolean;
+  /** The kick under way is the running drop kick: both boots (./kick.ts). */
+  drop?: boolean;
+  /** A finish by hand under way (`src/player/Execution.ts`): the hands are drawn (./execute.ts) in place of the weapon. */
+  exec?: { t: number; kind: number } | null;
 }
 
 /**
@@ -112,16 +121,27 @@ export interface ViewmodelFrame {
  * boot, it draws nothing from Math.random.
  */
 export function drawKickStreaks(kickAnim: number): void {
-  const k=streaks(kickElapsed(kickAnim));
-  const foot=vm.footAt;
-  if(k<=0||!foot)return;
+  const t=kickElapsed(kickAnim),k=streaks(t);
+  const foot=vm.footAt,b=burst(t);
+  if(!foot||(k<=0&&!(b>0&&kickShow.met)))return;   // nothing to draw: no save/restore either (the reference's early return)
   const fg=getFx(),s=getVH()/VIEW_H;
   fg.save();
-  fg.strokeStyle=`rgba(180,178,166,${(.32*k).toFixed(3)})`;fg.lineWidth=1.5*s;
-  for(let i=0;i<3;i++){fg.beginPath();
-    fg.moveTo(foot[0]+(i*10-4)*s,foot[1]+(10+i*5)*s);
-    fg.lineTo(foot[0]+(i*10+10)*s,foot[1]+(10+i*5+44*k)*s);fg.stroke();}
+  if(k>0){   // the drive: five streaks off the boot (owner, 2026-10-21: three faint ones read as nothing)
+    fg.strokeStyle=`rgba(200,196,182,${(.45*k).toFixed(3)})`;fg.lineWidth=2*s;
+    for(let i=0;i<5;i++){fg.beginPath();
+      fg.moveTo(foot[0]+(i*9-14)*s,foot[1]+(8+i*4)*s);
+      fg.lineTo(foot[0]+(i*11-6)*s,foot[1]+(8+i*4+62*k)*s);fg.stroke();}}
+  if(b>0&&kickShow.met){   // the blow landing: a flat white burst at the sole, gone in under a tenth of a second
+    const r=(10+26*(1-b))*s;
+    fg.fillStyle=`rgba(255,246,222,${(.5*b).toFixed(3)})`;fg.beginPath();fg.arc(foot[0],foot[1]-6*s,r*.55,0,Math.PI*2);fg.fill();
+    fg.strokeStyle=`rgba(255,236,200,${(.85*b).toFixed(3)})`;fg.lineWidth=2.5*s;
+    for(let i=0;i<8;i++){const a=i/8*Math.PI*2+.2;fg.beginPath();
+      fg.moveTo(foot[0]+Math.cos(a)*r*.6,foot[1]-6*s+Math.sin(a)*r*.6);fg.lineTo(foot[0]+Math.cos(a)*r*1.25,foot[1]-6*s+Math.sin(a)*r*1.25);fg.stroke();}}
   fg.restore();
+}
+/** 1..0 over the .085 s after the hit resolves: the burst at the boot. */
+function burst(t: number): number {
+  return t>=KICK_HIT_T-1e-9&&t<KICK_HIT_T+.085?1-(t-KICK_HIT_T)/.085:0;
 }
 /** 0..1: the streaks show while the foot is travelling — the strike's drive — and fade as it plants. */
 function streaks(t: number): number {
@@ -156,7 +176,7 @@ const vm = {
  */
 export function poseKey(cur: number, p: Pose, cy: number): string {
   const r = (n: number) => Math.round(n * 1e4);
-  return [cur, cy, r(p.x), r(p.y), r(p.z), r(p.pitch), r(p.yaw), r(p.roll), r(p.recoil), r(p.action), r(p.spin), r(p.reload), r(p.heat), r(p.kick)].join(",");
+  return [cur, cy, r(p.x), r(p.y), r(p.z), r(p.pitch), r(p.yaw), r(p.roll), r(p.recoil), r(p.action), r(p.spin), r(p.reload), r(p.heat), r(p.kick), p.empty, p.drop, r(p.exec), p.execKind].join(",");
 }
 
 /**
@@ -179,7 +199,7 @@ function paint(cur: number, pose: Pose, cy: number): boolean {
   if (key !== vm.lastKey) {
     vm.lastKey = key;
     const prev = { x0: vm.raster.x0, y0: vm.raster.y0, x1: vm.raster.x1, y1: vm.raster.y1 };
-    vm.anchors = renderWeapon(vm.raster, WEAPON_ART[cur] ?? null, pose, RW / 2, cy);
+    vm.anchors = renderWeapon(vm.raster, pose.exec >= 0 ? EXEC_ART : WEAPON_ART[cur] ?? null, pose, RW / 2, cy);   // a finish by hand: the hands, not the gun (./execute.ts)
     vm.topRow = topOpaqueRow(vm.raster);
     toRGBA(vm.raster, vm.image.data, prev);
     vm.ctx.putImageData(vm.image, 0, 0);
@@ -212,14 +232,18 @@ export function drawViewmodel(dt: number, tNow: number, v: ViewmodelFrame, weapo
   // Scaled with the screen's height: exactly 1:1 on a 16:9 overlay (VH 180), smaller on a wider
   // screen, larger on a taller one, so the weapon is always the same share of the height and its
   // clearance below the crosshair (rig.ts's CLEAR_BELOW) holds at every aspect ratio.
-  const s=VH/VIEW_H;
+  const s=VH/VIEW_H/VM_RES;   // screen pixels per raster pixel (VM_RES raster pixels to an overlay unit)
   const top0=VH-RH*s;
   const cy=Math.round((VH/2-top0)/s);  // the crosshair's row in the raster: the model aims there
   const painted=paint(scoped?-1:v.cur,pose,cy);
   // The ceiling: screen-space motion (stride, lag, take-off, breathing) may lower the weapon freely,
   // but may lift it only as far as leaves its top pixel CLEAR_BELOW under the crosshair.
+  // The line: since the weapons are held straight ahead (owner, 2026-10-20) a rig motion — an equip swing, a reload's
+  // tilt, a recoil — can carry the muzzle up past it too, so the ceiling holds the finished image under the line
+  // whatever lifted it: screen motion is clamped, and a rig pose that rose is lowered until its top sits on the line.
   let sy=pose.sy;
-  if(painted&&sy<0)sy=Math.max(sy,Math.min(0,VH/2+CLEAR_BELOW*VH-(top0+vm.topRow*s)));
+  // (while reloading, only to just under the crosshair: nothing is fired then, and the reload is brought up into view — pose.ts's `present`)
+  if(painted&&!(pose.exec>=0))sy=Math.max(sy,VH/2+(v.wstate==="reload"?RELOAD_CLEAR:CLEAR_BELOW)*VH-(top0+vm.topRow*s));
   const left=(VW-RW*s)/2+pose.sx, top=top0+sy;
   if(painted){
     fg.save();
@@ -234,26 +258,36 @@ export function drawViewmodel(dt: number, tNow: number, v: ViewmodelFrame, weapo
   if(scoped)return;
   const glow=vm.anchors.glow;
   if(glow){ // the soul core's light spilling past its cage
-    const gx=left+glow[0]*s, gy=top+glow[1]*s, gr=(14+10*pose.heat)*s;
+    const gx=left+glow[0]*s, gy=top+glow[1]*s, gr=(10+10*pose.heat)*s*VM_RES;
     const g=fg.createRadialGradient(gx,gy,1,gx,gy,gr);
-    g.addColorStop(0,`rgba(150,240,110,${.35+.4*pose.heat})`);g.addColorStop(1,"rgba(60,160,40,0)");
+    // a halo, not a lid over the core it comes from (2026-10-22)
+    g.addColorStop(0,`rgba(150,240,110,${.16+.4*pose.heat})`);g.addColorStop(1,"rgba(60,160,40,0)");
     fg.fillStyle=g;fg.beginPath();fg.arc(gx,gy,gr,0,7);fg.fill();}
   /* muzzle flash, anchored to this weapon's barrel tip */
   if(v.muzzle>0){
     const m=vm.anchors.muzzle??[RW/2,RH/2];
     const cx=left+m[0]*s, my=top+m[1]*s;
-    const r=(10+Math.random()*10)*(MUZ[v.cur].r)*s;
+    const r=(10+Math.random()*10)*(MUZ[v.cur].r)*s*VM_RES;
     const col=v.cur===5?["255,250,220","235,210,140","220,180,90"]:v.cur===7?["230,255,200","150,240,110","60,160,40"]:["255,240,190","255,170,80","255,120,40"];
     fg.save();fg.translate(cx,my);
-    fg.fillStyle=`rgba(${col[0]},${Math.min(1,v.muzzle*2.2)})`;
-    fg.beginPath();
-    fg.moveTo(0,-r*1.5);fg.lineTo(r*.22,-r*.22);fg.lineTo(r*1.4,0);
-    fg.lineTo(r*.22,r*.22);fg.lineTo(0,r*1.2);fg.lineTo(-r*.22,r*.22);
-    fg.lineTo(-r*1.4,0);fg.lineTo(-r*.22,-r*.22);fg.closePath();fg.fill();
+    // the glow first, then the flame over it: petals of fire round the bore, each its own length, turned and re-cut every frame from the
+    // frame's own number (no dice: the two draws above are the reference's, and the trace fixtures count them), an orange outer
+    // flame, a yellow inner one and a white-hot core (2026-10-22: it was one four-pointed star)
     const grd=fg.createRadialGradient(0,0,2,0,0,r*1.3);
     grd.addColorStop(0,`rgba(${col[1]},${v.muzzle})`);
     grd.addColorStop(1,`rgba(${col[2]},0)`);
     fg.fillStyle=grd;fg.beginPath();fg.arc(0,0,r*1.3,0,7);fg.fill();
+    const a=Math.min(1,v.muzzle*2.2), fk=Math.floor(tNow*60);
+    const h=(i:number)=>{const x=Math.sin(i*12.9898+fk*78.233)*43758.5453;return x-Math.floor(x);};
+    const rot=h(99)*Math.PI;
+    const petals=(n:number,len:number,w:number,colour:string,alpha:number,seed:number)=>{
+      fg.fillStyle=`rgba(${colour},${alpha})`;fg.beginPath();
+      for(let i=0;i<n;i++){const ang=rot+i*Math.PI*2/n+(h(seed+i)-.5)*.5, L=len*(.6+.5*h(seed+i+20));
+        fg.lineTo(Math.cos(ang-w)*len*.45,Math.sin(ang-w)*len*.45);fg.lineTo(Math.cos(ang)*L,Math.sin(ang)*L);fg.lineTo(Math.cos(ang+w)*len*.45,Math.sin(ang+w)*len*.45);}
+      fg.closePath();fg.fill();};
+    petals(7,r*1.5,.5,col[2],a*.85,1);
+    petals(5,r*1.05,.6,col[1],a,40);
+    fg.fillStyle=`rgba(${col[0]},${a})`;fg.beginPath();fg.arc(0,0,r*.38,0,7);fg.fill();
     fg.restore();
     if(Math.random()<.6)spawnPuff(cx+rnd(-5,5),my,rnd(-6,6),3,rnd(.5,1));}
 }

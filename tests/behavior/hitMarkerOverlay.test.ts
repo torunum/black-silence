@@ -4,10 +4,9 @@ import { installDomStubs, loadGameHtml } from "../support/domStubs";
 import { recordingCanvas, type DrawCall } from "../support/recordingCanvas";
 
 /**
- * THE MARKER IS DRAWN BY THE OVERLAY (impact plan, Task 1). tests/fx/hitMarker
- * holds the marker's own drawing; this holds that `fxTick` — the one place
- * the game draws the 2D layer each frame — calls it, last (after the weapon
- * and the leg), and calls it for nothing while idle.
+ * THE MARKER IS NOT DRAWN (owner, 2026-10-20: "düşmana sıkınca çıkan x işaretini kaldır").
+ * The impact plan's hit marker still keeps its state (tests/fx/hitMarker, tests/fx/hitFeel), but
+ * `fxTick` — the one place the game draws the 2D layer each frame — no longer draws it, idle or not.
  */
 
 let calls: DrawCall[];
@@ -31,22 +30,18 @@ const tick = (): DrawCall[] => {
   return calls.slice(start);
 };
 
-describe("fxTick draws the hit marker", () => {
+describe("fxTick does not draw the hit marker", () => {
   it("nothing of it while idle", () => {
     resetMarker();
     expect(tick().filter((c) => c.method === "rect")).toEqual([]);
   });
 
-  it("after a kill: red ticks around the middle, drawn after the weapon and the leg", () => {
+  it("nothing of it after a kill either: no ticks, no red", () => {
     showMarker("kill");
     const log = tick();
-    const vmAt = log.findIndex((c) => c.method === "callback:vm");
-    const rects = log.map((c, i) => [c, i] as const).filter(([c]) => c.method === "rect");
-    expect(vmAt).toBeGreaterThan(-1);
-    expect(rects.length).toBeGreaterThan(8);
-    for (const [, i] of rects) expect(i).toBeGreaterThan(vmAt);
+    expect(log.filter((c) => c.method === "rect")).toEqual([]);
     const styles = log.filter((c) => c.method === "set:fillStyle").map((c) => c.args[0]);
-    expect(styles).toContain("#e2301c");
+    expect(styles).not.toContain("#e2301c");
     resetMarker();
   });
 });

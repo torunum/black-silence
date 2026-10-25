@@ -1,4 +1,6 @@
 import type * as THREE from "three";
+import { dynamiteTick } from "../weapons/Dynamite";
+import { stakeTick } from "../weapons/Stake";
 import { rnd } from "../utils/math";
 import { fleshHitsPlayer, fleshSplat } from "../audio/sounds/monsters";
 import { spawnP, blood, smoke3d } from "./Particles";
@@ -7,7 +9,7 @@ import { renderState } from "../render/Renderer";
 import { player } from "../player/PlayerState";
 import { damagePlayer } from "../player/Player";
 import { S } from "../core/State";
-import { ceilHeightAt, solidAt, floorHeightAt } from "../world/Collision";
+import { ceilHeightAt, shotSolidAt, floorHeightAt } from "../world/Collision";
 import { crossExplode } from "../weapons/Hitscan";
 import { weaponRuntime } from "../weapons/WeaponRuntime";
 import { world } from "../world/WorldState";
@@ -74,6 +76,8 @@ interface Orb {
 type Enemy = Pick<EnemyShape, "dead" | "dormant" | "x" | "z" | "w" | "h">;
 
 export function projTick(dt: number){
+  dynamiteTick(dt);   // the thrown bundles: flight, bounces, fuses (src/weapons/Dynamite.ts)
+  stakeTick(dt);      // the stakes: flight, fire, what they strike and stay in (src/weapons/Stake.ts)
   const nails=projectiles.nails as unknown as Nail[];
   for(let i=nails.length-1;i>=0;i--){const n=nails[i];
     n.life-=dt;
@@ -83,10 +87,10 @@ export function projTick(dt: number){
     const mx=n.m.position.x,my=n.m.position.y,mz=n.m.position.z;
     if(n.reap){ // visual tracer only — damage already applied by hitscan
       if(Math.random()<.6)spawnP(mx,my,mz,0,0,0,.5,.9,.35,.2,3);
-      if(n.life<=0||my<0.05||my>ceilHeightAt(mx,mz)||solidAt(mx,mz)){
+      if(n.life<=0||my<0.05||my>ceilHeightAt(mx,mz)||shotSolidAt(mx,my,mz)){
         smoke3d(mx,Math.max(my,.3),mz,4);renderState.scene.remove(n.m);nails.splice(i,1);}
       continue;}
-    let boom=n.life<=0||my<0.05||my>ceilHeightAt(mx,mz)||solidAt(mx,mz);
+    let boom=n.life<=0||my<0.05||my>ceilHeightAt(mx,mz)||shotSolidAt(mx,my,mz);
     if(!boom)for(const p of world.props as unknown as Prop[]){if(p.dead)continue;
       if(Math.hypot(mx-p.x,mz-p.z)<p.r+.1&&my<p.hgt){boom=true;break;}}
     const enemies: readonly Enemy[] = world.enemies;   // checked widening, not a cast
@@ -105,7 +109,7 @@ export function projTick(dt: number){
     }else if(Math.random()<.4){
       const c=o.col||0x9a4ae0,r2=(c>>16&255)/255,g2=(c>>8&255)/255,b2=(c&255)/255;
       spawnP(o.m.position.x,o.m.position.y,o.m.position.z,0,0,0,r2,g2,b2,.25,3);}
-    let dead=o.life<=0||solidAt(o.m.position.x,o.m.position.z)||(o.flesh&&o.m.position.y<floorHeightAt(o.m.position.x,o.m.position.z)+.1);   // a thrown chunk lands on the floor under it
+    let dead=o.life<=0||shotSolidAt(o.m.position.x,o.m.position.y,o.m.position.z)||(o.flesh&&o.m.position.y<floorHeightAt(o.m.position.x,o.m.position.z)+.1);   // a thrown chunk lands on the floor under it
     const hit=Math.hypot(o.m.position.x-player.px,o.m.position.z-player.pz)<.55&&
        Math.abs(o.m.position.y-(player.pyy-.3))<1;
     if(!dead&&hit){damagePlayer(o.dmg);

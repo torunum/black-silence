@@ -5,11 +5,21 @@ files. Every third-party asset ships with a row here. No row, no ship.
 
 | Asset | Type | License | Source | Why chosen | Modifications |
 |---|---|---|---|---|---|
-| _(none yet — Phase 1 Task 6 adds the first audio)_ | | | | | |
+| Gun reports (6 clips: 1911, Model 12, AK-47, Carl Gustav M45, Mosin-Nagant, AR-15) | audio | CC0 | https://opengameart.org/content/the-free-firearm-sound-library (Still North Media, posted by bart) | Real recorded firearms — the owner, 2026-10-20: "silah sesleri de gerçekçi degil" | One shot each cut from the prepared library at its onset; mono 44.1 kHz; peak-normalized, tanh-saturated (drive 3) for loudness, 120 ms fade-out; MP3 96 kbps (`assets/sfx/gun.*.mp3`) |
+| Creature cries (roars, screams, hurts, grunts, attacks, deaths, aliens, trolls) | audio | CC0 | https://opengameart.org/content/80-cc0-creature-sfx and https://opengameart.org/content/80-cc0-creture-sfx-2 (rubberduck) | Monster voices that sound like throats, not oscillators | Leading silence trimmed, cut to ≤ 2 s, mono 32 kHz, peak −1 dBFS, MP3 64 kbps |
+| Monster growls | audio | CC0 | https://opengameart.org/content/16-monster-growls (starninjas) | Big-creature and boss growls | as above |
+| Undead moans | audio | CC0 | https://opengameart.org/content/undead-moans (antumdeluge) | Zombie alerts | as above |
+| Zombie / skeleton voice effects (yells, deaths) | audio | CC0 | https://opengameart.org/content/zombie-skeleton-monster-voice-effects (arcadeparty) | Zombie pain and death | as above |
+| Zombie moans | audio | CC0 | https://opengameart.org/content/zombie-moans (darsycho) | Distant moans | first 6 s, as above |
+| Ambient horror | audio | CC0 | https://opengameart.org/content/ambient-horror (techiew) | The ambience bed under every level | first 22 s, loudness-normalized, mono 24 kHz MP3 32 kbps; folded into a seamless loop at load (`src/audio/Samples.ts`) |
 
 ---
 
 ## Where to drop audio files
+
+**Done 2026-10-20** — the clips above live in `assets/sfx/` and are played by `src/audio/Samples.ts` (guns),
+`src/audio/SampleVoice.ts` (monster voices) and the ambience bed; the synthesized sounds remain as the fallback.
+The plan below is kept for history.
 
 Phase 1 Task 6 — real, user-supplied CC0 `.ogg` files — has been outstanding
 since 2026-08-29 and is the actual fix for the game's sound. Everything in

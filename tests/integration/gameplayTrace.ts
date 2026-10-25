@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { PLAY_ORDER } from "../../src/world/levels/index";
 import { installDomStubs, loadGameHtml, installFakeClock } from "../support/domStubs";
 import { seedRandom } from "../support/seededRandom";
 import { getScene } from "../../src/render/SceneRef";
@@ -742,14 +743,15 @@ export async function runTrace(o: TraceOptions): Promise<TraceFrame[]> {
       // what makes any level beyond the prologue reachable from a test at
       // all. Unlock it, then drive the chapter-select screen the same way a
       // player would: open it, click the row for this level.
-      save.maxLevel = Math.max(save.maxLevel, level);
+      save.maxLevel = Math.max(save.maxLevel, PLAY_ORDER.length - 1);   // places in the play order (levels/index.ts), every row unlocked
       const chapterBtn = document.getElementById("mChapter") as HTMLElement | null;
       if (!chapterBtn) throw new Error("the CHAPTER SELECT menu row is gone — the trace drives level selection through it");
       chapterBtn.click();
       // Scoped to #chaplist: the main menu's own mNew/mChapter/mSettings
       // buttons are ALSO .mbtn (index.html), so a bare
       // `.mbtn` query would risk matching those instead.
-      const row = document.querySelectorAll("#chaplist .mbtn")[level] as HTMLElement | undefined;
+      // the rows are in the order the levels are played (the monastery second: levels/index.ts PLAY_ORDER), not by index
+      const row = document.querySelectorAll("#chaplist .mbtn")[PLAY_ORDER.indexOf(level)] as HTMLElement | undefined;
       if (!row) throw new Error(`chapter select has no row for level ${level} — #chaplist didn't build as expected`);
       if (row.className.includes("locked")) {
         throw new Error(`level ${level}'s chapter row is locked — save.maxLevel wasn't raised far enough`);

@@ -325,11 +325,11 @@ describe("the ViewmodelFrame main.ts builds", () => {
   // Task 2 (no hands while ADEM climbs out of his grave, src/world/Opening.ts).
   const EXPECTED_FIELDS = [
     "bobT", "cueDryFire", "cueHurt", "cueHurtAmt", "cueInput", "cuePickup",
-    "cur", "dead", "equipT", "grounded", "hidden", "kickAmt", "kickAnim", "kickRot", "muzzle", "paused", "pianoOpen",
+    "cur", "dead", "empty", "equipT", "grounded", "hidden", "kickAmt", "kickAnim", "kickRot", "muzzle", "paused", "pianoOpen",
     "sprintKey", "started", "swayX", "swayY", "unequipT", "vx", "vy", "vz", "wstate", "wtime", "yaw", "zoomLerp",
   ];
 
-  it("carries exactly the twenty-nine fields ViewmodelFrame declares — no more, no fewer", () => {
+  it("carries exactly the thirty fields ViewmodelFrame declares — no more, no fewer", () => {
     // draw.ts reads `v.foo` for each; a dropped field is silently undefined
     // there, which is how a missing one would otherwise reach the screen.
     expect(Object.keys(restFrame.vm).sort()).toEqual(EXPECTED_FIELDS);
@@ -408,7 +408,7 @@ describe("the ViewmodelFrame main.ts builds", () => {
   it("passes the weapon table, with an entry for the equipped slot", () => {
     const weapons = restFrame.weapons as Array<{ name: string }>;
     expect(Array.isArray(weapons)).toBe(true);
-    expect(weapons.length).toBe(8);
+    expect(weapons.length).toBe(10);   // DYNAMITE, the ninth (2026-10-20); the STAKE GUN, the tenth (2026-10-21)
     expect(weapons[restFrame.vm.cur as number]).toBeDefined();
     expect(typeof weapons[restFrame.vm.cur as number].name).toBe("string");
   });

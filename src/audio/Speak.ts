@@ -2,6 +2,7 @@ import { ctx, echoBus, masterBus } from "./AudioEngine";
 import { noise, noiseOffset } from "./Noise";
 import { layer, saturationCurve, type Layer } from "./Layers";
 import { voicePlan, type VocalEvent, type VoicePlan } from "./VoiceTable";
+import { sampleVoice } from "./SampleVoice";
 
 /**
  * A MONSTER SPEAKS — builds one emission of a voice (`./VoiceTable.ts`,
@@ -134,6 +135,7 @@ function gurgleLayer(dur: number): Layer {
 /** `kind` makes `event` now: a fresh plan (sound's own dice), built, with any `extra` layers under it. */
 export function speak(kind: string, event: VocalEvent, extra: readonly Layer[] = []): void {
   if (!ctx()) return;
+  if (sampleVoice(kind, event, extra)) return;   // a recorded throat, when one is decoded (./SampleVoice.ts)
   voice(voicePlan(kind, event), extra);
 }
 
@@ -167,6 +169,6 @@ export function speakOnce(kind: string, event: VocalEvent, window: number, extra
   const was = last.get(key);
   if (was !== undefined && now - was < window) return false;
   last.set(key, now);
-  voice(voicePlan(kind, event), extra);
+  if (!sampleVoice(kind, event, extra)) voice(voicePlan(kind, event), extra);
   return true;
 }

@@ -1,8 +1,9 @@
+import { hoverY } from "../enemies/Hover";
 import type * as THREE from "three";
 import { renderState } from "../render/Renderer";
 import { world } from "../world/WorldState";
 import { clamp, rnd } from "../utils/math";
-import { solidAt, segBlocked, wallNormal } from "../world/Collision";
+import { segBlocked, shotNormal, shotSolidAt } from "../world/Collision";
 import { WALLH } from "../world/Grid";
 import { WEAPON_STATS } from "./definitions";
 import { weaponRuntime } from "./WeaponRuntime";
@@ -18,6 +19,7 @@ import { flashHoly } from "../ui/HudMessages";
 import { screenShake, shake } from "../fx/ShakeState";
 import { breakProp, explodeBarrel, type Prop } from "../world/Props";
 import { alertSound } from "../enemies/ai/Perception";
+import { blastWindows, hitWindow } from "../world/Windows";
 import { damageEnemy } from "../enemies/Damage";
 import type { Enemy } from "../enemies/Enemy";
 
@@ -87,7 +89,7 @@ export function hitscan(dir: THREE.Vector3,dmg: number,wIdx: number){
   const cands: HitCandidate[]=[];
   const enemies: readonly HitscanEnemy[] = world.enemies;   // checked widening, not a cast
   enemies.forEach(e=>{if(e.dead||e.dormant)return;
-    const ecy=e.fly?(e.flyH||1.5):e.h*.5+(e.fy||0);   // sprite center height
+    const ecy=hoverY(e);   // sprite center height (a flier's where it hangs: src/enemies/Hover.ts)
     const ex=e.x-o.x,ez=e.z-o.z,ey=ecy-o.y;
     const t=ex*dir.x+ez*dir.z+ey*dir.y;if(t<0)return;
     const cx=o.x+dir.x*t,cz=o.z+dir.z*t,cy=o.y+dir.y*t;
@@ -101,7 +103,8 @@ export function hitscan(dir: THREE.Vector3,dmg: number,wIdx: number){
   let wallT=1e9,wx=0,wz=0,wy=0;
   for(let t=0;t<46;t+=.1){
     const sx=o.x+dir.x*t,sz=o.z+dir.z*t;
-    if(solidAt(sx,sz)||(world.wallSegs.length&&segBlocked(sx,sz,.12))){wallT=t;wx=sx;wz=sz;wy=o.y+dir.y*t;break;}}
+    const sy=o.y+dir.y*t;
+    if(shotSolidAt(sx,sy,sz)||(world.wallSegs.length&&segBlocked(sx,sz,.12))){wallT=t;wx=sx;wz=sz;wy=sy;break;}}   // a shot's own test: past a pillar's column, over a crate (src/world/Collision.ts)
   cands.sort((a,b)=>a.t-b.t);
   const pierce=WEAPON_STATS[wIdx]&&WEAPON_STATS[wIdx].pierce||1;
   let used=0;
@@ -113,14 +116,14 @@ export function hitscan(dir: THREE.Vector3,dmg: number,wIdx: number){
         sparks(o.x+dir.x*c.t,o.y+dir.y*c.t,o.z+dir.z*c.t,5);
         if(c.p.hp<=0)explodeBarrel(c.p);}
       else{c.p.hp-=dmg;
-        spawnGibs(o.x+dir.x*c.t,o.y+dir.y*c.t,o.z+dir.z*c.t,1,2,true);
+        if(!(c.p as { soft?: boolean }).soft)spawnGibs(o.x+dir.x*c.t,o.y+dir.y*c.t,o.z+dir.z*c.t,1,2,true);   // the breakable dressing takes no dice (src/world/decor/breakable.ts)
         at(o.x+dir.x*c.t,o.y+dir.y*c.t,o.z+dir.z*c.t,()=>bulletHitsProp());
         if(c.p.hp<=0)breakProp(c.p);}
       used++;if(used>=pierce)return;continue;}
     const e=c.e;
     weaponRuntime.volleyHit=true;
     // vertical fraction up the sprite (0 feet .. 1 head)
-    const ecy0=e.fly?(e.flyH||1.5):e.h*.5+(e.fy||0);   // the sprite's centre, on the floor it stands on: a zombie on a raised floor was one long head
+    const ecy0=hoverY(e);   // the sprite's centre, on the floor it stands on: a zombie on a raised floor was one long head
     const frac=clamp((c.cy-(ecy0-e.h*.5))/e.h,0,1);
     // horizontal: project hit point onto camera-right axis, normalized to half-width
     const rightX=Math.cos(input.yaw),rightZ=-Math.sin(input.yaw);
@@ -135,14 +138,15 @@ export function hitscan(dir: THREE.Vector3,dmg: number,wIdx: number){
     else{blood(hx,hy,hz,head?10:5,head?2.6:1.8);at(hx,hy,hz,()=>bulletHitsFlesh(e));}   // Task 5: and the flesh, at the blood
     for(let t2=c.t;t2<c.t+6;t2+=.2){
       const sx=o.x+dir.x*t2,sz=o.z+dir.z*t2;
-      if(solidAt(sx,sz)){const n=wallNormal(sx,sz,dir);
+      if(shotSolidAt(sx,hy,sz)){const n=shotNormal(sx,sz,dir);
         if(Math.random()<.5&&e.plate<=0)
           addWallDecal(sx-dir.x*.06,clamp(hy+rnd(-.3,.3),.2,WALLH-.2),sz-dir.z*.06,n.x,n.z,rnd(.2,.45),splatMat);
         break;}}
     damageEnemy(e,dmg*(head?2:1),{head,leg,arm,armSide,lateral,wIdx,dir:{x:dir.x,z:dir.z},dist:c.t,hx,hy,hz});
     used++;if(used>=pierce)return;}
   if(wallT<45){
-    const n=wallNormal(wx,wz,dir);
+    hitWindow(wx,wy,wz);   // if it is a window's glass, it breaks (src/world/Windows.ts); the spark and the mark go on as before, hidden by the pane
+    const n=shotNormal(wx,wz,dir);
     sparks(wx-dir.x*.05,clamp(wy,.1,WALLH-.1),wz-dir.z*.05,4);
     addWallDecal(wx,clamp(wy,.15,WALLH-.15),wz,n.x,n.z,.08,holeMat);
     at(wx,clamp(wy,.1,WALLH-.1),wz,()=>bulletHitsWall());   // player feedback round 2 Task 5: the wall is heard, at the spark
@@ -161,4 +165,5 @@ export function crossExplode(x: number,y: number,z: number){
       damageEnemy(e,dd,{explosive:true,dir:{x:(e.x-x)/Math.max(.2,d),z:(e.z-z)/Math.max(.2,d)}});}}
   for(const p of world.props as unknown as Prop[]){if(p.dead)continue;
     if(Math.hypot(p.x-x,p.z-z)<3){p.explosive?explodeBarrel(p):breakProp(p);}}
+  blastWindows(x,z,3.4);
   alertSound(x,z,20);}

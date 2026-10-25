@@ -926,6 +926,49 @@ import { world } from "../../src/world/WorldState";
  *      `unnamed#9` (1,430), `unnamed#8` (2), `#10` (2), `#11` (1), then `unnamed#9` -> `unnamed#13` (273) and `unnamed#8` -> `#12` (1): the same textures, numbered by first sight in a later frame; the wailer `s.a` -> `s.walk0` (6), `walk2` (6), `walk4` (5), `walk1` (1).
  *    - **one flying part — 430 frames, 1,440 sprites removed and 1,440 added at the same x and z, every one .0265 m higher** (the head of a sprinter and the like, in the legacy crop's box; the same
  *      mechanism as the ghoul's). No colour changed anywhere.
+ *
+ * ## The owner's round, 2026-10-20 — regeneration: two dynamite pickups in level 2 (scene count +2 only)
+ *
+ * DYNAMITE (slot 8) lies in level 2's north chapel (`d`, [30, 8]) with a box of bundles in the nave (`e`, [31, 22]). Their bob phase comes from the cell, not
+ * `Math.random` (`LevelLoader.ts`), so the seeded stream does not move. Against the previous fixture, field by field, all 512 sampled frames:
+ * `camera` — **identical in all 512**; `hud` — **identical in all 512** (the run still ends `HEALTH3661` / `THE CORRUPTED PRIEST — PHASE 3`);
+ * `scene.count` — **+2 in all 512** (the two sprites, never reached by the run's path); `scene.digest` — differs in all 512, by those two children.
+ *
+ * ## The owner's round, 2026-10-20 — regeneration: the pickups redrawn (digest only, 512 of 512 frames)
+ *
+ * Every pickup has its own picture now (`src/render/PickupArt.ts`), and each weapon pickup its own icon (`ITEMTEX.w1`..`w8`) where all
+ * of them were `ITEMTEX.gun`. Painted `quietly`, so no seeded draw moves. Against the previous fixture, field by field, every sampled frame:
+ * `camera` — **identical**; `hud` — **identical**; `scene.count` — **identical**; `scene.digest` — differs in 512 of 512: the weapon
+ * pickups' texture names (`item.gun` -> `item.w<slot>`), which the digest hashes; nothing moved.
+ *
+ * ## The owner's round, 2026-10-20 — regeneration: the level's number (hud only, 512 of 512 frames)
+ *
+ * The Ash Bell Monastery is played straight after the prologue (`src/world/levels/index.ts`'s `PLAY_ORDER`), so every later level's shown
+ * title counts one more (`titleOf`). Against the previous fixture: `camera`, `scene.count` and `scene.digest` **identical in every sampled
+ * frame**; `hud` differs in `lvltitle` and `msg` only, in all 512 (`LEVEL n` -> `LEVEL n+1`), every other field identical.
+ *
+ * ## The owner's round, 2026-10-21 — regeneration: the doors are remade, and the levels run into each other (digest only, 512 of 512 frames)
+ *
+ * A plain or locked door under an arch is two leaves on hinges now (`src/world/LevelDoors.ts`), not a cell-sized box, and the arch stands
+ * on its cell's own floor; the prologue's exit is the ladder up into the monastery and the dungeon's entrance the monastery's great gate
+ * (`src/world/HatchKit.ts`, `GateKit.ts`). Against the previous fixture: `camera`, `hud` and `scene.count` **identical in every sampled
+ * frame**; `scene.digest` differs in all 512 — the doors' children are hashed with every frame. Nothing moved.
+ *
+ * ## The owner's round, 2026-10-21 — regeneration: the dressing that breaks (a different fight from frame 672)
+ *
+ * The church's urns, benches, lecterns and bone stacks stand as pieces of their own in `world.props` now (`src/world/decor/breakable.ts`),
+ * and so they are things a shot can strike, a debris strike or a shock ring can break. They break without a draw from the seeded stream,
+ * and the windows break without changing the draws a wall hit makes, so the run is the same run until a shot of the sweep meets a lectern
+ * instead of what was behind it: from frame 672 (health 49 -> 59 there: a cultist lived a little longer and struck a little later) `camera`
+ * and `hud` differ (351 and 470 of 512 frames); `scene.count` differs from the first frame (the pieces are children of their own, and
+ * the boss's rings and strikes break them as the fight goes on). Every property the run is held to below still holds — the priest wakes,
+ * reaches phase 3 inside a sampled frame, ends awake, hurt and alive.
+ *
+ * ## The owner's round, 2026-10-21 — regeneration: doors on raised floors (digest only, 512 of 512 frames)
+ *
+ * A door cell's ceiling is the passage's now, and a secret door's block stands floor to ceiling on its own floor (`src/world/LevelDoors.ts`'s
+ * `fitDoorCeilings`, `sinkingDoor`). Against the previous fixture: `camera`, `hud` and `scene.count` **identical in every sampled frame**;
+ * `scene.digest` differs in all 512 — the ceiling over the raised doorways and the secret door's block are hashed with every frame.
   */
 
 const FIXTURE_DIR = join(__dirname, "__fixtures__");
@@ -1026,8 +1069,21 @@ const REV = (2 * Math.PI) / SENS;
  * 2808** (567 frames of live phase 3, priest at 194 hp) and **`EVERY` stays
  * 18**. 2808/18 = 156 recorded frames. The module doc comment's last
  * section has the measurement and the field-by-field account.
+ *
+ * ### Re-measured, the owner's round of 2026-10-21 (night) — 8192 -> 10080
+ *
+ * The boss-like enemies became rigs, KNOWN-15 was closed (the church's cultists fire their orbs; ten authored fields reach every enemy)
+ * and a shot got its own wall test (`shotSolidAt`): the fight moved. At 8192 the priest ended the run in phase 2, and the four phase-3
+ * checks said so. Measured with the run taken on to 20000: the phase-3 swap at **9519** (the priest dead by 20000). **`TOTAL_FRAMES` =
+ * 10080** (561 frames of live phase 3; at the cutoff `phase = 3`, alive, `hp = 458` of 1800, 25%), and **`EVERY` stays 16**: 16 x 595 =
+ * **9520** falls inside the swap's window. 10080/16 = 630 recorded frames.
+ *
+ * ## The owner's round, 2026-10-22 — regeneration: the particles are round (digest only, 630 of 630 frames)
+ *
+ * The particles' one `PointsMaterial` carries a soft disc texture and is transparent (`src/fx/Particles.ts`). Against the previous fixture:
+ * `camera`, `hud` and `scene.count` **identical in every sampled frame**; `scene.digest` differs in all 630 — the material is hashed.
  */
-const TOTAL_FRAMES = 8192;
+const TOTAL_FRAMES = 10080;
 const EVERY = 16;
 /**
  * The fifth knob the structural guard depends on, alongside `TOTAL_FRAMES`
@@ -1093,7 +1149,7 @@ let pewShapes: Array<Record<string, unknown>> = [];
  * module doc comment, "The form swap is pinned by exactly one sampled
  * frame", for what it proves and why.
  */
-let mapWrites: Array<{ frame: number; phase: number }>;
+let mapWrites: Array<{ frame: number; phase: number; map: unknown }>;
 
 beforeAll(async () => {
   // Pre-boot seeding, the `combatTrace` way: loadLevel never touches the
@@ -1171,7 +1227,7 @@ beforeAll(async () => {
         get(): unknown { return currentMap; },
         set(v: unknown): void {
           currentMap = v;
-          mapWrites.push({ frame: Math.round((performance.now() - t0) / DT_MS), phase: priest.phase });
+          mapWrites.push({ frame: Math.round((performance.now() - t0) / DT_MS), phase: priest.phase, map: v });
         },
       });
     },
@@ -1274,39 +1330,20 @@ describe("the recorded run actually fights a priest boss", () => {
     expect(priest.formKey).toBe("Q2");
   });
 
-  it("the phase-3 form swap always lands inside a sampled frame — structural guard, review round 1", () => {
-    // See the module doc comment's "The form swap is pinned by exactly one
-    // sampled frame" section. `mapWrites` is every write to the priest's
-    // material.map, in order; the first one recorded with phase===3 is
-    // necessarily the form swap itself (`Boss.ts`'s phase transition sets
-    // `e.phase=3` and performs the swap in the same call, before any
-    // phase-3 walk-cycle write can exist), and the very next write after it
-    // is the walk cycle overwriting it. Whatever that half-open window is,
-    // a sampled frame (a multiple of EVERY) has to fall inside it, or this
-    // site's coverage is gone regardless of what the fixture comparison says.
-    const phase3Writes = mapWrites.filter((w) => w.phase === 3);
-    expect(phase3Writes.length, "the priest never reached phase 3 — nothing to check the window against").toBeGreaterThan(0);
-
-    const swap = phase3Writes[0]!;
-    const swapIdx = mapWrites.indexOf(swap);
-    const overwrite = mapWrites[swapIdx + 1];
-    expect(
-      overwrite,
-      "nothing ever overwrote the phase-3 form swap's material.map — the window is open-ended, " +
-      "which this test cannot check a sample against",
-    ).toBeDefined();
-
-    const lo = swap.frame, hi = overwrite!.frame;
-    let sampledFrameInWindow = -1;
-    for (let f = EVERY; f <= TOTAL_FRAMES; f += EVERY) {
-      if (f >= lo && f < hi) { sampledFrameInWindow = f; break; }
-    }
-    expect(
-      sampledFrameInWindow,
-      `the form swap's visible window is [${lo},${hi}) and no multiple of EVERY(${EVERY}) falls in ` +
-      "it — a retune of TOTAL_FRAMES/EVERY/DT_MS/the sweep/the seed has silently moved this site's " +
-      "coverage out of the sampled frames",
-    ).toBeGreaterThan(0);
+  it("the phase-3 form shows in the sampled frames — structural guard, review round 1 (rigged since 2026-10-21)", async () => {
+    // The priest is a rig now (`src/enemies/rig/priest.ts`), and so is his last form (`priest2.ts`): `Boss.ts` swaps the form in
+    // (`formKey`) and the rig's frames follow it the same call (`RigAnim.rigLive`), so the legacy swap's one-frame window is gone.
+    // What has to hold is what the window stood for: once he is in phase 3, a sampled frame shows a frame of the second form's
+    // rig. `mapWrites` is every write to his material.map, in order, with what was written.
+    const { PX } = await import("../../src/enemies/SpriteBaker");
+    const form = (PX as unknown as Record<string, { rig?: { all(): unknown[] } }>).Q2.rig!;
+    const phase3 = mapWrites.findIndex((w) => w.phase === 3);
+    expect(phase3, "the priest never reached phase 3 — nothing to check").toBeGreaterThanOrEqual(0);
+    const swapFrame = mapWrites[phase3].frame;
+    const shownAt = (f: number): unknown => { let m: unknown = undefined; for (const w of mapWrites) { if (w.frame > f) break; m = w.map; } return m; };
+    let seen = -1;
+    for (let f = EVERY; f <= TOTAL_FRAMES; f += EVERY) if (f >= swapFrame && form.all().includes(shownAt(f))) { seen = f; break; }
+    expect(seen, `no sampled frame (every ${EVERY}) after the form swap at ${swapFrame} shows the second form's rig`).toBeGreaterThan(0);
   });
 
   it("the weapon state machine left idle (NOT boss-specific — see the module doc comment)", () => {

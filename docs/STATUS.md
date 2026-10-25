@@ -1,5 +1,286 @@
 # Where this project stands
 
+## Owner's round, 2026-10-22: the flare pistol's animations, redone
+
+"animasyonları da yenile, daha kaliteli olmasını istiyorum". Every timing the foley follows is unchanged (`FLARE` in `phases.ts`); what
+moves between them is new (`weapons/flare.ts`'s header has the whole choreography). Fire: the skull-hammer falls forward at the shot,
+jaw dropped, its eyes and the slits flaring white with the flash; the right thumb (drawn by the weapon now: `fist(..., { thumb: false })`,
+`THUMB`) comes up onto its crown and rolls it back as the gun is cocked. Reload: the wrist snaps down to break it, the barrel flops once
+on its hinge, the embers die, the spent shell kicks up out of the red-hot bore tumbling over the shoulder, the left hand pinches a fresh
+shell by its rim (fingers, not a fist, which hid the breech) and pushes it home, lets go and drops away; the barrel snaps shut speeding
+into the stop, the wrist flicks up, the teeth chatter, and the slits light back to front, the eyes last. Ends exactly on the idle pose.
+
+## Owner's round, 2026-10-22: the flare pistol, made frightening
+
+"pistol olan silahı daha iyi modeller misin daha korkutucu olsun". The orange-and-brass signal pistol is a cursed thing now
+(`weapons/flare.ts`): a fat barrel of hammered black iron with riveted bands, its muzzle a bell ringed with bone fangs, three barbs
+along the rib, and slits along its top and side where the flare smoulders red while it is loaded and goes dark when it is spent. On the
+breech, staring back at the man who holds it, a horned bone skull with embers in its sockets, a dried tear of blood and bared teeth; it
+is the hammer — its jaw drops as the shot goes and shuts as the gun is cocked. Blued iron frame, a bone grip bound in black cord, an iron
+skull for a butt cap. A new emissive palette material, `EMBER` (a coal's red, not a flame's white). The choreography and every timing are
+unchanged; the hold is 8 mm lower, so the horns clear the crosshair line.
+
+## Owner's round, 2026-10-22 (morning): water in the sewers
+
+The rebuilt sewers had no water in them, only pools of scum dressed on dry stone. Standing sewage now floods the main drain's channel,
+the flooded store, the overflow chamber and the great cistern (a dry rim along their walls) and the settling tanks' two basins
+(`BuiltLevel.water`, `src/fx/Water.ts`, painted by `src/render/SewerWater.ts`): two world-mapped layers like hell's lava — dark water with
+the light on its ripples (Phong: the torches glint on it) and the scum riding on it, alpha-tested — 6 cm deep over whatever floor it covers,
+flowing from a clock (4 numbers a frame, no allocation, no `Math.random`). Dressing only: no cell, mass or height changes. The womb has the same flood in its own colours (`BuiltLevel.fluid = "blood"`): a lake of
+blood in the great ventricle and round the heart, and the sac full of it. `tests/fx/water.test.ts`.
+
+## Owner's round, 2026-10-22 (morning): the graveyard under the sky
+
+"geliştirmeye devam et" — the rebuilt graveyard was roofed over like a cellar. It is zoned now (`graveyardZones.ts`), as the village is: the
+lychgate, the yew walk, the potter's field, the terraces and the new graves under the night sky, with the yard's earth underfoot and its
+own air; the gravekeeper's cottage and loft, the chapel of rest and its bell loft, the charnel and the family vault under their roofs. The
+tests that used it as the level with no zones and no ceiling map use the factory (6) now.
+
+## Owner's round, 2026-10-22: the weapons, first pass
+
+"silahları geliştirelim … kesinlikle daha kaliteli olmaları gerekiyor. animasyon cizim vs. oyuna uygun olmaları gerekiyor"; asked which way,
+the owner chose "Blood gibi sağ-alt" —
+
+- **Twice the resolution** (`raster.ts`'s `VM_RES = 2`: the raster is 640 x 400, the lenses and the aim shift doubled, `draw.ts` maps
+  raster pixels to the overlay at half the scale): a weapon has four times the pixels to be drawn in.
+- **Round parts lit pixel by pixel** (`builder.ts`: a cylinder's or a ball's facets carry the normal of the curve they stand for, shaded per
+  pixel when the palette asks for it, `Palette.smooth`, on the weapons' palette only — the monsters' rigs keep their facets): barrels,
+  drums, scopes and knuckles read round, with a glint along them.
+- **Held lower and to the right, turned a little toward the crosshair** (`rig.ts`'s `STANCE`, over every weapon's own hold; the sniper,
+  the stake gun and the cross launcher moved back toward the middle): the side of each weapon shows — the tommy's drum, the scope, the
+  nail cannon's barrels. A weapon at rest is 25-45% of the screen's height (was 30-45%).
+- **A broad sheen along round metal** (the per-pixel shading adds a wide specular along a barrel's curve), and three weapons drawn
+  closer: the flare pistol held nearer, the soul core swirling (`soulTex`) under a fainter halo, the tommy's and the rifle's receivers
+  machined (seams, an ejection port, pins) where they were flat grey boxes.
+- **The particles are round** (`Particles.ts`: a soft disc texture on the one `Points` material): the muzzle's smoke half a metre in front of
+  the eye was a grey square over the crosshair.
+- **Second pass**: the muzzle flash is petals of fire round a white-hot core, re-cut each frame from the frame number (no new dice: the two
+  draws are still the reference's), where it was one four-pointed star; the gloves have knuckles; the lighter in the dynamite's left hand is
+  a trench lighter with its lid thrown back and a tongue of flame, bigger and nearer; the cross launcher's roof is carved in tiles.
+
+## Owner's round, 2026-10-21 (night): the bosses redrawn, five levels rebuilt, shots past pillars, a harder kick, a better map
+
+"bosslara benzeyenler kötü … yeniden çiz hepsini … zombiler vs kalsın"; "sütunlar vs yakınında düşmanlara sıkınca gitmiyor … kısa
+cisimlerin üzerinden mermi gitmiyor"; "tekme … gerçekten sağlam bir tekme atıyormuş hissi versin"; "minimap i de geliştir"; "bölümleri de geliştirelim. hala zayıf duruyorlar" —
+
+- **Every boss and boss-like enemy is a rig now** (`src/enemies/rig/`): the cultist, gargoyle, cacodemon, lost soul, reiver,
+  slaughtaur, ettin, the guardian, the executioner, and the six bosses with their last forms as rigs of their own (`Q2`, `Z2`, `N2`,
+  `H2`, `V2`, `G2`: a boss's phase-3 form is worn through `RigAnim`'s `formKey`). The horde the owner liked (ghoul, bloat, sprinter,
+  horror, wailer, hound, dragger) is untouched. Every rig is held to the same suite (`tests/enemies/rigSuite.ts`): frame aspect, the
+  legacy regions, brightness, the punch of its emissives, the head zone. Only `B`, `q` and `A`, placed in no level, are legacy art.
+- **KNOWN-15 closed** (approved): the ten authored enemy fields reach the enemy; fliers hover (`src/enemies/Hover.ts`).
+- **A shot has its own wall test** (`shotSolidAt`, `src/world/Collision.ts`): a pillar is its round column (r .62), not its whole
+  cell, and a solid mass (a crate pile, a bench) stops a shot only below its top. Hitscan, nails, orbs and stakes use it; the body
+  still collides with the whole cell.
+- **The kick**: a bigger boot and leg, a deeper lean into it, five streaks, a burst at the sole when it meets something
+  (`kickShow.met`), a heavier punch and shake, more knockback (21; a boss 4), a light foe flung, a longer hit-stop.
+- **The five lattice levels rebuilt** — the necropolis (3), the graveyard (4), the sewers (5), the factory (6) and the womb (8): they were the
+  reference's 33 x 25 lattice of seven-by-five rooms under other names, 44 steps through (the womb 32), their keys opening side rooms. Each
+  is now its own place written with `LevelPlan` (`necropolis.ts`, `graveyard.ts`, `sewers.ts`, `factory.ts`, `womb.ts` and their dress
+  files), on three floors, with a key hunt (the key 24-64 steps off the way), a loop, two secrets, an arena, a forced shrine near the
+  middle, its boss in a room of its own at the end (the exit at (16,16) for the four that open one), and is held to every structure
+  target (`REBUILT` is now every level but the prologue). The old `level3-7.ts` / `dress3-7.ts` are gone; `levelDressing567.test.ts` is
+  `levelDressingRebuilt.test.ts`, and the fidelity test pins the five as rebuilt.
+- **The minimap redrawn** (`src/ui/MinimapDraw.ts`): walls as bright lines with a glow, doors as bars across their doorways, pillars
+  as discs, windows dashed, steps between heights; health, armour, ammunition, weapons, the key, the seals and the exit marked by
+  kind; a trail of where the player walked; a brass rim ticked at eight points with N in red and a view cone; the automap framed on
+  what has been explored, with the level's name, kills and secrets, and a legend.
+
+## Owner's round, 2026-10-21 (evening, later): what was found wrong, and fixed
+
+"eksiklikleri bul ve düzelt" —
+
+- **Doors on raised floors.** A secret door (and a door with no arch over it) was a block at the grid's own 0 to 3.4, whatever floor
+  its cell had: on the monastery's and the village's 1.2 floors it stood with its foot in the floor, and on a 3.6 loft (the miller's
+  hoard) it was entirely under the floor — the secret was an open hole in the wall. And a door cell kept the default 3.4 ceiling while
+  the rooms either side had theirs a storey up, so the doorway was squashed under a lintel (and on a loft, its ceiling was below its
+  floor). Now a door cell takes the lower of its passage's ceilings, and the sinking block stands floor to ceiling on its own floor and
+  sinks into it (`src/world/LevelDoors.ts`: `fitDoorCeilings`, `sinkingDoor`, `sunkY`); the arched doors' leaves fit the taller opening.
+- **The arrival lines.** `loadLevel` said `lvl<index>`, the reference's numbering: since the bone cathedral took index 7, it opened on
+  the womb's "the walls are breathing", and the womb, the monastery and the village opened on nothing. Each level now has its own
+  (`src/content/monologue.ts`: `arrivalLine`, and the port's own lines in `PORT_LINES`, beside the reference's untouched `MONOLOGUE`).
+- **The gauntlet** (KNOWN-21, wired since the reference and placed in no level) is in the village, in the east lane's yard; its plate
+  and light stand on the floor they are on. ADEM has a word for the cornfield, the barn and the graveyard (zone lines).
+
+## Owner's round, 2026-10-21 (evening): THE HOLLOW VILLAGE, an open-air level
+
+"açık havada geçen, Blood tarzı bölümler" — **a new level, played after the abandoned church** (`src/world/levels/village.ts`,
+`villagePop.ts`, `villageZones.ts`, `dressVillage.ts`; index 10, `PLAY_ORDER` `[0, 9, 1, 2, 10, 3, …]`, shown as LEVEL 4). The village
+round the church, at night, under the open sky: ADEM comes out through the church's own doors onto its square (the well, the gallows,
+the inn, the store), down the street (the undertaker's, the burned house, the smithy, the cottage), finds the town gate locked, crosses
+the dead cornfield (dogs and crawlers in the corn) to the barn, takes THE RED KEY from the hayloft where an ettin keeps it, and goes on
+through the gate into the graveyard and out by the cemetery gate — which the necropolis now begins at. Off the way: the store's
+cellar and the tunnel up into the mill and its loft, the east lane, and three secrets (the inn's wine cellar, the miller's hoard, the
+undertaker's hidden coffin). Three floors (1.2 ground, 0 cellars, 3.6 galleries and lofts), 79 enemies, five shrines; it meets every
+structure target (`REBUILT`, measured against 80). New pieces for it (`src/world/decor/village.ts`): slate gable roofs with chimneys over
+every house, the well, the gallows, a cart, hay bales, woodpiles, scarecrows, fingerposts and the corn.
+
+## Owner's round, 2026-10-21 (later still): windows that break, and more that breaks
+
+"kırılabilir cam pencereler ve daha fazla kırılabilir eşya" —
+
+- **The stained-glass windows break** (`src/world/Windows.ts`, which now builds them for `loadLevel` exactly as it did): a bullet into
+  the glass, a stake, a dynamite or barrel blast or a cross's burst nearby. A crash and a long rain of tinkling pieces
+  (`glassShatters`), coloured shards thrown into the room, the pane left a ragged ring of glass in the lead round a hole onto the night,
+  and its coloured light turned the cold grey of the moon. A wall hit makes the same draws it always did, so nothing else moves.
+- **The level kit's urns, benches, lecterns, crate piles and bone stacks, and the womb's egg-sacs, tumours and growths break**
+  (`src/world/decor/breakable.ts`): built as pieces of their own and entered in `world.props`, so shots, stakes, kicks, blasts and a
+  boss's falling debris and shock rings break them — clay into shards and a puff of ash (`potteryBreaks`), wood into splinters, bone
+  into a clatter, flesh into a burst. They are never in anyone's way (walked past as before; only a boss or a brute smashes through)
+  and break without a draw from the game's dice; nothing drops out of them.
+- Traces: the dungeon's gains its eight pieces (scene only); the boss's fight is a different fight from frame 672, where a shot of its
+  sweep meets a lectern — every property it is held to still holds (header note).
+
+## Owner's round, 2026-10-21 (later): the levels run into each other, and the doors are remade
+
+"bölümleri geliştirmeye devam et. prologue u da diğer bölüme bağla. kapıları yeniden yapabilirsin" —
+
+- **The prologue runs straight into the monastery.** Its way out is a **ladder** at the top of the climb (`src/world/HatchKit.ts`):
+  ADEM walks to its foot, climbs looking up, shoulders the slab over the shaft aside, and the screen goes black. The monastery begins
+  with him coming **up out of a hatch** in the family crypt's floor: the slab pushed off from below (hell's red glow under it), head and
+  shoulders up into the crypt, out, a look back as the slab is dragged back over the shaft, and on. (`Transition.ts`'s `climb` and
+  `arriveByHatch`; ADEM's card lines say where he has come up.)
+- **The monastery ends at its great gate, and the dungeon begins coming in through it** (`src/world/GateKit.ts`): two tall braced
+  oak leaves with iron studs and rings under a pointed arch of two orders with a keystone, the monastery's bronze bell in the arch's
+  head, iron braziers burning either side. With the dungeon's well and the church's rope, the first four levels are one way down.
+- **The doors inside every level are remade** (`src/world/LevelDoors.ts`): the reference's door was a cell-sized textured box sunk into
+  the floor, built at the grid's own height — on the monastery's raised floors it stood with its foot in the floor and a gap over its
+  head. A plain or locked door is now a pair of gothic leaves under the doorway's pointed arch, each cut to the arch's curve and hung on
+  its jamb, an iron ring either face; opened, they swing away from whoever opened them and come to rest against the passage's walls.
+  Oak with strap hinges (plain), riveted black iron with the red lock plate (locked: the red key's), the flesh door's skin on the womb.
+  The arch and the leaves stand on the door cell's own floor and fit its own ceiling (`Arches.ts`'s `archMatrix` takes both now; on a
+  level with no raised floor they are where they always were). Secret doors keep the sinking block (they are drawn as wall on purpose).
+  Built `quietly`; collision unchanged (a door's cell is solid until opened); a checkpoint puts opened doors back open.
+- New door surfaces in `DOORTEX`: `oak`, `ironLeaf`, `gate`, `slab`. The door parts the kits share moved to `src/world/DoorParts.ts`.
+
+## Owner's round, 2026-10-21: the stake gun
+
+"sonra kazık eklensin" — **the STAKE GUN is slot 9, the tenth weapon, key `0`** (`src/weapons/Stake.ts`, its art
+`src/render/viewmodel/weapons/stakegun.ts`): a pneumatic launcher of dark oak and iron with a copper air tank, driving a sharpened ash
+stake with an iron point out of an open trough. The stake is a real projectile, not a hitscan: 46 m/s with a slight drop, 120 to a
+body (x1.5 in the top fifth of it); after 0.28 s in the air it catches fire and strikes x1.5 harder (the reward for range); it goes
+through what it kills (up to three, keeping 70% each time) and stops in what it does not, shoving it back; it is driven into the wall,
+floor or beam it reaches and stays there (the oldest of 40 pulled out), and breaks props and sets off barrels. One stake in the trough;
+the next is laid in and the lever pumped in 0.8 s. Glyphs `u` (the weapon, with six stakes) and `1` (+6 stakes): the monastery's bone
+chapel, cistern and rite chapel, and the bone cathedral's east vault, west vault and nave (bob phase from the cell, as the dynamite's).
+The viewmodel now knows when the magazine is empty (`Pose.empty`), so the stake gun's trough and the dynamite's hand are drawn empty
+between the shot and the reload. `tests/integration/stake.test.ts`.
+
+## Owner's round, 2026-10-21: the dungeon ends down a well, the church begins at its bottom
+
+"ilk bölüm büyük bir kapıdan geçerek bitebilir ... diğer bölümde de kuyuya inebilir iple. 3. bölümde kuyu icinden başlar" — the
+monastery ends through its great gate (the Gravedigger's exit door); the dungeon (played second) now ends **down a well on a rope**,
+and the church (played third) **begins at the well's bottom**. `src/world/WellKit.ts` builds both as door rigs (`DoorStyle` "well" and
+"rope"; the eight theme doors are unchanged), so `ExitDoor.ts` sites them and the hint, the touch and `E` work as at any door; a level
+names them with `LevelDef.exitStyle`/`entranceStyle`. `Transition.ts`: through the well the camera goes to the rim, looks down and
+climbs down into the black (`descend`); into the church it comes down the rope from the shaft's grey light, lands, and walks to the
+spawn (`arriveByRope`). The door-walk's own test now walks the prologue's crypt door. `tests/world/transition.test.ts`,
+`tests/world/exitDoor.test.ts`.
+
+## Owner's round, 2026-10-20 (night): LEVEL 1 — THE ASH BELL MONASTERY, blockout
+
+The owner's brief ("Kül Çanı Manastırı": an old monastery, its graveyard and funeral houses over a forbidden rite) built blockout-first,
+as the brief asks: the whole level playable in plain geometry, its ways, fights and length checked, the dressing after.
+`src/world/levels/monastery.ts` (geometry), `monasteryPop.ts` (twelve fights, the weapons on the way, six secrets' rewards, the light,
+six shrines), `monasteryZones.ts` (eleven regions, the graveyard, the courtyard and the cloister open to the sky),
+`monasteryScript.ts`. **Played straight after the prologue**: appended to `LEVELS` at index 9 so no other level moves, and
+`PLAY_ORDER` (`levels/index.ts`) puts it second; every later level's shown number (`titleOf`) counts one more, the chapter select lists
+the levels in play order, and `save.maxLevel` counts places in it.
+
+**A level script** (`src/world/script/`): data beside the grid, run at play — two seals (`J`, `M`: the Ash Seal, the Bell Seal), the
+gate under the courtyard that wants both (its two marks over the door light as each is taken), the crematorium's service door barred on
+the courtyard's side, four courtyard niches that will not move until the great bell is rung, the bell's lever at the top of the tower,
+and a freight lift from the bell chamber (6.0) to the courtyard (1.2), chained at the top until the bell. The structure suite reads the
+script (`analyse.ts`'s `scriptView`): the gate as a locked door, the last seal its key, the other a goal on the way — so the critical
+path is the real one through both wings (297 steps), and the monastery is in `REBUILT`, meeting every target.
+`tests/integration/monastery.test.ts` drives each piece through the real game.
+
+**Length, measured not guessed:** the blockout's main route was 328 cells of walking with 79 enemies (a first run estimated at 12-20
+minutes against the brief's 25-35). The second pass (`monasteryMore.ts`) gave each region the side space it was missing — the family
+vault, a ruined bone chapel with a gallery and a way down into the coal store under the crematorium, the embalming room (now on the
+way through the morgue), the chapter house (now on the way to the library), the archive stacks on the gallery's floor, a bone chapel
+off the ossuary, and a pump room that is a second way into the rite chapel. The main route is now 396 cells (the critical path the suite
+measures, 347 steps), with 115 enemies in the level and about 95 on the way: a first run estimated at 20-30 minutes, explorers more.
+Estimated, not played: the owner's runs are the measure.
+
+**Dressed** (`dressMonastery.ts`): each region its own vocabulary from the kit whatever the level's theme — sarcophagi, urns and niches
+in the crypt; table tombs (cover that breaks sight and way), headstones, crosses, open graves and mounds in the graveyard; slabs, racks
+and chains in the morgue; machines, drums, hooks and pipes in the crematorium; lecterns, banners, candelabra and broken glass in the
+library; bone stacks and skull piles under the courtyard; pipes, grates and sludge in the cistern; the altar and the cult's banners in the
+rite chapel. All of it `may` (a piece the kit refuses is skipped), none of it a light. `#dev` in the address gives a script
+`window.__bs.tp(x, z, yaw)` and `__bs.calm()` (`src/core/DevHook.ts`), for walking a level's screenshots.
+
+## Owner's round, 2026-10-20 (evening): the pickups redrawn, the reloads brought into view
+
+"can silah mermisi vs simgelerini daha güzel yapalım ... pompalı mermisi vs simgesi hepsinin farklı olsun" — **every pickup is its own
+picture** (`src/render/PickupArt.ts`, the rows in `src/render/pickups/`): a medical kit, a steel breastplate, an open box of pistol
+rounds, three red shotgun shells with brass heads, two rifle rounds on a clip, a gold cross, a tin of nails, a burning green skull,
+loose dynamite, the red key; and **every weapon pickup its own side-on silhouette** (`ITEMTEX.w1`..`w8`, which also fixes a respawned
+weapon pickup that had no texture). Painted over the reference's under the same keys, quietly (no seeded draw). The HUD shows the
+same icons by HEALTH, ARMOR and AMMO, and the equipped weapon's (`src/ui/HudIcons.ts`). The traces' fixtures moved in their scene
+digests only (the weapon pickups' texture names); headers say so.
+
+"silah reload vs animasyonlarında sorun var gibi" — rendered frame by frame, every reload worked its magazine, drum, hopper or breech
+below the bottom of the screen: the gun dipped and nothing seemed to happen. **A reload now brings the weapon up into view**
+(`WeaponArt.present`, eased in over the first sixth and out over the last), the rifle and the sniper turned to show their side, and the
+ceiling lets it rise to just under the crosshair (`RELOAD_CLEAR`) while nothing can be fired. The tommy gun's left arm racks the knob
+from low on the left instead of across the eye. `tests/render/reloadPresent.test.ts`.
+
+## Owner's round, 2026-10-20 (later still): dynamite
+
+"ilk dinamit eklensin" — **DYNAMITE is slot 8, the ninth weapon, key `9`** (`src/weapons/Dynamite.ts`, its art
+`src/render/viewmodel/weapons/dynamite.ts`): a bundle of three sticks with a lit fuse, held up in the right hand with a brass lighter
+in the left, as Blood's Caleb holds his. Thrown underhand along the aim with a lob; it bounces off floors and walls, rolls to a stop,
+and goes off when its 1.7 s fuse burns down — not on contact — for 150 at the centre to nothing at 5.5 m, knocking bodies back,
+breaking props, setting off barrels, and hurting the thrower inside 4.5 m. One in the hand; the next is lit in 0.75 s (the reload:
+it comes up from below, the lighter crosses to the fuse). Glyphs `d` (the weapon) and `e` (+3 bundles): level 2's north chapel and
+nave, and the bone cathedral's porch, vault and nave; their bob phase is from the cell, not `Math.random`, so the boss trace's
+fight is unchanged (its fixture regenerated: scene count +2 only, header note). `tests/integration/dynamite.test.ts`.
+
+## Owner's round, 2026-10-20 (later): recorded guns and monsters
+
+"gerçekçi sesler koyamaz mıyız ? korkunc sesler olsun istiyorum. silah sesleri de gerçekçi degil." The guns and the monsters now
+play real recordings, all CC0 (`docs/assets.md`, `THIRD-PARTY-NOTICES.md`): 60 short mono MP3s in `assets/sfx/` (about 660 KB),
+inlined into the bundle as data URLs so the single file still opens from `file://`. `src/audio/Samples.ts` decodes them when the
+game starts; `src/audio/sounds/weapons.ts`'s six firearms (1911, Model 12, AK-47, Carl Gustav M45, Mosin-Nagant, AR-15) and
+`src/audio/SampleVoice.ts` (every `speak`, by voice family and event, pitched by each kind's fundamental) play them, and a loop of
+ambient horror runs under the oscillator drones. Every one falls back to the synthesized sound when its clip is not decoded — which
+is always so in the tests, so no fixture moved. The relic launcher and the soul-eater keep their synthesized character.
+`tests/audio/samples.test.ts`.
+
+## Owner's round, 2026-10-20: the X goes, the guns stand straight, a map, a new chapter
+
+Four asks, in the owner's words: remove the X that shows when a shot hits an enemy; the weapon models stand crooked and should be
+more like Doom and Blood; add a new chapter; add a minimap ("mini map önemli. yönümüzü bulamıyoruz").
+
+- **The hit marker is not drawn.** `Overlay2D.ts`'s `fxTick` no longer calls `drawHitMarker`; the marker's state still runs (the
+  hit-stop, the punch and the confirming sound are the feedback). `tests/behavior/hitMarkerOverlay.test.ts` now holds that nothing of
+  it is drawn, idle or after a kill.
+- **The weapons are held square to the screen** — no cant (`roll`), no swing across it (`yaw`), the lens no longer shifted right
+  (`AIM_DX` 0). The owner was shown three framings (the old one, dead centre seen end-on as Doom's, and the old models held straight)
+  and chose the third, "a bit more upright": each gun a little right of centre (its old `x` times 0.38), pointing straight ahead,
+  so its side still shows. The guns have their own, longer lens (`rig.ts`'s `WEAPON_FOCAL` 280; the leg keeps `FOCAL` 170), and the
+  line of fire is 10% of the screen under the crosshair (`CLEAR_BELOW`, was 15%); `draw.ts`'s ceiling now holds the finished image
+  under it whatever lifted it, rig motion included. **Nothing in the motion turns or cants the gun any more** (the owner's "yamuk"
+  was as much the sprint cant, the strafe lean, the flinch, the dry-fire cant, the fidget, the switch's roll-over and the kick's
+  swing as the rest pose): those reactions drop and dip it instead, the switch goes straight down and up, and the walk's bob is
+  Doom's U (side to side over the top, dipping through the middle on each footstep) instead of a figure-eight. The cross launcher's
+  muzzle anchor is the cross itself (it is what flies). The combat rifle's and the sniper's bolts sit below the frame: their shot
+  reads as the recoil, and `viewmodel.test.ts` exempts those two from the "mechanism moves" check.
+- **`Esc` pauses** (`src/ui/Pause.ts`): losing a held mouse lock in play brings up `#pause` and stops the loop; a click takes the
+  mouse back and resumes. **KNOWN-20 is closed**: the nails and souls pickups have icons. A faster player (9/13) and sound carried
+  through the grid to wake the next room were tried the same day and taken back: the owner liked the pace as it was, and the
+  hearing changed the trace fixtures' fights beyond what this round should re-record.
+- **The minimap** (`src/ui/Minimap.ts`): a round corner map, top left, that turns with the player (the facing is always up; a red N
+  on the rim), and a full automap, north up, on `M` or held `Tab`. Only what the player has seen is drawn — a fan of rays through
+  the grid every tenth of a second, stopped by walls and closed doors; a secret door is a wall until it opens; the key is marked
+  where it lies, the exit door once seen (green once it opens). Per level, no `Math.random`. `tests/ui/minimap.test.ts`.
+- **LEVEL 7 — THE BONE CATHEDRAL** (`src/world/levels/cathedral.ts`, `dressCathedral.ts`): new, between the factory and the womb,
+  which is now LEVEL 8. Written with `LevelPlan` on the necropolis's theme and in `REBUILT` from the start: 112 steps, a loop, a key
+  hunt (the charnel vault), two secrets, three floors, three shrines (one forced at 44%), the Guardian in the west vault and the
+  Bone Sovereign on its throne. It shares the necropolis's tomb door (nine levels, eight styles). Its `OLD_CRITICAL` is the lattice
+  levels' 44, as if it had been one. Every index-keyed table in the tests moved the womb from 7 to 8.
+
 ## Enemies, redrawn: Task 2 - the horde - 2026-10-16 (branch `enemies`)
 
 Plan: `docs/superpowers/plans/2026-10-13-enemies.md`; the report and the strips are in
@@ -930,7 +1211,7 @@ into `world.enemies` — and nothing kept them agreeing. They are now
 | `spawnEnemy` returns `Enemy`; `world.enemies` is `Enemy[]` | reading an undeclared field off an element is now `tsc` error TS2339 |
 | The fifteen `as unknown as SomeEnemy[]` casts gone | replaced by `readonly SomePick[]` bindings — a *checked* widening |
 | `severKey`'s contradiction resolved | `string` in the writer vs `boolean` in the reader → the real union, guarded both directions |
-| KNOWN-15 found and pinned | `tests/enemies/deadDefFields.test.ts`, four mutations |
+| KNOWN-15 found and pinned | `tests/enemies/defFields.test.ts`, four mutations |
 | The walk-frame hole closed | `tests/enemies/walkFrames.test.ts` |
 
 The direction is the finding. Consolidating the *consumers* would have
@@ -982,7 +1263,7 @@ already sixteen.
 
 None of them changed a decision, and that is the point: they were quoted as
 evidence and would have been baked into a doc row that outlives the phase. So
-**every count in the new tests is derived at run time** — `deadDefFields.test.ts`
+**every count in the new tests is derived at run time** — `defFields.test.ts`
 reads `ENEMY_DEFS` and spawns every authoring enemy; `enemyShape.test.ts` parses
 `Enemy.ts` and compares sets. Neither asserts a number. The numbers that do
 appear, in `docs/known-issues.md`, are descriptive and dated to a commit.
@@ -1635,7 +1916,7 @@ omission.
   flesh; the Slaughtaur's shield absorbs nothing; and the five sovereign
   bosses use the non-sovereign stat block. Identical in the frozen reference,
   so it is faithful, not drift. Found by Phase 3 Part A's enemy-shape
-  consolidation and pinned by `tests/enemies/deadDefFields.test.ts`. **Do not
+  consolidation and pinned by `tests/enemies/defFields.test.ts`. **Do not
   fix it with a spread in `spawnEnemy`**: switching ten behaviors on in one
   commit is a balance change that needs a human at the game, one field at a
   time.

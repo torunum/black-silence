@@ -33,6 +33,9 @@
   .num{font-size:34px;font-weight:bold;line-height:.9}
   .sub2{font-size:13px;color:#6e6a5e}
   #hp .num{color:#9c2f1e} #ar .num{color:#4a6b8a} #am .num{color:#a08c5a}
+  .istat{display:flex;align-items:center;gap:8px}
+  .ico{width:40px;height:40px;image-rendering:pixelated;image-rendering:crisp-edges}
+  #icoW{width:54px;height:54px;margin-right:-6px}
   #wname{font-size:12px;color:#6e6a5e;text-align:center;letter-spacing:3px}
   #cross{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:6;pointer-events:none;
     color:#b8b2a6;font-size:16px;text-shadow:1px 1px 0 #000;opacity:.8}
@@ -45,7 +48,12 @@
     text-shadow:2px 2px 0 #000;pointer-events:none;line-height:1.5}
   #subt b{color:#9c8a5a;font-style:normal;letter-spacing:3px;font-size:11px}
   #keys{position:fixed;right:18px;top:14px;z-index:10;font-size:12px;letter-spacing:2px;color:#9c2f1e;text-shadow:2px 2px 0 #000}
-  #lvltitle{position:fixed;left:18px;top:14px;z-index:10;font-size:12px;letter-spacing:3px;color:#6e6a5e;
+  /* the corner map and the automap (src/ui/Minimap.ts) */
+  #minimap{position:fixed;left:14px;top:14px;width:clamp(120px,15vw,190px);height:clamp(120px,15vw,190px);z-index:10;
+    pointer-events:none;display:none;filter:drop-shadow(2px 3px 2px rgba(0,0,0,.8))}
+  #automap{position:fixed;inset:6vh 8vw;width:84vw;height:88vh;z-index:13;pointer-events:none;display:none;
+    border:1px solid rgba(120,100,70,.35);box-shadow:0 0 40px #000}
+  #lvltitle{position:fixed;left:calc(28px + clamp(120px,15vw,190px));top:14px;z-index:10;font-size:12px;letter-spacing:3px;color:#6e6a5e;
     text-shadow:2px 2px 0 #000;text-transform:uppercase;opacity:0;transition:opacity 1.2s}
   /* achievement toasts */
   #toasts{position:fixed;right:14px;top:54px;z-index:12;display:flex;flex-direction:column;gap:8px;align-items:flex-end}
@@ -123,16 +131,18 @@
 <div id="subt"></div>
 <div id="keys"></div>
 <div id="lvltitle"></div>
+<canvas id="minimap"></canvas>
+<canvas id="automap"></canvas>
 <div id="toasts"></div>
 <div id="hud">
   <div style="display:flex;gap:34px">
-    <div id="hp"><div class="stat">HEALTH</div><div class="num">100</div></div>
-    <div id="ar"><div class="stat">ARMOR</div><div class="num">0</div></div>
+    <div id="hp" class="istat"><canvas class="ico" id="icoHp" width="48" height="48"></canvas><div><div class="stat">HEALTH</div><div class="num">100</div></div></div>
+    <div id="ar" class="istat"><canvas class="ico" id="icoAr" width="48" height="48"></canvas><div><div class="stat">ARMOR</div><div class="num">0</div></div></div>
   </div>
   <div>
     <div id="wname">RUSTED REVOLVER</div>
   </div>
-  <div id="am"><div class="stat">AMMO</div><div class="num">6<span class="sub2"> | 60</span></div></div>
+  <div id="am" class="istat"><canvas class="ico" id="icoW" width="72" height="72"></canvas><canvas class="ico" id="icoAm" width="48" height="48"></canvas><div><div class="stat">AMMO</div><div class="num">6<span class="sub2"> | 60</span></div></div></div>
 </div>
 
 <div id="piano">
@@ -187,6 +197,7 @@
       <span>WEAPONS</span><b>1 – 8 / WHEEL</b>
       <span>INTERACT</span><b>E</b>
       <span>SNIPER ZOOM</span><b>Z</b>
+      <span>MAP</span><b>M / HOLD TAB</b>
     </div>
   </div>
   <div class="mbtn back" id="setBack">[ BACK ]</div>
@@ -198,6 +209,13 @@
   <div class="stats" id="deadwhere"></div>
   <div class="start deadbtn" id="riseBtn">[ RISE AGAIN AT THE LAST SHRINE — SPACE ]</div>
   <div class="start deadbtn" id="restartBtn">[ RESTART THE LEVEL — R ]</div>
+</div>
+
+<div id="pause" class="overlay hidden">
+  <h1 class="title">PAUSED</h1>
+  <div class="sub">the parish waits</div>
+  <div class="start" id="pauseResume">[ CLICK TO RETURN ]</div>
+  <div class="mbtn back" id="pauseMenu">[ QUIT TO MENU ]</div>
 </div>
 
 <div id="fade"></div>

@@ -7,7 +7,8 @@
  * faces, its health and ammo, and the monsters in its line of sight.
  *
  * - **Walks the route**: grave -> mausoleum -> crypt stair -> hell's west
- *   bank -> the bridge -> the east bank -> the climb -> the exit. When hurt
+ *   bank -> the bridge -> the east bank -> the field of pyres -> the throne
+ *   hall -> the climb -> the exit. When hurt
  *   below 55 it detours to the nearest health it has seen on the way.
  * - **Fights what it sees**: the nearest monster within 14 m in line of
  *   sight *and in front of it* (a 70-degree cone either side), or one it
@@ -43,22 +44,30 @@ export type BotEvent =
 
 /**
  * The route, in world units (a cell is 2): the centre of the corridor at each turn. It ends at the exit's door, not the exit cell:
- * the door stands in the landing's north wall (z 16), and walking into it (within 0.7 of it) is what opens it
- * (`src/world/Transition.ts`). The pad this route used to end on, at z 19, is two cells short of that wall.
+ * the door stands in the landing's north wall, and walking into it (within 0.7 of it) is what opens it (`src/world/Transition.ts`).
+ * Since the prologue grew (2026-10-22): over the pit's bridge, through the cleft in the east bank into the field of pyres, over the
+ * river's bridge, down the passage into the throne hall, over the moat's north bridge onto the island and off it by the east one,
+ * out of the hall and up the long climb to the landing.
  */
 export const ROUTE: ReadonlyArray<readonly [number, number, string]> = [
   [20, 13, "churchyard"], [20, 17, "mausoleum door"], [20, 22, "crypt"], [20, 37, "stair foot"],
   [19, 44, "west bank"], [19, 50, "west bank"], [21, 53, "bridge"], [37, 53, "bridge's far end"],
-  [44, 46, "east bank"], [50, 40, "climb"], [50, 27, "climb"], [50, 22, "landing"], [51, 16.6, "exit"],
+  [49, 49, "east bank"], [55, 45, "the cleft"], [63, 45, "the cleft's end"],
+  [81, 51, "the field"], [81, 58, "the river's bridge"], [81, 65, "over the river"], [80, 83, "the passage down"],
+  [80, 91, "the throne hall"], [70, 93, "the moat's north bridge"], [70, 101, "the island"], [83, 106, "the island's east side"],
+  [93, 106, "the east bridge"], [105, 105, "out of the hall"], [113, 105, "the climb's foot"], [113, 61, "the climb"],
+  [113, 33, "the climb's head"], [107, 23, "landing"], [107, 16.6, "exit"],
 ];
 
-/** Out of the burning pit, if it falls in: up the steps along the pit's east wall, north or south, to the east bank. */
-const PIT_EXITS: ReadonlyArray<ReadonlyArray<readonly [number, number]>> = [
-  [[35, 47], [35, 38.6], [38.5, 38.6]],
-  [[35, 61], [35, 69.4], [38.5, 69.4]],
+/** Out of the fire, if it falls in: to the nearest stair out, and back onto the route at `wp`. */
+const FIRE_EXITS: ReadonlyArray<{ path: ReadonlyArray<readonly [number, number]>; wp: number }> = [
+  { path: [[35, 47], [35, 38.6], [38.5, 38.6]], wp: 8 },              // the pit, up the steps along its east wall, north half
+  { path: [[35, 61], [35, 69.4], [38.5, 69.4]], wp: 8 },              //   and south half
+  { path: [[65, 57], [65, 53]], wp: 12 },                             // the river, up its west end
+  { path: [[95, 57], [95, 53]], wp: 12 },                             //   and its east end
+  { path: [[57, 121], [49, 121], [45, 93]], wp: 16 },                 // the moat, up its south-west stair and round the hall
+  { path: [[85, 95], [93, 95], [80, 91]], wp: 16 },                   //   and its north-east stair
 ];
-/** The route's index of the east bank: where it picks up again after climbing out of the pit. */
-const EAST_BANK = 8;
 
 const SENS = .0022, SIGHT = 14, CONE = 70 * Math.PI / 180;
 
@@ -83,6 +92,8 @@ export class PrologueBot {
   detour: BotItem | null = null;
   /** Climbing out of the pit: the steps' waypoints left to walk. */
   escape: Array<readonly [number, number]> = [];
+  /** Where the route picks up again once out of the fire. */
+  rejoin = 0;
   falls = 0;
   log: string[] = [];
   lowest = 100;
@@ -165,16 +176,16 @@ export class PrologueBot {
         if (best) { this.detour = best; this.log.push(`f${frame}: detour for health at hp ${S.hp}`); }
       }
       if (this.detour && this.detour.taken) this.detour = null;
-      // fell into the pit (its floor is 0; the banks are 2.1): walk to the nearer stair out
+      // fell into the fire (its floor is 0; the banks are 2.1): walk to the nearest stair out
       if (player.pyy < 1.5 && !this.escape.length) {
-        const exit = PIT_EXITS.reduce((a, b) => Math.hypot(a[0][0] - player.px, a[0][1] - player.pz) < Math.hypot(b[0][0] - player.px, b[0][1] - player.pz) ? a : b);
-        this.escape = [...exit]; this.detour = null; this.falls++;
+        const exit = FIRE_EXITS.reduce((a, b) => Math.hypot(a.path[0][0] - player.px, a.path[0][1] - player.pz) < Math.hypot(b.path[0][0] - player.px, b.path[0][1] - player.pz) ? a : b);
+        this.escape = [...exit.path]; this.rejoin = exit.wp; this.detour = null; this.falls++;
         this.log.push(`f${frame}: fell into the pit at hp ${S.hp}`);
       }
       const [gx, gz] = this.escape.length ? this.escape[0] : this.detour ? [this.detour.x, this.detour.z] : ROUTE[Math.min(this.wp, ROUTE.length - 1)];
       const dx = gx - player.px, dz = gz - player.pz, d = Math.hypot(dx, dz);
       if (this.escape.length) {
-        if (d < .9) { this.escape.shift(); if (!this.escape.length) { this.wp = Math.max(this.wp, EAST_BANK); this.log.push(`f${frame}: climbed out of the pit at hp ${S.hp}`); } }
+        if (d < .9) { this.escape.shift(); if (!this.escape.length) { this.wp = Math.max(this.wp, this.rejoin); this.log.push(`f${frame}: climbed out of the pit at hp ${S.hp}`); } }
       } else if (!this.detour && d < .9 && this.wp < ROUTE.length - 1) { this.wp++; this.log.push(`f${frame}: reached ${ROUTE[this.wp - 1][2]} at hp ${S.hp}`); }
       const off = this.turnTo(Math.atan2(-dx, -dz), 0, out);
       this.key("KeyW", off < .5, out);

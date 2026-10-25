@@ -153,8 +153,22 @@ const ARMOUR_CELLS: Readonly<Record<string, ReadonlyArray<readonly [number, numb
   "LEVEL 4 — THE GRAVEYARD": [[30, 20], [4, 21], [20, 21]],
   "LEVEL 5 — THE SEWERS": [[6, 20], [30, 20], [20, 21]],
   "LEVEL 6 — THE FACTORY": [[26, 2], [6, 20], [19, 20], [30, 22]],
-  "LEVEL 7 — THE WOMB": [[26, 2], [6, 20], [26, 20], [20, 21]],
+  "LEVEL 8 — THE WOMB": [[26, 2], [6, 20], [26, 20], [20, 21]],
 };
+
+/**
+ * The sixth deliberate divergence, and the first level the reference never had: LEVEL 7, THE BONE CATHEDRAL (owner, 2026-10-20, "daha yeni
+ * bölüm eklenmesi"), between the factory and the womb (`src/world/levels/cathedral.ts`). The reference has eight levels and the port nine: the
+ * port's list with the cathedral taken out is the reference's, in order, but for the womb's number in its name (it was 7 and is 8).
+ */
+const NEW_LEVEL = "LEVEL 7 — THE BONE CATHEDRAL";
+/** A port level's name as the reference spells it: the womb moved from 7 to 8 when the cathedral went in. */
+const refName = (name: string): string => (name === "LEVEL 8 — THE WOMB" ? "LEVEL 7 — THE WOMB" : name);
+/** The levels the port added: the bone cathedral (index 7) and the Ash Bell Monastery (index 9, played second: levels/index.ts PLAY_ORDER). */
+const NEW_MONASTERY = "LEVEL 1 — THE ASH BELL MONASTERY";
+/** The hollow village (2026-10-21): the port's own as well, appended after the monastery. */
+const NEW_VILLAGE = "LEVEL 4 — THE HOLLOW VILLAGE";
+const PORTED = LEVELS.filter((d) => d.name !== NEW_LEVEL && d.name !== NEW_MONASTERY && d.name !== NEW_VILLAGE);
 
 /**
  * The third deliberate divergence, and the only whole-level one: the
@@ -197,6 +211,18 @@ const REBUILT_LEVEL_1 = "LEVEL 1 — THE GOTHIC DUNGEON";
  */
 const REBUILT_LEVEL_2 = "LEVEL 2 — THE ABANDONED CHURCH";
 
+/**
+ * The sixth deliberate divergence: the five lattice levels — THE NECROPOLIS, THE GRAVEYARD, THE SEWERS, THE FACTORY and THE WOMB — rebuilt on
+ * 2026-10-21 (owner: "bölümleri de geliştirelim. hala zayıf duruyorlar. cok gelişmeleri lazım"). Each was the reference's 33 x 25 lattice of
+ * seven-by-five rooms with its own names on it, 44 steps through (the womb 32), its key opening a side room; each is rebuilt with the
+ * level-design toolkit to the numbers a rebuilt level must meet (`src/world/structure/targets.ts`). Pinned in their place: the frozen
+ * reference's are still that lattice; the port's are other maps, on three floors, each with one red key and its gate, two secrets, its boss
+ * and its Guardian and Executioner, and no `A` or `V` (KNOWN-4, KNOWN-11; the factory's and the womb's `C` are Cacodemons, as they were).
+ */
+const REBUILT_LATTICE: Record<string, string> = {
+  "LEVEL 3 — THE NECROPOLIS": "Z", "LEVEL 4 — THE GRAVEYARD": "N", "LEVEL 5 — THE SEWERS": "H", "LEVEL 6 — THE FACTORY": "V", "LEVEL 8 — THE WOMB": "G",
+};
+
 /** Every cell where two grids disagree, as `x,z ref->ours` strings. */
 function gridDiff(ours: string[][], ref: string[][]): string[] {
   const out: string[] = [];
@@ -210,14 +236,33 @@ function gridDiff(ours: string[][], ref: string[][]): string[] {
 }
 
 describe("LEVELS vs. reference", () => {
-  it("declares the same eight levels, in order, with identical metadata", () => {
-    const meta = (defs: ReadonlyArray<{ build: unknown }>) =>
-      defs.map(({ build, ...rest }) => rest);
-    expect(meta(LEVELS)).toEqual(meta(refLevels));
+  it("declares the same eight levels, in order, with identical metadata, and the new bone cathedral before the womb", () => {
+    const meta = (defs: ReadonlyArray<{ build: unknown; name: string; exitStyle?: unknown; entranceStyle?: unknown }>) =>
+      defs.map(({ build, name, exitStyle, entranceStyle, ...rest }) => ({ name: refName(name), ...rest }));   // the well and the rope (2026-10-21) are the port's own
+    expect(meta(PORTED)).toEqual(meta(refLevels));
+    expect(LEVELS).toHaveLength(refLevels.length + 3);
+    expect(LEVELS.findIndex((d) => d.name === NEW_VILLAGE), "the village is appended after the monastery").toBe(10);
+    expect(LEVELS.findIndex((d) => d.name === NEW_MONASTERY), "the monastery is appended, so no other level moves").toBe(9);
+    expect(LEVELS.findIndex((d) => d.name === NEW_LEVEL), "the cathedral is level 7, between the factory and the womb").toBe(7);
   });
 
-  it.each(LEVELS.map((def, i) => [def.name, def, refLevels[i]] as const))(
-    "%s builds the reference grid, cell for cell, apart from the armour tiles of levels 3-7; the prologue and levels 1 and 2 are rebuilt and pinned instead",
+  it("the bone cathedral is the port's own: built with the toolkit, three floors, the Sovereign and the Guardian, a red key and its gate", () => {
+    const built = LEVELS[7].build();
+    const count = (g: string[][], ch: string): number => g.flat().filter((c) => c === ch).length;
+    expect([built.W, built.H]).toEqual([62, 46]);
+    const heights = new Set(built.hmap!.flat());
+    expect([...heights].filter((h) => [0, 1.2, 2.4].includes(h)).sort()).toEqual([0, 1.2, 2.4]);
+    expect(count(built.g, "Z"), "one Sovereign").toBe(1);
+    expect(count(built.g, "U"), "one Guardian").toBe(1);
+    expect(count(built.g, "K"), "one red key").toBe(1);
+    expect(count(built.g, "D"), "one locked gate").toBe(1);
+    expect(count(built.g, "S"), "two secrets").toBe(2);
+    for (const ch of ["A", "C", "V"]) expect(count(built.g, ch), `no ${ch} (KNOWN-4, KNOWN-11)`).toBe(0);
+    expect(built.zones).toBeUndefined();
+  });
+
+  it.each(PORTED.map((def, i) => [def.name, def, refLevels[i]] as const))(
+    "%s: the prologue and every level of the reference are rebuilt and pinned instead of compared cell for cell",
     (name, def, refDef) => {
       const built = def.build();
       const refBuilt = refDef.build();
@@ -275,6 +320,26 @@ describe("LEVELS vs. reference", () => {
         expect(built.segs).toBeUndefined();
         return;
       }
+      if (REBUILT_LATTICE[name]) {
+        const count = (g: string[][], ch: string): number => g.flat().filter((c) => c === ch).length, boss = REBUILT_LATTICE[name];
+        expect([refBuilt.W, refBuilt.H], `the frozen reference's ${name} is the lattice`).toEqual([33, 25]);
+        expect(gridDiff(built.g, refBuilt.g).length, "the port's is a different map").toBeGreaterThan(300);
+        const heights = new Set(built.hmap!.flat());
+        expect([...heights].filter((h) => [0, 1.2, 2.4].includes(h)).sort(), "three floors").toEqual([0, 1.2, 2.4]);
+        expect(count(built.g, "K"), "one red key").toBe(1);
+        expect(count(built.g, "D"), "and its gate").toBe(1);
+        expect(count(built.g, "S"), "two secrets").toBe(2);
+        expect(count(built.g, boss), `its boss, ${boss}`).toBe(1);
+        expect(count(built.g, "U"), "one Guardian").toBe(1);
+        expect(count(built.g, "E"), "one Executioner").toBe(1);
+        expect(count(built.g, "A"), "no Mancubus (KNOWN-11)").toBe(0);
+        if (boss !== "V") expect(count(built.g, "V"), "no Foreman but the factory's (KNOWN-4)").toBe(0);
+        else expect(count(built.g, "V"), "the factory's one Foreman").toBe(1);
+        for (const c of new Set(built.g.flat())) if (/[A-Za-z]/.test(c) && !"PKXDSWIilpTxOFv".includes(c) && !"hrabocdeu".includes(c) && !"0123456789".includes(c)) expect(ENEMY_DEFS[c], `${c} is an enemy`).toBeDefined();
+        if (name === "LEVEL 4 — THE GRAVEYARD") expect(built.zones?.themes.find((t) => t.sky), "the graveyard is under the sky (2026-10-22)").toBeDefined();
+        else expect(built.zones).toBeUndefined();
+        return;
+      }
       expect(built.zones, `${name} has no zones`).toBeUndefined();
       const armour = (ARMOUR_CELLS[name] ?? []).map(([x, z]) => `${x},${z} A->r`);
       const expected = [...armour].sort();
@@ -305,7 +370,9 @@ describe("WEAPON_STATS vs. reference", () => {
 
   it("matches every field except snd, slot for slot, in order", () => {
     const stripped = refWeapons.map(({ snd, ...rest }) => rest);
-    expect(WEAPON_STATS).toEqual(stripped);
+    // the owner's round, 2026-10-20: DYNAMITE is a ninth slot the reference never had, appended — the eight it had are untouched
+    expect(WEAPON_STATS.slice(0, stripped.length)).toEqual(stripped);
+    expect(WEAPON_STATS.map((w) => w.name).slice(stripped.length)).toEqual(["DYNAMITE", "STAKE GUN"]);   // and the STAKE GUN tenth, 2026-10-21
   });
 });
 
@@ -508,6 +575,9 @@ describe("SpriteBaker (texFromPx/buildSprites) vs. reference", () => {
           expect(ref, `${key}.${f} should be null to match ours`).toBeNull();
           continue;
         }
+        // DIVERGENCE (the roster redrawn, 2026-10-21): a rigged monster has a strike and two falling frames whether or not its
+        // legacy art drew them (the cultist's and the bosses' did not); the frames the reference has, it still agrees with.
+        if (ref == null && RIGS[key] && (f === "atk" || f === "die1" || f === "die2")) continue;
         expect(ref, `reference ${key}.${f} missing`).toBeDefined();
         expect(ours.magFilter, `${key}.${f} magFilter`).toBe(ref!.magFilter);
         expect(ours.minFilter, `${key}.${f} minFilter`).toBe(ref!.minFilter);
@@ -571,12 +641,15 @@ describe("ItemTextures (pickupTex/buildItemTex) vs. reference", () => {
     buildItemTex();
   });
 
-  it("produces the identical ITEMTEX key set as the reference", () => {
-    expect(Object.keys(ITEMTEX).sort()).toEqual(Object.keys(refModule.ITEMTEX).sort());
+  // KNOWN-20, closed 2026-10-20: the port draws the two pickups the reference named and never drew, nails and souls
+  const NEW_ITEMTEX = ["nails", "souls", "tnt"];   // + dynamite, 2026-10-20
+  it("produces the reference's ITEMTEX key set, and the two it lacked (nails, souls: KNOWN-20)", () => {
+    expect(Object.keys(ITEMTEX).filter((k) => !NEW_ITEMTEX.includes(k)).sort()).toEqual(Object.keys(refModule.ITEMTEX).sort());
+    for (const k of NEW_ITEMTEX) { expect(ITEMTEX[k], k).toBeDefined(); expect(refModule.ITEMTEX[k], `the reference never drew ${k}`).toBeUndefined(); }
   });
 
   it("keeps ITEMTEX.torch a two-frame array and every other entry a single texture, matching the reference", () => {
-    for (const key of Object.keys(ITEMTEX)) {
+    for (const key of Object.keys(ITEMTEX).filter((k) => !NEW_ITEMTEX.includes(k))) {
       const ours = ITEMTEX[key];
       const ref = refModule.ITEMTEX[key];
       expect(ref, `reference ITEMTEX.${key} missing`).toBeDefined();
@@ -592,7 +665,7 @@ describe("ItemTextures (pickupTex/buildItemTex) vs. reference", () => {
       expect(ours.magFilter, `${label} magFilter`).toBe(ref.magFilter);
       expect(ours.minFilter, `${label} minFilter`).toBe(ref.minFilter);
     };
-    for (const key of Object.keys(ITEMTEX)) {
+    for (const key of Object.keys(ITEMTEX).filter((k) => !NEW_ITEMTEX.includes(k))) {
       const ours = ITEMTEX[key];
       const ref = refModule.ITEMTEX[key];
       if (Array.isArray(ours) && Array.isArray(ref)) {
@@ -974,6 +1047,7 @@ describe("viewmodel kit (SKIN/SLEEVE/.../HOLY, VM, MUZ) vs. reference", () => {
   });
 
   it("matches MUZ, the per-weapon muzzle-flash alignment table, slot for slot", () => {
-    expect(Kit.MUZ).toEqual(ref.MUZ);
+    expect(Kit.MUZ.slice(0, ref.MUZ.length)).toEqual(ref.MUZ);   // slot 8 (DYNAMITE, 2026-10-20) is new and flashes nothing; slot 9 (the STAKE GUN, 2026-10-21) is new
+    expect(Kit.MUZ.slice(ref.MUZ.length)).toEqual([{ y: -80, r: 0 }, { y: -96, r: 1.2 }]);
   });
 });

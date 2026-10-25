@@ -7,7 +7,7 @@ import { installDomStubs, loadGameHtml } from "../support/domStubs";
 import { renderState } from "../../src/render/Renderer";
 import { world } from "../../src/world/WorldState";
 import { CELL, EYE, WALLH } from "../../src/world/Grid";
-import { solidAt } from "../../src/world/Collision";
+import { ceilHeightAtCell, solidAt } from "../../src/world/Collision";
 import { LEVELS } from "../../src/world/levels/index";
 import { SHADOW_POLICY } from "../../src/render/Shadows";
 import { BANDTEX } from "../../src/render/BandTextures";
@@ -121,8 +121,9 @@ describe("which doorways get an arch", () => {
     }
     expect(total, "the case is void without arches").toBeGreaterThan(50);
     expect(secrets, "the case is void without secret doors").toBeGreaterThan(3);
-    // (two of them were level 1's, a free-standing and a walled-in door, until that level was rebuilt with every door in a wall line)
-    expect(skipped, "a free-standing or walled-in door somewhere is meant to be skipped").toBeGreaterThanOrEqual(1);
+    // (two of them were level 1's, a free-standing and a walled-in door, until that level was rebuilt with every door in a wall line; the last
+    // was the old necropolis's, rebuilt on 2026-10-21: every level is now written with the toolkit, which refuses a door out of a wall line)
+    expect(skipped, "no door outside a wall line is left to skip").toBe(0);
   });
 });
 
@@ -137,22 +138,25 @@ describe("a closed door hides it", () => {
     for (let k = 0; k < m.count; k++) {
       const c = cellOf(m, k);
       const x0 = c.x * CELL, z0 = c.z * CELL;
+      // on the door cell's own floor, squeezed under a low ceiling (2026-10-21: the doors stand on their floors)
+      const fl = world.heightMap?.[c.z]?.[c.x] || 0, sy = Math.min(1, (ceilHeightAtCell(c.x, c.z) - fl) / WALLH);
       for (const t of worldTriangles(m, k)) for (const p of t.p) {
         verts++;
         const across = c.axis === "z" ? p.x - x0 : p.z - z0, along = c.axis === "z" ? p.z - z0 : p.x - x0;
         expect(across).toBeGreaterThanOrEqual(-1e-6); expect(across).toBeLessThanOrEqual(CELL + 1e-6);
-        expect(p.y).toBeGreaterThanOrEqual(A.ARCH_SPRING - 1e-6); expect(p.y).toBeLessThanOrEqual(WALLH + 1e-6);
+        expect(p.y).toBeGreaterThanOrEqual(fl + A.ARCH_SPRING * sy - 1e-5); expect(p.y).toBeLessThanOrEqual(fl + WALLH * sy + 1e-5);
         expect(Math.min(along, CELL - along), "inset from the door's passage faces").toBeGreaterThanOrEqual(.03);
       }
     }
     expect(verts).toBeGreaterThan(1000);
   });
 
-  it("stays where it is while the door sinks past it", () => {
+  it("stays where it is while the door opens under it", () => {
     loadLevel(2);
     const m = arches()!;
     const before = [...m.instanceMatrix.array];
-    for (const d of Object.values(world.doors)) { d.open = true; if (!d.secret) expect((d.mesh as THREE.Object3D).children).toEqual([]); }
+    // (since 2026-10-21 an arched door is two leaves under it, src/world/LevelDoors.ts, not a block sinking past it: its children are the leaves)
+    for (const d of Object.values(world.doors)) d.open = true;
     doorTick(0.5);
     expect([...m.instanceMatrix.array]).toEqual(before);
     expect(m.parent).toBe(renderState.scene);
@@ -203,7 +207,7 @@ describe("one scene child a level", () => {
 
   it("wears the level's trim band, flesh level included, and takes the wall's shadow rule", () => {
     expect(SHADOW_POLICY.doorArch).toEqual(SHADOW_POLICY.wall);
-    for (const [i, theme] of [[1, "dungeon"], [2, "church"], [7, "flesh"]] as const) {
+    for (const [i, theme] of [[1, "dungeon"], [2, "church"], [8, "flesh"]] as const) {
       loadLevel(i);
       const m = arches()!;
       expect((m.material as THREE.MeshLambertMaterial).map, `level ${i}`).toBe(BANDTEX[theme]);

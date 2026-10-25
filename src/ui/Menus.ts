@@ -1,6 +1,6 @@
 import { save } from "../save/SaveGame";
 import { flushSave } from "../save/persist";
-import { LEVELS } from "../world/levels/index";
+import { LEVELS, PLAY_ORDER } from "../world/levels/index";
 import { getMasterVolume, setMasterVolume } from "../audio/AudioEngine";
 import { uiHover, uiSelect } from "../audio/sounds/ui";
 import { RENDER_WIDTHS, sizeRender } from "../render/RenderCore";
@@ -113,11 +113,12 @@ export function initMenus(startGame: (idx: number) => void): void {
   el("mChapter").addEventListener("click",()=>{
     const list=el("chaplist");
     list.innerHTML="";
-    LEVELS.forEach((lv,i)=>{
-      const unlocked=i<=save.maxLevel;
+    PLAY_ORDER.forEach((i,pos)=>{   // in the order they are played (levels/index.ts); save.maxLevel counts places
+      const lv=LEVELS[i];
+      const unlocked=pos<=save.maxLevel;
       const row=document.createElement("div");
       const label=lv.name.replace(/^(LEVEL \d+|PROLOGUE)\s*—\s*/,"");
-      const tag=i===0?"PROLOGUE":"CH "+i;
+      const tag=pos===0?"PROLOGUE":"CH "+pos;
       row.className="mbtn"+(unlocked?"":" locked");
       row.textContent=unlocked?("[ "+tag+" · "+label+" ]"):("[ "+tag+" · LOCKED ]");
       if(unlocked)row.addEventListener("click",()=>startGame(i));

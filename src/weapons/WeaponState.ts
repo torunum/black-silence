@@ -1,3 +1,5 @@
+import { hands } from "../player/HandsState";
+import { TOUGHNESS } from "../enemies/EnemyDefs";
 import * as THREE from "three";
 // Side-effect import: this module builds three coloured viewmodel materials
 // at module scope, so THREE.ColorManagement has to be settled before its
@@ -5,7 +7,7 @@ import * as THREE from "three";
 import "../render/ColorPolicy";
 import { rnd } from "../utils/math";
 import { WEAPON_STATS } from "./definitions";
-import { weaponRuntime } from "./WeaponRuntime";
+import { kickShow, weaponRuntime } from "./WeaponRuntime";
 import { animCues } from "../core/AnimCues";
 import { WEAPON_FIRE_SOUNDS, kickSwing, kickImpact } from "../audio/sounds/weapons";
 import type { KickTarget } from "../audio/sounds/impacts";
@@ -24,7 +26,7 @@ import { game } from "../core/Game";
 import { player } from "../player/PlayerState";
 import { S } from "../core/State";
 import { world } from "../world/WorldState";
-import { input } from "../player/Input";
+import { input, keys } from "../player/Input";
 import { breakProp, explodeBarrel, type Prop } from "../world/Props";
 import { alertSound } from "../enemies/ai/Perception";
 import { damageEnemy } from "../enemies/Damage";
@@ -32,6 +34,8 @@ import { puntHeads } from "../enemies/Death";
 import { kickResolved, type KickMet } from "./KickFx";
 import { after } from "../core/Timers";
 import { hitscan } from "./Hitscan";
+import { throwDynamite } from "./Dynamite";
+import { fireStake } from "./Stake";
 import { schedule } from "../core/Time";
 import { track } from "../render/DisposeRegistry";
 import type { Enemy } from "../enemies/Enemy";
@@ -111,7 +115,7 @@ export function requestSwitch(i: number){
   weaponRuntime.pending=i;input.zoomOn=false;
   if(weaponRuntime.wstate!=="unequip"){weaponRuntime.wstate="unequip";weaponRuntime.wtime=0;weaponLower();}}
 export function startReload(){
-  if(!game.started||S.dead||game.inputLock)return;
+  if(!game.started||S.dead||game.inputLock||hands.busy)return;
   const w=WEAPONS[S.cur];
   if(weaponRuntime.wstate!=="idle"&&weaponRuntime.wstate!=="fire")return;
   if(S.mag[S.cur]>=w.magSize||S.ammo[w.ammo]<=0)return;
@@ -141,7 +145,7 @@ export function weaponTick(dt: number){
     // the reload's mechanism, heard as the animation reaches each part of it (./Foley.ts) — unless firing just cut it short
     if(rt>=1||!(input.firing&&S.mag[S.cur]>0))cross(RELOAD_CUES[S.cur],prevRt,rt);
     if(input.firing&&S.mag[S.cur]>0){weaponRuntime.wstate="idle";weaponRuntime.wtime=0;}}
-  if(input.firing&&(weaponRuntime.wstate==="idle"||weaponRuntime.wstate==="fire")&&weaponRuntime.wCool<=0&&!S.dead&&game.started&&!game.inputLock){
+  if(input.firing&&!hands.busy&&(weaponRuntime.wstate==="idle"||weaponRuntime.wstate==="fire")&&weaponRuntime.wCool<=0&&!S.dead&&game.started&&!game.inputLock){
     if(S.mag[S.cur]<=0){
       if(S.ammo[w.ammo]>0)startReload();
       else{dryFire();weaponRuntime.wCool=.3;animCues.dryFire++;}}        // dry click, not a beep (the cue is animation only, round 2 Task 4)
@@ -159,9 +163,16 @@ export function weaponTick(dt: number){
   /* kick cooldown */
   if(S.kickCd>0){S.kickCd-=dt;
     if(S.kickCd<=0){say("kickready");kickReady();}}
-  weaponRuntime.kickAnim=Math.max(0,weaponRuntime.kickAnim-dt);
+  weaponRuntime.kickAnim=Math.max(0,weaponRuntime.kickAnim-dt);if(weaponRuntime.kickAnim<=0)hands.drop=false;
   motorFoley(S.cur,weaponRuntime.wstate);}
 export function fire(w: typeof WEAPONS[number]){
+  if(w.kind==="tnt"){   // DYNAMITE: thrown, not fired — no flash, no smoke, no shot counted, and a throw is quiet (./Dynamite.ts)
+    S.mag[S.cur]--;weaponRuntime.wCool=w.rate;weaponRuntime.wstate="fire";weaponRuntime.wtime=0;
+    weaponRuntime.kickAmt=w.kick;weaponRuntime.kickRot=0;shake(w.trauma);
+    w.snd();
+    const dir=new THREE.Vector3();renderState.camera.getWorldDirection(dir);
+    throwDynamite(dir);
+    return;}
   S.mag[S.cur]--;weaponRuntime.wCool=w.rate;weaponRuntime.wstate="fire";weaponRuntime.wtime=0;
   S.shots++;
   weaponRuntime.kickAmt=w.kick;weaponRuntime.kickRot=(Math.random()-.5)*w.kick*.25;
@@ -173,7 +184,7 @@ export function fire(w: typeof WEAPONS[number]){
   w.snd();
   if(S.cur===2||S.cur===3)ejectCasing(0);
   if(S.cur===1)after(()=>{ejectCasing(2);shotgunPump();},300); // pump
-  weaponRuntime.recoilPitch+=(S.cur===1?.04:S.cur===4?.05:S.cur===0?.022:S.cur===5?.03:.006);
+  weaponRuntime.recoilPitch+=(S.cur===1?.04:S.cur===4?.05:S.cur===0?.022:S.cur===5?.03:S.cur===9?.04:.006);
   alertSound(player.px,player.pz,18);
   const dir=new THREE.Vector3();renderState.camera.getWorldDirection(dir);
   weaponRuntime.volleyHit=false;
@@ -182,6 +193,7 @@ export function fire(w: typeof WEAPONS[number]){
     d.x+=(Math.random()-.5)*w.spread*2;d.y+=(Math.random()-.5)*w.spread*2;d.z+=(Math.random()-.5)*w.spread*2;
     d.normalize();
     if(w.kind==="hit")hitscan(d,w.dmg,S.cur);
+    else if(w.kind==="stake")fireStake(d,w.dmg);   // a stake is a thing that flies, not a hitscan (./Stake.ts)
     else if(w.kind==="reap"){
       hitscan(d,w.dmg,S.cur);
       // green energy bolt + glow tracer
@@ -210,30 +222,47 @@ const reapCoreMat=new THREE.MeshBasicMaterial({color:0xaff060});
 const reapTailMat=new THREE.MeshBasicMaterial({color:0x4fa030,transparent:true,opacity:.7});
 
 /* ---------- POWER KICK ---------- */
+/**
+ * The running drop kick (owner, 2026-10-22: "koşarak tekme atınca drop kick atsın, sağlam uçsun düşmanlar"): a kick thrown while
+ * sprinting flat out launches the player off the ground boots first. The body flies on with the run (`DROP.launch`, a hop of
+ * `DROP.hop`), the kick reaches further and wider and lands twice on the way (once at the usual moment and once more mid-flight, for what
+ * the flight carries it into), and what it meets is sent flying — every monster but a boss, however heavy, flung clear off its feet.
+ */
+export const DROP = { launch: 15.5, hop: 4.6, reach: 3.4, cone: .42, dmg: 34, kb: 38, kbHeavy: 27, kbBoss: 9, stun: 1.5, second: .2, cd: 1.25 } as const;
+/** Sprinting fast enough for a kick to be a drop kick: the sprint key held and most of the sprint's speed already. */
+export const DROP_SPEED = 8;
+
 export function doKick(){
-  if(!game.started||S.dead||game.inputLock||S.kickCd>0||game.pianoOpen)return;
-  S.kickCd=KICK_CD;weaponRuntime.kickAnim=.32;
-  shake(.3);kickSwing();
-  schedule(()=>{
+  if(!game.started||S.dead||game.inputLock||S.kickCd>0||game.pianoOpen||hands.busy)return;
+  const running=player.grounded&&!!(keys.ShiftLeft||keys.ShiftRight)&&Math.hypot(player.vx,player.vz)>DROP_SPEED;
+  S.kickCd=running?DROP.cd:KICK_CD;weaponRuntime.kickAnim=.32;kickShow.met=false;hands.drop=running;
+  shake(running?.4:.3);kickSwing();
+  if(running){   // off the ground, boots first, along the facing
+    const f=new THREE.Vector3();renderState.camera.getWorldDirection(f);f.y=0;f.normalize();
+    player.vx=f.x*DROP.launch;player.vz=f.z*DROP.launch;player.vy=DROP.hop;player.grounded=false;}
+  const met=new Set<KickEnemy>();
+  const resolve=(second: boolean)=>{
     const dir=new THREE.Vector3();renderState.camera.getWorldDirection(dir);
     let hitAny=false,hitFoe=false;
+    const reach=running?DROP.reach:2.5,cone=running?DROP.cone:.55;
     const enemies: readonly KickEnemy[] = world.enemies;   // checked widening, not a cast
-    for(const e of enemies){if(e.dead)continue;
+    for(const e of enemies){if(e.dead||met.has(e))continue;
       const dx=e.x-player.px,dz=e.z-player.pz,d=Math.hypot(dx,dz);
-      if(d>2.5)continue;
+      if(d>reach)continue;
       const dot=(dx*dir.x+dz*dir.z)/d;
-      if(dot<.55)continue;
-      hitAny=true;hitFoe=true;
-      const kb=e.boss?3:16;
+      if(dot<cone)continue;
+      met.add(e);hitAny=true;hitFoe=true;
+      const kb=running?(e.boss?DROP.kbBoss:e.maxhp>200?DROP.kbHeavy:DROP.kb):(e.boss?4:21);   // (owner, 2026-10-21: a kick that sends them; it was 3 and 16)
       e.kx+=dx/d*kb;e.kz+=dz/d*kb;
-      e.stun=Math.max(e.stun,e.boss?.25:.9);
-      if(!e.boss&&e.maxhp<=60){e.flung=.9;e.flungT=0;}
-      blood(e.x,e.h*.6+(e.fy||0),e.z,4,2);
-      damageEnemy(e,15,{dir:{x:dx/d,z:dz/d},wIdx:-1});}
+      e.stun=Math.max(e.stun,e.boss?.25:running?DROP.stun:.9);
+      if(!e.boss&&(running||e.maxhp<=70*TOUGHNESS)){e.flung=running?1.25:.9;e.flungT=0;}
+      blood(e.x,e.h*.6+(e.fy||0),e.z,running?8:4,2);
+      damageEnemy(e,running?DROP.dmg:15,{dir:{x:dx/d,z:dz/d},wIdx:-1});}
+    if(second&&!hitFoe)return;   // the flight's second reach only reports what it meets
     let hitProp=false;
     for(const p of world.props as unknown as Prop[]){if(p.dead)continue;
       const dx=p.x-player.px,dz=p.z-player.pz,d=Math.hypot(dx,dz);
-      if(d>2.6)continue;
+      if(d>reach+.1)continue;
       const dot=(dx*dir.x+dz*dir.z)/Math.max(.001,d);
       if(dot<.5)continue;
       hitAny=true;hitProp=true;
@@ -242,11 +271,12 @@ export function doKick(){
     // Player feedback round 2 Task 5: what the boot met decides the sound — a monster, a prop or a wall,
     // or the air (which is the swing alone). The wall is only looked at, never changed; nothing else moved.
     kickImpact(kickTarget(hitFoe||hitHead,hitAny||hitHead,dir));
-    if(hitAny||hitHead){shake(.15);screenShake.hitStop=Math.max(screenShake.hitStop,.03);}
+    if(hitAny||hitHead){shake(running?.45:.28);screenShake.hitStop=Math.max(screenShake.hitStop,running?.07:.04);}
     // what the boot met, for the screen and the air (src/weapons/KickFx.ts): a body, a head, a prop, a wall, or nothing
-    const met:KickMet=hitFoe?"body":hitHead?"head":hitProp?"prop":kickTarget(false,false,dir)==="stone"?"wall":"air";
-    kickResolved(met,dir.x,dir.z,S.shots);
-  },0.110);}
+    const what:KickMet=hitFoe?"body":hitHead?"head":hitProp?"prop":kickTarget(false,false,dir)==="stone"?"wall":"air";
+    kickResolved(what,dir.x,dir.z,S.shots);};
+  schedule(()=>resolve(false),0.110);
+  if(running)schedule(()=>resolve(true),DROP.second);}
 /**
  * What a kick resolving now struck, for its sound (`kickImpact`): a monster
  * ("flesh") before a prop, a prop before a wall ("stone" either way), and

@@ -38,16 +38,18 @@ beforeAll(async () => {
   LEVELS.push(def("THE WELL", buildWell), def("THE CHARNEL STAIR", buildCharnel));
 });
 
-afterAll(() => { LEVELS.length = 8; });
+/** The game's own levels: the two of this file go after them (the hollow village, 2026-10-21, is the eleventh). */
+const N = LEVELS.length;
+afterAll(() => { LEVELS.length = N; });
 
-describe.each([[8, "the well", buildWell], [9, "the charnel stair", buildCharnel]] as const)("level %i, %s", (idx, _name, build) => {
+describe.each([[N, "the well", buildWell], [N + 1, "the charnel stair", buildCharnel]] as const)("level %i, %s", (idx, _name, build) => {
   it("loads, and the game makes what the plan placed", () => {
     const L = build(), s = analyse(L), d = measureLevel(L);
     loadLevel(idx);
     expect(world.enemies.length, "enemies").toBe(s.enemies);
     expect(world.enemies.length).toBe(d.enemies);
     expect(world.items.length, "pickups").toBe(d.pickupsTotal);
-    expect(world.props.length, "props").toBe(d.propsTotal);
+    expect((world.props as unknown as Array<{ soft?: boolean }>).filter((p) => !p.soft).length, "props (the breakable dressing aside: the decor list's)").toBe(d.propsTotal);
     expect(S.enemiesTotal).toBe(s.enemies);
     expect(world.GW).toBe(L.W);
     expect(world.GH).toBe(L.H);

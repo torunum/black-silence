@@ -1,4 +1,6 @@
+import { tryExecute } from "./Execution";
 import * as THREE from "three";
+import { isSwing, sunkY, swingAway, swingTick } from "../world/LevelDoors";
 import { rnd } from "../utils/math";
 import { ACHIEVEMENTS } from "../content/achievements";
 import { ach } from "../ui/Toasts";
@@ -22,6 +24,7 @@ import { requestSwitch, WEAPONS } from "../weapons/WeaponState";
 import { openPiano } from "../ui/Piano";
 import { animCues } from "../core/AnimCues";
 import { tryExit } from "../world/Transition";
+import { doorRule, gateOpens, scriptInteract, takeSeal } from "../world/script/ScriptRun";
 
 /**
  * Interaction and pickups — opening doors, the piano-proximity check,
@@ -50,6 +53,8 @@ import { tryExit } from "../world/Transition";
 interface Door {
   mesh: THREE.Object3D;
   open: boolean;
+  /** A sinking door's floor and height (src/world/LevelDoors.ts's `sinkingDoor`). */
+  y0?: number; h?: number;
   locked?: boolean;
   secret?: boolean;
   flesh?: boolean;
@@ -91,20 +96,25 @@ interface Candle {
   seed: number;
 }
 
-const WNAMES: Record<string, string> = {w1:"SAWED-OFF SHOTGUN",w2:"COMBAT RIFLE",w3:"TOMMY GUN",w4:"BMG SNIPER",w5:"HOLY CROSS LAUNCHER",w6:"NAIL CANNON",w7:"SOUL REAPER"};
+const WNAMES: Record<string, string> = {w1:"SAWED-OFF SHOTGUN",w2:"COMBAT RIFLE",w3:"TOMMY GUN",w4:"BMG SNIPER",w5:"HOLY CROSS LAUNCHER",w6:"NAIL CANNON",w7:"SOUL REAPER",w8:"DYNAMITE",w9:"STAKE GUN"};
 export function interact(){
   if(!game.started||game.inputLock)return;
   if(world.pianoPos&&Math.hypot(player.px-(world.pianoPos as unknown as PianoPos).x,player.pz-(world.pianoPos as unknown as PianoPos).z)<1.9){openPiano();return;}
+  if(tryExecute())return;   // a monster reeling at the last of its health, finished by hand (src/player/Execution.ts)
   if(tryExit())return;   // the exit door: E at it, facing it (src/world/Transition.ts)
+  if(scriptInteract())return;   // a level's lever or lift (src/world/script/ScriptRun.ts)
   const dir=new THREE.Vector3();renderState.camera.getWorldDirection(dir);
   for(let t=.4;t<2.6;t+=.2){
     const wx_=player.px+dir.x*t,wz_=player.pz+dir.z*t;
     const gx=wx_/CELL|0,gz=wz_/CELL|0,d=world.doors[gx+","+gz] as unknown as Door;
     if(d&&!d.open){
+      const rule=doorRule(gx,gz);   // a scripted door: a gate's seals, a barred side, a niche before the bell
+      if(rule.block){showMsg(rule.block,2.6);at(wx_,WALLH/2,wz_,()=>lockedDoor());return;}
       if(d.locked&&!S.key){showMsg("IT WANTS THE RED KEY",2.2);
         say("locked");at(wx_,WALLH/2,wz_,()=>lockedDoor());return;}
       d.open=true;
-      at(wx_,WALLH/2,wz_,()=>doorOpens(d.flesh?"flesh":d.secret?"secret":d.locked?"gate":"stone"));
+      if(isSwing(d))d.dir=swingAway(d,player.px,player.pz);   // the leaves swing away from whoever opens them
+      if(rule.gate)gateOpens(gx,gz);else at(wx_,WALLH/2,wz_,()=>doorOpens(d.flesh?"flesh":d.secret?"secret":d.locked?"gate":"stone"));
       alertSound(wx_,wz_,8);
       if(d.secret){S.secrets++;S.totSecrets++;say("secret",true);
         showMsg("SECRET FOUND — "+S.secrets+"/"+S.secretsTotal,3);
@@ -127,6 +137,9 @@ export function itemsTick(dt: number){
         case "crosses":S.ammo.crosses+=3;showMsg("+3 BLESSED CROSSES");break;
         case "nails":S.ammo.nails+=40;showMsg("+40 NAILS");break;
         case "souls":S.ammo.souls+=3;showMsg("+3 SOULS");break;
+        case "tnt":S.ammo.tnt+=3;showMsg("+3 DYNAMITE");break;
+        case "stakes":S.ammo.stakes+=6;showMsg("+6 STAKES");break;
+        case "seal_ash":case "seal_bell":takeSeal(it.kind);break;   // the monastery's two seals (src/world/script/)
         case "key":S.key=true;say("key",true);showMsg("RED KEY — IT IS WARM",3);break;
         default:{
           const wi=+it.kind[1];
@@ -134,7 +147,7 @@ export function itemsTick(dt: number){
           const w=WEAPONS[wi];
           const fill=Math.min(w.magSize,4);
           S.mag[wi]=Math.max(S.mag[wi],fill);
-          S.ammo[w.ammo]+=w.magSize;
+          S.ammo[w.ammo]+=w.magSize+(it.kind==="w9"?5:0);   // the stake gun comes with a bundle of six
           requestSwitch(wi);
           showMsg(WNAMES[it.kind]+" ACQUIRED",2.6);
           if(it.kind==="w1")say("w2",true);
@@ -146,7 +159,8 @@ export function itemsTick(dt: number){
   if(!S.weapons[3]&&S.totKills>=8){S.weapons[3]=true;S.mag[3]=36;
     showMsg("SCRAP SMG ASSEMBLED FROM THE DEAD",3);scrapSmgAssembled();animCues.pickup++;}}
 export function doorTick(dt: number){for(const k in world.doors){const d=world.doors[k] as unknown as Door;
-  if(d.open&&d.mesh.position.y>-WALLH/2+.1)d.mesh.position.y-=dt*2.6;}}
+  if(isSwing(d)){swingTick(d,dt);continue;}   // two leaves on their hinges (src/world/LevelDoors.ts)
+  if(d.open&&d.mesh.position.y>sunkY(d)+.1)d.mesh.position.y-=dt*2.6;}}   // into the floor it stands on
 export function propTick(dt: number){for(const p of world.props as unknown as Prop[]){
   if(p.dead||p.fuse!<0)continue;
   p.fuse!-=dt;if(p.fuse!<=0)explodeBarrel(p);}}

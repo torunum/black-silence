@@ -1,4 +1,5 @@
 import { game } from "./Game";
+import { scriptTick } from "../world/script/ScriptRun";
 import { time, tickScheduled } from "./Time";
 import { S } from "./State";
 import { screenShake } from "../fx/ShakeState";
@@ -22,6 +23,9 @@ import { tickMessage } from "../ui/HudMessages";
 import { partTick } from "../fx/Particles";
 import { fireTick } from "../fx/HellFire";
 import { lavaTick } from "../fx/Lava";
+import { waterTick } from "../fx/Water";
+import { executionTick } from "../player/Execution";
+import { hands } from "../player/HandsState";
 import { gibTick } from "../fx/Gibs";
 import { feelTick } from "../fx/HitFeel";
 import { goreTick } from "../fx/GoreFx";
@@ -36,6 +40,8 @@ import { updateListener } from "../audio/Listener";
 import { weaponRuntime } from "../weapons/WeaponRuntime";
 import { player } from "../player/PlayerState";
 import { hud } from "../ui/Hud";
+import { minimapTick } from "../ui/Minimap";
+import { pauseOpen } from "../ui/Pause";
 import { animCues } from "./AnimCues";
 
 /**
@@ -115,15 +121,15 @@ function loop(t: number){
   if(!game.started){return;}
   if(screenShake.hitStop>0){screenShake.hitStop-=dt;dt*=.08;}
   time.scaledDt=dt;
-  const paused=game.pianoOpen||overlayOpen()&&!game.pianoOpen;
+  const paused=game.pianoOpen||overlayOpen()&&!game.pianoOpen||pauseOpen();   // pauseOpen: Esc in play (src/ui/Pause.ts)
   let anyAware=false;
   if(!S.dead)transitionTick(dt);   // the walk through an exit door runs with the game stopped (S.won), the card with an overlay up
   if(!paused&&!S.dead&&!S.won){
     cineTick(dt);openingTick(dt);
-    playerTick(dt);zoneTick(dt);weaponTick(dt);
+    playerTick(dt);executionTick(dt);zoneTick(dt);weaponTick(dt);   // (executionTick: a finish by hand under way, and the prompt for one: src/player/Execution.ts)
     anyAware=enemyTick(dt)||false;
     projTick(dt);ringTick(dt);strikeTick(dt);poisonTick(dt);
-    itemsTick(dt);doorTick(dt);propTick(dt);
+    itemsTick(dt);doorTick(dt);scriptTick(dt);propTick(dt);
     eventTick(dt);ambience(dt);vitalsAudio(dt);
     chatterTick(dt,anyAware);
     musicTick(dt,anyAware);
@@ -131,7 +137,7 @@ function loop(t: number){
     tickScheduled(dt);}
   if(renderState.scene){
     updateListener();
-    partTick(dt);fireTick(dt);lavaTick(dt);gibTick(dt);poolTick(dt);headTick(dt);torchTick(dt,t);
+    partTick(dt);fireTick(dt);lavaTick(dt);waterTick(dt);gibTick(dt);poolTick(dt);headTick(dt);torchTick(dt,t);
     goreTick(dt);feelTick(time.dt);punchTick(dt);   // this frame's blows become one stop, punch, marker and sound (src/fx/HitFeel.ts); the punch ages with the game's clock, so it holds through a freeze
     const kick=kickShown.shown(weaponRuntime.kickAnim,S.dead||S.won,renderState.scene);
     fxTick(dt,t,weaponRuntime.zoomLerp,
@@ -139,11 +145,12 @@ function loop(t: number){
       (fdt,ft)=>drawViewmodel(fdt,ft,{
         started:game.started,dead:S.dead,pianoOpen:game.pianoOpen,zoomLerp:weaponRuntime.zoomLerp,cur:S.cur,vx:player.vx,vz:player.vz,vy:player.vy,grounded:player.grounded,yaw:input.yaw,
         sprintKey:!!(keys.ShiftLeft||keys.ShiftRight),bobT:player.bobT,wstate:weaponRuntime.wstate,wtime:weaponRuntime.wtime,
-        equipT:EQUIP_T,unequipT:UNEQUIP_T,kickAmt:weaponRuntime.kickAmt,kickRot:weaponRuntime.kickRot,kickAnim:kick,swayX:input.swayX,swayY:input.swayY,muzzle:weaponRuntime.muzzle,
-        cueHurt:animCues.hurt,cueHurtAmt:animCues.hurtAmt,cuePickup:animCues.pickup,cueDryFire:animCues.dryFire,cueInput:animCues.input,paused,hidden:openingHidesWeapon()||transitionHidesHands(),
+        equipT:EQUIP_T,unequipT:UNEQUIP_T,kickAmt:weaponRuntime.kickAmt,kickRot:weaponRuntime.kickRot,kickAnim:kick,swayX:input.swayX,swayY:input.swayY,muzzle:weaponRuntime.muzzle,empty:S.mag[S.cur]<=0,
+        cueHurt:animCues.hurt,cueHurtAmt:animCues.hurtAmt,cuePickup:animCues.pickup,cueDryFire:animCues.dryFire,cueInput:animCues.input,paused,hidden:openingHidesWeapon()||transitionHidesHands(),drop:hands.drop,exec:hands.exec,
       },WEAPONS));
     hud();
-    withKickLean(renderState.camera,kick,()=>withViewPunch(renderState.camera,()=>renderState.renderer.render(renderState.scene,renderState.camera)));}}
+    minimapTick(dt,t,game.started&&!S.dead&&!S.won&&!paused&&!openingHidesWeapon());   // the corner map and the automap (src/ui/Minimap.ts)
+    withKickLean(renderState.camera,kick,()=>withViewPunch(renderState.camera,()=>renderState.renderer.render(renderState.scene,renderState.camera)),hands.drop);}}
 
 /** Kicks off the frame loop. Called once, from `main.ts`, at boot. */
 export function startLoop(): void { requestAnimationFrame(loop); }

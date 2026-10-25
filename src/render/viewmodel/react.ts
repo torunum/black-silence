@@ -33,14 +33,18 @@ export interface CueInput {
 /** Rig terms to add to the pose. `fidget` (0..1, the fidget's weight) is for tests. */
 export interface Reaction { x: number; y: number; pitch: number; yaw: number; roll: number; fidget: number }
 
+/**
+ * Doom/Blood (owner, 2026-10-20: the weapons "stood crooked"): none of the reactions turns or cants the gun any more — a flinch drops
+ * it, a dry click jerks it, a pickup nods it, a fidget dips and settles it. Their yaw and roll terms are kept, at 0, so the shape stays.
+ */
 /** Seconds without input before the hands fidget; how long one lasts; how fast input cancels it. */
 export const FIDGET_AFTER = 6, FIDGET_LEN = 1.8, FIDGET_CANCEL = 0.1;
 /** The flinch: rise time and duration, seconds; full-strength rig offsets (roll signed by side). */
-export const FLINCH = { tau: 0.045, len: 0.45, x: 0.012, y: -0.022, pitch: -0.17, roll: 0.22 };
+export const FLINCH = { tau: 0.045, len: 0.45, x: 0, y: -0.022, pitch: -0.17, roll: 0 };
 /** The dry-fire squeeze (a jerk) and the cant to look at the empty weapon, and how long the cant holds after the last click. */
-export const DRY = { jerk: -0.08, tau: 0.03, roll: -0.34, yaw: -0.12, y: -0.012, hold: 0.35, ease: 0.1 };
+export const DRY = { jerk: -0.08, tau: 0.03, roll: 0, yaw: 0, y: -0.012, hold: 0.35, ease: 0.1 };
 /** The pickup nod: duration and full offsets. */
-export const NOD = { len: 0.4, pitch: -0.24, y: -0.028, roll: 0.1 };
+export const NOD = { len: 0.4, pitch: -0.24, y: -0.028, roll: 0 };
 
 const smooth = (u: number): number => { const v = u < 0 ? 0 : u > 1 ? 1 : u; return v * v * (3 - 2 * v); };
 /** A jolt: rises to 1 at `tau`, decays after, shaped by t·e^(1-t/tau); faded to exactly 0 by `len`. */
@@ -59,11 +63,11 @@ function fidgetPose(n: number, t: number): Omit<Reaction, "fidget"> {
   if (n % 2 === 1) {
     // inspect: turned over onto its left side and in toward the eye, a small settle half-way, and back
     const k = hump(t, FIDGET_LEN, 0.4), w = Math.sin(t * 5.2) * 0.06 * k;
-    return { x: -0.014 * k, y: -0.012 * k, pitch: -0.1 * k, yaw: -0.3 * k, roll: -0.58 * k + w };
+    return { x: 0, y: -0.012 * k + w * 0.1, pitch: -0.1 * k, yaw: 0, roll: 0 };
   }
   // re-grip: dipped, rocked in the hand twice, and settled back
   const k = hump(t, FIDGET_LEN * 0.8, 0.25);
-  return { x: 0, y: -0.02 * k, pitch: -0.07 * k, yaw: 0.06 * k, roll: 0.26 * Math.sin(t * 7) * k };
+  return { x: 0, y: -0.02 * k, pitch: -0.07 * k + 0.03 * Math.sin(t * 7) * k, yaw: 0, roll: 0 };
 }
 
 export class Reactions {

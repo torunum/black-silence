@@ -35,7 +35,7 @@ afterAll(() => { clearAllTimers(); clearScheduled(); });
 describe("level 1's torches, items and props stand on the floor under them", () => {
   it("asks for it: the level carries `lift`, and a hand-written level with a height map does not", () => {
     expect(LEVELS[1].build().lift).toBe(true);
-    expect(LEVELS[3].build().lift).toBeUndefined();
+    expect(LEVELS[0].build().lift).toBeUndefined();   // the prologue: hand-written, with a height map, and its own placing
   });
 
   it("lifts every torch (its light, flame and post), item and prop by its floor, on all three tiers", () => {
@@ -54,7 +54,10 @@ describe("level 1's torches, items and props stand on the floor under them", () 
     for (const p of (renderState.scene.children as THREE.Object3D[]).filter((c) => c.name === "torchPost")) expect(p.position.y).toBeCloseTo(.575 + floorHeightAt(p.position.x, p.position.z), 6);
     for (const it of items) expect(it.y0, `item at ${it.x / 2 | 0},${it.z / 2 | 0}`).toBeCloseTo(.5 + floorHeightAt(it.x, it.z), 6);
     expect(items.some((it) => floorHeightAt(it.x, it.z) >= 2.4), "items on the upper tier").toBe(true);
-    for (const p of props) expect(p.m.position.y).toBeGreaterThanOrEqual(floorHeightAt(p.x, p.z));
+    for (const p of props) {
+      if ((p as { soft?: boolean }).soft) { expect(new THREE.Box3().setFromObject(p.m).min.y + .02).toBeGreaterThanOrEqual(floorHeightAt(p.x, p.z)); continue; }
+      expect(p.m.position.y).toBeGreaterThanOrEqual(floorHeightAt(p.x, p.z));
+    }
   });
 });
 

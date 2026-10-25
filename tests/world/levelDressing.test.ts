@@ -303,20 +303,15 @@ describe("the pickups and props that moved, and the ones that did not", () => {
     expect(glyphs(g, "5")).toEqual(["53,2"]);
     expect(glyphs(g, "6")).toEqual(["15,20"]);
     expect(glyphs(g, "4")).toEqual(["49,8"]);
-    expect(measureLevel(built(2)).pickupsTotal).toBe(73);
+    expect(glyphs(g, "d")).toEqual(["30,8"]);   // DYNAMITE (2026-10-20), in the north chapel, and a box of bundles in the nave
+    expect(glyphs(g, "e")).toEqual(["31,22"]);
+    expect(measureLevel(built(2)).pickupsTotal).toBe(75);
   });
 
-  it("levels 3 and 4 keep every pickup where the reference put them: they were already spread through their rooms", () => {
-    // recorded from commit 64b4e8d's grids: glyph@x,z in the loader's scan order (level 2 was rebuilt: deeper-levels plan, Task 4)
-    const ref: Record<number, string> = {
-      3: "o@28,3 h@15,5 a@18,5 h@26,5 K@31,11 h@7,13 b@31,16 a@23,19 a@6,20 c@26,20 r@30,20 r@4,21 r@20,21 c@28,21 b@12,22 o@26,22 b@4,23 h@28,23",
-      4: "o@28,3 h@15,5 a@18,5 h@26,5 K@31,11 h@7,13 b@31,16 a@23,19 a@6,20 9@26,20 r@30,20 r@4,21 r@20,21 7@28,21 b@12,22 9@26,22 b@4,23 h@28,23",
-    };
-    for (const i of [3, 4]) {
-      const L = built(i), out: string[] = [];
-      for (let z = 0; z < L.H; z++) for (let x = 0; x < L.W; x++) if (classifyGlyph(L.g[z][x]) === "pickup") out.push(`${L.g[z][x]}@${x},${z}`);
-      expect(out.join(" "), `level ${i}`).toBe(ref[i]);
-    }
+  it("levels 3 and 4, rebuilt (2026-10-21), keep the red key where their key hunt needs it: up in the ossuary church, up in the gravekeeper's loft", () => {
+    // (they kept the reference's pickups to the cell until they were rebuilt; `structureLevels.test.ts` holds each to its key hunt's numbers)
+    expect(glyphs(built(3).g, "K")).toEqual(["37,6"]);
+    expect(glyphs(built(4).g, "K")).toEqual(["35,28"]);
   });
 });
 

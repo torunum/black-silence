@@ -114,6 +114,12 @@ A trim never pushes one sound on its own past -1.5 dBFS peak, or above +18 dB: t
 | `reaperPluck` | foley | -5.6 | -26 | -26.0 | -7.5 | -0.0 | — | -5.6 |
 | `reaperCharge` | foley | -11.6 | -26 | -26.0 | -15.7 | -0.0 | — | -11.6 |
 | `reaperClawsClose` | foley | -9.1 | -26 | -26.0 | -7.9 | -0.0 | — | -9.1 |
+| `dynamiteThrow` | foley | 0 | -26 | — (not yet measured, 2026-10-20) | — | — | — | 0 |
+| `fuseLit` | foley | 0 | -26 | — (not yet measured, 2026-10-20) | — | — | — | 0 |
+| `stakeGunFire` | weapon | -6 | -14 | — (not yet measured, 2026-10-21) | — | — | — | -6 |
+| `stakeSeat` | foley | 0 | -26 | — (not yet measured, 2026-10-21) | — | — | — | 0 |
+| `stakeCock` | foley | 0 | -26 | — (not yet measured, 2026-10-21) | — | — | — | 0 |
+| `stakeThunk` | foley | 0 | -26 | — (not yet measured, 2026-10-21) | — | — | — | 0 |
 | `barrelExplosion` | explosion | -18.6 | -19 | -19.0 | -12.0 | +0.0 | — | -18.6 |
 | `holyCrossExplosion` | explosion | -17.8 | -19 | -19.0 | -11.6 | -0.0 | — | -17.8 |
 | `afritDeathExplosion` | explosion | -18.1 | -19 | -19.0 | -12.1 | +0.0 | — | -18.1 |
@@ -168,6 +174,8 @@ A trim never pushes one sound on its own past -1.5 dBFS peak, or above +18 dB: t
 | `hitKill` | explosion | -13.8 | -19 | -19.0 | -6.5 | +0.0 | — | -13.8 |
 | `bulletRicochet` | impact | -5 | -23 | -23.0 | -10.2 | -0.0 | — | -5 |
 | `propBreaks` | impact | -16.8 | -23 | -23.0 | -8.4 | +0.0 | — | -16.8 |
+| `glassShatters` | impact | -8 | -23 | — (not yet measured, 2026-10-21) | — | — | — | -8 |
+| `potteryBreaks` | impact | -12 | -23 | — (not yet measured, 2026-10-21) | — | — | — | -12 |
 | `playerHurt` | impact | 4.4 | -23 | -23.0 | -8.0 | -0.0 | — | 4.4 |
 | `footstepStone` | footstep | -12.1 | -29 | -29.0 | -10.1 | +0.0 | — | -12.1 |
 | `footstepMarble` | footstep | -10.9 | -29 | -29.0 | -8.6 | +0.0 | — | -10.9 |

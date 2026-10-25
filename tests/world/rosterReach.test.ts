@@ -309,9 +309,9 @@ const UNREACHABLE: Record<string, string> = {
   // six glyphs, carries no such comment — level 7 is the only exception).
   // It converts anyway, because `docs/direction.md` cuts Mancubus from the
   // roster for IP reasons regardless of any one tile's authorial intent, and
-  // its two signature behaviours (`twin`, `orb`) are KNOWN-15 fields that
-  // never reach a spawned enemy, so what actually left the game is a 260 hp
-  // melee sponge. The def is **kept** rather than deleted, the same call
+  // its two signature behaviours (`twin`, `orb`) were KNOWN-15 fields that
+  // never reached a spawned enemy (delivered since 2026-10-21), so what left
+  // the game then was a 260 hp melee sponge. The def is **kept** rather than deleted, the same call
   // KNOWN-18 made for `B`/`q`: deleting an `ENEMY_DEFS` row is a
   // roster-composition decision that belongs to the project owner. This
   // entry is what fails if a tile drifts back to `A`.
@@ -387,6 +387,9 @@ const PROP_CHARS = new Set(["x", "T", "C", "F", "V", "O", "v"]); // LevelLoader.
 const ITEM_CHARS = new Set([
   "h", "A", "r", "a", "b", "o", "c", "K", // LevelLoader.ts:341 map2
   "2", "3", "4", "5", "6", "7", "8", "9", "0", // LevelLoader.ts:342 map2
+  "d", "e", // map2: dynamite and its bundles (2026-10-20)
+  "u", "1", // map2: the stake gun and its stakes (2026-10-21)
+  "J", "M", // map2: the monastery's Ash Seal and Bell Seal (2026-10-20)
 ]);
 const ENEMY_CHARS = new Set(Object.keys(ENEMY_DEFS));
 

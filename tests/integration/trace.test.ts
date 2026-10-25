@@ -680,6 +680,23 @@ const WRITE = process.env.WRITE_TRACE === "1";
  * through fire/reload cycles and the FX firing produces (muzzle flashes,
  * casings, impact decals) — it does not exercise shot resolution: the sweep
  * never finds the two enemies that come up behind it (12 shots, 0 hits).
+ *
+ * ## The owner's round, 2026-10-21 — regeneration: the doors are remade, and the levels run into each other (digest only, 90 of 90 frames)
+ *
+ * A plain or locked door under an arch is two leaves on hinges now (`src/world/LevelDoors.ts`), not a cell-sized box, and the arch stands
+ * on its cell's own floor; the prologue's exit is the ladder up into the monastery and the dungeon's entrance the monastery's great gate
+ * (`src/world/HatchKit.ts`, `GateKit.ts`). Against the previous fixture: `camera`, `hud` and `scene.count` **identical in every sampled
+ * frame**; `scene.digest` differs in all 90 — the doors' children are hashed with every frame. Nothing moved.
+ *
+ * ## The owner's round, 2026-10-21 (night) — regeneration: the boss-like enemies are rigs, the ten enemy fields reach the enemy, shots pass pillars, the kick (90 of 90 frames)
+ *
+ * The same four changes `combatTrace.test.ts`'s header records for level 1 (the rigs, KNOWN-15, `shotSolidAt`, the kick). Against the previous
+ * fixture, field by field over every sampled frame: `scene.digest` differs in 64, `scene.count` in 27, `hud.hp` in 25, `camera` in 8.
+ *
+ * ## The owner's round, 2026-10-22 — regeneration: the particles are round (digest only, 90 of 90 frames)
+ *
+ * The particles' one `PointsMaterial` carries a soft disc texture and is transparent (`src/fx/Particles.ts`). Against the previous fixture:
+ * `camera`, `hud` and `scene.count` **identical in every sampled frame**; `scene.digest` differs in all 90 — the material is hashed.
  */
 const FIGHT_START = 260;
 

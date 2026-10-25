@@ -38,7 +38,7 @@ const EXIT_OPENING_BOSSES = ["Q", "Z", "N", "H", "V"];
 const FINALE_BOSS = "G";
 
 it("builds every declared level", () => {
-  expect(built).toHaveLength(8);
+  expect(built).toHaveLength(11);   // the reference's eight, the bone cathedral and the Ash Bell Monastery (both 2026-10-20), the hollow village (2026-10-21)
 });
 
 describe.each(built)("$name", ({ grid }) => {
@@ -198,7 +198,10 @@ it("pins how many ambiguous tiles each level grid contains (KNOWN-4)", () => {
     // and is meant to be an enemy. This is why the fix is in level 2's grid
     // and not in the dispatch.
     "LEVEL 6 — THE FACTORY": { C: 3, V: 1 },
-    "LEVEL 7 — THE WOMB": { C: 2, V: 0 },
+    "LEVEL 7 — THE BONE CATHEDRAL": { C: 0, V: 0 },
+    "LEVEL 8 — THE WOMB": { C: 3, V: 0 },   // rebuilt (2026-10-21): its three Cacodemons are meant, as its two were
+    "LEVEL 1 — THE ASH BELL MONASTERY": { C: 0, V: 0 },
+    "LEVEL 4 — THE HOLLOW VILLAGE": { C: 0, V: 0 },
   });
 });
 
@@ -223,7 +226,10 @@ it("level 2's pews are props, not enemies, and `v` is claimed by no enemy def (K
     "LEVEL 4 — THE GRAVEYARD": 0,
     "LEVEL 5 — THE SEWERS": 0,
     "LEVEL 6 — THE FACTORY": 0,
-    "LEVEL 7 — THE WOMB": 0,
+    "LEVEL 7 — THE BONE CATHEDRAL": 6,   // new: two rows of pews down the nave
+    "LEVEL 8 — THE WOMB": 0,
+    "LEVEL 1 — THE ASH BELL MONASTERY": 0,
+    "LEVEL 4 — THE HOLLOW VILLAGE": 0,
   });
 });
 
@@ -271,13 +277,16 @@ it("every armour tile the authors wrote reaches the item table (KNOWN-11)", () =
     "PROLOGUE — OUT OF THE PIT": 0,          // the prologue authors none
     "LEVEL 1 — THE GOTHIC DUNGEON": 5,       // rebuilt: the closet, the hall's stair, the armoury, the ward, and the warders' hoard behind a secret door
     "LEVEL 2 — THE ABANDONED CHURCH": 5,     // rebuilt: the nave's west end, the reliquary behind its secret door, the sacristy, the chancel and the crypt
-    "LEVEL 3 — THE NECROPOLIS": 3,
-    "LEVEL 4 — THE GRAVEYARD": 3,
-    "LEVEL 5 — THE SEWERS": 3,
-    "LEVEL 6 — THE FACTORY": 4,
-    "LEVEL 7 — THE WOMB": 4,
+    "LEVEL 3 — THE NECROPOLIS": 6,          // rebuilt (2026-10-21), as are 4, 5, 6 and 8: armour in their arenas, their wings, their secrets and their boss rooms
+    "LEVEL 4 — THE GRAVEYARD": 7,
+    "LEVEL 5 — THE SEWERS": 6,
+    "LEVEL 6 — THE FACTORY": 7,
+    "LEVEL 7 — THE BONE CATHEDRAL": 10,     // new (2026-10-20): the nave, the triforium, both secrets, both vaults, the charnel vault and the sanctuary
+    "LEVEL 8 — THE WOMB": 8,
+    "LEVEL 1 — THE ASH BELL MONASTERY": 7,     // new (2026-10-20): the crypt's niche, the sealed tomb, the drawer room, the embalming room, the reading room, the rampart's hoard and the rite chapel
+    "LEVEL 4 — THE HOLLOW VILLAGE": 6,         // new (2026-10-21): the inn's gallery, the wine cellar, the miller's hoard, the hidden coffin, the hayloft and the graveyard
   });
-  expect(Object.values(counts).reduce((a, b) => a + b, 0)).toBe(27);   // the reference's twenty, and levels 1 and 2 (rebuilt) have five and five where they had one and two
+  expect(Object.values(counts).reduce((a, b) => a + b, 0)).toBe(67);   // the five lattice levels rebuilt (2026-10-21) have 34 where they had 17; before that: the reference's twenty, levels 1 and 2 (rebuilt) have five and five where they had one and two, the cathedral ten, the monastery seven, the village six
 });
 
 /**
@@ -306,7 +315,10 @@ it("no level contains an exit-opening boss other than its own (KNOWN-4)", () => 
     "LEVEL 4 — THE GRAVEYARD": ["N"],
     "LEVEL 5 — THE SEWERS": ["H"],
     "LEVEL 6 — THE FACTORY": ["V"],
-    "LEVEL 7 — THE WOMB": [],
+    "LEVEL 7 — THE BONE CATHEDRAL": ["Z"],   // the Sovereign again, on its own throne
+    "LEVEL 8 — THE WOMB": [],
+    "LEVEL 1 — THE ASH BELL MONASTERY": ["N"],   // the Gravedigger, under the courtyard: his death opens the great gate out
+    "LEVEL 4 — THE HOLLOW VILLAGE": [],   // new (2026-10-21): no boss; the cemetery gate out stands open
   });
 });
 

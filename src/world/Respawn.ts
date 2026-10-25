@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { isSwing, poseLevelDoor, sunkY } from "./LevelDoors";
 import { S } from "../core/State";
 import { game } from "../core/Game";
 import { input } from "../player/Input";
@@ -10,11 +11,11 @@ import { ITEMTEX } from "../render/ItemTextures";
 import { showMsg } from "../ui/HudMessages";
 import { el } from "../ui/dom";
 import { weaponRaise } from "../audio/sounds/foley";
-import { WALLH } from "./Grid";
 import { world } from "./WorldState";
-import { LEVELS } from "./levels/index";
+import { titleOf } from "./levels/index";
 import { loadLevel } from "./LevelLoader";
 import { applyInventory, igniteMark } from "./Checkpoints";
+import { scriptReplay } from "./script/ScriptRun";
 import { checkpoint as CP, RISE_MIN_HP, type Facts, type Snapshot } from "./CheckpointState";
 
 /**
@@ -76,7 +77,8 @@ function replay(f: Facts): void {
   for (const k of f.opened) {
     const d = world.doors[k] as unknown as Rec | undefined;
     if (!d) continue;
-    d.open = true; d.mesh!.position.y = -WALLH / 2;   // all the way down, as `doorTick` leaves one
+    if (isSwing(d)) { d.open = true; d.k = 1; poseLevelDoor(d); continue; }   // its leaves swung right back (src/world/LevelDoors.ts)
+    d.open = true; d.mesh!.position.y = sunkY(d as { y0?: number; h?: number });   // all the way down, as `doorTick` leaves one
   }
   for (const i of f.broken) {
     const p = world.props[i] as unknown as Rec | undefined;
@@ -110,6 +112,7 @@ export function riseAgain(): boolean {
   Object.assign(S, snap.tallies);
   S.deaths = deaths; S.levelT0 = t0 + away;
   replay(snap.facts);
+  scriptReplay();   // the seals and the bell the facts imply (src/world/script/)
   snap.lit.forEach((i) => { const m = CP.marks[i]; if (m && !m.lit) igniteMark(m, i); });
   settle();
   showMsg("YOU RISE AGAIN", 2.6);
@@ -125,6 +128,6 @@ export function restartLevel(): boolean {
   if (entry) applyInventory(entry);
   S.deaths = deaths;
   settle();
-  showMsg(LEVELS[S.level].name, 3);
+  showMsg(titleOf(S.level), 3);
   return true;
 }

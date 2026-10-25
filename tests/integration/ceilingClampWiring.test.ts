@@ -6,7 +6,6 @@ import * as THREE from "three";
 import { installDomStubs, loadGameHtml } from "../support/domStubs";
 import { projectiles } from "../../src/fx/Projectiles";
 import { renderState } from "../../src/render/Renderer";
-import { player } from "../../src/player/PlayerState";
 import { WALLH } from "../../src/world/Grid";
 import { ceilHeightAt, solidAt } from "../../src/world/Collision";
 
@@ -33,8 +32,10 @@ import { ceilHeightAt, solidAt } from "../../src/world/Collision";
 let loadLevel: (idx: number) => void;
 let projTick: (dt: number) => void;
 
-/** A crown cell of level 3's vault: grid (15,11), authored ceiling 8.6, floor 0. */
-const VAULT_X = 31, VAULT_Z = 23;
+/** A cell of level 3's plaza of the dead (the rebuilt necropolis, 2026-10-21): grid (44,30), authored ceiling 8, floor 0. */
+const VAULT_X = 89, VAULT_Z = 61;
+/** A cell of level 5's passage from the drain to the overflow (the rebuilt sewers): grid (34,38), floor 0, the default ceiling. */
+const LOW_X = 69, LOW_Z = 77;
 /** Above WALLH, well below the vault — the exact band the old constant got wrong. */
 const HIGH_Y = 6.0;
 
@@ -99,11 +100,11 @@ describe("projTick clamps flight to the local ceiling, not to WALLH", () => {
     expect(projectiles.nails.length).toBe(1);
   });
 
-  it("but the same cross at the same height dies on a level with no ceiling map", () => {
+  it("but the same cross at the same height dies under a ceiling at the default height", () => {
     loadLevel(5);
-    expect(ceilHeightAt(player.px, player.pz)).toBe(WALLH); // level 5 never opted in (levels 1 and 2 did, when they were rebuilt: their tiers have ceilings of their own)
+    expect(ceilHeightAt(LOW_X, LOW_Z)).toBe(WALLH); // a passage at floor 0 keeps the default (every level has a ceiling map since the rebuilds of 2026-10-21; its own cells say where)
     projectiles.nails.length = 0;
-    pushNail(player.px, HIGH_Y, player.pz, false);
+    pushNail(LOW_X, HIGH_Y, LOW_Z, false);
     projTick(0.001);
     // The control that makes the two cases above mean something: if the
     // clamp were simply removed rather than made local, they would pass and
@@ -114,7 +115,7 @@ describe("projTick clamps flight to the local ceiling, not to WALLH", () => {
   it("and a reaper tracer at the same height dies there too", () => {
     loadLevel(5);
     projectiles.nails.length = 0;
-    pushNail(player.px, HIGH_Y, player.pz, true);
+    pushNail(LOW_X, HIGH_Y, LOW_Z, true);
     projTick(0.001);
     expect(projectiles.nails.length).toBe(0);
   });

@@ -130,6 +130,8 @@ describe("buildItemTex behavioral parity with reference", () => {
     const moduleCalls = recordCanvasCalls(3, () => moduleBuildItemTex());
 
     expect(referenceCalls.length).toBeGreaterThan(50);
-    expectCallLogEqual(moduleCalls, referenceCalls, "buildItemTex call log");
+    // the port draws everything the reference draws, in its order, and then the two it never drew (nails, souls: KNOWN-20, closed 2026-10-20)
+    expectCallLogEqual(moduleCalls.slice(0, referenceCalls.length), referenceCalls, "buildItemTex call log");
+    expect(moduleCalls.length, "the nails and souls icons, after").toBeGreaterThan(referenceCalls.length);
   });
 });

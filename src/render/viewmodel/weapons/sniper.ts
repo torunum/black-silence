@@ -33,7 +33,8 @@ function bolt(b: Builder, lift: number, back: number): void {
 
 export const bmgSniper: WeaponArt = {
   name: "BMG SNIPER",
-  hold: { x: 0.13, y: -0.125, z: 0.32, pitch: -0.03, yaw: -0.2, roll: 0.04 },
+  hold: { x: 0.019, y: -0.1233, z: 0.32, pitch: 0.15, yaw: 0, roll: 0 },  // a little right of centre, square to the screen, looking ahead (owner, 2026-10-20: option 3, "biraz daha dik")
+  present: { y: 0.06, pitch: 0.2, roll: 0.6 },   // the reload brought up into view (pose.ts)
   kick: { back: 0.09, lift: 0.06 },
   action: (p) => p,
   draw(b: Builder, pose: Pose) {

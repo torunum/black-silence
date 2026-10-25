@@ -2,7 +2,7 @@
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { installDomStubs, loadGameHtml } from "../support/domStubs";
 import type * as PlayerModule from "../../src/player/Player";
-import { stride, STRIDE_Y } from "../../src/render/viewmodel/motion";
+import { stride, STRIDE_X, STRIDE_Y } from "../../src/render/viewmodel/motion";
 
 /**
  * Pins `player.bobT`'s per-frame rate constants (`WALK_BOB_RATE`,
@@ -93,9 +93,10 @@ beforeEach(() => { steps.length = 0; });
 const cadence = (spd: number, rate: number) => spd * rate * 4 / (2 * Math.PI);
 
 describe("player.bobT rate (footstep cadence, camera bob and the weapon's stride)", () => {
-  it("pins WALK_BOB_RATE/SPRINT_BOB_RATE at their round-2 values (2026-09-28)", () => {
+  it("pins WALK_BOB_RATE/SPRINT_BOB_RATE at their round-2 values (2026-09-28), and the speeds at 7 and 10.5", () => {
     expect(Player.WALK_BOB_RATE).toBe(0.45);
     expect(Player.SPRINT_BOB_RATE).toBe(0.45);
+    expect([Player.WALK_SPEED, Player.SPRINT_SPEED]).toEqual([7, 10.5]);
   });
 
   it("gives about two steps a second walking and three sprinting — and the old 1.6 gave seven and eleven", () => {
@@ -157,14 +158,14 @@ describe("the cadence through the real playerTick", () => {
     expect(run.perSec / stroll.perSec).toBeLessThan(1.65);
   });
 
-  it("every real footstep lands at the bottom of the weapon's stride, alternately right and left", () => {
+  it("every real footstep lands at the bottom of the weapon's stride, in the middle of Doom's U", () => {
     for (const sprint of [false, true]) {
       const { found } = walk(sprint, 4);
       expect(found.length).toBeGreaterThanOrEqual(7);
       // bobT*4 moves spd*DT*rate*4 rad a frame, so the footstep frame is at most that past the bottom
       const slack = (1 - Math.cos((sprint ? 10.5 : 7) * DT * Player.WALK_BOB_RATE * 4)) / 2 * STRIDE_Y;
       for (const s of found) expect(stride(s.bobT, 1).y).toBeGreaterThanOrEqual(STRIDE_Y - slack - 1e-9);
-      for (let i = 1; i < found.length; i++) expect(Math.sign(stride(found[i].bobT, 1).x)).toBe(-Math.sign(stride(found[i - 1].bobT, 1).x));
+      for (const s of found) expect(Math.abs(stride(s.bobT, 1).x)).toBeLessThan(STRIDE_X * 0.25);
     }
   });
 });

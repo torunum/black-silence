@@ -121,12 +121,25 @@ function recoil(t: number): number {
   return 0.016 * Math.exp(-u * 32) * Math.abs(Math.sin(u * 64));
 }
 
-/** The leg for elapsed time `t` (seconds since the kick), or null when no kick is running. */
-export function legPose(t: number): LegPose | null {
+/**
+ * The running drop kick's legs (owner, 2026-10-22: "koşarak tekme atınca drop kick atsın"): both of them, thrown up and out straight
+ * from the hips, boots together, soles to the target, higher and further than the standing kick's one leg. The right is the leading leg;
+ * the left comes a hand's breadth behind and to the side of it.
+ */
+const DROP_STRUCK = { thigh: 0.3, knee: 0.0, ankle: 0.25, hz: 0.12 };
+
+/** The leg for elapsed time `t` (seconds since the kick), or null when no kick is running. `drop`: the drop kick's legs, `left` its left one. */
+export function legPose(t: number, drop = false, left = false): LegPose | null {
   if (t < 0 || t >= KICK_ANIM) return null;
   const r = raised(t), e = extension(t), c = coil(t);
+  if (drop) {
+    const S = DROP_STRUCK, el = left ? Math.max(0, e - 0.08) : e, s = left ? -1 : 1;
+    const k = (key: "thigh" | "knee" | "ankle" | "hz"): number => lerp(lerp(HANG[key], CHAMBER[key], r) + COIL[key] * c * 0.6, S[key], el);
+    return { hx: left ? -0.12 : 0.1, hy: -0.4, hz: k("hz"), yaw: s * (-0.12 - 0.04 * el), thigh: k("thigh") - (left ? 0.06 : 0), knee: k("knee"), ankle: k("ankle"),
+      twist: s * (0.1 - 0.1 * el), turn: s * (-0.1 - 0.25 * el) };
+  }
   const k = (key: "thigh" | "knee" | "ankle" | "hz"): number => lerp(lerp(HANG[key], CHAMBER[key], r) + COIL[key] * c, STRUCK[key], e);
-  return { hx: 0.075, hy: -0.33, hz: k("hz") - recoil(t), yaw: -0.2 - 0.06 * e, thigh: k("thigh"), knee: k("knee"), ankle: k("ankle"), twist: 0.3 - 0.1 * e, turn: -0.3 - 0.65 * e };
+  return { hx: 0.075, hy: -0.33, hz: k("hz") - recoil(t), yaw: -0.2 - 0.06 * e, thigh: k("thigh"), knee: k("knee"), ankle: k("ankle"), twist: 0.3 - 0.1 * e, turn: -0.3 - 0.8 * e };   // turned further as it strikes: the sole and the heel's iron to the eye
 }
 
 /** The weapon swung out of the way: 0 at the aim, 1 fully aside. Out during the wind-up, back over the recovery. */
@@ -137,7 +150,7 @@ export function aside(t: number): number {
   return 1 - smooth(span(t, 0.2, KICK_ANIM));
 }
 /** The weapon's rig offsets at full `aside`: down and out to the right, rolled onto its side, muzzle dropped. */
-export const ASIDE = { x: 0.045, y: -0.038, pitch: -0.22, yaw: 0.22, roll: 0.6 };
+export const ASIDE = { x: 0, y: -0.06, pitch: -0.22, yaw: 0, roll: 0 };   // straight down out of the leg's way, never twisted (owner, 2026-10-20)
 
 /**
  * The view leaning into the kick, 0..1: it builds through the strike, peaks
@@ -150,7 +163,10 @@ export function leanAmount(t: number): number {
   return 1 - smooth(span(t, KICK_HOLD, KICK_ANIM));
 }
 /** The lean at full strength: the head dips forward and down (pitch, radians; drop and forward push, metres) and the body cants a little. */
-export const LEAN = { pitch: -0.08, roll: -0.04, drop: 0.05, fwd: 0.11 };   // (impact plan, Task 2: was -.05, -.03, .03, .07)
+export const LEAN_STAND = { pitch: -0.11, roll: -0.05, drop: 0.06, fwd: 0.16 };
+/** The drop kick's: the body thrown back behind the boots (the head goes up, not down), canted hard, and carried far on. */
+export const LEAN = LEAN_STAND;
+export const DROP_LEAN = { pitch: 0.09, roll: -0.13, drop: -0.08, fwd: 0.34 };   // (impact plan, Task 2: was -.05, -.03, .03, .07; owner, 2026-10-21: -.08, -.04, .05, .11 — the body behind the boot)
 
 /** The slice of a three.js camera withKickLean touches. */
 export interface LeanCamera {
@@ -174,8 +190,8 @@ export interface LeanCamera {
  * camera after each frame — sees exactly the camera it would have without
  * the kick.
  */
-export function withKickLean(cam: LeanCamera, kickAnim: number, render: () => void): void {
-  const k = leanAmount(kickElapsed(kickAnim));
+export function withKickLean(cam: LeanCamera, kickAnim: number, render: () => void, drop = false): void {
+  const k = leanAmount(kickElapsed(kickAnim)), LEAN = drop ? DROP_LEAN : LEAN_STAND;
   if (k <= 0) { render(); return; }
   const { x: px, y: py, z: pz } = cam.position, { x: rx, z: rz } = cam.rotation, yaw = cam.rotation.y;
   // forward along the facing, as Player.ts moves (-sin yaw, -cos yaw)
@@ -228,52 +244,69 @@ export class KickShown {
 
 const L_THIGH = 0.27, L_SHIN = 0.3;
 
-/** Heavy canvas: a faint twill so the big dark trouser shapes are not flat slabs. */
-const twill = (x: number, y: number, z: number): number =>
-  ((Math.floor((x + z) * 90) + Math.floor((y - z) * 90)) & 3) === 0 ? -0.6 : 0;
 
-/** The boot is drawn this much larger than life: at the distance the kick lands it has to read at 320x200. */
-const BK = 1.3;
-/** Laces up the instep and a polished toe cap, in the boot's own space (z toward the toe, y up from the sole), before BK. */
-const bootTex = (x: number, y: number, z: number): number => {
+/** The boot is drawn this much larger than life: at the distance the kick lands it has to read at 320x200 (owner, 2026-10-21: "gerçekten sağlam bir tekme" — it was 1.3, a boot you could miss). */
+const BK = 1.75;
+const k = (n: number): number => n * BK;
+/** Leather: creases where the boot flexes over the instep and the ankle, and a polished toe. In the boot's frame, before BK. */
+const leatherTex = (x: number, y: number, z: number): number => {
   x /= BK; y /= BK; z /= BK;
-  if (z > 0.135) return 0.9;                                               // toe cap, polished
-  if (y > 0.022 && z > -0.03 && z < 0.11 && Math.abs(x) < 0.024) {        // the lacing: three crossings
-    const u = ((z + 0.03) % 0.047) / 0.047;
-    return Math.abs(Math.abs(x) / 0.024 - Math.abs(u - 0.5) * 2) < 0.28 ? 1.6 : -1.1;
+  if (Math.abs(z - 0.112) < 0.0035) return -2;                                   // the toe cap's seam
+  if (z > 0.115) return 0.9;                                                     // the toe cap, polished
+  if (y > -0.012 && z > -0.012 && z < 0.1) {                                     // the instep: the tongue, laced over
+    const u = ((z + 0.012) % 0.028) / 0.028;
+    if (Math.abs(x) < 0.022 && Math.abs(Math.abs(x) / 0.022 - Math.abs(u - 0.5) * 2) < 0.2) return 1.8;   // the lace, crossing
+    if (Math.abs(Math.abs(x) - 0.026) < 0.004 && u < 0.35) return 2.2;                                       // an eyelet
+    if (Math.abs(x) < 0.024) return -1.2;                                                                     // the tongue, in shadow
   }
+  if (z > 0.02 && z < 0.1 && Math.abs(Math.sin(z * 260 + x * 40)) < 0.12) return -1.1;   // creases across the instep
   return 0;
 };
-/** A welt stitch along the sole's top edge, and hobnails. */
+/** The laces up the front of the shaft: three crossings, the eyelets either side. */
+const laceTex = (x: number, y: number, z: number): number => {
+  x /= BK; y /= BK; z /= BK;
+  if (z < 0.03) return 0;
+  const u = ((y + 0.03) % 0.034) / 0.034;
+  if (Math.abs(Math.abs(x) / 0.026 - Math.abs(u - 0.5) * 2) < 0.22 && Math.abs(x) < 0.026) return 1.7;   // the lace
+  return Math.abs(Math.abs(x) - 0.03) < 0.005 && u < 0.3 ? 2.2 : 0;                                       // an eyelet
+};
+/** The sole's edge: the welt's stitching along its top, hobnails underneath. */
 const soleTex = (x: number, y: number, z: number): number => {
   x /= BK; y /= BK; z /= BK;
-  if (y > -0.053) return 1.2;
-  return Math.abs(Math.abs(x) - 0.038) < 0.006 && Math.floor(z / 0.03) % 2 === 0 ? 2.5 : 0;
+  if (y > -0.069) return (Math.floor(z * 160) & 1) ? 1.4 : 0.4;
+  return Math.abs(Math.abs(x) - 0.036) < 0.007 && Math.floor(z / 0.028) % 2 === 0 ? 2.5 : 0;
 };
-const k = (n: number): number => n * BK;
+/** Heavy canvas trousers: the weave and the folds that run round a bent leg. */
+const foldTex = (x: number, y: number, z: number): number =>
+  (((Math.floor((x + z) * 90) + Math.floor((y - z) * 90)) & 3) === 0 ? -0.6 : 0) + (Math.sin(z * 34 + Math.atan2(y, x) * 2) > 0.86 ? -1.2 : 0);
 
 /**
- * The boot, ankle at the origin: z toward the toe, y up the shin, x across.
- * A leather upper and toe cap in side profile, a shaft round the ankle, a
- * welted sole, a stacked heel shod with an iron plate.
+ * The boot, ankle at the origin: z toward the toe, y up the shin, x across. Remodelled (owner, 2026-10-22: "bacaklar da öyle olsun"):
+ * a rounded heel, instep and toe box (`Builder.ell`), lit round; a laced shaft up over the trouser with two iron-buckled straps; a welted
+ * sole with its stitching and hobnails, springing up at the toe; a stacked heel shod with iron.
  */
 function boot(b: Builder): void {
-  // the upper, heel counter to the ball of the foot, the instep sloping down
-  b.ext([[-0.058, -0.05], [-0.063, 0.02], [-0.045, 0.052], [0.02, 0.05], [0.1, 0.03], [0.13, 0.024], [0.13, -0.05]]
-    .map(([z, y]) => [k(z), k(y)] as [number, number]), k(-0.05), k(0.05), MAT.BOOT, { tex: bootTex });
-  // the toe box: a rounded section narrowing to the tip
-  const toe: Array<[number, number]> = [[-0.05, -0.05], [0.05, -0.05], [0.05, 0.004], [0.036, 0.022], [-0.036, 0.022], [-0.05, 0.004]];
-  b.push(); b.translate(0, 0, k(0.128));
-  b.prz(toe.map(([x, y]) => [k(x), k(y)] as [number, number]), 0, k(0.088), MAT.BOOT, { r1: 0.72, tex: (x, y, z) => bootTex(x, y, z + k(0.128)) });
+  // the shaft up the shin, laced up its front, the trouser tucked into it; its two straps. One surface with the foot below it.
+  const up = b.part();
+  b.push(); b.pitch(-Math.PI / 2);
+  b.cyl(0, 0, k(-0.03), k(0.12), k(0.054), k(0.062), 12, MAT.BOOT, { tex: (x, y, z) => laceTex(x, -z, -y), part: up });
+  for (const [z0, z1] of [[0.045, 0.062], [0.088, 0.104]] as const) {
+    b.cyl(0, 0, k(z0), k(z1), k(0.064), k(0.065), 12, MAT.BLACK);
+    b.cbox(k(0.05), k(-0.011), k(z0 - 0.002), k(0.07), k(0.011), k(z1 + 0.002), k(0.003), MAT.IRON);
+  }
   b.pop();
-  // the shaft round the ankle, running up into the trouser
-  b.push(); b.pitch(-Math.PI / 2); b.cyl(0, k(-0.008), k(-0.03), k(0.11), k(0.058), k(0.062), 8, MAT.BOOT); b.pop();
-  // welted sole, wider and longer than the upper, springing up a little at the toe
-  const sole: Array<[number, number]> = [[-0.057, -0.07], [0.057, -0.07], [0.057, -0.048], [-0.057, -0.048]];
-  b.prz(sole.map(([x, y]) => [k(x), k(y)] as [number, number]), k(-0.068), k(0.226), MAT.BLACK, { r1: 0.8, tex: soleTex });
-  // stacked heel and its iron plate
-  b.box(k(-0.052), k(-0.1), k(-0.068), k(0.052), k(-0.07), k(0.016), MAT.BOOT);
-  b.box(k(-0.052), k(-0.108), k(-0.068), k(0.052), k(-0.1), k(0.016), MAT.IRON);
+  // the foot: one long rounded last from heel to toe, the heel and the toe box swelling out of it — a single leather surface
+  b.ell(0, k(-0.036), k(0.06), k(0.05), k(0.042), k(0.135), MAT.BOOT, 12, { tex: leatherTex, part: up });
+  b.ell(0, k(-0.04), k(-0.026), k(0.05), k(0.044), k(0.044), MAT.BOOT, 10, { tex: leatherTex, part: up });
+  b.ell(0, k(-0.046), k(0.15), k(0.049), k(0.03), k(0.06), MAT.BOOT, 10, { tex: leatherTex, part: up });
+  // the welted sole, wider and longer than the upper, and its spring at the toe
+  b.cbox(k(-0.058), k(-0.082), k(-0.068), k(0.058), k(-0.064), k(0.16), k(0.008), MAT.BLACK, { tex: soleTex });
+  b.push(); b.translate(0, k(-0.073), k(0.16)); b.pitch(0.3);
+  b.cbox(k(-0.052), k(-0.009), 0, k(0.052), k(0.009), k(0.055), k(0.008), MAT.BLACK, { tex: soleTex });
+  b.pop();
+  // the stacked heel and its iron plate
+  b.cbox(k(-0.052), k(-0.11), k(-0.07), k(0.052), k(-0.078), k(0.012), k(0.006), MAT.BOOT);
+  b.box(k(-0.05), k(-0.117), k(-0.068), k(0.05), k(-0.108), k(0.01), MAT.IRON);
 }
 
 /**
@@ -287,12 +320,12 @@ export function drawLeg(b: Builder, lp: LegPose): void {
   b.yaw(lp.yaw);
   b.pitch(lp.thigh);
   b.roll(lp.twist);
-  b.cyl(0, 0, -0.25, L_THIGH, 0.1, 0.074, 8, MAT.TROUSER, { tex: twill });          // thigh
+  b.cyl(0, 0, -0.25, L_THIGH, 0.118, 0.087, 12, MAT.TROUSER, { tex: foldTex });     // thigh
   b.translate(0, 0, L_THIGH);
-  b.ball(0, 0, 0, 0.072, MAT.TROUSER, 8);                                            // knee
+  b.ell(0, 0.006, 0, 0.088, 0.09, 0.084, MAT.TROUSER, 10, { tex: foldTex });          // knee
   b.pitch(-lp.knee);
-  b.cyl(0, 0, 0, L_SHIN - 0.07, 0.07, 0.06, 8, MAT.TROUSER, { tex: twill });         // shin
-  b.cyl(0, 0, L_SHIN - 0.1, L_SHIN - 0.065, 0.068, 0.066, 8, MAT.TROUSER);           // the trouser's hem over the boot
+  b.cyl(0, 0, 0, L_SHIN - 0.07, 0.081, 0.069, 12, MAT.TROUSER, { tex: foldTex });     // shin
+  b.cyl(0, 0, L_SHIN - 0.1, L_SHIN - 0.05, 0.077, 0.074, 12, MAT.TROUSER, { tex: foldTex });   // bunched where it goes into the boot
   b.translate(0, 0, L_SHIN);
   // the foot, square to the shin: its toe along the shin's "up", its sole facing down the shin;
   // then turned about its own length so the outside of the boot — sole, heel — shows to the eye

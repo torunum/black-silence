@@ -16,6 +16,7 @@ import { crawlFactor } from "./Sever";
 import { renderState } from "../render/Renderer";
 import { startHitReact } from "./HitReact";
 import type { Enemy } from "./Enemy";
+import { tryStagger } from "./Stagger";
 
 /**
  * Enemy damage — hit resolution, dismemberment and the sprite/knockback
@@ -159,6 +160,7 @@ export function damageEnemy(enemy: unknown, dmg: number, info?: DamageInfo) {
       e.sever.legs=true;severLimb(e,"legs",info);}
     refreshSeverSprite(e);}
   if(e.hp<=0)killEnemy(e,dmg,info);
+  else tryStagger(e as unknown as Enemy);   // at the last of its health it may reel, open to being finished by hand (src/enemies/Stagger.ts)
   // one report per body hit; src/fx/HitFeel.ts folds a volley's into a single stop, punch, marker and sound
   registerHit({wIdx:info.wIdx,explosive:info.explosive,head:info.head,kill:e.hp<=0,gib:e.hp<=0&&!!e.gone,side:sideOf(player.px,player.pz,e.x,e.z,yaw)});}
 

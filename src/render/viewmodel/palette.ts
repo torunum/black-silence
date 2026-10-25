@@ -33,7 +33,7 @@ export const MAT = {
   NONE: 0, OUT: 1, IRON: 2, BLUED: 3, BRASS: 4, WOOD: 5, GLOVE: 6, COAT: 7,
   CUFF: 8, ORANGE: 9, RED: 10, GOLD: 11, BONE: 12, SOUL: 13, LENS: 14,
   COPPER: 15, BLACK: 16, FLAME: 17, SILVER: 18, SKIN: 19, DEADSOUL: 20,
-  TROUSER: 21, BOOT: 22,
+  TROUSER: 21, BOOT: 22, EMBER: 23,
 } as const;
 export type MatId = typeof MAT[keyof typeof MAT];
 
@@ -60,7 +60,9 @@ export const MATERIALS: Record<number, Material> = {
   [MAT.DEADSOUL]: { ramp: ["#0c100c", "#162016", "#223022", "#2f4230", "#3e563f"], amb: .3, spec: .5 },
   // the kicking leg (Task 3): heavy dark-brown canvas trousers, and an oiled black-brown leather boot
   [MAT.TROUSER]: { ramp: ["#100e0c", "#1a1714", "#25211c", "#322c25", "#413930", "#52483c"], amb: .24 },
-  [MAT.BOOT]:   { ramp: ["#0a0706", "#120c08", "#1b130d", "#271b12", "#35251a", "#473224", "#5e4431"], amb: .18, spec: .45, rim: true },
+  // a coal's red glow, not a flame's white (2026-10-22: the flare pistol's slits and its skull's eyes)
+  [MAT.EMBER]:  { ramp: ["#3a0602", "#6a0c04", "#a01806", "#d0300a", "#f05414"], emissive: true },
+  [MAT.BOOT]:   { ramp: ["#0c0806", "#160f0a", "#22170f", "#302116", "#422d1e", "#583c28", "#735036", "#8e6646"], amb: .22, spec: .5, rim: true },   // a shade lighter (2026-10-21): the boot has to read against a dark corridor
 };
 
 /**
@@ -75,6 +77,11 @@ export interface Palette {
   lut: Uint8Array;
   /** Materials that take a rim of light, by id. */
   rim: boolean[];
+  /**
+   * Round things (a barrel, a drum, a knuckle) are lit pixel by pixel from their own curved surface, not face by face (`builder.ts`):
+   * the weapons' palette, since the viewmodel went to twice the resolution (2026-10-21). The monsters' rigs keep their facets.
+   */
+  smooth?: boolean;
 }
 
 export function makePalette(materials: Record<number, Material>): Palette {
@@ -95,7 +102,7 @@ export function makePalette(materials: Record<number, Material>): Palette {
 }
 
 /** The viewmodel's palette: every weapon, glove and sleeve. */
-export const VIEW_PALETTE: Palette = makePalette(MATERIALS);
+export const VIEW_PALETTE: Palette = { ...makePalette(MATERIALS), smooth: true };
 
 /** Tones in a material's ramp. */
 export function toneCount(mat: number, pal: Palette = VIEW_PALETTE): number {

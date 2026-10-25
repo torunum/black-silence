@@ -180,3 +180,32 @@ export function reaperCharge(): void {
 }
 /** Reload: the bone claws closing on the new core — three dry clacks. */
 export function reaperClawsClose(): void { lv("reaperClawsClose", () => { play([...[0, 0.018, 0.031].flatMap((t) => clack(t, [1400, 2200], 0.03, 0.35)), thud(0, 180, 0.05, 0.3)]); }); }
+/** Dynamite's reload: the lighter's flint struck, and the fuse catching — a spitting, crackling hiss. */
+export function fuseLit(): void {
+  lv("fuseLit", () => {
+    play([
+      ...clack(0, [4200, 6100], 0.02, 0.25),
+      { at: 0.02, noise: "white", filters: [{ type: "highpass", f: 2400 }, { type: "bandpass", f: 5200, q: 0.9 }], am: { rate: 41, depth: 0.55, type: "square", to: 27, over: 0.6 }, env: { a: 0.03, h: 0.25, d: 0.4 }, level: 0.5 },
+    ]);
+  });
+}
+/** The stake gun's reload, first half: a fresh stake laid in the iron trough — wood knocking on iron, and seated. */
+export function stakeSeat(): void { lv("stakeSeat", () => { play([...clack(0, [620, 1150], 0.05, 0.3), thud(0.004, 170, 0.06, 0.45), slide(0.03, 900, 500, 0.08, 0.2, 1.4)]); }); }
+/** The stake gun's reload, second half: the pneumatic lever pumped back — a ratchet, and the air drawn in. */
+export function stakeCock(): void {
+  lv("stakeCock", () => {
+    play([
+      rattle(0, 2600, 46, 0.1, 0.3), ...clack(0.11, [1500, 2350, 3500], 0.06, 0.4), thud(0.11, 210, 0.05, 0.35),
+      { at: 0.02, noise: "white", filters: [{ type: "bandpass", f: 1800, q: 0.8, to: 900, over: 0.12 }], env: { a: 0.02, h: 0.04, d: 0.08 }, level: 0.25 },
+    ]);
+  });
+}
+/** A stake driven into stone or timber, where it strikes: a hard, deep knock and the shaft quivering. */
+export function stakeThunk(): void {
+  lv("stakeThunk", () => {
+    play([
+      thud(0, 120, 0.12, 0.8), ...clack(0, [480, 830], 0.06, 0.5),
+      { at: 0.01, tone: "triangle", f: 190, am: { rate: 34, depth: 0.45, type: "sine", to: 18, over: 0.3 }, env: { a: 0.004, h: 0.02, d: 0.3 }, level: 0.22 },
+    ]);
+  });
+}

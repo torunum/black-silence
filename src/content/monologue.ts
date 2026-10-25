@@ -129,13 +129,43 @@ export const MONOLOGUE: Record<string, string[]> = {
  * badly (C or D) — picked by the grade, never by dice, so the same run shows
  * the same line. A separate export from `MONOLOGUE` on purpose:
  * `tests/fidelity.test.ts` holds that table's key set equal to the frozen
- * reference's. The womb (7) has none; its end is the win screen.
+ * reference's. The womb (8) has none; its end is the win screen.
  */
+/**
+ * The port's own lines (2026-10-21), beside the reference's: the arrival lines of the levels it added — the bone cathedral, the Ash
+ * Bell Monastery, the hollow village — and the village's places. Kept apart from `MONOLOGUE`, which stays the reference's line for line
+ * (`tests/fidelity.test.ts`); `say` reads both (`LINES`).
+ */
+export const PORT_LINES: Record<string, string[]> = {
+ lvl_cathedral:["A cathedral built out of people. Somebody had a vision. Somebody needs help.",
+   "Bones for bricks, skulls for the windows. The acoustics must be to die for."],
+ lvl_monastery:["Up out of hell and into somebody's family crypt. It's an improvement. Barely.",
+   "A monastery. Bells, vows, silence. I can respect one of those three."],
+ lvl_village:["A village. Open sky, not one light in a window. That's not quiet, that's waiting.",
+   "Fresh air at last. It smells of dead corn and something that used to be the neighbours."],
+ vil_field:["Corn higher than my head. Something in it is breathing. Several somethings.",
+   "A cornfield at night. Every film I ever walked out of started like this."],
+ vil_barn:["A barn. Hay, hooks, and a smell like a butcher's Sunday.",
+   "Somebody's been hanging things in here. Not coats."],
+ vil_grave:["The town gate opens on the graveyard. Every town's does, in the end.",
+   "More graves. This whole country is one long funeral with gaps for villages."],
+};
+
+/** Every line `say` can say: the reference's and the port's. */
+export const LINES: Record<string, string[]> = { ...MONOLOGUE, ...PORT_LINES };
+
+/**
+ * The line a level opens with (`loadLevel`). The reference keyed it by the level's index, and the port's three levels moved the womb
+ * from 7 to 8: the bone cathedral opened on the womb's "the walls are breathing", and the womb, the monastery and the village on nothing.
+ */
+const ARRIVAL: Readonly<Record<number, string>> = { 7: "lvl_cathedral", 8: "lvl7", 9: "lvl_monastery", 10: "lvl_village" };
+export function arrivalLine(level: number): string { return ARRIVAL[level] ?? "lvl" + level; }
+
 export const CHAPTER_LINES: Readonly<Record<number, readonly [string, string]>> = {
-  0: ["Out of the pit, through a door, and not one soul held it for me. Onward.",
-      "I left a trail the whole way up. Somebody will have to mop hell."],
-  1: ["Cells empty, chains still swinging. Housekeeping would be proud, if housekeeping were alive.",
-      "That went worse than it looked. Everything goes worse than it looks. Next door."],
+  0: ["Out of the pit, up a ladder, and there's a floor over hell. Somebody built a monastery on the lid. Of course they did.",
+      "I left a trail the whole way up. Somebody will have to mop hell. Up the ladder before it notices."],
+  1: ["Cells empty, chains still swinging, and the only way on is down a well. Of course it is.",
+      "That went worse than it looked. Everything goes worse than it looks. Down the rope."],
   2: ["The bell can stop now. I'd say a prayer, but the line's been busy since the funeral.",
       "If anyone upstairs is keeping score, I'd like a recount."],
   3: ["Down here the dead keep better order than the living. I'm leaving before they notice.",
@@ -146,4 +176,10 @@ export const CHAPTER_LINES: Readonly<Record<number, readonly [string, string]>> 
       "Something grabbed my boot down there. I kept the boot. I did not keep the dignity."],
   6: ["Whatever they were making in there, I just stopped the line. Management can write me a letter.",
       "The machines ran the whole time and never once looked up. Rude."],
+  7: ["A whole cathedral made of people. Lovely acoustics. The stairs down are warm, which is never good news.",
+      "The Sovereign got back up twice. I got back up more. Somebody keep count, I'm going downstairs."],
+  10: ["A whole village and not one door answered politely. The gate's open. The graveyard's next. It always is.",
+      "Corn, dogs, a butcher in a barn and a gallows on the green. Lovely place. I'll write to the tourist board."],
+  9: ["Rang their bell, broke their seals, buried their gravedigger. The great gate's open. Whatever they kept behind it, I'm next.",
+      "I came for a quiet monastery and left it louder than I found it. The gate's open. So is everything else."],
 };
