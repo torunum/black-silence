@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "bytes": 22656762,
+  "sha256": "4b03db10fcf7433e90e2f21e662224d79ce356f3e2bac392ab7ab21cd09c6198",
+  "engineSha256": "6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899",
+  "villageSha256": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627",
+  "moduleHashes": {
+    "materials.js": "05e43b45ce521b52cf4d7b172177984699670d9de1261de5f88bf11f42b45517",
+    "combat.js": "5f8c099867ca971387f21de80fecc9a83f6ab0b498b82ca153c2ccfe0d18514c",
+    "enemy-animation.js": "5dbcfaf8908f8bde69d7c1625bce9ef163e874aab3ff22ded58d08040f1cec54",
+    "viewmodels.js": "9fc125ed1e30ec51921990ee12eb46f190ed62fbba0fe4a445ad33e2385dc049",
+    "finishers.js": "8c2c7bdf13e17005c3383054560b155986d8e706b5bfda81e9f1a8224ee3c5b0",
+    "reload-audio-data.js": "2f48b10a1225d1c007ee282d3c18f82c5022bb0267ed86d65feadf819ec1be30",
+    "reload-audio.js": "6b63eec006c8f7ee98392f323f630879140948f24165ab72b308bfb4b4d6be16",
+    "prologue.js": "cfa3f704eecf407002b506cd584d415d660ad4aad66d9d67f4db86db40238839",
+    "render-warmup.js": "84db971283d86b0cbea7d0181eb3d48d40924936c5d577ab05fd31ca4b7e755c",
+    "village-presentation.js": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627"
+  },
+  "idempotentBuilds": 2,
+  "invalidInputsRefusedWithoutWrite": 8
+}

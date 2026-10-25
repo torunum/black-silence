@@ -1,0 +1,37 @@
+{
+  "description": "Actual native renderer, seeded paused equal cameras at native eye/zone; no postprocessing",
+  "beforeSourceSHA256": "a887a17a74c59f11a7b689e20fec314286349d984cdec4007f719d69b3d1c089",
+  "sourceSHA256": "cfa3f704eecf407002b506cd584d415d660ad4aad66d9d67f4db86db40238839",
+  "files": [
+    {
+      "file": "before-arena-focus.png",
+      "sha256": "2e38abb4fbc5db18f3a5833e210fb8d2ac71d6508b40b81e58f2d08465de6a02",
+      "inputSHA256": "38b1a9aa2933d1523ba2607f3ae39d6d977b926b4d483d031112e085eb078b95"
+    },
+    {
+      "file": "after-arena-focus.png",
+      "sha256": "d69602d8d4967c0e76f6088a9450f58936ec7ab32d307b85fb300a45e99ceaa6",
+      "inputSHA256": "fd74059e07504b1beb8812563b4b1deafc43dd82fb35e278bb83a21f90d8a936"
+    },
+    {
+      "file": "before-arena-side.png",
+      "sha256": "a0a1ccbd3604fb25533c836d12c37869cecb22e587b05faf4dbc320440032206",
+      "inputSHA256": "38b1a9aa2933d1523ba2607f3ae39d6d977b926b4d483d031112e085eb078b95"
+    },
+    {
+      "file": "after-arena-side.png",
+      "sha256": "6bbddb1c8eb3861bf65ec9609af85b482424e5ba5d2eeeea89130d882b421e42",
+      "inputSHA256": "fd74059e07504b1beb8812563b4b1deafc43dd82fb35e278bb83a21f90d8a936"
+    },
+    {
+      "file": "before-bridge.png",
+      "sha256": "00773c8d3594f8a5bb4870c9c74645b25be40e9999070e085fd3e32a8a13df76",
+      "inputSHA256": "38b1a9aa2933d1523ba2607f3ae39d6d977b926b4d483d031112e085eb078b95"
+    },
+    {
+      "file": "after-bridge.png",
+      "sha256": "bdc709c068206552848f4a7a8dc8ce9cbb1e569e7c30084dcbf8ec05a97375be",
+      "inputSHA256": "fd74059e07504b1beb8812563b4b1deafc43dd82fb35e278bb83a21f90d8a936"
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "passed": true,
+  "htmlSHA256": "4b03db10fcf7433e90e2f21e662224d79ce356f3e2bac392ab7ab21cd09c6198",
+  "combatSourceSHA256": "5f8c099867ca971387f21de80fecc9a83f6ab0b498b82ca153c2ccfe0d18514c",
+  "nativeExecutions": {
+    "scope": "Near-distance fixture spawns a low-health staggered target; actual held E starts native execution and real RAF advances choreography. A brief fixture RNG selector chooses each choreography before E; it is restored immediately after start. Fresh game per run. Native movement and held fire verify recovery. No source changes.",
+    "kinds": [
+      {
+        "kind": 0,
+        "dead": true,
+        "controlReturned": true,
+        "mouseLookReturned": true,
+        "errors": []
+      },
+      {
+        "kind": 1,
+        "dead": true,
+        "controlReturned": true,
+        "mouseLookReturned": true,
+        "errors": []
+      },
+      {
+        "kind": 2,
+        "dead": true,
+        "controlReturned": true,
+        "mouseLookReturned": true,
+        "errors": []
+      }
+    ],
+    "errors": []
+  },
+  "nativeChain": {
+    "scope": "Native sprint/right-click, 88HP zombie and controlled stagger RNG; actual S step-back if launch overshoots before actual E. No player position writes after initial scene fixture. Real RAF.",
+    "observed": {
+      "drop": true,
+      "flung": true,
+      "landed": true
+    },
+    "hp": -5,
+    "terminalFrames": 20,
+    "viewRanges": {
+      "yaw": [
+        0.024332855574526337,
+        0.024332855574526337
+      ],
+      "pitch": [
+        0.27268613493924654,
+        0.27268613493924654
+      ],
+      "x": [
+        19.02809530096827,
+        19.02809530096827
+      ],
+      "z": [
+        7.600667718521147,
+        7.600667718521147
+      ]
+    },
+    "errors": []
+  }
+}

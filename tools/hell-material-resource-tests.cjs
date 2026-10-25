@@ -1,5 +1,5 @@
 // Same-camera prologue material captures plus five next-chapter/return pairs.
-// node tools/hell-material-resource-tests.cjs game.html output-directory [before|after]
+// node tools/hell-material-resource-tests.cjs game.html output-directory [before|after] [standard|lancet]
 // Before mode only captures the baseline. Resource counts are not FPS claims.
 const fs=require('fs'),{chromium}=require('playwright'),{pathToFileURL}=require('url');
 const path=require('node:path'),crypto=require('node:crypto'),assert=require('node:assert/strict');
@@ -7,6 +7,11 @@ const input=path.resolve(process.argv[2]||'THE-BLACK-SILENCE.html');
 const dir=path.resolve(process.argv[3]||'.dream-loop/hell-material-resources');
 const stage=process.argv[4]||'after';
 assert(['before','after'].includes(stage),'Stage must be before or after');
+const preset=process.argv[5]||'standard';
+assert(['standard','lancet'].includes(preset),'Preset must be standard or lancet');
+const cameras=preset==='lancet'
+ ?[['arena',67,105,71,110,4.5],['arena-focus',71,105,71,119,9],['arena-side',65,114,71,120,8],['pyre',67,102,71,105,3.2],['bridge',21,53,38,53,3.5],['bridge-focus',27,53,54,53,9]]
+ :[['arena',67,105,71,110,4.5],['pyre',67,102,71,105,3.2],['bridge',21,53,38,53,3.5]];
 const canonical=p=>fs.realpathSync(p).toLowerCase();
 const isWithin=(file,directory)=>{const rel=path.relative(directory,file);return rel===''||(!rel.startsWith('..'+path.sep)&&rel!=='..'&&!path.isAbsolute(rel));};
 // No fixture, report or PNG may overwrite an input within the output tree.
@@ -32,8 +37,8 @@ const seam=`window.__HELL_CAPTURE = {syncZone() {
 const fixture=path.join(dir,'capture-'+sha256.slice(0,16)+'.html');
 fs.writeFileSync(fixture,source.replace(anchor,()=>seam+anchor));
 const fixtureSHA256=hash(fs.readFileSync(fixture));
-(async()=>{const browser=await chromium.launch({channel:'chrome',headless:true});try{const page=await browser.newPage({viewport:{width:1280,height:720}}),errors=[];page.on('pageerror',e=>errors.push(e.message));await page.addInitScript(()=>{let seed=123456;Math.random=()=>{seed^=seed<<13;seed^=seed>>>17;seed^=seed<<5;return(seed>>>0)/4294967296;};});await page.goto(pathToFileURL(fixture).href+'?qa=1');await page.locator('#mNew').click();await page.waitForFunction(()=>{const q=window.__BLACK_SILENCE_QA;return q?.Be.started&&!q.Be.inputLock&&q.paintedGloves.ready();});await page.evaluate(()=>{const q=window.__BLACK_SILENCE_QA;q.pause(true);q.T.cur=1;q.T.weapons[1]=true;q.T.mag[1]=4;q.St.wstate='idle';q.viewPose={...q.pose(),reload:-1,recoil:0,action:0,heat:0};document.getElementById('pause').classList.add('hidden');document.getElementById('subt').textContent='';});
-const records=[];for(const[name,x,z,tx,tz,ty]of[['arena',67,105,71,110,4.5],['pyre',67,102,71,105,3.2],['bridge',21,53,38,53,3.5]]){const zone=await page.evaluate(({x,z,tx,tz,ty})=>{const q=window.__BLACK_SILENCE_QA;q.C.px=x;q.C.pz=z;q.C.pyy=q.floor(x,z)+q.eyeHeight;q.C.vx=q.C.vz=q.C.vy=0;q.Ct.yaw=Math.atan2(tx-x,tz-z)+Math.PI;q.Ct.pitch=Math.atan2(ty-q.C.pyy,Math.hypot(tx-x,tz-z));q.setCamera();return window.__HELL_CAPTURE.syncZone();}, {x,z,tx,tz,ty});
+(async()=>{const browser=await chromium.launch({channel:'chrome',headless:true});try{const page=await browser.newPage({viewport:{width:1280,height:720}}),errors=[];page.on('pageerror',e=>errors.push(e.message));await page.addInitScript(()=>{let seed=123456;Math.random=()=>{seed^=seed<<13;seed^=seed>>>17;seed^=seed<<5;return(seed>>>0)/4294967296;};});await page.goto(pathToFileURL(fixture).href+'?qa=1');await page.locator('#mNew').click();await page.waitForFunction(()=>{const q=window.__BLACK_SILENCE_QA;return q?.Be.started&&!q.Be.inputLock&&q.paintedGloves.ready();});await page.evaluate((weapon)=>{const q=window.__BLACK_SILENCE_QA;q.pause(true);q.T.cur=weapon;q.T.weapons[weapon]=true;q.T.mag[weapon]=weapon===0?6:4;q.St.wstate='idle';q.viewPose={...q.pose(),reload:-1,recoil:0,action:0,heat:0};document.getElementById('pause').classList.add('hidden');document.getElementById('subt').textContent='';},preset==='lancet'?0:1);
+const records=[];for(const[name,x,z,tx,tz,ty]of cameras){const zone=await page.evaluate(({x,z,tx,tz,ty})=>{const q=window.__BLACK_SILENCE_QA;q.C.px=x;q.C.pz=z;q.C.pyy=q.floor(x,z)+q.eyeHeight;q.C.vx=q.C.vz=q.C.vy=0;q.Ct.yaw=Math.atan2(tx-x,tz-z)+Math.PI;q.Ct.pitch=Math.atan2(ty-q.C.pyy,Math.hypot(tx-x,tz-z));q.setCamera();return window.__HELL_CAPTURE.syncZone();}, {x,z,tx,tz,ty});
 assert.equal(zone.active,zone.index,name+': native zone matches player position');
 assert.equal(zone.id,'hell',name+': expected hell camera');
 assert(Math.abs(zone.player[1]-zone.expectedEyeY)<1e-10,name+': native standing eye height');

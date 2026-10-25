@@ -349,12 +349,26 @@
         box("dark", 0.91, height + 0.26, 0.08, E(x, y + height / 2, 0.025));
         box("hellGlass", 0.64, height - 0.3, 0.03, E(x, y + (height - 0.3) / 2, -0.05));
         for (const side of [-1,1]) {
-          box("hellEdge", 0.14, height - 0.22, 0.22, E(x + side * 0.46, y + (height - 0.22) / 2, -0.08));
-          box("hellEdge", 0.12, 0.66, 0.22, E(x + side * 0.23, y + height - 0.13, -0.08, 0, 0, side * 0.7));
+          // Deep jambs and a continuous pointed reveal seat each glass panel
+          // into the masonry. Existing stone batches and glass remain shared.
+          box("hellEdge", .20, height-.56, .40, E(x+side*.46,y+(height-.56)/2,-.08));
+          let previous=[side*.46,y+height-.56];
+          for(let segment=1;segment<=3;segment++) {
+            const t=segment/3,next=[side*.46*(1-t),y+height-.56+.71*(.6*t+.4*Math.sin(t*Math.PI/2))];
+            const dx=next[0]-previous[0],dy=next[1]-previous[1];
+            box("hellEdge",.14,Math.hypot(dx,dy)+.025,.40,
+              E(x+(previous[0]+next[0])/2,(previous[1]+next[1])/2,-.08,0,0,-Math.atan2(dx,dy)));
+            previous=next;
+          }
           box("hellGlass", 0.12, 0.44, 0.025, E(x + side * 0.1, y + height - 0.24, -0.08, 0, 0, side * 0.6));
         }
         box("hellBronze", 0.91, 0.13, 0.42, E(x, y - 0.07, -0.12));
         box("wrought", 0.035, height - 0.34, 0.04, E(x, y + (height - 0.34)/2, -0.095));
+        // Sparse leadwork divides the warm glass without filling its opening.
+        for(const fraction of [.32,.66])
+          box("wrought",.64,.032,.045,E(x,y+(height-.3)*fraction,-.095));
+        for(const side of [-1,1])
+          box("wrought",.026,.44,.045,E(x+side*.12,y+(height-.3)*.66+.15,-.095,0,0,side*.65));
       }
       for (const side of [-1,1]) {
         box("hellBasalt", 0.62, 4.5, 0.94, E(side * 3.15, 2.25, 0.08));

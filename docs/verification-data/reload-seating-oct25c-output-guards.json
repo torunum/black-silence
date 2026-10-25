@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "inputs": [
+    {
+      "file": ".dream-loop/reload-motion-oct25c/baseline.html",
+      "sha256": "38b1a9aa2933d1523ba2607f3ae39d6d977b926b4d483d031112e085eb078b95"
+    },
+    {
+      "file": ".dream-loop/reload-motion-oct25c/candidate.html",
+      "sha256": "ccc9f8eafd5f3707c7686e4329d99bfc64c2b18c2be1472e1dcace47a6821129"
+    }
+  ],
+  "tests": [
+    {
+      "output": ".dream-loop/reload-motion-oct25c/baseline.html",
+      "rejected": true
+    },
+    {
+      "output": ".dream-loop/reload-motion-oct25c/candidate.html",
+      "rejected": true
+    },
+    {
+      "output": "C:\\USERS\\TEHLIKE47\\GAME\\.DREAM-LOOP\\RELOAD-MOTION-OCT25C\\BASELINE.HTML",
+      "rejected": true
+    },
+    {
+      "output": "C:\\USERS\\TEHLIKE47\\GAME\\.DREAM-LOOP\\RELOAD-MOTION-OCT25C\\CANDIDATE.HTML",
+      "rejected": true
+    }
+  ]
+}

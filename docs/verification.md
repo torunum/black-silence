@@ -1,33 +1,37 @@
-# Doğrulama — 25 Ekim 2026, Soul tutuşu ve bölüm atmosferi
+# Doğrulama — 25 Ekim 2026, doldurma hareketi ve cehennem pencereleri
 
-Teslim dosyası: `THE-BLACK-SILENCE.html`, **22.653.664 bayt**. SHA256: `38b1a9aa2933d1523ba2607f3ae39d6d977b926b4d483d031112e085eb078b95`.
+Teslim dosyası: `THE-BLACK-SILENCE.html`, **22.656.762 bayt**. SHA256: `4b03db10fcf7433e90e2f21e662224d79ce356f3e2bac392ab7ab21cd09c6198`.
 
-Bu tur Soul Reaper'ın sağ kabza temasını, şapel altarının taş kemerini ve crypt içindeki üç mevcut ışığın dengesini geliştirir. Native düşman pain/attack karelerinin ilk üretimi de mevcut cache kullanılarak bölüm yüklenmesine taşınır. Yeni silah modeli veya genel FPS artışı iddiası yoktur.
+Bu tur Rifle/Tommy şarjör yerleştirme hareketini native olaya hizalar, bitiricinin son vuruşundan sonraki görüş kaymasını giderir ve cehennemin üç pencere grubuna taş derinliği ekler. Cephane, hasar, düşman davranışı ve genel bölüm rotası korunur. Yeni FPS kazancı iddiası yoktur.
 
-## Kaynak ve derleme
+## Derleme ve son dosya
 
-Standart builder tüm gömülü modülleri kaynaklarıyla eşleştirir. Native motor SHA256 `6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899` ve Village SHA256 `d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627` korunur. Önceki teslimat `b823d85f6dd70b4eb795c4e17cde96cc455b3f11e1c44856a70e78444b9f2103` idi. Son modül/rapor hashleri [build bilgisinde](build-info.json) bulunur.
+Son birleşik adayda on silahın gerçek R/RAF doldurma ve cephane tamamlama, ateş, değiştirme, tekme ve çizim cache kontrolleri geçti. Standard builder iki tekrarda aynı çıktıyı üretti; sekiz geçersiz girdi dosya yazmadan reddedildi. Bütün kaynak modülleri gömülü karşılıklarıyla eşleşti.
 
-## Silah ve oyun akışı
+Native motor SHA256 `6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899` ve Village SHA256 `d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627` değişmedi. Önceki yayın `38b1a9aa2933d1523ba2607f3ae39d6d977b926b4d483d031112e085eb078b95` idi. Son modül/rapor hashleri [build bilgisinde](build-info.json) bulunur.
 
-Son birleşik 38b1a9aa dosyasında on silahın gerçek R/ateş/geçiş/tekme ve cache kontrolleri geçti. Derleme bütün modülleri eşleştirdi; iki tekrar aynı çıktıyı verdi ve sekiz geçersiz girdi yazmadan reddedildi.
+## Doldurma
 
-Soul-only `eee23be9…` adayında 660 deterministik çizim karşılaştırmasının 600'ü eşit, yalnız Soul7'nin 60 pozu amaçlı farklıydı; beklenmeyen fark yoktu. Diğer dokuz silah, botlar ve bitiriciler eşit kaldı. Üç ekran oranında gerçek idle/ateş/R doldurma ve cephane bitişi geçti. Kaynakta yalnız sabit sağ el ankrajı değişir; sol el, core/claw hareketleri, cephane, ses ve zamanlama korunur. Bu ara aday karşılaştırması son birleşik dosyada yeniden koşulmuş gibi sunulmaz. [Soul temas kanıtları](soul-grip-oct25b.md).
+Rifle ve Tommy'nin şarjör/tambur dönüşü native `rc.seat` / `Ac.seat` aralıklarını izler ve `.60` yerleştirme olayında yerine oturur. İlk çıkarma eğrisinin özgün aritmetiği, el ve parçanın ortak dönüşümleri, geç sürgü/kol hareketi, ses ve cephane korunur.
 
-## Bölüm
+Weapon-only adayındaki 2002 eğri örneği sınırlı hareketi, sekiz smoothstep birleşimi hız sürekliliğini, bütün kaynak karşılaştırması yalnız iki authored ifadeyi doğruladı. Native ekran oranı ve gerçek R görüntüleri ayrı raporlanır; bunlar final birleşik dosyada tekrar çalışmış gibi etiketlenmez. [Görsel/zamanlama kapsamı](reload-seating-oct25c.md).
 
-Şapel kemeri 17 statik primitive ekler ve iki mevcut ayağı genişletir. Mevcut üç materyal batch'i kullanılır. Üç eş kamerada draw call sayıları 62/92/69 olarak aynı, üçgen farkı +204'tür. Cam/pencere/leadwork, map/collision/route/entity/item verileri korunur.
+## Bitirici
 
-Crypt değişimi yalnız üç mevcut ışığın şiddeti/menzilidir. Dört native kamera karşılaştırmasında çizim/doku/materyal sayıları eşit kaldı. Son `a887a17a…` prologue kaynağının tüm harita testi yalnız bu üç ışık farkını kabul eder; diğer map verileri eşittir. `e2d734d2…` çevre adayında 15 native yürüyüş noktası, ilk canlı encounter, eşya alımı, E çıkış ve sonraki bölüme varış geçti. İlk encounter sonrasındaki rota testi tam savaş dengesi ölçümü değildir.
+Son birleşik `4b03…` üzerinde üç tür gerçek E/RAF bitirici tamamlandı; ardından native W, ateş ve fareyle bakış çalıştı. Koşu/dropkick → duvar → sendeleme → E zincirindeki 20 terminal karede son vuruş konumu ve görüş yönü sabit kaldı, hata oluşmadı.
 
-Altar-only `911050d9…` adayındaki beş gerçek bölüm geçişinde scoped dokuların 9/9'u temizlendi; sonraki bölümde ilgili etiket ve temizlenmiş doku yeniden kullanımı sıfırdı. Dönüşte resident texture sayısı 49 olarak sabitti. Son çevre sürümüne bundan sonra yalnız üç ışık parametresi değişimi eklenmiştir. Final 38b birleşik dosyasında aynı beş geçiş ayrıca geçti: 9/9 disposal, 0 next-level tag ve 0 disposed reuse. Renderer resident49 sabit kalmıştır; bu sayı global rig cache içindeki CPU bitmap toplamı değildir. [Eşleşmiş görüntüler, kaynak ömrü ve kapsam](chapel-architecture-oct25b.md).
+Aynı combat kaynağını içeren `ee6dca45…` özel adayında 132 izole durum ve önceki 32 kol yaşam döngüsü kontrolü geçti. Eş deterministik koşulda 1.275 düşman/sağlık/ödül/vuruş/zamanlayıcı/dikey durum örneği, bunların içindeki 843 canlı hedef kamera örneği birebir aynıydı. Son vuruş öncesi davranış korunur; yeni engel kaydedilen konumu bozarsa native yatay konum çözümü kalıcı olarak devralır, görüş yönü korunur. Bu kontrollü kurulumlar kampanyanın bütün rastgele karşılaşmaları değildir. [Ayrıntılı kapsam](finisher-recovery-oct25c.md).
 
-## İlk temas ve sınırlar
+## Cehennem pencereleri
 
-Final 38b dosyasında native ilk/tekrar temas, yükleme/bölüm dönüşü, gerçek ateş-cephane/HP akışı, oyun RNG/state korunumu ve beş pain/attack PNG hashinin baseline ile eşitliği geçti. Kontrollü önce/sonra ölçümde ilk temastaki beş pose bake kaldırıldı; iş bölüm yüklemesine taşınır. Prologue için yaklaşık 217 KiB raw RGBA ek cache ve ölçülen 36.6 ms yükleme işi vardır; bunlar tek yerel ölçümdür, GPU/driver/canvas ek yükünü içermez. Cache globaldir ve map-owned dokular gibi temizlenmez. [Ayrıntılı ölçüm, bellek ve test kapsamı](enemy-pose-warmup-oct25.md).
+Yalnız üç `hellLancetShrine` pencere grubunda mevcut stone/edge/wrought yüzeyleri değişir. Her birine 24 primitive, toplam 72 primitive/864 üçgen eklenir. Altı eş kamerada draw call ve texture/material/renderer geometry sayıları aynı kaldı. Cam yüzeyleri, kaide, ışıklar ve tüm harita/grid/çarpışma/rota/düşman/eşya verisi birebir eşittir.
 
-Performans sonuçları ilgili cihaz/sahne ve test girdileriyle sınırlıdır. Silahlar gerçek hacim ve hareketli parçalara bağlı perspektifli resim yüzeyleri kullanır; tam serbest açılı 3B model değildir. Önceki animasyon, bitirici ve materyal kanıtları kendi tarihli sürümlerine aittir. Bu tur bütün kampanyanın hatasız olduğu iddia edilmez.
+`fd74059e…` çevre-only adayında native 15 yürüyüş noktası, ilk canlı encounter, eşya alımı, E çıkış ve sonraki bölüme varış geçti. Beş gerçek bölüm geçişinde scoped hell/ritual dokularının 8/8'i temizlendi, sonraki bölümde ilgili etiket ve temizlenmiş doku yeniden kullanımı sıfırdı. Resident renderer 59 bu koşuda sabitti; global enemy cache'in toplam CPU bitmap sayısı değildir. [Önce/sonra ve kanıt](hell-lancets-oct25c.md).
 
-## Paket
+Son birleşik `4b03…` üzerinde altı native göz yüksekliği/bölge ışığı kamerası ve beş gerçek bölüm geçişi ayrıca geçti. Scoped 8/8 doku temizliği, sıfır sonraki-bölüm etiketi ve sıfır temizlenmiş doku yeniden kullanımı doğrulandı. Eski görsel çiftlerinin fd740 provenance bilgileri korunur; final kontrolü [ayrı raporda](verification-data/hell-lancets-oct25c-final-4b03.json) yer alır.
 
-`dist/THE-BLACK-SILENCE-2026-10-25-ATMOSPHERE.zip`, yalnız Git'te takipli veya açıkça stage edilmiş izinli kaynak/asset/doc/tool dosyalarını içerir. HTML, kaynak modüller, build-info ve her ZIP girdisi çalışma dosyalarının hashleriyle eşleştirilir. Ignored log, untracked deneme, `.dream-loop`, bağımlılıklar ve Git metadatası dahil edilmez. Paketleyici küçük ayrı Git fixture'ında ignored/untracked dışlama ve mevcut ZIP'i değiştirmeme testinden geçti. Önceki paketler korunur.
+## Sınırlar ve paket
+
+Testler belirtilen akışları kapsar; bütün kampanyanın hatasız olduğu iddia edilmez. Önceki Soul/Stake temas, cam ve ilk temas hazırlığı kanıtları kendi tarihli sürümlerine aittir. Silahlar gerçek hacim/hareketli parçalara bağlı resim yüzeyleri kullanır, tam serbest açılı modeller değildir.
+
+Yeni paket `dist/THE-BLACK-SILENCE-2026-10-25-REFINEMENTS.zip`. Yalnız Git'te takipli veya açıkça stage edilmiş izinli kaynak/asset/doc/tool dosyaları alınır. Her ZIP girdisi, HTML ve modül/rapor manifest hashleri çalışma dosyalarıyla eşleştirilir. Ignored loglar, özel denemeler, bağımlılıklar ve Git metadatası dışarıda; önceki ZIP'ler korunur.

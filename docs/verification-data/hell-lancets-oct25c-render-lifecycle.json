@@ -1,0 +1,224 @@
+{
+  "passed": true,
+  "before": {
+    "inputSHA256": "38b1a9aa2933d1523ba2607f3ae39d6d977b926b4d483d031112e085eb078b95",
+    "zoneSynchronized": true,
+    "cameras": [
+      {
+        "name": "arena",
+        "zone": "hell",
+        "eye": [
+          67,
+          3.1,
+          105
+        ],
+        "calls": 68,
+        "triangles": 120670
+      },
+      {
+        "name": "arena-focus",
+        "zone": "hell",
+        "eye": [
+          71,
+          3.1,
+          105
+        ],
+        "calls": 57,
+        "triangles": 118092
+      },
+      {
+        "name": "arena-side",
+        "zone": "hell",
+        "eye": [
+          65,
+          1,
+          114
+        ],
+        "calls": 63,
+        "triangles": 120518
+      },
+      {
+        "name": "pyre",
+        "zone": "hell",
+        "eye": [
+          67,
+          3.1,
+          102
+        ],
+        "calls": 72,
+        "triangles": 120660
+      },
+      {
+        "name": "bridge",
+        "zone": "hell",
+        "eye": [
+          21,
+          3.1,
+          53
+        ],
+        "calls": 199,
+        "triangles": 176282
+      },
+      {
+        "name": "bridge-focus",
+        "zone": "hell",
+        "eye": [
+          27,
+          3.1,
+          53
+        ],
+        "calls": 195,
+        "triangles": 175692
+      }
+    ],
+    "resources": {
+      "textures": 54,
+      "images": 50,
+      "materials": 234,
+      "renderer": {
+        "geometries": 159,
+        "textures": 50
+      }
+    }
+  },
+  "after": {
+    "inputSHA256": "fd74059e07504b1beb8812563b4b1deafc43dd82fb35e278bb83a21f90d8a936",
+    "zoneSynchronized": true,
+    "cameras": [
+      {
+        "name": "arena",
+        "zone": "hell",
+        "eye": [
+          67,
+          3.1,
+          105
+        ],
+        "calls": 68,
+        "triangles": 121534
+      },
+      {
+        "name": "arena-focus",
+        "zone": "hell",
+        "eye": [
+          71,
+          3.1,
+          105
+        ],
+        "calls": 57,
+        "triangles": 118956
+      },
+      {
+        "name": "arena-side",
+        "zone": "hell",
+        "eye": [
+          65,
+          1,
+          114
+        ],
+        "calls": 63,
+        "triangles": 121382
+      },
+      {
+        "name": "pyre",
+        "zone": "hell",
+        "eye": [
+          67,
+          3.1,
+          102
+        ],
+        "calls": 72,
+        "triangles": 121524
+      },
+      {
+        "name": "bridge",
+        "zone": "hell",
+        "eye": [
+          21,
+          3.1,
+          53
+        ],
+        "calls": 199,
+        "triangles": 177146
+      },
+      {
+        "name": "bridge-focus",
+        "zone": "hell",
+        "eye": [
+          27,
+          3.1,
+          53
+        ],
+        "calls": 195,
+        "triangles": 176556
+      }
+    ],
+    "resources": {
+      "textures": 54,
+      "images": 50,
+      "materials": 234,
+      "renderer": {
+        "geometries": 159,
+        "textures": 50
+      }
+    }
+  },
+  "lifecycleInputSHA256": "fd74059e07504b1beb8812563b4b1deafc43dd82fb35e278bb83a21f90d8a936",
+  "lifecycle": [
+    {
+      "cycle": 0,
+      "oldTextures": 8,
+      "disposed": 8,
+      "taggedNextLevel": 0,
+      "reusedDisposedTextures": 0,
+      "flames": 1,
+      "textures": 60,
+      "images": 49,
+      "resident": 59
+    },
+    {
+      "cycle": 1,
+      "oldTextures": 8,
+      "disposed": 8,
+      "taggedNextLevel": 0,
+      "reusedDisposedTextures": 0,
+      "flames": 1,
+      "textures": 60,
+      "images": 49,
+      "resident": 59
+    },
+    {
+      "cycle": 2,
+      "oldTextures": 8,
+      "disposed": 8,
+      "taggedNextLevel": 0,
+      "reusedDisposedTextures": 0,
+      "flames": 1,
+      "textures": 60,
+      "images": 49,
+      "resident": 59
+    },
+    {
+      "cycle": 3,
+      "oldTextures": 8,
+      "disposed": 8,
+      "taggedNextLevel": 0,
+      "reusedDisposedTextures": 0,
+      "flames": 1,
+      "textures": 60,
+      "images": 49,
+      "resident": 59
+    },
+    {
+      "cycle": 4,
+      "oldTextures": 8,
+      "disposed": 8,
+      "taggedNextLevel": 0,
+      "reusedDisposedTextures": 0,
+      "flames": 1,
+      "textures": 61,
+      "images": 50,
+      "resident": 59
+    }
+  ],
+  "scope": "Eight hell/ritual textures; existing chapel glass is outside this scoped counter. Resident renderer count is not global rig CPU cache size."
+}

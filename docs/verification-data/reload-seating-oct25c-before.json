@@ -1,0 +1,168 @@
+{
+  "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\reload-motion-oct25c\\baseline.html",
+  "sha256": "38b1a9aa2933d1523ba2607f3ae39d6d977b926b4d483d031112e085eb078b95",
+  "scope": "Actual mouse fire and keyboard R/native RAF; pause only freezes screenshots; no viewPose.",
+  "frames": [
+    {
+      "index": 2,
+      "state": "idle",
+      "time": 0.12569999999999892,
+      "phase": 0.07394117647058761,
+      "mag": 24,
+      "file": "weapon-2-idle.png"
+    },
+    {
+      "index": 2,
+      "state": "fire",
+      "time": 0.07140000000000146,
+      "phase": 0.04200000000000086,
+      "mag": 23,
+      "file": "weapon-2-fire.png"
+    },
+    {
+      "index": 2,
+      "state": "reload",
+      "time": 0.32,
+      "phase": 0.18823529411764706,
+      "mag": 0,
+      "file": "weapon-2-0.18.png"
+    },
+    {
+      "index": 2,
+      "state": "reload",
+      "time": 0.6957000000000009,
+      "phase": 0.4092352941176476,
+      "mag": 0,
+      "file": "weapon-2-0.4.png"
+    },
+    {
+      "index": 2,
+      "state": "reload",
+      "time": 0.8383000000000013,
+      "phase": 0.49311764705882427,
+      "mag": 0,
+      "file": "weapon-2-0.49.png"
+    },
+    {
+      "index": 2,
+      "state": "reload",
+      "time": 0.9276000000000005,
+      "phase": 0.5456470588235297,
+      "mag": 0,
+      "file": "weapon-2-0.54.png"
+    },
+    {
+      "index": 2,
+      "state": "reload",
+      "time": 1.0344000000000018,
+      "phase": 0.6084705882352952,
+      "mag": 0,
+      "file": "weapon-2-0.6.png"
+    },
+    {
+      "index": 2,
+      "state": "reload",
+      "time": 1.0885000000000022,
+      "phase": 0.6402941176470601,
+      "mag": 0,
+      "file": "weapon-2-0.64.png"
+    },
+    {
+      "index": 2,
+      "state": "reload",
+      "time": 1.4280000000000022,
+      "phase": 0.8400000000000013,
+      "mag": 0,
+      "file": "weapon-2-0.82.png"
+    },
+    {
+      "index": 2,
+      "state": "reload",
+      "time": 1.6420000000000021,
+      "phase": 0.9658823529411777,
+      "mag": 0,
+      "file": "weapon-2-0.96.png"
+    },
+    {
+      "index": 3,
+      "state": "idle",
+      "time": 0.12189999999999963,
+      "phase": 0.08126666666666642,
+      "mag": 36,
+      "file": "weapon-3-idle.png"
+    },
+    {
+      "index": 3,
+      "state": "fire",
+      "time": 0.03560000000000037,
+      "phase": 0.02373333333333358,
+      "mag": 35,
+      "file": "weapon-3-fire.png"
+    },
+    {
+      "index": 3,
+      "state": "reload",
+      "time": 0.3051999999999989,
+      "phase": 0.20346666666666594,
+      "mag": 0,
+      "file": "weapon-3-0.18.png"
+    },
+    {
+      "index": 3,
+      "state": "reload",
+      "time": 0.6072999999999992,
+      "phase": 0.4048666666666661,
+      "mag": 0,
+      "file": "weapon-3-0.4.png"
+    },
+    {
+      "index": 3,
+      "state": "reload",
+      "time": 0.7684999999999997,
+      "phase": 0.5123333333333332,
+      "mag": 0,
+      "file": "weapon-3-0.49.png"
+    },
+    {
+      "index": 3,
+      "state": "reload",
+      "time": 0.8402999999999989,
+      "phase": 0.5601999999999993,
+      "mag": 0,
+      "file": "weapon-3-0.54.png"
+    },
+    {
+      "index": 3,
+      "state": "reload",
+      "time": 0.9114999999999996,
+      "phase": 0.6076666666666665,
+      "mag": 0,
+      "file": "weapon-3-0.6.png"
+    },
+    {
+      "index": 3,
+      "state": "reload",
+      "time": 0.9827999999999989,
+      "phase": 0.6551999999999992,
+      "mag": 0,
+      "file": "weapon-3-0.64.png"
+    },
+    {
+      "index": 3,
+      "state": "reload",
+      "time": 1.2694999999999976,
+      "phase": 0.8463333333333317,
+      "mag": 0,
+      "file": "weapon-3-0.82.png"
+    },
+    {
+      "index": 3,
+      "state": "reload",
+      "time": 1.4654999999999976,
+      "phase": 0.9769999999999984,
+      "mag": 0,
+      "file": "weapon-3-0.96.png"
+    }
+  ],
+  "errors": []
+}

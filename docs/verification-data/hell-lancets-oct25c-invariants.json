@@ -1,0 +1,51 @@
+{
+  "passed": true,
+  "beforeSourceSHA256": "a887a17a74c59f11a7b689e20fec314286349d984cdec4007f719d69b3d1c089",
+  "sourceSHA256": "cfa3f704eecf407002b506cd584d415d660ad4aad66d9d67f4db86db40238839",
+  "entireMapExact": true,
+  "sourceOutsideShrineExact": true,
+  "shrines": [
+    {
+      "k": "hellLancetShrine",
+      "x": 27,
+      "z": 26,
+      "r": 1.5707963267948966,
+      "s": 2.75
+    },
+    {
+      "k": "hellLancetShrine",
+      "x": 40,
+      "z": 39.7,
+      "s": 2.2
+    },
+    {
+      "k": "hellLancetShrine",
+      "x": 35,
+      "z": 59.6,
+      "s": 2.65
+    }
+  ],
+  "primitivesBefore": 48,
+  "primitivesAfter": 72,
+  "addedPerShrine": 24,
+  "addedTotal": 72,
+  "addedTrianglesTotal": 864,
+  "materialSetExact": true,
+  "glassSurfacesExact": true,
+  "shadowBacksExact": true,
+  "noNewLightOrResource": true,
+  "inputs": [
+    {
+      "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\environment-oct25c\\baseline.html",
+      "sha256": "38b1a9aa2933d1523ba2607f3ae39d6d977b926b4d483d031112e085eb078b95"
+    },
+    {
+      "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\environment-oct25c\\baseline-prologue.js",
+      "sha256": "a887a17a74c59f11a7b689e20fec314286349d984cdec4007f719d69b3d1c089"
+    },
+    {
+      "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\environment-oct25c\\prologue.js",
+      "sha256": "cfa3f704eecf407002b506cd584d415d660ad4aad66d9d67f4db86db40238839"
+    }
+  ]
+}

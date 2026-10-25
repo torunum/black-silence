@@ -576,6 +576,7 @@
   // native sever wound/blood/sound, but do not also launch that same arm into
   // the world until the hand has lowered out of view at normal completion.
   let heldFinisherArm = null;
+  let terminalFinishView = null;
   const originalLimbBurst = G9;
   G9 = function (enemy, part, side, hit) {
     if (enemy !== ve.e || enemy.boss || ve.kind !== 2 || !enemy.executing ||
@@ -602,6 +603,7 @@
   let lastKind = -1;
   K_ = function () {
     if (!canAct() || melee || oo.busy || !originalFinishStart()) return false;
+    terminalFinishView = null;
     // Alternate three choreographies rather than accidentally replaying one.
     if (ve.kind === lastKind)
       ve.kind = (ve.kind + 1 + (Math.random() < 0.5 ? 0 : 1)) % 3;
@@ -626,6 +628,7 @@
     // Keep the target for this frame: the native update clears ve.e when the
     // animation ends, after applying its older chest-height camera pose.
     const frameTarget = ve.e;
+    const run = ve.from, scene = J.scene, recoveryView = terminalFinishView;
     originalFinisherUpdate(dt);
     if (frameTarget && !T.dead && v.enemies.includes(frameTarget)) {
       // Frame the body part the hands are attacking. Keep this framing through
@@ -636,6 +639,33 @@
         Qd,
       );
       Ct.pitch = ve.from.pitch + (pitch - ve.from.pitch) * P_(ve.t / 0.2);
+    }
+    // Once the final strike has killed the target, its native corpse knockback
+    // must not pull or turn the player during the remaining recovery. Preserve
+    // the collision-valid kill-frame view; keep native timers/cleanup running.
+    const terminal = frameTarget?.dead && !T.dead && !T.won &&
+      J.scene === scene && ve.from === run && v.enemies.includes(frameTarget) &&
+      ve.fired === Lm.length &&
+      (ve.e === frameTarget || (!ve.e && ve.t >= Sk));
+    if (terminal && recoveryView?.target === frameTarget &&
+        recoveryView.run === run && recoveryView.scene === scene) {
+      if (!recoveryView.blocked && !fu(recoveryView.x, recoveryView.z)) {
+        C.px = recoveryView.x;
+        C.pz = recoveryView.z;
+      } else {
+        // A newly blocked spot must never be forced. Keep the native fallback
+        // for the rest of this execution rather than snapping back if it clears.
+        recoveryView.blocked = true;
+      }
+      // Looking direction has no collider: keep it even if a new obstacle
+      // requires native horizontal movement instead of our recorded position.
+      Ct.yaw = recoveryView.yaw;
+      Ct.pitch = recoveryView.pitch;
+    } else if (terminal && !recoveryView && ve.e === frameTarget) {
+      terminalFinishView = {
+        target: frameTarget, run, scene, x: C.px, z: C.pz,
+        yaw: Ct.yaw, pitch: Ct.pitch, blocked: false,
+      };
     }
     if (ve.e && !ve.e.dead) {
       const p = ve.t;
@@ -654,6 +684,8 @@
   };
   const originalFinisherEnd = Kw;
   Kw = function () {
+    const recoveryView = terminalFinishView;
+    terminalFinishView = null;
     const held = heldFinisherArm;
     const completed = held && held.enemy === ve.e && ve.kind === 2 &&
       ve.t >= Sk && ve.fired === Lm.length && held.enemy.dead &&
@@ -663,10 +695,21 @@
     originalFinisherEnd();
     Ct.firing = false;
     if (completed) {
-      const forwardX = -Math.sin(Ct.yaw), forwardZ = -Math.cos(Ct.yaw);
-      const leftX = -Math.cos(Ct.yaw), leftZ = Math.sin(Ct.yaw);
-      let x = C.px + forwardX * 0.9 + leftX * 0.3;
-      let z = C.pz + forwardZ * 0.9 + leftZ * 0.3;
+      // Kw runs inside the native update, before our final-frame camera restore.
+      // Drop the held arm relative to the view the player actually retains.
+      const sameView = recoveryView?.target === held.enemy &&
+        recoveryView.run === ve.from && recoveryView.scene === J.scene;
+      const keepPosition = sameView && !recoveryView.blocked &&
+        !fu(recoveryView.x, recoveryView.z);
+      const dropView = {
+        x: keepPosition ? recoveryView.x : C.px,
+        z: keepPosition ? recoveryView.z : C.pz,
+        yaw: sameView ? recoveryView.yaw : Ct.yaw,
+      };
+      const forwardX = -Math.sin(dropView.yaw), forwardZ = -Math.cos(dropView.yaw);
+      const leftX = -Math.cos(dropView.yaw), leftZ = Math.sin(dropView.yaw);
+      let x = dropView.x + forwardX * 0.9 + leftX * 0.3;
+      let z = dropView.z + forwardZ * 0.9 + leftZ * 0.3;
       if (d0(x, z)) { x = held.enemy.x; z = held.enemy.z; }
       held.spawn(held.kind, held.host, {
         ...held.launch, x, z,

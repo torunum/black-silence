@@ -4558,6 +4558,7 @@ window.__silenceMaterialTone=(material,x,y,z)=>{
   // native sever wound/blood/sound, but do not also launch that same arm into
   // the world until the hand has lowered out of view at normal completion.
   let heldFinisherArm = null;
+  let terminalFinishView = null;
   const originalLimbBurst = G9;
   G9 = function (enemy, part, side, hit) {
     if (enemy !== ve.e || enemy.boss || ve.kind !== 2 || !enemy.executing ||
@@ -4584,6 +4585,7 @@ window.__silenceMaterialTone=(material,x,y,z)=>{
   let lastKind = -1;
   K_ = function () {
     if (!canAct() || melee || oo.busy || !originalFinishStart()) return false;
+    terminalFinishView = null;
     // Alternate three choreographies rather than accidentally replaying one.
     if (ve.kind === lastKind)
       ve.kind = (ve.kind + 1 + (Math.random() < 0.5 ? 0 : 1)) % 3;
@@ -4608,6 +4610,7 @@ window.__silenceMaterialTone=(material,x,y,z)=>{
     // Keep the target for this frame: the native update clears ve.e when the
     // animation ends, after applying its older chest-height camera pose.
     const frameTarget = ve.e;
+    const run = ve.from, scene = J.scene, recoveryView = terminalFinishView;
     originalFinisherUpdate(dt);
     if (frameTarget && !T.dead && v.enemies.includes(frameTarget)) {
       // Frame the body part the hands are attacking. Keep this framing through
@@ -4618,6 +4621,33 @@ window.__silenceMaterialTone=(material,x,y,z)=>{
         Qd,
       );
       Ct.pitch = ve.from.pitch + (pitch - ve.from.pitch) * P_(ve.t / 0.2);
+    }
+    // Once the final strike has killed the target, its native corpse knockback
+    // must not pull or turn the player during the remaining recovery. Preserve
+    // the collision-valid kill-frame view; keep native timers/cleanup running.
+    const terminal = frameTarget?.dead && !T.dead && !T.won &&
+      J.scene === scene && ve.from === run && v.enemies.includes(frameTarget) &&
+      ve.fired === Lm.length &&
+      (ve.e === frameTarget || (!ve.e && ve.t >= Sk));
+    if (terminal && recoveryView?.target === frameTarget &&
+        recoveryView.run === run && recoveryView.scene === scene) {
+      if (!recoveryView.blocked && !fu(recoveryView.x, recoveryView.z)) {
+        C.px = recoveryView.x;
+        C.pz = recoveryView.z;
+      } else {
+        // A newly blocked spot must never be forced. Keep the native fallback
+        // for the rest of this execution rather than snapping back if it clears.
+        recoveryView.blocked = true;
+      }
+      // Looking direction has no collider: keep it even if a new obstacle
+      // requires native horizontal movement instead of our recorded position.
+      Ct.yaw = recoveryView.yaw;
+      Ct.pitch = recoveryView.pitch;
+    } else if (terminal && !recoveryView && ve.e === frameTarget) {
+      terminalFinishView = {
+        target: frameTarget, run, scene, x: C.px, z: C.pz,
+        yaw: Ct.yaw, pitch: Ct.pitch, blocked: false,
+      };
     }
     if (ve.e && !ve.e.dead) {
       const p = ve.t;
@@ -4636,6 +4666,8 @@ window.__silenceMaterialTone=(material,x,y,z)=>{
   };
   const originalFinisherEnd = Kw;
   Kw = function () {
+    const recoveryView = terminalFinishView;
+    terminalFinishView = null;
     const held = heldFinisherArm;
     const completed = held && held.enemy === ve.e && ve.kind === 2 &&
       ve.t >= Sk && ve.fired === Lm.length && held.enemy.dead &&
@@ -4645,10 +4677,21 @@ window.__silenceMaterialTone=(material,x,y,z)=>{
     originalFinisherEnd();
     Ct.firing = false;
     if (completed) {
-      const forwardX = -Math.sin(Ct.yaw), forwardZ = -Math.cos(Ct.yaw);
-      const leftX = -Math.cos(Ct.yaw), leftZ = Math.sin(Ct.yaw);
-      let x = C.px + forwardX * 0.9 + leftX * 0.3;
-      let z = C.pz + forwardZ * 0.9 + leftZ * 0.3;
+      // Kw runs inside the native update, before our final-frame camera restore.
+      // Drop the held arm relative to the view the player actually retains.
+      const sameView = recoveryView?.target === held.enemy &&
+        recoveryView.run === ve.from && recoveryView.scene === J.scene;
+      const keepPosition = sameView && !recoveryView.blocked &&
+        !fu(recoveryView.x, recoveryView.z);
+      const dropView = {
+        x: keepPosition ? recoveryView.x : C.px,
+        z: keepPosition ? recoveryView.z : C.pz,
+        yaw: sameView ? recoveryView.yaw : Ct.yaw,
+      };
+      const forwardX = -Math.sin(dropView.yaw), forwardZ = -Math.cos(dropView.yaw);
+      const leftX = -Math.cos(dropView.yaw), leftZ = Math.sin(dropView.yaw);
+      let x = dropView.x + forwardX * 0.9 + leftX * 0.3;
+      let z = dropView.z + forwardZ * 0.9 + leftZ * 0.3;
       if (d0(x, z)) { x = held.enemy.x; z = held.enemy.z; }
       held.spawn(held.kind, held.host, {
         ...held.launch, x, z,
@@ -6883,7 +6926,7 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
   Met.draw=function(m,pose){
     const previous=arsenalIndex;arsenalIndex=2;
     try {
-      const a=firearmArt[2],t=pose.reload,inspect=t<0?0:Qe(t,0,.99,.14),out=t<0?0:Qe(t,.10,.62,.13),charge=t<0?0:Qe(t,.81,.96,.055);
+      const a=firearmArt[2],t=pose.reload,inspect=t<0?0:Qe(t,0,.99,.14),out=t<0?0:K0(t,.10,.10+.13)*(1-K0(t,...rc.seat)),charge=t<0?0:Qe(t,.81,.96,.055);
       // Raise the complete reload assembly, retaining the shared magazine/hand rig.
       a.move(m,0,-.09*inspect,0);
       m.roll(.19*inspect);m.pitch(-.06*inspect);
@@ -6922,7 +6965,7 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
   Ret.draw=function(m,pose){
     const previous=arsenalIndex;arsenalIndex=3;
     try {
-      const a=firearmArt[3],t=pose.reload,inspect=t<0?0:Qe(t,0,.99,.13),out=t<0?0:Qe(t,.10,.63,.14),knob=t<0?0:Qe(t,.82,.96,.05);
+      const a=firearmArt[3],t=pose.reload,inspect=t<0?0:Qe(t,0,.99,.13),out=t<0?0:K0(t,.10,.10+.14)*(1-K0(t,...Ac.seat)),knob=t<0?0:Qe(t,.82,.96,.05);
       m.roll(.16*inspect);m.pitch(-.06*inspect);
       a.hull(m,[[961,131],[982,128],[997,138],[993,159],[966,152]],.035,.016);
       a.hull(m,[[978,109],[989,109],[996,134],[978,133]],.035,.008);
@@ -8768,12 +8811,26 @@ const BLACK_SILENCE_RELOAD_PCM = {"latch":{"pcm":"AAD+//3/+v/9/wgADwAIACIAHAAHAD
         box("dark", 0.91, height + 0.26, 0.08, E(x, y + height / 2, 0.025));
         box("hellGlass", 0.64, height - 0.3, 0.03, E(x, y + (height - 0.3) / 2, -0.05));
         for (const side of [-1,1]) {
-          box("hellEdge", 0.14, height - 0.22, 0.22, E(x + side * 0.46, y + (height - 0.22) / 2, -0.08));
-          box("hellEdge", 0.12, 0.66, 0.22, E(x + side * 0.23, y + height - 0.13, -0.08, 0, 0, side * 0.7));
+          // Deep jambs and a continuous pointed reveal seat each glass panel
+          // into the masonry. Existing stone batches and glass remain shared.
+          box("hellEdge", .20, height-.56, .40, E(x+side*.46,y+(height-.56)/2,-.08));
+          let previous=[side*.46,y+height-.56];
+          for(let segment=1;segment<=3;segment++) {
+            const t=segment/3,next=[side*.46*(1-t),y+height-.56+.71*(.6*t+.4*Math.sin(t*Math.PI/2))];
+            const dx=next[0]-previous[0],dy=next[1]-previous[1];
+            box("hellEdge",.14,Math.hypot(dx,dy)+.025,.40,
+              E(x+(previous[0]+next[0])/2,(previous[1]+next[1])/2,-.08,0,0,-Math.atan2(dx,dy)));
+            previous=next;
+          }
           box("hellGlass", 0.12, 0.44, 0.025, E(x + side * 0.1, y + height - 0.24, -0.08, 0, 0, side * 0.6));
         }
         box("hellBronze", 0.91, 0.13, 0.42, E(x, y - 0.07, -0.12));
         box("wrought", 0.035, height - 0.34, 0.04, E(x, y + (height - 0.34)/2, -0.095));
+        // Sparse leadwork divides the warm glass without filling its opening.
+        for(const fraction of [.32,.66])
+          box("wrought",.64,.032,.045,E(x,y+(height-.3)*fraction,-.095));
+        for(const side of [-1,1])
+          box("wrought",.026,.44,.045,E(x+side*.12,y+(height-.3)*.66+.15,-.095,0,0,side*.65));
       }
       for (const side of [-1,1]) {
         box("hellBasalt", 0.62, 4.5, 0.94, E(side * 3.15, 2.25, 0.08));

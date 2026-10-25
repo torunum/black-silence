@@ -19,6 +19,12 @@ Gotik piksel FPS oyununun on silah, deri eldiven ve prologue cehennem bölümü 
 
 ## Bu sürüm
 
+Bitiricinin son vuruşundan sonraki kısa toparlanmada görüş artık savrulan düşmanın peşinden kaymaz. Güvenli konum engellenirse native konum çözümü kullanılır; bitiş, ölüm ve bölüm değişimi temizliği korunur. [Gerçek E akışları ve sınır kontrolleri](docs/finisher-recovery-oct25c.md).
+
+Rifle ve Tommy doldururken şarjör/tamburun yerine dönmesi native yerleştirme aralığıyla eşleştirildi. El ve yüklenen parça birlikte hareket eder; ilk çıkarma, geç kol çekme, süreler ve cephane korunur. [Hareket ve zamanlama kontrolleri](docs/reload-seating-oct25c.md).
+
+Cehennemdeki üç pencere grubuna daha derin taş söveler, sürekli sivri üst kemerler ve seyrek cam bölmeleri eklendi. Köprüden görülen üçlü sıcak odak korunur; mevcut materyaller kullanılır, yeni ışık veya çizim çağrısı eklenmez. [Önce/sonra ve kapsam](docs/hell-lancets-oct25c.md).
+
 Soul Reaper'ın sağ eli normal duruş, ateş ve doldurma boyunca aşağı uzanan kabzaya oturtuldu. Yalnız elin sabit temas noktası değişir; silah, enerji ve diğer el hareketleri korunur. [Gerçek görüntüler ve karşılaştırma](docs/soul-grip-oct25b.md).
 
 Şapel altarına mevcut taş malzemeleriyle okunur bir sivri kemer eklendi; kırık vitray ve harabe açıklıkları korunur. Crypt içindeki üç mevcut sıcak ışık dengelenerek geniş taş yüzeylerindeki aşırı parlaklık azaltıldı. Rota, eşyalar, düşmanlar ve çarpışmalar korunur. [Önce/sonra ve kapsam](docs/chapel-architecture-oct25b.md).

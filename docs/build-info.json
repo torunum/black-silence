@@ -1,106 +1,106 @@
 {
   "passed": true,
-  "bytes": 22653664,
-  "sha256": "38b1a9aa2933d1523ba2607f3ae39d6d977b926b4d483d031112e085eb078b95",
+  "bytes": 22656762,
+  "sha256": "4b03db10fcf7433e90e2f21e662224d79ce356f3e2bac392ab7ab21cd09c6198",
   "engineSha256": "6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899",
   "villageSha256": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627",
   "moduleHashes": {
     "materials.js": "05e43b45ce521b52cf4d7b172177984699670d9de1261de5f88bf11f42b45517",
-    "combat.js": "6c6a13264859ecdf05f9740d8d161f8eb265f9e8a04dc05b1675b6bdb1164e54",
+    "combat.js": "5f8c099867ca971387f21de80fecc9a83f6ab0b498b82ca153c2ccfe0d18514c",
     "enemy-animation.js": "5dbcfaf8908f8bde69d7c1625bce9ef163e874aab3ff22ded58d08040f1cec54",
-    "viewmodels.js": "a7081298c0d62fa843a766956544986ce860327fae4a661fa1b3f2734c193630",
+    "viewmodels.js": "9fc125ed1e30ec51921990ee12eb46f190ed62fbba0fe4a445ad33e2385dc049",
     "finishers.js": "8c2c7bdf13e17005c3383054560b155986d8e706b5bfda81e9f1a8224ee3c5b0",
     "reload-audio-data.js": "2f48b10a1225d1c007ee282d3c18f82c5022bb0267ed86d65feadf819ec1be30",
     "reload-audio.js": "6b63eec006c8f7ee98392f323f630879140948f24165ab72b308bfb4b4d6be16",
-    "prologue.js": "a887a17a74c59f11a7b689e20fec314286349d984cdec4007f719d69b3d1c089",
+    "prologue.js": "cfa3f704eecf407002b506cd584d415d660ad4aad66d9d67f4db86db40238839",
     "render-warmup.js": "84db971283d86b0cbea7d0181eb3d48d40924936c5d577ab05fd31ca4b7e755c",
     "village-presentation.js": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627"
   },
   "idempotentBuilds": 2,
   "invalidInputsRefusedWithoutWrite": 8,
   "file": "THE-BLACK-SILENCE.html",
-  "verifiedAt": "2026-10-25T14:29:56.041Z",
-  "previousRelease": "b823d85f6dd70b4eb795c4e17cde96cc455b3f11e1c44856a70e78444b9f2103",
-  "scope": "Soul Reaper right-hand grip contact; chapel altar pointed-arch connection; three existing crypt lights balanced; native intact attack/pain pose textures prepared during chapter loading. Native weapon stats/timings, audio, combat, engine and Village preserved.",
+  "verifiedAt": "2026-10-25T16:22:51.495Z",
+  "previousRelease": "38b1a9aa2933d1523ba2607f3ae39d6d977b926b4d483d031112e085eb078b95",
+  "scope": "Rifle and Tommy shared magazine/support-hand seating curves align with the existing native .60 seat event; finisher recovery no longer follows post-kill corpse displacement and released arm origin follows the held view; hell ritual shrine has a bounded lancet recess. Native weapon stats, audio, engine and Village preserved.",
   "verificationReports": [
     {
-      "file": "docs/verification-data/chapel-architecture-oct25b-final-invariants.json",
-      "sha256": "b9f431320a0d9dda738fcd21081755516a430101e75cdaa24e9b39bd4a05f467"
+      "file": "docs/verification-data/finisher-recovery-oct25c-final-4b03db10.json",
+      "sha256": "ebe8b483f4fb3abc439db781b6afaccbe2923145c05d8461dacd0166b6c115a3"
     },
     {
-      "file": "docs/verification-data/chapel-architecture-oct25b-final-lifecycle.json",
-      "sha256": "5c4fd8bc5ce63ffe1b9a896c6d2fa9d0e53782d72f1d3011a5e12b9620a73765"
+      "file": "docs/verification-data/finisher-recovery-oct25c-private.json",
+      "sha256": "0d4b6c5e19c2f2e1163a2f5408bda0c5c570dbd17bbb8122931aacb27934de22"
     },
     {
-      "file": "docs/verification-data/chapel-architecture-oct25b-invariants.json",
-      "sha256": "9c707681f4812d4af9505333236900344be407ae2c93e5da25cacf56efa479a8"
+      "file": "docs/verification-data/finisher-recovery-oct25c-tool-guards.json",
+      "sha256": "c834a287614d38d3629cc0510177af9027748015cb2d43e999700f42a5213240"
     },
     {
-      "file": "docs/verification-data/chapel-architecture-oct25b-lifecycle.json",
-      "sha256": "281c0459846e7d9a84bac2e4238095683d29db6570dad6bec50aee259282aedb"
+      "file": "docs/verification-data/hell-lancets-oct25c-final-4b03.json",
+      "sha256": "a3c39164bc73de18961e3400c1a4e9650fbf152e156c3bbaa605603ff8e8ef0b"
     },
     {
-      "file": "docs/verification-data/chapel-architecture-oct25b-navigation.json",
-      "sha256": "00cd893a79e25579612018166ff847993e9b140e619d32641a5994a2d2f4f6e8"
+      "file": "docs/verification-data/hell-lancets-oct25c-invariants.json",
+      "sha256": "eb12e4a98b858675cdae90a9bdfc0af7e18886dff8efa2aee6655d1ea10a0571"
     },
     {
-      "file": "docs/verification-data/chapel-architecture-oct25b-render.json",
-      "sha256": "c8e3ebe242d2355fe38e68b432d8dfeed1ae58686055ef5f8b9c446003e09a07"
+      "file": "docs/verification-data/hell-lancets-oct25c-navigation.json",
+      "sha256": "1d00ab9bbb1bbac8f568c160b8c7218f8a30245b2458be207952f12c6753edcb"
     },
     {
-      "file": "docs/verification-data/chapel-architecture-oct25b-tool-guards.json",
-      "sha256": "94118aaabd476a4e134089fbcaf75fc30ee0338f6285d5d17c61eb912f2b706f"
+      "file": "docs/verification-data/hell-lancets-oct25c-render-lifecycle.json",
+      "sha256": "7f9c9a87c0adfa63251831cd2292ce6080eb1a67627e5e50418264038c32072b"
     },
     {
-      "file": "docs/verification-data/crypt-lighting-oct25b-invariants.json",
-      "sha256": "cf526478f7f0552452b01311739a6b9d58b80fdf520181001468623469a7ebf1"
+      "file": "docs/verification-data/hell-lancets-oct25c-tool-guards.json",
+      "sha256": "148753c0a0149b2e76932ce1fc493c46b8dc3acdad08d373e23689ad05306209"
     },
     {
-      "file": "docs/verification-data/enemy-pose-warmup-oct25-final-38b1a9aa.json",
-      "sha256": "ebcdf36909cb25fdf65f9824e1b444abd372fffe09906458dcdda03302fd141b"
+      "file": "docs/verification-data/reload-seating-oct25c-before.json",
+      "sha256": "ffc76668bf400df7f2f18ad89e9f3c6aac4aa3b66de73e2760c390cb30b04a66"
     },
     {
-      "file": "docs/verification-data/enemy-pose-warmup-oct25-measurement.json",
-      "sha256": "3d958640a7683b9f7838d2195d4588cc34a23326bcfaf9a2ca6e4d1c0b1e76d5"
+      "file": "docs/verification-data/reload-seating-oct25c-curves.json",
+      "sha256": "bd0ca2f437722edc6dc2a5a54972a1daa4872d78f71cf550453b1ffc96e771fd"
     },
     {
-      "file": "docs/verification-data/soul-grip-oct25b-after.json",
-      "sha256": "2c65e7b335f388a48e7b4167717b20412a5a83670dad72ba7d7b9c9d18b808ef"
+      "file": "docs/verification-data/reload-seating-oct25c-final-build.json",
+      "sha256": "4f0cbca2a07d22da508a58203bd13070856041b64fc8ec30ef29f81949de2ce9"
     },
     {
-      "file": "docs/verification-data/soul-grip-oct25b-aspects.json",
-      "sha256": "f21fff2ac5752dd48438c14b1ab77d70ace273fe75ab45e263434f0868b2f4a2"
+      "file": "docs/verification-data/reload-seating-oct25c-final-runtime.json",
+      "sha256": "9f21bcfc7b2e790f32ba39bbf9f02e953e7e4d215f0c8ce58fe44721577abd78"
     },
     {
-      "file": "docs/verification-data/soul-grip-oct25b-before.json",
-      "sha256": "4f921aa2673fa00706f50909ac6cbd568c77b73ea20ad74ceba04c338596d321"
+      "file": "docs/verification-data/reload-seating-oct25c-output-guards.json",
+      "sha256": "1abdaec60dcb0a4e4a4c1f0ba05a626937198a6773df6e30a6436d6dbf3da2e1"
     },
     {
-      "file": "docs/verification-data/soul-grip-oct25b-final-build.json",
-      "sha256": "a8a5211a8e4681ff4c376073adad85cba12e0c7783943ed7298b91492de51091"
+      "file": "docs/verification-data/reload-seating-oct25c-parity.json",
+      "sha256": "3f22490cc5d35635c261343db1946f1f9192ae7c15cfe00c8403f7ffa3e5fc8e"
     },
     {
-      "file": "docs/verification-data/soul-grip-oct25b-final-runtime.json",
-      "sha256": "b1e3c4a963a2b62f80e476eee24d8be49f078bdd63abc34d15220d03cbf7fbcc"
+      "file": "docs/verification-data/reload-seating-oct25c-rifle-aspects.json",
+      "sha256": "8e75fed7bb470295b6200ba84d0be8a01c2caba759fae2d19f20448faa67e560"
     },
     {
-      "file": "docs/verification-data/soul-grip-oct25b-parity.json",
-      "sha256": "791d7b1f0b097b2fd7b61dc1eecfb69288afdf20f08e40979f40424e53b0b039"
+      "file": "docs/verification-data/reload-seating-oct25c-tommy-aspects.json",
+      "sha256": "2a9a4f44a2c61ef3634908538317c39988de71def9f38e5f58fe8e3c002aaac5"
     }
   ],
   "viewmodelParity": {
-    "baselineSHA256": "b823d85f6dd70b4eb795c4e17cde96cc455b3f11e1c44856a70e78444b9f2103",
-    "candidateSHA256": "eee23be98f92a85ba032e678c3bae53d0ec405657f91895b2612ee0befcf78bf",
-    "sourceSHA256": "a7081298c0d62fa843a766956544986ce860327fae4a661fa1b3f2734c193630",
+    "baselineSHA256": "38b1a9aa2933d1523ba2607f3ae39d6d977b926b4d483d031112e085eb078b95",
+    "candidateSHA256": "ccc9f8eafd5f3707c7686e4329d99bfc64c2b18c2be1472e1dcace47a6821129",
+    "sourceSHA256": "9fc125ed1e30ec51921990ee12eb46f190ed62fbba0fe4a445ad33e2385dc049",
     "comparisons": 660,
-    "exact": 600,
-    "expectedSoulDifferences": 60,
+    "exact": 626,
+    "expectedRifleTommySeatingDifferences": 34,
     "unexpectedDifferences": 0
   },
   "limitations": [
-    "No general FPS improvement is claimed. Pose prewarming moves bounded first-contact bake work into chapter loading and retains native global cache lifetime.",
-    "Weapon artwork remains articulated textured surfaces with native depth/backing; the Soul change only relocates its existing right hand.",
-    "Screenshots retain their actual input provenance and may have different background RNG; intermediate reports are not relabelled as final tests.",
+    "No general frame-rate or audio-quality improvement is claimed; this pass changes mechanical animation timing, camera recovery and local architecture.",
+    "The deterministic weapon comparison is the weapon-only intermediate pair; the final combined candidate separately passed native runtime and integration tests.",
+    "Screenshots and clips retain actual input provenance; background RNG and native capture phase differences are not pixel-parity evidence.",
     "Validation covers documented flows, not every campaign state."
   ]
 }

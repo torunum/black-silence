@@ -1,0 +1,105 @@
+{
+  "scope": "Actual R/native RAF screenshots. Pause freezes screenshots only, no viewPose. Comparison backgrounds can differ by random state. Curve and raster tests are separate.",
+  "baseline": "38b1a9aa2933d1523ba2607f3ae39d6d977b926b4d483d031112e085eb078b95",
+  "weaponOnlyCandidate": "ccc9f8eafd5f3707c7686e4329d99bfc64c2b18c2be1472e1dcace47a6821129",
+  "source": "9fc125ed1e30ec51921990ee12eb46f190ed62fbba0fe4a445ad33e2385dc049",
+  "images": [
+    {
+      "file": "rifle-before-approach.png",
+      "sha256": "df5a0d162a4e0c712f22e82fc5ada502f514513915764514cca68a271757479e",
+      "inputSHA256": "38b1a9aa2933d1523ba2607f3ae39d6d977b926b4d483d031112e085eb078b95",
+      "sourceCapture": ".dream-loop/reload-motion-oct25c/before/weapon-2-0.49.png"
+    },
+    {
+      "file": "rifle-after-approach.png",
+      "sha256": "7f897c1b7d410b7e10e38efaf26551060dc65bfb620011aa08528111b2b2c695",
+      "inputSHA256": "ccc9f8eafd5f3707c7686e4329d99bfc64c2b18c2be1472e1dcace47a6821129",
+      "sourceCapture": ".dream-loop/reload-motion-oct25c/aspects-rifle/weapon-2-1280x720-0.49.png"
+    },
+    {
+      "file": "rifle-seated.png",
+      "sha256": "f324afdc3ff99288825a10036573a322a4e645f8bff6108dcaa8cc09c5d1cabd",
+      "inputSHA256": "ccc9f8eafd5f3707c7686e4329d99bfc64c2b18c2be1472e1dcace47a6821129",
+      "sourceCapture": ".dream-loop/reload-motion-oct25c/aspects-rifle/weapon-2-1280x720-0.6.png"
+    },
+    {
+      "file": "tommy-before-approach.png",
+      "sha256": "0790a6f9d66b66a315e2692447a33408103cc7b5ce71146fa5160608e8e5a434",
+      "inputSHA256": "38b1a9aa2933d1523ba2607f3ae39d6d977b926b4d483d031112e085eb078b95",
+      "sourceCapture": ".dream-loop/reload-motion-oct25c/before/weapon-3-0.49.png"
+    },
+    {
+      "file": "tommy-after-approach.png",
+      "sha256": "5b177f1ebe089d2f7bd45d931b0d03ff5c8146827f83c063d8cfaa2dd1801c37",
+      "inputSHA256": "ccc9f8eafd5f3707c7686e4329d99bfc64c2b18c2be1472e1dcace47a6821129",
+      "sourceCapture": ".dream-loop/reload-motion-oct25c/aspects-tommy/weapon-3-1280x720-0.49.png"
+    },
+    {
+      "file": "tommy-seated.png",
+      "sha256": "3f84476eac6340bfde37ada4d19a033134423296e9ed7b22f30fb7e55c4f2517",
+      "inputSHA256": "ccc9f8eafd5f3707c7686e4329d99bfc64c2b18c2be1472e1dcace47a6821129",
+      "sourceCapture": ".dream-loop/reload-motion-oct25c/aspects-tommy/weapon-3-1280x720-0.6.png"
+    }
+  ],
+  "videos": [
+    {
+      "file": "before-motion.webm",
+      "sha256": "f308f6e6c9651232a931124bc05dfeb37ae38e8d789e83b8ed2e03dce1a07427",
+      "inputSHA256": "38b1a9aa2933d1523ba2607f3ae39d6d977b926b4d483d031112e085eb078b95",
+      "scope": "Uninterrupted real keyboard switching/R and native RAF with post-volume WebAudio. QA only grants weapons/ammo and removes enemies.",
+      "capture": {
+        "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\reload-motion-oct25c\\video-before\\page@adea35406f3fc92db19ea00b2d22f2fe.webm",
+        "trimStart": 14.13,
+        "syncMarker": true,
+        "errors": [],
+        "audio": {
+          "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\reload-motion-oct25c\\video-before\\game-output.webm",
+          "bytes": 81561,
+          "duration": 5.190700000017881,
+          "startedAt": 14126.90000000596,
+          "sampleRate": 48000,
+          "contexts": 1
+        },
+        "scope": "Actual RAF weapon idle/fire/reload and post-volume WebAudio output. QA supplies Rifle and Tommy ammunition and removes enemies; real switching and R reload with uninterrupted native RAF."
+      }
+    },
+    {
+      "file": "after-motion.webm",
+      "inputSHA256": "4b03db10fcf7433e90e2f21e662224d79ce356f3e2bac392ab7ab21cd09c6198",
+      "sha256": "028c9021bcea79f9cc1fe77694423e7ed0a78a8fd87bfe413f90f7283b80e46b",
+      "scope": "Final combined uninterrupted actual keyboard R/switching and native RAF with post-volume WebAudio; input setup only grants weapons/ammunition and removes enemies.",
+      "capture": {
+        "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\reload-motion-oct25c\\final-motion\\page@4d3fe0ba2d13fad48f62ff37197d2612.webm",
+        "trimStart": 14.304,
+        "syncMarker": true,
+        "errors": [],
+        "audio": {
+          "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\reload-motion-oct25c\\final-motion\\game-output.webm",
+          "bytes": 78663,
+          "duration": 4.86909999999404,
+          "startedAt": 14301.5,
+          "sampleRate": 48000,
+          "contexts": 1
+        },
+        "scope": "Actual RAF weapon idle/fire/reload and post-volume WebAudio output. QA supplies Rifle and Tommy ammunition and removes enemies; real switching and R reload with uninterrupted native RAF."
+      }
+    }
+  ],
+  "finalBuild": {
+    "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\reload-motion-oct25c\\combined-final\\THE-BLACK-SILENCE.html",
+    "sha256": "4b03db10fcf7433e90e2f21e662224d79ce356f3e2bac392ab7ab21cd09c6198",
+    "bytes": 22656762,
+    "moduleHashes": {
+      "combat.js": "5f8c099867ca971387f21de80fecc9a83f6ab0b498b82ca153c2ccfe0d18514c",
+      "enemy-animation.js": "5dbcfaf8908f8bde69d7c1625bce9ef163e874aab3ff22ded58d08040f1cec54",
+      "finishers.js": "8c2c7bdf13e17005c3383054560b155986d8e706b5bfda81e9f1a8224ee3c5b0",
+      "materials.js": "05e43b45ce521b52cf4d7b172177984699670d9de1261de5f88bf11f42b45517",
+      "prologue.js": "cfa3f704eecf407002b506cd584d415d660ad4aad66d9d67f4db86db40238839",
+      "reload-audio-data.js": "2f48b10a1225d1c007ee282d3c18f82c5022bb0267ed86d65feadf819ec1be30",
+      "reload-audio.js": "6b63eec006c8f7ee98392f323f630879140948f24165ab72b308bfb4b4d6be16",
+      "render-warmup.js": "84db971283d86b0cbea7d0181eb3d48d40924936c5d577ab05fd31ca4b7e755c",
+      "viewmodels.js": "9fc125ed1e30ec51921990ee12eb46f190ed62fbba0fe4a445ad33e2385dc049",
+      "village-presentation.js": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "syntaxChecks": 2,
+  "cases": [
+    {
+      "case": "same input",
+      "refused": true
+    },
+    {
+      "case": "case alias",
+      "refused": true
+    },
+    {
+      "case": "Input must be outside output directory",
+      "refused": true
+    },
+    {
+      "case": "Preset must be standard or lancet",
+      "refused": true
+    }
+  ],
+  "immutableInputHashes": [
+    "38b1a9aa2933d1523ba2607f3ae39d6d977b926b4d483d031112e085eb078b95",
+    "a887a17a74c59f11a7b689e20fec314286349d984cdec4007f719d69b3d1c089",
+    "cfa3f704eecf407002b506cd584d415d660ad4aad66d9d67f4db86db40238839"
+  ]
+}

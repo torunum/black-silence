@@ -1800,7 +1800,7 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
   Met.draw=function(m,pose){
     const previous=arsenalIndex;arsenalIndex=2;
     try {
-      const a=firearmArt[2],t=pose.reload,inspect=t<0?0:Qe(t,0,.99,.14),out=t<0?0:Qe(t,.10,.62,.13),charge=t<0?0:Qe(t,.81,.96,.055);
+      const a=firearmArt[2],t=pose.reload,inspect=t<0?0:Qe(t,0,.99,.14),out=t<0?0:K0(t,.10,.10+.13)*(1-K0(t,...rc.seat)),charge=t<0?0:Qe(t,.81,.96,.055);
       // Raise the complete reload assembly, retaining the shared magazine/hand rig.
       a.move(m,0,-.09*inspect,0);
       m.roll(.19*inspect);m.pitch(-.06*inspect);
@@ -1839,7 +1839,7 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
   Ret.draw=function(m,pose){
     const previous=arsenalIndex;arsenalIndex=3;
     try {
-      const a=firearmArt[3],t=pose.reload,inspect=t<0?0:Qe(t,0,.99,.13),out=t<0?0:Qe(t,.10,.63,.14),knob=t<0?0:Qe(t,.82,.96,.05);
+      const a=firearmArt[3],t=pose.reload,inspect=t<0?0:Qe(t,0,.99,.13),out=t<0?0:K0(t,.10,.10+.14)*(1-K0(t,...Ac.seat)),knob=t<0?0:Qe(t,.82,.96,.05);
       m.roll(.16*inspect);m.pitch(-.06*inspect);
       a.hull(m,[[961,131],[982,128],[997,138],[993,159],[966,152]],.035,.016);
       a.hull(m,[[978,109],[989,109],[996,134],[978,133]],.035,.008);

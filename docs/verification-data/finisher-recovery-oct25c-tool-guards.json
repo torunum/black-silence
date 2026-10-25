@@ -1,0 +1,15 @@
+{
+  "pass": true,
+  "guards": [
+    {
+      "tool": "finisher-camera-tests.cjs",
+      "rejected": true,
+      "inputUnchanged": true
+    },
+    {
+      "tool": "finisher-camera-native-tests.cjs",
+      "rejected": true,
+      "inputUnchanged": true
+    }
+  ]
+}
