@@ -114,6 +114,29 @@
     texture.name="prologueRitualIvory";
     hellTextureCache.set("ritualIvory",texture);return texture;
   }
+  // One map-owned native-pixel glass map is shared only by the chapel shards.
+  // The original wine/smoke/gold colors and broken geometry remain intact.
+  function chapelGlassTexture() {
+    if(hellTextureCache.has("chapelGlass"))return hellTextureCache.get("chapelGlass");
+    const texture=Z(e0((ctx,width,height)=>{
+      const image=ctx.createImageData(width,height);
+      for(let y=0;y<height;y++)for(let x=0;x<width;x++){
+        const grain=Math.sin(x*.42+y*.09)*12+Math.sin(y*.19)*9;
+        const facet=x>13+Math.floor(y*.09)?62:0;
+        const edge=Math.min(x,width-1-x,y,height-1-y);
+        const crackX=9+Math.floor(y*.14)+Math.floor(Math.sin(y*.13)*2);
+        const crack=y>9&&y<56&&Math.abs(x-crackX)<1.1;
+        const branch=y>29&&y<42&&Math.abs(x-crackX-Math.floor((y-29)*.7))<1.1;
+        const glint=y>9&&y<56&&x===crackX-2;
+        const value=crack||branch?82:glint?255:248+grain-facet-(edge<1?68:edge<2?22:0)-14*(y/height)**2;
+        const i=(y*width+x)*4;
+        image.data[i]=image.data[i+1]=image.data[i+2]=value;image.data[i+3]=255;
+      }
+      ctx.putImageData(image,0,0);
+    },32,64));
+    texture.name="prologueChapelGlass";
+    hellTextureCache.set("chapelGlass",texture);return texture;
+  }
   iR = function (name) {
     if(name === "prologueRitualIvory")return new Wt({map:ritualIvoryTexture()});
     if (name === "hellPyreFlame") {
@@ -162,7 +185,7 @@
       prologueOldGold: 0x82613b,
     };
     return glass[name] !== undefined
-      ? new $e({ color: glass[name], toneMapped: false })
+      ? new $e({ color: glass[name], toneMapped: false, ...(name === "prologueAmber" ? {} : { map: chapelGlassTexture() }) })
       : originalDecorMaterial(name);
   };
 

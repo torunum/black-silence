@@ -19,6 +19,10 @@ Gotik piksel FPS oyununun on silah, deri eldiven ve prologue cehennem bölümü 
 
 ## Bu sürüm
 
+Stake doldurmanın erken taşıma aşamasında sol elin kazıktan ayrılması düzeltildi; sağ el de normal duruş, ateş ve doldurma boyunca kabzaya oturtuldu. Bitirici animasyonlarının eldivenleri mevcut koyu deri renkleriyle uyumlu hale getirildi. Kol koparma bitiricisinde elde tutulan kol artık aynı anda dünyaya ikinci bir parça olarak fırlamaz; normal bitişte bırakılır, ölüm veya bölüm değişiminde bekleyen parça iptal edilir. [Temas ve eldiven kontrolleri](docs/stake-contact-oct25.md).
+
+Şapelin kırık vitrayına mevcut renkleri, delikleri ve silueti koruyan yüzey kırıkları ve ton farkları eklendi. Tek ortak küçük doku kullanılır; geometri veya yeni ışık eklenmez. [Eşleşmiş görüntüler ve kaynak temizliği](docs/chapel-glass-oct25.md).
+
 Tommy, Sniper ve Nail doldururken tambur/şarjör/kap ile yükleme elinin ekranın altına kaybolması düzeltildi. Yükleme hareketi boyunca bütün silah ve eller birlikte daha görünür konuma gelir; Tommy tamburunun çıkarma yolu da kısaltıldı. Geç kapama/kol çekme, cephane, süreler ve diğer silahlar korunur. [Gerçek doldurma görüntüleri ve kontroller](docs/reload-framing-oct24d.md).
 
 Önceki turda Rifle doldururken şarjör ve sol elin ekranın altına kaybolması düzeltildi. Silah, şarjör ve el birlikte daha görünür bir konuma gelir; temas ilişkisi, cephane ve doldurma süresi korunur. [Gerçek doldurma videosu ve doğrulama](docs/rifle-reload-oct24c.md).

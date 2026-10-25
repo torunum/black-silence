@@ -4289,6 +4289,7 @@ window.__silenceMaterialTone=(material,x,y,z)=>{
     melee = null;
     flights = new WeakMap();
     St.kickAnim = 0;
+    heldFinisherArm = null;
     Kw();
     originalReset();
   };
@@ -4553,6 +4554,32 @@ window.__silenceMaterialTone=(material,x,y,z)=>{
     return danger;
   };
 
+  // The tear sequence holds the left arm in its first-person hand. Keep the
+  // native sever wound/blood/sound, but do not also launch that same arm into
+  // the world until the hand has lowered out of view at normal completion.
+  let heldFinisherArm = null;
+  const originalLimbBurst = G9;
+  G9 = function (enemy, part, side, hit) {
+    if (enemy !== ve.e || enemy.boss || ve.kind !== 2 || !enemy.executing ||
+        part !== "arm" || side !== "L" || heldFinisherArm)
+      return originalLimbBurst.apply(this, arguments);
+    const spawn = xu;
+    xu = function (kind, host, launch, life) {
+      if (kind !== 1) return spawn.apply(this, arguments);
+      heldFinisherArm = { enemy, kind, host, launch: { ...launch }, life, spawn };
+      // G9 uses xu only for its side effect; it does not consume this result.
+      return null;
+    };
+    try {
+      return originalLimbBurst.apply(this, arguments);
+    } catch (error) {
+      heldFinisherArm = null;
+      throw error;
+    } finally {
+      xu = spawn;
+    }
+  };
+
   const originalFinishStart = K_;
   let lastKind = -1;
   K_ = function () {
@@ -4609,9 +4636,28 @@ window.__silenceMaterialTone=(material,x,y,z)=>{
   };
   const originalFinisherEnd = Kw;
   Kw = function () {
+    const held = heldFinisherArm;
+    const completed = held && held.enemy === ve.e && ve.kind === 2 &&
+      ve.t >= Sk && ve.fired === Lm.length && held.enemy.dead &&
+      !T.dead && !T.won && v.enemies.includes(held.enemy);
+    heldFinisherArm = null;
     if (ve.e && !ve.e.dead) ve.e.sp.material.rotation = 0;
     originalFinisherEnd();
     Ct.firing = false;
+    if (completed) {
+      const forwardX = -Math.sin(Ct.yaw), forwardZ = -Math.cos(Ct.yaw);
+      const leftX = -Math.cos(Ct.yaw), leftZ = Math.sin(Ct.yaw);
+      let x = C.px + forwardX * 0.9 + leftX * 0.3;
+      let z = C.pz + forwardZ * 0.9 + leftZ * 0.3;
+      if (d0(x, z)) { x = held.enemy.x; z = held.enemy.z; }
+      held.spawn(held.kind, held.host, {
+        ...held.launch, x, z,
+        y: Math.max(ie(x, z) + 0.2, C.pyy - 0.95),
+        vx: forwardX * 0.6 + leftX * 0.35,
+        vz: forwardZ * 0.6 + leftZ * 0.35,
+        vy: -0.4,
+      }, held.life);
+    }
   };
   // Release held input after losing focus, so sprint/fire cannot become stuck.
   addEventListener("blur", () => {
@@ -5475,7 +5521,9 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
     });
     // Every vertex stays behind the native near plane; no magnified fallback.
     if(corners.some(p=>p.z<=uq||!Number.isFinite(p.x+p.y)))return;
-    gloveTriangles.push({v:[corners[0],corners[1],corners[2]],asset},{v:[corners[0],corners[2],corners[3]],asset});
+    // A scoped long sleeve may cross the native canvas before its tail strip.
+    const sleeve=options.sideSleeve===true;
+    gloveTriangles.push({v:[corners[0],corners[1],corners[2]],asset,sleeve},{v:[corners[0],corners[2],corners[3]],asset,sleeve});
     if(!asset.extend)return;
     // Continue only the opaque sleeve leaving the bitmap. The original hand
     // quad stays intact; extra polygons start outside its existing UV bounds.
@@ -6150,7 +6198,7 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
   }
   b0=function(mesh,side,options={}) {
     if(arsenalIndex<2)return priorHands.grip(mesh,side,options);
-    if(side>0)paintedHand(mesh,'right',[-.025,-.005,arsenalIndex===8?-.032:-.048],arsenalIndex===8?.195:.205,arsenalBasis(mesh,arsenalIndex));
+    if(side>0)paintedHand(mesh,'right',[-.025,-.005,arsenalIndex===8?-.032:-.048],arsenalIndex===8?.195:.205,arsenalBasis(mesh,arsenalIndex),{sideSleeve:arsenalIndex===9});
     else paintedHand(mesh,'left',[0,-.012,-.016],.15,arsenalBasis(mesh,arsenalIndex,true));
   };
   c0=function(...args){if(arsenalIndex<2)return priorHands.sleeve(...args);};
@@ -7352,13 +7400,13 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       if(t>=0&&t<.52){
         const reach=Qe(t,.015,.52,.10);
         m.push();m.translate(-.060*off*reach,-.120*off*reach,-.040*off*reach);m.roll(.28*off*reach);
-        a.support(m,1119+16*reach,668-11*reach,-.060-.011*reach,.174);m.pop();
+        a.support(m,1119+16*reach,668-78*reach,-.060-.011*reach,.174);m.pop();
       }else{
         const reach=t<0?0:Qe(t,.52,.99,.10);
         m.push();a.pivot(m,1506,799,-.40*pump*reach);
         a.support(m,1119+404*reach,668+86*reach,-.060-.010*reach,.174-.010*reach);m.pop();
       }
-      a.grip(m,1467,837,-.066);m.anchor('muzzle',...a.point(969,515));
+      a.grip(m,1395,780,-.066);m.anchor('muzzle',...a.point(969,515));
     }finally{arsenalIndex=previous;}
   };
 
@@ -7651,6 +7699,17 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       pose.action=Math.max(pose.action,ease(t,0,.012)*(1-ease(t,.04,.11)));
     }
     return pose;
+  };
+  // Use the same dark leather ramp for the authored execution gloves. Scope
+  // only their material IDs; geometry, texture callbacks and held props stay native.
+  const finishDraw=A0t.draw;
+  A0t.draw=function(mesh,pose){
+    const face=mesh.face;
+    mesh.face=function(points,normal,material,...args){
+      return face.call(this,points,normal,material===O.GLOVE?HAND_LEATHER:material,...args);
+    };
+    try{return finishDraw.call(this,mesh,pose);}
+    finally{mesh.face=face;}
   };
   // Finisher wrists now move around the target instead of only appearing at impact.
   const leftFinish = s0t,
@@ -8474,6 +8533,29 @@ const BLACK_SILENCE_RELOAD_PCM = {"latch":{"pcm":"AAD+//3/+v/9/wgADwAIACIAHAAHAD
     texture.name="prologueRitualIvory";
     hellTextureCache.set("ritualIvory",texture);return texture;
   }
+  // One map-owned native-pixel glass map is shared only by the chapel shards.
+  // The original wine/smoke/gold colors and broken geometry remain intact.
+  function chapelGlassTexture() {
+    if(hellTextureCache.has("chapelGlass"))return hellTextureCache.get("chapelGlass");
+    const texture=Z(e0((ctx,width,height)=>{
+      const image=ctx.createImageData(width,height);
+      for(let y=0;y<height;y++)for(let x=0;x<width;x++){
+        const grain=Math.sin(x*.42+y*.09)*12+Math.sin(y*.19)*9;
+        const facet=x>13+Math.floor(y*.09)?62:0;
+        const edge=Math.min(x,width-1-x,y,height-1-y);
+        const crackX=9+Math.floor(y*.14)+Math.floor(Math.sin(y*.13)*2);
+        const crack=y>9&&y<56&&Math.abs(x-crackX)<1.1;
+        const branch=y>29&&y<42&&Math.abs(x-crackX-Math.floor((y-29)*.7))<1.1;
+        const glint=y>9&&y<56&&x===crackX-2;
+        const value=crack||branch?82:glint?255:248+grain-facet-(edge<1?68:edge<2?22:0)-14*(y/height)**2;
+        const i=(y*width+x)*4;
+        image.data[i]=image.data[i+1]=image.data[i+2]=value;image.data[i+3]=255;
+      }
+      ctx.putImageData(image,0,0);
+    },32,64));
+    texture.name="prologueChapelGlass";
+    hellTextureCache.set("chapelGlass",texture);return texture;
+  }
   iR = function (name) {
     if(name === "prologueRitualIvory")return new Wt({map:ritualIvoryTexture()});
     if (name === "hellPyreFlame") {
@@ -8522,7 +8604,7 @@ const BLACK_SILENCE_RELOAD_PCM = {"latch":{"pcm":"AAD+//3/+v/9/wgADwAIACIAHAAHAD
       prologueOldGold: 0x82613b,
     };
     return glass[name] !== undefined
-      ? new $e({ color: glass[name], toneMapped: false })
+      ? new $e({ color: glass[name], toneMapped: false, ...(name === "prologueAmber" ? {} : { map: chapelGlassTexture() }) })
       : originalDecorMaterial(name);
   };
 

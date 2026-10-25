@@ -1,0 +1,16 @@
+{
+  "cases": 3600,
+  "passed": true,
+  "scope": "Exact rawRGBA, simulated canvas upload, Float32 depth and dirty bounds; main and side buffers, empty/degenerate triangles, texel and alpha boundaries, signed and zero sleeve directions.",
+  "inputs": {
+    "baseline": {
+      "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\stake-contact-oct25\\baseline.html",
+      "sha256": "6dd69003987fadb8c4b405d3e94d3833e303d37a86484e33c4ed2fb556c75c99"
+    },
+    "candidate": {
+      "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\stake-contact-oct25\\combined\\THE-BLACK-SILENCE.html",
+      "sha256": "697219aba3391120a1e0b74b5056050b9dbce774513385a3773485b6e76199b9"
+    }
+  },
+  "failures": []
+}

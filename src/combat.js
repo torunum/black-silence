@@ -307,6 +307,7 @@
     melee = null;
     flights = new WeakMap();
     St.kickAnim = 0;
+    heldFinisherArm = null;
     Kw();
     originalReset();
   };
@@ -571,6 +572,32 @@
     return danger;
   };
 
+  // The tear sequence holds the left arm in its first-person hand. Keep the
+  // native sever wound/blood/sound, but do not also launch that same arm into
+  // the world until the hand has lowered out of view at normal completion.
+  let heldFinisherArm = null;
+  const originalLimbBurst = G9;
+  G9 = function (enemy, part, side, hit) {
+    if (enemy !== ve.e || enemy.boss || ve.kind !== 2 || !enemy.executing ||
+        part !== "arm" || side !== "L" || heldFinisherArm)
+      return originalLimbBurst.apply(this, arguments);
+    const spawn = xu;
+    xu = function (kind, host, launch, life) {
+      if (kind !== 1) return spawn.apply(this, arguments);
+      heldFinisherArm = { enemy, kind, host, launch: { ...launch }, life, spawn };
+      // G9 uses xu only for its side effect; it does not consume this result.
+      return null;
+    };
+    try {
+      return originalLimbBurst.apply(this, arguments);
+    } catch (error) {
+      heldFinisherArm = null;
+      throw error;
+    } finally {
+      xu = spawn;
+    }
+  };
+
   const originalFinishStart = K_;
   let lastKind = -1;
   K_ = function () {
@@ -627,9 +654,28 @@
   };
   const originalFinisherEnd = Kw;
   Kw = function () {
+    const held = heldFinisherArm;
+    const completed = held && held.enemy === ve.e && ve.kind === 2 &&
+      ve.t >= Sk && ve.fired === Lm.length && held.enemy.dead &&
+      !T.dead && !T.won && v.enemies.includes(held.enemy);
+    heldFinisherArm = null;
     if (ve.e && !ve.e.dead) ve.e.sp.material.rotation = 0;
     originalFinisherEnd();
     Ct.firing = false;
+    if (completed) {
+      const forwardX = -Math.sin(Ct.yaw), forwardZ = -Math.cos(Ct.yaw);
+      const leftX = -Math.cos(Ct.yaw), leftZ = Math.sin(Ct.yaw);
+      let x = C.px + forwardX * 0.9 + leftX * 0.3;
+      let z = C.pz + forwardZ * 0.9 + leftZ * 0.3;
+      if (d0(x, z)) { x = held.enemy.x; z = held.enemy.z; }
+      held.spawn(held.kind, held.host, {
+        ...held.launch, x, z,
+        y: Math.max(ie(x, z) + 0.2, C.pyy - 0.95),
+        vx: forwardX * 0.6 + leftX * 0.35,
+        vz: forwardZ * 0.6 + leftZ * 0.35,
+        vy: -0.4,
+      }, held.life);
+    }
   };
   // Release held input after losing focus, so sprint/fire cannot become stuck.
   addEventListener("blur", () => {

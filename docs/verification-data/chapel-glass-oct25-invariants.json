@@ -1,0 +1,33 @@
+{
+  "passed": true,
+  "beforeSHA256": "c7614fb312a6171350279bc2cd7cfbc27984c60e13d8d5ddfdf944ffb36176c7",
+  "afterSHA256": "b0107518140492cc18c4cd7bd41b1e342359ceccf558e9ed1dee22942add3773",
+  "entireMapExact": true,
+  "geometryTransformsExact": true,
+  "globalMaterialRoutesExact": true,
+  "glassColorsExact": true,
+  "chapelWindows": 1,
+  "glassMaterialGroups": 3,
+  "texture": {
+    "width": 32,
+    "height": 64,
+    "shared": true,
+    "opaque": true,
+    "name": "prologueChapelGlass",
+    "reset": true
+  },
+  "inputs": [
+    {
+      "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\chapel-glass-oct25\\baseline.html",
+      "sha256": "6dd69003987fadb8c4b405d3e94d3833e303d37a86484e33c4ed2fb556c75c99"
+    },
+    {
+      "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\chapel-glass-oct25\\baseline-prologue.js",
+      "sha256": "c7614fb312a6171350279bc2cd7cfbc27984c60e13d8d5ddfdf944ffb36176c7"
+    },
+    {
+      "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\chapel-glass-oct25\\prologue.js",
+      "sha256": "b0107518140492cc18c4cd7bd41b1e342359ceccf558e9ed1dee22942add3773"
+    }
+  ]
+}

@@ -1,76 +1,127 @@
 {
   "passed": true,
-  "bytes": 22648018,
-  "sha256": "6dd69003987fadb8c4b405d3e94d3833e303d37a86484e33c4ed2fb556c75c99",
+  "bytes": 22651858,
+  "sha256": "b823d85f6dd70b4eb795c4e17cde96cc455b3f11e1c44856a70e78444b9f2103",
   "engineSha256": "6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899",
   "villageSha256": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627",
   "moduleHashes": {
     "materials.js": "05e43b45ce521b52cf4d7b172177984699670d9de1261de5f88bf11f42b45517",
-    "combat.js": "a0644449f03a77ec7c121104ab2c6850e0caf6ceb0b17c553b8c6c273c08374c",
+    "combat.js": "6c6a13264859ecdf05f9740d8d161f8eb265f9e8a04dc05b1675b6bdb1164e54",
     "enemy-animation.js": "5dbcfaf8908f8bde69d7c1625bce9ef163e874aab3ff22ded58d08040f1cec54",
-    "viewmodels.js": "7f847d1bda53689395130c52abcb05ea87564f82f6b7c33ecfa55882ac0bc77c",
+    "viewmodels.js": "ad2e2482ae2c01865833289dd5143d8ce5a0672ef297271d62d20865e6cf13fb",
     "finishers.js": "8c2c7bdf13e17005c3383054560b155986d8e706b5bfda81e9f1a8224ee3c5b0",
     "reload-audio-data.js": "2f48b10a1225d1c007ee282d3c18f82c5022bb0267ed86d65feadf819ec1be30",
     "reload-audio.js": "6b63eec006c8f7ee98392f323f630879140948f24165ab72b308bfb4b4d6be16",
-    "prologue.js": "c7614fb312a6171350279bc2cd7cfbc27984c60e13d8d5ddfdf944ffb36176c7",
+    "prologue.js": "b0107518140492cc18c4cd7bd41b1e342359ceccf558e9ed1dee22942add3773",
     "render-warmup.js": "9418307e9d71b28411b36e86e1ed3f4eb2eecda6b00d58144ce5bc79d110838c",
     "village-presentation.js": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627"
   },
   "idempotentBuilds": 2,
   "invalidInputsRefusedWithoutWrite": 8,
   "file": "THE-BLACK-SILENCE.html",
-  "verifiedAt": "2026-10-24T20:52:11.443Z",
-  "scope": "Tommy Gun, Nail Cannon and Sniper loading-hand visibility; Tommy shared drum/hand extraction shortened. Compositor, native engine, environment, weapon stats, audio timing and Village unchanged.",
-  "previousRelease": "d5a41a6872cb7b58f0e7f4b95c58e55d466f520070a64adfa2cf66cc1df564df",
+  "verifiedAt": "2026-10-25T13:07:26.818Z",
+  "previousRelease": "6dd69003987fadb8c4b405d3e94d3833e303d37a86484e33c4ed2fb556c75c99",
+  "scope": "Stake loading-hand contact and right grip in all poses, with scoped ultrawide sleeve continuation; execution-glove dark leather material; one held/released arm during tear execution with cancellation cleanup; chapel glass surface detail and scoped texture disposal. Native weapon stats/timings, engine and Village preserved.",
   "verificationReports": [
     {
-      "file": "docs/verification-data/nail-framing-oct24d-824314e9.json",
-      "sha256": "dd4e165af8004ae4be602ba304166af0d0ea46a1901926b14ace0ee261239082"
+      "file": "docs/verification-data/chapel-glass-oct25-before.json",
+      "sha256": "bd1d7e1cd400c49ddee0b680b3bdd9a8ce909f3fbe5a50b0870fd1b5df3e6b86"
     },
     {
-      "file": "docs/verification-data/reload-framing-oct24d-build.json",
-      "sha256": "46313f305ad44a61b552a6b872c86b7ef228ca56e12b24a3939734dd1f63725b"
+      "file": "docs/verification-data/chapel-glass-oct25-invariants.json",
+      "sha256": "0aa1582f5cb374eeffa6a887f9bb22f84ae112306e6917174324c9c9823d75b6"
     },
     {
-      "file": "docs/verification-data/reload-framing-oct24d-kernel.json",
-      "sha256": "fd85170cc0c1872aa8d94c5d9a4c08117bdf96b60d46c46f114f5329e155eefa"
+      "file": "docs/verification-data/chapel-glass-oct25-lifecycle.json",
+      "sha256": "2d0cca5f4c831b440a36545e2c6ce0629d35a447c4e759c6c2e26064814255da"
     },
     {
-      "file": "docs/verification-data/reload-framing-oct24d-parity.json",
-      "sha256": "088108542e58c488d86356c8bb5029bd3e0c1c7efd4c8e94d01e380926f2020d"
+      "file": "docs/verification-data/chapel-glass-oct25-output-guards.json",
+      "sha256": "7e4c4e05fef44353514bdad3bae0b207001f72021bfb564f876882345c7ad83f"
     },
     {
-      "file": "docs/verification-data/reload-framing-oct24d-performance-3-6-summary.json",
-      "sha256": "203b49ff43c12a8f23c02a8876272aca2263ac560fd97a6c4bd72bc5c5af11de"
+      "file": "docs/verification-data/execution-lifecycle-oct25-697219ab.json",
+      "sha256": "1b71edccf4de7c2a605506701f526b0dc3cf1943086f5deb305c8229f5cf7103"
     },
     {
-      "file": "docs/verification-data/reload-framing-oct24d-performance-3-6.json",
-      "sha256": "48aa77be41c73d2ba0cf911c14605cf0ede3588d6dbe91a7b4872a682adbf49d"
+      "file": "docs/verification-data/execution-native-oct25-697219ab.json",
+      "sha256": "7e4b75296d2d122f525349e88f029429541b46a7bd3b11a974d60f3603488960"
     },
     {
-      "file": "docs/verification-data/reload-framing-oct24d-performance-4-6-summary.json",
-      "sha256": "449716565fdad3bac98086c531e457f803b4332ae8afd18d28eb04bee7ac69b3"
+      "file": "docs/verification-data/execution-sanity-oct25-b823d85f.json",
+      "sha256": "6b50251e8cd0ea53cf6480be7da584b45c0a66fb7e0a13881b007aa3d326f58c"
     },
     {
-      "file": "docs/verification-data/reload-framing-oct24d-performance-4-6.json",
-      "sha256": "ca090758baad8adb0f6e3520db8e6af991c52c17c16cf5421433d08c1b412911"
+      "file": "docs/verification-data/finisher-oct25-after.json",
+      "sha256": "cafac4a034bc9d0effa683b4a94262ffdfb816f01adb71105cc6155706ff8abc"
     },
     {
-      "file": "docs/verification-data/reload-framing-oct24d-runtime.json",
-      "sha256": "1aa3eeee78ccd86df72e3d60d3600e1ba6dece4d8f71b16bc051ac3cd1e6bc69"
+      "file": "docs/verification-data/finisher-oct25-before.json",
+      "sha256": "4ebde7abeb02069e59587057f886cfd80582153fb0ff7ed919e993c504ed9e9e"
     },
     {
-      "file": "docs/verification-data/sniper-framing-oct24d-6dd69003.json",
-      "sha256": "6a2b50c22997b937a380e2ad0bba2e46a6507d2ddcdb324cc3d6060efb9f7faf"
+      "file": "docs/verification-data/finisher-oct25-material-scope.json",
+      "sha256": "6ba7be6071d4b64aafd5bc3dbc52abc8f39df6b1c9c385fac6f111fc901050fe"
     },
     {
-      "file": "docs/verification-data/tommy-framing-oct24d-824314e9.json",
-      "sha256": "5c5c359df177d8c1e2079dd86f89e3cb6667dfc0152f2a041b938aeddaa5577c"
+      "file": "docs/verification-data/finisher-oct25-output-guard.json",
+      "sha256": "b7e2588f1dc1a28c8f01d4177104b351cc36dd7c8c0b1a0c2c43cc5e6a943477"
+    },
+    {
+      "file": "docs/verification-data/polish-oct25-build.json",
+      "sha256": "5405bbb41c8ea94c0fdb895fd8f3ce6f872eb6a53e5e021a4d6ba7bceb99a4da"
+    },
+    {
+      "file": "docs/verification-data/polish-oct25-kernel.json",
+      "sha256": "2888fc4589244da00d96a266470392675cd437c65c7b635e2ab33b5c57db9926"
+    },
+    {
+      "file": "docs/verification-data/polish-oct25-runtime.json",
+      "sha256": "1e65f64c931674bfe363fa294305904755277a02d3375ec0d3bb88a15abec013"
+    },
+    {
+      "file": "docs/verification-data/stake-contact-oct25-aspects.json",
+      "sha256": "2164387653c791621f997101132b39ae087fdfcd4890e47aa157f0057956dd61"
+    },
+    {
+      "file": "docs/verification-data/stake-contact-oct25-parity.json",
+      "sha256": "8cbcc665584f3c0e1cd892968648a6f1012aef12a51fd9e58e384be2ea84c1fc"
+    },
+    {
+      "file": "docs/verification-data/stake-finisher-oct25-parity.json",
+      "sha256": "7fbced1f8fb3ddc14b0682b7191ec594522c4265d095a0a55ce633dc12b4d6cb"
+    },
+    {
+      "file": "docs/verification-data/stake-right-grip-oct25-b823-aspects.json",
+      "sha256": "471a7e2fc24596927c0e8d4049ca98701645b38a40a60749b14000a9bec53b6b"
+    },
+    {
+      "file": "docs/verification-data/stake-right-grip-oct25-b823-build.json",
+      "sha256": "d5132bdeaac2f31e49cca73aae7c290acb42d054f09a00d16ce5e83dabbeec1e"
+    },
+    {
+      "file": "docs/verification-data/stake-right-grip-oct25-b823-parity.json",
+      "sha256": "36544fb7dc426346365f5db25a7697713832442c7956997f745011c033553875"
+    },
+    {
+      "file": "docs/verification-data/stake-right-grip-oct25-b823-runtime.json",
+      "sha256": "b1cb597dfbfe52aed5559bfe8df96770f81650cc15b6c579ca86e43ffbe54623"
     }
   ],
   "limitations": [
-    "Short serial ABBA on this host had inconsistent Nail slow trials in both baseline and candidate; no general speed gain or repeatable regression is established.",
-    "Sniper magazine remains close to the lower edge in the middle loading phase; the loading hand is more readable. Only tested .12/.82 bolt poses are claimed pixel-identical, not every bolt-reach phase.",
-    "Reference-driven weapon parts use articulated textured surfaces and native depth/backing, not fully sculpted 3D anatomy."
-  ]
+    "No FPS improvement is claimed; this pass makes scoped animation, material and lifecycle corrections.",
+    "Weapon assets remain articulated textured surfaces with native depth/backing; execution hands retain procedural geometry.",
+    "Actual before/after execution screenshots have different background RNG; exact material isolation is demonstrated by the deterministic depth/part/glove-mask test.",
+    "Intermediate media and test reports retain their exact input identities rather than being relabelled as final-build captures.",
+    "Validation covers the documented flows, not every campaign state."
+  ],
+  "finalRightGripParity": {
+    "baselineSHA256": "697219aba3391120a1e0b74b5056050b9dbce774513385a3773485b6e76199b9",
+    "candidateSHA256": "b823d85f6dd70b4eb795c4e17cde96cc455b3f11e1c44856a70e78444b9f2103",
+    "comparisons": 660,
+    "exact": 600,
+    "expectedStakeDifferences": 60,
+    "unexpectedDifferences": 0,
+    "scope": "Other nine weapons, boots and finishers exact. Stake right grip changes all poses; existing left loading path unchanged."
+  }
 }

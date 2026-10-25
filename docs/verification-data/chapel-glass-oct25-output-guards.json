@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "tool": "chapel-material-tests",
+      "case": "direct collision",
+      "refused": true
+    },
+    {
+      "tool": "chapel-material-tests",
+      "case": "case-insensitive collision",
+      "refused": true
+    },
+    {
+      "tool": "chapel-material-resource-tests",
+      "case": "input within output",
+      "refused": true
+    },
+    {
+      "tool": "chapel-material-resource-tests",
+      "case": "case-insensitive containment",
+      "refused": true
+    }
+  ],
+  "inputHashes": [
+    "6dd69003987fadb8c4b405d3e94d3833e303d37a86484e33c4ed2fb556c75c99",
+    "c7614fb312a6171350279bc2cd7cfbc27984c60e13d8d5ddfdf944ffb36176c7",
+    "b0107518140492cc18c4cd7bd41b1e342359ceccf558e9ed1dee22942add3773"
+  ],
+  "inputsPreserved": true
+}

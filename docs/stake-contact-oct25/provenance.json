@@ -1,0 +1,67 @@
+{
+  "finalCandidate": {
+    "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\stake-contact-oct25\\combined-final\\THE-BLACK-SILENCE.html",
+    "sha256": "b823d85f6dd70b4eb795c4e17cde96cc455b3f11e1c44856a70e78444b9f2103",
+    "bytes": 22651858,
+    "moduleHashes": {
+      "combat.js": "6c6a13264859ecdf05f9740d8d161f8eb265f9e8a04dc05b1675b6bdb1164e54",
+      "enemy-animation.js": "5dbcfaf8908f8bde69d7c1625bce9ef163e874aab3ff22ded58d08040f1cec54",
+      "finishers.js": "8c2c7bdf13e17005c3383054560b155986d8e706b5bfda81e9f1a8224ee3c5b0",
+      "materials.js": "05e43b45ce521b52cf4d7b172177984699670d9de1261de5f88bf11f42b45517",
+      "prologue.js": "b0107518140492cc18c4cd7bd41b1e342359ceccf558e9ed1dee22942add3773",
+      "reload-audio-data.js": "2f48b10a1225d1c007ee282d3c18f82c5022bb0267ed86d65feadf819ec1be30",
+      "reload-audio.js": "6b63eec006c8f7ee98392f323f630879140948f24165ab72b308bfb4b4d6be16",
+      "render-warmup.js": "9418307e9d71b28411b36e86e1ed3f4eb2eecda6b00d58144ce5bc79d110838c",
+      "viewmodels.js": "ad2e2482ae2c01865833289dd5143d8ce5a0672ef297271d62d20865e6cf13fb",
+      "village-presentation.js": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627"
+    }
+  },
+  "scope": "Actual native R/fire and E/RAF evidence. Final Stake after, ultrawide and video use exact b823 build. Execution before/after retains its intermediate source identity; deterministic tests separately prove material isolation. Background RNG differs between screenshots.",
+  "media": [
+    {
+      "file": "stake-before.png",
+      "sha256": "187eaf317a718e70ee213cb10ca55d622adab0b991de81e10ab872d0d70ce1cf",
+      "inputSHA256": "6dd69003987fadb8c4b405d3e94d3833e303d37a86484e33c4ed2fb556c75c99"
+    },
+    {
+      "file": "stake-after.png",
+      "sha256": "046f8910843ac19bea550c82f21a523fedb40973059437c89d8584d1b6d22cc1",
+      "inputSHA256": "b823d85f6dd70b4eb795c4e17cde96cc455b3f11e1c44856a70e78444b9f2103",
+      "capture": "Actual native keyboard R / mouse fire and RAF; no viewPose override"
+    },
+    {
+      "file": "finisher-before.png",
+      "sha256": "3c862f1d7a66b1f133648e8bbcd480c613cef8092f68c84892f7f979e43ae4bb",
+      "inputSHA256": "6dd69003987fadb8c4b405d3e94d3833e303d37a86484e33c4ed2fb556c75c99"
+    },
+    {
+      "file": "finisher-after.png",
+      "sha256": "e51af0b09657ec79635a4a482608611d0381cf68adc16fd4d411275b01aabdf9",
+      "inputSHA256": "db1a400add4161fdcfa04604fee78c150e52ec21cd35e984cd05b1b53012ed28"
+    },
+    {
+      "file": "stake-fire-reload.webm",
+      "sha256": "b76d332b6b76b3189f5a87023694e2ec3fb35c014cb636a20e81eb4d9e2e2dc1",
+      "inputSHA256": "b823d85f6dd70b4eb795c4e17cde96cc455b3f11e1c44856a70e78444b9f2103",
+      "capture": "Actual native keyboard R / mouse fire and RAF; no viewPose override"
+    },
+    {
+      "file": "stake-ultrawide.png",
+      "sha256": "5e69da173ef30782d044cabbe30ac4048349034a7352812ce962f27f4abce611",
+      "inputSHA256": "b823d85f6dd70b4eb795c4e17cde96cc455b3f11e1c44856a70e78444b9f2103",
+      "capture": "Unpaused native ultrawide R at phase .52; existing sleeve continues to viewport edge"
+    }
+  ],
+  "video": {
+    "file": "C:\\Users\\tehlike47\\game\\docs\\stake-contact-oct25\\stake-fire-reload.webm",
+    "videoCodec": "VP9",
+    "audioCodec": "Opus",
+    "fps": 25,
+    "trimStart": 13.04,
+    "markerFrames": 8,
+    "audioSource": "C:\\Users\\tehlike47\\game\\.dream-loop\\stake-contact-oct25\\right-grip\\video-final\\game-output.webm",
+    "audioDuration": 3.2025999999940393,
+    "bytes": 1219104,
+    "syncScope": "Audio starts when the preroll marker is removed; trim uses the first non-marker video frame. Video frame granularity is 40ms; physical audio-output latency is not measured."
+  }
+}

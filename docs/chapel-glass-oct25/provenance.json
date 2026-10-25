@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-25",
+  "scope": "One procedural 32x64 chapel-glass texture; unchanged geometry, colors and lights",
+  "sourceSHA256": "b0107518140492cc18c4cd7bd41b1e342359ceccf558e9ed1dee22942add3773",
+  "render": "Actual native 1280x720 file-offline game; paused matched camera, original standing eye and churchyard zone lighting; Flare weapon; test-only deterministic seed",
+  "media": [
+    {
+      "file": "docs/chapel-glass-oct25/before.png",
+      "sha256": "6a045d4543f67ecffa20b8cf30d49b0768783adf9f4f850d8214a42a4db9d4e9",
+      "htmlSHA256": "6dd69003987fadb8c4b405d3e94d3833e303d37a86484e33c4ed2fb556c75c99"
+    },
+    {
+      "file": "docs/chapel-glass-oct25/after.png",
+      "sha256": "5af4664c4f65dc3ad3398858ce354c34684bf27e23c5ff10b096080fa70ff447",
+      "htmlSHA256": "cd5579d71ec3675a30e9811b89c666df2d3187ac47e0a39f3cb3f95d2f0b1a6c"
+    },
+    {
+      "file": "docs/chapel-glass-oct25/after-wide.png",
+      "sha256": "394fff55e7fa8db061718abfe5b3f4331861e8198db8345d50d654f74c0d3ab9",
+      "htmlSHA256": "cd5579d71ec3675a30e9811b89c666df2d3187ac47e0a39f3cb3f95d2f0b1a6c"
+    }
+  ],
+  "tools": [
+    {
+      "file": "tools/chapel-material-tests.cjs",
+      "sha256": "ff3b97d1dfdd6b4147faa9f86b25e4d8ba8e0d5d3736b027443e94835ee30bbd"
+    },
+    {
+      "file": "tools/chapel-material-resource-tests.cjs",
+      "sha256": "8cf9f77f03e5a88f7988fc90bbc1128c0b3824e00cb3df08652f42fc869fba5c"
+    }
+  ]
+}

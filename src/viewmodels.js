@@ -438,7 +438,9 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
     });
     // Every vertex stays behind the native near plane; no magnified fallback.
     if(corners.some(p=>p.z<=uq||!Number.isFinite(p.x+p.y)))return;
-    gloveTriangles.push({v:[corners[0],corners[1],corners[2]],asset},{v:[corners[0],corners[2],corners[3]],asset});
+    // A scoped long sleeve may cross the native canvas before its tail strip.
+    const sleeve=options.sideSleeve===true;
+    gloveTriangles.push({v:[corners[0],corners[1],corners[2]],asset,sleeve},{v:[corners[0],corners[2],corners[3]],asset,sleeve});
     if(!asset.extend)return;
     // Continue only the opaque sleeve leaving the bitmap. The original hand
     // quad stays intact; extra polygons start outside its existing UV bounds.
@@ -1113,7 +1115,7 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
   }
   b0=function(mesh,side,options={}) {
     if(arsenalIndex<2)return priorHands.grip(mesh,side,options);
-    if(side>0)paintedHand(mesh,'right',[-.025,-.005,arsenalIndex===8?-.032:-.048],arsenalIndex===8?.195:.205,arsenalBasis(mesh,arsenalIndex));
+    if(side>0)paintedHand(mesh,'right',[-.025,-.005,arsenalIndex===8?-.032:-.048],arsenalIndex===8?.195:.205,arsenalBasis(mesh,arsenalIndex),{sideSleeve:arsenalIndex===9});
     else paintedHand(mesh,'left',[0,-.012,-.016],.15,arsenalBasis(mesh,arsenalIndex,true));
   };
   c0=function(...args){if(arsenalIndex<2)return priorHands.sleeve(...args);};
@@ -2315,13 +2317,13 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       if(t>=0&&t<.52){
         const reach=Qe(t,.015,.52,.10);
         m.push();m.translate(-.060*off*reach,-.120*off*reach,-.040*off*reach);m.roll(.28*off*reach);
-        a.support(m,1119+16*reach,668-11*reach,-.060-.011*reach,.174);m.pop();
+        a.support(m,1119+16*reach,668-78*reach,-.060-.011*reach,.174);m.pop();
       }else{
         const reach=t<0?0:Qe(t,.52,.99,.10);
         m.push();a.pivot(m,1506,799,-.40*pump*reach);
         a.support(m,1119+404*reach,668+86*reach,-.060-.010*reach,.174-.010*reach);m.pop();
       }
-      a.grip(m,1467,837,-.066);m.anchor('muzzle',...a.point(969,515));
+      a.grip(m,1395,780,-.066);m.anchor('muzzle',...a.point(969,515));
     }finally{arsenalIndex=previous;}
   };
 
@@ -2614,6 +2616,17 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       pose.action=Math.max(pose.action,ease(t,0,.012)*(1-ease(t,.04,.11)));
     }
     return pose;
+  };
+  // Use the same dark leather ramp for the authored execution gloves. Scope
+  // only their material IDs; geometry, texture callbacks and held props stay native.
+  const finishDraw=A0t.draw;
+  A0t.draw=function(mesh,pose){
+    const face=mesh.face;
+    mesh.face=function(points,normal,material,...args){
+      return face.call(this,points,normal,material===O.GLOVE?HAND_LEATHER:material,...args);
+    };
+    try{return finishDraw.call(this,mesh,pose);}
+    finally{mesh.face=face;}
   };
   // Finisher wrists now move around the target instead of only appearing at impact.
   const leftFinish = s0t,

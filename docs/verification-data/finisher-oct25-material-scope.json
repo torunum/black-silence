@@ -1,0 +1,446 @@
+{
+  "passed": true,
+  "cases": 21,
+  "scope": "Deterministic finisher poses: native depth/part, glove mask and every pixel outside glove material are exact. Normal/throw wrapper restoration also verified.",
+  "errors": [],
+  "results": [
+    {
+      "input": {
+        "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\stake-contact-oct25\\baseline.html",
+        "sha256": "6dd69003987fadb8c4b405d3e94d3833e303d37a86484e33c4ed2fb556c75c99",
+        "fixture": "C:\\Users\\tehlike47\\game\\.dream-loop\\stake-contact-oct25\\material-final\\fixture-0.html"
+      },
+      "records": [
+        {
+          "kind": 0,
+          "time": 0.12,
+          "pixels": 9924,
+          "mask": "92144407a08e06a4c18e0cbee02b885d1b8a400aa6bc117decd8c2be3548de4f",
+          "outsideRGBA": "e24d6aa29879028ab107aadb99adfe405f50928d8e786307578c87acc2f0e91f",
+          "outsidePalette": "97b25467bfaaeb705b76a62dc8cbc9e0db0231131b64264eec6f7e3e9102f652",
+          "depth": "2f173e6d64d7cbd11acfed1a03dcb393afe6d596b06c56c5c6c9b2fcb2659e90",
+          "part": "5f99841612eb4e328666639b2db7474b4177df40534a748f9a5c3c9439cc3c08"
+        },
+        {
+          "kind": 0,
+          "time": 0.25,
+          "pixels": 4252,
+          "mask": "dbd5f22246452f62ecb3a6670b9e582d850a5c4ebe01ee6b431a6048a29a4d28",
+          "outsideRGBA": "b91b19ab889aab24aac538398c3e9112c7d3e31a490f058c123318fd5b2c90e9",
+          "outsidePalette": "76af6ce12fa337590db7e19ce19f6436c236a7512f411fc68d4daeb772cd65bc",
+          "depth": "ca41300f650f4eba2c0f6995658642d10b4cf88033e8b43dc4a6c230218c8209",
+          "part": "da2c812a1bb285b33e6f4b7d1237d05fa64a468eeb01754f34558e5b75f327db"
+        },
+        {
+          "kind": 0,
+          "time": 0.36,
+          "pixels": 3637,
+          "mask": "d7bb73f80ee2eeaf7c4ec7a2a6a6cec90f0a00715091136ec89000609d2e69ad",
+          "outsideRGBA": "0f81eacde0dedb062695a8cd7a663b2087e8ce65185d1e5819f6ba92a071770f",
+          "outsidePalette": "69592150c1a9ef9151d3a766b298450a33cd19952ece61d611d2011e853ffdd6",
+          "depth": "f7bfc6f4855de010c607084c858018edcf5b2c78f064a4ee46e0e05458ab58b8",
+          "part": "decc147b4fdfda6c0df7e92359dae86619b4d56549df17966257817c4c75432f"
+        },
+        {
+          "kind": 0,
+          "time": 0.55,
+          "pixels": 3737,
+          "mask": "b74d8ee7af0799d390e0c249c5db0798fd24a4f99dbaa374d648ba499776c23f",
+          "outsideRGBA": "ebdc54521a9b32884e97b41cc0e187723178adc299dcc60d25b86734d75c7b05",
+          "outsidePalette": "a864ceddb2b6a08ecc6be272100500a1dc628e86dbfb90a507e31b5643685762",
+          "depth": "63520962bec4e5781a3400741f850adf08c89468828763720873ad953babd4b8",
+          "part": "2d2e684ff5aec9d09086f4620310eda840fec54bbe3e79e956a08981e65f5404"
+        },
+        {
+          "kind": 0,
+          "time": 0.62,
+          "pixels": 3738,
+          "mask": "7f1e66d70a67776909bbb6e0a13eeebf9a15cd6aee213450e24a04ed199f86fb",
+          "outsideRGBA": "fdff6b3a81674747240be1bb10a06dd48dca83f0d23ca0662ee735b0cda3db38",
+          "outsidePalette": "e2cdc2e67ec0368c2b4a166c857ec457226f02a1ff386b092267c4d92b667c16",
+          "depth": "ffc726d54337adf50f529122c6890ec4177a80d5abce1c5a0cc65e1aa6d5e23f",
+          "part": "9fb52d5eef83f027283fb8f91d691039d00c23fe32ea053b54fb078112c0717b"
+        },
+        {
+          "kind": 0,
+          "time": 0.85,
+          "pixels": 4820,
+          "mask": "2252143df7b5689e08541c47b2e13abcdc2a7fc113a4824b00f11984b814d41d",
+          "outsideRGBA": "c7d8e803d8268123ef7ac65d8f537500ee51efdc30a09b439cdd706f9fba5cdf",
+          "outsidePalette": "05ab8fa5320515dc499aeb334ed4a079a9ee27b295af779a4faa5911af992e20",
+          "depth": "f3b28908d09c885c00ffa6c2dd915013c5adb4c31713b7d27c015c53b274f476",
+          "part": "8e931ac29a6ecd487eb66ad75acaf900eba80891f341020cf7a7d0d687b26b70"
+        },
+        {
+          "kind": 0,
+          "time": 0.9,
+          "pixels": 4820,
+          "mask": "2252143df7b5689e08541c47b2e13abcdc2a7fc113a4824b00f11984b814d41d",
+          "outsideRGBA": "c7d8e803d8268123ef7ac65d8f537500ee51efdc30a09b439cdd706f9fba5cdf",
+          "outsidePalette": "05ab8fa5320515dc499aeb334ed4a079a9ee27b295af779a4faa5911af992e20",
+          "depth": "f3b28908d09c885c00ffa6c2dd915013c5adb4c31713b7d27c015c53b274f476",
+          "part": "8e931ac29a6ecd487eb66ad75acaf900eba80891f341020cf7a7d0d687b26b70"
+        },
+        {
+          "kind": 1,
+          "time": 0.12,
+          "pixels": 9855,
+          "mask": "a5f37ea07bbb304f018afb27ab4b3755b11898cd2fe18518b1c4a1c536b0e8c7",
+          "outsideRGBA": "8991ae62ec26398532557459458617a59efc36e0baa9f91784d28c20713c16b0",
+          "outsidePalette": "9b07851eec1d591b605e929268abde5b183d36e0b9c1225de4e3b9f5facd0ece",
+          "depth": "73bdca196a5cccc9601510b0a2f5442086572403c2415d4151c1fd8d93803927",
+          "part": "ae14f4f5d1694d9241300b50d86a40be6a8ba764bf92a5607af8ff09330b7d2f"
+        },
+        {
+          "kind": 1,
+          "time": 0.25,
+          "pixels": 8914,
+          "mask": "e286e2995848ee5bd4e8a2a3438e559b5751ba1533795662b5ff77e0c23b17c6",
+          "outsideRGBA": "ed45301c03c9480881b1f6e76f34b9f980ecc99a17e66bd41ea64e25f48d7ba6",
+          "outsidePalette": "5c7407760afa03dfc42ce62a21b5d954a63055fde875ab7be1b5111d1b89422a",
+          "depth": "8502c80bd0d76012a7f066c2fd07823a818e36518b01a5438b2833bd5e3b7ceb",
+          "part": "0b6137d12dd43d38fcf53b0b0779cc8317768262ae6c2ba372394dcd1d160495"
+        },
+        {
+          "kind": 1,
+          "time": 0.36,
+          "pixels": 3195,
+          "mask": "4e63a4a9687aec282e6ff8ad394d9aea0d1ef52872e9617f2ef98adc70284898",
+          "outsideRGBA": "485f3f2194ab8c6a19ffa58a900a0847328fefb83dd50031b8c957b072a1e6cd",
+          "outsidePalette": "0730c57e4663b900a44c6e9d147cee497ca5882b44bb4f540384becca85ecec8",
+          "depth": "eea784c71ec75854724a964c3fcebdfe9bd987236b87390518eee69e6162b3ed",
+          "part": "ef1873a56b5d2f34d7fda87a5db337e4d5de448d9cffd92663aa2b9fa8481cf5"
+        },
+        {
+          "kind": 1,
+          "time": 0.55,
+          "pixels": 3567,
+          "mask": "9dc62bb9f1ed1dcc45dfaae77020b5a0b749d1e184bd78933ed0568215dc108c",
+          "outsideRGBA": "f064a5cf0a9109218a0b67cf30ac9355f10ae6bb6b48154b9e734728af82b5a6",
+          "outsidePalette": "ddc442c1297a4d05e8009a440c3e925a4ced9837537423badfe2741e715b8e0c",
+          "depth": "066839ce82f691c92ad84d035718ad39ad8da7f13a9c58e9f3e994ffcd4c72ca",
+          "part": "523ecf165c9dc82a174dbf5c68ddb68268dd06fc2c0acc036fc10c03be1a9e48"
+        },
+        {
+          "kind": 1,
+          "time": 0.62,
+          "pixels": 3123,
+          "mask": "a21007fc1e9150379ff97324182ce92c67c2b0eb55d03ae06b3998781f295a2d",
+          "outsideRGBA": "cf1cda1aa59368d1fb18c2ccf3b5114e58fdf332c9ee9a4d4e08dd709237e0fa",
+          "outsidePalette": "a87b7ea6d95251c61a073a62f378dc828d6fa827c62326e2da857fe3534c0837",
+          "depth": "19f3c4a6065a9d21f3e73eccdee9905e66171ff712032535ac663f33349dca42",
+          "part": "88e9c10f9bce6fe15f04f04dc09a369e53941b9d7a3b2f3623ab9d0ec9d471a8"
+        },
+        {
+          "kind": 1,
+          "time": 0.85,
+          "pixels": 3102,
+          "mask": "d73c3a32c78068da7f784842a33de1134aa9f7a35adfa487af6ed4cb05955e3f",
+          "outsideRGBA": "1c94cd800720152a8d664c39c9ad291ab024027bd8ba953c43fecf8455854257",
+          "outsidePalette": "41668278776c68b62c66029e4c56ed7e492bde3872710c933f975ff5e1dea637",
+          "depth": "84112a11b0a5e8c1acd6fcdc37e0989ed3bd16637f724313dade1e2345d4e2b7",
+          "part": "03be9ccb429b3196ff32b63c0156402fbe4b5577f013802cbbfaa2494f70f5b4"
+        },
+        {
+          "kind": 1,
+          "time": 0.9,
+          "pixels": 3168,
+          "mask": "68038651f844c1bd5c2ea171fa86c350212d59270bf471db865d01f053174296",
+          "outsideRGBA": "e4de59fe9792dc7b7b7a087c32bf082af8c9906632cbf35cb6e9238dba23ad93",
+          "outsidePalette": "0b57cda8b960af1dab55b92840a7e680e6ab9d86bd513922920e54bbb1ea4e46",
+          "depth": "3d7ff73831af048f20af3aed7d11eab0d5c6dd6b12c69d985ca411f8c95ee35e",
+          "part": "9807604e8bac8d8306278c4fcaac94234758dc03e80fcc6ce0e1cf2319e4ebb7"
+        },
+        {
+          "kind": 2,
+          "time": 0.12,
+          "pixels": 3830,
+          "mask": "8ce060d7d400d1d3ae70c0c02d65cad8474de234b9d15c340ae1a8094ba82592",
+          "outsideRGBA": "336aa42b3cc150f450011928cc92b00484ed58b071361f10ed443399596366ae",
+          "outsidePalette": "cc2d75ee2aae7e8a7480c5c19405fc10e6d009cb781c406704ab12dd99cc26bc",
+          "depth": "55634ccfaf2b72d855e1cc068003cbd34b11c544c93b01c7e524cc7466052873",
+          "part": "55c94dd7ec60a47678358f5465837926cb12441b4ef8af062b43c22d4b1342c2"
+        },
+        {
+          "kind": 2,
+          "time": 0.25,
+          "pixels": 4535,
+          "mask": "ae6d2291c70bc1e49bfecc874115764e8945e48502d02d5327f5c989c42cb4df",
+          "outsideRGBA": "532cc7c03813b615c1ccd177efc62919133ef0ba002b5244b180558d3343addf",
+          "outsidePalette": "db2ca27d7ff8ca6dfe5e4a059ea024f0a9b47b354108acee937911e32dafa5da",
+          "depth": "ebc80fabc1098991c5e9640ae3b50f152c11da42c2769ea48ba916d122058b6c",
+          "part": "6126e625176d9e30cd0ef2c3e0caf6b9e8167cd0f3322034795d533f218bc0a8"
+        },
+        {
+          "kind": 2,
+          "time": 0.36,
+          "pixels": 3439,
+          "mask": "e8a5b9e8e7726fa7bc90d73a2b96b01596882c48dfe4319839313b8732cc97ad",
+          "outsideRGBA": "9ea1e51a793c1df55303cd5c7a7d229dd6f799c52e4d7cc5cc7063adf5ea7f9a",
+          "outsidePalette": "b6e75ff2949e3ebf2d1e79c62e237b1db8ab7b517f3131858586b03bec7a6bfb",
+          "depth": "07240c0ed58348834460edbb13d9ae51bb852b7f411d42c7d009eca98dadc175",
+          "part": "1b3b167eee1af55042bc84dc0f853d122bffdaf49d8700761abc5ce0d0cfb69a"
+        },
+        {
+          "kind": 2,
+          "time": 0.55,
+          "pixels": 5496,
+          "mask": "b2e21b8713133a6678475bd0bbda1dc6a547b4430ece1bca92122e1f22650594",
+          "outsideRGBA": "b47d4e523ddde94efaefbdb1532141ff0e3793ae6022c8dcdb8753d2891be9ae",
+          "outsidePalette": "5c8c8c687a43a9489de0d4eb0af723f5b56ffbc56f79a599e8de12bd4d220f14",
+          "depth": "313db02d3afa1e7de02dc2fa9c1fd3816e0b175200598352ee4a878d1751d8a9",
+          "part": "7d6e9f67afd7f0bf01b0a5162b65d54026183504716eed33ace027616b48175f"
+        },
+        {
+          "kind": 2,
+          "time": 0.62,
+          "pixels": 6492,
+          "mask": "cfe2dfcc9f9aad2e2f819b9bb2a3e552fe19f7b465c9a9744a7d33562bde9303",
+          "outsideRGBA": "d5a517151af76f11e16578d5c82b551eb21c773e58029da7049f6567d448f217",
+          "outsidePalette": "613c9bbfa13032a440bd770694de5772ea95dc7a69a86b9f86fc9fc2339c861a",
+          "depth": "eac484c4fd01fd704d3b319fad67fa97e1465b8b34a23d9fe1acf1d4cf973cfe",
+          "part": "36f391bdb8d3a9e9f85dc29889006e515f165e9e6eeb610c73b4d0b64f454742"
+        },
+        {
+          "kind": 2,
+          "time": 0.85,
+          "pixels": 5017,
+          "mask": "26003b5fe0ffc112cbbd763e529f9324ad120dacf6c9b63871394033bda6da56",
+          "outsideRGBA": "45d484e20b8329831750c980515c57c9153ae06ed83041fb1cdef1a60053b843",
+          "outsidePalette": "90bfac17c6be0be5e2da7d3f236221efe279e7778630ea9aea64a000185034fe",
+          "depth": "44518a7598273054412e0e568337755bc7d9e285394731088f48bab138bd0412",
+          "part": "a50971f8c63f4364a79dc4f8a7adb0cf748806bb3b4b24eab9d363633b0d7fe1"
+        },
+        {
+          "kind": 2,
+          "time": 0.9,
+          "pixels": 5059,
+          "mask": "df811bdb4b420c938aee2ab70cc36d1fcaaae0bb8088188160bab6a85a08033c",
+          "outsideRGBA": "96ecadce20b9e0d45c000beebc4473ebb2209920227713b27c6d2523bea78e4d",
+          "outsidePalette": "e83c9c80146959d3b0f1b0ddc5d2b1312c1128bd9d037aeb250408561d6b6b50",
+          "depth": "d6a801ffc9d6f49c89749604776375652126c8bb0b51bc541fe2afa198c93123",
+          "part": "0a14aebbc631c001ab1919202ba7c0dd536763a6f05d709591a64ebc0f02c92e"
+        }
+      ]
+    },
+    {
+      "input": {
+        "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\stake-contact-oct25\\combined\\THE-BLACK-SILENCE.html",
+        "sha256": "697219aba3391120a1e0b74b5056050b9dbce774513385a3773485b6e76199b9",
+        "fixture": "C:\\Users\\tehlike47\\game\\.dream-loop\\stake-contact-oct25\\material-final\\fixture-1.html"
+      },
+      "records": [
+        {
+          "kind": 0,
+          "time": 0.12,
+          "pixels": 9924,
+          "mask": "92144407a08e06a4c18e0cbee02b885d1b8a400aa6bc117decd8c2be3548de4f",
+          "outsideRGBA": "e24d6aa29879028ab107aadb99adfe405f50928d8e786307578c87acc2f0e91f",
+          "outsidePalette": "97b25467bfaaeb705b76a62dc8cbc9e0db0231131b64264eec6f7e3e9102f652",
+          "depth": "2f173e6d64d7cbd11acfed1a03dcb393afe6d596b06c56c5c6c9b2fcb2659e90",
+          "part": "5f99841612eb4e328666639b2db7474b4177df40534a748f9a5c3c9439cc3c08"
+        },
+        {
+          "kind": 0,
+          "time": 0.25,
+          "pixels": 4252,
+          "mask": "dbd5f22246452f62ecb3a6670b9e582d850a5c4ebe01ee6b431a6048a29a4d28",
+          "outsideRGBA": "b91b19ab889aab24aac538398c3e9112c7d3e31a490f058c123318fd5b2c90e9",
+          "outsidePalette": "76af6ce12fa337590db7e19ce19f6436c236a7512f411fc68d4daeb772cd65bc",
+          "depth": "ca41300f650f4eba2c0f6995658642d10b4cf88033e8b43dc4a6c230218c8209",
+          "part": "da2c812a1bb285b33e6f4b7d1237d05fa64a468eeb01754f34558e5b75f327db"
+        },
+        {
+          "kind": 0,
+          "time": 0.36,
+          "pixels": 3637,
+          "mask": "d7bb73f80ee2eeaf7c4ec7a2a6a6cec90f0a00715091136ec89000609d2e69ad",
+          "outsideRGBA": "0f81eacde0dedb062695a8cd7a663b2087e8ce65185d1e5819f6ba92a071770f",
+          "outsidePalette": "69592150c1a9ef9151d3a766b298450a33cd19952ece61d611d2011e853ffdd6",
+          "depth": "f7bfc6f4855de010c607084c858018edcf5b2c78f064a4ee46e0e05458ab58b8",
+          "part": "decc147b4fdfda6c0df7e92359dae86619b4d56549df17966257817c4c75432f"
+        },
+        {
+          "kind": 0,
+          "time": 0.55,
+          "pixels": 3737,
+          "mask": "b74d8ee7af0799d390e0c249c5db0798fd24a4f99dbaa374d648ba499776c23f",
+          "outsideRGBA": "ebdc54521a9b32884e97b41cc0e187723178adc299dcc60d25b86734d75c7b05",
+          "outsidePalette": "a864ceddb2b6a08ecc6be272100500a1dc628e86dbfb90a507e31b5643685762",
+          "depth": "63520962bec4e5781a3400741f850adf08c89468828763720873ad953babd4b8",
+          "part": "2d2e684ff5aec9d09086f4620310eda840fec54bbe3e79e956a08981e65f5404"
+        },
+        {
+          "kind": 0,
+          "time": 0.62,
+          "pixels": 3738,
+          "mask": "7f1e66d70a67776909bbb6e0a13eeebf9a15cd6aee213450e24a04ed199f86fb",
+          "outsideRGBA": "fdff6b3a81674747240be1bb10a06dd48dca83f0d23ca0662ee735b0cda3db38",
+          "outsidePalette": "e2cdc2e67ec0368c2b4a166c857ec457226f02a1ff386b092267c4d92b667c16",
+          "depth": "ffc726d54337adf50f529122c6890ec4177a80d5abce1c5a0cc65e1aa6d5e23f",
+          "part": "9fb52d5eef83f027283fb8f91d691039d00c23fe32ea053b54fb078112c0717b"
+        },
+        {
+          "kind": 0,
+          "time": 0.85,
+          "pixels": 4820,
+          "mask": "2252143df7b5689e08541c47b2e13abcdc2a7fc113a4824b00f11984b814d41d",
+          "outsideRGBA": "c7d8e803d8268123ef7ac65d8f537500ee51efdc30a09b439cdd706f9fba5cdf",
+          "outsidePalette": "05ab8fa5320515dc499aeb334ed4a079a9ee27b295af779a4faa5911af992e20",
+          "depth": "f3b28908d09c885c00ffa6c2dd915013c5adb4c31713b7d27c015c53b274f476",
+          "part": "8e931ac29a6ecd487eb66ad75acaf900eba80891f341020cf7a7d0d687b26b70"
+        },
+        {
+          "kind": 0,
+          "time": 0.9,
+          "pixels": 4820,
+          "mask": "2252143df7b5689e08541c47b2e13abcdc2a7fc113a4824b00f11984b814d41d",
+          "outsideRGBA": "c7d8e803d8268123ef7ac65d8f537500ee51efdc30a09b439cdd706f9fba5cdf",
+          "outsidePalette": "05ab8fa5320515dc499aeb334ed4a079a9ee27b295af779a4faa5911af992e20",
+          "depth": "f3b28908d09c885c00ffa6c2dd915013c5adb4c31713b7d27c015c53b274f476",
+          "part": "8e931ac29a6ecd487eb66ad75acaf900eba80891f341020cf7a7d0d687b26b70"
+        },
+        {
+          "kind": 1,
+          "time": 0.12,
+          "pixels": 9855,
+          "mask": "a5f37ea07bbb304f018afb27ab4b3755b11898cd2fe18518b1c4a1c536b0e8c7",
+          "outsideRGBA": "8991ae62ec26398532557459458617a59efc36e0baa9f91784d28c20713c16b0",
+          "outsidePalette": "9b07851eec1d591b605e929268abde5b183d36e0b9c1225de4e3b9f5facd0ece",
+          "depth": "73bdca196a5cccc9601510b0a2f5442086572403c2415d4151c1fd8d93803927",
+          "part": "ae14f4f5d1694d9241300b50d86a40be6a8ba764bf92a5607af8ff09330b7d2f"
+        },
+        {
+          "kind": 1,
+          "time": 0.25,
+          "pixels": 8914,
+          "mask": "e286e2995848ee5bd4e8a2a3438e559b5751ba1533795662b5ff77e0c23b17c6",
+          "outsideRGBA": "ed45301c03c9480881b1f6e76f34b9f980ecc99a17e66bd41ea64e25f48d7ba6",
+          "outsidePalette": "5c7407760afa03dfc42ce62a21b5d954a63055fde875ab7be1b5111d1b89422a",
+          "depth": "8502c80bd0d76012a7f066c2fd07823a818e36518b01a5438b2833bd5e3b7ceb",
+          "part": "0b6137d12dd43d38fcf53b0b0779cc8317768262ae6c2ba372394dcd1d160495"
+        },
+        {
+          "kind": 1,
+          "time": 0.36,
+          "pixels": 3195,
+          "mask": "4e63a4a9687aec282e6ff8ad394d9aea0d1ef52872e9617f2ef98adc70284898",
+          "outsideRGBA": "485f3f2194ab8c6a19ffa58a900a0847328fefb83dd50031b8c957b072a1e6cd",
+          "outsidePalette": "0730c57e4663b900a44c6e9d147cee497ca5882b44bb4f540384becca85ecec8",
+          "depth": "eea784c71ec75854724a964c3fcebdfe9bd987236b87390518eee69e6162b3ed",
+          "part": "ef1873a56b5d2f34d7fda87a5db337e4d5de448d9cffd92663aa2b9fa8481cf5"
+        },
+        {
+          "kind": 1,
+          "time": 0.55,
+          "pixels": 3567,
+          "mask": "9dc62bb9f1ed1dcc45dfaae77020b5a0b749d1e184bd78933ed0568215dc108c",
+          "outsideRGBA": "f064a5cf0a9109218a0b67cf30ac9355f10ae6bb6b48154b9e734728af82b5a6",
+          "outsidePalette": "ddc442c1297a4d05e8009a440c3e925a4ced9837537423badfe2741e715b8e0c",
+          "depth": "066839ce82f691c92ad84d035718ad39ad8da7f13a9c58e9f3e994ffcd4c72ca",
+          "part": "523ecf165c9dc82a174dbf5c68ddb68268dd06fc2c0acc036fc10c03be1a9e48"
+        },
+        {
+          "kind": 1,
+          "time": 0.62,
+          "pixels": 3123,
+          "mask": "a21007fc1e9150379ff97324182ce92c67c2b0eb55d03ae06b3998781f295a2d",
+          "outsideRGBA": "cf1cda1aa59368d1fb18c2ccf3b5114e58fdf332c9ee9a4d4e08dd709237e0fa",
+          "outsidePalette": "a87b7ea6d95251c61a073a62f378dc828d6fa827c62326e2da857fe3534c0837",
+          "depth": "19f3c4a6065a9d21f3e73eccdee9905e66171ff712032535ac663f33349dca42",
+          "part": "88e9c10f9bce6fe15f04f04dc09a369e53941b9d7a3b2f3623ab9d0ec9d471a8"
+        },
+        {
+          "kind": 1,
+          "time": 0.85,
+          "pixels": 3102,
+          "mask": "d73c3a32c78068da7f784842a33de1134aa9f7a35adfa487af6ed4cb05955e3f",
+          "outsideRGBA": "1c94cd800720152a8d664c39c9ad291ab024027bd8ba953c43fecf8455854257",
+          "outsidePalette": "41668278776c68b62c66029e4c56ed7e492bde3872710c933f975ff5e1dea637",
+          "depth": "84112a11b0a5e8c1acd6fcdc37e0989ed3bd16637f724313dade1e2345d4e2b7",
+          "part": "03be9ccb429b3196ff32b63c0156402fbe4b5577f013802cbbfaa2494f70f5b4"
+        },
+        {
+          "kind": 1,
+          "time": 0.9,
+          "pixels": 3168,
+          "mask": "68038651f844c1bd5c2ea171fa86c350212d59270bf471db865d01f053174296",
+          "outsideRGBA": "e4de59fe9792dc7b7b7a087c32bf082af8c9906632cbf35cb6e9238dba23ad93",
+          "outsidePalette": "0b57cda8b960af1dab55b92840a7e680e6ab9d86bd513922920e54bbb1ea4e46",
+          "depth": "3d7ff73831af048f20af3aed7d11eab0d5c6dd6b12c69d985ca411f8c95ee35e",
+          "part": "9807604e8bac8d8306278c4fcaac94234758dc03e80fcc6ce0e1cf2319e4ebb7"
+        },
+        {
+          "kind": 2,
+          "time": 0.12,
+          "pixels": 3830,
+          "mask": "8ce060d7d400d1d3ae70c0c02d65cad8474de234b9d15c340ae1a8094ba82592",
+          "outsideRGBA": "336aa42b3cc150f450011928cc92b00484ed58b071361f10ed443399596366ae",
+          "outsidePalette": "cc2d75ee2aae7e8a7480c5c19405fc10e6d009cb781c406704ab12dd99cc26bc",
+          "depth": "55634ccfaf2b72d855e1cc068003cbd34b11c544c93b01c7e524cc7466052873",
+          "part": "55c94dd7ec60a47678358f5465837926cb12441b4ef8af062b43c22d4b1342c2"
+        },
+        {
+          "kind": 2,
+          "time": 0.25,
+          "pixels": 4535,
+          "mask": "ae6d2291c70bc1e49bfecc874115764e8945e48502d02d5327f5c989c42cb4df",
+          "outsideRGBA": "532cc7c03813b615c1ccd177efc62919133ef0ba002b5244b180558d3343addf",
+          "outsidePalette": "db2ca27d7ff8ca6dfe5e4a059ea024f0a9b47b354108acee937911e32dafa5da",
+          "depth": "ebc80fabc1098991c5e9640ae3b50f152c11da42c2769ea48ba916d122058b6c",
+          "part": "6126e625176d9e30cd0ef2c3e0caf6b9e8167cd0f3322034795d533f218bc0a8"
+        },
+        {
+          "kind": 2,
+          "time": 0.36,
+          "pixels": 3439,
+          "mask": "e8a5b9e8e7726fa7bc90d73a2b96b01596882c48dfe4319839313b8732cc97ad",
+          "outsideRGBA": "9ea1e51a793c1df55303cd5c7a7d229dd6f799c52e4d7cc5cc7063adf5ea7f9a",
+          "outsidePalette": "b6e75ff2949e3ebf2d1e79c62e237b1db8ab7b517f3131858586b03bec7a6bfb",
+          "depth": "07240c0ed58348834460edbb13d9ae51bb852b7f411d42c7d009eca98dadc175",
+          "part": "1b3b167eee1af55042bc84dc0f853d122bffdaf49d8700761abc5ce0d0cfb69a"
+        },
+        {
+          "kind": 2,
+          "time": 0.55,
+          "pixels": 5496,
+          "mask": "b2e21b8713133a6678475bd0bbda1dc6a547b4430ece1bca92122e1f22650594",
+          "outsideRGBA": "b47d4e523ddde94efaefbdb1532141ff0e3793ae6022c8dcdb8753d2891be9ae",
+          "outsidePalette": "5c8c8c687a43a9489de0d4eb0af723f5b56ffbc56f79a599e8de12bd4d220f14",
+          "depth": "313db02d3afa1e7de02dc2fa9c1fd3816e0b175200598352ee4a878d1751d8a9",
+          "part": "7d6e9f67afd7f0bf01b0a5162b65d54026183504716eed33ace027616b48175f"
+        },
+        {
+          "kind": 2,
+          "time": 0.62,
+          "pixels": 6492,
+          "mask": "cfe2dfcc9f9aad2e2f819b9bb2a3e552fe19f7b465c9a9744a7d33562bde9303",
+          "outsideRGBA": "d5a517151af76f11e16578d5c82b551eb21c773e58029da7049f6567d448f217",
+          "outsidePalette": "613c9bbfa13032a440bd770694de5772ea95dc7a69a86b9f86fc9fc2339c861a",
+          "depth": "eac484c4fd01fd704d3b319fad67fa97e1465b8b34a23d9fe1acf1d4cf973cfe",
+          "part": "36f391bdb8d3a9e9f85dc29889006e515f165e9e6eeb610c73b4d0b64f454742"
+        },
+        {
+          "kind": 2,
+          "time": 0.85,
+          "pixels": 5017,
+          "mask": "26003b5fe0ffc112cbbd763e529f9324ad120dacf6c9b63871394033bda6da56",
+          "outsideRGBA": "45d484e20b8329831750c980515c57c9153ae06ed83041fb1cdef1a60053b843",
+          "outsidePalette": "90bfac17c6be0be5e2da7d3f236221efe279e7778630ea9aea64a000185034fe",
+          "depth": "44518a7598273054412e0e568337755bc7d9e285394731088f48bab138bd0412",
+          "part": "a50971f8c63f4364a79dc4f8a7adb0cf748806bb3b4b24eab9d363633b0d7fe1"
+        },
+        {
+          "kind": 2,
+          "time": 0.9,
+          "pixels": 5059,
+          "mask": "df811bdb4b420c938aee2ab70cc36d1fcaaae0bb8088188160bab6a85a08033c",
+          "outsideRGBA": "96ecadce20b9e0d45c000beebc4473ebb2209920227713b27c6d2523bea78e4d",
+          "outsidePalette": "e83c9c80146959d3b0f1b0ddc5d2b1312c1128bd9d037aeb250408561d6b6b50",
+          "depth": "d6a801ffc9d6f49c89749604776375652126c8bb0b51bc541fe2afa198c93123",
+          "part": "0a14aebbc631c001ab1919202ba7c0dd536763a6f05d709591a64ebc0f02c92e"
+        }
+      ]
+    }
+  ]
+}
