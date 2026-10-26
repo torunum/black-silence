@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "case": "same input",
+      "refused": true
+    },
+    {
+      "case": "case alias",
+      "refused": true
+    }
+  ],
+  "syntaxChecks": 2,
+  "immutableInputHashes": [
+    "4b03db10fcf7433e90e2f21e662224d79ce356f3e2bac392ab7ab21cd09c6198",
+    "cfa3f704eecf407002b506cd584d415d660ad4aad66d9d67f4db86db40238839",
+    "e5c3bb8e0978876f1cfc824f37b8e2c13bfb8ce64c1355920d1a187ad0141d0f"
+  ]
+}

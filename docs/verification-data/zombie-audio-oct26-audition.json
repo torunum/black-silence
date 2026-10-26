@@ -1,0 +1,111 @@
+{
+  "format": "mono PCM16 48000Hz",
+  "provenance": "Offline WebAudio audition of existing embedded samples; native z base rate/gain and 40ms release; excludes native spatial/master/reverb bus. No loudness normalization.",
+  "beforeOrder": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "afterOrder": [
+    0,
+    2,
+    0,
+    2,
+    0
+  ],
+  "clips": [
+    {
+      "id": 0,
+      "filtered": false,
+      "rate": 0.9258200997725514,
+      "gain": 0.7663354669650633,
+      "start": 0,
+      "duration": 0.4354922733898865,
+      "stats": {
+        "peak": 0.6411899328231812,
+        "rms": 0.058001982865230464,
+        "samplesAtOrAboveFullScale": 0
+      }
+    },
+    {
+      "id": 0,
+      "filtered": true,
+      "rate": 0.9258200997725514,
+      "gain": 0.7663354669650633,
+      "start": 0,
+      "duration": 0.4354922733898865,
+      "stats": {
+        "peak": 0.552845299243927,
+        "rms": 0.059433227118672716,
+        "samplesAtOrAboveFullScale": 0
+      }
+    },
+    {
+      "id": 1,
+      "filtered": false,
+      "rate": 0.9258200997725514,
+      "gain": 0.7663354669650633,
+      "start": 0,
+      "duration": 0.3490373922673761,
+      "stats": {
+        "peak": 0.7632075548171997,
+        "rms": 0.05209690495948021,
+        "samplesAtOrAboveFullScale": 0
+      }
+    },
+    {
+      "id": 2,
+      "filtered": false,
+      "rate": 0.9258200997725514,
+      "gain": 0.7663354669650633,
+      "start": 0,
+      "duration": 0.4317343438876848,
+      "stats": {
+        "peak": 0.645016074180603,
+        "rms": 0.07273569423080477,
+        "samplesAtOrAboveFullScale": 0
+      }
+    },
+    {
+      "id": 2,
+      "filtered": true,
+      "rate": 0.9258200997725514,
+      "gain": 0.7663354669650633,
+      "start": 0,
+      "duration": 0.4317343438876848,
+      "stats": {
+        "peak": 0.6781631708145142,
+        "rms": 0.07827932313655245,
+        "samplesAtOrAboveFullScale": 0
+      }
+    },
+    {
+      "id": 3,
+      "filtered": false,
+      "rate": 0.9258200997725514,
+      "gain": 0.7663354669650633,
+      "start": 0,
+      "duration": 0.5090081756874507,
+      "stats": {
+        "peak": 0.6284077167510986,
+        "rms": 0.06588658664328578,
+        "samplesAtOrAboveFullScale": 0
+      }
+    },
+    {
+      "id": 4,
+      "filtered": false,
+      "rate": 0.9258200997725514,
+      "gain": 0.7663354669650633,
+      "start": 0,
+      "duration": 0.48466039292468227,
+      "stats": {
+        "peak": 0.7417778372764587,
+        "rms": 0.12767977299864816,
+        "samplesAtOrAboveFullScale": 0
+      }
+    }
+  ]
+}

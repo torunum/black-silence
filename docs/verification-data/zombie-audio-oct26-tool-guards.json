@@ -1,0 +1,15 @@
+{
+  "inputSHA256": "5a455752659c038d5aee45fb66d6165f91692b7a36344bfeb7425bc2013e8ffe",
+  "checks": [
+    {
+      "output": "C:\\Users\\tehlike47\\game\\.dream-loop\\zombie-audio-oct26",
+      "rejected": true,
+      "inputUnchanged": true
+    },
+    {
+      "output": "C:\\USERS\\TEHLIKE47\\GAME\\.DREAM-LOOP\\ZOMBIE-AUDIO-OCT26",
+      "rejected": true,
+      "inputUnchanged": true
+    }
+  ]
+}

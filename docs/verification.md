@@ -1,37 +1,37 @@
-# Doğrulama — 25 Ekim 2026, doldurma hareketi ve cehennem pencereleri
+# Doğrulama — 26 Ekim 2026
 
-Teslim dosyası: `THE-BLACK-SILENCE.html`, **22.656.762 bayt**. SHA256: `4b03db10fcf7433e90e2f21e662224d79ce356f3e2bac392ab7ab21cd09c6198`.
+Teslim dosyası `THE-BLACK-SILENCE.html`, **24.886.358 bayt**. SHA256: `56394da38ad2dff02bffb5a32900daa40cf7c6cd319be7e6a1b850145e6e376d`.
 
-Bu tur Rifle/Tommy şarjör yerleştirme hareketini native olaya hizalar, bitiricinin son vuruşundan sonraki görüş kaymasını giderir ve cehennemin üç pencere grubuna taş derinliği ekler. Cephane, hasar, düşman davranışı ve genel bölüm rotası korunur. Yeni FPS kazancı iddiası yoktur.
+Bu tur handgun görünümünü koruyarak diğer silahların referans oranlarını, bazı gövde/bağlantı detaylarını ve doldurma kadrajını geliştirir. Zombinin darbe sesi daha pes iki mevcut kayda yönlendirilir. Cehennemdeki dört büyük kemer daha ağır taşıyıcı kütle kazanır. Bütün silahlar sıfırdan yeniden yapılmış veya genel FPS artmış değildir.
 
-## Derleme ve son dosya
+## Son birleşik dosya
 
-Son birleşik adayda on silahın gerçek R/RAF doldurma ve cephane tamamlama, ateş, değiştirme, tekme ve çizim cache kontrolleri geçti. Standard builder iki tekrarda aynı çıktıyı üretti; sekiz geçersiz girdi dosya yazmadan reddedildi. Bütün kaynak modülleri gömülü karşılıklarıyla eşleşti.
+Son birleşik adayda on silah için gerçek ateş/R, cephane tamamlama, silah değiştirme/tekme ve render cache akışları geçti. Native prologue rota ve bölüm geçişleri ayrıca doğrulandı. Standart builder bütün modül hashlerini ve native/Village byte bütünlüğünü kontrol eder.
 
-Native motor SHA256 `6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899` ve Village SHA256 `d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627` değişmedi. Önceki yayın `38b1a9aa2933d1523ba2607f3ae39d6d977b926b4d483d031112e085eb078b95` idi. Son modül/rapor hashleri [build bilgisinde](build-info.json) bulunur.
+Native motor ve Village sunumu byte düzeyinde korunur. Önceki yayın `4b03db10fcf7433e90e2f21e662224d79ce356f3e2bac392ab7ab21cd09c6198` idi. Son kaynak/rapor hashleri [build bilgisinde](build-info.json) bulunur.
 
-## Doldurma
+## Silahlar
 
-Rifle ve Tommy'nin şarjör/tambur dönüşü native `rc.seat` / `Ac.seat` aralıklarını izler ve `.60` yerleştirme olayında yerine oturur. İlk çıkarma eğrisinin özgün aritmetiği, el ve parçanın ortak dönüşümleri, geç sürgü/kol hareketi, ses ve cephane korunur.
+Native raster/canvas/yan buffer karşılaştırması, yalnız viewmodel değişen `4baca569…` özel adayında 660 poz kapsadı: 120 birebir, 540 beklenen 1–9 silah farkı, beklenmeyen fark 0. Handgun 0 ile bağımsız tekme/bitirici kareleri aynı kaldı. Bu adayın `fac282…` viewmodels kaynağı son birleşik dosyada aynıdır. Oranlar/kadraj ve seçili mekanik detaylar değişti; cephane veya süreler değişmedi. [Güncel görüntüler ve kesin kapsam](arsenal-model-oct26.md).
 
-Weapon-only adayındaki 2002 eğri örneği sınırlı hareketi, sekiz smoothstep birleşimi hız sürekliliğini, bütün kaynak karşılaştırması yalnız iki authored ifadeyi doğruladı. Native ekran oranı ve gerçek R görüntüleri ayrı raporlanır; bunlar final birleşik dosyada tekrar çalışmış gibi etiketlenmez. [Görsel/zamanlama kapsamı](reload-seating-oct25c.md).
+Görsel çiftler ve ara aday kontrolleri kendi gerçek input hashlerini korur; final birleşik dosyada tekrar koşmuş gibi etiketlenmez. Silahlar hacimsel taşıyıcı ve hareketli parçalara bağlı referans resim yüzeyleri kullanır; her açıdan serbestçe bakılabilen tam 3B asset iddiası yoktur.
 
-## Bitirici
+## Zombi sesi
 
-Son birleşik `4b03…` üzerinde üç tür gerçek E/RAF bitirici tamamlandı; ardından native W, ateş ve fareyle bakış çalıştı. Koşu/dropkick → duvar → sendeleme → E zincirindeki 20 terminal karede son vuruş konumu ve görüş yönü sabit kaldı, hata oluşmadı.
+Yalnız ordinary zombie `z` darbe/pain olayı iki mevcut pes kaydı kullanır. Native varyasyon/RNG sırası, emitter throttle, spatial/room route, saldırı/ölüm ve diğer ses yolları korunur. Decode öncesinde veya decode başarısızsa native fallback çalışır; başlangıçta iki ek ses buffer'ı yaklaşık 151 KiB kullanır.
 
-Aynı combat kaynağını içeren `ee6dca45…` özel adayında 132 izole durum ve önceki 32 kol yaşam döngüsü kontrolü geçti. Eş deterministik koşulda 1.275 düşman/sağlık/ödül/vuruş/zamanlayıcı/dikey durum örneği, bunların içindeki 843 canlı hedef kamera örneği birebir aynıydı. Son vuruş öncesi davranış korunur; yeni engel kaydedilen konumu bozarsa native yatay konum çözümü kalıcı olarak devralır, görüş yönü korunur. Bu kontrollü kurulumlar kampanyanın bütün rastgele karşılaşmaları değildir. [Ayrıntılı kapsam](finisher-recovery-oct25c.md).
+İlk `5a455752…` özel adayda 14 native/lifecycle kontrolü geçti; gerçek fare ateşiyle zombi yaralandı/öldü, diğer ses yolları korundu. Offline önce/sonra WAV'lar aynı rate/gain ile ve normalize edilmeden üretildi; bunlar oyun içi kayıt değildir. Aynı 14 kontrol portable araçla son `56394da3…` birleşik adayda yeniden geçti; hata sıfır. [Final ses raporu](verification-data/zombie-audio-oct26-final.json). [Kapsam ve dinleme örnekleri](zombie-audio-oct26.md).
 
-## Cehennem pencereleri
+## Cehennem mimarisi
 
-Yalnız üç `hellLancetShrine` pencere grubunda mevcut stone/edge/wrought yüzeyleri değişir. Her birine 24 primitive, toplam 72 primitive/864 üçgen eklenir. Altı eş kamerada draw call ve texture/material/renderer geometry sayıları aynı kaldı. Cam yüzeyleri, kaide, ışıklar ve tüm harita/grid/çarpışma/rota/düşman/eşya verisi birebir eşittir.
+Yalnız `hellGreatArch.build` içinde dört kemer ayağı değişir: kademeli kaide, üçlü taş yüzey ve basamaklı arka payanda. Toplam 142 ek primitive / 2.640 üçgen; altı eş native kamerada çizim çağrıları 68/57/63/72/199/195 ve doku 54 / materyal 234 / renderer geometry 159 sayıları aynı kaldı. Yeni ışık/doku/material/shader yok.
 
-`fd74059e…` çevre-only adayında native 15 yürüyüş noktası, ilk canlı encounter, eşya alımı, E çıkış ve sonraki bölüme varış geçti. Beş gerçek bölüm geçişinde scoped hell/ritual dokularının 8/8'i temizlendi, sonraki bölümde ilgili etiket ve temizlenmiş doku yeniden kullanımı sıfırdı. Resident renderer 59 bu koşuda sabitti; global enemy cache'in toplam CPU bitmap sayısı değildir. [Önce/sonra ve kanıt](hell-lancets-oct25c.md).
+`4d7b584c…` çevre-only adayında tüm map/grid/collision/route/entity/item/light verisi birebir eşit; native 15 rota noktası, ilk canlı karşılaşma, E çıkış/Space devamı ve sonraki bölüme varış geçti. Beş gerçek geçişte scoped 8 hell/ritual dokusunun 8/8'i temizlendi, sonraki bölümde ilgili etiket ve disposed yeniden kullanım sıfır. Chapel glass ve global enemy rig CPU cache'i bu sayaca dahil değildir. Testin sabit bekleme süresi native cardReady koşuluyla değiştirildi; oyun davranışı değişmedi. [Gerçek önce/sonra ve sınırlar](hell-architecture-oct26.md).
 
-Son birleşik `4b03…` üzerinde altı native göz yüksekliği/bölge ışığı kamerası ve beş gerçek bölüm geçişi ayrıca geçti. Scoped 8/8 doku temizliği, sıfır sonraki-bölüm etiketi ve sıfır temizlenmiş doku yeniden kullanımı doğrulandı. Eski görsel çiftlerinin fd740 provenance bilgileri korunur; final kontrolü [ayrı raporda](verification-data/hell-lancets-oct25c-final-4b03.json) yer alır.
+Son birleşik `56394da3…` üzerinde 15 rota noktası, native E/Space geçişi ve bölüm 9/geri 0 tekrar geçti. Üç native kamera ve bir kaynak döngüsünde 8/8 dispose, 0 diğer bölüm etiketi/yeniden kullanım ve 0 hata ölçüldü. [Son birleşik ortam raporu](verification-data/hell-architecture-oct26-final-56394da3.json).
 
-## Sınırlar ve paket
+## Teslim ve sınırlar
 
-Testler belirtilen akışları kapsar; bütün kampanyanın hatasız olduğu iddia edilmez. Önceki Soul/Stake temas, cam ve ilk temas hazırlığı kanıtları kendi tarihli sürümlerine aittir. Silahlar gerçek hacim/hareketli parçalara bağlı resim yüzeyleri kullanır, tam serbest açılı modeller değildir.
+Testler belirtilen akışları kapsar; tüm kampanyanın hatasız olduğu veya görsellerin referansla birebir aynı olduğu iddia edilmez. Aynı makinede, aynı başlangıç kamerasında seri ABBA gerçek RAF/R ölçümü yapıldı. Shotgun/Sniper/Nail/Soul için gözlenen FPS sırasıyla 48,70→49,60 / 56,13→56,34 / 49,37→53,31 / 42,63→41,33 idi. Sniper raster süresi 10,31→12,13 ms, Soul 18,86→19,92 ms arttı; büyüyen görünür yüzeyler ücretsiz değildir. Bunlar headless Chrome ve bu sahnedeki kısa bütün-build ölçümleridir, genel FPS garantisi veya optimizasyon iddiası değildir. [Ham ölçüm ve özet](verification-data/arsenal-model-oct26-performance-summary.json).
 
-Yeni paket `dist/THE-BLACK-SILENCE-2026-10-25-REFINEMENTS.zip`. Yalnız Git'te takipli veya açıkça stage edilmiş izinli kaynak/asset/doc/tool dosyaları alınır. Her ZIP girdisi, HTML ve modül/rapor manifest hashleri çalışma dosyalarıyla eşleştirilir. Ignored loglar, özel denemeler, bağımlılıklar ve Git metadatası dışarıda; önceki ZIP'ler korunur.
+Paket `dist/THE-BLACK-SILENCE-2026-10-26-ARSENAL.zip`, açıkça stage edilmiş/takipli izinli kaynak/asset/doc/tool dosyalarından üretilir. Her girdinin SHA'sı, ana HTML ve modül/rapor manifesti doğrulanır. Private denemeler, cache, bağımlılıklar, Git metadatası ve ignored loglar dışarıda; önceki ZIP'ler korunur.

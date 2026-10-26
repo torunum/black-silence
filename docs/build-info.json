@@ -1,106 +1,112 @@
 {
   "passed": true,
-  "bytes": 22656762,
-  "sha256": "4b03db10fcf7433e90e2f21e662224d79ce356f3e2bac392ab7ab21cd09c6198",
+  "bytes": 24886358,
+  "sha256": "56394da38ad2dff02bffb5a32900daa40cf7c6cd319be7e6a1b850145e6e376d",
   "engineSha256": "6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899",
   "villageSha256": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627",
   "moduleHashes": {
     "materials.js": "05e43b45ce521b52cf4d7b172177984699670d9de1261de5f88bf11f42b45517",
     "combat.js": "5f8c099867ca971387f21de80fecc9a83f6ab0b498b82ca153c2ccfe0d18514c",
     "enemy-animation.js": "5dbcfaf8908f8bde69d7c1625bce9ef163e874aab3ff22ded58d08040f1cec54",
-    "viewmodels.js": "9fc125ed1e30ec51921990ee12eb46f190ed62fbba0fe4a445ad33e2385dc049",
+    "viewmodels.js": "fac2821077fe86e235207797d3a7a7bcd024e77f00a44c0bec744271d05d89fa",
     "finishers.js": "8c2c7bdf13e17005c3383054560b155986d8e706b5bfda81e9f1a8224ee3c5b0",
     "reload-audio-data.js": "2f48b10a1225d1c007ee282d3c18f82c5022bb0267ed86d65feadf819ec1be30",
     "reload-audio.js": "6b63eec006c8f7ee98392f323f630879140948f24165ab72b308bfb4b4d6be16",
-    "prologue.js": "cfa3f704eecf407002b506cd584d415d660ad4aad66d9d67f4db86db40238839",
+    "zombie-audio.js": "bc974fbebcfeb7719ca785ca021af6bf7de465e2f0236b94b0b87f9f4525e7df",
+    "prologue.js": "e5c3bb8e0978876f1cfc824f37b8e2c13bfb8ce64c1355920d1a187ad0141d0f",
     "render-warmup.js": "84db971283d86b0cbea7d0181eb3d48d40924936c5d577ab05fd31ca4b7e755c",
     "village-presentation.js": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627"
   },
   "idempotentBuilds": 2,
   "invalidInputsRefusedWithoutWrite": 8,
   "file": "THE-BLACK-SILENCE.html",
-  "verifiedAt": "2026-10-25T16:22:51.495Z",
-  "previousRelease": "38b1a9aa2933d1523ba2607f3ae39d6d977b926b4d483d031112e085eb078b95",
-  "scope": "Rifle and Tommy shared magazine/support-hand seating curves align with the existing native .60 seat event; finisher recovery no longer follows post-kill corpse displacement and released arm origin follows the held view; hell ritual shrine has a bounded lancet recess. Native weapon stats, audio, engine and Village preserved.",
+  "verifiedAt": "2026-10-26T17:35:04.432Z",
+  "previousRelease": "4b03db10fcf7433e90e2f21e662224d79ce356f3e2bac392ab7ab21cd09c6198",
+  "scope": "Handgun preserved; reference-led proportions and framing for weapons1–9, shotgun lockplate, Cross raised lid/hinges, TNT lighter/fuse, Stake grip contact and bounded ultrawide sleeve continuation; scoped zombie pain audio and hell arch masonry.",
   "verificationReports": [
     {
-      "file": "docs/verification-data/finisher-recovery-oct25c-final-4b03db10.json",
-      "sha256": "ebe8b483f4fb3abc439db781b6afaccbe2923145c05d8461dacd0166b6c115a3"
+      "file": "docs/verification-data/arsenal-model-oct26-aspects.json",
+      "sha256": "c4329a531256deb33da68fd3a684e8ddd478bb16916ace56d6e7430f54a254af"
     },
     {
-      "file": "docs/verification-data/finisher-recovery-oct25c-private.json",
-      "sha256": "0d4b6c5e19c2f2e1163a2f5408bda0c5c570dbd17bbb8122931aacb27934de22"
+      "file": "docs/verification-data/arsenal-model-oct26-final-runtime.json",
+      "sha256": "a2a4cc3d7309c36bf172ea8f37c7aa3e7d70ede7d44b1e9e8edcfd549d4053c0"
     },
     {
-      "file": "docs/verification-data/finisher-recovery-oct25c-tool-guards.json",
-      "sha256": "c834a287614d38d3629cc0510177af9027748015cb2d43e999700f42a5213240"
+      "file": "docs/verification-data/arsenal-model-oct26-parity.json",
+      "sha256": "d2fa4e87bd5b6e1cfe5dd7d67d63ef08529971fde5c0eab059cc9ce7dd23f244"
     },
     {
-      "file": "docs/verification-data/hell-lancets-oct25c-final-4b03.json",
-      "sha256": "a3c39164bc73de18961e3400c1a4e9650fbf152e156c3bbaa605603ff8e8ef0b"
+      "file": "docs/verification-data/arsenal-model-oct26-performance-summary.json",
+      "sha256": "60ff8836dd4171ac23e12407e61b296eefe73d16c334676887f11b930d65b1d5"
     },
     {
-      "file": "docs/verification-data/hell-lancets-oct25c-invariants.json",
-      "sha256": "eb12e4a98b858675cdae90a9bdfc0af7e18886dff8efa2aee6655d1ea10a0571"
+      "file": "docs/verification-data/arsenal-model-oct26-performance.json",
+      "sha256": "bf7738e1826dc4c85aebfa7faab300dfec6a38abeeb229a12f5a69a92a393747"
     },
     {
-      "file": "docs/verification-data/hell-lancets-oct25c-navigation.json",
-      "sha256": "1d00ab9bbb1bbac8f568c160b8c7218f8a30245b2458be207952f12c6753edcb"
+      "file": "docs/verification-data/arsenal-model-oct26-presentation.json",
+      "sha256": "f3baa393b945531c80cb0b512d89ee5cb90d2fbfc2640bee22e34c5701040f98"
     },
     {
-      "file": "docs/verification-data/hell-lancets-oct25c-render-lifecycle.json",
-      "sha256": "7f9c9a87c0adfa63251831cd2292ce6080eb1a67627e5e50418264038c32072b"
+      "file": "docs/verification-data/arsenal-model-oct26-source-scope.json",
+      "sha256": "25e6591250a3b0dcbc45ec88761897297e732baf26f0f62eb898d570b8ab05b4"
     },
     {
-      "file": "docs/verification-data/hell-lancets-oct25c-tool-guards.json",
-      "sha256": "148753c0a0149b2e76932ce1fc493c46b8dc3acdad08d373e23689ad05306209"
+      "file": "docs/verification-data/hell-architecture-oct26-final-56394da3.json",
+      "sha256": "eff09ef80a1a1056ad7800d3a889ac8b6f4c9d23003f21a63240b2d4f0c0197d"
     },
     {
-      "file": "docs/verification-data/reload-seating-oct25c-before.json",
-      "sha256": "ffc76668bf400df7f2f18ad89e9f3c6aac4aa3b66de73e2760c390cb30b04a66"
+      "file": "docs/verification-data/hell-architecture-oct26-invariants.json",
+      "sha256": "9ebef2f2669e395eddb9b7b6cff243f6421123fdc13b1557ea4b92d7ef5a2a56"
     },
     {
-      "file": "docs/verification-data/reload-seating-oct25c-curves.json",
-      "sha256": "bd0ca2f437722edc6dc2a5a54972a1daa4872d78f71cf550453b1ffc96e771fd"
+      "file": "docs/verification-data/hell-architecture-oct26-navigation.json",
+      "sha256": "5bfccc66af02308cb398867b2406d63e9d3d6352b31a2102d9112ec439ace341"
     },
     {
-      "file": "docs/verification-data/reload-seating-oct25c-final-build.json",
-      "sha256": "4f0cbca2a07d22da508a58203bd13070856041b64fc8ec30ef29f81949de2ce9"
+      "file": "docs/verification-data/hell-architecture-oct26-render-lifecycle.json",
+      "sha256": "6531aa633a2343ce3c6062ec8f85ef21abbbe946541e7fa499fc0e1ccf441251"
     },
     {
-      "file": "docs/verification-data/reload-seating-oct25c-final-runtime.json",
-      "sha256": "9f21bcfc7b2e790f32ba39bbf9f02e953e7e4d215f0c8ce58fe44721577abd78"
+      "file": "docs/verification-data/hell-architecture-oct26-tool-guards.json",
+      "sha256": "e6e8d5360db847fd4e72405d95d84ee11ad4e99782996a58ff6f87d0c968ef53"
     },
     {
-      "file": "docs/verification-data/reload-seating-oct25c-output-guards.json",
-      "sha256": "1abdaec60dcb0a4e4a4c1f0ba05a626937198a6773df6e30a6436d6dbf3da2e1"
+      "file": "docs/verification-data/zombie-audio-oct26-audition.json",
+      "sha256": "747d210a0414ba8e57205465ffbe037a251c6c38fda31d7078dd19f3bc48f504"
     },
     {
-      "file": "docs/verification-data/reload-seating-oct25c-parity.json",
-      "sha256": "3f22490cc5d35635c261343db1946f1f9192ae7c15cfe00c8403f7ffa3e5fc8e"
+      "file": "docs/verification-data/zombie-audio-oct26-final.json",
+      "sha256": "4b84002dd76222cf46bb23187fe0f3b08072b0f7686b0c9606f97680f36bc966"
     },
     {
-      "file": "docs/verification-data/reload-seating-oct25c-rifle-aspects.json",
-      "sha256": "8e75fed7bb470295b6200ba84d0be8a01c2caba759fae2d19f20448faa67e560"
+      "file": "docs/verification-data/zombie-audio-oct26-private.json",
+      "sha256": "cac410abfb35b927ea33069d254468b7bf037c8bd699a0c5d910bdd77e6de98e"
     },
     {
-      "file": "docs/verification-data/reload-seating-oct25c-tommy-aspects.json",
-      "sha256": "2a9a4f44a2c61ef3634908538317c39988de71def9f38e5f58fe8e3c002aaac5"
+      "file": "docs/verification-data/zombie-audio-oct26-tool-guards.json",
+      "sha256": "7a50caf04ae23444108ffe7377b3a099366015bfbcf98ddb30085ea85789c20c"
     }
   ],
   "viewmodelParity": {
-    "baselineSHA256": "38b1a9aa2933d1523ba2607f3ae39d6d977b926b4d483d031112e085eb078b95",
-    "candidateSHA256": "ccc9f8eafd5f3707c7686e4329d99bfc64c2b18c2be1472e1dcace47a6821129",
-    "sourceSHA256": "9fc125ed1e30ec51921990ee12eb46f190ed62fbba0fe4a445ad33e2385dc049",
+    "baselineSHA256": "4b03db10fcf7433e90e2f21e662224d79ce356f3e2bac392ab7ab21cd09c6198",
+    "candidateSHA256": "4baca569e8d9d68098a6bd615cf81041d6405053a20aa083095da0624f3a4321",
+    "sourceSHA256": "fac2821077fe86e235207797d3a7a7bcd024e77f00a44c0bec744271d05d89fa",
     "comparisons": 660,
-    "exact": 626,
-    "expectedRifleTommySeatingDifferences": 34,
+    "exact": 120,
+    "expectedWeapons1To9Differences": 540,
     "unexpectedDifferences": 0
   },
+  "mediaManifest": {
+    "file": "docs/arsenal-model-oct26/provenance.json",
+    "sha256": "e614631e5fe041412a6ef8ea63f8d3dc8dc765bf87fbd09466f5d3bc487ca958"
+  },
   "limitations": [
-    "No general frame-rate or audio-quality improvement is claimed; this pass changes mechanical animation timing, camera recovery and local architecture.",
-    "The deterministic weapon comparison is the weapon-only intermediate pair; the final combined candidate separately passed native runtime and integration tests.",
-    "Screenshots and clips retain actual input provenance; background RNG and native capture phase differences are not pixel-parity evidence.",
-    "Validation covers documented flows, not every campaign state."
+    "No general FPS improvement is claimed. Final host-specific ABBA observations show higher Sniper/Soul raster cost; Soul reload mean frame FPS42.63→41.33.",
+    "Models retain reference-derived articulated2.5D surfaces and volumetric backing, not full arbitrary-view3D reconstruction.",
+    "Weapon-only parity/aspect reports preserve their intermediate input hashes; final combined runtime/audio/environment/build checks are separately identified.",
+    "Video uses actual native RAF and WebAudio with25fps capture; background/phase variation in screenshots is not deterministic parity evidence.",
+    "Validation covers documented flows, not every campaign state or hardware/aspect combination."
   ]
 }

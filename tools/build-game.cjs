@@ -50,6 +50,7 @@ const code = [
   "finishers.js",
   "reload-audio-data.js",
   "reload-audio.js",
+  "zombie-audio.js",
   "prologue.js",
   "render-warmup.js",
 ]

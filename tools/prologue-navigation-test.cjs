@@ -24,7 +24,7 @@ window.__PROLOGUE_NAV = {
     V5(true);
   },
   reload: Bm,
-  exit: () => ({x:z0.exit.x,z:z0.exit.z,nx:z0.exit.nx,nz:z0.exit.nz,phase:oe.phase,nextLevel:hR(T.level)}),
+  exit: () => ({x:z0.exit.x,z:z0.exit.z,nx:z0.exit.nx,nz:z0.exit.nz,phase:oe.phase,nextLevel:hR(T.level),cardReady:oe.phase==="card"&&oe.card>=pc.cardAfter}),
 };
 `;
 const fixture = path.join(output, "navigation-study.html");
@@ -169,7 +169,7 @@ fs.writeFileSync(fixture, source.replace(anchor, study + anchor));
     await page.waitForFunction(()=>window.__PROLOGUE_NAV.exit().phase!=="idle",null,{timeout:4000});
     const exitPhase=await page.evaluate(()=>window.__PROLOGUE_NAV.exit().phase);
     await page.waitForFunction(()=>window.__PROLOGUE_NAV.exit().phase==="card",null,{timeout:15000});
-    await page.waitForTimeout(1500);
+    await page.waitForFunction(()=>window.__PROLOGUE_NAV.exit().cardReady,null,{timeout:15000});
     await page.keyboard.press("Space");
     await page.waitForFunction(nextLevel=>{
       const q=window.__BLACK_SILENCE_QA;

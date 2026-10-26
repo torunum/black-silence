@@ -1,0 +1,147 @@
+{
+  "inputHTMLSHA256": "5a455752659c038d5aee45fb66d6165f91692b7a36344bfeb7425bc2013e8ffe",
+  "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\zombie-audio-oct26\\candidate.html",
+  "checks": [
+    "Two authored clips ready at first playable scene",
+    "Real held mouse shots: z pain uses own recordings; native attack/death remain",
+    "Non-z pain and z alert/attack/death retain native sample routing",
+    "Native 40ms same-emitter throttle retained",
+    "Natural source end releases all owned nodes",
+    "pause stops active custom voices",
+    "reset stops active custom voices",
+    "map stops active custom voices",
+    "mute stops active custom voices",
+    "hidden stops active custom voices",
+    "blur stops active custom voices",
+    "death stops active custom voices",
+    "Real AudioContext replacement prepares own two recordings without stale buffers",
+    "Decode failure retains native fallback instead of silent/missing pain"
+  ],
+  "errors": [],
+  "combat": {
+    "events": [
+      {
+        "kind": "z",
+        "event": "attack",
+        "key": "moan.attack",
+        "rate": 0.9357433793150491,
+        "gain": 0.7663354669650633
+      },
+      {
+        "kind": "z",
+        "event": "attack",
+        "key": "moan.attack",
+        "rate": 0.8951223702137499,
+        "gain": 0.7663354669650633
+      },
+      {
+        "kind": "z",
+        "event": "death",
+        "key": "moan.death",
+        "rate": 0.941254083423019,
+        "gain": 0.7663354669650633
+      }
+    ],
+    "custom": [
+      {
+        "type": "play",
+        "path": "../../assets/sfx/moan.pain.2.mp3",
+        "rate": 0.910131954940348,
+        "gain": 0.7663354669650633,
+        "duration": 0.39970833333333333
+      },
+      {
+        "type": "play",
+        "path": "../../assets/sfx/moan.pain.0.mp3",
+        "rate": 0.9235216623386016,
+        "gain": 0.7663354669650633,
+        "duration": 0.4031875
+      },
+      {
+        "type": "play",
+        "path": "../../assets/sfx/moan.pain.2.mp3",
+        "rate": 0.899220981249224,
+        "gain": 0.7663354669650633,
+        "duration": 0.39970833333333333
+      }
+    ],
+    "enemy": {
+      "hp": -14,
+      "dead": true
+    },
+    "mag": 3
+  },
+  "routing": [
+    {
+      "kind": "f",
+      "event": "pain",
+      "key": "moan.pain",
+      "rate": 1.1596187527033217,
+      "gain": 0.72346733247202
+    },
+    {
+      "kind": "m",
+      "event": "pain",
+      "key": "moan.pain",
+      "rate": 0.8904518851056744,
+      "gain": 0.6751789995156392
+    },
+    {
+      "kind": "w",
+      "event": "pain",
+      "key": "skitter.pain",
+      "rate": 0.9970117163658142,
+      "gain": 0.6229008531680684
+    },
+    {
+      "kind": "z",
+      "event": "alert",
+      "key": "moan.alert",
+      "rate": 0.9269815016850231,
+      "gain": 0.7663354669650633
+    },
+    {
+      "kind": "z",
+      "event": "attack",
+      "key": "moan.attack",
+      "rate": 0.955025577812299,
+      "gain": 0.7663354669650633
+    },
+    {
+      "kind": "z",
+      "event": "death",
+      "key": "moan.death",
+      "rate": 0.9135222738291177,
+      "gain": 0.7663354669650633
+    }
+  ],
+  "replacement": {
+    "old": "closed",
+    "ready": true,
+    "active": 1,
+    "last": {
+      "type": "play",
+      "path": "../../assets/sfx/moan.pain.0.mp3",
+      "rate": 0.8917198122823827,
+      "gain": 0.7663354669650633,
+      "duration": 0.4031875
+    }
+  },
+  "failure": {
+    "ready": false,
+    "events": [
+      {
+        "kind": "z",
+        "event": "pain",
+        "key": "moan.pain",
+        "rate": 0.928823931546562,
+        "gain": 0.7663354669650633
+      }
+    ],
+    "active": 0
+  },
+  "limits": [
+    "Native gameplay combat used real held mouse input; other sound and lifecycle cases use native function entry points.",
+    "Hidden case directly exercises shared cleanup; blur event is dispatched. No listening or general sound-quality claim."
+  ]
+}

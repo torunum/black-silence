@@ -1,0 +1,55 @@
+{
+  "finalInputSHA256": "56394da38ad2dff02bffb5a32900daa40cf7c6cd319be7e6a1b850145e6e376d",
+  "viewmodelsSHA256": "fac2821077fe86e235207797d3a7a7bcd024e77f00a44c0bec744271d05d89fa",
+  "records": [
+    {
+      "file": "arsenal-idle-sheet.png",
+      "sha256": "700b1a8378fbfced8168026f4db457b310e31e262aab1832884824b4b6d23155",
+      "bytes": 1160669,
+      "inputSHA256": "56394da38ad2dff02bffb5a32900daa40cf7c6cd319be7e6a1b850145e6e376d",
+      "scope": "Nine full-viewport native idle frames arranged as thumbnails; no game-art editing."
+    },
+    {
+      "file": "arsenal-reloads.webm",
+      "sha256": "a0f47ba89e6525d5f0de98dbbd5312f17ebfc5d7259269fab48bfb4dca9bb6d6",
+      "bytes": 11106997,
+      "inputSHA256": "56394da38ad2dff02bffb5a32900daa40cf7c6cd319be7e6a1b850145e6e376d",
+      "scope": "Uninterrupted actual native keyboard reloads for weapons1–9, with game WebAudio. QA supplies ammo and removes enemies; not a synthetic animation."
+    },
+    {
+      "file": "cross-after.png",
+      "sha256": "d94377a549a236560e88841a166c76c5308181afb3ea89a3b4f322574b624cba",
+      "bytes": 538855,
+      "inputSHA256": "56394da38ad2dff02bffb5a32900daa40cf7c6cd319be7e6a1b850145e6e376d",
+      "scope": "Native1280x720 idle screenshot; no viewPose override."
+    },
+    {
+      "file": "nail-after.png",
+      "sha256": "d3f1993edd5a5907c43d4ecbe02b6b9227dbabf9ea86f94d18955bd068f62a24",
+      "bytes": 539512,
+      "inputSHA256": "56394da38ad2dff02bffb5a32900daa40cf7c6cd319be7e6a1b850145e6e376d",
+      "scope": "Native1280x720 idle screenshot; no viewPose override."
+    },
+    {
+      "file": "nail-before.png",
+      "sha256": "8ceb0d994cd5b148e9f41e1e40c97c74a83ad333672d7d5b4c8043cad6236416",
+      "bytes": 501425,
+      "inputSHA256": "4b03db10fcf7433e90e2f21e662224d79ce356f3e2bac392ab7ab21cd09c6198",
+      "scope": "Native1280x720 idle screenshot; no viewPose override."
+    },
+    {
+      "file": "rifle-after.png",
+      "sha256": "17aa6dd00d371ff058a182ed22bf46df8241e703907287bbcd51dc4911d8c338",
+      "bytes": 513011,
+      "inputSHA256": "56394da38ad2dff02bffb5a32900daa40cf7c6cd319be7e6a1b850145e6e376d",
+      "scope": "Native1280x720 idle screenshot; no viewPose override."
+    }
+  ],
+  "video": {
+    "fps": 25,
+    "duration": 41.804100000023844,
+    "bytes": 11106997,
+    "trimStart": 14.08,
+    "syncScope": "Audio starts when the preroll marker is removed; trim uses the first non-marker video frame. Video frame granularity is 40ms; physical audio-output latency is not measured."
+  }
+}

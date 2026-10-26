@@ -280,20 +280,28 @@
       const halfWidth = spec.w || 3.35;
       for (const side of [-1, 1]) {
         const x = side * halfWidth;
-        // Separate stone courses keep block dimensions human-scaled on the
-        // tall pier instead of stretching one texture over an entire column.
-        const courses = Math.ceil(spring / 0.7), course = spring / courses;
-        for (let i = 0; i < courses; i++) {
-          box("hellBasalt", .66, course - 0.012, 1.02, E(x, base + (i + 0.5) * course, 0));
-          for(const shaft of [-1,1])
-            cylinder("hellEdge",.1,.1,course-.012,E(x+shaft*.34,base+(i+.5)*course,-.38),6);
+        // Mass stays on the outer/lava side of the existing pier. Layered
+        // plinths and engaged shafts give the arch a grounded structural base.
+        const courses=Math.ceil(spring/.7),course=spring/courses;
+        for(let i=0;i<courses;i++) {
+          const cy=base+(i+.5)*course;
+          box("hellBasalt",.80,course-.012,1.10,E(x+side*.07,cy,.04));
+          for(const shaft of [-1,0,1])
+            cylinder("hellEdge",shaft===0?.19:.15,shaft===0?.19:.15,course-.012,
+              E(x+side*.08+shaft*.32,cy,shaft===0?-.58:-.43),6);
         }
-        box("hellEdge", .98, 0.18, 1.35, E(x, base + 0.23, 0));
-        box("hellEdge", .92, 0.16, 1.24, E(x, base + spring - 0.08, 0));
-        box("hellBronze", .88, 0.1, 1.18, E(x, base + spring - 0.25, 0));
-        box("hellBasalt", .64, spring * .64, 2.1, E(x + side * .1, base + spring * .32, 1.0));
-        box("hellBasalt", .52, spring * .5, .8,
-          E(x + side * .1, base + spring * .68, 1.0, .22, 0, 0));
+        for(const [width,depth,y,height,offset] of [[1.60,1.72,.14,.28,.32],[1.32,1.48,.36,.16,.18],[1.10,1.30,.51,.14,.07]])
+          box("hellBasalt",width,height,depth,E(x+side*offset,base+y,.18));
+        box("hellEdge",1.36,.10,1.52,E(x+side*.18,base+.45,.18));
+        box("hellEdge",1.02,.20,1.38,E(x+side*.06,base+spring-.08,0));
+        box("hellBronze",.92,.09,1.22,E(x+side*.06,base+spring-.25,0));
+        // Stepped rear buttress overlaps the core, never the walking opening.
+        for(const [fraction,depth,width,offset] of [[.30,1.90,.98,.22],[.52,1.48,.85,.16],[.72,1.06,.72,.12]]) {
+          const h=spring*fraction;
+          box("hellBasalt",width,h,depth,E(x+side*offset,base+h/2,.90));
+          box("hellEdge",width+.06,.11,depth+.06,E(x+side*offset,base+h,.90));
+        }
+        box("hellBasalt",.62,spring*.27,.76,E(x+side*.10,base+spring*.79,.83,.22,0,0));
         // Low fire slot brightens the foot, not a new dynamic light.
         box("hellGlass", 0.08, 0.72, 0.018, E(x - side * 0.23, base + 0.62, -0.525));
       }

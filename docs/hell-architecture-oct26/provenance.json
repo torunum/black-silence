@@ -1,0 +1,27 @@
+{
+  "description": "Native renderer, equal seeded cameras and native eye/zone; no image postprocessing",
+  "beforeSourceSHA256": "cfa3f704eecf407002b506cd584d415d660ad4aad66d9d67f4db86db40238839",
+  "sourceSHA256": "e5c3bb8e0978876f1cfc824f37b8e2c13bfb8ce64c1355920d1a187ad0141d0f",
+  "files": [
+    {
+      "file": "before-arena-focus.png",
+      "sha256": "44342944d3a1ae7423514f14c72eb622f1c92746787644d969b89078a70bc0a9",
+      "inputSHA256": "4b03db10fcf7433e90e2f21e662224d79ce356f3e2bac392ab7ab21cd09c6198"
+    },
+    {
+      "file": "after-arena-focus.png",
+      "sha256": "f75348625e41bde574cab1897cb6bc52d44d4cfe472b7dc50dab3ae28192a460",
+      "inputSHA256": "4d7b584c8fcac153b37b1e1d7c0dd477f9995e372fb81cc441aec62166f7d258"
+    },
+    {
+      "file": "before-bridge.png",
+      "sha256": "5cbd4ed5218b5b9c6ad3889b9a175f9bbc9bc9fe27b8108b604c3d71fae59480",
+      "inputSHA256": "4b03db10fcf7433e90e2f21e662224d79ce356f3e2bac392ab7ab21cd09c6198"
+    },
+    {
+      "file": "after-bridge.png",
+      "sha256": "bd2878c66e24beab469ac298215190092004432cbd3bedfd14f0f5e9a2bda78b",
+      "inputSHA256": "4d7b584c8fcac153b37b1e1d7c0dd477f9995e372fb81cc441aec62166f7d258"
+    }
+  ]
+}

@@ -1,0 +1,405 @@
+{
+  "passed": true,
+  "input": {
+    "sha256": "56394da38ad2dff02bffb5a32900daa40cf7c6cd319be7e6a1b850145e6e376d",
+    "bytes": 24886358,
+    "prologueSha256": "e5c3bb8e0978876f1cfc824f37b8e2c13bfb8ce64c1355920d1a187ad0141d0f"
+  },
+  "navigation": {
+    "passed": true,
+    "scope": "Live AI through first encounter; remaining route validates movement, collision, elevation, E exit, next-level arrival and material scope",
+    "results": [
+      {
+        "name": "chapel",
+        "ai": true,
+        "at": [
+          58.99022504787274,
+          9.006037937476638
+        ],
+        "ticks": 1062,
+        "minHP": 100,
+        "hp": 100,
+        "shotgun": true,
+        "shells": 5
+      },
+      {
+        "name": "crypt-landing",
+        "ai": true,
+        "at": [
+          19.03010289286279,
+          18.970628273191444
+        ],
+        "ticks": 1103,
+        "minHP": 100,
+        "hp": 100,
+        "shotgun": true,
+        "shells": 5
+      },
+      {
+        "name": "first-encounter",
+        "ai": true,
+        "encounter": true,
+        "at": [
+          19.000000002091994,
+          35.619463369045285
+        ],
+        "ticks": 377,
+        "minHP": 100,
+        "hp": 100
+      },
+      {
+        "name": "first-bridge-near",
+        "ai": false,
+        "at": [
+          20.95586482355162,
+          52.95696369240925
+        ],
+        "ticks": 459,
+        "minHP": 100,
+        "hp": 100,
+        "shotgun": true,
+        "shells": 5
+      },
+      {
+        "name": "first-bridge-far",
+        "ai": false,
+        "at": [
+          36.933770685069405,
+          52.999999999999844
+        ],
+        "ticks": 413,
+        "minHP": 100,
+        "hp": 100,
+        "shotgun": true,
+        "shells": 5
+      },
+      {
+        "name": "east-passage",
+        "ai": false,
+        "at": [
+          58.94015988345131,
+          45.0620609305129
+        ],
+        "ticks": 617,
+        "minHP": 100,
+        "hp": 100,
+        "shotgun": true,
+        "shells": 11
+      },
+      {
+        "name": "second-bridge-near",
+        "ai": false,
+        "at": [
+          80.99823310182593,
+          54.998233102177615
+        ],
+        "ticks": 626,
+        "minHP": 100,
+        "hp": 100,
+        "shotgun": true,
+        "shells": 11
+      },
+      {
+        "name": "second-bridge-far",
+        "ai": false,
+        "at": [
+          80.99999987391247,
+          61.01757800065729
+        ],
+        "ticks": 155,
+        "minHP": 100,
+        "hp": 100,
+        "shotgun": true,
+        "shells": 11
+      },
+      {
+        "name": "arena-entry",
+        "ai": false,
+        "at": [
+          79.00585054163658,
+          84.99039804348378
+        ],
+        "ticks": 631,
+        "minHP": 100,
+        "hp": 100,
+        "shotgun": true,
+        "shells": 11
+      },
+      {
+        "name": "arena-platform",
+        "ai": false,
+        "at": [
+          67.04493350043126,
+          104.95506632829613
+        ],
+        "ticks": 619,
+        "minHP": 100,
+        "hp": 100,
+        "shotgun": true,
+        "shells": 11
+      },
+      {
+        "name": "arena-east-bridge",
+        "ai": false,
+        "at": [
+          91.01303595223098,
+          105.01681878026345
+        ],
+        "ticks": 630,
+        "minHP": 100,
+        "hp": 100,
+        "shotgun": true,
+        "shells": 11
+      },
+      {
+        "name": "ascent-turn",
+        "ai": false,
+        "at": [
+          108.95513236827863,
+          104.99999999999996
+        ],
+        "ticks": 463,
+        "minHP": 100,
+        "hp": 100,
+        "shotgun": true,
+        "shells": 11
+      },
+      {
+        "name": "stair-foot",
+        "ai": false,
+        "at": [
+          112.99353413469989,
+          97.01058015353286
+        ],
+        "ticks": 226,
+        "minHP": 100,
+        "hp": 100,
+        "shotgun": true,
+        "shells": 11
+      },
+      {
+        "name": "climb-refuge",
+        "ai": false,
+        "at": [
+          118.93825306104216,
+          53.06174647467193
+        ],
+        "ticks": 1170,
+        "minHP": 100,
+        "hp": 100,
+        "shotgun": true,
+        "shells": 11
+      },
+      {
+        "name": "exit-approach",
+        "ai": false,
+        "at": [
+          107.06230265183778,
+          18.062302645278233
+        ],
+        "ticks": 974,
+        "minHP": 100,
+        "hp": 100,
+        "shotgun": true,
+        "shells": 11
+      }
+    ],
+    "exitPhase": "walk",
+    "initialHellMaterials": 8,
+    "materialScope": {
+      "nextLevel": {
+        "level": 9,
+        "bakedMeshes": 0,
+        "scopedTextures": 0,
+        "emberObjects": 0
+      },
+      "returned": {
+        "level": 0,
+        "bakedMeshes": 8,
+        "scopedTextures": 3,
+        "emberObjects": 2
+      },
+      "rebuilt": {
+        "level": 0,
+        "bakedMeshes": 8,
+        "scopedTextures": 3,
+        "emberObjects": 2
+      }
+    },
+    "errors": []
+  },
+  "resourceSmoke": {
+    "method": "Existing native resource harness, one transition cycle instead of five; standard three cameras.",
+    "fixtureSHA256": "ab6c0a7c23fdcb1e3549dd937db81992505512d2205724a8d5eba350e4bacbf6",
+    "cameras": [
+      {
+        "name": "arena",
+        "index": 2,
+        "active": 2,
+        "id": "hell",
+        "player": [
+          67,
+          3.1,
+          105
+        ],
+        "camera": [
+          67,
+          3.1,
+          105
+        ],
+        "expectedEyeY": 3.1,
+        "fog": [
+          0.10196078431372549,
+          0.0784313725490196,
+          0.06666666666666667
+        ],
+        "expectedFog": [
+          0.10196078431372549,
+          0.0784313725490196,
+          0.06666666666666667
+        ],
+        "density": 0.0345,
+        "expectedDensity": 0.0345,
+        "ambient": [
+          0.6431372549019608,
+          0.611764705882353,
+          0.5725490196078431
+        ],
+        "expectedAmbient": [
+          0.6431372549019608,
+          0.611764705882353,
+          0.5725490196078431
+        ],
+        "intensity": 0.49559999999999993,
+        "expectedIntensity": 0.49559999999999993,
+        "render": {
+          "frame": 323,
+          "calls": 68,
+          "triangles": 124174,
+          "points": 1828,
+          "lines": 0
+        }
+      },
+      {
+        "name": "pyre",
+        "index": 2,
+        "active": 2,
+        "id": "hell",
+        "player": [
+          67,
+          3.1,
+          102
+        ],
+        "camera": [
+          67,
+          3.1,
+          102
+        ],
+        "expectedEyeY": 3.1,
+        "fog": [
+          0.10196078431372549,
+          0.0784313725490196,
+          0.06666666666666667
+        ],
+        "expectedFog": [
+          0.10196078431372549,
+          0.0784313725490196,
+          0.06666666666666667
+        ],
+        "density": 0.0345,
+        "expectedDensity": 0.0345,
+        "ambient": [
+          0.6431372549019608,
+          0.611764705882353,
+          0.5725490196078431
+        ],
+        "expectedAmbient": [
+          0.6431372549019608,
+          0.611764705882353,
+          0.5725490196078431
+        ],
+        "intensity": 0.49559999999999993,
+        "expectedIntensity": 0.49559999999999993,
+        "render": {
+          "frame": 347,
+          "calls": 72,
+          "triangles": 124164,
+          "points": 1828,
+          "lines": 0
+        }
+      },
+      {
+        "name": "bridge",
+        "index": 2,
+        "active": 2,
+        "id": "hell",
+        "player": [
+          21,
+          3.1,
+          53
+        ],
+        "camera": [
+          21,
+          3.1,
+          53
+        ],
+        "expectedEyeY": 3.1,
+        "fog": [
+          0.10196078431372549,
+          0.0784313725490196,
+          0.06666666666666667
+        ],
+        "expectedFog": [
+          0.10196078431372549,
+          0.0784313725490196,
+          0.06666666666666667
+        ],
+        "density": 0.0345,
+        "expectedDensity": 0.0345,
+        "ambient": [
+          0.6431372549019608,
+          0.611764705882353,
+          0.5725490196078431
+        ],
+        "expectedAmbient": [
+          0.6431372549019608,
+          0.611764705882353,
+          0.5725490196078431
+        ],
+        "intensity": 0.49559999999999993,
+        "expectedIntensity": 0.49559999999999993,
+        "render": {
+          "frame": 366,
+          "calls": 199,
+          "triangles": 179786,
+          "points": 2008,
+          "lines": 0
+        }
+      }
+    ],
+    "counts": {
+      "textures": 54,
+      "images": 50,
+      "materials": 234,
+      "renderer": {
+        "geometries": 158,
+        "textures": 50
+      }
+    },
+    "lifecycle": [
+      {
+        "cycle": 0,
+        "oldTextures": 8,
+        "disposed": 8,
+        "taggedNextLevel": 0,
+        "reusedDisposedTextures": 0,
+        "flames": 1,
+        "textures": 60,
+        "images": 49,
+        "resident": 59
+      }
+    ],
+    "errors": []
+  },
+  "limitations": "Full before/after map and five-cycle resource comparisons are on the earlier environment-only candidate, unchanged prologue source. No performance claim."
+}

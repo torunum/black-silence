@@ -1,0 +1,125 @@
+{
+  "inputSHA256": "4baca569e8d9d68098a6bd615cf81041d6405053a20aa083095da0624f3a4321",
+  "sourceSHA256": "fac2821077fe86e235207797d3a7a7bcd024e77f00a44c0bec744271d05d89fa",
+  "baselineSourceSHA256": "9fc125ed1e30ec51921990ee12eb46f190ed62fbba0fe4a445ad33e2385dc049",
+  "footAndFinisherTailExact": true,
+  "nativeGameplayTimingUnchanged": true,
+  "sourceChanges": [
+    {
+      "before": "[[2,[548,314],.00045],[3,[1320,302],.00045],[4,[584,794],.00044],[5,[1410,806],.00048]]",
+      "after": "[[2,[548,314],.00063],[3,[1320,302],.00062],[4,[584,794],.000585],[5,[1410,806],.000586]]"
+    },
+    {
+      "before": "scale=.00046*(1+depth/.65)",
+      "after": "scale=.00060*(1+depth/.65)"
+    },
+    {
+      "before": "340+(u-340)*1.18",
+      "after": "340+(u-340)*1.30"
+    },
+    {
+      "before": "r79Rig(7,[1430,310],.00049)",
+      "after": "r79Rig(7,[1430,310],.000637)"
+    },
+    {
+      "before": "r79Rig(8,[590,786],.00046)",
+      "after": "r79Rig(8,[590,786],.000575)"
+    },
+    {
+      "before": "r79Rig(9,[1465,790],.00046)",
+      "after": "r79Rig(9,[1465,790],.000598)"
+    },
+    {
+      "before": "[0,.063,.05,.04,.06,.05,.04,.05,.03,.05][index]",
+      "after": "[0,.083,.18,.18,.17,.13,.18,.15,.20,.17][index]"
+    },
+    {
+      "before": "yaw: -0.50,",
+      "after": "yaw: -0.70,"
+    },
+    {
+      "before": "const xs=[-.039,-.030,-.018,0,.018,.030,.039],tops=[.046,.063,.071,.074,.071,.063,.046];",
+      "after": "const xs=[-.034,-.027,-.016,0,.016,.027,.034],tops=[.045,.057,.063,.066,.063,.057,.045];"
+    },
+    {
+      "before": "const inset=outline.map(([z,y])=>[-.029+(z+.029)*.90,.024+(y-.024)*.86]);",
+      "after": "const inset=outline.map(([z,y])=>[-.029+(z+.029)*.95,.024+(y-.024)*1.08]);"
+    },
+    {
+      "before": "const outline=[[.012,.012],[.012,.026],[-.008,.038],[-.029,.046],[-.051,.043],[-.073,.028],[-.071,.009],[-.047,.003],[-.008,.004]];",
+      "after": "const outline=[[.012,.010],[.012,.028],[-.008,.043],[-.029,.052],[-.051,.049],[-.073,.030],[-.071,.006],[-.047,-.002],[-.008,0]];"
+    },
+    {
+      "before": "lower?BRONZE:RELIC_BONE,part",
+      "after": "BRONZE,part"
+    },
+    {
+      "before": "lower?.52+.13*facing:.63+.25*upward+.10*facing",
+      "after": "lower?.46+.13*facing:.44+.22*upward+.08*facing"
+    },
+    {
+      "before": "const angle=1.5*(1-open),co=Math.cos(angle),si=Math.sin(angle);",
+      "after": "const angle=.48*(1-open),co=Math.cos(angle),si=Math.sin(angle);"
+    },
+    {
+      "before": "const lower=normal.reduce((s,x,i)=>s+x*a.basis.v[i],0)>.35;",
+      "after": "const lower=normal.reduce((s,x,i)=>s+x*a.basis.v[i],0)>-.55;"
+    },
+    {
+      "before": "m.translate(-.010*(1-reach),-.008*(1-reach),0);",
+      "after": "m.translate(-.002*(1-reach),-.001*(1-reach),0);"
+    },
+    {
+      "before": "const depth=(anchor[0]-x)*.00024+extra,s=scale*(1+depth/.65),o=[0,.045,-.040];",
+      "after": "if(index===8&&x<340){x=284+(x-284)*1.22;y=706+(y-706)*1.22;} const depth=(anchor[0]-x)*.00024+extra,s=scale*(1+depth/.65),o=[0,.045,-.040];"
+    },
+    {
+      "before": "  const gloveImages = {};",
+      "after": "[asset registration or long mechanical expression]"
+    },
+    {
+      "before": "if(pose.reload>=0&&pose.exec<0&&pose.kick<0){",
+      "after": "if(pose.reload>=0&&pose.exec<0&&pose.kick<0){\n      Te.topRow+=([0,0,.16,.15,0,0,.18,.18,0,0][index]||0)*Qe(pose.reload,0,1,.10)*Dk*_r;"
+    },
+    {
+      "before": "[asset registration or long mechanical expression]",
+      "after": "[asset registration or long mechanical expression]"
+    },
+    {
+      "before": "const sway=Math.sin(pose.spin*4)*2,outline=[[289,589],[284,579],[287,568],[293+sway,551],[295+sway,565],[302,574],[302,582],[297,590]],part=m.part(),inv=m.inverse();",
+      "after": "const sway=Math.sin(pose.spin*4)*2,outline=[[289,589],[284,579],[288,568],[287+sway,556],[292+sway,550],[294+sway,565],[301,574],[302,582],[297,590]],part=m.part(),inv=m.inverse();"
+    },
+    {
+      "before": "O.FLAME,part,{tex:()=>-2.8},inv);",
+      "after": "O.EMBER,part,{tex:()=>-1.0},inv);"
+    },
+    {
+      "before": "if(index===4)Te.topRow+=.10*Qe(pose.reload,.25,.76,.12)*Dk*_r;",
+      "after": "if(index===4)Te.topRow+=.35*Qe(pose.reload,.25,.76,.12)*Dk*_r;"
+    },
+    {
+      "before": "a.grip(m,1395,780,-.066);",
+      "after": "a.grip(m,1395,750,-.066);"
+    },
+    {
+      "before": "const fit=p=>p.map((v,i)=>v+fittedHinge[i]-hinge[i]);",
+      "after": "[asset registration or long mechanical expression]"
+    },
+    {
+      "before": "if(pose.reload>=0&&pose.exec<0&&pose.kick<0){",
+      "after": "[asset registration or long mechanical expression]"
+    },
+    {
+      "before": ".205,basis);",
+      "after": ".205,basis,{sideSleeve:wide});"
+    },
+    {
+      "before": "// The actual illustrated lid pivots on its lower edge. The closed idle\n      // pose covers the chamber; it never inherits the open reference pose.",
+      "after": "// The illustrated lid rests raised on a fitted lower-edge hinge.\n      // Reload opens it further while the attached brackets follow its axis."
+    },
+    {
+      "before": "{sideSleeve:arsenalIndex===9}",
+      "after": "{sideSleeve:arsenalIndex>=2&&arsenalIndex<=9}"
+    }
+  ]
+}

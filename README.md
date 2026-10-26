@@ -19,6 +19,12 @@ Gotik piksel FPS oyununun on silah, deri eldiven ve prologue cehennem bölümü 
 
 ## Bu sürüm
 
+Handgun korunarak diğer dokuz silahın referans gövde oranları ve ekrandaki yerleşimi yeniden ayarlandı. Shotgun kilit plakası, Cross menteşe bağlantıları, TNT çakmak/fitil biçimi ve Stake tutuşu elden geçirildi; büyüyen modellerin doldurma eli ve parçaları için kadraj düzeltildi. [Güncel silah görüntüleri ve kapsam](docs/arsenal-model-oct26.md).
+
+Zombinin darbe alma sesi, mevcut kayıtlardaki daha pes iki insan iniltisiyle sınırlandı; tiz varyantlar bu olaydan çıkarıldı. Saldırı, ölüm, diğer düşmanlar ve silah sesleri korunur. [Önce/sonra sesleri ve kapsam](docs/zombie-audio-oct26.md).
+
+Cehennemin dört büyük kemerine daha ağır, kademeli kaideler ve taş payandalar verildi. Merkezdeki sıcak pencere odağı ve yürüyüş açıklıkları korunur; mevcut materyal grupları kullanılır, yeni ışık eklenmez. [Eş kamera görüntüleri ve rota kontrolleri](docs/hell-architecture-oct26.md).
+
 Bitiricinin son vuruşundan sonraki kısa toparlanmada görüş artık savrulan düşmanın peşinden kaymaz. Güvenli konum engellenirse native konum çözümü kullanılır; bitiş, ölüm ve bölüm değişimi temizliği korunur. [Gerçek E akışları ve sınır kontrolleri](docs/finisher-recovery-oct25c.md).
 
 Rifle ve Tommy doldururken şarjör/tamburun yerine dönmesi native yerleştirme aralığıyla eşleştirildi. El ve yüklenen parça birlikte hareket eder; ilk çıkarma, geç kol çekme, süreler ve cephane korunur. [Hareket ve zamanlama kontrolleri](docs/reload-seating-oct25c.md).

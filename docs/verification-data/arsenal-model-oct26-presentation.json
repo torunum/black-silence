@@ -1,0 +1,87 @@
+{
+  "passed": true,
+  "sourceSHA256": "fac2821077fe86e235207797d3a7a7bcd024e77f00a44c0bec744271d05d89fa",
+  "scope": "Analytical scoped topRow contribution: matching idle at reload0/1 with zero endpoint derivatives, same native K0/Qe arithmetic. Actual full motion is separately recorded; this is not a whole-animation velocity proof.",
+  "results": [
+    {
+      "index": 0,
+      "idle": 0,
+      "start": 0,
+      "end": 0,
+      "startSlope": 0,
+      "endSlope": 0
+    },
+    {
+      "index": 1,
+      "idle": 0.083,
+      "start": 0.083,
+      "end": 0.083,
+      "startSlope": -0.000006916689443414725,
+      "endSlope": 0.000006916689443414725
+    },
+    {
+      "index": 2,
+      "idle": 0.18,
+      "start": 0.18,
+      "end": 0.18,
+      "startSlope": -0.00001019989648298747,
+      "endSlope": 0.00001019989648298747
+    },
+    {
+      "index": 3,
+      "idle": 0.18,
+      "start": 0.18,
+      "end": 0.18,
+      "startSlope": -0.000010499934255392418,
+      "endSlope": 0.000010499934255392418
+    },
+    {
+      "index": 4,
+      "idle": 0.17,
+      "start": 0.17,
+      "end": 0.17,
+      "startSlope": -0.000014166723349973154,
+      "endSlope": 0.000014166723349973154
+    },
+    {
+      "index": 5,
+      "idle": 0.13,
+      "start": 0.13,
+      "end": 0.13,
+      "startSlope": -0.000010833278718536121,
+      "endSlope": 0.000010833278718536121
+    },
+    {
+      "index": 6,
+      "idle": 0.18,
+      "start": 0.18,
+      "end": 0.18,
+      "startSlope": -0.000009599820938177572,
+      "endSlope": 0.000009599820938177572
+    },
+    {
+      "index": 7,
+      "idle": 0.15,
+      "start": 0.15,
+      "end": 0.15,
+      "startSlope": -0.000007099876242477876,
+      "endSlope": 0.000007099876242477876
+    },
+    {
+      "index": 8,
+      "idle": 0.2,
+      "start": 0.2,
+      "end": 0.2,
+      "startSlope": -0.00001666666804567285,
+      "endSlope": 0.00001666666804567285
+    },
+    {
+      "index": 9,
+      "idle": 0.17,
+      "start": 0.17,
+      "end": 0.17,
+      "startSlope": -0.000014166723349973154,
+      "endSlope": 0.000014166723349973154
+    }
+  ]
+}
