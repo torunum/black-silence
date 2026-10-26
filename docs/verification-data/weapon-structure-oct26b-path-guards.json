@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "output": ".dream-loop/weapon-structure-oct26b/candidate.html",
+      "exitCode": 1,
+      "expectedMessage": true
+    },
+    {
+      "output": ".dream-loop/weapon-structure-oct26b/v3/candidate.html",
+      "exitCode": 1,
+      "expectedMessage": true
+    },
+    {
+      "output": ".DREAM-LOOP/WEAPON-STRUCTURE-OCT26B/V3/CANDIDATE.HTML",
+      "exitCode": 1,
+      "expectedMessage": true
+    }
+  ],
+  "inputHashes": [
+    "9f4571fa6ac13160a4153ec7d5a3c5843152fff93cf1d7a2042a6033e0bd2675",
+    "1ffca6070492cc6a4833fc00d42a70909baec623058f90e3a960501654cdc955"
+  ]
+}

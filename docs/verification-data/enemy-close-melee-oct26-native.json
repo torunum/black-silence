@@ -1,0 +1,248 @@
+{
+  "baselineHTMLSHA256": "56394da38ad2dff02bffb5a32900daa40cf7c6cd319be7e6a1b850145e6e376d",
+  "baselineSourceSHA256": "5dbcfaf8908f8bde69d7c1625bce9ef163e874aab3ff22ded58d08040f1cec54",
+  "sourceSHA256": "977a4a425dedb5a48cce43592986a058f1c390641f529660f048dd71a9be0d3e",
+  "candidateHTMLSHA256": "280de70147dfa830fbbd4c543dac11306f25c671a1d51858a74d02f4378c7a78",
+  "scope": "Real unpaused native enemy cooldown/contact; fixture position and awareness only. Paused solely to capture frames. No direct damage or enemyStep injection.",
+  "runs": [
+    {
+      "label": "anticipation-before",
+      "input": "C:\\Users\\tehlike47\\game\\THE-BLACK-SILENCE.html",
+      "inputHTMLSHA256": "56394da38ad2dff02bffb5a32900daa40cf7c6cd319be7e6a1b850145e6e376d",
+      "errors": [],
+      "runs": [
+        {
+          "kind": "z",
+          "pre": {
+            "time": 9769.899999976158,
+            "cool": 0.11419999999999894,
+            "hurt": 0,
+            "hp": 100,
+            "distance": 1,
+            "map": 202,
+            "pose": {
+              "gait": 0,
+              "moving": 0,
+              "recoil": 0,
+              "attack": 0,
+              "staggered": false,
+              "recover": 0,
+              "anticipation": true,
+              "landing": 0,
+              "pose": "atk"
+            }
+          },
+          "contact": {
+            "time": 10105.5,
+            "cool": 1,
+            "atk": 0.202,
+            "hurt": 0,
+            "hp": 88,
+            "distance": 1,
+            "map": 203,
+            "pose": {
+              "gait": 0,
+              "moving": 0,
+              "recoil": 0,
+              "attack": 0.31,
+              "staggered": false,
+              "recover": 0,
+              "anticipation": true,
+              "landing": 0,
+              "pose": "atk"
+            }
+          },
+          "observedRAFFrames": 43
+        },
+        {
+          "kind": "t",
+          "pre": {
+            "time": 10609.5,
+            "cool": 0.11370000000000068,
+            "hurt": 0,
+            "hp": 100,
+            "distance": 1,
+            "map": 65,
+            "pose": {
+              "gait": 0,
+              "moving": 0,
+              "recoil": 0,
+              "attack": 0,
+              "staggered": false,
+              "recover": 0,
+              "anticipation": false,
+              "landing": 0,
+              "pose": "idle"
+            }
+          },
+          "contact": {
+            "time": 11018.100000023842,
+            "cool": 1,
+            "atk": 0.20189999999999964,
+            "hurt": 0,
+            "hp": 88,
+            "distance": 1,
+            "map": 210,
+            "pose": {
+              "gait": 0,
+              "moving": 0,
+              "recoil": 0,
+              "attack": 0.31,
+              "staggered": false,
+              "recover": 0,
+              "anticipation": false,
+              "landing": 0,
+              "pose": "atk"
+            }
+          },
+          "observedRAFFrames": 47
+        }
+      ]
+    },
+    {
+      "label": "anticipation-after",
+      "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\enemy-oct26\\candidate.html",
+      "inputHTMLSHA256": "280de70147dfa830fbbd4c543dac11306f25c671a1d51858a74d02f4378c7a78",
+      "errors": [],
+      "runs": [
+        {
+          "kind": "z",
+          "pre": {
+            "time": 11207.100000023842,
+            "cool": 0.11189999999999967,
+            "hurt": 0,
+            "hp": 100,
+            "distance": 1,
+            "map": 202,
+            "pose": {
+              "gait": 0,
+              "moving": 0,
+              "recoil": 0,
+              "attack": 0,
+              "staggered": false,
+              "recover": 0,
+              "anticipation": true,
+              "landing": 0,
+              "pose": "atk"
+            }
+          },
+          "contact": {
+            "time": 11504.699999988079,
+            "cool": 1,
+            "atk": 0.20240000000000147,
+            "hurt": 0,
+            "hp": 88,
+            "distance": 1,
+            "map": 203,
+            "pose": {
+              "gait": 0,
+              "moving": 0,
+              "recoil": 0,
+              "attack": 0.31,
+              "staggered": false,
+              "recover": 0,
+              "anticipation": true,
+              "landing": 0,
+              "pose": "atk"
+            }
+          },
+          "observedRAFFrames": 42
+        },
+        {
+          "kind": "t",
+          "pre": {
+            "time": 11936.899999976158,
+            "cool": 0.11679999999999943,
+            "hurt": 0,
+            "hp": 100,
+            "distance": 1,
+            "map": 210,
+            "pose": {
+              "gait": 0,
+              "moving": 0,
+              "recoil": 0,
+              "attack": 0,
+              "staggered": false,
+              "recover": 0,
+              "anticipation": true,
+              "landing": 0,
+              "pose": "atk"
+            }
+          },
+          "contact": {
+            "time": 12190.5,
+            "cool": 1,
+            "atk": 0.20239999999999964,
+            "hurt": 0,
+            "hp": 88,
+            "distance": 1,
+            "map": 211,
+            "pose": {
+              "gait": 0,
+              "moving": 0,
+              "recoil": 0,
+              "attack": 0.31,
+              "staggered": false,
+              "recover": 0,
+              "anticipation": true,
+              "landing": 0,
+              "pose": "atk"
+            }
+          },
+          "observedRAFFrames": 37
+        }
+      ]
+    },
+    {
+      "label": "cultist-after",
+      "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\enemy-oct26\\candidate.html",
+      "inputHTMLSHA256": "280de70147dfa830fbbd4c543dac11306f25c671a1d51858a74d02f4378c7a78",
+      "errors": [],
+      "runs": [
+        {
+          "kind": "j",
+          "pre": {
+            "time": 12394.099999964237,
+            "cool": 0.11289999999999972,
+            "hurt": 0,
+            "hp": 100,
+            "distance": 1,
+            "map": 210,
+            "pose": {
+              "gait": 0,
+              "moving": 0,
+              "recoil": 0,
+              "attack": 0,
+              "staggered": false,
+              "recover": 0,
+              "anticipation": true,
+              "landing": 0,
+              "pose": "atk"
+            }
+          },
+          "contact": {
+            "time": 12651,
+            "cool": 1,
+            "atk": 0.2025,
+            "hurt": 0,
+            "hp": 91,
+            "distance": 1,
+            "map": 211,
+            "pose": {
+              "gait": 0,
+              "moving": 0,
+              "recoil": 0,
+              "attack": 0.31,
+              "staggered": false,
+              "recover": 0,
+              "anticipation": true,
+              "landing": 0,
+              "pose": "atk"
+            }
+          },
+          "observedRAFFrames": 37
+        }
+      ]
+    }
+  ]
+}

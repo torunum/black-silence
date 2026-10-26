@@ -1,0 +1,288 @@
+{
+  "passed": true,
+  "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\weapon-structure-oct26b\\combined-final\\THE-BLACK-SILENCE.html",
+  "sha256": "7ff9137196f2aba929c920312847c1e21bf8b5bda5d76be2f5263cfefe9e62b3",
+  "fixtureSHA256": "06d43fffcf325cc1c6043904e86136aeaf8ac28a4c0acd87beac282ce7618fa9",
+  "zoneSynchronized": true,
+  "cameras": [
+    {
+      "name": "crypt-entry",
+      "index": 1,
+      "active": 1,
+      "id": "crypt",
+      "player": [
+        19,
+        5.2,
+        20
+      ],
+      "camera": [
+        19,
+        5.2,
+        20
+      ],
+      "expectedEyeY": 5.2,
+      "fog": [
+        0.0392156862745098,
+        0.03529411764705882,
+        0.03529411764705882
+      ],
+      "expectedFog": [
+        0.0392156862745098,
+        0.03529411764705882,
+        0.03529411764705882
+      ],
+      "density": 0.09,
+      "expectedDensity": 0.09,
+      "ambient": [
+        0.2901960784313726,
+        0.25098039215686274,
+        0.23529411764705882
+      ],
+      "expectedAmbient": [
+        0.2901960784313726,
+        0.25098039215686274,
+        0.23529411764705882
+      ],
+      "intensity": 0.21,
+      "expectedIntensity": 0.21,
+      "render": {
+        "frame": 326,
+        "calls": 173,
+        "triangles": 180632,
+        "points": 2008,
+        "lines": 0
+      }
+    },
+    {
+      "name": "crypt-deeper",
+      "index": 1,
+      "active": 1,
+      "id": "crypt",
+      "player": [
+        19,
+        4.78,
+        25
+      ],
+      "camera": [
+        19,
+        4.78,
+        25
+      ],
+      "expectedEyeY": 4.78,
+      "fog": [
+        0.0392156862745098,
+        0.03529411764705882,
+        0.03529411764705882
+      ],
+      "expectedFog": [
+        0.0392156862745098,
+        0.03529411764705882,
+        0.03529411764705882
+      ],
+      "density": 0.09,
+      "expectedDensity": 0.09,
+      "ambient": [
+        0.2901960784313726,
+        0.25098039215686274,
+        0.23529411764705882
+      ],
+      "expectedAmbient": [
+        0.2901960784313726,
+        0.25098039215686274,
+        0.23529411764705882
+      ],
+      "intensity": 0.21,
+      "expectedIntensity": 0.21,
+      "render": {
+        "frame": 351,
+        "calls": 153,
+        "triangles": 180254,
+        "points": 2008,
+        "lines": 0
+      }
+    },
+    {
+      "name": "crypt-wall",
+      "index": 1,
+      "active": 1,
+      "id": "crypt",
+      "player": [
+        19,
+        3.9400000000000004,
+        29
+      ],
+      "camera": [
+        19,
+        3.9400000000000004,
+        29
+      ],
+      "expectedEyeY": 3.9400000000000004,
+      "fog": [
+        0.0392156862745098,
+        0.03529411764705882,
+        0.03529411764705882
+      ],
+      "expectedFog": [
+        0.0392156862745098,
+        0.03529411764705882,
+        0.03529411764705882
+      ],
+      "density": 0.09,
+      "expectedDensity": 0.09,
+      "ambient": [
+        0.2901960784313726,
+        0.25098039215686274,
+        0.23529411764705882
+      ],
+      "expectedAmbient": [
+        0.2901960784313726,
+        0.25098039215686274,
+        0.23529411764705882
+      ],
+      "intensity": 0.21,
+      "expectedIntensity": 0.21,
+      "render": {
+        "frame": 373,
+        "calls": 64,
+        "triangles": 118996,
+        "points": 2008,
+        "lines": 0
+      }
+    },
+    {
+      "name": "crypt-enemy",
+      "index": 1,
+      "active": 1,
+      "id": "crypt",
+      "player": [
+        19,
+        3.1,
+        34
+      ],
+      "camera": [
+        19,
+        3.1,
+        34
+      ],
+      "expectedEyeY": 3.1,
+      "fog": [
+        0.0392156862745098,
+        0.03529411764705882,
+        0.03529411764705882
+      ],
+      "expectedFog": [
+        0.0392156862745098,
+        0.03529411764705882,
+        0.03529411764705882
+      ],
+      "density": 0.09,
+      "expectedDensity": 0.09,
+      "ambient": [
+        0.2901960784313726,
+        0.25098039215686274,
+        0.23529411764705882
+      ],
+      "expectedAmbient": [
+        0.2901960784313726,
+        0.25098039215686274,
+        0.23529411764705882
+      ],
+      "intensity": 0.21,
+      "expectedIntensity": 0.21,
+      "render": {
+        "frame": 393,
+        "calls": 133,
+        "triangles": 178442,
+        "points": 2008,
+        "lines": 0
+      }
+    }
+  ],
+  "errors": [],
+  "resources": {
+    "textures": 54,
+    "images": 49,
+    "materials": 234,
+    "renderer": {
+      "geometries": 115,
+      "textures": 43
+    }
+  },
+  "lifecycle": [
+    {
+      "cycle": 0,
+      "oldTextures": 1,
+      "disposed": 1,
+      "nextCryptTextures": 0,
+      "visibleRisers": 1,
+      "visibleCourses": 1,
+      "sharedExistingImage": true,
+      "independentTextureObject": true,
+      "reusedDisposed": 0,
+      "registeredReused": false,
+      "cryptTextures": 1,
+      "distinctTexture": true,
+      "resident": 52
+    },
+    {
+      "cycle": 1,
+      "oldTextures": 1,
+      "disposed": 1,
+      "nextCryptTextures": 0,
+      "visibleRisers": 1,
+      "visibleCourses": 1,
+      "sharedExistingImage": true,
+      "independentTextureObject": true,
+      "reusedDisposed": 0,
+      "registeredReused": false,
+      "cryptTextures": 1,
+      "distinctTexture": true,
+      "resident": 52
+    },
+    {
+      "cycle": 2,
+      "oldTextures": 1,
+      "disposed": 1,
+      "nextCryptTextures": 0,
+      "visibleRisers": 1,
+      "visibleCourses": 1,
+      "sharedExistingImage": true,
+      "independentTextureObject": true,
+      "reusedDisposed": 0,
+      "registeredReused": false,
+      "cryptTextures": 1,
+      "distinctTexture": true,
+      "resident": 52
+    },
+    {
+      "cycle": 3,
+      "oldTextures": 1,
+      "disposed": 1,
+      "nextCryptTextures": 0,
+      "visibleRisers": 1,
+      "visibleCourses": 1,
+      "sharedExistingImage": true,
+      "independentTextureObject": true,
+      "reusedDisposed": 0,
+      "registeredReused": false,
+      "cryptTextures": 1,
+      "distinctTexture": true,
+      "resident": 52
+    },
+    {
+      "cycle": 4,
+      "oldTextures": 1,
+      "disposed": 1,
+      "nextCryptTextures": 0,
+      "visibleRisers": 1,
+      "visibleCourses": 1,
+      "sharedExistingImage": true,
+      "independentTextureObject": true,
+      "reusedDisposed": 0,
+      "registeredReused": false,
+      "cryptTextures": 1,
+      "distinctTexture": true,
+      "resident": 52
+    }
+  ]
+}

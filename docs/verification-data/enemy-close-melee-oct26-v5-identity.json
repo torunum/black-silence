@@ -1,0 +1,24 @@
+{
+  "scope": "Read-only source identity guard; native t/j and dropkick/E were executed on 7ff91371, not repeated on d6101272. Last changes affect viewmodels only.",
+  "testedNativeHTMLSHA256": "7ff9137196f2aba929c920312847c1e21bf8b5bda5d76be2f5263cfefe9e62b3",
+  "currentHTMLSHA256": "d6101272e6d34d5635d1a75745ad971c4ab07e9d85d5bec7b721e5a7f0813c87",
+  "modules": {
+    "combat.js": {
+      "sourceSHA256": "5f8c099867ca971387f21de80fecc9a83f6ab0b498b82ca153c2ccfe0d18514c",
+      "uniqueExactEmbedInBoth": true
+    },
+    "enemy-animation.js": {
+      "sourceSHA256": "977a4a425dedb5a48cce43592986a058f1c390641f529660f048dd71a9be0d3e",
+      "uniqueExactEmbedInBoth": true
+    },
+    "finishers.js": {
+      "sourceSHA256": "8c2c7bdf13e17005c3383054560b155986d8e706b5bfda81e9f1a8224ee3c5b0",
+      "uniqueExactEmbedInBoth": true
+    },
+    "prologue.js": {
+      "sourceSHA256": "821bd0a364421c3b3473e138ea56d43263dfd3965dd1796a511b459fcc119e8d",
+      "uniqueExactEmbedInBoth": true
+    }
+  },
+  "passed": true
+}

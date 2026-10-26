@@ -1,0 +1,507 @@
+{
+  "passed": true,
+  "before": {
+    "passed": true,
+    "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\environment-oct26b\\baseline.html",
+    "sha256": "56394da38ad2dff02bffb5a32900daa40cf7c6cd319be7e6a1b850145e6e376d",
+    "fixtureSHA256": "ab6c0a7c23fdcb1e3549dd937db81992505512d2205724a8d5eba350e4bacbf6",
+    "zoneSynchronized": true,
+    "cameras": [
+      {
+        "name": "crypt-entry",
+        "index": 1,
+        "active": 1,
+        "id": "crypt",
+        "player": [
+          19,
+          5.2,
+          20
+        ],
+        "camera": [
+          19,
+          5.2,
+          20
+        ],
+        "expectedEyeY": 5.2,
+        "fog": [
+          0.0392156862745098,
+          0.03529411764705882,
+          0.03529411764705882
+        ],
+        "expectedFog": [
+          0.0392156862745098,
+          0.03529411764705882,
+          0.03529411764705882
+        ],
+        "density": 0.09,
+        "expectedDensity": 0.09,
+        "ambient": [
+          0.2901960784313726,
+          0.25098039215686274,
+          0.23529411764705882
+        ],
+        "expectedAmbient": [
+          0.2901960784313726,
+          0.25098039215686274,
+          0.23529411764705882
+        ],
+        "intensity": 0.21,
+        "expectedIntensity": 0.21,
+        "render": {
+          "frame": 325,
+          "calls": 173,
+          "triangles": 180092,
+          "points": 2008,
+          "lines": 0
+        }
+      },
+      {
+        "name": "crypt-deeper",
+        "index": 1,
+        "active": 1,
+        "id": "crypt",
+        "player": [
+          19,
+          4.78,
+          25
+        ],
+        "camera": [
+          19,
+          4.78,
+          25
+        ],
+        "expectedEyeY": 4.78,
+        "fog": [
+          0.0392156862745098,
+          0.03529411764705882,
+          0.03529411764705882
+        ],
+        "expectedFog": [
+          0.0392156862745098,
+          0.03529411764705882,
+          0.03529411764705882
+        ],
+        "density": 0.09,
+        "expectedDensity": 0.09,
+        "ambient": [
+          0.2901960784313726,
+          0.25098039215686274,
+          0.23529411764705882
+        ],
+        "expectedAmbient": [
+          0.2901960784313726,
+          0.25098039215686274,
+          0.23529411764705882
+        ],
+        "intensity": 0.21,
+        "expectedIntensity": 0.21,
+        "render": {
+          "frame": 342,
+          "calls": 153,
+          "triangles": 179714,
+          "points": 2008,
+          "lines": 0
+        }
+      },
+      {
+        "name": "crypt-wall",
+        "index": 1,
+        "active": 1,
+        "id": "crypt",
+        "player": [
+          19,
+          3.9400000000000004,
+          29
+        ],
+        "camera": [
+          19,
+          3.9400000000000004,
+          29
+        ],
+        "expectedEyeY": 3.9400000000000004,
+        "fog": [
+          0.0392156862745098,
+          0.03529411764705882,
+          0.03529411764705882
+        ],
+        "expectedFog": [
+          0.0392156862745098,
+          0.03529411764705882,
+          0.03529411764705882
+        ],
+        "density": 0.09,
+        "expectedDensity": 0.09,
+        "ambient": [
+          0.2901960784313726,
+          0.25098039215686274,
+          0.23529411764705882
+        ],
+        "expectedAmbient": [
+          0.2901960784313726,
+          0.25098039215686274,
+          0.23529411764705882
+        ],
+        "intensity": 0.21,
+        "expectedIntensity": 0.21,
+        "render": {
+          "frame": 359,
+          "calls": 64,
+          "triangles": 118456,
+          "points": 2008,
+          "lines": 0
+        }
+      },
+      {
+        "name": "crypt-enemy",
+        "index": 1,
+        "active": 1,
+        "id": "crypt",
+        "player": [
+          19,
+          3.1,
+          34
+        ],
+        "camera": [
+          19,
+          3.1,
+          34
+        ],
+        "expectedEyeY": 3.1,
+        "fog": [
+          0.0392156862745098,
+          0.03529411764705882,
+          0.03529411764705882
+        ],
+        "expectedFog": [
+          0.0392156862745098,
+          0.03529411764705882,
+          0.03529411764705882
+        ],
+        "density": 0.09,
+        "expectedDensity": 0.09,
+        "ambient": [
+          0.2901960784313726,
+          0.25098039215686274,
+          0.23529411764705882
+        ],
+        "expectedAmbient": [
+          0.2901960784313726,
+          0.25098039215686274,
+          0.23529411764705882
+        ],
+        "intensity": 0.21,
+        "expectedIntensity": 0.21,
+        "render": {
+          "frame": 375,
+          "calls": 133,
+          "triangles": 177902,
+          "points": 2008,
+          "lines": 0
+        }
+      }
+    ],
+    "errors": [],
+    "resources": {
+      "textures": 54,
+      "images": 50,
+      "materials": 234,
+      "renderer": {
+        "geometries": 115,
+        "textures": 44
+      }
+    },
+    "lifecycle": []
+  },
+  "after": {
+    "passed": true,
+    "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\environment-oct26b\\band-candidate.html",
+    "sha256": "d18df141f4332addb94f3ac66bddd997fb51d0af90388d5c4fd4f6928df239bd",
+    "fixtureSHA256": "5b35e052ca67c2b562efed50bb699ffa6361cfa9e93c59cc58a004b508126468",
+    "zoneSynchronized": true,
+    "cameras": [
+      {
+        "name": "crypt-entry",
+        "index": 1,
+        "active": 1,
+        "id": "crypt",
+        "player": [
+          19,
+          5.2,
+          20
+        ],
+        "camera": [
+          19,
+          5.2,
+          20
+        ],
+        "expectedEyeY": 5.2,
+        "fog": [
+          0.0392156862745098,
+          0.03529411764705882,
+          0.03529411764705882
+        ],
+        "expectedFog": [
+          0.0392156862745098,
+          0.03529411764705882,
+          0.03529411764705882
+        ],
+        "density": 0.09,
+        "expectedDensity": 0.09,
+        "ambient": [
+          0.2901960784313726,
+          0.25098039215686274,
+          0.23529411764705882
+        ],
+        "expectedAmbient": [
+          0.2901960784313726,
+          0.25098039215686274,
+          0.23529411764705882
+        ],
+        "intensity": 0.21,
+        "expectedIntensity": 0.21,
+        "render": {
+          "frame": 327,
+          "calls": 173,
+          "triangles": 180632,
+          "points": 2008,
+          "lines": 0
+        }
+      },
+      {
+        "name": "crypt-deeper",
+        "index": 1,
+        "active": 1,
+        "id": "crypt",
+        "player": [
+          19,
+          4.78,
+          25
+        ],
+        "camera": [
+          19,
+          4.78,
+          25
+        ],
+        "expectedEyeY": 4.78,
+        "fog": [
+          0.0392156862745098,
+          0.03529411764705882,
+          0.03529411764705882
+        ],
+        "expectedFog": [
+          0.0392156862745098,
+          0.03529411764705882,
+          0.03529411764705882
+        ],
+        "density": 0.09,
+        "expectedDensity": 0.09,
+        "ambient": [
+          0.2901960784313726,
+          0.25098039215686274,
+          0.23529411764705882
+        ],
+        "expectedAmbient": [
+          0.2901960784313726,
+          0.25098039215686274,
+          0.23529411764705882
+        ],
+        "intensity": 0.21,
+        "expectedIntensity": 0.21,
+        "render": {
+          "frame": 351,
+          "calls": 153,
+          "triangles": 180254,
+          "points": 2008,
+          "lines": 0
+        }
+      },
+      {
+        "name": "crypt-wall",
+        "index": 1,
+        "active": 1,
+        "id": "crypt",
+        "player": [
+          19,
+          3.9400000000000004,
+          29
+        ],
+        "camera": [
+          19,
+          3.9400000000000004,
+          29
+        ],
+        "expectedEyeY": 3.9400000000000004,
+        "fog": [
+          0.0392156862745098,
+          0.03529411764705882,
+          0.03529411764705882
+        ],
+        "expectedFog": [
+          0.0392156862745098,
+          0.03529411764705882,
+          0.03529411764705882
+        ],
+        "density": 0.09,
+        "expectedDensity": 0.09,
+        "ambient": [
+          0.2901960784313726,
+          0.25098039215686274,
+          0.23529411764705882
+        ],
+        "expectedAmbient": [
+          0.2901960784313726,
+          0.25098039215686274,
+          0.23529411764705882
+        ],
+        "intensity": 0.21,
+        "expectedIntensity": 0.21,
+        "render": {
+          "frame": 370,
+          "calls": 64,
+          "triangles": 118996,
+          "points": 2008,
+          "lines": 0
+        }
+      },
+      {
+        "name": "crypt-enemy",
+        "index": 1,
+        "active": 1,
+        "id": "crypt",
+        "player": [
+          19,
+          3.1,
+          34
+        ],
+        "camera": [
+          19,
+          3.1,
+          34
+        ],
+        "expectedEyeY": 3.1,
+        "fog": [
+          0.0392156862745098,
+          0.03529411764705882,
+          0.03529411764705882
+        ],
+        "expectedFog": [
+          0.0392156862745098,
+          0.03529411764705882,
+          0.03529411764705882
+        ],
+        "density": 0.09,
+        "expectedDensity": 0.09,
+        "ambient": [
+          0.2901960784313726,
+          0.25098039215686274,
+          0.23529411764705882
+        ],
+        "expectedAmbient": [
+          0.2901960784313726,
+          0.25098039215686274,
+          0.23529411764705882
+        ],
+        "intensity": 0.21,
+        "expectedIntensity": 0.21,
+        "render": {
+          "frame": 390,
+          "calls": 133,
+          "triangles": 178442,
+          "points": 2008,
+          "lines": 0
+        }
+      }
+    ],
+    "errors": [],
+    "resources": {
+      "textures": 54,
+      "images": 49,
+      "materials": 234,
+      "renderer": {
+        "geometries": 115,
+        "textures": 43
+      }
+    },
+    "lifecycle": [
+      {
+        "cycle": 0,
+        "oldTextures": 1,
+        "disposed": 1,
+        "nextCryptTextures": 0,
+        "visibleRisers": 1,
+        "visibleCourses": 1,
+        "sharedExistingImage": true,
+        "independentTextureObject": true,
+        "reusedDisposed": 0,
+        "registeredReused": false,
+        "cryptTextures": 1,
+        "distinctTexture": true,
+        "resident": 52
+      },
+      {
+        "cycle": 1,
+        "oldTextures": 1,
+        "disposed": 1,
+        "nextCryptTextures": 0,
+        "visibleRisers": 1,
+        "visibleCourses": 1,
+        "sharedExistingImage": true,
+        "independentTextureObject": true,
+        "reusedDisposed": 0,
+        "registeredReused": false,
+        "cryptTextures": 1,
+        "distinctTexture": true,
+        "resident": 52
+      },
+      {
+        "cycle": 2,
+        "oldTextures": 1,
+        "disposed": 1,
+        "nextCryptTextures": 0,
+        "visibleRisers": 1,
+        "visibleCourses": 1,
+        "sharedExistingImage": true,
+        "independentTextureObject": true,
+        "reusedDisposed": 0,
+        "registeredReused": false,
+        "cryptTextures": 1,
+        "distinctTexture": true,
+        "resident": 52
+      },
+      {
+        "cycle": 3,
+        "oldTextures": 1,
+        "disposed": 1,
+        "nextCryptTextures": 0,
+        "visibleRisers": 1,
+        "visibleCourses": 1,
+        "sharedExistingImage": true,
+        "independentTextureObject": true,
+        "reusedDisposed": 0,
+        "registeredReused": false,
+        "cryptTextures": 1,
+        "distinctTexture": true,
+        "resident": 52
+      },
+      {
+        "cycle": 4,
+        "oldTextures": 1,
+        "disposed": 1,
+        "nextCryptTextures": 0,
+        "visibleRisers": 1,
+        "visibleCourses": 1,
+        "sharedExistingImage": true,
+        "independentTextureObject": true,
+        "reusedDisposed": 0,
+        "registeredReused": false,
+        "cryptTextures": 1,
+        "distinctTexture": true,
+        "resident": 52
+      }
+    ]
+  },
+  "sourceSHA256": "821bd0a364421c3b3473e138ea56d43263dfd3965dd1796a511b459fcc119e8d",
+  "triangleDelta": 540,
+  "primitiveDelta": 45,
+  "note": "One extra map-owned texture shares an existing image; net referenced texture count is unchanged because the previous band texture is no longer referenced."
+}

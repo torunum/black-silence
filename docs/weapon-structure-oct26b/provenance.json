@@ -1,0 +1,63 @@
+{
+  "finalHTMLSHA256": "d6101272e6d34d5635d1a75745ad971c4ab07e9d85d5bec7b721e5a7f0813c87",
+  "viewmodelsSHA256": "b94143465477341407ed16e3377a7d95159309cea3b5b62fe68c1d887540b910",
+  "images": [
+    {
+      "file": "docs/weapon-structure-oct26b/shotgun-before.png",
+      "input": ".dream-loop/weapon-structure-oct26b/before/weapon-1-idle.png",
+      "inputHTMLSHA256": "56394da38ad2dff02bffb5a32900daa40cf7c6cd319be7e6a1b850145e6e376d",
+      "sha256": "2151b59a1bff857c4f4ef74c30a4b45b238f63b81807e2774ee52cd7055999ac"
+    },
+    {
+      "file": "docs/weapon-structure-oct26b/shotgun-after.png",
+      "input": ".dream-loop/.dream-loop/video/weapon-1-idle.png",
+      "inputHTMLSHA256": "d6101272e6d34d5635d1a75745ad971c4ab07e9d85d5bec7b721e5a7f0813c87",
+      "sha256": "d86f72a159ffd76285a542eeec85aa46d9c488f033d3be5e68476e1a3a38150c"
+    },
+    {
+      "file": "docs/weapon-structure-oct26b/cross-after.png",
+      "input": ".dream-loop/.dream-loop/video/weapon-5-idle.png",
+      "inputHTMLSHA256": "d6101272e6d34d5635d1a75745ad971c4ab07e9d85d5bec7b721e5a7f0813c87",
+      "sha256": "70ae4f14fbfa207db95e421c5ccea17d191bf7fc3a4a65b5bb034d8d8c9017a0"
+    },
+    {
+      "file": "docs/weapon-structure-oct26b/cross-loading.png",
+      "input": ".dream-loop/weapon-structure-oct26b/v5/proof/weapon-5-0.5.png",
+      "inputHTMLSHA256": "163ec3ade47971e35ef07513340b41fdadc1037f6bf9e7af09c16a5f108e97c4",
+      "sha256": "cbf2204400729ae0920d379e7fb21a5a854f2201d16d112c6f7605fa83e54663"
+    }
+  ],
+  "video": {
+    "file": "docs/weapon-structure-oct26b/reload.webm",
+    "sha256": "76774220d7b1d64d553d4d523b89ef77fe9aabe0be1bae7a6a86aff838790197",
+    "inputHTMLSHA256": "d6101272e6d34d5635d1a75745ad971c4ab07e9d85d5bec7b721e5a7f0813c87",
+    "capture": {
+      "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\.dream-loop\\video\\page@ca293d81e00bfa0618900fe18375e448.webm",
+      "trimStart": 18.963,
+      "syncMarker": true,
+      "errors": [],
+      "audio": {
+        "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\.dream-loop\\video\\game-output.webm",
+        "bytes": 174601,
+        "duration": 10.9075,
+        "startedAt": 19060.599999964237,
+        "sampleRate": 48000,
+        "contexts": 1
+      },
+      "scope": "Actual RAF weapon idle/fire/reload and post-volume WebAudio output. QA supplies two weapons ammunition and removes enemies; real switching and R reload with uninterrupted native RAF."
+    },
+    "encoding": {
+      "file": "C:\\Users\\tehlike47\\game\\docs\\weapon-structure-oct26b\\reload.webm",
+      "videoCodec": "VP9",
+      "audioCodec": "Opus",
+      "fps": 25,
+      "trimStart": 18.6,
+      "markerFrames": 13,
+      "audioSource": "C:\\Users\\tehlike47\\game\\.dream-loop\\.dream-loop\\video\\game-output.webm",
+      "audioDuration": 10.9075,
+      "bytes": 3030765,
+      "syncScope": "Audio starts when the preroll marker is removed; trim uses the first non-marker video frame. Video frame granularity is 40ms; physical audio-output latency is not measured."
+    }
+  },
+  "note": "Actual native fullscene frames and keyboard reload/RAF/WebAudio. Screenshot background RNG/phase variations are not pixel parity evidence. Cross loading screenshot uses weapon-only163ec with the identical finalb941 viewmodel source; other after images/video use exact combinedd610."
+}

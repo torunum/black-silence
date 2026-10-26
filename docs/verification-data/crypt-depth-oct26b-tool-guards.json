@@ -1,0 +1,62 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "tool": "tools/crypt-architecture-tests.cjs",
+      "args": [
+        ".dream-loop\\environment-oct26b\\baseline.html",
+        ".dream-loop\\environment-oct26b\\baseline-prologue.js",
+        "src\\prologue.js",
+        "src\\prologue.js"
+      ],
+      "refused": true,
+      "reason": "Report must not overwrite any input"
+    },
+    {
+      "tool": "tools/crypt-architecture-tests.cjs",
+      "args": [
+        ".dream-loop\\environment-oct26b\\baseline.html",
+        ".dream-loop\\environment-oct26b\\baseline-prologue.js",
+        "src\\prologue.js",
+        "SRC\\PROLOGUE.JS"
+      ],
+      "refused": true,
+      "reason": "Report must not overwrite any input"
+    },
+    {
+      "tool": "tools/crypt-material-resource-tests.cjs",
+      "args": [
+        ".dream-loop\\environment-oct26b\\baseline.html",
+        ".dream-loop\\environment-oct26b",
+        "after"
+      ],
+      "refused": true,
+      "reason": "Input must be outside output directory"
+    },
+    {
+      "tool": "tools/crypt-material-resource-tests.cjs",
+      "args": [
+        ".dream-loop\\environment-oct26b\\baseline.html",
+        ".DREAM-LOOP\\ENVIRONMENT-OCT26B",
+        "after"
+      ],
+      "refused": true,
+      "reason": "Input must be outside output directory"
+    }
+  ],
+  "immutableInputs": [
+    {
+      "file": ".dream-loop\\environment-oct26b\\baseline.html",
+      "sha256": "56394da38ad2dff02bffb5a32900daa40cf7c6cd319be7e6a1b850145e6e376d"
+    },
+    {
+      "file": ".dream-loop\\environment-oct26b\\baseline-prologue.js",
+      "sha256": "e5c3bb8e0978876f1cfc824f37b8e2c13bfb8ce64c1355920d1a187ad0141d0f"
+    },
+    {
+      "file": "src\\prologue.js",
+      "sha256": "821bd0a364421c3b3473e138ea56d43263dfd3965dd1796a511b459fcc119e8d"
+    }
+  ],
+  "syntaxPassed": true
+}

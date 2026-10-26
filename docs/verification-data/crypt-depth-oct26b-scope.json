@@ -1,0 +1,84 @@
+{
+  "passed": true,
+  "baselineHTMLSHA256": "56394da38ad2dff02bffb5a32900daa40cf7c6cd319be7e6a1b850145e6e376d",
+  "beforeSourceSHA256": "e5c3bb8e0978876f1cfc824f37b8e2c13bfb8ce64c1355920d1a187ad0141d0f",
+  "sourceSHA256": "821bd0a364421c3b3473e138ea56d43263dfd3965dd1796a511b459fcc119e8d",
+  "mapExactExceptThreeVisualFlagsAndCryptWallBand": true,
+  "cryptWallAndBandOnly": true,
+  "changes": [
+    {
+      "before": {
+        "k": "prologueCryptBay",
+        "x": 9,
+        "z": 13,
+        "r": 1.5707963267948966
+      },
+      "after": {
+        "k": "prologueCryptBay",
+        "x": 9,
+        "z": 13,
+        "r": 1.5707963267948966,
+        "cryptDepth": 1
+      }
+    },
+    {
+      "before": {
+        "k": "prologueCryptBay",
+        "x": 10,
+        "z": 15,
+        "r": -1.5707963267948966
+      },
+      "after": {
+        "k": "prologueCryptBay",
+        "x": 10,
+        "z": 15,
+        "r": -1.5707963267948966,
+        "cryptDepth": 1
+      }
+    },
+    {
+      "before": {
+        "k": "prologueCryptBay",
+        "x": 9,
+        "z": 17,
+        "r": 1.5707963267948966
+      },
+      "after": {
+        "k": "prologueCryptBay",
+        "x": 9,
+        "z": 17,
+        "r": 1.5707963267948966,
+        "cryptDepth": 1
+      }
+    }
+  ],
+  "laterChapterAndGenericGeometryExact": true,
+  "materialSetExact": true,
+  "oldPrimitiveCounts": [
+    14,
+    14,
+    14
+  ],
+  "newPrimitiveCounts": [
+    29,
+    29,
+    29
+  ],
+  "primitiveDelta": 45,
+  "triangleDelta": 540,
+  "maxProjection": -0.77,
+  "inputs": [
+    {
+      "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\environment-oct26b\\baseline.html",
+      "sha256": "56394da38ad2dff02bffb5a32900daa40cf7c6cd319be7e6a1b850145e6e376d"
+    },
+    {
+      "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\environment-oct26b\\baseline-prologue.js",
+      "sha256": "e5c3bb8e0978876f1cfc824f37b8e2c13bfb8ce64c1355920d1a187ad0141d0f"
+    },
+    {
+      "file": "C:\\Users\\tehlike47\\game\\src\\prologue.js",
+      "sha256": "821bd0a364421c3b3473e138ea56d43263dfd3965dd1796a511b459fcc119e8d"
+    }
+  ]
+}

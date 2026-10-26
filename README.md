@@ -19,6 +19,12 @@ Gotik piksel FPS oyununun on silah, deri eldiven ve prologue cehennem bölümü 
 
 ## Bu sürüm
 
+Shotgun alıcı plakası ve horozu, Cross gövde kaplaması ve menteşesi daha belirgin hacim kazandı. Cross doldururken sol el ve kutsal parça aynı hareketle daha görünür konuma gelir. [Görseller ve mekanik kapsam](docs/weapon-structure-oct26b.md).
+
+Crypt geçişindeki üç mezar nişine derin taş söveler verildi; duvar ve kiriş kenarları mevcut taş dokusuyla uyumlu hale getirildi. Amber ışık, rota, düşmanlar ve eşyalar korunur. [Eş kamera karşılaştırmaları](docs/crypt-depth-oct26b.md).
+
+Menzilli düşmanların yakın mesafedeki native yakın dövüş saldırısı öncesinde hazırlık hareketi görünür hale getirildi. Hasar, bekleme süresi ve saldırı kuralları değişmez. [Gerçek saldırı ve durum kontrolleri](docs/enemy-close-melee-oct26.md).
+
 Handgun korunarak diğer dokuz silahın referans gövde oranları ve ekrandaki yerleşimi yeniden ayarlandı. Shotgun kilit plakası, Cross menteşe bağlantıları, TNT çakmak/fitil biçimi ve Stake tutuşu elden geçirildi; büyüyen modellerin doldurma eli ve parçaları için kadraj düzeltildi. [Güncel silah görüntüleri ve kapsam](docs/arsenal-model-oct26.md).
 
 Zombinin darbe alma sesi, mevcut kayıtlardaki daha pes iki insan iniltisiyle sınırlandı; tiz varyantlar bu olaydan çıkarıldı. Saldırı, ölüm, diğer düşmanlar ve silah sesleri korunur. [Önce/sonra sesleri ve kapsam](docs/zombie-audio-oct26.md).

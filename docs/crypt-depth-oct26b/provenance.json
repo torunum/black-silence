@@ -1,0 +1,29 @@
+{
+  "baselineHTMLSHA256": "56394da38ad2dff02bffb5a32900daa40cf7c6cd319be7e6a1b850145e6e376d",
+  "environmentOnlyHTMLSHA256": "d18df141f4332addb94f3ac66bddd997fb51d0af90388d5c4fd4f6928df239bd",
+  "sourceSHA256": "821bd0a364421c3b3473e138ea56d43263dfd3965dd1796a511b459fcc119e8d",
+  "note": "Matched native standing-eye cameras with native zone/fog/light synchronized. PNGs were rendered from the environment-only candidate. Lifecycle was tested separately on intermediate combined 7ff; later weapon-only revisions preserve the same prologue source.",
+  "media": [
+    {
+      "file": "before-entry.png",
+      "sha256": "2ccd33ee7a32553731beecf4fd6c1853476562fdc5b2fb26cea9fb8ae692a40b",
+      "inputSHA256": "56394da38ad2dff02bffb5a32900daa40cf7c6cd319be7e6a1b850145e6e376d"
+    },
+    {
+      "file": "after-entry.png",
+      "sha256": "f9f8371b5799b8346eac7bfdf440143ccdec2fd7eee1c91fac08c127cf5537e5",
+      "inputSHA256": "d18df141f4332addb94f3ac66bddd997fb51d0af90388d5c4fd4f6928df239bd"
+    },
+    {
+      "file": "before-deeper.png",
+      "sha256": "5051167766ab1002ff15356ebd27b3c0a8f47b8515bfaa69023420c762b7b039",
+      "inputSHA256": "56394da38ad2dff02bffb5a32900daa40cf7c6cd319be7e6a1b850145e6e376d"
+    },
+    {
+      "file": "after-deeper.png",
+      "sha256": "aa179e099b94b7995b33579cdbcf0fc28f12f13139a114c8bbc16a06ea038012",
+      "inputSHA256": "d18df141f4332addb94f3ac66bddd997fb51d0af90388d5c4fd4f6928df239bd"
+    }
+  ],
+  "combinedValidationHTMLSHA256": "7ff9137196f2aba929c920312847c1e21bf8b5bda5d76be2f5263cfefe9e62b3"
+}

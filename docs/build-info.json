@@ -1,112 +1,124 @@
 {
   "passed": true,
-  "bytes": 24886358,
-  "sha256": "56394da38ad2dff02bffb5a32900daa40cf7c6cd319be7e6a1b850145e6e376d",
+  "bytes": 24890836,
+  "sha256": "d6101272e6d34d5635d1a75745ad971c4ab07e9d85d5bec7b721e5a7f0813c87",
   "engineSha256": "6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899",
   "villageSha256": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627",
   "moduleHashes": {
     "materials.js": "05e43b45ce521b52cf4d7b172177984699670d9de1261de5f88bf11f42b45517",
     "combat.js": "5f8c099867ca971387f21de80fecc9a83f6ab0b498b82ca153c2ccfe0d18514c",
-    "enemy-animation.js": "5dbcfaf8908f8bde69d7c1625bce9ef163e874aab3ff22ded58d08040f1cec54",
-    "viewmodels.js": "fac2821077fe86e235207797d3a7a7bcd024e77f00a44c0bec744271d05d89fa",
+    "enemy-animation.js": "977a4a425dedb5a48cce43592986a058f1c390641f529660f048dd71a9be0d3e",
+    "viewmodels.js": "b94143465477341407ed16e3377a7d95159309cea3b5b62fe68c1d887540b910",
     "finishers.js": "8c2c7bdf13e17005c3383054560b155986d8e706b5bfda81e9f1a8224ee3c5b0",
     "reload-audio-data.js": "2f48b10a1225d1c007ee282d3c18f82c5022bb0267ed86d65feadf819ec1be30",
     "reload-audio.js": "6b63eec006c8f7ee98392f323f630879140948f24165ab72b308bfb4b4d6be16",
     "zombie-audio.js": "bc974fbebcfeb7719ca785ca021af6bf7de465e2f0236b94b0b87f9f4525e7df",
-    "prologue.js": "e5c3bb8e0978876f1cfc824f37b8e2c13bfb8ce64c1355920d1a187ad0141d0f",
+    "prologue.js": "821bd0a364421c3b3473e138ea56d43263dfd3965dd1796a511b459fcc119e8d",
     "render-warmup.js": "84db971283d86b0cbea7d0181eb3d48d40924936c5d577ab05fd31ca4b7e755c",
     "village-presentation.js": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627"
   },
   "idempotentBuilds": 2,
   "invalidInputsRefusedWithoutWrite": 8,
   "file": "THE-BLACK-SILENCE.html",
-  "verifiedAt": "2026-10-26T17:35:04.432Z",
-  "previousRelease": "4b03db10fcf7433e90e2f21e662224d79ce356f3e2bac392ab7ab21cd09c6198",
-  "scope": "Handgun preserved; reference-led proportions and framing for weapons1–9, shotgun lockplate, Cross raised lid/hinges, TNT lighter/fuse, Stake grip contact and bounded ultrawide sleeve continuation; scoped zombie pain audio and hell arch masonry.",
+  "verifiedAt": "2026-10-26T18:30:39.531Z",
+  "previousRelease": "56394da38ad2dff02bffb5a32900daa40cf7c6cd319be7e6a1b850145e6e376d",
+  "scope": "Shotgun inset lockplate and curved hammers; Cross bronze/ivory structure, inexpensive bevel surfaces and visible shared hand/relic loading path; crypt depth and close melee anticipation.",
   "verificationReports": [
     {
-      "file": "docs/verification-data/arsenal-model-oct26-aspects.json",
-      "sha256": "c4329a531256deb33da68fd3a684e8ddd478bb16916ace56d6e7430f54a254af"
+      "file": "docs/verification-data/crypt-depth-oct26b-final-7ff91371.json",
+      "sha256": "28a6ad4febcf7a6a2527f45d7e259d04b4485e0af3d8469007bc7193c3f5eae8"
     },
     {
-      "file": "docs/verification-data/arsenal-model-oct26-final-runtime.json",
-      "sha256": "a2a4cc3d7309c36bf172ea8f37c7aa3e7d70ede7d44b1e9e8edcfd549d4053c0"
+      "file": "docs/verification-data/crypt-depth-oct26b-navigation.json",
+      "sha256": "a570cf4acb61d1475a74f0a6d25549d0d6b414ad99ad5324335409a037eb214e"
     },
     {
-      "file": "docs/verification-data/arsenal-model-oct26-parity.json",
-      "sha256": "d2fa4e87bd5b6e1cfe5dd7d67d63ef08529971fde5c0eab059cc9ce7dd23f244"
+      "file": "docs/verification-data/crypt-depth-oct26b-private.json",
+      "sha256": "c6ae2009ed14a921ab7675f2dec4b99513c86c04d54a43ef45a5683743ed7c62"
     },
     {
-      "file": "docs/verification-data/arsenal-model-oct26-performance-summary.json",
-      "sha256": "60ff8836dd4171ac23e12407e61b296eefe73d16c334676887f11b930d65b1d5"
+      "file": "docs/verification-data/crypt-depth-oct26b-scope.json",
+      "sha256": "934f5cd21690b247afe773107e09b0aeb174f84c2c772e8e5ca9925be72ae241"
     },
     {
-      "file": "docs/verification-data/arsenal-model-oct26-performance.json",
-      "sha256": "bf7738e1826dc4c85aebfa7faab300dfec6a38abeeb229a12f5a69a92a393747"
+      "file": "docs/verification-data/crypt-depth-oct26b-tool-guards.json",
+      "sha256": "3e0316276aaf74f477f7ba76d3daf3403e0d83a7cd7a446df6c87db10cd96822"
     },
     {
-      "file": "docs/verification-data/arsenal-model-oct26-presentation.json",
-      "sha256": "f3baa393b945531c80cb0b512d89ee5cb90d2fbfc2640bee22e34c5701040f98"
+      "file": "docs/verification-data/crypt-depth-oct26b-v5-identity.json",
+      "sha256": "ab1574428307ee94e4dea5c10d5b4f8dc5a4740dd47883676e8a5c8e334a7eed"
     },
     {
-      "file": "docs/verification-data/arsenal-model-oct26-source-scope.json",
-      "sha256": "25e6591250a3b0dcbc45ec88761897297e732baf26f0f62eb898d570b8ab05b4"
+      "file": "docs/verification-data/enemy-close-melee-oct26-final.json",
+      "sha256": "d74101165c4e23172b951b43927d72a5d629041b9eb7ad85c4323aaee125d725"
     },
     {
-      "file": "docs/verification-data/hell-architecture-oct26-final-56394da3.json",
-      "sha256": "eff09ef80a1a1056ad7800d3a889ac8b6f4c9d23003f21a63240b2d4f0c0197d"
+      "file": "docs/verification-data/enemy-close-melee-oct26-native.json",
+      "sha256": "ecc269d86a2680194cc3deaaafb990a4e391b14ab312cb7d998a05539b2347af"
     },
     {
-      "file": "docs/verification-data/hell-architecture-oct26-invariants.json",
-      "sha256": "9ebef2f2669e395eddb9b7b6cff243f6421123fdc13b1557ea4b92d7ef5a2a56"
+      "file": "docs/verification-data/enemy-close-melee-oct26-parity.json",
+      "sha256": "5f2fb801938b86995f2d34f62a1e3ee5ebe08041f02dee7d5f7302faf3b26139"
     },
     {
-      "file": "docs/verification-data/hell-architecture-oct26-navigation.json",
-      "sha256": "5bfccc66af02308cb398867b2406d63e9d3d6352b31a2102d9112ec439ace341"
+      "file": "docs/verification-data/enemy-close-melee-oct26-regression.json",
+      "sha256": "129cd7d57867d3c0f863eaf3599ccb4b2d1ff18326d8b73e5b9fc9735af97264"
     },
     {
-      "file": "docs/verification-data/hell-architecture-oct26-render-lifecycle.json",
-      "sha256": "6531aa633a2343ce3c6062ec8f85ef21abbbe946541e7fa499fc0e1ccf441251"
+      "file": "docs/verification-data/enemy-close-melee-oct26-v5-identity.json",
+      "sha256": "ce54db8473e914fb928b832f81bf0aaab619c428b93763914ec09ed17afa2b5f"
     },
     {
-      "file": "docs/verification-data/hell-architecture-oct26-tool-guards.json",
-      "sha256": "e6e8d5360db847fd4e72405d95d84ee11ad4e99782996a58ff6f87d0c968ef53"
+      "file": "docs/verification-data/weapon-structure-oct26b-aspects.json",
+      "sha256": "bb6f739859018a6501a7f3ef2aabc0a35e899c6e0d6de3608cf1491dc1df38f0"
     },
     {
-      "file": "docs/verification-data/zombie-audio-oct26-audition.json",
-      "sha256": "747d210a0414ba8e57205465ffbe037a251c6c38fda31d7078dd19f3bc48f504"
+      "file": "docs/verification-data/weapon-structure-oct26b-cross-v3-aspects.json",
+      "sha256": "8289f6a498eca12a3b3a8a906ab51089d972d87ccaa8da716a9bb12bf1456491"
     },
     {
-      "file": "docs/verification-data/zombie-audio-oct26-final.json",
-      "sha256": "4b84002dd76222cf46bb23187fe0f3b08072b0f7686b0c9606f97680f36bc966"
+      "file": "docs/verification-data/weapon-structure-oct26b-cross-v5-aspects.json",
+      "sha256": "5a9d66d9b61bf4f21dc803c490919f19233df38761bcd50f6d381a994ed05ef8"
     },
     {
-      "file": "docs/verification-data/zombie-audio-oct26-private.json",
-      "sha256": "cac410abfb35b927ea33069d254468b7bf037c8bd699a0c5d910bdd77e6de98e"
+      "file": "docs/verification-data/weapon-structure-oct26b-parity.json",
+      "sha256": "582e977bbbb98a32f001797518cf3b649aa3a485e669e5c5c17fd4e71a3d1577"
     },
     {
-      "file": "docs/verification-data/zombie-audio-oct26-tool-guards.json",
-      "sha256": "7a50caf04ae23444108ffe7377b3a099366015bfbcf98ddb30085ea85789c20c"
+      "file": "docs/verification-data/weapon-structure-oct26b-path-guards.json",
+      "sha256": "88aedec6e404e87fb2994498a3554fc820fd703d91e49ee9f735d4fe2271ef7c"
+    },
+    {
+      "file": "docs/verification-data/weapon-structure-oct26b-path.json",
+      "sha256": "a10016e1bebe97bca259797bf5138760b518bd9a9c78c6d74bb48244ff485958"
+    },
+    {
+      "file": "docs/verification-data/weapon-structure-oct26b-performance.json",
+      "sha256": "3fbd55fb088151fdd1532cd7665649b50f086167cb4d3ef22c28c3663396a252"
+    },
+    {
+      "file": "docs/verification-data/weapon-structure-oct26b-runtime.json",
+      "sha256": "c7a1a91e7ecd952e18e5dd8b54141ae1936515b921cc2b3c5bf377167fd04238"
     }
   ],
   "viewmodelParity": {
-    "baselineSHA256": "4b03db10fcf7433e90e2f21e662224d79ce356f3e2bac392ab7ab21cd09c6198",
-    "candidateSHA256": "4baca569e8d9d68098a6bd615cf81041d6405053a20aa083095da0624f3a4321",
-    "sourceSHA256": "fac2821077fe86e235207797d3a7a7bcd024e77f00a44c0bec744271d05d89fa",
+    "baselineSHA256": "56394da38ad2dff02bffb5a32900daa40cf7c6cd319be7e6a1b850145e6e376d",
+    "candidateSHA256": "163ec3ade47971e35ef07513340b41fdadc1037f6bf9e7af09c16a5f108e97c4",
+    "sourceSHA256": "b94143465477341407ed16e3377a7d95159309cea3b5b62fe68c1d887540b910",
     "comparisons": 660,
-    "exact": 120,
-    "expectedWeapons1To9Differences": 540,
+    "exact": 540,
+    "expectedShotgunCrossDifferences": 120,
     "unexpectedDifferences": 0
   },
   "mediaManifest": {
-    "file": "docs/arsenal-model-oct26/provenance.json",
-    "sha256": "e614631e5fe041412a6ef8ea63f8d3dc8dc765bf87fbd09466f5d3bc487ca958"
+    "file": "docs/weapon-structure-oct26b/provenance.json",
+    "sha256": "3aaa8cf31ee8204589358f4abfe519c2601017917067f37ac74cf3882a8fa335"
   },
   "limitations": [
-    "No general FPS improvement is claimed. Final host-specific ABBA observations show higher Sniper/Soul raster cost; Soul reload mean frame FPS42.63→41.33.",
-    "Models retain reference-derived articulated2.5D surfaces and volumetric backing, not full arbitrary-view3D reconstruction.",
-    "Weapon-only parity/aspect reports preserve their intermediate input hashes; final combined runtime/audio/environment/build checks are separately identified.",
-    "Video uses actual native RAF and WebAudio with25fps capture; background/phase variation in screenshots is not deterministic parity evidence.",
-    "Validation covers documented flows, not every campaign state or hardware/aspect combination."
+    "Final Cross reload remains about1.5ms CPU and3FPS more costly in the recorded local comparison; no general FPS gain is claimed.",
+    "Reference-derived articulated2.5D artwork and native volumetric backing remain view dependent.",
+    "Environment/enemy native7ff smoke and private aspect reports retain their original input hashes. Finald610 module identity, all10runtime and build checks are separate.",
+    "Cross servicing hand is more readable but can still be partly occluded by the receiver.",
+    "Documented tests do not prove all campaign states or all hardware."
   ]
 }

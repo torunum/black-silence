@@ -1,0 +1,238 @@
+{
+  "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\weapon-structure-oct26b\\v3\\candidate.html",
+  "sha256": "1ffca6070492cc6a4833fc00d42a70909baec623058f90e3a960501654cdc955",
+  "frames": [
+    {
+      "width": 1024,
+      "height": 768,
+      "label": "idle",
+      "index": 5,
+      "state": "idle",
+      "phase": 0.04890909090909107,
+      "mag": 3,
+      "ammo": 100,
+      "override": false,
+      "sideDraws": [],
+      "canvas": [
+        400,
+        300
+      ],
+      "file": "weapon-5-1024x768-idle.png"
+    },
+    {
+      "width": 1024,
+      "height": 768,
+      "label": "0.35",
+      "index": 5,
+      "state": "reload",
+      "phase": 0.3730454545454548,
+      "mag": 0,
+      "ammo": 100,
+      "override": false,
+      "sideDraws": [],
+      "canvas": [
+        400,
+        300
+      ],
+      "file": "weapon-5-1024x768-0.35.png"
+    },
+    {
+      "width": 1024,
+      "height": 768,
+      "label": "0.5",
+      "index": 5,
+      "state": "reload",
+      "phase": 0.5192272727272731,
+      "mag": 0,
+      "ammo": 100,
+      "override": false,
+      "sideDraws": [],
+      "canvas": [
+        400,
+        300
+      ],
+      "file": "weapon-5-1024x768-0.5.png"
+    },
+    {
+      "width": 1024,
+      "height": 768,
+      "label": "0.65",
+      "index": 5,
+      "state": "reload",
+      "phase": 0.665681818181819,
+      "mag": 0,
+      "ammo": 100,
+      "override": false,
+      "sideDraws": [],
+      "canvas": [
+        400,
+        300
+      ],
+      "file": "weapon-5-1024x768-0.65.png"
+    },
+    {
+      "width": 1680,
+      "height": 720,
+      "label": "idle",
+      "index": 5,
+      "state": "idle",
+      "phase": 0.04059090909090876,
+      "mag": 3,
+      "ammo": 100,
+      "override": false,
+      "sideDraws": [],
+      "canvas": [
+        400,
+        171
+      ],
+      "file": "weapon-5-1680x720-idle.png"
+    },
+    {
+      "width": 1680,
+      "height": 720,
+      "label": "0.35",
+      "index": 5,
+      "state": "reload",
+      "phase": 0.3655909090909095,
+      "mag": 0,
+      "ammo": 100,
+      "override": false,
+      "sideDraws": [],
+      "canvas": [
+        400,
+        171
+      ],
+      "file": "weapon-5-1680x720-0.35.png"
+    },
+    {
+      "width": 1680,
+      "height": 720,
+      "label": "0.5",
+      "index": 5,
+      "state": "reload",
+      "phase": 0.5284545454545457,
+      "mag": 0,
+      "ammo": 100,
+      "override": false,
+      "sideDraws": [],
+      "canvas": [
+        400,
+        171
+      ],
+      "file": "weapon-5-1680x720-0.5.png"
+    },
+    {
+      "width": 1680,
+      "height": 720,
+      "label": "0.65",
+      "index": 5,
+      "state": "reload",
+      "phase": 0.6667272727272734,
+      "mag": 0,
+      "ammo": 100,
+      "override": false,
+      "sideDraws": [],
+      "canvas": [
+        400,
+        171
+      ],
+      "file": "weapon-5-1680x720-0.65.png"
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "label": "idle",
+      "index": 5,
+      "state": "idle",
+      "phase": 0.048954545454545785,
+      "mag": 3,
+      "ammo": 100,
+      "override": false,
+      "sideDraws": [],
+      "canvas": [
+        400,
+        225
+      ],
+      "file": "weapon-5-1280x720-idle.png"
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "label": "0.35",
+      "index": 5,
+      "state": "reload",
+      "phase": 0.3728181818181813,
+      "mag": 0,
+      "ammo": 100,
+      "override": false,
+      "sideDraws": [],
+      "canvas": [
+        400,
+        225
+      ],
+      "file": "weapon-5-1280x720-0.35.png"
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "label": "0.5",
+      "index": 5,
+      "state": "reload",
+      "phase": 0.5191363636363637,
+      "mag": 0,
+      "ammo": 100,
+      "override": false,
+      "sideDraws": [],
+      "canvas": [
+        400,
+        225
+      ],
+      "file": "weapon-5-1280x720-0.5.png"
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "label": "0.65",
+      "index": 5,
+      "state": "reload",
+      "phase": 0.6815454545454542,
+      "mag": 0,
+      "ammo": 100,
+      "override": false,
+      "sideDraws": [],
+      "canvas": [
+        400,
+        225
+      ],
+      "file": "weapon-5-1280x720-0.65.png"
+    }
+  ],
+  "endpoints": [
+    {
+      "width": 1024,
+      "height": 768,
+      "index": 5,
+      "mag": 3,
+      "size": 3,
+      "ammo": 97
+    },
+    {
+      "width": 1680,
+      "height": 720,
+      "index": 5,
+      "mag": 3,
+      "size": 3,
+      "ammo": 97
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "index": 5,
+      "mag": 3,
+      "size": 3,
+      "ammo": 97
+    }
+  ],
+  "errors": [],
+  "scope": "Native resize + real R and RAF; no viewPose; pause for screenshots only."
+}

@@ -1,0 +1,2061 @@
+{
+  "passed": true,
+  "inputs": [
+    {
+      "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\weapon-structure-oct26b\\v5\\baseline.html",
+      "sha256": "56394da38ad2dff02bffb5a32900daa40cf7c6cd319be7e6a1b850145e6e376d",
+      "errors": []
+    },
+    {
+      "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\weapon-structure-oct26b\\v5\\candidate.html",
+      "sha256": "163ec3ade47971e35ef07513340b41fdadc1037f6bf9e7af09c16a5f108e97c4",
+      "errors": []
+    }
+  ],
+  "cases": 660,
+  "exact": 540,
+  "expectedDifferences": [
+    {
+      "case": 9,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": -1
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 10,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.12
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 11,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.26
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 12,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.43
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 13,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.55
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 14,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.59
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 15,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.74
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 16,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.86
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 17,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.99
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 45,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": -1
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 46,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.12
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 47,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.26
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 48,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.43
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 49,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.55
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 50,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.59
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 51,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.74
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 52,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.86
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 53,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.99
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 106,
+      "index": 1,
+      "pose": {
+        "recoil": 0.5,
+        "action": 0.25,
+        "heat": 0.3333333333333333,
+        "spin": 0.137,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.041666666666666664
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 110,
+      "index": 5,
+      "pose": {
+        "recoil": 1,
+        "action": 0,
+        "heat": 0.3333333333333333,
+        "spin": 0.685,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.20833333333333334
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 116,
+      "index": 1,
+      "pose": {
+        "recoil": 1,
+        "action": 0.25,
+        "heat": 1,
+        "spin": 1.5070000000000001,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.4583333333333333
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 120,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 1,
+        "spin": 2.055,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.625
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 126,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0.25,
+        "heat": 0.3333333333333333,
+        "spin": 2.8770000000000002,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.875
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 130,
+      "index": 5,
+      "pose": {
+        "recoil": 0.5,
+        "action": 0,
+        "heat": 0.3333333333333333,
+        "spin": 3.4250000000000003,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.041666666666666664
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 136,
+      "index": 1,
+      "pose": {
+        "recoil": 0.5,
+        "action": 0.25,
+        "heat": 1,
+        "spin": 4.247,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.2916666666666667
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 140,
+      "index": 5,
+      "pose": {
+        "recoil": 1,
+        "action": 0,
+        "heat": 1,
+        "spin": 4.795,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.4583333333333333
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 146,
+      "index": 1,
+      "pose": {
+        "recoil": 1,
+        "action": 0.25,
+        "heat": 0.3333333333333333,
+        "spin": 5.617000000000001,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.7083333333333334
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 150,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0.3333333333333333,
+        "spin": 6.165000000000001,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.875
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 156,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0.25,
+        "heat": 1,
+        "spin": 6.987,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.125
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 160,
+      "index": 5,
+      "pose": {
+        "recoil": 0.5,
+        "action": 0,
+        "heat": 1,
+        "spin": 7.535,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.2916666666666667
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 166,
+      "index": 1,
+      "pose": {
+        "recoil": 0.5,
+        "action": 0.25,
+        "heat": 0.3333333333333333,
+        "spin": 8.357000000000001,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.5416666666666666
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 170,
+      "index": 5,
+      "pose": {
+        "recoil": 1,
+        "action": 0,
+        "heat": 0.3333333333333333,
+        "spin": 8.905000000000001,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.7083333333333334
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 176,
+      "index": 1,
+      "pose": {
+        "recoil": 1,
+        "action": 0.25,
+        "heat": 1,
+        "spin": 9.727,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.9583333333333334
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 180,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 1,
+        "spin": 10.275,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.125
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 186,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0.25,
+        "heat": 0.3333333333333333,
+        "spin": 11.097000000000001,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.375
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 190,
+      "index": 5,
+      "pose": {
+        "recoil": 0.5,
+        "action": 0,
+        "heat": 0.3333333333333333,
+        "spin": 11.645000000000001,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.5416666666666666
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 196,
+      "index": 1,
+      "pose": {
+        "recoil": 0.5,
+        "action": 0.25,
+        "heat": 1,
+        "spin": 12.467,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.7916666666666666
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 200,
+      "index": 5,
+      "pose": {
+        "recoil": 1,
+        "action": 0,
+        "heat": 1,
+        "spin": 13.015,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.9583333333333334
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 206,
+      "index": 1,
+      "pose": {
+        "recoil": 1,
+        "action": 0.25,
+        "heat": 0.3333333333333333,
+        "spin": 13.837000000000002,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.20833333333333334
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 210,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0.3333333333333333,
+        "spin": 14.385000000000002,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.375
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 216,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0.25,
+        "heat": 1,
+        "spin": 15.207,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.625
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 220,
+      "index": 5,
+      "pose": {
+        "recoil": 0.5,
+        "action": 0,
+        "heat": 1,
+        "spin": 15.755,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.7916666666666666
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 226,
+      "index": 1,
+      "pose": {
+        "recoil": 0.5,
+        "action": 0.25,
+        "heat": 0.3333333333333333,
+        "spin": 16.577,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.041666666666666664
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 230,
+      "index": 5,
+      "pose": {
+        "recoil": 1,
+        "action": 0,
+        "heat": 0.3333333333333333,
+        "spin": 17.125,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.20833333333333334
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 236,
+      "index": 1,
+      "pose": {
+        "recoil": 1,
+        "action": 0.25,
+        "heat": 1,
+        "spin": 17.947000000000003,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.4583333333333333
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 240,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 1,
+        "spin": 18.495,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.625
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 246,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0.25,
+        "heat": 0.3333333333333333,
+        "spin": 19.317,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.875
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 250,
+      "index": 5,
+      "pose": {
+        "recoil": 0.5,
+        "action": 0,
+        "heat": 0.3333333333333333,
+        "spin": 19.865000000000002,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.041666666666666664
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 256,
+      "index": 1,
+      "pose": {
+        "recoil": 0.5,
+        "action": 0.25,
+        "heat": 1,
+        "spin": 20.687,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.2916666666666667
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 260,
+      "index": 5,
+      "pose": {
+        "recoil": 1,
+        "action": 0,
+        "heat": 1,
+        "spin": 21.235000000000003,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.4583333333333333
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 266,
+      "index": 1,
+      "pose": {
+        "recoil": 1,
+        "action": 0.25,
+        "heat": 0.3333333333333333,
+        "spin": 22.057000000000002,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.7083333333333334
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 270,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0.3333333333333333,
+        "spin": 22.605,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.875
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 276,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0.25,
+        "heat": 1,
+        "spin": 23.427000000000003,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.125
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 280,
+      "index": 5,
+      "pose": {
+        "recoil": 0.5,
+        "action": 0,
+        "heat": 1,
+        "spin": 23.975,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.2916666666666667
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 286,
+      "index": 1,
+      "pose": {
+        "recoil": 0.5,
+        "action": 0.25,
+        "heat": 0.3333333333333333,
+        "spin": 24.797,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.5416666666666666
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 290,
+      "index": 5,
+      "pose": {
+        "recoil": 1,
+        "action": 0,
+        "heat": 0.3333333333333333,
+        "spin": 25.345000000000002,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.7083333333333334
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 296,
+      "index": 1,
+      "pose": {
+        "recoil": 1,
+        "action": 0.25,
+        "heat": 1,
+        "spin": 26.167,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.9583333333333334
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 300,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 1,
+        "spin": 26.715000000000003,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.125
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 306,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0.25,
+        "heat": 0.3333333333333333,
+        "spin": 27.537000000000003,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.375
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 310,
+      "index": 5,
+      "pose": {
+        "recoil": 0.5,
+        "action": 0,
+        "heat": 0.3333333333333333,
+        "spin": 28.085,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.5416666666666666
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 316,
+      "index": 1,
+      "pose": {
+        "recoil": 0.5,
+        "action": 0.25,
+        "heat": 1,
+        "spin": 28.907000000000004,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.7916666666666666
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 320,
+      "index": 5,
+      "pose": {
+        "recoil": 1,
+        "action": 0,
+        "heat": 1,
+        "spin": 29.455000000000002,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.9583333333333334
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 326,
+      "index": 1,
+      "pose": {
+        "recoil": 1,
+        "action": 0.25,
+        "heat": 0.3333333333333333,
+        "spin": 30.277,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.20833333333333334
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 330,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0.3333333333333333,
+        "spin": 30.825000000000003,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.375
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 336,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0.25,
+        "heat": 1,
+        "spin": 31.647000000000002,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.625
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 340,
+      "index": 5,
+      "pose": {
+        "recoil": 0.5,
+        "action": 0,
+        "heat": 1,
+        "spin": 32.195,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.7916666666666666
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 354,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": -1
+      },
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      }
+    },
+    {
+      "case": 355,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.12
+      },
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      }
+    },
+    {
+      "case": 356,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.26
+      },
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      }
+    },
+    {
+      "case": 357,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.43
+      },
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      }
+    },
+    {
+      "case": 358,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.55
+      },
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      }
+    },
+    {
+      "case": 359,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.59
+      },
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      }
+    },
+    {
+      "case": 360,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.74
+      },
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      }
+    },
+    {
+      "case": 361,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.86
+      },
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      }
+    },
+    {
+      "case": 362,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.99
+      },
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      }
+    },
+    {
+      "case": 390,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": -1
+      },
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      }
+    },
+    {
+      "case": 391,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.12
+      },
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      }
+    },
+    {
+      "case": 392,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.26
+      },
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      }
+    },
+    {
+      "case": 393,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.43
+      },
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      }
+    },
+    {
+      "case": 394,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.55
+      },
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      }
+    },
+    {
+      "case": 395,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.59
+      },
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      }
+    },
+    {
+      "case": 396,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.74
+      },
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      }
+    },
+    {
+      "case": 397,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.86
+      },
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      }
+    },
+    {
+      "case": 398,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.99
+      },
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      }
+    },
+    {
+      "case": 459,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": -1
+      },
+      "viewport": {
+        "width": 1680,
+        "height": 720
+      }
+    },
+    {
+      "case": 460,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.12
+      },
+      "viewport": {
+        "width": 1680,
+        "height": 720
+      }
+    },
+    {
+      "case": 461,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.26
+      },
+      "viewport": {
+        "width": 1680,
+        "height": 720
+      }
+    },
+    {
+      "case": 462,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.43
+      },
+      "viewport": {
+        "width": 1680,
+        "height": 720
+      }
+    },
+    {
+      "case": 463,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.55
+      },
+      "viewport": {
+        "width": 1680,
+        "height": 720
+      }
+    },
+    {
+      "case": 464,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.59
+      },
+      "viewport": {
+        "width": 1680,
+        "height": 720
+      }
+    },
+    {
+      "case": 465,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.74
+      },
+      "viewport": {
+        "width": 1680,
+        "height": 720
+      }
+    },
+    {
+      "case": 466,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.86
+      },
+      "viewport": {
+        "width": 1680,
+        "height": 720
+      }
+    },
+    {
+      "case": 467,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.99
+      },
+      "viewport": {
+        "width": 1680,
+        "height": 720
+      }
+    },
+    {
+      "case": 495,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": -1
+      },
+      "viewport": {
+        "width": 1680,
+        "height": 720
+      }
+    },
+    {
+      "case": 496,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.12
+      },
+      "viewport": {
+        "width": 1680,
+        "height": 720
+      }
+    },
+    {
+      "case": 497,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.26
+      },
+      "viewport": {
+        "width": 1680,
+        "height": 720
+      }
+    },
+    {
+      "case": 498,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.43
+      },
+      "viewport": {
+        "width": 1680,
+        "height": 720
+      }
+    },
+    {
+      "case": 499,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.55
+      },
+      "viewport": {
+        "width": 1680,
+        "height": 720
+      }
+    },
+    {
+      "case": 500,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.59
+      },
+      "viewport": {
+        "width": 1680,
+        "height": 720
+      }
+    },
+    {
+      "case": 501,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.74
+      },
+      "viewport": {
+        "width": 1680,
+        "height": 720
+      }
+    },
+    {
+      "case": 502,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.86
+      },
+      "viewport": {
+        "width": 1680,
+        "height": 720
+      }
+    },
+    {
+      "case": 503,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.99
+      },
+      "viewport": {
+        "width": 1680,
+        "height": 720
+      }
+    },
+    {
+      "case": 564,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": -1
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 565,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.12
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 566,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.26
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 567,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.43
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 568,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.55
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 569,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.59
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 570,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.74
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 571,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.86
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 572,
+      "index": 1,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.99
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 600,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": -1
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 601,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.12
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 602,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.26
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 603,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.43
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 604,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.55
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 605,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.59
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 606,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.74
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 607,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.86
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "case": 608,
+      "index": 5,
+      "pose": {
+        "recoil": 0,
+        "action": 0,
+        "heat": 0,
+        "spin": 0,
+        "kick": -1,
+        "exec": -1,
+        "reload": 0.99
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    }
+  ],
+  "unexpectedDifferences": [],
+  "scope": "Raw RGBA, native canvas, side canvas, topRow and bounds; only Shotgun1 and Cross5 may differ. Handgun0, other7 weapons, boots and standalone finishers exact."
+}

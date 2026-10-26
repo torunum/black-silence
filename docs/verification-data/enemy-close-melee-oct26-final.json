@@ -1,0 +1,142 @@
+{
+  "inputHTML": "C:\\Users\\tehlike47\\game\\.dream-loop\\weapon-structure-oct26b\\combined-final\\THE-BLACK-SILENCE.html",
+  "inputHTMLSHA256": "7ff9137196f2aba929c920312847c1e21bf8b5bda5d76be2f5263cfefe9e62b3",
+  "enemyAnimationSourceSHA256": "977a4a425dedb5a48cce43592986a058f1c390641f529660f048dd71a9be0d3e",
+  "scope": "Final combined native RAF enemy contact and actual sprint/RMB plus E chain. Enemy placement/awareness are controlled; chain RNG fixed at .1 to make stagger deterministic. No direct damage or enemyStep injection. Prior 67 controlled parity and 39 regression checks were on private280de701, not rerun here.",
+  "nativeContacts": [
+    {
+      "kind": "t",
+      "pre": {
+        "time": 10531.300000011921,
+        "cool": 0.11189999999999971,
+        "hurt": 0,
+        "hp": 100,
+        "distance": 1,
+        "map": 211,
+        "pose": {
+          "gait": 0,
+          "moving": 0,
+          "recoil": 0,
+          "attack": 0,
+          "staggered": false,
+          "recover": 0,
+          "anticipation": true,
+          "landing": 0,
+          "pose": "atk"
+        }
+      },
+      "contact": {
+        "time": 10829.600000023842,
+        "cool": 1,
+        "atk": 0.202,
+        "hurt": 0,
+        "hp": 88,
+        "distance": 1,
+        "map": 212,
+        "pose": {
+          "gait": 0,
+          "moving": 0,
+          "recoil": 0,
+          "attack": 0.31,
+          "staggered": false,
+          "recover": 0,
+          "anticipation": true,
+          "landing": 0,
+          "pose": "atk"
+        }
+      },
+      "observedRAFFrames": 39
+    },
+    {
+      "kind": "j",
+      "pre": {
+        "time": 11299.699999988079,
+        "cool": 0.11270000000000084,
+        "hurt": 0,
+        "hp": 100,
+        "distance": 1,
+        "map": 213,
+        "pose": {
+          "gait": 0,
+          "moving": 0,
+          "recoil": 0,
+          "attack": 0,
+          "staggered": false,
+          "recover": 0,
+          "anticipation": true,
+          "landing": 0,
+          "pose": "atk"
+        }
+      },
+      "contact": {
+        "time": 11614.199999988079,
+        "cool": 1,
+        "atk": 0.202,
+        "hurt": 0,
+        "hp": 91,
+        "distance": 1,
+        "map": 214,
+        "pose": {
+          "gait": 0,
+          "moving": 0,
+          "recoil": 0,
+          "attack": 0.31,
+          "staggered": false,
+          "recover": 0,
+          "anticipation": true,
+          "landing": 0,
+          "pose": "atk"
+        }
+      },
+      "observedRAFFrames": 41
+    }
+  ],
+  "chain": {
+    "observed": {
+      "drop": true,
+      "flung": true,
+      "landed": true
+    },
+    "passed": true,
+    "finalEnemyHP": -5,
+    "final": {
+      "t": 18067.5,
+      "drop": false,
+      "flung": 0,
+      "flungT": 0,
+      "hp": -5,
+      "x": 19.049948859829385,
+      "z": 7.2712124494782175,
+      "y": 3.65736,
+      "rotation": 0,
+      "stun": 1.5,
+      "stagger": 0,
+      "dead": true,
+      "executing": false,
+      "exec": null,
+      "player": {
+        "x": 19.069836486692544,
+        "z": 7.598904738415861,
+        "pitch": 0.27268613493924654,
+        "yaw": 0.060615596371384785
+      },
+      "animation": {
+        "gait": 2.6422888611792725,
+        "moving": 0,
+        "recoil": 0,
+        "attack": 0,
+        "staggered": false,
+        "recover": 0,
+        "anticipation": false,
+        "landing": 0,
+        "pose": "pain"
+      }
+    },
+    "staggerObserved": true,
+    "executionObserved": true,
+    "inputPreserved": true,
+    "errors": []
+  },
+  "errors": [],
+  "passed": true
+}

@@ -600,7 +600,35 @@
   di.prologueCryptBay = {
     mode: "wall",
     cls: "decor",
-    build(box) {
+    build(box, cylinder, spec) {
+      if (spec?.cryptDepth === 1) {
+        // A deep-looking recess stays within the original shallow wall footprint.
+        // The flag is only present on the three prologue descent bays.
+        box("prologueMemorialStone", 1.76, .35, .15, E(0,.185,-.925));
+        box("slate",1.84,.09,.22,E(0,.405,-.88));
+        box("dark",1.01,.99,.025,E(0,1.01,-.968));
+        box("dark",.82,.27,.025,E(0,1.62,-.968));
+        box("dark",.50,.24,.025,E(0,1.835,-.968));
+        for(const side of [-1,1]) {
+          box("prologueMemorialStone",.23,1.25,.22,E(side*.68,1.075,-.88));
+          box("slate",.105,1.12,.14,E(side*.535,1.055,-.9));
+          for(const y of [.52,.91,1.30])
+            box("stone",.31,.085,.20,E(side*.69,y,-.87));
+          box("rock",.25,.14,.20,E(side*.65,1.52,-.87));
+          const pts=[[.56,1.50],[.46,1.73],[.27,1.93],[0,2.06]];
+          for(let i=1;i<pts.length;i++) {
+            const a=pts[i-1],b=pts[i],dx=side*(b[0]-a[0]),dy=b[1]-a[1];
+            box("slate",.18,Math.hypot(dx,dy)+.035,.22,E(side*(a[0]+b[0])/2,(a[1]+b[1])/2,-.88,0,0,-Math.atan2(dx,dy)));
+          }
+        }
+        box("rock",.25,.18,.20,E(0,2.035,-.87));
+        box("rock",1.17,.11,.20,E(0,.54,-.87));
+        box("prologueMemorialStone",.94,.045,.17,E(0,.625,-.895));
+        box("oldbone",.36,.065,.08,E(-.08,.69,-.87,0,.13));
+        box("oldbone",.28,.06,.075,E(.15,.75,-.9,0,-.16));
+        box("prologueWatermark",.33,.68,.008,E(-.77,1.15,-.775));
+        return;
+      }
       box("prologueMemorialStone", 1.76, 0.35, 0.15, E(0, 0.185, -0.925));
       box("slate", 1.84, 0.09, 0.22, E(0, 0.405, -0.88));
       for (const x of [-0.78, 0.78]) {
@@ -740,6 +768,10 @@
     // as the new architecture rather than the old metre-wide glowing cracks.
     Ft.hellAshWall = Ew(hellTexture("stone"), 2, 2);
     Ft.hellAshWall.name = "prologueHellWall";
+    // Reuse the existing stone image with an isolated map-owned texture name.
+    // Crypt risers must not enter the hell-only hidden-ceiling filter.
+    Ft.prologueCryptStone = Ew(hellTexture("stone"), 2, 2);
+    Ft.prologueCryptStone.name = "prologueCryptStone";
     Ft.hellAshRoof = Ew(hellTexture("stone"), 1, 1);
     Ft.hellAshRoof.name = "prologueHellRoof";
     const slabSource = hellTexture("paving").image;
@@ -771,7 +803,7 @@
       if (map.zones.map[z][x] === 2 && !"#WI".includes(map.g[z][x]))
         map.cmap[z][x] = Math.max(map.cmap[z][x], 14.8);
     map.zones = { ...map.zones, themes: map.zones.themes.map(theme =>
-      theme.id === "hell" ? { ...theme, wall:"hellAshWall",ceil:"hellAshRoof",side:"hellAshWall",ground:"hellAshSlab",amb: 0xa49c92, ambI: 1.18, fogD: 0.023, fog: 0x1a1411 } : theme) };
+      theme.id === "crypt" ? { ...theme, wall:"prologueCryptStone", band:"prologueCryptStone" } : theme.id === "hell" ? { ...theme, wall:"hellAshWall",ceil:"hellAshRoof",side:"hellAshWall",ground:"hellAshSlab",amb: 0xa49c92, ambI: 1.18, fogD: 0.023, fog: 0x1a1411 } : theme) };
 
     // The ruined chapel becomes an optional, visible reward before the descent.
     // These were empty floor cells; the altar, existing health and ammo stay.
@@ -844,9 +876,9 @@
     place("niche", 9, 14, { r: Math.PI / 2, s: 0.75 });
     place("niche", 10, 16, { r: -Math.PI / 2, s: 0.75 });
     place("shackles", 9, 17, { r: Math.PI / 2, s: 0.65 });
-    place("prologueCryptBay", 9, 13, { r: Math.PI / 2 });
-    place("prologueCryptBay", 10, 15, { r: -Math.PI / 2 });
-    place("prologueCryptBay", 9, 17, { r: Math.PI / 2 });
+    place("prologueCryptBay", 9, 13, { r: Math.PI / 2, cryptDepth: 1 });
+    place("prologueCryptBay", 10, 15, { r: -Math.PI / 2, cryptDepth: 1 });
+    place("prologueCryptBay", 9, 17, { r: Math.PI / 2, cryptDepth: 1 });
 
     // Give the player time to read the first bank and build up a sprint.
     // Preserve the original enemy count and types, including all later fights.

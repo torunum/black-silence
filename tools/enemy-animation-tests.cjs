@@ -120,6 +120,27 @@ const target = path.resolve(process.env.GAME_HTML || path.join(root, "THE-BLACK-
             attacker.sp.scale.y === attacker.h,
           "contact has recovery motion without inflating the sprite",
         );
+        for (const key of ["t", "j"]) {
+          const rangedMelee = reset(1, key);
+          rangedMelee.cool = 0.15;
+          q.C.spawnGuard = 0;
+          q.T.armor = 0;
+          const beforeContact = q.T.hp;
+          q.enemyStep(0.03);
+          check(q.enemyAnimation(rangedMelee).anticipation &&
+            q.enemyAnimation(rangedMelee).pose === "atk" && q.T.hp === beforeContact,
+            `${key}: native close melee receives a pre-contact pose without early damage`);
+          q.enemyStep(0.13);
+          check(q.T.hp === beforeContact - rangedMelee.mel && rangedMelee.cool === 1,
+            `${key}: close melee retains native damage and cooldown`);
+          for (const distance of [1.56, 2.5, 3, 4]) {
+            const ranged = reset(distance, key);
+            ranged.cool = 0.15;
+            q.enemyStep(0.03);
+            check(q.enemyAnimation(ranged).anticipation === (distance > 3),
+              `${key}: reach ${distance} preserves the native gap and distant attack band`);
+          }
+        }
         const struck = reset();
         const fullHP = struck.hp;
         q.damage(struck, 5, { wIdx: 0, dir: { x: 1, z: 0 } });

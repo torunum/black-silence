@@ -1,0 +1,6763 @@
+{
+  "inputs": [
+    {
+      "input": "C:\\Users\\tehlike47\\game\\THE-BLACK-SILENCE.html",
+      "sha256": "56394da38ad2dff02bffb5a32900daa40cf7c6cd319be7e6a1b850145e6e376d"
+    },
+    {
+      "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\enemy-oct26\\candidate.html",
+      "sha256": "280de70147dfa830fbbd4c543dac11306f25c671a1d51858a74d02f4378c7a78"
+    }
+  ],
+  "runs": [
+    {
+      "cases": [
+        {
+          "key": "z",
+          "distance": 1,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": true,
+                "pose": "atk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 1,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.09,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": true,
+                "pose": "atk",
+                "attack": 0.31
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 0.92,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.009999999999999995,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.22999999999999998
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 0.77,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": -0.14,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.07999999999999999
+              }
+            }
+          ]
+        },
+        {
+          "key": "z",
+          "distance": 1.54,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 11.532,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": true,
+                "pose": "atk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 11.844,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 1,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.09,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": true,
+                "pose": "atk",
+                "attack": 0.31
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 12.036,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 0.92,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.009999999999999995,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.22999999999999998
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12.036,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 0.77,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": -0.14,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.07999999999999999
+              }
+            }
+          ]
+        },
+        {
+          "key": "z",
+          "distance": 1.55,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 11.521999999999998,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": true,
+                "pose": "atk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 11.833999999999998,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 1,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.09,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": true,
+                "pose": "atk",
+                "attack": 0.31
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 12.025999999999998,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 0.92,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.009999999999999995,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.22999999999999998
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12.025999999999998,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 0.77,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": -0.14,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.07999999999999999
+              }
+            }
+          ]
+        },
+        {
+          "key": "z",
+          "distance": 1.9,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 11.171999999999999,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 11.483999999999998,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": -0.010000000000000009,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": true,
+                "pose": "atk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 11.675999999999998,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 1,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.14,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.31
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12.035999999999998,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 0.85,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": -0.009999999999999981,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.16
+              }
+            }
+          ]
+        },
+        {
+          "key": "z",
+          "distance": 2.5,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 10.572,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 10.883999999999999,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": -0.010000000000000009,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 11.075999999999999,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": -0.09000000000000001,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 11.435999999999998,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": -0.24,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            }
+          ]
+        },
+        {
+          "key": "z",
+          "distance": 3,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 10.072,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 10.383999999999999,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": -0.010000000000000009,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 10.575999999999999,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": -0.09000000000000001,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 10.935999999999998,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": -0.24,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            }
+          ]
+        },
+        {
+          "key": "z",
+          "distance": 4,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 9.072,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 9.383999999999999,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": -0.010000000000000009,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 9.575999999999999,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": -0.09000000000000001,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 9.935999999999998,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": -0.24,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            }
+          ]
+        },
+        {
+          "key": "t",
+          "distance": 1,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 1,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.09,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.31
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.92,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.009999999999999995,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.22999999999999998
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.77,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": -0.14,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.07999999999999999
+              }
+            }
+          ]
+        },
+        {
+          "key": "t",
+          "distance": 1.54,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 11.4,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 11.14,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": -0.010000000000000009,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 10.98,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": -0.09000000000000001,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 10.68,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": -0.24,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            }
+          ]
+        },
+        {
+          "key": "t",
+          "distance": 1.55,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 11.389999999999999,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 11.129999999999999,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": -0.010000000000000009,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 10.969999999999999,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": -0.09000000000000001,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 10.669999999999998,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": -0.24,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            }
+          ]
+        },
+        {
+          "key": "t",
+          "distance": 1.9,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 11.04,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 10.78,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": -0.010000000000000009,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 10.62,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": -0.09000000000000001,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 10.319999999999999,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": -0.24,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            }
+          ]
+        },
+        {
+          "key": "t",
+          "distance": 2.5,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 10.44,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 10.18,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": -0.010000000000000009,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 10.02,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": -0.09000000000000001,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 9.719999999999999,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": -0.24,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            }
+          ]
+        },
+        {
+          "key": "t",
+          "distance": 3,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 9.94,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 9.68,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 2.3,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.09,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": true,
+                "pose": "atk",
+                "attack": 0.31
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 9.52,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 2.2199999999999998,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.009999999999999995,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.22999999999999998
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 9.219999999999999,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 2.07,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": -0.14,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.07999999999999999
+              }
+            }
+          ]
+        },
+        {
+          "key": "t",
+          "distance": 4,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 9.06,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": true,
+                "pose": "atk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 8.8,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 2.3,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.09,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": true,
+                "pose": "atk",
+                "attack": 0.31
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 8.96,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 2.2199999999999998,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.009999999999999995,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.22999999999999998
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 9.260000000000002,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 2.07,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": -0.14,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.07999999999999999
+              }
+            }
+          ]
+        },
+        {
+          "key": "j",
+          "distance": 1,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 1,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.09,
+                "playerHP": 91,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.31
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.92,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.009999999999999995,
+                "playerHP": 91,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.22999999999999998
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.77,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": -0.14,
+                "playerHP": 91,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.07999999999999999
+              }
+            }
+          ]
+        },
+        {
+          "key": "j",
+          "distance": 1.54,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 11.364,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 10.948,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": -0.010000000000000009,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 10.692,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": -0.09000000000000001,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 10.212,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": -0.24,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            }
+          ]
+        },
+        {
+          "key": "j",
+          "distance": 1.55,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 11.354,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 10.937999999999999,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": -0.010000000000000009,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 10.681999999999999,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": -0.09000000000000001,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 10.201999999999998,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": -0.24,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            }
+          ]
+        },
+        {
+          "key": "j",
+          "distance": 1.9,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 11.004,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 10.588,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": -0.010000000000000009,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 10.331999999999999,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": -0.09000000000000001,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 9.851999999999999,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": -0.24,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            }
+          ]
+        },
+        {
+          "key": "j",
+          "distance": 2.5,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 10.404,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 9.988,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": -0.010000000000000009,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 9.732,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 2.3,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.14,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.31
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 9.251999999999999,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 2.15,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": -0.009999999999999981,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.16
+              }
+            }
+          ]
+        },
+        {
+          "key": "j",
+          "distance": 3,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 9.904,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 9.488,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 2.3,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.09,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": true,
+                "pose": "atk",
+                "attack": 0.31
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 9.232,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 2.2199999999999998,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.009999999999999995,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.22999999999999998
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 8.751999999999999,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 2.07,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": -0.14,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.07999999999999999
+              }
+            }
+          ]
+        },
+        {
+          "key": "j",
+          "distance": 4,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 9.096,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": true,
+                "pose": "atk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 8.68,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 2.3,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.09,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": true,
+                "pose": "atk",
+                "attack": 0.31
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 8.936,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 2.2199999999999998,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.009999999999999995,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.22999999999999998
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 9.416,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 2.07,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": -0.14,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.07999999999999999
+              }
+            }
+          ]
+        },
+        {
+          "key": "t",
+          "distance": 1,
+          "flag": "hurt",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.12,
+                "hurt": 0.47,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 1,
+                "hurt": 0.33999999999999997,
+                "stun": 0,
+                "atkAnim": 0.09,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0.31
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.92,
+                "hurt": 0.25999999999999995,
+                "stun": 0,
+                "atkAnim": 0.009999999999999995,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0.22999999999999998
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.77,
+                "hurt": 0.10999999999999996,
+                "stun": 0,
+                "atkAnim": -0.14,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0.07999999999999999
+              }
+            }
+          ]
+        },
+        {
+          "key": "t",
+          "distance": 1,
+          "flag": "stun",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.15,
+                "hurt": 0,
+                "stun": 0.47,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.15,
+                "hurt": 0,
+                "stun": 0.33999999999999997,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.15,
+                "hurt": 0,
+                "stun": 0.25999999999999995,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.15,
+                "hurt": 0,
+                "stun": 0.10999999999999996,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            }
+          ]
+        },
+        {
+          "key": "t",
+          "distance": 1,
+          "flag": "stagger",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.15,
+                "hurt": 0.048,
+                "stun": 0,
+                "stagger": 0.47,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "pain",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.15,
+                "hurt": 0.048,
+                "stun": 0,
+                "stagger": 0.33999999999999997,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "pain",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.15,
+                "hurt": 0.048,
+                "stun": 0,
+                "stagger": 0.25999999999999995,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "pain",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.15,
+                "hurt": 0.048,
+                "stun": 0,
+                "stagger": 0.10999999999999996,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "pain",
+                "attack": 0
+              }
+            }
+          ]
+        },
+        {
+          "key": "t",
+          "distance": 1,
+          "flag": "unaware",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 1,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.09,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.31
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.92,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.009999999999999995,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.22999999999999998
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.77,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": -0.14,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.07999999999999999
+              }
+            }
+          ]
+        },
+        {
+          "key": "t",
+          "distance": 1,
+          "flag": "height",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": -0.010000000000000009,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": -0.09000000000000001,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": -0.24,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            }
+          ]
+        },
+        {
+          "key": "t",
+          "distance": 1,
+          "flag": "attack",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.17,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 1,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.09,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.92,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.009999999999999995,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.77,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": -0.14,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0
+              }
+            }
+          ]
+        },
+        {
+          "key": "j",
+          "distance": 1,
+          "flag": "hurt",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.12,
+                "hurt": 0.47,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 1,
+                "hurt": 0.33999999999999997,
+                "stun": 0,
+                "atkAnim": 0.09,
+                "playerHP": 91,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0.31
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.92,
+                "hurt": 0.25999999999999995,
+                "stun": 0,
+                "atkAnim": 0.009999999999999995,
+                "playerHP": 91,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0.22999999999999998
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.77,
+                "hurt": 0.10999999999999996,
+                "stun": 0,
+                "atkAnim": -0.14,
+                "playerHP": 91,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0.07999999999999999
+              }
+            }
+          ]
+        },
+        {
+          "key": "j",
+          "distance": 1,
+          "flag": "stun",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.15,
+                "hurt": 0,
+                "stun": 0.47,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.15,
+                "hurt": 0,
+                "stun": 0.33999999999999997,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.15,
+                "hurt": 0,
+                "stun": 0.25999999999999995,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.15,
+                "hurt": 0,
+                "stun": 0.10999999999999996,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            }
+          ]
+        },
+        {
+          "key": "j",
+          "distance": 1,
+          "flag": "stagger",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.15,
+                "hurt": 0.048,
+                "stun": 0,
+                "stagger": 0.47,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "pain",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.15,
+                "hurt": 0.048,
+                "stun": 0,
+                "stagger": 0.33999999999999997,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "pain",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.15,
+                "hurt": 0.048,
+                "stun": 0,
+                "stagger": 0.25999999999999995,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "pain",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.15,
+                "hurt": 0.048,
+                "stun": 0,
+                "stagger": 0.10999999999999996,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "pain",
+                "attack": 0
+              }
+            }
+          ]
+        },
+        {
+          "key": "j",
+          "distance": 1,
+          "flag": "unaware",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 1,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.09,
+                "playerHP": 91,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.31
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.92,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.009999999999999995,
+                "playerHP": 91,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.22999999999999998
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.77,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": -0.14,
+                "playerHP": 91,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.07999999999999999
+              }
+            }
+          ]
+        },
+        {
+          "key": "j",
+          "distance": 1,
+          "flag": "height",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": -0.010000000000000009,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": -0.09000000000000001,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": -0.24,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            }
+          ]
+        },
+        {
+          "key": "j",
+          "distance": 1,
+          "flag": "attack",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.17,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 1,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.09,
+                "playerHP": 91,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.92,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.009999999999999995,
+                "playerHP": 91,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.77,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": -0.14,
+                "playerHP": 91,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0
+              }
+            }
+          ]
+        }
+      ],
+      "blocked": {
+        "fixture": {
+          "px": 3,
+          "pz": 5,
+          "ex": 7,
+          "ez": 5
+        },
+        "anticipation": false
+      }
+    },
+    {
+      "cases": [
+        {
+          "key": "z",
+          "distance": 1,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": true,
+                "pose": "atk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 1,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.09,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": true,
+                "pose": "atk",
+                "attack": 0.31
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 0.92,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.009999999999999995,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.22999999999999998
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 0.77,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": -0.14,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.07999999999999999
+              }
+            }
+          ]
+        },
+        {
+          "key": "z",
+          "distance": 1.54,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 11.532,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": true,
+                "pose": "atk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 11.844,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 1,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.09,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": true,
+                "pose": "atk",
+                "attack": 0.31
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 12.036,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 0.92,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.009999999999999995,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.22999999999999998
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12.036,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 0.77,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": -0.14,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.07999999999999999
+              }
+            }
+          ]
+        },
+        {
+          "key": "z",
+          "distance": 1.55,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 11.521999999999998,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": true,
+                "pose": "atk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 11.833999999999998,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 1,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.09,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": true,
+                "pose": "atk",
+                "attack": 0.31
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 12.025999999999998,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 0.92,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.009999999999999995,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.22999999999999998
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12.025999999999998,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 0.77,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": -0.14,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.07999999999999999
+              }
+            }
+          ]
+        },
+        {
+          "key": "z",
+          "distance": 1.9,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 11.171999999999999,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 11.483999999999998,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": -0.010000000000000009,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": true,
+                "pose": "atk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 11.675999999999998,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 1,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.14,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.31
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12.035999999999998,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 0.85,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": -0.009999999999999981,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.16
+              }
+            }
+          ]
+        },
+        {
+          "key": "z",
+          "distance": 2.5,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 10.572,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 10.883999999999999,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": -0.010000000000000009,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 11.075999999999999,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": -0.09000000000000001,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 11.435999999999998,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": -0.24,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            }
+          ]
+        },
+        {
+          "key": "z",
+          "distance": 3,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 10.072,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 10.383999999999999,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": -0.010000000000000009,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 10.575999999999999,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": -0.09000000000000001,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 10.935999999999998,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": -0.24,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            }
+          ]
+        },
+        {
+          "key": "z",
+          "distance": 4,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 9.072,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 9.383999999999999,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": -0.010000000000000009,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 9.575999999999999,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": -0.09000000000000001,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 9.935999999999998,
+                "fy": 4.2,
+                "w": 1.18,
+                "h": 1.652,
+                "hp": 88,
+                "cool": -0.24,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            }
+          ]
+        },
+        {
+          "key": "t",
+          "distance": 1,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": true,
+                "pose": "atk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 1,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.09,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": true,
+                "pose": "atk",
+                "attack": 0.31
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.92,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.009999999999999995,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.22999999999999998
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.77,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": -0.14,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.07999999999999999
+              }
+            }
+          ]
+        },
+        {
+          "key": "t",
+          "distance": 1.54,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 11.4,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": true,
+                "pose": "atk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 11.14,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": -0.010000000000000009,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 10.98,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": -0.09000000000000001,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 10.68,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": -0.24,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            }
+          ]
+        },
+        {
+          "key": "t",
+          "distance": 1.55,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 11.389999999999999,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 11.129999999999999,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": -0.010000000000000009,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 10.969999999999999,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": -0.09000000000000001,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 10.669999999999998,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": -0.24,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            }
+          ]
+        },
+        {
+          "key": "t",
+          "distance": 1.9,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 11.04,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 10.78,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": -0.010000000000000009,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 10.62,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": -0.09000000000000001,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 10.319999999999999,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": -0.24,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            }
+          ]
+        },
+        {
+          "key": "t",
+          "distance": 2.5,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 10.44,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 10.18,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": -0.010000000000000009,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 10.02,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": -0.09000000000000001,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 9.719999999999999,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": -0.24,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            }
+          ]
+        },
+        {
+          "key": "t",
+          "distance": 3,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 9.94,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 9.68,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 2.3,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.09,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": true,
+                "pose": "atk",
+                "attack": 0.31
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 9.52,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 2.2199999999999998,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.009999999999999995,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.22999999999999998
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 9.219999999999999,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 2.07,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": -0.14,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.07999999999999999
+              }
+            }
+          ]
+        },
+        {
+          "key": "t",
+          "distance": 4,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 9.06,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": true,
+                "pose": "atk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 8.8,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 2.3,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.09,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": true,
+                "pose": "atk",
+                "attack": 0.31
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 8.96,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 2.2199999999999998,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.009999999999999995,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.22999999999999998
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 9.260000000000002,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 2.07,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": -0.14,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.07999999999999999
+              }
+            }
+          ]
+        },
+        {
+          "key": "j",
+          "distance": 1,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": true,
+                "pose": "atk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 1,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.09,
+                "playerHP": 91,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": true,
+                "pose": "atk",
+                "attack": 0.31
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.92,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.009999999999999995,
+                "playerHP": 91,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.22999999999999998
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.77,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": -0.14,
+                "playerHP": 91,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.07999999999999999
+              }
+            }
+          ]
+        },
+        {
+          "key": "j",
+          "distance": 1.54,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 11.364,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": true,
+                "pose": "atk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 10.948,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": -0.010000000000000009,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 10.692,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": -0.09000000000000001,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 10.212,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": -0.24,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            }
+          ]
+        },
+        {
+          "key": "j",
+          "distance": 1.55,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 11.354,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 10.937999999999999,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": -0.010000000000000009,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 10.681999999999999,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": -0.09000000000000001,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 10.201999999999998,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": -0.24,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            }
+          ]
+        },
+        {
+          "key": "j",
+          "distance": 1.9,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 11.004,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 10.588,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": -0.010000000000000009,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 10.331999999999999,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": -0.09000000000000001,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 9.851999999999999,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": -0.24,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            }
+          ]
+        },
+        {
+          "key": "j",
+          "distance": 2.5,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 10.404,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 9.988,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": -0.010000000000000009,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 9.732,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 2.3,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.14,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.31
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 9.251999999999999,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 2.15,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": -0.009999999999999981,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.16
+              }
+            }
+          ]
+        },
+        {
+          "key": "j",
+          "distance": 3,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 9.904,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "walk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 9.488,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 2.3,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.09,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": true,
+                "pose": "atk",
+                "attack": 0.31
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 9.232,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 2.2199999999999998,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.009999999999999995,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.22999999999999998
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 8.751999999999999,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 2.07,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": -0.14,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.07999999999999999
+              }
+            }
+          ]
+        },
+        {
+          "key": "j",
+          "distance": 4,
+          "flag": "normal",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 9.096,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": true,
+                "pose": "atk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 8.68,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 2.3,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.09,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": true,
+                "pose": "atk",
+                "attack": 0.31
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 8.936,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 2.2199999999999998,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.009999999999999995,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.22999999999999998
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 9.416,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 2.07,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": -0.14,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.07999999999999999
+              }
+            }
+          ]
+        },
+        {
+          "key": "t",
+          "distance": 1,
+          "flag": "hurt",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.12,
+                "hurt": 0.47,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 1,
+                "hurt": 0.33999999999999997,
+                "stun": 0,
+                "atkAnim": 0.09,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0.31
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.92,
+                "hurt": 0.25999999999999995,
+                "stun": 0,
+                "atkAnim": 0.009999999999999995,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0.22999999999999998
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.77,
+                "hurt": 0.10999999999999996,
+                "stun": 0,
+                "atkAnim": -0.14,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0.07999999999999999
+              }
+            }
+          ]
+        },
+        {
+          "key": "t",
+          "distance": 1,
+          "flag": "stun",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.15,
+                "hurt": 0,
+                "stun": 0.47,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.15,
+                "hurt": 0,
+                "stun": 0.33999999999999997,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.15,
+                "hurt": 0,
+                "stun": 0.25999999999999995,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.15,
+                "hurt": 0,
+                "stun": 0.10999999999999996,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            }
+          ]
+        },
+        {
+          "key": "t",
+          "distance": 1,
+          "flag": "stagger",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.15,
+                "hurt": 0.048,
+                "stun": 0,
+                "stagger": 0.47,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "pain",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.15,
+                "hurt": 0.048,
+                "stun": 0,
+                "stagger": 0.33999999999999997,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "pain",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.15,
+                "hurt": 0.048,
+                "stun": 0,
+                "stagger": 0.25999999999999995,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "pain",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.15,
+                "hurt": 0.048,
+                "stun": 0,
+                "stagger": 0.10999999999999996,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "pain",
+                "attack": 0
+              }
+            }
+          ]
+        },
+        {
+          "key": "t",
+          "distance": 1,
+          "flag": "unaware",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 1,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.09,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": true,
+                "pose": "atk",
+                "attack": 0.31
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.92,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.009999999999999995,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.22999999999999998
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.77,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": -0.14,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.07999999999999999
+              }
+            }
+          ]
+        },
+        {
+          "key": "t",
+          "distance": 1,
+          "flag": "height",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": -0.010000000000000009,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": -0.09000000000000001,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": -0.24,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            }
+          ]
+        },
+        {
+          "key": "t",
+          "distance": 1,
+          "flag": "attack",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.17,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 1,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.09,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.92,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.009999999999999995,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.298,
+                "h": 1.7109999999999999,
+                "hp": 114,
+                "cool": 0.77,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": -0.14,
+                "playerHP": 88,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0
+              }
+            }
+          ]
+        },
+        {
+          "key": "j",
+          "distance": 1,
+          "flag": "hurt",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.12,
+                "hurt": 0.47,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 1,
+                "hurt": 0.33999999999999997,
+                "stun": 0,
+                "atkAnim": 0.09,
+                "playerHP": 91,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0.31
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.92,
+                "hurt": 0.25999999999999995,
+                "stun": 0,
+                "atkAnim": 0.009999999999999995,
+                "playerHP": 91,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0.22999999999999998
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.77,
+                "hurt": 0.10999999999999996,
+                "stun": 0,
+                "atkAnim": -0.14,
+                "playerHP": 91,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0.07999999999999999
+              }
+            }
+          ]
+        },
+        {
+          "key": "j",
+          "distance": 1,
+          "flag": "stun",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.15,
+                "hurt": 0,
+                "stun": 0.47,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.15,
+                "hurt": 0,
+                "stun": 0.33999999999999997,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.15,
+                "hurt": 0,
+                "stun": 0.25999999999999995,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.15,
+                "hurt": 0,
+                "stun": 0.10999999999999996,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            }
+          ]
+        },
+        {
+          "key": "j",
+          "distance": 1,
+          "flag": "stagger",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.15,
+                "hurt": 0.048,
+                "stun": 0,
+                "stagger": 0.47,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "pain",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.15,
+                "hurt": 0.048,
+                "stun": 0,
+                "stagger": 0.33999999999999997,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "pain",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.15,
+                "hurt": 0.048,
+                "stun": 0,
+                "stagger": 0.25999999999999995,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "pain",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.15,
+                "hurt": 0.048,
+                "stun": 0,
+                "stagger": 0.10999999999999996,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "pain",
+                "attack": 0
+              }
+            }
+          ]
+        },
+        {
+          "key": "j",
+          "distance": 1,
+          "flag": "unaware",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 1,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.09,
+                "playerHP": 91,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": true,
+                "pose": "atk",
+                "attack": 0.31
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.92,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.009999999999999995,
+                "playerHP": 91,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.22999999999999998
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.77,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": -0.14,
+                "playerHP": 91,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0.07999999999999999
+              }
+            }
+          ]
+        },
+        {
+          "key": "j",
+          "distance": 1,
+          "flag": "height",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": -0.010000000000000009,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": -0.09000000000000001,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": -0.24,
+                "hurt": 0,
+                "stun": 0,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "idle",
+                "attack": 0
+              }
+            }
+          ]
+        },
+        {
+          "key": "j",
+          "distance": 1,
+          "flag": "attack",
+          "snapshots": [
+            {
+              "dt": 0.03,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.12,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.17,
+                "playerHP": 100,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.13,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 1,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.09,
+                "playerHP": 91,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.08,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.92,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": 0.009999999999999995,
+                "playerHP": 91,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0
+              }
+            },
+            {
+              "dt": 0.15,
+              "physical": {
+                "x": 19,
+                "z": 12,
+                "fy": 4.2,
+                "w": 1.062,
+                "h": 1.652,
+                "hp": 79,
+                "cool": 0.77,
+                "hurt": 0,
+                "stun": 0,
+                "atkAnim": -0.14,
+                "playerHP": 91,
+                "aware": true,
+                "dead": false,
+                "flung": 0
+              },
+              "visual": {
+                "anticipation": false,
+                "pose": "atk",
+                "attack": 0
+              }
+            }
+          ]
+        }
+      ],
+      "blocked": {
+        "fixture": {
+          "px": 3,
+          "pz": 5,
+          "ex": 7,
+          "ez": 5
+        },
+        "anticipation": false
+      }
+    }
+  ],
+  "checks": [
+    "z/1/normal: native state exact",
+    "z/1: correct reach/pose",
+    "z/1.54/normal: native state exact",
+    "z/1.54: correct reach/pose",
+    "z/1.55/normal: native state exact",
+    "z/1.55: correct reach/pose",
+    "z/1.9/normal: native state exact",
+    "z/1.9: correct reach/pose",
+    "z/2.5/normal: native state exact",
+    "z/2.5: correct reach/pose",
+    "z/3/normal: native state exact",
+    "z/3: correct reach/pose",
+    "z/4/normal: native state exact",
+    "z/4: correct reach/pose",
+    "t/1/normal: native state exact",
+    "t/1: correct reach/pose",
+    "t/1.54/normal: native state exact",
+    "t/1.54: correct reach/pose",
+    "t/1.55/normal: native state exact",
+    "t/1.55: correct reach/pose",
+    "t/1.9/normal: native state exact",
+    "t/1.9: correct reach/pose",
+    "t/2.5/normal: native state exact",
+    "t/2.5: correct reach/pose",
+    "t/3/normal: native state exact",
+    "t/3: correct reach/pose",
+    "t/4/normal: native state exact",
+    "t/4: correct reach/pose",
+    "j/1/normal: native state exact",
+    "j/1: correct reach/pose",
+    "j/1.54/normal: native state exact",
+    "j/1.54: correct reach/pose",
+    "j/1.55/normal: native state exact",
+    "j/1.55: correct reach/pose",
+    "j/1.9/normal: native state exact",
+    "j/1.9: correct reach/pose",
+    "j/2.5/normal: native state exact",
+    "j/2.5: correct reach/pose",
+    "j/3/normal: native state exact",
+    "j/3: correct reach/pose",
+    "j/4/normal: native state exact",
+    "j/4: correct reach/pose",
+    "t/1/hurt: native state exact",
+    "t/hurt: higher priority retained",
+    "t/1/stun: native state exact",
+    "t/stun: higher priority retained",
+    "t/1/stagger: native state exact",
+    "t/stagger: higher priority retained",
+    "t/1/unaware: native state exact",
+    "t/unaware: higher priority retained",
+    "t/1/height: native state exact",
+    "t/height: higher priority retained",
+    "t/1/attack: native state exact",
+    "t/attack: higher priority retained",
+    "j/1/hurt: native state exact",
+    "j/hurt: higher priority retained",
+    "j/1/stun: native state exact",
+    "j/stun: higher priority retained",
+    "j/1/stagger: native state exact",
+    "j/stagger: higher priority retained",
+    "j/1/unaware: native state exact",
+    "j/unaware: higher priority retained",
+    "j/1/height: native state exact",
+    "j/height: higher priority retained",
+    "j/1/attack: native state exact",
+    "j/attack: higher priority retained",
+    "native occluded LOS blocks anticipation on both builds"
+  ],
+  "errors": [],
+  "passed": 67
+}

@@ -55,7 +55,12 @@ for(let z=0;z<result.H;z++)for(let x=0;x<result.W;x++) {
   assert.equal(result.cmap[z][x],lifted?Math.max(baseline.cmap[z][x],14.8):baseline.cmap[z][x], 'Only open hell roof is raised '+x+','+z);
 }
 result.zones.themes.forEach((theme,i)=>{
-  if(theme.id!=='hell')assert.deepEqual(theme,baseline.zones.themes[i],'Other chapter themes preserved');
+  if(theme.id==='crypt') {
+    assert.equal(theme.wall,'prologueCryptStone','Crypt stone wall is scoped');
+    assert.equal(theme.band,'prologueCryptStone','Crypt courses reuse the scoped stone');
+    const unchanged={...theme}; delete unchanged.wall; delete unchanged.band;
+    assert.deepEqual(unchanged,baseline.zones.themes[i],'Other crypt theme properties preserved');
+  } else if(theme.id!=='hell')assert.deepEqual(theme,baseline.zones.themes[i],'Other chapter themes preserved');
   else {
     for(const key of ['wall','ceil','side','ground'])assert(theme[key].startsWith('hellAsh'),'Scoped generated hell material '+key);
     for(const key of ['shell','lava','bed','line'])assert.equal(theme[key],baseline.zones.themes[i][key],'Hell behavior '+key);

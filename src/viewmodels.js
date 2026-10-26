@@ -992,9 +992,11 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
     for(const side of [-1,1]){
       const hammer=reloading?pose.empty*(1-ease(time,reloadTiming.open,reloadTiming.opened)):Math.max(pose.empty,pose.action*(side<0?.85:1));
       mesh.push();mesh.translate(side*.027,.065,-.061);mesh.pitch(.14-.62*hammer);
-      // Slender curved neck and rolled hook on a real circular pivot.
-      const path=[[0,0],[.002,.011],[-.001,.023],[-.007,.029],[-.013,.030],[-.018,.026],[-.018,.022]];
-      for(let i=0;i<path.length-1;i++)mesh.limb([0,path[i][1],path[i][0]],[0,path[i+1][1],path[i+1][0]],i===0?.0048:.0032,.0032,BRONZE,8,{tex:steel});
+      // A solid hooked hammer has a load-bearing neck, a short thumb spur and
+      // a circular pivot; its original cocking transform is unchanged.
+      const hammerProfile=[[-.004,-.003],[.006,.001],[.007,.011],[.003,.025],[-.004,.032],[-.012,.034],[-.020,.030],[-.021,.023],[-.016,.022],[-.013,.027],[-.007,.027],[-.003,.021],[-.001,.010],[-.004,.003]];
+      mesh.ext(hammerProfile,-.0035,.0035,BRONZE,{tex:steel});
+      mesh.limb([0,.031,-.006],[0,.031,-.013],.001,.001,EDGE,6,{tex:steel});
       mesh.push();mesh.yaw(Math.PI/2);mesh.cyl(0,0,-.006,.006,.007,.007,12,BRONZE,{tex:steel});mesh.cyl(0,0,.006,.007,.0038,.0038,8,EDGE,{tex:steel});mesh.pop();
       mesh.pop();
     }
@@ -1747,11 +1749,14 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
     paintedSurface(mesh,'shotgunSource',points,mapped,.96);
   }
   function drawShotgunReferenceLock(mesh,side){
-    const shape=[[0,.40],[.50,.35],[.58,0],[.75,.02],[1,.65],[.99,.90],[.90,1],[.08,.85],[0,.65]];
-    const local=([u,v])=>[.015-u*.100,.064-v*.088],outline=shape.map(local);
-    mesh.ext(outline,side*.038-.0014,side*.038+.0014,BRONZE,{tex:(x,y,z)=>-.9+steel(x,y,z)*.15});
-    const faceX=side*.0401,uv=([u,v])=>[(70+1640*u)/1774,(120+660*v)/887];
-    paintedSurface(mesh,'lockplate',[[faceX,.064,.015],[faceX,.064,-.085],[faceX,-.024,-.085],[faceX,-.024,.015]],[[0,0],[1,0],[1,1],[0,1]].map(uv),.80);
+    // The skull lobe is inset into the receiver. The source's long ornamental
+    // tail is omitted rather than compressed into a hanging triangular plate.
+    const shape=[[.10,.36],[.24,.14],[.40,.02],[.67,.03],[.86,.19],[.99,.44],[.98,.76],[.85,.94],[.61,1],[.26,.88],[.05,.65],[0,.46]];
+    const local=([u,v])=>[.010-u*.093,.061-v*.057],outline=shape.map(local);
+    mesh.ext(outline,side*.038-.0015,side*.038+.0015,WORN,{tex:steel});
+    const faceX=side*.0401;
+    paintedSurface(mesh,'lockplate',shape.map(p=>{const[z,y]=local(p);return[faceX,y,z]}),shape.map(([u,v])=>[(850+850*u)/1774,(120+665*v)/887]),.84);
+    for(let i=0;i<outline.length;i++){const p=outline[i],q=outline[(i+1)%outline.length];mesh.limb([side*.040,p[1],p[0]],[side*.040,q[1],q[0]],.0010,.0010,BRONZE,6,{tex:steel});}
     hingePin(mesh,side*.036,.017,.038,.0055);
   }
   paintedShotgunTubes=function(mesh){
@@ -1950,8 +1955,25 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
         const face=[p,q,r,rings[k+1][j]];
         m.face(face,normal,BRONZE,part,{tex:(x,y,z)=>steel(x,y,z)*.12},inv);
         const upward=Math.max(0,-normal.reduce((s,x,i)=>s+x*a.basis.v[i],0)),facing=Math.abs(normal.reduce((s,x,i)=>s+x*a.basis.w[i],0));
-        const coords=lower?[uvAt(brassUV,0,k/4),uvAt(brassUV,1,k/4),uvAt(brassUV,1,(k+1)/4),uvAt(brassUV,0,(k+1)/4)]:[uvAt(boneUV,0,(j%3)/3),uvAt(boneUV,0,(j%3+1)/3),uvAt(boneUV,1,(j%3+1)/3),uvAt(boneUV,1,(j%3)/3)];
-        paintedSurface(m,'firearmSource',face.map(p=>p.map((v,i)=>v-a.basis.w[i]*.0005)),coords,lower?.46+.13*facing:.44+.22*upward+.08*facing);
+        const metalCoords=[uvAt(brassUV,0,k/4),uvAt(brassUV,1,k/4),uvAt(brassUV,1,(k+1)/4),uvAt(brassUV,0,(k+1)/4)];
+        paintedSurface(m,'firearmSource',face.map(p=>p.map((v,i)=>v-a.basis.w[i]*.0005)),metalCoords,.42+.16*upward+.10*facing);
+        if(!lower){
+          // Separate shallow ivory insets leave the curved bronze enclosure
+          // visible between panels; their bevels have real depth on rotation.
+          const at=(u,v)=>face[0].map((_,i)=>(1-u)*(1-v)*face[0][i]+u*(1-v)*face[1][i]+u*v*face[2][i]+(1-u)*v*face[3][i]);
+          const inner=[[.13,.09],[.87,.09],[.87,.91],[.13,.91]].map(([u,v])=>at(u,v).map((x,i)=>x+normal[i]*.001));
+          const coords=[uvAt(boneUV,0,0),uvAt(boneUV,0,1),uvAt(boneUV,1,1),uvAt(boneUV,1,0)];
+          paintedSurface(m,'firearmSource',inner,coords,.47+.22*upward+.08*facing);
+          // Four planar bevels carry the shallow inset border. Rounded limb
+          // end-caps would add hundreds of invisible subpixel sphere faces.
+          const outer=[[.10,.06],[.90,.06],[.90,.94],[.10,.94]].map(([u,v])=>at(u,v).map((x,i)=>x+normal[i]*.0002));
+          for(let n=0;n<4;n++){
+            const j=(n+1)%4,edge=outer[j].map((v,i)=>v-outer[n][i]),rise=inner[n].map((v,i)=>v-outer[n][i]);
+            let bevelNormal=normalize(cross(edge,rise));
+            if(bevelNormal.reduce((s,v,i)=>s+v*normal[i],0)<0)bevelNormal=bevelNormal.map(v=>-v);
+            m.face([outer[n],outer[j],inner[j],inner[n]],bevelNormal,BRONZE,part,{tex:steel},inv);
+          }
+        }
       }
       m.face(rings[0],direction.map(x=>-x),BRONZE,part,{},inv);m.face(rings.at(-1),direction,BRONZE,part,{},inv);
       // Concave silhouette follows the reference's actual contour and omits
@@ -1969,6 +1991,17 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       }
       if(indices.length===3)triangles.push(indices.map(i=>body[i]));
       for(const tri of triangles)paintedSurface(m,'firearmSource',tri.map(([u,v])=>a.point(u,v,-.013)),tri.map(([u,v])=>[u/1672,v/941]),.97);
+      // The two visible ivory vault panels sit in separate shallow bronze
+      // beds. Their source coordinates are retained, including the engravings.
+      for(const panel of [
+        [[1094,635],[1132,623],[1156,630],[1151,706],[1097,686],[1080,658]],
+        [[1196,651],[1228,659],[1273,675],[1294,688],[1262,748],[1174,717]]
+      ]){
+        a.hull(m,panel,-.018,.008,null,false,panel,BRONZE);
+        const center=panel.reduce((c,p)=>[c[0]+p[0]/panel.length,c[1]+p[1]/panel.length],[0,0]);
+        const inset=panel.map(p=>[center[0]+(p[0]-center[0])*.92,center[1]+(p[1]-center[1])*.90]);
+        a.hull(m,inset,-.021,.003,null,true,inset,BRONZE);
+      }
       // Muzzle and chamber fittings remain volumetric and independent.
       a.hull(m,[[1048,658],[1062,651],[1078,657],[1077,688],[1062,690],[1047,678]],.040,.017);
       // Recessed rear chamber and separate red charge relic stay below lid.
@@ -1976,7 +2009,7 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       a.hull(m,[[1465,710],[1490,718],[1512,738],[1509,749],[1488,734],[1460,735]],.010,.026);
       a.hull(m,[[1450,780],[1482,791],[1505,795],[1558,830],[1464,817]],.010,.026);
       a.hull(m,[[1512,749],[1561,803],[1558,830],[1505,795],[1517,775]],.010,.026);
-      m.push();a.move(m,-.035*load,.055*load,-.015*load);
+      m.push();a.move(m,-.075*load,.010*load,-.028*load);
       a.hull(m,[[1465,738],[1488,735],[1511,751],[1517,775],[1505,795],[1482,791],[1465,772]],-.007,.012);m.pop();
       a.hull(m,[[1450,829],[1576,824],[1614,841],[1607,872],[1454,870]],-.002,.026);
       // The illustrated lid rests raised on a fitted lower-edge hinge.
@@ -1988,12 +2021,15 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       const turn=p=>{const v=p.map((x,i)=>x-hinge[i]),dot=v.reduce((s,x,i)=>s+x*axis[i],0),cross=[axis[1]*v[2]-axis[2]*v[1],axis[2]*v[0]-axis[0]*v[2],axis[0]*v[1]-axis[1]*v[0]];return v.map((x,i)=>fittedHinge[i]+x*co+cross[i]*si+axis[i]*dot*(1-co));};
       a.hull(m,[[1357,528],[1395,488],[1454,529],[1492,630],[1435,646],[1375,629]],-.014,.017,turn);
       a.hull(m,[[1377,536],[1398,513],[1439,541],[1470,621],[1405,619]],-.019,.004,turn);
+      // Hinge axle joins the two fitted brackets. The lid's underside and
+      // frame remain one rigid part throughout its existing opening motion.
+      m.limb(a.point(1356,708,-.003),a.point(1504,704,-.003),.003,.003,WORN,8,{tex:steel});
       for(const [base,tip]of [[[1360,740],[1375,629]],[[1490,747],[1492,630]]]){m.limb(a.point(...base,.005),turn(a.point(...tip,-.011)),.005,.005,BRONZE,8,{tex:steel});}
       const fit=p=>p.map((v,i)=>v+fittedHinge[i]-hinge[i]);
       a.hull(m,[[1357,643],[1372,643],[1378,680],[1360,682]],.008,.012,fit);
       a.hull(m,[[1489,639],[1504,639],[1486,693],[1474,690]],.008,.012,fit);
       const support=[1117,756,-.050],contact=[1475,771,-.052],reach=t<0?0:Qe(t,.17,.84,.11),hand=support.map((v,i)=>v+(contact[i]-v)*reach);
-      m.push();a.move(m,-.035*load,.055*load,-.015*load);a.left(m,hand,.172);m.pop();
+      m.push();a.move(m,-.075*load,.010*load,-.028*load);a.left(m,hand,.172);m.pop();
       a.right(m,[1417,870,-.054]);a.anchor(m,1054,672,.040);
     } finally {arsenalIndex=previous;}
   };

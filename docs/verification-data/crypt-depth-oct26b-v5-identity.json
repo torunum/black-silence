@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "scope": "Read-only exact embedded source identity; not a rerun of navigation or lifecycle.",
+  "finalHTMLSHA256": "d6101272e6d34d5635d1a75745ad971c4ab07e9d85d5bec7b721e5a7f0813c87",
+  "prologueSHA256": "821bd0a364421c3b3473e138ea56d43263dfd3965dd1796a511b459fcc119e8d",
+  "lifecycleTestedHTMLSHA256": "7ff9137196f2aba929c920312847c1e21bf8b5bda5d76be2f5263cfefe9e62b3",
+  "embeddedSourceOccurrences": 1
+}

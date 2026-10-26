@@ -159,7 +159,7 @@
     if (!(enemy.cool > 0 && enemy.cool <= 0.18) || !enemy.aware) return false;
     const distance = Math.hypot(enemy.x - C.px, enemy.z - C.pz);
     const inReach = enemy.range
-      ? distance > 3 && distance < enemy.range
+      ? distance < 1.55 || (distance > 3 && distance < enemy.range)
       : distance < 1.9;
     return (
       inReach &&

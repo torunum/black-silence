@@ -1,0 +1,97 @@
+{
+  "passed": true,
+  "inputs": [
+    {
+      "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\weapon-structure-oct26b\\v4\\candidate.html",
+      "sha256": "f03c81319256ae2544865596da2e50de98fe8ffe85674e59d93c20fbe47fd285"
+    },
+    {
+      "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\weapon-structure-oct26b\\v5\\candidate.html",
+      "sha256": "163ec3ade47971e35ef07513340b41fdadc1037f6bf9e7af09c16a5f108e97c4"
+    }
+  ],
+  "scope": "Two shared local translations only; exact native envelope, unchanged attach endpoints and timing, finite bounded samples and C1 joins. This is not a visual contact proof.",
+  "samples": 2001,
+  "oldVector": [
+    -0.09,
+    -0.015,
+    -0.028
+  ],
+  "newVector": [
+    -0.075,
+    0.01,
+    -0.028
+  ],
+  "endpoints": [
+    {
+      "phase": -1,
+      "offset": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "phase": 0,
+      "offset": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "phase": 0.27,
+      "offset": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "phase": 0.68,
+      "offset": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "phase": 0.88,
+      "offset": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "phase": 1,
+      "offset": [
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "phase": 0.27,
+      "leftSlope": 0,
+      "rightSlope": 0.00002083332176045741
+    },
+    {
+      "phase": 0.39,
+      "leftSlope": 0.000020833335057091062,
+      "rightSlope": 0
+    },
+    {
+      "phase": 0.56,
+      "leftSlope": 0,
+      "rightSlope": -0.000020833335057091062
+    },
+    {
+      "phase": 0.68,
+      "leftSlope": -0.000020833335057091062,
+      "rightSlope": 0
+    }
+  ]
+}
