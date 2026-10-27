@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "finalInput": ".dream-loop/arsenal-reference-oct27/combined/THE-BLACK-SILENCE.html",
+  "sha256": "17ebe0d27fdcef2eea80b54fbc68ebf0cfa96b51c0244bd2a56e85ac22155d61",
+  "module": "src/prologue.js",
+  "moduleSha256": "66b89378273e83b09f178e1ce27319454daf89136e05d0ab9bdcf9a7fecd3c79",
+  "exactEmbeddedOnce": true,
+  "pairedNativeReport": "chapter-architecture-oct27-native.json",
+  "pairedNativeInput": "bb65a06355775d22ec9ffe7d874bf5b4a4d8d1c96f0b5dae913e4f21dce3b6df",
+  "sameEnvironmentSource": true,
+  "note": "Paired navigation/lifecycle ran on environment-only bb65. Final combined17ebe runs the identical environment source; final fixed-camera RAF observed separately. No claim of repeated final navigation."
+}

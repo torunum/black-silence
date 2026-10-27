@@ -19,6 +19,10 @@ Gotik piksel FPS oyununun on silah, deri eldiven ve prologue cehennem bölümü 
 
 ## Bu sürüm
 
+Sekiz silahın referansa yakın mekanik biçimi ve yüzey derinliği elden geçirildi: Rifle/Tommy/Sniper bağlantıları, Shotgun namlu profili, Nail tank bileşenleri, Soul cam küresi, TNT örgülü fitili ve Stake ahşap/üst kapak formu. Handgun ve Cross bu tur korunur. [Görüntüler ve kesin kapsam](docs/arsenal-reference-oct27.md).
+
+Ash Bell Monastery girişi ve Gothic Dungeon hücrelerine daha belirgin taş kemer/söve katmanları verildi. Dungeon merkez hücresinde üç mum ve tek yerel sıcak ışık odak oluşturur; rota, kapılar, düşmanlar ve eşyalar korunur. [İki bölümün önce/sonra görüntüleri](docs/chapter-architecture-oct27.md).
+
 Shotgun alıcı plakası ve horozu, Cross gövde kaplaması ve menteşesi daha belirgin hacim kazandı. Cross doldururken sol el ve kutsal parça aynı hareketle daha görünür konuma gelir. [Görseller ve mekanik kapsam](docs/weapon-structure-oct26b.md).
 
 Crypt geçişindeki üç mezar nişine derin taş söveler verildi; duvar ve kiriş kenarları mevcut taş dokusuyla uyumlu hale getirildi. Amber ışık, rota, düşmanlar ve eşyalar korunur. [Eş kamera karşılaştırmaları](docs/crypt-depth-oct26b.md).

@@ -1,0 +1,26 @@
+{
+  "source": "66b89378273e83b09f178e1ce27319454daf89136e05d0ab9bdcf9a7fecd3c79",
+  "method": "Native staged matched camera; no image editing",
+  "files": [
+    {
+      "file": "docs/chapter-architecture-oct27/dungeon-after.png",
+      "sha256": "b43581c84fd2b007826b9eebb68a56de1684df5719f8b957e8a5c6df752731c5",
+      "input": "bb65a06355775d22ec9ffe7d874bf5b4a4d8d1c96f0b5dae913e4f21dce3b6df"
+    },
+    {
+      "file": "docs/chapter-architecture-oct27/dungeon-before.png",
+      "sha256": "abd40513feec8ebabfef2ce3ec466eff57e8d66f824734efaa687ee3cbe73c24",
+      "input": "d6101272e6d34d5635d1a75745ad971c4ab07e9d85d5bec7b721e5a7f0813c87"
+    },
+    {
+      "file": "docs/chapter-architecture-oct27/monastery-after.png",
+      "sha256": "e36ec8073c996174a5687f6af68cc2544ca00b76004cc948883c8a2f47b87b50",
+      "input": "bb65a06355775d22ec9ffe7d874bf5b4a4d8d1c96f0b5dae913e4f21dce3b6df"
+    },
+    {
+      "file": "docs/chapter-architecture-oct27/monastery-before.png",
+      "sha256": "82e44f25fd6957b4b644043c686a7ac97ee3f0e94e9fdc2a6cf7b347619adcad",
+      "input": "d6101272e6d34d5635d1a75745ad971c4ab07e9d85d5bec7b721e5a7f0813c87"
+    }
+  ]
+}

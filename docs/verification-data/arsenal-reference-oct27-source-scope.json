@@ -1,0 +1,165 @@
+{
+  "passed": true,
+  "baselineHTMLSHA256": "d6101272e6d34d5635d1a75745ad971c4ab07e9d85d5bec7b721e5a7f0813c87",
+  "weaponCandidateSHA256": "4edca6147375d48abcf15207c1ec9f363d24dab308fdf8b0e3dd79b5056408cf",
+  "combinedSHA256": "17ebe0d27fdcef2eea80b54fbc68ebf0cfa96b51c0244bd2a56e85ac22155d61",
+  "baselineViewmodelsSHA256": "b94143465477341407ed16e3377a7d95159309cea3b5b62fe68c1d887540b910",
+  "viewmodelsSHA256": "99bd9d094ce38eb0f221a820026ce5ee81e0c192a2b9a8b5b5fa630ac3416aac",
+  "exactReplacementCount": 25,
+  "weaponOnlyHTMLExactSingleSourceReplacement": true,
+  "liveSourceEqualsReviewedCandidate": true,
+  "handAnchorStakeUnchanged": true,
+  "scope": "No renderer/compositor, weapon timing/audio/ammo or hand-path changes. New local geometry/UV/shading calls only; scoped pixel tests and native runtime separately verify behavior.",
+  "changes": [
+    {
+      "beforeSHA256": "7dc55421bc63cd23fd50285f465f5a6f1153c1c01dd6792d39e290ef197e58f9",
+      "afterSHA256": "b8032526582b1807ece2072caf4f130225ff3d0d8dfba1a53dfe51e1a334cfc8",
+      "beforePreview": "a.hull(m,[[367,182],[693,278],[693,359],[387,293]],.020,.029,null,false);",
+      "afterPreview": "a.hull(m,[[367,209],[693,301],[693,359],[387,293]],.020,.029,null,false);"
+    },
+    {
+      "beforeSHA256": "74fc07113708d9e81372f10fcdc181a4da56fdd7fc9cf237a3d7de26e279c7e3",
+      "afterSHA256": "9b62facdc399db9c18639adf4f2e2072828cb830a2bcdee4611bc66403d4757e",
+      "beforePreview": "      // Magazine follows its own extraction/seat motion; hand uses that rig.",
+      "afterPreview": "      // A short bevelled magwell makes the receiver-to-magazine joint tangible.\n      a.hull(m,[[391,289],[483,316],[48"
+    },
+    {
+      "beforeSHA256": "9d156fdd875887345dd690c1ae1c687cf1632c8c4bc3bcbd8aec17953a588edd",
+      "afterSHA256": "d4f7da9b1a4bb621a25481f7dd8931cd194a5b2831a8442bbd07490975e0d243",
+      "beforePreview": "a.hull(m,[[455,274],[527,293],[527,328],[457,309]],.002,.026);",
+      "afterPreview": "a.hull(m,[[456,255],[529,275],[529,328],[457,309]],.002,.026);"
+    },
+    {
+      "beforeSHA256": "f147c695bcb9535372fd4de5f19799af064bf69317654aeb7ec34c70af42f798",
+      "afterSHA256": "437325974b009925229ab8a0d2d156f10a71506cb2240543c46b771165d2f413",
+      "beforePreview": "      a.hull(m,[[636,272],[690,281],[692,352],[642,352]],.004,.033);",
+      "afterPreview": "      a.hull(m,[[574,250],[637,268],[638,290],[570,282]],-.001,.028);\n      a.hull(m,[[636,272],[690,281],[692,352],[642"
+    },
+    {
+      "beforeSHA256": "2929fd123133c33e3abc5d1d28de7962b01fe3a936c5f365ebafa9d78a2272c1",
+      "afterSHA256": "2fd0868060e12b5f4b21e32de933ad0fd9c8203dde16916b1389bee263ec8d7c",
+      "beforePreview": "      // The drum has real thickness and rotates slightly during removal.",
+      "afterPreview": "      // Fixed feed throat stays in the receiver while the drum moves away.\n      a.hull(m,[[1167,212],[1211,224],[1235,"
+    },
+    {
+      "beforeSHA256": "62953e50ecc6f01d7a4f7537b847da7e17121c0d626fd8cd3628461224aea8d3",
+      "afterSHA256": "6711a32c1cd861bc38409faac7fe20818c4dc37d586b61198f0f58c632e5e87e",
+      "beforePreview": "[[1113,252],[1145,223],[1179,215],[1219,230],[1247,265],[1274,315],[1277,382],[1258,418],[1228,442],[1181,449],[1135,430",
+      "afterPreview": "[[1113,252],[1145,223],[1179,215],[1219,230],[1247,265],[1274,315],[1277,382],[1258,418],[1228,442],[1181,449],[1135,430"
+    },
+    {
+      "beforeSHA256": "3f315292ee8c4e0fb138184b077761cd53bedf45bd75fc9c56b5c5ffef7d6c4c",
+      "afterSHA256": "fdce4bbe9da8f0819894ff8d7b1fd564540f175dee2b1aa998e9325cff62e8f8",
+      "beforePreview": "  const firearmArt = {};",
+      "afterPreview": "  // Small planar bevels: one quad per outline edge, no capped limb meshes.\n  function referenceBevel(mesh,point,poly,fr"
+    },
+    {
+      "beforeSHA256": "b409b626a7824ed165b9e8fdb5764411b512c4c04711d617afc90f1f250c8596",
+      "afterSHA256": "4cc21434f258b52033869f8f24f3fd4333faabd473e20bda56cc7bbcf5a554fa",
+      "beforePreview": "      a.hull(m,[[405,623],[754,684],[751,713],[403,650]],.010,.022,null,false);",
+      "afterPreview": "      // Individual scope shells provide the optical tube backing."
+    },
+    {
+      "beforeSHA256": "9273bfc94e396b635ce776a6d8f06e4819d6b868541640a72e6aab08dddcaea4",
+      "afterSHA256": "f10e25c7da5d8e31cda5c83e1c70ec68edd0d3d5c7dad471d446a2ff71e5b260",
+      "beforePreview": "[[440,650],[469,661],[469,708],[440,697]]",
+      "afterPreview": "[[440,670],[469,681],[469,708],[440,697]]"
+    },
+    {
+      "beforeSHA256": "e75673ddec7a6553d47a15c0248fa702b62d15eca8a7e9b42ac13adcbdaaa9f7",
+      "afterSHA256": "4715c35ec36f5eeda5a746b74f0aa60efe4696055ea3e501f925242abb2e4364",
+      "beforePreview": "[[565,686],[596,696],[596,750],[563,737]]",
+      "afterPreview": "[[565,704],[596,714],[596,750],[563,737]]"
+    },
+    {
+      "beforeSHA256": "40a3c9e3dd2fe528f6e594fca4b5a4a21632e0dc23786cc115eb39373c2611b0",
+      "afterSHA256": "b297fcbfaf321e673fc653b4d1b281388a6e8a46ca6e7adc77617a00600cb0cf",
+      "beforePreview": "[[231,657],[421,721],[421,776],[231,687]]",
+      "afterPreview": "[[231,657],[421,721],[421,789],[231,700]]"
+    },
+    {
+      "beforeSHA256": "59ae1c71567258b022fbda458613865e8146207dec2856d9ff678bdf7e62d271",
+      "afterSHA256": "06522132954346c61e936d72c4bece86870b18be24de4acf5f0325dcb29c0252",
+      "beforePreview": "scopeCenter[i]+(v-scopeCenter[i])*.93",
+      "afterPreview": "scopeCenter[i]+(v-scopeCenter[i])*.93+a.basis.v[i]*.006"
+    },
+    {
+      "beforeSHA256": "234527fc4a7276e9e0b451f77a906a5d6e4f1ea307bb0e3fb9503bd6329ea19a",
+      "afterSHA256": "01c8663e7cafbdc8606623b0dd0c7c9ee104350bf3e605eddd6ad916e0893560",
+      "beforePreview": "[[443,671],[468,679],[467,698],[445,691]]",
+      "afterPreview": "[[443,681],[468,689],[467,704],[445,697]]"
+    },
+    {
+      "beforeSHA256": "2f00cfd3a86f27a7c3e3e2d0d19f37c8baa98691252b6781d2e3f83d3d4aca5f",
+      "afterSHA256": "227bcf6ff66d31b94237b936aeffd36de94a122afeab850b8b57d02509b8a179",
+      "beforePreview": "[[565,707],[588,711],[591,735],[565,728]]",
+      "afterPreview": "[[565,717],[588,721],[591,741],[565,734]]"
+    },
+    {
+      "beforeSHA256": "a872e518f7ed029bfc823517ee9950e15ef82572ec80a91c1bbc0c83b5be447e",
+      "afterSHA256": "17154a590ee069554f4fafea2ec6088ebaea6d006d968d090977d978bde86650",
+      "beforePreview": "      nailArtHull(m,[[417,155],[512,173],[512,270],[417,247]],.005);",
+      "afterPreview": "      nailArtHull(m,[[390,136],[417,150],[421,183],[409,214],[388,220],[399,191]],.002,.032);\n      nailArtHull(m,[[417,"
+    },
+    {
+      "beforeSHA256": "9cfc22fdaceffbc315d829bb8583bd7d0fb025ee96d768ae96b987e293726f77",
+      "afterSHA256": "a011d3fe1b499ea96cd007946e8dd7cb8bc520988a0e3adcc0b3a40c52deafae",
+      "beforePreview": "const uvInset=main?.58:.88,uvCx=cx-(main?8:0),uvCy=cy-(main?4:0);",
+      "afterPreview": "const uvInset=main?.84:.88,uvCx=cx+(main?3:0),uvCy=cy-(main?5:0);"
+    },
+    {
+      "beforeSHA256": "bc19d3dce133c29abbac810315fb1a835f5d6cf02f1514c20cbb45c149b7700e",
+      "afterSHA256": "93389569218cc9fae09897920defede3244cb3a34a2a6dbab1d43c8501322e7f",
+      "beforePreview": "light0=.96-.63*Math.pow(r,1.55)",
+      "afterPreview": "light0=.89-.42*Math.pow(r,1.55)"
+    },
+    {
+      "beforeSHA256": "889e4bdef51104b7a0ab072856137a9c1b47286fbb797c32b8d1fec06dbb6326",
+      "afterSHA256": "0f068178d8f29b6a9dafe52ee755a344636818452434a0befafe8b8587d57e0b",
+      "beforePreview": "return {p:point(cx+rx*x,cy+ry*y,depth+z),uv:[(uvCx+rx*x*uvInset)/1672,(uvCy+ry*y*uvInset)/941]};",
+      "afterPreview": "const clearGlass=main&&x<0&&y>0?1-.16*Math.min(1,-x*y*4):1;\n        return {p:point(cx+rx*x,cy+ry*y,depth+z),uv:[(uvCx+r"
+    },
+    {
+      "beforeSHA256": "867b9e2cd5c5892e08e37f5eed33f89bd0d1b9b35aec72d46d38d1456573d4ee",
+      "afterSHA256": "f7a28b28d53a28a3de01d528a5626c3b3e3ce38e964d9bb07ca6dedb71297f1e",
+      "beforePreview": "Math.cos(mid-1.12)),30),light=.42+.30*Math.max(0,Math.sin(mid))+.80*shine",
+      "afterPreview": "Math.cos(mid-(x<0?.94:1.28))),30),light=.36+.28*Math.max(0,Math.sin(mid))+.78*shine"
+    },
+    {
+      "beforeSHA256": "c601242c601f0985d37c4b783b7daede125e66ec6d184505e8006bb2d9ba39a4",
+      "afterSHA256": "0832a3edfab266078bd59f4ea43d609c4c7b666e3c35fc99263489ade666c1a5",
+      "beforePreview": "mesh.cbox(-0.0025, 0.074, 0.064, 0.0025, 0.078, 0.287, 0.001, EDGE",
+      "afterPreview": "mesh.cbox(-0.0018, 0.073, 0.064, 0.0018, 0.076, 0.287, 0.001, WORN"
+    },
+    {
+      "beforeSHA256": "3c5d20953cb13b107170b0150611fe0eb9d61bb311a052108eaec80f4e35691d",
+      "afterSHA256": "8c1f4833b0b0d5145ea28b1c7fd7d5bfc28654154498028b2fb6627f0c31972c",
+      "beforePreview": "for(let i=1;i<=12;i++){const t=i/12,s=1-t,p=control[0].map((v,k)=>v*s*s*s+3*control[1][k]*s*s*t+3*control[2][k]*s*t*t+co",
+      "afterPreview": "for(const strand of [0,Math.PI]){let ring0=null;const part=m.part(),inv=m.inverse();\n          for(let j=0;j<=24;j++){co"
+    },
+    {
+      "beforeSHA256": "21816a9b924b73f246888d642cda0a1acf3296e18f54cb523d0aeeee8194f92e",
+      "afterSHA256": "bef3734160ce592334b28ebaa64bd6a9cba200a4ad2fbd865e1b75b255ccd11d",
+      "beforePreview": "        const sway=Math.sin(pose.spin*4)*2,outline=[[289,589],[284,579],[288,568],[287+sway,556],[292+sway,550],[294+swa",
+      "afterPreview": "        const sway=Math.sin(pose.spin*4)*1.4,flame=[[286,594],[285,582],[280,575],[282,563],[289,555],[291,546],[291,536"
+    },
+    {
+      "beforeSHA256": "8be358e0027401ca2bb11be40b5abed30003d97c314b13d52cef6acbcbe67298",
+      "afterSHA256": "b0590f10afe84e9ae930ed322a316788a0987948ffe676592cd605a76fddd0c1",
+      "beforePreview": "a.hull(m,[[1398,705],[1452,719],[1486,748],[1481,793],[1449,822],[1419,806],[1418,752]],-.025,.045,BRONZE);",
+      "afterPreview": "a.hull(m,[[1398,685],[1452,695],[1486,731],[1481,793],[1449,822],[1419,806],[1418,740]],-.025,.045,BRONZE,[[1398,705],[1"
+    },
+    {
+      "beforeSHA256": "dfd651556fcbe26e7ab88de7685aac0c5a3e016267a184e211692132f79722d7",
+      "afterSHA256": "383087a91710f3cea788ead475452337c4dd319a784e5cc14b16797a9b3bd8d6",
+      "beforePreview": "[[1032,613],[1324,748],[1336,762],[1329,799],[1318,804],[1044,671],[1033,654]]",
+      "afterPreview": "[[1032,613],[1324,748],[1336,762],[1329,791],[1318,796],[1044,663],[1033,650]]"
+    },
+    {
+      "beforeSHA256": "a5c09c02a66d4d5b5a5ba0f363e8d3ce68341bf2b448741838ab1e433baccbd3",
+      "afterSHA256": "f7b63f4669f0b62b55df18d39004db23b20b326cbf3893ac5a572e778329e8d4",
+      "beforePreview": "a.point(1044,671,.018),a.point(1318,804,.018),a.point(1315,799,.029),a.point(1047,666,.029)",
+      "afterPreview": "a.point(1044,663,.018),a.point(1318,796,.018),a.point(1315,791,.029),a.point(1047,658,.029)"
+    }
+  ]
+}

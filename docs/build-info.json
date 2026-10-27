@@ -1,124 +1,102 @@
 {
   "passed": true,
-  "bytes": 24890836,
-  "sha256": "d6101272e6d34d5635d1a75745ad971c4ab07e9d85d5bec7b721e5a7f0813c87",
+  "bytes": 24894597,
+  "sha256": "17ebe0d27fdcef2eea80b54fbc68ebf0cfa96b51c0244bd2a56e85ac22155d61",
   "engineSha256": "6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899",
   "villageSha256": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627",
   "moduleHashes": {
     "materials.js": "05e43b45ce521b52cf4d7b172177984699670d9de1261de5f88bf11f42b45517",
     "combat.js": "5f8c099867ca971387f21de80fecc9a83f6ab0b498b82ca153c2ccfe0d18514c",
     "enemy-animation.js": "977a4a425dedb5a48cce43592986a058f1c390641f529660f048dd71a9be0d3e",
-    "viewmodels.js": "b94143465477341407ed16e3377a7d95159309cea3b5b62fe68c1d887540b910",
+    "viewmodels.js": "99bd9d094ce38eb0f221a820026ce5ee81e0c192a2b9a8b5b5fa630ac3416aac",
     "finishers.js": "8c2c7bdf13e17005c3383054560b155986d8e706b5bfda81e9f1a8224ee3c5b0",
     "reload-audio-data.js": "2f48b10a1225d1c007ee282d3c18f82c5022bb0267ed86d65feadf819ec1be30",
     "reload-audio.js": "6b63eec006c8f7ee98392f323f630879140948f24165ab72b308bfb4b4d6be16",
     "zombie-audio.js": "bc974fbebcfeb7719ca785ca021af6bf7de465e2f0236b94b0b87f9f4525e7df",
-    "prologue.js": "821bd0a364421c3b3473e138ea56d43263dfd3965dd1796a511b459fcc119e8d",
+    "prologue.js": "66b89378273e83b09f178e1ce27319454daf89136e05d0ab9bdcf9a7fecd3c79",
     "render-warmup.js": "84db971283d86b0cbea7d0181eb3d48d40924936c5d577ab05fd31ca4b7e755c",
     "village-presentation.js": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627"
   },
   "idempotentBuilds": 2,
   "invalidInputsRefusedWithoutWrite": 8,
   "file": "THE-BLACK-SILENCE.html",
-  "verifiedAt": "2026-10-26T18:30:39.531Z",
-  "previousRelease": "56394da38ad2dff02bffb5a32900daa40cf7c6cd319be7e6a1b850145e6e376d",
-  "scope": "Shotgun inset lockplate and curved hammers; Cross bronze/ivory structure, inexpensive bevel surfaces and visible shared hand/relic loading path; crypt depth and close melee anticipation.",
+  "verifiedAt": "2026-10-27T11:19:03.711Z",
+  "previousRelease": "d6101272e6d34d5635d1a75745ad971c4ab07e9d85d5bec7b721e5a7f0813c87",
+  "scope": "Eight local reference-based weapon revisions; handgun/Cross preserved; authored monastery portal and dungeon cell architecture.",
   "verificationReports": [
     {
-      "file": "docs/verification-data/crypt-depth-oct26b-final-7ff91371.json",
-      "sha256": "28a6ad4febcf7a6a2527f45d7e259d04b4485e0af3d8469007bc7193c3f5eae8"
+      "file": "docs/verification-data/arsenal-reference-oct27-aspects.json",
+      "sha256": "26e9f0ba65e133a64cedc49b9b1222e717e685d6a0428eb8c9d0703b46254fd2"
     },
     {
-      "file": "docs/verification-data/crypt-depth-oct26b-navigation.json",
-      "sha256": "a570cf4acb61d1475a74f0a6d25549d0d6b414ad99ad5324335409a037eb214e"
+      "file": "docs/verification-data/arsenal-reference-oct27-independent-review.json",
+      "sha256": "ac31ea02c4d8816f682c10678c8dfd1492a03dd06a54844f257025f298b42ff5"
     },
     {
-      "file": "docs/verification-data/crypt-depth-oct26b-private.json",
-      "sha256": "c6ae2009ed14a921ab7675f2dec4b99513c86c04d54a43ef45a5683743ed7c62"
+      "file": "docs/verification-data/arsenal-reference-oct27-parity.json",
+      "sha256": "45efe685d8268bba966c9d0366aa985ac6df46c3ab8571b171cd560fcba8296b"
     },
     {
-      "file": "docs/verification-data/crypt-depth-oct26b-scope.json",
-      "sha256": "934f5cd21690b247afe773107e09b0aeb174f84c2c772e8e5ca9925be72ae241"
+      "file": "docs/verification-data/arsenal-reference-oct27-performance.json",
+      "sha256": "65c92a5ab833c1338158895a445141c595e1bc5689be6c536f824f466a56c55d"
     },
     {
-      "file": "docs/verification-data/crypt-depth-oct26b-tool-guards.json",
-      "sha256": "3e0316276aaf74f477f7ba76d3daf3403e0d83a7cd7a446df6c87db10cd96822"
+      "file": "docs/verification-data/arsenal-reference-oct27-runtime.json",
+      "sha256": "c43e376fec5f7b74cbb62ca35e1563184f51596fc56da860868f68510ab91c36"
     },
     {
-      "file": "docs/verification-data/crypt-depth-oct26b-v5-identity.json",
-      "sha256": "ab1574428307ee94e4dea5c10d5b4f8dc5a4740dd47883676e8a5c8e334a7eed"
+      "file": "docs/verification-data/arsenal-reference-oct27-source-scope.json",
+      "sha256": "31894fbb21f2fda166e26028c15f808a5aa96baf362450beb84af6480a0fc34c"
     },
     {
-      "file": "docs/verification-data/enemy-close-melee-oct26-final.json",
-      "sha256": "d74101165c4e23172b951b43927d72a5d629041b9eb7ad85c4323aaee125d725"
+      "file": "docs/verification-data/chapter-architecture-oct27-final-identity.json",
+      "sha256": "fa5d612097767a0b3435a449239a5664e74b335140cfa98496e1fb1b96bbca1c"
     },
     {
-      "file": "docs/verification-data/enemy-close-melee-oct26-native.json",
-      "sha256": "ecc269d86a2680194cc3deaaafb990a4e391b14ab312cb7d998a05539b2347af"
+      "file": "docs/verification-data/chapter-architecture-oct27-native.json",
+      "sha256": "fe1be02ab00252719e7f5c102a2926e870b5fea12e248b812dd71af1348b876c"
     },
     {
-      "file": "docs/verification-data/enemy-close-melee-oct26-parity.json",
-      "sha256": "5f2fb801938b86995f2d34f62a1e3ee5ebe08041f02dee7d5f7302faf3b26139"
+      "file": "docs/verification-data/chapter-architecture-oct27-performance.json",
+      "sha256": "7877deafcb11a0fbe93f025a0c3e7423e4b525314bb9d0ce954002fcb9a023e6"
     },
     {
-      "file": "docs/verification-data/enemy-close-melee-oct26-regression.json",
-      "sha256": "129cd7d57867d3c0f863eaf3599ccb4b2d1ff18326d8b73e5b9fc9735af97264"
+      "file": "docs/verification-data/chapter-architecture-oct27-scope.json",
+      "sha256": "dedde2d7d1be2485fd7ecb2306e8893ddd8073c5a169f71c5291166a98110bbf"
     },
     {
-      "file": "docs/verification-data/enemy-close-melee-oct26-v5-identity.json",
-      "sha256": "ce54db8473e914fb928b832f81bf0aaab619c428b93763914ec09ed17afa2b5f"
-    },
-    {
-      "file": "docs/verification-data/weapon-structure-oct26b-aspects.json",
-      "sha256": "bb6f739859018a6501a7f3ef2aabc0a35e899c6e0d6de3608cf1491dc1df38f0"
-    },
-    {
-      "file": "docs/verification-data/weapon-structure-oct26b-cross-v3-aspects.json",
-      "sha256": "8289f6a498eca12a3b3a8a906ab51089d972d87ccaa8da716a9bb12bf1456491"
-    },
-    {
-      "file": "docs/verification-data/weapon-structure-oct26b-cross-v5-aspects.json",
-      "sha256": "5a9d66d9b61bf4f21dc803c490919f19233df38761bcd50f6d381a994ed05ef8"
-    },
-    {
-      "file": "docs/verification-data/weapon-structure-oct26b-parity.json",
-      "sha256": "582e977bbbb98a32f001797518cf3b649aa3a485e669e5c5c17fd4e71a3d1577"
-    },
-    {
-      "file": "docs/verification-data/weapon-structure-oct26b-path-guards.json",
-      "sha256": "88aedec6e404e87fb2994498a3554fc820fd703d91e49ee9f735d4fe2271ef7c"
-    },
-    {
-      "file": "docs/verification-data/weapon-structure-oct26b-path.json",
-      "sha256": "a10016e1bebe97bca259797bf5138760b518bd9a9c78c6d74bb48244ff485958"
-    },
-    {
-      "file": "docs/verification-data/weapon-structure-oct26b-performance.json",
-      "sha256": "3fbd55fb088151fdd1532cd7665649b50f086167cb4d3ef22c28c3663396a252"
-    },
-    {
-      "file": "docs/verification-data/weapon-structure-oct26b-runtime.json",
-      "sha256": "c7a1a91e7ecd952e18e5dd8b54141ae1936515b921cc2b3c5bf377167fd04238"
+      "file": "docs/verification-data/chapter-architecture-oct27-tool-guards.json",
+      "sha256": "e28aba86609a12dc1e7570e3b8d37b83810035c9684bf13d5144dcc7b614bbdc"
     }
   ],
   "viewmodelParity": {
-    "baselineSHA256": "56394da38ad2dff02bffb5a32900daa40cf7c6cd319be7e6a1b850145e6e376d",
-    "candidateSHA256": "163ec3ade47971e35ef07513340b41fdadc1037f6bf9e7af09c16a5f108e97c4",
-    "sourceSHA256": "b94143465477341407ed16e3377a7d95159309cea3b5b62fe68c1d887540b910",
+    "baselineSHA256": "d6101272e6d34d5635d1a75745ad971c4ab07e9d85d5bec7b721e5a7f0813c87",
+    "candidateSHA256": "4edca6147375d48abcf15207c1ec9f363d24dab308fdf8b0e3dd79b5056408cf",
+    "sourceSHA256": "99bd9d094ce38eb0f221a820026ce5ee81e0c192a2b9a8b5b5fa630ac3416aac",
     "comparisons": 660,
-    "exact": 540,
-    "expectedShotgunCrossDifferences": 120,
+    "exact": 192,
+    "expectedDifferences": 468,
+    "differencesByWeapon": {
+      "1": 60,
+      "2": 60,
+      "3": 60,
+      "4": 60,
+      "6": 60,
+      "7": 60,
+      "8": 48,
+      "9": 60
+    },
     "unexpectedDifferences": 0
   },
   "mediaManifest": {
-    "file": "docs/weapon-structure-oct26b/provenance.json",
-    "sha256": "3aaa8cf31ee8204589358f4abfe519c2601017917067f37ac74cf3882a8fa335"
+    "file": "docs/arsenal-reference-oct27/provenance.json",
+    "sha256": "ef2f6417e3e796cd55cad56fcb62562545ab8d93da8a2a752903ca0e7b5f31a7"
   },
   "limitations": [
-    "Final Cross reload remains about1.5ms CPU and3FPS more costly in the recorded local comparison; no general FPS gain is claimed.",
-    "Reference-derived articulated2.5D artwork and native volumetric backing remain view dependent.",
-    "Environment/enemy native7ff smoke and private aspect reports retain their original input hashes. Finald610 module identity, all10runtime and build checks are separate.",
-    "Cross servicing hand is more readable but can still be partly occluded by the receiver.",
-    "Documented tests do not prove all campaign states or all hardware."
+    "Reference-derived articulated2.5D surfaces remain view dependent; not a full arbitrary-view3D reconstruction.",
+    "Recorded host-specific performance varies; one Sniper candidate repeat is about1.2ms more costly, another matches baseline. No general FPS improvement is claimed.",
+    "135-frame aspect QA uses the weapon-only4edca input with exact final99bd source. Final17ebe all10 runtime/build/media and source identity are separately recorded.",
+    "Environment paired tests retain their actual private input hashes; finalmodule identity is separately checked.",
+    "Tests cover listed representative states, not every campaign interaction or hardware configuration."
   ]
 }

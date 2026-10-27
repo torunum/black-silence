@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "tests": [
+    {
+      "script": "tools/chapter-architecture-tests.cjs",
+      "refusal": true,
+      "inputUnchanged": true
+    },
+    {
+      "script": "tools/chapter-architecture-native-tests.cjs",
+      "refusal": true,
+      "inputUnchanged": true
+    }
+  ]
+}

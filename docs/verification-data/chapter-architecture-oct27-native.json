@@ -1,0 +1,647 @@
+{
+  "passed": true,
+  "reports": [
+    {
+      "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\environment-oct27\\baseline.html",
+      "sha256": "d6101272e6d34d5635d1a75745ad971c4ab07e9d85d5bec7b721e5a7f0813c87",
+      "phases": [
+        {
+          "cycle": 0,
+          "level": 9,
+          "priorReferencesAbsent": true,
+          "candleLights": [],
+          "lightCount": 21,
+          "materials": 518,
+          "textures": 33,
+          "walked": [
+            {
+              "target": [
+                164,
+                154
+              ],
+              "at": [
+                164.1751260578921,
+                154
+              ],
+              "reached": true
+            },
+            {
+              "target": [
+                170,
+                154
+              ],
+              "at": [
+                169.82625707340875,
+                154
+              ],
+              "reached": true
+            },
+            {
+              "target": [
+                167,
+                154
+              ],
+              "at": [
+                167.17604297267275,
+                154
+              ],
+              "reached": true
+            },
+            {
+              "target": [
+                167,
+                152
+              ],
+              "at": [
+                166.96609637805122,
+                152.16825095891267
+              ],
+              "reached": true
+            }
+          ],
+          "ticks": 215,
+          "geometry": {
+            "prologueStonePortal": [
+              {
+                "mat": "decor|rock",
+                "triangles": 24
+              },
+              {
+                "mat": "decor|stone",
+                "triangles": 108
+              },
+              {
+                "mat": "decor|slate",
+                "triangles": 36
+              },
+              {
+                "mat": "decor|dark",
+                "triangles": 12
+              }
+            ],
+            "prologuePrisonMemorial": [
+              {
+                "mat": "decor|prologueMemorialStone",
+                "triangles": 12
+              },
+              {
+                "mat": "decor|slate",
+                "triangles": 48
+              },
+              {
+                "mat": "decor|rock",
+                "triangles": 84
+              },
+              {
+                "mat": "decor|stone",
+                "triangles": 36
+              },
+              {
+                "mat": "decor|prologueWatermark",
+                "triangles": 24
+              },
+              {
+                "mat": "decor|dark",
+                "triangles": 12
+              },
+              {
+                "mat": "decor|wrought",
+                "triangles": 48
+              },
+              {
+                "mat": "decor|oldbone",
+                "triangles": 12
+              }
+            ]
+          },
+          "errors": [],
+          "collisionSamples": 775
+        },
+        {
+          "cycle": 1,
+          "level": 1,
+          "priorReferencesAbsent": true,
+          "candleLights": [],
+          "lightCount": 19,
+          "materials": 185,
+          "textures": 25,
+          "walked": [
+            {
+              "target": [
+                35,
+                12
+              ],
+              "at": [
+                34.82712487902457,
+                12
+              ],
+              "reached": true
+            },
+            {
+              "target": [
+                39,
+                12
+              ],
+              "at": [
+                38.83456023533568,
+                12
+              ],
+              "reached": true
+            },
+            {
+              "target": [
+                35,
+                12
+              ],
+              "at": [
+                35.1705830603126,
+                12
+              ],
+              "reached": true
+            },
+            {
+              "target": [
+                35,
+                9
+              ],
+              "at": [
+                34.99536332391005,
+                9.176471070370551
+              ],
+              "reached": true
+            }
+          ],
+          "ticks": 231,
+          "geometry": null,
+          "errors": [],
+          "collisionSamples": 1587
+        }
+      ],
+      "errors": []
+    },
+    {
+      "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\environment-oct27\\v4-candidate.html",
+      "sha256": "bb65a06355775d22ec9ffe7d874bf5b4a4d8d1c96f0b5dae913e4f21dce3b6df",
+      "phases": [
+        {
+          "cycle": 0,
+          "level": 9,
+          "priorReferencesAbsent": true,
+          "candleLights": [],
+          "lightCount": 21,
+          "materials": 518,
+          "textures": 33,
+          "walked": [
+            {
+              "target": [
+                164,
+                154
+              ],
+              "at": [
+                164.1751260578921,
+                154
+              ],
+              "reached": true
+            },
+            {
+              "target": [
+                170,
+                154
+              ],
+              "at": [
+                169.82625707340875,
+                154
+              ],
+              "reached": true
+            },
+            {
+              "target": [
+                167,
+                154
+              ],
+              "at": [
+                167.17604297267275,
+                154
+              ],
+              "reached": true
+            },
+            {
+              "target": [
+                167,
+                152
+              ],
+              "at": [
+                166.96609637805122,
+                152.16825095891267
+              ],
+              "reached": true
+            }
+          ],
+          "ticks": 215,
+          "geometry": {
+            "prologueStonePortal": [
+              {
+                "mat": "decor|rock",
+                "triangles": 96
+              },
+              {
+                "mat": "decor|slate",
+                "triangles": 192
+              },
+              {
+                "mat": "decor|marble",
+                "triangles": 96
+              },
+              {
+                "mat": "decor|stone",
+                "triangles": 108
+              },
+              {
+                "mat": "decor|dark",
+                "triangles": 12
+              }
+            ],
+            "prologuePrisonMemorial": [
+              {
+                "mat": "decor|prologueMemorialStone",
+                "triangles": 12
+              },
+              {
+                "mat": "decor|slate",
+                "triangles": 72
+              },
+              {
+                "mat": "decor|rock",
+                "triangles": 156
+              },
+              {
+                "mat": "decor|marble",
+                "triangles": 108
+              },
+              {
+                "mat": "decor|stone",
+                "triangles": 132
+              },
+              {
+                "mat": "decor|prologueWatermark",
+                "triangles": 24
+              },
+              {
+                "mat": "decor|dark",
+                "triangles": 36
+              },
+              {
+                "mat": "decor|wrought",
+                "triangles": 48
+              },
+              {
+                "mat": "decor|oldbone",
+                "triangles": 12
+              },
+              {
+                "mat": "decor|bone",
+                "triangles": 60
+              },
+              {
+                "mat": "decor|prologueAmber",
+                "triangles": 36
+              }
+            ]
+          },
+          "errors": [],
+          "collisionSamples": 775
+        },
+        {
+          "cycle": 1,
+          "level": 1,
+          "priorReferencesAbsent": true,
+          "candleLights": [
+            {
+              "intensity": 1.2,
+              "range": 4.2,
+              "pos": [
+                35,
+                3.42,
+                4.7
+              ],
+              "castShadow": false
+            }
+          ],
+          "lightCount": 20,
+          "materials": 186,
+          "textures": 25,
+          "walked": [
+            {
+              "target": [
+                35,
+                12
+              ],
+              "at": [
+                34.82712487902457,
+                12
+              ],
+              "reached": true
+            },
+            {
+              "target": [
+                39,
+                12
+              ],
+              "at": [
+                38.83456023533568,
+                12
+              ],
+              "reached": true
+            },
+            {
+              "target": [
+                35,
+                12
+              ],
+              "at": [
+                35.1705830603126,
+                12
+              ],
+              "reached": true
+            },
+            {
+              "target": [
+                35,
+                9
+              ],
+              "at": [
+                34.99536332391005,
+                9.176471070370551
+              ],
+              "reached": true
+            }
+          ],
+          "ticks": 231,
+          "geometry": null,
+          "errors": [],
+          "collisionSamples": 1587
+        },
+        {
+          "cycle": 2,
+          "level": 9,
+          "priorReferencesAbsent": true,
+          "candleLights": [],
+          "lightCount": 21,
+          "materials": 518,
+          "textures": 33,
+          "walked": [
+            {
+              "target": [
+                164,
+                154
+              ],
+              "at": [
+                164.1751260578921,
+                154
+              ],
+              "reached": true
+            },
+            {
+              "target": [
+                170,
+                154
+              ],
+              "at": [
+                169.82625707340875,
+                154
+              ],
+              "reached": true
+            },
+            {
+              "target": [
+                167,
+                154
+              ],
+              "at": [
+                167.17604297267275,
+                154
+              ],
+              "reached": true
+            },
+            {
+              "target": [
+                167,
+                152
+              ],
+              "at": [
+                166.96609637805122,
+                152.16825095891267
+              ],
+              "reached": true
+            }
+          ],
+          "ticks": 215,
+          "geometry": null,
+          "errors": [],
+          "collisionSamples": 775
+        },
+        {
+          "cycle": 3,
+          "level": 1,
+          "priorReferencesAbsent": true,
+          "candleLights": [
+            {
+              "intensity": 1.2,
+              "range": 4.2,
+              "pos": [
+                35,
+                3.42,
+                4.7
+              ],
+              "castShadow": false
+            }
+          ],
+          "lightCount": 20,
+          "materials": 186,
+          "textures": 25,
+          "walked": [
+            {
+              "target": [
+                35,
+                12
+              ],
+              "at": [
+                34.82712487902457,
+                12
+              ],
+              "reached": true
+            },
+            {
+              "target": [
+                39,
+                12
+              ],
+              "at": [
+                38.83456023533568,
+                12
+              ],
+              "reached": true
+            },
+            {
+              "target": [
+                35,
+                12
+              ],
+              "at": [
+                35.1705830603126,
+                12
+              ],
+              "reached": true
+            },
+            {
+              "target": [
+                35,
+                9
+              ],
+              "at": [
+                34.99536332391005,
+                9.176471070370551
+              ],
+              "reached": true
+            }
+          ],
+          "ticks": 231,
+          "geometry": null,
+          "errors": [],
+          "collisionSamples": 1587
+        },
+        {
+          "cycle": 4,
+          "level": 9,
+          "priorReferencesAbsent": true,
+          "candleLights": [],
+          "lightCount": 21,
+          "materials": 518,
+          "textures": 33,
+          "walked": [
+            {
+              "target": [
+                164,
+                154
+              ],
+              "at": [
+                164.1751260578921,
+                154
+              ],
+              "reached": true
+            },
+            {
+              "target": [
+                170,
+                154
+              ],
+              "at": [
+                169.82625707340875,
+                154
+              ],
+              "reached": true
+            },
+            {
+              "target": [
+                167,
+                154
+              ],
+              "at": [
+                167.17604297267275,
+                154
+              ],
+              "reached": true
+            },
+            {
+              "target": [
+                167,
+                152
+              ],
+              "at": [
+                166.96609637805122,
+                152.16825095891267
+              ],
+              "reached": true
+            }
+          ],
+          "ticks": 215,
+          "geometry": null,
+          "errors": [],
+          "collisionSamples": 775
+        },
+        {
+          "cycle": 5,
+          "level": 1,
+          "priorReferencesAbsent": true,
+          "candleLights": [
+            {
+              "intensity": 1.2,
+              "range": 4.2,
+              "pos": [
+                35,
+                3.42,
+                4.7
+              ],
+              "castShadow": false
+            }
+          ],
+          "lightCount": 20,
+          "materials": 186,
+          "textures": 25,
+          "walked": [
+            {
+              "target": [
+                35,
+                12
+              ],
+              "at": [
+                34.82712487902457,
+                12
+              ],
+              "reached": true
+            },
+            {
+              "target": [
+                39,
+                12
+              ],
+              "at": [
+                38.83456023533568,
+                12
+              ],
+              "reached": true
+            },
+            {
+              "target": [
+                35,
+                12
+              ],
+              "at": [
+                35.1705830603126,
+                12
+              ],
+              "reached": true
+            },
+            {
+              "target": [
+                35,
+                9
+              ],
+              "at": [
+                34.99536332391005,
+                9.176471070370551
+              ],
+              "reached": true
+            }
+          ],
+          "ticks": 231,
+          "geometry": null,
+          "errors": [],
+          "collisionSamples": 1587
+        }
+      ],
+      "errors": []
+    }
+  ],
+  "scope": "Paired actual native walking within two changed galleries; exact map/encounter/door descriptors and sampled native collisions, repeated scene rebuild/light ownership. Not a full chapter playthrough or FPS benchmark."
+}

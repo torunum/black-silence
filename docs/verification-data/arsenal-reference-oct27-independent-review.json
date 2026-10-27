@@ -1,0 +1,35 @@
+{
+  "scope": "Independent native visual review and read-only source review; no benchmark",
+  "testedHtmlSHA256": "4edca6147375d48abcf15207c1ec9f363d24dab308fdf8b0e3dd79b5056408cf",
+  "testedWeaponSourceSHA256": "99bd9d094ce38eb0f221a820026ce5ee81e0c192a2b9a8b5b5fa630ac3416aac",
+  "combinedHtmlSHA256": "17ebe0d27fdcef2eea80b54fbc68ebf0cfa96b51c0244bd2a56e85ac22155d61",
+  "combinedWeaponModuleExact": true,
+  "combined135Rerun": false,
+  "frames": 135,
+  "nativeReloadEndpoints": 27,
+  "aspects": [
+    "1024x768",
+    "1280x720",
+    "1680x720"
+  ],
+  "phases": [
+    "idle",
+    "after-fire",
+    "0.18",
+    "0.5",
+    "0.88"
+  ],
+  "pageErrors": 0,
+  "visualReview": "All nine full-frame sheets and critical full-size reload images inspected. No newly observed grip separation, open receiver hole, detached drum rim, or framing blocker.",
+  "stakeBaseline": "Thin black rail/lever triangles also appear in baseline native 1024x768 phase0.5. Native sample phases differ slightly. Not a new chamfer regression and not claimed fixed.",
+  "materialReview": "Changes stay within weapon-specific hulls, material/UV sampling and bevel helper. Added UV coordinates remain on existing reference boards; visible source-hand contamination removed from Soul glass in this candidate.",
+  "lifecycleReview": "No texture registration/decode/context/reset lifecycle changes. Existing orb cache retains per-rig geometry keys; no new asset or global cache.",
+  "rigReview": "Tommy drum rim shares drum transform. Scope/receiver additions remain on weapon rig. Stake hand anchors and left reload path unchanged. Gameplay, ammo and native timing paths unchanged.",
+  "limitations": [
+    "Reference-derived 2.5D geometry is not an exact reproduction of every reference angle.",
+    "After-fire screenshots follow a confirmed magazine decrement; they do not guarantee identical peak recoil across aspects.",
+    "Functional inventory/enemy setup is fixture-controlled; R and mouse inputs use native handlers.",
+    "No FPS or performance improvement claim."
+  ],
+  "passed": true
+}

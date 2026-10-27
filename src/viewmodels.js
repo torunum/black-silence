@@ -1024,7 +1024,7 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       }
     }
     paintedShotgunTubes(mesh);
-    mesh.cbox(-0.0025, 0.074, 0.064, 0.0025, 0.078, 0.287, 0.001, EDGE, {
+    mesh.cbox(-0.0018, 0.073, 0.064, 0.0018, 0.076, 0.287, 0.001, WORN, {
       tex: steel,
     });
     mesh.ball(0, 0.082, 0.294, 0.0033, BRONZE, 5);
@@ -1764,7 +1764,7 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
     for(const x of [-.023,.023])for(const [z0,z1,r0,r1] of [[-.054,.048,.0205,.020],[.062,.29,.0172,.016]])for(let j=0;j<24;j++){
       const a=j*Math.PI*2/24,b=(j+1)*Math.PI*2/24;
       const p=(a,z,r)=>[x+Math.cos(a)*(r+.00065),.057+Math.sin(a)*(r+.00065),z];
-      const mid=(a+b)*.5,shine=Math.pow(Math.max(0,Math.cos(mid-1.12)),30),light=.42+.30*Math.max(0,Math.sin(mid))+.80*shine;
+      const mid=(a+b)*.5,shine=Math.pow(Math.max(0,Math.cos(mid-(x<0?.94:1.28))),30),light=.36+.28*Math.max(0,Math.sin(mid))+.78*shine;
       const uv=(u,v)=>shotgunTargetUV(u,v,metal);
       paintedSurface(mesh,'shotgunSource',[p(a,z0,r0),p(b,z0,r0),p(b,z1,r1),p(a,z1,r1)],[uv(1,j/24),uv(1,(j+1)/24),uv(0,(j+1)/24),uv(0,j/24)],light);
     }
@@ -1778,6 +1778,13 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
   // Reference-specific articulated artwork hulls. UV outlines exclude hands,
   // scenery, and panel borders. Native thickness and the shared depth buffer
   // keep the approved gloves independent from the weapon artwork.
+  // Small planar bevels: one quad per outline edge, no capped limb meshes.
+  function referenceBevel(mesh,point,poly,frontDepth,backDepth,expand=1.02,material=WORN){
+    const center=poly.reduce((a,p)=>[a[0]+p[0]/poly.length,a[1]+p[1]/poly.length],[0,0]);
+    const inner=poly.map(p=>point(...p,frontDepth)),outer=poly.map(p=>point(center[0]+(p[0]-center[0])*expand,center[1]+(p[1]-center[1])*expand,backDepth));
+    const part=mesh.part(),inv=mesh.inverse();
+    for(let i=0;i<poly.length;i++){const j=(i+1)%poly.length,a=inner[i],b=inner[j],c=outer[j],u=b.map((v,k)=>v-a[k]),v=c.map((v,k)=>v-a[k]),n=[u[1]*v[2]-u[2]*v[1],u[2]*v[0]-u[0]*v[2],u[0]*v[1]-u[1]*v[0]],l=Math.hypot(...n)||1;mesh.face([a,b,c,outer[i]],n.map(v=>v/l),material,part,{tex:steel},inv);}
+  }
   const firearmArt = {};
   for (const [index, center, scale] of [[2,[548,314],.00063],[3,[1320,302],.00062],[4,[584,794],.000585],[5,[1410,806],.000586]]) {
     const m=new Xf(Te.raster,1,0,0),h=vk[index].hold;
@@ -1814,7 +1821,7 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       a.move(m,0,-.09*inspect,0);
       m.roll(.19*inspect);m.pitch(-.06*inspect);
       // A continuous receiver chassis joins the outlined cosmetic surfaces.
-      a.hull(m,[[367,182],[693,278],[693,359],[387,293]],.020,.029,null,false);
+      a.hull(m,[[367,209],[693,301],[693,359],[387,293]],.020,.029,null,false);
       // Separate muzzle, ribbed cooling jacket, action shell, and stock.
       a.hull(m,[[141,144],[155,138],[169,145],[169,168],[148,164]],.035,.012);
       a.hull(m,[[166,118],[174,114],[179,145],[165,145]],.035,.008);
@@ -1826,14 +1833,17 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       a.hull(m,[[444,204],[571,239],[566,259],[446,228]],.005,.020);
       a.hull(m,[[437,220],[459,226],[456,275],[438,270]],.004,.025);
       a.hull(m,[[526,249],[574,260],[570,282],[527,272]],.003,.025);
-      a.hull(m,[[455,274],[527,293],[527,328],[457,309]],.002,.026);
+      a.hull(m,[[456,255],[529,275],[529,328],[457,309]],.002,.026);
       a.hull(m,[[530,268],[638,290],[640,351],[529,328]],-.002,.028);
       a.hull(m,[[574,228],[591,225],[600,216],[621,218],[626,250],[571,247]],.010,.009);
+      a.hull(m,[[574,250],[637,268],[638,290],[570,282]],-.001,.028);
       a.hull(m,[[636,272],[690,281],[692,352],[642,352]],.004,.033);
       a.hull(m,[[692,313],[832,389],[832,465],[703,383],[675,352],[675,317]],.015,.026);
       // Recessed chamber is visible while the separate brass bolt retracts.
       const port=a.point(488,253,.007);m.push();m.translate(...port);m.box(-.0155,-.004,-.002,.0155,.004,.002,WORN);m.pop();
       m.push();a.move(m,charge*.035,0,.001);a.hull(m,[[459,231],[526,251],[523,272],[458,253]],-.006,.012);m.pop();
+      // A short bevelled magwell makes the receiver-to-magazine joint tangible.
+      a.hull(m,[[391,289],[483,316],[480,329],[389,302]],-.010,.033,null,false);
       // Magazine follows its own extraction/seat motion; hand uses that rig.
       m.push();a.move(m,-.012*out,.065*out,.005*out);m.roll(-.07*out);
       a.hull(m,[[392,297],[480,323],[472,466],[366,442]],-.008,.028);m.pop();
@@ -1862,9 +1872,12 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       a.hull(m,[[1410,232],[1468,250],[1466,346],[1405,318]],-.002,.033);
       a.hull(m,[[1409,211],[1430,210],[1454,218],[1455,246],[1409,237]],.014,.010);
       a.hull(m,[[1475,289],[1546,319],[1670,385],[1670,466],[1526,413],[1466,350]],.016,.029);
+      // Fixed feed throat stays in the receiver while the drum moves away.
+      a.hull(m,[[1167,212],[1211,224],[1235,246],[1224,258],[1172,242]],.004,.041);
       // The drum has real thickness and rotates slightly during removal.
       m.push();a.move(m,-.025*out,.045*out,.012*out);m.roll(-.13*out);
-      a.hull(m,[[1113,252],[1145,223],[1179,215],[1219,230],[1247,265],[1274,315],[1277,382],[1258,418],[1228,442],[1181,449],[1135,430],[1105,394],[1095,345],[1100,292]],-.012,.036);
+      a.hull(m,[[1113,252],[1145,223],[1179,215],[1219,230],[1247,265],[1274,315],[1277,382],[1258,418],[1228,442],[1181,449],[1135,430],[1105,394],[1095,345],[1100,292]],-.012,.052);
+      referenceBevel(m,a.point,[[1113,252],[1145,223],[1179,215],[1219,230],[1247,265],[1274,315],[1277,382],[1258,418],[1228,442],[1181,449],[1135,430],[1105,394],[1095,345],[1100,292]],-.012,.008,1.025);
       m.pop();
       m.push();a.move(m,.035*knob,0,0);a.hull(m,[[1152,177],[1167,173],[1178,182],[1176,196],[1164,201],[1154,192]],-.019,.012);m.pop();
       const reach=t<0?0:Qe(t,.02,.78,.10),support=[1056,254,-.048],load=[1177,356,-.055],knobReach=t<0?0:Qe(t,.72,.98,.075),knobContact=[1165,187,-.050];
@@ -1881,23 +1894,23 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       m.roll(.15*inspect);m.pitch(-.045*inspect);
       // Continuous action spine and optical tube backing connect all rings.
       a.hull(m,[[410,693],[655,777],[655,819],[414,744]],.020,.028,null,false);
-      a.hull(m,[[405,623],[754,684],[751,713],[403,650]],.010,.022,null,false);
-      a.hull(m,[[440,650],[469,661],[469,708],[440,697]],.011,.019,null,false);
-      a.hull(m,[[565,686],[596,696],[596,750],[563,737]],.010,.020,null,false);
+      // Individual scope shells provide the optical tube backing.
+      a.hull(m,[[440,670],[469,681],[469,708],[440,697]],.011,.019,null,false);
+      a.hull(m,[[565,704],[596,714],[596,750],[563,737]],.010,.020,null,false);
       a.hull(m,[[132,607],[152,602],[164,610],[158,629],[135,621]],.045,.012);
       a.hull(m,[[147,593],[156,593],[160,607],[146,607]],.045,.006);
       a.hull(m,[[159,611],[424,693],[421,716],[157,630]],.035,.014);
       // Actual long walnut lower stock; action and scope stand above it.
       // The original support hand occludes this forearm in the target. Use
       // clean walnut from the same stock, not its photographed glove edge.
-      a.hull(m,[[231,657],[421,721],[421,776],[231,687]],.014,.042,null,true,[[430,760],[515,790],[515,825],[430,791]]);
+      a.hull(m,[[231,657],[421,721],[421,789],[231,700]],.014,.042,null,true,[[430,760],[515,790],[515,825],[430,791]]);
       a.hull(m,[[421,728],[529,765],[608,818],[597,862],[521,852],[421,789]],.008,.033);
       a.hull(m,[[609,818],[692,859],[789,939],[721,939],[636,882]],.015,.027);
       a.hull(m,[[420,696],[472,704],[474,734],[421,721]],.002,.023);
       a.hull(m,[[474,714],[551,739],[550,773],[474,746]],-.002,.024);
       a.hull(m,[[551,736],[600,753],[615,788],[552,778]],-.004,.027);
       // Scope is segmented at objective, rings, tube, turrets and eyepiece.
-      const scopeCenter=a.point(565,680,-.012),scope=(poly,d,th)=>a.hull(m,poly,d,th,p=>p.map((v,i)=>scopeCenter[i]+(v-scopeCenter[i])*.93));
+      const scopeCenter=a.point(565,680,-.012),scope=(poly,d,th)=>a.hull(m,poly,d,th,p=>p.map((v,i)=>scopeCenter[i]+(v-scopeCenter[i])*.93+a.basis.v[i]*.006));
       scope([[363,610],[383,591],[422,598],[446,612],[443,656],[421,675],[380,665],[362,648]],-.012,.031);
       scope([[445,615],[470,624],[470,672],[445,663]],-.017,.025);
       scope([[471,628],[497,625],[533,638],[533,683],[501,692],[472,675]],-.013,.028);
@@ -1910,8 +1923,8 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       scope([[741,652],[773,657],[790,680],[794,713],[780,743],[752,758],[722,756],[741,731],[751,691]],-.026,.025);
       scope([[746,671],[765,668],[778,680],[781,707],[769,731],[751,742],[739,737],[749,708]],-.030,.004);
       // Two bolted scope mount bases connect the optics to the action.
-      a.hull(m,[[443,671],[468,679],[467,698],[445,691]],.006,.016);
-      a.hull(m,[[565,707],[588,711],[591,735],[565,728]],.005,.018);
+      a.hull(m,[[443,681],[468,689],[467,704],[445,697]],.006,.016);
+      a.hull(m,[[565,717],[588,721],[591,741],[565,734]],.005,.018);
       // Bolt handle and knob move independently around their receiver pivot.
       const bp=a.point(627,793,-.010);
       // The grasp and lever share one pivot; sliding the wrist alone lets it
@@ -2060,6 +2073,7 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       m.translate(0,-.02*inspect,0);m.roll(.30*inspect);m.pitch(-.08*inspect);
       // Contiguous copper/steel receiver, split at real jacket seams.
       nailArtHull(m,[[340,143],[393,124],[419,151],[411,214],[388,220],[366,216],[341,206]],.012);
+      nailArtHull(m,[[390,136],[417,150],[421,183],[409,214],[388,220],[399,191]],.002,.032);
       nailArtHull(m,[[417,155],[512,173],[512,270],[417,247]],.005);
       nailArtHull(m,[[511,171],[574,157],[621,180],[640,204],[632,281],[574,308],[511,275]],0);
       nailArtHull(m,[[635,204],[672,218],[690,246],[678,292],[640,308],[629,271]],-.006);
@@ -2172,7 +2186,7 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       if(!shape){
       shape={back:[],front:[]};
       const main=rx>50,segments=main?28:16,rings=main?4:3,radius=Math.max(rx,ry)*scale;
-      const uvInset=main?.58:.88,uvCx=cx-(main?8:0),uvCy=cy-(main?4:0);
+      const uvInset=main?.84:.88,uvCx=cx+(main?3:0),uvCy=cy-(main?5:0);
       // Only the rear half is native geometry. A complete sphere can intersect
       // the slightly perspective-compensated artwork and expose a flat wedge.
       const back=(r,angle)=>point(cx+rx*r*Math.cos(angle),cy+ry*r*Math.sin(angle),depth+radius*Math.sqrt(Math.max(0,1-r*r))+.006);
@@ -2185,14 +2199,15 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       }
       const vertex=(r,angle)=>{
         const x=Math.cos(angle)*r,y=Math.sin(angle)*r,z=-radius*Math.sqrt(Math.max(0,1-r*r))-.002;
-        return {p:point(cx+rx*x,cy+ry*y,depth+z),uv:[(uvCx+rx*x*uvInset)/1672,(uvCy+ry*y*uvInset)/941]};
+        const clearGlass=main&&x<0&&y>0?1-.16*Math.min(1,-x*y*4):1;
+        return {p:point(cx+rx*x,cy+ry*y,depth+z),uv:[(uvCx+rx*x*uvInset*clearGlass)/1672,(uvCy+ry*y*uvInset*clearGlass)/941]};
       };
       // Real rounded depth across concentric latitude rings, with shaded glass
       // edges. A single center-to-rim fan reads as a flat cutout during insert.
       for(let row=0;row<rings;row++)for(let k=0;k<segments;k++){
         const r0=Math.sin(row/rings*Math.PI/2),r1=Math.sin((row+1)/rings*Math.PI/2),a0=k*Math.PI*2/segments,a1=(k+1)*Math.PI*2/segments;
         const vertices=row===0?[vertex(0,0),vertex(r1,a0),vertex(r1,a1)]:[vertex(r0,a0),vertex(r1,a0),vertex(r1,a1),vertex(r0,a1)];
-        const r=(r0+r1)*.5,light0=.96-.63*Math.pow(r,1.55),light1=.95-.08*Math.cos((a0+a1)*.5);
+        const r=(r0+r1)*.5,light0=.89-.42*Math.pow(r,1.55),light1=.95-.08*Math.cos((a0+a1)*.5);
         shape.front.push({vertices:vertices.map(v=>v.p),uv:vertices.map(v=>v.uv),light0,light1});
       }
       orbGeometry.set(key,shape);
@@ -2281,7 +2296,12 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
         a.hull(m,[[431,543],[450,539],[464,560],[456,580],[436,577]],-.014,.018,BRONZE);
         // Fuse is a segmented physical cord, following its authored arcing path.
         const control=[[432,552],[405,454],[319,449],[298,553]].map(p=>a.point(...p,-.010));let prev=control[0];
-        for(let i=1;i<=12;i++){const t=i/12,s=1-t,p=control[0].map((v,k)=>v*s*s*s+3*control[1][k]*s*s*t+3*control[2][k]*s*t*t+control[3][k]*t*t*t);m.limb(prev,p,.0022,.0022,WORN,6,{tex:steel});prev=p;}
+        for(const strand of [0,Math.PI]){let ring0=null;const part=m.part(),inv=m.inverse();
+          for(let j=0;j<=24;j++){const t=j/24,s=1-t,angle=t*Math.PI*10+strand,p=control[0].map((v,k)=>v*s*s*s+3*control[1][k]*s*s*t+3*control[2][k]*s*t*t+control[3][k]*t*t*t+a.u[k]*Math.cos(angle)*.0016+a.w[k]*Math.sin(angle)*.0016);
+            const ring=Array.from({length:4},(_,n)=>p.map((v,k)=>v+a.u[k]*Math.cos(n*Math.PI/2)*.0018+a.w[k]*Math.sin(n*Math.PI/2)*.0018));
+            if(ring0)for(let n=0;n<4;n++){const k=(n+1)%4,u=ring[k].map((v,i)=>v-ring[n][i]),v=ring0[n].map((v,i)=>v-ring[n][i]),normal=[u[1]*v[2]-u[2]*v[1],u[2]*v[0]-u[0]*v[2],u[0]*v[1]-u[1]*v[0]],len=Math.hypot(...normal)||1;m.face([ring[n],ring[k],ring0[k],ring0[n]],normal.map(v=>v/len),HAND_LEATHER,part,{tex:leather},inv);}ring0=ring;
+          }
+        }
         if(lit){const p=a.point(298,553,-.012);m.ball(...p,.0035,O.FLAME,7,{tex:()=>-2.6});m.anchor('glow',...p);}
         a.grip(m,608,841,-.070);
       }
@@ -2295,9 +2315,10 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       a.hull(m,[[189,574],[229,547],[239,549],[261,603],[244,625],[207,638]],-.025,.012,BRONZE);m.pop();
       a.support(m,284,706,-.058,.157);
       if(t<0||t>.45){
-        const sway=Math.sin(pose.spin*4)*2,outline=[[289,589],[284,579],[288,568],[287+sway,556],[292+sway,550],[294+sway,565],[301,574],[302,582],[297,590]],part=m.part(),inv=m.inverse();
-        for(const ids of r79Triangles(outline))m.face(ids.map(i=>a.point(...outline[i],-.027)),a.w.map(v=>-v),O.EMBER,part,{tex:()=>-1.0},inv);
-        m.face([[290,589],[290,580],[295,568],[298,582],[296,590]].map(p=>a.point(...p,-.028)),a.w.map(v=>-v),O.FLAME,part,{tex:()=>-1.1},inv);
+        const sway=Math.sin(pose.spin*4)*1.4,flame=[[286,594],[285,582],[280,575],[282,563],[289,555],[291,546],[291,536],[296,542],[302,540],[305,550],[307,565],[303,577],[297,584],[293,592]];
+        // The existing reference's orange/white flame is tightly masked. Only
+        // its upper tip sways; source UVs never include the church or glove.
+        for(const ids of r79Triangles(flame))paintedSurface(m,'relicSource',ids.map(i=>a.point(flame[i][0]+sway*(594-flame[i][1])/58,flame[i][1],-.029)),ids.map(i=>[flame[i][0]/1672,flame[i][1]/941]),1.08);
       }
       m.pop();
     }finally{arsenalIndex=previous;}
@@ -2312,7 +2333,7 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       // A continuous tapered fore-stock, not a silhouette filled with a tiny
       // stretched wood patch. This complete clean rear-stock panel is ~150px
       // along its grain; the illustrated support glove is outside its UV bounds.
-      const timber=[[1032,613],[1324,748],[1336,762],[1329,799],[1318,804],[1044,671],[1033,654]];
+      const timber=[[1032,613],[1324,748],[1336,762],[1329,791],[1318,796],[1044,663],[1033,650]];
       const woodUV=[[1272,746],[1405,809],[1410,819],[1401,844],[1396,846],[1273,783],[1271,769]];
       a.hull(m,timber,.018,.046,O.WOOD,woodUV);
       // Chamfered top and lower arrises connect the textured side to the stock's
@@ -2321,14 +2342,14 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
         a.point(1032,613,.018),a.point(1324,748,.018),a.point(1324,748,.031),a.point(1032,613,.031)
       ],[[1272/1672,746/941],[1405/1672,809/941],[1405/1672,815/941],[1272/1672,752/941]],1.06);
       paintedSurface(m,'relicSource',[
-        a.point(1044,671,.018),a.point(1318,804,.018),a.point(1315,799,.029),a.point(1047,666,.029)
+        a.point(1044,663,.018),a.point(1318,796,.018),a.point(1315,791,.029),a.point(1047,658,.029)
       ],[[1273/1672,778/941],[1401/1672,840/941],[1401/1672,846/941],[1273/1672,784/941]],.70);
       a.hull(m,[[1292,731],[1396,779],[1461,820],[1462,883],[1412,921],[1379,896],[1380,844],[1300,802]],.010,.040,O.WOOD);
       a.hull(m,[[1004,572],[1031,573],[1231,646],[1236,671],[1026,603],[1004,599]],-.008,.030,WORN,[[1004,572],[1031,573],[1231,646],[1236,666],[1026,598],[1004,594]]);
       a.hull(m,[[1100,606],[1219,645],[1338,693],[1354,722],[1324,726],[1101,638]],-.012,.031,WORN,[[1100,606],[1219,645],[1338,693],[1354,714],[1324,718],[1101,630]]);
       // Pressure chamber is not the wooden stake: separate copper hull and cap.
       a.hull(m,[[1279,650],[1329,666],[1410,705],[1422,752],[1388,776],[1295,734],[1271,694]],-.015,.038,BRONZE);
-      a.hull(m,[[1398,705],[1452,719],[1486,748],[1481,793],[1449,822],[1419,806],[1418,752]],-.025,.045,BRONZE);
+      a.hull(m,[[1398,685],[1452,695],[1486,731],[1481,793],[1449,822],[1419,806],[1418,740]],-.025,.045,BRONZE,[[1398,705],[1452,719],[1486,748],[1481,793],[1449,822],[1419,806],[1418,752]]);
       a.hull(m,[[1461,737],[1493,752],[1514,775],[1514,817],[1490,839],[1469,824],[1478,793],[1485,761]],-.030,.032,BRONZE);
       // Bands stay attached to the receiver while the wooden bolt is laid in.
       for(const poly of [

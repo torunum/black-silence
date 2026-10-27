@@ -648,48 +648,69 @@
     mode: "wall",
     cls: "decor",
     build(box) {
-      // The jambs lie beyond the existing two-metre opening, against masonry.
+      // Layered portal stones remain outside the original walk-through opening.
       for (const side of [-1, 1]) {
-        box("rock", 0.32, 2.24, 0.28, E(side * 1.15, 1.12, -0.92));
-        for (const y of [0.15, 0.83, 1.56, 2.22])
-          box("stone", 0.42, 0.13, 0.34, E(side * 1.15, y, -0.87));
-        box("slate", 0.3, 0.67, 0.27,
-          E(side * 0.83, 2.5, -0.92, 0, 0, side * 0.75));
+        box("rock", .34, 2.20, .28, E(side*1.17,1.10,-.92));
+        box("slate", .09, 2.04, .16, E(side*1.005,1.12,-.86));
+        box("marble",.095,2.02,.014,E(side*1.17,1.11,-.729));
+        for(const [y,h] of [[.15,.28],[.77,.50],[1.35,.50],[1.94,.50]])
+          box("stone",.39,h,.30,E(side*1.17,y,-.89));
+        for(const y of [.33,1.06,1.64,2.23])
+          box("slate",.43,.075,.33,E(side*1.17,y,-.865));
+        const pts=[[1.06,2.20],[.84,2.43],[.48,2.66],[0,2.77]];
+        for(let i=1;i<pts.length;i++){
+          const a=pts[i-1],b=pts[i],dx=side*(b[0]-a[0]),dy=b[1]-a[1];
+          box("rock",.23,Math.hypot(dx,dy)+.04,.30,E(side*(a[0]+b[0])/2,(a[1]+b[1])/2,-.9,0,0,-Math.atan2(dx,dy)));
+          box("marble",.075,Math.hypot(dx,dy)+.018,.014,E(side*(a[0]+b[0])/2,(a[1]+b[1])/2,-.738,0,0,-Math.atan2(dx,dy)));
+          box("slate",.065,Math.hypot(dx,dy)+.025,.13,E(side*(a[0]+b[0])/2,(a[1]+b[1])/2-.075,-.79,0,0,-Math.atan2(dx,dy)));
+        }
       }
-      box("stone", 1.32, 0.18, 0.31, E(0, 2.77, -0.9));
-      box("slate", 0.3, 0.31, 0.38, E(0, 2.73, -0.86));
-      box("dark", 0.06, 0.16, 0.015, E(0, 2.74, -0.66));
+      box("stone",.25,.23,.35,E(0,2.77,-.875));
+      box("dark",.055,.13,.014,E(0,2.77,-.693));
     },
   };
   di.prologuePrisonMemorial = {
     mode: "wall",
     cls: "decor",
-    build(box) {
-      // Damp cells sit in a continuous low masonry course. The trim follows
-      // the corridor wall, while local missing cap stones break its rhythm.
-      box("prologueMemorialStone", 3.7, 0.48, 0.16, E(0, 0.25, -0.92));
-      box("slate", 3.74, 0.1, 0.24, E(0, 0.54, -0.88));
-      for (const side of [-1, 1]) {
-        box("rock", 0.22, 2.41, 0.18, E(side * 1.72, 1.49, -0.9));
-        box("stone", 0.31, 0.13, 0.25, E(side * 1.72, 2.65, -0.86));
-        box("prologueWatermark", 0.6, side < 0 ? 1.38 : 0.94, 0.008,
-          E(side * 1.15, side < 0 ? 1.86 : 2.08, -0.95));
+    build(box, cylinder, spec) {
+      // A continuous blind arcade sits entirely against the existing cell wall.
+      box("prologueMemorialStone",3.7,.48,.16,E(0,.25,-.92));
+      box("slate",3.74,.10,.24,E(0,.54,-.88));
+      for(const side of [-1,1]){
+        box("rock",.29,2.23,.20,E(side*1.70,1.49,-.9));
+        box("marble",.070,2.14,.014,E(side*1.70,1.49,-.788));
+        for(const y of [.48,1.10,1.75,2.42])
+          box("stone",.34,.11,.26,E(side*1.70,y,-.87));
+        box("slate",.075,2.06,.13,E(side*1.52,1.5,-.895));
+        box("prologueWatermark",.54,side<0?1.34:.92,.008,E(side*1.15,side<0?1.84:2.06,-.95));
       }
-      box("rock", 2.52, 0.15, 0.23, E(-0.54, 2.79, -0.88));
-      box("rock", 0.53, 0.15, 0.23, E(1.59, 2.79, -0.88));
-      box("dark", 1.3, 1.27, 0.025, E(0, 1.46, -0.97));
-      for (const side of [-1, 1]) {
-        box("rock", 0.18, 1.49, 0.2, E(side * 0.75, 1.44, -0.88));
-        box("slate", 0.21, 0.53, 0.2,
-          E(side * 0.48, 2.32, -0.88, 0, 0, side * 0.78));
+      box("rock",2.52,.15,.23,E(-.54,2.79,-.88));
+      box("marble",2.44,.035,.012,E(-.54,2.80,-.756));
+      box("rock",.53,.15,.23,E(1.59,2.79,-.88));
+      box("dark",1.34,1.23,.025,E(0,1.38,-.97));
+      box("dark",1.14,.40,.025,E(0,2.11,-.97));
+      box("dark",.70,.27,.025,E(0,2.43,-.97));
+      for(const side of [-1,1]){
+        box("rock",.25,1.39,.25,E(side*.80,1.38,-.875));
+        box("slate",.065,1.28,.15,E(side*.655,1.36,-.875));
+        box("stone",.31,.12,.29,E(side*.80,2.03,-.855));
+        const pts=[[.80,1.99],[.66,2.29],[.39,2.53],[0,2.70]];
+        for(let i=1;i<pts.length;i++){
+          const a=pts[i-1],b=pts[i],dx=side*(b[0]-a[0]),dy=b[1]-a[1];
+          box("rock",.23,Math.hypot(dx,dy)+.035,.25,E(side*(a[0]+b[0])/2,(a[1]+b[1])/2,-.875,0,0,-Math.atan2(dx,dy)));
+          box("marble",.075,Math.hypot(dx,dy)+.012,.014,E(side*(a[0]+b[0])/2,(a[1]+b[1])/2,-.738,0,0,-Math.atan2(dx,dy)));
+        }
       }
-      box("stone", 1.73, 0.13, 0.32, E(0, 0.68, -0.81));
-      box("slate", 0.28, 0.26, 0.25, E(0, 2.48, -0.86));
-      for (const x of [-0.43, 0, 0.43])
-        box("wrought", 0.055, 1.33, 0.06, E(x, 1.44, -0.83));
-      box("wrought", 1.31, 0.055, 0.06, E(0, 1.22, -0.83));
-      box("oldbone", 0.24, 0.075, 0.07, E(0.28, 0.79, -0.85, 0, 0.3));
-      box("rock", 0.28, 0.08, 0.21, E(-0.52, 0.04, -0.66, 0, 0.2));
+      box("stone",1.85,.15,.31,E(0,.68,-.815));
+      box("slate",.27,.25,.28,E(0,2.70,-.86));
+      for(const x of [-.43,0,.43])box("wrought",.055,1.42,.06,E(x,1.43,-.83));
+      box("wrought",1.31,.055,.06,E(0,1.22,-.83));
+      box("oldbone",.24,.075,.07,E(.28,.79,-.85,0,.3));
+      if (spec?.galleryVotive) for (const [x,h] of [[-.26,.14],[0,.22],[.25,.17]]) {
+        cylinder("bone",.025,.030,h,E(x,.755+h/2,-.70),5);
+        box("prologueAmber",.040,.075,.040,E(x,.755+h+.0375,-.70));
+      }
+      box("rock",.28,.08,.21,E(-.52,.04,-.66,0,.2));
     },
   };
   // Sealed loculi and two exposed burial shelves give the monastery crypt an
@@ -1014,7 +1035,8 @@
     ]],
     [1, [
       ["prologuePrisonMemorial", 11, 2],
-      ["prologuePrisonMemorial", 17, 2],
+      ["prologuePrisonMemorial", 17, 2, { galleryVotive: 1 }],
+      ["light", 17, 1.85, { s: 1.2, h: 4.2, r: 1.02 }],
       ["prologuePrisonMemorial", 25, 2],
       ["prologueStonePortal", 8, 5, { r: Math.PI / 2 }],
       ["prologuePaving", 9.4, 4.6, { s: 0.7, r: 0.13 }],

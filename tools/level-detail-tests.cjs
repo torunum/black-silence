@@ -26,6 +26,7 @@ window.__LEVEL_DETAIL_TEST = {
       return {level, unchangedMap:JSON.stringify(beforeMap)===JSON.stringify(afterMap),
         unchangedExistingDecor:JSON.stringify(before)===JSON.stringify(after.slice(0,before.length)),
         added:added.length, newLights:added.filter(p=>p.k==='light'||di[p.k]?.light).length,
+        newLightSpecs:added.filter(p=>p.k==='light'),
         newCollisionMasses:added.filter(p=>di[p.k]?.mass).length,
         anchorsValid:added.every(p=>!"#WI+DS".includes(current.g[Math.floor(p.z+.5)]?.[Math.floor(p.x+.5)]||'#')),
         repeatCount:gV[level].build().decor.length===after.length};
@@ -56,7 +57,7 @@ fs.writeFileSync(study, html);
     const checks=await page.evaluate(()=>window.__LEVEL_DETAIL_TEST.compare());
     for(const check of checks) {
       assert(check.unchangedMap && check.unchangedExistingDecor && check.repeatCount, "Native chapter preserved: "+check.level);
-      assert(check.anchorsValid && check.newCollisionMasses===0 && check.newLights===0, "Safe static batches: "+check.level);
+      assert(check.anchorsValid && check.newCollisionMasses===0 && (check.newLights===0 || (check.level===1 && check.newLights===1 && JSON.stringify(check.newLightSpecs)===JSON.stringify([{k:'light',x:17,z:1.85,s:1.2,h:4.2,r:1.02}]))), "Safe static batches: "+check.level);
       if (!baselineCapture) assert(check.added>=8, "Authored details present: "+check.level);
     }
     for(const [name,level,x,z,tx,tz] of [

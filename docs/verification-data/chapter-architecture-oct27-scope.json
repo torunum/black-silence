@@ -1,0 +1,82 @@
+{
+  "passed": true,
+  "inputs": [
+    {
+      "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\environment-oct27\\baseline-prologue.js",
+      "sha256": "821bd0a364421c3b3473e138ea56d43263dfd3965dd1796a511b459fcc119e8d"
+    },
+    {
+      "file": "C:\\Users\\tehlike47\\game\\src\\prologue.js",
+      "sha256": "66b89378273e83b09f178e1ce27319454daf89136e05d0ab9bdcf9a7fecd3c79"
+    }
+  ],
+  "onlyTwoStaticBuildersChanged": true,
+  "otherPlacementMapMaterialFactoriesLifecycleExact": true,
+  "addedLights": [
+    {
+      "level": 1,
+      "x": 17,
+      "z": 1.85,
+      "intensity": 1.2,
+      "range": 4.2,
+      "height": 1.02
+    }
+  ],
+  "candles": 3,
+  "records": [
+    {
+      "kind": "prologueStonePortal",
+      "oldPrimitives": 15,
+      "newPrimitives": 42,
+      "triangleDelta": 324,
+      "oldMaterials": [
+        "rock",
+        "stone",
+        "slate",
+        "dark"
+      ],
+      "newMaterials": [
+        "rock",
+        "slate",
+        "marble",
+        "stone",
+        "dark"
+      ]
+    },
+    {
+      "kind": "prologuePrisonMemorial",
+      "oldPrimitives": 23,
+      "newPrimitives": 50,
+      "triangleDelta": 324,
+      "oldMaterials": [
+        "prologueMemorialStone",
+        "slate",
+        "rock",
+        "stone",
+        "prologueWatermark",
+        "dark",
+        "wrought",
+        "oldbone"
+      ],
+      "newMaterials": [
+        "prologueMemorialStone",
+        "slate",
+        "rock",
+        "marble",
+        "stone",
+        "prologueWatermark",
+        "dark",
+        "wrought",
+        "oldbone"
+      ]
+    }
+  ],
+  "chapterTriangles": {
+    "THE ASH BELL MONASTERY": 324,
+    "THE GOTHIC DUNGEON": 1392
+  },
+  "candleAuthoredTriangles": 96,
+  "newTextureOrMaterialFactories": 0,
+  "nativeLightInstancesAdded": 1,
+  "scope": "Static geometry and source boundaries; native route and resource smoke are separate."
+}

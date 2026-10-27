@@ -1,0 +1,164 @@
+{
+  "finalHTMLSHA256": "17ebe0d27fdcef2eea80b54fbc68ebf0cfa96b51c0244bd2a56e85ac22155d61",
+  "viewmodelsSHA256": "99bd9d094ce38eb0f221a820026ce5ee81e0c192a2b9a8b5b5fa630ac3416aac",
+  "images": [
+    {
+      "file": "docs/arsenal-reference-oct27/rifle-before.png",
+      "inputHTMLSHA256": "d6101272e6d34d5635d1a75745ad971c4ab07e9d85d5bec7b721e5a7f0813c87",
+      "sha256": "eb3a23882dfedbc6c28029378fb986b426e27aeee31aa799d6865c52a8a4badc",
+      "scope": "Actual native fullscene screenshot"
+    },
+    {
+      "file": "docs/arsenal-reference-oct27/soul-before.png",
+      "inputHTMLSHA256": "d6101272e6d34d5635d1a75745ad971c4ab07e9d85d5bec7b721e5a7f0813c87",
+      "sha256": "6a061ce803570c03e2dab0f31828c3f87551f903080f882475655f754d8d8e90",
+      "scope": "Actual native fullscene screenshot"
+    },
+    {
+      "file": "docs/arsenal-reference-oct27/rifle-after.png",
+      "inputHTMLSHA256": "17ebe0d27fdcef2eea80b54fbc68ebf0cfa96b51c0244bd2a56e85ac22155d61",
+      "sha256": "b5bdc10eeebbd56f64e558821bdd4c754205bfe96548a22e78032a0ba80ec643",
+      "scope": "Actual native fullscene screenshot"
+    },
+    {
+      "file": "docs/arsenal-reference-oct27/soul-after.png",
+      "inputHTMLSHA256": "17ebe0d27fdcef2eea80b54fbc68ebf0cfa96b51c0244bd2a56e85ac22155d61",
+      "sha256": "1891093a5284299628f66b57953c7c89c812425da3e822124e0d6a3d97f5e30e",
+      "scope": "Actual native fullscene screenshot"
+    },
+    {
+      "file": "docs/arsenal-reference-oct27/full.jpg",
+      "inputHTMLSHA256": "17ebe0d27fdcef2eea80b54fbc68ebf0cfa96b51c0244bd2a56e85ac22155d61",
+      "sha256": "0fe994e4b65fb4c4e0a63d119721f2fe1a3c1269d94248a1ebb95a95a0a3cfe8",
+      "scope": "Labelled reduced full-viewport contact sheet, all0–9"
+    },
+    {
+      "file": "docs/arsenal-reference-oct27/weapon-crops.jpg",
+      "inputHTMLSHA256": "17ebe0d27fdcef2eea80b54fbc68ebf0cfa96b51c0244bd2a56e85ac22155d61",
+      "sha256": "04213e0be74102dbda0e83929075b9bbc03eb9a7d77de48f1bdf89e2d5696e2a",
+      "scope": "Labelled enlarged weapon crops from actual native full-viewport frames"
+    }
+  ],
+  "contactSheetFrames": {
+    "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\arsenal-reference-oct27\\combined\\THE-BLACK-SILENCE.html",
+    "sha256": "17ebe0d27fdcef2eea80b54fbc68ebf0cfa96b51c0244bd2a56e85ac22155d61",
+    "scope": "Actual native idle after intro dialogue; inventory staging and enemies removed. Native RAF presentation, no viewPose; pause only freezes screenshots.",
+    "frames": [
+      {
+        "index": 0,
+        "state": "idle",
+        "time": 0.122,
+        "phase": 0.061,
+        "mag": 6,
+        "file": "weapon-0-idle.png"
+      },
+      {
+        "index": 1,
+        "state": "idle",
+        "time": 0.06839999999999964,
+        "phase": 0.0325714285714284,
+        "mag": 5,
+        "file": "weapon-1-idle.png"
+      },
+      {
+        "index": 2,
+        "state": "idle",
+        "time": 0.12670000000000073,
+        "phase": 0.07452941176470632,
+        "mag": 24,
+        "file": "weapon-2-idle.png"
+      },
+      {
+        "index": 3,
+        "state": "idle",
+        "time": 0.12510000000000038,
+        "phase": 0.08340000000000025,
+        "mag": 36,
+        "file": "weapon-3-idle.png"
+      },
+      {
+        "index": 4,
+        "state": "idle",
+        "time": 0.12589999999999962,
+        "phase": 0.052458333333333176,
+        "mag": 4,
+        "file": "weapon-4-idle.png"
+      },
+      {
+        "index": 5,
+        "state": "idle",
+        "time": 0.12239999999999965,
+        "phase": 0.05563636363636347,
+        "mag": 3,
+        "file": "weapon-5-idle.png"
+      },
+      {
+        "index": 6,
+        "state": "idle",
+        "time": 0.12610000000000035,
+        "phase": 0.06305000000000018,
+        "mag": 50,
+        "file": "weapon-6-idle.png"
+      },
+      {
+        "index": 7,
+        "state": "idle",
+        "time": 0.10729999999999928,
+        "phase": 0.041269230769230496,
+        "mag": 4,
+        "file": "weapon-7-idle.png"
+      },
+      {
+        "index": 8,
+        "state": "idle",
+        "time": 0.10759999999999854,
+        "phase": 0.14346666666666472,
+        "mag": 1,
+        "file": "weapon-8-idle.png"
+      },
+      {
+        "index": 9,
+        "state": "idle",
+        "time": 0.10800000000000001,
+        "phase": 0.135,
+        "mag": 1,
+        "file": "weapon-9-idle.png"
+      }
+    ],
+    "errors": []
+  },
+  "video": {
+    "file": "docs/arsenal-reference-oct27/reload.webm",
+    "sha256": "1c6da94ef31e3e978966a15cf4218e05b8c295e7a31999190b8506614b06f6f9",
+    "bytes": 4326555,
+    "inputHTMLSHA256": "17ebe0d27fdcef2eea80b54fbc68ebf0cfa96b51c0244bd2a56e85ac22155d61",
+    "capture": {
+      "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\arsenal-reference-oct27\\video\\page@0a884a417a12472b1f583cc975f71e5e.webm",
+      "trimStart": 21.939,
+      "syncMarker": true,
+      "errors": [],
+      "audio": {
+        "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\arsenal-reference-oct27\\video\\game-output.webm",
+        "bytes": 251171,
+        "duration": 15.685199999988079,
+        "startedAt": 21986.900000035763,
+        "sampleRate": 48000,
+        "contexts": 1
+      },
+      "scope": "Actual RAF weapon idle/fire/reload and post-volume WebAudio output. QA supplies selected weapons ammunition and removes enemies; real switching and R reload with uninterrupted native RAF."
+    },
+    "encoding": {
+      "file": "C:\\Users\\tehlike47\\game\\docs\\arsenal-reference-oct27\\reload.webm",
+      "videoCodec": "VP9",
+      "audioCodec": "Opus",
+      "fps": 25,
+      "trimStart": 23.32,
+      "markerFrames": 9,
+      "audioSource": "C:\\Users\\tehlike47\\game\\.dream-loop\\arsenal-reference-oct27\\video\\game-output.webm",
+      "audioDuration": 15.685199999988079,
+      "bytes": 4326555,
+      "syncScope": "Audio starts when the preroll marker is removed; trim uses the first non-marker video frame. Video frame granularity is 40ms; physical audio-output latency is not measured."
+    }
+  },
+  "note": "Final after media and both sheets are newly captured on exact17ebe combined input, not mixed private-version screenshots. Before images retain exactd610 provenance and may show dialogue/background differences. Screenshots are visual evidence, not deterministic pixel-parity tests. Target boards are separate source assets."
+}
