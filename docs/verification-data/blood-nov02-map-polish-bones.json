@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "inputs": [
+    {
+      "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\blood-map-nov02\\candidate-v6.html",
+      "sha256": "7efcd339a5b6c1bd45accc4dc5da55a5b7cd680d49aa6318d83c1beac28cf4cb"
+    },
+    {
+      "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\release-blood-nov02\\map-polish-final\\THE-BLACK-SILENCE.html",
+      "sha256": "38f1fb1bcff2c68f58a4581d4b77e865f2899a68e62094eddcb38bec96d89f66"
+    }
+  ],
+  "unmarkedBuildersExact": true,
+  "markedGeometryExact": true,
+  "materialRemappedPrimitives": 71,
+  "errors": []
+}

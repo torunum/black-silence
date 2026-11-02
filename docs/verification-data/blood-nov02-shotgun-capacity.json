@@ -1,0 +1,255 @@
+{
+  "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\release-blood-nov02\\final-combined\\THE-BLACK-SILENCE.html",
+  "inputSHA256": "5e5ceb0cb354945067ef71cfa5600fd9836a4236cf20258aff548bea3ec1a3cc",
+  "fixtureSHA256": "77b26e1dbcb368b2b9245022c1335fa7b8d4427e1b229e4acebda9ff58503e84",
+  "scope": "Real native G$/ck/lk with isolated fixture items; real R and held mouse/RAF for firing and reload. No persistent inventory save is claimed.",
+  "pickups": [
+    {
+      "name": "first acquisition",
+      "owned": false,
+      "mag": 0,
+      "reserve": 0,
+      "kinds": [
+        "w1"
+      ],
+      "result": {
+        "mag": 2,
+        "reserve": 7,
+        "bullets": 10,
+        "taken": [
+          {
+            "kind": "w1",
+            "taken": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "second full pickup",
+      "owned": true,
+      "mag": 2,
+      "reserve": 7,
+      "kinds": [
+        "w1"
+      ],
+      "result": {
+        "mag": 2,
+        "reserve": 12,
+        "bullets": 10,
+        "taken": [
+          {
+            "kind": "w1",
+            "taken": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "third full pickup",
+      "owned": true,
+      "mag": 2,
+      "reserve": 12,
+      "kinds": [
+        "w1"
+      ],
+      "result": {
+        "mag": 2,
+        "reserve": 17,
+        "bullets": 10,
+        "taken": [
+          {
+            "kind": "w1",
+            "taken": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "partial owned pickup",
+      "owned": true,
+      "mag": 1,
+      "reserve": 7,
+      "kinds": [
+        "w1"
+      ],
+      "result": {
+        "mag": 2,
+        "reserve": 12,
+        "bullets": 10,
+        "taken": [
+          {
+            "kind": "w1",
+            "taken": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "empty owned pickup",
+      "owned": true,
+      "mag": 0,
+      "reserve": 7,
+      "kinds": [
+        "w1"
+      ],
+      "result": {
+        "mag": 2,
+        "reserve": 12,
+        "bullets": 10,
+        "taken": [
+          {
+            "kind": "w1",
+            "taken": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "two simultaneous first pickups",
+      "owned": false,
+      "mag": 0,
+      "reserve": 0,
+      "kinds": [
+        "w1",
+        "w1"
+      ],
+      "result": {
+        "mag": 2,
+        "reserve": 12,
+        "bullets": 10,
+        "taken": [
+          {
+            "kind": "w1",
+            "taken": true
+          },
+          {
+            "kind": "w1",
+            "taken": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "unrelated shell and bullet pickups",
+      "owned": true,
+      "mag": 2,
+      "reserve": 7,
+      "kinds": [
+        "shells",
+        "bullets"
+      ],
+      "result": {
+        "mag": 2,
+        "reserve": 13,
+        "bullets": 28,
+        "taken": [
+          {
+            "kind": "shells",
+            "taken": true
+          },
+          {
+            "kind": "bullets",
+            "taken": true
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [],
+  "network": [],
+  "nativeWorldPickup": {
+    "position": {
+      "x": 59,
+      "z": 9
+    },
+    "mag": 2,
+    "reserve": 7,
+    "taken": true
+  },
+  "metadata": {
+    "native": {
+      "name": "SAWED-OFF SHOTGUN",
+      "ammo": "shells",
+      "dmg": 9,
+      "rate": 0.85,
+      "pellets": 8,
+      "spread": 0.075,
+      "kind": "hit",
+      "magSize": 2,
+      "reload": 2.1,
+      "trauma": 0.42,
+      "kick": 26,
+      "pump": true
+    },
+    "runtime": {
+      "name": "SAWED-OFF SHOTGUN",
+      "ammo": "shells",
+      "dmg": 9,
+      "rate": 0.85,
+      "pellets": 8,
+      "spread": 0.075,
+      "kind": "hit",
+      "magSize": 2,
+      "reload": 2.1,
+      "trauma": 0.42,
+      "kick": 26,
+      "pump": true
+    }
+  },
+  "restore": {
+    "results": [
+      [
+        2,
+        10
+      ],
+      [
+        2,
+        10
+      ],
+      [
+        2,
+        10
+      ]
+    ],
+    "snapshotUnchanged": true
+  },
+  "twoShots": {
+    "before": {
+      "mag": 2,
+      "reserve": 3,
+      "state": "idle",
+      "shots": 0
+    },
+    "empty": {
+      "mag": 0,
+      "reserve": 3,
+      "state": "reload",
+      "shots": 2
+    },
+    "reloaded": {
+      "mag": 2,
+      "reserve": 1,
+      "state": "idle",
+      "shots": 2
+    }
+  },
+  "oneReserve": {
+    "mag": 1,
+    "reserve": 0,
+    "state": "idle",
+    "shots": 2
+  },
+  "fireCancel": {
+    "mag": 0,
+    "reserve": 5,
+    "state": "fire",
+    "shots": 3
+  },
+  "switchCancel": {
+    "mag": 0,
+    "reserve": 5,
+    "state": "idle",
+    "shots": 3
+  },
+  "passed": true
+}

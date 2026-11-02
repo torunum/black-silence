@@ -1,0 +1,965 @@
+{
+  "scope": "Actual native u0t draw, frozen scene fixture; identity canvas context after every call, unchanged other7 weapons, hidden/zoom/kick passthrough. Does not claim performance.",
+  "passed": true,
+  "cases": 46,
+  "differences": [],
+  "results": [
+    {
+      "label": "baseline",
+      "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\blood-weapons-nov02\\baseline.html",
+      "sha": "3d58959919c4b673aa7643dd1237ecaf98eb21654f89f87a5b007f7d745a69e9",
+      "rows": [
+        {
+          "case": {
+            "cur": 0,
+            "wstate": "idle",
+            "phase": -1
+          },
+          "hash": "b04e4a5bf2552018baea708c5e7664cbfc9c8232cbb8d7a95c8ef579ff230e4d",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 0,
+            "wstate": "reload",
+            "phase": 0.18
+          },
+          "hash": "fbf6f8df6411f32661bb50fcc3044f64ccd1bfb931fe637cd50c300052dc2536",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 0,
+            "wstate": "reload",
+            "phase": 0.5
+          },
+          "hash": "e7bbe03c2821e990ea5dc2c754eaf7e15c76d843df5e7d10aaaa7a96a9eb77f1",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 0,
+            "wstate": "reload",
+            "phase": 0.88
+          },
+          "hash": "c83aaace434f70cb2b86f6a8b103689fdd54f0ab6c291116eb8672a30e8ea255",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 1,
+            "wstate": "idle",
+            "phase": -1
+          },
+          "hash": "f66e28b6232cab2080449aa476aa351312b84a9557b4aeec8fb0d8bdadd812c2",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 1,
+            "wstate": "reload",
+            "phase": 0.18
+          },
+          "hash": "9da5545a049c2f6025c62e0ce62fe6a634d16adeba8edd72b38b3015fb7ef17f",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 1,
+            "wstate": "reload",
+            "phase": 0.5
+          },
+          "hash": "fe3ba09399dde9b66f082909707e5062351d85decc0d736ae49b285026835233",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 1,
+            "wstate": "reload",
+            "phase": 0.88
+          },
+          "hash": "64ce0be7f017d82ce0bfcf45febaaf1b833a619ce1c33bce29797b4c6e6f2059",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 2,
+            "wstate": "idle",
+            "phase": -1
+          },
+          "hash": "a8662aca1c5a1409da4e28fe5171d41b820456c9faad7ba1a3eda3df7749aefd",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 2,
+            "wstate": "reload",
+            "phase": 0.18
+          },
+          "hash": "f8dc864ad12e5067968f9d73c83bc5ee3d3648f0e2ab5a9080e4bd8c5bce5074",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 2,
+            "wstate": "reload",
+            "phase": 0.5
+          },
+          "hash": "0e06b4437dce7eada9036b0fea5592acc0184a46bdee3dc33cf1e2886e87d353",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 2,
+            "wstate": "reload",
+            "phase": 0.88
+          },
+          "hash": "7ca9f32360e3f51a118accc081e5d5e09d97e3673ba665c135eab82a22512993",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 3,
+            "wstate": "idle",
+            "phase": -1
+          },
+          "hash": "4a5741c59926de05ad68c5b67ad0d4d58dcbd3f7e0e37d27a2922ac7d9bfd2a6",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 3,
+            "wstate": "reload",
+            "phase": 0.18
+          },
+          "hash": "685f81271beec1ed0110afab2d829f68090cf3a3f395e15fd41aa9ab95121151",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 3,
+            "wstate": "reload",
+            "phase": 0.5
+          },
+          "hash": "b9a67309dbec62483a67983e8e450bed9d53e19e07960decf543503359faa347",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 3,
+            "wstate": "reload",
+            "phase": 0.88
+          },
+          "hash": "764f9af147f04e1e9e621a73e08df5efb81eedbfb9a35a1a2029b5f3d31a3c70",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 4,
+            "wstate": "idle",
+            "phase": -1
+          },
+          "hash": "826d38034c7a2c810954045daac0ce2684342dacfb4ec081e30e6979d9ddd05d",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 4,
+            "wstate": "reload",
+            "phase": 0.18
+          },
+          "hash": "c2f49b4472983df1b585f995eb32534b917ac176524388184ed0aa2caa5a2a3a",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 4,
+            "wstate": "reload",
+            "phase": 0.5
+          },
+          "hash": "2fbb8903fe6f3a2750c71efb88f5ce3acc9bcb36d609810344b9c8dae5846ffd",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 4,
+            "wstate": "reload",
+            "phase": 0.88
+          },
+          "hash": "90fd6214c07c1a1476c0debbcfd17ad95de9daaef6de4045b5c0da65104cf3d9",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 5,
+            "wstate": "idle",
+            "phase": -1
+          },
+          "hash": "a7505bf202868db427a8dbd69aa9e0edd26165deb1a7ed5ea534a1768917a687",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 5,
+            "wstate": "reload",
+            "phase": 0.18
+          },
+          "hash": "63858068f4bc7e6f0eef8256835dedb06e39e61621a191d2c26e782219b5de24",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 5,
+            "wstate": "reload",
+            "phase": 0.5
+          },
+          "hash": "43d559ba40af5b5dbebda58aaabfe47d280e0abf41fe03a684ef520ff36a3c85",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 5,
+            "wstate": "reload",
+            "phase": 0.88
+          },
+          "hash": "01488fa2003191625cbdd13b0e4fc8608ec6be5bd2f859b91591872ad6c54d66",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 6,
+            "wstate": "idle",
+            "phase": -1
+          },
+          "hash": "6d4b0cc9cc97d6809b65814563a95115914d6a0143c8e8593c91da262d52e91d",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 6,
+            "wstate": "reload",
+            "phase": 0.18
+          },
+          "hash": "35cd24f4006d98e51b1ff61ec669c6457ef9968ba061699de496dec8b82c8965",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 6,
+            "wstate": "reload",
+            "phase": 0.5
+          },
+          "hash": "0aab87e06c8152977986366d7e137f63243decb1acd4499775fff36235288fca",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 6,
+            "wstate": "reload",
+            "phase": 0.88
+          },
+          "hash": "64b65df875810392a46b17321b2577778c0f53b9bb13f046b3c6c08aabfa1a85",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 7,
+            "wstate": "idle",
+            "phase": -1
+          },
+          "hash": "db779c80d7b255b04789b32f9aa63388a7525ca9c38610eeffbaf1d97b35c4ec",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 7,
+            "wstate": "reload",
+            "phase": 0.18
+          },
+          "hash": "7cf2097da4acc74609369b699fda1d80684f329fd7c65f451e33c23761c99aed",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 7,
+            "wstate": "reload",
+            "phase": 0.5
+          },
+          "hash": "a7b5cfe30a1e7023e5b4be400cb5ebbeab9763ceb5df387d47e8b31c019cbe69",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 7,
+            "wstate": "reload",
+            "phase": 0.88
+          },
+          "hash": "7e4d7e3fc44f114ea7a8e2423cbfdc53e6500b0f431958819e942b4acba47f38",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 8,
+            "wstate": "idle",
+            "phase": -1
+          },
+          "hash": "46d03fb2ccb54b1839d66c7802beedc4e51526aee1cd0b820664638ed734fae7",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 8,
+            "wstate": "reload",
+            "phase": 0.18
+          },
+          "hash": "fbebede6cac28438c91950529ca3b168a1e35c1d39454e4d7344dc6197488fe5",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 8,
+            "wstate": "reload",
+            "phase": 0.5
+          },
+          "hash": "3ece4fe098cc01feba1b502c34230204a1974add70dc483c8319ed0a9f7612ca",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 8,
+            "wstate": "reload",
+            "phase": 0.88
+          },
+          "hash": "59e9fc11018e4c16d572ce2047ce15c917010927feeb69835746d6ded4d2a5f1",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 9,
+            "wstate": "idle",
+            "phase": -1
+          },
+          "hash": "ecb65d176791b1b8cd7799c0605d679a1c8efda57aff1f53ed4898817bf2a025",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 9,
+            "wstate": "reload",
+            "phase": 0.18
+          },
+          "hash": "aa8944df0a69c88b46001b993ab300d6c127f6d11e3aecfb8ebe78f5460c79d1",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 9,
+            "wstate": "reload",
+            "phase": 0.5
+          },
+          "hash": "2de319169f5aca63f8e805bd3760a70e6461633a8b2c8c06b5f311639f75960f",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 9,
+            "wstate": "reload",
+            "phase": 0.88
+          },
+          "hash": "c064c1adbca1862402bbba0cf13cda0327d7a4ce9c719cb911c7b5edbf7c6c46",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 4,
+            "zoomLerp": 1
+          },
+          "hash": "0b150fd32588b1daca5569992ebe559c0102c837306b1af4c44d35128ec58366",
+          "shifts": [],
+          "skipped": true
+        },
+        {
+          "case": {
+            "cur": 4,
+            "zoomLerp": 0.4
+          },
+          "hash": "826d38034c7a2c810954045daac0ce2684342dacfb4ec081e30e6979d9ddd05d",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 4,
+            "hidden": true
+          },
+          "hash": "0b150fd32588b1daca5569992ebe559c0102c837306b1af4c44d35128ec58366",
+          "shifts": [],
+          "skipped": true
+        },
+        {
+          "case": {
+            "cur": 4,
+            "kickAnim": 0.5
+          },
+          "hash": "af930c83306b20e8d33d3dc9988c26d7cc1b9d0451dffd670de573ee11369705",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 9,
+            "kickAnim": 0.5
+          },
+          "hash": "6a6b886f220d24e0b0f645af096f16a0eca2430a5a3f93a4af286bca3f7eda42",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 1,
+            "kickAnim": 0.5
+          },
+          "hash": "6fde350b8465fde9dc954c3cb4f68a4482bf133464cc9513416a9e597989dcad",
+          "shifts": [],
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "label": "candidate",
+      "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\blood-weapons-nov02\\final\\candidate.html",
+      "sha": "af2c643a1376a1610fa693b354fccd3ab7fcaf1935b5b79698974b3aea1cd663",
+      "rows": [
+        {
+          "case": {
+            "cur": 0,
+            "wstate": "idle",
+            "phase": -1
+          },
+          "hash": "b04e4a5bf2552018baea708c5e7664cbfc9c8232cbb8d7a95c8ef579ff230e4d",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 0,
+            "wstate": "reload",
+            "phase": 0.18
+          },
+          "hash": "fbf6f8df6411f32661bb50fcc3044f64ccd1bfb931fe637cd50c300052dc2536",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 0,
+            "wstate": "reload",
+            "phase": 0.5
+          },
+          "hash": "e7bbe03c2821e990ea5dc2c754eaf7e15c76d843df5e7d10aaaa7a96a9eb77f1",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 0,
+            "wstate": "reload",
+            "phase": 0.88
+          },
+          "hash": "c83aaace434f70cb2b86f6a8b103689fdd54f0ab6c291116eb8672a30e8ea255",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 1,
+            "wstate": "idle",
+            "phase": -1
+          },
+          "hash": "f66e28b6232cab2080449aa476aa351312b84a9557b4aeec8fb0d8bdadd812c2",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 1,
+            "wstate": "reload",
+            "phase": 0.18
+          },
+          "hash": "9da5545a049c2f6025c62e0ce62fe6a634d16adeba8edd72b38b3015fb7ef17f",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 1,
+            "wstate": "reload",
+            "phase": 0.5
+          },
+          "hash": "fe3ba09399dde9b66f082909707e5062351d85decc0d736ae49b285026835233",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 1,
+            "wstate": "reload",
+            "phase": 0.88
+          },
+          "hash": "64ce0be7f017d82ce0bfcf45febaaf1b833a619ce1c33bce29797b4c6e6f2059",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 2,
+            "wstate": "idle",
+            "phase": -1
+          },
+          "hash": "a8662aca1c5a1409da4e28fe5171d41b820456c9faad7ba1a3eda3df7749aefd",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 2,
+            "wstate": "reload",
+            "phase": 0.18
+          },
+          "hash": "f8dc864ad12e5067968f9d73c83bc5ee3d3648f0e2ab5a9080e4bd8c5bce5074",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 2,
+            "wstate": "reload",
+            "phase": 0.5
+          },
+          "hash": "0e06b4437dce7eada9036b0fea5592acc0184a46bdee3dc33cf1e2886e87d353",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 2,
+            "wstate": "reload",
+            "phase": 0.88
+          },
+          "hash": "7ca9f32360e3f51a118accc081e5d5e09d97e3673ba665c135eab82a22512993",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 3,
+            "wstate": "idle",
+            "phase": -1
+          },
+          "hash": "4a5741c59926de05ad68c5b67ad0d4d58dcbd3f7e0e37d27a2922ac7d9bfd2a6",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 3,
+            "wstate": "reload",
+            "phase": 0.18
+          },
+          "hash": "685f81271beec1ed0110afab2d829f68090cf3a3f395e15fd41aa9ab95121151",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 3,
+            "wstate": "reload",
+            "phase": 0.5
+          },
+          "hash": "b9a67309dbec62483a67983e8e450bed9d53e19e07960decf543503359faa347",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 3,
+            "wstate": "reload",
+            "phase": 0.88
+          },
+          "hash": "764f9af147f04e1e9e621a73e08df5efb81eedbfb9a35a1a2029b5f3d31a3c70",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 4,
+            "wstate": "idle",
+            "phase": -1
+          },
+          "hash": "d3a0cd32bd1df7b6dfab9f63b9a3b086cbdca76523c6e63c4de9164fa0097811",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 4,
+            "wstate": "reload",
+            "phase": 0.18
+          },
+          "hash": "bde0cf587ba1cacdfa4b9d1b1bb66234e6b728e8e6506b2f3e7012cd37a1f4a6",
+          "shifts": [
+            [
+              -39.6,
+              -18
+            ]
+          ],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 4,
+            "wstate": "reload",
+            "phase": 0.5
+          },
+          "hash": "6bdf4f54041ee26c90dc0f56a799eded300f0697dc8b565526c1dae1c608083d",
+          "shifts": [
+            [
+              -39.6,
+              -18
+            ]
+          ],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 4,
+            "wstate": "reload",
+            "phase": 0.88
+          },
+          "hash": "02d2b1d202a7e87ef6b594f24820f2912f3eb6580856ed90db231b0467e35643",
+          "shifts": [
+            [
+              -33.41249999999996,
+              -15.187499999999984
+            ]
+          ],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 5,
+            "wstate": "idle",
+            "phase": -1
+          },
+          "hash": "a7505bf202868db427a8dbd69aa9e0edd26165deb1a7ed5ea534a1768917a687",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 5,
+            "wstate": "reload",
+            "phase": 0.18
+          },
+          "hash": "63858068f4bc7e6f0eef8256835dedb06e39e61621a191d2c26e782219b5de24",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 5,
+            "wstate": "reload",
+            "phase": 0.5
+          },
+          "hash": "43d559ba40af5b5dbebda58aaabfe47d280e0abf41fe03a684ef520ff36a3c85",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 5,
+            "wstate": "reload",
+            "phase": 0.88
+          },
+          "hash": "01488fa2003191625cbdd13b0e4fc8608ec6be5bd2f859b91591872ad6c54d66",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 6,
+            "wstate": "idle",
+            "phase": -1
+          },
+          "hash": "6d4b0cc9cc97d6809b65814563a95115914d6a0143c8e8593c91da262d52e91d",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 6,
+            "wstate": "reload",
+            "phase": 0.18
+          },
+          "hash": "35cd24f4006d98e51b1ff61ec669c6457ef9968ba061699de496dec8b82c8965",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 6,
+            "wstate": "reload",
+            "phase": 0.5
+          },
+          "hash": "0aab87e06c8152977986366d7e137f63243decb1acd4499775fff36235288fca",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 6,
+            "wstate": "reload",
+            "phase": 0.88
+          },
+          "hash": "64b65df875810392a46b17321b2577778c0f53b9bb13f046b3c6c08aabfa1a85",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 7,
+            "wstate": "idle",
+            "phase": -1
+          },
+          "hash": "db779c80d7b255b04789b32f9aa63388a7525ca9c38610eeffbaf1d97b35c4ec",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 7,
+            "wstate": "reload",
+            "phase": 0.18
+          },
+          "hash": "7cf2097da4acc74609369b699fda1d80684f329fd7c65f451e33c23761c99aed",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 7,
+            "wstate": "reload",
+            "phase": 0.5
+          },
+          "hash": "a7b5cfe30a1e7023e5b4be400cb5ebbeab9763ceb5df387d47e8b31c019cbe69",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 7,
+            "wstate": "reload",
+            "phase": 0.88
+          },
+          "hash": "7e4d7e3fc44f114ea7a8e2423cbfdc53e6500b0f431958819e942b4acba47f38",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 8,
+            "wstate": "idle",
+            "phase": -1
+          },
+          "hash": "46d03fb2ccb54b1839d66c7802beedc4e51526aee1cd0b820664638ed734fae7",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 8,
+            "wstate": "reload",
+            "phase": 0.18
+          },
+          "hash": "fbebede6cac28438c91950529ca3b168a1e35c1d39454e4d7344dc6197488fe5",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 8,
+            "wstate": "reload",
+            "phase": 0.5
+          },
+          "hash": "3ece4fe098cc01feba1b502c34230204a1974add70dc483c8319ed0a9f7612ca",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 8,
+            "wstate": "reload",
+            "phase": 0.88
+          },
+          "hash": "59e9fc11018e4c16d572ce2047ce15c917010927feeb69835746d6ded4d2a5f1",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 9,
+            "wstate": "idle",
+            "phase": -1
+          },
+          "hash": "7434b0a2f3a771b241345b01ec7baa52ba1689a18a761dac024d526f72f500a7",
+          "shifts": [
+            [
+              0,
+              -9.36
+            ]
+          ],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 9,
+            "wstate": "reload",
+            "phase": 0.18
+          },
+          "hash": "4247b5a9a42e2764ff2fb1ffc1f9ba8acdeb5ec3d8b0e51ee2bd3000a4d5f570",
+          "shifts": [
+            [
+              0,
+              -12.599999999999998
+            ]
+          ],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 9,
+            "wstate": "reload",
+            "phase": 0.5
+          },
+          "hash": "4dd6e92107be4c593e633efacf0558e9b21cb73ae7cfa985aca27892c739e0c8",
+          "shifts": [
+            [
+              0,
+              -12.599999999999998
+            ]
+          ],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 9,
+            "wstate": "reload",
+            "phase": 0.88
+          },
+          "hash": "3cbf88cf66b39dc7fb58eab045d783ff3b0ecf7ab5bd484999897083c8f19bca",
+          "shifts": [
+            [
+              0,
+              -12.09375
+            ]
+          ],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 4,
+            "zoomLerp": 1
+          },
+          "hash": "0b150fd32588b1daca5569992ebe559c0102c837306b1af4c44d35128ec58366",
+          "shifts": [],
+          "skipped": true
+        },
+        {
+          "case": {
+            "cur": 4,
+            "zoomLerp": 0.4
+          },
+          "hash": "d3a0cd32bd1df7b6dfab9f63b9a3b086cbdca76523c6e63c4de9164fa0097811",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 4,
+            "hidden": true
+          },
+          "hash": "0b150fd32588b1daca5569992ebe559c0102c837306b1af4c44d35128ec58366",
+          "shifts": [],
+          "skipped": true
+        },
+        {
+          "case": {
+            "cur": 4,
+            "kickAnim": 0.5
+          },
+          "hash": "13c5bfec216cb3ac6c60bd612b5fc9a833ed154adb3334cb8da230d2c2a58b63",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 9,
+            "kickAnim": 0.5
+          },
+          "hash": "96aaa0eb3a78c905125c7d4c3a7fd0b6d5ba3dd53f24d02c2011bfb2425cb58f",
+          "shifts": [],
+          "skipped": false
+        },
+        {
+          "case": {
+            "cur": 1,
+            "kickAnim": 0.5
+          },
+          "hash": "6fde350b8465fde9dc954c3cb4f68a4482bf133464cc9513416a9e597989dcad",
+          "shifts": [],
+          "skipped": false
+        }
+      ]
+    }
+  ]
+}

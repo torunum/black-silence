@@ -1,0 +1,2157 @@
+{
+  "passed": true,
+  "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\release-blood-nov02\\final-combined\\THE-BLACK-SILENCE.html",
+  "sha256": "5e5ceb0cb354945067ef71cfa5600fd9836a4236cf20258aff548bea3ec1a3cc",
+  "fixtureSHA256": "bae01ffa631dd815e09709f74739838f9355f7a0de1ccd1bde4e7f19b9777d17",
+  "zoneSynchronized": true,
+  "freshNativeLevelBeforeCaptures": false,
+  "cameras": [
+    {
+      "name": "grave",
+      "index": 0,
+      "active": 0,
+      "id": "churchyard",
+      "player": [
+        19,
+        5.2,
+        9
+      ],
+      "camera": [
+        19,
+        5.2,
+        9
+      ],
+      "expectedEyeY": 5.2,
+      "fog": [
+        0.043137254901960784,
+        0.06274509803921569,
+        0.09411764705882353
+      ],
+      "expectedFog": [
+        0.043137254901960784,
+        0.06274509803921569,
+        0.09411764705882353
+      ],
+      "density": 0.07500000000000001,
+      "expectedDensity": 0.07500000000000001,
+      "ambient": [
+        0.35294117647058826,
+        0.41568627450980394,
+        0.5333333333333333
+      ],
+      "expectedAmbient": [
+        0.35294117647058826,
+        0.41568627450980394,
+        0.5333333333333333
+      ],
+      "intensity": 0.315,
+      "expectedIntensity": 0.315,
+      "render": {
+        "frame": 321,
+        "calls": 176,
+        "triangles": 201504,
+        "points": 2008,
+        "lines": 0
+      }
+    },
+    {
+      "name": "grave-side",
+      "index": 0,
+      "active": 0,
+      "id": "churchyard",
+      "player": [
+        18.4,
+        5.2,
+        11.4
+      ],
+      "camera": [
+        18.4,
+        5.2,
+        11.4
+      ],
+      "expectedEyeY": 5.2,
+      "fog": [
+        0.043137254901960784,
+        0.06274509803921569,
+        0.09411764705882353
+      ],
+      "expectedFog": [
+        0.043137254901960784,
+        0.06274509803921569,
+        0.09411764705882353
+      ],
+      "density": 0.07500000000000001,
+      "expectedDensity": 0.07500000000000001,
+      "ambient": [
+        0.35294117647058826,
+        0.41568627450980394,
+        0.5333333333333333
+      ],
+      "expectedAmbient": [
+        0.35294117647058826,
+        0.41568627450980394,
+        0.5333333333333333
+      ],
+      "intensity": 0.315,
+      "expectedIntensity": 0.315,
+      "render": {
+        "frame": 338,
+        "calls": 66,
+        "triangles": 95338,
+        "points": 2008,
+        "lines": 0
+      }
+    },
+    {
+      "name": "crypt-entry",
+      "index": 1,
+      "active": 1,
+      "id": "crypt",
+      "player": [
+        19,
+        5.2,
+        19
+      ],
+      "camera": [
+        19,
+        5.2,
+        19
+      ],
+      "expectedEyeY": 5.2,
+      "fog": [
+        0.0392156862745098,
+        0.03529411764705882,
+        0.03529411764705882
+      ],
+      "expectedFog": [
+        0.0392156862745098,
+        0.03529411764705882,
+        0.03529411764705882
+      ],
+      "density": 0.09,
+      "expectedDensity": 0.09,
+      "ambient": [
+        0.2901960784313726,
+        0.25098039215686274,
+        0.23529411764705882
+      ],
+      "expectedAmbient": [
+        0.2901960784313726,
+        0.25098039215686274,
+        0.23529411764705882
+      ],
+      "intensity": 0.21,
+      "expectedIntensity": 0.21,
+      "render": {
+        "frame": 359,
+        "calls": 174,
+        "triangles": 201444,
+        "points": 2008,
+        "lines": 0
+      }
+    },
+    {
+      "name": "crypt-deep",
+      "index": 1,
+      "active": 1,
+      "id": "crypt",
+      "player": [
+        19.4,
+        4.36,
+        27
+      ],
+      "camera": [
+        19.4,
+        4.36,
+        27
+      ],
+      "expectedEyeY": 4.36,
+      "fog": [
+        0.0392156862745098,
+        0.03529411764705882,
+        0.03529411764705882
+      ],
+      "expectedFog": [
+        0.0392156862745098,
+        0.03529411764705882,
+        0.03529411764705882
+      ],
+      "density": 0.09,
+      "expectedDensity": 0.09,
+      "ambient": [
+        0.2901960784313726,
+        0.25098039215686274,
+        0.23529411764705882
+      ],
+      "expectedAmbient": [
+        0.2901960784313726,
+        0.25098039215686274,
+        0.23529411764705882
+      ],
+      "intensity": 0.21,
+      "expectedIntensity": 0.21,
+      "render": {
+        "frame": 378,
+        "calls": 156,
+        "triangles": 201388,
+        "points": 2008,
+        "lines": 0
+      }
+    },
+    {
+      "name": "crypt-bay",
+      "index": 1,
+      "active": 1,
+      "id": "crypt",
+      "player": [
+        20.2,
+        4.36,
+        27
+      ],
+      "camera": [
+        20.2,
+        4.36,
+        27
+      ],
+      "expectedEyeY": 4.36,
+      "fog": [
+        0.0392156862745098,
+        0.03529411764705882,
+        0.03529411764705882
+      ],
+      "expectedFog": [
+        0.0392156862745098,
+        0.03529411764705882,
+        0.03529411764705882
+      ],
+      "density": 0.09,
+      "expectedDensity": 0.09,
+      "ambient": [
+        0.2901960784313726,
+        0.25098039215686274,
+        0.23529411764705882
+      ],
+      "expectedAmbient": [
+        0.2901960784313726,
+        0.25098039215686274,
+        0.23529411764705882
+      ],
+      "intensity": 0.21,
+      "expectedIntensity": 0.21,
+      "render": {
+        "frame": 396,
+        "calls": 70,
+        "triangles": 105590,
+        "points": 2008,
+        "lines": 0
+      }
+    },
+    {
+      "name": "crypt-open",
+      "index": 1,
+      "active": 1,
+      "id": "crypt",
+      "player": [
+        19.7,
+        3.5200000000000005,
+        31
+      ],
+      "camera": [
+        19.7,
+        3.5200000000000005,
+        31
+      ],
+      "expectedEyeY": 3.5200000000000005,
+      "fog": [
+        0.0392156862745098,
+        0.03529411764705882,
+        0.03529411764705882
+      ],
+      "expectedFog": [
+        0.0392156862745098,
+        0.03529411764705882,
+        0.03529411764705882
+      ],
+      "density": 0.09,
+      "expectedDensity": 0.09,
+      "ambient": [
+        0.2901960784313726,
+        0.25098039215686274,
+        0.23529411764705882
+      ],
+      "expectedAmbient": [
+        0.2901960784313726,
+        0.25098039215686274,
+        0.23529411764705882
+      ],
+      "intensity": 0.21,
+      "expectedIntensity": 0.21,
+      "render": {
+        "frame": 412,
+        "calls": 202,
+        "triangles": 202854,
+        "points": 2008,
+        "lines": 0
+      }
+    },
+    {
+      "name": "arena",
+      "index": 2,
+      "active": 2,
+      "id": "hell",
+      "player": [
+        67,
+        3.1,
+        105
+      ],
+      "camera": [
+        67,
+        3.1,
+        105
+      ],
+      "expectedEyeY": 3.1,
+      "fog": [
+        0.10196078431372549,
+        0.0784313725490196,
+        0.06666666666666667
+      ],
+      "expectedFog": [
+        0.10196078431372549,
+        0.0784313725490196,
+        0.06666666666666667
+      ],
+      "density": 0.0345,
+      "expectedDensity": 0.0345,
+      "ambient": [
+        0.6431372549019608,
+        0.611764705882353,
+        0.5725490196078431
+      ],
+      "expectedAmbient": [
+        0.6431372549019608,
+        0.611764705882353,
+        0.5725490196078431
+      ],
+      "intensity": 0.49559999999999993,
+      "expectedIntensity": 0.49559999999999993,
+      "render": {
+        "frame": 432,
+        "calls": 70,
+        "triangles": 144746,
+        "points": 1828,
+        "lines": 0
+      }
+    },
+    {
+      "name": "arena-floor",
+      "index": 2,
+      "active": 2,
+      "id": "hell",
+      "player": [
+        71,
+        3.1,
+        99
+      ],
+      "camera": [
+        71,
+        3.1,
+        99
+      ],
+      "expectedEyeY": 3.1,
+      "fog": [
+        0.10196078431372549,
+        0.0784313725490196,
+        0.06666666666666667
+      ],
+      "expectedFog": [
+        0.10196078431372549,
+        0.0784313725490196,
+        0.06666666666666667
+      ],
+      "density": 0.0345,
+      "expectedDensity": 0.0345,
+      "ambient": [
+        0.6431372549019608,
+        0.611764705882353,
+        0.5725490196078431
+      ],
+      "expectedAmbient": [
+        0.6431372549019608,
+        0.611764705882353,
+        0.5725490196078431
+      ],
+      "intensity": 0.49559999999999993,
+      "expectedIntensity": 0.49559999999999993,
+      "render": {
+        "frame": 451,
+        "calls": 65,
+        "triangles": 142180,
+        "points": 1828,
+        "lines": 0
+      }
+    },
+    {
+      "name": "arena-focus",
+      "index": 2,
+      "active": 2,
+      "id": "hell",
+      "player": [
+        71,
+        3.1,
+        105
+      ],
+      "camera": [
+        71,
+        3.1,
+        105
+      ],
+      "expectedEyeY": 3.1,
+      "fog": [
+        0.10196078431372549,
+        0.0784313725490196,
+        0.06666666666666667
+      ],
+      "expectedFog": [
+        0.10196078431372549,
+        0.0784313725490196,
+        0.06666666666666667
+      ],
+      "density": 0.0345,
+      "expectedDensity": 0.0345,
+      "ambient": [
+        0.6431372549019608,
+        0.611764705882353,
+        0.5725490196078431
+      ],
+      "expectedAmbient": [
+        0.6431372549019608,
+        0.611764705882353,
+        0.5725490196078431
+      ],
+      "intensity": 0.49559999999999993,
+      "expectedIntensity": 0.49559999999999993,
+      "render": {
+        "frame": 469,
+        "calls": 59,
+        "triangles": 142168,
+        "points": 1828,
+        "lines": 0
+      }
+    },
+    {
+      "name": "arena-side",
+      "index": 2,
+      "active": 2,
+      "id": "hell",
+      "player": [
+        65,
+        1,
+        114
+      ],
+      "camera": [
+        65,
+        1,
+        114
+      ],
+      "expectedEyeY": 1,
+      "fog": [
+        0.10196078431372549,
+        0.0784313725490196,
+        0.06666666666666667
+      ],
+      "expectedFog": [
+        0.10196078431372549,
+        0.0784313725490196,
+        0.06666666666666667
+      ],
+      "density": 0.0345,
+      "expectedDensity": 0.0345,
+      "ambient": [
+        0.6431372549019608,
+        0.611764705882353,
+        0.5725490196078431
+      ],
+      "expectedAmbient": [
+        0.6431372549019608,
+        0.611764705882353,
+        0.5725490196078431
+      ],
+      "intensity": 0.49559999999999993,
+      "expectedIntensity": 0.49559999999999993,
+      "render": {
+        "frame": 487,
+        "calls": 64,
+        "triangles": 144390,
+        "points": 1828,
+        "lines": 0
+      }
+    },
+    {
+      "name": "bridge",
+      "index": 2,
+      "active": 2,
+      "id": "hell",
+      "player": [
+        21,
+        3.1,
+        53
+      ],
+      "camera": [
+        21,
+        3.1,
+        53
+      ],
+      "expectedEyeY": 3.1,
+      "fog": [
+        0.10196078431372549,
+        0.0784313725490196,
+        0.06666666666666667
+      ],
+      "expectedFog": [
+        0.10196078431372549,
+        0.0784313725490196,
+        0.06666666666666667
+      ],
+      "density": 0.0345,
+      "expectedDensity": 0.0345,
+      "ambient": [
+        0.6431372549019608,
+        0.611764705882353,
+        0.5725490196078431
+      ],
+      "expectedAmbient": [
+        0.6431372549019608,
+        0.611764705882353,
+        0.5725490196078431
+      ],
+      "intensity": 0.49559999999999993,
+      "expectedIntensity": 0.49559999999999993,
+      "render": {
+        "frame": 511,
+        "calls": 201,
+        "triangles": 200394,
+        "points": 2008,
+        "lines": 0
+      }
+    }
+  ],
+  "errors": [],
+  "resources": {
+    "textures": 60,
+    "images": 49,
+    "materials": 238,
+    "renderer": {
+      "geometries": 161,
+      "textures": 49
+    },
+    "maps": [
+      {
+        "name": "",
+        "texture": 176,
+        "image": "pPcczrfX/wAAAP//OXrZigAAAAZJREFUAwCUeAuYw4LmyAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "goreSplats",
+        "texture": 177,
+        "image": "KF6i1wfI3cI3AAAA//8Bj/8BAAAABklEQVQDAMxju0HGgkncAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "goreSplats",
+        "texture": 178,
+        "image": "3doOxVgTINGzBwAA//9LDbHdAAAABklEQVQDAOEfNU1lh1blAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "wall",
+        "texture": 6,
+        "image": "7ftSh44d/w8AAP//y8SRRAAAAAZJREFUAwDytwMmozyL6QAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "wall",
+        "texture": 171,
+        "image": "inW6lWxuA8sQE0al6NPiS3iw/1ijO5DK8/QAERDfMsWrSAMAAAAASUVORK5CYII=",
+        "mapName": "prologueCryptStone",
+        "baked": false
+      },
+      {
+        "name": "pillar",
+        "texture": 14,
+        "image": "Ydm2dSil/A8AAP//5b3yYgAAAAZJREFUAwD+bOsniZan8gAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "floorCells",
+        "texture": 179,
+        "image": "8GKH55j7PwAAAP//U/z/iAAAAAZJREFUAwC/I7Homnc4qAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "floorCells",
+        "texture": 180,
+        "image": "eVLK9X/lvwAAAP//ApNsvAAAAAZJREFUAwAAkMYA1tGjVgAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "floorCells",
+        "texture": 181,
+        "image": "/i9E4P9q0f8HAAAA//8FOVZJAAAABklEQVQDAIHm/fxb8TflAAAAAElFTkSuQmCC",
+        "mapName": "prologueCryptFloor",
+        "baked": false
+      },
+      {
+        "name": "ceilingCells",
+        "texture": 182,
+        "image": "inW6lWxuA8sQE0al6NPiS3iw/1ijO5DK8/QAERDfMsWrSAMAAAAASUVORK5CYII=",
+        "mapName": "prologueHellRoof",
+        "baked": false
+      },
+      {
+        "name": "ceilingCells",
+        "texture": 183,
+        "image": "jBhJAjdK2P8/AAAA//9zHJxUAAAABklEQVQDAK3TEb1gpc3+AAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "ceilingCells",
+        "texture": 184,
+        "image": "jBhJAjdK2P8/AAAA//9zHJxUAAAABklEQVQDAK3TEb1gpc3+AAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "ceilingRisers",
+        "texture": 6,
+        "image": "7ftSh44d/w8AAP//y8SRRAAAAAZJREFUAwDytwMmozyL6QAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "ceilingRisers",
+        "texture": 171,
+        "image": "inW6lWxuA8sQE0al6NPiS3iw/1ijO5DK8/QAERDfMsWrSAMAAAAASUVORK5CYII=",
+        "mapName": "prologueCryptStone",
+        "baked": false
+      },
+      {
+        "name": "ceilingRisers",
+        "texture": 170,
+        "image": "inW6lWxuA8sQE0al6NPiS3iw/1ijO5DK8/QAERDfMsWrSAMAAAAASUVORK5CYII=",
+        "mapName": "prologueHellWall",
+        "baked": false
+      },
+      {
+        "name": "wallCourse",
+        "texture": 27,
+        "image": "9khfzKp5Cv8PAAD//9Y/cBsAAAAGSURBVAMAovkNgyoKXmgAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "wallCourse",
+        "texture": 171,
+        "image": "inW6lWxuA8sQE0al6NPiS3iw/1ijO5DK8/QAERDfMsWrSAMAAAAASUVORK5CYII=",
+        "mapName": "prologueCryptStone",
+        "baked": false
+      },
+      {
+        "name": "wallCourse",
+        "texture": 44,
+        "image": "RQYmSizX5fD/AQAA//9A40cDAAAABklEQVQDAHGMeZCDPB+IAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "pillarTrim",
+        "texture": 14,
+        "image": "Ydm2dSil/A8AAP//5b3yYgAAAAZJREFUAwD+bOsniZan8gAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": 30,
+        "image": "eHJUGHNY7hj/DwAA//+1IRd6AAAABklEQVQDAD7K0T5j7B6fAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": 30,
+        "image": "eHJUGHNY7hj/DwAA//+1IRd6AAAABklEQVQDAD7K0T5j7B6fAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": 29,
+        "image": "8GKH55j7PwAAAP//U/z/iAAAAAZJREFUAwC/I7Homnc4qAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": 30,
+        "image": "eHJUGHNY7hj/DwAA//+1IRd6AAAABklEQVQDAD7K0T5j7B6fAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": 30,
+        "image": "eHJUGHNY7hj/DwAA//+1IRd6AAAABklEQVQDAD7K0T5j7B6fAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": 30,
+        "image": "eHJUGHNY7hj/DwAA//+1IRd6AAAABklEQVQDAD7K0T5j7B6fAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": 24,
+        "image": "maaqOk9V5V8AAAD//xOUFJAAAAAGSURBVAMAbDARBy5EcPYAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": 24,
+        "image": "maaqOk9V5V8AAAD//xOUFJAAAAAGSURBVAMAbDARBy5EcPYAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": 175,
+        "image": "/i9E4P9q0f8HAAAA//8FOVZJAAAABklEQVQDAIHm/fxb8TflAAAAAElFTkSuQmCC",
+        "mapName": "prologueCryptFloor",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": 24,
+        "image": "maaqOk9V5V8AAAD//xOUFJAAAAAGSURBVAMAbDARBy5EcPYAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": 24,
+        "image": "maaqOk9V5V8AAAD//xOUFJAAAAAGSURBVAMAbDARBy5EcPYAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": 24,
+        "image": "maaqOk9V5V8AAAD//xOUFJAAAAAGSURBVAMAbDARBy5EcPYAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": 24,
+        "image": "maaqOk9V5V8AAAD//xOUFJAAAAAGSURBVAMAbDARBy5EcPYAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": 24,
+        "image": "maaqOk9V5V8AAAD//xOUFJAAAAAGSURBVAMAbDARBy5EcPYAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": 9,
+        "image": "eVLK9X/lvwAAAP//ApNsvAAAAAZJREFUAwAAkMYA1tGjVgAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": 24,
+        "image": "maaqOk9V5V8AAAD//xOUFJAAAAAGSURBVAMAbDARBy5EcPYAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": 24,
+        "image": "maaqOk9V5V8AAAD//xOUFJAAAAAGSURBVAMAbDARBy5EcPYAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": 24,
+        "image": "maaqOk9V5V8AAAD//xOUFJAAAAAGSURBVAMAbDARBy5EcPYAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "hellRock",
+        "texture": 170,
+        "image": "inW6lWxuA8sQE0al6NPiS3iw/1ijO5DK8/QAERDfMsWrSAMAAAAASUVORK5CYII=",
+        "mapName": "prologueHellWall",
+        "baked": true
+      },
+      {
+        "name": "hellGround",
+        "texture": 198,
+        "image": "O1dnacX6/w8AAP//QXWDkgAAAAZJREFUAwBNKdo4u1UD6gAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": true
+      },
+      {
+        "name": "lava",
+        "texture": 185,
+        "image": "04gdc9nN/P8FAAD//xS13w8AAAAGSURBVAMAxWWq+SlkYkoAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "lavaCrust",
+        "texture": 186,
+        "image": "scbPNvZ6q4D/AQAA//9GbYMSAAAABklEQVQDAOyClAdDM4C9AAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 142,
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 142,
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 142,
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 140,
+        "image": "YSEEAWSmwhUAAP//BO+6WgAAAAZJREFUAwBbFG/KKJW0pwAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 148,
+        "image": "tqo4kNqBHwAAAP//UEQhpwAAAAZJREFUAwDfT69/WrbE1wAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 140,
+        "image": "YSEEAWSmwhUAAP//BO+6WgAAAAZJREFUAwBbFG/KKJW0pwAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 160,
+        "image": "AmDMJiAjEenvAAAA//9kKV71AAAABklEQVQDAB2Gbr4mDlu8AAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 149,
+        "image": "SG1PdiC1A98AAAD//+9yibQAAAAGSURBVAMAOybvcCRrsIMAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 142,
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 141,
+        "image": "nA8LIQigMCNXAAAA//80bTesAAAABklEQVQDAKY6b8puShE3AAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 141,
+        "image": "nA8LIQigMCNXAAAA//80bTesAAAABklEQVQDAKY6b8puShE3AAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 141,
+        "image": "nA8LIQigMCNXAAAA//80bTesAAAABklEQVQDAKY6b8puShE3AAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 140,
+        "image": "YSEEAWSmwhUAAP//BO+6WgAAAAZJREFUAwBbFG/KKJW0pwAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 142,
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 142,
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 146,
+        "image": "QG1JTIHaCvwCAAD//3boz6IAAAAGSURBVAMAC0Mrf6V1TjIAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 141,
+        "image": "nA8LIQigMCNXAAAA//80bTesAAAABklEQVQDAKY6b8puShE3AAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 142,
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 142,
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 142,
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 142,
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 142,
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 146,
+        "image": "QG1JTIHaCvwCAAD//3boz6IAAAAGSURBVAMAC0Mrf6V1TjIAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 147,
+        "image": "sLntQIIiRlH8AQAA///rLMKrAAAABklEQVQDALdF5nAYt3cwAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 142,
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 148,
+        "image": "tqo4kNqBHwAAAP//UEQhpwAAAAZJREFUAwDfT69/WrbE1wAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 141,
+        "image": "nA8LIQigMCNXAAAA//80bTesAAAABklEQVQDAKY6b8puShE3AAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 148,
+        "image": "tqo4kNqBHwAAAP//UEQhpwAAAAZJREFUAwDfT69/WrbE1wAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 5,
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "prop",
+        "texture": 16,
+        "image": "sQPnh0f0OwAAAP//q2kDuAAAAAZJREFUAwBClKgqwAAUwwAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 61,
+        "image": "CPIH+n/V/wsAAP//BMh4XgAAAAZJREFUAwCTAlsyi4skVQAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 5,
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 148,
+        "image": "tqo4kNqBHwAAAP//UEQhpwAAAAZJREFUAwDfT69/WrbE1wAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 61,
+        "image": "CPIH+n/V/wsAAP//BMh4XgAAAAZJREFUAwCTAlsyi4skVQAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 5,
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 66,
+        "image": "uL0Yay7GeBkAAP//WNAuxAAAAAZJREFUAwDi/0voydAqtAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 5,
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 149,
+        "image": "SG1PdiC1A98AAAD//+9yibQAAAAGSURBVAMAOybvcCRrsIMAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 142,
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 66,
+        "image": "uL0Yay7GeBkAAP//WNAuxAAAAAZJREFUAwDi/0voydAqtAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 5,
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 66,
+        "image": "uL0Yay7GeBkAAP//WNAuxAAAAAZJREFUAwDi/0voydAqtAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 5,
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 149,
+        "image": "SG1PdiC1A98AAAD//+9yibQAAAAGSURBVAMAOybvcCRrsIMAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 146,
+        "image": "QG1JTIHaCvwCAAD//3boz6IAAAAGSURBVAMAC0Mrf6V1TjIAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 61,
+        "image": "CPIH+n/V/wsAAP//BMh4XgAAAAZJREFUAwCTAlsyi4skVQAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 5,
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 140,
+        "image": "YSEEAWSmwhUAAP//BO+6WgAAAAZJREFUAwBbFG/KKJW0pwAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 146,
+        "image": "QG1JTIHaCvwCAAD//3boz6IAAAAGSURBVAMAC0Mrf6V1TjIAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 141,
+        "image": "nA8LIQigMCNXAAAA//80bTesAAAABklEQVQDAKY6b8puShE3AAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 61,
+        "image": "CPIH+n/V/wsAAP//BMh4XgAAAAZJREFUAwCTAlsyi4skVQAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 5,
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 148,
+        "image": "tqo4kNqBHwAAAP//UEQhpwAAAAZJREFUAwDfT69/WrbE1wAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 146,
+        "image": "QG1JTIHaCvwCAAD//3boz6IAAAAGSURBVAMAC0Mrf6V1TjIAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 66,
+        "image": "uL0Yay7GeBkAAP//WNAuxAAAAAZJREFUAwDi/0voydAqtAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 5,
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 61,
+        "image": "CPIH+n/V/wsAAP//BMh4XgAAAAZJREFUAwCTAlsyi4skVQAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 5,
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 66,
+        "image": "uL0Yay7GeBkAAP//WNAuxAAAAAZJREFUAwDi/0voydAqtAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 5,
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 5,
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "prop",
+        "texture": 16,
+        "image": "sQPnh0f0OwAAAP//q2kDuAAAAAZJREFUAwBClKgqwAAUwwAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 142,
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 148,
+        "image": "tqo4kNqBHwAAAP//UEQhpwAAAAZJREFUAwDfT69/WrbE1wAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 141,
+        "image": "nA8LIQigMCNXAAAA//80bTesAAAABklEQVQDAKY6b8puShE3AAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 66,
+        "image": "uL0Yay7GeBkAAP//WNAuxAAAAAZJREFUAwDi/0voydAqtAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 5,
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 61,
+        "image": "CPIH+n/V/wsAAP//BMh4XgAAAAZJREFUAwCTAlsyi4skVQAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 5,
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 141,
+        "image": "nA8LIQigMCNXAAAA//80bTesAAAABklEQVQDAKY6b8puShE3AAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 66,
+        "image": "uL0Yay7GeBkAAP//WNAuxAAAAAZJREFUAwDi/0voydAqtAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 5,
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 61,
+        "image": "CPIH+n/V/wsAAP//BMh4XgAAAAZJREFUAwCTAlsyi4skVQAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 5,
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 142,
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 61,
+        "image": "CPIH+n/V/wsAAP//BMh4XgAAAAZJREFUAwCTAlsyi4skVQAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 5,
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 142,
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 148,
+        "image": "tqo4kNqBHwAAAP//UEQhpwAAAAZJREFUAwDfT69/WrbE1wAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 146,
+        "image": "QG1JTIHaCvwCAAD//3boz6IAAAAGSURBVAMAC0Mrf6V1TjIAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 142,
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 148,
+        "image": "tqo4kNqBHwAAAP//UEQhpwAAAAZJREFUAwDfT69/WrbE1wAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 146,
+        "image": "QG1JTIHaCvwCAAD//3boz6IAAAAGSURBVAMAC0Mrf6V1TjIAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 142,
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 61,
+        "image": "CPIH+n/V/wsAAP//BMh4XgAAAAZJREFUAwCTAlsyi4skVQAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 5,
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 61,
+        "image": "CPIH+n/V/wsAAP//BMh4XgAAAAZJREFUAwCTAlsyi4skVQAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 5,
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 142,
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 61,
+        "image": "CPIH+n/V/wsAAP//BMh4XgAAAAZJREFUAwCTAlsyi4skVQAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 5,
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 66,
+        "image": "uL0Yay7GeBkAAP//WNAuxAAAAAZJREFUAwDi/0voydAqtAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 5,
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 61,
+        "image": "CPIH+n/V/wsAAP//BMh4XgAAAAZJREFUAwCTAlsyi4skVQAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 5,
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 147,
+        "image": "sLntQIIiRlH8AQAA///rLMKrAAAABklEQVQDALdF5nAYt3cwAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 146,
+        "image": "QG1JTIHaCvwCAAD//3boz6IAAAAGSURBVAMAC0Mrf6V1TjIAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 66,
+        "image": "uL0Yay7GeBkAAP//WNAuxAAAAAZJREFUAwDi/0voydAqtAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 5,
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 146,
+        "image": "QG1JTIHaCvwCAAD//3boz6IAAAAGSURBVAMAC0Mrf6V1TjIAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 148,
+        "image": "tqo4kNqBHwAAAP//UEQhpwAAAAZJREFUAwDfT69/WrbE1wAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 57,
+        "image": "qG3fUJOrp/8CAAD//4V9q6kAAAAGSURBVAMAfSJfQF8BgaoAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 57,
+        "image": "qG3fUJOrp/8CAAD//4V9q6kAAAAGSURBVAMAfSJfQF8BgaoAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 57,
+        "image": "qG3fUJOrp/8CAAD//4V9q6kAAAAGSURBVAMAfSJfQF8BgaoAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 57,
+        "image": "qG3fUJOrp/8CAAD//4V9q6kAAAAGSURBVAMAfSJfQF8BgaoAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 57,
+        "image": "qG3fUJOrp/8CAAD//4V9q6kAAAAGSURBVAMAfSJfQF8BgaoAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 57,
+        "image": "qG3fUJOrp/8CAAD//4V9q6kAAAAGSURBVAMAfSJfQF8BgaoAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 57,
+        "image": "qG3fUJOrp/8CAAD//4V9q6kAAAAGSURBVAMAfSJfQF8BgaoAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 57,
+        "image": "qG3fUJOrp/8CAAD//4V9q6kAAAAGSURBVAMAfSJfQF8BgaoAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 57,
+        "image": "qG3fUJOrp/8CAAD//4V9q6kAAAAGSURBVAMAfSJfQF8BgaoAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 57,
+        "image": "qG3fUJOrp/8CAAD//4V9q6kAAAAGSURBVAMAfSJfQF8BgaoAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 57,
+        "image": "qG3fUJOrp/8CAAD//4V9q6kAAAAGSURBVAMAfSJfQF8BgaoAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 57,
+        "image": "qG3fUJOrp/8CAAD//4V9q6kAAAAGSURBVAMAfSJfQF8BgaoAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 57,
+        "image": "qG3fUJOrp/8CAAD//4V9q6kAAAAGSURBVAMAfSJfQF8BgaoAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 6,
+        "image": "7ftSh44d/w8AAP//y8SRRAAAAAZJREFUAwDytwMmozyL6QAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 6,
+        "image": "7ftSh44d/w8AAP//y8SRRAAAAAZJREFUAwDytwMmozyL6QAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 6,
+        "image": "7ftSh44d/w8AAP//y8SRRAAAAAZJREFUAwDytwMmozyL6QAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 6,
+        "image": "7ftSh44d/w8AAP//y8SRRAAAAAZJREFUAwDytwMmozyL6QAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 60,
+        "image": "kvqMwyaP/wEAAP//fMEBdAAAAAZJREFUAwAmZ6l+ttsdsgAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 6,
+        "image": "7ftSh44d/w8AAP//y8SRRAAAAAZJREFUAwDytwMmozyL6QAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 6,
+        "image": "7ftSh44d/w8AAP//y8SRRAAAAAZJREFUAwDytwMmozyL6QAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 6,
+        "image": "7ftSh44d/w8AAP//y8SRRAAAAAZJREFUAwDytwMmozyL6QAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 55,
+        "image": "YAlDP9TpOe3wHwAA//9JuC1DAAAABklEQVQDAD8twFCOLtCQAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 55,
+        "image": "YAlDP9TpOe3wHwAA//9JuC1DAAAABklEQVQDAD8twFCOLtCQAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 15,
+        "image": "Bp7Bxn/P8B8AAAD//+Jy27QAAAAGSURBVAMA+fVK58r7UywAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 15,
+        "image": "Bp7Bxn/P8B8AAAD//+Jy27QAAAAGSURBVAMA+fVK58r7UywAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": 187,
+        "image": "+ZS5Lzw68D8AAAD//w5oCMQAAAAGSURBVAMAJvkGQd6vBVMAAAAASUVORK5CYII=",
+        "mapName": "prologueRitualIvory",
+        "baked": false
+      },
+      {
+        "name": "lavafall",
+        "texture": 188,
+        "image": "vvZ4PJr5/wEAAP//PVPJjAAAAAZJREFUAwAbnpzR6tcJXgAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "lavafall",
+        "texture": 189,
+        "image": "vvZ4PJr5/wEAAP//PVPJjAAAAAZJREFUAwAbnpzR6tcJXgAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "lavafall",
+        "texture": 190,
+        "image": "vvZ4PJr5/wEAAP//PVPJjAAAAAZJREFUAwAbnpzR6tcJXgAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "lavafall",
+        "texture": 191,
+        "image": "vvZ4PJr5/wEAAP//PVPJjAAAAAZJREFUAwAbnpzR6tcJXgAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "lavafall",
+        "texture": 192,
+        "image": "vvZ4PJr5/wEAAP//PVPJjAAAAAZJREFUAwAbnpzR6tcJXgAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decor",
+        "texture": 7,
+        "image": "GEswf3bofwAAAP//4PaJoAAAAAZJREFUAwC6ykrCJ2nSFQAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decor",
+        "texture": 15,
+        "image": "Bp7Bxn/P8B8AAAD//+Jy27QAAAAGSURBVAMA+fVK58r7UywAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decor",
+        "texture": 15,
+        "image": "Bp7Bxn/P8B8AAAD//+Jy27QAAAAGSURBVAMA+fVK58r7UywAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decor",
+        "texture": 187,
+        "image": "+ZS5Lzw68D8AAAD//w5oCMQAAAAGSURBVAMAJvkGQd6vBVMAAAAASUVORK5CYII=",
+        "mapName": "prologueRitualIvory",
+        "baked": false
+      },
+      {
+        "name": "decor",
+        "texture": 29,
+        "image": "8GKH55j7PwAAAP//U/z/iAAAAAZJREFUAwC/I7Homnc4qAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decor",
+        "texture": 14,
+        "image": "Ydm2dSil/A8AAP//5b3yYgAAAAZJREFUAwD+bOsniZan8gAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decor",
+        "texture": 34,
+        "image": "tUyDWZaMrwMAAP//ItQOwgAAAAZJREFUAwAbjOCoXyaBIgAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decorClutter",
+        "texture": 15,
+        "image": "Bp7Bxn/P8B8AAAD//+Jy27QAAAAGSURBVAMA+fVK58r7UywAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decorClutter",
+        "texture": 34,
+        "image": "tUyDWZaMrwMAAP//ItQOwgAAAAZJREFUAwAbjOCoXyaBIgAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decorClutter",
+        "texture": 29,
+        "image": "8GKH55j7PwAAAP//U/z/iAAAAAZJREFUAwC/I7Homnc4qAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decorClutter",
+        "texture": 6,
+        "image": "7ftSh44d/w8AAP//y8SRRAAAAAZJREFUAwDytwMmozyL6QAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decorClutter",
+        "texture": 7,
+        "image": "GEswf3bofwAAAP//4PaJoAAAAAZJREFUAwC6ykrCJ2nSFQAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decor",
+        "texture": 173,
+        "image": "gPVeu9Z2vtD/DwAA//+WJhTcAAAABklEQVQDALK+jeoAK9MFAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": true
+      },
+      {
+        "name": "decor",
+        "texture": 169,
+        "image": "inW6lWxuA8sQE0al6NPiS3iw/1ijO5DK8/QAERDfMsWrSAMAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": true
+      },
+      {
+        "name": "decor",
+        "texture": 193,
+        "image": "k7WJvpvpXwAAAP//hundAgAAAAZJREFUAwAh6KkZErONTQAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": true
+      },
+      {
+        "name": "decor",
+        "texture": 42,
+        "image": "XpL8inxU6P8DAAD//wkhbo4AAAAGSURBVAMAfuDJLlKODakAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decor",
+        "texture": 194,
+        "image": "10X1/rHnXwAAAP//X15DOgAAAAZJREFUAwCKhpwTiHTeywAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decorClutter",
+        "texture": 42,
+        "image": "XpL8inxU6P8DAAD//wkhbo4AAAAGSURBVAMAfuDJLlKODakAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decorClutter",
+        "texture": 187,
+        "image": "+ZS5Lzw68D8AAAD//w5oCMQAAAAGSURBVAMAJvkGQd6vBVMAAAAASUVORK5CYII=",
+        "mapName": "prologueRitualIvory",
+        "baked": false
+      },
+      {
+        "name": "decorClutter",
+        "texture": 31,
+        "image": "4Z9xs0/G2P8BAAD//zixFZoAAAAGSURBVAMAPmt4jOH8/MgAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decor",
+        "texture": 7,
+        "image": "GEswf3bofwAAAP//4PaJoAAAAAZJREFUAwC6ykrCJ2nSFQAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decor",
+        "texture": 195,
+        "image": "E1i25pu0/wcAAP//k1qmOQAAAAZJREFUAwDrn3XqU8TUTwAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decor",
+        "texture": 196,
+        "image": "Y+0eEZ+k8g8AAAD//0kEo+QAAAAGSURBVAMAQzuL6/hS7LwAAAAASUVORK5CYII=",
+        "mapName": "prologueChapelGlass",
+        "baked": false
+      },
+      {
+        "name": "decor",
+        "texture": 196,
+        "image": "Y+0eEZ+k8g8AAAD//0kEo+QAAAAGSURBVAMAQzuL6/hS7LwAAAAASUVORK5CYII=",
+        "mapName": "prologueChapelGlass",
+        "baked": false
+      },
+      {
+        "name": "decor",
+        "texture": 196,
+        "image": "Y+0eEZ+k8g8AAAD//0kEo+QAAAAGSURBVAMAQzuL6/hS7LwAAAAASUVORK5CYII=",
+        "mapName": "prologueChapelGlass",
+        "baked": false
+      },
+      {
+        "name": "decor",
+        "texture": 6,
+        "image": "7ftSh44d/w8AAP//y8SRRAAAAAZJREFUAwDytwMmozyL6QAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decor",
+        "texture": 6,
+        "image": "7ftSh44d/w8AAP//y8SRRAAAAAZJREFUAwDytwMmozyL6QAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decorClutter",
+        "texture": 14,
+        "image": "Ydm2dSil/A8AAP//5b3yYgAAAAZJREFUAwD+bOsniZan8gAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decor",
+        "texture": 169,
+        "image": "inW6lWxuA8sQE0al6NPiS3iw/1ijO5DK8/QAERDfMsWrSAMAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": true
+      },
+      {
+        "name": "decor",
+        "texture": 197,
+        "image": "9EZEc+D4PwAAAP///Hn7DAAAAAZJREFUAwAbwsf2czTvfgAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decor",
+        "texture": 169,
+        "image": "inW6lWxuA8sQE0al6NPiS3iw/1ijO5DK8/QAERDfMsWrSAMAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": true
+      },
+      {
+        "name": "decor",
+        "texture": 173,
+        "image": "gPVeu9Z2vtD/DwAA//+WJhTcAAAABklEQVQDALK+jeoAK9MFAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": true
+      },
+      {
+        "name": "decor",
+        "texture": 187,
+        "image": "+ZS5Lzw68D8AAAD//w5oCMQAAAAGSURBVAMAJvkGQd6vBVMAAAAASUVORK5CYII=",
+        "mapName": "prologueRitualIvory",
+        "baked": false
+      },
+      {
+        "name": "fireFlames",
+        "texture": 35,
+        "image": "R7TgzmJZf38AAAD//3GmBHIAAAAGSURBVAMArfWSO0gQGjEAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "fireEmbers",
+        "texture": 35,
+        "image": "R7TgzmJZf38AAAD//3GmBHIAAAAGSURBVAMArfWSO0gQGjEAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "prologueEmberHalo",
+        "texture": 199,
+        "image": "vFsC9T/DdwAAAP//jMEhXwAAAAZJREFUAwBW0q5h3Dga5wAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "prologueEmberPool",
+        "texture": 199,
+        "image": "vFsC9T/DdwAAAP//jMEhXwAAAAZJREFUAwBW0q5h3Dga5wAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "prologueChapelGlassSpill",
+        "texture": 200,
+        "image": "FvvvA4T99bL3BwAA//9yzhzeAAAABklEQVQDAEq6F1Dk6n2TAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "prologueVotiveFlame",
+        "texture": 201,
+        "image": "Dq0unOoW+iZ6AwAA//85Y5mXAAAABklEQVQDAGSBUdIprKVgAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "prologueVotiveFlame",
+        "texture": 201,
+        "image": "Dq0unOoW+iZ6AwAA//85Y5mXAAAABklEQVQDAGSBUdIprKVgAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "prologueVotiveFlame",
+        "texture": 201,
+        "image": "Dq0unOoW+iZ6AwAA//85Y5mXAAAABklEQVQDAGSBUdIprKVgAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "prologueVotiveFlame",
+        "texture": 201,
+        "image": "Dq0unOoW+iZ6AwAA//85Y5mXAAAABklEQVQDAGSBUdIprKVgAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "prologueVotiveFlame",
+        "texture": 201,
+        "image": "Dq0unOoW+iZ6AwAA//85Y5mXAAAABklEQVQDAGSBUdIprKVgAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "prologueVotiveFlame",
+        "texture": 201,
+        "image": "Dq0unOoW+iZ6AwAA//85Y5mXAAAABklEQVQDAGSBUdIprKVgAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "prologueVotiveFlame",
+        "texture": 201,
+        "image": "Dq0unOoW+iZ6AwAA//85Y5mXAAAABklEQVQDAGSBUdIprKVgAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "prologueVotiveFlame",
+        "texture": 201,
+        "image": "Dq0unOoW+iZ6AwAA//85Y5mXAAAABklEQVQDAGSBUdIprKVgAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "prologueVotiveFlame",
+        "texture": 201,
+        "image": "Dq0unOoW+iZ6AwAA//85Y5mXAAAABklEQVQDAGSBUdIprKVgAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      }
+    ]
+  },
+  "lifecycle": [
+    {
+      "cycle": 0,
+      "oldTextures": 10,
+      "cryptFloorTextures": 2,
+      "cryptFloorDisposed": 2,
+      "disposed": 10,
+      "taggedNextLevel": 0,
+      "reusedDisposedTextures": 0,
+      "flames": 1,
+      "textures": 60,
+      "images": 49,
+      "resident": 61
+    },
+    {
+      "cycle": 1,
+      "oldTextures": 10,
+      "cryptFloorTextures": 2,
+      "cryptFloorDisposed": 2,
+      "disposed": 10,
+      "taggedNextLevel": 0,
+      "reusedDisposedTextures": 0,
+      "flames": 1,
+      "textures": 60,
+      "images": 49,
+      "resident": 61
+    },
+    {
+      "cycle": 2,
+      "oldTextures": 10,
+      "cryptFloorTextures": 2,
+      "cryptFloorDisposed": 2,
+      "disposed": 10,
+      "taggedNextLevel": 0,
+      "reusedDisposedTextures": 0,
+      "flames": 1,
+      "textures": 60,
+      "images": 49,
+      "resident": 61
+    },
+    {
+      "cycle": 3,
+      "oldTextures": 10,
+      "cryptFloorTextures": 2,
+      "cryptFloorDisposed": 2,
+      "disposed": 10,
+      "taggedNextLevel": 0,
+      "reusedDisposedTextures": 0,
+      "flames": 1,
+      "textures": 60,
+      "images": 49,
+      "resident": 61
+    },
+    {
+      "cycle": 4,
+      "oldTextures": 10,
+      "cryptFloorTextures": 2,
+      "cryptFloorDisposed": 2,
+      "disposed": 10,
+      "taggedNextLevel": 0,
+      "reusedDisposedTextures": 0,
+      "flames": 1,
+      "textures": 60,
+      "images": 49,
+      "resident": 61
+    }
+  ]
+}

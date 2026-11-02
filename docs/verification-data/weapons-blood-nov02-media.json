@@ -1,0 +1,51 @@
+{
+  "combinedHTML": "5e5ceb0cb354945067ef71cfa5600fd9836a4236cf20258aff548bea3ec1a3cc",
+  "capture": {
+    "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\blood-weapons-nov02\\final\\combined-video-quiet\\page@1b305fdcbe6e0d457c24702b91eaad52.webm",
+    "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\release-blood-nov02\\final-combined\\THE-BLACK-SILENCE.html",
+    "inputSHA256": "5e5ceb0cb354945067ef71cfa5600fd9836a4236cf20258aff548bea3ec1a3cc",
+    "selected": [
+      4,
+      9
+    ],
+    "trimStart": 22.002,
+    "syncMarker": true,
+    "errors": [],
+    "audio": {
+      "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\blood-weapons-nov02\\final\\combined-video-quiet\\game-output.webm",
+      "bytes": 91253,
+      "duration": 5.671,
+      "startedAt": 21995.599999999627,
+      "sampleRate": 48000,
+      "contexts": 1
+    },
+    "scope": "Actual RAF weapon idle/fire/reload and post-volume WebAudio output. QA supplies selected weapons ammunition and removes enemies; real switching and R reload with uninterrupted native RAF."
+  },
+  "files": [
+    {
+      "name": "reload.webm",
+      "sha256": "514d18480355d147e7ef90304d1ca668102fbb26cb6468d23ad386bfe8c4a39c",
+      "origin": "actual finalcombined reload + WebAudio"
+    },
+    {
+      "name": "sniper-after.png",
+      "sha256": "87b9c06eb666da7fe8b27f7e1ddad786275be8ad385b9ecedf41e216f77720f4",
+      "origin": "actual finalcombined native capture"
+    },
+    {
+      "name": "sniper-before.png",
+      "sha256": "ae074fd9ef16d4877c4d30d651a1fb22453885065493ca56b62757859f08f458",
+      "origin": "baseline native capture"
+    },
+    {
+      "name": "stake-after.png",
+      "sha256": "cdff70a710a6d3343c8c320d5eab66b2ce2809c1a135b535d14e73eb6575c3de",
+      "origin": "actual finalcombined native capture"
+    },
+    {
+      "name": "stake-before.png",
+      "sha256": "2decc8ed3ee40701a43b734d8f03fed09a663257123e725dae2fc40479d552d0",
+      "origin": "baseline native capture"
+    }
+  ]
+}

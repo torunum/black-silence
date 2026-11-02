@@ -1,0 +1,25 @@
+{
+  "reviewer": "independent integration agent; did not author map changes",
+  "sourceSHA256": "99208d79415f9b2776836153c5b14ea1fea3be0d6e495ffd378f5d72389d4671",
+  "candidateSHA256": "7efcd339a5b6c1bd45accc4dc5da55a5b7cd680d49aa6318d83c1beac28cf4cb",
+  "reviewedViews": ["grave-side", "crypt-entry", "crypt-deep", "crypt-bay", "crypt-open", "arena", "arena-floor", "arena-focus", "bridge"],
+  "iterations": [
+    {"candidate":"v2correct","verdict":"Crypt floor/ribs meaningful; arena patch too coarse and disconnected; bright block-like skulls need correction."},
+    {"candidate":"v5","verdict":"Continuous hell paving resolves pasted carpet; inset broken ring belongs to arena. Bridge composition preserved."},
+    {"candidate":"v6","verdict":"Muted rounded skulls improve readability; crypt and arena accepted with remaining style limitations."}
+  ],
+  "finalRubric": {
+    "crypt":{"composition":2.5,"lighting":2.2,"materials":2.4,"details":0.7,"total":7.8},
+    "arena":{"composition":2.6,"lighting":2.4,"materials":2.3,"details":0.6,"total":7.9}
+  },
+  "rubricMaximums":{"composition":3,"lighting":3,"materials":3,"details":1,"total":10},
+  "remainingGaps":["Some pre-existing bone props remain flat and bright.","Repeated masonry texture and uniform warm crypt lighting remain less varied than the references.","No pixel-identical reference or universal 8+ quality claim."],
+  "sourceReview": {
+    "reviewed":"Full prologue diff and scope tool; independent rerun on immutable baseline and frozen source passed.",
+    "scope":"New ribs/ritual inlays, prologue-only coffin contents, crypt-depth bay contents, crypt and hell generated ground textures, construction-only baked light field and ritual-floor shading.",
+    "laterChapterSharedBuilders":"Coffin content gated by explicit prologue flags; non-crypt shared bays retain exact generated geometry.",
+    "noGameplayMapChanges":"Existing grid, heights, enemies, items, lights and other map descriptors exact after four decor/two flags/crypt ground allowlist.",
+    "runtimeLightClarification":"Added pyre light entry is used only while baking vertex colors, not a runtime PointLight."
+  },
+  "performance":"Measured separately by author; this visual review does not assert FPS gains."
+}

@@ -1,0 +1,7 @@
+{
+  "passed": true,
+  "beforeSHA256": "5f8c099867ca971387f21de80fecc9a83f6ab0b498b82ca153c2ccfe0d18514c",
+  "afterSHA256": "f9e13f3a7ebe5b26e8c129a152ebb03c0e6873719f4a98d0c0e59e949550fdbf",
+  "existingCombatBodyExact": true,
+  "scope": "Only new two-chamber metadata, pickup reserve accounting, and checkpoint overflow normalization before original combat body. Original damage, enemy health/stagger, kick, wall collisions and finisher code byte-exact."
+}

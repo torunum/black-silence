@@ -1,0 +1,23 @@
+{
+  "baselineCommit": "567328539d2719f8a23a5951ef89553b5836484b",
+  "baseline": "3d58959919c4b673aa7643dd1237ecaf98eb21654f89f87a5b007f7d745a69e9",
+  "finalSource": "3d8978803faac61859166ca2fd5e9a18267dd14d7c0ee7a873e851a5c00eb9c9",
+  "privateWeaponOnlyHTML": "af2c643a1376a1610fa693b354fccd3ab7fcaf1935b5b79698974b3aea1cd663",
+  "combinedHTML": "5e5ceb0cb354945067ef71cfa5600fd9836a4236cf20258aff548bea3ec1a3cc",
+  "scope": "Built from pristine baseline, replacing only Sniper4, Stake9 and their bounded presentation/distal sleeve support. Shotgun visual/model helpers all retained from baseline. No new image asset or audio changes.",
+  "installedSourceEqualsPrivate": true,
+  "selected": [
+    4,
+    9
+  ],
+  "unchangedWeapons": [
+    0,
+    1,
+    2,
+    3,
+    5,
+    6,
+    7,
+    8
+  ]
+}

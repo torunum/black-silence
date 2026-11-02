@@ -19,6 +19,11 @@ Gotik piksel FPS oyununun on silah, deri eldiven ve prologue cehennem bölümü 
 
 ## Bu sürüm
 
+2 Kasım Blood turu: Resmî Blood görselleri incelenerek kriptin taş döşemesi, nişleri ve kaburgalı tavan eşikleri; cehennemin taş zemini ve ateş çevresindeki aşınmış ritüel döşemesi geliştirildi. Kemikler mevcut dokularla çevreye daha iyi oturtuldu. [Gerçek görüntüler ve ölçümler](docs/blood-prologue-nov02.md), [Blood incelemesi](docs/blood-reference-study-nov02.md).
+
+Sniper ve Stake tutuşları/doldurma sunumu yeniden elden geçirildi. Shotgun görsel denemeleri ölçülen performans kaybı nedeniyle teslim sürümüne alınmadı. Shotgun artık modelindeki iki hazneye uygun iki fişek taşıyor; eski kontrol noktasındaki fazla fişekler yedeğe korunuyor. [Cephane davranışı ve testler](docs/shotgun-capacity-nov02.md). Handgun ve önceki Rifle/Tommy tutuşları korundu. Hedef görsellerle birebir eşitlik iddiası yoktur.
+
+
 2 Kasım: GitHub main dalı kontrol edilip son sürüm temel alındı. DreamLoop karşılaştırmalarıyla cehennem köprüsü koyu taş döşeme ve kesintili kakmalar, lav çıkışları katmanlı taş biçimleri, ana nef ve arena daha belirgin sivri tonozlar kazandı. [Gerçek önce/sonra ve ölçümler](docs/hell-causeway-nov02.md).
 
 Rifle ve Tommy'nin sağ eli kendi referans çizimindeki tutuşla yeniden kuruldu; açık tetik korkulukları, Sniper/Stake temasları, Soul kemik kafesi ve Shotgun namlu vurguları düzeltildi. Altı silah değişti; Handgun, Cross, Nail ve Dynamite bu tur korundu. On silahın oynanış kontrolleri geçti. [Silah kanıtları ve sınırlar](docs/weapons-dreamloop-nov02.md). Hedefe yaklaşıldı; bütün silahların ve haritanın örnekle birebir olduğu iddia edilmez.

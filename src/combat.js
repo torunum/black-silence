@@ -1,6 +1,44 @@
 // Combat upgrade. The original bundle remains intact; these bindings extend its
 // public-in-module functions before the game initializes. Units are world metres.
 (() => {
+  // The break-action model has two chambers. Keep acquired/checkpoint ammunition
+  // when reducing its former five-round capacity, rather than discarding rounds.
+  yu[1].magSize = Th[1].magSize = 2;
+  const normalizeShotgun = () => {
+    const overflow = T.mag[1] - 2;
+    if (overflow > 0) {
+      T.mag[1] = 2;
+      T.ammo.shells += overflow;
+    }
+  };
+  normalizeShotgun();
+  const restoreInventory = lk;
+  lk = function (...args) {
+    const result = restoreInventory.apply(this, args);
+    normalizeShotgun();
+    return result;
+  };
+  const collectItems = G$;
+  const takenShotguns = () => {
+    let count = 0;
+    for (let i = 0; i < v.items.length; i++)
+      if (v.items[i].kind === "w1" && v.items[i].taken) count++;
+    return count;
+  };
+  G$ = function (dt) {
+    const owned = T.weapons[1];
+    const before = takenShotguns();
+    const result = collectItems.call(this, dt);
+    // Native collection marks records as taken; it removes only their sprites.
+    const collected = takenShotguns() - before;
+    // Native pickup now loads at most two and grants two reserve shells. Keep
+    // the old five-shell reserve grant; first acquisition keeps nine in total.
+    // Owned weapons top up only their actual two chambers (no virtual magazine).
+    if (collected) T.ammo.shells += collected * 3 + (owned ? 0 : 2);
+    normalizeShotgun();
+    return result;
+  };
+
   // 23% admits the zombie's 20HP remainder after two pistol body shots (or
   // one headshot), and 16HP after a full shotgun volley, without saving kills.
   const balance = {

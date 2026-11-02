@@ -58,7 +58,8 @@ result.zones.themes.forEach((theme,i)=>{
   if(theme.id==='crypt') {
     assert.equal(theme.wall,'prologueCryptStone','Crypt stone wall is scoped');
     assert.equal(theme.band,'prologueCryptStone','Crypt courses reuse the scoped stone');
-    const unchanged={...theme}; delete unchanged.wall; delete unchanged.band;
+    assert.equal(theme.ground,'prologueCryptFloor','Crypt flagstones are scoped');
+    const unchanged={...theme}; delete unchanged.wall; delete unchanged.band; delete unchanged.ground;
     assert.deepEqual(unchanged,baseline.zones.themes[i],'Other crypt theme properties preserved');
   } else if(theme.id!=='hell')assert.deepEqual(theme,baseline.zones.themes[i],'Other chapter themes preserved');
   else {

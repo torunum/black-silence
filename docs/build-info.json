@@ -1,28 +1,29 @@
 {
   "passed": true,
-  "bytes": 24901782,
-  "sha256": "3d58959919c4b673aa7643dd1237ecaf98eb21654f89f87a5b007f7d745a69e9",
+  "bytes": 24914672,
+  "sha256": "5e5ceb0cb354945067ef71cfa5600fd9836a4236cf20258aff548bea3ec1a3cc",
   "engineSha256": "6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899",
   "villageSha256": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627",
   "moduleHashes": {
     "materials.js": "05e43b45ce521b52cf4d7b172177984699670d9de1261de5f88bf11f42b45517",
-    "combat.js": "5f8c099867ca971387f21de80fecc9a83f6ab0b498b82ca153c2ccfe0d18514c",
+    "combat.js": "f9e13f3a7ebe5b26e8c129a152ebb03c0e6873719f4a98d0c0e59e949550fdbf",
     "enemy-animation.js": "977a4a425dedb5a48cce43592986a058f1c390641f529660f048dd71a9be0d3e",
-    "viewmodels.js": "25c82ff3c3f1e0fadf97a7adb2ba04b1771f7be24ac3550e549ecb38e55f5797",
+    "viewmodels.js": "3d8978803faac61859166ca2fd5e9a18267dd14d7c0ee7a873e851a5c00eb9c9",
     "finishers.js": "8c2c7bdf13e17005c3383054560b155986d8e706b5bfda81e9f1a8224ee3c5b0",
     "reload-audio-data.js": "2f48b10a1225d1c007ee282d3c18f82c5022bb0267ed86d65feadf819ec1be30",
     "reload-audio.js": "6b63eec006c8f7ee98392f323f630879140948f24165ab72b308bfb4b4d6be16",
     "zombie-audio.js": "bc974fbebcfeb7719ca785ca021af6bf7de465e2f0236b94b0b87f9f4525e7df",
-    "prologue.js": "49647fbb295457cd5afec600420ebe1e2d32977b7a4cab8d4a6e7cdbbcd62c3c",
+    "prologue.js": "44369f2a1f6f455992cc9d3bdc647bab32ccd290f97008f5413a2e81e6b1f547",
     "render-warmup.js": "84db971283d86b0cbea7d0181eb3d48d40924936c5d577ab05fd31ca4b7e755c",
     "village-presentation.js": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627"
   },
   "idempotentBuilds": 2,
   "invalidInputsRefusedWithoutWrite": 8,
   "file": "THE-BLACK-SILENCE.html",
-  "verifiedAt": "2026-11-02T13:59:45.981Z",
-  "previousRelease": "17ebe0d27fdcef2eea80b54fbc68ebf0cfa96b51c0244bd2a56e85ac22155d61",
-  "scope": "DreamLoop revision of hell causeway/cascade/vaults and six weapons; reference-derived Rifle/Tommy grasps; handgun/Cross/Nail/Dynamite preserved.",
+  "verifiedAt": "2026-11-02T15:57:20.190Z",
+  "previousRelease": "3d58959919c4b673aa7643dd1237ecaf98eb21654f89f87a5b007f7d745a69e9",
+  "baselineCommit": "567328539d2719f8a23a5951ef89553b5836484b",
+  "scope": "Blood-informed prologue crypt/hell materials and room details; scoped bone material polish; Sniper/Stake viewmodels; two-chamber shotgun inventory consistency.",
   "verificationReports": [
     {
       "file": "docs/verification-data/arsenal-nov02-aspects.json",
@@ -43,6 +44,82 @@
     {
       "file": "docs/verification-data/arsenal-nov02-source-scope.json",
       "sha256": "e5d1b632a1e7d574edf7325b26f23dd2d75240f23873783977970e595a2a0615"
+    },
+    {
+      "file": "docs/verification-data/blood-nov02-final-map-lifecycle.json",
+      "sha256": "c70fc90be5a79b74ab33f5403505615a454811073a89fb239fd9415ce8638825"
+    },
+    {
+      "file": "docs/verification-data/blood-nov02-final-map-performance.json",
+      "sha256": "1acc05b144916029c3940666b6687707a69d5de6f31ba5b91a240dbfc47fa882"
+    },
+    {
+      "file": "docs/verification-data/blood-nov02-final-navigation.json",
+      "sha256": "89f71a0b28774f87a3bc0fe4da48ecb297092465d9f9420cf64de8bad1eefb18"
+    },
+    {
+      "file": "docs/verification-data/blood-nov02-final-runtime.json",
+      "sha256": "8e21a330dccecfe87d8310c0d78aa14836494417d456fab325c86b8b349bd868"
+    },
+    {
+      "file": "docs/verification-data/blood-nov02-fresh-review.json",
+      "sha256": "abc40412fb159d0a7edc53c3b4988c9431b138e44f5e2fcb5c44ba1785a3de6f"
+    },
+    {
+      "file": "docs/verification-data/blood-nov02-map-independent-review.json",
+      "sha256": "55ff11ab24d48944677d8509343b3212c57ab2caa2626e5147088fc6c8b616e6"
+    },
+    {
+      "file": "docs/verification-data/blood-nov02-map-independent-scope.json",
+      "sha256": "398afbc6a53052fa912b7a9533f17fa37895a8d1d7addc553b3469a721d62e3b"
+    },
+    {
+      "file": "docs/verification-data/blood-nov02-map-polish-bones.json",
+      "sha256": "7e46d9eba83af783a39ef40705fe64c0c42385bbe29969c0e1b5909e0c9438b0"
+    },
+    {
+      "file": "docs/verification-data/blood-nov02-map-polish-lifecycle.json",
+      "sha256": "b85c7d3b7c50468ec47f06e97bad389724c6e12c5186968869a0a17fd3a1a2ea"
+    },
+    {
+      "file": "docs/verification-data/blood-nov02-map-polish-provenance.json",
+      "sha256": "d16ec042d1a9baea0ba8cbaf0fd2dd997aee2032bdd402d8c94bdb4549e6e57a"
+    },
+    {
+      "file": "docs/verification-data/blood-nov02-map-polish-scope.json",
+      "sha256": "9cdf2d2ff0564f4b07d04751694b73721e7156844793181fa792f61f5bc5df54"
+    },
+    {
+      "file": "docs/verification-data/blood-nov02-shotgun-capacity.json",
+      "sha256": "9370b8e794cf7a1562eea4ece62f1e5c793dd3791912348049382478235d8039"
+    },
+    {
+      "file": "docs/verification-data/blood-nov02-shotgun-scope.json",
+      "sha256": "6e21567ad8852f4ded05e279e6295cf23257cb73c787ad972e0b644a5ecdcf0a"
+    },
+    {
+      "file": "docs/verification-data/blood-prologue-nov02-baseline.json",
+      "sha256": "c91ea546d816d9dc8bcdfa73ce69fb5323e25568f1663df5cc5c7c097c00a76c"
+    },
+    {
+      "file": "docs/verification-data/blood-prologue-nov02-clearance.json",
+      "sha256": "f2b34cf08d7bce321401ed4022e01ae1caec41f1391c5fd5a43977800394d009"
+    },
+    {
+      "file": "docs/verification-data/blood-prologue-nov02-lifecycle.json",
+      "sha256": "0a927900bc229b42f5ac978c883b48d154c240a515b57ff86568a8c09e7ffbe7"
+    },
+    {
+      "file": "docs/verification-data/blood-prologue-nov02-navigation.json",
+      "sha256": "606fb4679a451195150433ca7ae068d62a2813114dfb8f6fb433d599f3fa1bd6"
+    },
+    {
+      "file": "docs/verification-data/blood-prologue-nov02-performance.json",
+      "sha256": "22586ecb5b276be2995f18ae2349f8555e9c3e4b50bf43f90d03786f1f904848"
+    },
+    {
+      "file": "docs/verification-data/blood-prologue-nov02-scope.json",
+      "sha256": "a5a0509e2181720a58f34bc85bd8291d54bf83168410c7b973d551a24e0f3b34"
     },
     {
       "file": "docs/verification-data/dreamloop-nov02-build.json",
@@ -79,6 +156,34 @@
     {
       "file": "docs/verification-data/hell-causeway-nov02-scope.json",
       "sha256": "637fd2cefea637b2cff40503fea7a845ff62064c049a566b622eb4d4cd34c6fd"
+    },
+    {
+      "file": "docs/verification-data/weapons-blood-nov02-media.json",
+      "sha256": "8762bd958df110dd2d269205d6921d74d2d251211a8da7f47baf7329302f4824"
+    },
+    {
+      "file": "docs/verification-data/weapons-blood-nov02-parity.json",
+      "sha256": "c98ee65efff31b379a9c108cef3bf104d38239edc50b8b45c71123f05d33662a"
+    },
+    {
+      "file": "docs/verification-data/weapons-blood-nov02-performance.json",
+      "sha256": "d6b085e23f6d1bbf29c7e75f86ea3e1b3bb2dadc3782e372ed7d0a3ebc0b7694"
+    },
+    {
+      "file": "docs/verification-data/weapons-blood-nov02-presentation.json",
+      "sha256": "be55240a44e18bc0092709f8cc2f305c99467175fd77af913d0b063a6dfefd66"
+    },
+    {
+      "file": "docs/verification-data/weapons-blood-nov02-reference-motion.json",
+      "sha256": "e68c8d88768f202e00b195aee5de32dba4778293c50809c92c290a81f263e775"
+    },
+    {
+      "file": "docs/verification-data/weapons-blood-nov02-source.json",
+      "sha256": "5edfeed51a9cd90df1b9ea71f3967367e7caf88f543d1eb6878b43459a3adea8"
+    },
+    {
+      "file": "docs/verification-data/weapons-blood-nov02-video-capture.json",
+      "sha256": "5045d55d8d76a82a4aa90f259487b205d7dce91df7718b0e5f0ef6d7842054bd"
     }
   ]
 }

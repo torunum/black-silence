@@ -1,0 +1,370 @@
+{
+  "reviewer": "blood_pass_fresh_judge",
+  "dateUTC": "2026-11-02",
+  "scope": "Independent full native image and source review. No source edits, gameplay/performance runs, build, commit or push. Visual acceptance is scoped to supplied private candidates, not final combined release.",
+  "status": "Accepted map bone-only polish and final Sniper/Stake visual scope. All Shotgun visual experiments rejected for shipment by root performance gate; Shotgun visual source restored to baseline.",
+  "rubric": {
+    "composition": 3,
+    "lighting": 3,
+    "materials": 3,
+    "details": 1,
+    "note": "Subjective independent judgments; no averaging with other reviewers or minimum-score inflation."
+  },
+  "referenceFilesViewed": [
+    "C:/Users/tehlike47/game/assets/hell/reference-target.png",
+    "C:/Users/tehlike47/game/assets/weapon-reference/shotgun-target-v1.png",
+    "C:/Users/tehlike47/game/assets/weapon-reference/arsenal-target-2-5-v1.png",
+    "C:/Users/tehlike47/game/assets/weapon-reference/arsenal-target-6-9-v1.png"
+  ],
+  "map": {
+    "original": {
+      "sourceSHA256": "99208d79415f9b2776836153c5b14ea1fea3be0d6e495ffd378f5d72389d4671",
+      "candidateSHA256": "7efcd339a5b6c1bd45accc4dc5da55a5b7cd680d49aa6318d83c1beac28cf4cb",
+      "viewedFiles": [
+        "C:/Users/tehlike47/game/docs/blood-prologue-nov02/before-crypt-deep.png",
+        "C:/Users/tehlike47/game/docs/blood-prologue-nov02/after-crypt-deep.png",
+        "C:/Users/tehlike47/game/docs/blood-prologue-nov02/after-crypt-open.png",
+        "C:/Users/tehlike47/game/docs/blood-prologue-nov02/before-arena.png",
+        "C:/Users/tehlike47/game/docs/blood-prologue-nov02/after-arena.png",
+        "C:/Users/tehlike47/game/docs/blood-prologue-nov02/before-grave-side.png",
+        "C:/Users/tehlike47/game/docs/blood-prologue-nov02/after-grave-side.png"
+      ],
+      "scores": {
+        "crypt": {
+          "composition": 2.3,
+          "lighting": 2.2,
+          "materials": 2.2,
+          "details": 0.6,
+          "total": 7.3
+        },
+        "arena": {
+          "composition": 2.4,
+          "lighting": 2.3,
+          "materials": 2.1,
+          "details": 0.6,
+          "total": 7.4
+        },
+        "grave": {
+          "composition": 2,
+          "lighting": 2,
+          "materials": 1.9,
+          "details": 0.6,
+          "total": 6.5
+        }
+      },
+      "finding": "Positive localized delta: floor scale belongs to masonry, crypt ribs add depth, burial niches establish purpose, arena paving integrates more naturally. No screenshot-visible route obstruction. Grave coffin still reads shallow tray.",
+      "gaps": [
+        "Crypt warmth remains fairly uniform.",
+        "Bones remain geometrically primitive and niche skulls sparse against textured surroundings.",
+        "Arena mid-distance paving has speckling; focal separation changes little.",
+        "Reference cathedral has substantially richer vertical hierarchy and warm/cool separation."
+      ]
+    },
+    "rejectedPolish": {
+      "sourceSHA256": "569c16879fc038a37dc8428db8550848248ff364e856728eca689d28a32c61d2",
+      "candidateSHA256": "2ea704cb09a3c04a804336373ecfd12fc7b633f384369d6135720f8ce92fd7a5",
+      "viewedFiles": [
+        "C:/Users/tehlike47/game/.dream-loop/release-blood-nov02/map-polish-v2-capture/before-grave-side.png",
+        "C:/Users/tehlike47/game/.dream-loop/release-blood-nov02/map-polish-v2-capture/before-crypt-deep.png",
+        "C:/Users/tehlike47/game/.dream-loop/release-blood-nov02/map-polish-v2-capture/before-arena-focus.png",
+        "C:/Users/tehlike47/game/.dream-loop/release-blood-nov02/map-polish-v2-capture/before-arena-floor.png",
+        "C:/Users/tehlike47/game/.dream-loop/release-blood-nov02/map-polish-v2-capture/before-grave.png",
+        "C:/Users/tehlike47/game/.dream-loop/release-blood-nov02/map-polish-v2-capture/before-crypt-open.png"
+      ],
+      "comparisonExtraFiles": [
+        "C:/Users/tehlike47/game/.dream-loop/blood-map-nov02/v6/after-grave.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-map-nov02/v6/after-arena-focus.png"
+      ],
+      "finding": "Reject coffin geometry: enlarged displaced slab dominates foreground, partly hides candles, cavity remains ambiguous. Accept bone material only as small integration improvement."
+    },
+    "acceptedBoneOnly": {
+      "sourceSHA256": "44369f2a1f6f455992cc9d3bdc647bab32ccd290f97008f5413a2e81e6b1f547",
+      "candidateSHA256": "38f1fb1bcff2c68f58a4581d4b77e865f2899a68e62094eddcb38bec96d89f66",
+      "viewedFiles": [
+        "C:/Users/tehlike47/game/.dream-loop/release-blood-nov02/map-polish-final-capture/after-grave-side.png",
+        "C:/Users/tehlike47/game/.dream-loop/release-blood-nov02/map-polish-final-capture/after-crypt-deep.png",
+        "C:/Users/tehlike47/game/.dream-loop/release-blood-nov02/map-polish-final-capture/after-arena-focus.png",
+        "C:/Users/tehlike47/game/.dream-loop/release-blood-nov02/map-polish-final-capture/after-arena.png"
+      ],
+      "scores": {
+        "crypt": {
+          "composition": 2.3,
+          "lighting": 2.2,
+          "materials": 2.3,
+          "details": 0.6,
+          "total": 7.4
+        },
+        "arena": {
+          "composition": 2.4,
+          "lighting": 2.3,
+          "materials": 2.2,
+          "details": 0.6,
+          "total": 7.5
+        },
+        "grave": {
+          "composition": 2,
+          "lighting": 2,
+          "materials": 1.9,
+          "details": 0.6,
+          "total": 6.5
+        }
+      },
+      "finding": "Original coffin restored. Material remap makes native bones less chalk-white and better integrated; no sculptural improvement claimed.",
+      "proofCaveat": "Final after-arena-focus has unmatched strong right-column glow. Arena +0.1 materials judgment uses matched polish-v2 focus frame; final bright frame unsuitable for matched comparison. Author notified to replace or omit. Later viewed after-arena.png from same final candidate: quiet wider view is acceptable proof and preserves bone/material judgment."
+    }
+  },
+  "weapons": {
+    "v4": {
+      "sourceSHA256": "4c9c5a3a8239f17c20e9455f4853ee03e71d7951407a5833ea29ae1d59a742e1",
+      "candidateSHA256": "89070be886cfbce76fd65739260b2c4ec7645954936890e983c13995af2ddf12",
+      "verdict": "Rejected",
+      "blockers": [
+        "Rifle trigger hand/cuff ends within viewport at mid-reload; actual regression vs baseline.",
+        "Rifle support sleeve cuts above bottom in some aspects after whole canvas translation.",
+        "Stake right wrist ends inside ultrawide viewport at phases 0.18 and 0.88.",
+        "Retracted rifle bolt head/shaft visually disconnected from receiver."
+      ],
+      "viewedFiles": [
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v4/motion/weapon-1-1280x720-idle.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v4/motion/weapon-1-1280x720-0.18.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v4/motion/weapon-1-1280x720-0.5.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v4/motion/weapon-1-1280x720-0.88.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v4/motion/weapon-4-1280x720-idle.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v4/motion/weapon-4-1280x720-0.18.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v4/motion/weapon-4-1280x720-0.5.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v4/motion/weapon-4-1280x720-0.88.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v4/motion/weapon-9-1280x720-idle.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v4/motion/weapon-9-1280x720-0.18.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v4/motion/weapon-9-1280x720-0.5.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v4/motion/weapon-9-1280x720-0.88.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v4/motion/weapon-1-1024x768-0.5.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v4/motion/weapon-1-1680x720-0.5.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v4/motion/weapon-4-1024x768-0.5.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v4/motion/weapon-4-1680x720-0.5.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v4/motion/weapon-9-1024x768-0.88.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v4/motion/weapon-9-1680x720-0.88.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v4/motion/weapon-1-1680x720-idle.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v4/motion/weapon-1-1680x720-0.18.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v4/motion/weapon-1-1680x720-0.88.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v4/motion/weapon-4-1680x720-idle.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v4/motion/weapon-9-1680x720-idle.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v4/motion/weapon-9-1680x720-0.18.png"
+      ],
+      "baselineComparisonFiles": [
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/before-motion/weapon-4-1280x720-0.5.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/before-motion/weapon-9-1280x720-0.18.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/before-motion/weapon-1-1280x720-0.18.png"
+      ]
+    },
+    "v6": {
+      "sourceSHA256": "45bd42cfa7ba6df311ec4246209a89090fe026a6e36cb3151cda247e615ca357",
+      "candidateSHA256": "a9135ae8285efda100a919db3c307c9bd0f1ae785151858e46ec4fe783385429",
+      "finding": "Viewed prior failure poses at three aspects: sleeve continuity and bolt guide resolve V4 blockers.",
+      "viewedFiles": [
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v6/motion/weapon-4-1280x720-0.5.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v6/motion/weapon-4-1680x720-0.5.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v6/motion/weapon-9-1680x720-0.18.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v6/motion/weapon-9-1680x720-0.88.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v6/motion/weapon-1-1280x720-0.18.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v6/motion/weapon-1-1280x720-0.5.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v6/motion/weapon-1-1680x720-0.88.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v6/motion/weapon-4-1024x768-0.5.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v6/motion/weapon-4-1280x720-0.18.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v6/motion/weapon-4-1280x720-0.88.png"
+      ]
+    },
+    "v7": {
+      "sourceSHA256": "ac85932f2895734b29ca666e0fc3619f47ee8f6cd94b10a2d6b631cbd11171cf",
+      "candidateSHA256": "e00fb7d20047497348edcfdb2c4a7d8f3ec41430c828ee8b9b8ddf3b507447ad",
+      "verdict": "Rejected stake UV change; accepted unchanged sleeve and mechanism fixes",
+      "denseViewedFiles": [
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/dense-final/weapon-1-1280x720-0.04.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/dense-final/weapon-1-1280x720-0.12.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/dense-final/weapon-1-1280x720-0.22.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/dense-final/weapon-1-1280x720-0.3.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/dense-final/weapon-1-1280x720-0.4.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/dense-final/weapon-1-1280x720-0.5.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/dense-final/weapon-1-1280x720-0.59.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/dense-final/weapon-1-1280x720-0.67.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/dense-final/weapon-1-1280x720-0.75.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/dense-final/weapon-1-1280x720-0.84.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/dense-final/weapon-1-1280x720-0.94.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/dense-final/weapon-4-1280x720-0.04.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/dense-final/weapon-4-1280x720-0.12.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/dense-final/weapon-4-1280x720-0.22.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/dense-final/weapon-4-1280x720-0.3.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/dense-final/weapon-4-1280x720-0.4.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/dense-final/weapon-4-1280x720-0.5.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/dense-final/weapon-4-1280x720-0.59.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/dense-final/weapon-4-1280x720-0.67.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/dense-final/weapon-4-1280x720-0.75.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/dense-final/weapon-4-1280x720-0.84.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/dense-final/weapon-4-1280x720-0.94.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/dense-final/weapon-9-1280x720-0.04.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/dense-final/weapon-9-1280x720-0.12.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/dense-final/weapon-9-1280x720-0.22.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/dense-final/weapon-9-1280x720-0.3.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/dense-final/weapon-9-1280x720-0.4.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/dense-final/weapon-9-1280x720-0.5.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/dense-final/weapon-9-1280x720-0.59.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/dense-final/weapon-9-1280x720-0.67.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/dense-final/weapon-9-1280x720-0.75.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/dense-final/weapon-9-1280x720-0.84.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/dense-final/weapon-9-1280x720-0.94.png"
+      ],
+      "video": "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/reload.webm",
+      "decodedVideoViewedFiles": [
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/judge-video-frames/frame-008.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/judge-video-frames/frame-013.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/judge-video-frames/frame-018.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/judge-video-frames/frame-025.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/judge-video-frames/frame-030.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/judge-video-frames/frame-035.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/judge-video-frames/frame-040.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/judge-video-frames/frame-045.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/judge-video-frames/frame-050.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/judge-video-frames/frame-055.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/judge-video-frames/frame-060.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/judge-video-frames/frame-065.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v7/judge-video-frames/frame-068.png"
+      ],
+      "videoMethod": "Decoded at nominal 8 fps with existing FFmpeg; viewed full frames, not cropped contact sheets. This is sampled visual evidence from actual timed recording, not real-time playback or audio listening.",
+      "finding": "33 dense native reload-phase frames show legible shotgun open/eject/insert/close cycle and connected rifle magazine/bolt sequence. Rifle right bolt-grasp is near bottom edge but fingers reach knob. Stake V7 shaft UV sampled gold rivets/receiver ornament and removed pale point, producing detached duplicate fore-stock look."
+    },
+    "v8": {
+      "sourceSHA256": "4adc3719788dced3276e3f85bb543d245c7bbfbd169318f7390d9a04507034eb",
+      "candidateSHA256": "6034e9f43c35d1bc5728b673eae9544617761cfae232940edae226df1853b6cc",
+      "verdict": "Visual delta acceptable, pending successor overscan border checks and separate runtime/parity/performance gates.",
+      "denseViewedFiles": [
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v8/dense/weapon-9-1280x720-0.04.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v8/dense/weapon-9-1280x720-0.12.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v8/dense/weapon-9-1280x720-0.22.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v8/dense/weapon-9-1280x720-0.3.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v8/dense/weapon-9-1280x720-0.4.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v8/dense/weapon-9-1280x720-0.5.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v8/dense/weapon-9-1280x720-0.59.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v8/dense/weapon-9-1280x720-0.67.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v8/dense/weapon-9-1280x720-0.75.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v8/dense/weapon-9-1280x720-0.84.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v8/dense/weapon-9-1280x720-0.94.png"
+      ],
+      "finding": "Clean wooden shaft and pale sharpened point restore recognizable stake; receiver hardware stays fixed. All 11 dense stake phases viewed. No new disconnected hand observed.",
+      "scores": {
+        "shotgun": {
+          "composition": 2.4,
+          "lighting": 2.3,
+          "materials": 2.4,
+          "details": 0.7,
+          "total": 7.8
+        },
+        "rifle": {
+          "composition": 2.2,
+          "lighting": 2.3,
+          "materials": 2.2,
+          "details": 0.7,
+          "total": 7.4
+        },
+        "stake": {
+          "composition": 2.3,
+          "lighting": 2.3,
+          "materials": 2.4,
+          "details": 0.7,
+          "total": 7.7
+        }
+      },
+      "remainingPolish": [
+        "Rifle right forearm is narrow/straight with angular cuff join.",
+        "Rifle bolt-grasp remains close to viewport bottom rather than prominently visible.",
+        "Some material surfaces remain planar/atlas-like despite retained approved style."
+      ]
+    },
+    "v10": {
+      "sourceSHA256": "46c66c0255aeb09116fc9cc8a9301e1cba2bc65c609802d0e3f9a1cb6dca5c6c",
+      "candidateSHA256": "f9439e92dab017f5eb7194936061deb38f423f1b644c638ec3f134c71a1ba9f5",
+      "verdict": "Accept scoped visual delta. No further visual source change requested.",
+      "codeDiff": "Independently read git diff --no-index V8 to V10: exactly one bottom overscan calculation changed. No palm, mechanism, timing or UV delta.",
+      "viewedFiles": [
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v10/motion/weapon-4-1024x768-0.5.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v10/motion/weapon-9-1024x768-0.88.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v10/motion/weapon-1-1024x768-0.5.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v10/motion/weapon-1-1024x768-0.88.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v10/motion/weapon-4-1280x720-0.5.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v10/motion/weapon-9-1280x720-0.88.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v10/motion/weapon-1-1280x720-0.5.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v10/motion/weapon-1-1280x720-0.88.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v10/motion/weapon-4-1680x720-0.5.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v10/motion/weapon-9-1680x720-0.88.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v10/motion/weapon-1-1680x720-0.5.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v10/motion/weapon-1-1680x720-0.88.png"
+      ],
+      "finding": "All 12 requested full native border poses retain sleeve continuity after overscan reduction. No restored right wrist stump, support sleeve cutoff or bolt gap. V8 scores and polish limitations retained."
+    },
+    "v14": {
+      "sourceSHA256": "6dda202b7f1d42f2262de870f9fac2fb7ef7a45e1200cdb4744f0f94c9425eb7",
+      "candidateSHA256": "7e46aa909eabfffbda51318bcd6623367563f1ce4a2b4d818ffdc854c14ad704",
+      "verdict": "Accept scoped visual fallback; unresolved measured performance cost is not approved by this visual review.",
+      "codeDiff": "Independently read V10 to V14: exactly three changes, removing Shotgun from canvas lift and bottom overscan and restoring hold pitch .41 from .53. No V11/V12 clipping or scissor code remains. Sniper/Stake source unchanged.",
+      "viewedFiles": [
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v14/motion/weapon-1-1024x768-idle.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v14/motion/weapon-1-1024x768-0.18.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v14/motion/weapon-1-1024x768-0.5.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v14/motion/weapon-1-1024x768-0.88.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v14/motion/weapon-1-1280x720-idle.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v14/motion/weapon-1-1280x720-0.18.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v14/motion/weapon-1-1280x720-0.5.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v14/motion/weapon-1-1280x720-0.88.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v14/motion/weapon-1-1680x720-idle.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v14/motion/weapon-1-1680x720-0.18.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v14/motion/weapon-1-1680x720-0.5.png",
+        "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/v14/motion/weapon-1-1680x720-0.88.png"
+      ],
+      "finding": "All 12 native frames retain forearm border continuity, shell-pair/loading-hand attachment, twin breech legibility and closing regrip. Mid-reload lower part of gun exits viewport under restored original framing. Claim compact twin-chamber/mechanical improvement, not framing improvement.",
+      "shotgunScore": {
+        "composition": 2.3,
+        "lighting": 2.3,
+        "materials": 2.4,
+        "details": 0.7,
+        "total": 7.7
+      },
+      "remainingPolish": "Rifle and Stake V8 scores/limitations remain. No final V14 timed video was reviewed; earlier native-cycle evidence describes V7, with current Shotgun framing covered by these fixed-pose checks.",
+      "shipmentDecision": "Rejected for shipment by root: repeat Shotgun reload measured 50.57 FPS versus 55.86 FPS baseline. Scoped visual acceptance above is historical, not shipped approval."
+    },
+    "final": {
+      "sourceSHA256": "3d8978803faac61859166ca2fd5e9a18267dd14d7c0ee7a873e851a5c00eb9c9",
+      "candidateSHA256": "af2c643a1376a1610fa693b354fccd3ab7fcaf1935b5b79698974b3aea1cd663",
+      "sourcePath": "C:/Users/tehlike47/game/.dream-loop/blood-weapons-nov02/final/viewmodels.js",
+      "verdict": "Accept previously viewed Sniper and Stake visual changes only. Shotgun visual changes not shipping.",
+      "independentScopeCheck": {
+        "method": "Read final source diff and independently reversed the two changed weapon blocks plus scoped compositor/presentation changes in memory, then compared remainder to baseline. No source mutation.",
+        "remainderByteExactBaseline": true,
+        "sniperDrawByteExactAcceptedV10": true,
+        "stakeRigByteExactAcceptedV10": true,
+        "shotgunPresentationGuardExcluded": true,
+        "shotgunBottomOverscanExcluded": true
+      },
+      "scores": {
+        "rifle": {
+          "composition": 2.2,
+          "lighting": 2.3,
+          "materials": 2.2,
+          "details": 0.7,
+          "total": 7.4
+        },
+        "stake": {
+          "composition": 2.3,
+          "lighting": 2.3,
+          "materials": 2.4,
+          "details": 0.7,
+          "total": 7.7
+        }
+      },
+      "limitations": "No Shotgun visual improvement claimed. Separate two-round gameplay capacity change is outside this visual source review. Final runtime parity and combined screenshots/video are separate evidence from release owner."
+    }
+  },
+  "limits": [
+    "No claim that all possible animation frames/aspects are artifact-free.",
+    "No audio quality/timing judgment: audio was not listened to.",
+    "No independent gameplay, performance or seven-other-weapons parity claim; those belong to separate reported tests.",
+    "No final combined binary was reviewed in this file yet."
+  ]
+}

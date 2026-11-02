@@ -1,0 +1,9 @@
+{
+  "sourceSHA256": "44369f2a1f6f455992cc9d3bdc647bab32ccd290f97008f5413a2e81e6b1f547",
+  "priorSourceSHA256": "99208d79415f9b2776836153c5b14ea1fea3be0d6e495ffd378f5d72389d4671",
+  "originalV6GraveBuilderByteExact": true,
+  "scope": "Only existing prologue bone material remap and explanatory comment; no grave geometry change",
+  "proofHtmlSHA256": "38f1fb1bcff2c68f58a4581d4b77e865f2899a68e62094eddcb38bec96d89f66",
+  "imageDirectory": "docs/blood-prologue-polish-nov02",
+  "priorNavigationClearance": "V6 geometry unchanged; report provenance retained"
+}

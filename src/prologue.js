@@ -86,6 +86,18 @@
     },
   };
   const originalDecorMaterial = iR;
+  // Only marked prologue remains use the aged, lit ivory surface. Keep native
+  // meshes/transforms and all later-chapter uses of these builders unchanged.
+  for (const kind of ["bones", "bonestack", "skullpile", "ribs", "skullpole"]) {
+    const native = di[kind];
+    if (!native) continue;
+    di[kind] = { ...native, build(box, cylinder, spec, ...args) {
+      if (!spec.burialBone) return native.build(box, cylinder, spec, ...args);
+      const remap = material => material === "bone" || material === "oldbone" ? "prologueOssuaryBone" : material;
+      return native.build((material, ...shape) => box(remap(material), ...shape),
+        (material, ...shape) => cylinder(remap(material), ...shape), spec, ...args);
+    }};
+  }
   function hellBakedMaterial(texture,roof=false) {
     const material=new $e({map:texture,vertexColors:true,toneMapped:false});
     material.userData.hellBaked=true;
@@ -94,7 +106,8 @@
   }
   // Both arena standards share one map-owned, native-pixel ivory surface.
   // Broad grain and sparse hairline stains keep the large caps from reading
-  // as flat white polygons. Ground bones and other chapters stay unchanged.
+  // as flat white polygons. Marked prologue remains share the same surface;
+  // unmarked props and other chapters retain their original materials.
   function ritualIvoryTexture() {
     if(hellTextureCache.has("ritualIvory"))return hellTextureCache.get("ritualIvory");
     const texture=Z(e0((ctx,width,height)=>{
@@ -139,6 +152,7 @@
   }
   iR = function (name) {
     if(name === "prologueRitualIvory")return new Wt({map:ritualIvoryTexture()});
+    if(name === "prologueOssuaryBone")return new Wt({map:ritualIvoryTexture(),color:0xaca99e});
     if (name === "hellPyreFlame") {
       const material = new $e({map:hellFlameTexture(),alphaTest:.15,toneMapped:false});
       material.userData.hellPyreFlame = true;
@@ -162,6 +176,12 @@
       const material=hellBakedMaterial(null);
       material.color.setHex(0x8d7757);
       material.userData.hellRunner=true;
+      return material;
+    }
+    if (name === "prologueRitualPaving") {
+      const material=hellBakedMaterial(hellTexture("paving"));
+      material.color.setHex(0x929fa8);
+      material.userData.hellRitualFloor=true;
       return material;
     }
     if (name === "hellFloorStone")
@@ -488,6 +508,51 @@
     },
   };
 
+  // Low transverse stone ribs make the stair descent a built crypt.
+  // Their feet hug the solid side walls, above-floor arch clearance is 2.1m.
+  di.prologueCryptRib = {
+    mode:"free",cls:"decor",
+    build(box) {
+      for(const side of [-1,1]) {
+        for(let j=0;j<4;j++)box("prologueMemorialStone",.17,.50,.23,E(side*1.96,.25+j*.51,0));
+        box("slate",.26,.10,.29,E(side*1.93,2.09,0));
+        let last=[side*1.91,2.12];
+        for(let j=1;j<=8;j++) {
+          const t=j/8,next=[side*1.91*(1-t),2.12+.73*Math.sin(t*Math.PI/2)];
+          const dx=next[0]-last[0],dy=next[1]-last[1];
+          box("prologueMemorialStone",.15,Math.hypot(dx,dy)+.012,.23,
+            E((last[0]+next[0])/2,(last[1]+next[1])/2,0,0,0,-Math.atan2(dx,dy)));
+          last=next;
+        }
+      }
+      box("slate",.18,.20,.28,E(0,2.84,0));
+    },
+  };
+
+  // The pyre was once the centre of a funerary rite. A worn stone seal gives
+  // the arena a human-scale history without adding a platform or collision.
+  di.prologueRitualFloor = {
+    mode: "flat", cls: "decor",
+    build(box, cylinder) {
+      // Interrupted nested rings read as laid masonry, not a glowing HUD decal.
+      for(let i=0;i<16;i++) {
+        const angle=i*Math.PI/8, r=3.18, x=Math.sin(angle)*r,z=Math.cos(angle)*r;
+        if(i!==3&&i!==10)box("prologueRitualPaving",1.20,.034,.29,E(x,.037,z,0,angle,0));
+        if(i!==2&&i!==3&&i!==11)box("hellInlay",1.06,.008,.035,E(x,.059,z,0,angle,0));
+        if(i%2===0)box("hellInlay",.040,.009,.36,E(Math.sin(angle)*2.86,.058,Math.cos(angle)*2.86,0,angle,0));
+      }
+      // Eight unequal inset spokes terminate before the original fire stack.
+      for(let i=0;i<8;i++){
+        const angle=i*Math.PI/4,r=2.0;
+        box("hellInlay",.045,.008,1.25,E(Math.sin(angle)*r,.034,Math.cos(angle)*r,0,angle,0));
+        if(i%2===0)box("hellInlay",.41,.008,.045,E(Math.sin(angle)*2.47,.035,Math.cos(angle)*2.47,0,angle,0));
+      }
+      // A few displaced slabs interrupt the perfect circle on its unused edge.
+      for(const[x,z,w,d,a]of[[-2.8,1.9,.43,.35,.3],[2.7,2.1,.61,.34,-.4],[2.2,2.6,.31,.22,.8]])
+        box("prologueRitualPaving",w,.055,d,E(x,.031,z,0,a,0));
+    },
+  };
+
   // A damaged lancet behind the chapel altar. The original stone, iron and
   // glass palette keeps the silhouette readable at the game's low resolution.
   // The wall is still solid: these shallow pieces never create a false exit.
@@ -630,6 +695,22 @@
       box("slate", 1.35, 0.17, 0.17, E(-0.02, 0.08, -0.98));
       box("stone", 1.24, 0.14, 1.08, E(-0.1 * side, 0.18, -0.36, 0.12, -0.06, side * 0.065));
       box("slate", 0.94, 0.12, 0.64, E(0.27 * side, 0.1, 0.78, -0.1, side * 0.3));
+      if(spec.coffinOpened) {
+        // Earth and exposed coffin boards show what the broken stone lid covered.
+        box("dark",.82,.015,1.67,E(0,.048,0));
+        for(const x of [-.43,.43]) {
+          box("char",.07,.18,1.53,E(x,.145,.08));
+          box("wood",.046,.025,1.47,E(x,.245,.08));
+          for(const z of [-.42,.48]) {
+            box("wrought",.025,.075,.18,E(x*1.12,.16,z));
+            box("wrought",.11,.025,.18,E(x*1.18,.13,z));
+          }
+        }
+        box("char",.86,.18,.065,E(0,.145,.82));
+        box("char",.86,.18,.065,E(0,.145,-.70));
+        box("wood",.77,.055,.27,E(.08,.18,.56,0,-.12));
+        box("wood",.74,.045,.19,E(-.06,.14,.28,0,.15));
+        }
       // Eroded incised cross stays attached to the upper lid.
       box("dark", 0.055, 0.018, 0.55, E(-0.1 * side, 0.298, -0.36, 0.12, -0.06));
       box("dark", 0.35, 0.018, 0.055, E(-0.1 * side, 0.31, -0.52, 0.12, -0.06));
@@ -668,6 +749,40 @@
         box("oldbone",.36,.065,.08,E(-.08,.69,-.87,0,.13));
         box("oldbone",.28,.06,.075,E(.15,.75,-.9,0,-.16));
         box("prologueWatermark",.33,.68,.008,E(-.77,1.15,-.775));
+        const sealed=spec.z===13;
+        if(sealed) {
+          // Sealed stone ossuary tablet: worn cross, name lines and iron clamps.
+          box("prologueMemorialStone",.91,.92,.035,E(0,1.12,-.933));
+          box("slate",.98,.060,.06,E(0,.68,-.915));
+          box("slate",.98,.060,.06,E(0,1.57,-.915));
+          box("prologueOssuaryBone",.046,.29,.012,E(0,1.33,-.910));
+          box("prologueOssuaryBone",.18,.045,.012,E(0,1.39,-.910));
+          for(const[y,w]of[[1.10,.48],[1.00,.36],[.90,.43]])
+            box("prologuePatinatedStone",w,.024,.016,E(0,y,-.906));
+          for(const x of [-.36,.36])for(const y of [.77,1.48])
+            box("wrought",.085,.065,.018,E(x,y,-.904));
+        } else {
+          // Open stacked loculi: dark gaps, projecting shelves and recognizable
+          // skulls replace the same empty black recess repeated down the stairs.
+          box("slate",1.0,.070,.19,E(0,1.17,-.888));
+          box("prologueOssuaryBone",.53,.054,.06,E(-.12,1.25,-.866,0,.12));
+          box("prologueOssuaryBone",.41,.048,.06,E(.08,1.29,-.89,0,-.16));
+          for(const[x,y]of[[.29,.76],[-.27,1.33]]) {
+            // A tapered crown, cheek planes and short jaw give a skull profile
+            // at native pixel scale; small sockets no longer eat the whole face.
+            cylinder("prologueOssuaryBone",.067,.098,.10,E(x,y+.052,-.854),8);
+            cylinder("prologueOssuaryBone",.098,.075,.115,E(x,y-.052,-.854),8);
+            box("oldbone",.10,.040,.085,E(x,y-.126,-.831));
+            for(const side of [-1,1])box("dark",.027,.030,.012,E(x+side*.043,y-.030,-.758));
+            box("dark",.019,.025,.013,E(x,y-.070,-.774));
+            box("dark",.068,.014,.012,E(x,y-.112,-.784));
+          }
+          if(spec.z===17){
+            box("prologueMemorialStone",.37,.55,.042,E(.30,.87,-.804,0,0,-.19));
+            box("prologueMemorialStone",.47,.15,.15,E(-.21,.13,-.83,0,.17,.11));
+            box("wrought",.08,.09,.024,E(.34,1.06,-.776,0,0,-.19));
+          }
+        }
         return;
       }
       box("prologueMemorialStone", 1.76, 0.35, 0.15, E(0, 0.185, -0.925));
@@ -838,13 +953,38 @@
     Ft.hellAshRoof.name = "prologueHellRoof";
     const slabSource = hellTexture("paving").image;
     Ft.hellAshSlab = Z(e0((ctx,w,h)=>{
-      // Quiet stone grain from the generated material, with one broad course.
-      ctx.drawImage(slabSource,0,0,w,h);
-      ctx.fillStyle="rgba(43,43,41,.30)";ctx.fillRect(0,0,w,h);
-      ctx.fillStyle="#18191a";ctx.fillRect(0,0,w,2);ctx.fillRect(0,h-2,w,2);
-      ctx.fillRect(0,0,2,h);ctx.fillRect(w-2,0,2,h);
-      ctx.fillStyle="#65605a";ctx.fillRect(0,2,w,1);
+      // Cool worn masonry grain, scaled as staggered flagstones. The same
+      // ground image spans the nave and arena, so no pasted circular carpet.
+      const raw=atob(hellTextureData.paving),pixels=ctx.createImageData(w,h);
+      for(let i=0,j=0;i<raw.length;i+=3,j+=4){
+        const grey=raw.charCodeAt(i)*.28+raw.charCodeAt(i+1)*.59+raw.charCodeAt(i+2)*.13;
+        pixels.data[j]=grey*.82;pixels.data[j+1]=grey*.88;pixels.data[j+2]=grey*.91;pixels.data[j+3]=255;
+      }
+      ctx.putImageData(pixels,0,0);
+      ctx.fillStyle="#171c1e";
+      for(const y of [0,31,63,95,127])ctx.fillRect(0,y,w,1);
+      for(let row=0;row<4;row++)for(const x of row%2?[31,95]:[0,63,127])ctx.fillRect(x,row*32,1,31);
+      ctx.fillStyle="#676b68";
+      for(const y of [1,32,64,96])ctx.fillRect(1,y,w-2,1);
     },128,128));
+    Ft.prologueCryptFloor = Z(e0((ctx,w,h)=>{
+      const raw=atob(hellTextureData.paving),pixels=ctx.createImageData(w,h);
+      for(let i=0,j=0;i<raw.length;i+=3,j+=4){
+        const grey=raw.charCodeAt(i)*.28+raw.charCodeAt(i+1)*.59+raw.charCodeAt(i+2)*.13;
+        pixels.data[j]=grey*.79;pixels.data[j+1]=grey*.91;pixels.data[j+2]=grey*.94;pixels.data[j+3]=255;
+      }
+      ctx.putImageData(pixels,0,0);
+      // Four staggered worn flagstones per tile, with a narrow dark mortar bed.
+      ctx.fillStyle="#161916";
+      for(const y of [0,63,126])ctx.fillRect(0,y,w,2);
+      for(const[x,y]of[[0,0],[62,0],[31,64],[95,64]])ctx.fillRect(x,y,2,62);
+      ctx.fillStyle="#706754";
+      for(const y of [2,65])ctx.fillRect(2,y,124,1);
+      ctx.fillStyle="#292a23";
+      for(const[x,y,l]of[[42,8,12],[45,20,11],[99,75,15],[102,89,9],[12,93,14]])
+        ctx.fillRect(x,y,1,l);
+    },128,128));
+    Ft.prologueCryptFloor.name="prologueCryptFloor";
     chapter = { elapsed: 0, quiet: 0, shown: new Set(), grid: map.g };
     const place = (kind, x, z, options = {}) =>
       map.decor.push({ k: kind, x, z, ...options });
@@ -865,7 +1005,7 @@
       if (map.zones.map[z][x] === 2 && !"#WI".includes(map.g[z][x]))
         map.cmap[z][x] = Math.max(map.cmap[z][x], 14.8);
     map.zones = { ...map.zones, themes: map.zones.themes.map(theme =>
-      theme.id === "crypt" ? { ...theme, wall:"prologueCryptStone", band:"prologueCryptStone" } : theme.id === "hell" ? { ...theme, wall:"hellAshWall",ceil:"hellAshRoof",side:"hellAshWall",ground:"hellAshSlab",amb: 0xa49c92, ambI: 1.18, fogD: 0.023, fog: 0x1a1411 } : theme) };
+      theme.id === "crypt" ? { ...theme, wall:"prologueCryptStone", band:"prologueCryptStone", ground:"prologueCryptFloor" } : theme.id === "hell" ? { ...theme, wall:"hellAshWall",ceil:"hellAshRoof",side:"hellAshWall",ground:"hellAshSlab",amb: 0xa49c92, ambI: 1.18, fogD: 0.023, fog: 0x1a1411 } : theme) };
 
     // The ruined chapel becomes an optional, visible reward before the descent.
     // These were empty floor cells; the altar, existing health and ammo stay.
@@ -899,8 +1039,8 @@
     ]) {
       place("rubble", x, z, { s: scale, r: rotation });
     }
-    place("prologueBrokenGrave", 7.65, 5.25, { s: 1.18, r: 0.2, h: -1 });
-    place("prologueBrokenGrave", 11.55, 6.1, { s: 1.45, r: -0.38 });
+    place("prologueBrokenGrave", 7.65, 5.25, { s: 1.18, r: 0.2, h: -1, coffinOpened: 1 });
+    place("prologueBrokenGrave", 11.55, 6.1, { s: 1.45, r: -0.38, coffinOpened: 1 });
     for (const [x, z, scale, rotation, side] of [
       [8.1, 4.45, 1.2, 0.16, -1], [10.65, 4.95, 1.15, -0.12, 1],
       [8.65, 6.05, 0.85, 0.2, 1], [10.3, 6.8, 0.8, -0.18, -1],
@@ -941,6 +1081,8 @@
     place("prologueCryptBay", 9, 13, { r: Math.PI / 2, cryptDepth: 1 });
     place("prologueCryptBay", 10, 15, { r: -Math.PI / 2, cryptDepth: 1 });
     place("prologueCryptBay", 9, 17, { r: Math.PI / 2, cryptDepth: 1 });
+
+    for(const z of [12,14,16])place("prologueCryptRib",9.5,z);
 
     // Give the player time to read the first bank and build up a sprint.
     // Preserve the original enemy count and types, including all later fights.
@@ -1026,6 +1168,7 @@
 
     // The existing arena pyre remains the focal point: two unequal funerary
     // standards and one collapsed offering cluster mark its rear edge.
+    place("prologueRitualFloor", 35, 52);
     place("prologueRitualSpine", 33, 54.65, { s: 1.25, h: -1, r: 0.2 });
     place("prologueRitualSpine", 37.2, 54.5, { s: 1.06, h: 1, r: -0.3 });
     place("urn", 36.7, 54.8, { s: 0.85, r: 1.2 });
@@ -1053,6 +1196,8 @@
     place("niche", 61, 26, { r: -Math.PI / 2, s: 0.85 });
     place("prologueVotive", 60.8, 26.2, { s: 0.8 });
     place("light", 60, 26, { s: 0.75, h: 7, r: 0.65 });
+    for (const spec of map.decor)
+      if (["bones", "bonestack", "skullpile", "ribs", "skullpole"].includes(spec.k)) spec.burialBone = 1;
     return map;
   };
 
@@ -1119,6 +1264,7 @@
       [77.5,6,79,7,4.8],[84.5,6,79,7,4.8],[81,2.5,74,7,3],
       [69,2.8,65,7,3.5],[93,2.8,65,7,3.5],
       [74.6,10,64,8,5.2],[87.4,10,64,8,5.2],
+      [71,3.0,105,6,1.75],
       [67.1,3.2,110.5,8,5.0],[74.9,3.2,110.5,8,5.0],
       [66.7,6,119.2,7,4.8],[75.3,6,119.2,7,4.8],
       [67,1,98,6,3.6],[75,1,98,6,3.6],[65,1,106,6,3],[77,1,106,6,3],
@@ -1143,7 +1289,7 @@
           heat+=power*f*f*facing;
         }
         const ao=originalColour?.itemSize===3 ? .75+.25*originalColour.getX(i) : 1;
-        const base=roof ? .075 : .195;
+        const base=roof ? .075 : mesh.material.userData.hellRitualFloor ? .40 : .195;
         // Lava warms the narrow coping, leaving the centre slabs charcoal.
         if(x>=22&&x<=37&&y>2.18&&y<2.5) {
           const rim=Math.max(0,1-Math.abs(Math.abs(z-53)-.89)/.28);
@@ -1152,6 +1298,7 @@
         // Keep the walking runner charcoal; firelight remains strongest on
         // the flanking coping instead of washing out every centre slab.
         if(mesh.material.userData.hellRunner)heat*=.18;
+        if(mesh.material.userData.hellRitualFloor)heat*=.14;
         const directional=.72+.16*Math.abs(nx)+.18*Math.max(0,ny);
         colours[i*3]=(base*directional+heat)*ao;
         colours[i*3+1]=(base*directional*.91+heat*.36)*ao;

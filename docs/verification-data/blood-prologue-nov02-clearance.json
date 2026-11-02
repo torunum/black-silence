@@ -1,0 +1,79 @@
+{
+  "passed": true,
+  "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\blood-map-nov02\\candidate-v6.html",
+  "sha256": "7efcd339a5b6c1bd45accc4dc5da55a5b7cd680d49aa6318d83c1beac28cf4cb",
+  "scopeSourceSHA256": "99208d79415f9b2776836153c5b14ea1fea3be0d6e495ffd378f5d72389d4671",
+  "scope": "Real native movement integration, AI paused. Standing camera plus20cm head margin and12cm lateral envelope tested against rotated rib lower edges; no topology-only claim.",
+  "lanes": [
+    {
+      "x": 18.5,
+      "nativeFrames": 110,
+      "minimumClearance": 0.7020171181689998,
+      "geometryProbes": 36,
+      "crossings": [
+        {
+          "centreZ": 25,
+          "frames": 4,
+          "minHeadClearance": 0.7409060070578886
+        },
+        {
+          "centreZ": 29,
+          "frames": 4,
+          "minHeadClearance": 0.7020171181689998
+        },
+        {
+          "centreZ": 33,
+          "frames": 4,
+          "minHeadClearance": 0.7409060070578877
+        }
+      ]
+    },
+    {
+      "x": 20,
+      "nativeFrames": 110,
+      "minimumClearance": 1.2366666666666657,
+      "geometryProbes": 60,
+      "crossings": [
+        {
+          "centreZ": 25,
+          "frames": 4,
+          "minHeadClearance": 1.2755555555555544
+        },
+        {
+          "centreZ": 29,
+          "frames": 4,
+          "minHeadClearance": 1.2366666666666657
+        },
+        {
+          "centreZ": 33,
+          "frames": 4,
+          "minHeadClearance": 1.2755555555555544
+        }
+      ]
+    },
+    {
+      "x": 21.5,
+      "nativeFrames": 110,
+      "minimumClearance": 0.7020171181689998,
+      "geometryProbes": 36,
+      "crossings": [
+        {
+          "centreZ": 25,
+          "frames": 4,
+          "minHeadClearance": 0.7409060070578886
+        },
+        {
+          "centreZ": 29,
+          "frames": 4,
+          "minHeadClearance": 0.7020171181689998
+        },
+        {
+          "centreZ": 33,
+          "frames": 4,
+          "minHeadClearance": 0.7409060070578877
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

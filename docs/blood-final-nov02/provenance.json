@@ -1,0 +1,11 @@
+{
+  "inputSHA256": "5e5ceb0cb354945067ef71cfa5600fd9836a4236cf20258aff548bea3ec1a3cc",
+  "sourcePrologueSHA256": "44369f2a1f6f455992cc9d3bdc647bab32ccd290f97008f5413a2e81e6b1f547",
+  "nativeImages": [
+    "crypt-deep.png",
+    "arena.png"
+  ],
+  "captureTool": "tools/blood-prologue-render-tests.cjs",
+  "freshNativeLevelBeforeCaptures": false,
+  "setup": "Original native start completes, then paused same-camera capture; rejected reload-while-paused intro-card captures not used"
+}
