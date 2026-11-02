@@ -19,6 +19,11 @@ Gotik piksel FPS oyununun on silah, deri eldiven ve prologue cehennem bölümü 
 
 ## Bu sürüm
 
+2 Kasım: GitHub main dalı kontrol edilip son sürüm temel alındı. DreamLoop karşılaştırmalarıyla cehennem köprüsü koyu taş döşeme ve kesintili kakmalar, lav çıkışları katmanlı taş biçimleri, ana nef ve arena daha belirgin sivri tonozlar kazandı. [Gerçek önce/sonra ve ölçümler](docs/hell-causeway-nov02.md).
+
+Rifle ve Tommy'nin sağ eli kendi referans çizimindeki tutuşla yeniden kuruldu; açık tetik korkulukları, Sniper/Stake temasları, Soul kemik kafesi ve Shotgun namlu vurguları düzeltildi. Altı silah değişti; Handgun, Cross, Nail ve Dynamite bu tur korundu. On silahın oynanış kontrolleri geçti. [Silah kanıtları ve sınırlar](docs/weapons-dreamloop-nov02.md). Hedefe yaklaşıldı; bütün silahların ve haritanın örnekle birebir olduğu iddia edilmez.
+
+
 Sekiz silahın referansa yakın mekanik biçimi ve yüzey derinliği elden geçirildi: Rifle/Tommy/Sniper bağlantıları, Shotgun namlu profili, Nail tank bileşenleri, Soul cam küresi, TNT örgülü fitili ve Stake ahşap/üst kapak formu. Handgun ve Cross bu tur korunur. [Görüntüler ve kesin kapsam](docs/arsenal-reference-oct27.md).
 
 Ash Bell Monastery girişi ve Gothic Dungeon hücrelerine daha belirgin taş kemer/söve katmanları verildi. Dungeon merkez hücresinde üç mum ve tek yerel sıcak ışık odak oluşturur; rota, kapılar, düşmanlar ve eşyalar korunur. [İki bölümün önce/sonra görüntüleri](docs/chapter-architecture-oct27.md).

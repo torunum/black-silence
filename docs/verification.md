@@ -1,27 +1,25 @@
-# Doğrulama — 27 Ekim 2026
+# Doğrulama — 2 Kasım 2026
 
-Teslim dosyası `THE-BLACK-SILENCE.html`, **24.894.597 bayt**. SHA256: `17ebe0d27fdcef2eea80b54fbc68ebf0cfa96b51c0244bd2a56e85ac22155d61`. Ana dosya standart builder ile bu test edilmiş hash’e byte-identical üretildi; paket bütünlüğü aynı hash ile doğrulanır.
+Son teslim HTML: **24.901.782 bayt**, SHA-256 `3d58959919c4b673aa7643dd1237ecaf98eb21654f89f87a5b007f7d745a69e9`. GitHub main başlangıcı `247b824` günceldi; fetch ve fast-forward kontrolü yapıldı. Daha eski ayrı geliştirme dalı ana oyuna karıştırılmadı.
 
-Bu tur sekiz silahın mekanik gövde/yüzey ayrıntılarını ve Monastery/Dungeon taş mimarisini geliştirir. Handgun ve Cross bu tur korunur. Cephane, hasar, native oyun kuralları veya tüm modellerin baştan yapıldığı iddia edilmez.
+## Harita ve DreamLoop
 
-## Silahlar ve oynanış
+Cehennem köprüsünün taş yüzeyi ve kakmaları, lav çıkışlarının mimarisi ve sivri tonoz profilleri geliştirildi. Bağımsız görsel değerlendirme 6,3 → 6,7 → 7,3 → 7,7 ilerledi; hedefle piksel eşitliği iddiası yoktur. Arena zemini yeniden yapılmadı. [Görüntüler ve kapsam](hell-causeway-nov02.md).
 
-Final birleşik üzerinde on silah için gerçek R/cephane tamamlanması, ateş, silah değiştirme/tekme ve cache akışları geçti. Silah çizimi karşılaştırmasında 660 raw RGBA/canvas/yan buffer/topRow kontrolünün 192'si aynı, 468'i yalnız değişen sekiz silah için beklenen farktı; beklenmeyen fark sıfır. Handgun/Cross ve tekme/bitirici kapsamı aynı kaldı. Bu karşılaştırma görsel kalite puanı değildir.
+Haritanın bütün oynanış/dekor/ışık/zemin tanımları aynı. Native 15 kontrol noktası, ilk canlı karşılaşma, isteğe bağlı Shotgun alımı, E çıkışı, sonraki bölüm ve dönüş geçti. Beş harita döngüsünde kaynak temizliği ve tarayıcı hatasızlığı doğrulandı. Eğri açıklığı 1.001 örnekte daralmadı. Bu test tüm oyunun bitirilmesi değildir.
 
-Bağımsız üç viewport'taki 135 native idle/fire/reload kare ve 27 cephane uç kontrolü, yalnız silah değişen `4edca614…` adayı üzerinde geçti. Bu adayın `99bd9d09…` viewmodels kaynağı final birleşikte aynıdır; final birleşikte yeniden 135 kare koşulmuş gibi etiketlenmez. [Görseller, model kapsamı, ölçüm ve kaynak kimlikleri](arsenal-reference-oct27.md).
+Altı eş kamerada draw call aynı, gönderilen üçgen +18.492. Seri ABBA ölçümünde köprü ortalaması 56,275 → 56,211 FPS; arena 56,157 → 55,917 FPS; frame p95 18,1–18,2 ms. Ek geometri küçük bir CPU maliyeti taşır. Bunlar kısa, duraklatılmış sahne ölçümleridir; genel FPS kazancı veya cihaz garantisi değildir.
 
-Gövde biçimleri mevcut referans çizimlerinden türetilmiş resim yüzeyleri ve hacimsel taşıyıcılarla oluşturulur; bütün açılarda tam 3B veya referansla birebir eşitlik iddiası yoktur. Silah performans örnekleri kısa native RAF kayıtlarıdır; host varyansı ve silaha göre maliyetler detay raporda tutulur, genel FPS artışı iddia edilmez.
+## Silahlar
 
-## İki bölümün mimarisi
+Altı silah değişti: 1,2,3,4,7,9. Handgun/Cross/Nail/Dynamite, bot ve bitirici çizimi korundu. Rifle/Tommy referans el siluetleri ve açık tetik korkulukları kullanır. İlk Rifle adayındaki doldurma sırasında ayrık görünen ahşap/metal parçalar bağımsız incelemede yakalanıp çıkarıldı. Son özel silah adayı `2fa1bf12…`, final birleşikle aynı `25c82ff3…` viewmodels kaynağını içerir. [Silah raporu](weapons-dreamloop-nov02.md).
 
-Ash Bell Monastery mezar odası girişi ve Gothic Dungeon'ın üç hücresi katmanlı taş söve/sivri kemer kazandı. Merkez Dungeon hücresinde üç mum ve tek sınırlı native sıcak ışık odak oluşturur. Yeni doku veya global ışık ayarı yoktur. Monastery +324, Dungeon +1392 authored üçgen; Dungeon materyal 185→186, ışık 19→20, texture 25 sabittir. Bunlar ayrı haritalardır.
+Son silah adayı üzerinde üç en-boy oranında 135 native kare ve 27 doldurma sonu geçti. 660 deterministik çizim karşılaştırması: 300 aynı, 360 yalnız değişen altı silah için beklenen fark, beklenmeyen fark sıfır. Bu karşılaştırma kalite puanı değildir. Fresh bağımsız inceleme Rifle/Tommy tutuşlarını ayrıca değerlendirdi; bütün silahlara aynı puan verilmiş gibi sunulmaz.
 
-Çevre-only `bb65a063…` üzerinde, önceki yayın `d6101272…` ile paired native test map/grid/kapı/encounter/pickup tanımlarını ve 775+1587 collision/elevation örneğini karşılaştırdı. İzinli bir görsel bayrak/ışık dışında map exact. Gerçek W hareketiyle önce 8, sonra 24 waypoint ve altı değişimli map rebuild geçti. Yeni ışık yalnız Dungeon'da 1; eski light nesneleri yeni sahnede kullanılmıyor, texture sayıları sabit, page error sıfır. Bu test bütün bölümün oynanması veya kapı açılması testi değildir.
+Final birleşik `3d58959919c4b673aa7643dd1237ecaf98eb21654f89f87a5b007f7d745a69e9` üzerinde on silah gerçek R doldurma/cephane korunumu, ateş, silah değiştirme, tekme ile iptal/toparlanma, kısmi dolu şarjörle ateş iptali ve çizim cache kontrollerinden geçti. Sayfa hatası ve ağ isteği sıfır. Görsel/aspect incelemesi özel silah adayındadır; final birleşik üzerinde yeniden 135 kare koşulduğu iddia edilmez.
 
-Final birleşik aynı `66b89378…` çevre kaynağını byte-identical içerir. Final 17ebe ile baseline arasında ayrıca tek tarayıcıda seri 6 sn Dungeon RAF ölçümü yapıldı: FPS 55,96→56,03, p95 her ikisinde 18,1 ms, renderer.render CPU 0,684→1,105 ms. Bu kısa sahnede frame-rate düşüşü gözlenmedi; ek ışık/mimari CPU maliyeti vardır. [Eş kameralar, kaynak kapsamı ve raporlar](chapter-architecture-oct27.md).
+## Derleme ve paket
 
-## Derleme ve teslim
+Özgün motor, Village ve değişmeyen modüllerin hashleri korundu. İki ardışık derleme byte-identical; sekiz hatalı marker girdisi dosyaya yazmadan reddedildi. Final kaynak ve rapor hashleri [build bilgisinde](build-info.json). Önceki ses/combat düzeltmeleri bu tur yeniden yapılmış veya yeniden test edilmiş gibi sunulmaz.
 
-Native motor ve Village sunumu byte düzeyinde korunur. Standart builder bütün modül hashlerini, iki idempotent build'i ve sekiz hatalı girdide yazmama korumasını kontrol eder. Kesin final kaynak/rapor hashleri [build bilgisinde](build-info.json) bulunur. Önceki ses, düşman ve combat iyileştirmeleri korunur; bunlar bu tur yeni düzeltme veya yeniden koşulmuş test olarak sunulmaz.
-
-Paket `dist/THE-BLACK-SILENCE-2026-10-27-ARSENAL.zip`, açıkça stage edilmiş/takipli izinli kaynak/asset/doc/tool dosyalarından üretilir. Her girdinin SHA'sı, ana HTML ve modül/rapor manifesti doğrulanır. Private adaylar, cache, bağımlılıklar, Git metadatası ve ignored loglar dışarıda; önceki ZIP'ler korunur.
+Paket `dist/THE-BLACK-SILENCE-2026-11-02-DREAMLOOP.zip`, açıkça stage edilmiş/takipli izinli kaynak, asset, doc ve tool dosyalarından üretilir. Her ZIP girdisi ve manifest hashleri ayrıca doğrulanır. Özel adaylar, cache, bağımlılıklar ve Git metadatası pakete girmez; eski ZIP'ler korunur.

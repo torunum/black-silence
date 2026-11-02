@@ -1,0 +1,27 @@
+{
+  "date": "2026-11-02",
+  "reviewer": "sync_release_nov02",
+  "method": "Independent image comparison using DreamLoop Pro rubric, not an automated quality score. Reference targets were previously approved; actual screenshots are native game renders. Root and implementation agents also reviewed separately.",
+  "map": {
+    "target": "assets/hell/reference-target.png",
+    "baselineHTML": "17ebe0d27fdcef2eea80b54fbc68ebf0cfa96b51c0244bd2a56e85ac22155d61",
+    "rounds": [
+      {"name":"baseline","composition":2.2,"lighting":1.9,"materials":1.8,"details":0.4,"total":6.3,"gaps":"Plain warm slabs, cuboid outlet towers and uniformly warm stone."},
+      {"name":"V4","composition":2.3,"lighting":1.9,"materials":2.0,"details":0.5,"total":6.7,"gaps":"Courses visible but grey inlay lines over unchanged brown paving; actual dominant lighting needed diagnosis."},
+      {"name":"V5","composition":2.4,"lighting":2.2,"materials":2.2,"details":0.5,"total":7.3,"gaps":"Charcoal runner and warm coping now separate; arch structure and engraved depth still weak."},
+      {"name":"V6","composition":2.6,"lighting":2.2,"materials":2.3,"details":0.6,"total":7.7,"gaps":"Curved pointed vaults improve silhouette. Inlays remain flatter, and upper masonry less detailed, than target."}
+    ],
+    "decision":"Accept meaningful improvement within user time budget after route/lifecycle checks; target not pixel-identical and score below 8."
+  },
+  "weapons": {
+    "targets":["assets/weapon-reference/shotgun-target-v1.png","assets/weapon-reference/arsenal-target-2-5-v1.png","assets/weapon-reference/arsenal-target-6-9-v1.png","assets/hand-reference/original-target.png"],
+    "allTenAudited":true,
+    "rejectedV1":"Exposed grips were outside the grasp, Sniper guard lay over the stock, and Soul bones widened the gap. Rejected for delivery.",
+    "V4":"Guard holes are real empty geometry, Sniper guard moved below stock, grips contact hands, Stake pressure cap is visible, and Soul cage closes around orb. Suitable for motion tests, but not a claim that all weapons reached target.",
+    "rifleTargetGrasp":{"composition":2.6,"lighting":2.3,"materials":2.5,"details":0.6,"total":8.0,"scope":"Actual native idle Rifle with reference-index/palm/sleeve silhouette. This is a weapon-only visual assessment, not an all-arsenal or motion score."},
+    "residuals":"Shotgun barrel pair remains flatter than the target; generic finger anatomy on remaining unchanged hand rigs and fine worn material detail are not exact reference matches.",
+    "preservedWeapons":[0,5,6,8],
+    "changedWeapons":[1,2,3,4,7,9]
+  },
+  "assetLadder":{"externalAssetDownloads":false,"existingApprovedTargetsReused":true,"FAL_KEY_present":false,"FAL_API_KEY_present":false,"BlenderAvailable":false,"approach":"Existing reference-derived surfaces with native articulated rigs; architectural forms use native batched geometry."}
+}

@@ -1,0 +1,164 @@
+{
+  "baselineInputSHA256": "17ebe0d27fdcef2eea80b54fbc68ebf0cfa96b51c0244bd2a56e85ac22155d61",
+  "finalCombinedInputSHA256": "3d58959919c4b673aa7643dd1237ecaf98eb21654f89f87a5b007f7d745a69e9",
+  "viewmodelsSHA256": "25c82ff3c3f1e0fadf97a7adb2ba04b1771f7be24ac3550e549ecb38e55f5797",
+  "scope": "Before images are actual released17ebe viewport captures. After images, both sheets and video are actual finalcombined3d589 viewport captures. Crops are labelled enlarged weapon crops, not fullviewports. Target boards remain separate under assets/weapon-reference.",
+  "idleCapture": {
+    "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\release-nov02\\combined\\THE-BLACK-SILENCE.html",
+    "sha256": "3d58959919c4b673aa7643dd1237ecaf98eb21654f89f87a5b007f7d745a69e9",
+    "scope": "Actual native idle after intro dialogue; inventory staging and enemies removed. Native RAF presentation, no viewPose; pause only freezes screenshots.",
+    "frames": [
+      {
+        "index": 0,
+        "state": "idle",
+        "time": 0.12620000000000073,
+        "phase": 0.06310000000000036,
+        "mag": 6,
+        "file": "weapon-0-idle.png"
+      },
+      {
+        "index": 1,
+        "state": "idle",
+        "time": 0.0175,
+        "phase": 0.008333333333333333,
+        "mag": 5,
+        "file": "weapon-1-idle.png"
+      },
+      {
+        "index": 2,
+        "state": "idle",
+        "time": 0.10630000000000109,
+        "phase": 0.06252941176470653,
+        "mag": 24,
+        "file": "weapon-2-idle.png"
+      },
+      {
+        "index": 3,
+        "state": "idle",
+        "time": 0.10769999999999891,
+        "phase": 0.07179999999999927,
+        "mag": 36,
+        "file": "weapon-3-idle.png"
+      },
+      {
+        "index": 4,
+        "state": "idle",
+        "time": 0.1073000000000011,
+        "phase": 0.044708333333333794,
+        "mag": 4,
+        "file": "weapon-4-idle.png"
+      },
+      {
+        "index": 5,
+        "state": "idle",
+        "time": 0.12429999999999929,
+        "phase": 0.05649999999999967,
+        "mag": 3,
+        "file": "weapon-5-idle.png"
+      },
+      {
+        "index": 6,
+        "state": "idle",
+        "time": 0.10760000000000036,
+        "phase": 0.05380000000000018,
+        "mag": 50,
+        "file": "weapon-6-idle.png"
+      },
+      {
+        "index": 7,
+        "state": "idle",
+        "time": 0.10660000000000036,
+        "phase": 0.04100000000000014,
+        "mag": 4,
+        "file": "weapon-7-idle.png"
+      },
+      {
+        "index": 8,
+        "state": "idle",
+        "time": 0.10710000000000038,
+        "phase": 0.1428000000000005,
+        "mag": 1,
+        "file": "weapon-8-idle.png"
+      },
+      {
+        "index": 9,
+        "state": "idle",
+        "time": 0.12579999999999927,
+        "phase": 0.15724999999999908,
+        "mag": 1,
+        "file": "weapon-9-idle.png"
+      }
+    ],
+    "errors": []
+  },
+  "videoCapture": {
+    "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\weapons-nov02\\final-video\\page@3a513c5f7a6ca458980cdeb1354333db.webm",
+    "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\release-nov02\\combined\\THE-BLACK-SILENCE.html",
+    "inputSHA256": "3d58959919c4b673aa7643dd1237ecaf98eb21654f89f87a5b007f7d745a69e9",
+    "selected": [
+      2,
+      3
+    ],
+    "trimStart": 13.926,
+    "syncMarker": true,
+    "errors": [],
+    "audio": {
+      "file": "C:\\Users\\tehlike47\\game\\.dream-loop\\weapons-nov02\\final-video\\game-output.webm",
+      "bytes": 91253,
+      "duration": 5.656900000000372,
+      "startedAt": 13928.900000000373,
+      "sampleRate": 48000,
+      "contexts": 1
+    },
+    "scope": "Actual RAF weapon idle/fire/reload and post-volume WebAudio output. QA supplies selected weapons ammunition and removes enemies; real switching and R reload with uninterrupted native RAF."
+  },
+  "encodedVideo": {
+    "file": "C:\\Users\\tehlike47\\game\\docs\\weapons-dreamloop-nov02\\reload.webm",
+    "videoCodec": "VP9",
+    "audioCodec": "Opus",
+    "fps": 25,
+    "trimStart": 14.64,
+    "markerFrames": 8,
+    "audioSource": "C:\\Users\\tehlike47\\game\\.dream-loop\\weapons-nov02\\final-video\\game-output.webm",
+    "audioDuration": 5.656900000000372,
+    "bytes": 1844580,
+    "syncScope": "Audio starts when the preroll marker is removed; trim uses the first non-marker video frame. Video frame granularity is 40ms; physical audio-output latency is not measured."
+  },
+  "files": [
+    {
+      "file": "full.jpg",
+      "sha256": "b9683da466d98ed45bb61006354332b41d15eb1250ae8767492425d5e76c1361",
+      "bytes": 734727
+    },
+    {
+      "file": "reload.webm",
+      "sha256": "ee439566a2b2931e4fc02a4bf774c32eaa1d1c29e8f9d1fc7996633df86bf1ee",
+      "bytes": 1844580
+    },
+    {
+      "file": "rifle-after.png",
+      "sha256": "10b87a348e9842b64dc89589af833b331014d38fefdadc3c70507506d33dff42",
+      "bytes": 533709
+    },
+    {
+      "file": "rifle-before.png",
+      "sha256": "6cc619209f41bddbf3edc1f7f90e0f57b51d61954212e02249028550a804fd9b",
+      "bytes": 529946
+    },
+    {
+      "file": "tommy-after.png",
+      "sha256": "719438f3e29538910404d463a4513d7f9d08ceff5227dcdabd0da9adf65f16fb",
+      "bytes": 535564
+    },
+    {
+      "file": "tommy-before.png",
+      "sha256": "2b5cc08b95d1aaa8846e7ae8cb0ae2fee70d38b621fd32e9c8e63cd672e9bda4",
+      "bytes": 535321
+    },
+    {
+      "file": "weapon-crops.jpg",
+      "sha256": "52a144f48123f55acb2c6a0dba7b0391cf5eae7c2e68614e5c8884a3807a0e1f",
+      "bytes": 637893
+    }
+  ]
+}

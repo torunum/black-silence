@@ -1,0 +1,1878 @@
+{
+  "passed": true,
+  "input": "C:\\Users\\tehlike47\\game\\.dream-loop\\map-nov02\\candidate-v6.html",
+  "sha256": "8ed6b0dfb094b1c6ad42570efbd8bae287acf689fc76d96937f739661b5c6d0a",
+  "fixtureSHA256": "28e17ae4af252b09c7d531810897aeab27419429064a8772bbd0ad5b8ef70ca6",
+  "zoneSynchronized": true,
+  "cameras": [
+    {
+      "name": "arena",
+      "index": 2,
+      "active": 2,
+      "id": "hell",
+      "player": [
+        67,
+        3.1,
+        105
+      ],
+      "camera": [
+        67,
+        3.1,
+        105
+      ],
+      "expectedEyeY": 3.1,
+      "fog": [
+        0.10196078431372549,
+        0.0784313725490196,
+        0.06666666666666667
+      ],
+      "expectedFog": [
+        0.10196078431372549,
+        0.0784313725490196,
+        0.06666666666666667
+      ],
+      "density": 0.0345,
+      "expectedDensity": 0.0345,
+      "ambient": [
+        0.6431372549019608,
+        0.611764705882353,
+        0.5725490196078431
+      ],
+      "expectedAmbient": [
+        0.6431372549019608,
+        0.611764705882353,
+        0.5725490196078431
+      ],
+      "intensity": 0.49559999999999993,
+      "expectedIntensity": 0.49559999999999993,
+      "render": {
+        "frame": 320,
+        "calls": 68,
+        "triangles": 143098,
+        "points": 1828,
+        "lines": 0
+      }
+    },
+    {
+      "name": "arena-focus",
+      "index": 2,
+      "active": 2,
+      "id": "hell",
+      "player": [
+        71,
+        3.1,
+        105
+      ],
+      "camera": [
+        71,
+        3.1,
+        105
+      ],
+      "expectedEyeY": 3.1,
+      "fog": [
+        0.10196078431372549,
+        0.0784313725490196,
+        0.06666666666666667
+      ],
+      "expectedFog": [
+        0.10196078431372549,
+        0.0784313725490196,
+        0.06666666666666667
+      ],
+      "density": 0.0345,
+      "expectedDensity": 0.0345,
+      "ambient": [
+        0.6431372549019608,
+        0.611764705882353,
+        0.5725490196078431
+      ],
+      "expectedAmbient": [
+        0.6431372549019608,
+        0.611764705882353,
+        0.5725490196078431
+      ],
+      "intensity": 0.49559999999999993,
+      "expectedIntensity": 0.49559999999999993,
+      "render": {
+        "frame": 344,
+        "calls": 57,
+        "triangles": 140520,
+        "points": 1828,
+        "lines": 0
+      }
+    },
+    {
+      "name": "arena-side",
+      "index": 2,
+      "active": 2,
+      "id": "hell",
+      "player": [
+        65,
+        1,
+        114
+      ],
+      "camera": [
+        65,
+        1,
+        114
+      ],
+      "expectedEyeY": 1,
+      "fog": [
+        0.10196078431372549,
+        0.0784313725490196,
+        0.06666666666666667
+      ],
+      "expectedFog": [
+        0.10196078431372549,
+        0.0784313725490196,
+        0.06666666666666667
+      ],
+      "density": 0.0345,
+      "expectedDensity": 0.0345,
+      "ambient": [
+        0.6431372549019608,
+        0.611764705882353,
+        0.5725490196078431
+      ],
+      "expectedAmbient": [
+        0.6431372549019608,
+        0.611764705882353,
+        0.5725490196078431
+      ],
+      "intensity": 0.49559999999999993,
+      "expectedIntensity": 0.49559999999999993,
+      "render": {
+        "frame": 372,
+        "calls": 63,
+        "triangles": 142946,
+        "points": 1828,
+        "lines": 0
+      }
+    },
+    {
+      "name": "pyre",
+      "index": 2,
+      "active": 2,
+      "id": "hell",
+      "player": [
+        67,
+        3.1,
+        102
+      ],
+      "camera": [
+        67,
+        3.1,
+        102
+      ],
+      "expectedEyeY": 3.1,
+      "fog": [
+        0.10196078431372549,
+        0.0784313725490196,
+        0.06666666666666667
+      ],
+      "expectedFog": [
+        0.10196078431372549,
+        0.0784313725490196,
+        0.06666666666666667
+      ],
+      "density": 0.0345,
+      "expectedDensity": 0.0345,
+      "ambient": [
+        0.6431372549019608,
+        0.611764705882353,
+        0.5725490196078431
+      ],
+      "expectedAmbient": [
+        0.6431372549019608,
+        0.611764705882353,
+        0.5725490196078431
+      ],
+      "intensity": 0.49559999999999993,
+      "expectedIntensity": 0.49559999999999993,
+      "render": {
+        "frame": 412,
+        "calls": 72,
+        "triangles": 143088,
+        "points": 1828,
+        "lines": 0
+      }
+    },
+    {
+      "name": "bridge",
+      "index": 2,
+      "active": 2,
+      "id": "hell",
+      "player": [
+        21,
+        3.1,
+        53
+      ],
+      "camera": [
+        21,
+        3.1,
+        53
+      ],
+      "expectedEyeY": 3.1,
+      "fog": [
+        0.10196078431372549,
+        0.0784313725490196,
+        0.06666666666666667
+      ],
+      "expectedFog": [
+        0.10196078431372549,
+        0.0784313725490196,
+        0.06666666666666667
+      ],
+      "density": 0.0345,
+      "expectedDensity": 0.0345,
+      "ambient": [
+        0.6431372549019608,
+        0.611764705882353,
+        0.5725490196078431
+      ],
+      "expectedAmbient": [
+        0.6431372549019608,
+        0.611764705882353,
+        0.5725490196078431
+      ],
+      "intensity": 0.49559999999999993,
+      "expectedIntensity": 0.49559999999999993,
+      "render": {
+        "frame": 439,
+        "calls": 199,
+        "triangles": 198710,
+        "points": 2008,
+        "lines": 0
+      }
+    },
+    {
+      "name": "bridge-focus",
+      "index": 2,
+      "active": 2,
+      "id": "hell",
+      "player": [
+        27,
+        3.1,
+        53
+      ],
+      "camera": [
+        27,
+        3.1,
+        53
+      ],
+      "expectedEyeY": 3.1,
+      "fog": [
+        0.10196078431372549,
+        0.0784313725490196,
+        0.06666666666666667
+      ],
+      "expectedFog": [
+        0.10196078431372549,
+        0.0784313725490196,
+        0.06666666666666667
+      ],
+      "density": 0.0345,
+      "expectedDensity": 0.0345,
+      "ambient": [
+        0.6431372549019608,
+        0.611764705882353,
+        0.5725490196078431
+      ],
+      "expectedAmbient": [
+        0.6431372549019608,
+        0.611764705882353,
+        0.5725490196078431
+      ],
+      "intensity": 0.49559999999999993,
+      "expectedIntensity": 0.49559999999999993,
+      "render": {
+        "frame": 479,
+        "calls": 195,
+        "triangles": 198120,
+        "points": 2008,
+        "lines": 0
+      }
+    }
+  ],
+  "errors": [],
+  "resources": {
+    "textures": 53,
+    "images": 49,
+    "materials": 234,
+    "renderer": {
+      "geometries": 159,
+      "textures": 49
+    },
+    "maps": [
+      {
+        "name": "",
+        "texture": "71db78fa-d894-4bc3-9062-4d9b9163ecd7",
+        "image": "pPcczrfX/wAAAP//OXrZigAAAAZJREFUAwCUeAuYw4LmyAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "goreSplats",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "KF6i1wfI3cI3AAAA//8Bj/8BAAAABklEQVQDAMxju0HGgkncAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "goreSplats",
+        "texture": "36fc8cfa-f075-4498-aaef-fb36636933d5",
+        "image": "3doOxVgTINGzBwAA//9LDbHdAAAABklEQVQDAOEfNU1lh1blAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "wall",
+        "texture": "ec71f4a2-a836-41b5-9ab8-aff728d93f14",
+        "image": "7ftSh44d/w8AAP//y8SRRAAAAAZJREFUAwDytwMmozyL6QAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "wall",
+        "texture": "93cd2dc2-3a7b-4108-af1e-d7c5afbb20e6",
+        "image": "inW6lWxuA8sQE0al6NPiS3iw/1ijO5DK8/QAERDfMsWrSAMAAAAASUVORK5CYII=",
+        "mapName": "prologueCryptStone",
+        "baked": false
+      },
+      {
+        "name": "pillar",
+        "texture": "0920a221-ba09-49d1-8329-3cef8d158728",
+        "image": "Ydm2dSil/A8AAP//5b3yYgAAAAZJREFUAwD+bOsniZan8gAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "floorCells",
+        "texture": "29714223-b8f4-47c1-90ad-09ddc3d1d4fd",
+        "image": "8GKH55j7PwAAAP//U/z/iAAAAAZJREFUAwC/I7Homnc4qAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "floorCells",
+        "texture": "2ba4ceb7-a8a4-490a-96e5-2fe9f0f52ca4",
+        "image": "eVLK9X/lvwAAAP//ApNsvAAAAAZJREFUAwAAkMYA1tGjVgAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "floorCells",
+        "texture": "ca29484c-12c3-4c67-8b4d-e5186d20d699",
+        "image": "tz+1Uvqc/wAAAP//zkIOlwAAAAZJREFUAwBLEybgh8PIJwAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "ceilingCells",
+        "texture": "e2b2be81-51db-4dab-98f4-250a09477720",
+        "image": "inW6lWxuA8sQE0al6NPiS3iw/1ijO5DK8/QAERDfMsWrSAMAAAAASUVORK5CYII=",
+        "mapName": "prologueHellRoof",
+        "baked": false
+      },
+      {
+        "name": "ceilingCells",
+        "texture": "bebb58ac-27c3-4fde-9cdf-f0f3d7706ae9",
+        "image": "jBhJAjdK2P8/AAAA//9zHJxUAAAABklEQVQDAK3TEb1gpc3+AAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "ceilingCells",
+        "texture": "4caefe5a-1573-4e69-87f9-2050c31622ac",
+        "image": "jBhJAjdK2P8/AAAA//9zHJxUAAAABklEQVQDAK3TEb1gpc3+AAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "ceilingRisers",
+        "texture": "ec71f4a2-a836-41b5-9ab8-aff728d93f14",
+        "image": "7ftSh44d/w8AAP//y8SRRAAAAAZJREFUAwDytwMmozyL6QAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "ceilingRisers",
+        "texture": "93cd2dc2-3a7b-4108-af1e-d7c5afbb20e6",
+        "image": "inW6lWxuA8sQE0al6NPiS3iw/1ijO5DK8/QAERDfMsWrSAMAAAAASUVORK5CYII=",
+        "mapName": "prologueCryptStone",
+        "baked": false
+      },
+      {
+        "name": "ceilingRisers",
+        "texture": "2acf8bb3-9b89-4787-9d69-02a64d4d1a8f",
+        "image": "inW6lWxuA8sQE0al6NPiS3iw/1ijO5DK8/QAERDfMsWrSAMAAAAASUVORK5CYII=",
+        "mapName": "prologueHellWall",
+        "baked": false
+      },
+      {
+        "name": "wallCourse",
+        "texture": "9d904675-b365-454d-b437-31c995ea3b17",
+        "image": "9khfzKp5Cv8PAAD//9Y/cBsAAAAGSURBVAMAovkNgyoKXmgAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "wallCourse",
+        "texture": "93cd2dc2-3a7b-4108-af1e-d7c5afbb20e6",
+        "image": "inW6lWxuA8sQE0al6NPiS3iw/1ijO5DK8/QAERDfMsWrSAMAAAAASUVORK5CYII=",
+        "mapName": "prologueCryptStone",
+        "baked": false
+      },
+      {
+        "name": "wallCourse",
+        "texture": "043f7cf0-aa3d-4884-9492-1ef4161fc0ee",
+        "image": "RQYmSizX5fD/AQAA//9A40cDAAAABklEQVQDAHGMeZCDPB+IAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "pillarTrim",
+        "texture": "0920a221-ba09-49d1-8329-3cef8d158728",
+        "image": "Ydm2dSil/A8AAP//5b3yYgAAAAZJREFUAwD+bOsniZan8gAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": "91062d55-ccb1-484a-bcc4-06d818e3a511",
+        "image": "eHJUGHNY7hj/DwAA//+1IRd6AAAABklEQVQDAD7K0T5j7B6fAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": "91062d55-ccb1-484a-bcc4-06d818e3a511",
+        "image": "eHJUGHNY7hj/DwAA//+1IRd6AAAABklEQVQDAD7K0T5j7B6fAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": "be657868-d74c-49fd-a8f7-e6409f8c605c",
+        "image": "8GKH55j7PwAAAP//U/z/iAAAAAZJREFUAwC/I7Homnc4qAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": "91062d55-ccb1-484a-bcc4-06d818e3a511",
+        "image": "eHJUGHNY7hj/DwAA//+1IRd6AAAABklEQVQDAD7K0T5j7B6fAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": "91062d55-ccb1-484a-bcc4-06d818e3a511",
+        "image": "eHJUGHNY7hj/DwAA//+1IRd6AAAABklEQVQDAD7K0T5j7B6fAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": "91062d55-ccb1-484a-bcc4-06d818e3a511",
+        "image": "eHJUGHNY7hj/DwAA//+1IRd6AAAABklEQVQDAD7K0T5j7B6fAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": "f787bd86-f807-41fe-8d59-27036844d3e9",
+        "image": "maaqOk9V5V8AAAD//xOUFJAAAAAGSURBVAMAbDARBy5EcPYAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": "f787bd86-f807-41fe-8d59-27036844d3e9",
+        "image": "maaqOk9V5V8AAAD//xOUFJAAAAAGSURBVAMAbDARBy5EcPYAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": "6db17bc0-e462-437c-819a-36095449b897",
+        "image": "tz+1Uvqc/wAAAP//zkIOlwAAAAZJREFUAwBLEybgh8PIJwAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": "f787bd86-f807-41fe-8d59-27036844d3e9",
+        "image": "maaqOk9V5V8AAAD//xOUFJAAAAAGSURBVAMAbDARBy5EcPYAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": "f787bd86-f807-41fe-8d59-27036844d3e9",
+        "image": "maaqOk9V5V8AAAD//xOUFJAAAAAGSURBVAMAbDARBy5EcPYAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": "f787bd86-f807-41fe-8d59-27036844d3e9",
+        "image": "maaqOk9V5V8AAAD//xOUFJAAAAAGSURBVAMAbDARBy5EcPYAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": "f787bd86-f807-41fe-8d59-27036844d3e9",
+        "image": "maaqOk9V5V8AAAD//xOUFJAAAAAGSURBVAMAbDARBy5EcPYAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": "f787bd86-f807-41fe-8d59-27036844d3e9",
+        "image": "maaqOk9V5V8AAAD//xOUFJAAAAAGSURBVAMAbDARBy5EcPYAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": "20f8017c-c2cd-4a23-8188-503a61795b43",
+        "image": "eVLK9X/lvwAAAP//ApNsvAAAAAZJREFUAwAAkMYA1tGjVgAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": "f787bd86-f807-41fe-8d59-27036844d3e9",
+        "image": "maaqOk9V5V8AAAD//xOUFJAAAAAGSURBVAMAbDARBy5EcPYAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": "f787bd86-f807-41fe-8d59-27036844d3e9",
+        "image": "maaqOk9V5V8AAAD//xOUFJAAAAAGSURBVAMAbDARBy5EcPYAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "platform",
+        "texture": "f787bd86-f807-41fe-8d59-27036844d3e9",
+        "image": "maaqOk9V5V8AAAD//xOUFJAAAAAGSURBVAMAbDARBy5EcPYAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "hellRock",
+        "texture": "2acf8bb3-9b89-4787-9d69-02a64d4d1a8f",
+        "image": "inW6lWxuA8sQE0al6NPiS3iw/1ijO5DK8/QAERDfMsWrSAMAAAAASUVORK5CYII=",
+        "mapName": "prologueHellWall",
+        "baked": true
+      },
+      {
+        "name": "hellGround",
+        "texture": "35c0c227-53c5-4387-9f6e-ce028c2c5b2c",
+        "image": "DwT+99b5/wUAAP//UzI2EQAAAAZJREFUAwDEEezewQmYSwAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": true
+      },
+      {
+        "name": "lava",
+        "texture": "c6c0d555-0092-4754-91c3-db62494f804c",
+        "image": "04gdc9nN/P8FAAD//xS13w8AAAAGSURBVAMAxWWq+SlkYkoAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "lavaCrust",
+        "texture": "0816409c-6850-4e4e-b775-c510286b2772",
+        "image": "scbPNvZ6q4D/AQAA//9GbYMSAAAABklEQVQDAOyClAdDM4C9AAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "875f964b-dae8-448c-9382-6f22c91a9095",
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "875f964b-dae8-448c-9382-6f22c91a9095",
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "875f964b-dae8-448c-9382-6f22c91a9095",
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b3a4b216-65b1-4406-a11d-8f8112e24e26",
+        "image": "nA8LIQigMCNXAAAA//80bTesAAAABklEQVQDAKY6b8puShE3AAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "tqo4kNqBHwAAAP//UEQhpwAAAAZJREFUAwDfT69/WrbE1wAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "11673ccb-5c9b-4ebc-8690-d4814c445b69",
+        "image": "YSEEAWSmwhUAAP//BO+6WgAAAAZJREFUAwBbFG/KKJW0pwAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "AmDMJiAjEenvAAAA//9kKV71AAAABklEQVQDAB2Gbr4mDlu8AAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "SG1PdiC1A98AAAD//+9yibQAAAAGSURBVAMAOybvcCRrsIMAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "875f964b-dae8-448c-9382-6f22c91a9095",
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "11673ccb-5c9b-4ebc-8690-d4814c445b69",
+        "image": "YSEEAWSmwhUAAP//BO+6WgAAAAZJREFUAwBbFG/KKJW0pwAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "11673ccb-5c9b-4ebc-8690-d4814c445b69",
+        "image": "YSEEAWSmwhUAAP//BO+6WgAAAAZJREFUAwBbFG/KKJW0pwAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "11673ccb-5c9b-4ebc-8690-d4814c445b69",
+        "image": "YSEEAWSmwhUAAP//BO+6WgAAAAZJREFUAwBbFG/KKJW0pwAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "11673ccb-5c9b-4ebc-8690-d4814c445b69",
+        "image": "YSEEAWSmwhUAAP//BO+6WgAAAAZJREFUAwBbFG/KKJW0pwAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "875f964b-dae8-448c-9382-6f22c91a9095",
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "875f964b-dae8-448c-9382-6f22c91a9095",
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "QG1JTIHaCvwCAAD//3boz6IAAAAGSURBVAMAC0Mrf6V1TjIAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "11673ccb-5c9b-4ebc-8690-d4814c445b69",
+        "image": "YSEEAWSmwhUAAP//BO+6WgAAAAZJREFUAwBbFG/KKJW0pwAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "875f964b-dae8-448c-9382-6f22c91a9095",
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "875f964b-dae8-448c-9382-6f22c91a9095",
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "875f964b-dae8-448c-9382-6f22c91a9095",
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "875f964b-dae8-448c-9382-6f22c91a9095",
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "875f964b-dae8-448c-9382-6f22c91a9095",
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "QG1JTIHaCvwCAAD//3boz6IAAAAGSURBVAMAC0Mrf6V1TjIAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "sLntQIIiRlH8AQAA///rLMKrAAAABklEQVQDALdF5nAYt3cwAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "875f964b-dae8-448c-9382-6f22c91a9095",
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "tqo4kNqBHwAAAP//UEQhpwAAAAZJREFUAwDfT69/WrbE1wAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b3a4b216-65b1-4406-a11d-8f8112e24e26",
+        "image": "nA8LIQigMCNXAAAA//80bTesAAAABklEQVQDAKY6b8puShE3AAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "tqo4kNqBHwAAAP//UEQhpwAAAAZJREFUAwDfT69/WrbE1wAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "4185b413-4b1d-4ce0-9d37-900746030d2f",
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "prop",
+        "texture": "3ffb916c-3b85-432c-8d4a-e1d05134a6ce",
+        "image": "sQPnh0f0OwAAAP//q2kDuAAAAAZJREFUAwBClKgqwAAUwwAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "CPIH+n/V/wsAAP//BMh4XgAAAAZJREFUAwCTAlsyi4skVQAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "4185b413-4b1d-4ce0-9d37-900746030d2f",
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "tqo4kNqBHwAAAP//UEQhpwAAAAZJREFUAwDfT69/WrbE1wAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "CPIH+n/V/wsAAP//BMh4XgAAAAZJREFUAwCTAlsyi4skVQAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "4185b413-4b1d-4ce0-9d37-900746030d2f",
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "uL0Yay7GeBkAAP//WNAuxAAAAAZJREFUAwDi/0voydAqtAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "4185b413-4b1d-4ce0-9d37-900746030d2f",
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "SG1PdiC1A98AAAD//+9yibQAAAAGSURBVAMAOybvcCRrsIMAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "875f964b-dae8-448c-9382-6f22c91a9095",
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "uL0Yay7GeBkAAP//WNAuxAAAAAZJREFUAwDi/0voydAqtAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "4185b413-4b1d-4ce0-9d37-900746030d2f",
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "uL0Yay7GeBkAAP//WNAuxAAAAAZJREFUAwDi/0voydAqtAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "4185b413-4b1d-4ce0-9d37-900746030d2f",
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "SG1PdiC1A98AAAD//+9yibQAAAAGSURBVAMAOybvcCRrsIMAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "QG1JTIHaCvwCAAD//3boz6IAAAAGSURBVAMAC0Mrf6V1TjIAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "CPIH+n/V/wsAAP//BMh4XgAAAAZJREFUAwCTAlsyi4skVQAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "4185b413-4b1d-4ce0-9d37-900746030d2f",
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b3a4b216-65b1-4406-a11d-8f8112e24e26",
+        "image": "nA8LIQigMCNXAAAA//80bTesAAAABklEQVQDAKY6b8puShE3AAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "QG1JTIHaCvwCAAD//3boz6IAAAAGSURBVAMAC0Mrf6V1TjIAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b3a4b216-65b1-4406-a11d-8f8112e24e26",
+        "image": "nA8LIQigMCNXAAAA//80bTesAAAABklEQVQDAKY6b8puShE3AAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "CPIH+n/V/wsAAP//BMh4XgAAAAZJREFUAwCTAlsyi4skVQAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "4185b413-4b1d-4ce0-9d37-900746030d2f",
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "tqo4kNqBHwAAAP//UEQhpwAAAAZJREFUAwDfT69/WrbE1wAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "QG1JTIHaCvwCAAD//3boz6IAAAAGSURBVAMAC0Mrf6V1TjIAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "uL0Yay7GeBkAAP//WNAuxAAAAAZJREFUAwDi/0voydAqtAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "4185b413-4b1d-4ce0-9d37-900746030d2f",
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "CPIH+n/V/wsAAP//BMh4XgAAAAZJREFUAwCTAlsyi4skVQAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "4185b413-4b1d-4ce0-9d37-900746030d2f",
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "uL0Yay7GeBkAAP//WNAuxAAAAAZJREFUAwDi/0voydAqtAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "4185b413-4b1d-4ce0-9d37-900746030d2f",
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "4185b413-4b1d-4ce0-9d37-900746030d2f",
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "prop",
+        "texture": "3ffb916c-3b85-432c-8d4a-e1d05134a6ce",
+        "image": "sQPnh0f0OwAAAP//q2kDuAAAAAZJREFUAwBClKgqwAAUwwAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "875f964b-dae8-448c-9382-6f22c91a9095",
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "tqo4kNqBHwAAAP//UEQhpwAAAAZJREFUAwDfT69/WrbE1wAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "11673ccb-5c9b-4ebc-8690-d4814c445b69",
+        "image": "YSEEAWSmwhUAAP//BO+6WgAAAAZJREFUAwBbFG/KKJW0pwAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "uL0Yay7GeBkAAP//WNAuxAAAAAZJREFUAwDi/0voydAqtAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "4185b413-4b1d-4ce0-9d37-900746030d2f",
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "CPIH+n/V/wsAAP//BMh4XgAAAAZJREFUAwCTAlsyi4skVQAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "4185b413-4b1d-4ce0-9d37-900746030d2f",
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b3a4b216-65b1-4406-a11d-8f8112e24e26",
+        "image": "nA8LIQigMCNXAAAA//80bTesAAAABklEQVQDAKY6b8puShE3AAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "uL0Yay7GeBkAAP//WNAuxAAAAAZJREFUAwDi/0voydAqtAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "4185b413-4b1d-4ce0-9d37-900746030d2f",
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "CPIH+n/V/wsAAP//BMh4XgAAAAZJREFUAwCTAlsyi4skVQAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "4185b413-4b1d-4ce0-9d37-900746030d2f",
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "875f964b-dae8-448c-9382-6f22c91a9095",
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "CPIH+n/V/wsAAP//BMh4XgAAAAZJREFUAwCTAlsyi4skVQAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "4185b413-4b1d-4ce0-9d37-900746030d2f",
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "875f964b-dae8-448c-9382-6f22c91a9095",
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "tqo4kNqBHwAAAP//UEQhpwAAAAZJREFUAwDfT69/WrbE1wAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "QG1JTIHaCvwCAAD//3boz6IAAAAGSURBVAMAC0Mrf6V1TjIAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "875f964b-dae8-448c-9382-6f22c91a9095",
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "tqo4kNqBHwAAAP//UEQhpwAAAAZJREFUAwDfT69/WrbE1wAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "QG1JTIHaCvwCAAD//3boz6IAAAAGSURBVAMAC0Mrf6V1TjIAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "875f964b-dae8-448c-9382-6f22c91a9095",
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "CPIH+n/V/wsAAP//BMh4XgAAAAZJREFUAwCTAlsyi4skVQAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "4185b413-4b1d-4ce0-9d37-900746030d2f",
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "CPIH+n/V/wsAAP//BMh4XgAAAAZJREFUAwCTAlsyi4skVQAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "4185b413-4b1d-4ce0-9d37-900746030d2f",
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "875f964b-dae8-448c-9382-6f22c91a9095",
+        "image": "/R/knLO8wX/xAAAA//8n/TFYAAAABklEQVQDAOkNWuj7SCkbAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "CPIH+n/V/wsAAP//BMh4XgAAAAZJREFUAwCTAlsyi4skVQAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "4185b413-4b1d-4ce0-9d37-900746030d2f",
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "uL0Yay7GeBkAAP//WNAuxAAAAAZJREFUAwDi/0voydAqtAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "4185b413-4b1d-4ce0-9d37-900746030d2f",
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "CPIH+n/V/wsAAP//BMh4XgAAAAZJREFUAwCTAlsyi4skVQAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "4185b413-4b1d-4ce0-9d37-900746030d2f",
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "sLntQIIiRlH8AQAA///rLMKrAAAABklEQVQDALdF5nAYt3cwAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "QG1JTIHaCvwCAAD//3boz6IAAAAGSURBVAMAC0Mrf6V1TjIAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "uL0Yay7GeBkAAP//WNAuxAAAAAZJREFUAwDi/0voydAqtAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "4185b413-4b1d-4ce0-9d37-900746030d2f",
+        "image": "0WvmYviIvwAAAP//8GDscAAAAAZJREFUAwBqwIhqLWtwTAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "QG1JTIHaCvwCAAD//3boz6IAAAAGSURBVAMAC0Mrf6V1TjIAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "b879379e-72f3-4e3c-ab6d-a6dae5e6dd78",
+        "image": "tqo4kNqBHwAAAP//UEQhpwAAAAZJREFUAwDfT69/WrbE1wAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "1fae0a7a-2681-49d6-9855-9f216600beac",
+        "image": "qG3fUJOrp/8CAAD//4V9q6kAAAAGSURBVAMAfSJfQF8BgaoAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "1fae0a7a-2681-49d6-9855-9f216600beac",
+        "image": "qG3fUJOrp/8CAAD//4V9q6kAAAAGSURBVAMAfSJfQF8BgaoAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "1fae0a7a-2681-49d6-9855-9f216600beac",
+        "image": "qG3fUJOrp/8CAAD//4V9q6kAAAAGSURBVAMAfSJfQF8BgaoAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "1fae0a7a-2681-49d6-9855-9f216600beac",
+        "image": "qG3fUJOrp/8CAAD//4V9q6kAAAAGSURBVAMAfSJfQF8BgaoAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "1fae0a7a-2681-49d6-9855-9f216600beac",
+        "image": "qG3fUJOrp/8CAAD//4V9q6kAAAAGSURBVAMAfSJfQF8BgaoAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "1fae0a7a-2681-49d6-9855-9f216600beac",
+        "image": "qG3fUJOrp/8CAAD//4V9q6kAAAAGSURBVAMAfSJfQF8BgaoAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "1fae0a7a-2681-49d6-9855-9f216600beac",
+        "image": "qG3fUJOrp/8CAAD//4V9q6kAAAAGSURBVAMAfSJfQF8BgaoAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "1fae0a7a-2681-49d6-9855-9f216600beac",
+        "image": "qG3fUJOrp/8CAAD//4V9q6kAAAAGSURBVAMAfSJfQF8BgaoAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "1fae0a7a-2681-49d6-9855-9f216600beac",
+        "image": "qG3fUJOrp/8CAAD//4V9q6kAAAAGSURBVAMAfSJfQF8BgaoAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "1fae0a7a-2681-49d6-9855-9f216600beac",
+        "image": "qG3fUJOrp/8CAAD//4V9q6kAAAAGSURBVAMAfSJfQF8BgaoAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "1fae0a7a-2681-49d6-9855-9f216600beac",
+        "image": "qG3fUJOrp/8CAAD//4V9q6kAAAAGSURBVAMAfSJfQF8BgaoAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "1fae0a7a-2681-49d6-9855-9f216600beac",
+        "image": "qG3fUJOrp/8CAAD//4V9q6kAAAAGSURBVAMAfSJfQF8BgaoAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "1fae0a7a-2681-49d6-9855-9f216600beac",
+        "image": "qG3fUJOrp/8CAAD//4V9q6kAAAAGSURBVAMAfSJfQF8BgaoAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "ec71f4a2-a836-41b5-9ab8-aff728d93f14",
+        "image": "7ftSh44d/w8AAP//y8SRRAAAAAZJREFUAwDytwMmozyL6QAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "ec71f4a2-a836-41b5-9ab8-aff728d93f14",
+        "image": "7ftSh44d/w8AAP//y8SRRAAAAAZJREFUAwDytwMmozyL6QAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "ec71f4a2-a836-41b5-9ab8-aff728d93f14",
+        "image": "7ftSh44d/w8AAP//y8SRRAAAAAZJREFUAwDytwMmozyL6QAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "ec71f4a2-a836-41b5-9ab8-aff728d93f14",
+        "image": "7ftSh44d/w8AAP//y8SRRAAAAAZJREFUAwDytwMmozyL6QAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "969d033b-2e60-4a5e-9fa5-6e41a01f9f2d",
+        "image": "kvqMwyaP/wEAAP//fMEBdAAAAAZJREFUAwAmZ6l+ttsdsgAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "ec71f4a2-a836-41b5-9ab8-aff728d93f14",
+        "image": "7ftSh44d/w8AAP//y8SRRAAAAAZJREFUAwDytwMmozyL6QAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "ec71f4a2-a836-41b5-9ab8-aff728d93f14",
+        "image": "7ftSh44d/w8AAP//y8SRRAAAAAZJREFUAwDytwMmozyL6QAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "ec71f4a2-a836-41b5-9ab8-aff728d93f14",
+        "image": "7ftSh44d/w8AAP//y8SRRAAAAAZJREFUAwDytwMmozyL6QAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "4601533f-b911-42b0-9f3c-90b461c188d3",
+        "image": "YAlDP9TpOe3wHwAA//9JuC1DAAAABklEQVQDAD8twFCOLtCQAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "4601533f-b911-42b0-9f3c-90b461c188d3",
+        "image": "YAlDP9TpOe3wHwAA//9JuC1DAAAABklEQVQDAD8twFCOLtCQAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "ba280da4-f54e-4322-afcd-383a1e434550",
+        "image": "Bp7Bxn/P8B8AAAD//+Jy27QAAAAGSURBVAMA+fVK58r7UywAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "",
+        "texture": "ba280da4-f54e-4322-afcd-383a1e434550",
+        "image": "Bp7Bxn/P8B8AAAD//+Jy27QAAAAGSURBVAMA+fVK58r7UywAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "lavafall",
+        "texture": "9f5f0e27-7c12-4f73-a4aa-efaf6fc9cf0f",
+        "image": "vvZ4PJr5/wEAAP//PVPJjAAAAAZJREFUAwAbnpzR6tcJXgAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "lavafall",
+        "texture": "ec36324a-d983-4d91-88be-bc0d12bdcfd4",
+        "image": "vvZ4PJr5/wEAAP//PVPJjAAAAAZJREFUAwAbnpzR6tcJXgAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "lavafall",
+        "texture": "ddad3340-5994-4684-9b14-b29747371670",
+        "image": "vvZ4PJr5/wEAAP//PVPJjAAAAAZJREFUAwAbnpzR6tcJXgAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "lavafall",
+        "texture": "ad37433a-54e7-4dca-95fe-68a6ee23fe8f",
+        "image": "vvZ4PJr5/wEAAP//PVPJjAAAAAZJREFUAwAbnpzR6tcJXgAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "lavafall",
+        "texture": "24acf14f-fe12-4334-98ee-17879a8c5a22",
+        "image": "vvZ4PJr5/wEAAP//PVPJjAAAAAZJREFUAwAbnpzR6tcJXgAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decor",
+        "texture": "c1ca57c2-e47f-4d5a-8409-3555a2abb775",
+        "image": "GEswf3bofwAAAP//4PaJoAAAAAZJREFUAwC6ykrCJ2nSFQAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decor",
+        "texture": "ba280da4-f54e-4322-afcd-383a1e434550",
+        "image": "Bp7Bxn/P8B8AAAD//+Jy27QAAAAGSURBVAMA+fVK58r7UywAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decor",
+        "texture": "ba280da4-f54e-4322-afcd-383a1e434550",
+        "image": "Bp7Bxn/P8B8AAAD//+Jy27QAAAAGSURBVAMA+fVK58r7UywAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decor",
+        "texture": "be657868-d74c-49fd-a8f7-e6409f8c605c",
+        "image": "8GKH55j7PwAAAP//U/z/iAAAAAZJREFUAwC/I7Homnc4qAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decor",
+        "texture": "0920a221-ba09-49d1-8329-3cef8d158728",
+        "image": "Ydm2dSil/A8AAP//5b3yYgAAAAZJREFUAwD+bOsniZan8gAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decor",
+        "texture": "4e9f6eda-0b0a-4839-9755-1b3d43a6b7a0",
+        "image": "tUyDWZaMrwMAAP//ItQOwgAAAAZJREFUAwAbjOCoXyaBIgAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decorClutter",
+        "texture": "ba280da4-f54e-4322-afcd-383a1e434550",
+        "image": "Bp7Bxn/P8B8AAAD//+Jy27QAAAAGSURBVAMA+fVK58r7UywAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decorClutter",
+        "texture": "4e9f6eda-0b0a-4839-9755-1b3d43a6b7a0",
+        "image": "tUyDWZaMrwMAAP//ItQOwgAAAAZJREFUAwAbjOCoXyaBIgAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decorClutter",
+        "texture": "be657868-d74c-49fd-a8f7-e6409f8c605c",
+        "image": "8GKH55j7PwAAAP//U/z/iAAAAAZJREFUAwC/I7Homnc4qAAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decorClutter",
+        "texture": "ec71f4a2-a836-41b5-9ab8-aff728d93f14",
+        "image": "7ftSh44d/w8AAP//y8SRRAAAAAZJREFUAwDytwMmozyL6QAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decorClutter",
+        "texture": "c1ca57c2-e47f-4d5a-8409-3555a2abb775",
+        "image": "GEswf3bofwAAAP//4PaJoAAAAAZJREFUAwC6ykrCJ2nSFQAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decor",
+        "texture": "06f42d88-70e5-4ce3-9fae-fd8b33871ffb",
+        "image": "gPVeu9Z2vtD/DwAA//+WJhTcAAAABklEQVQDALK+jeoAK9MFAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": true
+      },
+      {
+        "name": "decor",
+        "texture": "8b2bf6c8-ae04-42bd-9bd1-14412ab5c8be",
+        "image": "inW6lWxuA8sQE0al6NPiS3iw/1ijO5DK8/QAERDfMsWrSAMAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": true
+      },
+      {
+        "name": "decor",
+        "texture": "f60e7fb8-c686-496d-8644-68f51a95e342",
+        "image": "k7WJvpvpXwAAAP//hundAgAAAAZJREFUAwAh6KkZErONTQAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": true
+      },
+      {
+        "name": "decor",
+        "texture": "dd2226b0-dfc4-46fb-ac7c-0048421b22b4",
+        "image": "XpL8inxU6P8DAAD//wkhbo4AAAAGSURBVAMAfuDJLlKODakAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decor",
+        "texture": "0e7bccef-78c0-4875-b108-edcf2e8694b1",
+        "image": "10X1/rHnXwAAAP//X15DOgAAAAZJREFUAwCKhpwTiHTeywAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decorClutter",
+        "texture": "dd2226b0-dfc4-46fb-ac7c-0048421b22b4",
+        "image": "XpL8inxU6P8DAAD//wkhbo4AAAAGSURBVAMAfuDJLlKODakAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decorClutter",
+        "texture": "a244cc7a-6eec-43b9-bfad-135f48d6a470",
+        "image": "4Z9xs0/G2P8BAAD//zixFZoAAAAGSURBVAMAPmt4jOH8/MgAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decor",
+        "texture": "c1ca57c2-e47f-4d5a-8409-3555a2abb775",
+        "image": "GEswf3bofwAAAP//4PaJoAAAAAZJREFUAwC6ykrCJ2nSFQAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decor",
+        "texture": "2f6c8e28-33c8-4b44-b180-a79c6d2387fb",
+        "image": "E1i25pu0/wcAAP//k1qmOQAAAAZJREFUAwDrn3XqU8TUTwAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decor",
+        "texture": "b487460f-cc45-4929-ac4c-1c210cadb6b8",
+        "image": "Y+0eEZ+k8g8AAAD//0kEo+QAAAAGSURBVAMAQzuL6/hS7LwAAAAASUVORK5CYII=",
+        "mapName": "prologueChapelGlass",
+        "baked": false
+      },
+      {
+        "name": "decor",
+        "texture": "b487460f-cc45-4929-ac4c-1c210cadb6b8",
+        "image": "Y+0eEZ+k8g8AAAD//0kEo+QAAAAGSURBVAMAQzuL6/hS7LwAAAAASUVORK5CYII=",
+        "mapName": "prologueChapelGlass",
+        "baked": false
+      },
+      {
+        "name": "decor",
+        "texture": "b487460f-cc45-4929-ac4c-1c210cadb6b8",
+        "image": "Y+0eEZ+k8g8AAAD//0kEo+QAAAAGSURBVAMAQzuL6/hS7LwAAAAASUVORK5CYII=",
+        "mapName": "prologueChapelGlass",
+        "baked": false
+      },
+      {
+        "name": "decor",
+        "texture": "ec71f4a2-a836-41b5-9ab8-aff728d93f14",
+        "image": "7ftSh44d/w8AAP//y8SRRAAAAAZJREFUAwDytwMmozyL6QAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decor",
+        "texture": "ec71f4a2-a836-41b5-9ab8-aff728d93f14",
+        "image": "7ftSh44d/w8AAP//y8SRRAAAAAZJREFUAwDytwMmozyL6QAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decorClutter",
+        "texture": "0920a221-ba09-49d1-8329-3cef8d158728",
+        "image": "Ydm2dSil/A8AAP//5b3yYgAAAAZJREFUAwD+bOsniZan8gAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decor",
+        "texture": "8b2bf6c8-ae04-42bd-9bd1-14412ab5c8be",
+        "image": "inW6lWxuA8sQE0al6NPiS3iw/1ijO5DK8/QAERDfMsWrSAMAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": true
+      },
+      {
+        "name": "decor",
+        "texture": "d89bbce2-79e4-4749-a52a-a702f2ab981a",
+        "image": "9EZEc+D4PwAAAP///Hn7DAAAAAZJREFUAwAbwsf2czTvfgAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "decor",
+        "texture": "8b2bf6c8-ae04-42bd-9bd1-14412ab5c8be",
+        "image": "inW6lWxuA8sQE0al6NPiS3iw/1ijO5DK8/QAERDfMsWrSAMAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": true
+      },
+      {
+        "name": "decor",
+        "texture": "f017df07-40e9-4941-b01d-1ff88825976d",
+        "image": "+ZS5Lzw68D8AAAD//w5oCMQAAAAGSURBVAMAJvkGQd6vBVMAAAAASUVORK5CYII=",
+        "mapName": "prologueRitualIvory",
+        "baked": false
+      },
+      {
+        "name": "fireFlames",
+        "texture": "1c44bc94-41aa-429b-a62d-db1f53ea9936",
+        "image": "R7TgzmJZf38AAAD//3GmBHIAAAAGSURBVAMArfWSO0gQGjEAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "fireEmbers",
+        "texture": "1c44bc94-41aa-429b-a62d-db1f53ea9936",
+        "image": "R7TgzmJZf38AAAD//3GmBHIAAAAGSURBVAMArfWSO0gQGjEAAAAASUVORK5CYII=",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "prologueEmberHalo",
+        "texture": "f5290688-2922-41ea-97a6-e4026a4cda52",
+        "image": "vFsC9T/DdwAAAP//jMEhXwAAAAZJREFUAwBW0q5h3Dga5wAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "prologueEmberPool",
+        "texture": "f5290688-2922-41ea-97a6-e4026a4cda52",
+        "image": "vFsC9T/DdwAAAP//jMEhXwAAAAZJREFUAwBW0q5h3Dga5wAAAABJRU5ErkJggg==",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "prologueChapelGlassSpill",
+        "texture": "678fe2e6-0e49-4556-840a-4e0585c0df44",
+        "image": "FvvvA4T99bL3BwAA//9yzhzeAAAABklEQVQDAEq6F1Dk6n2TAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "prologueVotiveFlame",
+        "texture": "f6d6568c-d2ab-4b87-8ae7-c7ac5355eb57",
+        "image": "Dq0unOoW+iZ6AwAA//85Y5mXAAAABklEQVQDAGSBUdIprKVgAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "prologueVotiveFlame",
+        "texture": "f6d6568c-d2ab-4b87-8ae7-c7ac5355eb57",
+        "image": "Dq0unOoW+iZ6AwAA//85Y5mXAAAABklEQVQDAGSBUdIprKVgAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "prologueVotiveFlame",
+        "texture": "f6d6568c-d2ab-4b87-8ae7-c7ac5355eb57",
+        "image": "Dq0unOoW+iZ6AwAA//85Y5mXAAAABklEQVQDAGSBUdIprKVgAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "prologueVotiveFlame",
+        "texture": "f6d6568c-d2ab-4b87-8ae7-c7ac5355eb57",
+        "image": "Dq0unOoW+iZ6AwAA//85Y5mXAAAABklEQVQDAGSBUdIprKVgAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "prologueVotiveFlame",
+        "texture": "f6d6568c-d2ab-4b87-8ae7-c7ac5355eb57",
+        "image": "Dq0unOoW+iZ6AwAA//85Y5mXAAAABklEQVQDAGSBUdIprKVgAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "prologueVotiveFlame",
+        "texture": "f6d6568c-d2ab-4b87-8ae7-c7ac5355eb57",
+        "image": "Dq0unOoW+iZ6AwAA//85Y5mXAAAABklEQVQDAGSBUdIprKVgAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "prologueVotiveFlame",
+        "texture": "f6d6568c-d2ab-4b87-8ae7-c7ac5355eb57",
+        "image": "Dq0unOoW+iZ6AwAA//85Y5mXAAAABklEQVQDAGSBUdIprKVgAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "prologueVotiveFlame",
+        "texture": "f6d6568c-d2ab-4b87-8ae7-c7ac5355eb57",
+        "image": "Dq0unOoW+iZ6AwAA//85Y5mXAAAABklEQVQDAGSBUdIprKVgAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      },
+      {
+        "name": "prologueVotiveFlame",
+        "texture": "f6d6568c-d2ab-4b87-8ae7-c7ac5355eb57",
+        "image": "Dq0unOoW+iZ6AwAA//85Y5mXAAAABklEQVQDAGSBUdIprKVgAAAAAElFTkSuQmCC",
+        "mapName": "",
+        "baked": false
+      }
+    ]
+  },
+  "lifecycle": [
+    {
+      "cycle": 0,
+      "oldTextures": 7,
+      "disposed": 7,
+      "taggedNextLevel": 0,
+      "reusedDisposedTextures": 0,
+      "flames": 1,
+      "textures": 60,
+      "images": 49,
+      "resident": 59
+    },
+    {
+      "cycle": 1,
+      "oldTextures": 7,
+      "disposed": 7,
+      "taggedNextLevel": 0,
+      "reusedDisposedTextures": 0,
+      "flames": 1,
+      "textures": 59,
+      "images": 48,
+      "resident": 59
+    },
+    {
+      "cycle": 2,
+      "oldTextures": 7,
+      "disposed": 7,
+      "taggedNextLevel": 0,
+      "reusedDisposedTextures": 0,
+      "flames": 1,
+      "textures": 60,
+      "images": 49,
+      "resident": 59
+    },
+    {
+      "cycle": 3,
+      "oldTextures": 7,
+      "disposed": 7,
+      "taggedNextLevel": 0,
+      "reusedDisposedTextures": 0,
+      "flames": 1,
+      "textures": 60,
+      "images": 49,
+      "resident": 59
+    },
+    {
+      "cycle": 4,
+      "oldTextures": 7,
+      "disposed": 7,
+      "taggedNextLevel": 0,
+      "reusedDisposedTextures": 0,
+      "flames": 1,
+      "textures": 60,
+      "images": 49,
+      "resident": 59
+    }
+  ]
+}

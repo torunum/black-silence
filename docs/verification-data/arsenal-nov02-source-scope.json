@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "baselineHTMLSHA256": "17ebe0d27fdcef2eea80b54fbc68ebf0cfa96b51c0244bd2a56e85ac22155d61",
+  "weaponCandidateSHA256": "2fa1bf12550d57f04ee6d6dd2a40350df61eac189534074dd56f1335088daad1",
+  "combinedSHA256": "3d58959919c4b673aa7643dd1237ecaf98eb21654f89f87a5b007f7d745a69e9",
+  "baselineViewmodelsSHA256": "99bd9d094ce38eb0f221a820026ce5ee81e0c192a2b9a8b5b5fa630ac3416aac",
+  "viewmodelsSHA256": "25c82ff3c3f1e0fadf97a7adb2ba04b1771f7be24ac3550e549ecb38e55f5797",
+  "weaponOnlyExactSingleSourceReplacement": true,
+  "combinedIncludesIdenticalReviewedSource": true,
+  "modifiedWeaponIndices": [
+    1,
+    2,
+    3,
+    4,
+    7,
+    9
+  ],
+  "unchangedWeaponIndices": [
+    0,
+    5,
+    6,
+    8
+  ],
+  "parity": {
+    "cases": 660,
+    "exact": 300,
+    "expectedChanges": 360,
+    "unexpectedChanges": 0
+  },
+  "scope": "Only local geometry, weapon-specific right-hand pose/masks, barrel shading and cage contours changed. No animation durations, ammunition, audio, shared renderer/compositor, boot or finisher edits. Existing approved firearmSource texture supplies Rifle/Tommy hand cutouts. Real runtime and native frames are tested separately."
+}

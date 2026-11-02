@@ -1,102 +1,84 @@
 {
   "passed": true,
-  "bytes": 24894597,
-  "sha256": "17ebe0d27fdcef2eea80b54fbc68ebf0cfa96b51c0244bd2a56e85ac22155d61",
+  "bytes": 24901782,
+  "sha256": "3d58959919c4b673aa7643dd1237ecaf98eb21654f89f87a5b007f7d745a69e9",
   "engineSha256": "6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899",
   "villageSha256": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627",
   "moduleHashes": {
     "materials.js": "05e43b45ce521b52cf4d7b172177984699670d9de1261de5f88bf11f42b45517",
     "combat.js": "5f8c099867ca971387f21de80fecc9a83f6ab0b498b82ca153c2ccfe0d18514c",
     "enemy-animation.js": "977a4a425dedb5a48cce43592986a058f1c390641f529660f048dd71a9be0d3e",
-    "viewmodels.js": "99bd9d094ce38eb0f221a820026ce5ee81e0c192a2b9a8b5b5fa630ac3416aac",
+    "viewmodels.js": "25c82ff3c3f1e0fadf97a7adb2ba04b1771f7be24ac3550e549ecb38e55f5797",
     "finishers.js": "8c2c7bdf13e17005c3383054560b155986d8e706b5bfda81e9f1a8224ee3c5b0",
     "reload-audio-data.js": "2f48b10a1225d1c007ee282d3c18f82c5022bb0267ed86d65feadf819ec1be30",
     "reload-audio.js": "6b63eec006c8f7ee98392f323f630879140948f24165ab72b308bfb4b4d6be16",
     "zombie-audio.js": "bc974fbebcfeb7719ca785ca021af6bf7de465e2f0236b94b0b87f9f4525e7df",
-    "prologue.js": "66b89378273e83b09f178e1ce27319454daf89136e05d0ab9bdcf9a7fecd3c79",
+    "prologue.js": "49647fbb295457cd5afec600420ebe1e2d32977b7a4cab8d4a6e7cdbbcd62c3c",
     "render-warmup.js": "84db971283d86b0cbea7d0181eb3d48d40924936c5d577ab05fd31ca4b7e755c",
     "village-presentation.js": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627"
   },
   "idempotentBuilds": 2,
   "invalidInputsRefusedWithoutWrite": 8,
   "file": "THE-BLACK-SILENCE.html",
-  "verifiedAt": "2026-10-27T11:19:03.711Z",
-  "previousRelease": "d6101272e6d34d5635d1a75745ad971c4ab07e9d85d5bec7b721e5a7f0813c87",
-  "scope": "Eight local reference-based weapon revisions; handgun/Cross preserved; authored monastery portal and dungeon cell architecture.",
+  "verifiedAt": "2026-11-02T13:59:45.981Z",
+  "previousRelease": "17ebe0d27fdcef2eea80b54fbc68ebf0cfa96b51c0244bd2a56e85ac22155d61",
+  "scope": "DreamLoop revision of hell causeway/cascade/vaults and six weapons; reference-derived Rifle/Tommy grasps; handgun/Cross/Nail/Dynamite preserved.",
   "verificationReports": [
     {
-      "file": "docs/verification-data/arsenal-reference-oct27-aspects.json",
-      "sha256": "26e9f0ba65e133a64cedc49b9b1222e717e685d6a0428eb8c9d0703b46254fd2"
+      "file": "docs/verification-data/arsenal-nov02-aspects.json",
+      "sha256": "b8612ad10cd0e4269b80bf4c9fc7ca0afe34016260c6da90060028eb84d65c1a"
     },
     {
-      "file": "docs/verification-data/arsenal-reference-oct27-independent-review.json",
-      "sha256": "ac31ea02c4d8816f682c10678c8dfd1492a03dd06a54844f257025f298b42ff5"
+      "file": "docs/verification-data/arsenal-nov02-parity.json",
+      "sha256": "53d9cf032d46db2e0a23adce0982d1a73045512c8295fea05655d4978f20ee0a"
     },
     {
-      "file": "docs/verification-data/arsenal-reference-oct27-parity.json",
-      "sha256": "45efe685d8268bba966c9d0366aa985ac6df46c3ab8571b171cd560fcba8296b"
+      "file": "docs/verification-data/arsenal-nov02-performance.json",
+      "sha256": "2cc51a3f61f6d415cc037d4df0716cec8fd14c96f6b0f493fb0221c9525960d8"
     },
     {
-      "file": "docs/verification-data/arsenal-reference-oct27-performance.json",
-      "sha256": "65c92a5ab833c1338158895a445141c595e1bc5689be6c536f824f466a56c55d"
+      "file": "docs/verification-data/arsenal-nov02-runtime.json",
+      "sha256": "b8816efa40f482b11d3e5fcc5836780e2862f7bf43978b317aa02ec6e79ce5a1"
     },
     {
-      "file": "docs/verification-data/arsenal-reference-oct27-runtime.json",
-      "sha256": "c43e376fec5f7b74cbb62ca35e1563184f51596fc56da860868f68510ab91c36"
+      "file": "docs/verification-data/arsenal-nov02-source-scope.json",
+      "sha256": "e5d1b632a1e7d574edf7325b26f23dd2d75240f23873783977970e595a2a0615"
     },
     {
-      "file": "docs/verification-data/arsenal-reference-oct27-source-scope.json",
-      "sha256": "31894fbb21f2fda166e26028c15f808a5aa96baf362450beb84af6480a0fc34c"
+      "file": "docs/verification-data/dreamloop-nov02-build.json",
+      "sha256": "1b947141668e5c4910048276ed5b0edae26f5974ed7470326e11b193de89028d"
     },
     {
-      "file": "docs/verification-data/chapter-architecture-oct27-final-identity.json",
-      "sha256": "fa5d612097767a0b3435a449239a5664e74b335140cfa98496e1fb1b96bbca1c"
+      "file": "docs/verification-data/dreamloop-nov02-fresh-motion-review.json",
+      "sha256": "fccf9a33dfb93822eb7bd3f101b16665e63ace8e0d86b1ecda41850b0cdea967"
     },
     {
-      "file": "docs/verification-data/chapter-architecture-oct27-native.json",
-      "sha256": "fe1be02ab00252719e7f5c102a2926e870b5fea12e248b812dd71af1348b876c"
+      "file": "docs/verification-data/dreamloop-nov02-independent-review.json",
+      "sha256": "188f0236fc0a4bf1992d7f23d976e2af4b785ad9b8c342e43a4ac42bfbc1cff2"
     },
     {
-      "file": "docs/verification-data/chapter-architecture-oct27-performance.json",
-      "sha256": "7877deafcb11a0fbe93f025a0c3e7423e4b525314bb9d0ce954002fcb9a023e6"
+      "file": "docs/verification-data/hell-causeway-nov02-comment-only.json",
+      "sha256": "623e2fc2166330c04b821970fab70163cf8781127c9b3542b4115506e574932c"
     },
     {
-      "file": "docs/verification-data/chapter-architecture-oct27-scope.json",
-      "sha256": "dedde2d7d1be2485fd7ecb2306e8893ddd8073c5a169f71c5291166a98110bbf"
+      "file": "docs/verification-data/hell-causeway-nov02-independent-scope.json",
+      "sha256": "b56819613a1e8343ec226546189b7950aebbb6850c5f705b452561423e607eff"
     },
     {
-      "file": "docs/verification-data/chapter-architecture-oct27-tool-guards.json",
-      "sha256": "e28aba86609a12dc1e7570e3b8d37b83810035c9684bf13d5144dcc7b614bbdc"
+      "file": "docs/verification-data/hell-causeway-nov02-lifecycle.json",
+      "sha256": "377a06a791f693118acb563b2a8466c42390d038af59cca0062aa4f22c8fd073"
+    },
+    {
+      "file": "docs/verification-data/hell-causeway-nov02-navigation.json",
+      "sha256": "be2999566af5fea48ac4e3efe06c87e70668a30b5333848e48c045628954b9fd"
+    },
+    {
+      "file": "docs/verification-data/hell-causeway-nov02-performance.json",
+      "sha256": "688b31f644c4fca5c6623666d67a1b1fd5672019f46dcdf50c8c6b6e820c64fd"
+    },
+    {
+      "file": "docs/verification-data/hell-causeway-nov02-scope.json",
+      "sha256": "637fd2cefea637b2cff40503fea7a845ff62064c049a566b622eb4d4cd34c6fd"
     }
-  ],
-  "viewmodelParity": {
-    "baselineSHA256": "d6101272e6d34d5635d1a75745ad971c4ab07e9d85d5bec7b721e5a7f0813c87",
-    "candidateSHA256": "4edca6147375d48abcf15207c1ec9f363d24dab308fdf8b0e3dd79b5056408cf",
-    "sourceSHA256": "99bd9d094ce38eb0f221a820026ce5ee81e0c192a2b9a8b5b5fa630ac3416aac",
-    "comparisons": 660,
-    "exact": 192,
-    "expectedDifferences": 468,
-    "differencesByWeapon": {
-      "1": 60,
-      "2": 60,
-      "3": 60,
-      "4": 60,
-      "6": 60,
-      "7": 60,
-      "8": 48,
-      "9": 60
-    },
-    "unexpectedDifferences": 0
-  },
-  "mediaManifest": {
-    "file": "docs/arsenal-reference-oct27/provenance.json",
-    "sha256": "ef2f6417e3e796cd55cad56fcb62562545ab8d93da8a2a752903ca0e7b5f31a7"
-  },
-  "limitations": [
-    "Reference-derived articulated2.5D surfaces remain view dependent; not a full arbitrary-view3D reconstruction.",
-    "Recorded host-specific performance varies; one Sniper candidate repeat is about1.2ms more costly, another matches baseline. No general FPS improvement is claimed.",
-    "135-frame aspect QA uses the weapon-only4edca input with exact final99bd source. Final17ebe all10 runtime/build/media and source identity are separately recorded.",
-    "Environment paired tests retain their actual private input hashes; finalmodule identity is separately checked.",
-    "Tests cover listed representative states, not every campaign interaction or hardware configuration."
   ]
 }

@@ -1,0 +1,49 @@
+{
+  "passed": true,
+  "input": [
+    "C:\\Users\\tehlike47\\game\\.dream-loop\\release-nov02\\baseline.html",
+    "C:\\Users\\tehlike47\\game\\.dream-loop\\release-nov02\\prologue-before.js",
+    "C:\\Users\\tehlike47\\game\\src\\prologue.js"
+  ],
+  "hashes": [
+    "17ebe0d27fdcef2eea80b54fbc68ebf0cfa96b51c0244bd2a56e85ac22155d61",
+    "66b89378273e83b09f178e1ce27319454daf89136e05d0ab9bdcf9a7fecd3c79",
+    "49647fbb295457cd5afec600420ebe1e2d32977b7a4cab8d4a6e7cdbbcd62c3c"
+  ],
+  "entireMapExact": true,
+  "collisionClassesExact": true,
+  "curveSamples": 1001,
+  "minNormalizedRiseGain": 0,
+  "counts": {
+    "hellCauseway": {
+      "instances": 23,
+      "before": 184,
+      "after": 575
+    },
+    "hellGreatArch": {
+      "instances": 4,
+      "before": 780,
+      "after": 780
+    },
+    "hellSideAisle": {
+      "instances": 14,
+      "before": 1204,
+      "after": 1204
+    },
+    "hellVaultShell": {
+      "instances": 25,
+      "before": 2120,
+      "after": 3120
+    },
+    "hellNaveRib": {
+      "instances": 1,
+      "before": 62,
+      "after": 62
+    },
+    "hellCascadeRock": {
+      "instances": 2,
+      "before": 30,
+      "after": 156
+    }
+  }
+}

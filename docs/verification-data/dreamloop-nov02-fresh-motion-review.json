@@ -1,0 +1,25 @@
+{
+  "date":"2026-11-02T13:51:00Z",
+  "reviewer":"fresh_motion_judge_nov02",
+  "scope":"Fresh independent read-only visual review; no source or artifact edits by reviewer.",
+  "targets":["assets/weapon-reference/arsenal-target-2-5-v1.png","assets/weapon-reference/arsenal-target-6-9-v1.png"],
+  "reviewed":"Baseline Rifle/Tommy idle, baseline Rifle R.5, 30 target-grasps-v1 native motion frames and 15 target-grasps-v2 Rifle frames. Native 1024x768,1280x720,1680x720; idle, fire, reload .18/.5/.88.",
+  "rejectedV1":"Rifle reload .18/.5 showed orange triangular grip fragment and detached black dash below right fingers, absent from baseline.",
+  "V2Fix":"Author removed one redundant Rifle wood-grip hull. All 15 final Rifle frames visually clear. Tommy and all other source lines are byte-identical between v1 and v2, independently confirmed in release review.",
+  "finalTechnicalVerdict":"No confirmed remaining duplicate hand, filled guard void, wrist seam, or internal canvas clipping. 4:3 viewport edge framing is distinct from contact-sheet cropping.",
+  "aestheticResidual":"Tommy fingertip looks round and exposed wooden grip neck remains longer than target; not called an exact match.",
+  "withdrawnSuspicion":"Tan wedge was consistent world ground, not confirmed UV contamination.",
+  "weaponOnlyScores":{
+    "Rifle":{"composition":2.3,"lighting":2.6,"materials":2.7,"details":0.7,"total":8.3},
+    "Tommy":{"composition":2.3,"lighting":2.6,"materials":2.7,"details":0.6,"total":8.2}
+  },
+  "provenance":{
+    "RiflePrivateHTML":"2fa1bf12550d57f04ee6d6dd2a40350df61eac189534074dd56f1335088daad1",
+    "RifleViewmodels":"25c82ff3c3f1e0fadf97a7adb2ba04b1771f7be24ac3550e549ecb38e55f5797",
+    "Rifle1280Reload50PNG":"13cfcdb0d5289f79ba636e2287e2dc5bffb77e207119b6bc1936fd5f12e344b0",
+    "TommyPrivateHTML":"b30c7108522675b6871a3485def8d933d27a90fea75ed8a2b1d44108b44bd3a3",
+    "Tommy1280IdlePNG":"b956f784a4834964810c190ee798a0142f419b7d62b80b94d12ca98c46a6ef8f",
+    "combinedFinalHTML":"3d58959919c4b673aa7643dd1237ecaf98eb21654f89f87a5b007f7d745a69e9"
+  },
+  "limits":"These subjective scores apply to two weapons only. The review does not assert every weapon reached the target or that these private screenshots were captured from final combined HTML. Final combined contains the identical reviewed viewmodels source."
+}

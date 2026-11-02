@@ -152,8 +152,18 @@
       return hellBakedMaterial(hellTexture("stone"),true);
     if (name === "hellSlab")
       return hellBakedMaterial(Ft.hellAshSlab);
-    if (name === "hellPaving")
-      return hellBakedMaterial(hellTexture("paving"));
+    if (name === "hellPaving") {
+      const material=hellBakedMaterial(hellTexture("paving"));
+      material.color.setHex(0x7c929e);
+      material.userData.hellRunner=true;
+      return material;
+    }
+    if (name === "hellInlay") {
+      const material=hellBakedMaterial(null);
+      material.color.setHex(0x8d7757);
+      material.userData.hellRunner=true;
+      return material;
+    }
     if (name === "hellFloorStone")
       return hellBakedMaterial(hellTexture("stone"));
     if (name === "hellBronze")
@@ -191,6 +201,9 @@
 
   // Pointed ribs are built as one batched masonry material, with an open
   // centre. The hero rib stands in the lava margins; it never fills the lane.
+  // Two centred circular arcs meet at a pointed crown. This bows the
+  // shoulders outward while preserving each opening's spring and apex.
+  function hellPointedRise(t) { return Math.sqrt(t*(4-t)/3); }
   function hellArch(box, halfWidth, spring, rise, depth, base = 0, z = 0, trim = false) {
     const material = trim ? "hellEdge" : "hellBasalt";
     const thickness = trim ? 0.16 : 0.46;
@@ -198,7 +211,7 @@
       let previous = [side * halfWidth, spring + base];
       for (let i = 1; i <= 7; i++) {
         const t = i / 7;
-        const next = [side * halfWidth * (1 - t), spring + base + rise * (0.6 * t + 0.4 * Math.sin(t * Math.PI / 2))];
+        const next = [side * halfWidth * (1 - t), spring + base + rise * hellPointedRise(t)];
         const dx = next[0] - previous[0], dy = next[1] - previous[1];
         box(material, thickness, Math.hypot(dx, dy) + 0.035, depth,
           E((next[0] + previous[0]) * 0.5, (next[1] + previous[1]) * 0.5, z,
@@ -210,8 +223,21 @@
   di.hellCauseway = {
     mode: "cover", cls: "decor",
     build(box, cylinder, spec) {
-      box(Math.round(spec.x+spec.z)%4===0?"hellSlab":"hellPaving", P-.035, 0.12, P - 0.5, E(0, 0.085, 0));
-      box("wrought",.025,.012,P-.5,E(-.985,.151,0));
+      // A continuous dark runner, narrow inset border and alternating worn
+      // funerary sigils establish scale along the entire playable causeway.
+      box("hellPaving", P-.035, 0.12, P - 0.5, E(0, 0.085, 0));
+      for(const side of [-1,1]) {
+        box("hellInlay",P-.16,.008,.032,E(0,.150,side*.64));
+        box("hellInlay",.032,.008,1.28,E(side*.92,.150,0));
+      }
+      // Broken, paired incision edges give the diamond a cut-stone reading.
+      for(const side of [-1,1])for(const end of [-1,1]) {
+        box("wrought",.063,.006,.61,E(end*.26,.150,-side*.16,0,-side*end*.552+Math.PI/2,0));
+        for(const t of [-.18,.15])
+          box("hellInlay",.026,.008,.27,E(end*.26+Math.cos(-side*end*.552)*t,.155,-side*.16-Math.sin(-side*end*.552)*t,0,-side*end*.552+Math.PI/2,0));
+      }
+      box("hellInlay",1.04,.008,.027,E(0,.155,0));
+      box("hellInlay",.026,.008,.33,E(.12,.155,0));
       for (const side of [-1, 1]) {
         box("hellBasalt", P, 0.15, 0.18, E(0, 0.08, side * (P / 2 - 0.11)));
         box("hellBronze", P, 0.045, 0.09, E(0, 0.18, side * (P / 2 - 0.11)));
@@ -226,7 +252,7 @@
     mode:"free",cls:"decor",
     build(box,cylinder,spec) {
       const width=spec.w||7.4, spring=(spec.h||8.3)+2.1-ie((spec.x+.5)*P,(spec.z+.5)*P), rise=spec.a||4;
-      const length=spec.l||8, steps=7;
+      const length=spec.l||8, steps=12;
       if(spec.w===8.4)for(const side of [-1,1]) {
         box("hellRoof",.32,.72,length,E(side*width,spring-.10,0));
         box("hellEdge",.36,.10,length,E(side*width,spring-.44,0));
@@ -234,7 +260,7 @@
       for(const side of [-1,1]) {
         let old=[side*width,spring];
         for(let i=1;i<=steps;i++) {
-          const t=i/steps, next=[side*width*(1-t),spring+rise*(.6*t+.4*Math.sin(t*Math.PI/2))];
+          const t=i/steps, next=[side*width*(1-t),spring+rise*hellPointedRise(t)];
           const dx=next[0]-old[0],dy=next[1]-old[1];
           for(let z=-length/2+1;z<length/2;z+=2)
             box("hellRoof",.24,Math.hypot(dx,dy)+.06,2.04,E((old[0]+next[0])/2,(old[1]+next[1])/2,z,0,0,-Math.atan2(dx,dy)));
@@ -264,7 +290,7 @@
       for(const side of [-1,1]) for(let i=0;i<7;i++) {
         const t0=i/7,t1=(i+1)/7;
         const x0=side*3.4*(1-t0),x1=side*3.4*(1-t1);
-        const y0=spring+rise*(.6*t0+.4*Math.sin(t0*Math.PI/2)),y1=spring+rise*(.6*t1+.4*Math.sin(t1*Math.PI/2));
+        const y0=spring+rise*hellPointedRise(t0),y1=spring+rise*hellPointedRise(t1);
         box("hellRoof",.2,Math.hypot(x1-x0,y1-y0)+.04,3.6,E((x0+x1)/2,(y0+y1)/2,1.8,0,0,-Math.atan2(x1-x0,y1-y0)));
       }
       box("hellBronze",.12,.6,.08,E(-3.02,.55,-.58));
@@ -421,15 +447,30 @@
     mode:"free",cls:"decor",
     build(box,cylinder,spec) {
       const height=spec.h||5.4;
+      // Coursed, tiered abutments replace the unbroken cube faces. Every tier
+      // remains on the lava side, away from the walking lane.
       for(const side of [-1,1]) {
         for(let step=0;step<3;step++) {
-          const h=height*(1-step*.23),x=side*(.85+step*.48);
-          box("hellBasalt",.8,h,1.5+step*.25,E(x,h/2,.3+step*.16));
-          box("hellEdge",.92,.18,1.7+step*.25,E(x,h-.05,.3+step*.16));
+          const h=height*(1-step*.30),x=side*(.85+step*.48);
+          const courses=Math.ceil(h/.64),course=h/courses,depth=1.5+step*.25,z=.3+step*.16;
+          for(let row=0;row<courses;row++)
+            box("hellBasalt",.8,course-.015,depth,E(x,(row+.5)*course,z));
+          box("hellEdge",.94,.14,depth+.19,E(x,h-.08,z));
+          box("hellBasalt",.84,.18,depth+.07,E(x,h+.04,z));
+          if(step>0)box("hellBasalt",.20,height*.39,depth*.78,E(x-side*.25,h+height*.10,z,0,0,side*.45));
+          // A paired engaged shaft and inset vertical recess catch the fire.
+          for(const offset of [-.25,.25])
+            cylinder("hellEdge",.07,.10,h-.26,E(x+offset,(h-.26)/2,-.49),6);
+          box("hellBronze",.13,.13,.07,E(x,.22,-.52));
         }
+        // Corbels bind the opening to a projecting carved lip.
+        box("hellBasalt",.34,.48,.58,E(side*.74,height-.30,-.44,.18,0,0));
+        box("hellEdge",.45,.12,.76,E(side*.74,height-.10,-.48));
       }
-      box("hellBasalt",2.55,.4,1.7,E(0,height+.1,.36));
-      box("hellBronze",1.55,.12,.3,E(0,height-.16,-.5));
+      box("hellBasalt",2.55,.30,1.7,E(0,height+.14,.36));
+      box("hellEdge",2.65,.12,1.85,E(0,height+.34,.36));
+      box("hellBronze",1.55,.12,.30,E(0,height-.16,-.50));
+      box("hellBasalt",1.48,.11,.60,E(0,height-.09,-.35));
       cylinder("hellBronze",1.5,1.55,.06,E(0,.06,-.2),8);
     },
   };
@@ -1102,13 +1143,16 @@
           heat+=power*f*f*facing;
         }
         const ao=originalColour?.itemSize===3 ? .75+.25*originalColour.getX(i) : 1;
-        const base=roof ? .095 : .24;
+        const base=roof ? .075 : .195;
         // Lava warms the narrow coping, leaving the centre slabs charcoal.
         if(x>=22&&x<=37&&y>2.18&&y<2.5) {
           const rim=Math.max(0,1-Math.abs(Math.abs(z-53)-.89)/.28);
           heat+=rim*1.85;
         }
-        const directional=.88+.12*Math.abs(nx)+.08*Math.max(0,ny);
+        // Keep the walking runner charcoal; firelight remains strongest on
+        // the flanking coping instead of washing out every centre slab.
+        if(mesh.material.userData.hellRunner)heat*=.18;
+        const directional=.72+.16*Math.abs(nx)+.18*Math.max(0,ny);
         colours[i*3]=(base*directional+heat)*ao;
         colours[i*3+1]=(base*directional*.91+heat*.36)*ao;
         colours[i*3+2]=(base*directional*.80+heat*.075)*ao;

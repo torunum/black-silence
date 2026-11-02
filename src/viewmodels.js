@@ -1121,7 +1121,7 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
   }
   b0=function(mesh,side,options={}) {
     if(arsenalIndex<2)return priorHands.grip(mesh,side,options);
-    if(side>0)paintedHand(mesh,'right',[-.025,-.005,arsenalIndex===8?-.032:-.048],arsenalIndex===8?.195:.205,arsenalBasis(mesh,arsenalIndex),{sideSleeve:arsenalIndex>=2&&arsenalIndex<=9});
+    if(side>0)paintedHand(mesh,'right',[-.025,-.005,arsenalIndex===8?-.032:-.048],({2:.190,3:.190,4:.190,9:.190}[arsenalIndex]||(arsenalIndex===8?.195:.205)),arsenalBasis(mesh,arsenalIndex),{sideSleeve:arsenalIndex>=2&&arsenalIndex<=9});
     else paintedHand(mesh,'left',[0,-.012,-.016],.15,arsenalBasis(mesh,arsenalIndex,true));
   };
   c0=function(...args){if(arsenalIndex<2)return priorHands.sleeve(...args);};
@@ -1764,7 +1764,7 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
     for(const x of [-.023,.023])for(const [z0,z1,r0,r1] of [[-.054,.048,.0205,.020],[.062,.29,.0172,.016]])for(let j=0;j<24;j++){
       const a=j*Math.PI*2/24,b=(j+1)*Math.PI*2/24;
       const p=(a,z,r)=>[x+Math.cos(a)*(r+.00065),.057+Math.sin(a)*(r+.00065),z];
-      const mid=(a+b)*.5,shine=Math.pow(Math.max(0,Math.cos(mid-(x<0?.94:1.28))),30),light=.36+.28*Math.max(0,Math.sin(mid))+.78*shine;
+      const mid=(a+b)*.5,shine=Math.pow(Math.max(0,Math.cos(mid-(x<0?.80:1.40))),11),light=.45+.35*Math.max(0,Math.sin(mid))+1.05*shine;
       const uv=(u,v)=>shotgunTargetUV(u,v,metal);
       paintedSurface(mesh,'shotgunSource',[p(a,z0,r0),p(b,z0,r0),p(b,z1,r1),p(a,z1,r1)],[uv(1,j/24),uv(1,(j+1)/24),uv(0,(j+1)/24),uv(0,j/24)],light);
     }
@@ -1784,6 +1784,23 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
     const inner=poly.map(p=>point(...p,frontDepth)),outer=poly.map(p=>point(center[0]+(p[0]-center[0])*expand,center[1]+(p[1]-center[1])*expand,backDepth));
     const part=mesh.part(),inv=mesh.inverse();
     for(let i=0;i<poly.length;i++){const j=(i+1)%poly.length,a=inner[i],b=inner[j],c=outer[j],u=b.map((v,k)=>v-a[k]),v=c.map((v,k)=>v-a[k]),n=[u[1]*v[2]-u[2]*v[1],u[2]*v[0]-u[0]*v[2],u[0]*v[1]-u[1]*v[0]],l=Math.hypot(...n)||1;mesh.face([a,b,c,outer[i]],n.map(v=>v/l),material,part,{tex:steel},inv);}
+  }
+  // Open, load-bearing trigger guards: front and rear rims, inner wall and
+  // outer wall. Their centres contain no painted source background.
+  function referenceTriggerGuard(mesh,point,w,outer,inner,trigger,depth=-.025){
+    const part=mesh.part(),inv=mesh.inverse(),face=(vertices,material)=>{
+      const u=vertices[1].map((v,i)=>v-vertices[0][i]),v=vertices[2].map((v,i)=>v-vertices[0][i]),n=[u[1]*v[2]-u[2]*v[1],u[2]*v[0]-u[0]*v[2],u[0]*v[1]-u[1]*v[0]],len=Math.hypot(...n)||1;
+      mesh.face(vertices,n.map(v=>v/len),material,part,{tex:(x,y,z)=>steel(x,y,z)*.18-.65},inv);
+    };
+    inner=inner.map((p,i)=>p.map((v,k)=>outer[i][k]+(v-outer[i][k])*.48));
+    // Twelve corner-rounded sections keep the open oval compact. The narrow
+    // bevel has actual depth; no ball/cylinder tessellation or filled centre.
+    const round=poly=>poly.flatMap((p,i)=>{const a=poly[(i+poly.length-1)%poly.length],b=poly[(i+1)%poly.length],start=p.map((v,k)=>v+(a[k]-v)*.32),end=p.map((v,k)=>v+(b[k]-v)*.32);return [.22,.78].map(t=>p.map((v,k)=>start[k]*(1-t)*(1-t)+2*v*t*(1-t)+end[k]*t*t));});
+    outer=round(outer);inner=round(inner);
+    const f=outer.map(p=>point(...p,depth)),g=inner.map(p=>point(...p,depth)),b=outer.map(p=>point(...p,depth+.007)),c=inner.map(p=>point(...p,depth+.007));
+    const bevel=outer.map((p,i)=>point(p[0]+(inner[i][0]-p[0])*.32,p[1]+(inner[i][1]-p[1])*.32,depth-.0015));
+    for(let i=0;i<outer.length;i++){const j=(i+1)%outer.length;face([f[i],f[j],bevel[j],bevel[i]],i<4?BRONZE:WORN);face([bevel[i],bevel[j],g[j],g[i]],WORN);face([b[j],b[i],c[i],c[j]],WORN);face([f[j],f[i],b[i],b[j]],WORN);face([g[i],g[j],c[j],c[i]],WORN);}
+    for(let i=0;i<trigger.length-1;i++){const a=trigger[i],b=trigger[i+1];face([point(a[0]-2,a[1],depth-.003),point(b[0]-2,b[1],depth-.003),point(b[0]+2,b[1],depth-.003),point(a[0]+2,a[1],depth-.003)],EDGE);}
   }
   const firearmArt = {};
   for (const [index, center, scale] of [[2,[548,314],.00063],[3,[1320,302],.00062],[4,[584,794],.000585],[5,[1410,806],.000586]]) {
@@ -1851,7 +1868,18 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       const chargeReach=t<0?0:Qe(t,.72,.98,.075),boltContact=[491,250,-.050];
       const contact=support.map((v,i)=>{const atMag=v+(load[i]-v)*reach;return atMag+(boltContact[i]-atMag)*chargeReach;});
       m.push();a.move(m,-.012*out+.035*charge*chargeReach,.065*out,.005*out);m.roll(-.07*out);a.left(m,contact,.172);m.pop();
-      a.right(m,[537,349,-.048]);a.anchor(m,145,153,.035);
+      // Rear wooden pistol grip hangs below the action, leaving a real open guard.
+      // The reference palm fully occludes this grip; no separate protruding backing.
+      referenceTriggerGuard(m,a.point,a.basis.w,[[484,317],[548,335],[551,360],[530,383],[501,374],[485,348]],[[490,326],[542,341],[543,357],[528,374],[507,367],[493,346]],[[513,328],[518,344],[513,356]]);
+      // The approved target supplies this rifle's actual thumb/index/palm grip.
+      // Tight independent outlines exclude all receiver, stock and background.
+      // It rides the complete rifle rig; the other hand owns magazine and bolt.
+      const targetGrasp=[
+        [[502,344],[507,337],[514,334],[523,336],[529,342],[530,350],[524,359],[517,364],[508,361],[503,355]],
+        [[540,339],[554,342],[576,350],[597,358],[617,368],[638,381],[659,398],[681,417],[702,440],[718,462],[723,470],[530,470],[520,461],[512,456],[507,448],[505,438],[509,428],[502,419],[502,406],[508,396],[504,386],[507,376],[515,365],[526,350]]
+      ];
+      for(const poly of targetGrasp)for(const ids of r79Triangles(poly))paintedSurface(m,'firearmSource',ids.map(i=>a.point(...poly[i],-.058)),ids.map(i=>[poly[i][0]/1672,poly[i][1]/941]),.97);
+      a.anchor(m,145,153,.035);
     } finally {arsenalIndex=previous;}
   };
 
@@ -1883,7 +1911,15 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       const reach=t<0?0:Qe(t,.02,.78,.10),support=[1056,254,-.048],load=[1177,356,-.055],knobReach=t<0?0:Qe(t,.72,.98,.075),knobContact=[1165,187,-.050];
       const contact=support.map((v,i)=>{const atDrum=v+(load[i]-v)*reach;return atDrum+(knobContact[i]-atDrum)*knobReach;});
       m.push();a.move(m,-.025*out+.035*knob*knobReach,.045*out,.012*out);m.roll(-.13*out);a.left(m,contact,.175);m.pop();
-      a.right(m,[1305,338,-.050]);a.anchor(m,969,141,.035);
+      a.hull(m,[[1309,298],[1341,309],[1354,384],[1326,417],[1299,399]],-.007,.033,null,true,[[1544,353],[1609,380],[1620,425],[1576,449],[1545,412]]);
+      referenceTriggerGuard(m,a.point,a.basis.w,[[1259,258],[1318,276],[1327,309],[1300,335],[1276,325],[1259,300]],[[1267,268],[1311,283],[1317,307],[1298,326],[1281,318],[1268,299]],[[1287,270],[1293,292],[1287,305]]);
+      // This gun's own reference grasp puts the index inside its open guard.
+      const targetGrasp=[
+        [[1270,294],[1278,285],[1289,285],[1297,291],[1297,303],[1290,314],[1280,318],[1272,312],[1269,303]],
+        [[1284,337],[1305,334],[1327,337],[1343,345],[1355,360],[1368,379],[1385,394],[1405,412],[1428,434],[1441,451],[1450,470],[1301,470],[1299,463],[1290,455],[1291,444],[1286,440],[1284,427],[1286,415],[1278,406],[1276,394],[1280,384],[1273,376],[1270,364],[1270,353],[1276,345]]
+      ];
+      for(const poly of targetGrasp)for(const ids of r79Triangles(poly))paintedSurface(m,'firearmSource',ids.map(i=>a.point(...poly[i],-.058)),ids.map(i=>[poly[i][0]/1672,poly[i][1]/941]),.97);
+      a.anchor(m,969,141,.035);
     } finally {arsenalIndex=previous;}
   };
 
@@ -1938,7 +1974,8 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       const reach=t<0?0:Qe(t,.12,.79,.11),support=[280,691,-.045],load=[461,868,-.049],contact=support.map((v,i)=>v+(load[i]-v)*reach);
       m.push();a.move(m,-.012*out,.085*out,.006*out);a.left(m,contact,.173);m.pop();
       const boltReach=t<0?Qe(pose.action||0,.05,.95,.10):Math.max(Qe(t,.03,.28,.065),Qe(t,.75,.99,.06)),grip=[586,872,-.050],boltGrip=[716,809,-.055];
-      const rightContact=grip.map((v,i)=>v+(boltGrip[i]-v)*boltReach);
+      const naturalGrip=[grip[0]+4,grip[1],grip[2]],rightContact=naturalGrip.map((v,i)=>v+(boltGrip[i]-v)*boltReach);
+      referenceTriggerGuard(m,a.point,a.basis.w,[[535,850],[582,863],[595,882],[576,905],[548,895],[535,875]],[[543,860],[576,870],[584,880],[574,895],[554,887],[543,873]],[[560,858],[566,875],[561,886]]);
       m.push();if(boltReach>0)boltRig(boltReach);a.right(m,rightContact);m.pop();a.anchor(m,137,614,.044);
     } finally {arsenalIndex=previous;}
   };
@@ -2261,15 +2298,17 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       // Finger contact rises beneath the offered sphere during pluck/seat.
       a.support(m,1142+47*handReach,262-8*handReach,-.060,.174);m.pop();
       // Upper ivory claw: three convex pieces, hinging about the real root.
+      const upperBone=(poly,d,th)=>a.hull(m,poly.map(([x,y])=>[x,183+(y-183)*.82]),d,th,RELIC_BONE,poly);
+      const lowerBone=(poly,d,th)=>a.hull(m,poly.map(([x,y])=>[1311+(x-1311)*.94,y]),d,th,RELIC_BONE,poly);
       m.push();a.pivot(m,1320,183,-.15*claw);
-      a.hull(m,[[1156,70],[1178,51],[1204,43],[1250,38],[1260,61],[1202,61],[1170,68]],-.024,.022,RELIC_BONE);
-      a.hull(m,[[1250,38],[1289,43],[1314,61],[1307,96],[1283,107],[1260,83],[1260,61]],-.026,.028,RELIC_BONE);
-      a.hull(m,[[1283,105],[1305,85],[1331,119],[1340,150],[1330,185],[1309,201],[1288,184],[1303,153]],-.029,.028,RELIC_BONE);m.pop();
+      upperBone([[1156,70],[1178,51],[1204,43],[1250,38],[1260,61],[1202,61],[1170,68]],-.024,.022);
+      upperBone([[1250,38],[1289,43],[1314,61],[1307,96],[1283,107],[1260,83],[1260,61]],-.026,.028);
+      upperBone([[1283,105],[1305,85],[1331,119],[1340,150],[1330,185],[1309,201],[1288,184],[1303,153]],-.029,.028);m.pop();
       // Lower claw is independent of the orb and leaves its dark aperture open.
       m.push();a.pivot(m,1311,301,.14*claw);
-      a.hull(m,[[1115,114],[1100,142],[1088,167],[1095,197],[1128,224],[1146,207],[1119,183]],-.033,.025,RELIC_BONE);
-      a.hull(m,[[1128,222],[1147,208],[1195,248],[1224,251],[1239,275],[1214,290],[1173,265]],-.034,.026,RELIC_BONE);
-      a.hull(m,[[1214,289],[1239,275],[1265,286],[1278,314],[1309,318],[1327,337],[1304,349],[1276,334],[1256,309]],-.035,.026,RELIC_BONE);m.pop();
+      lowerBone([[1115,114],[1100,142],[1088,167],[1095,197],[1128,224],[1146,207],[1119,183]],-.033,.025);
+      lowerBone([[1128,222],[1147,208],[1195,248],[1224,251],[1239,275],[1214,290],[1173,265]],-.034,.026);
+      lowerBone([[1214,289],[1239,275],[1265,286],[1278,314],[1309,318],[1327,337],[1304,349],[1276,334],[1256,309]],-.035,.026);m.pop();
       m.anchor('muzzle',...a.point(1219,177));a.grip(m,1365,350,-.065);
     }finally{arsenalIndex=previous;}
   };
@@ -2383,7 +2422,8 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
         m.push();a.pivot(m,1506,799,-.40*pump*reach);
         a.support(m,1119+404*reach,668+86*reach,-.060-.010*reach,.174-.010*reach);m.pop();
       }
-      a.grip(m,1395,750,-.066);m.anchor('muzzle',...a.point(969,515));
+      referenceTriggerGuard(m,a.point,a.w,[[1378,807],[1435,824],[1449,857],[1427,889],[1397,879],[1381,848]],[[1386,817],[1428,831],[1438,855],[1424,878],[1403,871],[1389,847]],[[1405,820],[1413,841],[1409,855]],-.034);
+      a.grip(m,1414,818,-.066);m.anchor('muzzle',...a.point(969,515));
     }finally{arsenalIndex=previous;}
   };
 
