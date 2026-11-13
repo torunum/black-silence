@@ -1,0 +1,83 @@
+{
+  "inputSHA": "5e5ceb0cb354945067ef71cfa5600fd9836a4236cf20258aff548bea3ec1a3cc",
+  "mapSHA": "7abc0bbe41661248d6eacab7397a25b33e73efd790fb9b3fb81ee470b810b747",
+  "collisionSHA": "2292c67f3a4a5c76a531bde04fc0b99e3ea645122a023e822927eef1deff2bb4",
+  "collisionSamples": 11102,
+  "exit": [
+    107,
+    16,
+    0,
+    1
+  ],
+  "cameras": [
+    {
+      "name": "climb",
+      "camera": [
+        113,
+        3.94,
+        87
+      ],
+      "floor": 2.94,
+      "png": "31923c217bdd6f32708ee97af03dfc2b49c5d08e66ea312520f2eac411871ce7",
+      "render": {
+        "frame": 315,
+        "calls": 198,
+        "triangles": 203038,
+        "points": 2008,
+        "lines": 0
+      }
+    },
+    {
+      "name": "refuge",
+      "camera": [
+        114,
+        5.2,
+        54
+      ],
+      "floor": 4.2,
+      "png": "121c686bdd377ef158e7690966ac2a6eedb730b2da4493f24619555265718a5b",
+      "render": {
+        "frame": 332,
+        "calls": 52,
+        "triangles": 125348,
+        "points": 1828,
+        "lines": 0
+      }
+    },
+    {
+      "name": "chapel",
+      "camera": [
+        113,
+        5.2,
+        29
+      ],
+      "floor": 4.2,
+      "png": "61840209262f38f412531c84ff4a67697f8799cc06787cc63df743e469c1b26b",
+      "render": {
+        "frame": 350,
+        "calls": 148,
+        "triangles": 182574,
+        "points": 2008,
+        "lines": 0
+      }
+    },
+    {
+      "name": "ladder",
+      "camera": [
+        108,
+        5.2,
+        25
+      ],
+      "floor": 4.2,
+      "png": "0e2a11d567658a861e0c8a012d589fd42e8566e940d1324b9a6bb9da10e8bed9",
+      "render": {
+        "frame": 367,
+        "calls": 92,
+        "triangles": 97554,
+        "points": 2008,
+        "lines": 0
+      }
+    }
+  ],
+  "errors": []
+}

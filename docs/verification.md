@@ -1,4 +1,15 @@
-# Doğrulama — 2 Kasım 2026, Blood turu
+# Doğrulama — 13 Kasım 2026
+
+GitHub `main` üzerindeki `d4ec5d6` sürümü fast-forward ile kontrol edilip temel alındı. [Birleşik sonuçlar](verification-data/nov13-release.json) aşağıdaki testlerin aynı 17.992.630 baytlık oyun dosyasını kullandığını kaydeder. [Modül hashleri](build-info.json) tekrar derlemede korundu; özgün motor ve Village aynı.
+
+- Dönüş şapeli ve merdiven, 11.102 çarpışma örneği, zindanda gizli kapıdan sağlık paketine geçiş (50 → 75 HP), prologue'da 15 kontrol noktası ve sonraki bölüm.
+- Dört gerçek R girişi senaryosunda çiftenin görünen fişekleri, ekleme ve iptal. On silahla ateş, doldurma, değiştirme, tekme ve görüntü önbelleği.
+- Olağan zombi için 14 ses ve yaşam döngüsü testi, 39 düşman poz kontrolü. Çok sayıda test penceresi açıkken ilk ses testi izin gerektiren bir pointer-lock hatası bildirdi; aynı dosya ve test tek başına hatasız geçti.
+- 360 × 480 ekranda CRT ayarı ve klavye kullanımı, kayıt alanı kapalıyken geçici ayar, dosya tekrar açıldığında normal kayıt; gerçek bölüm çıkışı ve son düşman sonrası rekor ekranı. [Rekor testi](chapter-records-nov13.md).
+
+[Harita](return-chapel-nov13.md) ve [silah](arsenal-nov13/README.md) notlarında karşılaştırma görüntüleri hangi özel deneme sürümünden alındıysa o sürüm belirtilir. Zombi örnek sesleri tek başına çevrimdışı hazırlanmıştır. Genel FPS artışı ölçülmedi.
+
+## Arşiv — 2 Kasım 2026, Blood turu
 
 Son teslim HTML: **24.914.672 bayt**, SHA-256 `5e5ceb0cb354945067ef71cfa5600fd9836a4236cf20258aff548bea3ec1a3cc`. GitHub main başlangıcı `567328539d2719f8a23a5951ef89553b5836484b`; fetch ve fast-forward kontrolünde günceldi. Eski ayrı geliştirme dalı karıştırılmadı.
 

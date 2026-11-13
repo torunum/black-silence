@@ -1,0 +1,76 @@
+{
+  "before": {
+    "frames": [
+      {
+        "time": 0.08,
+        "actor": 0,
+        "voices": 1,
+        "path": "../../assets/sfx/moan.pain.0.mp3"
+      },
+      {
+        "time": 0.2,
+        "actor": 0,
+        "voices": 2,
+        "path": "../../assets/sfx/moan.pain.0.mp3"
+      },
+      {
+        "time": 0.32,
+        "actor": 0,
+        "voices": 3,
+        "path": "../../assets/sfx/moan.pain.0.mp3"
+      },
+      {
+        "time": 0.35,
+        "actor": 1,
+        "voices": 4,
+        "path": "../../assets/sfx/moan.pain.0.mp3"
+      },
+      {
+        "time": 1.1,
+        "actor": 0,
+        "voices": 1,
+        "path": "../../assets/sfx/moan.pain.0.mp3"
+      }
+    ],
+    "draws": 10,
+    "sampleRate": 24000,
+    "peak": 0.5713687539100647
+  },
+  "after": {
+    "frames": [
+      {
+        "time": 0.08,
+        "actor": 0,
+        "voices": 1,
+        "path": "../../assets/sfx/moan.pain.0.mp3"
+      },
+      {
+        "time": 0.2,
+        "actor": 0,
+        "voices": 2,
+        "path": "../../assets/sfx/moan.pain.0.mp3"
+      },
+      {
+        "time": 0.32,
+        "actor": 0,
+        "voices": 2,
+        "path": "../../assets/sfx/moan.pain.2.mp3"
+      },
+      {
+        "time": 0.35,
+        "actor": 1,
+        "voices": 2,
+        "path": "../../assets/sfx/moan.pain.0.mp3"
+      },
+      {
+        "time": 1.1,
+        "actor": 0,
+        "voices": 1,
+        "path": "../../assets/sfx/moan.pain.0.mp3"
+      }
+    ],
+    "draws": 10,
+    "sampleRate": 24000,
+    "peak": 0.6782125234603882
+  }
+}

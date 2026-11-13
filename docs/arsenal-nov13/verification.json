@@ -1,0 +1,294 @@
+{
+  "baselineCommit": "d4ec5d654827263c30180891257f7160b906638c",
+  "baseline": {
+    "bytes": 24914672,
+    "sha256": "5e5ceb0cb354945067ef71cfa5600fd9836a4236cf20258aff548bea3ec1a3cc"
+  },
+  "privateBuild": {
+    "bytes": 17954412,
+    "sha256": "446e4114ab703fe777b1aa170801d3566fa63fadaec14939936e42fa106dc2df"
+  },
+  "weaponModule": {
+    "bytes": 15377391,
+    "sha256": "40f17058e96391730ec2ad9c8c82faf09a143d4a82b1e6ee33c52c7fe6729f43"
+  },
+  "clip": {
+    "seconds": 6.765,
+    "fps": 25,
+    "video": "VP9",
+    "audio": "Opus",
+    "markerFrames": 8
+  },
+  "artifacts": {
+    "shotgun.png": {
+      "bytes": 505027,
+      "sha256": "d82108c114e5fcb8aa4d455629f58c6529a9ce539c354d491d709455f8f9b44a"
+    },
+    "loading.png": {
+      "bytes": 501050,
+      "sha256": "a399169f81e4bb20b68cc59e07da75ae9f0f098e261cd0b6ce8c4fe96e617ee0"
+    },
+    "ember.png": {
+      "bytes": 503471,
+      "sha256": "06841894a4adf6c380e743a2601f503fd47785528b45ef2afcd483d22f054977"
+    },
+    "reload.webm": {
+      "bytes": 1984772,
+      "sha256": "3df223d9ed75d4d85edad832786fa01ffc2d4521d78d6822b0ee03712f8d7fbb"
+    }
+  },
+  "presentation": {
+    "cases": 46,
+    "passed": true,
+    "differences": []
+  },
+  "chambers": [
+    {
+      "loaded": 0,
+      "reserve": 2,
+      "cancel": false,
+      "mag": 2,
+      "remaining": 0,
+      "phases": 84
+    },
+    {
+      "loaded": 1,
+      "reserve": 7,
+      "cancel": false,
+      "mag": 2,
+      "remaining": 6,
+      "phases": 67
+    },
+    {
+      "loaded": 0,
+      "reserve": 1,
+      "cancel": false,
+      "mag": 1,
+      "remaining": 0,
+      "phases": 53
+    },
+    {
+      "loaded": 1,
+      "reserve": 7,
+      "cancel": true,
+      "mag": 1,
+      "remaining": 7,
+      "phases": 31
+    }
+  ],
+  "native": {
+    "denseFrames": 26,
+    "aspectFrames": 30,
+    "endpoints": [
+      {
+        "width": 1024,
+        "height": 768,
+        "fired": 1,
+        "index": 1,
+        "mag": 2,
+        "size": 2,
+        "ammo": 98,
+        "override": false
+      },
+      {
+        "width": 1024,
+        "height": 768,
+        "fired": 0,
+        "index": 8,
+        "mag": 1,
+        "size": 1,
+        "ammo": 99,
+        "override": false
+      },
+      {
+        "width": 1280,
+        "height": 720,
+        "fired": 1,
+        "index": 1,
+        "mag": 2,
+        "size": 2,
+        "ammo": 98,
+        "override": false
+      },
+      {
+        "width": 1280,
+        "height": 720,
+        "fired": 0,
+        "index": 8,
+        "mag": 1,
+        "size": 1,
+        "ammo": 99,
+        "override": false
+      },
+      {
+        "width": 1680,
+        "height": 720,
+        "fired": 1,
+        "index": 1,
+        "mag": 2,
+        "size": 2,
+        "ammo": 98,
+        "override": false
+      },
+      {
+        "width": 1680,
+        "height": 720,
+        "fired": 0,
+        "index": 8,
+        "mag": 1,
+        "size": 1,
+        "ammo": 99,
+        "override": false
+      }
+    ],
+    "errors": []
+  },
+  "timing": {
+    "scope": "Serial ABBA, same chapter 0 starting camera, enemies removed equally, real RAF and keyboard reload. Whole-build observation including changed scenery; headless Chrome/shared host, not a hardware-independent FPS guarantee.",
+    "viewport": "1280x720",
+    "order": [
+      0,
+      1,
+      1,
+      0
+    ],
+    "runs": [
+      {
+        "variant": 0,
+        "errors": [],
+        "stages": [
+          {
+            "weapon": 1,
+            "state": "idle",
+            "fps": 60,
+            "p95FrameMs": 16.8,
+            "meanRasterMs": 0.02
+          },
+          {
+            "weapon": 1,
+            "state": "reload",
+            "fps": 42.46,
+            "p95FrameMs": 33.4,
+            "meanRasterMs": 18.39
+          },
+          {
+            "weapon": 8,
+            "state": "idle",
+            "fps": 60,
+            "p95FrameMs": 16.8,
+            "meanRasterMs": 0.02
+          },
+          {
+            "weapon": 8,
+            "state": "reload",
+            "fps": 60.01,
+            "p95FrameMs": 16.8,
+            "meanRasterMs": 11.6
+          }
+        ]
+      },
+      {
+        "variant": 1,
+        "errors": [],
+        "stages": [
+          {
+            "weapon": 1,
+            "state": "idle",
+            "fps": 57.06,
+            "p95FrameMs": 18.2,
+            "meanRasterMs": 0.01
+          },
+          {
+            "weapon": 1,
+            "state": "reload",
+            "fps": 55.93,
+            "p95FrameMs": 18.1,
+            "meanRasterMs": 9.24
+          },
+          {
+            "weapon": 8,
+            "state": "idle",
+            "fps": 55.92,
+            "p95FrameMs": 18.1,
+            "meanRasterMs": 0.02
+          },
+          {
+            "weapon": 8,
+            "state": "reload",
+            "fps": 55.98,
+            "p95FrameMs": 18.1,
+            "meanRasterMs": 11.82
+          }
+        ]
+      },
+      {
+        "variant": 1,
+        "errors": [],
+        "stages": [
+          {
+            "weapon": 1,
+            "state": "idle",
+            "fps": 56.13,
+            "p95FrameMs": 18.1,
+            "meanRasterMs": 0.02
+          },
+          {
+            "weapon": 1,
+            "state": "reload",
+            "fps": 56.9,
+            "p95FrameMs": 18.2,
+            "meanRasterMs": 9.91
+          },
+          {
+            "weapon": 8,
+            "state": "idle",
+            "fps": 56.11,
+            "p95FrameMs": 18.2,
+            "meanRasterMs": 0.01
+          },
+          {
+            "weapon": 8,
+            "state": "reload",
+            "fps": 57.03,
+            "p95FrameMs": 18.2,
+            "meanRasterMs": 11.64
+          }
+        ]
+      },
+      {
+        "variant": 0,
+        "errors": [],
+        "stages": [
+          {
+            "weapon": 1,
+            "state": "idle",
+            "fps": 55.9,
+            "p95FrameMs": 18.1,
+            "meanRasterMs": 0.01
+          },
+          {
+            "weapon": 1,
+            "state": "reload",
+            "fps": 53.94,
+            "p95FrameMs": 18.3,
+            "meanRasterMs": 14.51
+          },
+          {
+            "weapon": 8,
+            "state": "idle",
+            "fps": 56.02,
+            "p95FrameMs": 18.1,
+            "meanRasterMs": 0.02
+          },
+          {
+            "weapon": 8,
+            "state": "reload",
+            "fps": 55.68,
+            "p95FrameMs": 18.1,
+            "meanRasterMs": 11.02
+          }
+        ]
+      }
+    ]
+  }
+}

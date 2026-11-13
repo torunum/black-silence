@@ -53,6 +53,8 @@ const code = [
   "zombie-audio.js",
   "prologue.js",
   "render-warmup.js",
+  "display-settings.js",
+  "chapter-records.js",
 ]
   .map((file) => fs.readFileSync(path.join(root, "src", file), "utf8"))
   .join("\n");

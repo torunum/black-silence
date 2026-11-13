@@ -1,0 +1,119 @@
+{
+  "sha256": "683dd31e70d2ecc4fd8755a2ea37e9abf8f4bf6a2e421a283bff8c29ed5c06b4",
+  "bytes": 17992630,
+  "base": "d4ec5d654827263c30180891257f7160b906638c",
+  "arsenal": {
+    "passed": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "checks": "real reload/fire/switch/kick and cache",
+    "cases": [
+      {
+        "loaded": 0,
+        "reserve": 2,
+        "cancel": false,
+        "mag": 2,
+        "remaining": 0,
+        "phases": 48
+      },
+      {
+        "loaded": 1,
+        "reserve": 7,
+        "cancel": false,
+        "mag": 2,
+        "remaining": 6,
+        "phases": 64
+      },
+      {
+        "loaded": 0,
+        "reserve": 1,
+        "cancel": false,
+        "mag": 1,
+        "remaining": 0,
+        "phases": 64
+      },
+      {
+        "loaded": 1,
+        "reserve": 7,
+        "cancel": true,
+        "mag": 1,
+        "remaining": 7,
+        "phases": 28
+      }
+    ]
+  },
+  "world": {
+    "checkpoints": [
+      "chapel",
+      "crypt-landing",
+      "first-encounter",
+      "first-bridge-near",
+      "first-bridge-far",
+      "east-passage",
+      "second-bridge-near",
+      "second-bridge-far",
+      "arena-entry",
+      "arena-platform",
+      "arena-east-bridge",
+      "ascent-turn",
+      "stair-foot",
+      "climb-refuge",
+      "exit-approach"
+    ],
+    "exitPhase": "walk",
+    "mapSHA": "7abc0bbe41661248d6eacab7397a25b33e73efd790fb9b3fb81ee470b810b747",
+    "collisionSHA": "2292c67f3a4a5c76a531bde04fc0b99e3ea645122a023e822927eef1deff2bb4",
+    "collisionSamples": 11102,
+    "refugeCheckpoint": "candlestub",
+    "secretOpened": 1,
+    "medikit": true,
+    "hp": 75
+  },
+  "audio": {
+    "checks": [
+      "Two authored clips ready at first playable scene",
+      "Real held mouse shots: z pain uses own recordings; native attack/death remain",
+      "Non-z pain and z alert/attack/death retain native sample routing",
+      "Native 40ms same-emitter throttle retained",
+      "Natural source end releases all owned nodes",
+      "pause stops active custom voices",
+      "reset stops active custom voices",
+      "map stops active custom voices",
+      "mute stops active custom voices",
+      "hidden stops active custom voices",
+      "blur stops active custom voices",
+      "death stops active custom voices",
+      "Real AudioContext replacement prepares own two recordings without stale buffers",
+      "Decode failure retains native fallback instead of silent/missing pain"
+    ],
+    "pointerLockRetry": "First concurrent run reported a browser pointer-lock gesture denial. Same input passed on isolated retry."
+  },
+  "enemy": {
+    "checks": 39
+  },
+  "settings": {
+    "viewport": [
+      360,
+      480
+    ],
+    "off": "none",
+    "nativeDefault": true,
+    "normalAndDeniedStorage": true
+  },
+  "records": {
+    "tests": "tools/chapter-records-tests.cjs",
+    "independentGradeAndTime": "S / 0:42",
+    "victory": true,
+    "storageDenied": true,
+    "baselineCompared": true
+  }
+}

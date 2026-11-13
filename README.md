@@ -15,9 +15,17 @@ Gotik piksel FPS oyununun on silah, deri eldiven ve prologue cehennem bölümü 
 | Tekme | Sağ fare |
 | Drop kick | Yerde yeterli ileri hızla koşarken sağ fare |
 | Etkileşim / sendeleyen düşmanı bitir | E |
-| Silah değiştir | Oyunun silah seçme kontrolleri |
+| Silah değiştir | 1–9, 0 veya fare tekerleği |
 
 ## Bu sürüm
+
+**13 Kasım — dönüş şapeli.** Prologue'un lav alanından sonraki sığınak ve çıkış şapeli yenilendi. Taş yol ile kandiller çıkış merdivenine yönlendiriyor. Bir sonraki zindanda duvardan sızan su, var olan gizli kemikliğe işaret ediyor. [Önce/sonra görüntüleri](docs/return-chapel-nov13.md).
+
+Çifteye iki oynar namlu, ahşap el kundağı ve işlenmiş kilit eklendi. Doldurma eli yalnız gereken fişekleri getiriyor; yarım doldurmada dolu fişek yerinde kalıyor. Dinamit çakmağı fitili temas ederek tutuşturuyor. [Doldurma videosu](docs/arsenal-nov13/reload.webm) · [Silah görüntüleri](docs/arsenal-nov13/README.md).
+
+Arka arkaya darbe alan zombinin sesi kendi üzerine yığılmıyor; her düşmanın sesi ayrı kalıyor. Düşman pozları artık her karede yeni bir kayıt oluşturmuyor. Ayarlarda **CRT Scanlines** ile tarama çizgilerinin şiddetini ayarlayabilir veya kapatabilirsin. Tamamladığın bölümün en iyi derecesi ve en kısa süresi sonuç ve bölüm seçme ekranlarında görünür. [Ses karşılaştırması](docs/zombie-phrase-nov13/README.md) · [Bölüm rekorları](docs/chapter-records-nov13.md).
+
+## Önceki sürümler
 
 2 Kasım Blood turu: Resmî Blood görselleri incelenerek kriptin taş döşemesi, nişleri ve kaburgalı tavan eşikleri; cehennemin taş zemini ve ateş çevresindeki aşınmış ritüel döşemesi geliştirildi. Kemikler mevcut dokularla çevreye daha iyi oturtuldu. [Gerçek görüntüler ve ölçümler](docs/blood-prologue-nov02.md), [Blood incelemesi](docs/blood-reference-study-nov02.md).
 

@@ -25,6 +25,7 @@
         landingRotation: 0,
         landingMap: null,
         visual: null,
+        visualApplied: false,
         pose: "idle",
       };
       states.set(enemy, state);
@@ -44,14 +45,14 @@
   // changed the target pose earlier in the current frame.
   function removeVisual(enemy, state) {
     const previous = state.visual;
-    if (!previous) return;
-    for (const axis of ["x", "y", "z"]) {
-      if (Math.abs(enemy.sp.position[axis] - previous[axis]) < 1e-7)
-        enemy.sp.position[axis] = previous["base" + axis];
-    }
+    if (!state.visualApplied) return;
+    const p = enemy.sp.position;
+    if (Math.abs(p.x - previous.x) < 1e-7) p.x = previous.basex;
+    if (Math.abs(p.y - previous.y) < 1e-7) p.y = previous.basey;
+    if (Math.abs(p.z - previous.z) < 1e-7) p.z = previous.basez;
     if (Math.abs(enemy.sp.material.rotation - previous.rotation) < 1e-7)
       enemy.sp.material.rotation = previous.baseRotation;
-    state.visual = null;
+    state.visualApplied = false;
   }
 
   function rigPose(enemy, action, frame) {
@@ -319,19 +320,19 @@
           }
         }
       }
-      const visual = {
-        basex: enemy.sp.position.x,
-        basey: enemy.sp.position.y,
-        basez: enemy.sp.position.z,
-        baseRotation: enemy.sp.material.rotation,
-        x,
-        y,
-        z,
-        rotation,
-      };
+      // One scratch record for the lifetime of this actor, including handoffs.
+      const visual = state.visual || (state.visual = {});
+      visual.basex = enemy.sp.position.x;
+      visual.basey = enemy.sp.position.y;
+      visual.basez = enemy.sp.position.z;
+      visual.baseRotation = enemy.sp.material.rotation;
+      visual.x = x;
+      visual.y = y;
+      visual.z = z;
+      visual.rotation = rotation;
       enemy.sp.position.set(x, y, z);
       enemy.sp.material.rotation = rotation;
-      state.visual = visual;
+      state.visualApplied = true;
     }
     return danger;
   };

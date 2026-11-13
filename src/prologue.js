@@ -150,7 +150,63 @@
     texture.name="prologueChapelGlass";
     hellTextureCache.set("chapelGlass",texture);return texture;
   }
+  // A small central glass medallion marks the chapel; the side bays are stone.
+  function pilgrimGlass() {
+    if (hellTextureCache.has("pilgrimGlass")) return hellTextureCache.get("pilgrimGlass");
+    const texture = Z(e0((ctx,w,h)=>{
+      const img=ctx.createImageData(w,h);
+      const palette=[[23,29,35],[43,63,71],[55,86,105],[73,107,119],[100,115,111],
+        [118,127,119],[122,101,66],[153,120,69],[166,150,111],[30,37,40]];
+      for(let j=0;j<h;j++)for(let i=0;i<w;i++){
+        const x=(i+.5-w/2)/(w*.43), y=(h-j-.5)/(h*.94);
+        const r=Math.hypot(x,y*3.4-2.14),a=Math.atan2(y*3.4-2.14,x);
+        const petal=Math.cos(8*a), rose=.44+.105*petal;
+        const arch=y<.69?.99:Math.max(0,.99*(1-Math.pow((y-.69)/.31,1.45)));
+        const seam=Math.abs(Math.abs(x)*2.7+y*5.3-Math.round(Math.abs(x)*2.7+y*5.3));
+        let k=0;
+        if(y>.045&&y<1&&Math.abs(x)<arch) {
+          k=(Math.floor((x+1)*4)+Math.floor(y*11))%3+1;
+          if(r<.69)k=r>.58?7:r>rose?2:r>.19?(petal>0?5:6):8;
+          if(Math.abs(r-.69)<.03||Math.abs(r-.58)<.025||Math.abs(r-rose)<.026||r<.69&&r>.18&&Math.abs(Math.sin(4*a))<.10)k=9;
+          if(r>=.69&&seam<.09)k=9;
+          if(Math.abs(x)>arch-.065||y<.066)k=6;
+          // Dark replacement panes: the old glass is unevenly repaired.
+          if(x<-.36&&x>-.73&&y>.17&&y<.37&&seam>.12)k=1;
+        }
+        const p=palette[k], grain=((i*23+j*43+(i^j)*11)%19)-9 + 4*Math.sin(i*.37+j*.19);
+        const n=(j*w+i)*4;for(let c=0;c<3;c++)img.data[n+c]=p[c]+grain;img.data[n+3]=255;
+      }
+      ctx.putImageData(img,0,0);
+    },96,128));
+    texture.name="prologuePilgrimGlass";hellTextureCache.set("pilgrimGlass",texture);return texture;
+  }
+  const reliefData = /* RETURN_RELIEF_BEGIN */ {"effigy":[96,24,"HhcSIBgTIRoUIhsVJR0YHxkVEQ4NEQ8PFRISGBMUGRUVGRYVHBgXHxoZIRsZIRwZIh0aJSAeJyIfJSAdIR4bIh4aJR4aJx8cJx8bIhwYIRwYIx4ZJB4aHxsXHxsYIx0ZIRwYIhwZJB0bIxwaHRgVHBcTIRsWJyEaJyEbKSMdLScfLyggLygiKyQfLSUfLyghLiUfLSQfLiUfLycgKyQeJB4YJB0XJh8ZKSEbKSAbKSEbKiIbKyMbLSUeLiUfLCMdKSEZKiEaLCQeLiYfLSQeLiQdLyYeLyYcLSMaLCMdKiMcIxwWHRcSHxkVKCAcKiMcKSMcKyQdKiIbKCIaKiQcKyQcKCIbJB8ZJh8aJiAbJB8ZIRsXHRgUFxUSDg4LJyEZHRUSHhUSHxcTHxkUHRYTEw0NDQoLEhAQFhMSGRQUGhYVGRQUGxcWHRgXHxoYIhwZJB4bJiEfJSAdIx4bJB8cJCAcJB8bJx8cJx8cJR8aJR4aJSAbIh0ZHBcVJB8aPTInPjInNiohMyUfOiwjSDkrKCEZGRUTIhwZJSAbKSMdLyggMSoiLyghKyQeLyghMisjMCcfMSggMyojMyoiMCghLiUfLSQdKyQdKyIbKSAaKiIbKyMbKSIaLiYfMCYgLiUeLyYeLyYfMCcgMikhLyUfMCYfMighLCQcKSAYKyMcLyceMCcdLCUcKSEaKiAcKyMcKSMdJyEcJyAaKSEbLiYeMikgLSUfJSAaJR8bJyAcJB4ZIRsXHxoWGhcVDg4OFRIQHRMQHhQRHhURHxcSHRYREA0MDAoMEA4PExAQFhERFhMSFxQTGBUTGRQTGhUUHBcWHxoYIx0bJB4aJR4bJh8cJSAcJyEdKSAcJyAcJh8bKB8aLCMdMCcgKyMdMikiTT4wW0g3Z087X0QzWEIxcVY+Uz8tMiceLSQdIRsXIBkWJyAbKiQdKiQcLCQcLSUfLSUfMCYfLCMdLCMeKyMdKiIcKyIcLCMdKiEbJh8YKSAaKyIcKSIbKiIaKiEbLCMbLSMcLCIcLCMdLCMcKiEbKSAaKSEcLCIcKiEZJx4XJB0WKSEYLyYcMCYdLSQcKiEaKiAaIxwXHxkVIRsXJh4YKyIZMSYdLyUdJiAZIhwWIhsXIRsXHxkVHRgUHBcUFhMSDw4OJBoWJBsWJBsWJRwWIhoVEg8MDgwMExERExAQEw8PFBAQFBMR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MCceMyYdNCYeOSshPC0jNykgOCofNiceIxgVGRMQEQsKDgsLFhMRFxMSGBUTHRcWHxoXHxsYIBwYIBwZIx8bIRwZHxoXIx4bJyEeKSQgKSYhKCMgJyIgKiQiLCUjLSUjKiEeJR4ZKB8aMSkhNCsjMCYfMSgfKiMcIhwXIRkUKiIcKCIaIhwVIxwWJx8aIxwYIBkTJBwWKCAaKyMcKyAaKB0XKyAZKyAZKyEbLCIbJx4ZKB4ZKR4WKB0VKB0XJBwYJB0YJx4YKB8ZLSIdLiMeLCMbLSIaLCAZMSUcNCcdMSUdLyUcLiMaMScdOCshNywgLCMbNSsgNyofMyYdNCkeMScdOi8iOCsfMygeNikfNiogOS0jMigeNCsfPDEkLiYcLyYcNiofNishNCkfNScfNicfQzEkOysfIRkTFhENDwwLDwwMExAQFBIRFxQUGxcWHxsZIB0aIh0aKCMfLCciKyUfKiQfKyQeLygjLycjKCQfHx0bIBwcJiAfKCAeKCEfJR4bIxwYIxsXJyAZKyEcLSMcKyMcIhwXHxoUIBsVHhkWGBQQFRAMHBYSHRcUGRQRGRMOHhgTIhwXIxsWHxYSIBcTIRkVIhkVIxoWIBkVHhcTIRkVJBsXJBoUJRwXHhkUGBQRIxsYJR4ZJh4ZKSEcKCAaJyAZKCEbKSEaMSYdLyUdKyIaKyMbLCQcLyYeKyMbHxkVJyEbLyUcLSIZKyMaKCEZKyMaLSIaKR8YLCIaLyUbMSceLSQbKiIaMikfLiUdNi0iRDcnRTgpQTMlPi8jRDQnVkAtRzQjKiEXHhkSFxQQFBEP"],"shaft":[24,64,"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"]} /* RETURN_RELIEF_END */;
+  function returnRelief(name) {
+    if(hellTextureCache.has(name))return hellTextureCache.get(name);
+    const [w,h,encoded]=reliefData[name],bytes=atob(encoded);
+    const tex=Z(e0(ctx=>{
+      const p=ctx.createImageData(w,h);
+      for(let i=0;i<w*h;i++){
+        for(let c=0;c<3;c++)p.data[i*4+c]=bytes.charCodeAt(i*3+c);
+        p.data[i*4+3]=255;
+      }
+      ctx.putImageData(p,0,0);
+    },w,h));
+    tex.name="prologueReturnRelief_"+name;hellTextureCache.set(name,tex);return tex;
+  }
   iR = function (name) {
+    if(name==="ossuaryWetSlate")return new $e({map:Ft.pillar,color:0x477579,toneMapped:false});
+    if(name==="ossuarySillWear")return new $e({map:Ft.churchWall,color:0x84806c,toneMapped:false});
+    if(name==="returnEffigy"||name==="returnShaftRelief")
+      return new $e({map:returnRelief(name==="returnEffigy"?"effigy":"shaft"),toneMapped:false});
+    if(name==="returnPilgrimGlass")return new $e({map:pilgrimGlass(),toneMapped:false});
+    if(name==="returnLimestone")return new $e({map:hellTexture("paving"),color:0xafa79c,toneMapped:false});
+    if(name==="returnWornStep"){
+      const m=new $e({map:hellTexture("paving"),vertexColors:true,toneMapped:false});
+      m.userData.returnWay=true;return m;
+    }
+    if(name==="returnCandleGold")return new Wt({map:Ft.wood,color:0x9a7858,emissive:0x422916});
+    if(name==="returnLampPool")return new $e({map:to.spark,color:0xff7328,transparent:true,opacity:.62,blending:is,depthWrite:false,toneMapped:false});
     if(name === "prologueRitualIvory")return new Wt({map:ritualIvoryTexture()});
     if(name === "prologueOssuaryBone")return new Wt({map:ritualIvoryTexture(),color:0xaca99e});
     if (name === "hellPyreFlame") {
@@ -642,6 +698,154 @@
       box("rock", 0.27, 0.14, 0.32, E(0.37, 0.07, 0.13, 0.15, 0.6));
     },
   };
+  // Light the native, tilted ladder instead of a second mesh that could separate
+  // during the climb. Its material is made for this individual exit in bJ.
+  if(typeof bJ==="function"){
+    const nativeHatch=bJ;
+    bJ=function(style,name){
+      const rig=nativeHatch(style,name);
+      if(T.level===0&&style==="ladder"&&name==="exitDoor"){
+        const ladder=rig.group.children.find(o=>o.isGroup&&o.children.length>6&&o.rotation.x<0);
+        const mat=ladder?.children[0]?.material;
+        if(mat?.emissive){mat.color.setHex(0xb5b0a1);mat.emissive.setHex(0x283340);}
+      }
+      return rig;
+    };
+  }
+  // Final ascent: shallow structural haunches outside the three-cell walking
+  // lane. The scar of one missing inner rib breaks the procession's symmetry.
+  di.returnGallowsBay = {
+    mode:"free",cls:"decor",build(box,cylinder,spec){
+      for(const side of [-1,1]){
+        box("prologuePatinatedStone",.42,1.96,.48,E(side*2.82,.98,0));
+        box("stone",.57,.20,.57,E(side*2.74,.11,0));
+        box("slate",.56,.13,.54,E(side*2.74,1.86,0));
+        box("returnLimestone",.62,.15,.55,E(side*2.70,2.02,0));
+        const pts=[[2.71,2.04],[2.49,2.53],[2.05,2.91],[1.41,3.15],[.70,3.27],[0,3.29]];
+        for(let j=1;j<pts.length;j++){
+          const [u,v]=pts[j-1],[x,y]=pts[j],dx=(x-u)*side,dy=y-v,ang=-Math.atan2(dx,dy);
+          box("prologuePatinatedStone",.22,Math.hypot(dx,dy)+.02,.40,E((u+x)*side/2,(v+y)/2,0,0,0,ang));
+          if(!(spec.h===-1&&side===1&&j>2))box("returnLimestone",.095,Math.hypot(dx,dy)+.018,.46,E((u+x)*side/2,(v+y)/2-.102,0,0,0,ang));
+        }
+        for(const y of [.50,1.46])box("rock",.45,.075,.51,E(side*2.80,y,0));
+      }
+      box("stone",.38,.24,.49,E(0,3.19,0));
+    }
+  };
+  di.returnInfirmary = {
+    mode:"wall",cls:"decor",build(box,cylinder){
+      // Worn timber slats of a folded field litter, strapped against the wall.
+      for(const x of [-.68,.68]){
+        box("wood",.11,2.05,.14,E(x,1.23,-.79));
+        for(const y of [.48,1.89])box("wrought",.14,.12,.17,E(x,y,-.785));
+      }
+      for(let n=0;n<7;n++)box(n%3?"wood":"char",1.24,.115,.092,E(0,.57+n*.21,-.846));
+      box("cloth",.72,1.11,.08,E(-.065,1.27,-.73));
+      for(const y of [.83,1.65])box("char",1.39,.076,.09,E(0,y,-.68));
+      // Small medicine shelf, tight to the wall, with paired stoppered jars.
+      box("wood",1.26,.095,.35,E(1.47,.87,-.805));
+      for(const x of [1.04,1.88])box("wrought",.07,.29,.24,E(x,.71,-.85));
+      for(const [x,h] of [[1.13,.25],[1.49,.34],[1.78,.21]]){
+        cylinder("returnCandleGold",.085,.105,h,E(x,.93+h/2,-.79),7);
+        cylinder("wrought",.050,.078,.063,E(x,.96+h,-.79),7);
+        cylinder("wood",.047,.04,.055,E(x,1.007+h,-.79),7);
+      }
+    }
+  };
+  di.returnChapelWindow = {
+    mode:"wall",cls:"decor",build(box,cylinder,spec){
+      // The side niches stay subdued so the working exit is the main focus.
+      box("slate",2.06,2.40,.13,E(0,1.70,-.918));
+      box("dark",1.80,2.14,.019,E(0,1.72,-.834));
+      if(spec.h<0){
+        box("rock",1.64,.15,.31,E(0,.82,-.76));
+        box("prologuePatinatedStone",1.42,.28,.18,E(0,1.05,-.74));
+        box("returnEffigy",1.55,.39,.025,E(0,1.08,-.63));
+      }else{
+        box("prologuePatinatedStone",1.15,1.32,.10,E(0,1.36,-.74));
+        box("stone",.08,.76,.04,E(0,1.50,-.668));
+        box("stone",.38,.075,.04,E(0,1.67,-.663));
+      }
+      for(const side of [-1,1]){
+        box("prologuePatinatedStone",.27,1.75,.26,E(side*1.04,1.40,-.836));
+        box("marble",.082,1.71,.045,E(side*.932,1.42,-.692));
+        box("stone",.39,.17,.33,E(side*1.04,2.23,-.81));
+        const pts=[[1.04,2.27],[.87,2.57],[.48,2.86],[0,3.05]];
+        for(let j=1;j<pts.length;j++){
+          const [u,v]=pts[j-1],[x,y]=pts[j],dx=(x-u)*side,dy=y-v;
+          box("prologuePatinatedStone",.23,Math.hypot(dx,dy)+.028,.26,E((u+x)*side/2,(v+y)/2,-.833,0,0,-Math.atan2(dx,dy)));
+        }
+      }
+      box("rock",2.49,.20,.45,E(0,.50,-.75));
+      box("marble",2.40,.055,.42,E(0,.61,-.744));
+      box("stone",.31,.26,.31,E(0,3.01,-.827));
+    }
+  };
+  di.returnDoorCrown={
+    mode:"wall",cls:"decor",build(nativeBox,nativeCylinder,spec){
+      // The engine deliberately excludes wall props from the exit cell. These
+      // are independent side-wall bays, cantilevering a crown over the ladder.
+      const side=spec.h,offset=E(-side*2,0,0);
+      const box=(m,w,h,d,t)=>nativeBox(m,w,h,d,offset.clone().multiply(t));
+      const cylinder=(m,t,b,h,transform,n)=>nativeCylinder(m,t,b,h,offset.clone().multiply(transform),n);
+      {
+        box("rock",.50,.21,.54,E(side*1.03,.12,-.73));
+        box("returnLimestone",.48,1.65,.33,E(side*1.10,1.06,-.77));
+        box("returnShaftRelief",.41,1.65,.014,E(side*1.10,1.06,-.592));
+        box("slate",.065,1.61,.12,E(side*.86,1.04,-.545));
+        box("returnLimestone",.47,.15,.44,E(side*1.03,1.95,-.73));
+        const pts=[[1.04,1.97],[.93,2.31],[.72,2.57],[.43,2.83],[0,3.10]];
+        for(let i=1;i<pts.length;i++){
+          const [u,v]=pts[i-1],[x,y]=pts[i],dx=side*(x-u),dy=y-v,l=Math.hypot(dx,dy),r=-Math.atan2(dx,dy);
+          box("returnLimestone",.25,l+.02,.34,E(side*(u+x)*.5,(v+y)*.5,-.77,0,0,r));
+          box("returnShaftRelief",.17,l+.015,.026,E(side*(u+x)*.5,(v+y)*.5,-.580,0,0,r));
+          box("returnLimestone",.06,l+.018,.08,E(side*(u+x)*.5+side*.16,(v+y)*.5+.05,-.555,0,0,r));
+        }
+        const x=side*2.06;
+        // Radial wash on the masonry under the bracket, using existing glow.
+        box("returnLampPool",3.3,3.1,.006,E(x,1.41,-.953));
+        box("wrought",.12,.44,.10,E(x,2.08,-.84));
+        box("returnCandleGold",.10,.09,.43,E(x,2.18,-.68));
+        for(const s of [-1,1])box("wrought",.035,.90,.035,E(x+s*.10,1.78,-.52,0,0,-s*.21));
+        cylinder("returnCandleGold",.22,.095,.22,E(x,1.30,-.52),8);
+        for(const [off,h] of [[-.06,.22],[.035,.33],[.10,.15]])
+          cylinder("prologueAmber",0,.081,h*1.30,E(x+off,1.39+h*.65,-.50,0,0,off),5);
+      }
+      if(side<0){
+        box("returnPilgrimGlass",.44,.47,.025,E(0,2.77,-.911));
+        box("returnLimestone",.26,.22,.36,E(0,3.1,-.76));
+      }
+    }
+  };
+  di.returnProcession={mode:"flat",cls:"decor",build(box){
+    // A shallow lane of split stones: visual cue, not a step in the floor.
+    const offset=t=>6*t*t*(3-2*t);
+    for(let row=0;row<19;row++){
+      const a=row/19,b=(row+1)/19,dx=offset(b)-offset(a),dz=15/19;
+      const z=(row+.5)*dz-.41,x=(offset(a)+offset(b))/2,l=Math.hypot(dx,dz);
+      const angle=Math.atan2(dx,dz),half=.72+.09*a,split=row%2?.24:-.24;
+      for(const [w,mid] of [[half+split,(-half+split)/2],[half-split,(half+split)/2]])
+        box("returnWornStep",w-.038,.025,l-.032,E(x+mid*Math.cos(angle),.018,z-mid*Math.sin(angle),0,angle,0));
+    }
+  }};
+  // The undercroft already has a real sliding secret leading to the drowned
+  // ossuary. Water seeping from its sill and the scuffed fan of stone where
+  // it swings give a curious player a clue without branding it as a door.
+  di.ossuarySeep={mode:"flat",cls:"decor",build(box){
+    // World-space local origin is one cell north of the concealed threshold.
+    for(const [x,z,w,d,r] of [
+      [-.38,.91,.77,.14,.02],[-.12,.76,.61,.12,.24],[.06,.64,.41,.095,.47],
+      [.11,.47,.19,.31,-.23],[.03,.20,.14,.32,-.26],[-.12,-.06,.21,.17,.4],
+      [-.28,-.20,.12,.10,.10]
+    ])box("ossuaryWetSlate",w,.008,d,E(x,.011,z,0,r));
+    for(let i=0;i<6;i++){
+      const a=(i+1)*.17;
+      box("ossuarySillWear",.17,.008,.044,E(-.71+Math.sin(a)*.94,.014,.96-(1-Math.cos(a))*.94,0,a));
+    }
+    // Two flakes on the approach match the chipped stone, not loot sprites.
+    box("stone",.14,.045,.12,E(-.51,.023,.65,0,.48,.08));
+    box("rock",.082,.032,.12,E(-.36,.017,.50,0,-.27,0));
+  }};
   di.prologueRitualSpine = {
     mode: "free",
     cls: "decor",
@@ -1196,6 +1400,11 @@
     place("niche", 61, 26, { r: -Math.PI / 2, s: 0.85 });
     place("prologueVotive", 60.8, 26.2, { s: 0.8 });
     place("light", 60, 26, { s: 0.75, h: 7, r: 0.65 });
+    for (const [z,h] of [[43,0],[35,-1],[28,0],[17,0]]) place("returnGallowsBay",56,z,{h});
+    place("returnInfirmary",61,27.6,{r:-Math.PI/2});
+    for(const [x,h] of [[49.9,-1],[56.1,1]]) place("returnChapelWindow",x,8,{h});
+    for(const side of [-1,1])place("returnDoorCrown",53+side,8,{h:side});
+    place("returnProcession",53,8);
     for (const spec of map.decor)
       if (["bones", "bonestack", "skullpile", "ribs", "skullpole"].includes(spec.k)) spec.burialBone = 1;
     return map;
@@ -1220,6 +1429,7 @@
       ["prologueBrokenGrave", 75, 68.5, { s: 0.8, r: 0.42 }],
     ]],
     [1, [
+      ["ossuarySeep",9,22],
       ["prologuePrisonMemorial", 11, 2],
       ["prologuePrisonMemorial", 17, 2, { galleryVotive: 1 }],
       ["light", 17, 1.85, { s: 1.2, h: 4.2, r: 1.02 }],
@@ -1311,6 +1521,17 @@
     originalDecorBuild(scene, map);
     if (T.level !== 0 || !map.grave || !chapter || map.g !== chapter.grid)
       return;
+    // The route bends in from the real entrance. Attenuate its stone towards
+    // the dark passage; only the last courses receive the hatch's cool light.
+    for(const mesh of scene.children)if(mesh.material?.userData?.returnWay){
+      const pos=mesh.geometry.attributes.position, colors=new Float32Array(pos.count*3);
+      for(let i=0;i<pos.count;i++){
+        const d=Math.min(1,Math.max(0,(pos.getZ(i)-16)/15));
+        const l=.08+.64*(1-d)**2.1;
+        colors[i*3]=l*.96;colors[i*3+1]=l*.94;colors[i*3+2]=l*.87;
+      }
+      mesh.geometry.setAttribute("color",new y0(colors,3));
+    }
     for(const mesh of scene.children)
       if(mesh.name==="ceilingCells" && mesh.material?.map?.name==="prologueHellRoof")
         mesh.visible=false;

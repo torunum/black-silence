@@ -1,0 +1,16 @@
+{
+  "before": {
+    "ticks": 240,
+    "actors": 4,
+    "applications": 950,
+    "unique": 950,
+    "poseDigest": "d6c15485f401d031fd68ecf3b24ec42a226d148981ba440eedc22540e568f830"
+  },
+  "after": {
+    "ticks": 240,
+    "actors": 4,
+    "applications": 950,
+    "unique": 4,
+    "poseDigest": "d6c15485f401d031fd68ecf3b24ec42a226d148981ba440eedc22540e568f830"
+  }
+}
