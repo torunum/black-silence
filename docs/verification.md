@@ -1,6 +1,14 @@
 # Doğrulama — 13 Kasım 2026
 
-GitHub `main` üzerindeki `d4ec5d6` sürümü fast-forward ile kontrol edilip temel alındı. [Birleşik sonuçlar](verification-data/nov13-release.json) aşağıdaki testlerin aynı 17.992.630 baytlık oyun dosyasını kullandığını kaydeder. [Modül hashleri](build-info.json) tekrar derlemede korundu; özgün motor ve Village aynı.
+**Son sürüm:** 18.002.486 bayt, SHA-256 `31a05e9b68138b7f8c3aaa83a923175db8507b81ba07e2dbf6338ba395f7604c`. [Birleşik doğrulama](verification-data/nov13-vigil-release.json) ve [modül hashleri](build-info.json).
+
+Çanın gerçek E etkileşimi yalnız bir keşif saydı; kapak açılınca geçiş mümkün oldu, arka duvar kapalı kaldı. Ödül toplam altı fişek. Alınmış ve alınmamış durumlarda ayrı ölüm/kayıt dönüşleri ödülü çoğaltmadı. Kontrollü bir denemede diğer sonuçlar aynıyken sır keşfi bölüm notunu B'den A'ya çıkardı. [Çan testi ve ses ölçümü](vigil-nov13/verification.json).
+
+Teslim edilen dosyada on silahın gerçek ateş/doldurma/değiştirme/tekme ve önbellek kontrolleri, prologue'un 15 kontrol noktası ve bölüm geçişi, bölüm rekorları, ana düşman sonrası son ekran ve 35 savaş kontrolü geçti. [Nail Cannon karşılaştırması](nail-cannon-nov13/README.md) ayrı silah çalışmasında alınan görüntülerin kaynağını belirtir.
+
+## 13 Kasım: ilk teslim
+
+GitHub `main` üzerindeki `d4ec5d6` sürümü fast-forward ile kontrol edilip temel alındı. [İlk teslimin sonuçları](verification-data/nov13-release.json) aşağıdaki testlerin aynı 17.992.630 baytlık oyun dosyasını kullandığını kaydeder. Yeniden derleme aynı çıktıyı verdi; özgün motor ve Village aynı.
 
 - Dönüş şapeli ve merdiven, 11.102 çarpışma örneği, zindanda gizli kapıdan sağlık paketine geçiş (50 → 75 HP), prologue'da 15 kontrol noktası ve sonraki bölüm.
 - Dört gerçek R girişi senaryosunda çiftenin görünen fişekleri, ekleme ve iptal. On silahla ateş, doldurma, değiştirme, tekme ve görüntü önbelleği.

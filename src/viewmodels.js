@@ -1923,8 +1923,8 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
   Bet.draw=function(m,pose){
     const previous=arsenalIndex;arsenalIndex=6;
     try{
-      const t=pose.reload,inspect=t<0?0:Qe(t,0,.98,.14),lift=t<0?0:Qe(t,...Dm.lift);
-      m.translate(0,-.02*inspect,0);m.roll(.30*inspect);m.pitch(-.08*inspect);
+      const t=pose.reload,inspect=t<0?0:Qe(t,0,.98,.14);
+      m.translate(0,-.02*inspect,0);m.roll(.23*inspect);m.pitch(-.065*inspect);
       // Contiguous copper/steel receiver, split at real jacket seams.
       nailArtHull(m,[[340,143],[393,124],[419,151],[411,214],[388,220],[366,216],[341,206]],.012);
       nailArtHull(m,[[390,136],[417,150],[421,183],[409,214],[388,220],[399,191]],.002,.032);
@@ -1961,21 +1961,45 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       nailArtHull(m,[[485,260],[514,270],[514,321],[489,307]],-.018,.032);
       // A recessed steel seat stays on the receiver when the brass canister
       // moves away; it gives the insertion joint a readable physical boundary.
-      const seat=nailArtPoint(644,309,-.016);m.push();m.translate(...seat);
-      m.cyl(0,0,-.003,.012,.013,.013,12,WORN);
-      m.cyl(0,0,-.005,-.003,.009,.009,12,EDGE);m.pop();
-      m.push();m.translate(-.105*lift,-.035*lift,-.030*lift);m.roll(-.16*lift);
+      // The annular feed socket is attached to the pressure jacket. Its open
+      // throat is occluded by the cassette at rest and revealed on extraction.
+      const P=nailArtPoint,B=nailArtBasis,at=P(642,300,-.023),part=m.part(),inv=m.inverse();
+      const ring=(radius,theta,z)=>at.map((p,i)=>p+B.u[i]*(Math.cos(theta)*radius*.68-Math.sin(theta)*radius*.21)+B.v[i]*(Math.sin(theta)*radius*.98+Math.cos(theta)*radius*.24)+B.w[i]*z);
+      const rear=P(618,278,.011),socketBack=at.map((n,i)=>n+B.w[i]*.016);m.limb(rear,socketBack,.010,.009,WORN,8,{tex:steel});
+      for(let k=0;k<12;k++){
+        const p=k*Math.PI/6,q=p+Math.PI/6;
+        const normal=B.w.map(v=>-v);const rimUV=(a,y)=>[(443+7*Math.cos(a))/1672,(169+6*Math.sin(a)+y)/941];paintedSurface(m,'relicSource',[ring(.020,p,-.0004),ring(.020,q,-.0004),ring(.013,q,-.0012),ring(.013,p,-.0012)],[rimUV(p,0),rimUV(q,0),rimUV(q,5),rimUV(p,5)],.83);
+        m.face([ring(.020,p,0),ring(.020,q,0),ring(.013,q,-.0008),ring(.013,p,-.0008)],normal,k%5===1?BRONZE:WORN,part,{tex:steel},inv);
+        m.face([ring(.013,p,-.0008),ring(.013,q,-.0008),ring(.010,q,.004),ring(.010,p,.004)],normal,O.BLACK,part,{},inv);
+      }
+      m.face(Array.from({length:12},(_,i)=>ring(.010,i*Math.PI/6,.004)),B.w.map(v=>-v),O.BLACK,part,{},inv);
+      const reach=t<0?0:ease(t,.025,.18)*(1-ease(t,.78,.96));
+      const pull=t<0?0:ease(t,.16,.38)*(1-ease(t,.56,.74));
+      const turn=t<0?0:Qe(t,.095,.82,.10);
+      const arc=t<0?0:Math.sin(pull*Math.PI);
+      const travel=B.u.map((v,i)=>v*(-.015*pull-.016*arc)+B.v[i]*(.035*pull+.004*arc)+B.w[i]*(-.029*pull));
+      const pivot=P(641,309,-.020);
+      const cassettePose=()=>{m.translate(...travel);m.translate(...pivot);m.roll(-.24*turn-.15*pull);m.translate(...pivot.map(v=>-v));};
+      m.push();cassettePose();
       nailArtHull(m,[[632,250],[704,265],[766,309],[760,393],[660,368],[624,331]],-.025,.028);
       nailArtHull(m,[[767,311],[798,332],[814,371],[796,405],[773,414],[756,389],[753,352]],-.033,.022);
       m.pop();
       // Heavy receiver support uses the approved curled glove, mirrored in rig
       // space. Travel begins before extraction and finishes after reseating.
-      const reach=t<0?0:Qe(t,.02,.86,.10),support=nailArtPoint(404,249,-.048),load=nailArtPoint(668,361,-.051);
-      const contact=support.map((value,i)=>value+(load[i]-value)*reach);
-      m.push();m.translate(-.105*lift,-.035*lift,-.030*lift);m.roll(-.16*lift);
-      paintedHand(m,'right',contact,.182,{u:nailArtBasis.u.map(value=>-value),v:nailArtBasis.v});m.pop();
-      // Approved right glove remains its original asset and neutral rig basis.
-      m.push();m.translate(...nailArtPoint(650,370,-.048));m.pitch(-.25);b0(m,1,{trigger:true,w:.017});m.pop();
+      const support=P(404,249,-.048),load=P(637,314,-.073);
+      const contact=support.map((v,i)=>v+(load[i]-v)*reach);
+      m.push();cassettePose();
+      paintedHand(m,'right',contact,.172,{u:B.u.map(v=>-v),v:B.v});m.pop();
+      // The source panel already depicts the correct lower index and curled
+      // grasp beneath the copper canister. Only glove pixels are mapped.
+      const grasp=[
+        [[643,402],[650,394],[666,389],[690,388],[709,398],[732,409],[747,420],[765,419],[791,414],[812,417],[830,422],[830,469],[632,469],[632,456],[636,448],[635,438],[637,429],[640,419]]
+      ];
+      const hp=(pt,z=-.031)=>nailArtPoint(pt[0]-40,pt[1]-35,z);
+      const sleeveStart=gloveTriangles.length;
+      paintedSurface(m,'right',[[716,467],[805,467],[1175,820],[1070,904]].map(pt=>hp(pt,-.042)),[[.60,.88],[.88,.88],[2,2],[1.72,2]],.92);
+      for(let i=sleeveStart;i<gloveTriangles.length;i++)gloveTriangles[i].sleeve=true;
+      for(const poly of grasp)for(const ids of r79Triangles(poly))paintedSurface(m,'relicSource',ids.map(i=>hp(poly[i])),ids.map(i=>[poly[i][0]/1672,poly[i][1]/941]),.98);
     }finally{arsenalIndex=previous;}
   };
 

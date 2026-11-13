@@ -19,6 +19,10 @@ Gotik piksel FPS oyununun on silah, deri eldiven ve prologue cehennem bölümü 
 
 ## Bu sürüm
 
+**Nöbet çanı.** Prologue'daki harap şapelde bir duvar çanı var. Yaklaşıp yüzünü çana dön ve **E** ile çal: taş kapak iner, bir kez alınabilen altı fişek açığa çıkar. Bu isteğe bağlı keşif bölümün sır sayısına ve sonuç notuna katılır. [Çanın sesini dinle](docs/vigil-nov13/toll.wav).
+
+Nail Cannon'ın doldurma eli artık hazneye kilit açılmadan ulaşıyor; el ve hazne birlikte ayrılıp bakır yuvaya geri oturuyor. Arka kabzanın tutuşu referansa göre yenilendi. [Doldurma karşılaştırması](docs/nail-cannon-nov13/README.md).
+
 **13 Kasım — dönüş şapeli.** Prologue'un lav alanından sonraki sığınak ve çıkış şapeli yenilendi. Taş yol ile kandiller çıkış merdivenine yönlendiriyor. Bir sonraki zindanda duvardan sızan su, var olan gizli kemikliğe işaret ediyor. [Önce/sonra görüntüleri](docs/return-chapel-nov13.md).
 
 Çifteye iki oynar namlu, ahşap el kundağı ve işlenmiş kilit eklendi. Doldurma eli yalnız gereken fişekleri getiriyor; yarım doldurmada dolu fişek yerinde kalıyor. Dinamit çakmağı fitili temas ederek tutuşturuyor. [Doldurma videosu](docs/arsenal-nov13/reload.webm) · [Silah görüntüleri](docs/arsenal-nov13/README.md).

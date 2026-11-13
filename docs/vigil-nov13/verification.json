@@ -1,0 +1,361 @@
+{
+  "hash": "31a05e9b68138b7f8c3aaa83a923175db8507b81ba07e2dbf6338ba395f7604c",
+  "privateModuleInjection": false,
+  "initial": {
+    "open": false,
+    "doorY": 5.9,
+    "rotation": 0,
+    "count": 0,
+    "total": 1,
+    "all": 0,
+    "ammo": 0,
+    "gun": false,
+    "tolls": 0,
+    "busy": false,
+    "taken": false,
+    "base": true,
+    "col": [
+      true,
+      true,
+      true,
+      true
+    ],
+    "x": 19,
+    "z": 9,
+    "hp": 100,
+    "lights": 0,
+    "present": true,
+    "marks": [
+      [
+        117,
+        49
+      ]
+    ]
+  },
+  "walked": [
+    58,
+    30
+  ],
+  "closed": {
+    "open": false,
+    "doorY": 5.9,
+    "rotation": 0,
+    "count": 0,
+    "total": 1,
+    "all": 0,
+    "ammo": 13,
+    "gun": true,
+    "tolls": 0,
+    "busy": false,
+    "taken": false,
+    "base": true,
+    "col": [
+      true,
+      true,
+      true,
+      true
+    ],
+    "x": 66.0614197872646,
+    "z": 10.570863652286878,
+    "hp": 100,
+    "lights": 0,
+    "present": true,
+    "marks": [
+      [
+        117,
+        49
+      ]
+    ]
+  },
+  "strike": {
+    "open": true,
+    "doorY": 5.758820000000002,
+    "rotation": 0.15285903661911815,
+    "count": 1,
+    "total": 1,
+    "all": 1,
+    "ammo": 13,
+    "gun": true,
+    "tolls": 1,
+    "busy": false,
+    "taken": false,
+    "base": true,
+    "col": [
+      false,
+      true,
+      true,
+      true
+    ],
+    "x": 66.0614197872646,
+    "z": 10.570863652286878,
+    "hp": 100,
+    "lights": 0,
+    "present": true,
+    "marks": [
+      [
+        117,
+        49
+      ]
+    ]
+  },
+  "opened": {
+    "open": true,
+    "doorY": 2.5751200000000014,
+    "rotation": 0,
+    "count": 1,
+    "total": 1,
+    "all": 1,
+    "ammo": 13,
+    "gun": true,
+    "tolls": 1,
+    "busy": false,
+    "taken": false,
+    "base": true,
+    "col": [
+      false,
+      true,
+      true,
+      true
+    ],
+    "x": 66.0614197872646,
+    "z": 10.570863652286878,
+    "hp": 100,
+    "lights": 0,
+    "present": true,
+    "marks": [
+      [
+        117,
+        49
+      ]
+    ]
+  },
+  "audio": {
+    "rate": 48000,
+    "seconds": 3.6266666666666665,
+    "peak": 0.4073401391506195,
+    "earlyRms": 0.1519762300495451,
+    "tailRms": 0.001595826999468329
+  },
+  "gradeClosed": "B",
+  "gradeOpen": "A",
+  "restoredOpen": {
+    "open": true,
+    "doorY": 2.5000000000000004,
+    "rotation": 0,
+    "count": 1,
+    "total": 1,
+    "all": 1,
+    "ammo": 13,
+    "gun": true,
+    "tolls": 1,
+    "busy": false,
+    "taken": false,
+    "base": true,
+    "col": [
+      false,
+      true,
+      true,
+      true
+    ],
+    "x": 117,
+    "z": 49,
+    "hp": 100,
+    "lights": 0,
+    "present": true,
+    "marks": [
+      [
+        117,
+        49
+      ]
+    ]
+  },
+  "reward": {
+    "open": true,
+    "doorY": 2.5000000000000004,
+    "rotation": 0,
+    "count": 1,
+    "total": 1,
+    "all": 1,
+    "ammo": 19,
+    "gun": true,
+    "tolls": 1,
+    "busy": false,
+    "taken": true,
+    "base": true,
+    "col": [
+      false,
+      true,
+      true,
+      true
+    ],
+    "x": 68.21337559113492,
+    "z": 10.729810539285431,
+    "hp": 100,
+    "lights": 0,
+    "present": true,
+    "marks": [
+      [
+        117,
+        49
+      ]
+    ]
+  },
+  "finisher": {
+    "open": false,
+    "doorY": 5.9,
+    "rotation": 0,
+    "count": 0,
+    "total": 1,
+    "all": 1,
+    "ammo": 19,
+    "gun": true,
+    "tolls": 1,
+    "busy": true,
+    "taken": false,
+    "base": true,
+    "col": [
+      true,
+      true,
+      true,
+      true
+    ],
+    "x": 65.95,
+    "z": 11,
+    "hp": 100,
+    "lights": 0,
+    "present": true,
+    "marks": [
+      [
+        117,
+        49
+      ]
+    ]
+  },
+  "secondReward": {
+    "open": true,
+    "doorY": 2.5587400000000047,
+    "rotation": -0.002826978982784741,
+    "count": 1,
+    "total": 1,
+    "all": 2,
+    "ammo": 25,
+    "gun": true,
+    "tolls": 2,
+    "busy": false,
+    "taken": true,
+    "base": true,
+    "col": [
+      false,
+      true,
+      true,
+      true
+    ],
+    "x": 68.22138047356195,
+    "z": 10.725541526111265,
+    "hp": 100,
+    "lights": 0,
+    "present": true,
+    "marks": [
+      [
+        117,
+        49
+      ]
+    ]
+  },
+  "restoredTaken": {
+    "open": true,
+    "doorY": 2.5000000000000004,
+    "rotation": 0,
+    "count": 1,
+    "total": 1,
+    "all": 2,
+    "ammo": 25,
+    "gun": true,
+    "tolls": 2,
+    "busy": false,
+    "taken": true,
+    "base": true,
+    "col": [
+      false,
+      true,
+      true,
+      true
+    ],
+    "x": 117,
+    "z": 49,
+    "hp": 100,
+    "lights": 0,
+    "present": true,
+    "marks": [
+      [
+        117,
+        49
+      ]
+    ]
+  },
+  "dungeon": {
+    "count": 0,
+    "total": 2,
+    "all": 2,
+    "ammo": 25,
+    "gun": true,
+    "tolls": 2,
+    "busy": false,
+    "taken": false,
+    "base": false,
+    "col": [
+      false,
+      false,
+      false,
+      false
+    ],
+    "x": 7,
+    "z": 11,
+    "hp": 100,
+    "lights": 0,
+    "present": false,
+    "marks": [
+      [
+        73,
+        29
+      ],
+      [
+        101,
+        59
+      ]
+    ]
+  },
+  "fresh": {
+    "open": false,
+    "doorY": 5.9,
+    "rotation": 0,
+    "count": 0,
+    "total": 1,
+    "all": 2,
+    "ammo": 25,
+    "gun": true,
+    "tolls": 2,
+    "busy": false,
+    "taken": false,
+    "base": true,
+    "col": [
+      true,
+      true,
+      true,
+      true
+    ],
+    "x": 19,
+    "z": 9,
+    "hp": 100,
+    "lights": 0,
+    "present": true,
+    "marks": [
+      [
+        117,
+        49
+      ]
+    ]
+  },
+  "errors": [],
+  "network": []
+}

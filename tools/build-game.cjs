@@ -52,6 +52,7 @@ const code = [
   "reload-audio.js",
   "zombie-audio.js",
   "prologue.js",
+  "vigil-secret.js",
   "render-warmup.js",
   "display-settings.js",
   "chapter-records.js",

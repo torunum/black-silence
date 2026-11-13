@@ -1,0 +1,136 @@
+{
+  "build": "600aa6e079b4e86d7d911d37e78612984039207e8cebf010f8470a8b1a8f8861",
+  "moduleSha256": "f44c0732c4a6b4756c7cd0a7fff0296f52f3a0c22c954ad84473905c0ab1b3f0",
+  "baselineCommit": "4863e4e",
+  "captures": 28,
+  "endpoints": [
+    {
+      "width": 1024,
+      "height": 768,
+      "fired": 47,
+      "index": 6,
+      "mag": 50,
+      "size": 50,
+      "ammo": 50,
+      "override": false
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "fired": 47,
+      "index": 6,
+      "mag": 50,
+      "size": 50,
+      "ammo": 50,
+      "override": false
+    },
+    {
+      "width": 1680,
+      "height": 720,
+      "fired": 45,
+      "index": 6,
+      "mag": 50,
+      "size": 50,
+      "ammo": 50,
+      "override": false
+    }
+  ],
+  "otherWeapons": {
+    "cases": 46,
+    "differences": 0,
+    "passed": true
+  },
+  "reloadABBA": [
+    {
+      "variant": 0,
+      "errors": [],
+      "weapon": 6,
+      "n": 88,
+      "fps": 43.05,
+      "meanRasterMs": 17.43
+    },
+    {
+      "variant": 1,
+      "errors": [],
+      "weapon": 6,
+      "n": 111,
+      "fps": 55.89,
+      "meanRasterMs": 9.95
+    },
+    {
+      "variant": 1,
+      "errors": [],
+      "weapon": 6,
+      "n": 113,
+      "fps": 56.56,
+      "meanRasterMs": 10.03
+    },
+    {
+      "variant": 0,
+      "errors": [],
+      "weapon": 6,
+      "n": 98,
+      "fps": 48.57,
+      "meanRasterMs": 15.61
+    }
+  ],
+  "heldFire": [
+    {
+      "variant": "v7",
+      "n": 60,
+      "shots": [
+        {
+          "spin": 4.319689898685965,
+          "mag": 46,
+          "state": "fire"
+        },
+        {
+          "spin": 4.025165587411922,
+          "mag": 44,
+          "state": "fire"
+        },
+        {
+          "spin": 0.09817477042468103,
+          "mag": 43,
+          "state": "fire"
+        }
+      ],
+      "span": [
+        47,
+        23
+      ],
+      "rasterMs": 16.34,
+      "fps": 41.27,
+      "errors": []
+    },
+    {
+      "variant": "base",
+      "n": 51,
+      "shots": [
+        {
+          "spin": 4.908738521234052,
+          "mag": 47,
+          "state": "fire"
+        },
+        {
+          "spin": 0.4908738521234052,
+          "mag": 45,
+          "state": "fire"
+        },
+        {
+          "spin": 2.454369260617026,
+          "mag": 43,
+          "state": "fire"
+        }
+      ],
+      "span": [
+        47,
+        23
+      ],
+      "rasterMs": 20.48,
+      "fps": 35.68,
+      "errors": []
+    }
+  ],
+  "note": "Weapon-only build. Stock barrel surfaces/orbit and gameplay ammunition, projectiles, damage, fire interval and reload duration preserved. Timing collected in headless Chrome on a shared host; not a general gameplay FPS guarantee."
+}

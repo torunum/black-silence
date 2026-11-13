@@ -1,0 +1,109 @@
+{
+  "sha256": "31a05e9b68138b7f8c3aaa83a923175db8507b81ba07e2dbf6338ba395f7604c",
+  "bytes": 18002486,
+  "previous": "4863e4e2add4c1c767c4466618beac30e028c63d",
+  "vigil": {
+    "totals": [
+      1,
+      2,
+      1
+    ],
+    "initial": 0,
+    "triggered": 1,
+    "tolls": 1,
+    "shells": 6,
+    "grade": [
+      "B",
+      "A"
+    ],
+    "openOnRestore": true,
+    "takenOnRestore": true,
+    "unduplicatedReserve": 25,
+    "closedCollision": [
+      true,
+      true,
+      true,
+      true
+    ],
+    "openCollision": [
+      false,
+      true,
+      true,
+      true
+    ],
+    "errors": [],
+    "network": []
+  },
+  "navigation": {
+    "checkpoints": [
+      "chapel",
+      "crypt-landing",
+      "first-encounter",
+      "first-bridge-near",
+      "first-bridge-far",
+      "east-passage",
+      "second-bridge-near",
+      "second-bridge-far",
+      "arena-entry",
+      "arena-platform",
+      "arena-east-bridge",
+      "ascent-turn",
+      "stair-foot",
+      "climb-refuge",
+      "exit-approach"
+    ],
+    "exit": "walk",
+    "errors": []
+  },
+  "arsenal": {
+    "weapons": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "scope": "Real R/digit keys, mouse fire/kick and RAF. Isolated setup inventories; no gameplay balance claim. Same-build cache ghost comparison, not old visual parity.",
+    "errors": [],
+    "network": []
+  },
+  "records": {
+    "first": {
+      "grade": "D",
+      "seconds": 94
+    },
+    "slower": {
+      "grade": "S",
+      "seconds": 360
+    },
+    "faster": {
+      "grade": "D",
+      "seconds": 42
+    },
+    "best": {
+      "grade": "S",
+      "seconds": 42
+    },
+    "victory": {
+      "grade": "D",
+      "seconds": 4
+    },
+    "blocked": {
+      "grade": "D",
+      "seconds": 55
+    },
+    "small": {
+      "width": 360,
+      "content": 360,
+      "top": 16,
+      "height": 480
+    },
+    "errors": [],
+    "network": []
+  }
+}
