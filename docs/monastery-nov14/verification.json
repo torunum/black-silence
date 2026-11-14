@@ -1,0 +1,517 @@
+{
+  "baseHTMLSHA256": "b8831734b95ca3fd6acae18307a75b37266fab4617405d3ab82a10b5d60e3768",
+  "verifiedModuleSHA256": "adeca70d210d4fb0fd12b5a5e1e3ef16122995409a656cdaade6782a8dae1083",
+  "moduleHashScope": "UTF-8 source with leading/trailing whitespace trimmed",
+  "assembledCandidateSHA256": "6d99e4ab8a58dce1761927a027db382dd86e99c1761de912ba7bdd04df13deda",
+  "integratedStandaloneSHA256": null,
+  "instrumentedFixtureSHA256": "e531764aaff929e8947dfc5072670181b642304e225268b104de7475191d5a01",
+  "privateModuleInjection": true,
+  "diff": {
+    "cells": [
+      [
+        77,
+        41,
+        "#",
+        "."
+      ],
+      [
+        77,
+        42,
+        "#",
+        "."
+      ],
+      [
+        77,
+        43,
+        "#",
+        "S"
+      ],
+      [
+        74,
+        44,
+        ".",
+        "i"
+      ],
+      [
+        77,
+        44,
+        "i",
+        "."
+      ]
+    ],
+    "floor": [
+      [
+        77,
+        41,
+        0,
+        1.2
+      ],
+      [
+        77,
+        42,
+        0,
+        1.2
+      ],
+      [
+        77,
+        43,
+        0,
+        1.2
+      ]
+    ],
+    "ceil": [
+      [
+        77,
+        41,
+        0,
+        4.2
+      ],
+      [
+        77,
+        42,
+        0,
+        4.2
+      ],
+      [
+        77,
+        43,
+        0,
+        4.2
+      ]
+    ],
+    "others": true,
+    "previousSecrets": 6,
+    "exits": [
+      {
+        "at": [
+          41,
+          27
+        ],
+        "needs": [
+          "seal_ash",
+          "seal_bell"
+        ]
+      }
+    ]
+  },
+  "closed": {
+    "present": true,
+    "open": false,
+    "y": 2.7,
+    "collision": true,
+    "steps": [
+      0,
+      2
+    ],
+    "angle": [
+      0,
+      -3.141592653589793
+    ],
+    "count": 0,
+    "total": 7,
+    "all": 0,
+    "gate": {
+      "block": "THE GATE WANTS TWO SEALS  —  ASH SEAL ✘  ·  BELL SEAL ✘",
+      "gate": true
+    },
+    "seals": [],
+    "bell": false,
+    "boss": 1,
+    "marks": [
+      [
+        159,
+        125
+      ],
+      [
+        105,
+        121
+      ],
+      [
+        27,
+        101
+      ],
+      [
+        181,
+        83
+      ],
+      [
+        131,
+        73
+      ],
+      [
+        83,
+        31
+      ],
+      [
+        53,
+        45
+      ]
+    ],
+    "x": 167,
+    "z": 153,
+    "paused": false,
+    "busy": false,
+    "rocks": [
+      true,
+      true
+    ],
+    "hp": 100,
+    "drawNodes": 25,
+    "triangles": 4122,
+    "lights": 0
+  },
+  "clue": "THE MOON SETS WEST. THE STAR KEEPS NORTH.",
+  "partialRise": {
+    "present": true,
+    "open": false,
+    "y": 2.7,
+    "collision": true,
+    "steps": [
+      1,
+      2
+    ],
+    "angle": [
+      -1.5707963267948966,
+      -3.141592653589793
+    ],
+    "count": 0,
+    "total": 7,
+    "all": 0,
+    "gate": {
+      "block": "THE GATE WANTS TWO SEALS  —  ASH SEAL ✘  ·  BELL SEAL ✘",
+      "gate": true
+    },
+    "seals": [],
+    "bell": false,
+    "boss": 1,
+    "marks": [
+      [
+        159,
+        125
+      ],
+      [
+        105,
+        121
+      ],
+      [
+        27,
+        101
+      ],
+      [
+        181,
+        83
+      ],
+      [
+        131,
+        73
+      ],
+      [
+        83,
+        31
+      ],
+      [
+        53,
+        45
+      ]
+    ],
+    "x": 159,
+    "z": 125,
+    "paused": true,
+    "busy": false,
+    "rocks": [
+      true,
+      true
+    ],
+    "hp": 100,
+    "drawNodes": 25,
+    "triangles": 4122,
+    "lights": 0
+  },
+  "solved": {
+    "present": true,
+    "open": true,
+    "y": -0.21078666666667223,
+    "collision": false,
+    "steps": [
+      3,
+      0
+    ],
+    "angle": [
+      -4.71238898038469,
+      -6.283185307179586
+    ],
+    "count": 1,
+    "total": 7,
+    "all": 1,
+    "gate": {
+      "block": "THE GATE WANTS TWO SEALS  —  ASH SEAL ✘  ·  BELL SEAL ✘",
+      "gate": true
+    },
+    "seals": [],
+    "bell": false,
+    "boss": 1,
+    "marks": [
+      [
+        159,
+        125
+      ],
+      [
+        105,
+        121
+      ],
+      [
+        27,
+        101
+      ],
+      [
+        181,
+        83
+      ],
+      [
+        131,
+        73
+      ],
+      [
+        83,
+        31
+      ],
+      [
+        53,
+        45
+      ]
+    ],
+    "x": 157.72,
+    "z": 89.8,
+    "paused": false,
+    "busy": false,
+    "rocks": [
+      true,
+      true
+    ],
+    "hp": 100,
+    "drawNodes": 25,
+    "triangles": 4122,
+    "lights": 0
+  },
+  "crossed": {
+    "present": true,
+    "open": true,
+    "y": -0.21078666666667223,
+    "collision": false,
+    "steps": [
+      3,
+      0
+    ],
+    "angle": [
+      -4.71238898038469,
+      -6.283185307179586
+    ],
+    "count": 1,
+    "total": 7,
+    "all": 1,
+    "gate": {
+      "block": "THE GATE WANTS TWO SEALS  —  ASH SEAL ✘  ·  BELL SEAL ✘",
+      "gate": true
+    },
+    "seals": [],
+    "bell": false,
+    "boss": 1,
+    "marks": [
+      [
+        159,
+        125
+      ],
+      [
+        105,
+        121
+      ],
+      [
+        27,
+        101
+      ],
+      [
+        181,
+        83
+      ],
+      [
+        131,
+        73
+      ],
+      [
+        83,
+        31
+      ],
+      [
+        53,
+        45
+      ]
+    ],
+    "x": 155,
+    "z": 77.01975314625875,
+    "paused": false,
+    "busy": false,
+    "rocks": [
+      true,
+      true
+    ],
+    "hp": 100,
+    "drawNodes": 25,
+    "triangles": 4122,
+    "lights": 0
+  },
+  "walk": [
+    54,
+    55,
+    53,
+    40,
+    45,
+    36,
+    58,
+    54,
+    54
+  ],
+  "solvedRise": {
+    "present": true,
+    "open": true,
+    "y": -0.30000000000000004,
+    "collision": false,
+    "steps": [
+      3,
+      0
+    ],
+    "angle": [
+      -4.71238898038469,
+      0
+    ],
+    "count": 1,
+    "total": 7,
+    "all": 1,
+    "gate": {
+      "block": "THE GATE WANTS TWO SEALS  —  ASH SEAL ✘  ·  BELL SEAL ✘",
+      "gate": true
+    },
+    "seals": [],
+    "bell": false,
+    "boss": 1,
+    "marks": [
+      [
+        159,
+        125
+      ],
+      [
+        105,
+        121
+      ],
+      [
+        27,
+        101
+      ],
+      [
+        181,
+        83
+      ],
+      [
+        131,
+        73
+      ],
+      [
+        83,
+        31
+      ],
+      [
+        53,
+        45
+      ]
+    ],
+    "x": 105,
+    "z": 121,
+    "paused": true,
+    "busy": false,
+    "rocks": [
+      true,
+      true
+    ],
+    "hp": 100,
+    "drawNodes": 25,
+    "triangles": 4122,
+    "lights": 0
+  },
+  "fresh": {
+    "present": true,
+    "open": false,
+    "y": 2.7,
+    "collision": true,
+    "steps": [
+      0,
+      2
+    ],
+    "angle": [
+      0,
+      -3.141592653589793
+    ],
+    "count": 0,
+    "total": 7,
+    "all": 1,
+    "gate": {
+      "block": "THE GATE WANTS TWO SEALS  —  ASH SEAL ✘  ·  BELL SEAL ✘",
+      "gate": true
+    },
+    "seals": [],
+    "bell": false,
+    "boss": 1,
+    "marks": [
+      [
+        159,
+        125
+      ],
+      [
+        105,
+        121
+      ],
+      [
+        27,
+        101
+      ],
+      [
+        181,
+        83
+      ],
+      [
+        131,
+        73
+      ],
+      [
+        83,
+        31
+      ],
+      [
+        53,
+        45
+      ]
+    ],
+    "x": 167,
+    "z": 153,
+    "paused": false,
+    "busy": false,
+    "rocks": [
+      true,
+      true
+    ],
+    "hp": 100,
+    "drawNodes": 25,
+    "triangles": 4122,
+    "lights": 0
+  },
+  "seals": [
+    {
+      "block": "THE GATE WANTS TWO SEALS  —  ASH SEAL ✔  ·  BELL SEAL ✘",
+      "gate": true
+    },
+    {
+      "block": null,
+      "gate": true
+    }
+  ],
+  "errors": [],
+  "network": []
+}

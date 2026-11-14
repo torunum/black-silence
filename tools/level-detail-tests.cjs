@@ -16,11 +16,16 @@ let html = fs.readFileSync(htmlPath, "utf8");
 assert.equal(html.split(marker).length, 2, "Exactly one shipped scene module");
 html = html.replace(marker,
   "window.__LEVEL_DETAIL_ORIGINAL=[gV[1].build,gV[9].build];\n" + marker);
+// This test checks the earlier additive dressing pass. A later monastery puzzle
+// intentionally carves a passage; its exact native map delta has a separate test.
+const passage = "/* THE_SIDEREAL_PASSAGE_BEGIN */";
+html = html.replace(passage, () => "window.__LEVEL_DETAIL_DRESSED=[gV[1].build,gV[9].build];\n" + passage);
 html = html.replace(anchor, `
 window.__LEVEL_DETAIL_TEST = {
   compare() {
     return [1,9].map((level,index) => {
-      const original=window.__LEVEL_DETAIL_ORIGINAL[index](), current=gV[level].build();
+      const authored=window.__LEVEL_DETAIL_DRESSED?.[index]??gV[level].build;
+      const original=window.__LEVEL_DETAIL_ORIGINAL[index](), current=authored();
       const {decor:before,...beforeMap}=original, {decor:after,...afterMap}=current;
       const added=after.slice(before.length);
       return {level, unchangedMap:JSON.stringify(beforeMap)===JSON.stringify(afterMap),
@@ -29,7 +34,7 @@ window.__LEVEL_DETAIL_TEST = {
         newLightSpecs:added.filter(p=>p.k==='light'),
         newCollisionMasses:added.filter(p=>di[p.k]?.mass).length,
         anchorsValid:added.every(p=>!"#WI+DS".includes(current.g[Math.floor(p.z+.5)]?.[Math.floor(p.x+.5)]||'#')),
-        repeatCount:gV[level].build().decor.length===after.length};
+        repeatCount:authored().decor.length===after.length};
     });
   },
   pose(x,z,tx,tz) {
