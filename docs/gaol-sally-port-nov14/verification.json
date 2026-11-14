@@ -1,8 +1,8 @@
 {
-  "inputSHA256": "38c22c6d0405019ec6658f4a5bb2b4cde31db6912f52b8ac9c4ba8c3eadd0490",
-  "candidateSHA256": "28a622e7e94fba82ed28335ab87ce32d93fc7ab9430cec97d80c191826cda758",
+  "inputSHA256": "fd809a3a410f390e21e9b2e4cc7ebfe2606ba8c346c2bb899062d91fc83a8d6e",
+  "candidateSHA256": "fd809a3a410f390e21e9b2e4cc7ebfe2606ba8c346c2bb899062d91fc83a8d6e",
   "moduleSHA256": "09db0af5e4177be813e931fbe99f10108d9ded33c9ef04952b0377253cce0480",
-  "integrated": false,
+  "integrated": true,
   "diff": {
     "grid": [
       [
@@ -453,6 +453,66 @@
     "busy": false,
     "started": true
   },
+  "flights": [
+    {
+      "open": false,
+      "launch": {
+        "x": 33.276666666666664,
+        "z": 43,
+        "flung": 1.0333333333333334,
+        "stun": 1.5,
+        "hp": 162,
+        "solid": false
+      },
+      "land": {
+        "x": 33.54898526114004,
+        "z": 43,
+        "flung": 0,
+        "stun": 1.5,
+        "hp": 122,
+        "solid": false
+      },
+      "last": {
+        "x": 29.22898526114013,
+        "z": 43,
+        "flung": 0,
+        "stun": -0.01666666666666634,
+        "hp": 122,
+        "solid": false
+      },
+      "maxX": 33.54898526114004,
+      "touchedSolid": false
+    },
+    {
+      "open": true,
+      "launch": {
+        "x": 33.276666666666664,
+        "z": 43,
+        "flung": 1.0333333333333334,
+        "stun": 1.5,
+        "hp": 162,
+        "solid": false
+      },
+      "land": {
+        "x": 45.548991590711715,
+        "z": 43,
+        "flung": 0,
+        "stun": 1.5,
+        "hp": 122,
+        "solid": false
+      },
+      "last": {
+        "x": 42.02899159071179,
+        "z": 43,
+        "flung": 0,
+        "stun": -0.01666666666666634,
+        "hp": 122,
+        "solid": false
+      },
+      "maxX": 45.548991590711715,
+      "touchedSolid": false
+    }
+  ],
   "tallies": [
     1,
     1,

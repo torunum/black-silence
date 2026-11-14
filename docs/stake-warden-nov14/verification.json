@@ -1,0 +1,201 @@
+{
+  "inputs": {
+    "baseCommit": "c781a4b",
+    "baseSHA256": "8d31559d3d5540c5070ac7325e6c973a41e8402d402e09f5f8012712f1088ec7",
+    "releaseSHA256": "fd809a3a410f390e21e9b2e4cc7ebfe2606ba8c346c2bb899062d91fc83a8d6e",
+    "v5WeaponOnlySHA256": "a5d53739a64c0f49b534eec3ba42e680569337700fc6b699b8abef0af6c2f905",
+    "v4PreviousFramingSHA256": "0eea51e4a3d4dfa5f2de01017186ad0db3a3f8bee9b3a136ace069c35c4bf3e5"
+  },
+  "sources": {
+    "src/viewmodels.js": "8c746360b28c5a81f481e5bac6ab59ae7a3119e5012048eae21c460e6e1c572f",
+    "src/reload-audio.js": "b5d976f11e9e062e0f225496ffdbbd8b1290594f022b665026c062c60cb7df77",
+    "src/munition-tin.js": "f1792480acd2698068725c8c85d4905c12e1ef45a0461476acb8cf9764a2208a",
+    "tools/reload-audio-tests.cjs": "013227f76257ad095166a625b2614681da29f9f979f4d674e0d95009672aaed9",
+    "assets/dungeon/munition-tin-target.png": "9ede08af7f42fcb7c842b85d607006e26eef7f4a9704a74a792e1440ef510c3c"
+  },
+  "standaloneWeapon": {
+    "input": "v5WeaponOnlySHA256",
+    "nativePoseFrames": 39,
+    "errors": [],
+    "endpoints": [
+      {
+        "width": 1280,
+        "height": 720,
+        "fired": 0,
+        "index": 9,
+        "mag": 1,
+        "size": 1,
+        "ammo": 99,
+        "override": false
+      },
+      {
+        "width": 1024,
+        "height": 768,
+        "fired": 0,
+        "index": 9,
+        "mag": 1,
+        "size": 1,
+        "ammo": 99,
+        "override": false
+      },
+      {
+        "width": 1680,
+        "height": 720,
+        "fired": 0,
+        "index": 9,
+        "mag": 1,
+        "size": 1,
+        "ammo": 99,
+        "override": false
+      }
+    ],
+    "unaffectedRGBAStates": 537,
+    "parityCases": 594,
+    "aimClearance": {
+      "method": "Isolate the actual drawImage of Te.canvas at its transformed native position, with the HUD excluded. Project near-center source alpha > 5 to CSS pixels. Live idle and held fire plus 350 ms after release.",
+      "viewports": [
+        {
+          "viewport": [
+            1280,
+            720
+          ],
+          "idle": {
+            "frames": 28,
+            "nearestPixel": 24.73863375370596
+          },
+          "firing": {
+            "frames": 15,
+            "nearestPixel": 18.439088914585774
+          }
+        },
+        {
+          "viewport": [
+            1024,
+            768
+          ],
+          "idle": {
+            "frames": 29,
+            "nearestPixel": 24.838679514016036
+          },
+          "firing": {
+            "frames": 15,
+            "nearestPixel": 19.530488985173925
+          }
+        },
+        {
+          "viewport": [
+            1680,
+            720
+          ],
+          "idle": {
+            "frames": 28,
+            "nearestPixel": 23.79487050520502
+          },
+          "firing": {
+            "frames": 16,
+            "nearestPixel": 16.617539092570244
+          }
+        }
+      ]
+    }
+  },
+  "controlsAndSound": {
+    "input": "v4PreviousFramingSHA256",
+    "scope": "V5 adjusts the slot-9 presentation translation only. Core timing and all audio source bytes are identical to V4.",
+    "reloadSeconds": 0.8,
+    "capacity": 1,
+    "transitions": [
+      {
+        "index": 9,
+        "firedMag": 0,
+        "switchedTo": 0,
+        "cancelledMag": 0,
+        "kickRecovered": true
+      }
+    ],
+    "returnedRasterMatches": true,
+    "nativeAudioChecks": 101,
+    "audioErrors": []
+  },
+  "performance": {
+    "environment": "Shared headless Chrome. Serial ABBA of V4 presentation candidate vs base, actual R, native RAF. Idle remained cached in all four observations. Differences include shared host activity.",
+    "reloadRasterMedianMsByRun": [
+      8.7,
+      20.4,
+      10.8,
+      9.4
+    ],
+    "variants": [
+      "base",
+      "V4",
+      "V4",
+      "base"
+    ],
+    "finalBuildFrameRate": "Not benchmarked"
+  },
+  "dungeonPickup": {
+    "input": "releaseSHA256",
+    "level": 1,
+    "positionXZ": [
+      39,
+      45
+    ],
+    "nearAndFarMetres": [
+      2.75,
+      5.59
+    ],
+    "sprite": "SpriteMaterial",
+    "atlasPixels": [
+      96,
+      96
+    ],
+    "colorSpace": "srgb",
+    "nativeCollect": {
+      "before": [
+        "bullets",
+        [
+          0.55,
+          0.55,
+          1
+        ],
+        0
+      ],
+      "after": [
+        18,
+        true
+      ]
+    },
+    "comparison": "base versus final canonical at the same two cameras, normal lighting runs before capture",
+    "asset": "assets/dungeon/munition-tin-target.png"
+  },
+  "clip": {
+    "file": "stake-reload.webm",
+    "input": "releaseSHA256",
+    "nativeCapturedSeconds": 3.1635,
+    "containerVideo": "VP9",
+    "audio": "Opus",
+    "framesPerSecond": 25,
+    "bytes": 1640275,
+    "sha256": "47c391d0fb5098fb66cd633ad8798fe97ada5db184fe22279a0ecb924f5977b5",
+    "reserveAndChamberAtEnd": [
+      1,
+      5
+    ],
+    "events": [
+      "unpin",
+      "draw",
+      "bed",
+      "keeper",
+      "stroke",
+      "catch",
+      "unpin",
+      "draw",
+      "bed",
+      "keeper",
+      "stroke",
+      "catch"
+    ],
+    "errors": [],
+    "scope": "Two real mouse shots and R reloads, native RAF and post-volume stereo sound. QA sets ammunition, removes auto-spawned courtyard enemies and hides intro text."
+  }
+}

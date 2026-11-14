@@ -35,9 +35,9 @@
   "idempotentBuilds": 2,
   "invalidInputsRefusedWithoutWrite": 8,
   "file": "THE-BLACK-SILENCE.html",
-  "verifiedAt": "2026-11-14T13:27:50.073Z",
-  "previousRelease": "d6ad8a1886a7402ae837c5553b19869816f352fd1a0fddcb119256d2c7abb1e4",
-  "baselineCommit": "56c2f1d",
+  "verifiedAt": "2026-11-14T13:33:27.517Z",
+  "previousRelease": "fd809a3a410f390e21e9b2e4cc7ebfe2606ba8c346c2bb899062d91fc83a8d6e",
+  "baselineCommit": "c781a4b6897ce610ce292d83aa5924cc6beffe67",
   "verificationReports": [
     {
       "file": "docs/factory-nov14/verification.json",
@@ -117,11 +117,19 @@
     },
     {
       "file": "docs/gaol-sally-port-nov14/campaign-upgrade.json",
-      "sha256": "9a41db96ecb05d42c41c2aa3f8f33603c2c91b255fa1fa18d8681433e8af4230"
+      "sha256": "2df83eef019d1765140c2a1db7376e9b198e8f86cda72cf93c2cdd4e3e3e8a9c"
     },
     {
       "file": "docs/gaol-sally-port-nov14/verification.json",
-      "sha256": "605c0f0af43bdab1890620dba2dcabc1eec3c1415117547261f266cdf861f5ab"
+      "sha256": "3d272de20262561f632ed0f17567cb10ea31e1b187c2ee76791992695dcac893"
+    },
+    {
+      "file": "docs/stake-warden-nov14/verification.json",
+      "sha256": "7b84f490cdf7ae7c07777d4b712c58c8a6bb3b734b9b62c71443a01b7617c648"
+    },
+    {
+      "file": "docs/verification-data/nov14-gaol-release.json",
+      "sha256": "54a11d42f51e64995aa83dd5100103092cba7cc8be644269a44ec3c35f8f2fb2"
     }
   ]
 }

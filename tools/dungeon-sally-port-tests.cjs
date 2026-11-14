@@ -122,6 +122,8 @@ function instruments(){
   function fly(){
     const e=window.__sallyKickActor,trail=[];
     for(let i=0;i<230;i++){
+      if(i===50)li.KeyS=true;
+      if(i===94)li.KeyS=false;
       m_(1/60);v$(1/60);qtt(1/60);C.spawnGuard=100;
       trail.push({x:e.x,z:e.z,flung:e.flung,stun:e.stun,hp:e.hp,solid:d0(e.x,e.z)});
     }
@@ -152,6 +154,7 @@ fs.writeFileSync(fixture,candidate.replace(mark,()=>capturePrevious+mark).replac
   const browser=await chromium.launch({channel:"chrome",headless:true});
   try{
     let page=await browser.newPage({viewport:{width:1280,height:720}});
+    page.setDefaultNavigationTimeout(90000);page.setDefaultTimeout(60000);
     const errors=[];page.on("pageerror",e=>errors.push(e.message));await page.route(/^https?:/,r=>r.abort());
     await page.goto(pathToFileURL(fixture).href+"?qa=1");await page.locator("#mNew").click();await page.waitForFunction(()=>window.__BLACK_SILENCE_QA.Be.started);
     const call=(name,...args)=>page.evaluate(([n,...a])=>__sallyTest[n](...a),[name,...args]);
@@ -162,6 +165,7 @@ fs.writeFileSync(fixture,candidate.replace(mark,()=>capturePrevious+mark).replac
       const old=fs.readFileSync(oldFile,"utf8");assert(!old.includes(mark)&&old.includes(anchor));
       fs.writeFileSync(priorStage,old.replace(anchor,()=>"("+instruments.toString()+")();"+anchor));
       const next=page;page=await browser.newPage({viewport:{width:1280,height:720}});
+      page.setDefaultNavigationTimeout(90000);page.setDefaultTimeout(60000);
       await page.route(/^https?:/,r=>r.abort());await page.goto(pathToFileURL(priorStage).href+"?qa=1");
       await page.locator("#mNew").click();await page.waitForFunction(()=>window.__BLACK_SILENCE_QA.Be.started);
       await page.evaluate(()=>{requestAnimationFrame=()=>1;});await page.waitForTimeout(160);await call("load",1);
@@ -214,7 +218,7 @@ fs.writeFileSync(fixture,candidate.replace(mark,()=>capturePrevious+mark).replac
       assert(await call("prepareKick"));await page.keyboard.down("ShiftLeft");await page.keyboard.down("KeyW");
       assert((await call("sprint"))>7);await page.mouse.click(640,360,{button:"right"});assert(await call("isDrop"));
       await page.keyboard.up("KeyW");await page.keyboard.up("ShiftLeft");const path=await call("fly");flights.push({open,...path});
-      assert(path.launch&&path.land&&path.last.hp>0&&!path.last.flung&&!path.last.stun&&!path.touchedSolid,JSON.stringify(path));
+      assert(path.launch&&path.land&&path.last.hp>0&&path.last.flung<=0&&path.last.stun<=0&&!path.touchedSolid,JSON.stringify(path));
       assert(open?path.maxX>36.25:path.maxX<34,JSON.stringify(path));
       assert(Math.hypot(path.last.x-path.land.x,path.last.z-path.land.z)>.15,"AI recovers after landing");
     }

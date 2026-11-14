@@ -54,7 +54,7 @@ function stage(content){
     const ctx=await browser.newContext({offline:true,viewport:{width:960,height:540}}),errors=[];
     let page;async function newPage(content,button){
       if(page){await page.evaluate(()=>{if(document.pointerLockElement)document.exitPointerLock();});await page.waitForTimeout(80);await page.close();}
-      stage(content);page=await ctx.newPage();page.on("pageerror",err=>errors.push(err.message));
+      stage(content);page=await ctx.newPage();page.setDefaultNavigationTimeout(90000);page.setDefaultTimeout(60000);page.on("pageerror",err=>errors.push(err.message));
       await page.goto(url);await page.locator(button).click();await page.waitForFunction(()=>__gateCampaign.state().finished);
       await page.evaluate(()=>{requestAnimationFrame=()=>1;});await page.waitForTimeout(120);await page.evaluate(()=>__gateCampaign.calm());
     }

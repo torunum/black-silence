@@ -4,6 +4,10 @@
 
 Yeni tek dosya 18.945.949 bayt. SHA-256 `fd809a3a410f390e21e9b2e4cc7ebfe2606ba8c346c2bb899062d91fc83a8d6e`. Art arda iki derleme aynı dosyayı verdi. Gerçek eski zindan kaydında keşfedilmiş 219 hücrenin 216'sı yeni plana taşındı. Yeniden şekillenen üç duvar hücresi tekrar ziyaret edilene kadar gizli kaldı. Bir sonraki kayıt ve Continue açılmış parmaklığı, tek sır puanını ve cephaneyi geri getirdi. [Kayıt aktarımı](gaol-sally-port-nov14/campaign-upgrade.json) · [Zindan ve port](gaol-sally-port-nov14/README.md) · [Harita ve pusula](wayfinding-nov14/README.md).
 
+GitHub'daki `3b26aa4` commit'inden anonim HTTPS ile indirilen oyun aynı 18.945.949 baytı ve aynı SHA-256 değerini verdi. Son dosyada on silahın ateş ve doldurma akışları, 101 ses kontrolü ve HUD karşılaştırması geçti. Zindandaki pirinç fişekler, oyuncu alana kadar metal kutuda duruyor; gerçek alımda yedek cephane 0'dan 18'e yükseldi. [Oyunu indir](https://github.com/torunum/black-silence/raw/3b26aa490d24069e6d23806f43d1a5d2613e99cb/THE-BLACK-SILENCE.html) · [Kazık tüfeğinin oyun içi videosu ve karşılaştırması](stake-warden-nov14/README.md).
+
+Son sürüm on bir bölümde WebGL ile açıldı. Tam ekran harita ölçekleri ve aktif kayıt lambası için on iki giriş ve yerleşim kontrolü, kampanya ve yeniden doğuş akışları için on iki senaryo çalıştırıldı. [Birleşik sürüm ölçümleri ve sınanan dosyalar](verification-data/nov14-gaol-release.json).
+
 ## Önceki Parish teslimi
 
 Teslim edilen tek HTML dosyası 18.551.365 bayt. SHA-256 `8d31559d3d5540c5070ac7325e6c973a41e8402d402e09f5f8012712f1088ec7`. İki bağımsız yeniden derleme aynı dosyayı üretti. Sekiz hasarlı derleme girdisi dosya değişmeden reddedildi. [Son sürümün ölçümleri](verification-data/nov14-parish-release.json) · [Modül ve kanıt hashleri](build-info.json).

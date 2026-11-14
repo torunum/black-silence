@@ -24,7 +24,7 @@ Gotik piksel FPS oyununun on silah, deri eldiven ve prologue cehennem bölümü 
 
 ## Bu sürüm
 
-**Gothic Dungeon.** Anahtar mahzeninden bakınca demir parmaklığı tutan çatlak meşe takozu görünüyor. Ateş ederek veya tekmeyle kırdığında karşı ağırlık iniyor, parmaklık yükseliyor ve geçitten iki yönde yürüyebiliyorsun. Yeşil zindan muhafızı tükürmeden önce başını kaldırıyor. Leş tazısı sıçramadan önce omzunu indirip arka bacaklarını topluyor. [Geçit ve harita](docs/gaol-sally-port-nov14/README.md) · [Yaratıkların oyun içi görüntüleri](docs/gaol-creatures-nov14/README.md).
+**Gothic Dungeon.** Anahtar mahzeninden bakınca demir parmaklığı tutan çatlak meşe takozu görünüyor. Ateş ederek veya tekmeyle kırdığında karşı ağırlık iniyor, parmaklık yükseliyor ve geçitten iki yönde yürüyebiliyorsun. Yeşil zindan muhafızı tükürmeden önce başını kaldırıyor. Leş tazısı sıçramadan önce omzunu indirip arka bacaklarını topluyor. [Geçidin oyun içi görüntüleri](docs/gaol-sally-port-nov14/README.md) · [Yaratıkların oyun içi görüntüleri](docs/gaol-creatures-nov14/README.md).
 
 **Stake Gun.** Silaha sahipken **0** ile seçip **R** ile doldur. Ahşap kazığın yivli taşıyıcıdan çıkışını ve elde yeni kazığın yuvaya oturuşunu [oyun içi kayıtta](docs/stake-warden-nov14/stake-reload.webm) görebilirsin.
 

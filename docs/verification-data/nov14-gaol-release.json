@@ -1,0 +1,129 @@
+{
+  "baselineCommit": "c781a4b6897ce610ce292d83aa5924cc6beffe67",
+  "gameCommit": "3b26aa490d24069e6d23806f43d1a5d2613e99cb",
+  "htmlSha256": "fd809a3a410f390e21e9b2e4cc7ebfe2606ba8c346c2bb899062d91fc83a8d6e",
+  "bytes": 18945949,
+  "idempotentBuilds": 2,
+  "invalidInputsRefusedWithoutWrite": 8,
+  "testedWeapons": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "foley": 101,
+  "hudStates": 27,
+  "passedSuites": [
+    "arsenal-runtime-tests",
+    "combat-tests",
+    "enemy-animation-tests",
+    "hud-updates-tests",
+    "reload-audio-tests"
+  ],
+  "shotgun": "Native pickup budget, legacy checkpoint normalization, fire, interrupt and R all passed on this HTML.",
+  "maps": [
+    {
+      "level": 0,
+      "width": 64,
+      "height": 62,
+      "enemies": 21,
+      "finitePlayer": true
+    },
+    {
+      "level": 1,
+      "width": 58,
+      "height": 44,
+      "enemies": 23,
+      "finitePlayer": true
+    },
+    {
+      "level": 2,
+      "width": 64,
+      "height": 46,
+      "enemies": 35,
+      "finitePlayer": true
+    },
+    {
+      "level": 3,
+      "width": 54,
+      "height": 46,
+      "enemies": 37,
+      "finitePlayer": true
+    },
+    {
+      "level": 4,
+      "width": 62,
+      "height": 46,
+      "enemies": 36,
+      "finitePlayer": true
+    },
+    {
+      "level": 5,
+      "width": 58,
+      "height": 46,
+      "enemies": 34,
+      "finitePlayer": true
+    },
+    {
+      "level": 6,
+      "width": 58,
+      "height": 46,
+      "enemies": 33,
+      "finitePlayer": true
+    },
+    {
+      "level": 7,
+      "width": 62,
+      "height": 46,
+      "enemies": 33,
+      "finitePlayer": true
+    },
+    {
+      "level": 8,
+      "width": 50,
+      "height": 42,
+      "enemies": 29,
+      "finitePlayer": true
+    },
+    {
+      "level": 9,
+      "width": 100,
+      "height": 86,
+      "enemies": 115,
+      "finitePlayer": true
+    },
+    {
+      "level": 10,
+      "width": 72,
+      "height": 64,
+      "enemies": 79,
+      "finitePlayer": true
+    }
+  ],
+  "launch": {
+    "offline": true,
+    "qaAbsent": true,
+    "viewport": "1920x1080"
+  },
+  "errors": [],
+  "smokeRunner": "tools/smoke-tests.cjs, repeated with a 120-second file navigation timeout on a busy rendering host.",
+  "gate": {
+    "file": "docs/gaol-sally-port-nov14/verification.json",
+    "dropkickAngles": 2,
+    "oldSave": "docs/gaol-sally-port-nov14/campaign-upgrade.json",
+    "upgradeHtml": "fd809a3a410f390e21e9b2e4cc7ebfe2606ba8c346c2bb899062d91fc83a8d6e"
+  },
+  "stake": "docs/stake-warden-nov14/verification.json",
+  "github": {
+    "anonymousDownload": true,
+    "http": 200,
+    "bytes": 18945949,
+    "sha256": "fd809a3a410f390e21e9b2e4cc7ebfe2606ba8c346c2bb899062d91fc83a8d6e"
+  }
+}
