@@ -1,5 +1,6 @@
 {
   "baselineCommit": "c781a4b6897ce610ce292d83aa5924cc6beffe67",
+  "dungeonUpgradeBaselineCommit": "57a0b433c16769df8f855c2c01b01fc0cf81adf7",
   "gameCommit": "3b26aa490d24069e6d23806f43d1a5d2613e99cb",
   "htmlSha256": "fd809a3a410f390e21e9b2e4cc7ebfe2606ba8c346c2bb899062d91fc83a8d6e",
   "bytes": 18945949,
@@ -120,6 +121,16 @@
     "upgradeHtml": "fd809a3a410f390e21e9b2e4cc7ebfe2606ba8c346c2bb899062d91fc83a8d6e"
   },
   "stake": "docs/stake-warden-nov14/verification.json",
+  "offlineDelivery": {
+    "Chrome": { "source": "isolated ZIP HTML", "masterPeak": 0.3359798789024353 },
+    "Edge": { "source": "isolated anonymous GitHub download", "masterPeak": 0.2506323754787445 },
+    "ordinaryNewGame": true,
+    "initialMagazineAndReserve": [6, 60],
+    "afterShooting": [5, 60],
+    "afterReloading": [6, 59],
+    "networkRequests": 0,
+    "runtimeErrors": 0
+  },
   "github": {
     "anonymousDownload": true,
     "http": 200,

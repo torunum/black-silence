@@ -177,7 +177,7 @@
     "framesPerSecond": 25,
     "bytes": 1640275,
     "sha256": "47c391d0fb5098fb66cd633ad8798fe97ada5db184fe22279a0ecb924f5977b5",
-    "reserveAndChamberAtEnd": [
+    "chamberAndReserveAtEnd": [
       1,
       5
     ],

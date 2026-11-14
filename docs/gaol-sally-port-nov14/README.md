@@ -20,7 +20,7 @@ Oyunda **Shift + W + sağ tık** ile mazgala doğru iki koşarak tekme atıldı.
 
 Önceki tek dosyalı sürümdeki bir kayıt şapelinde alınan kayıt aynı çevrimdışı adreste **Continue** ile açıldı. Keşfedilmiş 219 harita hücresinin değişmeyen 216’sı korundu. Üç yeni geçit hücresi oyuncu onları görene kadar gizli kaldı. Eski 13 kırılabilir nesnenin indeksleri, cephane, zırh, can, kırmızı anahtar ve oyuncu konumu korundu. Yeni geçit açılıp ikinci şapelde kayıt alındıktan sonra iki ayrı **Continue**, açık mazgalı, kazanılmış sır puanını, oyuncunun konumunu ve keşfettiği 330 hücreyi yükledi. [Kampanya aktarımı](campaign-upgrade.json)
 
-Kök dizinden aşağıdaki iki komut, son oyunu ve önceki sürümden alınmış tek dosyalı oyunu karşılaştırır. `previous.html` için `c781a4b` sürümünün `THE-BLACK-SILENCE.html` dosyasını kullan.
+Kök dizinden aşağıdaki iki komut, son oyunu ve önceki sürümden alınmış tek dosyalı oyunu karşılaştırır. `previous.html` için `57a0b43` sürümünün `THE-BLACK-SILENCE.html` dosyasını kullan.
 
 ```sh
 node tools/dungeon-sally-port-tests.cjs THE-BLACK-SILENCE.html .dream-loop/sally-check previous.html
