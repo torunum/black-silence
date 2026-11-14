@@ -1,0 +1,765 @@
+{
+  "sourceSHA256": "e9eeb63ef11893420d6835ecee6266d49d9c2ace0102d5c1ad4e90c798a8c067",
+  "inputSHA256": "42a45b1ac9aed60bf0407052865b59083fc5631385142b7a8e5776c725c1ef69",
+  "candidateSHA256": "42a45b1ac9aed60bf0407052865b59083fc5631385142b7a8e5776c725c1ef69",
+  "integrated": true,
+  "fixtureSHA256": "3b1ac82de8adb206f2845e037e3a73902e2fcfb3ddd7ab7a638a7c6616afe340",
+  "targetSHA256": "2d3523fc7dbef11112ac6a2c18726e73bc6748d26d838e2ef0a5af51700253b9",
+  "initial": {
+    "x": 11,
+    "z": 79,
+    "hp": 100,
+    "busy": false,
+    "key": false,
+    "level": 5,
+    "machine": true,
+    "audio": 0,
+    "primed": false,
+    "door": false,
+    "secrets": 0,
+    "all": 0,
+    "total": 2,
+    "hasReward": false,
+    "shrine": 3,
+    "exit": [
+      null,
+      null
+    ],
+    "marks": [
+      [
+        69,
+        77
+      ],
+      [
+        75,
+        35
+      ],
+      [
+        53,
+        45
+      ]
+    ],
+    "enemies": 34,
+    "angle": 0.54,
+    "idler": 0.54,
+    "valve": 0,
+    "needle": 2.15,
+    "rodAngle": -0.11139477501287207,
+    "pin": [
+      1.2417001670546355,
+      1.7467852759934943,
+      0.91
+    ],
+    "cross": [
+      3.4479406407004287,
+      1.5,
+      0.69
+    ],
+    "coupler": [
+      -1.7682998329453645,
+      2.5167852759934943,
+      0.81
+    ],
+    "leak": [
+      true,
+      false,
+      false
+    ]
+  },
+  "facts": {
+    "sameBuilder": true,
+    "cupboard": true,
+    "bed": true,
+    "nearSouth": false,
+    "high": false,
+    "low": true,
+    "locked": [
+      "37,22"
+    ],
+    "reward": [
+      [
+        "w6",
+        109,
+        35,
+        false
+      ],
+      [
+        "armor",
+        111,
+        39,
+        false
+      ],
+      [
+        "health",
+        109,
+        43,
+        false
+      ],
+      [
+        "slugs",
+        111,
+        43,
+        false
+      ]
+    ],
+    "allEntitiesClear": [
+      [
+        81,
+        33,
+        false
+      ]
+    ]
+  },
+  "ballistic": [
+    {
+      "part": "air",
+      "x": 91.5575,
+      "y": 5.2,
+      "solid": false,
+      "hitscanHitZ": 29.962322292200504,
+      "hitscanStopsAtMachine": false,
+      "projectilePassed": true,
+      "projectileEndZ": 31.408312917650292,
+      "travel": 40
+    },
+    {
+      "part": "spokeGap",
+      "x": 85.07464855736563,
+      "y": 5.493355501956944,
+      "solid": false,
+      "hitscanHitZ": 29.95000000000001,
+      "hitscanStopsAtMachine": false,
+      "projectilePassed": true,
+      "projectileEndZ": 31.383333333333297,
+      "travel": 16
+    },
+    {
+      "part": "hub",
+      "x": 83.995,
+      "y": 4.0375,
+      "solid": true,
+      "hitscanHitZ": 33.150000000000006,
+      "hitscanStopsAtMachine": true,
+      "projectilePassed": false,
+      "projectileEndZ": 33.16000028817385,
+      "travel": 7
+    },
+    {
+      "part": "piston",
+      "x": 91.5575,
+      "y": 3.075,
+      "solid": true,
+      "hitscanHitZ": 33.35000000000001,
+      "hitscanStopsAtMachine": true,
+      "projectilePassed": false,
+      "projectileEndZ": 33.351666878386396,
+      "travel": 6
+    },
+    {
+      "part": "spoke",
+      "x": 85.54959698497193,
+      "y": 4.969371484871268,
+      "solid": true,
+      "hitscanHitZ": 32.650000000000006,
+      "hitscanStopsAtMachine": true,
+      "projectilePassed": false,
+      "projectileEndZ": 32.77666714303472,
+      "travel": 9
+    },
+    {
+      "part": "plinth",
+      "x": 86.72,
+      "y": 1.45,
+      "solid": true,
+      "hitscanHitZ": 33.35000000000001,
+      "hitscanStopsAtMachine": true,
+      "projectilePassed": false,
+      "projectileEndZ": 33.351666878386396,
+      "travel": 6
+    }
+  ],
+  "metrics": {
+    "uniqueGeometries": 30,
+    "materials": 8,
+    "art": [
+      "sewerWorks_brick",
+      "sewerWorks_foundryAtlas"
+    ],
+    "meshes": 32,
+    "tri": 12188,
+    "lights": 0
+  },
+  "manualPickup": {
+    "x": 108.98864274934512,
+    "z": 35.43188168866345,
+    "hp": 100,
+    "busy": false,
+    "key": false,
+    "level": 5,
+    "machine": true,
+    "audio": 0,
+    "primed": false,
+    "door": true,
+    "secrets": 1,
+    "all": 1,
+    "total": 2,
+    "hasReward": true,
+    "shrine": 3,
+    "exit": [
+      null,
+      null
+    ],
+    "marks": [
+      [
+        69,
+        77
+      ],
+      [
+        75,
+        35
+      ],
+      [
+        53,
+        45
+      ]
+    ],
+    "enemies": 34,
+    "angle": 0.54,
+    "idler": 0.54,
+    "valve": 0,
+    "needle": 2.15,
+    "rodAngle": -0.11139477501287207,
+    "pin": [
+      1.2417001670546355,
+      1.7467852759934943,
+      0.91
+    ],
+    "cross": [
+      3.4479406407004287,
+      1.5,
+      0.69
+    ],
+    "coupler": [
+      -1.7682998329453645,
+      2.5167852759934943,
+      0.81
+    ],
+    "leak": [
+      true,
+      false,
+      false
+    ]
+  },
+  "start": {
+    "x": 104,
+    "z": 36.58,
+    "hp": 100,
+    "busy": false,
+    "key": false,
+    "level": 5,
+    "machine": true,
+    "audio": 1,
+    "primed": true,
+    "door": false,
+    "secrets": 0,
+    "all": 1,
+    "total": 2,
+    "hasReward": true,
+    "shrine": 3,
+    "exit": [
+      null,
+      null
+    ],
+    "marks": [
+      [
+        69,
+        77
+      ],
+      [
+        75,
+        35
+      ],
+      [
+        53,
+        45
+      ]
+    ],
+    "enemies": 35,
+    "angle": 0.7479648826666657,
+    "idler": 0.7479648826666657,
+    "valve": -2.2814470249844265,
+    "needle": 1.4520155895983857,
+    "rodAngle": -0.14759437189547014,
+    "pin": [
+      1.1818757924256977,
+      1.826471172854185,
+      0.91
+    ],
+    "cross": [
+      3.3777393066941084,
+      1.5,
+      0.69
+    ],
+    "coupler": [
+      -1.8281242075743023,
+      2.596471172854185,
+      0.81
+    ],
+    "leak": [
+      true,
+      true,
+      true
+    ]
+  },
+  "steady": {
+    "x": 104,
+    "z": 36.58,
+    "hp": 100,
+    "busy": false,
+    "key": false,
+    "level": 5,
+    "machine": true,
+    "audio": 2,
+    "primed": true,
+    "door": false,
+    "secrets": 0,
+    "all": 1,
+    "total": 2,
+    "hasReward": true,
+    "shrine": 3,
+    "exit": [
+      null,
+      null
+    ],
+    "marks": [
+      [
+        69,
+        77
+      ],
+      [
+        75,
+        35
+      ],
+      [
+        53,
+        45
+      ]
+    ],
+    "enemies": 35,
+    "angle": 0.29294383189732304,
+    "idler": 0.29294383189732304,
+    "valve": -4.775220833456485,
+    "needle": -1.899588342860679,
+    "rodAngle": -0.06247780442894574,
+    "pin": [
+      1.2895510060685096,
+      1.638610507615478,
+      0.91
+    ],
+    "cross": [
+      3.5052195569078672,
+      1.5,
+      0.69
+    ],
+    "coupler": [
+      -1.7204489939314904,
+      2.408610507615478,
+      0.81
+    ],
+    "leak": [
+      true,
+      true,
+      true
+    ]
+  },
+  "sealedRise": {
+    "x": 69,
+    "z": 77,
+    "hp": 100,
+    "busy": false,
+    "key": false,
+    "level": 5,
+    "machine": true,
+    "audio": 2,
+    "primed": true,
+    "door": false,
+    "secrets": 0,
+    "all": 1,
+    "total": 2,
+    "hasReward": true,
+    "shrine": 3,
+    "exit": [
+      null,
+      null
+    ],
+    "marks": [
+      [
+        69,
+        77
+      ],
+      [
+        75,
+        35
+      ],
+      [
+        53,
+        45
+      ]
+    ],
+    "enemies": 34,
+    "angle": 0.54,
+    "idler": 0.54,
+    "valve": -4.775220833456485,
+    "needle": -1.881492320621328,
+    "rodAngle": -0.11139477501287207,
+    "pin": [
+      1.2417001670546355,
+      1.7467852759934943,
+      0.91
+    ],
+    "cross": [
+      3.4479406407004287,
+      1.5,
+      0.69
+    ],
+    "coupler": [
+      -1.7682998329453645,
+      2.5167852759934943,
+      0.81
+    ],
+    "leak": [
+      true,
+      true,
+      true
+    ]
+  },
+  "openRise": {
+    "x": 75,
+    "z": 35,
+    "hp": 100,
+    "busy": false,
+    "key": false,
+    "level": 5,
+    "machine": true,
+    "audio": 2,
+    "primed": true,
+    "door": true,
+    "secrets": 1,
+    "all": 2,
+    "total": 2,
+    "hasReward": true,
+    "shrine": 3,
+    "exit": [
+      null,
+      null
+    ],
+    "marks": [
+      [
+        69,
+        77
+      ],
+      [
+        75,
+        35
+      ],
+      [
+        53,
+        45
+      ]
+    ],
+    "enemies": 34,
+    "angle": 0.5907600000000001,
+    "idler": 0.5907600000000001,
+    "valve": -4.775220833456485,
+    "needle": -1.8791148827602608,
+    "rodAngle": -0.12072381357570348,
+    "pin": [
+      1.228648450298143,
+      1.7673563410037043,
+      0.91
+    ],
+    "cross": [
+      3.4324906830646156,
+      1.5,
+      0.69
+    ],
+    "coupler": [
+      -1.781351549701857,
+      2.5373563410037043,
+      0.81
+    ],
+    "leak": [
+      true,
+      true,
+      true
+    ]
+  },
+  "routes": [
+    [
+      [
+        81,
+        49,
+        104,
+        37
+      ],
+      35
+    ],
+    [
+      [
+        91,
+        49,
+        104,
+        37
+      ],
+      25
+    ],
+    [
+      [
+        104,
+        37,
+        94,
+        31
+      ],
+      16
+    ],
+    [
+      [
+        81,
+        35,
+        104,
+        39
+      ],
+      27
+    ],
+    [
+      [
+        87,
+        35,
+        93,
+        31
+      ],
+      12
+    ]
+  ],
+  "perf": {
+    "native": {
+      "medianMicroseconds": 0.3125,
+      "p90Microseconds": 0.6041666679084301
+    },
+    "running": {
+      "medianMicroseconds": 1.9166666672875483,
+      "p90Microseconds": 2.4583333327124515
+    },
+    "distant": {
+      "medianMicroseconds": 0.12499999875823657,
+      "p90Microseconds": 0.14583333395421505
+    },
+    "samples": 11,
+    "iterations": 4800
+  },
+  "cycles": [
+    {
+      "tracked": 40,
+      "disposed": 40,
+      "absent": true,
+      "renewed": true,
+      "freshState": {
+        "x": 11,
+        "z": 79,
+        "hp": 100,
+        "busy": false,
+        "key": false,
+        "level": 5,
+        "machine": true,
+        "audio": 2,
+        "primed": false,
+        "door": false,
+        "secrets": 0,
+        "all": 2,
+        "total": 2,
+        "hasReward": true,
+        "shrine": 3,
+        "exit": [
+          null,
+          null
+        ],
+        "marks": [
+          [
+            69,
+            77
+          ],
+          [
+            75,
+            35
+          ],
+          [
+            53,
+            45
+          ]
+        ],
+        "enemies": 34,
+        "angle": 0.54,
+        "idler": 0.54,
+        "valve": 0,
+        "needle": 2.15,
+        "rodAngle": -0.11139477501287207,
+        "pin": [
+          1.2417001670546355,
+          1.7467852759934943,
+          0.91
+        ],
+        "cross": [
+          3.4479406407004287,
+          1.5,
+          0.69
+        ],
+        "coupler": [
+          -1.7682998329453645,
+          2.5167852759934943,
+          0.81
+        ],
+        "leak": [
+          true,
+          false,
+          false
+        ]
+      }
+    },
+    {
+      "tracked": 40,
+      "disposed": 40,
+      "absent": true,
+      "renewed": true,
+      "freshState": {
+        "x": 11,
+        "z": 79,
+        "hp": 100,
+        "busy": false,
+        "key": false,
+        "level": 5,
+        "machine": true,
+        "audio": 2,
+        "primed": false,
+        "door": false,
+        "secrets": 0,
+        "all": 2,
+        "total": 2,
+        "hasReward": true,
+        "shrine": 3,
+        "exit": [
+          null,
+          null
+        ],
+        "marks": [
+          [
+            69,
+            77
+          ],
+          [
+            75,
+            35
+          ],
+          [
+            53,
+            45
+          ]
+        ],
+        "enemies": 34,
+        "angle": 0.54,
+        "idler": 0.54,
+        "valve": 0,
+        "needle": 2.15,
+        "rodAngle": -0.11139477501287207,
+        "pin": [
+          1.2417001670546355,
+          1.7467852759934943,
+          0.91
+        ],
+        "cross": [
+          3.4479406407004287,
+          1.5,
+          0.69
+        ],
+        "coupler": [
+          -1.7682998329453645,
+          2.5167852759934943,
+          0.81
+        ],
+        "leak": [
+          true,
+          false,
+          false
+        ]
+      }
+    },
+    {
+      "tracked": 40,
+      "disposed": 40,
+      "absent": true,
+      "renewed": true,
+      "freshState": {
+        "x": 11,
+        "z": 79,
+        "hp": 100,
+        "busy": false,
+        "key": false,
+        "level": 5,
+        "machine": true,
+        "audio": 2,
+        "primed": false,
+        "door": false,
+        "secrets": 0,
+        "all": 2,
+        "total": 2,
+        "hasReward": true,
+        "shrine": 3,
+        "exit": [
+          null,
+          null
+        ],
+        "marks": [
+          [
+            69,
+            77
+          ],
+          [
+            75,
+            35
+          ],
+          [
+            53,
+            45
+          ]
+        ],
+        "enemies": 34,
+        "angle": 0.54,
+        "idler": 0.54,
+        "valve": 0,
+        "needle": 2.15,
+        "rodAngle": -0.11139477501287207,
+        "pin": [
+          1.2417001670546355,
+          1.7467852759934943,
+          0.91
+        ],
+        "cross": [
+          3.4479406407004287,
+          1.5,
+          0.69
+        ],
+        "coupler": [
+          -1.7682998329453645,
+          2.5167852759934943,
+          0.81
+        ],
+        "leak": [
+          true,
+          false,
+          false
+        ]
+      }
+    }
+  ],
+  "errors": [],
+  "network": []
+}

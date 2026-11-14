@@ -31,6 +31,8 @@ Tommy Gun doldurulurken destek eli tamburu çıkarıp yenisini yerine oturtuyor 
 
 Cathedral Guardian üç taş fırlatmadan önce kalkanının arkasına geçip kılıcını kaldırıyor. Koyu taş zırh, oyma kalkan ve mavi siperlik karanlık odalarda da seçiliyor. [Önce ve sonra](docs/guardian-nov14/README.md).
 
+The Sewers'ta müfettiş dolabının yanındaki kırmızı vanayı **E** ile çevirince pompa çalışıyor. Çarklar hızlanıyor, manometre yükseliyor ve duvarın arkasından su sesi geliyor. Suda, kuru taşta ve demir ızgarada yürüyüş ve iniş sesleri de farklı. [Pompa, dolap ve ses örnekleri](docs/sewer-works-nov14.md).
+
 ## 13 Kasım sürümü
 
 **Nöbet çanı.** Prologue'daki harap şapelde bir duvar çanı var. Yaklaşıp yüzünü çana dön ve **E** ile çal: taş kapak iner, bir kez alınabilen altı fişek açığa çıkar. Bu isteğe bağlı keşif bölümün sır sayısına ve sonuç notuna katılır. [Çanın sesini dinle](docs/vigil-nov13/toll.wav).

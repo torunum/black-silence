@@ -1,0 +1,164 @@
+{
+  "inputSHA256": "42a45b1ac9aed60bf0407052865b59083fc5631385142b7a8e5776c725c1ef69",
+  "candidateSHA256": "42a45b1ac9aed60bf0407052865b59083fc5631385142b7a8e5776c725c1ef69",
+  "moduleSHA256": "e9eeb63ef11893420d6835ecee6266d49d9c2ace0102d5c1ad4e90c798a8c067",
+  "integrated": true,
+  "audio": {
+    "sampleRate": 48000,
+    "samples": 216224,
+    "seconds": 4.504666666666667,
+    "peakBeforePCM": 1.5658615827560425,
+    "fixedGain": 0.5619909254374382,
+    "scope": "Dry taps of the native footfall and landing voices before their shared room bus."
+  },
+  "waterCells": 359,
+  "grates": 65,
+  "records": [
+    {
+      "tag": "open water",
+      "expected": "water",
+      "steps": [
+        "water",
+        "water"
+      ],
+      "landings": [
+        [
+          "water",
+          7.266666666666661
+        ]
+      ],
+      "room": "sewer",
+      "origin": {
+        "x": 26.25,
+        "z": 77.35,
+        "floor": 0,
+        "solid": false,
+        "room": "sewer"
+      }
+    },
+    {
+      "tag": "dry brick towpath",
+      "expected": "stone",
+      "steps": [
+        "stone"
+      ],
+      "landings": [
+        [
+          "stone",
+          7.266666666666661
+        ]
+      ],
+      "room": "sewer",
+      "origin": {
+        "x": 34.15,
+        "z": 74.83,
+        "floor": 0,
+        "solid": false,
+        "room": "sewer"
+      }
+    },
+    {
+      "tag": "inspector's valve",
+      "expected": "stone",
+      "steps": [
+        "stone"
+      ],
+      "landings": [
+        [
+          "stone",
+          7.266666666666661
+        ]
+      ],
+      "room": "sewer",
+      "origin": {
+        "x": 103.4,
+        "z": 36.92,
+        "floor": 1.2,
+        "solid": false,
+        "room": "sewer"
+      }
+    },
+    {
+      "tag": "floor grating",
+      "expected": "metal",
+      "steps": [
+        "metal"
+      ],
+      "landings": [
+        [
+          "metal",
+          7.266666666666661
+        ]
+      ],
+      "room": "sewer",
+      "origin": {
+        "x": 101.27520148060285,
+        "z": 49,
+        "floor": 1.2,
+        "solid": false,
+        "room": "sewer"
+      }
+    }
+  ],
+  "otherLevels": [
+    {
+      "level": 1,
+      "expected": {
+        "wanted": "hall",
+        "surface": "marble"
+      },
+      "e": [
+        {
+          "name": "landing",
+          "lane": "level1",
+          "ground": "marble",
+          "explicit": false,
+          "impact": 7.266666666666661,
+          "px": 7,
+          "pz": 11,
+          "room": "hall"
+        }
+      ]
+    },
+    {
+      "level": 6,
+      "expected": {
+        "wanted": "factory",
+        "surface": "metal"
+      },
+      "e": [
+        {
+          "name": "landing",
+          "lane": "level6",
+          "ground": "metal",
+          "explicit": false,
+          "impact": 7.266666666666661,
+          "px": 11,
+          "pz": 77,
+          "room": "factory"
+        }
+      ]
+    },
+    {
+      "level": 0,
+      "expected": {
+        "wanted": "graveyard",
+        "surface": "dirt"
+      },
+      "e": [
+        {
+          "name": "landing",
+          "lane": "level0",
+          "ground": "dirt",
+          "explicit": false,
+          "impact": 7.266666666666661,
+          "px": 19,
+          "pz": 9,
+          "room": "graveyard"
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "network": []
+}

@@ -1,7 +1,7 @@
 {
   "passed": true,
-  "bytes": 18473861,
-  "sha256": "41e096b5c04dafd3e7159d25bf75433b55089fbc1354dfaa14753aa98d060b96",
+  "bytes": 18539503,
+  "sha256": "42a45b1ac9aed60bf0407052865b59083fc5631385142b7a8e5776c725c1ef69",
   "engineSha256": "6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899",
   "villageSha256": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627",
   "moduleHashes": {
@@ -19,6 +19,7 @@
     "vigil-secret.js": "eee4d953810436e04f8758300541cd6a19ecd2272e39f8b781ffa212aa417e72",
     "monastery-nov14.js": "ca3ded666bb32ea82108e8d644c29edb6dc9fa5d5f1edb19c6dfb74050ff4609",
     "prologue-stained-glass.js": "61abbab4a1c33a2b27bfadf1bc8a78b2728bfb47ef8e59752f408ac337acaf58",
+    "sewer-works.js": "ff135f4bcc8e1fcb6a9f0db61ab2cb0177678082bea3126ace58cec6afff7ece",
     "render-warmup.js": "9a021fc24844f648460f0ee504653f74e200c1945dd33d4c8c06e71753325f15",
     "display-settings.js": "55681d7f89f77607da0a0649367513f22697e4762f1bba953081da4f4b982289",
     "chapter-records.js": "ad072e5d6a6e9eb7f6031b10660516948737a41ba74bd054d092fd5720914822",
@@ -29,9 +30,9 @@
   "idempotentBuilds": 2,
   "invalidInputsRefusedWithoutWrite": 8,
   "file": "THE-BLACK-SILENCE.html",
-  "verifiedAt": "2026-11-14T11:32:15.622Z",
-  "previousRelease": "5c42e12751aba2b89d6e986e4626a83cf6c3105bbdf213ce5ae0794fa3a8f3ed",
-  "baselineCommit": "f855b23",
+  "verifiedAt": "2026-11-14T11:41:05.631Z",
+  "previousRelease": "41e096b5c04dafd3e7159d25bf75433b55089fbc1354dfaa14753aa98d060b96",
+  "baselineCommit": "1b9f099",
   "verificationReports": [
     {
       "file": "docs/factory-nov14/verification.json",
@@ -68,6 +69,14 @@
     {
       "file": "docs/guardian-nov14/verification.json",
       "sha256": "65f95f566516ad30ad1283783bf19221be5257417c8bf89ec082b09b19285840"
+    },
+    {
+      "file": "docs/sewer-works-nov14/verification.json",
+      "sha256": "eebe75a35a20316bbd165a013a23a711ad4fd3eb2d16137a35686e633c33dc27"
+    },
+    {
+      "file": "docs/sewer-works-nov14/footing.json",
+      "sha256": "bada7a0d211a6a604c9f496c65d05f2ee6e9fe611db5b0ef86dde43a56032d0d"
     }
   ]
 }
