@@ -1,0 +1,68 @@
+{
+  "actors": [
+    {
+      "spawn": {
+        "key": "t",
+        "x": 29,
+        "z": 37,
+        "size": [
+          1.298,
+          1.7109999999999999
+        ],
+        "hp": 114
+      },
+      "atlas": [
+        79,
+        104
+      ],
+      "baselineColor": [
+        ""
+      ],
+      "newColor": [
+        "srgb"
+      ],
+      "sameCombatTicks": 100,
+      "releaseTick": 32,
+      "sampledTextures": 15,
+      "cacheAndVersionsStable": true,
+      "actions": [
+        "walk",
+        "atk"
+      ],
+      "hurtPose": "pain1:0"
+    },
+    {
+      "spawn": {
+        "key": "g",
+        "x": 19,
+        "z": 37,
+        "size": [
+          1.4749999999999999,
+          0.944
+        ],
+        "hp": 53
+      },
+      "atlas": [
+        91,
+        58
+      ],
+      "baselineColor": [
+        ""
+      ],
+      "newColor": [
+        "srgb"
+      ],
+      "sameCombatTicks": 100,
+      "releaseTick": 22,
+      "sampledTextures": 15,
+      "cacheAndVersionsStable": true,
+      "actions": [
+        "walk",
+        "atk",
+        "idle"
+      ],
+      "hurtPose": "pain1:0"
+    }
+  ],
+  "browserErrors": []
+}

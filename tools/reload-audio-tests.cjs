@@ -124,11 +124,14 @@ const output = path.resolve(process.env.QA_OUTPUT_DIR || path.join(root, ".dream
         [3, ["release", "lift", "align", "seat", "charge", "lock"]],
         [5, ["unseal", "hinge", "lift", "seat", "shut", "catch"]],
         [7, ["unlock", "pluck", "turn", "nest", "close"]],
+        [9, ["unpin", "draw", "bed", "keeper", "stroke", "catch"]],
       ]) {
         setup(index);
         const duration = q.weapons[index].reload;
         a.start();
-        advance(duration + .04);
+        // Sample at 200 Hz so even the Stake Gun's 0.8 s cycle resolves each
+        // contact inside the same normalized tolerance as the longer reloads.
+        advance(duration + .04, .005);
         const played = a.history.filter(e => e.type === "play");
         assert(played.map(e => e.event).join() === sequence.join(), `weapon ${index}: each contact plays once, in order`);
         assert(played.every(e => Math.abs(e.phase - e.target) < .011), `weapon ${index}: recorded hits meet their animation windows`);
@@ -306,7 +309,7 @@ const output = path.resolve(process.env.QA_OUTPUT_DIR || path.join(root, ".dream
       advance(0.5);
       assert(a.active() === 0, "suspended context does not queue stale foley");
       dispatchEvent(new KeyboardEvent("keydown", { code: "KeyR" }));
-      await wait(80);
+      for(let attempt=0;attempt<40 && ctx.state!=="running";attempt++)await wait(25);
       assert(
         ctx.state === "running",
         "user key gesture resumes the existing AudioContext",

@@ -533,7 +533,7 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
     const t=state.wstate==='reload'?Math.max(0,Math.min(1,state.wtime/weapons[index].reload)):-1;
     const show=t<0?0:ease(t,0,.14)*(1-ease(t,.84,1));
     const ready=state.wstate==='equip'?ease(state.wtime,0,state.equipT||.25):state.wstate==='unequip'?1-ease(state.wtime,0,state.unequipT||.2):1;
-    const offset=MR()*((index===5?.12:index===7?.066:index===9?.052:0)*ready+show*(index===4?.10:index===9?.018:index===5?-.113:index===7?-.17:0));
+    const offset=MR()*((index===5?.12:index===7?.066:index===9?.052:0)*ready+show*(index===4?.10:index===9?-.062:index===5?-.113:index===7?-.17:0));
     const sideways=MR()*show*(index===4?-.22:index===7?-.060:0);
     if(!offset&&!sideways)return nativeMechanismPresentation(dt,now,state,weapons);
     const ctx=ER();ctx.save();ctx.translate(sideways,-offset);
@@ -2561,77 +2561,261 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       m.pop();
     }finally{arsenalIndex=previous;}
   };
+  // Closed, independently articulated surfaces for the hardwood launcher.
+  // Coordinates follow the lower right panel of the approved four-weapon sheet.
   const r79Stake=r79Rig(9,[1465,790],.000598);
+  const stakePoint=(x,y,d=0)=>r79Stake.point(x+836,y+471,d);
+  const stakeUv=([x,y])=>[(x+836)/1672,(y+471)/941];
+  function stakeFace(points,uv,light=1) {
+    return {points:points.map(p=>stakePoint(...p)),uv:uv.map(stakeUv),light};
+  }
+  function stakePlate(front,depth,thickness,mat,source=front) {
+    const a=front.map(p=>stakePoint(...p,depth)), b=front.map(p=>stakePoint(...p,depth+thickness));
+    const faces=r79Triangles(front).map(tri=>({
+      points:tri.map(i=>a[i]),uv:tri.map(i=>stakeUv(source[i])),light:1
+    }));
+    const walls=a.map((p,i)=>{
+      const j=(i+1)%a.length,edge=a[j].map((v,k)=>v-p[k]);
+      const normal=normalize(cross(edge,b[j].map((v,k)=>v-p[k])));
+      return {points:[p,a[j],b[j],b[i]],normal};
+    });
+    return m=>{
+      const part=m.part(),inv=m.inverse();
+      for(const wall of walls)m.face(wall.points,wall.normal,mat,part,{},inv);
+      for(const f of faces)paintedSurface(m,'relicSource',f.points,f.uv,f.light);
+    };
+  }
+  const stakeReceiver=(()=>{
+    // A single sectioned timber continues from the nose, behind the cross
+    // escutcheon, through the palm and into the heel. The UVs crossing the
+    // illustrated hand sample adjacent bare walnut of the same stock.
+    const timber=[
+      [168,119,138,176,125,141],[184,128,153,185,133,151],
+      [215,143,173,207,145,162],[263,163,205,358,211,242],
+      [330,191,240,373,221,253],[401,224,280,390,237,262],
+      [440,247,315,462,277,311],[484,270,351,477,280,324],
+      [536,296,367,528,308,358],[581,320,393,567,325,383],
+      [609,336,404,562,323,373],[645,345,402,547,322,370],
+      [689,350,404,566,333,377],[749,363,434,539,319,355],
+      [805,382,469,564,336,379],[864,414,498,546,325,365],
+      [912,449,526,565,342,378]
+    ];
+    const stock=[];
+    const rows=timber.map(([x,t,b,u,vt,vb])=>{
+      const bevel=Math.min(6,(b-t)*.15);
+      return {v:[stakePoint(x,t,.024),stakePoint(x,t+bevel,.004),
+        stakePoint(x,b-bevel,-.001),stakePoint(x,b,.015),stakePoint(x,b-2,.052)],
+        uv:[stakeUv([u,vt]),stakeUv([u,vt+3]),stakeUv([u,vb-3]),stakeUv([u,vb]),stakeUv([u,vb-1])]};
+    });
+    for(let i=1;i<rows.length;i++){
+      const left=rows[i-1],right=rows[i];
+      for(let j=0;j<4;j++)stock.push({points:[left.v[j],right.v[j],right.v[j+1],left.v[j+1]],
+        uv:[left.uv[j],right.uv[j],right.uv[j+1],left.uv[j+1]],light:[1.17,.96,.70,.48][j]});
+    }
+    // Trough in perspective. Floor and inside lip use *metal-only* texels.
+    // Opening the clamps exposes one continuous empty bed.
+    const railStock=stakePlate([[167,104],[181,99],[506,209],[513,223],[503,242],[495,250],[171,125]],.021,.019,WORN,
+      [[170,106],[175,106],[394,202],[403,208],[404,216],[395,217],[171,114]]);
+    const floor=stakeFace([[172,102,.010],[505,219,.010],[500,230,.003],[168,115,.003]],
+      [[281,157],[344,184],[344,189],[281,164]],.49);
+    const rail=stakePlate([[167,100],[178,99],[251,129],[391,186],[497,231],[497,245],[402,211],[246,150],[167,117]],-.007,.016,WORN,
+      [[169,100],[180,102],[210,116],[302,166],[393,204],[391,208],[296,175],[209,126],[169,114]]);
+    const railBack=stakePlate([[201,48],[211,47],[336,91],[475,144],[556,176],[561,187],[543,185],[335,106],[203,56]],.030,.012,WORN,
+      [[205,49],[212,50],[333,92],[462,141],[540,175],[542,179],[535,177],[332,98],[207,54]]);
+    const railBridges=[
+      stakePlate([[207,56],[218,59],[227,92],[237,108],[234,122],[220,116],[210,96]],.028,.013,WORN,
+        [[466,206],[473,203],[475,224],[476,244],[468,254],[464,245],[465,224]]),
+      stakePlate([[528,169],[540,170],[563,178],[574,194],[566,210],[548,212],[532,200]],.015,.023,WORN,
+        [[557,185],[569,182],[594,190],[609,200],[601,212],[583,207],[563,201]])
+    ];
+    const chamber=[
+      stakePlate([[416,183],[438,170],[461,172],[533,205],[590,226],[643,258],[648,283],[632,305],[590,327],[531,300],[465,270],[419,241]],.005,.040,WORN,
+        [[454,184],[473,182],[495,193],[540,213],[574,230],[617,257],[619,275],[599,291],[570,303],[528,283],[475,263],[448,232]]),
+      stakePlate([[478,188],[495,180],[511,184],[569,207],[596,223],[604,247],[596,277],[580,298],[566,301],[498,273],[482,258],[475,233]],-.011,.027,BRONZE),
+      stakePlate([[556,184],[570,180],[597,187],[630,201],[632,211],[613,222],[602,220],[559,200]],-.017,.016,WORN),
+      stakePlate([[586,236],[609,226],[632,230],[687,252],[697,266],[687,291],[664,309],[655,348],[630,366],[588,352],[580,331],[580,272]],-.020,.034,BRONZE),
+      stakePlate([[644,267],[659,259],[676,263],[686,273],[692,292],[687,316],[676,333],[664,338],[647,333],[638,319],[636,288]],-.031,.019,BRONZE),
+      stakePlate([[573,235],[585,221],[602,217],[610,220],[595,233],[589,249],[585,274],[584,308],[581,333],[569,331],[565,309],[566,259]],-.024,.019,WORN)
+    ];
+    const lugs=[
+      stakePlate([[398,237],[405,228],[426,234],[432,244],[428,301],[417,322],[396,308]],-.016,.018,WORN),
+      stakePlate([[425,248],[440,242],[465,254],[464,292],[447,310],[438,329],[428,320]],-.019,.018,BRONZE),
+      stakePlate([[491,305],[497,300],[505,302],[512,309],[511,322],[505,329],[497,328],[490,321]],-.006,.005,BRONZE),
+      stakePlate([[540,336],[547,331],[554,333],[562,342],[561,355],[554,361],[547,358],[540,352]],-.006,.005,BRONZE)
+    ];
+    return m=>{
+      for(const f of stock)paintedSurface(m,'relicSource',f.points,f.uv,f.light);
+      railStock(m);railBack(m);for(const p of railBridges)p(m);
+      paintedSurface(m,'relicSource',floor.points,floor.uv,floor.light);rail(m);
+      for(const p of chamber)p(m);for(const p of lugs)p(m);
+    };
+  })();
+  // The stave is one solid faceted piece. A ring of changing cross sections
+  // shares its grain all the way to the cut end. The point uses pale, freshly
+  // shaved fibres from the illustration; saddles belong to the receiver.
+  const stakeBolt=(()=>{
+    const slant=[-.35,.94],profile=[
+      [129,42,.55,0],[155,52,7,.20],[180,61,14,.40],[195,67,18,.56],
+      [260,91,19,.68],[356,127,19,.83],[457,165,19,1]
+    ],facets=8,faces=[];
+    const rows=profile.map(([x,y,r])=>Array.from({length:facets},(_,k)=>{
+      const theta=k*2*Math.PI/facets,side=Math.cos(theta);
+      return [x+slant[0]*r*side,y+slant[1]*r*side,-.015+r*.0006*Math.sin(theta)];
+    }));
+    for(let i=1;i<rows.length;i++)for(let k=0;k<facets;k++){
+      const next=(k+1)%facets,near=Math.sin((k+.5)*Math.PI/4);
+      const side0=Math.cos(k*Math.PI/4),side1=Math.cos((k+1)*Math.PI/4);
+      const grain=(at,side)=>{
+        if(i<=3){
+          const tipX=[131,148,166,180][at],tipY=[42,48,55,61][at],radius=[.3,3,5,6][at];
+          return [tipX-.34*radius*side,tipY+.92*radius*side];
+        }
+        // The bare grain between collars (x=283..339) contains no guide pixels.
+        const section=at%2, x=section?337:287,y=section?133:113;
+        return [x-1.7*side,y+6*side];
+      };
+      faces.push(stakeFace([rows[i-1][k],rows[i][k],rows[i][next],rows[i-1][next]],
+        [grain(i-1,side0),grain(i,side0),grain(i,side1),grain(i-1,side1)],
+        (i<=3?1.19:1.07)-.12*Math.max(0,near)-.19*((side0+side1)*.5+.25)));
+    }
+    return m=>{for(const f of faces)paintedSurface(m,'relicSource',f.points,f.uv,f.light);};
+  })();
+  // Upper halves of both forward keepers lift on the far rail for loading.
+  // The curved bands reveal their dark inner steel, including an open throat.
+  const stakeClamps=[[238,84,1],[344,124,1.04],[415,151,1.12]].map(([x,y,s],i)=>{
+    const outer=[[0,15],[1,6],[6,-3],[14,-10],[23,-14],[35,-13],[42,-10],[40,-5],[28,-4],[22,-1],[17,6],[16,15],[16,43],[12,48],[0,43]];
+    const poly=outer.map(([dx,dy])=>[x+s*dx,y+s*dy]);
+    const uv=outer.map(([dx,dy])=>i===1?[344+dx*.83,137+dy*.87]:[238+dx*.87,84+dy*.92]);
+    const band=stakePlate(poly,-.034,.018,i===1?BRONZE:WORN,uv);
+    const foot=stakePlate([[x-3,y+38],[x+15,y+44],[x+15,y+65],[x-4,y+58]],-.020,.018,WORN,
+      [[236,128],[251,134],[253,152],[235,145]]);
+    return (m,open)=>{
+      foot(m);m.push();
+      const h=stakePoint(x+39*s,y-16*s,.010);
+      m.translate(...h);m.pitch(-.71*open);m.roll(-.28*open);m.translate(...h.map(v=>-v));
+      band(m);m.pop();
+    };
+  });
+  // The return link stays pinned to the copper piston while the large lever
+  // sweeps over it. The pin is visible in the hole between lever and receiver.
+  const leverLink=stakePlate([[662,297],[676,295],[716,316],[750,321],[754,337],[746,345],[714,338],[663,318]],-.034,.019,WORN,
+    [[653,290],[666,283],[682,291],[688,302],[684,315],[678,322],[669,314],[654,305]]);
+  const leverBlade=stakePlate([[645,161],[656,151],[673,146],[696,145],[709,152],[709,169],[700,180],[702,193],[727,248],[755,302],[778,320],[777,344],[760,351],[735,346],[720,330],[704,289],[684,239],[657,191],[645,182]],-.039,.022,WORN,
+    [[648,164],[657,156],[672,151],[696,150],[703,154],[702,166],[696,176],[699,192],[723,249],[753,307],[769,322],[768,339],[759,344],[739,341],[724,328],[709,289],[688,238],[660,193],[649,180]]);
+  const leverPin=stakePlate([[654,301],[661,293],[670,291],[676,296],[677,305],[671,314],[663,316],[656,310]],-.047,.013,BRONZE,
+    [[658,302],[661,295],[671,293],[676,299],[675,308],[671,314],[664,315],[658,311]]);
+  const stakeLeftOutline=[
+    [3,469],[5,442],[63,406],[115,367],[157,339],[176,325],[186,313],[201,304],[216,296],[232,289],
+    [237,279],[234,269],[230,259],[229,246],[234,235],[239,229],[244,219],[247,204],[246,188],
+    [244,178],[246,168],[249,162],[257,159],[268,161],[274,167],[281,184],[285,195],[295,204],
+    [305,213],[313,224],[319,239],[326,247],[336,239],[343,240],[352,247],[361,254],[370,263],
+    [378,268],[390,271],[396,278],[392,294],[378,309],[370,321],[361,335],[353,345],[345,350],
+    [345,364],[342,380],[339,393],[333,402],[326,416],[322,431],[316,446],[306,469]
+  ];
+  // When crossing to the high handle the same glove bends at its wrist and
+  // the forearm continues toward the player's left elbow. Rotating the whole
+  // artwork would swing the former arm across the firing wrist.
+  const stakeLeft=(()=>{
+    const uv=stakeLeftOutline.map(stakeUv);
+    const vertex=([x,y])=>{
+      const bent=ease(y,222,450),rest=stakePoint(x,y,-.045);
+      const curved=stakePoint(x-116*bent,166+(y-166)*.89+67*bent,-.045);
+      return {rest,delta:curved.map((v,i)=>v-rest[i])};
+    };
+    const outline=stakeLeftOutline.map(vertex),sleeve=[[9,460],[309,460],[150,840],[-400,840]].map(vertex);
+    const faces=r79Triangles(stakeLeftOutline).map(ids=>({ids,uv:ids.map(i=>uv[i])}));
+    return (m,amount)=>{
+      const first=gloveTriangles.length;
+      const point=v=>amount?v.rest.map((p,i)=>p+v.delta[i]*amount):v.rest;
+      paintedSurface(m,'right',sleeve.map(point),[[.59,.85],[.90,.91],[2.12,2.02],[1.79,2.10]],.86);
+      const points=outline.map(point);
+      for(const f of faces)paintedSurface(m,'relicSource',f.ids.map(i=>points[i]),f.uv,.98);
+      for(let i=first;i<gloveTriangles.length;i++)gloveTriangles[i].sleeve=true;
+    };
+  })();
+  const stakeRight=relicGlove(r79Stake.point,'relicSource',471,[[
+    [585,411],[591,389],[600,382],[611,377],[629,377],[649,381],[668,378],[689,372],[708,370],
+    [732,369],[751,373],[774,378],[803,389],[822,402],[835,419],[835,469],[591,469],
+    [582,464],[587,454],[594,445],[578,441],[569,429],[573,418]
+  ]],-.047,[[601,462],[827,454],[1010,746],[790,794]]);
+  // Two curled loading fingertips use the knuckles from the same brown glove.
+  // Their bases are under the far edge, tips sit across the stave's near edge.
+  const stakeDigits=[0,1].flatMap(k=>{
+    const digit=[[0,0],[3,-10],[10,-16],[17,-15],[21,-10],[23,1],[22,12],[17,21],[12,24],[6,21],[4,13]];
+    const uv=[[341,261],[345,251],[351,247],[356,249],[360,252],[366,263],[366,270],[362,279],[357,281],[350,278],[347,272]];
+    return r79Triangles(digit).map(ids=>{
+      const points=ids.map(i=>{const [x,y]=digit[i];return stakePoint(275+23*k+x,168+10*k+y,-.080+.0008*Math.max(0,y));});
+      return {points,uv:ids.map(i=>stakeUv(uv[i])),light:k?.87:.99};
+    });
+  });
+  const stakeBow=(()=>{
+    const frontTab=stakePlate([[489,329],[505,332],[506,363],[502,383],[493,383],[488,357]],-.031,.018,WORN,
+      [[489,334],[499,338],[500,363],[498,379],[493,375],[490,356]]);
+    const backTab=stakePlate([[568,361],[586,367],[599,379],[599,415],[590,429],[580,422],[578,393]],-.033,.019,WORN,
+      [[568,367],[579,372],[586,379],[585,407],[580,416],[576,409],[576,387]]);
+    const blade=stakePlate([[521,353],[531,358],[532,387],[527,398],[522,399],[524,376]],-.027,.009,BRONZE,
+      [[519,356],[527,358],[527,382],[523,391],[520,386],[522,370]]);
+    const path=[[496,352],[496,374],[502,388],[545,441],[552,448],[582,429],[592,407],[590,380]];
+    const inner=[[500,354],[502,373],[508,385],[549,433],[554,438],[577,422],[584,404],[583,377]];
+    const segments=path.slice(1).map((q,i)=>{
+      const p=path[i],r=inner[i+1],s=inner[i];
+      return stakePlate([p,q,r,s],-.032,.016,WORN,[[496,376],[542,433],[546,430],[499,374]]);
+    });
+    return m=>{frontTab(m);backTab(m);blade(m);for(const p of segments)p(m);};
+  })();
   arsenalModels[9].draw=function(m,pose){
-    const previous=arsenalIndex;arsenalIndex=9;
+    const index=arsenalIndex;arsenalIndex=9;
     try{
-      const a=r79Stake,t=pose.reload,inspect=t<0?0:Qe(t,0,.98,.14),pump=t<0?0:Qe(t,...Br.pump),seat=t<0?1:K0(t,...Br.lay);
-      m.translate(0,-.010*inspect,0);m.roll(-.24*inspect);m.pitch(-.04*inspect);
-      // Walnut receiver beneath two exposed metal guide rails.
-      // A continuous tapered fore-stock, not a silhouette filled with a tiny
-      // stretched wood patch. This complete clean rear-stock panel is ~150px
-      // along its grain; the illustrated support glove is outside its UV bounds.
-      const timber=[[1032,613],[1324,748],[1336,762],[1329,791],[1318,796],[1044,663],[1033,650]];
-      const woodUV=[[1272,746],[1405,809],[1410,819],[1401,844],[1396,846],[1273,783],[1271,769]];
-      a.hull(m,timber,.018,.046,O.WOOD,woodUV);
-      // Chamfered top and lower arrises connect the textured side to the stock's
-      // depth. Both follow the same grain direction and have actual sloped faces.
-      paintedSurface(m,'relicSource',[
-        a.point(1032,613,.018),a.point(1324,748,.018),a.point(1324,748,.031),a.point(1032,613,.031)
-      ],[[1272/1672,746/941],[1405/1672,809/941],[1405/1672,815/941],[1272/1672,752/941]],1.06);
-      paintedSurface(m,'relicSource',[
-        a.point(1044,663,.018),a.point(1318,796,.018),a.point(1315,791,.029),a.point(1047,658,.029)
-      ],[[1273/1672,778/941],[1401/1672,840/941],[1401/1672,846/941],[1273/1672,784/941]],.70);
-      a.hull(m,[[1292,731],[1396,779],[1461,820],[1462,883],[1412,921],[1379,896],[1380,844],[1300,802]],.010,.040,O.WOOD);
-      a.hull(m,[[1004,572],[1031,573],[1231,646],[1236,671],[1026,603],[1004,599]],-.008,.030,WORN,[[1004,572],[1031,573],[1231,646],[1236,666],[1026,598],[1004,594]]);
-      a.hull(m,[[1100,606],[1219,645],[1338,693],[1354,722],[1324,726],[1101,638]],-.012,.031,WORN,[[1100,606],[1219,645],[1338,693],[1354,714],[1324,718],[1101,630]]);
-      // Pressure chamber is not the wooden stake: separate copper hull and cap.
-      a.hull(m,[[1279,650],[1329,666],[1410,705],[1422,752],[1388,776],[1295,734],[1271,694]],-.015,.038,BRONZE);
-      a.hull(m,[[1398,685],[1452,695],[1486,731],[1481,793],[1449,822],[1419,806],[1418,740]],-.025,.045,BRONZE,[[1398,705],[1452,719],[1486,748],[1481,793],[1449,822],[1419,806],[1418,752]]);
-      a.hull(m,[[1461,737],[1493,752],[1514,775],[1514,817],[1490,839],[1469,824],[1478,793],[1485,761]],-.030,.032,BRONZE);
-      // Bands stay attached to the receiver while the wooden bolt is laid in.
-      for(const poly of [
-        [[1075,546],[1090,542],[1125,554],[1122,603],[1106,615],[1070,599]],
-        [[1187,596],[1205,592],[1234,607],[1235,654],[1217,666],[1185,650]],
-        [[1253,624],[1278,621],[1307,641],[1307,687],[1288,700],[1252,675]]
-      ])a.hull(m,poly,-.031,.023);
-      const loaded=t<0?!pose.empty:seat>=1,off=1-seat;
-      if(loaded||(t>=0&&t>Br.lay[0]-.12)||(t<0&&pose.action>0&&pose.action<.2)){
-        m.push();
-        if(t>=0){m.translate(-.060*off,-.120*off,-.040*off);m.roll(.28*off);}
-        else if(pose.empty)m.translate(...a.u.map(v=>v*(-.8*pose.action)));
-        // Actual sharpened wood tip plus shaft; no permanent painted bolt on rails.
-        a.hull(m,[[966,513],[1017,520],[1069,540],[1075,568],[1027,550]],-.022,.022,O.WOOD);
-        a.hull(m,[[1017,521],[1068,529],[1187,573],[1237,600],[1236,627],[1202,628],[1066,577]],-.022,.026,O.WOOD,[[1110,568],[1128,576],[1165,591],[1180,598],[1178,620],[1165,615],[1120,591]]);
-        a.hull(m,[[1234,600],[1261,609],[1280,625],[1280,646],[1240,637]],-.022,.026,O.WOOD,[[1130,577],[1144,583],[1160,590],[1158,611],[1130,600]]);
+      const t=pose.reload,a=r79Stake,P=stakePoint;
+      const inspect=t<0?0:Qe(t,.01,.97,.16),open=t<0?0:ease(t,.045,.20)*(1-ease(t,.54,.64));
+      const pick=t<0?0:ease(t,.015,.15),bring=t<0?0:ease(t,.15,.45);
+      const settle=t<0?1:ease(t,.43,.55),leverReach=t<0?0:ease(t,.60,.70)*(1-ease(t,.86,.99));
+      const pull=t<0?0:ease(t,.69,.79)*(1-ease(t,.80,.89));
+      m.translate(0,-.025*inspect,0);
+      m.roll(-.145*inspect);m.pitch(-.035*inspect);
+      stakeReceiver(m);
+      const hold=P(257,166,-.045),seat=P(312,106,-.045);
+      const carry=a.u.map((v,i)=>v*(-.096*(1-bring)-.012*(1-settle))+
+        a.v[i]*(.250*(1-bring)-.040*Math.sin(Math.PI*bring)-.012*(1-settle))+a.w[i]*(-.049*(1-settle)));
+      const orient=.16*(1-bring)-.065*Math.sin(Math.PI*bring);
+      function boltTransform() {
+        m.translate(...carry);m.translate(...seat);m.roll(orient);m.translate(...seat.map(v=>-v));
+      }
+      if(t<0?!pose.empty:t>.13){
+        m.push();if(t>=0)boltTransform();stakeBolt(m);m.pop();
+      }
+      for(const band of stakeClamps)band(m,open);
+      const pivot=P(670,309,-.037);
+      const leverTransform=()=>{m.translate(...pivot);m.roll(-.61*pull);m.pitch(-.14*pull);m.translate(...pivot.map(v=>-v));};
+      m.push();leverTransform();leverLink(m);leverBlade(m);m.pop();leverPin(m);
+      stakeBow(m);
+      stakeRight(m);
+      const taking=t>=0&&t<.60;
+      m.push();
+      if(taking){
+        const grip=pick*(1-ease(t,.54,.60));
+        const at=hold.map((v,i)=>v+(seat[i]-v)*grip+carry[i]*grip);
+        m.translate(...at.map((v,i)=>v-hold[i]));m.translate(...hold);m.roll(orient*grip);m.translate(...hold.map(v=>-v));
+      }else if(leverReach){
+        const handle=P(666,168,-.058);
+        // Transform only the *contact point*. Forearm orientation follows the
+        // wrist, not the sweep of the lever's entire rigid body.
+        const local=new Xf(Te.raster,1,0,0);
+        local.translate(...pivot);local.roll(-.61*pull);local.pitch(-.14*pull);
+        local.translate(...pivot.map(v=>-v));
+        const contact=local.toCam(...handle);
+        m.translate(...contact.map((v,i)=>(v-hold[i])*leverReach));
+        m.translate(...hold);m.roll(.18*leverReach);m.translate(...hold.map(n=>-n));
+      }
+      stakeLeft(m,leverReach);
+      if(t>.13 && t<.60){
+        const curl=Qe(t,.13,.60,.045);m.push();m.translate(...hold);m.pitch(-.27*(1-curl));m.translate(...hold.map(v=>-v));
+        for(const f of stakeDigits)paintedSurface(m,'relicSource',f.points,f.uv,f.light);
         m.pop();
       }
-      // Cocking handle shares its hinge with the gripping hand at pump time.
-      m.push();a.pivot(m,1506,799,-.40*pump);
-      a.hull(m,[[1504,626],[1521,619],[1544,626],[1547,650],[1535,666],[1549,735],[1556,794],[1537,809],[1518,779],[1490,672],[1490,648]],-.039,.025);
       m.pop();
-      // One continuous support-hand trajectory: reach for the wooden bolt,
-      // seat it with the shared transform, then reach/cock/return from the lever.
-      if(t>=0&&t<.52){
-        const reach=Qe(t,.015,.52,.10);
-        m.push();m.translate(-.060*off*reach,-.120*off*reach,-.040*off*reach);m.roll(.28*off*reach);
-        a.support(m,1119+16*reach,668-78*reach,-.060-.011*reach,.174);m.pop();
-      }else{
-        const reach=t<0?0:Qe(t,.52,.99,.10);
-        m.push();a.pivot(m,1506,799,-.40*pump*reach);
-        a.support(m,1119+404*reach,668+86*reach,-.060-.010*reach,.174-.010*reach);m.pop();
-      }
-      referenceTriggerGuard(m,a.point,a.w,[[1378,807],[1435,824],[1449,857],[1427,889],[1397,879],[1381,848]],[[1386,817],[1428,831],[1438,855],[1424,878],[1403,871],[1389,847]],[[1405,820],[1413,841],[1409,855]],-.034);
-      const stakeGrasp=[
-        [[1419,841],[1427,836],[1437,837],[1447,843],[1447,855],[1438,868],[1427,872],[1419,866],[1416,854]],
-        [[1440,850],[1470,845],[1505,845],[1540,848],[1570,853],[1602,865],[1635,882],[1655,895],[1671,911],[1671,940],[1446,940],[1435,931],[1431,919],[1428,908],[1421,898],[1420,885],[1428,873],[1437,860]]
-      ];
-      const sleeveStart=gloveTriangles.length;
-      paintedSurface(m,'right',[[1560,909],[1655,910],[2220,1450],[1960,1530]].map(p=>a.point(...p,-.064)),[[.60,.88],[.88,.88],[2.0,2.0],[1.72,2.0]],.92);
-      for(let i=sleeveStart;i<gloveTriangles.length;i++)gloveTriangles[i].sleeve=true;
-      for(const poly of stakeGrasp)for(const ids of r79Triangles(poly))paintedSurface(m,'relicSource',ids.map(i=>a.point(...poly[i],-.066)),ids.map(i=>[poly[i][0]/1672,poly[i][1]/941]),.97);
-      m.anchor('muzzle',...a.point(969,515));
-    }finally{arsenalIndex=previous;}
+      m.anchor('muzzle',...P(129,42,-.015));
+    }finally{arsenalIndex=index;}
   };
 
   Ltt = function (mesh) {

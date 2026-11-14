@@ -61,13 +61,20 @@
     Gk();
     const size=We.W*We.H, count=Math.ceil(size/8);
     if(!record(map) || map.v!==1 || !size || size>65536 || map.w!==We.W || map.h!==We.H ||
-        typeof map.data!=="string" || map.data.length!==4*Math.ceil(count/3) ||
-        map.layout!==topology() || map.check!==mapDigest(map.data,[T.level,We.W,We.H,map.layout].join("/"))) return;
+        typeof map.data!=="string" || map.data.length!==4*Math.ceil(count/3)) return;
+    const layout=topology();
+    // The sally port rebuilt three cells in the shipped 58×44 dungeon. Keep
+    // a signed old chart everywhere the floor plan is still identical.
+    const oldDungeon=T.level===1 && We.W===58 && We.H===44 &&
+      map.layout==="7a18b2bb" && layout==="269c7657";
+    if((map.layout!==layout && !oldDungeon) ||
+        map.check!==mapDigest(map.data,[T.level,We.W,We.H,map.layout].join("/"))) return;
     try {
       const bytes=atob(map.data);
       if(bytes.length!==count || btoa(bytes)!==map.data ||
           (size%8 && bytes.charCodeAt(count-1)>>(size%8))) return;
       for(let i=0;i<size;i++) We.seen[i]=(bytes.charCodeAt(i>>3)>>(i%8))&1;
+      if(oldDungeon) for(let z=20;z<=22;z++) We.seen[z*We.W+17]=0;
     } catch { /* An old or damaged overlay must not invalidate the shrine. */ }
   }
   function inventory(value) {

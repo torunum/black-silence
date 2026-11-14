@@ -50,6 +50,14 @@
       nest: { at: ya.press[1] - .028, clip: "glassSeat", rate: .91, gain: .56 },
       close: { at: ya.claws[1], clip: "close", rate: .63, gain: .35 },
     },
+    9: {
+      unpin: { at: .10, clip: "latch", rate: .86, gain: .24 },
+      draw: { at: Br.lay[0] + .024, clip: "staveSlide", rate: .89, gain: .34 },
+      bed: { at: .50, clip: "staveBed", rate: .94, gain: .44 },
+      keeper: { at: .625, clip: "latch", rate: 1.08, gain: .30 },
+      stroke: { at: .72, clip: "hinge", rate: .79, gain: .34 },
+      catch: { at: .883, clip: "close", rate: .86, gain: .38 },
+    },
   };
   const owned = () => (T.cur < 2 || !!weaponCues[T.cur]) && St.wstate === "reload";
   const parameters = (index, event) => weaponCues[index]?.[event] || ({
@@ -145,6 +153,21 @@
     }
     glassContact("glassLift", "eject", [[804, .080, .09], [1743, .052, .045]]);
     glassContact("glassSeat", "seat", [[474, .079, .065], [1266, .064, .055]]);
+    // Soften the metal ring in two existing recordings for wood sliding into
+    // the bed. The metal keepers and lever use the unfiltered recordings.
+    function woodenContact(name, recording, cutoff, decay) {
+      const source=buffers.get(recording),input=source.getChannelData(0);
+      const rate=source.sampleRate,buffer=next.createBuffer(1,input.length,rate);
+      const output=buffer.getChannelData(0),blend=1-Math.exp(-2*Math.PI*cutoff/rate);
+      let low=0;
+      for(let i=0;i<input.length;i++){
+        low+=blend*(input[i]-low);
+        output[i]=(.14*input[i]+.86*low)*Math.exp(-i/(rate*decay));
+      }
+      buffers.set(name,buffer);
+    }
+    woodenContact("staveSlide","slide",1760,.19);
+    woodenContact("staveBed","seat",1280,.11);
     return next;
   }
   function begin() {
