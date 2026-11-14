@@ -1770,6 +1770,115 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
   };
 
 
+  // Cross sections of the oiled walnut stock, from the nose to the heel.
+  // The wrist and comb continue behind the operating hand and out of frame.
+  const sniperStockData=[
+    // x, upper/lower contour, and the matching clean strip in the source art.
+    // Where the illustrated hand covers the wood, borrow adjacent walnut.
+    [228,650,672,432,753,787],[246,655,688,448,761,795],
+    [302,673,714,464,769,803],[372,696,756,373,710,759],
+    [430,715,815,431,730,805],[489,738,853,489,748,845],
+    [546,759,889,542,765,879],[576,771,869,576,780,863],
+    [610,790,858,610,795,854],[646,810,878,641,813,875],
+    [683,822,923,678,828,911],[704,831,944,702,839,930],
+    [739,862,969,721,858,936],[772,876,984,739,879,937],
+    [828,907,1003,772,900,936],[891,930,1024,792,918,937],
+    [924,940,1043,799,923,936],[943,945,1052,804,928,937],
+    [947,954,1051,806,930,936],[948,962,1048,807,931,935],
+  ];
+  const sniperShape=(()=>{
+    const a=firearmArt[4],p=a.point;
+    const faces=[],walls=[];
+    const uv=([x,y])=>[x/1672,y/941];
+    function wall(a,b,c,d) {
+      const ab=b.map((v,k)=>v-a[k]),ac=c.map((v,k)=>v-a[k]);
+      const n=[ab[1]*ac[2]-ab[2]*ac[1],ab[2]*ac[0]-ab[0]*ac[2],ab[0]*ac[1]-ab[1]*ac[0]];
+      const len=Math.hypot(...n)||1;
+      walls.push({points:[a,b,c,d],normal:n.map(v=>v/len)});
+    }
+    const rows=sniperStockData.map(([x,top,bottom,u,vt,vb])=>{
+      // Roll the near cheek into the upper and lower edges rather than
+      // extruding a square endplate (or a cap between every pair of slices).
+      const crown=Math.min(9,(bottom-top)*.22),heel=Math.min(7,(bottom-top)*.18);
+      const points=[p(x,top,.023),p(x,top+crown,.008),p(x,bottom-heel,.008),p(x,bottom,.018)];
+      const source=[[u,vt],[u,vt+Math.min(5,(vb-vt)*.22)],[u,vb-Math.min(4,(vb-vt)*.15)],[u,vb]];
+      return {points,source,farTop:p(x,top,.043),farBottom:p(x,bottom,.043)};
+    });
+    for(let i=1;i<rows.length;i++){
+      const left=rows[i-1],right=rows[i];
+      for(let j=0;j<3;j++){
+        let tex=[left.source[j],right.source[j],right.source[j+1],left.source[j+1]];
+        if(i===3){
+          const y=[0,3,29,34],start=432+(i-1)*16,top=753+(i-1)*8;
+          tex=[[start,top+y[j]],[start+16,top+8+y[j]],[start+16,top+8+y[j+1]],[start,top+y[j+1]]];
+        } else if(i>=17) {
+          // The recoil pad wraps the heel. Use charcoal leather across its
+          // dark exterior and a narrow felt seam where it meets the walnut.
+          const near=205+(i-17)*5,far=near+5,y=[836,840,856,860];
+          tex=[[near,y[j]],[far,y[j]],[far,y[j+1]],[near,y[j+1]]];
+        }
+        const light=(i>=17?.57:1)*[1.04,.97,.75][j];
+        faces.push({points:[left.points[j],right.points[j],right.points[j+1],left.points[j+1]],uv:tex.map(uv),light});
+      }
+      wall(left.points[0],left.farTop,right.farTop,right.points[0]);
+      wall(left.points[3],right.points[3],right.farBottom,left.farBottom);
+    }
+    for(const i of [0,rows.length-1]) {
+      const r=rows[i];
+      wall(r.points[0],r.points[3],r.farBottom,r.farTop);
+    }
+    return {faces,walls};
+  })();
+  const sniperPalmFolds=[
+    [[502,344],[507,337],[514,334],[523,336],[529,342],[530,350],[524,359],[517,364],[508,361],[503,355]],
+    [[540,339],[554,342],[576,350],[597,358],[617,368],[638,381],[659,398],[681,417],[702,440],[718,462],[723,470],[530,470],[520,461],[512,456],[507,448],[505,438],[509,428],[502,419],[502,406],[508,396],[504,386],[507,376],[515,365],[526,350]],
+  ];
+  const sniperPalmFaces=sniperPalmFolds.flatMap(poly=>r79Triangles(poly).map(ids=>{
+    const points=ids.map(i=>poly[i]);return {points,uv:points.map(([u,v])=>[u/1672,v/941])};
+  }));
+  const sniperWristSections=[
+    [[563,452],[682,432],[.60,.84],[.86,.83]],
+    [[590,482],[727,469],[.64,.91],[.92,.91]],
+    [[641,540],[782,508],[.71,1.01],[1.00,1.01]],
+    [[707,616],[853,568],[.83,1.13],[1.13,1.12]],
+    [[1042,1107],[1250,991],[1.71,2.0],[2.10,2.0]],
+  ];
+  const sniperWoodGrain={tex:(x,y,z)=>steel(x,y,z)*.09};
+  function drawSniperStock(m){
+    const part=m.part(),inv=m.inverse();
+    for(const wall of sniperShape.walls)m.face(wall.points,wall.normal,O.WOOD,part,sniperWoodGrain,inv);
+    for(const face of sniperShape.faces)paintedSurface(m,'firearmSource',face.points,face.uv,face.light);
+  }
+  const sniperSupport=[
+    [277,688],[284,684],[294,687],[303,695],[309,710],[317,719],
+    [327,728],[337,744],[347,759],[354,775],[364,777],[366,787],
+    [362,805],[354,816],[343,823],[341,836],[335,846],[329,859],
+    [316,875],[308,893],[302,904],[293,939],[10,939],[56,918],
+    [122,881],[168,855],[197,837],[201,824],[207,814],[229,800],
+    [239,784],[241,764],[242,746],[248,727],[260,714],[272,705],
+  ];
+  const sniperSupportFaces=r79Triangles(sniperSupport).map(ids=>{
+    const points=ids.map(i=>sniperSupport[i]);return {
+      points:points.map(p=>firearmArt[4].point(...p,-.044)),
+      uv:points.map(([x,y])=>[x/1672,y/941]),
+    };
+  });
+  const sniperSleeve=(()=>{
+    const a=firearmArt[4],rows=[
+      [[10,938],[293,938]], [[-64,978],[276,981]],
+      [[-170,1039],[244,1042]],[[-410,1219],[136,1222]],
+    ];
+    const uv=[[11,938],[292,938],[287,938],[15,938]].map(([x,y])=>[x/1672,y/941]);
+    return rows.slice(1).map(([l1,r1],i)=>{
+      const [l,r]=rows[i];return {points:[l,r,r1,l1].map(p=>a.point(...p,-.044)),uv};
+    });
+  })();
+  function drawSniperSupport(m) {
+    const first=gloveTriangles.length;
+    for(const face of sniperSleeve)paintedSurface(m,'firearmSource',face.points,face.uv,.97);
+    for(const face of sniperSupportFaces)paintedSurface(m,'firearmSource',face.points,face.uv,.97);
+    for(let i=first;i<gloveTriangles.length;i++)gloveTriangles[i].sleeve=true;
+  }
   bet.present={y:.06,pitch:.12,roll:.20};
   bet.draw=function(m,pose){
     const previous=arsenalIndex;arsenalIndex=4;
@@ -1784,12 +1893,9 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       a.hull(m,[[132,607],[152,602],[164,610],[158,629],[135,621]],.045,.012);
       a.hull(m,[[147,593],[156,593],[160,607],[146,607]],.045,.006);
       a.hull(m,[[159,611],[424,693],[421,716],[157,630]],.035,.014);
-      // Actual long walnut lower stock; action and scope stand above it.
-      // The original support hand occludes this forearm in the target. Use
-      // clean walnut from the same stock, not its photographed glove edge.
-      a.hull(m,[[231,657],[421,721],[421,789],[231,700]],.014,.042,null,true,[[430,760],[515,790],[515,825],[430,791]]);
-      a.hull(m,[[421,728],[529,765],[608,818],[597,862],[521,852],[421,789]],.008,.033);
-      a.hull(m,[[609,818],[692,859],[789,939],[721,939],[636,882]],.015,.027);
+      // Share vertices and depth at every section. The lower wrist curves
+      // inside the fingers; lifting the hand now exposes a complete stock.
+      drawSniperStock(m);
       a.hull(m,[[420,696],[472,704],[474,734],[421,721]],.002,.023);
       a.hull(m,[[474,714],[551,739],[550,773],[474,746]],-.002,.024);
       a.hull(m,[[551,736],[600,753],[615,788],[552,778]],-.004,.027);
@@ -1821,25 +1927,38 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       a.hull(m,[[611,777],[638,780],[653,791],[654,815],[628,813],[614,802]],-.018,.024);
       a.hull(m,[[652,790],[754,811],[752,835],[653,811]],-.018,.012);
       a.hull(m,[[753,802],[771,793],[790,799],[800,816],[798,834],[784,849],[763,846],[750,834],[746,817]],-.025,.023);m.pop();
-      m.push();a.move(m,-.012*out,.085*out,.006*out);a.hull(m,[[423,806],[510,850],[509,938],[420,895]],-.006,.025);m.pop();
-      const reach=t<0?0:Qe(t,.12,.79,.11),support=[280,691,-.045],load=[461,868,-.049],contact=support.map((v,i)=>v+(load[i]-v)*reach);
-      m.push();a.move(m,-.012*out,.085*out,.006*out);a.left(m,contact,.173);m.pop();
+      const magazineRig=()=>{
+        const p=a.point(459,817,-.006);
+        a.move(m,-.012*out,.085*out,.006*out);
+        m.translate(...p);m.roll(-.075*out);m.translate(...p.map(v=>-v));
+      };
+      // Two steel shoulders make a fixed magazine well while the feed lips
+      // and the fluted body travel together in the supporting hand.
+      a.hull(m,[[427,806],[513,851],[512,860],[425,815]],.003,.018,null,true,[[432,824],[511,866],[510,871],[431,833]]);
+      m.push();magazineRig();
+      a.hull(m,[[429,798],[442,802],[509,838],[512,848],[509,938],[420,895]],-.006,.025,null,true,
+        [[432,826],[440,830],[504,862],[509,868],[509,938],[420,895]]);
+      a.hull(m,[[428,799],[437,800],[507,838],[514,843],[511,851],[427,808]],-.009,.006,null,true,
+        [[450,717],[455,720],[511,740],[519,746],[516,750],[449,725]]);
+      m.pop();
+      const reach=t<0?0:Qe(t,.12,.79,.11),home=a.point(291,704,-.044),load=a.point(460,862,-.046);
+      m.push();magazineRig();m.translate(...home.map((v,i)=>(load[i]-v)*reach));
+      drawSniperSupport(m);m.pop();
       const boltReach=t<0?Qe(pose.action||0,.05,.95,.10):Math.max(Qe(t,.03,.28,.065),Qe(t,.75,.99,.06)),grip=[586,899,-.050],boltGrip=[790,842,-.055];
       const naturalGrip=[grip[0]+4,grip[1],grip[2]],rightContact=naturalGrip.map((v,i)=>v+(boltGrip[i]-v)*boltReach);
       referenceTriggerGuard(m,a.point,a.basis.w,[[535,850],[582,863],[595,882],[576,905],[548,895],[535,875]],[[543,860],[576,870],[584,880],[574,895],[554,887],[543,873]],[[560,858],[566,875],[561,886]]);
       m.push();if(boltReach>0)boltRig(boltReach);
       // A complete approved curled grasp follows one continuous grip-to-bolt rig.
-      const sniperGrasp=[
-        [[502,344],[507,337],[514,334],[523,336],[529,342],[530,350],[524,359],[517,364],[508,361],[503,355]],
-        [[540,339],[554,342],[576,350],[597,358],[617,368],[638,381],[659,398],[681,417],[702,440],[718,462],[723,470],[530,470],[520,461],[512,456],[507,448],[505,438],[509,428],[502,419],[502,406],[508,396],[504,386],[507,376],[515,365],[526,350]]
-      ];
       const handPoint=([u,v],depth=-.058)=>a.point(rightContact[0]+(u-535)*.76,rightContact[1]+(v-375)*.76,depth);
       // Continue the opaque cuff as a tapered leather forearm. Only sleeve UVs
       // are sampled; the source-board hand keeps its original knuckles/index.
       const sleeveStart=gloveTriangles.length;
-      paintedSurface(m,'right',[[621,466],[716,461],[1230,1000],[1030,1090]].map(p=>handPoint(p,-.056)),[[.60,.88],[.88,.88],[2.0,2.0],[1.72,2.0]],.92);
+      for(let i=1;i<sniperWristSections.length;i++){
+        const [l,r,lu,ru]=sniperWristSections[i-1],[l1,r1,lu1,ru1]=sniperWristSections[i];
+        paintedSurface(m,'right',[l,r,r1,l1].map(p=>handPoint(p,-.056)),[lu,ru,ru1,lu1],.93);
+      }
+      for(const face of sniperPalmFaces)paintedSurface(m,'firearmSource',face.points.map(p=>handPoint(p)),face.uv,.97);
       for(let i=sleeveStart;i<gloveTriangles.length;i++)gloveTriangles[i].sleeve=true;
-      for(const poly of sniperGrasp)for(const ids of r79Triangles(poly))paintedSurface(m,'firearmSource',ids.map(i=>handPoint(poly[i])),ids.map(i=>[poly[i][0]/1672,poly[i][1]/941]),.97);
       m.pop();a.anchor(m,137,614,.044);
     } finally {arsenalIndex=previous;}
   };

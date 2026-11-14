@@ -1,0 +1,77 @@
+{
+  "file": "THE-BLACK-SILENCE.html",
+  "htmlSha256": "8d31559d3d5540c5070ac7325e6c973a41e8402d402e09f5f8012712f1088ec7",
+  "bytes": 18551365,
+  "baselineCommit": "989481e80f58dc93aee5bf54fcfb4f1ba6e206e9",
+  "standalone": {
+    "passed": true,
+    "htmlSha256": "8d31559d3d5540c5070ac7325e6c973a41e8402d402e09f5f8012712f1088ec7",
+    "offline": true,
+    "ordinaryLaunch": true,
+    "isolatedFiles": 1,
+    "networkRequests": 0,
+    "qaBridge": false,
+    "initial": [
+      6,
+      60
+    ],
+    "fired": [
+      5,
+      60
+    ],
+    "reloaded": [
+      6,
+      59
+    ],
+    "masterPeak": 0.2995392680168152,
+    "errors": []
+  },
+  "idempotentBuilds": 2,
+  "invalidInputsRefusedWithoutWrite": 8,
+  "releaseChecks": [
+    {
+      "htmlSha256": "84690be560c8355b90f06bc364271eccf6c5872c129606b9e1bedd82cf31fa6d",
+      "passedSuites": [
+        "heavy-enemy-tests",
+        "prologue-navigation-test",
+        "sewer-works-tests",
+        "sidereal-passage-tests"
+      ]
+    },
+    {
+      "htmlSha256": "8d31559d3d5540c5070ac7325e6c973a41e8402d402e09f5f8012712f1088ec7",
+      "passedSuites": [
+        "hud-updates-tests",
+        "smoke-tests"
+      ]
+    }
+  ],
+  "weaponCandidate": {
+    "tenWeapons": {
+      "htmlSha256": "8d31559d3d5540c5070ac7325e6c973a41e8402d402e09f5f8012712f1088ec7",
+      "passed": true,
+      "count": 10
+    },
+    "foley": {
+      "htmlSha256": "84690be560c8355b90f06bc364271eccf6c5872c129606b9e1bedd82cf31fa6d",
+      "passed": true,
+      "count": 89
+    }
+  },
+  "featureReports": [
+    "docs/factory-nov14/verification.json",
+    "docs/monastery-nov14/verification.json",
+    "docs/prologue-vitray-nov14/verification.json",
+    "docs/prologue-vitray-nov14/navigation-results.json",
+    "docs/campaign-nov14/verification.json",
+    "docs/relics-nov14/verification.json",
+    "docs/pause-settings-nov14/verification.json",
+    "docs/tommy-nov14/verification.json",
+    "docs/guardian-nov14/verification.json",
+    "docs/sewer-works-nov14/verification.json",
+    "docs/sewer-works-nov14/footing.json",
+    "docs/campaign-nov14/automap-verification.json",
+    "docs/hud-nov14/integrated.json",
+    "docs/sniper-nov14/verification.json"
+  ]
+}

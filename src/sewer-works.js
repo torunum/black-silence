@@ -319,8 +319,9 @@
         if(list)list.push(housing);else v.masses.set(k,[housing]);
       }
     }
-    return {frame,wall,fly,idler,coupling,movingRod,slider,needle,valve,leak,drips,floor,
-      primed:false,age:0,phase:.54,shown:false,ready:false,leakAge:0};
+    const leakSource=leak.getWorldPosition(leak.position.clone());
+    return {frame,wall,fly,idler,coupling,movingRod,slider,needle,valve,leak,leakSource,drips,floor,
+      primed:false,age:0,phase:.54,shown:false,ready:false,leakAge:0,nextDrip:1.6};
   }
   function mapHousing(){
     return {x0:originX-4.44*engineScale,x1:originX+4.95*engineScale,z0:originZ-.82,z1:originZ+.93,y1:.46*engineScale};
@@ -437,12 +438,26 @@
       s.drips[i].scale.y=s.primed?1.4:.76;
     }
   }
-  function hiss(s,on){
-    Nt(control.x,s.floor+control.y,control.z,()=>nt("doorGate",()=>gt(on?[
+  function openValve(s){
+    Nt(control.x,s.floor+control.y,control.z,()=>nt("doorGate",()=>gt([
       {noise:"pink",rate:.72,filters:[{type:"lowpass",f:1700,q:.6}],env:{a:.02,d:.44},level:.23},
       {at:.17,tone:"triangle",f:90,to:47,over:.29,env:{a:.01,d:.43},level:.16},
       {at:.53,tone:"sine",f:55,to:40,over:.29,env:{a:.025,d:.51},level:.15}
-    ]:[{tone:"triangle",f:245,to:147,over:.09,env:{a:.003,d:.14},level:.15}])));
+    ])));
+  }
+  function leakSound(s,pressureArrives){
+    const p=s.leakSource;
+    Nt(p.x,p.y,p.z,()=>nt("drip",()=>gt(pressureArrives?[
+      {noise:"pink",rate:1.07,filters:[{type:"bandpass",f:2180,q:.61}],env:{a:.044,h:.08,d:.40},level:.065},
+      {at:.09,noise:"pink",rate:.76,filters:[{type:"bandpass",f:1130,q:.64}],env:{a:.018,d:.22},level:.038}
+    ]:[
+      {noise:"pink",rate:1.06,filters:[{type:"bandpass",f:2090,q:.77}],env:{a:.006,d:.080},level:.028},
+      {at:.042,tone:"sine",f:570,to:860,over:.031,env:{a:.002,d:.068},level:.040}
+    ])));
+  }
+  function nearLeak(s){
+    const dx=C.px-s.leakSource.x,dz=C.pz-s.leakSource.z;
+    return dx*dx+dz*dz<49;
   }
   // These cells are the same ones used by the liquid renderer. The finer mask
   // follows each visible 1.2 m grate and its authored rotation, so a tile can
@@ -504,18 +519,22 @@
   N$=function(...args){
     if(!station || !atValve(station) || Rk())return act.apply(this,args);
     if(station.primed){le(station.ready?"DISCHARGE PRESSURE HOLDS — LISTEN FOR THE LEAK":"THE FLYWHEEL IS PICKING UP",1.8);return;}
-    station.primed=true;hiss(station,true);le("THE CAST IRON SHUDDERS INTO MOTION",2);
+    station.primed=true;openValve(station);le("THE CAST IRON SHUDDERS INTO MOTION",2);
   };
   const tick=F$;
   F$=function(dt){
     tick(dt);
     const s=station;
-    if(!s)return;
+    if(!s || Wk() || T.dead || T.won || Be.inputLock)return;
     if(!s.ready && s.primed){
       s.age=Math.min(3,s.age+dt);
-      if(s.age>=3){s.ready=true;if(Math.abs(C.px-control.x)<6 && Math.abs(C.pz-control.z)<8){
-        hiss(s,false);le("PRESSURE HOLDS. WATER HISSES BEHIND THE WALL.",2.6);
+      if(s.age>=3){s.ready=true;if(nearLeak(s)){
+        leakSound(s,true);le("PRESSURE HOLDS. WATER HISSES BEHIND THE WALL.",2.6);
       }}
+    }
+    if(s.ready && nearLeak(s)){
+      s.nextDrip-=dt;
+      if(s.nextDrip<=0){leakSound(s,false);s.nextDrip=1.65+.44*(1+Math.sin(s.phase));}
     }
     if(C.px>66 && C.px<114 && C.pz>16 && C.pz<59){
       if(s.primed)s.phase=(s.phase+dt*(.1+Math.min(1,s.age/2.6)*2.72))%TAU;

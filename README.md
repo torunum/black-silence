@@ -35,6 +35,8 @@ Holy Cross Launcher'ın menteşeli tepesi, Soul Reaper'ın kemik kıskaçları v
 
 Tommy Gun doldurulurken destek eli tamburu çıkarıp yenisini yerine oturtuyor ve kurma hareketini tamamlıyor. [Oyun içi video ve ses karşılaştırması](docs/tommy-nov14/README.md).
 
+BMG Sniper'ın ceviz kundağı, deri eldivenli tutuşu ve şarjör yuvası referans çizimine göre yeniden modellendi. Doldururken destek eli şarjörü çıkarıp yerine oturtuyor, atış eli de mekanizmayı çalıştırıyor. [Referans ve oyun içi doldurma kareleri](docs/sniper-nov14/README.md).
+
 Cathedral Guardian üç taş fırlatmadan önce kalkanının arkasına geçip kılıcını kaldırıyor. Koyu taş zırh, oyma kalkan ve mavi siperlik karanlık odalarda da seçiliyor. [Önce ve sonra](docs/guardian-nov14/README.md).
 
 The Sewers'ta müfettiş dolabının yanındaki kırmızı vanayı **E** ile çevirince pompa çalışıyor. Çarklar hızlanıyor, manometre yükseliyor ve duvarın arkasından su sesi geliyor. Suda, kuru taşta ve demir ızgarada yürüyüş ve iniş sesleri de farklı. [Pompa, dolap ve ses örnekleri](docs/sewer-works-nov14.md).

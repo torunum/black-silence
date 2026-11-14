@@ -1,7 +1,7 @@
 {
   "passed": true,
-  "bytes": 18544824,
-  "sha256": "52933da3ee9e4a7ea9730653ab49b5e62e1df486d9eff1d32578f06f1fcb684c",
+  "bytes": 18551365,
+  "sha256": "8d31559d3d5540c5070ac7325e6c973a41e8402d402e09f5f8012712f1088ec7",
   "engineSha256": "6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899",
   "villageSha256": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627",
   "moduleHashes": {
@@ -10,7 +10,7 @@
     "heavy-enemies.js": "bcdfecbdf96debde5d97467be959837f027cff8b5d415f1bf4dbfa8a4fc927f0",
     "enemy-animation.js": "767a60e867ff7b2a8917ae8b23fa938da8e8400bcfff883a0ebb13abb2eb02f3",
     "guardian-volley.js": "87fbdc8d921c74c119eadcce7164d2ef45d8e2216c512825c7961e67dcbbdab9",
-    "viewmodels.js": "1b267a90dcabc9736a822d9e546662e47e5497ef97c50951671019db1857cd84",
+    "viewmodels.js": "eb0c0b2662a7cba30b2d6469f0074d8fba178f218eeeec96f6e11ab0d05c3d02",
     "finishers.js": "8c2c7bdf13e17005c3383054560b155986d8e706b5bfda81e9f1a8224ee3c5b0",
     "reload-audio-data.js": "2f48b10a1225d1c007ee282d3c18f82c5022bb0267ed86d65feadf819ec1be30",
     "reload-audio.js": "b583df949bd84a2d906abb492d62635cc8cfa11ef02031d469774de80ceae97b",
@@ -19,7 +19,7 @@
     "vigil-secret.js": "eee4d953810436e04f8758300541cd6a19ecd2272e39f8b781ffa212aa417e72",
     "monastery-nov14.js": "ca3ded666bb32ea82108e8d644c29edb6dc9fa5d5f1edb19c6dfb74050ff4609",
     "prologue-stained-glass.js": "61abbab4a1c33a2b27bfadf1bc8a78b2728bfb47ef8e59752f408ac337acaf58",
-    "sewer-works.js": "ff135f4bcc8e1fcb6a9f0db61ab2cb0177678082bea3126ace58cec6afff7ece",
+    "sewer-works.js": "42552ca5d86158d9ed046c9cfba8d75208c76bbaf223a87efa30919f4c012910",
     "render-warmup.js": "9a021fc24844f648460f0ee504653f74e200c1945dd33d4c8c06e71753325f15",
     "hud-updates.js": "d2047c2d4f92935dbf79b3dc22811341f19809aadaee3188db12339bc945531d",
     "display-settings.js": "55681d7f89f77607da0a0649367513f22697e4762f1bba953081da4f4b982289",
@@ -31,9 +31,9 @@
   "idempotentBuilds": 2,
   "invalidInputsRefusedWithoutWrite": 8,
   "file": "THE-BLACK-SILENCE.html",
-  "verifiedAt": "2026-11-14T11:52:05.305Z",
-  "previousRelease": "42a45b1ac9aed60bf0407052865b59083fc5631385142b7a8e5776c725c1ef69",
-  "baselineCommit": "9a1a976",
+  "verifiedAt": "2026-11-14T12:13:47.898Z",
+  "previousRelease": "52933da3ee9e4a7ea9730653ab49b5e62e1df486d9eff1d32578f06f1fcb684c",
+  "baselineCommit": "74cb2db",
   "verificationReports": [
     {
       "file": "docs/factory-nov14/verification.json",
@@ -73,7 +73,7 @@
     },
     {
       "file": "docs/sewer-works-nov14/verification.json",
-      "sha256": "eebe75a35a20316bbd165a013a23a711ad4fd3eb2d16137a35686e633c33dc27"
+      "sha256": "c32f79b297b37311d0bdc61f1711b24a8c86ef0bf002d29cc78be461836b17f5"
     },
     {
       "file": "docs/sewer-works-nov14/footing.json",
@@ -86,6 +86,14 @@
     {
       "file": "docs/hud-nov14/integrated.json",
       "sha256": "123f675021091146f134335f62d241f521f49fad59aaee85227c573ec33b66d2"
+    },
+    {
+      "file": "docs/sniper-nov14/verification.json",
+      "sha256": "49e650b331ff46ad7fd92b8ce136ffd7422ddd055ed73f7d72ff55c4cd530234"
+    },
+    {
+      "file": "docs/verification-data/nov14-parish-release.json",
+      "sha256": "1fadae3930352a6e9ae22da70840c8f48282b6a16c045b7a0fbf766979ac1a2b"
     }
   ]
 }

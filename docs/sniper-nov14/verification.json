@@ -1,0 +1,240 @@
+{
+  "baselineSHA256": "42a45b1ac9aed60bf0407052865b59083fc5631385142b7a8e5776c725c1ef69",
+  "weaponOnlyCandidateSHA256": "e7f28ae9def5eaf91f90bccc2240167392c524469eef9a60a4511607fb8acded",
+  "viewmodelSHA256": "eb0c0b2662a7cba30b2d6469f0074d8fba178f218eeeec96f6e11ab0d05c3d02",
+  "reference": "assets/weapon-reference/arsenal-target-2-5-v1.png, lower-left panel",
+  "sourceMedia": "Frozen private weapon-only candidate. The release engineer verifies the integrated HTML separately.",
+  "native": {
+    "samples": 39,
+    "phaseSamples": [
+      "idle",
+      "after-fire",
+      0.04,
+      0.12,
+      0.22,
+      0.3,
+      0.4,
+      0.5,
+      0.59,
+      0.67,
+      0.75,
+      0.84,
+      0.94
+    ],
+    "endpoints": [
+      {
+        "width": 1280,
+        "height": 720,
+        "fired": 3,
+        "index": 4,
+        "mag": 4,
+        "size": 4,
+        "ammo": 96,
+        "override": false
+      },
+      {
+        "width": 1024,
+        "height": 768,
+        "fired": 3,
+        "index": 4,
+        "mag": 4,
+        "size": 4,
+        "ammo": 96,
+        "override": false
+      },
+      {
+        "width": 1680,
+        "height": 720,
+        "fired": 3,
+        "index": 4,
+        "mag": 4,
+        "size": 4,
+        "ammo": 96,
+        "override": false
+      }
+    ],
+    "errors": []
+  },
+  "lens": {
+    "poses": 9,
+    "zoom": [
+      {
+        "width": 1024,
+        "height": 768,
+        "scoped": {
+          "zoom": true,
+          "fov": 32.119829285574525,
+          "skipped": true,
+          "state": "reload"
+        },
+        "restored": {
+          "fov": 74.75320576710659,
+          "state": "reload",
+          "finite": true,
+          "visible": true,
+          "index": 4
+        }
+      },
+      {
+        "width": 1280,
+        "height": 720,
+        "scoped": {
+          "zoom": true,
+          "fov": 32.188771841097186,
+          "skipped": true,
+          "state": "reload"
+        },
+        "restored": {
+          "fov": 74.46845599747313,
+          "state": "reload",
+          "finite": true,
+          "visible": true,
+          "index": 4
+        }
+      },
+      {
+        "width": 1680,
+        "height": 720,
+        "scoped": {
+          "zoom": true,
+          "fov": 32.19164739214266,
+          "skipped": true,
+          "state": "reload"
+        },
+        "restored": {
+          "fov": 75.23782857802297,
+          "state": "reload",
+          "finite": true,
+          "visible": true,
+          "index": 4
+        }
+      }
+    ],
+    "resize": {
+      "before": {
+        "hash": 2782569601,
+        "width": 640,
+        "height": 400,
+        "index": 4,
+        "reload": 0.82,
+        "finite": true
+      },
+      "after": {
+        "hash": 2782569601,
+        "width": 640,
+        "height": 400,
+        "index": 4,
+        "reload": 0.82,
+        "finite": true
+      },
+      "passed": true
+    }
+  },
+  "regression": {
+    "totalPoseCases": 594,
+    "otherWeaponsAndActions": 537,
+    "rawAndCanvasMatched": 537
+  },
+  "performance": {
+    "host": "Windows, headless Chrome at 1280×720, shared host and variable load",
+    "units": "Milliseconds. Separate recordings of one real R reload per run.",
+    "order": [
+      0,
+      1,
+      1,
+      0
+    ],
+    "runs": [
+      {
+        "variant": 0,
+        "stages": [
+          {
+            "state": "idle",
+            "elapsedMs": 2189,
+            "frameCount": 77,
+            "meanFrameMs": 24.245454545454564,
+            "meanRasterMs": 0.047435897474105544,
+            "p95RasterMs": 0.29999999701976776
+          },
+          {
+            "state": "reload",
+            "elapsedMs": 3332,
+            "frameCount": 60,
+            "meanFrameMs": 54.98166666666669,
+            "meanRasterMs": 37.02950819667245,
+            "p95RasterMs": 74.79999999701977
+          }
+        ]
+      },
+      {
+        "variant": 1,
+        "stages": [
+          {
+            "state": "idle",
+            "elapsedMs": 1433,
+            "frameCount": 79,
+            "meanFrameMs": 18.148101265822795,
+            "meanRasterMs": 0.02500000074505806,
+            "p95RasterMs": 0.10000000894069672
+          },
+          {
+            "state": "reload",
+            "elapsedMs": 2656,
+            "frameCount": 70,
+            "meanFrameMs": 37.74571428571424,
+            "meanRasterMs": 24.65633802829494,
+            "p95RasterMs": 35.8999999910593
+          }
+        ]
+      },
+      {
+        "variant": 1,
+        "stages": [
+          {
+            "state": "idle",
+            "elapsedMs": 1220,
+            "frameCount": 67,
+            "meanFrameMs": 17.65074626865672,
+            "meanRasterMs": 0.013235293986166225,
+            "p95RasterMs": 0.09999999403953552
+          },
+          {
+            "state": "reload",
+            "elapsedMs": 2440,
+            "frameCount": 93,
+            "meanFrameMs": 26.434408602150533,
+            "meanRasterMs": 19.160638298443022,
+            "p95RasterMs": 26
+          }
+        ]
+      },
+      {
+        "variant": 0,
+        "stages": [
+          {
+            "state": "idle",
+            "elapsedMs": 1239,
+            "frameCount": 68,
+            "meanFrameMs": 17.854411764705862,
+            "meanRasterMs": 0.021739130650741467,
+            "p95RasterMs": 0.10000000894069672
+          },
+          {
+            "state": "reload",
+            "elapsedMs": 2535,
+            "frameCount": 76,
+            "meanFrameMs": 33.153947368421065,
+            "meanRasterMs": 24.576623377861914,
+            "p95RasterMs": 27.799999997019768
+          }
+        ]
+      }
+    ]
+  },
+  "assets": {
+    "magazine-withdrawn.jpg": "2134149d7eea3cf39933bf3ed6746b17a96a890f81db4b8efe2310b0c288b0b2",
+    "reload-wide-and-standard.jpg": "4297d684120139ec71ab153350db05c42a0f3f5b73293507c68159717452e5c8",
+    "rifle-comparison.jpg": "ea6ea35f2d637b7fe08fbe2579daa2dc502dc2aeb4459a60143216124d5c6549",
+    "ultrawide.jpg": "d4ef78625351343d94e68fd9140f1cddd1cd497ec55984e2af36465abd3f3afc"
+  }
+}

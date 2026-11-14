@@ -8,6 +8,8 @@ Kısmi örtüşen iki çark aynı krank fazını kullanır. Sabit boydaki kolun 
 
 Kanalizasyon adımları oyuncunun altındaki zeminden gelir. Sıvı çizicisinin kullandığı su hücreleri ve döndürülmüş demir ızgaraların ayak izleri bölüm açılırken 25 cm aralıklı bir yüzey tablosuna yazılır. Ayak sesi tekrarı, koşma, darbe düzeyi ve odanın yankısı oyunun kendi ses yolundan geçer. Klavyeden yürüme, depar ve zıplamayla kaydedilen örnekte sırayla açık su, kuru çekme yolu, vana önü ve metal ızgara duyulur. WAV, seslerin oda karışımına girmeden önceki gerçek çıkışıdır. Tüm kayıt için tek çıkış kazancı uygulanmıştır. [Oyun içi adım ve iniş kaydı](sewer-works-nov14/water-stone-metal.wav) · [Malzeme ve bölüm geçişi doğrulaması](sewer-works-nov14/footing.json)
 
+Vanayı açan metal ses, el çarkından gelir. Basınç yükseldiğinde ilk su tıslaması yana ve yukarıdaki borunun ağzından, sonraki kısa damlalar da aynı dünya koordinatından duyulur. Yakın mesafede kayıttan dönüş sonrası üç damla, uzaklaşıp tekrar yanaşınca iki damla sayıldı. Duraklatmada, uzaktayken ve sonraki bölümde sızıntı sesi sayısı sıfırdı. [Konumlar ve olay sayıları](sewer-works-nov14/verification.json)
+
 İki mekan ve panel toplam 32 mesh, 30 ayrı buffer geometri, 8 materyal ve 12.188 üçgen kullanır. İki yerel dokunun biri 512 × 128 metal, diğeri 192 × 72 duvar dokusudur. Yeni gerçek zamanlı ışık yoktur. Sabit kamera ve 3 ayrı bölüm boşaltma/dönüş denemesi 40 kaynağın birer kez temizlendiğini denetler. Süreler Chrome'da oyun güncelleme fonksiyonunun 4.800 çağrılık 11 grubundan alınır. Tarayıcı çizimi, giriş gecikmesi ve tüm oyunun FPS'i bu ölçümün kapsamı dışındadır.
 
 ```sh

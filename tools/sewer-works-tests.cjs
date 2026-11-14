@@ -11,7 +11,14 @@ const before="window.__beforeWorksTick=F$;window.__beforeWorksBuild=gV[5].build;
 const probe=`
 const wFind=n=>J.scene.getObjectByName(n),wFloor=()=>ie(86.72,32.45),wKeys=["sewerWorks","worksPressureStand","worksDrainMouth","worksOutfallCollar"];
 const wFrames=n=>{for(let i=0;i<n;i++){F$(1/60);SK(1/60);Wb(1/60)}};
-let wAudio=0;const wEvent=nt;nt=function(kind,fn){if(kind==="doorGate" && Of?.x===105.64)wAudio++;return wEvent.apply(this,arguments);};
+let wAudio=0,wSources=[];const wEvent=nt;
+nt=function(kind,fn){
+ if(Of && ((kind==="doorGate" && Math.abs(Of.x-105.64)<.005) || (kind==="drip" && Math.abs(Of.x-105.59)<.005))){
+   wSources.push({kind,x:Of.x,y:Of.y,z:Of.z});
+   if(kind==="doorGate" || wSources.filter(a=>a.kind==="drip").length===1)wAudio++;
+ }
+ return wEvent.apply(this,arguments);
+};
  function wPose(x,z,tx,tz,y){
  if(v.cine)stt(v.cine.dur+1/60);
  V5(false);C.px=x;C.pz=z;C.pyy=ie(x,z)+Yo;C.vx=C.vz=C.vy=0;C.grounded=true;
@@ -122,7 +129,7 @@ window.__works={
  },
  camera(args){const [x,z,tx,tz,dy]=args;wPose(x,z,tx,tz,ie(x,z)+Yo+dy);T.cur=0;Object.assign(St,{wstate:"idle",wtime:0,wCool:0,pending:-1,kickAnim:0});V5(true);Jt("pause").classList.add("hidden");Jt("subt").style.visibility="hidden";le("",0);
    J.lamp.position.set(x,C.pyy+.4,z);J.lampCore.position.set(x,C.pyy+.2,z);return {solid:fu(x,z),eye:C.pyy};},
- resetAudio(){wAudio=0;},skip:sk
+ resetAudio(){wAudio=0;wSources=[];}, sources(){return wSources.slice();},skip:sk
 };`;
 fs.writeFileSync(file,candidate.replace(m,()=>before+"\n"+m).replace(a,()=>probe+a));
 (async()=>{const b=await chromium.launch({channel:"chrome",headless:true,args:["--autoplay-policy=no-user-gesture-required"]});
@@ -168,13 +175,24 @@ try{
  await run("cupboard");await key();assert((await state()).door);await run("step",140);await run("walk",109,39);await run("walk",109,35.3);assert((await state()).hasReward);
  const openSave=await run("save");assert(openSave.facts.opened.includes("53,19"));await run("rise");const openRise=await state();
  assert(openRise.primed&&openRise.hasReward&&openRise.door&&openRise.secrets===1);
+ const getSources=()=>run("sources"),sourcesBefore=await getSources();
+ assert.deepEqual(sourcesBefore.filter(e=>e.kind==="doorGate").map(e=>[e.x,e.z]),[[105.64,36.58]]);
+ assert(sourcesBefore[1].kind==="drip" && Math.abs(sourcesBefore[1].z-39.32)<.001 && Math.abs(sourcesBefore[1].y-3.63)<.001);
+ await run("aim");await run("step",420);const beside=await getSources();
+ assert(beside.length-sourcesBefore.length>=2&&beside.length-sourcesBefore.length<=5);
+ assert(beside.slice(1).every(e=>e.kind==="drip"&&Math.abs(e.z-39.32)<.001));
+ await run("pause",true);await run("step",480);assert.deepEqual(await getSources(),beside);
+ await run("pose",16,77,20,77,1.7);await run("step",500);assert.deepEqual(await getSources(),beside);
+ await run("aim");await run("step",200);const returned=await getSources();assert(returned.length>beside.length && returned.length<=beside.length+3);
  const routes=[];for(const p of [[81,49,104,37],[91,49,104,37],[104,37,94,31],[81,35,104,39],[87,35,93,31]]){
    const length=await run("route",...p);assert(length>0,"Connected floor across "+p);routes.push([p,length]);}
  const perf=await run("perf"),cycles=[];
  for(let i=0;i<3;i++){const c=await run("cycles");assert(c.absent&&c.renewed&&c.tracked===c.disposed && !c.freshState.primed&&!c.freshState.door);cycles.push(c);}
+ await run("load",1);await run("step",300);const postExit=await getSources();assert.equal(postExit.length,returned.length);
  assert.deepEqual(errors,[]);assert.deepEqual(network,[]);
  const report={sourceSHA256:sha(mod),inputSHA256:sha(raw),candidateSHA256:sha(candidate),integrated:present,fixtureSHA256:sha(fs.readFileSync(file)),
-   targetSHA256:sha(fs.readFileSync(path.join(root,"assets/sewer/works-target-v1.png"))),initial,facts,ballistic,metrics,manualPickup,start,steady,sealedRise,openRise,routes,perf,cycles,errors,network};
+   targetSHA256:sha(fs.readFileSync(path.join(root,"assets/sewer/works-target-v1.png"))),initial,facts,ballistic,metrics,manualPickup,start,steady,sealedRise,openRise,routes,perf,cycles,
+   sound:{opening:sourcesBefore[0],pressure:sourcesBefore[1],near:beside.length-sourcesBefore.length,returning:returned.length-beside.length,paused:0,distant:0,afterLevelExit:0},errors,network};
  fs.writeFileSync(path.join(out,"verification.json"),JSON.stringify(report,null,2)+"\n");console.log("PASS sewer works",JSON.stringify({metrics,perf,routes:routes.length}));
 }finally{await b.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;}).finally(()=>{fs.unlinkSync(file);fs.rmdirSync(tmp);});

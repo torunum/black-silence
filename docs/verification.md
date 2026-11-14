@@ -1,6 +1,18 @@
-# Doğrulama — 13 Kasım 2026
+# Doğrulama — 14 Kasım 2026
 
-**Son sürüm:** 18.002.486 bayt, SHA-256 `31a05e9b68138b7f8c3aaa83a923175db8507b81ba07e2dbf6338ba395f7604c`. [Birleşik doğrulama](verification-data/nov13-vigil-release.json) ve [modül hashleri](build-info.json).
+Teslim edilen tek HTML dosyası 18.551.365 bayt. SHA-256 `8d31559d3d5540c5070ac7325e6c973a41e8402d402e09f5f8012712f1088ec7`. İki bağımsız yeniden derleme aynı dosyayı üretti. Sekiz hasarlı derleme girdisi dosya değişmeden reddedildi. [Son sürümün ölçümleri](verification-data/nov14-parish-release.json) · [Modül ve kanıt hashleri](build-info.json).
+
+Son dosyada Chrome on bir bölümü yükledi. Ayrı bir dizinde tek dosyayı çevrimdışı açıp ana menüden New Game ile oynadık. Silah 6/60 iken ateş 5/60, ardından R 6/59 gösterdi. Ses çıkışı ölçüldü. Haricî ağ isteği ve oyun hatası kaydedilmedi. HUD 27 örnek durumda sınandı ve iki karşılaştırma görüntüsünün pikselleri eşleşti. [HUD ölçümleri](hud-nov14/README.md).
+
+Prologue rota testi 15 durağı ve sonraki bölümü kapsıyor. İlk karşılaşmada düşman yapay zekâsı çalışıyor; sonraki duraklarda yürüyüş, duvarlar, yükseklikler ve çıkış etkileşimi sınanıyor. Yerel kampanya testi gerçek E, Tab, M, sayfa yenileme ve ölüm sonrası shrine dönüşlerini kullanıyor. [Prologue](prologue-vitray-nov14.md) · [Kampanya test senaryoları](campaign-nov14/automap-verification.json).
+
+Fabrika saldırısı, Guardian mermileri, yeni manastır geçidi, kanalizasyon vanası ve ayak sesleri oyun içinde ölçüldü. Cross, Soul, Tommy ve Sniper kanıtlarında aynı kamera ve doldurma evreleri karşılaştırıldı. [Fabrika](factory-nov14/README.md) · [Guardian](guardian-nov14/README.md) · [Manastır](monastery-nov14.md) · [Kanalizasyon](sewer-works-nov14.md) · [Cross ve Soul](relics-nov14/README.md) · [Tommy](tommy-nov14/README.md) · [Sniper](sniper-nov14/README.md).
+
+Yerel dağıtım dosyası `dist/THE-BLACK-SILENCE-2026-11-14-PARISH.zip`. GitHub üzerindeki kaynak arşivi açıkça main dalını kullanır. [Oyunu indir](https://github.com/torunum/black-silence/raw/refs/heads/main/THE-BLACK-SILENCE.html) · [Kaynak arşivini indir](https://github.com/torunum/black-silence/archive/refs/heads/main.zip).
+
+## 13 Kasım 2026
+
+**13 Kasım sürümü:** 18.002.486 bayt, SHA-256 `31a05e9b68138b7f8c3aaa83a923175db8507b81ba07e2dbf6338ba395f7604c`. [Birleşik doğrulama](verification-data/nov13-vigil-release.json) ve [modül hashleri](build-info.json).
 
 Çanın gerçek E etkileşimi yalnız bir keşif saydı; kapak açılınca geçiş mümkün oldu, arka duvar kapalı kaldı. Ödül toplam altı fişek. Alınmış ve alınmamış durumlarda ayrı ölüm/kayıt dönüşleri ödülü çoğaltmadı. Kontrollü bir denemede diğer sonuçlar aynıyken sır keşfi bölüm notunu B'den A'ya çıkardı. [Çan testi ve ses ölçümü](vigil-nov13/verification.json).
 
