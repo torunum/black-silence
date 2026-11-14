@@ -93,7 +93,15 @@
     },
     {
       "file": "docs/verification-data/nov14-parish-release.json",
-      "sha256": "1fadae3930352a6e9ae22da70840c8f48282b6a16c045b7a0fbf766979ac1a2b"
+      "sha256": "5c34ba457a1d5cdacd0083e9bba21c49dd37029a73307b0897331865938d437f"
+    },
+    {
+      "file": "docs/sewer-works-nov14/kick.json",
+      "sha256": "e93c2482992cc4a813778e9af6694b3df44a1070156d187f0f368e1ba6e413a3"
+    },
+    {
+      "file": "docs/nov14-gameplay/verification.json",
+      "sha256": "ce01320ffa90943996f851e54b74ccf10f653fd112aaf97f00629a9467a450fb"
     }
   ]
 }

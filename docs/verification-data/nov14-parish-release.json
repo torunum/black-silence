@@ -46,18 +46,6 @@
       ]
     }
   ],
-  "weaponCandidate": {
-    "tenWeapons": {
-      "htmlSha256": "8d31559d3d5540c5070ac7325e6c973a41e8402d402e09f5f8012712f1088ec7",
-      "passed": true,
-      "count": 10
-    },
-    "foley": {
-      "htmlSha256": "84690be560c8355b90f06bc364271eccf6c5872c129606b9e1bedd82cf31fa6d",
-      "passed": true,
-      "count": 89
-    }
-  },
   "featureReports": [
     "docs/factory-nov14/verification.json",
     "docs/monastery-nov14/verification.json",
@@ -72,6 +60,47 @@
     "docs/sewer-works-nov14/footing.json",
     "docs/campaign-nov14/automap-verification.json",
     "docs/hud-nov14/integrated.json",
-    "docs/sniper-nov14/verification.json"
-  ]
+    "docs/sniper-nov14/verification.json",
+    "docs/sewer-works-nov14/kick.json"
+  ],
+  "finalGameplay": {
+    "chapters": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "ordinaryOffline1080": {
+      "offline": true,
+      "qaAbsent": true,
+      "viewport": "1920x1080"
+    },
+    "headUpDisplayCases": 27,
+    "weapons": 10,
+    "foleyChecks": 89,
+    "campaignChecks": [
+      "New Game and a fresh document restore the Prologue entry inventory",
+      "Real Tab/M, shrine reload and native Rise Again preserve the explored cells and terrain pixels",
+      "Real E, map facts, inventory, clock, achievements and native shrine respawn survive reload",
+      "Native chapter transition, carried weapons, real dial input and a collected seal round-trip",
+      "A second campaign transition resumes the Gothic Dungeon from chapter start",
+      "Sewers pressure, gauge, secret door and single reward restore after actual document reload",
+      "Chapter Select and QA do not replace the campaign slot",
+      "An older tab cannot replace or clear a newer campaign",
+      "Victory in the final chapter clears the campaign slot",
+      "Malformed saves and map-incompatible shrines leave a playable chapter entry",
+      "Damaged automap payloads and older shrine records still restore the shrine and inventory",
+      "Storage denial leaves the native New Game playable"
+    ],
+    "pumpAudioReport": "docs/sewer-works-nov14/verification.json",
+    "pumpDropkickReport": "docs/sewer-works-nov14/kick.json",
+    "kickAngles": 2
+  }
 }

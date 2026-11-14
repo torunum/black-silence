@@ -23,6 +23,8 @@ Gotik piksel FPS oyununun on silah, deri eldiven ve prologue cehennem bölümü 
 
 ## Bu sürüm
 
+Oyun içinden 18 saniyelik seçki. [Sesli oynanış videosu](docs/nov14-gameplay/gameplay.webm) · [Sahneler ve kayıt koşulları](docs/nov14-gameplay/README.md).
+
 **Esc** ile duraklatıp **Settings** ekranından farenin hassasiyetini %25–200 arasında değiştirebilir, dikey ekseni ters çevirebilirsin. **Back** ile duraklatma menüsüne dön ve **Click to Return** ile aynı yerden oyna. [Oyun içi ayarlar](docs/pause-settings-nov14/in-game-settings.png).
 
 Ana menüde **Continue**, son etkinleştirdiğin shrine'dan oyuna dönmeni sağlar. Bölümde henüz shrine etkinleştirmediysen bölüm girişinden başlarsın. Kaldığın yer, envanter ve bölümdeki keşiflerin aynı tarayıcıda ve aynı dosya adresinde saklanır. **Select Chapter** ile ayrı bir bölüm oynarken kampanya kaydın korunur. [Menü görünümü](docs/campaign-nov14/menu-1280.png).

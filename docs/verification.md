@@ -10,6 +10,8 @@ Fabrika saldırısı, Guardian mermileri, yeni manastır geçidi, kanalizasyon v
 
 Yerel dağıtım dosyası `dist/THE-BLACK-SILENCE-2026-11-14-PARISH.zip`. GitHub üzerindeki kaynak arşivi açıkça main dalını kullanır. [Oyunu indir](https://github.com/torunum/black-silence/raw/refs/heads/main/THE-BLACK-SILENCE.html) · [Kaynak arşivini indir](https://github.com/torunum/black-silence/archive/refs/heads/main.zip).
 
+Kanalizasyonda oyuncu, pompa kaidesinin iki tarafından Shift ile koşup sağ fareyle zombiye drop kick attı. Zombi darbe alıp yere indi ve oyuncuyu yeniden takip etti. Çarpma noktasından iki denemede 4,48 ve 2,76 metre ilerledi. [Kaide ve duvar denemeleri](sewer-works-nov14/kick.json). Aynı yapıda on silahın ateş, doldurma, geçiş, tekme, önbellek ve 89 ses kontrolü geçti. [On iki kampanya senaryosu ve bütünleşik sonuçlar](verification-data/nov14-parish-release.json).
+
 ## 13 Kasım 2026
 
 **13 Kasım sürümü:** 18.002.486 bayt, SHA-256 `31a05e9b68138b7f8c3aaa83a923175db8507b81ba07e2dbf6338ba395f7604c`. [Birleşik doğrulama](verification-data/nov13-vigil-release.json) ve [modül hashleri](build-info.json).

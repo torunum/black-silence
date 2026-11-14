@@ -15,4 +15,7 @@ Vanayı açan metal ses, el çarkından gelir. Basınç yükseldiğinde ilk su t
 ```sh
 node tools/sewer-works-tests.cjs THE-BLACK-SILENCE.html .dream-loop/sewer-works
 node tools/sewer-footing-tests.cjs THE-BLACK-SILENCE.html .dream-loop/sewer-footing
+node tools/sewer-wall-kick-tests.cjs THE-BLACK-SILENCE.html .dream-loop/sewer-kick
 ```
+
+Kaideye dik ve çapraz bakışlarda gerçek Shift, W ve sağ fare tıklamasıyla koşarak tekme sınandı. Haritada deneye özel yerleştirilen 200 canlı zombi, tekmenin ve çarpmanın ardından her iki durumda 122 canla yere indi. Oyuncu geri çekilince zombi sersemlemesini tamamlayıp kaidenin dışından takibe döndü. Çarpma noktasından sırasıyla 4,48 ve 2,76 metre uzaklaştı. [Kare bazında konum ve temas örnekleri](sewer-works-nov14/kick.json)
