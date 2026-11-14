@@ -1,0 +1,258 @@
+{
+  "html": "b8831734b95ca3fd6acae18307a75b37266fab4617405d3ab82a10b5d60e3768",
+  "baseline": "989481e80f58dc93aee5bf54fcfb4f1ba6e206e9",
+  "combat": 35,
+  "enemyAnimation": 39,
+  "standalone": "pass",
+  "evidence": "Native simulation in the Factory. Close camera, fixed 60 Hz RAF, deterministic test inputs. Other actors are isolated for close timing captures; the wide view includes them. Only the baseline B is fixture-spawned.",
+  "cases": [
+    {
+      "run": "baseline",
+      "key": "n",
+      "hit": true,
+      "firstDamageFrame": 29,
+      "finalHP": 76,
+      "actorAlreadyPlaced": true
+    },
+    {
+      "run": "baseline",
+      "key": "n",
+      "hit": false,
+      "firstDamageFrame": 0,
+      "finalHP": 100,
+      "actorAlreadyPlaced": true
+    },
+    {
+      "run": "baseline",
+      "key": "B",
+      "hit": true,
+      "firstDamageFrame": 29,
+      "finalHP": 76,
+      "actorAlreadyPlaced": false
+    },
+    {
+      "run": "baseline",
+      "key": "B",
+      "hit": false,
+      "firstDamageFrame": 0,
+      "finalHP": 100,
+      "actorAlreadyPlaced": false
+    },
+    {
+      "run": "candidate",
+      "key": "n",
+      "hit": true,
+      "firstDamageFrame": 29,
+      "finalHP": 76,
+      "actorAlreadyPlaced": true
+    },
+    {
+      "run": "candidate",
+      "key": "n",
+      "hit": false,
+      "firstDamageFrame": 0,
+      "finalHP": 100,
+      "actorAlreadyPlaced": true
+    },
+    {
+      "run": "candidate",
+      "key": "B",
+      "hit": true,
+      "firstDamageFrame": 29,
+      "finalHP": 76,
+      "actorAlreadyPlaced": true
+    },
+    {
+      "run": "candidate",
+      "key": "B",
+      "hit": false,
+      "firstDamageFrame": 0,
+      "finalHP": 100,
+      "actorAlreadyPlaced": true
+    }
+  ],
+  "checks": [
+    "4 distinct poses at frames 3, 19, 29, 40",
+    "raised hands inside atlas borders",
+    "far culling, flight, leg sever and stagger restore correct scale",
+    "same native health and collision dimensions for each species",
+    "key, locked route and exit on actual Foreman death"
+  ],
+  "factory": {
+    "actors": [
+      [
+        "L",
+        48,
+        3
+      ],
+      [
+        "B",
+        38,
+        4
+      ],
+      [
+        "E",
+        44,
+        6
+      ],
+      [
+        "z",
+        41,
+        8
+      ],
+      [
+        "z",
+        49,
+        8
+      ],
+      [
+        "C",
+        25,
+        12
+      ],
+      [
+        "j",
+        50,
+        13
+      ],
+      [
+        "C",
+        38,
+        14
+      ],
+      [
+        "V",
+        21,
+        16
+      ],
+      [
+        "j",
+        28,
+        18
+      ],
+      [
+        "L",
+        33,
+        18
+      ],
+      [
+        "U",
+        44,
+        18
+      ],
+      [
+        "j",
+        15,
+        20
+      ],
+      [
+        "j",
+        25,
+        20
+      ],
+      [
+        "L",
+        37,
+        22
+      ],
+      [
+        "j",
+        49,
+        22
+      ],
+      [
+        "j",
+        33,
+        32
+      ],
+      [
+        "z",
+        43,
+        32
+      ],
+      [
+        "m",
+        40,
+        33
+      ],
+      [
+        "j",
+        16,
+        34
+      ],
+      [
+        "z",
+        26,
+        34
+      ],
+      [
+        "C",
+        37,
+        35
+      ],
+      [
+        "n",
+        51,
+        35
+      ],
+      [
+        "z",
+        21,
+        36
+      ],
+      [
+        "L",
+        54,
+        36
+      ],
+      [
+        "L",
+        18,
+        37
+      ],
+      [
+        "L",
+        25,
+        37
+      ],
+      [
+        "z",
+        13,
+        38
+      ],
+      [
+        "n",
+        22,
+        38
+      ],
+      [
+        "j",
+        42,
+        39
+      ],
+      [
+        "m",
+        20,
+        40
+      ],
+      [
+        "j",
+        24,
+        40
+      ],
+      [
+        "z",
+        32,
+        40
+      ]
+    ],
+    "startsAt": "B",
+    "keyPickup": true,
+    "entranceToKey": true,
+    "entranceToCoal": true,
+    "lockedRoute": false,
+    "throughLockedDoor": true,
+    "bossDeathOpensExit": true,
+    "exitReachable": true
+  }
+}

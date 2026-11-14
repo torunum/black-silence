@@ -45,6 +45,7 @@ if (!village.startsWith(villageBegin) || !village.trimEnd().endsWith(villageEnd)
 const code = [
   "materials.js",
   "combat.js",
+  "heavy-enemies.js",
   "enemy-animation.js",
   "viewmodels.js",
   "finishers.js",

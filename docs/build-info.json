@@ -1,13 +1,14 @@
 {
   "passed": true,
-  "bytes": 18002486,
-  "sha256": "31a05e9b68138b7f8c3aaa83a923175db8507b81ba07e2dbf6338ba395f7604c",
+  "bytes": 18012071,
+  "sha256": "b8831734b95ca3fd6acae18307a75b37266fab4617405d3ab82a10b5d60e3768",
   "engineSha256": "6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899",
   "villageSha256": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627",
   "moduleHashes": {
     "materials.js": "05e43b45ce521b52cf4d7b172177984699670d9de1261de5f88bf11f42b45517",
     "combat.js": "f9e13f3a7ebe5b26e8c129a152ebb03c0e6873719f4a98d0c0e59e949550fdbf",
-    "enemy-animation.js": "8a52d1f3c6d201cbb68d04f9f864c2e0611437ad7cd9f0afd58f4a64511cae7c",
+    "heavy-enemies.js": "bcdfecbdf96debde5d97467be959837f027cff8b5d415f1bf4dbfa8a4fc927f0",
+    "enemy-animation.js": "767a60e867ff7b2a8917ae8b23fa938da8e8400bcfff883a0ebb13abb2eb02f3",
     "viewmodels.js": "f44c0732c4a6b4756c7cd0a7fff0296f52f3a0c22c954ad84473905c0ab1b3f0",
     "finishers.js": "8c2c7bdf13e17005c3383054560b155986d8e706b5bfda81e9f1a8224ee3c5b0",
     "reload-audio-data.js": "2f48b10a1225d1c007ee282d3c18f82c5022bb0267ed86d65feadf819ec1be30",
@@ -15,7 +16,7 @@
     "zombie-audio.js": "7f883bd656b0f7e0784d68e9e47e7612704e1df6b299ffc52e6d3f2cfcba2803",
     "prologue.js": "1b5ab0b99ecc80e41d1e7c183b28a52fe6ce3c51900988e28da61c24d91a8891",
     "vigil-secret.js": "eee4d953810436e04f8758300541cd6a19ecd2272e39f8b781ffa212aa417e72",
-    "render-warmup.js": "84db971283d86b0cbea7d0181eb3d48d40924936c5d577ab05fd31ca4b7e755c",
+    "render-warmup.js": "d0be2c069f155abfa9073b5996d92e7454d801b015b287e5500089be9ade3c59",
     "display-settings.js": "55681d7f89f77607da0a0649367513f22697e4762f1bba953081da4f4b982289",
     "chapter-records.js": "ad072e5d6a6e9eb7f6031b10660516948737a41ba74bd054d092fd5720914822",
     "village-presentation.js": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627"
@@ -23,21 +24,13 @@
   "idempotentBuilds": 2,
   "invalidInputsRefusedWithoutWrite": 8,
   "file": "THE-BLACK-SILENCE.html",
-  "verifiedAt": "2026-11-13T15:13:32.217Z",
-  "previousRelease": "683dd31e70d2ecc4fd8755a2ea37e9abf8f4bf6a2e421a283bff8c29ed5c06b4",
-  "baselineCommit": "4863e4e2add4c1c767c4466618beac30e028c63d",
+  "verifiedAt": "2026-11-14T10:48:52.475Z",
+  "previousRelease": "31a05e9b68138b7f8c3aaa83a923175db8507b81ba07e2dbf6338ba395f7604c",
+  "baselineCommit": "989481e80f58dc93aee5bf54fcfb4f1ba6e206e9",
   "verificationReports": [
     {
-      "file": "docs/verification-data/nov13-vigil-release.json",
-      "sha256": "ac69d405527068d5b09c6ac0d4f4b6adb452cd17710fcc7144ca2d87c4e327b9"
-    },
-    {
-      "file": "docs/nail-cannon-nov13/verification.json",
-      "sha256": "022b8f2bee17da47a7a9bc37b01b221f9c02a8f0b783dee5700855058f717b9a"
-    },
-    {
-      "file": "docs/vigil-nov13/verification.json",
-      "sha256": "17708b297ef6a9dedd20c3efcf9de1cc504bebbb46206cb63f318ac281e056f5"
+      "file": "docs/factory-nov14/verification.json",
+      "sha256": "d5fb18c66aaf50287f99146bccdc958cf8d9d783470ba703faf0cf1da7b44753"
     }
   ]
 }

@@ -24,6 +24,11 @@
         landing: 0,
         landingRotation: 0,
         landingMap: null,
+        slamElapsed: null,
+        slamMap: null,
+        slamBaseMap: null,
+        slamScaleX: 0,
+        slamScaleY: 0,
         visual: null,
         visualApplied: false,
         pose: "idle",
@@ -61,6 +66,45 @@
     Ym(enemy, rig.tex(action, frame, Mk(enemy)));
     stateFor(enemy).pose = action;
     return true;
+  }
+
+  function releaseSlam(enemy, state) {
+    if (state.slamMap && state.slamMap === enemy.sp.material.map) {
+      Ym(enemy, state.slamBaseMap);
+      state.pose = "native";
+    }
+    state.slamMap = state.slamBaseMap = null;
+  }
+
+  function showSlam(enemy, state, dt) {
+    // The native AI starts both the 4 s cooldown and the 0.5 s actor stun
+    // when it queues the hit. Its delayed callback ticks later in this frame.
+    if (state.beforeSlam < 4 && enemy.slamT === 4 && enemy.stun === 0.5)
+      state.slamElapsed = 0;
+    if (state.slamElapsed === null) return;
+    state.slamElapsed += dt;
+    const elapsed = state.slamElapsed;
+    if (elapsed >= .76 || Math.hypot(C.px-enemy.x,C.pz-enemy.z) > 30) {
+      state.slamElapsed = null;
+      releaseSlam(enemy, state);
+      return;
+    }
+    if (enemy.stagger > 0 || enemy.hurt > 0 || enemy.sever?.legs || state.landing ||
+        (elapsed > .55 && (state.anticipation || enemy.atkAnim > 0))) {
+      releaseSlam(enemy, state);
+      return;
+    }
+    const nativeMap = enemy.sp.material.map;
+    const frame = elapsed < .12 ? 0 : elapsed < .48 ? 1 : elapsed < .60 ? 2 : 3;
+    if (rigPose(enemy, "slam", frame)) {
+      if (nativeMap !== state.slamMap) state.slamBaseMap = nativeMap;
+      state.slamMap = enemy.sp.material.map;
+      const frame = wk(enemy).rig.frame;
+      const image = state.slamMap.image;
+      state.slamScaleX = enemy.w * image.width / frame.w;
+      state.slamScaleY = enemy.h * image.height / frame.h;
+      enemy.sp.scale.set(state.slamScaleX, state.slamScaleY, 1);
+    }
   }
 
   // Successful physical travel advances the feet. A blocked enemy cannot keep
@@ -175,9 +219,15 @@
     for (const enemy of v.enemies) {
       const state = stateFor(enemy);
       removeVisual(enemy, state);
+      if (state.slamScaleX) {
+        if (enemy.sp.scale.x === state.slamScaleX && enemy.sp.scale.y === state.slamScaleY)
+          enemy.sp.scale.set(enemy.w, enemy.h, 1);
+        state.slamScaleX = state.slamScaleY = 0;
+      }
       state.beforeX = enemy.x;
       state.beforeZ = enemy.z;
       state.beforeAttack = enemy.atkAnim || 0;
+      if (enemy.slam) state.beforeSlam = enemy.slamT;
       state.beforeFlight = enemy.flung > 0;
       state.beforeRotation = state.beforeFlight ? Math.atan2(
         Math.sin(enemy.sp.material.rotation),
@@ -190,6 +240,10 @@
     for (const enemy of v.enemies) {
       const state = stateFor(enemy);
       if (!ownsPose(enemy)) {
+        if (state.slamElapsed !== null) {
+          state.slamElapsed = null;
+          releaseSlam(enemy, state);
+        }
         state.recoil = state.attack = state.recover = state.moving = 0;
         state.landing = 0;
         state.landingMap = null;
@@ -320,6 +374,7 @@
           }
         }
       }
+      if (enemy.slam) showSlam(enemy, state, seconds);
       // One scratch record for the lifetime of this actor, including handoffs.
       const visual = state.visual || (state.visual = {});
       visual.basex = enemy.sp.position.x;
@@ -359,6 +414,7 @@
             recover: state.recover,
             anticipation: state.anticipation,
             landing: state.landing,
+            slamElapsed: state.slamElapsed,
             pose: state.pose,
           }
         : null;
