@@ -529,13 +529,14 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
   const nativeMechanismPresentation=u0t;
   u0t=function(dt,now,state,weapons){
     const index=state.cur;
-    if((index!==4&&index!==9)||state.kickAnim>0||state.exec||state.dead||state.hidden)return nativeMechanismPresentation(dt,now,state,weapons);
+    if((index!==4&&index!==5&&index!==7&&index!==9)||state.kickAnim>0||state.exec||state.dead||state.hidden)return nativeMechanismPresentation(dt,now,state,weapons);
     const t=state.wstate==='reload'?Math.max(0,Math.min(1,state.wtime/weapons[index].reload)):-1;
     const show=t<0?0:ease(t,0,.14)*(1-ease(t,.84,1));
     const ready=state.wstate==='equip'?ease(state.wtime,0,state.equipT||.25):state.wstate==='unequip'?1-ease(state.wtime,0,state.unequipT||.2):1;
-    const offset=MR()*((index===9?.052*ready:0)+show*(index===1?.075:index===4?.10:.018));
-    if(!offset)return nativeMechanismPresentation(dt,now,state,weapons);
-    const ctx=ER();ctx.save();ctx.translate(index===4?-MR()*.22*show:0,-offset);
+    const offset=MR()*((index===5?.12:index===7?.066:index===9?.052:0)*ready+show*(index===4?.10:index===9?.018:index===5?-.113:index===7?-.17:0));
+    const sideways=MR()*show*(index===4?-.22:index===7?-.060:0);
+    if(!offset&&!sideways)return nativeMechanismPresentation(dt,now,state,weapons);
+    const ctx=ER();ctx.save();ctx.translate(sideways,-offset);
     try{return nativeMechanismPresentation(dt,now,state,weapons);}finally{ctx.restore();}
   };
   const nativePaintedRaster=h0t;
@@ -549,7 +550,8 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
     // extra side pixels on wider viewports; gun scale and native raster stay fixed.
     const scale=MR()/Dk/_r;
     const missingHalfWidth=(bj()/scale-Wr)/2;
-    const bottom=(index===4||index===9)&&pose.kick<0&&pose.exec<0?Math.ceil((index===4?.10:index===9?.07:.075)*Dk*_r)+16:0;
+    const extraBelow=index===4?.10:index===5?.125:index===7?.066:index===9?.07:0;
+    const bottom=extraBelow&&pose.kick<0&&pose.exec<0?Math.ceil(extraBelow*Dk*_r)+16:0;
     const margin=missingHalfWidth>0?Math.min(Wr,Math.ceil(missingHalfWidth/32)*32+32):0;
     if(margin!==sleeveMargin||bottom!==sleeveBottom){sleeveBottom=bottom;sleeveMargin=margin;Te.lastKey='';sleeveSurface=null;}
     const redraw=q0t(index,pose,cy)!==Te.lastKey;
@@ -1797,67 +1799,94 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
     } finally {arsenalIndex=previous;}
   };
 
+  // These cutouts follow the leather seams in the same approved illustrations
+  // as the receivers. Local points belong to the weapon, including the wrists.
+  function relicGlove(point,texture,regionY,outline,depth,tail) {
+    const p=(x,y,d=depth)=>point(x+836,y+regionY,d);
+    const faces=outline.flatMap(poly=>r79Triangles(poly).map(indices=>{
+      const xy=indices.map(i=>poly[i]);
+      return {vertices:xy.map(([x,y])=>p(x,y)),uv:xy.map(([x,y])=>[(x+836)/1672,(y+regionY)/941])};
+    }));
+    const sleeve=tail.map(([x,y])=>p(x,y,depth+.005));
+    return m=>{
+      const first=gloveTriangles.length;
+      paintedSurface(m,'right',sleeve,[[.59,.85],[.90,.91],[2.12,2.02],[1.79,2.10]],.86);
+      for(let i=first;i<gloveTriangles.length;i++)gloveTriangles[i].sleeve=true;
+      for(const face of faces)paintedSurface(m,texture,face.vertices,face.uv,.98);
+    };
+  }
+  const crossGrip=relicGlove(firearmArt[5].point,'firearmSource',470,[
+    [[508,424],[509,409],[519,397],[532,389],[549,390],[564,397],[578,404],[599,408],[618,419],[631,433],[637,447],[635,471],[508,471],[508,454],[515,443]],
+    [[638,441],[648,422],[663,408],[681,392],[705,379],[733,375],[750,374],[766,380],[783,392],[798,407],[819,417],[836,430],[836,471],[637,471]]
+  ],-.045,[[641,462],[830,444],[1080,680],[843,711]]);
+  const crossSupport=relicGlove(firearmArt[5].point,'firearmSource',470,[
+    [[88,471],[122,449],[151,431],[177,416],[185,401],[198,385],[217,370],[227,359],[228,343],[236,326],[238,309],[245,300],[263,290],[263,276],[261,264],[268,260],[284,260],[296,266],[306,281],[309,292],[321,305],[332,319],[340,338],[353,359],[351,384],[339,399],[333,416],[330,439],[315,471]]
+  ],-.027,[[100,461],[320,461],[148,752],[-145,709]]);
+
+  const cross=(x,y)=>[x[1]*y[2]-x[2]*y[1],x[2]*y[0]-x[0]*y[2],x[0]*y[1]-x[1]*y[0]],normalize=v=>{const l=Math.hypot(...v)||1;return v.map(x=>x/l);};
+  const crossEnclosure=(()=>{
+    const a=firearmArt[5],geometry=[],surfaces=[];
+    const toned={tex:(x,y,z)=>steel(x,y,z)*.12},steelEdge={tex:steel},plain={};
+    const metal=(vertices,normal,material,options)=>geometry.push({vertices,normal,material,options});
+    const paint=(vertices,uv,light)=>surfaces.push({vertices,uv,light});
+    // A single enclosed oval-section barrel/chest carries the complete
+    // stationary reliquary surface. The arches are artwork relief on that
+    // shared surface, not individually floating slabs at unrelated depths.
+    const centers=[[1095,678,.024],[1210,738,.044],[1305,800,.057],[1425,815,.048],[1510,822,.034]].map(([u,v,r])=>({p:a.point(u,v,.050),r}));
+    const direction=centers.at(-1).p.map((v,i)=>v-centers[0].p[i]),dl=Math.hypot(...direction);direction.forEach((v,i)=>direction[i]=v/dl);
+
+    let across=normalize(cross(direction,a.basis.w));if(across.reduce((s,x,i)=>s+x*a.basis.v[i],0)<0)across=across.map(x=>-x);
+    const deep=normalize(cross(direction,across)),sides=12;
+    const rings=centers.map(({p,r})=>Array.from({length:sides},(_,j)=>{const angle=j/sides*Math.PI*2;return p.map((v,i)=>v+across[i]*Math.cos(angle)*r+deep[i]*Math.sin(angle)*Math.min(.048,r*1.18));}));
+    // Existing target material samples only: worn ivory inside the second
+    // vault and the narrow dark-brass frame beside its engraved arch.
+    // Surfaces wrap the unchanged enclosure, with normal-driven shading.
+    const boneUV=[[1188,680],[1224,690],[1216,718],[1180,701]],brassUV=[[1242,759],[1251,765],[1253,842],[1242,831]];
+    const uvAt=(quad,u,v)=>quad[0].map((_,i)=>((1-u)*(1-v)*quad[0][i]+u*(1-v)*quad[1][i]+u*v*quad[2][i]+(1-u)*v*quad[3][i])/(i===0?1672:941));
+    for(let k=0;k<rings.length-1;k++)for(let j=0;j<sides;j++){
+      const n=(j+1)%sides,p=rings[k][j],q=rings[k][n],r=rings[k+1][n],normal=normalize(cross(q.map((v,i)=>v-p[i]),r.map((v,i)=>v-p[i])));
+      const lower=normal.reduce((s,x,i)=>s+x*a.basis.v[i],0)>-.55;
+      const face=[p,q,r,rings[k+1][j]];
+      metal(face,normal,BRONZE,toned);
+      const upward=Math.max(0,-normal.reduce((s,x,i)=>s+x*a.basis.v[i],0)),facing=Math.abs(normal.reduce((s,x,i)=>s+x*a.basis.w[i],0));
+      const metalCoords=[uvAt(brassUV,0,k/4),uvAt(brassUV,1,k/4),uvAt(brassUV,1,(k+1)/4),uvAt(brassUV,0,(k+1)/4)];
+      paint(face.map(p=>p.map((v,i)=>v-a.basis.w[i]*.0005)),metalCoords,.42+.16*upward+.10*facing);
+      if(!lower){
+        // Separate shallow ivory insets leave the curved bronze enclosure
+        // visible between panels; their bevels have real depth on rotation.
+        const at=(u,v)=>face[0].map((_,i)=>(1-u)*(1-v)*face[0][i]+u*(1-v)*face[1][i]+u*v*face[2][i]+(1-u)*v*face[3][i]);
+        const inner=[[.13,.09],[.87,.09],[.87,.91],[.13,.91]].map(([u,v])=>at(u,v).map((x,i)=>x+normal[i]*.001));
+        const coords=[uvAt(boneUV,0,0),uvAt(boneUV,0,1),uvAt(boneUV,1,1),uvAt(boneUV,1,0)];
+        paint(inner,coords,.47+.22*upward+.08*facing);
+        // Four planar bevels carry the shallow inset border. Rounded limb
+        // end-caps would add hundreds of invisible subpixel sphere faces.
+        const outer=[[.10,.06],[.90,.06],[.90,.94],[.10,.94]].map(([u,v])=>at(u,v).map((x,i)=>x+normal[i]*.0002));
+        for(let n=0;n<4;n++){
+          const j=(n+1)%4,edge=outer[j].map((v,i)=>v-outer[n][i]),rise=inner[n].map((v,i)=>v-outer[n][i]);
+          let bevelNormal=normalize(cross(edge,rise));
+          if(bevelNormal.reduce((s,v,i)=>s+v*normal[i],0)<0)bevelNormal=bevelNormal.map(v=>-v);
+          metal([outer[n],outer[j],inner[j],inner[n]],bevelNormal,BRONZE,steelEdge);
+        }
+      }
+    }
+    metal(rings[0],direction.map(x=>-x),BRONZE,plain);metal(rings.at(-1),direction,BRONZE,plain);
+    // Concave silhouette follows the reference's actual contour and omits
+    // its support hand. Ear clipping keeps the entire front UV continuous.
+    const body=[[1078,655],[1094,635],[1132,623],[1156,630],[1155,650],[1196,646],[1228,655],[1245,670],[1273,670],[1301,686],[1320,714],[1334,715],[1359,723],[1390,775],[1397,781],[1420,799],[1445,832],[1437,863],[1340,864],[1328,897],[1296,917],[1239,862],[1165,778],[1110,730],[1079,696]];
+    for(const ids of r79Triangles(body))paint(ids.map(i=>a.point(...body[i],-.013)),ids.map(i=>[body[i][0]/1672,body[i][1]/941]),.97);
+    return m=>{
+      const part=m.part(),inv=m.inverse();
+      for(const f of geometry)m.face(f.vertices,f.normal,f.material,part,f.options,inv);
+      for(const f of surfaces)paintedSurface(m,'firearmSource',f.vertices,f.uv,f.light);
+    };
+  })();
   Uet.draw=function(m,pose){
     const previous=arsenalIndex;arsenalIndex=5;
     try {
-      const a=firearmArt[5],t=pose.reload,inspect=t<0?0:Qe(t,0,.99,.12),open=t<0?0:Qe(t,...uc.lid),load=t<0?0:Qe(t,.27,.68,.12);
+      const a=firearmArt[5],t=pose.reload,inspect=t<0?0:Qe(t,0,.99,.12),open=t<0?0:Qe(t,...uc.lid);
+      a.move(m,-.024,0,.105);
       m.roll(.12*inspect);m.pitch(-.055*inspect);
-      // A single enclosed oval-section barrel/chest carries the complete
-      // stationary reliquary surface. The arches are artwork relief on that
-      // shared surface, not individually floating slabs at unrelated depths.
-      const centers=[[1095,678,.024],[1210,738,.044],[1305,800,.057],[1425,815,.048],[1510,822,.034]].map(([u,v,r])=>({p:a.point(u,v,.050),r}));
-      const direction=centers.at(-1).p.map((v,i)=>v-centers[0].p[i]),dl=Math.hypot(...direction);direction.forEach((v,i)=>direction[i]=v/dl);
-      const cross=(x,y)=>[x[1]*y[2]-x[2]*y[1],x[2]*y[0]-x[0]*y[2],x[0]*y[1]-x[1]*y[0]],normalize=v=>{const l=Math.hypot(...v)||1;return v.map(x=>x/l);};
-      let across=normalize(cross(direction,a.basis.w));if(across.reduce((s,x,i)=>s+x*a.basis.v[i],0)<0)across=across.map(x=>-x);
-      const deep=normalize(cross(direction,across)),sides=12,part=m.part(),inv=m.inverse();
-      const rings=centers.map(({p,r})=>Array.from({length:sides},(_,j)=>{const angle=j/sides*Math.PI*2;return p.map((v,i)=>v+across[i]*Math.cos(angle)*r+deep[i]*Math.sin(angle)*Math.min(.048,r*1.18));}));
-      // Existing target material samples only: worn ivory inside the second
-      // vault and the narrow dark-brass frame beside its engraved arch.
-      // Surfaces wrap the unchanged enclosure, with normal-driven shading.
-      const boneUV=[[1188,680],[1224,690],[1216,718],[1180,701]],brassUV=[[1242,759],[1251,765],[1253,842],[1242,831]];
-      const uvAt=(quad,u,v)=>quad[0].map((_,i)=>((1-u)*(1-v)*quad[0][i]+u*(1-v)*quad[1][i]+u*v*quad[2][i]+(1-u)*v*quad[3][i])/(i===0?1672:941));
-      for(let k=0;k<rings.length-1;k++)for(let j=0;j<sides;j++){
-        const n=(j+1)%sides,p=rings[k][j],q=rings[k][n],r=rings[k+1][n],normal=normalize(cross(q.map((v,i)=>v-p[i]),r.map((v,i)=>v-p[i])));
-        const lower=normal.reduce((s,x,i)=>s+x*a.basis.v[i],0)>-.55;
-        const face=[p,q,r,rings[k+1][j]];
-        m.face(face,normal,BRONZE,part,{tex:(x,y,z)=>steel(x,y,z)*.12},inv);
-        const upward=Math.max(0,-normal.reduce((s,x,i)=>s+x*a.basis.v[i],0)),facing=Math.abs(normal.reduce((s,x,i)=>s+x*a.basis.w[i],0));
-        const metalCoords=[uvAt(brassUV,0,k/4),uvAt(brassUV,1,k/4),uvAt(brassUV,1,(k+1)/4),uvAt(brassUV,0,(k+1)/4)];
-        paintedSurface(m,'firearmSource',face.map(p=>p.map((v,i)=>v-a.basis.w[i]*.0005)),metalCoords,.42+.16*upward+.10*facing);
-        if(!lower){
-          // Separate shallow ivory insets leave the curved bronze enclosure
-          // visible between panels; their bevels have real depth on rotation.
-          const at=(u,v)=>face[0].map((_,i)=>(1-u)*(1-v)*face[0][i]+u*(1-v)*face[1][i]+u*v*face[2][i]+(1-u)*v*face[3][i]);
-          const inner=[[.13,.09],[.87,.09],[.87,.91],[.13,.91]].map(([u,v])=>at(u,v).map((x,i)=>x+normal[i]*.001));
-          const coords=[uvAt(boneUV,0,0),uvAt(boneUV,0,1),uvAt(boneUV,1,1),uvAt(boneUV,1,0)];
-          paintedSurface(m,'firearmSource',inner,coords,.47+.22*upward+.08*facing);
-          // Four planar bevels carry the shallow inset border. Rounded limb
-          // end-caps would add hundreds of invisible subpixel sphere faces.
-          const outer=[[.10,.06],[.90,.06],[.90,.94],[.10,.94]].map(([u,v])=>at(u,v).map((x,i)=>x+normal[i]*.0002));
-          for(let n=0;n<4;n++){
-            const j=(n+1)%4,edge=outer[j].map((v,i)=>v-outer[n][i]),rise=inner[n].map((v,i)=>v-outer[n][i]);
-            let bevelNormal=normalize(cross(edge,rise));
-            if(bevelNormal.reduce((s,v,i)=>s+v*normal[i],0)<0)bevelNormal=bevelNormal.map(v=>-v);
-            m.face([outer[n],outer[j],inner[j],inner[n]],bevelNormal,BRONZE,part,{tex:steel},inv);
-          }
-        }
-      }
-      m.face(rings[0],direction.map(x=>-x),BRONZE,part,{},inv);m.face(rings.at(-1),direction,BRONZE,part,{},inv);
-      // Concave silhouette follows the reference's actual contour and omits
-      // its support hand. Ear clipping keeps the entire front UV continuous.
-      const body=[[1078,655],[1094,635],[1132,623],[1156,630],[1155,650],[1196,646],[1228,655],[1245,670],[1273,670],[1301,686],[1320,714],[1334,715],[1359,723],[1390,775],[1397,781],[1420,799],[1445,832],[1437,863],[1340,864],[1328,897],[1296,917],[1239,862],[1165,778],[1110,730],[1079,696]];
-      const area=body.reduce((s,p,i)=>{const q=body[(i+1)%body.length];return s+p[0]*q[1]-p[1]*q[0];},0),sign=area>0?1:-1,indices=body.map((_,i)=>i),triangles=[];
-      const orient=(p,q,r)=>(q[0]-p[0])*(r[1]-p[1])-(q[1]-p[1])*(r[0]-p[0]);
-      const inside=(p,x,y,z)=>sign*orient(x,y,p)>=0&&sign*orient(y,z,p)>=0&&sign*orient(z,x,p)>=0;
-      for(let guard=0;indices.length>3&&guard<100;guard++){
-        let cut=false;for(let j=0;j<indices.length;j++){
-          const x=indices[(j+indices.length-1)%indices.length],y=indices[j],z=indices[(j+1)%indices.length];
-          if(sign*orient(body[x],body[y],body[z])<=0||indices.some(i=>i!==x&&i!==y&&i!==z&&inside(body[i],body[x],body[y],body[z])))continue;
-          triangles.push([body[x],body[y],body[z]]);indices.splice(j,1);cut=true;break;
-        }if(!cut)break;
-      }
-      if(indices.length===3)triangles.push(indices.map(i=>body[i]));
-      for(const tri of triangles)paintedSurface(m,'firearmSource',tri.map(([u,v])=>a.point(u,v,-.013)),tri.map(([u,v])=>[u/1672,v/941]),.97);
+      crossEnclosure(m);
       // The two visible ivory vault panels sit in separate shallow bronze
       // beds. Their source coordinates are retained, including the engravings.
       for(const panel of [
@@ -1871,33 +1900,56 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       }
       // Muzzle and chamber fittings remain volumetric and independent.
       a.hull(m,[[1048,658],[1062,651],[1078,657],[1077,688],[1062,690],[1047,678]],.040,.017);
-      // Recessed rear chamber and separate red charge relic stay below lid.
-      a.hull(m,[[1400,710],[1465,710],[1460,735],[1450,775],[1422,750]],.010,.026);
-      a.hull(m,[[1465,710],[1490,718],[1512,738],[1509,749],[1488,734],[1460,735]],.010,.026);
-      a.hull(m,[[1450,780],[1482,791],[1505,795],[1558,830],[1464,817]],.010,.026);
-      a.hull(m,[[1512,749],[1561,803],[1558,830],[1505,795],[1517,775]],.010,.026);
-      m.push();a.move(m,-.075*load,.010*load,-.028*load);
-      a.hull(m,[[1465,738],[1488,735],[1511,751],[1517,775],[1505,795],[1482,791],[1465,772]],-.007,.012);m.pop();
-      a.hull(m,[[1450,829],[1576,824],[1614,841],[1607,872],[1454,870]],-.002,.026);
-      // The illustrated lid rests raised on a fitted lower-edge hinge.
-      // Reload opens it further while the attached brackets follow its axis.
-      const hinge=a.point(1430,642,-.011),ha=a.point(1357,643,-.011),hb=a.point(1504,639,-.011),axis=hb.map((v,i)=>v-ha[i]),axisLength=Math.hypot(...axis);
-      axis.forEach((v,i)=>axis[i]=v/axisLength);
-      const fittedHinge=a.point(1430,706,-.011);
-      const angle=.48*(1-open),co=Math.cos(angle),si=Math.sin(angle);
-      const turn=p=>{const v=p.map((x,i)=>x-hinge[i]),dot=v.reduce((s,x,i)=>s+x*axis[i],0),cross=[axis[1]*v[2]-axis[2]*v[1],axis[2]*v[0]-axis[0]*v[2],axis[0]*v[1]-axis[1]*v[0]];return v.map((x,i)=>fittedHinge[i]+x*co+cross[i]*si+axis[i]*dot*(1-co));};
-      a.hull(m,[[1357,528],[1395,488],[1454,529],[1492,630],[1435,646],[1375,629]],-.014,.017,turn);
-      a.hull(m,[[1377,536],[1398,513],[1439,541],[1470,621],[1405,619]],-.019,.004,turn);
-      // Hinge axle joins the two fitted brackets. The lid's underside and
-      // frame remain one rigid part throughout its existing opening motion.
-      m.limb(a.point(1356,708,-.003),a.point(1504,704,-.003),.003,.003,WORN,8,{tex:steel});
-      for(const [base,tip]of [[[1360,740],[1375,629]],[[1490,747],[1492,630]]]){m.limb(a.point(...base,.005),turn(a.point(...tip,-.011)),.005,.005,BRONZE,8,{tex:steel});}
-      const fit=p=>p.map((v,i)=>v+fittedHinge[i]-hinge[i]);
-      a.hull(m,[[1357,643],[1372,643],[1378,680],[1360,682]],.008,.012,fit);
-      a.hull(m,[[1489,639],[1504,639],[1486,693],[1474,690]],.008,.012,fit);
-      const support=[1117,756,-.050],contact=[1475,771,-.052],reach=t<0?0:Qe(t,.17,.84,.11),hand=support.map((v,i)=>v+(contact[i]-v)*reach);
-      m.push();a.move(m,-.075*load,.010*load,-.028*load);a.left(m,hand,.172);m.pop();
-      a.right(m,[1417,870,-.054]);a.anchor(m,1054,672,.040);
+      // A continuous bed sits behind the rails and hinged crown. When the
+      // charge lifts out the player sees scorched iron inside the reliquary.
+      const box=(poly,d,th=.017,uv=poly)=>a.hull(m,poly,d,th,null,true,uv,BRONZE);
+      box([[1344,693],[1414,674],[1484,692],[1559,762],[1598,821],[1556,855],[1443,851],[1391,797]],
+          .044,.025,[[1361,646],[1424,645],[1481,650],[1473,675],[1460,687],[1431,689],[1405,678],[1375,683]]);
+      box([[1359,703],[1394,685],[1463,689],[1501,718],[1485,736],[1436,717],[1384,741]],.009);
+      box([[1400,710],[1465,710],[1460,735],[1450,775],[1422,750]],.010,.026);
+      box([[1465,710],[1490,718],[1512,738],[1509,749],[1488,734],[1460,735]],.010,.026);
+      box([[1450,780],[1482,791],[1505,795],[1558,830],[1464,817]],.010,.026);
+      box([[1512,749],[1561,803],[1558,830],[1505,795],[1517,775]],.010,.026);
+      box([[1460,736],[1488,729],[1514,745],[1526,772],[1514,802],[1476,805],[1457,777]],.018,.014,
+          [[1347,670],[1360,667],[1370,660],[1380,655],[1390,657],[1376,677],[1364,680]]);
+      // Charge and brass bezel share a rigid body. The arm first reaches its
+      // contact, then lifts, turns and returns the charge to its fitted seat.
+      const take=t<0?0:K0(t,.25,.42)*(1-K0(t,.53,.67)),reach=t<0?0:Qe(t,.065,.85,.16);
+      const chargePivot=a.point(1485,773,-.024);
+      function chargeMotion(){
+        a.move(m,-.059*take,-.026*take,-.040*take);
+        m.translate(...chargePivot);m.roll(-.22*take);m.translate(...chargePivot.map(v=>-v));
+      }
+      m.push();chargeMotion();
+      box([[1451,737],[1479,728],[1506,739],[1521,761],[1527,788],[1511,810],[1472,811],[1457,786]],-.012,.013,
+          [[1450,738],[1478,730],[1506,740],[1519,759],[1528,788],[1513,809],[1473,810],[1458,783]]);
+      box([[1464,740],[1481,736],[1497,741],[1510,756],[1515,776],[1505,791],[1484,793],[1470,779]],-.016,.009);m.pop();
+      box([[1450,829],[1576,817],[1617,833],[1618,864],[1582,877],[1482,881],[1454,869]],-.002,.030);
+      // The whole crown, including the thick dark underside and the two
+      // spires, rotates about its lower rear edge.
+      const hinge=a.point(1430,693,-.011),leftPin=a.point(1360,694,-.011),rightPin=a.point(1504,690,-.011);
+      const axis=normalize(rightPin.map((v,i)=>v-leftPin[i]));
+      const angle=.16-.57*open,co=Math.cos(angle),si=Math.sin(angle);
+      const turn=p=>{const v=p.map((x,i)=>x-hinge[i]),dot=v.reduce((s,x,i)=>s+x*axis[i],0),direction=cross(axis,v);return v.map((x,i)=>hinge[i]+x*co+direction[i]*si+axis[i]*dot*(1-co));};
+      const cap=(poly,d,th)=>a.hull(m,poly,d,th,turn,true,poly,BRONZE);
+      cap([[1373,637],[1504,633],[1510,644],[1470,689],[1398,690],[1357,675]],.002,.019);
+      cap([[1352,526],[1394,477],[1454,527],[1492,632],[1379,643]],-.014,.019);
+      cap([[1370,529],[1395,496],[1439,531],[1470,620],[1388,627]],-.019,.004);
+      cap([[1326,599],[1330,590],[1334,554],[1339,569],[1348,592],[1350,620],[1364,624],[1369,638],[1352,653],[1336,655]],-.013,.009);
+      cap([[1464,563],[1475,542],[1482,566],[1494,572],[1494,587],[1503,626],[1511,630],[1514,645],[1490,647]],-.013,.009);
+      // Hinge leaves and short end pins are seated in the rear corners.
+      // One long pin across the open face obscured the relief below the lid.
+      for(const pos of [1365,1482]){
+        box([[pos-7,682],[pos+6,681],[pos+8,708],[pos+5,720],[pos-6,714]],-.005,.012,
+            [[1332,598],[1341,597],[1344,623],[1341,635],[1334,628]]);
+        m.limb(a.point(pos-8,697,-.013),a.point(pos+9,697,-.013),.004,.004,BRONZE,7,{tex:steel});
+      }
+      const home=a.point(1118,742,-.028),socket=a.point(1469,784,-.054);
+      m.push();chargeMotion();
+      m.translate(...socket.map((v,i)=>(v-home[i])*reach));crossSupport(m);m.pop();
+      m.push();a.move(m,-.006,-.009,-.006);crossGrip(m);m.pop();
+      a.anchor(m,1054,672,.040);
+
     } finally {arsenalIndex=previous;}
   };
 
@@ -2030,7 +2082,7 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       if(index===8&&x<340){x=284+(x-284)*1.22;y=706+(y-706)*1.22;} const depth=(anchor[0]-x)*.00024+extra,s=scale*(1+depth/.65),o=[0,.045,-.040];
       return o.map((a,i)=>a+u[i]*(x-anchor[0])*s+v[i]*(y-anchor[1])*s+w[i]*depth);
     };
-    const hullGeometry=new Map(),orbGeometry=new Map(),rimGeometry=new Map();
+    const hullGeometry=new Map(),orbGeometry=new Map();
     const hullTone={tex:(x,y,z)=>steel(x,y,z)*.15};
     function hull(m,poly,depth=0,thick=.026,mat=WORN,sourcePoly=poly){
       const key=depth+':'+thick+':'+poly.map(p=>p.join(',')).join(';')+':'+(sourcePoly===poly?'same':sourcePoly.map(p=>p.join(',')).join(';'));
@@ -2085,7 +2137,7 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       for(let row=0;row<rings;row++)for(let k=0;k<segments;k++){
         const r0=Math.sin(row/rings*Math.PI/2),r1=Math.sin((row+1)/rings*Math.PI/2),a0=k*Math.PI*2/segments,a1=(k+1)*Math.PI*2/segments;
         const vertices=row===0?[vertex(0,0),vertex(r1,a0),vertex(r1,a1)]:[vertex(r0,a0),vertex(r1,a0),vertex(r1,a1),vertex(r0,a1)];
-        const r=(r0+r1)*.5,light0=.89-.42*Math.pow(r,1.55),light1=.95-.08*Math.cos((a0+a1)*.5);
+        const r=(r0+r1)*.5,light0=1.03-.26*Math.pow(r,1.65),light1=.95-.08*Math.cos((a0+a1)*.5);
         shape.front.push({vertices:vertices.map(v=>v.p),uv:vertices.map(v=>v.uv),light0,light1});
       }
       orbGeometry.set(key,shape);
@@ -2094,15 +2146,7 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       for(const face of shape.back)m.face(face.vertices,face.normal,O.DEADSOUL,part,{},inv);
       for(const face of shape.front)paintedSurface(m,'relicSource',face.vertices,face.uv,light*face.light0*face.light1);
     }
-    function retainingRim(m,cx,cy,rx,ry){
-      const key=[cx,cy,rx,ry].join(',');let shape=rimGeometry.get(key);
-      if(!shape){shape=[];for(let k=0;k<28;k++){
-        const a=k*Math.PI/14,b=(k+1)*Math.PI/14;
-        shape.push([point(cx+rx*Math.cos(a),cy+ry*Math.sin(a),.005),point(cx+rx*Math.cos(b),cy+ry*Math.sin(b),.005),point(cx+(rx+3)*Math.cos(a),cy+(ry+3)*Math.sin(a),.003),point(cx+(rx+3)*Math.cos(b),cy+(ry+3)*Math.sin(b),.003)]);
-      }rimGeometry.set(key,shape);}
-      for(const [a,b,c,d]of shape){m.limb(a,b,.0040,.0040,WORN,6,{tex:steel});m.limb(c,d,.0012,.0012,BRONZE,5,{tex:steel});}
-    }
-    return {point,hull,support,grip,pivot,orb,retainingRim,u,v,w};
+    return {point,hull,support,grip,pivot,orb,u,v,w};
   }
   // Individual illustrated parts rotate around the fore-end pin. Their thick
   // cut edges, the chamber faces and the hand-held shells share the depth buffer.
@@ -2169,55 +2213,120 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
     m.anchor('muzzle',...P(834,523));m.pop();
     paintedHand(m,'right',P(1112,762,-.048),.188,{u:a.u,v:a.v},{sideSleeve:true});
   };
-  const r79Soul=r79Rig(7,[1430,310],.000637);
+  const r79Soul=r79Rig(7,[1430,310],.000595);
+  const soulGrip=relicGlove(r79Soul.point,'relicSource',0,[
+    [[566,376],[568,359],[578,349],[592,343],[614,340],[628,341],[650,335],[677,328],[711,328],[733,323],[747,327],[758,341],[770,360],[782,379],[803,387],[821,392],[836,400],[836,471],[593,471],[590,461],[591,444],[585,437],[582,427],[583,414],[590,404],[599,399],[581,399],[570,392]]
+  ],-.043,[[617,460],[830,437],[1081,661],[847,723]]);
+  const soulSupport=relicGlove(r79Soul.point,'relicSource',0,[
+    [[173,470],[200,449],[222,432],[228,419],[233,401],[247,386],[262,374],[280,360],[286,346],[290,326],[296,310],[305,294],[309,285],[302,274],[296,258],[293,245],[297,243],[305,249],[318,266],[325,279],[338,286],[350,295],[359,310],[370,320],[380,326],[392,329],[407,336],[425,341],[431,347],[424,360],[415,368],[413,384],[406,398],[394,412],[393,431],[387,470]]
+  ],-.040,[[185,462],[387,462],[317,707],[-60,721]]);
+
+  // A curled digit wraps the near side as the palm rolls around the glass.
+  // Reproject the leather from the illustrated index; the base of the finger
+  // disappears into the palm and the last joint occludes the lower glass.
+  function soulFinger(m,weight,x,y,size,roll){
+    const src=[[566,373],[569,361],[579,349],[596,342],[615,340],[636,342],[649,350],[650,383],[637,395],[617,400],[593,399],[579,393],[568,384]];
+    const curve=[[-6,-22],[-10,-19],[-12,-13],[-12,-5],[-9,5],[-4,13],[1,20],[7,23],[11,19],[12,12],[10,3],[5,-8],[2,-18]];
+    const scale=size*(.16+.84*weight);
+    const geometry=curve.map(([u,v])=>{
+      const c=Math.cos(roll),s=Math.sin(roll);
+      const along=v>0?v*1.52:v;
+      return r79Soul.point(x+scale*(c*u-s*along),y+14*(1-weight)+scale*(s*u+c*along),-.055-.012*weight+.0012*Math.max(0,v));
+    });
+    for(const tri of r79Triangles(curve))paintedSurface(m,'relicSource',tri.map(i=>geometry[i]),tri.map(i=>[(836+src[i][0])/1672,src[i][1]/941]),.93);
+  }
+
+  // Pressed copper cup with a recessed iron diaphragm. The far wall keeps
+  // the opening dark when empty and the stepped lip catches the courtyard light.
+  const soulSocket=(()=>{
+    const a=r79Soul,cx=1220,cy=177,segments=16,paint=[],metal=[];
+    const p=(k,r,depth)=>a.point(cx+78*Math.cos(k*2*Math.PI/segments)*r,cy+82*Math.sin(k*2*Math.PI/segments)*r,depth);
+    const face=(vertices,mat)=>{
+      const [h,j,k]=vertices,ab=j.map((v,i)=>v-h[i]),ac=k.map((v,i)=>v-h[i]);
+      const n=[ab[1]*ac[2]-ab[2]*ac[1],ab[2]*ac[0]-ab[0]*ac[2],ab[0]*ac[1]-ab[1]*ac[0]],len=Math.hypot(...n)||1;
+      metal.push({vertices,normal:n.map(v=>v/len),mat});
+    };
+    const wall=(k,outer,inner,front,back,mat,uv,shade)=>{
+      const vertices=[p(k,outer,front),p(k+1,outer,front),p(k+1,inner,back),p(k,inner,back)];
+      if(uv)paint.push({vertices,uv:uv.map(([x,y])=>[x/1672,y/941]),shade});else face(vertices,mat);
+    };
+    for(let i=0;i<segments;i++){
+      const shade=.71+.19*Math.cos((i+5)*Math.PI/8);
+      wall(i,1.065,1.065,.008,.030,BRONZE);
+      wall(i,1.065,1.01,.008,-.006,BRONZE,[[1366,256],[1374,250],[1380,253],[1370,263]],shade);
+      wall(i,1.01,.955,-.006,-.006,WORN,[[1378,262],[1394,251],[1397,254],[1380,270]],1.07*shade);
+      wall(i,.955,.74,-.006,.030,BRONZE,[[1341,284],[1350,282],[1353,301],[1347,307]],.60);
+      const iron=(k,r)=>[1466+31*Math.cos(k*2*Math.PI/segments)*r,290+27*Math.sin(k*2*Math.PI/segments)*r];
+      wall(i,.74,.20,.030,.043,WORN,[iron(i,1),iron(i+1,1),iron(i+1,.27),iron(i,.27)],.78);
+    }
+    const screws=[2,6,10,14].map(k=>{
+      const angle=k*Math.PI/8,x=cx+76*Math.cos(angle),y=cy+80*Math.sin(angle);
+      return [[x-3,y-3],[x+2,y-4],[x+5,y],[x+2,y+4],[x-4,y+3]];
+    });
+    return m=>{
+      const part=m.part(),inv=m.inverse();
+      for(const f of metal)m.face(f.vertices,f.normal,f.mat,part,{tex:steel},inv);
+      for(const f of paint)paintedSurface(m,'relicSource',f.vertices,f.uv,f.shade);
+      for(const screw of screws)a.hull(m,screw,-.009,.006,BRONZE,[[1330,266],[1334,261],[1339,265],[1336,272],[1331,271]]);
+      a.hull(m,[[1203,170],[1216,159],[1234,164],[1239,180],[1230,194],[1212,194],[1202,183]],
+      .023,.014,BRONZE,[[1322,259],[1334,250],[1346,255],[1349,267],[1341,278],[1329,277],[1322,270]]);
+    };
+  })();
   arsenalModels[7].draw=function(m,pose){
     const previous=arsenalIndex;arsenalIndex=7;
     try{
-      const a=r79Soul,t=pose.reload,inspect=t<0?0:Qe(t,0,.98,.14),claw=t<0?Qe(pose.action,0,.7,.12):Qe(t,...ya.claws);
-      m.translate(0,-.012*inspect,0);m.roll(-.22*inspect);m.pitch(-.045*inspect);
-      // Rear mechanism and lower saddle are separated at real source seams.
+      const a=r79Soul,t=pose.reload,inspect=t<0?0:Qe(t,0,.98,.14),claw=t<0?Qe(pose.action,0,.70,.12):Qe(t,...ya.claws);
+      const travel=t<0?0:K0(t,...ya.pluck)*(1-K0(t,...ya.press)),reach=t<0?0:Qe(t,.055,.77,.125);
+      m.translate(0,-.008*inspect,0);m.roll(-.16*inspect);m.pitch(-.050*inspect);
+      // Each connected housing keeps its stepped side profile under recoil.
+      a.hull(m,[[1297,84],[1309,77],[1330,86],[1360,103],[1383,118],[1383,130],[1372,140],[1346,119],[1317,102]],.015,.023,RELIC_BONE);
+      a.hull(m,[[1350,125],[1363,120],[1432,177],[1430,188],[1422,194],[1355,143]],.016,.020,BRONZE);
       a.hull(m,[[1298,200],[1344,173],[1383,184],[1405,221],[1386,286],[1341,299],[1307,271]],.012,.040);
-      a.hull(m,[[1391,198],[1435,202],[1477,235],[1478,287],[1439,313],[1392,288]],.002,.038);
-      a.hull(m,[[1464,248],[1517,252],[1544,274],[1543,331],[1499,341],[1463,307]],-.006,.038);
-      a.hull(m,[[1518,252],[1547,247],[1561,264],[1560,321],[1543,334],[1542,275]],-.012,.030);
-      a.hull(m,[[1321,286],[1372,299],[1408,333],[1404,391],[1375,420],[1350,402],[1351,343],[1312,315]],-.008,.025);
-      m.limb(a.point(1278,289,.008),a.point(1347,279,.008),.012,.014,BRONZE,8,{tex:steel});
-      a.hull(m,[[1270,274],[1306,248],[1338,265],[1331,296],[1303,317],[1281,307]],-.011,.027,BRONZE);
-      // Secondary green core remains visible behind the large offering orb.
-      a.orb(m,1360,217,26,31,-.020,.9);
-      a.retainingRim(m,1222,179,82,85);
-      // Three solid cradle contacts connect the glass retaining rim to the bones
-      // and rear saddle; the opening remains visible when the core is plucked.
-      for(const [p,q]of [[[1260,92],[1260,114]],[[1175,249],[1192,253]],[[1295,204],[1317,218]]])
-        m.limb(a.point(...p,.010),a.point(...q,.010),.006,.006,BRONZE,8,{tex:steel});
-      // Main core is carried by the same transform as its supporting hand.
-      const travel=t<0?0:t<.4?K0(t,...ya.pluck):1-K0(t,...ya.press);
-      const handReach=t<0?0:Qe(t,.06,.72,.10),coreLift=t>=.16&&t<.62?travel:0;
-      m.push();m.translate(-.080*coreLift,-.040*coreLift,-.038*coreLift);
+      a.hull(m,[[1374,198],[1422,177],[1447,177],[1449,185],[1487,194],[1518,246],[1509,306],[1463,329],[1402,304],[1374,268]],.002,.038);
+      a.hull(m,[[1453,242],[1475,245],[1492,249],[1515,251],[1540,273],[1541,330],[1510,340],[1460,324],[1434,305],[1431,263]],-.006,.040);
+      a.hull(m,[[1504,259],[1520,245],[1542,246],[1559,262],[1561,322],[1549,330],[1510,324]],-.014,.028);
+      a.hull(m,[[1321,286],[1355,295],[1368,306],[1365,320],[1374,326],[1392,324],[1408,325],[1408,397],[1394,420],[1379,420],[1366,400],[1366,382],[1350,373],[1344,339],[1312,315]],-.006,.028);
+      // The yoke is one load-bearing contact between the handle plate and
+      // rear housing. The index crosses its right edge during inspect.
+      a.hull(m,[[1374,291],[1407,282],[1446,302],[1466,321],[1456,349],[1435,361],[1409,365],[1385,347],[1363,324]],.018,.041,WORN,
+        [[1427,262],[1454,270],[1473,289],[1492,304],[1497,314],[1480,316],[1460,307],[1434,293],[1424,275]]);
+      a.hull(m,[[1346,317],[1369,312],[1404,326],[1400,397],[1394,413],[1385,418],[1374,405],[1374,382],[1350,371]],-.014,.015,BRONZE);
+      // A continuous saddle locks both bony arms and the glass cup onto the
+      // receiver. Bolts and the lower fork have individual depth at each lug.
+      a.hull(m,[[1241,261],[1271,244],[1280,216],[1279,199],[1292,183],[1309,181],[1321,193],[1318,224],[1316,249],[1306,273],[1283,290],[1241,292],[1217,278]],.010,.027,BRONZE);
+      a.hull(m,[[1275,315],[1301,302],[1322,280],[1336,274],[1344,278],[1336,291],[1318,306],[1298,321],[1285,326]],-.027,.016,RELIC_BONE);
+      a.hull(m,[[1327,253],[1335,246],[1349,248],[1357,259],[1355,274],[1346,289],[1335,290],[1327,281]],-.034,.015,BRONZE);
+      soulSocket(m);
       const spent=t<0?Qe(pose.action,...ya.spent):1-K0(t,...ya.press);
-      // Discharge and renewed energy remain visible without a one-frame
-      // brightness jump at the start of reload or at the old .38 handoff.
-      const depleted=t<0?1:1-.62*K0(t,...ya.dying),renew=t<0?1:K0(t,.34,.44);
-      const coreLight=t<0?1-.14*spent:depleted+(1-.14*spent-depleted)*renew;
-      a.orb(m,1222,179,78,81,-.010,coreLight);
-      m.anchor('glow',...a.point(1222,179,-.038));
-      // Finger contact rises beneath the offered sphere during pluck/seat.
-      a.support(m,1142+47*handReach,262-8*handReach,-.060,.174);m.pop();
-      // Upper ivory claw: three convex pieces, hinging about the real root.
-      const upperBone=(poly,d,th)=>a.hull(m,poly.map(([x,y])=>[x,183+(y-183)*.82]),d,th,RELIC_BONE,poly);
-      const lowerBone=(poly,d,th)=>a.hull(m,poly.map(([x,y])=>[1311+(x-1311)*.94,y]),d,th,RELIC_BONE,poly);
-      m.push();a.pivot(m,1320,183,-.15*claw);
-      upperBone([[1156,70],[1178,51],[1204,43],[1250,38],[1260,61],[1202,61],[1170,68]],-.024,.022);
-      upperBone([[1250,38],[1289,43],[1314,61],[1307,96],[1283,107],[1260,83],[1260,61]],-.026,.028);
-      upperBone([[1283,105],[1305,85],[1331,119],[1340,150],[1330,185],[1309,201],[1288,184],[1303,153]],-.029,.028);m.pop();
-      // Lower claw is independent of the orb and leaves its dark aperture open.
-      m.push();a.pivot(m,1311,301,.14*claw);
-      lowerBone([[1115,114],[1100,142],[1088,167],[1095,197],[1128,224],[1146,207],[1119,183]],-.033,.025);
-      lowerBone([[1128,222],[1147,208],[1195,248],[1224,251],[1239,275],[1214,290],[1173,265]],-.034,.026);
-      lowerBone([[1214,289],[1239,275],[1265,286],[1278,314],[1309,318],[1327,337],[1304,349],[1276,334],[1256,309]],-.035,.026);m.pop();
-      m.anchor('muzzle',...a.point(1219,177));a.grip(m,1365,350,-.065);
+      const depleted=t<0?1:1-.52*K0(t,...ya.dying),renew=t<0?1:K0(t,.34,.47);
+      const coreLight=t<0?1-.26*spent:depleted+(1-.15*spent-depleted)*renew;
+      a.orb(m,1354,215,26,29,-.021,.82+.22*(1-coreLight)+.08*travel);
+      // The projecting thumb and fingertips travel with the offering. They
+      // move toward its underside before it leaves the recess, then recoil
+      // into their illustrated support posture after the jaws close.
+      const center=a.point(1220,177,-.025);
+      m.push();
+      m.translate(...a.u.map((v,i)=>(-.066*v+.014*a.v[i]-.036*a.w[i])*travel));
+      m.translate(...center);m.roll(-.18*travel);m.translate(...center.map(v=>-v));
+      a.orb(m,1220,177,71,74,-.011,coreLight);
+      m.anchor('glow',...a.point(1220,177,-.040));
+      const thumb=a.point(1140,254,-.040),under=a.point(1175,209,-.072);
+      m.push();m.translate(...under.map((v,i)=>(v-thumb[i])*reach));soulSupport(m);m.pop();
+      if(reach>.02){soulFinger(m,reach,1232,248,.95,.50);soulFinger(m,reach,1245,242,.90,.63);}
+      m.pop();
+      m.push();a.pivot(m,1293,205,-.23*claw);
+      a.hull(m,[[1156,71],[1166,56],[1186,46],[1214,39],[1243,36],[1274,43],[1286,55],[1275,67],[1255,68],[1247,86],[1238,83],[1226,67],[1204,61],[1184,58],[1169,62]],-.031,.023,RELIC_BONE);
+      a.hull(m,[[1254,84],[1257,69],[1275,68],[1284,73],[1297,94],[1320,124],[1333,152],[1338,165],[1324,179],[1308,188],[1295,180],[1288,164],[1291,153],[1294,142],[1278,115]],-.032,.028,RELIC_BONE);
+      a.hull(m,[[1293,201],[1298,193],[1307,191],[1316,198],[1316,211],[1308,219],[1298,220],[1292,214]],-.039,.011,BRONZE);m.pop();
+      m.push();a.pivot(m,1322,280,.19*claw);
+      a.hull(m,[[1115,118],[1108,143],[1106,158],[1118,171],[1139,178],[1161,181],[1171,194],[1165,202],[1148,203],[1143,211],[1134,225],[1129,245],[1117,241],[1106,224],[1097,204],[1088,184],[1087,166],[1093,147],[1102,129]],-.037,.025,RELIC_BONE);
+      a.hull(m,[[1138,224],[1144,210],[1155,207],[1164,214],[1174,229],[1192,246],[1207,254],[1223,259],[1230,268],[1224,278],[1214,283],[1211,306],[1202,309],[1192,296],[1185,278],[1160,259]],-.038,.024,RELIC_BONE);
+      a.hull(m,[[1217,285],[1223,278],[1233,284],[1241,294],[1264,302],[1273,296],[1290,295],[1297,310],[1285,320],[1298,332],[1294,340],[1280,345],[1269,337],[1260,322],[1236,316],[1216,303]],-.039,.024,RELIC_BONE);m.pop();
+      m.push();m.translate(...a.u.map((v,i)=>-.009*v-.003*a.v[i]));soulGrip(m);m.pop();
+      m.anchor('muzzle',...a.point(1219,177));
     }finally{arsenalIndex=previous;}
   };
+
   const r79TNT=r79Rig(8,[590,786],.000575);
   arsenalModels[8].draw=function(m,pose){
     const previous=arsenalIndex;arsenalIndex=8;

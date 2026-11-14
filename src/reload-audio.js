@@ -1,4 +1,4 @@
-// Close mechanical foley for the first two reloads. Audio follows animation
+// Close mechanical foley for the handguns, coach gun and two reliquaries. Audio follows animation
 // phase crossings, not wall-clock timers, and keeps the native ammo/state rules.
 (() => {
   const timing = window.__BLACK_SILENCE_RELOAD_TIMING;
@@ -24,8 +24,27 @@
     close: { clip: "close", gain: 0.45, rate: 1.0 },
     latch: { clip: "latch", gain: 0.27, rate: 0.94 },
   };
-  const owned = () => T.cur < 2 && St.wstate === "reload";
-  const parameters = (index, event) => ({
+  // All cues use the same recorded metal as the sidearms. Playback rate,
+  // emphasis and the shape of the contact give each relic its own scale.
+  const relicCues = {
+    5: {
+      unseal: { at: uc.lid[0], clip: "latch", rate: .81, gain: .40 },
+      hinge: { at: uc.lid[0] + .065, clip: "hinge", rate: .78, gain: .29 },
+      lift: { at: .28, clip: "eject", rate: .83, gain: .35 },
+      seat: { at: .645, clip: "seat", rate: .72, gain: .51 },
+      shut: { at: .79, clip: "close", rate: .82, gain: .45 },
+      catch: { at: uc.lid[1], clip: "latch", rate: 1.09, gain: .34 },
+    },
+    7: {
+      unlock: { at: ya.claws[0], clip: "hinge", rate: .62, gain: .24 },
+      pluck: { at: ya.pluck[0] + .035, clip: "glassLift", rate: 1.04, gain: .49 },
+      turn: { at: ya.press[0], clip: "eject", rate: .74, gain: .25 },
+      nest: { at: ya.press[1] - .028, clip: "glassSeat", rate: .91, gain: .56 },
+      close: { at: ya.claws[1], clip: "close", rate: .63, gain: .35 },
+    },
+  };
+  const owned = () => (T.cur < 2 || !!relicCues[T.cur]) && St.wstate === "reload";
+  const parameters = (index, event) => relicCues[index]?.[event] || ({
     clip: specs[event].clip,
     rate: specs[event].rate * (index === 1 ? 0.91 : 1.04),
     gain: specs[event].gain * (index === 1 ? 1.08 : 0.92),
@@ -90,6 +109,34 @@
       }
       buffers.set(name, buffer);
     }
+    // Strike two damped modes using the recorded contact's own first 12 ms.
+    // Render once per context. The tail lives in the same buffer as the hit,
+    // so pause, mute or a weapon switch releases the entire sound together.
+    function glassContact(name, recording, modes) {
+      const dry = buffers.get(recording), input = dry.getChannelData(0);
+      const rate = dry.sampleRate, length = Math.max(input.length, Math.ceil(rate * .33));
+      const out = next.createBuffer(1, length, rate), samples = out.getChannelData(0);
+      samples.set(input);
+      for (const [frequency, decay, mix] of modes) {
+        const damp = Math.exp(-1 / (rate * decay)), step = 2 * Math.PI * frequency / rate;
+        const a = 2 * damp * Math.cos(step), b = damp * damp;
+        let prev = 0, prev2 = 0;
+        for (let i = 0; i < length; i++) {
+          const hit = i < rate * .012 ? input[i] * Math.sin(step) : 0;
+          const y = a * prev - b * prev2 + hit;
+          samples[i] += mix * y;
+          prev2 = prev;
+          prev = y;
+        }
+      }
+      // Short cosine release lands the last sample at zero even after pitch shift.
+      const tail = Math.ceil(.016 * rate);
+      for (let i = 0; i < tail; i++)
+        samples[length - tail + i] *= .5 + .5 * Math.cos(Math.PI * i / (tail - 1));
+      buffers.set(name, out);
+    }
+    glassContact("glassLift", "eject", [[804, .080, .09], [1743, .052, .045]]);
+    glassContact("glassSeat", "seat", [[474, .079, .065], [1266, .064, .055]]);
     return next;
   }
   function begin() {
@@ -143,7 +190,7 @@
         weapon: index,
         event,
         phase: St.wtime / Th[index].reload,
-        target: timing[event],
+        target: spec.at ?? timing[event],
         audioTime: ctx.currentTime,
         performanceTime: performance.now(),
         gain: gain.gain.value,
@@ -156,6 +203,12 @@
     J_[index] = Object.keys(specs)
       .map((event) => ({ at: timing[event], play: () => play(index, event) }))
       .sort((a, b) => a.at - b.at);
+  for (const [id, cues] of Object.entries(relicCues)) {
+    const index = Number(id);
+    J_[index] = Object.entries(cues).map(([event, cue]) => ({
+      at: cue.at, play: () => play(index, event),
+    })).sort((a, b) => a.at - b.at);
+  }
 
   // Each native ejected casing otherwise queues a delayed square-wave chirp;
   // the recorded eject event replaces those only during these two reloads.
@@ -178,7 +231,7 @@
       (token && (token !== St.reloadFlags || weapon !== T.cur))
     )
       stop("state-before");
-    if (owned() && (St.wtime + args[0]) / Th[T.cur].reload > 0.18)
+    if (owned() && T.cur < 2 && (St.wtime + args[0]) / Th[T.cur].reload > 0.18)
       St.reloadFlags.a = 1;
     const result = update(...args);
     if (!owned() || blocked()) stop("state-after");

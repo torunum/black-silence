@@ -66,6 +66,7 @@ const output = path.resolve(process.env.QA_OUTPUT_DIR || path.join(root, ".dream
         q.St.wstate = "idle";
         q.St.wtime = 0;
         q.St.wCool = 0;
+        q.St.pending = -1;
         q.Ct.firing = false;
         q.T.kickCd = 0;
         a.volume(0.5);
@@ -118,6 +119,37 @@ const output = path.resolve(process.env.QA_OUTPUT_DIR || path.join(root, ".dream
         );
         await wait(60);
         assert(a.active() === 0, `weapon ${index}: completed voices released`);
+      }
+      for (const [index, sequence] of [
+        [5, ["unseal", "hinge", "lift", "seat", "shut", "catch"]],
+        [7, ["unlock", "pluck", "turn", "nest", "close"]],
+      ]) {
+        setup(index);
+        const duration = q.weapons[index].reload;
+        a.start();
+        advance(duration + .04);
+        const played = a.history.filter(e => e.type === "play");
+        assert(played.map(e => e.event).join() === sequence.join(), `weapon ${index}: each contact plays once, in order`);
+        assert(played.every(e => Math.abs(e.phase - e.target) < .011), `weapon ${index}: recorded hits meet their animation windows`);
+        assert(q.St.wstate === "idle" && q.T.mag[index] + q.T.ammo[q.weapons[index].ammo] === 30, `weapon ${index}: native ammo is conserved`);
+        assert(a.casingCount() === 0 && window.__oscillators === 0, `weapon ${index}: no casing or synth chirp on reload`);
+        for (const cancel of ["pause", "mute", "switch", "death"]) {
+          setup(index);
+          a.start();
+          advance(duration * .21);
+          assert(a.active() > 0, `weapon ${index}: ${cancel} interrupts a live recording`);
+          if (cancel === "pause") q.pause(true);
+          if (cancel === "mute") a.volume(0);
+          if (cancel === "switch") { q.T.weapons[0] = true; a.switch(0); }
+          if (cancel === "death") { q.C.spawnGuard = 0; a.damagePlayer(250); }
+          await wait(65);
+          assert(a.active() === 0, `weapon ${index}: ${cancel} releases contact and resonance`);
+        }
+      }
+      for (const name of ["glassLift", "glassSeat"]) {
+        const pcm = a.buffer(name).getChannelData(0);
+        assert(pcm.every(v => Number.isFinite(v) && Math.abs(v) < 1), name + ": no clipped or nonfinite samples");
+        assert(Math.abs(pcm[pcm.length - 1]) < .000001, name + ": tail ends at silence");
       }
       setup(0);
       a.start();

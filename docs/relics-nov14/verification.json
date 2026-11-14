@@ -1,0 +1,421 @@
+{
+  "sourceSHA256": "0824faa0defa5778f9c264315d0e849b0dd5f5cdd0fabb32a8541ce515de7f08",
+  "foleySHA256": "6b4fa810886ca2df11b4a4db428fd18227411e464e56af3ec9be812b98f23573",
+  "privateBuildSHA256": "cf70d5f5dc881bdd2c4167ac2003447d53c9d4e7ac7a82120c972d1321ca79e0",
+  "baselineBuildSHA256": "31a05e9b68138b7f8c3aaa83a923175db8507b81ba07e2dbf6338ba395f7604c",
+  "aspects": {
+    "passed": true,
+    "frames": 30,
+    "errors": [],
+    "endpoints": [
+      {
+        "width": 1024,
+        "height": 768,
+        "fired": 2,
+        "index": 5,
+        "mag": 3,
+        "size": 3,
+        "ammo": 97,
+        "override": false
+      },
+      {
+        "width": 1024,
+        "height": 768,
+        "fired": 3,
+        "index": 7,
+        "mag": 4,
+        "size": 4,
+        "ammo": 96,
+        "override": false
+      },
+      {
+        "width": 1280,
+        "height": 720,
+        "fired": 2,
+        "index": 5,
+        "mag": 3,
+        "size": 3,
+        "ammo": 97,
+        "override": false
+      },
+      {
+        "width": 1280,
+        "height": 720,
+        "fired": 3,
+        "index": 7,
+        "mag": 4,
+        "size": 4,
+        "ammo": 96,
+        "override": false
+      },
+      {
+        "width": 1680,
+        "height": 720,
+        "fired": 2,
+        "index": 5,
+        "mag": 3,
+        "size": 3,
+        "ammo": 97,
+        "override": false
+      },
+      {
+        "width": 1680,
+        "height": 720,
+        "fired": 3,
+        "index": 7,
+        "mag": 4,
+        "size": 4,
+        "ammo": 96,
+        "override": false
+      }
+    ]
+  },
+  "runtime": {
+    "passed": true,
+    "scope": "Real R/digit keys, mouse fire/kick and RAF. Isolated setup inventories; no gameplay balance claim. Same-build cache ghost comparison, not old visual parity.",
+    "runs": [
+      {
+        "before": {
+          "index": 5,
+          "name": "HOLY CROSS LAUNCHER",
+          "capacity": 3,
+          "reloadSeconds": 2.2,
+          "ammo": "crosses",
+          "mag": 0,
+          "reserve": 100
+        },
+        "after": {
+          "index": 5,
+          "state": "idle",
+          "mag": [
+            6,
+            2,
+            24,
+            36,
+            4,
+            3,
+            50,
+            4,
+            1,
+            1
+          ],
+          "ammo": {
+            "bullets": 100,
+            "shells": 100,
+            "slugs": 100,
+            "crosses": 97,
+            "nails": 100,
+            "souls": 100,
+            "tnt": 100,
+            "stakes": 100
+          },
+          "melee": false,
+          "voices": 0
+        },
+        "samples": 72,
+        "visible": 72
+      },
+      {
+        "before": {
+          "index": 7,
+          "name": "SOUL REAPER",
+          "capacity": 4,
+          "reloadSeconds": 2.6,
+          "ammo": "souls",
+          "mag": 0,
+          "reserve": 100
+        },
+        "after": {
+          "index": 7,
+          "state": "idle",
+          "mag": [
+            6,
+            2,
+            24,
+            36,
+            4,
+            3,
+            50,
+            4,
+            1,
+            1
+          ],
+          "ammo": {
+            "bullets": 100,
+            "shells": 100,
+            "slugs": 100,
+            "crosses": 100,
+            "nails": 100,
+            "souls": 96,
+            "tnt": 100,
+            "stakes": 100
+          },
+          "melee": false,
+          "voices": 0
+        },
+        "samples": 78,
+        "visible": 78
+      }
+    ]
+  },
+  "sightline": {
+    "phase": [
+      0.32,
+      0.62
+    ],
+    "aimDiskRadiusFractionOfHeight": 0.03,
+    "beforeFramingCorrection": [
+      {
+        "weapon": 5,
+        "width": 1024,
+        "height": 768,
+        "frames": 54,
+        "aimCentreCoveredFrames": 54,
+        "meanAimDiskCoveredFraction": 1
+      },
+      {
+        "weapon": 7,
+        "width": 1024,
+        "height": 768,
+        "frames": 65,
+        "aimCentreCoveredFrames": 65,
+        "meanAimDiskCoveredFraction": 1
+      },
+      {
+        "weapon": 5,
+        "width": 1280,
+        "height": 720,
+        "frames": 56,
+        "aimCentreCoveredFrames": 56,
+        "meanAimDiskCoveredFraction": 1
+      },
+      {
+        "weapon": 7,
+        "width": 1280,
+        "height": 720,
+        "frames": 68,
+        "aimCentreCoveredFrames": 68,
+        "meanAimDiskCoveredFraction": 1
+      }
+    ],
+    "afterFramingCorrection": [
+      {
+        "weapon": 5,
+        "width": 1024,
+        "height": 768,
+        "frames": 56,
+        "aimCentreCoveredFrames": 0,
+        "meanAimDiskCoveredFraction": 0
+      },
+      {
+        "weapon": 7,
+        "width": 1024,
+        "height": 768,
+        "frames": 61,
+        "aimCentreCoveredFrames": 0,
+        "meanAimDiskCoveredFraction": 0
+      },
+      {
+        "weapon": 5,
+        "width": 1280,
+        "height": 720,
+        "frames": 57,
+        "aimCentreCoveredFrames": 0,
+        "meanAimDiskCoveredFraction": 0
+      },
+      {
+        "weapon": 7,
+        "width": 1280,
+        "height": 720,
+        "frames": 65,
+        "aimCentreCoveredFrames": 0,
+        "meanAimDiskCoveredFraction": 0
+      }
+    ]
+  },
+  "unchangedWeapons": {
+    "cases": 477,
+    "passed": true
+  },
+  "crossEnclosureCache": {
+    "comparedPoses": 594,
+    "passed": true
+  },
+  "reloadRasterCPU": {
+    "method": "1280 x 720 native RAF, R-key reload. Serial ABBA under variable shared-host load. Same old scene for both, changed weapon renderer only.",
+    "runs": [
+      {
+        "candidate": false,
+        "weapons": [
+          {
+            "index": 5,
+            "n": 87,
+            "meanMs": 21.48,
+            "p95Ms": 30.3
+          },
+          {
+            "index": 7,
+            "n": 117,
+            "meanMs": 18.78,
+            "p95Ms": 22.2
+          }
+        ]
+      },
+      {
+        "candidate": true,
+        "weapons": [
+          {
+            "index": 5,
+            "n": 109,
+            "meanMs": 15.71,
+            "p95Ms": 19.5
+          },
+          {
+            "index": 7,
+            "n": 116,
+            "meanMs": 17,
+            "p95Ms": 21.7
+          }
+        ]
+      },
+      {
+        "candidate": true,
+        "weapons": [
+          {
+            "index": 5,
+            "n": 64,
+            "meanMs": 26.47,
+            "p95Ms": 33.2
+          },
+          {
+            "index": 7,
+            "n": 89,
+            "meanMs": 21.97,
+            "p95Ms": 26.5
+          }
+        ]
+      },
+      {
+        "candidate": false,
+        "weapons": [
+          {
+            "index": 5,
+            "n": 58,
+            "meanMs": 32.58,
+            "p95Ms": 41.8
+          },
+          {
+            "index": 7,
+            "n": 64,
+            "meanMs": 35.35,
+            "p95Ms": 43.2
+          }
+        ]
+      }
+    ]
+  },
+  "audio": {
+    "method": "Real-time master-output tap, R key, same courtyard, 64% effects setting. Original then revised, half-second silence between passes. No peak normalization.",
+    "events": [
+      {
+        "build": "original",
+        "weapon": 5,
+        "seconds": 2.7519727891156465,
+        "peak": 0.3336717756021536,
+        "rms": 0.08095035797086633,
+        "mag": 3,
+        "reserve": 97,
+        "revisedContactOnsets": []
+      },
+      {
+        "build": "original",
+        "weapon": 7,
+        "seconds": 3.1573242630385487,
+        "peak": 0.3660681533570266,
+        "rms": 0.10200829015059075,
+        "mag": 4,
+        "reserve": 96,
+        "revisedContactOnsets": []
+      },
+      {
+        "build": "revised",
+        "weapon": 5,
+        "seconds": 2.8159637188208615,
+        "peak": 0.4037197947904489,
+        "rms": 0.08199536450675994,
+        "mag": 3,
+        "reserve": 97,
+        "revisedContactOnsets": [
+          {
+            "event": "unseal",
+            "target": 0.1,
+            "actual": 0.10054545454545488
+          },
+          {
+            "event": "hinge",
+            "target": 0.165,
+            "actual": 0.16581818181818148
+          },
+          {
+            "event": "lift",
+            "target": 0.28,
+            "actual": 0.29604545454545417
+          },
+          {
+            "event": "seat",
+            "target": 0.645,
+            "actual": 0.6597272727272734
+          },
+          {
+            "event": "shut",
+            "target": 0.79,
+            "actual": 0.7976363636363634
+          },
+          {
+            "event": "catch",
+            "target": 0.86,
+            "actual": 0.862454545454546
+          }
+        ]
+      },
+      {
+        "build": "revised",
+        "weapon": 7,
+        "seconds": 3.1146485260770973,
+        "peak": 0.38457167270217313,
+        "rms": 0.10180619397579528,
+        "mag": 4,
+        "reserve": 96,
+        "revisedContactOnsets": [
+          {
+            "event": "unlock",
+            "target": 0.1,
+            "actual": 0.10326923076923077
+          },
+          {
+            "event": "pluck",
+            "target": 0.195,
+            "actual": 0.19996153846153766
+          },
+          {
+            "event": "turn",
+            "target": 0.4,
+            "actual": 0.4057307692307685
+          },
+          {
+            "event": "nest",
+            "target": 0.592,
+            "actual": 0.598423076923076
+          },
+          {
+            "event": "close",
+            "target": 0.72,
+            "actual": 0.7220384615384613
+          }
+        ]
+      }
+    ],
+    "checks": 77,
+    "pageErrors": []
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "inputSha256": "edcfa9f69cf68274e99748a853d0f1a84ac4376467ad93a61dbff0833f653cee",
+  "test": "tools/campaign-continue-tests.cjs",
+  "passes": [
+    "real menu and mouse look after reload",
+    "Prologue, Ash Bell Monastery and Gothic Dungeon entries",
+    "actual Vigil interaction, snapshot, actual death and Space respawn",
+    "ammo, health, position, relative clock, achievements and carried inventory",
+    "Monastery dial rotation with E and Ash Seal persistence",
+    "chapter selection and QA protect current campaign",
+    "older tab does not replace or clear a new campaign",
+    "final chapter clears slot",
+    "bounded malformed data and denied local storage",
+    "outdated shrine falls back to its playable chapter start"
+  ],
+  "canonicalAudioChecks": 77,
+  "canonicalArsenal": "all ten weapons fire/reload/switch/kick/cache",
+  "screens": [
+    [
+      1280,
+      720
+    ],
+    [
+      800,
+      460
+    ]
+  ]
+}

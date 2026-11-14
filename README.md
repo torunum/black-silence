@@ -19,6 +19,14 @@ Gotik piksel FPS oyununun on silah, deri eldiven ve prologue cehennem bölümü 
 
 ## Bu sürüm
 
+Ana menüde **Continue**, son etkinleştirdiğin shrine'dan oyuna dönmeni sağlar. Bölümde henüz shrine etkinleştirmediysen bölüm girişinden başlarsın. Kaldığın yer, envanter ve bölümdeki keşiflerin aynı tarayıcıda ve aynı dosya adresinde saklanır. **Select Chapter** ile ayrı bir bölüm oynarken kampanya kaydın korunur. [Menü görünümü](docs/campaign-nov14/menu-1280.png).
+
+Manastırda ay ve yıldız kadranları kütüphaneye geçit açıyor. Prologue'un cehennem köprüsü ve arenasında dokuz figürlü vitray var. Fabrikanın kömür deposunda yere vurmak için iki kolunu kaldıran ağır düşmanla karşılaşacaksın. [Manastır geçidi](docs/monastery-nov14.md) · [Cehennem vitrayları](docs/prologue-vitray-nov14.md) · [Fabrika düşmanları](docs/factory-nov14/README.md).
+
+Holy Cross Launcher'ın menteşeli tepesi, Soul Reaper'ın kemik kıskaçları ve iki silahın doldurma sesi yenilendi. [Oyun içi görüntüler ve sesler](docs/relics-nov14/README.md).
+
+## 13 Kasım sürümü
+
 **Nöbet çanı.** Prologue'daki harap şapelde bir duvar çanı var. Yaklaşıp yüzünü çana dön ve **E** ile çal: taş kapak iner, bir kez alınabilen altı fişek açığa çıkar. Bu isteğe bağlı keşif bölümün sır sayısına ve sonuç notuna katılır. [Çanın sesini dinle](docs/vigil-nov13/toll.wav).
 
 Nail Cannon'ın doldurma eli artık hazneye kilit açılmadan ulaşıyor; el ve hazne birlikte ayrılıp bakır yuvaya geri oturuyor. Arka kabzanın tutuşu referansa göre yenilendi. [Doldurma karşılaştırması](docs/nail-cannon-nov13/README.md).
