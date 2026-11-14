@@ -533,7 +533,7 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
     const t=state.wstate==='reload'?Math.max(0,Math.min(1,state.wtime/weapons[index].reload)):-1;
     const show=t<0?0:ease(t,0,.14)*(1-ease(t,.84,1));
     const ready=state.wstate==='equip'?ease(state.wtime,0,state.equipT||.25):state.wstate==='unequip'?1-ease(state.wtime,0,state.unequipT||.2):1;
-    const offset=MR()*((index===5?.12:index===7?.066:index===9?.052:0)*ready+show*(index===4?.10:index===9?-.062:index===5?-.113:index===7?-.17:0));
+    const offset=MR()*((index===5?.12:index===7?.066:index===9?.012:0)*ready+show*(index===4?.10:index===9?-.022:index===5?-.113:index===7?-.17:0));
     const sideways=MR()*show*(index===4?-.22:index===7?-.060:0);
     if(!offset&&!sideways)return nativeMechanismPresentation(dt,now,state,weapons);
     const ctx=ER();ctx.save();ctx.translate(sideways,-offset);

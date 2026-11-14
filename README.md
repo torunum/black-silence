@@ -24,7 +24,7 @@ Gotik piksel FPS oyununun on silah, deri eldiven ve prologue cehennem bölümü 
 
 ## Bu sürüm
 
-**Gothic Dungeon.** Anahtar mahzeninden bakınca demir parmaklığı tutan çatlak meşe takozu görünüyor. Ateş ederek veya tekmeyle kırdığında karşı ağırlık iniyor, parmaklık yükseliyor ve geçitten iki yönde yürüyebiliyorsun. Yeşil zindan muhafızı tükürmeden önce başını kaldırıyor. Leş tazısı sıçramadan önce omzunu indirip arka bacaklarını topluyor. [Yaratıkların oyun içi görüntüleri](docs/gaol-creatures-nov14/README.md).
+**Gothic Dungeon.** Anahtar mahzeninden bakınca demir parmaklığı tutan çatlak meşe takozu görünüyor. Ateş ederek veya tekmeyle kırdığında karşı ağırlık iniyor, parmaklık yükseliyor ve geçitten iki yönde yürüyebiliyorsun. Yeşil zindan muhafızı tükürmeden önce başını kaldırıyor. Leş tazısı sıçramadan önce omzunu indirip arka bacaklarını topluyor. [Geçit ve harita](docs/gaol-sally-port-nov14/README.md) · [Yaratıkların oyun içi görüntüleri](docs/gaol-creatures-nov14/README.md).
 
 **Stake Gun.** Silaha sahipken **0** ile seçip **R** ile doldur. Ahşap kazığın yivli taşıyıcıdan çıkışını ve elde yeni kazığın yuvaya oturuşunu [oyun içi kayıtta](docs/stake-warden-nov14/stake-reload.webm) görebilirsin.
 
@@ -146,4 +146,4 @@ npm run test:build
 
 `tools/build-game.cjs` modülleri mevcut motorun önüne yerleştirir; aynı kaynaklarla tekrar derleme aynı HTML'yi üretir. `src/viewmodels.js` tüm on silahı ve el/bot çizimini, `src/prologue.js` bölüm ayrıntılarını, `src/reload-audio.js` doldurma seslerini içerir. Diğer test komutları `package.json` içindedir. Yerel sunucu tercih edilirse `npm start` kullanılabilir; tek HTML'yi açmak için sunucu gerekmez.
 
-14 Kasım için hazırlanan yerel geliştirici paketi `dist/THE-BLACK-SILENCE-2026-11-14-PARISH.zip` adını taşır. Oyunun HTML dosyasını, kaynak kodlarını, görsel varlıkları, belgeleri ve geliştirme araçlarını içerir. Diğer bir bilgisayarda güncel sürümü almak için [GitHub ana oyun dosyasını](https://github.com/torunum/black-silence/raw/refs/heads/main/THE-BLACK-SILENCE.html) indirebilirsin.
+14 Kasım için hazırlanan yerel geliştirici paketi `dist/THE-BLACK-SILENCE-2026-11-14-GAOL.zip` adını taşır. Oyunun HTML dosyasını, kaynak kodlarını, görsel varlıkları, belgeleri ve geliştirme araçlarını içerir. Diğer bir bilgisayarda güncel sürümü almak için [GitHub ana oyun dosyasını](https://github.com/torunum/black-silence/raw/refs/heads/main/THE-BLACK-SILENCE.html) indirebilirsin.

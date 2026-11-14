@@ -44,6 +44,7 @@ if (!village.startsWith(villageBegin) || !village.trimEnd().endsWith(villageEnd)
   throw new Error("Unexpected village source markers.");
 const code = [
   "materials.js",
+  "munition-tin.js",
   "combat.js",
   "heavy-enemies.js",
   "enemy-animation.js",

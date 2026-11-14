@@ -1,5 +1,11 @@
 # Doğrulama — 14 Kasım 2026
 
+## Zindan teslimi
+
+Yeni tek dosya 18.945.949 bayt. SHA-256 `fd809a3a410f390e21e9b2e4cc7ebfe2606ba8c346c2bb899062d91fc83a8d6e`. Art arda iki derleme aynı dosyayı verdi. Gerçek eski zindan kaydında keşfedilmiş 219 hücrenin 216'sı yeni plana taşındı. Yeniden şekillenen üç duvar hücresi tekrar ziyaret edilene kadar gizli kaldı. Bir sonraki kayıt ve Continue açılmış parmaklığı, tek sır puanını ve cephaneyi geri getirdi. [Kayıt aktarımı](gaol-sally-port-nov14/campaign-upgrade.json) · [Zindan ve port](gaol-sally-port-nov14/README.md) · [Harita ve pusula](wayfinding-nov14/README.md).
+
+## Önceki Parish teslimi
+
 Teslim edilen tek HTML dosyası 18.551.365 bayt. SHA-256 `8d31559d3d5540c5070ac7325e6c973a41e8402d402e09f5f8012712f1088ec7`. İki bağımsız yeniden derleme aynı dosyayı üretti. Sekiz hasarlı derleme girdisi dosya değişmeden reddedildi. [Son sürümün ölçümleri](verification-data/nov14-parish-release.json) · [Modül ve kanıt hashleri](build-info.json).
 
 Son dosyada Chrome on bir bölümü yükledi. Ayrı bir dizinde tek dosyayı çevrimdışı açıp ana menüden New Game ile oynadık. Silah 6/60 iken ateş 5/60, ardından R 6/59 gösterdi. Ses çıkışı ölçüldü. Haricî ağ isteği ve oyun hatası kaydedilmedi. HUD 27 örnek durumda sınandı ve iki karşılaştırma görüntüsünün pikselleri eşleşti. [HUD ölçümleri](hud-nov14/README.md).

@@ -111,7 +111,26 @@ function instruments(){
     V5(true);Jt("pause").classList.add("hidden");Jt("msg").style.visibility="hidden";
     Jt("bossbar").style.visibility="hidden";
   }
+  function prepareKick(){
+    const q=window.__BLACK_SILENCE_QA;q.resetCombat();T.kickCd=0;Be.inputLock=false;V5(false);
+    for(const old of v.enemies)J.scene.remove(old.sp,old.blob);v.enemies.length=0;
+    setView(28.72,43,34.5,43,Yo);
+    const actor=Du("z",32.72,43,true);
+    Object.assign(actor,{hp:200,maxhp:200,aware:true,flingCD:100,cool:10,flank:0});
+    window.__sallyKickActor=actor;return !fu(C.px,C.pz)&&!d0(actor.x,actor.z);
+  }
+  function fly(){
+    const e=window.__sallyKickActor,trail=[];
+    for(let i=0;i<230;i++){
+      m_(1/60);v$(1/60);qtt(1/60);C.spawnGuard=100;
+      trail.push({x:e.x,z:e.z,flung:e.flung,stun:e.stun,hp:e.hp,solid:d0(e.x,e.z)});
+    }
+    const launch=trail.find(s=>s.flung>0),land=launch&&trail.slice(trail.indexOf(launch)+1).find(s=>s.flung===0);
+    return {launch,land,last:trail.at(-1),maxX:Math.max(...trail.map(s=>s.x)),touchedSolid:trail.some(s=>s.solid)};
+  }
   window.__sallyTest={state,tick,aim,feel,mapDiff,ballistics,setView,load,frame,observeDisposal,settle,
+    prepareKick,fly,sprint(){for(let i=0;i<13;i++)m_(1/60);return Math.hypot(C.vx,C.vz);},
+    isDrop(){return !!window.__BLACK_SILENCE_QA.melee()?.drop;},
     render(){Fk(performance.now());},
     disposed:()=>window.__sallyResources, fire(on){Ct.firing=on;},walkTick(){const down=li.KeyW;tick(32);return {down,x:C.px,z:C.pz};},
     resume(){V5(false);Jt("msg").style.visibility="";},facts:FX,
@@ -188,8 +207,19 @@ fs.writeFileSync(fixture,candidate.replace(mark,()=>capturePrevious+mark).replac
     const legacy={...saved.facts,opened:saved.facts.opened.filter(k=>k!=="17,21"),broken:[]};
     await call("load",1);await call("restore",legacy);assert((await call("state")).closed);
     const stays=[];for(const level of [5,1,0,1]){if(level!==1)await call("observeDisposal");await call("load",level);if(level!==1){const old=await call("disposed");assert(old.every(d=>d.count===1));stays.push(old.length);}}
+    const flights=[];
+    for(const open of [false,true]){
+      await call("load",1);
+      if(open){await call("aim","front");await page.mouse.down();await call("tick",2);await page.mouse.up();await call("openAll");}
+      assert(await call("prepareKick"));await page.keyboard.down("ShiftLeft");await page.keyboard.down("KeyW");
+      assert((await call("sprint"))>7);await page.mouse.click(640,360,{button:"right"});assert(await call("isDrop"));
+      await page.keyboard.up("KeyW");await page.keyboard.up("ShiftLeft");const path=await call("fly");flights.push({open,...path});
+      assert(path.launch&&path.land&&path.last.hp>0&&!path.last.flung&&!path.last.stun&&!path.touchedSolid,JSON.stringify(path));
+      assert(open?path.maxX>36.25:path.maxX<34,JSON.stringify(path));
+      assert(Math.hypot(path.last.x-path.land.x,path.last.z-path.land.z)>.15,"AI recovers after landing");
+    }
     assert.deepEqual(errors,[]);assert.equal(hash(fs.readFileSync(input,"utf8")),hash(html));
-    const report={inputSHA256:hash(html),candidateSHA256:hash(candidate),moduleSHA256:hash(moduleText),integrated,diff,shape,initial,barred,blockedShots,shotPaths,ballistics,impact,lifting,pause,opened,walks,kicked,tallies,legacyClosed:true,disposed:stays,errors};
+    const report={inputSHA256:hash(html),candidateSHA256:hash(candidate),moduleSHA256:hash(moduleText),integrated,diff,shape,initial,barred,blockedShots,shotPaths,ballistics,impact,lifting,pause,opened,walks,kicked,flights,tallies,legacyClosed:true,disposed:stays,errors};
     fs.writeFileSync(path.join(out,"verification.json"),JSON.stringify(report,null,2)+"\n");console.log("PASS",JSON.stringify({shape,walks,ballistics,hash:hash(candidate)}));
   }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;}).finally(()=>{fs.unlinkSync(fixture);if(fs.existsSync(priorStage))fs.unlinkSync(priorStage);fs.rmdirSync(temp);});

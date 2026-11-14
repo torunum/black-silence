@@ -1,0 +1,467 @@
+{
+  "inputSHA256": "38c22c6d0405019ec6658f4a5bb2b4cde31db6912f52b8ac9c4ba8c3eadd0490",
+  "candidateSHA256": "28a622e7e94fba82ed28335ab87ce32d93fc7ab9430cec97d80c191826cda758",
+  "moduleSHA256": "09db0af5e4177be813e931fbe99f10108d9ded33c9ef04952b0377253cce0480",
+  "integrated": false,
+  "diff": {
+    "grid": [
+      [
+        17,
+        20,
+        "#",
+        "."
+      ],
+      [
+        17,
+        21,
+        "#",
+        "S"
+      ],
+      [
+        17,
+        22,
+        "#",
+        "."
+      ]
+    ],
+    "ceiling": [
+      [
+        15,
+        19,
+        0,
+        4.53
+      ],
+      [
+        16,
+        19,
+        0,
+        4.53
+      ],
+      [
+        15,
+        20,
+        0,
+        4.53
+      ],
+      [
+        16,
+        20,
+        0,
+        4.53
+      ],
+      [
+        17,
+        20,
+        0,
+        4.53
+      ],
+      [
+        15,
+        21,
+        0,
+        4.53
+      ],
+      [
+        16,
+        21,
+        0,
+        4.53
+      ],
+      [
+        17,
+        21,
+        0,
+        4.53
+      ],
+      [
+        18,
+        21,
+        0,
+        4.53
+      ],
+      [
+        19,
+        21,
+        0,
+        4.53
+      ],
+      [
+        15,
+        22,
+        0,
+        4.53
+      ],
+      [
+        16,
+        22,
+        0,
+        4.53
+      ],
+      [
+        17,
+        22,
+        0,
+        4.53
+      ],
+      [
+        18,
+        22,
+        0,
+        4.53
+      ],
+      [
+        19,
+        22,
+        0,
+        4.53
+      ]
+    ],
+    "others": true,
+    "decor": [
+      {
+        "k": "brazier",
+        "x": 16,
+        "z": 20,
+        "r": 0.15267178531266842
+      }
+    ],
+    "added": []
+  },
+  "shape": {
+    "meshes": 13,
+    "triangles": 13241,
+    "lights": 0,
+    "resources": 18
+  },
+  "initial": {
+    "closed": true,
+    "keeper": false,
+    "glide": 0,
+    "fall": 1.45,
+    "shut": true,
+    "count": 0,
+    "total": 3,
+    "broken": 0,
+    "oldDoors": [
+      "33,4",
+      "44,7",
+      "33,11",
+      "36,12",
+      "9,13",
+      "9,23",
+      "23,24",
+      "43,24",
+      "50,27",
+      "43,36"
+    ],
+    "key": false,
+    "ammo": 6,
+    "warden": 1,
+    "marks": [
+      [
+        73,
+        29
+      ],
+      [
+        101,
+        59
+      ]
+    ],
+    "x": 28.15,
+    "z": 37.55,
+    "locked": true,
+    "gate": false,
+    "feedback": "LEVEL 2 — THE GOTHIC DUNGEON",
+    "blockedInput": false,
+    "paused": false,
+    "overlay": false,
+    "busy": false,
+    "started": true
+  },
+  "barred": {
+    "closed": true,
+    "keeper": false,
+    "glide": 0,
+    "fall": 1.45,
+    "shut": true,
+    "count": 0,
+    "total": 3,
+    "broken": 0,
+    "oldDoors": [
+      "33,4",
+      "44,7",
+      "33,11",
+      "36,12",
+      "9,13",
+      "9,23",
+      "23,24",
+      "43,24",
+      "50,27",
+      "43,36"
+    ],
+    "key": false,
+    "ammo": 6,
+    "warden": 1,
+    "marks": [
+      [
+        73,
+        29
+      ],
+      [
+        101,
+        59
+      ]
+    ],
+    "x": 36.92,
+    "z": 43,
+    "locked": true,
+    "gate": false,
+    "feedback": "BARRED FROM THE OTHER SIDE — THE KEY VAULT",
+    "blockedInput": false,
+    "paused": false,
+    "overlay": false,
+    "busy": false,
+    "started": true
+  },
+  "blockedShots": [
+    14,
+    false
+  ],
+  "shotPaths": {
+    "gap": false,
+    "bar": true,
+    "brace": true,
+    "jamb": true,
+    "highStone": true,
+    "sideWall": true
+  },
+  "ballistics": [
+    {
+      "name": "opening",
+      "bullet": true,
+      "stake": true
+    },
+    {
+      "name": "upright",
+      "bullet": false,
+      "stake": false
+    },
+    {
+      "name": "lower crossbar",
+      "bullet": false,
+      "stake": false
+    },
+    {
+      "name": "side jamb",
+      "bullet": false,
+      "stake": false
+    }
+  ],
+  "impact": {
+    "closed": true,
+    "keeper": true,
+    "glide": 0,
+    "fall": 1.45,
+    "shut": true,
+    "count": 1,
+    "total": 3,
+    "broken": 1,
+    "oldDoors": [
+      "33,4",
+      "44,7",
+      "33,11",
+      "36,12",
+      "9,13",
+      "9,23",
+      "23,24",
+      "43,24",
+      "50,27",
+      "43,36"
+    ],
+    "key": false,
+    "ammo": 5,
+    "warden": 1,
+    "marks": [
+      [
+        73,
+        29
+      ],
+      [
+        101,
+        59
+      ]
+    ],
+    "x": 32.04,
+    "z": 41.8296,
+    "locked": true,
+    "gate": false,
+    "feedback": "SECRET FOUND — THE GAOLER'S PASSAGE",
+    "blockedInput": false,
+    "paused": false,
+    "overlay": false,
+    "busy": false,
+    "started": true
+  },
+  "lifting": {
+    "closed": true,
+    "keeper": true,
+    "glide": 0.024089596155922672,
+    "fall": 1.439996693121693,
+    "shut": true,
+    "count": 1,
+    "total": 3,
+    "broken": 1,
+    "oldDoors": [
+      "33,4",
+      "44,7",
+      "33,11",
+      "36,12",
+      "9,13",
+      "9,23",
+      "23,24",
+      "43,24",
+      "50,27",
+      "43,36"
+    ],
+    "key": false,
+    "ammo": 5,
+    "warden": 1,
+    "marks": [
+      [
+        73,
+        29
+      ],
+      [
+        101,
+        59
+      ]
+    ],
+    "x": 32.04,
+    "z": 41.8296,
+    "locked": true,
+    "gate": false,
+    "feedback": "SECRET FOUND — THE GAOLER'S PASSAGE",
+    "blockedInput": false,
+    "paused": false,
+    "overlay": false,
+    "busy": false,
+    "started": true
+  },
+  "pause": [
+    0.024089596155922672,
+    0.024089596155922672
+  ],
+  "opened": {
+    "closed": false,
+    "keeper": true,
+    "glide": 2.36,
+    "fall": 0.47,
+    "shut": false,
+    "count": 1,
+    "total": 3,
+    "broken": 1,
+    "oldDoors": [
+      "33,4",
+      "44,7",
+      "33,11",
+      "36,12",
+      "9,13",
+      "9,23",
+      "23,24",
+      "43,24",
+      "50,27",
+      "43,36"
+    ],
+    "key": false,
+    "ammo": 5,
+    "warden": 1,
+    "marks": [
+      [
+        73,
+        29
+      ],
+      [
+        101,
+        59
+      ]
+    ],
+    "x": 32.04,
+    "z": 41.8296,
+    "locked": true,
+    "gate": false,
+    "feedback": "SECRET FOUND — THE GAOLER'S PASSAGE",
+    "blockedInput": false,
+    "paused": false,
+    "overlay": false,
+    "busy": false,
+    "started": true
+  },
+  "walks": [
+    {
+      "down": true,
+      "x": 36.42995187826956,
+      "z": 43
+    },
+    {
+      "down": true,
+      "x": 33.87004812173044,
+      "z": 43
+    }
+  ],
+  "kicked": {
+    "closed": true,
+    "keeper": true,
+    "glide": 1.095777993737178,
+    "fall": 0.9949735449735446,
+    "shut": true,
+    "count": 1,
+    "total": 3,
+    "broken": 1,
+    "oldDoors": [
+      "33,4",
+      "44,7",
+      "33,11",
+      "36,12",
+      "9,13",
+      "9,23",
+      "23,24",
+      "43,24",
+      "50,27",
+      "43,36"
+    ],
+    "key": false,
+    "ammo": 6,
+    "warden": 1,
+    "marks": [
+      [
+        73,
+        29
+      ],
+      [
+        101,
+        59
+      ]
+    ],
+    "x": 32.04,
+    "z": 41.8296,
+    "locked": true,
+    "gate": false,
+    "feedback": "SECRET FOUND — THE GAOLER'S PASSAGE",
+    "blockedInput": false,
+    "paused": false,
+    "overlay": false,
+    "busy": false,
+    "started": true
+  },
+  "tallies": [
+    1,
+    1,
+    1
+  ],
+  "legacyClosed": true,
+  "disposed": [
+    18,
+    18
+  ],
+  "errors": []
+}

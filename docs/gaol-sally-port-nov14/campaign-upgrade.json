@@ -1,0 +1,54 @@
+{
+  "oldSHA256": "38c22c6d0405019ec6658f4a5bb2b4cde31db6912f52b8ac9c4ba8c3eadd0490",
+  "inputSHA256": "d6ad8a1886a7402ae837c5553b19869816f352fd1a0fddcb119256d2c7abb1e4",
+  "candidateSHA256": "d6ad8a1886a7402ae837c5553b19869816f352fd1a0fddcb119256d2c7abb1e4",
+  "oldMap": "7a18b2bb",
+  "newMap": "269c7657",
+  "oldSeen": 219,
+  "importedSeen": 216,
+  "oldDoorBits": [
+    1,
+    1,
+    1
+  ],
+  "newDoorBits": [
+    0,
+    0,
+    0
+  ],
+  "oldPropIndices": [
+    0
+  ],
+  "originalPropCount": 13,
+  "unchangedOldProps": 13,
+  "idPreserved": true,
+  "initKey": true,
+  "initialMagazine": 3,
+  "initArmor": 27,
+  "initHP": 64,
+  "twoRestarts": [
+    {
+      "x": 101,
+      "z": 59,
+      "secrets": 1,
+      "broken": [
+        0,
+        13
+      ],
+      "mag": 2,
+      "seen": 330
+    },
+    {
+      "x": 101,
+      "z": 59,
+      "secrets": 1,
+      "broken": [
+        0,
+        13
+      ],
+      "mag": 2,
+      "seen": 330
+    }
+  ],
+  "errors": []
+}
