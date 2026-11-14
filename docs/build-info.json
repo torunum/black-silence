@@ -1,7 +1,7 @@
 {
   "passed": true,
-  "bytes": 18467892,
-  "sha256": "5c42e12751aba2b89d6e986e4626a83cf6c3105bbdf213ce5ae0794fa3a8f3ed",
+  "bytes": 18473861,
+  "sha256": "41e096b5c04dafd3e7159d25bf75433b55089fbc1354dfaa14753aa98d060b96",
   "engineSha256": "6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899",
   "villageSha256": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627",
   "moduleHashes": {
@@ -9,6 +9,7 @@
     "combat.js": "f9e13f3a7ebe5b26e8c129a152ebb03c0e6873719f4a98d0c0e59e949550fdbf",
     "heavy-enemies.js": "bcdfecbdf96debde5d97467be959837f027cff8b5d415f1bf4dbfa8a4fc927f0",
     "enemy-animation.js": "767a60e867ff7b2a8917ae8b23fa938da8e8400bcfff883a0ebb13abb2eb02f3",
+    "guardian-volley.js": "87fbdc8d921c74c119eadcce7164d2ef45d8e2216c512825c7961e67dcbbdab9",
     "viewmodels.js": "1b267a90dcabc9736a822d9e546662e47e5497ef97c50951671019db1857cd84",
     "finishers.js": "8c2c7bdf13e17005c3383054560b155986d8e706b5bfda81e9f1a8224ee3c5b0",
     "reload-audio-data.js": "2f48b10a1225d1c007ee282d3c18f82c5022bb0267ed86d65feadf819ec1be30",
@@ -18,7 +19,7 @@
     "vigil-secret.js": "eee4d953810436e04f8758300541cd6a19ecd2272e39f8b781ffa212aa417e72",
     "monastery-nov14.js": "ca3ded666bb32ea82108e8d644c29edb6dc9fa5d5f1edb19c6dfb74050ff4609",
     "prologue-stained-glass.js": "61abbab4a1c33a2b27bfadf1bc8a78b2728bfb47ef8e59752f408ac337acaf58",
-    "render-warmup.js": "d0be2c069f155abfa9073b5996d92e7454d801b015b287e5500089be9ade3c59",
+    "render-warmup.js": "9a021fc24844f648460f0ee504653f74e200c1945dd33d4c8c06e71753325f15",
     "display-settings.js": "55681d7f89f77607da0a0649367513f22697e4762f1bba953081da4f4b982289",
     "chapter-records.js": "ad072e5d6a6e9eb7f6031b10660516948737a41ba74bd054d092fd5720914822",
     "campaign-continue.js": "4c45ee15ecec00065ae3ccfec71aae7c8039c75196e85323594fca3a04f4fab2",
@@ -28,9 +29,9 @@
   "idempotentBuilds": 2,
   "invalidInputsRefusedWithoutWrite": 8,
   "file": "THE-BLACK-SILENCE.html",
-  "verifiedAt": "2026-11-14T11:28:15.935Z",
-  "previousRelease": "4fd264487d5251e0dfc5e3915be5b1cf9f071e8e759724cd1857c3c5f0abd784",
-  "baselineCommit": "51700ba",
+  "verifiedAt": "2026-11-14T11:32:15.622Z",
+  "previousRelease": "5c42e12751aba2b89d6e986e4626a83cf6c3105bbdf213ce5ae0794fa3a8f3ed",
+  "baselineCommit": "f855b23",
   "verificationReports": [
     {
       "file": "docs/factory-nov14/verification.json",
@@ -63,6 +64,10 @@
     {
       "file": "docs/tommy-nov14/verification.json",
       "sha256": "1aa98df7f983ef06bfff14702f768a49b4e3bc512f2132b71d3867c939a64a01"
+    },
+    {
+      "file": "docs/guardian-nov14/verification.json",
+      "sha256": "65f95f566516ad30ad1283783bf19221be5257417c8bf89ec082b09b19285840"
     }
   ]
 }

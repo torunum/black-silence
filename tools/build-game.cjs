@@ -47,6 +47,7 @@ const code = [
   "combat.js",
   "heavy-enemies.js",
   "enemy-animation.js",
+  "guardian-volley.js",
   "viewmodels.js",
   "finishers.js",
   "reload-audio-data.js",

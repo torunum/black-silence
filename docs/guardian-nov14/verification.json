@@ -1,0 +1,253 @@
+{
+  "sha256": "41e096b5c04dafd3e7159d25bf75433b55089fbc1354dfaa14753aa98d060b96",
+  "checks": [
+    {
+      "level": 5,
+      "range": 6.4,
+      "comparedFrameNumbers": [
+        1,
+        11,
+        23,
+        32,
+        39,
+        52
+      ],
+      "samePositionHealthCollisionClockProjectiles": true,
+      "volley": [
+        [
+          -1.3256595891202467,
+          -1.341093167701849,
+          9.407051964020052
+        ],
+        [
+          0,
+          -1.341093167701849,
+          9.5
+        ],
+        [
+          1.3256595891202467,
+          -1.341093167701849,
+          9.407051964020052
+        ]
+      ],
+      "nativeFireFrame": 32
+    },
+    {
+      "level": 6,
+      "range": 5.6,
+      "comparedFrameNumbers": [
+        1,
+        11,
+        23,
+        32,
+        39,
+        52
+      ],
+      "samePositionHealthCollisionClockProjectiles": true,
+      "volley": [
+        [
+          1.9716887274355799,
+          -1.5760291970803189,
+          9.293139596611226
+        ],
+        [
+          3.2491913615936636,
+          -1.5760291970803189,
+          8.927079897466198
+        ],
+        [
+          4.463113794576349,
+          -1.5760291970803189,
+          8.386335031267372
+        ]
+      ],
+      "nativeFireFrame": 32
+    },
+    {
+      "level": 2,
+      "range": 7.2,
+      "comparedFrameNumbers": [
+        1,
+        11,
+        23,
+        32,
+        39,
+        52
+      ],
+      "samePositionHealthCollisionClockProjectiles": true,
+      "volley": [
+        [
+          1.1542353725584074,
+          -1.1671135135134747,
+          9.42962039027738
+        ],
+        [
+          2.458780928473894,
+          -1.1671135135134747,
+          9.176295349746162
+        ],
+        [
+          3.7152130405564137,
+          -1.1671135135134747,
+          8.743408492303193
+        ]
+      ],
+      "nativeFireFrame": 32
+    }
+  ],
+  "allChapters": [
+    {
+      "chapter": 1,
+      "box": [
+        2.242,
+        2.596
+      ],
+      "colors": [
+        "srgb"
+      ],
+      "edges": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "cache": true,
+      "cached1000Ms": 0.6000000089406967,
+      "newPixels": 41108
+    },
+    {
+      "chapter": 2,
+      "box": [
+        2.242,
+        2.596
+      ],
+      "colors": [
+        "srgb"
+      ],
+      "edges": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "cache": true,
+      "cached1000Ms": 0.09999999403953552,
+      "newPixels": 41108
+    },
+    {
+      "chapter": 3,
+      "box": [
+        2.242,
+        2.596
+      ],
+      "colors": [
+        "srgb"
+      ],
+      "edges": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "cache": true,
+      "cached1000Ms": 0.20000000298023224,
+      "newPixels": 41108
+    },
+    {
+      "chapter": 4,
+      "box": [
+        2.242,
+        2.596
+      ],
+      "colors": [
+        "srgb"
+      ],
+      "edges": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "cache": true,
+      "cached1000Ms": 0.10000000894069672,
+      "newPixels": 41108
+    },
+    {
+      "chapter": 5,
+      "box": [
+        2.242,
+        2.596
+      ],
+      "colors": [
+        "srgb"
+      ],
+      "edges": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "cache": true,
+      "cached1000Ms": 0.20000000298023224,
+      "newPixels": 41108
+    },
+    {
+      "chapter": 6,
+      "box": [
+        2.242,
+        2.596
+      ],
+      "colors": [
+        "srgb"
+      ],
+      "edges": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "cache": true,
+      "cached1000Ms": 0.09999999403953552,
+      "newPixels": 41108
+    },
+    {
+      "chapter": 7,
+      "box": [
+        2.242,
+        2.596
+      ],
+      "colors": [
+        "srgb"
+      ],
+      "edges": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "cache": true,
+      "cached1000Ms": 0,
+      "newPixels": 41108
+    },
+    {
+      "chapter": 8,
+      "box": [
+        2.242,
+        2.596
+      ],
+      "colors": [
+        "srgb"
+      ],
+      "edges": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "cache": true,
+      "cached1000Ms": 0.10000000894069672,
+      "newPixels": 41108
+    }
+  ],
+  "errors": []
+}

@@ -13,7 +13,7 @@
       if (!rig || prepared.has(rig)) continue;
       prepared.add(rig);
       try {
-        for (const [action, count] of [["pain", 2], ["atk", 3], ["slam", 4]]) {
+        for (const [action, count] of [["pain", 2], ["atk", 3], ["slam", 4], ["volley", 4]]) {
           if (!rig.rig?.poses[action]) continue;
           for (let frame = 0; frame < Math.min(count, Vu(rig.rig, action)); frame++)
             rig.tex(action, frame, 0);
