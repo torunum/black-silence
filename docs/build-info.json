@@ -1,7 +1,7 @@
 {
   "passed": true,
-  "bytes": 18551365,
-  "sha256": "8d31559d3d5540c5070ac7325e6c973a41e8402d402e09f5f8012712f1088ec7",
+  "bytes": 18559001,
+  "sha256": "38c22c6d0405019ec6658f4a5bb2b4cde31db6912f52b8ac9c4ba8c3eadd0490",
   "engineSha256": "6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899",
   "villageSha256": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627",
   "moduleHashes": {
@@ -25,15 +25,16 @@
     "display-settings.js": "55681d7f89f77607da0a0649367513f22697e4762f1bba953081da4f4b982289",
     "chapter-records.js": "ad072e5d6a6e9eb7f6031b10660516948737a41ba74bd054d092fd5720914822",
     "campaign-continue.js": "90e47b2eb6dd1934535aeadb74a13c5fde8744e0f9754c7594819c00c0d67e12",
+    "shrine-map.js": "2ccf2e2379beb687a91a273ad6ffc6ab6213c5f204c07cc85ad50558abf1a09b",
     "pause-settings.js": "e41bf6aa3977290d494545ea1a194797625b744cfd80180e2b78546e54bdef02",
     "village-presentation.js": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627"
   },
   "idempotentBuilds": 2,
   "invalidInputsRefusedWithoutWrite": 8,
   "file": "THE-BLACK-SILENCE.html",
-  "verifiedAt": "2026-11-14T12:13:47.898Z",
-  "previousRelease": "52933da3ee9e4a7ea9730653ab49b5e62e1df486d9eff1d32578f06f1fcb684c",
-  "baselineCommit": "74cb2db",
+  "verifiedAt": "2026-11-14T12:54:44.109Z",
+  "previousRelease": "8d31559d3d5540c5070ac7325e6c973a41e8402d402e09f5f8012712f1088ec7",
+  "baselineCommit": "c781a4b6897ce610ce292d83aa5924cc6beffe67",
   "verificationReports": [
     {
       "file": "docs/factory-nov14/verification.json",
@@ -102,6 +103,10 @@
     {
       "file": "docs/nov14-gameplay/verification.json",
       "sha256": "ce01320ffa90943996f851e54b74ccf10f653fd112aaf97f00629a9467a450fb"
+    },
+    {
+      "file": "docs/wayfinding-nov14/verification.json",
+      "sha256": "d97da623a21aa760381a01aa1398061e70d59fef2694c3818fbd157e63f5abbe"
     }
   ]
 }

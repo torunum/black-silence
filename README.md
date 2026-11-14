@@ -19,9 +19,12 @@ Gotik piksel FPS oyununun on silah, deri eldiven ve prologue cehennem bölümü 
 | Etkileşim / sendeleyen düşmanı bitir | E |
 | Silah değiştir | 1–9, 0 veya fare tekerleği |
 | Haritayı aç / bakıp bırak | M / Tab basılı tut |
+| Açık haritayı yakınlaştır / uzaklaştır | Fare tekerleği veya + ve − |
 | Sniper dürbünü | Z |
 
 ## Bu sürüm
+
+Haritadaki turkuaz adak lambası son etkinleştirdiğin kayıt noktasını gösterir. **M** veya **Tab** ile haritayı açıp tekerlekle yaklaştığında harita oyuncuyu merkezde tutar. [Harita ve pusulanın oyun içi görüntüleri](docs/wayfinding-nov14/README.md).
 
 Oyun içinden 18 saniyelik seçki. [Sesli oynanış videosu](docs/nov14-gameplay/gameplay.webm) · [Sahneler ve kayıt koşulları](docs/nov14-gameplay/README.md).
 
