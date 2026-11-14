@@ -1,7 +1,7 @@
 {
   "passed": true,
-  "bytes": 18462931,
-  "sha256": "4fd264487d5251e0dfc5e3915be5b1cf9f071e8e759724cd1857c3c5f0abd784",
+  "bytes": 18467892,
+  "sha256": "5c42e12751aba2b89d6e986e4626a83cf6c3105bbdf213ce5ae0794fa3a8f3ed",
   "engineSha256": "6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899",
   "villageSha256": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627",
   "moduleHashes": {
@@ -9,10 +9,10 @@
     "combat.js": "f9e13f3a7ebe5b26e8c129a152ebb03c0e6873719f4a98d0c0e59e949550fdbf",
     "heavy-enemies.js": "bcdfecbdf96debde5d97467be959837f027cff8b5d415f1bf4dbfa8a4fc927f0",
     "enemy-animation.js": "767a60e867ff7b2a8917ae8b23fa938da8e8400bcfff883a0ebb13abb2eb02f3",
-    "viewmodels.js": "0824faa0defa5778f9c264315d0e849b0dd5f5cdd0fabb32a8541ce515de7f08",
+    "viewmodels.js": "1b267a90dcabc9736a822d9e546662e47e5497ef97c50951671019db1857cd84",
     "finishers.js": "8c2c7bdf13e17005c3383054560b155986d8e706b5bfda81e9f1a8224ee3c5b0",
     "reload-audio-data.js": "2f48b10a1225d1c007ee282d3c18f82c5022bb0267ed86d65feadf819ec1be30",
-    "reload-audio.js": "6b4fa810886ca2df11b4a4db428fd18227411e464e56af3ec9be812b98f23573",
+    "reload-audio.js": "b583df949bd84a2d906abb492d62635cc8cfa11ef02031d469774de80ceae97b",
     "zombie-audio.js": "7f883bd656b0f7e0784d68e9e47e7612704e1df6b299ffc52e6d3f2cfcba2803",
     "prologue.js": "1b5ab0b99ecc80e41d1e7c183b28a52fe6ce3c51900988e28da61c24d91a8891",
     "vigil-secret.js": "eee4d953810436e04f8758300541cd6a19ecd2272e39f8b781ffa212aa417e72",
@@ -28,9 +28,9 @@
   "idempotentBuilds": 2,
   "invalidInputsRefusedWithoutWrite": 8,
   "file": "THE-BLACK-SILENCE.html",
-  "verifiedAt": "2026-11-14T11:17:46.714Z",
-  "previousRelease": "edcfa9f69cf68274e99748a853d0f1a84ac4376467ad93a61dbff0833f653cee",
-  "baselineCommit": "7a39ad7",
+  "verifiedAt": "2026-11-14T11:28:15.935Z",
+  "previousRelease": "4fd264487d5251e0dfc5e3915be5b1cf9f071e8e759724cd1857c3c5f0abd784",
+  "baselineCommit": "51700ba",
   "verificationReports": [
     {
       "file": "docs/factory-nov14/verification.json",
@@ -59,6 +59,10 @@
     {
       "file": "docs/pause-settings-nov14/verification.json",
       "sha256": "205dfe21e2763f225bba0afd443c4a958ffdab82411fe4afaec6ee1fe944faaa"
+    },
+    {
+      "file": "docs/tommy-nov14/verification.json",
+      "sha256": "1aa98df7f983ef06bfff14702f768a49b4e3bc512f2132b71d3867c939a64a01"
     }
   ]
 }

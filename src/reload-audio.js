@@ -1,4 +1,4 @@
-// Close mechanical foley for the handguns, coach gun and two reliquaries. Audio follows animation
+// Recorded close mechanical foley follows the weapons' animation
 // phase crossings, not wall-clock timers, and keeps the native ammo/state rules.
 (() => {
   const timing = window.__BLACK_SILENCE_RELOAD_TIMING;
@@ -26,7 +26,15 @@
   };
   // All cues use the same recorded metal as the sidearms. Playback rate,
   // emphasis and the shape of the contact give each relic its own scale.
-  const relicCues = {
+  const weaponCues = {
+    3: {
+      release: { at: Ac.out[0], clip: "latch", rate: .92, gain: .33 },
+      lift: { at: Ac.out[1] - .045, clip: "slide", rate: .70, gain: .31 },
+      align: { at: Ac.seat[0] + .095, clip: "eject", rate: .80, gain: .28 },
+      seat: { at: Ac.seat[1], clip: "seat", rate: .82, gain: .50 },
+      charge: { at: Ac.knob[0] + .028, clip: "hinge", rate: 1.08, gain: .32 },
+      lock: { at: Ac.knob[1] - .012, clip: "close", rate: .94, gain: .40 },
+    },
     5: {
       unseal: { at: uc.lid[0], clip: "latch", rate: .81, gain: .40 },
       hinge: { at: uc.lid[0] + .065, clip: "hinge", rate: .78, gain: .29 },
@@ -43,8 +51,8 @@
       close: { at: ya.claws[1], clip: "close", rate: .63, gain: .35 },
     },
   };
-  const owned = () => (T.cur < 2 || !!relicCues[T.cur]) && St.wstate === "reload";
-  const parameters = (index, event) => relicCues[index]?.[event] || ({
+  const owned = () => (T.cur < 2 || !!weaponCues[T.cur]) && St.wstate === "reload";
+  const parameters = (index, event) => weaponCues[index]?.[event] || ({
     clip: specs[event].clip,
     rate: specs[event].rate * (index === 1 ? 0.91 : 1.04),
     gain: specs[event].gain * (index === 1 ? 1.08 : 0.92),
@@ -203,7 +211,7 @@
     J_[index] = Object.keys(specs)
       .map((event) => ({ at: timing[event], play: () => play(index, event) }))
       .sort((a, b) => a.at - b.at);
-  for (const [id, cues] of Object.entries(relicCues)) {
+  for (const [id, cues] of Object.entries(weaponCues)) {
     const index = Number(id);
     J_[index] = Object.entries(cues).map(([event, cue]) => ({
       at: cue.at, play: () => play(index, event),

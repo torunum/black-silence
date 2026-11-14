@@ -27,6 +27,8 @@ Manastırda ay ve yıldız kadranları kütüphaneye geçit açıyor. Prologue'u
 
 Holy Cross Launcher'ın menteşeli tepesi, Soul Reaper'ın kemik kıskaçları ve iki silahın doldurma sesi yenilendi. [Oyun içi görüntüler ve sesler](docs/relics-nov14/README.md).
 
+Tommy Gun doldurulurken destek eli tamburu çıkarıp yenisini yerine oturtuyor ve kurma hareketini tamamlıyor. [Oyun içi video ve ses karşılaştırması](docs/tommy-nov14/README.md).
+
 ## 13 Kasım sürümü
 
 **Nöbet çanı.** Prologue'daki harap şapelde bir duvar çanı var. Yaklaşıp yüzünü çana dön ve **E** ile çal: taş kapak iner, bir kez alınabilen altı fişek açığa çıkar. Bu isteğe bağlı keşif bölümün sır sayısına ve sonuç notuna katılır. [Çanın sesini dinle](docs/vigil-nov13/toll.wav).

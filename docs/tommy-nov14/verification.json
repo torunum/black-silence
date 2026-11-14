@@ -1,0 +1,218 @@
+{
+  "privateBuild": "5c42e12751aba2b89d6e986e4626a83cf6c3105bbdf213ce5ae0794fa3a8f3ed",
+  "sourceSHA256": "1b267a90dcabc9736a822d9e546662e47e5497ef97c50951671019db1857cd84",
+  "audioSHA256": "b583df949bd84a2d906abb492d62635cc8cfa11ef02031d469774de80ceae97b",
+  "sourceBaseCommit": "51700ba",
+  "beforeAndAfter": [
+    {
+      "input": "4fd264487d5251e0dfc5e3915be5b1cf9f071e8e759724cd1857c3c5f0abd784",
+      "frames": 15,
+      "endpoints": [
+        {
+          "width": 1024,
+          "height": 768,
+          "fired": 33,
+          "index": 3,
+          "mag": 36,
+          "size": 36,
+          "ammo": 64,
+          "override": false
+        },
+        {
+          "width": 1280,
+          "height": 720,
+          "fired": 34,
+          "index": 3,
+          "mag": 36,
+          "size": 36,
+          "ammo": 64,
+          "override": false
+        },
+        {
+          "width": 1680,
+          "height": 720,
+          "fired": 34,
+          "index": 3,
+          "mag": 36,
+          "size": 36,
+          "ammo": 64,
+          "override": false
+        }
+      ],
+      "errors": [],
+      "passed": true
+    },
+    {
+      "input": "5c42e12751aba2b89d6e986e4626a83cf6c3105bbdf213ce5ae0794fa3a8f3ed",
+      "frames": 15,
+      "endpoints": [
+        {
+          "width": 1024,
+          "height": 768,
+          "fired": 35,
+          "index": 3,
+          "mag": 36,
+          "size": 36,
+          "ammo": 64,
+          "override": false
+        },
+        {
+          "width": 1280,
+          "height": 720,
+          "fired": 35,
+          "index": 3,
+          "mag": 36,
+          "size": 36,
+          "ammo": 64,
+          "override": false
+        },
+        {
+          "width": 1680,
+          "height": 720,
+          "fired": 34,
+          "index": 3,
+          "mag": 36,
+          "size": 36,
+          "ammo": 64,
+          "override": false
+        }
+      ],
+      "errors": [],
+      "passed": true
+    }
+  ],
+  "outsideSlot3PixelParity": {
+    "cases": 537,
+    "passed": true
+  },
+  "actions": {
+    "passed": true,
+    "transitions": [
+      {
+        "index": 3,
+        "firedMag": 35,
+        "switchedTo": 4,
+        "cancelledMag": 0,
+        "kickRecovered": true
+      }
+    ],
+    "fireCancellation": [
+      {
+        "index": 3,
+        "pass": true,
+        "state": "fire",
+        "reserve": 100
+      }
+    ]
+  },
+  "audio": {
+    "checks": 89,
+    "pageErrors": [],
+    "captured": [
+      {
+        "build": "base",
+        "seconds": 2.4959637188208617,
+        "peak": 0.30815208363696434,
+        "rms": 0.06555964774449266,
+        "events": []
+      },
+      {
+        "build": "v3",
+        "seconds": 2.175963718820862,
+        "peak": 0.35225762396449206,
+        "rms": 0.08242823097421681,
+        "events": [
+          {
+            "name": "release",
+            "phase": 0.09046666666666715
+          },
+          {
+            "name": "lift",
+            "phase": 0.19546666666666715
+          },
+          {
+            "name": "align",
+            "phase": 0.49586666666666623
+          },
+          {
+            "name": "seat",
+            "phase": 0.6030666666666658
+          },
+          {
+            "name": "charge",
+            "phase": 0.8140000000000001
+          },
+          {
+            "name": "lock",
+            "phase": 0.9762666666666653
+          }
+        ]
+      }
+    ]
+  },
+  "performance": {
+    "method": "Real R, 1280x720 Chrome, serial ABBA on shared host. Same map and other features in both variants.",
+    "runs": [
+      {
+        "candidate": false,
+        "reload": [
+          {
+            "samples": 84,
+            "rasterMedianMs": 9.799999997019768,
+            "rasterMeanMs": 10.157142858242704,
+            "frameMedianMs": 18,
+            "frameMeanMs": 17.8698795180723
+          }
+        ]
+      },
+      {
+        "candidate": true,
+        "reload": [
+          {
+            "samples": 81,
+            "rasterMedianMs": 10.900000005960464,
+            "rasterMeanMs": 11.9148148143733,
+            "frameMedianMs": 18,
+            "frameMeanMs": 18.771249999999988
+          }
+        ]
+      },
+      {
+        "candidate": true,
+        "reload": [
+          {
+            "samples": 85,
+            "rasterMedianMs": 10.300000011920929,
+            "rasterMeanMs": 10.418823528640411,
+            "frameMedianMs": 17.600000000000364,
+            "frameMeanMs": 17.658333333333324
+          }
+        ]
+      },
+      {
+        "candidate": false,
+        "reload": [
+          {
+            "samples": 84,
+            "rasterMedianMs": 11.599999994039536,
+            "rasterMeanMs": 11.609523809381894,
+            "frameMedianMs": 18,
+            "frameMeanMs": 17.928915662650585
+          }
+        ]
+      }
+    ]
+  },
+  "video": {
+    "durationSeconds": 3.6,
+    "width": 1280,
+    "height": 720,
+    "framesPerSecond": 25,
+    "codec": "VP9/Opus",
+    "inputs": [
+      "digit 4",
+      "held mouse fire",
+      "R"
+    ]
+  }
+}
