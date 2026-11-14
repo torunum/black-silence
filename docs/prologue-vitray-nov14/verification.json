@@ -1,0 +1,486 @@
+{
+  "standaloneSHA256": "bb219035765ec810c4795ec022e378cecdc30ed8ebbad6e498e76bd4c16b913e",
+  "moduleSHA256": "34a1172ec0803bef48a74b0b03258b0405811d22ed72fa4481becf1cf4d11379",
+  "targetSHA256": "39fab406327e4a3bfd3aff0831c05ba4b2744077cedc69dc3979f93562b451dc",
+  "fixtureSHA256": "adfdab9d5d616628c6875febcf80030c49cb60679bd319e4e3baa1922956457f",
+  "map": {
+    "exact": true,
+    "site": [
+      {
+        "k": "hellLancetShrine",
+        "x": 27,
+        "z": 26,
+        "r": 1.5707963267948966,
+        "s": 2.75
+      },
+      {
+        "k": "hellLancetShrine",
+        "x": 40,
+        "z": 39.7,
+        "s": 2.2
+      },
+      {
+        "k": "hellLancetShrine",
+        "x": 35,
+        "z": 59.6,
+        "s": 2.65
+      }
+    ],
+    "points": [
+      {
+        "k": "light",
+        "x": 18.4,
+        "z": 22.8,
+        "s": 5.2,
+        "h": 15,
+        "r": 1.2
+      },
+      {
+        "k": "light",
+        "x": 18.4,
+        "z": 29.2,
+        "s": 5.2,
+        "h": 15,
+        "r": 1.2
+      },
+      {
+        "k": "light",
+        "x": 25.2,
+        "z": 22.4,
+        "s": 5.2,
+        "h": 15,
+        "r": 1.2
+      },
+      {
+        "k": "light",
+        "x": 25.2,
+        "z": 29.6,
+        "s": 5.2,
+        "h": 15,
+        "r": 1.2
+      },
+      {
+        "k": "light",
+        "x": 29,
+        "z": 4,
+        "s": 1.7,
+        "h": 7.5,
+        "r": 1.7
+      },
+      {
+        "k": "light",
+        "x": 9.5,
+        "z": 7.7,
+        "s": 0.65,
+        "h": 8,
+        "r": 1.2
+      },
+      {
+        "k": "light",
+        "x": 9.5,
+        "z": 10.5,
+        "s": 2.3,
+        "h": 10,
+        "r": 0.8
+      },
+      {
+        "k": "light",
+        "x": 9.5,
+        "z": 13,
+        "s": 1.55,
+        "h": 9,
+        "r": 0.7
+      },
+      {
+        "k": "light",
+        "x": 9.5,
+        "z": 15,
+        "s": 0.9,
+        "h": 8,
+        "r": 1.1
+      },
+      {
+        "k": "light",
+        "x": 9.5,
+        "z": 26,
+        "s": 0.55,
+        "h": 7,
+        "r": 0.75
+      },
+      {
+        "k": "light",
+        "x": 18.5,
+        "z": 26,
+        "s": 1.35,
+        "h": 7,
+        "r": 1.3
+      },
+      {
+        "k": "light",
+        "x": 28,
+        "z": 22,
+        "s": 0.55,
+        "h": 7,
+        "r": 0.75
+      },
+      {
+        "k": "light",
+        "x": 40,
+        "z": 27,
+        "s": 0.55,
+        "h": 7,
+        "r": 0.75
+      },
+      {
+        "k": "light",
+        "x": 40,
+        "z": 30,
+        "s": 1.35,
+        "h": 7,
+        "r": 1.3
+      },
+      {
+        "k": "light",
+        "x": 45.5,
+        "z": 52.5,
+        "s": 0.55,
+        "h": 7,
+        "r": 0.75
+      },
+      {
+        "k": "light",
+        "x": 35,
+        "z": 53,
+        "s": 1.25,
+        "h": 9,
+        "r": 1.2
+      },
+      {
+        "k": "light",
+        "x": 55.5,
+        "z": 48,
+        "s": 0.7,
+        "h": 9,
+        "r": 1.2
+      },
+      {
+        "k": "light",
+        "x": 60,
+        "z": 26,
+        "s": 0.75,
+        "h": 7,
+        "r": 0.65
+      }
+    ],
+    "shrineMass": null
+  },
+  "art": {
+    "triangles": 252,
+    "maps": [
+      "b31f286c-3aa3-4b94-acd2-faed39064a42"
+    ],
+    "hists": [
+      {
+        "amber": 1268,
+        "shade": 3457,
+        "coarse": [
+          1696,
+          12580,
+          25198,
+          2505,
+          14555,
+          73038,
+          90692,
+          41933,
+          23837,
+          81938,
+          88464,
+          79633,
+          22803,
+          39283,
+          102562,
+          99236,
+          58403,
+          51648,
+          57947,
+          93372,
+          49322,
+          33383,
+          87347,
+          62317,
+          40280,
+          27670,
+          61949,
+          25147,
+          22537,
+          16527,
+          19811,
+          19261
+        ]
+      },
+      {
+        "amber": 1384,
+        "shade": 3254,
+        "coarse": [
+          1827,
+          23862,
+          21441,
+          2075,
+          22674,
+          81174,
+          70969,
+          33767,
+          74744,
+          79709,
+          71549,
+          68319,
+          65897,
+          52212,
+          49887,
+          60919,
+          59629,
+          60618,
+          57204,
+          46311,
+          40091,
+          37043,
+          39599,
+          46441,
+          38244,
+          115837,
+          119965,
+          49132,
+          17370,
+          69939,
+          65014,
+          16620
+        ]
+      },
+      {
+        "amber": 984,
+        "shade": 3709,
+        "coarse": [
+          1660,
+          13092,
+          15108,
+          2256,
+          37069,
+          84227,
+          132715,
+          39545,
+          98183,
+          52267,
+          115199,
+          69940,
+          97187,
+          41620,
+          22257,
+          34533,
+          56188,
+          48389,
+          20446,
+          34699,
+          25185,
+          21931,
+          16770,
+          19145,
+          22671,
+          15436,
+          20275,
+          14547,
+          16507,
+          13489,
+          14088,
+          10996
+        ]
+      }
+    ],
+    "textures": [
+      512,
+      256
+    ],
+    "mapName": "prologueFiguredLancets",
+    "lightChildren": 0,
+    "fog": false,
+    "nearestMips": true,
+    "nearestMag": true,
+    "above": 0
+  },
+  "cams": [
+    {
+      "name": "arena-focus",
+      "pose": [
+        71,
+        105,
+        71,
+        119,
+        9
+      ],
+      "id": "hell",
+      "eye": 3.1,
+      "solid": true,
+      "render": {
+        "frame": 35,
+        "calls": 62,
+        "triangles": 146838,
+        "points": 1837,
+        "lines": 0,
+        "textureCount": 43
+      }
+    },
+    {
+      "name": "arena-side",
+      "pose": [
+        65,
+        114,
+        71,
+        120,
+        8
+      ],
+      "id": "hell",
+      "eye": 1,
+      "solid": false,
+      "render": {
+        "frame": 66,
+        "calls": 67,
+        "triangles": 149060,
+        "points": 1837,
+        "lines": 0,
+        "textureCount": 43
+      }
+    },
+    {
+      "name": "arena-east",
+      "pose": [
+        77.1,
+        113,
+        71,
+        120,
+        7.9
+      ],
+      "id": "hell",
+      "eye": 1,
+      "solid": false,
+      "render": {
+        "frame": 95,
+        "calls": 58,
+        "triangles": 145318,
+        "points": 1837,
+        "lines": 0,
+        "textureCount": 43
+      }
+    },
+    {
+      "name": "bridge",
+      "pose": [
+        21,
+        53,
+        38,
+        53,
+        3.5
+      ],
+      "id": "hell",
+      "eye": 3.1,
+      "solid": false,
+      "render": {
+        "frame": 118,
+        "calls": 233,
+        "triangles": 207902,
+        "points": 2017,
+        "lines": 0,
+        "textureCount": 53
+      }
+    },
+    {
+      "name": "bridge-focus",
+      "pose": [
+        27,
+        53,
+        54,
+        53,
+        9
+      ],
+      "id": "hell",
+      "eye": 3.1,
+      "solid": false,
+      "render": {
+        "frame": 152,
+        "calls": 229,
+        "triangles": 207312,
+        "points": 2017,
+        "lines": 0,
+        "textureCount": 53
+      }
+    },
+    {
+      "name": "transept",
+      "pose": [
+        81,
+        71,
+        81,
+        80.4,
+        8.1
+      ],
+      "id": "hell",
+      "eye": 3.1,
+      "solid": false,
+      "render": {
+        "frame": 199,
+        "calls": 89,
+        "triangles": 151632,
+        "points": 1837,
+        "lines": 0,
+        "textureCount": 53
+      }
+    }
+  ],
+  "cycles": [
+    {
+      "depart": {
+        "disposed": [
+          1,
+          1,
+          1
+        ],
+        "inMonastery": 0,
+        "bakedHellInMonastery": 0
+      },
+      "back": {
+        "fresh": true,
+        "size": 512
+      }
+    },
+    {
+      "depart": {
+        "disposed": [
+          1,
+          1,
+          1
+        ],
+        "inMonastery": 0,
+        "bakedHellInMonastery": 0
+      },
+      "back": {
+        "fresh": true,
+        "size": 512
+      }
+    },
+    {
+      "depart": {
+        "disposed": [
+          1,
+          1,
+          1
+        ],
+        "inMonastery": 0,
+        "bakedHellInMonastery": 0
+      },
+      "back": {
+        "fresh": true,
+        "size": 512
+      }
+    }
+  ],
+  "errors": [],
+  "network": []
+}

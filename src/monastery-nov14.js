@@ -51,7 +51,10 @@
     const floor=ie(centre,face+.6);
     const frame=new n0();
     frame.name="siderealPassage"; frame.position.set(centre,floor,face); scene.add(frame);
-    const art=carvings(), stone=Z(iR("prologuePatinatedStone")), bronze=Z(iR("hellBronze"));
+    const art=carvings(), stone=Z(iR("prologuePatinatedStone"));
+    // Local oxidised brass belongs to this chapter. Hell's baked bronze expects
+    // the prologue's vertex-colour pass and uses a level-owned texture cache.
+    const bronze=Z(new $e({map:Ft.pillar,color:0x9e774e,toneMapped:false}));
     const red=Z(new $e({map:Ft.wood,color:0x7a4239,toneMapped:false}));
     const iron=Z(new $e({map:Ft.pillar,color:0x71686b,toneMapped:false}));
     const timber=Z(new $e({map:Ft.wood,color:0x785747,toneMapped:false}));

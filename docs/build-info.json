@@ -1,7 +1,7 @@
 {
   "passed": true,
-  "bytes": 18170975,
-  "sha256": "11f0b8c0c20bd6391aacd31c724e214641505e33c960ca3c8f279855ff04e70a",
+  "bytes": 18438440,
+  "sha256": "59f21cb731e9c34b23001db706b5305ce0c6ce5105a292ee89934b2b0cf6bfbc",
   "engineSha256": "6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899",
   "villageSha256": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627",
   "moduleHashes": {
@@ -16,7 +16,8 @@
     "zombie-audio.js": "7f883bd656b0f7e0784d68e9e47e7612704e1df6b299ffc52e6d3f2cfcba2803",
     "prologue.js": "1b5ab0b99ecc80e41d1e7c183b28a52fe6ce3c51900988e28da61c24d91a8891",
     "vigil-secret.js": "eee4d953810436e04f8758300541cd6a19ecd2272e39f8b781ffa212aa417e72",
-    "monastery-nov14.js": "6d60b8d3559d0e1f0875283cfe1ff7dad09aa9df4358b63d99f78e456360adb9",
+    "monastery-nov14.js": "ca3ded666bb32ea82108e8d644c29edb6dc9fa5d5f1edb19c6dfb74050ff4609",
+    "prologue-stained-glass.js": "61abbab4a1c33a2b27bfadf1bc8a78b2728bfb47ef8e59752f408ac337acaf58",
     "render-warmup.js": "d0be2c069f155abfa9073b5996d92e7454d801b015b287e5500089be9ade3c59",
     "display-settings.js": "55681d7f89f77607da0a0649367513f22697e4762f1bba953081da4f4b982289",
     "chapter-records.js": "ad072e5d6a6e9eb7f6031b10660516948737a41ba74bd054d092fd5720914822",
@@ -25,9 +26,9 @@
   "idempotentBuilds": 2,
   "invalidInputsRefusedWithoutWrite": 8,
   "file": "THE-BLACK-SILENCE.html",
-  "verifiedAt": "2026-11-14T10:54:45.946Z",
-  "previousRelease": "b8831734b95ca3fd6acae18307a75b37266fab4617405d3ab82a10b5d60e3768",
-  "baselineCommit": "617e59f",
+  "verifiedAt": "2026-11-14T11:00:59.472Z",
+  "previousRelease": "11f0b8c0c20bd6391aacd31c724e214641505e33c960ca3c8f279855ff04e70a",
+  "baselineCommit": "e21275e",
   "verificationReports": [
     {
       "file": "docs/factory-nov14/verification.json",
@@ -35,7 +36,15 @@
     },
     {
       "file": "docs/monastery-nov14/verification.json",
-      "sha256": "39c0df8e48fd1ceee344d3b5d5061ce73e4e41e6f0acf58b79e628c185d134a1"
+      "sha256": "51fb52c4be975fe1d2fa9bb95984e417a88874449a1791db4269ed92408de720"
+    },
+    {
+      "file": "docs/prologue-vitray-nov14/verification.json",
+      "sha256": "0b3c2b9e97e996ff33cad7419b72857083badaaa4bd47b2de4e6bf3eae55e2bd"
+    },
+    {
+      "file": "docs/prologue-vitray-nov14/navigation-results.json",
+      "sha256": "711013de8fb9aa9ce3fb3b77414769004dbb37202343960f65c1ca2057cb26c8"
     }
   ]
 }

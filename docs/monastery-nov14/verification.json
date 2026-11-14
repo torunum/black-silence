@@ -1,11 +1,11 @@
 {
-  "baseHTMLSHA256": "b8831734b95ca3fd6acae18307a75b37266fab4617405d3ab82a10b5d60e3768",
-  "verifiedModuleSHA256": "adeca70d210d4fb0fd12b5a5e1e3ef16122995409a656cdaade6782a8dae1083",
+  "baseHTMLSHA256": "bb219035765ec810c4795ec022e378cecdc30ed8ebbad6e498e76bd4c16b913e",
+  "verifiedModuleSHA256": "6bef9f319ee5a1b49d819ca7f8bb1fac88662e840276fbdf3f11a1c5b40807ff",
   "moduleHashScope": "UTF-8 source with leading/trailing whitespace trimmed",
-  "assembledCandidateSHA256": "6d99e4ab8a58dce1761927a027db382dd86e99c1761de912ba7bdd04df13deda",
-  "integratedStandaloneSHA256": null,
-  "instrumentedFixtureSHA256": "e531764aaff929e8947dfc5072670181b642304e225268b104de7475191d5a01",
-  "privateModuleInjection": true,
+  "assembledCandidateSHA256": "bb219035765ec810c4795ec022e378cecdc30ed8ebbad6e498e76bd4c16b913e",
+  "integratedStandaloneSHA256": "bb219035765ec810c4795ec022e378cecdc30ed8ebbad6e498e76bd4c16b913e",
+  "instrumentedFixtureSHA256": "33b2fb3249d0db5450bd76724a62d26207d54c26243a0224013b0a12da5ed3be",
+  "privateModuleInjection": false,
   "diff": {
     "cells": [
       [
@@ -230,7 +230,7 @@
   "solved": {
     "present": true,
     "open": true,
-    "y": -0.21078666666667223,
+    "y": -0.22760000000000102,
     "collision": false,
     "steps": [
       3,
@@ -296,7 +296,7 @@
   "crossed": {
     "present": true,
     "open": true,
-    "y": -0.21078666666667223,
+    "y": -0.22760000000000102,
     "collision": false,
     "steps": [
       3,

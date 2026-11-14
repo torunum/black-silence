@@ -55,6 +55,7 @@ const code = [
   "prologue.js",
   "vigil-secret.js",
   "monastery-nov14.js",
+  "prologue-stained-glass.js",
   "render-warmup.js",
   "display-settings.js",
   "chapter-records.js",
