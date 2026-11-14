@@ -60,6 +60,7 @@ const code = [
   "display-settings.js",
   "chapter-records.js",
   "campaign-continue.js",
+  "pause-settings.js",
 ]
   .map((file) => fs.readFileSync(path.join(root, "src", file), "utf8"))
   .join("\n");

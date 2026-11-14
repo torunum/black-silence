@@ -1,7 +1,7 @@
 {
   "passed": true,
-  "bytes": 18458033,
-  "sha256": "edcfa9f69cf68274e99748a853d0f1a84ac4376467ad93a61dbff0833f653cee",
+  "bytes": 18462931,
+  "sha256": "4fd264487d5251e0dfc5e3915be5b1cf9f071e8e759724cd1857c3c5f0abd784",
   "engineSha256": "6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899",
   "villageSha256": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627",
   "moduleHashes": {
@@ -22,14 +22,15 @@
     "display-settings.js": "55681d7f89f77607da0a0649367513f22697e4762f1bba953081da4f4b982289",
     "chapter-records.js": "ad072e5d6a6e9eb7f6031b10660516948737a41ba74bd054d092fd5720914822",
     "campaign-continue.js": "4c45ee15ecec00065ae3ccfec71aae7c8039c75196e85323594fca3a04f4fab2",
+    "pause-settings.js": "e41bf6aa3977290d494545ea1a194797625b744cfd80180e2b78546e54bdef02",
     "village-presentation.js": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627"
   },
   "idempotentBuilds": 2,
   "invalidInputsRefusedWithoutWrite": 8,
   "file": "THE-BLACK-SILENCE.html",
-  "verifiedAt": "2026-11-14T11:11:45.055Z",
-  "previousRelease": "59f21cb731e9c34b23001db706b5305ce0c6ce5105a292ee89934b2b0cf6bfbc",
-  "baselineCommit": "0c2da44",
+  "verifiedAt": "2026-11-14T11:17:46.714Z",
+  "previousRelease": "edcfa9f69cf68274e99748a853d0f1a84ac4376467ad93a61dbff0833f653cee",
+  "baselineCommit": "7a39ad7",
   "verificationReports": [
     {
       "file": "docs/factory-nov14/verification.json",
@@ -54,6 +55,10 @@
     {
       "file": "docs/relics-nov14/verification.json",
       "sha256": "fd76f8770569fa4f321f4e2757bc0d16884d2cf5c21312296fb184f8cc74ccaa"
+    },
+    {
+      "file": "docs/pause-settings-nov14/verification.json",
+      "sha256": "205dfe21e2763f225bba0afd443c4a958ffdab82411fe4afaec6ee1fe944faaa"
     }
   ]
 }

@@ -1,0 +1,13 @@
+{
+  "sha256": "4fd264487d5251e0dfc5e3915be5b1cf9f071e8e759724cd1857c3c5f0abd784",
+  "checks": [
+    "Browser pointer-lock motion at default and 200% reversed sensitivity",
+    "Upper and lower pitch limits plus reverse input away from either limit",
+    "Native zoom gain and input lock",
+    "Same level, scene, inventory and position after settings, keyboard and mouse resume",
+    "All native settings operable while paused, no firing on resume",
+    "360 x 480 keyboard scrolling, back and focus",
+    "New session persistence, invalid saved values and denied storage",
+    "Original settings, old chapter unlock and normal file launch with no network requests"
+  ]
+}
