@@ -4,6 +4,8 @@ Gotik piksel FPS oyununun on silah, deri eldiven ve prologue cehennem bölümü 
 
 ## Oyna
 
+`main` dalındaki güncel oyunu [tek HTML dosyası olarak indir](https://github.com/torunum/black-silence/raw/refs/heads/main/THE-BLACK-SILENCE.html) veya [kaynaklarla birlikte ZIP olarak al](https://github.com/torunum/black-silence/archive/refs/heads/main.zip).
+
 `THE-BLACK-SILENCE.html` dosyasını Chrome veya Edge ile aç. İnternet bağlantısı ve kurulum gerekmez. Ses ve fare kontrolü için oyun alanına tıkla. Eski kayıtlarını kullanmak için aynı tarayıcı ve dosya/adres konumunu kullan; `file://` ile yerel sunucunun kayıt alanları farklıdır.
 
 | Eylem | Kontrol |
@@ -16,12 +18,16 @@ Gotik piksel FPS oyununun on silah, deri eldiven ve prologue cehennem bölümü 
 | Drop kick | Yerde yeterli ileri hızla koşarken sağ fare |
 | Etkileşim / sendeleyen düşmanı bitir | E |
 | Silah değiştir | 1–9, 0 veya fare tekerleği |
+| Haritayı aç / bakıp bırak | M / Tab basılı tut |
+| Sniper dürbünü | Z |
 
 ## Bu sürüm
 
 **Esc** ile duraklatıp **Settings** ekranından farenin hassasiyetini %25–200 arasında değiştirebilir, dikey ekseni ters çevirebilirsin. **Back** ile duraklatma menüsüne dön ve **Click to Return** ile aynı yerden oyna. [Oyun içi ayarlar](docs/pause-settings-nov14/in-game-settings.png).
 
 Ana menüde **Continue**, son etkinleştirdiğin shrine'dan oyuna dönmeni sağlar. Bölümde henüz shrine etkinleştirmediysen bölüm girişinden başlarsın. Kaldığın yer, envanter ve bölümdeki keşiflerin aynı tarayıcıda ve aynı dosya adresinde saklanır. **Select Chapter** ile ayrı bir bölüm oynarken kampanya kaydın korunur. [Menü görünümü](docs/campaign-nov14/menu-1280.png).
+
+Shrine'a ulaştığın anda haritada keşfettiğin alanlar da kaydedilir. Oyunu kapatıp **Continue** ile geri döndüğünde **M** ile aynı haritayı açabilirsin. Can, zırh ve cephane göstergeleri değerleri değiştiğinde güncellenir. [HUD ölçümleri](docs/hud-nov14/README.md).
 
 Manastırda ay ve yıldız kadranları kütüphaneye geçit açıyor. Prologue'un cehennem köprüsü ve arenasında dokuz figürlü vitray var. Fabrikanın kömür deposunda yere vurmak için iki kolunu kaldıran ağır düşmanla karşılaşacaksın. [Manastır geçidi](docs/monastery-nov14.md) · [Cehennem vitrayları](docs/prologue-vitray-nov14.md) · [Fabrika düşmanları](docs/factory-nov14/README.md).
 
@@ -129,4 +135,4 @@ npm run test:build
 
 `tools/build-game.cjs` modülleri mevcut motorun önüne yerleştirir; aynı kaynaklarla tekrar derleme aynı HTML'yi üretir. `src/viewmodels.js` tüm on silahı ve el/bot çizimini, `src/prologue.js` bölüm ayrıntılarını, `src/reload-audio.js` doldurma seslerini içerir. Diğer test komutları `package.json` içindedir. Yerel sunucu tercih edilirse `npm start` kullanılabilir; tek HTML'yi açmak için sunucu gerekmez.
 
-Teslim ZIP'i yalnız HTML, kaynaklar, görsel varlıklar, belgeler ve araçları içerir; `.git`, `.dream-loop`, bağımlılık klasörleri ve geçici dosyalar dahil edilmez. Son paket `THE-BLACK-SILENCE-2026-10-24-RELOADS.zip` adıyla ayrı tutulur; önceki ZIP'ler değiştirilmez. GitHub'daki ana HTML güncel kaynaklarla birlikte sürümlenir.
+14 Kasım için hazırlanan yerel geliştirici paketi `dist/THE-BLACK-SILENCE-2026-11-14-PARISH.zip` adını taşır. Oyunun HTML dosyasını, kaynak kodlarını, görsel varlıkları, belgeleri ve geliştirme araçlarını içerir. Diğer bir bilgisayarda güncel sürümü almak için [GitHub ana oyun dosyasını](https://github.com/torunum/black-silence/raw/refs/heads/main/THE-BLACK-SILENCE.html) indirebilirsin.

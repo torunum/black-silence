@@ -59,6 +59,7 @@ const code = [
   "prologue-stained-glass.js",
   "sewer-works.js",
   "render-warmup.js",
+  "hud-updates.js",
   "display-settings.js",
   "chapter-records.js",
   "campaign-continue.js",

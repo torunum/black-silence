@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "htmlSha256": "52933da3ee9e4a7ea9730653ab49b5e62e1df486d9eff1d32578f06f1fcb684c",
+  "checks": [
+    "New Game and a fresh document restore the Prologue entry inventory",
+    "Real Tab/M, shrine reload and native Rise Again preserve the explored cells and terrain pixels",
+    "Real E, map facts, inventory, clock, achievements and native shrine respawn survive reload",
+    "Native chapter transition, carried weapons, real dial input and a collected seal round-trip",
+    "A second campaign transition resumes the Gothic Dungeon from chapter start",
+    "Sewers pressure, gauge, secret door and single reward restore after actual document reload",
+    "Chapter Select and QA do not replace the campaign slot",
+    "An older tab cannot replace or clear a newer campaign",
+    "Victory in the final chapter clears the campaign slot",
+    "Malformed saves and map-incompatible shrines leave a playable chapter entry",
+    "Damaged automap payloads and older shrine records still restore the shrine and inventory",
+    "Storage denial leaves the native New Game playable"
+  ]
+}

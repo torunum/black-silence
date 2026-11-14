@@ -19,7 +19,8 @@ window.campaignProbe={
   state(){return {level:T.level,inv:ck(),entry:Q0.entry,snap:Q0.snap,deaths:T.deaths,
     totals:[T.kills,T.shots,T.secrets,T.totSecrets],position:[C.px,C.pz,Ct.yaw],
     elapsed:[performance.now()-T.t0,performance.now()-T.levelT0],ach:Object.keys(T.ach),
-    dials:FX().sidereal,seals:[...de.seals],doors:FX().opened,locked:Be.inputLock,dead:T.dead,
+    dials:FX().sidereal,seals:[...de.seals],doors:FX().opened,primed:FX().sewerPrimed===true,
+    needle:J.scene?.getObjectByName("worksGaugeNeedle")?.rotation.z,locked:Be.inputLock,dead:T.dead,
     marks:Q0.marks.map(m=>m.lit),started:Be.started};},
   pose(x,z,tx,tz,dy=0){C.px=x;C.pz=z;C.pyy=ie(x,z)+Yo;C.vx=C.vz=C.vy=0;C.grounded=true;
     Ct.yaw=Math.atan2(tx-x,tz-z)+Math.PI;Ct.pitch=Math.atan2(dy,Math.hypot(tx-x,tz-z));
@@ -32,8 +33,17 @@ window.campaignProbe={
     T.shots+=9;T.beheads=2;},
   collect(kind){const it=v.items.find(i=>i.kind===kind&&!i.taken);
     if(!it)throw Error("Missing collectible "+kind);this.pose(it.x,it.z,it.x+1,it.z);G$(1/60);},
-  shrine(i){const m=Q0.marks[i];if(!m)throw Error("Missing shrine "+i);this.pose(m.x,m.z,m.x+1,m.z);QX(1/60);},
+  shrine(i){const m=Q0.marks[i];if(!m)throw Error("Missing shrine "+i);this.pose(m.x,m.z,m.x+1,m.z);
+    T0t(C.px,C.pz);QX(1/60);},
+  explore(x,z){this.pose(x,z,x+1,z);T0t(x,z);},
+  map(){Gk();const layer=document.createElement("canvas");layer.width=We.W*3;layer.height=We.H*3;
+    const ctx=layer.getContext("2d");ctx.scale(3,3);Yk(ctx,We,0,0,We.W-1,We.H-1,3);
+    return {seen:Array.from(We.seen).flatMap((val,index)=>val?[index]:[]),
+      terrain:layer.toDataURL(),level:T.level};},
   death(){C.spawnGuard=0;ta(9999,true);},
+  balancePump(){const guard=v.bossRef;if(guard?.dormant)bk(guard);if(v.cine)stt(v.cine.dur+1/60);
+    this.calm();this.pose(104,36.58,105.41,36.58,ie(86.72,32.45)+1.38-ie(104,36.58)-Yo);},
+  advancePump(){for(let i=0;i<190;i++)F$(1/60);},
   final(){rp(8);h9();}
 };`;
 fs.writeFileSync(file,html.replace(anchor,()=>seam+anchor));
@@ -71,10 +81,13 @@ fs.writeFileSync(file,html.replace(anchor,()=>seam+anchor));
     await page.mouse.move(590,270);
     await page.waitForFunction(yaw=>Math.abs(campaignProbe.state().position[2]-yaw)>.001,yaw);
     note("New Game and a fresh document restore the Prologue entry inventory");
+    await call("explore",59,13);await call("explore",19,13);
     await call("pose",66.18,10.60,68,11,.2); await page.keyboard.press("KeyE");
     assert((await call("state")).doors.includes("34,5"),"Real E opens the vigil shutter");
     await call("supply"); await call("extra"); await call("shrine",0);
     const vigil=await data(); assert(vigil.shrine && vigil.shrine.facts.opened.includes("34,5"));
+    await page.keyboard.down("Tab");await page.locator("#automap").waitFor();
+    const litMap=await call("map");await page.keyboard.up("Tab");
     await reload(); assert.match(await page.locator("#mContinue").innerText(),/SHRINE/);
     if(process.env.CAMPAIGN_PROOF) {
       const out=path.resolve(process.env.CAMPAIGN_PROOF); fs.mkdirSync(out,{recursive:true});
@@ -88,6 +101,11 @@ fs.writeFileSync(file,html.replace(anchor,()=>seam+anchor));
     }
     await begin("#mContinue");
     let st=await call("state");
+    await page.keyboard.press("KeyM");await page.locator("#automap").waitFor();
+    const freshMap=await call("map");await page.keyboard.press("KeyM");
+    assert.deepEqual(freshMap.seen,litMap.seen,"A fresh document restores exactly the discovered cells");
+    assert.equal(freshMap.terrain,litMap.terrain,"Native terrain-layer pixels survive the page reload");
+    assert(litMap.seen.length>50 && litMap.seen.length<3000);
     assert.deepEqual(st.inv,vigil.shrine.inv); assert.deepEqual(st.ach,vigil.achievements);
     assert(st.doors.includes("34,5") && st.marks[0]&&!st.dead);
     assert.equal(st.totals[1],vigil.shrine.tallies.shots);
@@ -98,10 +116,13 @@ fs.writeFileSync(file,html.replace(anchor,()=>seam+anchor));
     await call("death");await page.waitForTimeout(1100);await page.keyboard.press("Space");
     await page.waitForFunction(()=>!campaignProbe.state().dead);
     assert.equal((await call("state")).deaths,1);assert.equal((await data()).deaths,1);
+    assert.deepEqual((await call("map")).seen,litMap.seen);
+    note("Real Tab/M, shrine reload and native Rise Again preserve the explored cells and terrain pixels");
     note("Real E, map facts, inventory, clock, achievements and native shrine respawn survive reload");
     await call("next");
     const monastery=await data();
     assert.equal(monastery.level,9);assert(!monastery.shrine);
+    assert((await call("map")).seen.length<litMap.seen.length);
     assert.deepEqual(monastery.entry.mag,vigil.shrine.inv.mag);
     await reload();await begin("#mContinue");st=await call("state");
     assert.equal(st.level,9);assert.deepEqual(st.inv.mag,monastery.entry.mag);
@@ -117,6 +138,30 @@ fs.writeFileSync(file,html.replace(anchor,()=>seam+anchor));
     await call("next"); const crypt=await data();assert.equal(crypt.level,1);assert(!crypt.shrine);
     await reload();await begin("#mContinue");assert.equal((await call("state")).level,1);
     note("A second campaign transition resumes the Gothic Dungeon from chapter start");
+    if(html.includes("/* SEWER_WORKS_END */")) {
+      while((await call("state")).level!==5) await call("next");
+      await call("balancePump");
+      await page.keyboard.press("KeyE");await call("advancePump");
+      const pressure=await call("state");assert(pressure.primed);
+      await call("shrine",0);await reload();await begin("#mContinue");st=await call("state");
+      assert(st.primed&&!st.doors.includes("53,19"));
+      assert(Number.isFinite(st.needle) && Math.abs(st.needle-pressure.needle)<.13);
+      await call("pose",104.5,39,106.99,39,-.75);await page.keyboard.press("KeyE");
+      await call("advancePump");const beforeReward=await call("state");
+      assert(beforeReward.doors.includes("53,19"));
+      await call("collect","w6");await call("shrine",1);
+      const earned=await data();assert(earned.shrine.inv.weapons[6]);
+      await reload();await begin("#mContinue");const returned=await call("state");
+      assert(returned.primed&&returned.inv.weapons[6]&&returned.doors.includes("53,19"));
+      await call("pose",104.5,39,106.99,39,-.75);await page.keyboard.press("KeyE");
+      assert.equal((await call("state")).totals[3],earned.shrine.inv.totSecrets);
+      const corrupt=JSON.parse(JSON.stringify(earned));corrupt.shrine.facts.sewerPrimed={};
+      await page.evaluate(([key,r])=>localStorage.setItem(key,JSON.stringify(r)),[storageKey,corrupt]);
+      await page.reload();assert.equal(await page.locator("#mContinue").count(),0);
+      await page.evaluate(([key,r])=>localStorage.setItem(key,JSON.stringify(r)),[storageKey,crypt]);
+      await reload();await begin("#mContinue");
+      note("Sewers pressure, gauge, secret door and single reward restore after actual document reload");
+    }
     const other=await freshPage();
     await other.locator("#mChapter").click();await other.locator("#chaplist .mbtn").first().click();
     assert.deepEqual(await data(),crypt);await settle(other);await other.close();
@@ -140,6 +185,19 @@ fs.writeFileSync(file,html.replace(anchor,()=>seam+anchor));
     await reload();await begin("#mContinue");st=await call("state");
     assert(!st.snap && st.level===0 && st.inv.hp===vigil.entry.hp);
     note("Malformed saves and map-incompatible shrines leave a playable chapter entry");
+    for (const kind of ["changed","old"]) {
+      await page.evaluate(([key,r,kind])=>{
+        if(kind==="old")delete r.shrine.automap;
+        else r.shrine.automap.data="AAAA";
+        localStorage.setItem(key,JSON.stringify(r));
+      },[storageKey,vigil,kind]);
+      await reload();await begin("#mContinue");st=await call("state");
+      assert(st.marks[0] && st.doors.includes("34,5"));
+      assert.deepEqual(st.inv,vigil.shrine.inv);
+      const after=await call("map");assert(after.seen.length<litMap.seen.length);
+      assert(after.seen.every(i=>litMap.seen.includes(i)));
+    }
+    note("Damaged automap payloads and older shrine records still restore the shrine and inventory");
     const blocked=await browser.newContext();const denied=await blocked.newPage();watch(denied);
     await denied.addInitScript(()=>Object.defineProperty(window,"localStorage",{get(){throw new DOMException("Denied","SecurityError");}}));
     await denied.goto(url);assert.equal(await denied.locator("#mContinue").count(),0);
@@ -147,6 +205,8 @@ fs.writeFileSync(file,html.replace(anchor,()=>seam+anchor));
     await settle(denied);
     await blocked.close();note("Storage denial leaves the native New Game playable");
     assert.deepEqual(errors,[]);
-    console.log(JSON.stringify({passed:true,checks}));
+    const report={passed:true,htmlSha256:require("node:crypto").createHash("sha256").update(fs.readFileSync(target)).digest("hex"),checks};
+    if(process.env.CAMPAIGN_REPORT)fs.writeFileSync(process.env.CAMPAIGN_REPORT,JSON.stringify(report,null,2)+"\n");
+    console.log(JSON.stringify(report));
   } finally { await browser.close(); }
 })().catch(e=>{console.error(e);process.exitCode=1;});

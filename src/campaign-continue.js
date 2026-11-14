@@ -34,6 +34,42 @@
   const ammoKeys = Object.keys(T.ammo);
   const ids = value => arrayOf(value,4096,n=>integer(n,4095)) &&
     new Set(value).size === value.length;
+  function topology() {
+    let hash=2166136261;
+    for(const row of v.grid) for(const cell of row)
+      hash=Math.imul(hash^cell.charCodeAt(0),16777619);
+    return (hash>>>0).toString(16);
+  }
+  function mapDigest(bits,signature) {
+    let hash=2166136261;
+    for(let i=0;i<signature.length;i++)
+      hash=Math.imul(hash^signature.charCodeAt(i),16777619);
+    for(let i=0;i<bits.length;i++) hash=Math.imul(hash^bits.charCodeAt(i),16777619);
+    return (hash>>>0).toString(16);
+  }
+  function captureMap() {
+    Gk();
+    const size=We.W*We.H;
+    if(!size || size>65536 || We.seen.length!==size) return null;
+    const bytes=new Uint8Array(Math.ceil(size/8));
+    for(let i=0;i<size;i++) if(We.seen[i]) bytes[i>>3]|=1<<(i%8);
+    const data=btoa(String.fromCharCode(...bytes));
+    const layout=topology(), w=We.W, h=We.H;
+    return {v:1,w,h,layout,data,check:mapDigest(data,[T.level,w,h,layout].join("/"))};
+  }
+  function restoreMap(map) {
+    Gk();
+    const size=We.W*We.H, count=Math.ceil(size/8);
+    if(!record(map) || map.v!==1 || !size || size>65536 || map.w!==We.W || map.h!==We.H ||
+        typeof map.data!=="string" || map.data.length!==4*Math.ceil(count/3) ||
+        map.layout!==topology() || map.check!==mapDigest(map.data,[T.level,We.W,We.H,map.layout].join("/"))) return;
+    try {
+      const bytes=atob(map.data);
+      if(bytes.length!==count || btoa(bytes)!==map.data ||
+          (size%8 && bytes.charCodeAt(count-1)>>(size%8))) return;
+      for(let i=0;i<size;i++) We.seen[i]=(bytes.charCodeAt(i>>3)>>(i%8))&1;
+    } catch { /* An old or damaged overlay must not invalidate the shrine. */ }
+  }
   function inventory(value) {
     return record(value) && number(value.hp,1000) && value.hp>0 && number(value.armor,1000) &&
       typeof value.key==="boolean" && record(value.ammo) &&
@@ -125,6 +161,7 @@
         lk(s.inv); Object.assign(T,s.tallies);
         a_(s.facts); jH();
         for(const index of s.lit) qk(Q0.marks[index],index);
+        restoreMap(s.automap);
         Be.inputLock=false;
         le("THE SHRINE REMEMBERS",2.6);
       } else if (r.shrine) {
@@ -144,10 +181,18 @@
   QX=function(...args) {
     const previous=Q0.snap;
     const result=mark.apply(this,args);
-    if(Q0.snap!==previous) save();
+    if(Q0.snap!==previous && campaign) {
+      const map=captureMap();
+      if(map) Q0.snap.automap=map;
+      save();
+    }
     return result;
   };
-  const restart=r_, died=V_, victory=h9;
+  const restart=r_, rise=s_, died=V_, victory=h9;
+  s_=function(...args) { const result=rise.apply(this,args);
+    if(result && campaign) restoreMap(Q0.snap?.automap);
+    return result;
+  };
   r_=function(...args) { const result=restart.apply(this,args); if(result) save(); return result; };
   V_=function(...args) { const result=died.apply(this,args); save(); return result; };
   h9=function(...args) {

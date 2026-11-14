@@ -1,7 +1,7 @@
 {
   "passed": true,
-  "bytes": 18539503,
-  "sha256": "42a45b1ac9aed60bf0407052865b59083fc5631385142b7a8e5776c725c1ef69",
+  "bytes": 18544824,
+  "sha256": "52933da3ee9e4a7ea9730653ab49b5e62e1df486d9eff1d32578f06f1fcb684c",
   "engineSha256": "6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899",
   "villageSha256": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627",
   "moduleHashes": {
@@ -21,18 +21,19 @@
     "prologue-stained-glass.js": "61abbab4a1c33a2b27bfadf1bc8a78b2728bfb47ef8e59752f408ac337acaf58",
     "sewer-works.js": "ff135f4bcc8e1fcb6a9f0db61ab2cb0177678082bea3126ace58cec6afff7ece",
     "render-warmup.js": "9a021fc24844f648460f0ee504653f74e200c1945dd33d4c8c06e71753325f15",
+    "hud-updates.js": "d2047c2d4f92935dbf79b3dc22811341f19809aadaee3188db12339bc945531d",
     "display-settings.js": "55681d7f89f77607da0a0649367513f22697e4762f1bba953081da4f4b982289",
     "chapter-records.js": "ad072e5d6a6e9eb7f6031b10660516948737a41ba74bd054d092fd5720914822",
-    "campaign-continue.js": "4c45ee15ecec00065ae3ccfec71aae7c8039c75196e85323594fca3a04f4fab2",
+    "campaign-continue.js": "90e47b2eb6dd1934535aeadb74a13c5fde8744e0f9754c7594819c00c0d67e12",
     "pause-settings.js": "e41bf6aa3977290d494545ea1a194797625b744cfd80180e2b78546e54bdef02",
     "village-presentation.js": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627"
   },
   "idempotentBuilds": 2,
   "invalidInputsRefusedWithoutWrite": 8,
   "file": "THE-BLACK-SILENCE.html",
-  "verifiedAt": "2026-11-14T11:41:05.631Z",
-  "previousRelease": "41e096b5c04dafd3e7159d25bf75433b55089fbc1354dfaa14753aa98d060b96",
-  "baselineCommit": "1b9f099",
+  "verifiedAt": "2026-11-14T11:52:05.305Z",
+  "previousRelease": "42a45b1ac9aed60bf0407052865b59083fc5631385142b7a8e5776c725c1ef69",
+  "baselineCommit": "9a1a976",
   "verificationReports": [
     {
       "file": "docs/factory-nov14/verification.json",
@@ -77,6 +78,14 @@
     {
       "file": "docs/sewer-works-nov14/footing.json",
       "sha256": "bada7a0d211a6a604c9f496c65d05f2ee6e9fe611db5b0ef86dde43a56032d0d"
+    },
+    {
+      "file": "docs/campaign-nov14/automap-verification.json",
+      "sha256": "27bb23f2c60a2204d0a49eb61939be5ceb0a7e47918b8b6a7a6468d628030108"
+    },
+    {
+      "file": "docs/hud-nov14/integrated.json",
+      "sha256": "123f675021091146f134335f62d241f521f49fad59aaee85227c573ec33b66d2"
     }
   ]
 }

@@ -1,0 +1,1123 @@
+{
+  "sourceSha256": "52933da3ee9e4a7ea9730653ab49b5e62e1df486d9eff1d32578f06f1fcb684c",
+  "hudSourceSha256": "3e6814596b51ec74910fefe345c4df360acae05511e9a3071e13b4d079248ee4",
+  "integrated": true,
+  "browser": "157.0.8103.52",
+  "viewport": [
+    960,
+    540
+  ],
+  "seed": 76503569,
+  "states": {
+    "startReload": {
+      "baselineRGBA": "4a2dd926a9ffa823b0f8785f43ce8ee33453a8a51331ecc2146cc5e065079bce",
+      "candidateRGBA": "4a2dd926a9ffa823b0f8785f43ce8ee33453a8a51331ecc2146cc5e065079bce",
+      "state": {
+        "hp": "74",
+        "armor": "23",
+        "ammo": "3<span class=\"sub2\"> | 28</span>",
+        "weapon": "FLARE PISTOL — RELOADING",
+        "keys": "",
+        "boss": [
+          "none",
+          "",
+          ""
+        ],
+        "hudOpacity": "",
+        "icons": [
+          "97f5132f529cf71860733ef439090f81fed5302fabed00bef7202c67027b1f9a",
+          "ed393aeb493380dea5e2bcda6840ce0442471c4c3fb7bb5fa4869f5c58141eb3",
+          "c0bea25d923148760e35a1d897ea9846ed262bc18dd04c9d4788628922bbf6f5",
+          "e1de83f6074fd322f79057a7ec2f4be26aefcdd8bb1e1efcbc91915f0774137d"
+        ]
+      },
+      "mutations": [
+        4,
+        1
+      ],
+      "removed": [
+        5,
+        0
+      ],
+      "candidateFields": {
+        "wname.characterData": 1
+      },
+      "originalAmmoNodesRetained": [
+        false,
+        true
+      ]
+    },
+    "phaseTwo": {
+      "baselineRGBA": "8d4c35cd09fb06db99edaa20da2cd1f7fc1952ad5a9b45b432470d7b3707a44a",
+      "candidateRGBA": "8d4c35cd09fb06db99edaa20da2cd1f7fc1952ad5a9b45b432470d7b3707a44a",
+      "state": {
+        "hp": "100",
+        "armor": "11",
+        "ammo": "6<span class=\"sub2\"> | 25</span>",
+        "weapon": "FLARE PISTOL",
+        "keys": "",
+        "boss": [
+          "block",
+          "THE FACTORY FOREMAN — PHASE 2",
+          "55%"
+        ],
+        "hudOpacity": "",
+        "icons": [
+          "97f5132f529cf71860733ef439090f81fed5302fabed00bef7202c67027b1f9a",
+          "ed393aeb493380dea5e2bcda6840ce0442471c4c3fb7bb5fa4869f5c58141eb3",
+          "c0bea25d923148760e35a1d897ea9846ed262bc18dd04c9d4788628922bbf6f5",
+          "e1de83f6074fd322f79057a7ec2f4be26aefcdd8bb1e1efcbc91915f0774137d"
+        ]
+      },
+      "mutations": [
+        6,
+        2
+      ],
+      "removed": [
+        6,
+        1
+      ],
+      "candidateFields": {
+        "bossname.childList": 1,
+        "bossfill.attributes": 1
+      },
+      "originalAmmoNodesRetained": [
+        false,
+        true
+      ]
+    },
+    "bound": {
+      "state": {
+        "hp": "74",
+        "armor": "23",
+        "ammo": "4<span class=\"sub2\"> | 28</span>",
+        "weapon": "FLARE PISTOL",
+        "keys": "",
+        "boss": [
+          "none",
+          "",
+          ""
+        ],
+        "hudOpacity": "",
+        "icons": [
+          "97f5132f529cf71860733ef439090f81fed5302fabed00bef7202c67027b1f9a",
+          "ed393aeb493380dea5e2bcda6840ce0442471c4c3fb7bb5fa4869f5c58141eb3",
+          "c0bea25d923148760e35a1d897ea9846ed262bc18dd04c9d4788628922bbf6f5",
+          "e1de83f6074fd322f79057a7ec2f4be26aefcdd8bb1e1efcbc91915f0774137d"
+        ]
+      },
+      "mutations": [
+        0,
+        0
+      ],
+      "removed": [
+        0,
+        0
+      ],
+      "candidateFields": {},
+      "originalAmmoNodesRetained": [
+        false,
+        true
+      ]
+    },
+    "stationary120": {
+      "state": {
+        "hp": "74",
+        "armor": "23",
+        "ammo": "4<span class=\"sub2\"> | 28</span>",
+        "weapon": "FLARE PISTOL",
+        "keys": "",
+        "boss": [
+          "none",
+          "",
+          ""
+        ],
+        "hudOpacity": "",
+        "icons": [
+          "97f5132f529cf71860733ef439090f81fed5302fabed00bef7202c67027b1f9a",
+          "ed393aeb493380dea5e2bcda6840ce0442471c4c3fb7bb5fa4869f5c58141eb3",
+          "c0bea25d923148760e35a1d897ea9846ed262bc18dd04c9d4788628922bbf6f5",
+          "e1de83f6074fd322f79057a7ec2f4be26aefcdd8bb1e1efcbc91915f0774137d"
+        ]
+      },
+      "mutations": [
+        480,
+        0
+      ],
+      "removed": [
+        600,
+        0
+      ],
+      "candidateFields": {},
+      "originalAmmoNodesRetained": [
+        false,
+        true
+      ]
+    },
+    "gameLoopFrame": {
+      "state": {
+        "hp": "74",
+        "armor": "23",
+        "ammo": "4<span class=\"sub2\"> | 28</span>",
+        "weapon": "FLARE PISTOL",
+        "keys": "",
+        "boss": [
+          "none",
+          "",
+          ""
+        ],
+        "hudOpacity": "",
+        "icons": [
+          "97f5132f529cf71860733ef439090f81fed5302fabed00bef7202c67027b1f9a",
+          "ed393aeb493380dea5e2bcda6840ce0442471c4c3fb7bb5fa4869f5c58141eb3",
+          "c0bea25d923148760e35a1d897ea9846ed262bc18dd04c9d4788628922bbf6f5",
+          "e1de83f6074fd322f79057a7ec2f4be26aefcdd8bb1e1efcbc91915f0774137d"
+        ]
+      },
+      "mutations": [
+        4,
+        0
+      ],
+      "removed": [
+        5,
+        0
+      ],
+      "candidateFields": {},
+      "originalAmmoNodesRetained": [
+        false,
+        true
+      ]
+    },
+    "shoot": {
+      "state": {
+        "hp": "74",
+        "armor": "23",
+        "ammo": "3<span class=\"sub2\"> | 28</span>",
+        "weapon": "FLARE PISTOL",
+        "keys": "",
+        "boss": [
+          "none",
+          "",
+          ""
+        ],
+        "hudOpacity": "",
+        "icons": [
+          "97f5132f529cf71860733ef439090f81fed5302fabed00bef7202c67027b1f9a",
+          "ed393aeb493380dea5e2bcda6840ce0442471c4c3fb7bb5fa4869f5c58141eb3",
+          "c0bea25d923148760e35a1d897ea9846ed262bc18dd04c9d4788628922bbf6f5",
+          "e1de83f6074fd322f79057a7ec2f4be26aefcdd8bb1e1efcbc91915f0774137d"
+        ]
+      },
+      "mutations": [
+        4,
+        1
+      ],
+      "removed": [
+        5,
+        0
+      ],
+      "candidateFields": {
+        "am.characterData": 1
+      },
+      "originalAmmoNodesRetained": [
+        false,
+        true
+      ]
+    },
+    "finishReload": {
+      "state": {
+        "hp": "74",
+        "armor": "23",
+        "ammo": "6<span class=\"sub2\"> | 25</span>",
+        "weapon": "FLARE PISTOL",
+        "keys": "",
+        "boss": [
+          "none",
+          "",
+          ""
+        ],
+        "hudOpacity": "",
+        "icons": [
+          "97f5132f529cf71860733ef439090f81fed5302fabed00bef7202c67027b1f9a",
+          "ed393aeb493380dea5e2bcda6840ce0442471c4c3fb7bb5fa4869f5c58141eb3",
+          "c0bea25d923148760e35a1d897ea9846ed262bc18dd04c9d4788628922bbf6f5",
+          "e1de83f6074fd322f79057a7ec2f4be26aefcdd8bb1e1efcbc91915f0774137d"
+        ]
+      },
+      "mutations": [
+        640,
+        3
+      ],
+      "removed": [
+        800,
+        0
+      ],
+      "candidateFields": {
+        "am.characterData": 2,
+        "wname.characterData": 1
+      },
+      "originalAmmoNodesRetained": [
+        false,
+        true
+      ]
+    },
+    "damage": {
+      "state": {
+        "hp": "66",
+        "armor": "11",
+        "ammo": "6<span class=\"sub2\"> | 25</span>",
+        "weapon": "FLARE PISTOL",
+        "keys": "",
+        "boss": [
+          "none",
+          "",
+          ""
+        ],
+        "hudOpacity": "",
+        "icons": [
+          "97f5132f529cf71860733ef439090f81fed5302fabed00bef7202c67027b1f9a",
+          "ed393aeb493380dea5e2bcda6840ce0442471c4c3fb7bb5fa4869f5c58141eb3",
+          "c0bea25d923148760e35a1d897ea9846ed262bc18dd04c9d4788628922bbf6f5",
+          "e1de83f6074fd322f79057a7ec2f4be26aefcdd8bb1e1efcbc91915f0774137d"
+        ]
+      },
+      "mutations": [
+        4,
+        2
+      ],
+      "removed": [
+        5,
+        0
+      ],
+      "candidateFields": {
+        "hp.characterData": 1,
+        "ar.characterData": 1
+      },
+      "originalAmmoNodesRetained": [
+        false,
+        true
+      ]
+    },
+    "heal": {
+      "state": {
+        "hp": "91",
+        "armor": "11",
+        "ammo": "6<span class=\"sub2\"> | 25</span>",
+        "weapon": "FLARE PISTOL",
+        "keys": "",
+        "boss": [
+          "none",
+          "",
+          ""
+        ],
+        "hudOpacity": "",
+        "icons": [
+          "97f5132f529cf71860733ef439090f81fed5302fabed00bef7202c67027b1f9a",
+          "ed393aeb493380dea5e2bcda6840ce0442471c4c3fb7bb5fa4869f5c58141eb3",
+          "c0bea25d923148760e35a1d897ea9846ed262bc18dd04c9d4788628922bbf6f5",
+          "e1de83f6074fd322f79057a7ec2f4be26aefcdd8bb1e1efcbc91915f0774137d"
+        ]
+      },
+      "mutations": [
+        4,
+        1
+      ],
+      "removed": [
+        5,
+        0
+      ],
+      "candidateFields": {
+        "hp.characterData": 1
+      },
+      "originalAmmoNodesRetained": [
+        false,
+        true
+      ]
+    },
+    "switch1": {
+      "state": {
+        "hp": "91",
+        "armor": "11",
+        "ammo": "0<span class=\"sub2\"> | 0</span>",
+        "weapon": "SAWED-OFF SHOTGUN",
+        "keys": "",
+        "boss": [
+          "none",
+          "",
+          ""
+        ],
+        "hudOpacity": "",
+        "icons": [
+          "97f5132f529cf71860733ef439090f81fed5302fabed00bef7202c67027b1f9a",
+          "ed393aeb493380dea5e2bcda6840ce0442471c4c3fb7bb5fa4869f5c58141eb3",
+          "41662f86a2b1aa00545081c3c51580e373efb8592cc12f3cef05515a2e5b8264",
+          "b4bc918b77653006ce3065cffcb9e22db4912f9cefcc695402cedc7a74dac92e"
+        ]
+      },
+      "mutations": [
+        160,
+        3
+      ],
+      "removed": [
+        200,
+        0
+      ],
+      "candidateFields": {
+        "am.characterData": 2,
+        "wname.characterData": 1
+      },
+      "originalAmmoNodesRetained": [
+        false,
+        true
+      ]
+    },
+    "switch4": {
+      "state": {
+        "hp": "91",
+        "armor": "11",
+        "ammo": "0<span class=\"sub2\"> | 0</span>",
+        "weapon": "BMG SNIPER",
+        "keys": "",
+        "boss": [
+          "none",
+          "",
+          ""
+        ],
+        "hudOpacity": "",
+        "icons": [
+          "97f5132f529cf71860733ef439090f81fed5302fabed00bef7202c67027b1f9a",
+          "ed393aeb493380dea5e2bcda6840ce0442471c4c3fb7bb5fa4869f5c58141eb3",
+          "a17d2fc3a5ebbd5ad8944128eeef36206724f57b3fa6be9257260e74824f02bc",
+          "90478851d6589227d96b3722b026b32b52d5f3e88ba3c71f6ef0de3be1644920"
+        ]
+      },
+      "mutations": [
+        160,
+        1
+      ],
+      "removed": [
+        200,
+        0
+      ],
+      "candidateFields": {
+        "wname.characterData": 1
+      },
+      "originalAmmoNodesRetained": [
+        false,
+        true
+      ]
+    },
+    "switch9": {
+      "state": {
+        "hp": "91",
+        "armor": "11",
+        "ammo": "0<span class=\"sub2\"> | 0</span>",
+        "weapon": "STAKE GUN",
+        "keys": "",
+        "boss": [
+          "none",
+          "",
+          ""
+        ],
+        "hudOpacity": "",
+        "icons": [
+          "97f5132f529cf71860733ef439090f81fed5302fabed00bef7202c67027b1f9a",
+          "ed393aeb493380dea5e2bcda6840ce0442471c4c3fb7bb5fa4869f5c58141eb3",
+          "8b573681560c249a434c500ddae00f6ae81cdab33a5df689d35a1f22405b4222",
+          "40b3d68a52e0bd1306e158d5906318362fdd768392c1a09533e2249ab2773685"
+        ]
+      },
+      "mutations": [
+        160,
+        1
+      ],
+      "removed": [
+        200,
+        0
+      ],
+      "candidateFields": {
+        "wname.characterData": 1
+      },
+      "originalAmmoNodesRetained": [
+        false,
+        true
+      ]
+    },
+    "switch0": {
+      "state": {
+        "hp": "91",
+        "armor": "11",
+        "ammo": "6<span class=\"sub2\"> | 25</span>",
+        "weapon": "FLARE PISTOL",
+        "keys": "",
+        "boss": [
+          "none",
+          "",
+          ""
+        ],
+        "hudOpacity": "",
+        "icons": [
+          "97f5132f529cf71860733ef439090f81fed5302fabed00bef7202c67027b1f9a",
+          "ed393aeb493380dea5e2bcda6840ce0442471c4c3fb7bb5fa4869f5c58141eb3",
+          "c0bea25d923148760e35a1d897ea9846ed262bc18dd04c9d4788628922bbf6f5",
+          "e1de83f6074fd322f79057a7ec2f4be26aefcdd8bb1e1efcbc91915f0774137d"
+        ]
+      },
+      "mutations": [
+        160,
+        3
+      ],
+      "removed": [
+        200,
+        0
+      ],
+      "candidateFields": {
+        "am.characterData": 2,
+        "wname.characterData": 1
+      },
+      "originalAmmoNodesRetained": [
+        false,
+        true
+      ]
+    },
+    "ashSeal": {
+      "state": {
+        "hp": "91",
+        "armor": "11",
+        "ammo": "6<span class=\"sub2\"> | 25</span>",
+        "weapon": "FLARE PISTOL",
+        "keys": "■ ASH SEAL",
+        "boss": [
+          "none",
+          "",
+          ""
+        ],
+        "hudOpacity": "",
+        "icons": [
+          "97f5132f529cf71860733ef439090f81fed5302fabed00bef7202c67027b1f9a",
+          "ed393aeb493380dea5e2bcda6840ce0442471c4c3fb7bb5fa4869f5c58141eb3",
+          "c0bea25d923148760e35a1d897ea9846ed262bc18dd04c9d4788628922bbf6f5",
+          "e1de83f6074fd322f79057a7ec2f4be26aefcdd8bb1e1efcbc91915f0774137d"
+        ]
+      },
+      "mutations": [
+        5,
+        1
+      ],
+      "removed": [
+        5,
+        0
+      ],
+      "candidateFields": {
+        "keys.childList": 1
+      },
+      "originalAmmoNodesRetained": [
+        false,
+        true
+      ]
+    },
+    "replaceSeal": {
+      "state": {
+        "hp": "91",
+        "armor": "11",
+        "ammo": "6<span class=\"sub2\"> | 25</span>",
+        "weapon": "FLARE PISTOL",
+        "keys": "■ BELL SEAL",
+        "boss": [
+          "none",
+          "",
+          ""
+        ],
+        "hudOpacity": "",
+        "icons": [
+          "97f5132f529cf71860733ef439090f81fed5302fabed00bef7202c67027b1f9a",
+          "ed393aeb493380dea5e2bcda6840ce0442471c4c3fb7bb5fa4869f5c58141eb3",
+          "c0bea25d923148760e35a1d897ea9846ed262bc18dd04c9d4788628922bbf6f5",
+          "e1de83f6074fd322f79057a7ec2f4be26aefcdd8bb1e1efcbc91915f0774137d"
+        ]
+      },
+      "mutations": [
+        5,
+        1
+      ],
+      "removed": [
+        6,
+        1
+      ],
+      "candidateFields": {
+        "keys.childList": 1
+      },
+      "originalAmmoNodesRetained": [
+        false,
+        true
+      ]
+    },
+    "twoSeals": {
+      "state": {
+        "hp": "91",
+        "armor": "11",
+        "ammo": "6<span class=\"sub2\"> | 25</span>",
+        "weapon": "FLARE PISTOL",
+        "keys": "■ ASH SEAL   ■ BELL SEAL",
+        "boss": [
+          "none",
+          "",
+          ""
+        ],
+        "hudOpacity": "",
+        "icons": [
+          "97f5132f529cf71860733ef439090f81fed5302fabed00bef7202c67027b1f9a",
+          "ed393aeb493380dea5e2bcda6840ce0442471c4c3fb7bb5fa4869f5c58141eb3",
+          "c0bea25d923148760e35a1d897ea9846ed262bc18dd04c9d4788628922bbf6f5",
+          "e1de83f6074fd322f79057a7ec2f4be26aefcdd8bb1e1efcbc91915f0774137d"
+        ]
+      },
+      "mutations": [
+        5,
+        1
+      ],
+      "removed": [
+        6,
+        1
+      ],
+      "candidateFields": {
+        "keys.childList": 1
+      },
+      "originalAmmoNodesRetained": [
+        false,
+        true
+      ]
+    },
+    "keyAndSeals": {
+      "state": {
+        "hp": "91",
+        "armor": "11",
+        "ammo": "6<span class=\"sub2\"> | 25</span>",
+        "weapon": "FLARE PISTOL",
+        "keys": "■ RED KEY   ■ ASH SEAL   ■ BELL SEAL",
+        "boss": [
+          "none",
+          "",
+          ""
+        ],
+        "hudOpacity": "",
+        "icons": [
+          "97f5132f529cf71860733ef439090f81fed5302fabed00bef7202c67027b1f9a",
+          "ed393aeb493380dea5e2bcda6840ce0442471c4c3fb7bb5fa4869f5c58141eb3",
+          "c0bea25d923148760e35a1d897ea9846ed262bc18dd04c9d4788628922bbf6f5",
+          "e1de83f6074fd322f79057a7ec2f4be26aefcdd8bb1e1efcbc91915f0774137d"
+        ]
+      },
+      "mutations": [
+        5,
+        1
+      ],
+      "removed": [
+        6,
+        1
+      ],
+      "candidateFields": {
+        "keys.childList": 1
+      },
+      "originalAmmoNodesRetained": [
+        false,
+        true
+      ]
+    },
+    "hidden": {
+      "state": {
+        "hp": "89",
+        "armor": "11",
+        "ammo": "6<span class=\"sub2\"> | 25</span>",
+        "weapon": "FLARE PISTOL",
+        "keys": "■ RED KEY   ■ ASH SEAL   ■ BELL SEAL",
+        "boss": [
+          "none",
+          "",
+          ""
+        ],
+        "hudOpacity": "0",
+        "icons": [
+          "97f5132f529cf71860733ef439090f81fed5302fabed00bef7202c67027b1f9a",
+          "ed393aeb493380dea5e2bcda6840ce0442471c4c3fb7bb5fa4869f5c58141eb3",
+          "c0bea25d923148760e35a1d897ea9846ed262bc18dd04c9d4788628922bbf6f5",
+          "e1de83f6074fd322f79057a7ec2f4be26aefcdd8bb1e1efcbc91915f0774137d"
+        ]
+      },
+      "mutations": [
+        5,
+        1
+      ],
+      "removed": [
+        6,
+        0
+      ],
+      "candidateFields": {
+        "hp.characterData": 1
+      },
+      "originalAmmoNodesRetained": [
+        false,
+        true
+      ]
+    },
+    "shown": {
+      "state": {
+        "hp": "87",
+        "armor": "11",
+        "ammo": "6<span class=\"sub2\"> | 25</span>",
+        "weapon": "FLARE PISTOL",
+        "keys": "■ RED KEY   ■ ASH SEAL   ■ BELL SEAL",
+        "boss": [
+          "none",
+          "",
+          ""
+        ],
+        "hudOpacity": "",
+        "icons": [
+          "97f5132f529cf71860733ef439090f81fed5302fabed00bef7202c67027b1f9a",
+          "ed393aeb493380dea5e2bcda6840ce0442471c4c3fb7bb5fa4869f5c58141eb3",
+          "c0bea25d923148760e35a1d897ea9846ed262bc18dd04c9d4788628922bbf6f5",
+          "e1de83f6074fd322f79057a7ec2f4be26aefcdd8bb1e1efcbc91915f0774137d"
+        ]
+      },
+      "mutations": [
+        5,
+        1
+      ],
+      "removed": [
+        6,
+        0
+      ],
+      "candidateFields": {
+        "hp.characterData": 1
+      },
+      "originalAmmoNodesRetained": [
+        false,
+        true
+      ]
+    },
+    "chapterLoad": {
+      "state": {
+        "hp": "100",
+        "armor": "11",
+        "ammo": "6<span class=\"sub2\"> | 25</span>",
+        "weapon": "FLARE PISTOL",
+        "keys": "",
+        "boss": [
+          "none",
+          "",
+          ""
+        ],
+        "hudOpacity": "",
+        "icons": [
+          "97f5132f529cf71860733ef439090f81fed5302fabed00bef7202c67027b1f9a",
+          "ed393aeb493380dea5e2bcda6840ce0442471c4c3fb7bb5fa4869f5c58141eb3",
+          "c0bea25d923148760e35a1d897ea9846ed262bc18dd04c9d4788628922bbf6f5",
+          "e1de83f6074fd322f79057a7ec2f4be26aefcdd8bb1e1efcbc91915f0774137d"
+        ]
+      },
+      "mutations": [
+        5,
+        2
+      ],
+      "removed": [
+        6,
+        1
+      ],
+      "candidateFields": {
+        "hp.characterData": 1,
+        "keys.childList": 1
+      },
+      "originalAmmoNodesRetained": [
+        false,
+        true
+      ]
+    },
+    "bossIntro": {
+      "state": {
+        "hp": "100",
+        "armor": "11",
+        "ammo": "6<span class=\"sub2\"> | 25</span>",
+        "weapon": "FLARE PISTOL",
+        "keys": "",
+        "boss": [
+          "none",
+          "",
+          ""
+        ],
+        "hudOpacity": "",
+        "icons": [
+          "97f5132f529cf71860733ef439090f81fed5302fabed00bef7202c67027b1f9a",
+          "ed393aeb493380dea5e2bcda6840ce0442471c4c3fb7bb5fa4869f5c58141eb3",
+          "c0bea25d923148760e35a1d897ea9846ed262bc18dd04c9d4788628922bbf6f5",
+          "e1de83f6074fd322f79057a7ec2f4be26aefcdd8bb1e1efcbc91915f0774137d"
+        ]
+      },
+      "mutations": [
+        4,
+        0
+      ],
+      "removed": [
+        5,
+        0
+      ],
+      "candidateFields": {},
+      "originalAmmoNodesRetained": [
+        false,
+        true
+      ]
+    },
+    "bossAppears": {
+      "state": {
+        "hp": "100",
+        "armor": "11",
+        "ammo": "6<span class=\"sub2\"> | 25</span>",
+        "weapon": "FLARE PISTOL",
+        "keys": "",
+        "boss": [
+          "block",
+          "THE FACTORY FOREMAN — PHASE 1",
+          "100%"
+        ],
+        "hudOpacity": "",
+        "icons": [
+          "97f5132f529cf71860733ef439090f81fed5302fabed00bef7202c67027b1f9a",
+          "ed393aeb493380dea5e2bcda6840ce0442471c4c3fb7bb5fa4869f5c58141eb3",
+          "c0bea25d923148760e35a1d897ea9846ed262bc18dd04c9d4788628922bbf6f5",
+          "e1de83f6074fd322f79057a7ec2f4be26aefcdd8bb1e1efcbc91915f0774137d"
+        ]
+      },
+      "mutations": [
+        7,
+        3
+      ],
+      "removed": [
+        5,
+        0
+      ],
+      "candidateFields": {
+        "bossbar.attributes": 1,
+        "bossname.childList": 1,
+        "bossfill.attributes": 1
+      },
+      "originalAmmoNodesRetained": [
+        false,
+        true
+      ]
+    },
+    "bossIdle120": {
+      "state": {
+        "hp": "100",
+        "armor": "11",
+        "ammo": "6<span class=\"sub2\"> | 25</span>",
+        "weapon": "FLARE PISTOL",
+        "keys": "",
+        "boss": [
+          "block",
+          "THE FACTORY FOREMAN — PHASE 1",
+          "100%"
+        ],
+        "hudOpacity": "",
+        "icons": [
+          "97f5132f529cf71860733ef439090f81fed5302fabed00bef7202c67027b1f9a",
+          "ed393aeb493380dea5e2bcda6840ce0442471c4c3fb7bb5fa4869f5c58141eb3",
+          "c0bea25d923148760e35a1d897ea9846ed262bc18dd04c9d4788628922bbf6f5",
+          "e1de83f6074fd322f79057a7ec2f4be26aefcdd8bb1e1efcbc91915f0774137d"
+        ]
+      },
+      "mutations": [
+        600,
+        0
+      ],
+      "removed": [
+        720,
+        0
+      ],
+      "candidateFields": {},
+      "originalAmmoNodesRetained": [
+        false,
+        true
+      ]
+    },
+    "phaseThree": {
+      "state": {
+        "hp": "100",
+        "armor": "11",
+        "ammo": "6<span class=\"sub2\"> | 25</span>",
+        "weapon": "FLARE PISTOL",
+        "keys": "",
+        "boss": [
+          "block",
+          "THE FACTORY FOREMAN — PHASE 3",
+          "25%"
+        ],
+        "hudOpacity": "",
+        "icons": [
+          "97f5132f529cf71860733ef439090f81fed5302fabed00bef7202c67027b1f9a",
+          "ed393aeb493380dea5e2bcda6840ce0442471c4c3fb7bb5fa4869f5c58141eb3",
+          "c0bea25d923148760e35a1d897ea9846ed262bc18dd04c9d4788628922bbf6f5",
+          "e1de83f6074fd322f79057a7ec2f4be26aefcdd8bb1e1efcbc91915f0774137d"
+        ]
+      },
+      "mutations": [
+        6,
+        2
+      ],
+      "removed": [
+        6,
+        1
+      ],
+      "candidateFields": {
+        "bossname.childList": 1,
+        "bossfill.attributes": 1
+      },
+      "originalAmmoNodesRetained": [
+        false,
+        true
+      ]
+    },
+    "twoBosses": {
+      "state": {
+        "hp": "100",
+        "armor": "11",
+        "ammo": "6<span class=\"sub2\"> | 25</span>",
+        "weapon": "FLARE PISTOL",
+        "keys": "",
+        "boss": [
+          "block",
+          "THE FACTORY FOREMAN — PHASE 3",
+          "25%"
+        ],
+        "hudOpacity": "",
+        "icons": [
+          "97f5132f529cf71860733ef439090f81fed5302fabed00bef7202c67027b1f9a",
+          "ed393aeb493380dea5e2bcda6840ce0442471c4c3fb7bb5fa4869f5c58141eb3",
+          "c0bea25d923148760e35a1d897ea9846ed262bc18dd04c9d4788628922bbf6f5",
+          "e1de83f6074fd322f79057a7ec2f4be26aefcdd8bb1e1efcbc91915f0774137d"
+        ]
+      },
+      "mutations": [
+        5,
+        0
+      ],
+      "removed": [
+        6,
+        0
+      ],
+      "candidateFields": {},
+      "originalAmmoNodesRetained": [
+        false,
+        true
+      ]
+    },
+    "axeExecutioner": {
+      "state": {
+        "hp": "100",
+        "armor": "11",
+        "ammo": "6<span class=\"sub2\"> | 25</span>",
+        "weapon": "FLARE PISTOL",
+        "keys": "",
+        "boss": [
+          "block",
+          "THE MUTANT EXECUTIONER",
+          "100%"
+        ],
+        "hudOpacity": "",
+        "icons": [
+          "97f5132f529cf71860733ef439090f81fed5302fabed00bef7202c67027b1f9a",
+          "ed393aeb493380dea5e2bcda6840ce0442471c4c3fb7bb5fa4869f5c58141eb3",
+          "c0bea25d923148760e35a1d897ea9846ed262bc18dd04c9d4788628922bbf6f5",
+          "e1de83f6074fd322f79057a7ec2f4be26aefcdd8bb1e1efcbc91915f0774137d"
+        ]
+      },
+      "mutations": [
+        6,
+        2
+      ],
+      "removed": [
+        6,
+        1
+      ],
+      "candidateFields": {
+        "bossname.childList": 1,
+        "bossfill.attributes": 1
+      },
+      "originalAmmoNodesRetained": [
+        false,
+        true
+      ]
+    },
+    "lastBossDead": {
+      "state": {
+        "hp": "100",
+        "armor": "11",
+        "ammo": "6<span class=\"sub2\"> | 25</span>",
+        "weapon": "FLARE PISTOL",
+        "keys": "",
+        "boss": [
+          "none",
+          "THE MUTANT EXECUTIONER",
+          "100%"
+        ],
+        "hudOpacity": "",
+        "icons": [
+          "97f5132f529cf71860733ef439090f81fed5302fabed00bef7202c67027b1f9a",
+          "ed393aeb493380dea5e2bcda6840ce0442471c4c3fb7bb5fa4869f5c58141eb3",
+          "c0bea25d923148760e35a1d897ea9846ed262bc18dd04c9d4788628922bbf6f5",
+          "e1de83f6074fd322f79057a7ec2f4be26aefcdd8bb1e1efcbc91915f0774137d"
+        ]
+      },
+      "mutations": [
+        5,
+        1
+      ],
+      "removed": [
+        5,
+        0
+      ],
+      "candidateFields": {
+        "bossbar.attributes": 1
+      },
+      "originalAmmoNodesRetained": [
+        false,
+        true
+      ]
+    }
+  },
+  "timings": {
+    "stationary": {
+      "callsPerBlock": 512,
+      "alternatingOrder": true,
+      "warmupBlocks": 4,
+      "rawBlockMs": {
+        "baseline": [
+          7.5999999940395355,
+          7.100000008940697,
+          9.599999994039536,
+          7.0999999940395355,
+          8.299999997019768,
+          7.200000002980232,
+          7.899999991059303,
+          7.0999999940395355,
+          7.700000002980232,
+          7.9000000059604645,
+          10.5,
+          8.599999994039536,
+          11.200000002980232,
+          8.5,
+          9.400000005960464,
+          11.700000002980232,
+          7.700000002980232,
+          8.5,
+          7.5,
+          8.599999994039536,
+          8.099999994039536,
+          7.5999999940395355,
+          7.100000008940697,
+          7.799999997019768
+        ],
+        "candidate": [
+          0.4000000059604645,
+          0.29999999701976776,
+          0.29999999701976776,
+          0.30000001192092896,
+          0.29999999701976776,
+          1.0999999940395355,
+          0.29999999701976776,
+          1.1000000089406967,
+          0.3999999910593033,
+          0.3999999910593033,
+          0.5,
+          0.5,
+          0.29999999701976776,
+          0.4000000059604645,
+          0.4000000059604645,
+          0.29999999701976776,
+          0.4000000059604645,
+          0.3999999910593033,
+          0.3999999910593033,
+          0.3999999910593033,
+          0.4000000059604645,
+          0.3999999910593033,
+          0.4000000059604645,
+          0.4000000059604645
+        ]
+      },
+      "baselineUsPerCall": {
+        "p50": 15.429687482537702,
+        "p95": 21.875000005820766
+      },
+      "candidateUsPerCall": {
+        "p50": 0.7812499825377017,
+        "p95": 2.148437488358468
+      }
+    },
+    "shotsAndReload": {
+      "callsPerBlock": 512,
+      "alternatingOrder": true,
+      "warmupBlocks": 4,
+      "rawBlockMs": {
+        "baseline": [
+          8.400000005960464,
+          7.799999997019768,
+          6.700000002980232,
+          9.900000005960464,
+          7.0999999940395355,
+          8.900000005960464,
+          11.299999997019768,
+          7.0999999940395355,
+          7.700000002980232,
+          9.299999997019768,
+          7.700000002980232,
+          9.900000005960464,
+          7.5,
+          6.399999991059303,
+          6.4000000059604645,
+          7,
+          7.200000002980232,
+          6.5,
+          7,
+          9.299999997019768,
+          8.599999994039536,
+          9.099999994039536,
+          9,
+          6.5999999940395355
+        ],
+        "candidate": [
+          0.699999988079071,
+          0.5,
+          0.6000000089406967,
+          0.5,
+          0.5,
+          0.3999999910593033,
+          0.7999999970197678,
+          0.20000000298023224,
+          0.20000000298023224,
+          0.29999999701976776,
+          0.29999999701976776,
+          0.29999999701976776,
+          0.29999999701976776,
+          0.29999999701976776,
+          0.29999999701976776,
+          0.29999999701976776,
+          0.6000000089406967,
+          0.29999999701976776,
+          0.3999999910593033,
+          0.3999999910593033,
+          0.4000000059604645,
+          0.20000000298023224,
+          0.29999999701976776,
+          0.20000000298023224
+        ]
+      },
+      "baselineUsPerCall": {
+        "p50": 15.039062505820766,
+        "p95": 19.335937511641532
+      },
+      "candidateUsPerCall": {
+        "p50": 0.5859374941792339,
+        "p95": 1.3671874767169356
+      }
+    }
+  }
+}
