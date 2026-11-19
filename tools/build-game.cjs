@@ -66,6 +66,7 @@ const code = [
   "sewer-works.js",
   "dungeon-sally-port.js",
   "necropolis-ossuary-entrance.js",
+  "cathedral-reliquary.js",
   "render-warmup.js",
   "hud-updates.js",
   "display-settings.js",

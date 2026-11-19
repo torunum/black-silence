@@ -1,0 +1,2290 @@
+{
+  "sha256": "631b5760524e333738464c1bc6ccca55ad18efda73abd34a108ae28973c9db1b",
+  "baselineCommit": "31bbb7ecac3f9332ee8ae74250ffcbd6f2748bd0",
+  "impactShake": {
+    "candidate": "631b5760524e333738464c1bc6ccca55ad18efda73abd34a108ae28973c9db1b",
+    "baseline": "c3be0ab035103e3e24832b2656a72ce26459d919144ad0c9d7fe2abeb4671f65",
+    "checks": [
+      "Native no-QA Settings, compact layout, Tab/Shift+Tab/Escape, capture, fire and reload preserve campaign and old input prefs",
+      "Invalid and unavailable preferences default to Full, with a usable session preference when storage is denied",
+      "Full matches the unmodified baseline exactly across all sampled camera, projection and gameplay state",
+      "Exact 100/50/0 shake amplitude projects coherently with unchanged recoil, dropkick staging, hit origin, script, and exception recovery",
+      "Real E opens the native Prologue door and completes a finisher after changing shake while paused mid-animation",
+      "Real forward sprint/right-click travels through the dropkick after changing shake while paused mid-flight"
+    ],
+    "errors": [],
+    "browser": "157.0.8103.80",
+    "render": {
+      "unshaken": [
+        19.02725392048206,
+        5.199769299746048,
+        13.00436062727713,
+        0.003592481124809435,
+        0.15,
+        0
+      ],
+      "full": [
+        18.99831500888935,
+        5.174917375119963,
+        13.00436062727713,
+        0.003592481124809435,
+        0.15,
+        -0.024662553376605712
+      ],
+      "reduced": [
+        19.012784464685705,
+        5.187343337433006,
+        13.00436062727713,
+        0.003592481124809435,
+        0.15,
+        -0.012331276688302856
+      ],
+      "off": [
+        19.02725392048206,
+        5.199769299746048,
+        13.00436062727713,
+        0.003592481124809435,
+        0.15,
+        0
+      ],
+      "bulletDirection": [
+        -0.1494371681562978,
+        0.0035924733974350446,
+        -0.9887646974423769
+      ]
+    },
+    "passed": true
+  },
+  "pauseSettings": {
+    "passed": true,
+    "checks": [
+      "Default real mouse input matches the original gain, zoom and clamp",
+      "Short-screen controls, Back and Resume preserve the same scene and player inventory",
+      "Custom sensitivity and inverted Y preserve native zoom, input lock and both pitch limits",
+      "Settings survive reopening the file; normal Settings and mouse Resume remain usable",
+      "Invalid saved values use defaults and storage denial still permits session changes"
+    ]
+  },
+  "cathedral": {
+    "previousSHA256": "c3be0ab035103e3e24832b2656a72ce26459d919144ad0c9d7fe2abeb4671f65",
+    "candidateSHA256": "631b5760524e333738464c1bc6ccca55ad18efda73abd34a108ae28973c9db1b",
+    "objects": [
+      {
+        "name": "cathedralBoneReliquary",
+        "triangles": 5331,
+        "texture": [
+          256,
+          32
+        ],
+        "point": [
+          93,
+          1.2,
+          49
+        ],
+        "min": [
+          -0.7298648357391357,
+          0.005999998655170202,
+          -0.7298648357391357
+        ],
+        "max": [
+          0.7298648357391357,
+          2.0799999237060547,
+          0.7298648357391357
+        ],
+        "lights": 0
+      },
+      {
+        "name": "cathedralVotiveLight",
+        "triangles": 4,
+        "texture": [
+          32,
+          32
+        ],
+        "point": [
+          0,
+          0,
+          0
+        ],
+        "min": [
+          91.56999969482422,
+          1.222000002861023,
+          46.81999969482422
+        ],
+        "max": [
+          94.43000030517578,
+          1.9500000476837158,
+          48.810001373291016
+        ],
+        "lights": 0
+      }
+    ],
+    "oldDraws": {
+      "frame": 345,
+      "calls": 147,
+      "triangles": 63862,
+      "points": 1468,
+      "lines": 0
+    },
+    "newDraws": {
+      "frame": 436,
+      "calls": 150,
+      "triangles": 69201,
+      "points": 1468,
+      "lines": 0
+    },
+    "collisionSamples": 5037,
+    "end": {
+      "level": 7,
+      "ready": true,
+      "key": true,
+      "at": [
+        49.00057410054558,
+        60.774990470673536,
+        1.33
+      ],
+      "captured": true,
+      "route": [
+        [
+          "55,31",
+          true,
+          1,
+          false
+        ],
+        [
+          "44,28",
+          true,
+          1,
+          false
+        ],
+        [
+          "18,41",
+          true,
+          1,
+          false
+        ],
+        [
+          "24,32",
+          true,
+          1,
+          true
+        ]
+      ],
+      "boss": {
+        "key": "Z",
+        "dead": false
+      },
+      "checkpoint": 1,
+      "exit": null
+    },
+    "steps": [
+      {
+        "action": "E",
+        "door": "porch",
+        "at": [
+          111,
+          66,
+          1
+        ]
+      },
+      {
+        "action": "W",
+        "from": [
+          111,
+          66,
+          1
+        ],
+        "goal": [
+          111,
+          61
+        ],
+        "at": [
+          111,
+          60.81128869845999,
+          1
+        ]
+      },
+      {
+        "action": "W",
+        "from": [
+          111,
+          60.78874575502357,
+          1
+        ],
+        "goal": [
+          111,
+          43
+        ],
+        "at": [
+          111,
+          42.864213507574725,
+          1
+        ]
+      },
+      {
+        "action": "W",
+        "from": [
+          111,
+          42.83514765658993,
+          1
+        ],
+        "goal": [
+          96.4,
+          43
+        ],
+        "at": [
+          96.01062921660777,
+          43.008425044958756,
+          1
+        ]
+      },
+      {
+        "action": "W",
+        "from": [
+          95.98861039314944,
+          43.00890148533782,
+          2.2
+        ],
+        "goal": [
+          94.2,
+          43.7
+        ],
+        "at": [
+          93.89646096287746,
+          43.81511472858168,
+          2.2
+        ]
+      },
+      {
+        "action": "W",
+        "from": [
+          93.72401485339584,
+          43.88629906052882,
+          2.2
+        ],
+        "goal": [
+          90.1,
+          45.6
+        ],
+        "at": [
+          89.77391566630904,
+          45.75423033944148,
+          2.2
+        ]
+      },
+      {
+        "action": "W",
+        "from": [
+          89.76238772955601,
+          45.75968326211237,
+          2.2
+        ],
+        "goal": [
+          88.9,
+          50.8
+        ],
+        "at": [
+          88.87863704530385,
+          50.933411415443196,
+          2.2
+        ]
+      },
+      {
+        "action": "W",
+        "from": [
+          88.87472134746685,
+          50.958710964191226,
+          2.2
+        ],
+        "goal": [
+          89,
+          54.64
+        ],
+        "at": [
+          89.0265757255102,
+          55.232122476602314,
+          2.2
+        ]
+      },
+      {
+        "action": "E",
+        "door": "nave-to-vault",
+        "at": [
+          89.03433469692195,
+          55.39657828676394,
+          2.2
+        ]
+      },
+      {
+        "action": "W",
+        "from": [
+          89.03433469692195,
+          55.39657828676394,
+          2.2
+        ],
+        "goal": [
+          89,
+          66.5
+        ],
+        "at": [
+          88.99963635223038,
+          66.61759095078776,
+          1
+        ]
+      },
+      {
+        "action": "W",
+        "from": [
+          88.99917371804926,
+          66.76719046857782,
+          1
+        ],
+        "goal": [
+          86.8,
+          67.8
+        ],
+        "at": [
+          86.72695431868668,
+          67.8420724210951,
+          1
+        ]
+      },
+      {
+        "action": "W",
+        "from": [
+          86.72695431868668,
+          67.8420724210951,
+          1
+        ],
+        "goal": [
+          87,
+          75
+        ],
+        "at": [
+          87.00784403963715,
+          75.11864812941027,
+          1
+        ]
+      },
+      {
+        "action": "W",
+        "from": [
+          87.00784403963715,
+          75.11864812941027,
+          1
+        ],
+        "goal": [
+          65,
+          75
+        ],
+        "at": [
+          64.86552679298833,
+          74.99802438652118,
+          1
+        ]
+      },
+      {
+        "action": "W",
+        "from": [
+          64.86552679298833,
+          74.99802438652118,
+          1
+        ],
+        "goal": [
+          43,
+          75
+        ],
+        "at": [
+          42.536123330230915,
+          75.00009773326255,
+          1
+        ]
+      },
+      {
+        "action": "W",
+        "from": [
+          42.5188094095823,
+          75.00010138116224,
+          1
+        ],
+        "goal": [
+          37,
+          76.6
+        ],
+        "at": [
+          36.88671778512028,
+          76.63341338576308,
+          1
+        ]
+      },
+      {
+        "action": "W",
+        "from": [
+          36.88671778512028,
+          76.63341338576308,
+          1
+        ],
+        "goal": [
+          37,
+          80.6
+        ],
+        "at": [
+          37.021727293087714,
+          80.90460878204458,
+          1
+        ]
+      },
+      {
+        "action": "E",
+        "door": "charnel",
+        "at": [
+          37.0401726243915,
+          81.098902126645,
+          1
+        ]
+      },
+      {
+        "action": "W",
+        "from": [
+          37.0401726243915,
+          81.098902126645,
+          1
+        ],
+        "goal": [
+          37,
+          87
+        ],
+        "at": [
+          36.99833572701641,
+          87.24402018216495,
+          1
+        ]
+      },
+      {
+        "action": "W",
+        "from": [
+          36.99711515326812,
+          87.42293256389614,
+          1
+        ],
+        "goal": [
+          37,
+          79
+        ],
+        "at": [
+          37.00002238517039,
+          78.9369210966359,
+          1
+        ]
+      },
+      {
+        "action": "W",
+        "from": [
+          37.00002238517039,
+          78.9369210966359,
+          1
+        ],
+        "goal": [
+          49,
+          77
+        ],
+        "at": [
+          49.09780758678319,
+          76.98569518173623,
+          1
+        ]
+      },
+      {
+        "action": "W",
+        "from": [
+          49.09780758678319,
+          76.98569518173623,
+          1
+        ],
+        "goal": [
+          49,
+          67.5
+        ],
+        "at": [
+          48.990511960817585,
+          67.18102052049422,
+          1
+        ]
+      },
+      {
+        "action": "E",
+        "door": "sanctuary-lock",
+        "at": [
+          48.98474448453333,
+          66.98753372330383,
+          1
+        ]
+      },
+      {
+        "action": "W",
+        "from": [
+          48.98474207768802,
+          66.98745297866475,
+          1
+        ],
+        "goal": [
+          49,
+          61
+        ],
+        "at": [
+          49.00010920089919,
+          60.95715911996475,
+          1.33
+        ]
+      }
+    ],
+    "retired": [
+      [
+        6,
+        [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      ],
+      [
+        8,
+        [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      ]
+    ],
+    "pageErrors": []
+  },
+  "campaign": {
+    "sha256": "631b5760524e333738464c1bc6ccca55ad18efda73abd34a108ae28973c9db1b",
+    "passed": true,
+    "scope": "Continuous native campaign from New Game. Fixed-step movement and door interaction through authored geometry. Actual Playwright E for bell and exits, Space for chapter cards. Bosses receive a seeded terminal hit through native damage. Hostile attacks are isolated during this route.",
+    "chapterCount": 11,
+    "chapterTransitions": 10,
+    "redKeys": 9,
+    "seals": 2,
+    "terminalBossFixtures": 21,
+    "nativeVictory": true,
+    "campaignCleared": true,
+    "chapters": [
+      {
+        "index": 0,
+        "name": "PROLOGUE — OUT OF THE PIT",
+        "entrance": [
+          19,
+          9
+        ],
+        "distance": 335.6545561732002,
+        "traversedGates": [],
+        "interactionsWithE": [
+          "exit"
+        ],
+        "exit": [
+          107.52477417796456,
+          17.52533331733246
+        ]
+      },
+      {
+        "index": 1,
+        "name": "LEVEL 1 — THE ASH BELL MONASTERY",
+        "entrance": [
+          167,
+          153
+        ],
+        "distance": 896.2203199862334,
+        "traversedGates": [
+          "83,73",
+          "75,65",
+          "64,50",
+          "87,51",
+          "90,43",
+          "64,36",
+          "37,33",
+          "27,33",
+          "20,37",
+          "23,42",
+          "30,47",
+          "35,52",
+          "41,27",
+          "42,13",
+          "42,6",
+          "25,16"
+        ],
+        "interactionsWithE": [
+          "bell",
+          "exit"
+        ],
+        "exit": [
+          33.55014911922639,
+          29.551909673494023
+        ]
+      },
+      {
+        "index": 2,
+        "name": "LEVEL 2 — THE GOTHIC DUNGEON",
+        "entrance": [
+          7,
+          11
+        ],
+        "distance": 215.18919566568192,
+        "traversedGates": [
+          "9,13",
+          "33,11",
+          "36,12",
+          "43,24",
+          "50,27",
+          "43,36"
+        ],
+        "interactionsWithE": [
+          "exit"
+        ],
+        "exit": [
+          61.454079203565804,
+          72.50000000000004
+        ]
+      },
+      {
+        "index": 3,
+        "name": "LEVEL 3 — THE ABANDONED CHURCH",
+        "entrance": [
+          121,
+          45
+        ],
+        "distance": 373.9618763773435,
+        "traversedGates": [
+          "57,17",
+          "53,23",
+          "19,23"
+        ],
+        "interactionsWithE": [
+          "exit"
+        ],
+        "exit": [
+          33.54889334302959,
+          29.548893476260993
+        ]
+      },
+      {
+        "index": 4,
+        "name": "LEVEL 4 — THE HOLLOW VILLAGE",
+        "entrance": [
+          71,
+          11
+        ],
+        "distance": 285.6726046067855,
+        "traversedGates": [
+          "10,45",
+          "31,36",
+          "35,45"
+        ],
+        "interactionsWithE": [
+          "exit"
+        ],
+        "exit": [
+          72.46393874114621,
+          122.46483798655385
+        ]
+      },
+      {
+        "index": 5,
+        "name": "LEVEL 5 — THE NECROPOLIS",
+        "entrance": [
+          9,
+          75
+        ],
+        "distance": 329.69568408173717,
+        "traversedGates": [
+          "34,21",
+          "31,27"
+        ],
+        "interactionsWithE": [
+          "exit"
+        ],
+        "exit": [
+          29.517731519429468,
+          33.51690280531182
+        ]
+      },
+      {
+        "index": 6,
+        "name": "LEVEL 6 — THE GRAVEYARD",
+        "entrance": [
+          15,
+          79
+        ],
+        "distance": 267.6848641250777,
+        "traversedGates": [
+          "31,38",
+          "42,38",
+          "46,16",
+          "39,10",
+          "28,10"
+        ],
+        "interactionsWithE": [
+          "exit"
+        ],
+        "exit": [
+          29.530289669112825,
+          32.47022927227687
+        ]
+      },
+      {
+        "index": 7,
+        "name": "LEVEL 7 — THE SEWERS",
+        "entrance": [
+          11,
+          79
+        ],
+        "distance": 374.2576275832085,
+        "traversedGates": [
+          "33,38",
+          "40,28",
+          "46,14",
+          "37,22"
+        ],
+        "interactionsWithE": [
+          "exit"
+        ],
+        "exit": [
+          29.558536577543734,
+          33.558575262070356
+        ]
+      },
+      {
+        "index": 8,
+        "name": "LEVEL 8 — THE FACTORY",
+        "entrance": [
+          11,
+          77
+        ],
+        "distance": 319.64913087642236,
+        "traversedGates": [
+          "28,36",
+          "42,29",
+          "44,11",
+          "35,18"
+        ],
+        "interactionsWithE": [
+          "exit"
+        ],
+        "exit": [
+          29.561080849011237,
+          33.5609133903325
+        ]
+      },
+      {
+        "index": 9,
+        "name": "LEVEL 9 — THE BONE CATHEDRAL",
+        "entrance": [
+          111,
+          67
+        ],
+        "distance": 271.41687942881583,
+        "traversedGates": [
+          "55,31",
+          "44,28",
+          "18,41",
+          "24,32"
+        ],
+        "interactionsWithE": [
+          "exit"
+        ],
+        "exit": [
+          29.50570723852302,
+          33.50570723852839
+        ]
+      },
+      {
+        "index": 10,
+        "name": "LEVEL 10 — THE WOMB",
+        "entrance": [
+          13,
+          63
+        ],
+        "distance": 205.30987863553244,
+        "traversedGates": [
+          "22,31",
+          "32,28",
+          "24,15"
+        ],
+        "interactionsWithE": [],
+        "exit": [
+          39.48558973032501,
+          23.485589803443247
+        ]
+      }
+    ],
+    "errors": []
+  },
+  "timeline": {
+    "sha256": "631b5760524e333738464c1bc6ccca55ad18efda73abd34a108ae28973c9db1b",
+    "tests": [
+      {
+        "kind": 0,
+        "before": {
+          "busy": false,
+          "execution": null,
+          "deaths": 0,
+          "kills": 0,
+          "totalKills": 0,
+          "hp": 70,
+          "ammo": 6,
+          "actorHealth": 19,
+          "actorDead": false,
+          "actorDeathTime": 0,
+          "actorHeight": 4.973425,
+          "actorFloor": 4.2,
+          "actorHitboxHeight": 1.652,
+          "poseExecution": -1
+        },
+        "paused": {
+          "busy": true,
+          "execution": {
+            "t": 0.4186000000000022,
+            "kind": 0
+          },
+          "deaths": 0,
+          "kills": 0,
+          "totalKills": 0,
+          "hp": 70,
+          "ammo": 6,
+          "actorHealth": 19,
+          "actorDead": false,
+          "actorExecuting": true,
+          "actorDeathTime": 0,
+          "actorHeight": 4.991841804501459,
+          "actorFloor": 4.2,
+          "actorHitboxHeight": 1.652,
+          "poseExecution": -1
+        },
+        "recovery": {
+          "busy": true,
+          "execution": {
+            "t": 1.0639560000000035,
+            "kind": 0
+          },
+          "deaths": 0,
+          "kills": 1,
+          "totalKills": 1,
+          "hp": 85,
+          "ammo": 6,
+          "actorHealth": -5,
+          "actorDead": true,
+          "actorExecuting": false,
+          "actorDeathTime": 0.27772,
+          "actorHeight": 4.4973600000000005,
+          "actorFloor": 4.2,
+          "actorHitboxHeight": 1.652,
+          "poseExecution": -1
+        },
+        "after": {
+          "busy": false,
+          "execution": null,
+          "deaths": 0,
+          "kills": 1,
+          "totalKills": 1,
+          "hp": 85,
+          "ammo": 6,
+          "actorHealth": -5,
+          "actorDead": true,
+          "actorExecuting": false,
+          "actorDeathTime": 0.7201200000000015,
+          "actorHeight": 4.4973600000000005,
+          "actorFloor": 4.2,
+          "actorHitboxHeight": 1.652,
+          "poseExecution": -1
+        }
+      },
+      {
+        "kind": 1,
+        "before": {
+          "busy": false,
+          "execution": null,
+          "deaths": 0,
+          "kills": 1,
+          "totalKills": 1,
+          "hp": 70,
+          "ammo": 6,
+          "actorHealth": 19,
+          "actorDead": false,
+          "actorDeathTime": 0,
+          "actorHeight": 5.0899,
+          "actorFloor": 4.2,
+          "actorHitboxHeight": 1.8997999999999997,
+          "poseExecution": -1
+        },
+        "paused": {
+          "busy": true,
+          "execution": {
+            "t": 0.4247520000000071,
+            "kind": 1
+          },
+          "deaths": 0,
+          "kills": 1,
+          "totalKills": 1,
+          "hp": 70,
+          "ammo": 6,
+          "actorHealth": 19,
+          "actorDead": false,
+          "actorExecuting": true,
+          "actorDeathTime": 0,
+          "actorHeight": 5.082824086070324,
+          "actorFloor": 4.2,
+          "actorHitboxHeight": 1.8997999999999997,
+          "poseExecution": -1
+        },
+        "recovery": {
+          "busy": true,
+          "execution": {
+            "t": 1.0686560000000056,
+            "kind": 1
+          },
+          "deaths": 0,
+          "kills": 2,
+          "totalKills": 2,
+          "hp": 85,
+          "ammo": 6,
+          "actorHealth": -90,
+          "actorDead": true,
+          "actorExecuting": false,
+          "actorDeathTime": 0,
+          "actorHeight": 5.039644327577436,
+          "actorFloor": 4.2,
+          "actorHitboxHeight": 1.8997999999999997,
+          "poseExecution": -1
+        },
+        "after": {
+          "busy": false,
+          "execution": null,
+          "deaths": 0,
+          "kills": 2,
+          "totalKills": 2,
+          "hp": 85,
+          "ammo": 6,
+          "actorHealth": -90,
+          "actorDead": true,
+          "actorExecuting": false,
+          "actorDeathTime": 0,
+          "actorHeight": 5.039644327577436,
+          "actorFloor": 4.2,
+          "actorHitboxHeight": 1.8997999999999997,
+          "poseExecution": -1
+        }
+      },
+      {
+        "kind": 2,
+        "before": {
+          "busy": false,
+          "execution": null,
+          "deaths": 0,
+          "kills": 2,
+          "totalKills": 2,
+          "hp": 70,
+          "ammo": 6,
+          "actorHealth": 19,
+          "actorDead": false,
+          "actorDeathTime": 0,
+          "actorHeight": 4.9864749999999995,
+          "actorFloor": 4.2,
+          "actorHitboxHeight": 1.652,
+          "poseExecution": -1
+        },
+        "paused": {
+          "busy": true,
+          "execution": {
+            "t": 0.39815199999999934,
+            "kind": 2
+          },
+          "deaths": 0,
+          "kills": 2,
+          "totalKills": 2,
+          "hp": 70,
+          "ammo": 6,
+          "actorHealth": 19,
+          "actorDead": false,
+          "actorExecuting": true,
+          "actorDeathTime": 0,
+          "actorHeight": 4.9224397032135085,
+          "actorFloor": 4.2,
+          "actorHitboxHeight": 1.652,
+          "poseExecution": -1
+        },
+        "recovery": {
+          "busy": true,
+          "execution": {
+            "t": 1.0691519999999959,
+            "kind": 2
+          },
+          "deaths": 0,
+          "kills": 3,
+          "totalKills": 3,
+          "hp": 85,
+          "ammo": 6,
+          "actorHealth": -5,
+          "actorDead": true,
+          "actorExecuting": false,
+          "actorDeathTime": 0.26429999999999926,
+          "actorHeight": 4.4973600000000005,
+          "actorFloor": 4.2,
+          "actorHitboxHeight": 1.652,
+          "poseExecution": -1
+        },
+        "after": {
+          "busy": false,
+          "execution": null,
+          "deaths": 0,
+          "kills": 3,
+          "totalKills": 3,
+          "hp": 85,
+          "ammo": 6,
+          "actorHealth": -5,
+          "actorDead": true,
+          "actorExecuting": false,
+          "actorDeathTime": 0.5302999999999992,
+          "actorHeight": 4.4973600000000005,
+          "actorFloor": 4.2,
+          "actorHitboxHeight": 1.652,
+          "poseExecution": -1
+        }
+      },
+      {
+        "cancel": "obstruction after first beat",
+        "before": {
+          "busy": false,
+          "execution": null,
+          "deaths": 0,
+          "kills": 3,
+          "totalKills": 3,
+          "hp": 70,
+          "ammo": 6,
+          "actorHealth": 19,
+          "actorDead": false,
+          "actorDeathTime": 0,
+          "actorHeight": 4.966,
+          "actorFloor": 4.2,
+          "actorHitboxHeight": 1.652,
+          "poseExecution": -1
+        },
+        "after": {
+          "busy": false,
+          "execution": null,
+          "deaths": 0,
+          "kills": 3,
+          "totalKills": 3,
+          "hp": 70,
+          "ammo": 6,
+          "actorHealth": 19,
+          "actorDead": false,
+          "actorExecuting": false,
+          "actorDeathTime": 0,
+          "actorHeight": 5.020673518518785,
+          "actorFloor": 4.2,
+          "actorHitboxHeight": 1.652,
+          "poseExecution": -1
+        }
+      }
+    ],
+    "errors": [],
+    "passed": true
+  },
+  "smoke": {
+    "candidateSHA256": "631b5760524e333738464c1bc6ccca55ad18efda73abd34a108ae28973c9db1b",
+    "viewport": "1280x720",
+    "maps": [
+      {
+        "level": 0,
+        "width": 64,
+        "height": 62,
+        "enemies": 21,
+        "finitePlayer": true,
+        "performance": {
+          "frames": 32,
+          "meanMs": 18.49,
+          "p95Ms": 18.2,
+          "maxMs": 36.2,
+          "approximateFPS": 54.1
+        }
+      },
+      {
+        "level": 1,
+        "width": 58,
+        "height": 44,
+        "enemies": 23,
+        "finitePlayer": true,
+        "performance": {
+          "frames": 32,
+          "meanMs": 17.88,
+          "p95Ms": 18.2,
+          "maxMs": 18.2,
+          "approximateFPS": 55.9
+        }
+      },
+      {
+        "level": 2,
+        "width": 64,
+        "height": 46,
+        "enemies": 35,
+        "finitePlayer": true,
+        "performance": {
+          "frames": 32,
+          "meanMs": 17.96,
+          "p95Ms": 18.2,
+          "maxMs": 18.2,
+          "approximateFPS": 55.7
+        }
+      },
+      {
+        "level": 3,
+        "width": 54,
+        "height": 46,
+        "enemies": 37,
+        "finitePlayer": true,
+        "performance": {
+          "frames": 32,
+          "meanMs": 17.91,
+          "p95Ms": 18.2,
+          "maxMs": 18.6,
+          "approximateFPS": 55.8
+        }
+      },
+      {
+        "level": 4,
+        "width": 62,
+        "height": 46,
+        "enemies": 36,
+        "finitePlayer": true,
+        "performance": {
+          "frames": 32,
+          "meanMs": 17.98,
+          "p95Ms": 18.2,
+          "maxMs": 18.6,
+          "approximateFPS": 55.6
+        }
+      },
+      {
+        "level": 5,
+        "width": 58,
+        "height": 46,
+        "enemies": 34,
+        "finitePlayer": true,
+        "performance": {
+          "frames": 32,
+          "meanMs": 29.04,
+          "p95Ms": 18.2,
+          "maxMs": 377.4,
+          "approximateFPS": 34.4
+        }
+      },
+      {
+        "level": 6,
+        "width": 58,
+        "height": 46,
+        "enemies": 33,
+        "finitePlayer": true,
+        "performance": {
+          "frames": 32,
+          "meanMs": 17.92,
+          "p95Ms": 18.3,
+          "maxMs": 19,
+          "approximateFPS": 55.8
+        }
+      },
+      {
+        "level": 7,
+        "width": 62,
+        "height": 46,
+        "enemies": 33,
+        "finitePlayer": true,
+        "performance": {
+          "frames": 32,
+          "meanMs": 17.97,
+          "p95Ms": 18.2,
+          "maxMs": 18.3,
+          "approximateFPS": 55.6
+        }
+      },
+      {
+        "level": 8,
+        "width": 50,
+        "height": 42,
+        "enemies": 29,
+        "finitePlayer": true,
+        "performance": {
+          "frames": 32,
+          "meanMs": 18.44,
+          "p95Ms": 18.2,
+          "maxMs": 36.1,
+          "approximateFPS": 54.2
+        }
+      },
+      {
+        "level": 9,
+        "width": 100,
+        "height": 86,
+        "enemies": 115,
+        "finitePlayer": true,
+        "performance": {
+          "frames": 32,
+          "meanMs": 19.64,
+          "p95Ms": 36.2,
+          "maxMs": 36.2,
+          "approximateFPS": 50.9
+        }
+      },
+      {
+        "level": 10,
+        "width": 72,
+        "height": 64,
+        "enemies": 79,
+        "finitePlayer": true,
+        "performance": {
+          "frames": 32,
+          "meanMs": 20.15,
+          "p95Ms": 36.3,
+          "maxMs": 36.3,
+          "approximateFPS": 49.6
+        }
+      }
+    ],
+    "actions": {
+      "dropkick": {
+        "x": 3,
+        "z": 9,
+        "y": 5.2,
+        "ex": 3,
+        "ez": 7,
+        "distance": 6.629214371251068,
+        "jump": 0.6695908595199995,
+        "enemyDistance": 4.548980703124958,
+        "airborne": true,
+        "finisherSeen": false,
+        "hp": 172,
+        "frames": {
+          "frames": 38,
+          "meanMs": 22.71,
+          "p95Ms": 36.2,
+          "maxMs": 71.8,
+          "approximateFPS": 44
+        }
+      },
+      "finisher": {
+        "x": 3,
+        "z": 9,
+        "y": 5.2,
+        "ex": 3,
+        "ez": 7,
+        "distance": 0.8499999999999996,
+        "jump": 0,
+        "enemyDistance": 0.715740110975033,
+        "airborne": false,
+        "finisherSeen": true,
+        "dead": true,
+        "frames": {
+          "frames": 78,
+          "meanMs": 18.34,
+          "p95Ms": 18.3,
+          "maxMs": 36.8,
+          "approximateFPS": 54.5
+        }
+      },
+      "warmFinishers": [
+        {
+          "requestedKind": 0,
+          "actualKind": 1,
+          "frames": 75,
+          "meanMs": 19.13,
+          "p95Ms": 35.7,
+          "maxMs": 36.3,
+          "approximateFPS": 52.3
+        },
+        {
+          "requestedKind": 1,
+          "actualKind": 2,
+          "frames": 80,
+          "meanMs": 18.22,
+          "p95Ms": 18.2,
+          "maxMs": 36.1,
+          "approximateFPS": 54.9
+        },
+        {
+          "requestedKind": 2,
+          "actualKind": 1,
+          "frames": 80,
+          "meanMs": 17.85,
+          "p95Ms": 18.2,
+          "maxMs": 18.6,
+          "approximateFPS": 56
+        }
+      ],
+      "restart": {
+        "melee": true,
+        "busy": false,
+        "exec": null,
+        "level": 0
+      }
+    },
+    "ordinaryLaunch": {
+      "offline": true,
+      "qaAbsent": true,
+      "viewport": "1920x1080"
+    },
+    "errors": []
+  },
+  "offline": {
+    "sha256": "631b5760524e333738464c1bc6ccca55ad18efda73abd34a108ae28973c9db1b",
+    "browsers": [
+      {
+        "channel": "chrome",
+        "version": "157.0.8103.80",
+        "offline": true,
+        "legacySave": true,
+        "settingsPersist": true,
+        "chapterStarts": true,
+        "newGame": {
+          "pointerLock": true,
+          "initial": [
+            6,
+            60
+          ],
+          "afterFire": [
+            5,
+            60
+          ],
+          "afterReload": [
+            6,
+            59
+          ]
+        },
+        "pageErrors": [],
+        "network": []
+      },
+      {
+        "channel": "msedge",
+        "version": "154.0.4258.53",
+        "offline": true,
+        "legacySave": true,
+        "settingsPersist": true,
+        "chapterStarts": true,
+        "newGame": {
+          "pointerLock": true,
+          "initial": [
+            6,
+            60
+          ],
+          "afterFire": [
+            5,
+            60
+          ],
+          "afterReload": [
+            6,
+            59
+          ]
+        },
+        "pageErrors": [],
+        "network": []
+      }
+    ]
+  },
+  "playerInput": {
+    "sha256": "631b5760524e333738464c1bc6ccca55ad18efda73abd34a108ae28973c9db1b",
+    "browser": "157.0.8103.80",
+    "results": {
+      "normal": {
+        "steps": [
+          "Fresh Title, Chapter Select, Back and New Game work with only the keyboard",
+          "Menu M stays inactive and real held Tab still opens the map during play",
+          "Pointer exit clears held fire and blocks reload input until resumed",
+          "Window blur event releases native capture, Settings returns to the same pause, click recaptures without firing",
+          "Keyboard Continue starts the same saved campaign"
+        ],
+        "initial": [
+          6,
+          60
+        ],
+        "released": [
+          5,
+          60
+        ],
+        "chapter": 0
+      },
+      "realBrowserDenial": {
+        "stoppedBeforeGameControl": true,
+        "retryPaused": true,
+        "notice": "Mouse capture was blocked. If retry fails, open this HTML in its own tab."
+      },
+      "recoverableDenial": {
+        "rejected": 1,
+        "genuineRetryCaptured": true,
+        "retryDidNotFire": true
+      }
+    },
+    "pageErrors": [],
+    "network": [],
+    "passed": true
+  },
+  "bossProgress": {
+    "legacySha": "145a2b448a71e91ea8dbd63be5149a2dedd1935cdd2cb32212d5a9f7a796c305",
+    "candidateSha": "631b5760524e333738464c1bc6ccca55ad18efda73abd34a108ae28973c9db1b",
+    "checks": [
+      {
+        "name": "post-boss shrine reached with E and W on legacy file",
+        "saved": {
+          "x": 53.11218723687509,
+          "z": 42.5237266940497,
+          "yaw": 3.0992879865641676
+        },
+        "index": 21,
+        "original": {
+          "level": 9,
+          "started": true,
+          "locked": false,
+          "dead": false,
+          "won": false,
+          "marks": [
+            [
+              159,
+              125,
+              false
+            ],
+            [
+              105,
+              121,
+              false
+            ],
+            [
+              27,
+              101,
+              false
+            ],
+            [
+              181,
+              83,
+              false
+            ],
+            [
+              131,
+              73,
+              false
+            ],
+            [
+              83,
+              31,
+              false
+            ],
+            [
+              53,
+              45,
+              false
+            ]
+          ],
+          "position": [
+            49.4,
+            33
+          ],
+          "boss": [
+            [
+              21,
+              "N",
+              true
+            ]
+          ],
+          "exit": {
+            "x": 33,
+            "z": 33
+          },
+          "lit": true,
+          "rig": [
+            33,
+            28,
+            0,
+            1
+          ],
+          "lights": 21,
+          "phase": "idle",
+          "card": 0,
+          "cardAfter": 1,
+          "kills": 1,
+          "totalKills": 1,
+          "speed": 0,
+          "victoryCalls": 0,
+          "key": false,
+          "doorOpen": [
+            "25,16"
+          ],
+          "achievements": [
+            "first",
+            "digger"
+          ],
+          "msg": "THE GRAVEDIGGER LIES STILL — A DRAIN YAWNS OPEN"
+        }
+      },
+      {
+        "name": "legacy Continue restores native gate without replaying kill credit",
+        "continued": {
+          "level": 9,
+          "started": true,
+          "locked": false,
+          "dead": false,
+          "won": false,
+          "activeMark": 6,
+          "marks": [
+            [
+              159,
+              125,
+              false
+            ],
+            [
+              105,
+              121,
+              false
+            ],
+            [
+              27,
+              101,
+              false
+            ],
+            [
+              181,
+              83,
+              false
+            ],
+            [
+              131,
+              73,
+              false
+            ],
+            [
+              83,
+              31,
+              false
+            ],
+            [
+              53,
+              45,
+              true
+            ]
+          ],
+          "position": [
+            53.11218723687509,
+            42.5237266940497
+          ],
+          "boss": [
+            [
+              21,
+              "N",
+              true
+            ]
+          ],
+          "exit": {
+            "x": 33,
+            "z": 33
+          },
+          "lit": true,
+          "rig": [
+            33,
+            28,
+            0,
+            1
+          ],
+          "lights": 21,
+          "phase": "idle",
+          "card": 0,
+          "cardAfter": 1,
+          "kills": 1,
+          "totalKills": 1,
+          "speed": 0,
+          "victoryCalls": 0,
+          "key": false,
+          "doorOpen": [
+            "25,16"
+          ],
+          "achievements": [
+            "first",
+            "digger"
+          ],
+          "msg": "THE SHRINE REMEMBERS"
+        }
+      },
+      {
+        "name": "native death, Rise Again, E and Space reach the Gothic Dungeon",
+        "risen": {
+          "level": 9,
+          "started": true,
+          "locked": false,
+          "dead": false,
+          "won": false,
+          "activeMark": 6,
+          "marks": [
+            [
+              159,
+              125,
+              false
+            ],
+            [
+              105,
+              121,
+              false
+            ],
+            [
+              27,
+              101,
+              false
+            ],
+            [
+              181,
+              83,
+              false
+            ],
+            [
+              131,
+              73,
+              false
+            ],
+            [
+              83,
+              31,
+              false
+            ],
+            [
+              53,
+              45,
+              true
+            ]
+          ],
+          "position": [
+            53.11218723687509,
+            42.5237266940497
+          ],
+          "boss": [
+            [
+              21,
+              "N",
+              true
+            ]
+          ],
+          "exit": {
+            "x": 33,
+            "z": 33
+          },
+          "lit": true,
+          "rig": [
+            33,
+            28,
+            0,
+            1
+          ],
+          "lights": 21,
+          "phase": "idle",
+          "card": 0,
+          "cardAfter": 1,
+          "kills": 1,
+          "totalKills": 1,
+          "speed": 0,
+          "victoryCalls": 0,
+          "key": false,
+          "doorOpen": [
+            "25,16"
+          ],
+          "achievements": [
+            "first",
+            "digger"
+          ],
+          "msg": "YOU RISE AGAIN"
+        }
+      },
+      {
+        "name": "restored Priest exit still requires the Cathedral Guardian",
+        "church": {
+          "level": 2,
+          "started": true,
+          "locked": false,
+          "dead": false,
+          "won": false,
+          "activeMark": 2,
+          "marks": [
+            [
+              105,
+              47,
+              false
+            ],
+            [
+              61,
+              57,
+              false
+            ],
+            [
+              41,
+              55,
+              true
+            ]
+          ],
+          "position": [
+            39,
+            53.44322613295721
+          ],
+          "boss": [
+            [
+              17,
+              "Q",
+              true
+            ],
+            [
+              31,
+              "U",
+              false
+            ]
+          ],
+          "exit": {
+            "x": 33,
+            "z": 33
+          },
+          "lit": true,
+          "rig": [
+            33,
+            28,
+            0,
+            1
+          ],
+          "lights": 21,
+          "phase": "idle",
+          "card": 0,
+          "cardAfter": 1,
+          "kills": 1,
+          "totalKills": 1,
+          "speed": 0,
+          "victoryCalls": 0,
+          "key": false,
+          "doorOpen": [
+            "19,23"
+          ],
+          "achievements": [
+            "first",
+            "priest"
+          ],
+          "msg": "THE SHRINE REMEMBERS"
+        }
+      },
+      {
+        "name": "legacy native shrine within its open red gate fell back to the entry",
+        "at": {
+          "x": 49.422932697040714,
+          "z": 31,
+          "yaw": 4.71238898038469
+        },
+        "oldThreshold": {
+          "level": 8,
+          "started": true,
+          "locked": false,
+          "dead": false,
+          "won": false,
+          "marks": [
+            [
+              47,
+              63,
+              false
+            ],
+            [
+              75,
+              43,
+              false
+            ],
+            [
+              51,
+              33,
+              false
+            ]
+          ],
+          "position": [
+            13,
+            63
+          ],
+          "boss": [
+            [
+              4,
+              "E",
+              false
+            ],
+            [
+              6,
+              "G",
+              false
+            ],
+            [
+              11,
+              "U",
+              false
+            ]
+          ],
+          "exit": null,
+          "lit": false,
+          "rig": null,
+          "lights": 20,
+          "phase": "idle",
+          "card": 0,
+          "cardAfter": 1,
+          "kills": 0,
+          "totalKills": 0,
+          "speed": 0,
+          "victoryCalls": 0,
+          "key": false,
+          "doorOpen": [],
+          "achievements": [
+            "first",
+            "heart"
+          ],
+          "msg": "CONTINUING FROM THE CHAPTER START"
+        }
+      },
+      {
+        "name": "closed and wall-overlapping doorway snapshots remain rejected",
+        "closed": {
+          "level": 8,
+          "started": true,
+          "locked": false,
+          "dead": false,
+          "won": false,
+          "marks": [
+            [
+              47,
+              63,
+              false
+            ],
+            [
+              75,
+              43,
+              false
+            ],
+            [
+              51,
+              33,
+              false
+            ]
+          ],
+          "position": [
+            13,
+            63
+          ],
+          "boss": [
+            [
+              4,
+              "E",
+              false
+            ],
+            [
+              6,
+              "G",
+              false
+            ],
+            [
+              11,
+              "U",
+              false
+            ]
+          ],
+          "exit": null,
+          "lit": false,
+          "rig": null,
+          "lights": 20,
+          "phase": "idle",
+          "card": 0,
+          "cardAfter": 1,
+          "kills": 0,
+          "totalKills": 0,
+          "speed": 0,
+          "victoryCalls": 0,
+          "key": false,
+          "doorOpen": [],
+          "achievements": [
+            "first",
+            "heart"
+          ],
+          "msg": "CONTINUING FROM THE CHAPTER START"
+        },
+        "partlyInWall": {
+          "level": 8,
+          "started": true,
+          "locked": false,
+          "dead": false,
+          "won": false,
+          "marks": [
+            [
+              47,
+              63,
+              false
+            ],
+            [
+              75,
+              43,
+              false
+            ],
+            [
+              51,
+              33,
+              false
+            ]
+          ],
+          "position": [
+            13,
+            63
+          ],
+          "boss": [
+            [
+              4,
+              "E",
+              false
+            ],
+            [
+              6,
+              "G",
+              false
+            ],
+            [
+              11,
+              "U",
+              false
+            ]
+          ],
+          "exit": null,
+          "lit": false,
+          "rig": null,
+          "lights": 20,
+          "phase": "idle",
+          "card": 0,
+          "cardAfter": 1,
+          "kills": 0,
+          "totalKills": 0,
+          "speed": 0,
+          "victoryCalls": 0,
+          "key": false,
+          "doorOpen": [],
+          "achievements": [
+            "first",
+            "heart"
+          ],
+          "msg": "CONTINUING FROM THE CHAPTER START"
+        }
+      },
+      {
+        "name": "legacy final-boss shrine recovers native victory without another fight",
+        "saved": {
+          "x": 50.37995187826956,
+          "z": 30.5,
+          "yaw": 4.71238898038469
+        },
+        "oldHeart": {
+          "level": 8,
+          "started": true,
+          "locked": false,
+          "dead": false,
+          "won": false,
+          "activeMark": 2,
+          "marks": [
+            [
+              47,
+              63,
+              false
+            ],
+            [
+              75,
+              43,
+              false
+            ],
+            [
+              51,
+              33,
+              true
+            ]
+          ],
+          "position": [
+            50.37995187826956,
+            30.5
+          ],
+          "boss": [
+            [
+              4,
+              "E",
+              false
+            ],
+            [
+              6,
+              "G",
+              true
+            ],
+            [
+              11,
+              "U",
+              false
+            ]
+          ],
+          "exit": null,
+          "lit": false,
+          "rig": null,
+          "lights": 20,
+          "phase": "idle",
+          "card": 0,
+          "cardAfter": 1,
+          "kills": 1,
+          "totalKills": 1,
+          "speed": 0,
+          "victoryCalls": 0,
+          "key": true,
+          "doorOpen": [
+            "24,15"
+          ],
+          "achievements": [
+            "first",
+            "heart"
+          ],
+          "msg": ""
+        },
+        "won": {
+          "level": 8,
+          "started": true,
+          "locked": false,
+          "dead": false,
+          "won": true,
+          "activeMark": 2,
+          "marks": [
+            [
+              47,
+              63,
+              false
+            ],
+            [
+              75,
+              43,
+              false
+            ],
+            [
+              51,
+              33,
+              true
+            ]
+          ],
+          "position": [
+            50.37995187826956,
+            30.5
+          ],
+          "boss": [
+            [
+              4,
+              "E",
+              false
+            ],
+            [
+              6,
+              "G",
+              true
+            ],
+            [
+              11,
+              "U",
+              false
+            ]
+          ],
+          "exit": null,
+          "lit": false,
+          "rig": null,
+          "lights": 20,
+          "phase": "idle",
+          "card": 0,
+          "cardAfter": 1,
+          "kills": 1,
+          "totalKills": 1,
+          "speed": 0,
+          "victoryCalls": 1,
+          "key": true,
+          "doorOpen": [
+            "24,15"
+          ],
+          "achievements": [
+            "first",
+            "heart"
+          ],
+          "msg": "THE SHRINE REMEMBERS"
+        }
+      },
+      {
+        "name": "legacy final-boss shrine recovers native victory without another fight",
+        "saved": {
+          "x": 49.422932697040714,
+          "z": 31,
+          "yaw": 4.71238898038469
+        },
+        "oldHeart": {
+          "level": 8,
+          "started": true,
+          "locked": false,
+          "dead": false,
+          "won": false,
+          "activeMark": 2,
+          "marks": [
+            [
+              47,
+              63,
+              false
+            ],
+            [
+              75,
+              43,
+              false
+            ],
+            [
+              51,
+              33,
+              true
+            ]
+          ],
+          "position": [
+            50.37995187826956,
+            30.5
+          ],
+          "boss": [
+            [
+              4,
+              "E",
+              false
+            ],
+            [
+              6,
+              "G",
+              true
+            ],
+            [
+              11,
+              "U",
+              false
+            ]
+          ],
+          "exit": null,
+          "lit": false,
+          "rig": null,
+          "lights": 20,
+          "phase": "idle",
+          "card": 0,
+          "cardAfter": 1,
+          "kills": 1,
+          "totalKills": 1,
+          "speed": 0,
+          "victoryCalls": 0,
+          "key": true,
+          "doorOpen": [
+            "24,15"
+          ],
+          "achievements": [
+            "first",
+            "heart"
+          ],
+          "msg": ""
+        },
+        "won": {
+          "level": 8,
+          "started": true,
+          "locked": false,
+          "dead": false,
+          "won": true,
+          "activeMark": 2,
+          "marks": [
+            [
+              47,
+              63,
+              false
+            ],
+            [
+              75,
+              43,
+              false
+            ],
+            [
+              51,
+              33,
+              true
+            ]
+          ],
+          "position": [
+            49.422932697040714,
+            31
+          ],
+          "boss": [
+            [
+              4,
+              "E",
+              false
+            ],
+            [
+              6,
+              "G",
+              true
+            ],
+            [
+              11,
+              "U",
+              false
+            ]
+          ],
+          "exit": null,
+          "lit": false,
+          "rig": null,
+          "lights": 20,
+          "phase": "idle",
+          "card": 0,
+          "cardAfter": 1,
+          "kills": 1,
+          "totalKills": 1,
+          "speed": 0,
+          "victoryCalls": 1,
+          "key": true,
+          "doorOpen": [
+            "24,15"
+          ],
+          "achievements": [
+            "first",
+            "heart"
+          ],
+          "msg": "THE SHRINE REMEMBERS"
+        }
+      }
+    ],
+    "errors": []
+  },
+  "arsenal": {
+    "candidateSHA256": "631b5760524e333738464c1bc6ccca55ad18efda73abd34a108ae28973c9db1b",
+    "passed": true,
+    "scope": "Real R/digit keys, mouse fire/kick and RAF. Isolated setup inventories; no gameplay balance claim. Same-build cache ghost comparison, not old visual parity.",
+    "weapons": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "reloadRuns": 10,
+    "fireSwitchAndKickTransitions": 10,
+    "cachePresentationComparisons": 10,
+    "partialReloadFiringCancellationChecks": 8,
+    "singleRoundSlots": [
+      8,
+      9
+    ],
+    "firstControllable": {
+      "ready": true,
+      "visible": true,
+      "skipped": false
+    },
+    "errors": [],
+    "network": []
+  }
+}

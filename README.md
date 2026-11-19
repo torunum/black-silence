@@ -28,6 +28,10 @@ Gotik piksel FPS oyununun on silah, deri eldiven ve prologue cehennem bölümü 
 
 **Mezarlık bekçisi.** Standart zombi, yıpranmış iş montu, keten kol sargısı ve ayrı botlarla yeniden çizildi. Yeni montun renkleri bitirici sırasında da görünüyor. [Oyun içi kareler ve sesli klip](docs/zombie-nov19/README.md).
 
+**Darbe sarsıntısı.** **Esc** ile duraklatıp **Settings → Impact Shake** alanından **Full**, **Reduced** veya **Off** seç. Ayar duraklatma menüsünden çıkınca uygulanır ve oyunu yeniden açtığında geri gelir. [Tarayıcı ve kamera kontrolleri](docs/verification-data/nov19-impact-shake.json).
+
+**Bone Cathedral.** Ana neften mahzenlere dönerken ilk güney payandada oyma taş kabartma, eskitilmiş bronz ve üç mum göreceksin. [Oyun içi önce ve sonra kareleri](docs/cathedral-nov19/README.md).
+
 **Fare ve menü kontrolü.** Başlık menüsünde **Tab** ile dolaş, **Enter** veya **Space** ile seç. Fare yakalama engellenirse oyun duraklar ve yeniden deneme seçeneği gösterir. Oyun dönüşte basılı tuşları ve ateş girdisini sıfırlar. [Kontroller ve tarayıcı testi](docs/player-input-nov19.md).
 
 **Kampanya kayıtları.** Gravedigger karşılaşmasından sonra kayıt noktasına ulaşırsan **Continue** manastır çıkışını açık olarak geri yükler. Heart of Silence yenildikten sonra alınmış eski bir kayıt da oyunun finalini tamamlayabilir. [Eski kayıtların testleri](docs/campaign-boss-restore-nov19.md) · [11 bölümün geçiş testi](docs/campaign-progression-nov19.md).
@@ -146,7 +150,7 @@ Prologue'un cehennem alanına koyu bazalt döşeme, kemerli mimari, bronz detayl
 
 Yukarıdaki silah görüntüleri ve video 23 Ekim teslimatındandır. Son animasyon kanıtları `docs/weapon-animation-oct24b/` ve `docs/enemy-landing-oct24/` içindedir; her kaydın kaynak sürümü kendi doğrulama notlarında belirtilir. Bölüm düzeni korunur; son materyal karşılaştırmaları `docs/ritual-ivory-oct24c/` içindedir. [Düzeltilmiş native kamera/ışık kontrolü](docs/hell-environment.md) ve `docs/hell-capture-oct24/` mevcut ortamı gösterir. Tasarım hedefleri `assets/weapon-reference/` ve `assets/hand-reference/` içindedir; hedef görseller oyun ekran görüntüsü değildir.
 
-Son dosyanın hashleri, test kapsamı ve ölçüm sınırları [doğrulama notlarında](docs/verification.md) ve [build bilgisinde](docs/build-info.json) yer alır.
+Son dosyanın hashleri, test kapsamı ve ölçüm sınırları [güncel doğrulama raporunda](docs/verification-data/nov19-execution-release.json) ve [build bilgisinde](docs/build-info.json) yer alır. [Önceki doğrulamalar](docs/verification.md).
 
 Silahların bir bölümü tam serbest açılı 3B model yerine, gerçek hacim ve hareketli parçalara bağlanan perspektifli resim yüzeyleri kullanır. Bu yöntem onaylanan birinci şahıs açısına göre hazırlanmıştır; her açıdan aynı ayrıntıyı sunan tam 3B model değildir. Bazı silah yüzeylerinde referansın ışık bilgisi resmin içinde bulunur. Cehennem ayrıntılarının bazı ışık vurguları da sabittir. Performans cihaz, tarayıcı ve sahneye göre değişir; tüm koşullarda sabit FPS garantisi yoktur.
 

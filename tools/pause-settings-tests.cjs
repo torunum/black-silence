@@ -7,7 +7,9 @@ const href=pathToFileURL(html).href+"?qa=1";
   const p=await b.newPage({viewport:{width:960,height:600}}),errors=[],checks=[];
   p.on("pageerror",e=>errors.push(e.message));
   const q=async fn=>p.evaluate(fn);
-  const waitLock=()=>p.waitForFunction(()=>document.pointerLockElement===document.querySelector("#game"));
+  // Chromium can expose the captured canvas before the game's lock event runs.
+  const waitLock=()=>p.waitForFunction(()=>document.pointerLockElement===document.querySelector("#game")&&
+    __BLACK_SILENCE_QA.Ct.locked&&document.getElementById("pause").classList.contains("hidden"));
   try{
     await p.goto(href);await p.locator("#mNew").click();await waitLock();
     await p.waitForFunction(()=>!__BLACK_SILENCE_QA.Be.inputLock);

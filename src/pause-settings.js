@@ -1,6 +1,9 @@
-// Use the existing settings panel and native mouse-look handler while paused.
+// Use the existing settings panel for input and presentation preferences.
 (() => {
   const key="black-silence.look.v1";
+  const shakeKey = "black-silence.impact-shake.v1";
+  const shakeLabels = { 0: "Off", 50: "Reduced", 100: "Full" };
+  let impactShake = 100;
   let sensitivity=100, inverted=false, fromPause=false;
   try {
     const text=localStorage.getItem(key);
@@ -12,6 +15,10 @@
       }
     }
   } catch { /* Keep the session defaults. */ }
+  try {
+    const savedShake = localStorage.getItem(shakeKey);
+    if (Object.hasOwn(shakeLabels, savedShake)) impactShake = Number(savedShake);
+  } catch { /* Keep the session default. */ }
   // The original listener observes this event later at the document. Adjust
   // its relative motion before the native zoom gain, sway limits and pitch
   // clamp are applied. Default input has no event allocation or mutation.
@@ -23,6 +30,56 @@
       movementY:{configurable:true,value:event.movementY*gain*(inverted?-1:1)},
     });
   },true);
+
+  // Hitscan and projectiles read the native camera. Sample the movement
+  // camera's trauma offset and adjust it only inside the two render passes.
+  // Both contact projections and world geometry use the same display pose.
+  let shakeView = null;
+  const movePlayer = m_;
+  m_ = function (dt) {
+    shakeView = null;
+    const result = movePlayer(dt);
+    if (impactShake === 100 || Be.inputLock || T.dead || T.won || !He.trauma) return result;
+    const camera = J.camera;
+    const bob = C.grounded ? C.lastBobSin * 0.025 * Math.min(1, Math.hypot(C.vx, C.vz) / 7) : 0;
+    shakeView = {
+      camera, scene: J.scene,
+      x: camera.position.x, y: camera.position.y, roll: camera.rotation.z,
+      steadyX: C.px, steadyY: C.pyy + bob,
+    };
+    return result;
+  };
+
+  function drawWithImpactShake(camera, view, draw) {
+    const { position, rotation } = camera;
+    // A level handoff or scripted camera may have replaced the sampled pose.
+    if (Be.inputLock || view.camera !== camera || view.scene !== J.scene ||
+        view.x !== position.x || view.y !== position.y || view.roll !== rotation.z) return draw();
+    const gain = impactShake / 100;
+    position.x = view.steadyX + (view.x - view.steadyX) * gain;
+    position.y = view.steadyY + (view.y - view.steadyY) * gain;
+    rotation.z = view.roll * gain;
+    try {
+      camera.updateMatrixWorld(true);
+      return draw();
+    } finally {
+      position.x = view.x;
+      position.y = view.y;
+      rotation.z = view.roll;
+      camera.updateMatrixWorld(true);
+    }
+  }
+
+  const drawViewmodel = Tj;
+  Tj = function (dt, time, zoom, drawBoot, drawHands) {
+    if (impactShake === 100 || !shakeView) return drawViewmodel(dt, time, zoom, drawBoot, drawHands);
+    return drawWithImpactShake(J.camera, shakeView, () => drawViewmodel(dt, time, zoom, drawBoot, drawHands));
+  };
+  const drawWorld = Utt;
+  Utt = function (camera, kick, draw, drop) {
+    if (impactShake === 100 || !shakeView) return drawWorld(camera, kick, draw, drop);
+    return drawWithImpactShake(camera, shakeView, () => drawWorld(camera, kick, draw, drop));
+  };
 
   function install() {
     const pause=Jt("pause"), settings=Jt("settings"), back=Jt("setBack");
@@ -38,8 +95,12 @@
     const invert=document.createElement("div");
     invert.className="setrow";
     invert.innerHTML='<label class="setlabel" for="invertLook">INVERT Y</label><input id="invertLook" type="checkbox"><span class="setval"></span>';
-    before.before(look,invert);
+    const shake = document.createElement("div");
+    shake.className = "setrow";
+    shake.innerHTML = '<label class="setlabel" for="impactShake">IMPACT SHAKE</label><input id="impactShake" type="range" min="0" max="100" step="50"><span class="setval" style="flex-basis:70px;font-size:11px"></span>';
+    before.before(look,invert,shake);
     const slider=look.querySelector("input"),box=invert.querySelector("input");
+    const shakeSlider = shake.querySelector("input");
     function update() {
       slider.value=String(sensitivity);
       slider.setAttribute("aria-valuetext",sensitivity+" percent");
@@ -53,7 +114,19 @@
     }
     slider.addEventListener("input",()=>{sensitivity=slider.valueAsNumber;store();});
     box.addEventListener("change",()=>{inverted=box.checked;store();});
+    function updateShake() {
+      const label = shakeLabels[impactShake];
+      shakeSlider.value = String(impactShake);
+      shakeSlider.setAttribute("aria-valuetext", label);
+      shake.lastElementChild.textContent = label;
+    }
+    shakeSlider.addEventListener("input", () => {
+      impactShake = shakeSlider.valueAsNumber;
+      updateShake();
+      try { localStorage.setItem(shakeKey, String(impactShake)); } catch {}
+    });
     update();
+    updateShake();
     function enter() {
       if(!Wk()) return;
       fromPause=true;

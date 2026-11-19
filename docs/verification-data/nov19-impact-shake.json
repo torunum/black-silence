@@ -1,0 +1,54 @@
+{
+  "candidate": "582f3909a1ae512910a7fed92962eb2f204d3576d6f2b6f22137dd9addf038c8",
+  "baseline": "4e77959ced3de2bce91cc49293e7961b42718bce2e416a47a8ff59939b83b417",
+  "checks": [
+    "Native no-QA Settings, compact layout, Tab/Shift+Tab/Escape, capture, fire and reload preserve campaign and old input prefs",
+    "Invalid and unavailable preferences default to Full, with a usable session preference when storage is denied",
+    "Full matches the unmodified baseline exactly across all sampled camera, projection and gameplay state",
+    "Exact 100/50/0 shake amplitude projects coherently with unchanged recoil, dropkick staging, hit origin, script, and exception recovery",
+    "Real E opens the native Prologue door and completes a finisher after changing shake while paused mid-animation",
+    "Real forward sprint/right-click travels through the dropkick after changing shake while paused mid-flight"
+  ],
+  "errors": [],
+  "browser": "157.0.8103.80",
+  "render": {
+    "unshaken": [
+      19.02725392048206,
+      5.199769299746048,
+      13.00436062727713,
+      0.003592481124809435,
+      0.15,
+      0
+    ],
+    "full": [
+      18.99831500888935,
+      5.174917375119963,
+      13.00436062727713,
+      0.003592481124809435,
+      0.15,
+      -0.024662553376605712
+    ],
+    "reduced": [
+      19.012784464685705,
+      5.187343337433006,
+      13.00436062727713,
+      0.003592481124809435,
+      0.15,
+      -0.012331276688302856
+    ],
+    "off": [
+      19.02725392048206,
+      5.199769299746048,
+      13.00436062727713,
+      0.003592481124809435,
+      0.15,
+      0
+    ],
+    "bulletDirection": [
+      -0.1494371681562978,
+      0.0035924733974350446,
+      -0.9887646974423769
+    ]
+  },
+  "passed": true
+}
