@@ -20,3 +20,11 @@ Başlangıç kaydını oyun, bağımsız bir Womb hazırlık testinde shrine’a
 | --- | ---: | --- |
 | Önceki yayımlanmış `dd6cf26` | 19.284.328 bayt | `b8363527cc897bd1a62ce54bbf4ddb937d52e5ebaf715ab29a82d46ba755165d` |
 | Zafer ekranı alınan son birleşik sürüm | 19.291.204 bayt | `48ca6290ff2ce2d13f9d1d95f4d5759f09b77b38d086a532793c263e977dbbcd` |
+
+## Varsayılan Womb başlangıcından zafer
+
+Aynı `48ca6290` dosyasında **Chapter Select** ile Womb açıldı. Yeni tarayıcı profiline yalnızca bölüm kilidinin açılmış olduğu bilgisi aktarıldı. Oyun bölümü 100 can, sıfır zırh ve varsayılan tabancada 6 takılı, 60 yedek mermiyle başlattı. Salt okunur gözlemci menü öncesinde bağlandı. Hareket, nişan, kapılar, atışlar ve ikmal gerçek fare ve klavye girdileriyle yapıldı.
+
+Oyuncu merkez shrine’ı etkinleştirdi, doğu kapısını açtı ve kırmızı anahtarı aldı. Silaha giderken bir kez öldü ve **Rise Again** ile oyunun ikinci shrine’ından döndü. Batı koridorundan anahtarı yeniden aldı, Stake Gun ve iki mühimmat kutusunu topladı, son shrine’ı etkinleştirdi ve arenanın kırmızı kapısını açtı.
+
+Heart üç evrenin ardından öldü. Dövüş başlangıcından zafer ekranına 35,450 saniye geçti. Bu süre içinde 16 kazık ve bir tabanca atışıyla 17 isabet kaydedildi. Oyuncu 79,2 can ve 87,8 zırhla hayatta kaldı. Oyunun bölüm sonuç ekranı yüzde 100 isabet, bir ölüm ve 1:41 bölüm süresi gösterdi. Tarayıcı hatası görülmedi. [Varsayılan başlangıçtan zafer ekranı](stock-victory.png)
