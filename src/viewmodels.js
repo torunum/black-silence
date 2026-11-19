@@ -1885,7 +1885,7 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
 
   const tommyLeft=relicGlove(firearmArt[3].point,'firearmSource',0,[
     [[1,446],[35,425],[66,405],[99,381],[111,366],[124,354],[145,341],[162,330],[165,307],[169,289],[180,276],[195,267],[205,261],[209,275],[220,276],[234,270],[247,263],[257,261],[269,265],[272,273],[266,289],[261,315],[260,340],[257,367],[249,382],[237,383],[234,404],[223,426],[210,443],[201,470],[0,470]]
-  ],-.034,[[5,462],[205,465],[-18,730],[-270,705]]);
+  ],-.034,[[5,462],[205,465],[-18,730],[-270,705]],true);
   const tommyRight=relicGlove(firearmArt[3].point,'firearmSource',0,[
     [[432,304],[435,295],[441,291],[449,292],[456,298],[457,308],[453,315],[446,319],[438,316],[433,312]],
     [[434,353],[437,345],[453,339],[471,336],[488,335],[507,333],[521,337],[532,346],[539,360],[551,373],[568,388],[582,400],[603,414],[615,429],[632,447],[645,469],[461,470],[462,458],[456,448],[453,440],[451,432],[449,417],[444,409],[441,398],[442,383],[447,377],[439,374],[434,367]]
@@ -1899,7 +1899,7 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
   Ret.draw=function(m,pose){
     const a=firearmArt[3],P=tommyPoint,t=pose.reload;
     const show=t<0?0:Qe(t,0,.99,.13),out=t<0?0:K0(t,...Ac.out)*(1-K0(t,...Ac.seat));
-    const knob=t<0?0:Qe(t,...Ac.knob),reach=t<0?0:Qe(t,.005,.76,.12);
+    const knob=t<0?0:Qe(t,...Ac.knob),reach=t<0?0:Qe(t,.005,.90,.12);
     const plate=(poly,d,th= .018,mat=WORN,uv=poly)=>a.hull(m,poly.map(([x,y])=>[836+x,y]),d,th,null,true,uv.map(([x,y])=>[836+x,y]),mat);
     a.move(m,-.006,0,.042);m.roll(.115*show);m.pitch(-.047*show);
     // The walnut belly reaches the action at the front of the grip. Its two
@@ -1959,7 +1959,7 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
     plate([[354,323],[360,320],[380,317],[386,320],[386,345],[378,350],[376,377],[365,379],[363,352],[357,350]],-.025,.005,BRONZE);
     m.pop();
     const home=P(216,269,-.034),drumContact=P(329,353,-.057),stud=P(331,190,-.047);
-    const finish=t<0?0:Qe(t,.72,.99,.088);
+    const finish=t<0?0:Math.min(K0(t,.64,.78),1-K0(t,.99-.088,.99));
     m.push();drumRig();const hand=home.map((v,i)=>{const grip=v+(drumContact[i]-v)*reach;return grip+(stud[i]-grip)*finish;});
     m.translate(...hand.map((v,i)=>v-home[i]));a.move(m,.034*knob*finish,0,0);tommyLeft(m);m.pop();
     m.push();a.move(m,.034*knob,0,0);plate([[315,179],[321,175],[329,176],[337,182],[338,190],[334,197],[327,201],[319,198],[315,190]],-.017,.014,BRONZE);m.pop();
@@ -2163,16 +2163,28 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
 
   // These cutouts follow the leather seams in the same approved illustrations
   // as the receivers. Local points belong to the weapon, including the wrists.
-  function relicGlove(point,texture,regionY,outline,depth,tail) {
+  function relicGlove(point,texture,regionY,outline,depth,tail,tommySleeve=false) {
     const p=(x,y,d=depth)=>point(x+836,y+regionY,d);
     const faces=outline.flatMap(poly=>r79Triangles(poly).map(indices=>{
       const xy=indices.map(i=>poly[i]);
-      return {vertices:xy.map(([x,y])=>p(x,y)),uv:xy.map(([x,y])=>[(x+836)/1672,(y+regionY)/941])};
+      return {vertices:xy.map(([x,y])=>p(x,y)),uv:xy.map(([x,y])=>[(x+836)/1672,((tommySleeve?Math.min(y,466):y)+regionY)/941])};
     }));
     const sleeve=tail.map(([x,y])=>p(x,y,depth+.005));
     return m=>{
       const first=gloveTriangles.length;
-      paintedSurface(m,'right',sleeve,[[.59,.85],[.90,.91],[2.12,2.02],[1.79,2.10]],.86);
+      if(tommySleeve){
+        // This hand keeps its original outline. Continue its own leather at
+        // the lower seam, sampling only the clean forearm strip in the art.
+        const rows=[0,.03,...Array.from({length:16},(_,i)=>(i+1)/16)];
+        const mix=(a,b,t)=>a.map((v,i)=>v+(b[i]-v)*t);
+        const uv=t=>{if(t===0)return[[841/1672,462/941],[1041/1672,465/941]];
+          const y=466-26*(.5-.5*Math.cos(Math.max(0,t-.03)*Math.PI*8));
+          return[[(838+(466-y)*.9)/1672,y/941],[(1037+(466-y)*.35)/1672,y/941]];};
+        for(let i=1;i<rows.length;i++){
+          const a=rows[i-1],b=rows[i],u=uv(a),v=uv(b);
+          paintedSurface(m,texture,[mix(sleeve[0],sleeve[3],a),mix(sleeve[1],sleeve[2],a),mix(sleeve[1],sleeve[2],b),mix(sleeve[0],sleeve[3],b)],[u[0],u[1],v[1],v[0]],.98);
+        }
+      }else paintedSurface(m,'right',sleeve,[[.59,.85],[.90,.91],[2.12,2.02],[1.79,2.10]],.86);
       for(let i=first;i<gloveTriangles.length;i++)gloveTriangles[i].sleeve=true;
       for(const face of faces)paintedSurface(m,texture,face.vertices,face.uv,.98);
     };

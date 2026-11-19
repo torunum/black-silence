@@ -1,0 +1,46 @@
+{
+  "baselineCommit": "1d5dd8b",
+  "baselineHtmlSha256": "48ca6290ff2ce2d13f9d1d95f4d5759f09b77b38d086a532793c263e977dbbcd",
+  "candidateHtmlSha256": "e88d03d39e01730cdb6455be895cb4558c385cbbd539b54dcdcb51b8731faad4",
+  "candidatePlayerInputSha256": "082298631bad703c74bcafbcde3e74e8d475bec85e43067a5b25a515bb017b11",
+  "browser": "Chrome 157.0.8103.80",
+  "offline": true,
+  "qaQuery": false,
+  "liveHeart": {
+    "setup": "Both runs imported the same authored pre-fight shrine once. After Continue, the driver read native state for steering and controlled gameplay through browser inputs.",
+    "base": {
+      "bossPhases": [1, 2, 3],
+      "shots": 16,
+      "hits": 16,
+      "playerHealthAtVictory": 75.4,
+      "focusedAtVictory": false,
+      "fourTabsReachedAction": false,
+      "enterAndSpaceLeftVictoryOpen": true,
+      "mouseReturnedToTitle": true
+    },
+    "candidate": {
+      "bossPhases": [1, 2, 3],
+      "shots": 19,
+      "hits": 19,
+      "playerHealthAtVictory": 84.8,
+      "focusedAtVictory": true,
+      "actionRole": "button",
+      "enterReturnedToTitle": true
+    },
+    "campaignSlotClearedAtVictoryAndAfterReturn": true,
+    "browserErrors": []
+  },
+  "restoredVictory": {
+    "setup": "A separate session opened the authored red gate with E, staged terminal damage, and walked into the shrine to write the checkpoint. Each verification imported it once and used Continue in the standalone game.",
+    "viewport": [360, 480],
+    "baselineKeyboardIgnored": true,
+    "baselineMouseReturned": true,
+    "candidateActionVisibleAndFocused": true,
+    "candidateReturnInputs": ["Enter", "Space", "mouse"],
+    "allReturnsKeptCampaignSlotCleared": true,
+    "allReturnsKeptChapterRecord": true,
+    "titleSettingsTabAndBackPassed": true,
+    "browserErrors": []
+  },
+  "passed": true
+}

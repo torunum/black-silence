@@ -1,7 +1,7 @@
 {
   "passed": true,
-  "bytes": 19291204,
-  "sha256": "48ca6290ff2ce2d13f9d1d95f4d5759f09b77b38d086a532793c263e977dbbcd",
+  "bytes": 19348859,
+  "sha256": "65a12987749d90f6ba6d9ddd00eb642266df2f8723c5efa101f2f4c1e4d307d6",
   "engineSha256": "6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899",
   "villageSha256": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627",
   "moduleHashes": {
@@ -15,7 +15,7 @@
     "dungeon-creatures.js": "f16ce76837b5878e405fefc1bd345f66068f2432ac2c125002ce0a978b2876fb",
     "necropolis-screamer.js": "26c9284dc4b724a19256773373399b32cfb361fba979373e1cfc7f607700ca19",
     "groundskeeper-zombie.js": "f049183e2efc592b87d4b151d6ca8ceed137fb08cdf535b01c2f37865d433a47",
-    "viewmodels.js": "0cd5e2a413f8e089f0a20b95ce0588b5e283ba955b63284fa7141b728c7ae06f",
+    "viewmodels.js": "0f13e8a24ec2d329343a548a82f0296585f56067ff32daaa9dea30a02b71f0e8",
     "finishers.js": "970db423fbb2a8d3edc8c12ce041f6be1eebc940b3c042a624b12a25bd9374fe",
     "reload-audio-data.js": "2f48b10a1225d1c007ee282d3c18f82c5022bb0267ed86d65feadf819ec1be30",
     "reload-audio.js": "dc67dd605d54c11fbf9571a1b1b80c58fe82953fcdb1a13798e3f4b89d3e2f60",
@@ -30,6 +30,7 @@
     "dungeon-sally-port.js": "c3d3837e7be33eba96309e95648dbdf1f3f564778f1a26422af27e2cbf94c8c2",
     "necropolis-ossuary-entrance.js": "fdaebdd1382bfb5cb0e3bbc3eb2991e20e081793a59b464540cd8df5fc7e61a6",
     "cathedral-reliquary.js": "2897bd75b63aaf8f5a39121a4563b495f258fa4591d4959c25a9b40a700dde8c",
+    "womb-east-valve.js": "3853a63b565c9fe79218011fcccee828f576b5f64662b2087d54c1701f914e9b",
     "render-warmup.js": "9a021fc24844f648460f0ee504653f74e200c1945dd33d4c8c06e71753325f15",
     "hud-updates.js": "d2047c2d4f92935dbf79b3dc22811341f19809aadaee3188db12339bc945531d",
     "display-settings.js": "55681d7f89f77607da0a0649367513f22697e4762f1bba953081da4f4b982289",
@@ -38,15 +39,15 @@
     "campaign-boss-restore.js": "0b80d503f54c334b0378250adc058f7cbb2c4ab161b455a78925c3614fd819de",
     "shrine-map.js": "6d326bc947bac9c7a2f68df5891e7bf51c45cf0f69a27009fa3bfc39d45e5b48",
     "pause-settings.js": "a930d33b67b02f347ff8f94f730bcacfa8134e0df313dd94b3f50f7078b65821",
-    "player-input.js": "5bc8f8faf6a574f46a0e523cb1f55c165365504e878b376bbfe3d710fd16850f",
+    "player-input.js": "082298631bad703c74bcafbcde3e74e8d475bec85e43067a5b25a515bb017b11",
     "village-presentation.js": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627"
   },
   "idempotentBuilds": 2,
   "invalidInputsRefusedWithoutWrite": 8,
   "file": "THE-BLACK-SILENCE.html",
-  "verifiedAt": "2026-11-19T15:39:17.458Z",
-  "previousRelease": "b8363527cc897bd1a62ce54bbf4ddb937d52e5ebaf715ab29a82d46ba755165d",
-  "baselineCommit": "dd6cf26b12851f46c14b8e497bd4f350198bf518",
+  "verifiedAt": "2026-11-19T18:42:05.066Z",
+  "previousRelease": "48ca6290ff2ce2d13f9d1d95f4d5759f09b77b38d086a532793c263e977dbbcd",
+  "baselineCommit": "1d5dd8b3e67596d7aaf53775c8b91bd5cc0bbbe6",
   "verificationReports": [
     {
       "file": "docs/factory-nov14/verification.json",
@@ -235,6 +236,34 @@
     {
       "file": "docs/verification-data/nov19-afternoon-release.json",
       "sha256": "5ed9f01a4885ce30ee34d09fa0a2bff767d256045459bc1b0240df1138e5cdef"
+    },
+    {
+      "file": "docs/womb-east-valve-nov19/scope.json",
+      "sha256": "b0b738df309e47fd54693d1a023e93afcc81707c84e71653f34af4801a98028b"
+    },
+    {
+      "file": "docs/tommy-transition-nov19/verification.json",
+      "sha256": "aeb3e1eef0778ceefb3e1ae35006037f24ffc2ffdce1127cc1ed85fa6222db30"
+    },
+    {
+      "file": "docs/verification-data/nov19-victory-input.json",
+      "sha256": "1f380fa186475dd13ddf4a6b1dc715999fd4aa0de10178ba632df1888e63b867"
+    },
+    {
+      "file": "docs/womb-east-valve-nov19/native-win.md",
+      "sha256": "973e82b6440b1bea706bec69ad10d40e5f885e328bc14ae2ffa2c6df97d4d46b"
+    },
+    {
+      "file": "docs/womb-east-valve-nov19/native-victory.png",
+      "sha256": "8a8fcaca3c7c0d5e8c75d5a5f8f6b8812a839364200bfeb3e07ff63b66d8d51a"
+    },
+    {
+      "file": "docs/tommy-transition-nov19/tommy-native.webm",
+      "sha256": "e96e7ce652b4224b594a2ebc0213bbb8edde4659f51f2eff3dd59d2ecad80d24"
+    },
+    {
+      "file": "docs/verification-data/nov19-evening-release.json",
+      "sha256": "8e5aa25beda3428ebe9ff61d667d3ec6e189a6f98ee508c378d056a4985ee370"
     }
   ]
 }

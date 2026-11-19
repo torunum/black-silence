@@ -1,0 +1,421 @@
+{
+  "sha256": "65a12987749d90f6ba6d9ddd00eb642266df2f8723c5efa101f2f4c1e4d307d6",
+  "bytes": 19348859,
+  "baselineCommit": "1d5dd8b3e67596d7aaf53775c8b91bd5cc0bbbe6",
+  "previousSHA256": "48ca6290ff2ce2d13f9d1d95f4d5759f09b77b38d086a532793c263e977dbbcd",
+  "changedModules": {
+    "viewmodels.js": "0f13e8a24ec2d329343a548a82f0296585f56067ff32daaa9dea30a02b71f0e8",
+    "womb-east-valve.js": "3853a63b565c9fe79218011fcccee828f576b5f64662b2087d54c1701f914e9b",
+    "player-input.js": "082298631bad703c74bcafbcde3e74e8d475bec85e43067a5b25a515bb017b11"
+  },
+  "build": {
+    "sourceModules": 36,
+    "idempotentBuilds": 2,
+    "invalidInputsRefusedWithoutWrite": 8
+  },
+  "wombEastGate": {
+    "oldDrawCalls": 155,
+    "newDrawCalls": 156,
+    "collisionSamples": 11088,
+    "measuredWAndEActions": 34,
+    "oldRoute": {
+      "center": {
+        "level": 8,
+        "ready": true,
+        "key": false,
+        "at": [
+          48.73729005023353,
+          63.057059433121516,
+          2.2
+        ],
+        "captured": true,
+        "route": [
+          [
+            "22,31",
+            true,
+            1,
+            false,
+            1
+          ],
+          [
+            "32,28",
+            false,
+            0,
+            false,
+            1
+          ],
+          [
+            "27,28",
+            false,
+            0,
+            false,
+            1
+          ],
+          [
+            "24,15",
+            false,
+            0,
+            true,
+            1
+          ]
+        ],
+        "boss": {
+          "key": "E",
+          "dead": false
+        },
+        "checkpoint": 0,
+        "exit": null
+      },
+      "key": {
+        "level": 8,
+        "ready": true,
+        "key": true,
+        "at": [
+          84.984504464274,
+          53.305296097435054,
+          3.4
+        ],
+        "captured": true,
+        "route": [
+          [
+            "22,31",
+            true,
+            1,
+            false,
+            1
+          ],
+          [
+            "32,28",
+            true,
+            1,
+            false,
+            -1
+          ],
+          [
+            "27,28",
+            false,
+            0,
+            false,
+            1
+          ],
+          [
+            "24,15",
+            false,
+            0,
+            true,
+            1
+          ]
+        ],
+        "boss": {
+          "key": "E",
+          "dead": false
+        },
+        "checkpoint": 1,
+        "exit": null
+      },
+      "dir": -1
+    },
+    "newRoute": {
+      "center": {
+        "level": 8,
+        "ready": true,
+        "key": false,
+        "at": [
+          48.764968144520644,
+          63.05974976712851,
+          2.2
+        ],
+        "captured": true,
+        "route": [
+          [
+            "22,31",
+            true,
+            1,
+            false,
+            1
+          ],
+          [
+            "32,28",
+            false,
+            0,
+            false,
+            1
+          ],
+          [
+            "27,28",
+            false,
+            0,
+            false,
+            1
+          ],
+          [
+            "24,15",
+            false,
+            0,
+            true,
+            1
+          ]
+        ],
+        "boss": {
+          "key": "E",
+          "dead": false
+        },
+        "checkpoint": 0,
+        "exit": null
+      },
+      "key": {
+        "level": 8,
+        "ready": true,
+        "key": true,
+        "at": [
+          84.98595855875223,
+          53.27522122263304,
+          3.4
+        ],
+        "captured": true,
+        "route": [
+          [
+            "22,31",
+            true,
+            1,
+            false,
+            1
+          ],
+          [
+            "32,28",
+            true,
+            1,
+            false,
+            -1
+          ],
+          [
+            "27,28",
+            false,
+            0,
+            false,
+            1
+          ],
+          [
+            "24,15",
+            false,
+            0,
+            true,
+            1
+          ]
+        ],
+        "boss": {
+          "key": "E",
+          "dead": false
+        },
+        "checkpoint": 1,
+        "exit": null
+      },
+      "dir": -1
+    },
+    "opensInReverse": true,
+    "geometryMaterialAndTextureDisposals": [
+      [
+        7,
+        [
+          1,
+          1,
+          1
+        ]
+      ],
+      [
+        3,
+        [
+          1,
+          1,
+          1
+        ]
+      ]
+    ],
+    "scope": "Real W and E, offline. Enemy attacks isolated. Same red key, gate behavior and collision samples."
+  },
+  "tommy": {
+    "curveSamples": 1001,
+    "nativeReadySamples": 72,
+    "nativeVisibleSamples": 72,
+    "ammoBefore": [
+      0,
+      100
+    ],
+    "ammoAfter": [
+      36,
+      64
+    ],
+    "nativeChecks": [
+      {
+        "index": 3,
+        "firedMag": 35,
+        "switchedTo": 4,
+        "cancelledMag": 0,
+        "kickRecovered": true
+      }
+    ],
+    "reloadAudioChecks": 125,
+    "isolatedRasterCases": 600,
+    "isolatedUnchangedCases": 537,
+    "isolatedExpectedDifferences": 63
+  },
+  "input": {
+    "browser": "157.0.8103.80",
+    "offlineScenarios": [
+      "normal",
+      "realBrowserDenial",
+      "recoverableDenial"
+    ],
+    "pauseChecks": 5,
+    "isolatedVictoryInputProof": "docs/verification-data/nov19-victory-input.json",
+    "nativeProof": "docs/womb-east-valve-nov19/native-win.md"
+  },
+  "offline": [
+    {
+      "channel": "chrome",
+      "version": "157.0.8103.80",
+      "offline": true,
+      "legacySave": true,
+      "settingsPersist": true,
+      "chapterStarts": true,
+      "newGame": {
+        "pointerLock": true,
+        "initial": [
+          6,
+          60
+        ],
+        "afterFire": [
+          5,
+          60
+        ],
+        "afterReload": [
+          6,
+          59
+        ]
+      },
+      "pageErrors": [],
+      "network": []
+    },
+    {
+      "channel": "msedge",
+      "version": "154.0.4258.53",
+      "offline": true,
+      "legacySave": true,
+      "settingsPersist": true,
+      "chapterStarts": true,
+      "newGame": {
+        "pointerLock": true,
+        "initial": [
+          6,
+          60
+        ],
+        "afterFire": [
+          5,
+          60
+        ],
+        "afterReload": [
+          6,
+          59
+        ]
+      },
+      "pageErrors": [],
+      "network": []
+    }
+  ],
+  "standaloneAudio": {
+    "passed": true,
+    "htmlSha256": "65a12987749d90f6ba6d9ddd00eb642266df2f8723c5efa101f2f4c1e4d307d6",
+    "offline": true,
+    "ordinaryLaunch": true,
+    "isolatedFiles": 1,
+    "networkRequests": 0,
+    "qaBridge": false,
+    "initial": [
+      6,
+      60
+    ],
+    "fired": [
+      5,
+      60
+    ],
+    "reloaded": [
+      6,
+      59
+    ],
+    "masterPeak": 0.4541016221046448,
+    "errors": [],
+    "setup": "A zero-duration click polling run timed out before a shot registered. The retry used the normal Space skip, observed HUD readiness and mouse capture, then held a real mouse press until the HUD registered one shot."
+  },
+  "webgl": {
+    "mapStarts": 11,
+    "normalOfflineLaunch": true
+  },
+  "campaign": {
+    "chapters": [
+      "PROLOGUE — OUT OF THE PIT",
+      "LEVEL 1 — THE ASH BELL MONASTERY",
+      "LEVEL 2 — THE GOTHIC DUNGEON",
+      "LEVEL 3 — THE ABANDONED CHURCH",
+      "LEVEL 4 — THE HOLLOW VILLAGE",
+      "LEVEL 5 — THE NECROPOLIS",
+      "LEVEL 6 — THE GRAVEYARD",
+      "LEVEL 7 — THE SEWERS",
+      "LEVEL 8 — THE FACTORY",
+      "LEVEL 9 — THE BONE CATHEDRAL",
+      "LEVEL 10 — THE WOMB"
+    ],
+    "nativeExitCards": 10,
+    "nativeVictory": true,
+    "scope": "Continuous native campaign from New Game. Fixed-step movement and door interaction through authored geometry. Actual Playwright E for bell and exits, Space for chapter cards. Bosses receive a seeded terminal hit through native damage. Hostile attacks are isolated during this route."
+  },
+  "runner": [
+    {
+      "test": "Womb east gate old/new",
+      "passed": true
+    },
+    {
+      "test": "Ordinary input and recovery",
+      "passed": true
+    },
+    {
+      "test": "Tommy native round trip",
+      "passed": true
+    },
+    {
+      "test": "Pause settings",
+      "passed": true
+    },
+    {
+      "test": "All weapon reload audio",
+      "passed": true
+    },
+    {
+      "test": "Offline Chrome and Edge",
+      "passed": true
+    },
+    {
+      "test": "Standalone game audio",
+      "passed": false
+    },
+    {
+      "test": "All eleven WebGL maps",
+      "passed": true
+    },
+    {
+      "test": "Continuous campaign",
+      "passed": true
+    },
+    {
+      "test": "Standalone game audio after intro handoff",
+      "passed": true
+    }
+  ],
+  "sourceLaneEvidence": [
+    "docs/womb-east-valve-nov19/scope.json",
+    "docs/tommy-transition-nov19/verification.json",
+    "docs/verification-data/nov19-victory-input.json",
+    "docs/womb-east-valve-nov19/native-win.md",
+    "docs/womb-east-valve-nov19/native-victory.png",
+    "docs/tommy-transition-nov19/tommy-native.webm"
+  ]
+}

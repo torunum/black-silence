@@ -1,0 +1,1323 @@
+{
+  "scope": {
+    "baselineSHA": "48ca6290ff2ce2d13f9d1d95f4d5759f09b77b38d086a532793c263e977dbbcd",
+    "candidateSHA": "efe7883410a7cc2e0c60b55f07acf150419e4d18becc71b71675d5987bd91533",
+    "exactSingleModuleReplacement": true,
+    "sourcePath": "src/viewmodels.js",
+    "sourceSHA": "0f13e8a24ec2d329343a548a82f0296585f56067ff32daaa9dea30a02b71f0e8",
+    "scope": [
+      "Tommy support hand direct drum-to-stud approach during phases .64-.78",
+      "Tommy support glove only: sample own reference sleeve texture and exclude panel-border rows",
+      "No original hand or forearm contour coordinate edits",
+      "No drum/charging-stud/native ammo/audio timing changes",
+      "No other weapon, boot, finisher, renderer or compositor edits"
+    ],
+    "curveTest": "../../tools/tommy-hand-transition-tests.cjs"
+  },
+  "parity": {
+    "cases": 600,
+    "passed": true,
+    "exact": 537,
+    "expectedDifferences": 63,
+    "unexpected": [],
+    "inputs": [
+      {
+        "input": "Previous release",
+        "sha256": "48ca6290ff2ce2d13f9d1d95f4d5759f09b77b38d086a532793c263e977dbbcd",
+        "fixtureSHA256": "6b70891f5892b5d84fc97f26982e54ea80afba55a9b681550f9d650047fb5c51",
+        "errors": []
+      },
+      {
+        "input": "Tommy-only candidate",
+        "sha256": "efe7883410a7cc2e0c60b55f07acf150419e4d18becc71b71675d5987bd91533",
+        "fixtureSHA256": "5c286b6c7346d1c99c3295880ac27b9cc6cffa939db2025de6aaf13824a38c64",
+        "errors": []
+      }
+    ],
+    "changedCases": [
+      {
+        "case": 27,
+        "index": 3,
+        "patch": {
+          "recoil": 0,
+          "action": 0,
+          "heat": 0,
+          "spin": 0,
+          "kick": -1,
+          "exec": -1,
+          "reload": -1
+        }
+      },
+      {
+        "case": 28,
+        "index": 3,
+        "patch": {
+          "recoil": 0,
+          "action": 0,
+          "heat": 0,
+          "spin": 0,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.12
+        }
+      },
+      {
+        "case": 29,
+        "index": 3,
+        "patch": {
+          "recoil": 0,
+          "action": 0,
+          "heat": 0,
+          "spin": 0,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.26
+        }
+      },
+      {
+        "case": 30,
+        "index": 3,
+        "patch": {
+          "recoil": 0,
+          "action": 0,
+          "heat": 0,
+          "spin": 0,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.43
+        }
+      },
+      {
+        "case": 31,
+        "index": 3,
+        "patch": {
+          "recoil": 0,
+          "action": 0,
+          "heat": 0,
+          "spin": 0,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.55
+        }
+      },
+      {
+        "case": 32,
+        "index": 3,
+        "patch": {
+          "recoil": 0,
+          "action": 0,
+          "heat": 0,
+          "spin": 0,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.59
+        }
+      },
+      {
+        "case": 33,
+        "index": 3,
+        "patch": {
+          "recoil": 0,
+          "action": 0,
+          "heat": 0,
+          "spin": 0,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.74
+        }
+      },
+      {
+        "case": 34,
+        "index": 3,
+        "patch": {
+          "recoil": 0,
+          "action": 0,
+          "heat": 0,
+          "spin": 0,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.86
+        }
+      },
+      {
+        "case": 35,
+        "index": 3,
+        "patch": {
+          "recoil": 0,
+          "action": 0,
+          "heat": 0,
+          "spin": 0,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.99
+        }
+      },
+      {
+        "case": 90,
+        "index": 3,
+        "patch": {
+          "recoil": 0,
+          "action": 0,
+          "heat": 0,
+          "spin": 0,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.64
+        }
+      },
+      {
+        "case": 91,
+        "index": 3,
+        "patch": {
+          "recoil": 0,
+          "action": 0,
+          "heat": 0,
+          "spin": 0,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.7
+        }
+      },
+      {
+        "case": 92,
+        "index": 3,
+        "patch": {
+          "recoil": 0,
+          "action": 0,
+          "heat": 0,
+          "spin": 0,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.74
+        }
+      },
+      {
+        "case": 93,
+        "index": 3,
+        "patch": {
+          "recoil": 0,
+          "action": 0,
+          "heat": 0,
+          "spin": 0,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.78
+        }
+      },
+      {
+        "case": 94,
+        "index": 3,
+        "patch": {
+          "recoil": 0,
+          "action": 0,
+          "heat": 0,
+          "spin": 0,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.808
+        }
+      },
+      {
+        "case": 95,
+        "index": 3,
+        "patch": {
+          "recoil": 0,
+          "action": 0,
+          "heat": 0,
+          "spin": 0,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.9
+        }
+      },
+      {
+        "case": 121,
+        "index": 3,
+        "patch": {
+          "recoil": 0,
+          "action": 0.75,
+          "heat": 1,
+          "spin": 0.41100000000000003,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.125
+        }
+      },
+      {
+        "case": 131,
+        "index": 3,
+        "patch": {
+          "recoil": 0.5,
+          "action": 0.75,
+          "heat": 0.3333333333333333,
+          "spin": 1.7810000000000001,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.5416666666666666
+        }
+      },
+      {
+        "case": 141,
+        "index": 3,
+        "patch": {
+          "recoil": 1,
+          "action": 0.75,
+          "heat": 1,
+          "spin": 3.1510000000000002,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.9583333333333334
+        }
+      },
+      {
+        "case": 151,
+        "index": 3,
+        "patch": {
+          "recoil": 0,
+          "action": 0.75,
+          "heat": 0.3333333333333333,
+          "spin": 4.521000000000001,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.375
+        }
+      },
+      {
+        "case": 161,
+        "index": 3,
+        "patch": {
+          "recoil": 0.5,
+          "action": 0.75,
+          "heat": 1,
+          "spin": 5.891,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.7916666666666666
+        }
+      },
+      {
+        "case": 171,
+        "index": 3,
+        "patch": {
+          "recoil": 1,
+          "action": 0.75,
+          "heat": 0.3333333333333333,
+          "spin": 7.261000000000001,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.20833333333333334
+        }
+      },
+      {
+        "case": 181,
+        "index": 3,
+        "patch": {
+          "recoil": 0,
+          "action": 0.75,
+          "heat": 1,
+          "spin": 8.631,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.625
+        }
+      },
+      {
+        "case": 191,
+        "index": 3,
+        "patch": {
+          "recoil": 0.5,
+          "action": 0.75,
+          "heat": 0.3333333333333333,
+          "spin": 10.001000000000001,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.041666666666666664
+        }
+      },
+      {
+        "case": 201,
+        "index": 3,
+        "patch": {
+          "recoil": 1,
+          "action": 0.75,
+          "heat": 1,
+          "spin": 11.371,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.4583333333333333
+        }
+      },
+      {
+        "case": 211,
+        "index": 3,
+        "patch": {
+          "recoil": 0,
+          "action": 0.75,
+          "heat": 0.3333333333333333,
+          "spin": 12.741000000000001,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.875
+        }
+      },
+      {
+        "case": 221,
+        "index": 3,
+        "patch": {
+          "recoil": 0.5,
+          "action": 0.75,
+          "heat": 1,
+          "spin": 14.111,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.2916666666666667
+        }
+      },
+      {
+        "case": 231,
+        "index": 3,
+        "patch": {
+          "recoil": 1,
+          "action": 0.75,
+          "heat": 0.3333333333333333,
+          "spin": 15.481000000000002,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.7083333333333334
+        }
+      },
+      {
+        "case": 241,
+        "index": 3,
+        "patch": {
+          "recoil": 0,
+          "action": 0.75,
+          "heat": 1,
+          "spin": 16.851000000000003,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.125
+        }
+      },
+      {
+        "case": 251,
+        "index": 3,
+        "patch": {
+          "recoil": 0.5,
+          "action": 0.75,
+          "heat": 0.3333333333333333,
+          "spin": 18.221,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.5416666666666666
+        }
+      },
+      {
+        "case": 261,
+        "index": 3,
+        "patch": {
+          "recoil": 1,
+          "action": 0.75,
+          "heat": 1,
+          "spin": 19.591,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.9583333333333334
+        }
+      },
+      {
+        "case": 271,
+        "index": 3,
+        "patch": {
+          "recoil": 0,
+          "action": 0.75,
+          "heat": 0.3333333333333333,
+          "spin": 20.961000000000002,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.375
+        }
+      },
+      {
+        "case": 281,
+        "index": 3,
+        "patch": {
+          "recoil": 0.5,
+          "action": 0.75,
+          "heat": 1,
+          "spin": 22.331000000000003,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.7916666666666666
+        }
+      },
+      {
+        "case": 291,
+        "index": 3,
+        "patch": {
+          "recoil": 1,
+          "action": 0.75,
+          "heat": 0.3333333333333333,
+          "spin": 23.701,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.20833333333333334
+        }
+      },
+      {
+        "case": 301,
+        "index": 3,
+        "patch": {
+          "recoil": 0,
+          "action": 0.75,
+          "heat": 1,
+          "spin": 25.071,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.625
+        }
+      },
+      {
+        "case": 311,
+        "index": 3,
+        "patch": {
+          "recoil": 0.5,
+          "action": 0.75,
+          "heat": 0.3333333333333333,
+          "spin": 26.441000000000003,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.041666666666666664
+        }
+      },
+      {
+        "case": 321,
+        "index": 3,
+        "patch": {
+          "recoil": 1,
+          "action": 0.75,
+          "heat": 1,
+          "spin": 27.811000000000003,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.4583333333333333
+        }
+      },
+      {
+        "case": 331,
+        "index": 3,
+        "patch": {
+          "recoil": 0,
+          "action": 0.75,
+          "heat": 0.3333333333333333,
+          "spin": 29.181,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.875
+        }
+      },
+      {
+        "case": 341,
+        "index": 3,
+        "patch": {
+          "recoil": 0.5,
+          "action": 0.75,
+          "heat": 1,
+          "spin": 30.551000000000002,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.2916666666666667
+        }
+      },
+      {
+        "case": 351,
+        "index": 3,
+        "patch": {
+          "recoil": 1,
+          "action": 0.75,
+          "heat": 0.3333333333333333,
+          "spin": 31.921000000000003,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.7083333333333334
+        }
+      },
+      {
+        "case": 361,
+        "index": 3,
+        "patch": {
+          "recoil": 0,
+          "action": 0.75,
+          "heat": 1,
+          "spin": 33.291000000000004,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.125
+        }
+      },
+      {
+        "case": 371,
+        "index": 3,
+        "patch": {
+          "recoil": 0.5,
+          "action": 0.75,
+          "heat": 0.3333333333333333,
+          "spin": 34.661,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.5416666666666666
+        }
+      },
+      {
+        "case": 381,
+        "index": 3,
+        "patch": {
+          "recoil": 1,
+          "action": 0.75,
+          "heat": 1,
+          "spin": 36.031000000000006,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.9583333333333334
+        }
+      },
+      {
+        "case": 391,
+        "index": 3,
+        "patch": {
+          "recoil": 0,
+          "action": 0.75,
+          "heat": 0.3333333333333333,
+          "spin": 37.401,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.375
+        }
+      },
+      {
+        "case": 401,
+        "index": 3,
+        "patch": {
+          "recoil": 0.5,
+          "action": 0.75,
+          "heat": 1,
+          "spin": 38.771,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.7916666666666666
+        }
+      },
+      {
+        "case": 411,
+        "index": 3,
+        "patch": {
+          "recoil": 1,
+          "action": 0.75,
+          "heat": 0.3333333333333333,
+          "spin": 40.141000000000005,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.20833333333333334
+        }
+      },
+      {
+        "case": 421,
+        "index": 3,
+        "patch": {
+          "recoil": 0,
+          "action": 0.75,
+          "heat": 1,
+          "spin": 41.511,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.625
+        }
+      },
+      {
+        "case": 431,
+        "index": 3,
+        "patch": {
+          "recoil": 0.5,
+          "action": 0.75,
+          "heat": 0.3333333333333333,
+          "spin": 42.881,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.041666666666666664
+        }
+      },
+      {
+        "case": 441,
+        "index": 3,
+        "patch": {
+          "recoil": 1,
+          "action": 0.75,
+          "heat": 1,
+          "spin": 44.251000000000005,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.4583333333333333
+        }
+      },
+      {
+        "case": 451,
+        "index": 3,
+        "patch": {
+          "recoil": 0,
+          "action": 0.75,
+          "heat": 0.3333333333333333,
+          "spin": 45.621,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.875
+        }
+      },
+      {
+        "case": 461,
+        "index": 3,
+        "patch": {
+          "recoil": 0.5,
+          "action": 0.75,
+          "heat": 1,
+          "spin": 46.99100000000001,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.2916666666666667
+        }
+      },
+      {
+        "case": 471,
+        "index": 3,
+        "patch": {
+          "recoil": 1,
+          "action": 0.75,
+          "heat": 0.3333333333333333,
+          "spin": 48.361000000000004,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.7083333333333334
+        }
+      },
+      {
+        "case": 481,
+        "index": 3,
+        "patch": {
+          "recoil": 0,
+          "action": 0.75,
+          "heat": 1,
+          "spin": 49.731,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.125
+        }
+      },
+      {
+        "case": 491,
+        "index": 3,
+        "patch": {
+          "recoil": 0.5,
+          "action": 0.75,
+          "heat": 0.3333333333333333,
+          "spin": 51.101000000000006,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.5416666666666666
+        }
+      },
+      {
+        "case": 501,
+        "index": 3,
+        "patch": {
+          "recoil": 1,
+          "action": 0.75,
+          "heat": 1,
+          "spin": 52.471000000000004,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.9583333333333334
+        }
+      },
+      {
+        "case": 511,
+        "index": 3,
+        "patch": {
+          "recoil": 0,
+          "action": 0.75,
+          "heat": 0.3333333333333333,
+          "spin": 53.841,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.375
+        }
+      },
+      {
+        "case": 521,
+        "index": 3,
+        "patch": {
+          "recoil": 0.5,
+          "action": 0.75,
+          "heat": 1,
+          "spin": 55.211000000000006,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.7916666666666666
+        }
+      },
+      {
+        "case": 531,
+        "index": 3,
+        "patch": {
+          "recoil": 1,
+          "action": 0.75,
+          "heat": 0.3333333333333333,
+          "spin": 56.581,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.20833333333333334
+        }
+      },
+      {
+        "case": 541,
+        "index": 3,
+        "patch": {
+          "recoil": 0,
+          "action": 0.75,
+          "heat": 1,
+          "spin": 57.95100000000001,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.625
+        }
+      },
+      {
+        "case": 551,
+        "index": 3,
+        "patch": {
+          "recoil": 0.5,
+          "action": 0.75,
+          "heat": 0.3333333333333333,
+          "spin": 59.321000000000005,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.041666666666666664
+        }
+      },
+      {
+        "case": 561,
+        "index": 3,
+        "patch": {
+          "recoil": 1,
+          "action": 0.75,
+          "heat": 1,
+          "spin": 60.691,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.4583333333333333
+        }
+      },
+      {
+        "case": 571,
+        "index": 3,
+        "patch": {
+          "recoil": 0,
+          "action": 0.75,
+          "heat": 0.3333333333333333,
+          "spin": 62.06100000000001,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.875
+        }
+      },
+      {
+        "case": 581,
+        "index": 3,
+        "patch": {
+          "recoil": 0.5,
+          "action": 0.75,
+          "heat": 1,
+          "spin": 63.431000000000004,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.2916666666666667
+        }
+      },
+      {
+        "case": 591,
+        "index": 3,
+        "patch": {
+          "recoil": 1,
+          "action": 0.75,
+          "heat": 0.3333333333333333,
+          "spin": 64.801,
+          "kick": -1,
+          "exec": -1,
+          "reload": 0.7083333333333334
+        }
+      }
+    ]
+  },
+  "runtime": {
+    "input": "Tommy-only candidate",
+    "inputSHA256": "efe7883410a7cc2e0c60b55f07acf150419e4d18becc71b71675d5987bd91533",
+    "fixtureSHA256": "058f49317fdbb48d970e427f22f2964aafc69eac6e1465dde376fb29fed231b6",
+    "selected": [
+      3
+    ],
+    "viewport": "1280x720",
+    "scope": "Real R/digit keys, mouse fire/kick and RAF. Isolated setup inventories; no gameplay balance claim. Same-build cache ghost comparison, not old visual parity.",
+    "runs": [
+      {
+        "before": {
+          "index": 3,
+          "name": "TOMMY GUN",
+          "capacity": 36,
+          "reloadSeconds": 1.5,
+          "ammo": "bullets",
+          "mag": 0,
+          "reserve": 100
+        },
+        "after": {
+          "index": 3,
+          "state": "idle",
+          "mag": [
+            6,
+            2,
+            24,
+            36,
+            4,
+            3,
+            50,
+            4,
+            1,
+            1
+          ],
+          "ammo": {
+            "bullets": 64,
+            "shells": 100,
+            "slugs": 100,
+            "crosses": 100,
+            "nails": 100,
+            "souls": 100,
+            "tnt": 100,
+            "stakes": 100
+          },
+          "melee": false,
+          "voices": 0
+        },
+        "elapsedMs": 1532,
+        "frameStats": {
+          "n": 86,
+          "meanMs": 17.710465116279053,
+          "p95Ms": 18.19999999999891,
+          "maxMs": 34.900000000001455,
+          "measuredFPS": 56.463790952662386
+        },
+        "rawFrameDurationsMs": [
+          17.69999999999891,
+          17.30000000000109,
+          17.799999999999272,
+          17.200000000000728,
+          17.299999999999272,
+          17.5,
+          17.600000000000364,
+          17.69999999999891,
+          17.100000000000364,
+          17.200000000000728,
+          17.69999999999891,
+          18.100000000000364,
+          17.100000000000364,
+          17.200000000000728,
+          17.69999999999891,
+          17.899999999999636,
+          17.80000000000109,
+          17.100000000000364,
+          18.19999999999891,
+          17.600000000000364,
+          17.700000000000728,
+          17.19999999999891,
+          17.200000000000728,
+          17.69999999999891,
+          17.100000000000364,
+          17.30000000000109,
+          18.19999999999891,
+          17.600000000000364,
+          17.100000000000364,
+          17.69999999999891,
+          17.600000000000364,
+          17.200000000000728,
+          17.100000000000364,
+          17.69999999999891,
+          18.100000000000364,
+          17.700000000000728,
+          17.099999999998545,
+          17.700000000000728,
+          17.100000000000364,
+          17.600000000000364,
+          17.299999999999272,
+          17.100000000000364,
+          17.19999999999891,
+          18,
+          17.200000000000728,
+          17.899999999999636,
+          18.200000000000728,
+          17.600000000000364,
+          17.799999999999272,
+          17.100000000000364,
+          17.100000000000364,
+          17.69999999999891,
+          17.100000000000364,
+          17.200000000000728,
+          17.099999999998545,
+          18.100000000000364,
+          17.200000000000728,
+          17.399999999999636,
+          18.200000000000728,
+          17.5,
+          17.69999999999891,
+          17.30000000000109,
+          17.69999999999891,
+          17.80000000000109,
+          17.299999999999272,
+          17.799999999999272,
+          34.900000000001455,
+          17.299999999999272,
+          17.299999999999272,
+          17.80000000000109,
+          17.69999999999891,
+          17.200000000000728,
+          17.200000000000728,
+          17.69999999999891,
+          17.600000000000364,
+          17.299999999999272,
+          17.80000000000109,
+          17.19999999999891,
+          17.700000000000728,
+          17.299999999999272,
+          17.30000000000109,
+          17.69999999999891,
+          17.700000000000728,
+          17.200000000000728,
+          17.799999999999272,
+          17.299999999999272
+        ],
+        "captures": [
+          {
+            "target": 0.18,
+            "phase": 0.1867333333333324
+          },
+          {
+            "target": 0.5,
+            "phase": 0.5013999999999991
+          },
+          {
+            "target": 0.88,
+            "phase": 0.8871999999999997
+          }
+        ],
+        "sampleCount": 87,
+        "visibleSampleCount": 87
+      }
+    ],
+    "transitions": [
+      {
+        "index": 3,
+        "firedMag": 35,
+        "switchedTo": 4,
+        "cancelledMag": 0,
+        "kickRecovered": true
+      }
+    ],
+    "ghosting": [
+      {
+        "index": 3,
+        "match": true,
+        "before": "0853a13dff127a6773185bc6de84304372b0b35842d777f3c48f291ce64d69a8",
+        "after": "0853a13dff127a6773185bc6de84304372b0b35842d777f3c48f291ce64d69a8",
+        "presentationAndCacheStable": true
+      }
+    ],
+    "errors": [],
+    "network": [],
+    "readyMs": 9778,
+    "assetNames": [
+      "right",
+      "left",
+      "skull",
+      "barrel",
+      "shotgunSource",
+      "firearmSource",
+      "relicSource"
+    ],
+    "firstControllable": {
+      "ready": true,
+      "visible": true,
+      "skipped": false
+    },
+    "fireCancellation": [
+      {
+        "index": 3,
+        "pass": true,
+        "state": "fire",
+        "reserve": 100
+      }
+    ],
+    "pass": true
+  },
+  "comparison": {
+    "method": "Each variant actual R + native ammo endpoint; matched screenshots replay exact baseline native-sampled poses with paused world.",
+    "poses": [
+      {
+        "target": 0.7,
+        "pose": {
+          "x": 0,
+          "y": 0.045,
+          "z": 0,
+          "pitch": 0.3,
+          "yaw": 0,
+          "roll": 0,
+          "sx": 0,
+          "sy": 0.006950455736567696,
+          "recoil": 0,
+          "action": 0,
+          "spin": 0,
+          "reload": 0.7114666666666672,
+          "heat": 0,
+          "kick": -1,
+          "empty": 0,
+          "drop": 0,
+          "exec": -1,
+          "execKind": 0
+        }
+      },
+      {
+        "target": 0.74,
+        "pose": {
+          "x": 0,
+          "y": 0.045,
+          "z": 0,
+          "pitch": 0.3,
+          "yaw": 0,
+          "roll": 0,
+          "sx": 0,
+          "sy": 0.047723522348155696,
+          "recoil": 0,
+          "action": 0,
+          "spin": 0,
+          "reload": 0.7468000000000007,
+          "heat": 0,
+          "kick": -1,
+          "empty": 0,
+          "drop": 0,
+          "exec": -1,
+          "execKind": 0
+        }
+      },
+      {
+        "target": 0.78,
+        "pose": {
+          "x": 0,
+          "y": 0.045,
+          "z": 0,
+          "pitch": 0.3,
+          "yaw": 0,
+          "roll": 0,
+          "sx": 0,
+          "sy": 0.08764692467832469,
+          "recoil": 0,
+          "action": 0,
+          "spin": 0,
+          "reload": 0.7815333333333342,
+          "heat": 0,
+          "kick": -1,
+          "empty": 0,
+          "drop": 0,
+          "exec": -1,
+          "execKind": 0
+        }
+      },
+      {
+        "target": 0.86,
+        "pose": {
+          "x": 0,
+          "y": 0.04233755777994786,
+          "z": 0,
+          "pitch": 0.2822503851996524,
+          "yaw": 0,
+          "roll": 0,
+          "sx": 0,
+          "sy": 0.18067293097452136,
+          "recoil": 0,
+          "action": 0,
+          "spin": 0,
+          "reload": 0.8636666666666669,
+          "heat": 0,
+          "kick": -1,
+          "empty": 0,
+          "drop": 0,
+          "exec": -1,
+          "execKind": 0
+        }
+      }
+    ],
+    "native": [
+      {
+        "label": "frozen-base",
+        "before": {
+          "index": 3,
+          "pose": {
+            "x": 0,
+            "y": 0.045,
+            "z": 0,
+            "pitch": 0.3,
+            "yaw": 0,
+            "roll": 0,
+            "sx": 0,
+            "sy": -0.020535483352896153,
+            "recoil": 0,
+            "action": 0,
+            "spin": 0,
+            "reload": 0.6876666666666668,
+            "heat": 0,
+            "kick": -1,
+            "empty": 0,
+            "drop": 0,
+            "exec": -1,
+            "execKind": 0
+          }
+        },
+        "after": {
+          "index": 3,
+          "pose": {
+            "x": 0,
+            "y": 0.045,
+            "z": 0,
+            "pitch": 0.3,
+            "yaw": 0,
+            "roll": 0,
+            "sx": 0,
+            "sy": 0.12796391997703052,
+            "recoil": 0,
+            "action": 0,
+            "spin": 0,
+            "reload": 0.8168666666666676,
+            "heat": 0,
+            "kick": -1,
+            "empty": 0,
+            "drop": 0,
+            "exec": -1,
+            "execKind": 0
+          }
+        },
+        "mag": 36,
+        "reserve": 64
+      },
+      {
+        "label": "v1",
+        "before": {
+          "index": 3,
+          "pose": {
+            "x": 0,
+            "y": 0.045,
+            "z": 0,
+            "pitch": 0.3,
+            "yaw": 0,
+            "roll": 0,
+            "sx": 0,
+            "sy": -0.6256925828622384,
+            "recoil": 0,
+            "action": 0,
+            "spin": 0,
+            "reload": 0.6910666666666659,
+            "heat": 0,
+            "kick": -1,
+            "empty": 0,
+            "drop": 0,
+            "exec": -1,
+            "execKind": 0
+          }
+        },
+        "after": {
+          "index": 3,
+          "pose": {
+            "x": 0,
+            "y": 0.045,
+            "z": 0,
+            "pitch": 0.3,
+            "yaw": 0,
+            "roll": 0,
+            "sx": 0,
+            "sy": -0.6777783794740063,
+            "recoil": 0,
+            "action": 0,
+            "spin": 0,
+            "reload": 0.8197333333333323,
+            "heat": 0,
+            "kick": -1,
+            "empty": 0,
+            "drop": 0,
+            "exec": -1,
+            "execKind": 0
+          }
+        },
+        "mag": 36,
+        "reserve": 64
+      },
+      {
+        "label": "v3",
+        "before": {
+          "index": 3,
+          "pose": {
+            "x": 0,
+            "y": 0.045,
+            "z": 0,
+            "pitch": 0.3,
+            "yaw": 0,
+            "roll": 0,
+            "sx": 0,
+            "sy": -0.6663262284349832,
+            "recoil": 0,
+            "action": 0,
+            "spin": 0,
+            "reload": 0.6865333333333341,
+            "heat": 0,
+            "kick": -1,
+            "empty": 0,
+            "drop": 0,
+            "exec": -1,
+            "execKind": 0
+          }
+        },
+        "after": {
+          "index": 3,
+          "pose": {
+            "x": 0,
+            "y": 0.045,
+            "z": 0,
+            "pitch": 0.3,
+            "yaw": 0,
+            "roll": 0,
+            "sx": 0,
+            "sy": -0.606439233264575,
+            "recoil": 0,
+            "action": 0,
+            "spin": 0,
+            "reload": 0.8147333333333336,
+            "heat": 0,
+            "kick": -1,
+            "empty": 0,
+            "drop": 0,
+            "exec": -1,
+            "execKind": 0
+          }
+        },
+        "mag": 36,
+        "reserve": 64
+      }
+    ]
+  },
+  "limitations": [
+    "Matched stills replay actual native-sampled poses; live native R separately verified.",
+    "No video/audio clip was recorded in this scoped pass.",
+    "No general performance claim."
+  ]
+}

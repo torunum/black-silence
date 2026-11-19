@@ -134,9 +134,20 @@
     return result;
   };
 
+  const victory = Jt("win");
+  const descendAgain = victory.querySelector(".start");
+  descendAgain.textContent = "[ DESCEND AGAIN ]";
+  enableKeyboard(descendAgain);
+  const showVictory = h9;
+  h9 = function (...args) {
+    const result = showVictory.apply(this, args);
+    if (T.won && !victory.classList.contains("hidden")) descendAgain.focus();
+    return result;
+  };
+
   const style = document.createElement("style");
   style.textContent = `
-    :is(#intro, #chapsel, #pause) :focus-visible { outline: 2px solid #b8a26a; outline-offset: 4px; }
+    :is(#intro, #chapsel, #pause, #win) :focus-visible { outline: 2px solid #b8a26a; outline-offset: 4px; }
     #pause .capture-help { max-width: min(28rem, 90vw); color: #bda787; opacity: 1;
       font-size: clamp(12px, 2vw, 14px); line-height: 1.55; letter-spacing: .07em; text-transform: none; }
   `;

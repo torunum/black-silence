@@ -68,6 +68,7 @@ const code = [
   "dungeon-sally-port.js",
   "necropolis-ossuary-entrance.js",
   "cathedral-reliquary.js",
+  "womb-east-valve.js",
   "render-warmup.js",
   "hud-updates.js",
   "display-settings.js",
