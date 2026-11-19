@@ -15,3 +15,9 @@ Kapının arkasındaki shrine etkinleşti. Oyuncu koridordaki sağlık paketine 
 Aynı oyun dosyası ve varsayılan ekipmanla tekrar başlandı. Ofisteki iki sağlık paketi alındı. **Cathedral Guardian** BMG ile yenildi ve oyuncu döküm kapısından bu kez 57,6 canla, henüz ölmeden geçti. Kömür deposundan Stake Gun ve mühimmat alındı. **Mutant Executioner** da normal atışlarla yenildi.
 
 Oyuncu iki kez `Space` ile döküm shrine’ında yeniden doğdu. Üçüncü Foreman karşılaşmasında boss ikinci evreye geçti ve 2.600 üzerinden 1.700 canı kaldı. Oyuncu öldüğü için bölüm çıkışına ulaşılamadı. Bu koşuda da tarayıcı hatası görülmedi.
+
+## Üçüncü koşu
+
+Aynı yayımlanmış dosyada Factory, **Chapter Select** üzerinden yeniden başlatıldı. Oyuncu 100 can ve 6 takılı, 60 yedek mermili varsayılan tabancayla başladı. Ofis anahtarını yürüyerek aldı. Kuzeydeki sağlık paketini toplayıp döküm çukurunun çevresini izledi. Bu rota, uzaktan Stake Gun ve BMG ile atış yapabileceği açıklıklar sağladı.
+
+Üç boss da gerçek fare ve klavye girdileriyle yenildi. Foreman’ın canı üçüncü evreye girerken 694’e, son atışta −26’ya düştü. Oyuncu 6 canla ve sıfır ölümle çıkışa ulaştı. `E` ıslak tünel çıkışını açtı ve **THE FACTORY CLEARED** ekranı göründü. Ekran C derecesi, %96 isabet, 3:09 süre ve 21 öldürme gösterdi. `Space` bir sonraki bölüm **The Bone Cathedral**’ı açtı. Tarayıcı hatası görülmedi. [Bölüm sonu ekranı](native-clear.png)

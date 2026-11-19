@@ -284,7 +284,7 @@
     },
     {
       "file": "docs/factory-manifold-nov19/native-route.md",
-      "sha256": "087f5de34b0fca8aa7bd0669dac443b5d0950e1dfe82bd24bef746fe0f812c63"
+      "sha256": "4eb50b1d2e0c7c76b3e8138454ff120e32cdb3faafc15094291792695791e221"
     },
     {
       "file": "docs/factory-manifold-nov19/native-route.png",
@@ -292,7 +292,11 @@
     },
     {
       "file": "docs/verification-data/nov19-night-release.json",
-      "sha256": "49188ba2f103177f5309a26b0c3fc33a578c32ba4675bd4c05c4de8f4dad8858"
+      "sha256": "f1fd38193af7f27d0aea7b3f3e660a5b084d8102352513496e366295bd11f3b5"
+    },
+    {
+      "file": "docs/factory-manifold-nov19/native-clear.png",
+      "sha256": "5c3a9d20905d741b7bc5c988ca9c03ca7755beaffaf9cb6e1b8fe1d01c1ae1a8"
     }
   ]
 }

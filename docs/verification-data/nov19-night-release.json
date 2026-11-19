@@ -177,6 +177,20 @@
     "nativeVictory": true,
     "scope": "Continuous native campaign from New Game. Fixed-step movement and door interaction through authored geometry. Actual Playwright E for bell and exits, Space for chapter cards. Bosses receive a seeded terminal hit through native damage. Hostile attacks are isolated during this route."
   },
+  "nativeFactoryClear": {
+    "start": "Stock Factory Chapter Select in offline Chrome",
+    "input": "Real keyboard and mouse",
+    "bossesDefeated": ["Cathedral Guardian", "Mutant Executioner", "Foreman"],
+    "foremanFinalHealth": -26,
+    "healthAtExit": 6,
+    "deaths": 0,
+    "exitInput": "E",
+    "chapterResult": {"title": "THE FACTORY CLEARED", "rank": "C", "accuracyPercent": 96, "time": "3:09", "kills": 21},
+    "continueInput": "Space",
+    "nextChapter": "The Bone Cathedral",
+    "pageErrors": [],
+    "image": "docs/factory-manifold-nov19/native-clear.png"
+  },
   "nativeHeartReplay": {
     "start": "Stock Womb Chapter Select in offline Chrome",
     "input": "Real keyboard and mouse",
@@ -225,6 +239,7 @@
     "docs/verification-data/nov19-map-controls.json",
     "docs/stake-grip-nov19/stake-native.webm",
     "docs/factory-manifold-nov19/native-route.md",
-    "docs/factory-manifold-nov19/native-route.png"
+    "docs/factory-manifold-nov19/native-route.png",
+    "docs/factory-manifold-nov19/native-clear.png"
   ]
 }
