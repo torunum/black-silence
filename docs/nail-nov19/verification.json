@@ -1,0 +1,342 @@
+{
+  "input": {
+    "baselineCommit": "237b9d2",
+    "baselineSHA256": "08329158d25a5d7486b73cb992e176ef58fbecd0d6339be4c49687afa946395d",
+    "candidateSHA256": "a1ffe2d91cb472990ec9df9d147eec6d8119d40da1363652d8791aefc04f1651",
+    "viewmodelsSHA256": "baab9bbd6dc11b5e8bd501b63838a018c5d61a04fd8f216f0ea62eca9602da62",
+    "reloadAudioSHA256": "dc67dd605d54c11fbf9571a1b1b80c58fe82953fcdb1a13798e3f4b89d3e2f60"
+  },
+  "comparison": {
+    "width": 1280,
+    "height": 720,
+    "columns": [
+      "older",
+      "new"
+    ],
+    "rows": [
+      "idle",
+      "0.4",
+      "0.5",
+      "0.75"
+    ],
+    "earlier": [
+      {
+        "label": "idle",
+        "phase": 0.060849999999998544
+      },
+      {
+        "label": 0.4,
+        "phase": 0.40220000000000083
+      },
+      {
+        "label": 0.5,
+        "phase": 0.5011500000000015
+      },
+      {
+        "label": 0.75,
+        "phase": 0.7515500000000012
+      }
+    ],
+    "current": [
+      {
+        "label": "idle",
+        "phase": 0.06910000000000037
+      },
+      {
+        "label": 0.4,
+        "phase": 0.4030499999999975
+      },
+      {
+        "label": 0.5,
+        "phase": 0.5000499999999976
+      },
+      {
+        "label": 0.75,
+        "phase": 0.7532999999999958
+      }
+    ]
+  },
+  "screenAndAudioChecks": {
+    "weapon": 6,
+    "sourceSha": "a1ffe2d91cb472990ec9df9d147eec6d8119d40da1363652d8791aefc04f1651",
+    "runs": [
+      {
+        "width": 1024,
+        "height": 768,
+        "initial": [
+          50,
+          50
+        ],
+        "afterFire": 45,
+        "final": [
+          50,
+          45
+        ],
+        "samples": {
+          "idle": {
+            "count": 24,
+            "nearest": 39.22448215082004,
+            "phase": 0.06105000000000018,
+            "obstructedPhases": []
+          },
+          "fire": {
+            "count": 6,
+            "nearest": 16.70449041425688,
+            "phase": 0.01925,
+            "obstructedPhases": []
+          },
+          "reload": {
+            "count": 51,
+            "nearest": 24.053274205396654,
+            "phase": 0.08660000000000036,
+            "obstructedPhases": []
+          }
+        },
+        "played": [
+          {
+            "event": "unlatch",
+            "phase": 0.12315000000000054,
+            "target": 0.105
+          },
+          {
+            "event": "release",
+            "phase": 0.20240000000000055,
+            "target": 0.19
+          },
+          {
+            "event": "withdraw",
+            "phase": 0.2806499999999996,
+            "target": 0.27
+          },
+          {
+            "event": "guide",
+            "phase": 0.5371999999999988,
+            "target": 0.535
+          },
+          {
+            "event": "seat",
+            "phase": 0.661249999999998,
+            "target": 0.66
+          },
+          {
+            "event": "lock",
+            "phase": 0.8168999999999977,
+            "target": 0.815
+          }
+        ]
+      },
+      {
+        "width": 1280,
+        "height": 720,
+        "initial": [
+          50,
+          50
+        ],
+        "afterFire": 46,
+        "final": [
+          50,
+          46
+        ],
+        "samples": {
+          "idle": {
+            "count": 24,
+            "nearest": 16,
+            "phase": 0.0885,
+            "obstructedPhases": []
+          },
+          "fire": {
+            "count": 7,
+            "nearest": 28.635642126552703,
+            "phase": 0,
+            "obstructedPhases": []
+          },
+          "reload": {
+            "count": 50,
+            "nearest": 22.090722034374522,
+            "phase": 0.1382000000000007,
+            "obstructedPhases": []
+          }
+        },
+        "played": [
+          {
+            "event": "unlatch",
+            "phase": 0.12035000000000036,
+            "target": 0.105
+          },
+          {
+            "event": "release",
+            "phase": 0.1990500000000011,
+            "target": 0.19
+          },
+          {
+            "event": "withdraw",
+            "phase": 0.2786000000000021,
+            "target": 0.27
+          },
+          {
+            "event": "guide",
+            "phase": 0.5581500000000014,
+            "target": 0.535
+          },
+          {
+            "event": "seat",
+            "phase": 0.6648000000000012,
+            "target": 0.66
+          },
+          {
+            "event": "lock",
+            "phase": 0.817,
+            "target": 0.815
+          }
+        ]
+      },
+      {
+        "width": 1680,
+        "height": 720,
+        "initial": [
+          50,
+          50
+        ],
+        "afterFire": 45,
+        "final": [
+          50,
+          45
+        ],
+        "samples": {
+          "idle": {
+            "count": 23,
+            "nearest": 21.18515547602352,
+            "phase": 0,
+            "obstructedPhases": []
+          },
+          "fire": {
+            "count": 8,
+            "nearest": 15.766423357664234,
+            "phase": 0.019,
+            "obstructedPhases": []
+          },
+          "reload": {
+            "count": 48,
+            "nearest": 24.926308638855364,
+            "phase": 0.9255499999999977,
+            "obstructedPhases": []
+          }
+        },
+        "played": [
+          {
+            "event": "unlatch",
+            "phase": 0.12439999999999965,
+            "target": 0.105
+          },
+          {
+            "event": "release",
+            "phase": 0.21025000000000002,
+            "target": 0.19
+          },
+          {
+            "event": "withdraw",
+            "phase": 0.2706500000000015,
+            "target": 0.27
+          },
+          {
+            "event": "guide",
+            "phase": 0.5528499999999987,
+            "target": 0.535
+          },
+          {
+            "event": "seat",
+            "phase": 0.674199999999999,
+            "target": 0.66
+          },
+          {
+            "event": "lock",
+            "phase": 0.8297999999999977,
+            "target": 0.815
+          }
+        ]
+      }
+    ],
+    "errors": [],
+    "requests": []
+  },
+  "audioLifecycle": {
+    "checks": 125,
+    "pageErrors": [],
+    "scope": "The game advances its original simulation to test mute, pause, switch, death and other audio lifecycle transitions."
+  },
+  "controlTransitions": {
+    "switchKick": [
+      {
+        "index": 6,
+        "firedMag": 49,
+        "switchedTo": 7,
+        "cancelledMag": 0,
+        "kickRecovered": true
+      }
+    ],
+    "fireCancellation": [
+      {
+        "index": 6,
+        "pass": true,
+        "state": "fire",
+        "reserve": 100
+      }
+    ],
+    "cache": [
+      {
+        "index": 6,
+        "match": true,
+        "before": "b04c06922e7f54bc4c1270fc50f636a05d59051a307a0d2f784d51a9fccebd78",
+        "after": "b04c06922e7f54bc4c1270fc50f636a05d59051a307a0d2f784d51a9fccebd78",
+        "presentationAndCacheStable": true
+      }
+    ],
+    "errors": []
+  },
+  "pixelScope": {
+    "poses": 594,
+    "unmodified": 537,
+    "changedCases": 57,
+    "changedWeaponIndices": [
+      6
+    ],
+    "runtimeErrors": []
+  },
+  "geometry": {
+    "cachedRotorTubes": 4,
+    "cachedPanels": 13,
+    "scope": "Only their original rigid transforms are recomputed per pose. No hardware FPS claim."
+  },
+  "video": {
+    "file": "reload.webm",
+    "sha256": "bcb996801252276138e64f4027d1ec395533ed1c26bc0edb7d4f4f6f2b88ebf9",
+    "videoCodec": "VP9",
+    "audioCodec": "Opus",
+    "fps": 25,
+    "capturedSeconds": 3.9304000000059607,
+    "capacity": 50,
+    "initialMagazineAndReserve": [
+      7,
+      12
+    ],
+    "afterFiring": [
+      0,
+      12
+    ],
+    "afterR": [
+      12,
+      0
+    ],
+    "events": [
+      "unlatch",
+      "release",
+      "withdraw",
+      "guide",
+      "seat",
+      "lock"
+    ],
+    "errors": [],
+    "network": [],
+    "scope": "Digit 7 equips the Nail Cannon. Real held left mouse empties the canister, then R loads the 12 available rounds. Actual RAF and stereo game output. Repeatable courtyard fixtures only remove enemy interference and choose the starting inventory."
+  }
+}

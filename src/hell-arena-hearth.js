@@ -105,8 +105,7 @@
     band("seam", .79, .79, 0, .035, .72);
     band("clinker", .78, .78, .035, .136, 1.12, .012);
     band("ashlar", .78, .68, .136, .195, 1.10, .005);
-    band("seam", .677, .685, .195, .589, .80);
-    band("clinker", .683, .692, .195, .589, 1.19, .008);
+    band("seam", .633, .651, .195, .589, .91);
     band("copper", .696, .715, .591, .620, 1.45, .004);
     band("iron", .715, .748, .620, .724, 1.34, .006);
     band("ashlar", .748, .741, .724, .745, 1.35);
@@ -115,12 +114,29 @@
     for(let i = 0; i < angles.length; i++) {
       const angle = angles[i] + Math.PI / 8;
       const x0 = Math.sin(angle), z0 = Math.cos(angle);
-      for(const [dx, height, width] of [[-.083,.132,.022],[-.021,.168,.026],[.071,.103,.018]]) {
-        const sx=x0*.645+Math.cos(angle)*dx, sz=z0*.645-Math.sin(angle)*dx;
-        box("iron",width+.023,height+.018,.015,sx,.358,sz,0,angle,0,.86);
-        box("seam",width,height,.021,sx,.359,sz,0,angle,0,.54);
-        if(i%3!==0)box("bed",width*.66,.024,.024,sx,.373-height*.49,sz,0,angle,0,.69);
+      const panelPoint=(u,y,inset=0)=>{
+        const r=.633 + (y-.195)*.021-inset;
+        return [x0*r+Math.cos(angle)*u,y,z0*r-Math.sin(angle)*u];
+      };
+      const stoneside=.88+.19*Math.sin(angle+.73);
+      const panel=(lo,hi,bottom,top)=>polygon("clinker",panelPoint(lo,bottom),panelPoint(lo,top),
+        panelPoint(hi,top),panelPoint(hi,bottom),stoneside*1.30);
+      // The dark chamber behind each opening is physically recessed. Chisel
+      // the face around the slots and give the two reveals different lighting.
+      let a=-.256;
+      for(const [dx, height, width] of [[-.096,.112,.019],[-.031,.149,.028],[.079,.104,.021]]) {
+        const lo=dx-width/2, hi=dx+width/2, b=.366-height/2, t=.366+height/2;
+        panel(a,lo,.195,.589);
+        panel(lo,hi,.195,b);
+        panel(lo,hi,t,.589);
+        for(const [slot,brightness] of [[lo,.82],[hi,1.14]])
+          polygon("iron",panelPoint(slot,b),panelPoint(slot,t),panelPoint(slot,t,.031),panelPoint(slot,b,.031),brightness);
+        polygon("ashlar",panelPoint(lo,b),panelPoint(lo,b,.031),panelPoint(hi,b,.031),panelPoint(hi,b),1.07);
+        if(i%3!==0)polygon("bed",panelPoint(lo,b+.007,.024),panelPoint(lo,b+.023,.024),
+          panelPoint(hi,b+.023,.024),panelPoint(hi,b+.007,.024),.99);
+        a=hi;
       }
+      panel(a,.256,.195,.589);
       // The copper shoulders are tied to each side of the octagon by rivets.
       for(const dx of [-.164,.163]) {
         const sx=x0*.663+Math.cos(angle)*dx, sz=z0*.663-Math.sin(angle)*dx;
@@ -131,19 +147,19 @@
     // The grate has cinder pockets, curved burned wood and thin lines of age.
     detail("bed",new Eo(.571,.547,.044,8),E(0,.716,0,0,roomAngle),1.41);
     for (const [length, radius, angle, x0, z0, lift, rise] of [
-      [.83,.114,.25,.20,-.14,.815,-.04], [.73,.108,1.27,-.148,.10,.835,-.20],
-      [.97,.131,2.04,-.045,-.085,.956,.40],[.62,.114,1.0,.04,.20,.885,.20]
+      [.74,.079,.12,.20,.18,.782,-.04], [.68,.090,1.09,-.216,.166,.836,-.19],
+      [1.02,.138,1.69,-.055,-.182,.994,-.40],[.68,.110,.99,.218,.13,.871,.28]
     ]) {
       const axis = new Y(Math.sin(angle),rise,Math.cos(angle)).normalize();
       detail("coal",new Eo(radius*.81,radius,length,8),along(x0,lift,z0,axis),1.64);
       for (const side of [-1,1]) {
         const d = side*length*.496, radiusEnd=radius*(side===1?.81:1);
         const tipX=x0+axis.x*d, tipY=lift+axis.y*d, tipZ=z0+axis.z*d;
-        detail("bed",new Eo(radiusEnd*.80,radiusEnd*.90,.022,7),along(tipX,tipY,tipZ,axis),.85);
-        detail("coal",new Eo(radiusEnd*.70,radiusEnd*.64,.024,7),along(tipX,tipY+.022,tipZ,axis),1.35);
+        detail("bed",new Eo(radiusEnd*.80,radiusEnd*.90,.022,7),along(tipX,tipY,tipZ,axis),1.05);
+        detail("coal",new Eo(radiusEnd*.69,radiusEnd*.61,.025,7),along(tipX,tipY+.016,tipZ,axis),1.54);
       }
       const fissure=new Eo(radius*.74,radius*.75,length*.64,5);
-      detail("bed",fissure,along(x0,lift-radius*.37,z0-.012,axis),.82);
+      detail("bed",fissure,along(x0,lift-radius*.43,z0-.023,axis),.87);
     }
     for(let i=0;i<19;i++){
       const angle = i * 2.39996, r = .07 + Math.sqrt(i / 19) * .53;

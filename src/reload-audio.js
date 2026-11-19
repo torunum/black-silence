@@ -51,6 +51,14 @@
       shut: { at: .79, clip: "close", rate: .82, gain: .45 },
       catch: { at: uc.lid[1], clip: "latch", rate: 1.09, gain: .34 },
     },
+    6: {
+      unlatch: { at: BLACK_SILENCE_NAIL_RELOAD.unlatch, clip: "latch", rate: .75, gain: .38 },
+      release: { at: BLACK_SILENCE_NAIL_RELOAD.release, clip: "hinge", rate: .81, gain: .31 },
+      withdraw: { at: BLACK_SILENCE_NAIL_RELOAD.withdraw, clip: "slide", rate: .70, gain: .30 },
+      guide: { at: BLACK_SILENCE_NAIL_RELOAD.guide, clip: "eject", rate: .73, gain: .29 },
+      seat: { at: BLACK_SILENCE_NAIL_RELOAD.seat, clip: "seat", rate: .74, gain: .49 },
+      lock: { at: BLACK_SILENCE_NAIL_RELOAD.lock, clip: "close", rate: .84, gain: .39 },
+    },
     7: {
       unlock: { at: ya.claws[0], clip: "hinge", rate: .62, gain: .24 },
       pluck: { at: ya.pluck[0] + .035, clip: "glassLift", rate: 1.04, gain: .49 },

@@ -24,7 +24,13 @@ Gotik piksel FPS oyununun on silah, deri eldiven ve prologue cehennem bölümü 
 
 ## Bu sürüm
 
-**19 Kasım.** Prologue'un cehennem arenasındaki ateş çukuru koyu bazalt, ince bakır kuşak ve közlerle yeniden işlendi. Combat Rifle'ı **3** ile seçip **R** ile doldurduğunda sol el eski şarjörü çıkarıyor, yenisini takıyor ve kurma kolunu çekiyor. Harita, keşfedilen zemini yeniden kullanarak açık kaldığı sürece daha az çizim yapıyor. [Arena görüntüleri](docs/hell-hearth-nov19/README.md) · [Combat Rifle görüntü ve sesi](docs/rifle-nov19/README.md) · [Harita karşılaştırması](docs/verification-data/nov19-map-backdrop.json).
+**19 Kasım, Prologue.** Cehennem arenasındaki köz ocağı koyu bazalt ve ince bakır kuşakla yeniden işlendi. Arenanın doğusundaki üç demir fener, üst kemere giden basamakları sırayla aydınlatıyor. [Arena görüntüleri](docs/hell-hearth-nov19/README.md) · [Arenadan üst kemere oynanış](docs/hell-ascent-nov19/README.md).
+
+**Necropolis.** Meydandaki bronz kakmaları izleyip kemiklik kapısını **E** ile aç. İki basamak kırmızı anahtara çıkar. [Kapının iki yönden geçişi](docs/necropolis-nov19/README.md).
+
+**Combat Rifle ve Nail Cannon.** **3** veya **7** ile silahı seç, **R** ile doldur. Tüfekte sol el şarjörü değiştirip kurma kolunu çekiyor. Nail Cannon'da sol el mandalı açıyor, pirinç hazneyi değiştiriyor ve mandalı kapatıyor. [Combat Rifle görüntü ve sesi](docs/rifle-nov19/README.md) · [Nail Cannon görüntü ve sesi](docs/nail-nov19/README.md).
+
+Harita, keşfedilen zemini yeniden kullanarak açık kaldığı sürece daha az çizim yapıyor. [Harita karşılaştırması](docs/verification-data/nov19-map-backdrop.json).
 
 **Gothic Dungeon.** Anahtar mahzeninden bakınca demir parmaklığı tutan çatlak meşe takozu görünüyor. Ateş ederek veya tekmeyle kırdığında karşı ağırlık iniyor, parmaklık yükseliyor ve geçitten iki yönde yürüyebiliyorsun. Yeşil zindan muhafızı tükürmeden önce başını kaldırıyor. Leş tazısı sıçramadan önce omzunu indirip arka bacaklarını topluyor. [Geçidin oyun içi görüntüleri](docs/gaol-sally-port-nov14/README.md) · [Yaratıkların oyun içi görüntüleri](docs/gaol-creatures-nov14/README.md).
 

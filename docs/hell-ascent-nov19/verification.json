@@ -1,0 +1,692 @@
+{
+  "passed": true,
+  "collisionSamples": 46200,
+  "scope": "Original walking input and native frames; matched activation, viewmodel, cameras and encounter staging.",
+  "original": {
+    "sha": "fd809a3a410f390e21e9b2e4cc7ebfe2606ba8c346c2bb899062d91fc83a8d6e",
+    "map": {
+      "distancesToFloor": [
+        [
+          2.1,
+          2.52
+        ],
+        [
+          2.52,
+          2.94
+        ],
+        [
+          2.94,
+          3.3600000000000003
+        ],
+        [
+          3.3600000000000003,
+          3.7800000000000002
+        ],
+        [
+          3.7800000000000002,
+          4.2
+        ]
+      ],
+      "candles": [
+        [
+          9,
+          7
+        ],
+        [
+          17,
+          7
+        ],
+        [
+          29,
+          7
+        ],
+        [
+          33,
+          13
+        ],
+        [
+          7,
+          19
+        ],
+        [
+          23,
+          19
+        ],
+        [
+          17,
+          23
+        ],
+        [
+          23,
+          23
+        ],
+        [
+          39,
+          23
+        ],
+        [
+          97,
+          29
+        ],
+        [
+          117,
+          29
+        ],
+        [
+          115,
+          37
+        ],
+        [
+          111,
+          45
+        ],
+        [
+          115,
+          61
+        ],
+        [
+          111,
+          69
+        ],
+        [
+          115,
+          77
+        ],
+        [
+          111,
+          85
+        ],
+        [
+          115,
+          93
+        ],
+        [
+          111,
+          101
+        ]
+      ],
+      "shrines": [
+        [
+          117,
+          49
+        ]
+      ],
+      "points": 35
+    },
+    "captures": [
+      {
+        "name": "foot",
+        "pose": [
+          113,
+          98.6,
+          113,
+          82,
+          4.35
+        ],
+        "settled": {
+          "x": 113,
+          "z": 98.6,
+          "eye": 3.1,
+          "zone": "climb"
+        },
+        "rendering": {
+          "p": [
+            113,
+            3.1,
+            98.6
+          ],
+          "camera": [
+            113,
+            3.1,
+            98.6
+          ],
+          "floor": 2.1,
+          "meshes": [],
+          "render": {
+            "frame": 311,
+            "calls": 237,
+            "triangles": 210066,
+            "points": 2008,
+            "lines": 0
+          },
+          "memory": {
+            "geometries": 184,
+            "textures": 53
+          }
+        }
+      },
+      {
+        "name": "mid",
+        "pose": [
+          113,
+          85.5,
+          113,
+          71,
+          5.3
+        ],
+        "settled": {
+          "x": 113,
+          "z": 85.5,
+          "eye": 3.94,
+          "zone": "climb"
+        },
+        "rendering": {
+          "p": [
+            113,
+            3.94,
+            85.5
+          ],
+          "camera": [
+            113,
+            3.94,
+            85.5
+          ],
+          "floor": 2.94,
+          "meshes": [],
+          "render": {
+            "frame": 345,
+            "calls": 220,
+            "triangles": 210154,
+            "points": 2008,
+            "lines": 0
+          },
+          "memory": {
+            "geometries": 191,
+            "textures": 54
+          }
+        }
+      },
+      {
+        "name": "refuge",
+        "pose": [
+          115.2,
+          54.5,
+          123.9,
+          52.2,
+          5.33
+        ],
+        "settled": {
+          "x": 115.2,
+          "z": 54.5,
+          "eye": 5.2,
+          "zone": "climb"
+        },
+        "rendering": {
+          "p": [
+            115.2,
+            5.2,
+            54.5
+          ],
+          "camera": [
+            115.2,
+            5.2,
+            54.5
+          ],
+          "floor": 4.2,
+          "meshes": [],
+          "render": {
+            "frame": 377,
+            "calls": 47,
+            "triangles": 51684,
+            "points": 1828,
+            "lines": 0
+          },
+          "memory": {
+            "geometries": 191,
+            "textures": 54
+          }
+        }
+      }
+    ],
+    "trail": [
+      {
+        "z": 99.4,
+        "floor": 2.1,
+        "x": 113,
+        "eye": 3.1,
+        "solid": false
+      },
+      {
+        "z": 97.8823992475322,
+        "floor": 2.52,
+        "x": 113,
+        "eye": 3.52,
+        "solid": false
+      },
+      {
+        "z": 89.89119924753224,
+        "floor": 2.94,
+        "x": 113,
+        "eye": 3.94,
+        "solid": false
+      },
+      {
+        "z": 81.99869924753223,
+        "floor": 3.3600000000000003,
+        "x": 113,
+        "eye": 4.36,
+        "solid": false
+      },
+      {
+        "z": 73.98579924753226,
+        "floor": 3.7800000000000002,
+        "x": 113,
+        "eye": 4.78,
+        "solid": false
+      },
+      {
+        "z": 65.97919924753232,
+        "floor": 4.2,
+        "x": 113,
+        "eye": 5.2,
+        "solid": false
+      }
+    ],
+    "arrived": {
+      "p": [
+        113,
+        5.2,
+        52.9830175556965
+      ],
+      "camera": [
+        113,
+        5.210241919572501,
+        52.9830175556965
+      ],
+      "floor": 4.2,
+      "meshes": [],
+      "render": {
+        "frame": 765,
+        "calls": 156,
+        "triangles": 188558,
+        "points": 2008,
+        "lines": 0
+      },
+      "memory": {
+        "geometries": 191,
+        "textures": 54
+      }
+    },
+    "resources": {
+      "count": 0,
+      "released": [],
+      "leaked": [],
+      "rebuilt": 0
+    },
+    "errors": []
+  },
+  "candidate": {
+    "sha": "078c3e5fc4c496151731abbb5018e64b622442b13d38c142ab6c19b983418ee5",
+    "map": {
+      "distancesToFloor": [
+        [
+          2.1,
+          2.52
+        ],
+        [
+          2.52,
+          2.94
+        ],
+        [
+          2.94,
+          3.3600000000000003
+        ],
+        [
+          3.3600000000000003,
+          3.7800000000000002
+        ],
+        [
+          3.7800000000000002,
+          4.2
+        ]
+      ],
+      "candles": [
+        [
+          9,
+          7
+        ],
+        [
+          17,
+          7
+        ],
+        [
+          29,
+          7
+        ],
+        [
+          33,
+          13
+        ],
+        [
+          7,
+          19
+        ],
+        [
+          23,
+          19
+        ],
+        [
+          17,
+          23
+        ],
+        [
+          23,
+          23
+        ],
+        [
+          39,
+          23
+        ],
+        [
+          97,
+          29
+        ],
+        [
+          117,
+          29
+        ],
+        [
+          115,
+          37
+        ],
+        [
+          111,
+          45
+        ],
+        [
+          115,
+          61
+        ],
+        [
+          111,
+          69
+        ],
+        [
+          115,
+          77
+        ],
+        [
+          111,
+          85
+        ],
+        [
+          115,
+          93
+        ],
+        [
+          111,
+          101
+        ]
+      ],
+      "shrines": [
+        [
+          117,
+          49
+        ]
+      ],
+      "points": 35
+    },
+    "captures": [
+      {
+        "name": "foot",
+        "pose": [
+          113,
+          98.6,
+          113,
+          82,
+          4.35
+        ],
+        "settled": {
+          "x": 113,
+          "z": 98.6,
+          "eye": 3.1,
+          "zone": "climb"
+        },
+        "rendering": {
+          "p": [
+            113,
+            3.1,
+            98.6
+          ],
+          "camera": [
+            113,
+            3.1,
+            98.6
+          ],
+          "floor": 2.1,
+          "meshes": [
+            [
+              "hellAscentLanternAssemblies",
+              3888
+            ],
+            [
+              "hellAscentLanternPanes",
+              24
+            ],
+            [
+              "hellAscentLanternLightSpill",
+              32
+            ]
+          ],
+          "render": {
+            "frame": 318,
+            "calls": 241,
+            "triangles": 213838,
+            "points": 2008,
+            "lines": 0
+          },
+          "memory": {
+            "geometries": 188,
+            "textures": 56
+          }
+        }
+      },
+      {
+        "name": "mid",
+        "pose": [
+          113,
+          85.5,
+          113,
+          71,
+          5.3
+        ],
+        "settled": {
+          "x": 113,
+          "z": 85.5,
+          "eye": 3.94,
+          "zone": "climb"
+        },
+        "rendering": {
+          "p": [
+            113,
+            3.94,
+            85.5
+          ],
+          "camera": [
+            113,
+            3.94,
+            85.5
+          ],
+          "floor": 2.94,
+          "meshes": [
+            [
+              "hellAscentLanternAssemblies",
+              3888
+            ],
+            [
+              "hellAscentLanternPanes",
+              24
+            ],
+            [
+              "hellAscentLanternLightSpill",
+              32
+            ]
+          ],
+          "render": {
+            "frame": 356,
+            "calls": 224,
+            "triangles": 213926,
+            "points": 2008,
+            "lines": 0
+          },
+          "memory": {
+            "geometries": 195,
+            "textures": 57
+          }
+        }
+      },
+      {
+        "name": "refuge",
+        "pose": [
+          115.2,
+          54.5,
+          123.9,
+          52.2,
+          5.33
+        ],
+        "settled": {
+          "x": 115.2,
+          "z": 54.5,
+          "eye": 5.2,
+          "zone": "climb"
+        },
+        "rendering": {
+          "p": [
+            115.2,
+            5.2,
+            54.5
+          ],
+          "camera": [
+            115.2,
+            5.2,
+            54.5
+          ],
+          "floor": 4.2,
+          "meshes": [
+            [
+              "hellAscentLanternAssemblies",
+              3888
+            ],
+            [
+              "hellAscentLanternPanes",
+              24
+            ],
+            [
+              "hellAscentLanternLightSpill",
+              32
+            ]
+          ],
+          "render": {
+            "frame": 392,
+            "calls": 49,
+            "triangles": 51652,
+            "points": 1828,
+            "lines": 0
+          },
+          "memory": {
+            "geometries": 195,
+            "textures": 57
+          }
+        }
+      }
+    ],
+    "trail": [
+      {
+        "z": 99.4,
+        "floor": 2.1,
+        "x": 113,
+        "eye": 3.1,
+        "solid": false
+      },
+      {
+        "z": 97.9412371143524,
+        "floor": 2.52,
+        "x": 113,
+        "eye": 3.52,
+        "solid": false
+      },
+      {
+        "z": 89.96053711435236,
+        "floor": 2.94,
+        "x": 113,
+        "eye": 3.94,
+        "solid": false
+      },
+      {
+        "z": 81.98543711435232,
+        "floor": 3.3600000000000003,
+        "x": 113,
+        "eye": 4.36,
+        "solid": false
+      },
+      {
+        "z": 73.90533711435235,
+        "floor": 3.7800000000000002,
+        "x": 113,
+        "eye": 4.78,
+        "solid": false
+      },
+      {
+        "z": 65.9379371143523,
+        "floor": 4.2,
+        "x": 113,
+        "eye": 5.2,
+        "solid": false
+      }
+    ],
+    "arrived": {
+      "p": [
+        113,
+        5.2,
+        53.09643133804968
+      ],
+      "camera": [
+        113,
+        5.214319621091145,
+        53.09643133804968
+      ],
+      "floor": 4.2,
+      "meshes": [
+        [
+          "hellAscentLanternAssemblies",
+          3888
+        ],
+        [
+          "hellAscentLanternPanes",
+          24
+        ],
+        [
+          "hellAscentLanternLightSpill",
+          32
+        ]
+      ],
+      "render": {
+        "frame": 789,
+        "calls": 158,
+        "triangles": 188738,
+        "points": 2008,
+        "lines": 0
+      },
+      "memory": {
+        "geometries": 195,
+        "textures": 57
+      }
+    },
+    "resources": {
+      "count": 8,
+      "released": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "leaked": [],
+      "rebuilt": 3
+    },
+    "errors": []
+  }
+}

@@ -12,11 +12,11 @@ Silah ve arayüz çıkarılmış [önceki sahne](clean-before.png), [yeni sahne]
 
 Chrome, `ded3e465` karşısında arena ocağının etrafındaki 10.404 oyuncu, gövde ve mermi çarpışma örneğini karşılaştırdı. Geçiş grid'i ve yükseklikleri, kapılar, çıkış, eşya noktaları ve ocağın çarpışma kütlesi eşleşti. **W** oyuncuyu ocağın önünde durdurdu, **S** ile geri yürünebildi. Beş canlı karede ateş ve zemindeki ışık değişti. Duraklatınca iki etki de durdu. Arena dışına çıkınca alev çizimi kapandı. İki bölüm değişiminde izlenen dokular, materyaller ve geometriler birer kez serbest bırakıldı.
 
-Bu testte dört eş açının çizim sayıları 67→67, 69→69, 223→226 ve 78→80 oldu. Karşılaştırma tarayıcısında hata kaydı yoktu. Görsel sahne karşılaştırması hareketli arka plan nesneleri içerir. [Sayısal sonuçlar](verification.json)
+Ocak ve merdiven denemesinde dört eş açının çizim sayıları 67→67, 69→69, 223→230 ve 78→80 oldu. Karşılaştırma tarayıcısında hata kaydı yoktu. Bu sahne kareleri hareketli arka plan nesnelerini de içerir. [Sayısal sonuçlar](verification.json)
 
 ```sh
 node tools/compile-hell-hearth.cjs --check
 node tools/hell-hearth-tests.cjs previous.html THE-BLACK-SILENCE.html .dream-loop/hearth-check
 ```
 
-`previous.html` için `ded3e465` sürümündeki HTML kullanılabilir. Yayın öncesi ocak denemesinin HTML SHA-256 değeri `cb2a30927e47428e480642670db5c2622ab45737c8aa2578e7f9ceffdfede167`. Kaynak SHA-256 değeri `453e641b4851ec77875c98086c522708d9f5c22cdef307bbb5205b1073dbbda5`.
+`previous.html` için `ded3e465` sürümündeki HTML kullanılabilir. Ocak ve merdiven denemesinin HTML SHA-256 değeri `078c3e5fc4c496151731abbb5018e64b622442b13d38c142ab6c19b983418ee5`. Ocak kaynağının SHA-256 değeri `2d273d0cc3b7beb5a1fa590e233e1454bd0ad3fc72f1624ce934f88445d606ef`.

@@ -1,7 +1,7 @@
 {
   "passed": true,
-  "bytes": 19062472,
-  "sha256": "08329158d25a5d7486b73cb992e176ef58fbecd0d6339be4c49687afa946395d",
+  "bytes": 19204519,
+  "sha256": "e76bc683b32b9b11283a99231e3c816bc034e00772427e6581665adc6a3390d6",
   "engineSha256": "6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899",
   "villageSha256": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627",
   "moduleHashes": {
@@ -12,18 +12,20 @@
     "enemy-animation.js": "767a60e867ff7b2a8917ae8b23fa938da8e8400bcfff883a0ebb13abb2eb02f3",
     "guardian-volley.js": "87fbdc8d921c74c119eadcce7164d2ef45d8e2216c512825c7961e67dcbbdab9",
     "dungeon-creatures.js": "f16ce76837b5878e405fefc1bd345f66068f2432ac2c125002ce0a978b2876fb",
-    "viewmodels.js": "e8fe2814d9114bce6c24d6c986cacaa4cdad7d076ff354a659245692575a4d6a",
+    "viewmodels.js": "baab9bbd6dc11b5e8bd501b63838a018c5d61a04fd8f216f0ea62eca9602da62",
     "finishers.js": "8c2c7bdf13e17005c3383054560b155986d8e706b5bfda81e9f1a8224ee3c5b0",
     "reload-audio-data.js": "2f48b10a1225d1c007ee282d3c18f82c5022bb0267ed86d65feadf819ec1be30",
-    "reload-audio.js": "548a90bf1ccb56eab033239ac0d140eb8816fd19c84acb3ce394c04c7173be6c",
+    "reload-audio.js": "dc67dd605d54c11fbf9571a1b1b80c58fe82953fcdb1a13798e3f4b89d3e2f60",
     "zombie-audio.js": "7f883bd656b0f7e0784d68e9e47e7612704e1df6b299ffc52e6d3f2cfcba2803",
     "prologue.js": "1b5ab0b99ecc80e41d1e7c183b28a52fe6ce3c51900988e28da61c24d91a8891",
     "vigil-secret.js": "eee4d953810436e04f8758300541cd6a19ecd2272e39f8b781ffa212aa417e72",
     "monastery-nov14.js": "ca3ded666bb32ea82108e8d644c29edb6dc9fa5d5f1edb19c6dfb74050ff4609",
     "prologue-stained-glass.js": "61abbab4a1c33a2b27bfadf1bc8a78b2728bfb47ef8e59752f408ac337acaf58",
-    "hell-arena-hearth.js": "453e641b4851ec77875c98086c522708d9f5c22cdef307bbb5205b1073dbbda5",
+    "hell-arena-hearth.js": "2d273d0cc3b7beb5a1fa590e233e1454bd0ad3fc72f1624ce934f88445d606ef",
+    "hell-ascent-lanterns.js": "44154df0f6039f9a1e2ec05340f76238842060382323277b2231b7b55d4f342b",
     "sewer-works.js": "42552ca5d86158d9ed046c9cfba8d75208c76bbaf223a87efa30919f4c012910",
     "dungeon-sally-port.js": "c3d3837e7be33eba96309e95648dbdf1f3f564778f1a26422af27e2cbf94c8c2",
+    "necropolis-ossuary-entrance.js": "fdaebdd1382bfb5cb0e3bbc3eb2991e20e081793a59b464540cd8df5fc7e61a6",
     "render-warmup.js": "9a021fc24844f648460f0ee504653f74e200c1945dd33d4c8c06e71753325f15",
     "hud-updates.js": "d2047c2d4f92935dbf79b3dc22811341f19809aadaee3188db12339bc945531d",
     "display-settings.js": "55681d7f89f77607da0a0649367513f22697e4762f1bba953081da4f4b982289",
@@ -36,9 +38,9 @@
   "idempotentBuilds": 2,
   "invalidInputsRefusedWithoutWrite": 8,
   "file": "THE-BLACK-SILENCE.html",
-  "verifiedAt": "2026-11-19T09:58:33.487Z",
-  "previousRelease": "ce4379e3a58cd9fe788aec3d96fa2eac73a67a6bec36d5f5e00f8e469b46fe68",
-  "baselineCommit": "449855638fe1391ce0b3352b233fc93794c55842",
+  "verifiedAt": "2026-11-19T10:26:18.637Z",
+  "previousRelease": "08329158d25a5d7486b73cb992e176ef58fbecd0d6339be4c49687afa946395d",
+  "baselineCommit": "237b9d2846b2271d5b81bf7a7246c9131c99a9c1",
   "verificationReports": [
     {
       "file": "docs/factory-nov14/verification.json",
@@ -126,11 +128,11 @@
     },
     {
       "file": "docs/stake-warden-nov14/verification.json",
-      "sha256": "7b84f490cdf7ae7c07777d4b712c58c8a6bb3b734b9b62c71443a01b7617c648"
+      "sha256": "2a1c3f3c452b0bac196ca9d7a35a41255aad3bcd0fe0c7d12a0764ce3650d81f"
     },
     {
       "file": "docs/verification-data/nov14-gaol-release.json",
-      "sha256": "54a11d42f51e64995aa83dd5100103092cba7cc8be644269a44ec3c35f8f2fb2"
+      "sha256": "8283c23c2b22de88dc8c7de83fa37672d14f9734d53b60dd3bda04a3e5dda2de"
     },
     {
       "file": "docs/verification-data/nov19-map-backdrop.json",
@@ -138,7 +140,7 @@
     },
     {
       "file": "docs/hell-hearth-nov19/verification.json",
-      "sha256": "cd5cc4db1750b3209c58db27b89a3c5db0519f5f9fb25fd341d308d93805653f"
+      "sha256": "91bee7e6555873aaa83c9c7b62c53a5815174151a09392c17f3471817beed8c8"
     },
     {
       "file": "docs/rifle-nov19/verification.json",
@@ -147,6 +149,22 @@
     {
       "file": "docs/verification-data/nov19-hearth-rifle-release.json",
       "sha256": "1d215116206d2828c3b1c66ddd4531f406671d45f02f762e99497104305cd3b7"
+    },
+    {
+      "file": "docs/hell-ascent-nov19/verification.json",
+      "sha256": "55c25cb811d75a2ad6fb43777d2b36e811f921530e01ebc37b95cf4ddafab664"
+    },
+    {
+      "file": "docs/necropolis-nov19/verification.json",
+      "sha256": "7f07b1e890709c6691f1e7f2b7114289e4e5da22616e7751edfd547e04a4e03e"
+    },
+    {
+      "file": "docs/nail-nov19/verification.json",
+      "sha256": "790006d93e9326daac290d101db3840469d9e7cea4a5ec82e4da315f072dbee0"
+    },
+    {
+      "file": "docs/verification-data/nov19-scenery-nail-release.json",
+      "sha256": "a1c8e23936a9090af7ef3ca54088879b7c7ab9dbc5874e7d3a06268de7b66527"
     }
   ]
 }

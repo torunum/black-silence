@@ -124,6 +124,7 @@ const output = path.resolve(process.env.QA_OUTPUT_DIR || path.join(root, ".dream
         [2, ["release", "strip", "guide", "seat", "drawBolt", "catchBolt"]],
         [3, ["release", "lift", "align", "seat", "charge", "lock"]],
         [5, ["unseal", "hinge", "lift", "seat", "shut", "catch"]],
+        [6, ["unlatch", "release", "withdraw", "guide", "seat", "lock"]],
         [7, ["unlock", "pluck", "turn", "nest", "close"]],
         [9, ["unpin", "draw", "bed", "keeper", "stroke", "catch"]],
       ]) {

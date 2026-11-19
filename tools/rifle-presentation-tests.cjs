@@ -8,18 +8,24 @@ const {chromium} = require("playwright");
 const root = path.resolve(__dirname,"..");
 const html = path.resolve(process.argv[2] || path.join(root,"THE-BLACK-SILENCE.html"));
 const output = path.resolve(process.argv[3] || path.join(root,".dream-loop/rifle-presentation"));
+const weapon = Number(process.env.WEAPON_PRESENTATION_SLOT || 2);
+const expected = {
+  2:["release","strip","guide","seat","drawBolt","catchBolt"],
+  6:["unlatch","release","withdraw","guide","seat","lock"],
+};
+assert(Object.hasOwn(expected,weapon),"Weapon presentation slot must be 2 or 6");
 assert.notEqual(html,output,"Pass a game HTML and a separate report directory");
 const source = fs.readFileSync(html, "utf8");
 const sourceSha = crypto.createHash("sha256").update(source).digest("hex");
 const anchor = "Jk();ju();Yy();X$(J$);D0t();";
 assert.equal(source.split(anchor).length, 2);
 fs.mkdirSync(output, {recursive:true});
-const fixture = path.join(output, "rifle-probe.html");
+const fixture = path.join(output, "receiver-probe.html");
 assert.notEqual(fixture, html);
 
 // Read a small screen-space region from the game’s actual weapon composite,
 // including the native draw transform. HUD and world pixels stay excluded.
-function observeWeapon() {
+function observeWeapon(weapon) {
   const original = CanvasRenderingContext2D.prototype.drawImage;
   const scratch = document.createElement("canvas");
   const radius = 50;
@@ -31,7 +37,7 @@ function observeWeapon() {
   window.__endRifleRead = () => {const result = frames; frames = null; return result;};
   CanvasRenderingContext2D.prototype.drawImage = function(image, ...rect) {
     const result = original.call(this, image, ...rect);
-    if (!frames || image !== Te.canvas || rect.length !== 4 || T.cur !== 2) return result;
+    if (!frames || image !== Te.canvas || rect.length !== 4 || T.cur !== weapon) return result;
     const matrix = this.getTransform();
     const canvas = this.canvas;
     const box = canvas.getBoundingClientRect();
@@ -50,15 +56,14 @@ function observeWeapon() {
       const dy = (y-radius)*box.height/canvas.height;
       distance = Math.min(distance,Math.hypot(dx,dy));
     }
-    frames.push({distance,state:St.wstate,phase:St.wtime/Th[2].reload});
+    frames.push({distance,state:St.wstate,phase:St.wtime/Th[weapon].reload});
     return result;
   };
 }
 
-const cues = ["release","strip","guide","seat","drawBolt","catchBolt"];
 const viewports = [[1024,768],[1280,720],[1680,720]];
 const proofOnly = process.env.RIFLE_REPORT_ONLY === "1";
-fs.writeFileSync(fixture, source.replace(anchor, () => `(${observeWeapon})();${anchor}`));
+fs.writeFileSync(fixture, source.replace(anchor, () => `(${observeWeapon})(${weapon});${anchor}`));
 async function read() {
   const b = await chromium.launch({channel:"chrome",headless:true});
   try {
@@ -81,42 +86,43 @@ async function read() {
     const runs = [];
     for(const [width,height] of viewports) {
       await page.setViewportSize({width,height});
-      const initial = await page.evaluate(() => {
-        const q = window.__BLACK_SILENCE_QA, w = q.weapons[2];
+      const initial = await page.evaluate(slot => {
+        const q = window.__BLACK_SILENCE_QA, w = q.weapons[slot];
         q.resetCombat();
         q.pause(false);
         q.C.spawnGuard = 100;
-        q.T.cur = 2;
-        q.T.weapons[2] = true;
-        q.T.mag[2] = w.magSize;
+        q.T.cur = slot;
+        q.T.weapons[slot] = true;
+        q.T.mag[slot] = w.magSize;
         q.T.ammo[w.ammo] = 50;
         q.T.kickCd = 0;
         Object.assign(q.St,{wstate:"idle",wtime:0,wCool:0,pending:-1,kickAnim:0});
         q.reloadAudio.history.length = 0;
         window.__beginRifleRead();
         return [w.magSize, q.T.ammo[w.ammo]];
-      });
+      },weapon);
       await page.waitForTimeout(420);
       await page.mouse.down();
-      await page.waitForFunction(n => window.__BLACK_SILENCE_QA.T.mag[2] <= n-4, initial[0]);
+      await page.waitForFunction(({slot,mag}) => window.__BLACK_SILENCE_QA.T.mag[slot] <= mag-4,
+        {slot:weapon,mag:initial[0]});
       await page.mouse.up();
       await page.waitForFunction(() => window.__BLACK_SILENCE_QA.St.wstate==="idle");
-      const afterFire = await page.evaluate(() => window.__BLACK_SILENCE_QA.T.mag[2]);
+      const afterFire = await page.evaluate(slot => window.__BLACK_SILENCE_QA.T.mag[slot],weapon);
       await page.keyboard.press("r");
       await page.waitForFunction(() => window.__BLACK_SILENCE_QA.St.wstate==="reload");
-      await page.waitForFunction(n => {
+      await page.waitForFunction(({slot,mag}) => {
         const q = window.__BLACK_SILENCE_QA;
-        return q.St.wstate==="idle" && q.T.mag[2]===n;
-      },initial[0],{timeout:20000});
-      const details = await page.evaluate(() => {
-        const q = window.__BLACK_SILENCE_QA, w = q.weapons[2];
+        return q.St.wstate==="idle" && q.T.mag[slot]===mag;
+      },{slot:weapon,mag:initial[0]},{timeout:20000});
+      const details = await page.evaluate(slot => {
+        const q = window.__BLACK_SILENCE_QA, w = q.weapons[slot];
         return {
           frames: window.__endRifleRead(),
-          final:[q.T.mag[2],q.T.ammo[w.ammo]],
+          final:[q.T.mag[slot],q.T.ammo[w.ammo]],
           played:q.reloadAudio.history.filter(e=>e.type==="play")
             .map(({event,phase,target})=>({event,phase,target}))
         };
-      });
+      },weapon);
       assert.equal(details.final[0],initial[0]);
       assert.equal(details.final[1],initial[1]-initial[0]+afterFire);
       const samples = {};
@@ -128,17 +134,18 @@ async function read() {
           obstructedPhases:frames.filter(f=>f.distance<12).map(f=>Math.round(f.phase*1000)/1000)};
       }
       if (!proofOnly) {
-        assert.deepEqual(details.played.map(e=>e.event),cues);
+        assert.deepEqual(details.played.map(e=>e.event),expected[weapon]);
         assert(details.played.every(e=>e.phase>=e.target-1e-5 && e.phase-e.target<.07));
       }
       runs.push({width,height,initial,afterFire,final:details.final,samples,played:details.played});
-      fs.writeFileSync(path.join(output,"rifle-presentation.json"),JSON.stringify({sourceSha,runs,errors,requests},null,2)+"\n");
+      const reportName=weapon===2?"rifle-presentation.json":"nail-presentation.json";
+      fs.writeFileSync(path.join(output,reportName),JSON.stringify({weapon,sourceSha,runs,errors,requests},null,2)+"\n");
       if (!proofOnly) assert(Object.values(samples).every(s=>s.nearest>=12),
-        `${width}x${height} has less than 12 CSS px of rifle clearance ${JSON.stringify(samples)}`);
+        `${width}x${height} has less than 12 CSS px of weapon clearance ${JSON.stringify(samples)}`);
     }
     assert.deepEqual(errors,[]);
     assert.deepEqual(requests,[]);
-    console.log("Rifle viewport, ammunition and audio",sourceSha,JSON.stringify(runs));
+    console.log("Weapon viewport, ammunition and audio",weapon,sourceSha,JSON.stringify(runs));
   } finally {await b.close();}
 }
 read().catch(err=>{console.error(err);process.exitCode=1;});
