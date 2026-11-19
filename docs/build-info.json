@@ -1,7 +1,7 @@
 {
   "passed": true,
-  "bytes": 18945949,
-  "sha256": "fd809a3a410f390e21e9b2e4cc7ebfe2606ba8c346c2bb899062d91fc83a8d6e",
+  "bytes": 18950576,
+  "sha256": "ce4379e3a58cd9fe788aec3d96fa2eac73a67a6bec36d5f5e00f8e469b46fe68",
   "engineSha256": "6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899",
   "villageSha256": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627",
   "moduleHashes": {
@@ -28,16 +28,16 @@
     "display-settings.js": "55681d7f89f77607da0a0649367513f22697e4762f1bba953081da4f4b982289",
     "chapter-records.js": "ad072e5d6a6e9eb7f6031b10660516948737a41ba74bd054d092fd5720914822",
     "campaign-continue.js": "3a51e4f3a42a1ce693c3e3a1be43f47624537ecb618f8462e7969aa3389cdd52",
-    "shrine-map.js": "2ccf2e2379beb687a91a273ad6ffc6ab6213c5f204c07cc85ad50558abf1a09b",
+    "shrine-map.js": "3fdf918811a6ada226ade4e16bd34950c7069b1735a8b0d410b4b1669ceecea8",
     "pause-settings.js": "e41bf6aa3977290d494545ea1a194797625b744cfd80180e2b78546e54bdef02",
     "village-presentation.js": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627"
   },
   "idempotentBuilds": 2,
   "invalidInputsRefusedWithoutWrite": 8,
   "file": "THE-BLACK-SILENCE.html",
-  "verifiedAt": "2026-11-14T13:33:27.517Z",
+  "verifiedAt": "2026-11-19T09:37:23.050Z",
   "previousRelease": "fd809a3a410f390e21e9b2e4cc7ebfe2606ba8c346c2bb899062d91fc83a8d6e",
-  "baselineCommit": "c781a4b6897ce610ce292d83aa5924cc6beffe67",
+  "baselineCommit": "ded3e465792b05933acc767a9914b2e01d3e70ef",
   "verificationReports": [
     {
       "file": "docs/factory-nov14/verification.json",
@@ -130,6 +130,10 @@
     {
       "file": "docs/verification-data/nov14-gaol-release.json",
       "sha256": "54a11d42f51e64995aa83dd5100103092cba7cc8be644269a44ec3c35f8f2fb2"
+    },
+    {
+      "file": "docs/verification-data/nov19-map-backdrop.json",
+      "sha256": "36af76c428ad283896e6c0f400befbf6bc546ae0beb3b0cc8b4dbc117da604b9"
     }
   ]
 }

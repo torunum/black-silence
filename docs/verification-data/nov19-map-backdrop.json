@@ -1,0 +1,588 @@
+{
+  "htmlSHA256": "ce4379e3a58cd9fe788aec3d96fa2eac73a67a6bec36d5f5e00f8e469b46fe68",
+  "automatedPixelParity": {
+    "htmlSHA256": "ce4379e3a58cd9fe788aec3d96fa2eac73a67a6bec36d5f5e00f8e469b46fe68",
+    "checks": [
+      {
+        "viewport": [
+          1280,
+          720,
+          1
+        ],
+        "label": "explored 1× overview",
+        "draws": 0,
+        "pixels": 681550,
+        "matches": true
+      },
+      {
+        "viewport": [
+          1280,
+          720,
+          1
+        ],
+        "label": "2× from keyboard",
+        "draws": 0,
+        "pixels": 681550,
+        "matches": true
+      },
+      {
+        "viewport": [
+          1280,
+          720,
+          1
+        ],
+        "label": "4× from wheel",
+        "draws": 0,
+        "pixels": 681550,
+        "matches": true
+      },
+      {
+        "viewport": [
+          1280,
+          720,
+          1
+        ],
+        "label": "changed exploration bits",
+        "draws": 0,
+        "pixels": 681550,
+        "matches": true
+      },
+      {
+        "viewport": [
+          1280,
+          720,
+          1
+        ],
+        "label": "closed door",
+        "draws": 0,
+        "pixels": 681550,
+        "matches": true
+      },
+      {
+        "viewport": [
+          1280,
+          720,
+          1
+        ],
+        "label": "door opened by KeyE",
+        "draws": 0,
+        "pixels": 681550,
+        "matches": true
+      },
+      {
+        "viewport": [
+          1280,
+          720,
+          1
+        ],
+        "label": "raised lift",
+        "draws": 0,
+        "pixels": 681550,
+        "matches": true
+      },
+      {
+        "viewport": [
+          1280,
+          720,
+          1
+        ],
+        "label": "lowered lift",
+        "draws": 0,
+        "pixels": 681550,
+        "matches": true
+      },
+      {
+        "viewport": [
+          1280,
+          720,
+          1
+        ],
+        "label": "second chapter",
+        "draws": 0,
+        "pixels": 681550,
+        "matches": true
+      },
+      {
+        "viewport": [
+          360,
+          640,
+          2
+        ],
+        "label": "explored 1× overview",
+        "draws": 0,
+        "pixels": 680104,
+        "matches": true
+      },
+      {
+        "viewport": [
+          360,
+          640,
+          2
+        ],
+        "label": "2× from keyboard",
+        "draws": 0,
+        "pixels": 680104,
+        "matches": true
+      },
+      {
+        "viewport": [
+          360,
+          640,
+          2
+        ],
+        "label": "4× from wheel",
+        "draws": 0,
+        "pixels": 680104,
+        "matches": true
+      },
+      {
+        "viewport": [
+          360,
+          640,
+          2
+        ],
+        "label": "changed exploration bits",
+        "draws": 0,
+        "pixels": 680104,
+        "matches": true
+      },
+      {
+        "viewport": [
+          360,
+          640,
+          2
+        ],
+        "label": "closed door",
+        "draws": 0,
+        "pixels": 680104,
+        "matches": true
+      },
+      {
+        "viewport": [
+          360,
+          640,
+          2
+        ],
+        "label": "door opened by KeyE",
+        "draws": 0,
+        "pixels": 680104,
+        "matches": true
+      },
+      {
+        "viewport": [
+          360,
+          640,
+          2
+        ],
+        "label": "raised lift",
+        "draws": 0,
+        "pixels": 680104,
+        "matches": true
+      },
+      {
+        "viewport": [
+          360,
+          640,
+          2
+        ],
+        "label": "lowered lift",
+        "draws": 0,
+        "pixels": 680104,
+        "matches": true
+      },
+      {
+        "viewport": [
+          360,
+          640,
+          2
+        ],
+        "label": "second chapter",
+        "draws": 0,
+        "pixels": 680104,
+        "matches": true
+      },
+      {
+        "viewport": [
+          2560,
+          1440,
+          1
+        ],
+        "label": "explored 1× overview",
+        "draws": 1,
+        "pixels": 2724050,
+        "matches": true
+      },
+      {
+        "viewport": [
+          2560,
+          1440,
+          1
+        ],
+        "label": "2× from keyboard",
+        "draws": 1,
+        "pixels": 2724050,
+        "matches": true
+      },
+      {
+        "viewport": [
+          2560,
+          1440,
+          1
+        ],
+        "label": "4× from wheel",
+        "draws": 1,
+        "pixels": 2724050,
+        "matches": true
+      },
+      {
+        "viewport": [
+          2560,
+          1440,
+          1
+        ],
+        "label": "changed exploration bits",
+        "draws": 1,
+        "pixels": 2724050,
+        "matches": true
+      },
+      {
+        "viewport": [
+          2560,
+          1440,
+          1
+        ],
+        "label": "closed door",
+        "draws": 1,
+        "pixels": 2724050,
+        "matches": true
+      },
+      {
+        "viewport": [
+          2560,
+          1440,
+          1
+        ],
+        "label": "door opened by KeyE",
+        "draws": 1,
+        "pixels": 2724050,
+        "matches": true
+      },
+      {
+        "viewport": [
+          2560,
+          1440,
+          1
+        ],
+        "label": "raised lift",
+        "draws": 1,
+        "pixels": 2724050,
+        "matches": true
+      },
+      {
+        "viewport": [
+          2560,
+          1440,
+          1
+        ],
+        "label": "lowered lift",
+        "draws": 1,
+        "pixels": 2724050,
+        "matches": true
+      },
+      {
+        "viewport": [
+          2560,
+          1440,
+          1
+        ],
+        "label": "second chapter",
+        "draws": 1,
+        "pixels": 2724050,
+        "matches": true
+      }
+    ],
+    "errors": []
+  },
+  "campaign": {
+    "passed": true,
+    "htmlSha256": "ce4379e3a58cd9fe788aec3d96fa2eac73a67a6bec36d5f5e00f8e469b46fe68",
+    "checks": [
+      "New Game and a fresh document restore the Prologue entry inventory",
+      "Real Tab/M, shrine reload and native Rise Again preserve the explored cells and terrain pixels",
+      "Real E, map facts, inventory, clock, achievements and native shrine respawn survive reload",
+      "Native chapter transition, carried weapons, real dial input and a collected seal round-trip",
+      "A second campaign transition resumes the Gothic Dungeon from chapter start",
+      "Sewers pressure, gauge, secret door and single reward restore after actual document reload",
+      "Chapter Select and QA do not replace the campaign slot",
+      "An older tab cannot replace or clear a newer campaign",
+      "Victory in the final chapter clears the campaign slot",
+      "Malformed saves and map-incompatible shrines leave a playable chapter entry",
+      "Damaged automap payloads and older shrine records still restore the shrine and inventory",
+      "Storage denial leaves the native New Game playable"
+    ]
+  },
+  "shrineMap": {
+    "htmlSha256": "ce4379e3a58cd9fe788aec3d96fa2eac73a67a6bec36d5f5e00f8e469b46fe68",
+    "checks": [
+      "Unknown checkpoints expose no symbol on either map",
+      "The full map hides the compass and skips its terrain and symbol pass",
+      "A native lit checkpoint appears once per map",
+      "Compass rotates the checkpoint position while the wick stays upright",
+      "An undiscovered shrine cell is excluded even if a current checkpoint is present",
+      "Wheel and keyboard change chart scale without changing weapon or optic",
+      "Wheel selection resumes after releasing Tab",
+      "Narrow legend wraps and every title, key and control label fits its row",
+      "A second shrine replaces the first marker immediately",
+      "Native Rise Again restores the active shrine",
+      "A fresh document restores the saved marker through Continue",
+      "Changing chapters resets the shrine and overview"
+    ],
+    "miniPixels": {
+      "unturned": {
+        "x": 80.59166622161865,
+        "y": 87.79583311080933,
+        "rotation": 0
+      },
+      "quarterTurn": {
+        "x": 102.2041668891907,
+        "y": 80.59166622161865,
+        "rotation": 0
+      }
+    },
+    "compact": [
+      {
+        "label": "PROLOGUE — OUT OF THE PIT",
+        "x": 30.964999999999996,
+        "y": 30.964999999999996,
+        "width": 450.0732421875
+      },
+      {
+        "label": "KILLS 0/21    SECRETS 0/1",
+        "x": 30.964999999999996,
+        "y": 68.12299999999999,
+        "width": 330.0537109375
+      },
+      {
+        "label": "YOU",
+        "x": 61.731824,
+        "y": 988.5154,
+        "width": 39.6064453125
+      },
+      {
+        "label": "DOOR",
+        "x": 155.6384933125,
+        "y": 988.5154,
+        "width": 52.80859375
+      },
+      {
+        "label": "LOCKED",
+        "x": 262.7473110625,
+        "y": 988.5154,
+        "width": 79.212890625
+      },
+      {
+        "label": "KEY",
+        "x": 396.2604256875,
+        "y": 988.5154,
+        "width": 39.6064453125
+      },
+      {
+        "label": "EXIT",
+        "x": 490.167095,
+        "y": 988.5154,
+        "width": 52.80859375
+      },
+      {
+        "label": "HEALTH",
+        "x": 61.731824,
+        "y": 1024.4348,
+        "width": 79.212890625
+      },
+      {
+        "label": "ARMOUR",
+        "x": 195.244938625,
+        "y": 1024.4348,
+        "width": 79.212890625
+      },
+      {
+        "label": "AMMO",
+        "x": 328.75805324999993,
+        "y": 1024.4348,
+        "width": 52.80859375
+      },
+      {
+        "label": "WEAPON",
+        "x": 435.86687099999995,
+        "y": 1024.4348,
+        "width": 79.212890625
+      },
+      {
+        "label": "SHRINE",
+        "x": 61.731824,
+        "y": 1060.3542,
+        "width": 79.212890625
+      },
+      {
+        "label": "2×   + / −  ZOOM",
+        "x": 30.964999999999996,
+        "y": 1101.228,
+        "width": 211.234375
+      },
+      {
+        "label": "M / TAB  CLOSE",
+        "x": 388.20492187499997,
+        "y": 1101.228,
+        "width": 184.830078125
+      }
+    ],
+    "errors": []
+  },
+  "profiling": {
+    "chapter": "The Ash Bell Monastery",
+    "viewport": [
+      1280,
+      720,
+      1
+    ],
+    "samples": [
+      "before",
+      "after",
+      "after",
+      "before"
+    ],
+    "scope": "Native M, + and W input, fixture-surveyed terrain and calm enemies. The profiling fixtures use a candidate with the same runtime logic as the shipped chart. Runs share system activity with other tasks. These values show canvas drawing cost in this fixture, not an FPS claim.",
+    "adapter": "ANGLE / Intel UHD Graphics 630 (Direct3D11)",
+    "before": [
+      {
+        "stage": "zoom1",
+        "samples": 89,
+        "chartMeanMs": 3.009,
+        "chartP95Ms": 4.3,
+        "rafP95Ms": 18.1,
+        "terrainDraws": 89
+      },
+      {
+        "stage": "zoom1-walk",
+        "samples": 70,
+        "chartMeanMs": 4.15,
+        "chartP95Ms": 5.4,
+        "rafP95Ms": 17.9,
+        "terrainDraws": 70
+      },
+      {
+        "stage": "zoom2",
+        "samples": 89,
+        "chartMeanMs": 1.224,
+        "chartP95Ms": 2.2,
+        "rafP95Ms": 18.2,
+        "terrainDraws": 89
+      },
+      {
+        "stage": "zoom2-walk",
+        "samples": 69,
+        "chartMeanMs": 0.946,
+        "chartP95Ms": 1.3,
+        "rafP95Ms": 18.2,
+        "terrainDraws": 69
+      },
+      {
+        "stage": "zoom1",
+        "samples": 56,
+        "chartMeanMs": 8.391,
+        "chartP95Ms": 16.1,
+        "rafP95Ms": 37.9,
+        "terrainDraws": 56
+      },
+      {
+        "stage": "zoom1-walk",
+        "samples": 48,
+        "chartMeanMs": 6.552,
+        "chartP95Ms": 9.2,
+        "rafP95Ms": 36.7,
+        "terrainDraws": 48
+      },
+      {
+        "stage": "zoom2",
+        "samples": 87,
+        "chartMeanMs": 3.13,
+        "chartP95Ms": 5.8,
+        "rafP95Ms": 19.6,
+        "terrainDraws": 87
+      },
+      {
+        "stage": "zoom2-walk",
+        "samples": 69,
+        "chartMeanMs": 3.607,
+        "chartP95Ms": 7.9,
+        "rafP95Ms": 18.8,
+        "terrainDraws": 69
+      }
+    ],
+    "after": [
+      {
+        "stage": "zoom1",
+        "samples": 89,
+        "chartMeanMs": 0.496,
+        "chartP95Ms": 0.6,
+        "rafP95Ms": 18.2,
+        "terrainDraws": 0
+      },
+      {
+        "stage": "zoom1-walk",
+        "samples": 70,
+        "chartMeanMs": 0.709,
+        "chartP95Ms": 1.3,
+        "rafP95Ms": 18.3,
+        "terrainDraws": 0
+      },
+      {
+        "stage": "zoom2",
+        "samples": 90,
+        "chartMeanMs": 0.673,
+        "chartP95Ms": 1.4,
+        "rafP95Ms": 18.1,
+        "terrainDraws": 9
+      },
+      {
+        "stage": "zoom2-walk",
+        "samples": 70,
+        "chartMeanMs": 0.604,
+        "chartP95Ms": 1,
+        "rafP95Ms": 18.2,
+        "terrainDraws": 0
+      },
+      {
+        "stage": "zoom1",
+        "samples": 89,
+        "chartMeanMs": 0.748,
+        "chartP95Ms": 1.1,
+        "rafP95Ms": 18.1,
+        "terrainDraws": 0
+      },
+      {
+        "stage": "zoom1-walk",
+        "samples": 69,
+        "chartMeanMs": 0.857,
+        "chartP95Ms": 1.4,
+        "rafP95Ms": 18.2,
+        "terrainDraws": 0
+      },
+      {
+        "stage": "zoom2",
+        "samples": 88,
+        "chartMeanMs": 1.149,
+        "chartP95Ms": 2.2,
+        "rafP95Ms": 18.7,
+        "terrainDraws": 11
+      },
+      {
+        "stage": "zoom2-walk",
+        "samples": 73,
+        "chartMeanMs": 1.489,
+        "chartP95Ms": 3.5,
+        "rafP95Ms": 18.2,
+        "terrainDraws": 4
+      }
+    ]
+  }
+}

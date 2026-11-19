@@ -4,6 +4,13 @@
   const ink = "#af9d7d";
   const levels = [1, 2, 4];
   let zoom = 0, grid = null, layout = null;
+  // This layer uses device pixels at the visible canvas's exact origin and
+  // scale. Keep the moving player, trail, icons and labels on the live canvas.
+  const backdrop = {
+    canvas: null, context: null, current: false, pending: false,
+    view: {}, discovery: null, mappedGrid: null, heights: null, liftHeight: null,
+    doors: null, doorList: [], openDoors: null
+  };
 
   function lamp(ctx, x, y, size) {
     ctx.save();
@@ -72,42 +79,7 @@
     return layout;
   }
 
-  M0t = function (surfaces, map, time) {
-    if (grid !== map.grid) { grid = map.grid; zoom = 0; }
-    const canvas = surfaces.auto, ctx = surfaces.ag;
-    Nk(canvas);
-    const width = canvas.width, height = canvas.height;
-    const ratio = Math.min(2, window.devicePixelRatio || 1);
-    const unit = Math.max(11 * ratio, Math.min(height * .022, 18 * ratio));
-    const {pad, icon, line, font, symbols, footer} = fitLegend(ctx, width, height, unit);
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.clearRect(0, 0, width, height);
-    ctx.fillStyle = "rgba(5,4,3,0.93)";
-    ctx.fillRect(0, 0, width, height);
-    ctx.textBaseline = "middle";
-    ctx.textAlign = "left";
-    ctx.font = 'bold ' + Math.round(unit * 1.22) + 'px "Courier New",monospace';
-    const title = mh(T.level).toUpperCase(), titleWidth = ctx.measureText(title).width;
-    ctx.fillStyle = ge.text;
-    ctx.fillText(title, pad, unit * 1.25, width - 2 * pad);
-    const totals = "KILLS " + T.kills + "/" + T.enemiesTotal + "    SECRETS " + T.secrets + "/" + T.secretsTotal;
-    ctx.font = font;
-    const stack = titleWidth + ctx.measureText(totals).width + pad * 3 > width;
-    ctx.textAlign = stack ? "left" : "right";
-    ctx.fillStyle = ink;
-    ctx.fillText(totals, stack ? pad : width - pad, (stack ? 2.75 : 1.25) * unit);
-    const top = (stack ? 3.75 : 2.65) * unit;
-    const [left, upper, right, lower] = x0t(map);
-    const cols = right - left + 3, rows = lower - upper + 3;
-    const fit = Math.min(unit * 2.4, (width - pad * 2) / cols, Math.max(1, footer - top) / rows);
-    const cell = Math.max(.01, fit * levels[zoom]);
-    const px = C.px / P, py = C.pz / P;
-    const ox = zoom ? width / 2 - px * cell : (width - cols * cell) / 2 - (left - 1) * cell;
-    const oy = zoom ? (top + footer) / 2 - py * cell : top + (footer - top - rows * cell) / 2 - (upper - 1) * cell;
-    const x1 = Math.max(left - 1, Math.floor((pad - ox) / cell));
-    const x2 = Math.min(right + 2, Math.ceil((width - pad - ox) / cell));
-    const y1 = Math.max(upper - 1, Math.floor((top - oy) / cell));
-    const y2 = Math.min(lower + 2, Math.ceil((footer - oy) / cell));
+  function drawTerrain(ctx, map, width, pad, top, footer, ratio, cell, ox, oy, x1, y1, x2, y2) {
     ctx.save();
     ctx.beginPath(); ctx.rect(pad, top, width - 2 * pad, Math.max(0, footer - top)); ctx.clip();
     if (cell >= 7 * ratio) {
@@ -122,8 +94,149 @@
       }
       ctx.stroke();
     }
-    ctx.save(); ctx.translate(ox, oy); ctx.scale(cell, cell);
+    ctx.translate(ox, oy); ctx.scale(cell, cell);
     Yk(ctx, map, x1 - 1, y1 - 1, x2 + 1, y2 + 1, cell);
+    ctx.restore();
+  }
+
+  function updateDiscovery(map) {
+    const discovery = backdrop.discovery;
+    if (!discovery || discovery.length !== map.seen.length || backdrop.mappedGrid !== map.grid) {
+      backdrop.discovery = map.seen.slice();
+      backdrop.mappedGrid = map.grid;
+      return true;
+    }
+    // A persisted shrine can restore the visibility bits directly. Compare
+    // their values instead of relying on a specific discovery/write path.
+    for (let i = 0; i < discovery.length; i++) {
+      if (discovery[i] !== map.seen[i]) {
+        discovery.set(map.seen);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function updateDoors() {
+    // Level construction installs the door objects before its first frame.
+    // Opening, closing and restoring a checkpoint update those same objects.
+    if (backdrop.doors !== v.doors) {
+      backdrop.doors = v.doors;
+      backdrop.doorList = Object.values(v.doors);
+      backdrop.openDoors = new Uint8Array(backdrop.doorList.length);
+    }
+    let changed = false;
+    for (let i = 0; i < backdrop.doorList.length; i++) {
+      const open = Number(!!backdrop.doorList[i].open);
+      if (backdrop.openDoors[i] !== open) {
+        backdrop.openDoors[i] = open;
+        changed = true;
+      }
+    }
+    return changed;
+  }
+
+  function paintBackground(ctx, width, height) {
+    ctx.clearRect(0, 0, width, height);
+    ctx.fillStyle = "rgba(5,4,3,0.93)";
+    ctx.fillRect(0, 0, width, height);
+  }
+
+  function paintChart(ctx, map, width, height, pad, top, footer, ratio, cell, ox, oy, x1, y1, x2, y2) {
+    // Avoid reserving another very large pixel surface for extreme viewports.
+    if (width * height > 2500000) {
+      if (backdrop.canvas) {
+        backdrop.canvas = backdrop.context = null;
+        backdrop.current = backdrop.pending = false;
+      }
+      return false;
+    }
+    const mapChanged = updateDiscovery(map);
+    const doorsChanged = updateDoors();
+    const liftHeight = de.def?.lift ? de.lift.h : null;
+    const view = backdrop.view;
+    const stable = view && view.width === width && view.height === height &&
+      view.pad === pad && view.top === top && view.footer === footer && view.ratio === ratio &&
+      view.cell === cell && view.ox === ox && view.oy === oy &&
+      view.x1 === x1 && view.y1 === y1 && view.x2 === x2 && view.y2 === y2;
+    if (!stable || mapChanged || doorsChanged || backdrop.heights !== v.heightMap || backdrop.liftHeight !== liftHeight) {
+      if (!stable) {
+        view.width = width; view.height = height;
+        view.pad = pad; view.top = top; view.footer = footer; view.ratio = ratio;
+        view.cell = cell; view.ox = ox; view.oy = oy;
+        view.x1 = x1; view.y1 = y1; view.x2 = x2; view.y2 = y2;
+      }
+      backdrop.heights = v.heightMap;
+      backdrop.liftHeight = liftHeight;
+      backdrop.current = false;
+      backdrop.pending = true;
+      return false;
+    }
+    if (backdrop.pending) {
+      if (!backdrop.canvas) {
+        const canvas = document.createElement("canvas");
+        backdrop.context = canvas.getContext("2d", ctx.getContextAttributes?.());
+        backdrop.canvas = canvas;
+      }
+      const cache = backdrop.context;
+      if (!cache) return false;
+      if (backdrop.canvas.width !== width) backdrop.canvas.width = width;
+      if (backdrop.canvas.height !== height) backdrop.canvas.height = height;
+      paintBackground(cache, width, height);
+      drawTerrain(cache, map, width, pad, top, footer, ratio, cell, ox, oy, x1, y1, x2, y2);
+      backdrop.pending = false;
+      backdrop.current = true;
+    }
+    if (!backdrop.current) return false;
+    ctx.save();
+    ctx.globalCompositeOperation = "copy";
+    ctx.drawImage(backdrop.canvas, 0, 0);
+    ctx.restore();
+    return true;
+  }
+
+  M0t = function (surfaces, map, time) {
+    if (grid !== map.grid) { grid = map.grid; zoom = 0; }
+    const canvas = surfaces.auto, ctx = surfaces.ag;
+    Nk(canvas);
+    const width = canvas.width, height = canvas.height;
+    const ratio = Math.min(2, window.devicePixelRatio || 1);
+    const unit = Math.max(11 * ratio, Math.min(height * .022, 18 * ratio));
+    const {pad, icon, line, font, symbols, footer} = fitLegend(ctx, width, height, unit);
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.textBaseline = "middle";
+    ctx.textAlign = "left";
+    const titleFont = 'bold ' + Math.round(unit * 1.22) + 'px "Courier New",monospace';
+    ctx.font = titleFont;
+    const title = mh(T.level).toUpperCase(), titleWidth = ctx.measureText(title).width;
+    const totals = "KILLS " + T.kills + "/" + T.enemiesTotal + "    SECRETS " + T.secrets + "/" + T.secretsTotal;
+    ctx.font = font;
+    const stack = titleWidth + ctx.measureText(totals).width + pad * 3 > width;
+    const top = (stack ? 3.75 : 2.65) * unit;
+    const [left, upper, right, lower] = x0t(map);
+    const cols = right - left + 3, rows = lower - upper + 3;
+    const fit = Math.min(unit * 2.4, (width - pad * 2) / cols, Math.max(1, footer - top) / rows);
+    const cell = Math.max(.01, fit * levels[zoom]);
+    const px = C.px / P, py = C.pz / P;
+    const ox = zoom ? width / 2 - px * cell : (width - cols * cell) / 2 - (left - 1) * cell;
+    const oy = zoom ? (top + footer) / 2 - py * cell : top + (footer - top - rows * cell) / 2 - (upper - 1) * cell;
+    const x1 = Math.max(left - 1, Math.floor((pad - ox) / cell));
+    const x2 = Math.min(right + 2, Math.ceil((width - pad - ox) / cell));
+    const y1 = Math.max(upper - 1, Math.floor((top - oy) / cell));
+    const y2 = Math.min(lower + 2, Math.ceil((footer - oy) / cell));
+    const stored = paintChart(ctx, map, width, height, pad, top, footer, ratio, cell, ox, oy, x1, y1, x2, y2);
+    if (!stored) paintBackground(ctx, width, height);
+    ctx.font = titleFont;
+    ctx.fillStyle = ge.text;
+    ctx.fillText(title, pad, unit * 1.25, width - 2 * pad);
+    ctx.font = font;
+    ctx.textAlign = stack ? "left" : "right";
+    ctx.fillStyle = ink;
+    ctx.fillText(totals, stack ? pad : width - pad, (stack ? 2.75 : 1.25) * unit);
+    if (!stored) drawTerrain(ctx, map, width, pad, top, footer, ratio, cell, ox, oy, x1, y1, x2, y2);
+    ctx.save();
+    ctx.beginPath(); ctx.rect(pad, top, width - 2 * pad, Math.max(0, footer - top)); ctx.clip();
+    ctx.save(); ctx.translate(ox, oy); ctx.scale(cell, cell);
     Bk(ctx, map, cell, time);
     ctx.restore();
     ctx.translate(ox + px * cell, oy + py * cell); ctx.rotate(-Ct.yaw);
