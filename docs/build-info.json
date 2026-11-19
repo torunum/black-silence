@@ -1,7 +1,7 @@
 {
   "passed": true,
-  "bytes": 18950576,
-  "sha256": "ce4379e3a58cd9fe788aec3d96fa2eac73a67a6bec36d5f5e00f8e469b46fe68",
+  "bytes": 19062472,
+  "sha256": "08329158d25a5d7486b73cb992e176ef58fbecd0d6339be4c49687afa946395d",
   "engineSha256": "6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899",
   "villageSha256": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627",
   "moduleHashes": {
@@ -12,15 +12,16 @@
     "enemy-animation.js": "767a60e867ff7b2a8917ae8b23fa938da8e8400bcfff883a0ebb13abb2eb02f3",
     "guardian-volley.js": "87fbdc8d921c74c119eadcce7164d2ef45d8e2216c512825c7961e67dcbbdab9",
     "dungeon-creatures.js": "f16ce76837b5878e405fefc1bd345f66068f2432ac2c125002ce0a978b2876fb",
-    "viewmodels.js": "8c746360b28c5a81f481e5bac6ab59ae7a3119e5012048eae21c460e6e1c572f",
+    "viewmodels.js": "e8fe2814d9114bce6c24d6c986cacaa4cdad7d076ff354a659245692575a4d6a",
     "finishers.js": "8c2c7bdf13e17005c3383054560b155986d8e706b5bfda81e9f1a8224ee3c5b0",
     "reload-audio-data.js": "2f48b10a1225d1c007ee282d3c18f82c5022bb0267ed86d65feadf819ec1be30",
-    "reload-audio.js": "b5d976f11e9e062e0f225496ffdbbd8b1290594f022b665026c062c60cb7df77",
+    "reload-audio.js": "548a90bf1ccb56eab033239ac0d140eb8816fd19c84acb3ce394c04c7173be6c",
     "zombie-audio.js": "7f883bd656b0f7e0784d68e9e47e7612704e1df6b299ffc52e6d3f2cfcba2803",
     "prologue.js": "1b5ab0b99ecc80e41d1e7c183b28a52fe6ce3c51900988e28da61c24d91a8891",
     "vigil-secret.js": "eee4d953810436e04f8758300541cd6a19ecd2272e39f8b781ffa212aa417e72",
     "monastery-nov14.js": "ca3ded666bb32ea82108e8d644c29edb6dc9fa5d5f1edb19c6dfb74050ff4609",
     "prologue-stained-glass.js": "61abbab4a1c33a2b27bfadf1bc8a78b2728bfb47ef8e59752f408ac337acaf58",
+    "hell-arena-hearth.js": "453e641b4851ec77875c98086c522708d9f5c22cdef307bbb5205b1073dbbda5",
     "sewer-works.js": "42552ca5d86158d9ed046c9cfba8d75208c76bbaf223a87efa30919f4c012910",
     "dungeon-sally-port.js": "c3d3837e7be33eba96309e95648dbdf1f3f564778f1a26422af27e2cbf94c8c2",
     "render-warmup.js": "9a021fc24844f648460f0ee504653f74e200c1945dd33d4c8c06e71753325f15",
@@ -35,9 +36,9 @@
   "idempotentBuilds": 2,
   "invalidInputsRefusedWithoutWrite": 8,
   "file": "THE-BLACK-SILENCE.html",
-  "verifiedAt": "2026-11-19T09:37:23.050Z",
-  "previousRelease": "fd809a3a410f390e21e9b2e4cc7ebfe2606ba8c346c2bb899062d91fc83a8d6e",
-  "baselineCommit": "ded3e465792b05933acc767a9914b2e01d3e70ef",
+  "verifiedAt": "2026-11-19T09:58:33.487Z",
+  "previousRelease": "ce4379e3a58cd9fe788aec3d96fa2eac73a67a6bec36d5f5e00f8e469b46fe68",
+  "baselineCommit": "449855638fe1391ce0b3352b233fc93794c55842",
   "verificationReports": [
     {
       "file": "docs/factory-nov14/verification.json",
@@ -134,6 +135,18 @@
     {
       "file": "docs/verification-data/nov19-map-backdrop.json",
       "sha256": "36af76c428ad283896e6c0f400befbf6bc546ae0beb3b0cc8b4dbc117da604b9"
+    },
+    {
+      "file": "docs/hell-hearth-nov19/verification.json",
+      "sha256": "cd5cc4db1750b3209c58db27b89a3c5db0519f5f9fb25fd341d308d93805653f"
+    },
+    {
+      "file": "docs/rifle-nov19/verification.json",
+      "sha256": "7e2166829e5f6947bf256b277e48a5363340867160867cb4212681a6e4afaf34"
+    },
+    {
+      "file": "docs/verification-data/nov19-hearth-rifle-release.json",
+      "sha256": "1d215116206d2828c3b1c66ddd4531f406671d45f02f762e99497104305cd3b7"
     }
   ]
 }

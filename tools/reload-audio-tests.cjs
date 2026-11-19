@@ -121,6 +121,7 @@ const output = path.resolve(process.env.QA_OUTPUT_DIR || path.join(root, ".dream
         assert(a.active() === 0, `weapon ${index}: completed voices released`);
       }
       for (const [index, sequence] of [
+        [2, ["release", "strip", "guide", "seat", "drawBolt", "catchBolt"]],
         [3, ["release", "lift", "align", "seat", "charge", "lock"]],
         [5, ["unseal", "hinge", "lift", "seat", "shut", "catch"]],
         [7, ["unlock", "pluck", "turn", "nest", "close"]],

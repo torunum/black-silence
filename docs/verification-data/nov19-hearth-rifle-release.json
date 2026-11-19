@@ -1,0 +1,827 @@
+{
+  "htmlSHA256": "08329158d25a5d7486b73cb992e176ef58fbecd0d6339be4c49687afa946395d",
+  "hearth": {
+    "passed": true,
+    "exactCollisionSamples": 10404,
+    "preserved": [
+      "grid",
+      "elevation",
+      "doors",
+      "exit",
+      "item spawns",
+      "native mass"
+    ],
+    "scope": "Live Chrome RAF/renderer and W/S at the centered pyre; quiet encounters and fixed camera for matched captures.",
+    "original": {
+      "sha256": "fd809a3a410f390e21e9b2e4cc7ebfe2606ba8c346c2bb899062d91fc83a8d6e",
+      "map": {
+        "visibleFireOrigin": true,
+        "sounds": 0
+      },
+      "captures": [
+        {
+          "name": "hero",
+          "pose": [
+            68.4,
+            101.2,
+            69.7,
+            105,
+            3.33
+          ],
+          "settled": {
+            "x": 68.4,
+            "z": 101.2,
+            "floor": 2.1,
+            "eye": 3.1,
+            "zone": "hell"
+          },
+          "renderer": {
+            "frame": 318,
+            "calls": 67,
+            "triangles": 146848,
+            "points": 1837,
+            "lines": 0
+          },
+          "memory": {
+            "geometries": 120,
+            "textures": 44
+          }
+        },
+        {
+          "name": "east",
+          "pose": [
+            74.6,
+            101.4,
+            72.8,
+            105.7,
+            3.4
+          ],
+          "settled": {
+            "x": 74.6,
+            "z": 101.4,
+            "floor": 2.1,
+            "eye": 3.1,
+            "zone": "hell"
+          },
+          "renderer": {
+            "frame": 360,
+            "calls": 69,
+            "triangles": 146852,
+            "points": 1837,
+            "lines": 0
+          },
+          "memory": {
+            "geometries": 120,
+            "textures": 44
+          }
+        },
+        {
+          "name": "south",
+          "pose": [
+            68,
+            111.2,
+            71,
+            105,
+            3.5
+          ],
+          "settled": {
+            "x": 68,
+            "z": 111.2,
+            "floor": 2.1,
+            "eye": 3.1,
+            "zone": "hell"
+          },
+          "renderer": {
+            "frame": 398,
+            "calls": 223,
+            "triangles": 210066,
+            "points": 2017,
+            "lines": 0
+          },
+          "memory": {
+            "geometries": 152,
+            "textures": 48
+          }
+        },
+        {
+          "name": "entrance",
+          "pose": [
+            76.7,
+            93,
+            71,
+            105,
+            3.93
+          ],
+          "settled": {
+            "x": 76.7,
+            "z": 93,
+            "floor": 2.1,
+            "eye": 3.1,
+            "zone": "hell"
+          },
+          "renderer": {
+            "frame": 441,
+            "calls": 78,
+            "triangles": 149664,
+            "points": 1837,
+            "lines": 0
+          },
+          "memory": {
+            "geometries": 152,
+            "textures": 48
+          }
+        }
+      ],
+      "nearby": {
+        "active": false,
+        "triangles": null,
+        "flameTriangles": null
+      },
+      "blocked": [
+        71,
+        3.1,
+        104.09550638472494
+      ],
+      "escaped": [
+        71,
+        3.1,
+        102.30487074810476
+      ],
+      "audio": {
+        "near": {
+          "calls": [],
+          "context": "running"
+        },
+        "far": {
+          "calls": [],
+          "context": "running"
+        }
+      },
+      "litFrames": [],
+      "lifecycle": [],
+      "errors": []
+    },
+    "candidate": {
+      "sha256": "08329158d25a5d7486b73cb992e176ef58fbecd0d6339be4c49687afa946395d",
+      "map": {
+        "visibleFireOrigin": false,
+        "sounds": 0
+      },
+      "captures": [
+        {
+          "name": "hero",
+          "pose": [
+            68.4,
+            101.2,
+            69.7,
+            105,
+            3.33
+          ],
+          "settled": {
+            "x": 68.4,
+            "z": 101.2,
+            "floor": 2.1,
+            "eye": 3.1,
+            "zone": "hell"
+          },
+          "renderer": {
+            "frame": 333,
+            "calls": 67,
+            "triangles": 148248,
+            "points": 1837,
+            "lines": 0
+          },
+          "memory": {
+            "geometries": 123,
+            "textures": 47
+          }
+        },
+        {
+          "name": "east",
+          "pose": [
+            74.6,
+            101.4,
+            72.8,
+            105.7,
+            3.4
+          ],
+          "settled": {
+            "x": 74.6,
+            "z": 101.4,
+            "floor": 2.1,
+            "eye": 3.1,
+            "zone": "hell"
+          },
+          "renderer": {
+            "frame": 363,
+            "calls": 69,
+            "triangles": 148252,
+            "points": 1837,
+            "lines": 0
+          },
+          "memory": {
+            "geometries": 123,
+            "textures": 47
+          }
+        },
+        {
+          "name": "south",
+          "pose": [
+            68,
+            111.2,
+            71,
+            105,
+            3.5
+          ],
+          "settled": {
+            "x": 68,
+            "z": 111.2,
+            "floor": 2.1,
+            "eye": 3.1,
+            "zone": "hell"
+          },
+          "renderer": {
+            "frame": 393,
+            "calls": 226,
+            "triangles": 212254,
+            "points": 2017,
+            "lines": 0
+          },
+          "memory": {
+            "geometries": 155,
+            "textures": 51
+          }
+        },
+        {
+          "name": "entrance",
+          "pose": [
+            76.7,
+            93,
+            71,
+            105,
+            3.93
+          ],
+          "settled": {
+            "x": 76.7,
+            "z": 93,
+            "floor": 2.1,
+            "eye": 3.1,
+            "zone": "hell"
+          },
+          "renderer": {
+            "frame": 423,
+            "calls": 80,
+            "triangles": 151352,
+            "points": 1837,
+            "lines": 0
+          },
+          "memory": {
+            "geometries": 155,
+            "textures": 51
+          }
+        }
+      ],
+      "nearby": {
+        "active": true,
+        "position": [
+          71,
+          2.1,
+          105
+        ],
+        "children": [
+          "hellArenaHearthFlames",
+          "hellArenaHearthSpill"
+        ],
+        "visible": false,
+        "version": 1,
+        "uv": 0.004464285913854837,
+        "glow": 1,
+        "triangles": 2358,
+        "flameTriangles": 32
+      },
+      "blocked": [
+        71,
+        3.1,
+        104.09582905021995
+      ],
+      "escaped": [
+        71,
+        3.1,
+        102.39443781314206
+      ],
+      "audio": {
+        "near": {
+          "calls": [
+            {
+              "x": 71,
+              "y": 2.92,
+              "z": 105
+            }
+          ],
+          "context": "running"
+        },
+        "far": {
+          "calls": [],
+          "context": "running"
+        }
+      },
+      "litFrames": [
+        {
+          "active": true,
+          "position": [
+            71,
+            2.1,
+            105
+          ],
+          "children": [
+            "hellArenaHearthFlames",
+            "hellArenaHearthSpill"
+          ],
+          "visible": true,
+          "version": 36,
+          "uv": 0.3794642984867096,
+          "glow": 0.8745623161760061,
+          "triangles": 2358,
+          "flameTriangles": 32
+        },
+        {
+          "active": true,
+          "position": [
+            71,
+            2.1,
+            105
+          ],
+          "children": [
+            "hellArenaHearthFlames",
+            "hellArenaHearthSpill"
+          ],
+          "visible": true,
+          "version": 38,
+          "uv": 0.6294642686843872,
+          "glow": 0.9039788862514643,
+          "triangles": 2358,
+          "flameTriangles": 32
+        },
+        {
+          "active": true,
+          "position": [
+            71,
+            2.1,
+            105
+          ],
+          "children": [
+            "hellArenaHearthFlames",
+            "hellArenaHearthSpill"
+          ],
+          "visible": true,
+          "version": 39,
+          "uv": 0.7544642686843872,
+          "glow": 0.8412832226450151,
+          "triangles": 2358,
+          "flameTriangles": 32
+        },
+        {
+          "active": true,
+          "position": [
+            71,
+            2.1,
+            105
+          ],
+          "children": [
+            "hellArenaHearthFlames",
+            "hellArenaHearthSpill"
+          ],
+          "visible": true,
+          "version": 41,
+          "uv": 0.004464285913854837,
+          "glow": 0.7094542905680817,
+          "triangles": 2358,
+          "flameTriangles": 32
+        },
+        {
+          "active": true,
+          "position": [
+            71,
+            2.1,
+            105
+          ],
+          "children": [
+            "hellArenaHearthFlames",
+            "hellArenaHearthSpill"
+          ],
+          "visible": true,
+          "version": 43,
+          "uv": 0.2544642984867096,
+          "glow": 0.7524339209332171,
+          "triangles": 2358,
+          "flameTriangles": 32
+        }
+      ],
+      "lifecycle": [
+        {
+          "cycle": 0,
+          "departed": {
+            "ids": 9,
+            "disposed": [
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "leaks": []
+          },
+          "returned": {
+            "active": true,
+            "position": [
+              71,
+              2.1,
+              105
+            ],
+            "children": [
+              "hellArenaHearthFlames",
+              "hellArenaHearthSpill"
+            ],
+            "visible": false,
+            "version": 1,
+            "uv": 0.004464285913854837,
+            "glow": 1,
+            "triangles": 2358,
+            "flameTriangles": 32
+          }
+        },
+        {
+          "cycle": 1,
+          "departed": {
+            "ids": 9,
+            "disposed": [
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "leaks": []
+          },
+          "returned": {
+            "active": true,
+            "position": [
+              71,
+              2.1,
+              105
+            ],
+            "children": [
+              "hellArenaHearthFlames",
+              "hellArenaHearthSpill"
+            ],
+            "visible": false,
+            "version": 1,
+            "uv": 0.004464285913854837,
+            "glow": 1,
+            "triangles": 2358,
+            "flameTriangles": 32
+          }
+        }
+      ],
+      "errors": []
+    }
+  },
+  "rifle": {
+    "sourceSha": "08329158d25a5d7486b73cb992e176ef58fbecd0d6339be4c49687afa946395d",
+    "runs": [
+      {
+        "width": 1024,
+        "height": 768,
+        "initial": [
+          24,
+          50
+        ],
+        "afterFire": 20,
+        "final": [
+          24,
+          46
+        ],
+        "samples": {
+          "idle": {
+            "count": 25,
+            "nearest": 30.442076144704714,
+            "phase": 0.02105882352941241,
+            "obstructedPhases": []
+          },
+          "fire": {
+            "count": 11,
+            "nearest": 34.20409332229112,
+            "phase": 0.02082352941176449,
+            "obstructedPhases": []
+          },
+          "reload": {
+            "count": 50,
+            "nearest": 25.649951267010238,
+            "phase": 0.8477058823529403,
+            "obstructedPhases": []
+          }
+        },
+        "played": [
+          {
+            "event": "release",
+            "phase": 0.14741176470588147,
+            "target": 0.145
+          },
+          {
+            "event": "strip",
+            "phase": 0.2641764705882344,
+            "target": 0.245
+          },
+          {
+            "event": "guide",
+            "phase": 0.5372352941176467,
+            "target": 0.535
+          },
+          {
+            "event": "seat",
+            "phase": 0.6429411764705882,
+            "target": 0.64
+          },
+          {
+            "event": "drawBolt",
+            "phase": 0.7601764705882348,
+            "target": 0.76
+          },
+          {
+            "event": "catchBolt",
+            "phase": 0.8905882352941176,
+            "target": 0.885
+          }
+        ]
+      },
+      {
+        "width": 1280,
+        "height": 720,
+        "initial": [
+          24,
+          50
+        ],
+        "afterFire": 20,
+        "final": [
+          24,
+          46
+        ],
+        "samples": {
+          "idle": {
+            "count": 24,
+            "nearest": 27.85677655436824,
+            "phase": 0.010764705882352513,
+            "obstructedPhases": []
+          },
+          "fire": {
+            "count": 13,
+            "nearest": 31.622776601683796,
+            "phase": 0.05299999999999915,
+            "obstructedPhases": []
+          },
+          "reload": {
+            "count": 52,
+            "nearest": 24.083189157584588,
+            "phase": 0.8847058823529412,
+            "obstructedPhases": []
+          }
+        },
+        "played": [
+          {
+            "event": "release",
+            "phase": 0.1581176470588231,
+            "target": 0.145
+          },
+          {
+            "event": "strip",
+            "phase": 0.2631176470588231,
+            "target": 0.245
+          },
+          {
+            "event": "guide",
+            "phase": 0.5389411764705887,
+            "target": 0.535
+          },
+          {
+            "event": "seat",
+            "phase": 0.6422941176470596,
+            "target": 0.64
+          },
+          {
+            "event": "drawBolt",
+            "phase": 0.7681764705882361,
+            "target": 0.76
+          },
+          {
+            "event": "catchBolt",
+            "phase": 0.9054705882352937,
+            "target": 0.885
+          }
+        ]
+      },
+      {
+        "width": 1680,
+        "height": 720,
+        "initial": [
+          24,
+          50
+        ],
+        "afterFire": 20,
+        "final": [
+          24,
+          46
+        ],
+        "samples": {
+          "idle": {
+            "count": 29,
+            "nearest": 28.297531571435513,
+            "phase": 0.02105882352941348,
+            "obstructedPhases": []
+          },
+          "fire": {
+            "count": 14,
+            "nearest": 32.501323772615805,
+            "phase": 0.04129411764705926,
+            "obstructedPhases": []
+          },
+          "reload": {
+            "count": 66,
+            "nearest": 25.875765444899898,
+            "phase": 0.9752941176470591,
+            "obstructedPhases": []
+          }
+        },
+        "played": [
+          {
+            "event": "release",
+            "phase": 0.14782352941176427,
+            "target": 0.145
+          },
+          {
+            "event": "strip",
+            "phase": 0.26205882352941173,
+            "target": 0.245
+          },
+          {
+            "event": "guide",
+            "phase": 0.5441176470588236,
+            "target": 0.535
+          },
+          {
+            "event": "seat",
+            "phase": 0.6494705882352934,
+            "target": 0.64
+          },
+          {
+            "event": "drawBolt",
+            "phase": 0.7650000000000002,
+            "target": 0.76
+          },
+          {
+            "event": "catchBolt",
+            "phase": 0.8911176470588225,
+            "target": 0.885
+          }
+        ]
+      }
+    ],
+    "errors": [],
+    "requests": []
+  },
+  "audio": {
+    "sha256": "08329158d25a5d7486b73cb992e176ef58fbecd0d6339be4c49687afa946395d",
+    "checks": 113,
+    "results": [
+      "weapon 0: old .18 casing event removed",
+      "weapon 0: native casing count at shared .27 phase",
+      "weapon 0: seven foley events exactly once",
+      "weapon 0: all event onsets within one simulation step",
+      "weapon 0: native ammo/reserve unchanged",
+      "weapon 0: native reload completion unchanged",
+      "weapon 0: zero delayed casing beeps or reload oscillators",
+      "weapon 0: completed voices released",
+      "weapon 1: old .18 casing event removed",
+      "weapon 1: native casing count at shared .27 phase",
+      "weapon 1: seven foley events exactly once",
+      "weapon 1: all event onsets within one simulation step",
+      "weapon 1: native ammo/reserve unchanged",
+      "weapon 1: native reload completion unchanged",
+      "weapon 1: zero delayed casing beeps or reload oscillators",
+      "weapon 1: completed voices released",
+      "weapon 2: each contact plays once, in order",
+      "weapon 2: recorded hits meet their animation windows",
+      "weapon 2: native ammo is conserved",
+      "weapon 2: no casing or synth chirp on reload",
+      "weapon 2: pause interrupts a live recording",
+      "weapon 2: pause releases contact and resonance",
+      "weapon 2: mute interrupts a live recording",
+      "weapon 2: mute releases contact and resonance",
+      "weapon 2: switch interrupts a live recording",
+      "weapon 2: switch releases contact and resonance",
+      "weapon 2: death interrupts a live recording",
+      "weapon 2: death releases contact and resonance",
+      "weapon 3: each contact plays once, in order",
+      "weapon 3: recorded hits meet their animation windows",
+      "weapon 3: native ammo is conserved",
+      "weapon 3: no casing or synth chirp on reload",
+      "weapon 3: pause interrupts a live recording",
+      "weapon 3: pause releases contact and resonance",
+      "weapon 3: mute interrupts a live recording",
+      "weapon 3: mute releases contact and resonance",
+      "weapon 3: switch interrupts a live recording",
+      "weapon 3: switch releases contact and resonance",
+      "weapon 3: death interrupts a live recording",
+      "weapon 3: death releases contact and resonance",
+      "weapon 5: each contact plays once, in order",
+      "weapon 5: recorded hits meet their animation windows",
+      "weapon 5: native ammo is conserved",
+      "weapon 5: no casing or synth chirp on reload",
+      "weapon 5: pause interrupts a live recording",
+      "weapon 5: pause releases contact and resonance",
+      "weapon 5: mute interrupts a live recording",
+      "weapon 5: mute releases contact and resonance",
+      "weapon 5: switch interrupts a live recording",
+      "weapon 5: switch releases contact and resonance",
+      "weapon 5: death interrupts a live recording",
+      "weapon 5: death releases contact and resonance",
+      "weapon 7: each contact plays once, in order",
+      "weapon 7: recorded hits meet their animation windows",
+      "weapon 7: native ammo is conserved",
+      "weapon 7: no casing or synth chirp on reload",
+      "weapon 7: pause interrupts a live recording",
+      "weapon 7: pause releases contact and resonance",
+      "weapon 7: mute interrupts a live recording",
+      "weapon 7: mute releases contact and resonance",
+      "weapon 7: switch interrupts a live recording",
+      "weapon 7: switch releases contact and resonance",
+      "weapon 7: death interrupts a live recording",
+      "weapon 7: death releases contact and resonance",
+      "weapon 9: each contact plays once, in order",
+      "weapon 9: recorded hits meet their animation windows",
+      "weapon 9: native ammo is conserved",
+      "weapon 9: no casing or synth chirp on reload",
+      "weapon 9: pause interrupts a live recording",
+      "weapon 9: pause releases contact and resonance",
+      "weapon 9: mute interrupts a live recording",
+      "weapon 9: mute releases contact and resonance",
+      "weapon 9: switch interrupts a live recording",
+      "weapon 9: switch releases contact and resonance",
+      "weapon 9: death interrupts a live recording",
+      "weapon 9: death releases contact and resonance",
+      "glassLift: no clipped or nonfinite samples",
+      "glassLift: tail ends at silence",
+      "glassSeat: no clipped or nonfinite samples",
+      "glassSeat: tail ends at silence",
+      "rapid R does not restart or duplicate reload audio",
+      "reload creates real AudioBufferSource voices",
+      "weapon switch fades and releases reload voices",
+      "cancel after eject leaves no delayed old casing chirps",
+      "pause stops reload foley",
+      "pause has no wall-clock audio event queue",
+      "resume triggers only future phase crossings",
+      "focus loss stops reload voices",
+      "hidden tab stops reload voices",
+      "hidden tab cannot create new foley",
+      "master effects volume zero produces no foley voices",
+      "mute does not change ammo or casing visuals",
+      "muting mid-reload releases the existing voices",
+      "unmuting does not resurrect a prior transient",
+      "reset/new game releases active foley",
+      "death fixture has active reload voices",
+      "repeated nonlethal native damage preserves reload audio",
+      "native damage return value preserved",
+      "lethal native damage enters death state",
+      "death releases foley without a subsequent weapon update",
+      "repeated-stop fixture has active voices",
+      "repeated state checks cannot postpone an already scheduled stop",
+      "idempotent release still disconnects its voices",
+      "kick cancellation releases audio and preserves native combat cancellation",
+      "map change releases old foley",
+      "suspended context does not queue stale foley",
+      "user key gesture resumes the existing AudioContext",
+      "future events play after context resume",
+      "pause releases voices even while the audio clock is suspended",
+      "resuming a suspended context cannot resurrect cancelled foley",
+      "delayed native shotgun firing mechanism remains audible during a later reload",
+      "audio and animation share the same frozen timing object",
+      "shared timing cannot drift through runtime mutation"
+    ],
+    "pageErrors": []
+  },
+  "compatibility": {
+    "sha256": "08329158d25a5d7486b73cb992e176ef58fbecd0d6339be4c49687afa946395d",
+    "legacySave": true,
+    "settingsPersist": true,
+    "chapterStarts": true,
+    "errors": [],
+    "network": []
+  }
+}

@@ -1,0 +1,494 @@
+{
+  "passed": true,
+  "exactCollisionSamples": 10404,
+  "preserved": [
+    "grid",
+    "elevation",
+    "doors",
+    "exit",
+    "item spawns",
+    "native mass"
+  ],
+  "scope": "Live Chrome RAF/renderer and W/S at the centered pyre; quiet encounters and fixed camera for matched captures.",
+  "original": {
+    "sha256": "fd809a3a410f390e21e9b2e4cc7ebfe2606ba8c346c2bb899062d91fc83a8d6e",
+    "map": {
+      "visibleFireOrigin": true,
+      "sounds": 0
+    },
+    "captures": [
+      {
+        "name": "hero",
+        "pose": [
+          68.4,
+          101.2,
+          69.7,
+          105,
+          3.33
+        ],
+        "settled": {
+          "x": 68.4,
+          "z": 101.2,
+          "floor": 2.1,
+          "eye": 3.1,
+          "zone": "hell"
+        },
+        "renderer": {
+          "frame": 328,
+          "calls": 67,
+          "triangles": 146848,
+          "points": 1837,
+          "lines": 0
+        },
+        "memory": {
+          "geometries": 120,
+          "textures": 44
+        }
+      },
+      {
+        "name": "east",
+        "pose": [
+          74.6,
+          101.4,
+          72.8,
+          105.7,
+          3.4
+        ],
+        "settled": {
+          "x": 74.6,
+          "z": 101.4,
+          "floor": 2.1,
+          "eye": 3.1,
+          "zone": "hell"
+        },
+        "renderer": {
+          "frame": 367,
+          "calls": 69,
+          "triangles": 146852,
+          "points": 1837,
+          "lines": 0
+        },
+        "memory": {
+          "geometries": 120,
+          "textures": 44
+        }
+      },
+      {
+        "name": "south",
+        "pose": [
+          68,
+          111.2,
+          71,
+          105,
+          3.5
+        ],
+        "settled": {
+          "x": 68,
+          "z": 111.2,
+          "floor": 2.1,
+          "eye": 3.1,
+          "zone": "hell"
+        },
+        "renderer": {
+          "frame": 401,
+          "calls": 223,
+          "triangles": 210066,
+          "points": 2017,
+          "lines": 0
+        },
+        "memory": {
+          "geometries": 152,
+          "textures": 48
+        }
+      },
+      {
+        "name": "entrance",
+        "pose": [
+          76.7,
+          93,
+          71,
+          105,
+          3.93
+        ],
+        "settled": {
+          "x": 76.7,
+          "z": 93,
+          "floor": 2.1,
+          "eye": 3.1,
+          "zone": "hell"
+        },
+        "renderer": {
+          "frame": 440,
+          "calls": 78,
+          "triangles": 149664,
+          "points": 1837,
+          "lines": 0
+        },
+        "memory": {
+          "geometries": 152,
+          "textures": 48
+        }
+      }
+    ],
+    "nearby": {
+      "active": false,
+      "triangles": null,
+      "flameTriangles": null
+    },
+    "blocked": [
+      71,
+      3.1,
+      104.09826844329025
+    ],
+    "escaped": [
+      71,
+      3.1,
+      102.38680293541667
+    ],
+    "audio": {
+      "near": {
+        "calls": [],
+        "context": "running"
+      },
+      "far": {
+        "calls": [],
+        "context": "running"
+      }
+    },
+    "litFrames": [],
+    "lifecycle": [],
+    "errors": []
+  },
+  "candidate": {
+    "sha256": "cb2a30927e47428e480642670db5c2622ab45737c8aa2578e7f9ceffdfede167",
+    "map": {
+      "visibleFireOrigin": false,
+      "sounds": 0
+    },
+    "captures": [
+      {
+        "name": "hero",
+        "pose": [
+          68.4,
+          101.2,
+          69.7,
+          105,
+          3.33
+        ],
+        "settled": {
+          "x": 68.4,
+          "z": 101.2,
+          "floor": 2.1,
+          "eye": 3.1,
+          "zone": "hell"
+        },
+        "renderer": {
+          "frame": 324,
+          "calls": 67,
+          "triangles": 148248,
+          "points": 1837,
+          "lines": 0
+        },
+        "memory": {
+          "geometries": 123,
+          "textures": 47
+        }
+      },
+      {
+        "name": "east",
+        "pose": [
+          74.6,
+          101.4,
+          72.8,
+          105.7,
+          3.4
+        ],
+        "settled": {
+          "x": 74.6,
+          "z": 101.4,
+          "floor": 2.1,
+          "eye": 3.1,
+          "zone": "hell"
+        },
+        "renderer": {
+          "frame": 362,
+          "calls": 69,
+          "triangles": 148252,
+          "points": 1837,
+          "lines": 0
+        },
+        "memory": {
+          "geometries": 123,
+          "textures": 47
+        }
+      },
+      {
+        "name": "south",
+        "pose": [
+          68,
+          111.2,
+          71,
+          105,
+          3.5
+        ],
+        "settled": {
+          "x": 68,
+          "z": 111.2,
+          "floor": 2.1,
+          "eye": 3.1,
+          "zone": "hell"
+        },
+        "renderer": {
+          "frame": 398,
+          "calls": 226,
+          "triangles": 212254,
+          "points": 2017,
+          "lines": 0
+        },
+        "memory": {
+          "geometries": 155,
+          "textures": 51
+        }
+      },
+      {
+        "name": "entrance",
+        "pose": [
+          76.7,
+          93,
+          71,
+          105,
+          3.93
+        ],
+        "settled": {
+          "x": 76.7,
+          "z": 93,
+          "floor": 2.1,
+          "eye": 3.1,
+          "zone": "hell"
+        },
+        "renderer": {
+          "frame": 436,
+          "calls": 80,
+          "triangles": 151352,
+          "points": 1837,
+          "lines": 0
+        },
+        "memory": {
+          "geometries": 155,
+          "textures": 51
+        }
+      }
+    ],
+    "nearby": {
+      "active": true,
+      "position": [
+        71,
+        2.1,
+        105
+      ],
+      "children": [
+        "hellArenaHearthFlames",
+        "hellArenaHearthSpill"
+      ],
+      "visible": false,
+      "version": 1,
+      "uv": 0.004464285913854837,
+      "glow": 1,
+      "triangles": 2358,
+      "flameTriangles": 32
+    },
+    "blocked": [
+      71,
+      3.1,
+      104.09561511715407
+    ],
+    "escaped": [
+      71,
+      3.1,
+      102.39027306705675
+    ],
+    "audio": {
+      "near": {
+        "calls": [
+          {
+            "x": 71,
+            "y": 2.92,
+            "z": 105
+          }
+        ],
+        "context": "running"
+      },
+      "far": {
+        "calls": [],
+        "context": "running"
+      }
+    },
+    "litFrames": [
+      {
+        "active": true,
+        "position": [
+          71,
+          2.1,
+          105
+        ],
+        "children": [
+          "hellArenaHearthFlames",
+          "hellArenaHearthSpill"
+        ],
+        "visible": true,
+        "version": 41,
+        "uv": 0.004464285913854837,
+        "glow": 0.6967564922042757,
+        "triangles": 2358,
+        "flameTriangles": 32
+      },
+      {
+        "active": true,
+        "position": [
+          71,
+          2.1,
+          105
+        ],
+        "children": [
+          "hellArenaHearthFlames",
+          "hellArenaHearthSpill"
+        ],
+        "visible": true,
+        "version": 43,
+        "uv": 0.2544642984867096,
+        "glow": 0.7728762154741401,
+        "triangles": 2358,
+        "flameTriangles": 32
+      },
+      {
+        "active": true,
+        "position": [
+          71,
+          2.1,
+          105
+        ],
+        "children": [
+          "hellArenaHearthFlames",
+          "hellArenaHearthSpill"
+        ],
+        "visible": true,
+        "version": 45,
+        "uv": 0.5044642686843872,
+        "glow": 0.8741703212987683,
+        "triangles": 2358,
+        "flameTriangles": 32
+      },
+      {
+        "active": true,
+        "position": [
+          71,
+          2.1,
+          105
+        ],
+        "children": [
+          "hellArenaHearthFlames",
+          "hellArenaHearthSpill"
+        ],
+        "visible": true,
+        "version": 47,
+        "uv": 0.7544642686843872,
+        "glow": 0.868478258101893,
+        "triangles": 2358,
+        "flameTriangles": 32
+      },
+      {
+        "active": true,
+        "position": [
+          71,
+          2.1,
+          105
+        ],
+        "children": [
+          "hellArenaHearthFlames",
+          "hellArenaHearthSpill"
+        ],
+        "visible": true,
+        "version": 48,
+        "uv": 0.8794642686843872,
+        "glow": 0.9094849855882964,
+        "triangles": 2358,
+        "flameTriangles": 32
+      }
+    ],
+    "lifecycle": [
+      {
+        "cycle": 0,
+        "departed": {
+          "ids": 9,
+          "disposed": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "leaks": []
+        },
+        "returned": {
+          "active": true,
+          "position": [
+            71,
+            2.1,
+            105
+          ],
+          "children": [
+            "hellArenaHearthFlames",
+            "hellArenaHearthSpill"
+          ],
+          "visible": false,
+          "version": 1,
+          "uv": 0.004464285913854837,
+          "glow": 1,
+          "triangles": 2358,
+          "flameTriangles": 32
+        }
+      },
+      {
+        "cycle": 1,
+        "departed": {
+          "ids": 9,
+          "disposed": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "leaks": []
+        },
+        "returned": {
+          "active": true,
+          "position": [
+            71,
+            2.1,
+            105
+          ],
+          "children": [
+            "hellArenaHearthFlames",
+            "hellArenaHearthSpill"
+          ],
+          "visible": false,
+          "version": 1,
+          "uv": 0.004464285913854837,
+          "glow": 1,
+          "triangles": 2358,
+          "flameTriangles": 32
+        }
+      }
+    ],
+    "errors": []
+  }
+}

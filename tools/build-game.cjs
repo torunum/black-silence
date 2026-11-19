@@ -59,6 +59,7 @@ const code = [
   "vigil-secret.js",
   "monastery-nov14.js",
   "prologue-stained-glass.js",
+  "hell-arena-hearth.js",
   "sewer-works.js",
   "dungeon-sally-port.js",
   "render-warmup.js",

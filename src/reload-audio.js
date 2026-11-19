@@ -27,6 +27,14 @@
   // All cues use the same recorded metal as the sidearms. Playback rate,
   // emphasis and the shape of the contact give each relic its own scale.
   const weaponCues = {
+    2: {
+      release: { at: BLACK_SILENCE_RIFLE_RELOAD.release, clip: "latch", rate: 1.08, gain: .32 },
+      strip: { at: BLACK_SILENCE_RIFLE_RELOAD.strip, clip: "slide", rate: .94, gain: .33 },
+      guide: { at: BLACK_SILENCE_RIFLE_RELOAD.guide, clip: "eject", rate: .97, gain: .24 },
+      seat: { at: BLACK_SILENCE_RIFLE_RELOAD.seat, clip: "seat", rate: 1.02, gain: .46 },
+      drawBolt: { at: BLACK_SILENCE_RIFLE_RELOAD.drawBolt, clip: "hinge", rate: 1.26, gain: .31 },
+      catchBolt: { at: BLACK_SILENCE_RIFLE_RELOAD.catchBolt, clip: "close", rate: 1.10, gain: .39 },
+    },
     3: {
       release: { at: Ac.out[0], clip: "latch", rate: .92, gain: .33 },
       lift: { at: Ac.out[1] - .045, clip: "slide", rate: .70, gain: .31 },

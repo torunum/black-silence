@@ -1,0 +1,344 @@
+{
+  "inputs": {
+    "baselineCommit": "ded3e46",
+    "baselineGameSHA256": "fd809a3a410f390e21e9b2e4cc7ebfe2606ba8c346c2bb899062d91fc83a8d6e",
+    "candidateGameSHA256": "d240e9d21360105d6264fe81b1e3bc265d067b3c0d9fee3d64e645de2d9da840",
+    "sourceSHA256": "e8fe2814d9114bce6c24d6c986cacaa4cdad7d076ff354a659245692575a4d6a",
+    "audioSourceSHA256": "548a90bf1ccb56eab033239ac0d140eb8816fd19c84acb3ce394c04c7173be6c",
+    "versionScope": "Weapon sources are from the full rifle candidate. Camera images and video use the same stilled courtyard as the initial baseline."
+  },
+  "comparison": {
+    "image": "comparison.png",
+    "captureViewport": [
+      1280,
+      720
+    ],
+    "columns": [
+      "baseline",
+      "candidate"
+    ],
+    "rows": [
+      "idle",
+      "0.4",
+      "0.5",
+      "0.84"
+    ],
+    "baselineSamples": [
+      {
+        "label": "idle",
+        "phase": 0.071823529411766
+      },
+      {
+        "label": 0.4,
+        "phase": 0.4075882352941163
+      },
+      {
+        "label": 0.5,
+        "phase": 0.5002941176470567
+      },
+      {
+        "label": 0.84,
+        "phase": 0.8535294117646995
+      }
+    ],
+    "candidateSamples": [
+      {
+        "label": "idle",
+        "phase": 0.06205882352941177
+      },
+      {
+        "label": 0.4,
+        "phase": 0.4096470588235303
+      },
+      {
+        "label": 0.5,
+        "phase": 0.5022352941176467
+      },
+      {
+        "label": 0.84,
+        "phase": 0.8404705882352936
+      }
+    ]
+  },
+  "viewportAndAmmo": {
+    "sourceSha": "d240e9d21360105d6264fe81b1e3bc265d067b3c0d9fee3d64e645de2d9da840",
+    "runs": [
+      {
+        "width": 1024,
+        "height": 768,
+        "initial": [
+          24,
+          50
+        ],
+        "afterFire": 20,
+        "final": [
+          24,
+          46
+        ],
+        "samples": {
+          "idle": {
+            "count": 27,
+            "nearest": 30.442076144704714,
+            "phase": 0.01047058823529476,
+            "obstructedPhases": []
+          },
+          "fire": {
+            "count": 22,
+            "nearest": 34.46505476566083,
+            "phase": 0.05170588235294097,
+            "obstructedPhases": []
+          },
+          "reload": {
+            "count": 92,
+            "nearest": 25.043961347997644,
+            "phase": 0.02094117647058845,
+            "obstructedPhases": []
+          }
+        },
+        "played": [
+          {
+            "event": "release",
+            "phase": 0.1457647058823525,
+            "target": 0.145
+          },
+          {
+            "event": "strip",
+            "phase": 0.25058823529411767,
+            "target": 0.245
+          },
+          {
+            "event": "guide",
+            "phase": 0.5438823529411766,
+            "target": 0.535
+          },
+          {
+            "event": "seat",
+            "phase": 0.6489411764705876,
+            "target": 0.64
+          },
+          {
+            "event": "drawBolt",
+            "phase": 0.7642352941176468,
+            "target": 0.76
+          },
+          {
+            "event": "catchBolt",
+            "phase": 0.9013529411764707,
+            "target": 0.885
+          }
+        ]
+      },
+      {
+        "width": 1280,
+        "height": 720,
+        "initial": [
+          24,
+          50
+        ],
+        "afterFire": 20,
+        "final": [
+          24,
+          46
+        ],
+        "samples": {
+          "idle": {
+            "count": 27,
+            "nearest": 27.85677655436824,
+            "phase": 0.01052941176470674,
+            "obstructedPhases": []
+          },
+          "fire": {
+            "count": 21,
+            "nearest": 31.622776601683796,
+            "phase": 0.05323529411764706,
+            "obstructedPhases": []
+          },
+          "reload": {
+            "count": 93,
+            "nearest": 23.40939982143925,
+            "phase": 0.9222941176470589,
+            "obstructedPhases": []
+          }
+        },
+        "played": [
+          {
+            "event": "release",
+            "phase": 0.14676470588235294,
+            "target": 0.145
+          },
+          {
+            "event": "strip",
+            "phase": 0.26188235294117584,
+            "target": 0.245
+          },
+          {
+            "event": "guide",
+            "phase": 0.5445882352941173,
+            "target": 0.535
+          },
+          {
+            "event": "seat",
+            "phase": 0.6501176470588231,
+            "target": 0.64
+          },
+          {
+            "event": "drawBolt",
+            "phase": 0.765176470588235,
+            "target": 0.76
+          },
+          {
+            "event": "catchBolt",
+            "phase": 0.8912352941176476,
+            "target": 0.885
+          }
+        ]
+      },
+      {
+        "width": 1680,
+        "height": 720,
+        "initial": [
+          24,
+          50
+        ],
+        "afterFire": 20,
+        "final": [
+          24,
+          46
+        ],
+        "samples": {
+          "idle": {
+            "count": 30,
+            "nearest": 28.297531571435513,
+            "phase": 0.010647058823528555,
+            "obstructedPhases": []
+          },
+          "fire": {
+            "count": 18,
+            "nearest": 31.641919141739827,
+            "phase": 0.04970588235293904,
+            "obstructedPhases": []
+          },
+          "reload": {
+            "count": 78,
+            "nearest": 26.277372262773724,
+            "phase": 0.1461764705882353,
+            "obstructedPhases": []
+          }
+        },
+        "played": [
+          {
+            "event": "release",
+            "phase": 0.1461764705882353,
+            "target": 0.145
+          },
+          {
+            "event": "strip",
+            "phase": 0.2521764705882357,
+            "target": 0.245
+          },
+          {
+            "event": "guide",
+            "phase": 0.5367058823529421,
+            "target": 0.535
+          },
+          {
+            "event": "seat",
+            "phase": 0.6521764705882357,
+            "target": 0.64
+          },
+          {
+            "event": "drawBolt",
+            "phase": 0.7681764705882361,
+            "target": 0.76
+          },
+          {
+            "event": "catchBolt",
+            "phase": 0.8953529411764696,
+            "target": 0.885
+          }
+        ]
+      }
+    ],
+    "errors": [],
+    "requests": []
+  },
+  "video": {
+    "name": "reload.webm",
+    "videoCodec": "VP9",
+    "audioCodec": "Opus",
+    "framesPerSecond": 25,
+    "capturedSeconds": 3.718200000017881,
+    "bytes": 1470861,
+    "sha256": "cbf5ca236a394d0efabf1f4bea006e9b7ce1d27ef015ffb6bb3f89498585a35b",
+    "startingMagazineAndReserve": [
+      6,
+      11
+    ],
+    "afterFiring": [
+      0,
+      11
+    ],
+    "afterReload": [
+      11,
+      0
+    ],
+    "events": [
+      "release",
+      "strip",
+      "guide",
+      "seat",
+      "drawBolt",
+      "catchBolt"
+    ],
+    "errors": [],
+    "network": [],
+    "scope": "Digit 3 equips the rifle. Real held left mouse empties the magazine, then R loads the 11 available rounds. Actual RAF and stereo game output. Repeatable courtyard fixtures only remove enemy interference and choose the starting inventory."
+  },
+  "audioRuntime": {
+    "inputSHA256": "75e7a5be1bbbe545d0260df069f178c15c69f7bec014f61c37f86ccdb66dc586",
+    "checks": 113,
+    "errors": [],
+    "scope": "This candidate and the visual final use byte-identical audio sources. This suite steps the original simulation for cancellation, mute and pause tests."
+  },
+  "runtime": {
+    "passed": true,
+    "inputSHA256": "d240e9d21360105d6264fe81b1e3bc265d067b3c0d9fee3d64e645de2d9da840",
+    "transitions": [
+      {
+        "index": 2,
+        "firedMag": 23,
+        "switchedTo": 3,
+        "cancelledMag": 0,
+        "kickRecovered": true
+      }
+    ],
+    "cancellation": [
+      {
+        "index": 2,
+        "pass": true,
+        "state": "fire",
+        "reserve": 100
+      }
+    ],
+    "cache": [
+      {
+        "index": 2,
+        "match": true,
+        "before": "02c348b8c29d5b60995d4564b801fa803e6e1185ce1dc5b1800d8529ee1265c5",
+        "after": "02c348b8c29d5b60995d4564b801fa803e6e1185ce1dc5b1800d8529ee1265c5",
+        "presentationAndCacheStable": true
+      }
+    ],
+    "errors": []
+  },
+  "otherWeaponPixels": {
+    "passed": true,
+    "unaffectedCases": 536,
+    "cases": 594,
+    "changedCases": 58,
+    "changedWeaponIndices": [
+      2
+    ],
+    "errors": []
+  }
+}
