@@ -1,0 +1,885 @@
+{
+  "sha256": "f6585a733ff0ea1d9174de2e4db79677a507619992695b25a2106ab4217d74c5",
+  "baselineCommit": "eff5cf40cc691c221ee00f95561a94db225ce83f",
+  "legacySaveCommit": "b8b77ffab2d9261e4c814792716551c3da4f338e",
+  "bossProgress": {
+    "legacySha": "145a2b448a71e91ea8dbd63be5149a2dedd1935cdd2cb32212d5a9f7a796c305",
+    "candidateSha": "f6585a733ff0ea1d9174de2e4db79677a507619992695b25a2106ab4217d74c5",
+    "checks": [
+      {
+        "name": "post-boss shrine reached with E and W on legacy file",
+        "saved": {
+          "x": 53.09405518679128,
+          "z": 42.4800916951796,
+          "yaw": 3.1079067192794896
+        },
+        "index": 21,
+        "original": {
+          "level": 9,
+          "started": true,
+          "locked": false,
+          "dead": false,
+          "won": false,
+          "marks": [
+            [
+              159,
+              125,
+              false
+            ],
+            [
+              105,
+              121,
+              false
+            ],
+            [
+              27,
+              101,
+              false
+            ],
+            [
+              181,
+              83,
+              false
+            ],
+            [
+              131,
+              73,
+              false
+            ],
+            [
+              83,
+              31,
+              false
+            ],
+            [
+              53,
+              45,
+              false
+            ]
+          ],
+          "position": [
+            49.4,
+            33
+          ],
+          "boss": [
+            [
+              21,
+              "N",
+              true
+            ]
+          ],
+          "exit": {
+            "x": 33,
+            "z": 33
+          },
+          "lit": true,
+          "rig": [
+            33,
+            28,
+            0,
+            1
+          ],
+          "lights": 21,
+          "phase": "idle",
+          "card": 0,
+          "cardAfter": 1,
+          "kills": 1,
+          "totalKills": 1,
+          "speed": 0,
+          "victoryCalls": 0,
+          "key": false,
+          "doorOpen": [
+            "25,16"
+          ],
+          "achievements": [
+            "first",
+            "digger"
+          ],
+          "msg": "THE GRAVEDIGGER LIES STILL — A DRAIN YAWNS OPEN"
+        }
+      },
+      {
+        "name": "legacy Continue restores native gate without replaying kill credit",
+        "continued": {
+          "level": 9,
+          "started": true,
+          "locked": false,
+          "dead": false,
+          "won": false,
+          "activeMark": 6,
+          "marks": [
+            [
+              159,
+              125,
+              false
+            ],
+            [
+              105,
+              121,
+              false
+            ],
+            [
+              27,
+              101,
+              false
+            ],
+            [
+              181,
+              83,
+              false
+            ],
+            [
+              131,
+              73,
+              false
+            ],
+            [
+              83,
+              31,
+              false
+            ],
+            [
+              53,
+              45,
+              true
+            ]
+          ],
+          "position": [
+            53.09405518679128,
+            42.4800916951796
+          ],
+          "boss": [
+            [
+              21,
+              "N",
+              true
+            ]
+          ],
+          "exit": {
+            "x": 33,
+            "z": 33
+          },
+          "lit": true,
+          "rig": [
+            33,
+            28,
+            0,
+            1
+          ],
+          "lights": 21,
+          "phase": "idle",
+          "card": 0,
+          "cardAfter": 1,
+          "kills": 1,
+          "totalKills": 1,
+          "speed": 0,
+          "victoryCalls": 0,
+          "key": false,
+          "doorOpen": [
+            "25,16"
+          ],
+          "achievements": [
+            "first",
+            "digger"
+          ],
+          "msg": "THE SHRINE REMEMBERS"
+        }
+      },
+      {
+        "name": "native death, Rise Again, E and Space reach the Gothic Dungeon",
+        "risen": {
+          "level": 9,
+          "started": true,
+          "locked": false,
+          "dead": false,
+          "won": false,
+          "activeMark": 6,
+          "marks": [
+            [
+              159,
+              125,
+              false
+            ],
+            [
+              105,
+              121,
+              false
+            ],
+            [
+              27,
+              101,
+              false
+            ],
+            [
+              181,
+              83,
+              false
+            ],
+            [
+              131,
+              73,
+              false
+            ],
+            [
+              83,
+              31,
+              false
+            ],
+            [
+              53,
+              45,
+              true
+            ]
+          ],
+          "position": [
+            53.09405518679128,
+            42.4800916951796
+          ],
+          "boss": [
+            [
+              21,
+              "N",
+              true
+            ]
+          ],
+          "exit": {
+            "x": 33,
+            "z": 33
+          },
+          "lit": true,
+          "rig": [
+            33,
+            28,
+            0,
+            1
+          ],
+          "lights": 21,
+          "phase": "idle",
+          "card": 0,
+          "cardAfter": 1,
+          "kills": 1,
+          "totalKills": 1,
+          "speed": 0,
+          "victoryCalls": 0,
+          "key": false,
+          "doorOpen": [
+            "25,16"
+          ],
+          "achievements": [
+            "first",
+            "digger"
+          ],
+          "msg": "YOU RISE AGAIN"
+        }
+      },
+      {
+        "name": "restored Priest exit still requires the Cathedral Guardian",
+        "church": {
+          "level": 2,
+          "started": true,
+          "locked": false,
+          "dead": false,
+          "won": false,
+          "activeMark": 2,
+          "marks": [
+            [
+              105,
+              47,
+              false
+            ],
+            [
+              61,
+              57,
+              false
+            ],
+            [
+              41,
+              55,
+              true
+            ]
+          ],
+          "position": [
+            39,
+            53.441696685527006
+          ],
+          "boss": [
+            [
+              17,
+              "Q",
+              true
+            ],
+            [
+              31,
+              "U",
+              false
+            ]
+          ],
+          "exit": {
+            "x": 33,
+            "z": 33
+          },
+          "lit": true,
+          "rig": [
+            33,
+            28,
+            0,
+            1
+          ],
+          "lights": 21,
+          "phase": "idle",
+          "card": 0,
+          "cardAfter": 1,
+          "kills": 1,
+          "totalKills": 1,
+          "speed": 0,
+          "victoryCalls": 0,
+          "key": false,
+          "doorOpen": [
+            "19,23"
+          ],
+          "achievements": [
+            "first",
+            "priest"
+          ],
+          "msg": "THE SHRINE REMEMBERS"
+        }
+      },
+      {
+        "name": "legacy native shrine within its open red gate fell back to the entry",
+        "at": {
+          "x": 49.454117102709056,
+          "z": 31,
+          "yaw": 4.71238898038469
+        },
+        "oldThreshold": {
+          "level": 8,
+          "started": true,
+          "locked": false,
+          "dead": false,
+          "won": false,
+          "marks": [
+            [
+              47,
+              63,
+              false
+            ],
+            [
+              75,
+              43,
+              false
+            ],
+            [
+              51,
+              33,
+              false
+            ]
+          ],
+          "position": [
+            13,
+            63
+          ],
+          "boss": [
+            [
+              4,
+              "E",
+              false
+            ],
+            [
+              6,
+              "G",
+              false
+            ],
+            [
+              11,
+              "U",
+              false
+            ]
+          ],
+          "exit": null,
+          "lit": false,
+          "rig": null,
+          "lights": 20,
+          "phase": "idle",
+          "card": 0,
+          "cardAfter": 1,
+          "kills": 0,
+          "totalKills": 0,
+          "speed": 0,
+          "victoryCalls": 0,
+          "key": false,
+          "doorOpen": [],
+          "achievements": [
+            "first",
+            "heart"
+          ],
+          "msg": "CONTINUING FROM THE CHAPTER START"
+        }
+      },
+      {
+        "name": "closed and wall-overlapping doorway snapshots remain rejected",
+        "closed": {
+          "level": 8,
+          "started": true,
+          "locked": false,
+          "dead": false,
+          "won": false,
+          "marks": [
+            [
+              47,
+              63,
+              false
+            ],
+            [
+              75,
+              43,
+              false
+            ],
+            [
+              51,
+              33,
+              false
+            ]
+          ],
+          "position": [
+            13,
+            63
+          ],
+          "boss": [
+            [
+              4,
+              "E",
+              false
+            ],
+            [
+              6,
+              "G",
+              false
+            ],
+            [
+              11,
+              "U",
+              false
+            ]
+          ],
+          "exit": null,
+          "lit": false,
+          "rig": null,
+          "lights": 20,
+          "phase": "idle",
+          "card": 0,
+          "cardAfter": 1,
+          "kills": 0,
+          "totalKills": 0,
+          "speed": 0,
+          "victoryCalls": 0,
+          "key": false,
+          "doorOpen": [],
+          "achievements": [
+            "first",
+            "heart"
+          ],
+          "msg": "CONTINUING FROM THE CHAPTER START"
+        },
+        "partlyInWall": {
+          "level": 8,
+          "started": true,
+          "locked": false,
+          "dead": false,
+          "won": false,
+          "marks": [
+            [
+              47,
+              63,
+              false
+            ],
+            [
+              75,
+              43,
+              false
+            ],
+            [
+              51,
+              33,
+              false
+            ]
+          ],
+          "position": [
+            13,
+            63
+          ],
+          "boss": [
+            [
+              4,
+              "E",
+              false
+            ],
+            [
+              6,
+              "G",
+              false
+            ],
+            [
+              11,
+              "U",
+              false
+            ]
+          ],
+          "exit": null,
+          "lit": false,
+          "rig": null,
+          "lights": 20,
+          "phase": "idle",
+          "card": 0,
+          "cardAfter": 1,
+          "kills": 0,
+          "totalKills": 0,
+          "speed": 0,
+          "victoryCalls": 0,
+          "key": false,
+          "doorOpen": [],
+          "achievements": [
+            "first",
+            "heart"
+          ],
+          "msg": "CONTINUING FROM THE CHAPTER START"
+        }
+      },
+      {
+        "name": "legacy final-boss shrine recovers native victory without another fight",
+        "saved": {
+          "x": 50.38745043604241,
+          "z": 30.5,
+          "yaw": 4.71238898038469
+        },
+        "oldHeart": {
+          "level": 8,
+          "started": true,
+          "locked": false,
+          "dead": false,
+          "won": false,
+          "activeMark": 2,
+          "marks": [
+            [
+              47,
+              63,
+              false
+            ],
+            [
+              75,
+              43,
+              false
+            ],
+            [
+              51,
+              33,
+              true
+            ]
+          ],
+          "position": [
+            50.38745043604241,
+            30.5
+          ],
+          "boss": [
+            [
+              4,
+              "E",
+              false
+            ],
+            [
+              6,
+              "G",
+              true
+            ],
+            [
+              11,
+              "U",
+              false
+            ]
+          ],
+          "exit": null,
+          "lit": false,
+          "rig": null,
+          "lights": 20,
+          "phase": "idle",
+          "card": 0,
+          "cardAfter": 1,
+          "kills": 1,
+          "totalKills": 1,
+          "speed": 0,
+          "victoryCalls": 0,
+          "key": true,
+          "doorOpen": [
+            "24,15"
+          ],
+          "achievements": [
+            "first",
+            "heart"
+          ],
+          "msg": ""
+        },
+        "won": {
+          "level": 8,
+          "started": true,
+          "locked": false,
+          "dead": false,
+          "won": true,
+          "activeMark": 2,
+          "marks": [
+            [
+              47,
+              63,
+              false
+            ],
+            [
+              75,
+              43,
+              false
+            ],
+            [
+              51,
+              33,
+              true
+            ]
+          ],
+          "position": [
+            50.38745043604241,
+            30.5
+          ],
+          "boss": [
+            [
+              4,
+              "E",
+              false
+            ],
+            [
+              6,
+              "G",
+              true
+            ],
+            [
+              11,
+              "U",
+              false
+            ]
+          ],
+          "exit": null,
+          "lit": false,
+          "rig": null,
+          "lights": 20,
+          "phase": "idle",
+          "card": 0,
+          "cardAfter": 1,
+          "kills": 1,
+          "totalKills": 1,
+          "speed": 0,
+          "victoryCalls": 1,
+          "key": true,
+          "doorOpen": [
+            "24,15"
+          ],
+          "achievements": [
+            "first",
+            "heart"
+          ],
+          "msg": "THE SHRINE REMEMBERS"
+        }
+      },
+      {
+        "name": "legacy final-boss shrine recovers native victory without another fight",
+        "saved": {
+          "x": 49.454117102709056,
+          "z": 31,
+          "yaw": 4.71238898038469
+        },
+        "oldHeart": {
+          "level": 8,
+          "started": true,
+          "locked": false,
+          "dead": false,
+          "won": false,
+          "activeMark": 2,
+          "marks": [
+            [
+              47,
+              63,
+              false
+            ],
+            [
+              75,
+              43,
+              false
+            ],
+            [
+              51,
+              33,
+              true
+            ]
+          ],
+          "position": [
+            50.38745043604241,
+            30.5
+          ],
+          "boss": [
+            [
+              4,
+              "E",
+              false
+            ],
+            [
+              6,
+              "G",
+              true
+            ],
+            [
+              11,
+              "U",
+              false
+            ]
+          ],
+          "exit": null,
+          "lit": false,
+          "rig": null,
+          "lights": 20,
+          "phase": "idle",
+          "card": 0,
+          "cardAfter": 1,
+          "kills": 1,
+          "totalKills": 1,
+          "speed": 0,
+          "victoryCalls": 0,
+          "key": true,
+          "doorOpen": [
+            "24,15"
+          ],
+          "achievements": [
+            "first",
+            "heart"
+          ],
+          "msg": ""
+        },
+        "won": {
+          "level": 8,
+          "started": true,
+          "locked": false,
+          "dead": false,
+          "won": true,
+          "activeMark": 2,
+          "marks": [
+            [
+              47,
+              63,
+              false
+            ],
+            [
+              75,
+              43,
+              false
+            ],
+            [
+              51,
+              33,
+              true
+            ]
+          ],
+          "position": [
+            49.454117102709056,
+            31
+          ],
+          "boss": [
+            [
+              4,
+              "E",
+              false
+            ],
+            [
+              6,
+              "G",
+              true
+            ],
+            [
+              11,
+              "U",
+              false
+            ]
+          ],
+          "exit": null,
+          "lit": false,
+          "rig": null,
+          "lights": 20,
+          "phase": "idle",
+          "card": 0,
+          "cardAfter": 1,
+          "kills": 1,
+          "totalKills": 1,
+          "speed": 0,
+          "victoryCalls": 1,
+          "key": true,
+          "doorOpen": [
+            "24,15"
+          ],
+          "achievements": [
+            "first",
+            "heart"
+          ],
+          "msg": "THE SHRINE REMEMBERS"
+        }
+      }
+    ],
+    "errors": []
+  },
+  "continueCampaign": {
+    "passed": true,
+    "htmlSha256": "f6585a733ff0ea1d9174de2e4db79677a507619992695b25a2106ab4217d74c5",
+    "checks": [
+      "New Game and a fresh document restore the Prologue entry inventory",
+      "Real Tab/M, shrine reload and native Rise Again preserve the explored cells and terrain pixels",
+      "Real E, map facts, inventory, clock, achievements and native shrine respawn survive reload",
+      "Native chapter transition, carried weapons, real dial input and a collected seal round-trip",
+      "A second campaign transition resumes the Gothic Dungeon from chapter start",
+      "Sewers pressure, gauge, secret door and single reward restore after actual document reload",
+      "Chapter Select and QA do not replace the campaign slot",
+      "An older tab cannot replace or clear a newer campaign",
+      "Victory in the final chapter clears the campaign slot",
+      "Malformed saves and map-incompatible shrines leave a playable chapter entry",
+      "Damaged automap payloads and older shrine records still restore the shrine and inventory",
+      "Storage denial leaves the native New Game playable"
+    ]
+  },
+  "playerInput": {
+    "sha256": "f6585a733ff0ea1d9174de2e4db79677a507619992695b25a2106ab4217d74c5",
+    "browser": "157.0.8103.80",
+    "results": {
+      "normal": {
+        "steps": [
+          "Fresh Title, Chapter Select, Back and New Game work with only the keyboard",
+          "Menu M stays inactive and real held Tab still opens the map during play",
+          "Pointer exit clears held fire and blocks reload input until resumed",
+          "Window blur event releases native capture, Settings returns to the same pause, click recaptures without firing",
+          "Keyboard Continue starts the same saved campaign"
+        ],
+        "initial": [
+          6,
+          60
+        ],
+        "released": [
+          5,
+          60
+        ],
+        "chapter": 0
+      },
+      "realBrowserDenial": {
+        "stoppedBeforeGameControl": true,
+        "retryPaused": true,
+        "notice": "Mouse capture was blocked. If retry fails, open this HTML in its own tab."
+      },
+      "recoverableDenial": {
+        "rejected": 1,
+        "genuineRetryCaptured": true,
+        "retryDidNotFire": true
+      }
+    },
+    "pageErrors": [],
+    "network": [],
+    "passed": true
+  }
+}

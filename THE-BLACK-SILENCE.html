@@ -15197,14 +15197,28 @@ const BLACK_SILENCE_RELOAD_PCM = {"latch":{"pcm":"AAD+//3/+v/9/wgADwAIACIAHAAHAD
       claimSlot=false;
     } catch {}
   }
+  function fitsPosition(s) {
+    const {x,z}=s.at;
+    if(!d0(x,z)) return true;
+    const cell=Math.floor(x/P)+","+Math.floor(z/P);
+    const door=v.doors[cell];
+    if(!door || !s.facts.opened.includes(cell)) return false;
+    // Check the full player footprint with the door in its saved state.
+    // The fresh level has not restored any door's animation or facts yet.
+    const closed=s.facts.opened.map(key=>v.doors[key]).filter(savedDoor=>!savedDoor.open);
+    for (const savedDoor of closed) savedDoor.open=true;
+    try { return !fu(x,z); }
+    finally { for (const savedDoor of closed) savedDoor.open=false; }
+  }
   function fitsLevel(s) {
     if(!s) return false;
     const f=s.facts, nearby=Q0.marks[s.mark];
     return nearby && Math.hypot(nearby.x-s.at.x,nearby.z-s.at.z)<=aR+.01 &&
-      !d0(s.at.x,s.at.z) && s.lit.every(i=>i<Q0.marks.length) &&
+      s.lit.every(i=>i<Q0.marks.length) &&
       f.killed.every(i=>i<Q0.base.enemies) && f.taken.every(i=>i<Q0.base.items) &&
       f.broken.every(i=>i<Q0.base.props) && f.opened.every(k=>Object.hasOwn(v.doors,k)) &&
-      f.spawned.every(i=>Object.hasOwn(f0,i.kind) && i.x<v.GW*P && i.z<v.GH*P);
+      f.spawned.every(i=>Object.hasOwn(f0,i.kind) && i.x<v.GW*P && i.z<v.GH*P) &&
+      fitsPosition(s);
   }
   const load=rp;
   rp=function(level, options) {
@@ -15303,6 +15317,30 @@ const BLACK_SILENCE_RELOAD_PCM = {"latch":{"pcm":"AAD+//3/+v/9/wgADwAIACIAHAAHAD
     restoring=slot; runId=slot.id; campaign=true;
     try { J$(slot.level); } finally { restoring=null; }
   });
+})();
+
+// The native snapshot stores defeated actors. Rebuild their progression
+// effects without replaying the death, achievements or combat audio.
+(() => {
+  const restoreFacts = a_;
+  a_ = function (facts) {
+    const result = restoreFacts.call(this, facts);
+    for (const index of facts.killed) {
+      const actor = v.enemies[index];
+      if (!actor?.boss || !actor.dead) continue;
+      if (!v.exitPos && cR.includes(actor.key)) {
+        const [cellX, cellZ] = Xg();
+        v.exitPos = { x: (cellX + .5) * P, z: (cellZ + .5) * P };
+        YJ(J.scene, gV[T.level]);
+      }
+      if (actor.key === "G" && T.level === dh.at(-1)) {
+        // Run the normal finale on the first unpaused update. A chapter
+        // change clears this queue before any callback can fire.
+        Xq(() => h9(), 0);
+      }
+    }
+    return result;
+  };
 })();
 
 // Both native maps use Bk for known items and draw the player above that layer.

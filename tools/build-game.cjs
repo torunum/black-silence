@@ -70,6 +70,7 @@ const code = [
   "display-settings.js",
   "chapter-records.js",
   "campaign-continue.js",
+  "campaign-boss-restore.js",
   "shrine-map.js",
   "pause-settings.js",
   "player-input.js",

@@ -138,14 +138,28 @@
       claimSlot=false;
     } catch {}
   }
+  function fitsPosition(s) {
+    const {x,z}=s.at;
+    if(!d0(x,z)) return true;
+    const cell=Math.floor(x/P)+","+Math.floor(z/P);
+    const door=v.doors[cell];
+    if(!door || !s.facts.opened.includes(cell)) return false;
+    // Check the full player footprint with the door in its saved state.
+    // The fresh level has not restored any door's animation or facts yet.
+    const closed=s.facts.opened.map(key=>v.doors[key]).filter(savedDoor=>!savedDoor.open);
+    for (const savedDoor of closed) savedDoor.open=true;
+    try { return !fu(x,z); }
+    finally { for (const savedDoor of closed) savedDoor.open=false; }
+  }
   function fitsLevel(s) {
     if(!s) return false;
     const f=s.facts, nearby=Q0.marks[s.mark];
     return nearby && Math.hypot(nearby.x-s.at.x,nearby.z-s.at.z)<=aR+.01 &&
-      !d0(s.at.x,s.at.z) && s.lit.every(i=>i<Q0.marks.length) &&
+      s.lit.every(i=>i<Q0.marks.length) &&
       f.killed.every(i=>i<Q0.base.enemies) && f.taken.every(i=>i<Q0.base.items) &&
       f.broken.every(i=>i<Q0.base.props) && f.opened.every(k=>Object.hasOwn(v.doors,k)) &&
-      f.spawned.every(i=>Object.hasOwn(f0,i.kind) && i.x<v.GW*P && i.z<v.GH*P);
+      f.spawned.every(i=>Object.hasOwn(f0,i.kind) && i.x<v.GW*P && i.z<v.GH*P) &&
+      fitsPosition(s);
   }
   const load=rp;
   rp=function(level, options) {
