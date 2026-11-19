@@ -24,6 +24,8 @@ Gotik piksel FPS oyununun on silah, deri eldiven ve prologue cehennem bölümü 
 
 ## Bu sürüm
 
+**Fare ve menü kontrolü.** Başlık menüsünde **Tab** ile dolaş, **Enter** veya **Space** ile seç. Fare yakalama engellenirse oyun duraklar ve yeniden deneme seçeneği gösterir. Oyun dönüşte basılı tuşları ve ateş girdisini sıfırlar. [Kontroller ve tarayıcı testi](docs/player-input-nov19.md).
+
 **19 Kasım, Prologue.** Cehennem arenasındaki köz ocağı koyu bazalt ve ince bakır kuşakla yeniden işlendi. Arenanın doğusundaki üç demir fener, üst kemere giden basamakları sırayla aydınlatıyor. [Arena görüntüleri](docs/hell-hearth-nov19/README.md) · [Arenadan üst kemere oynanış](docs/hell-ascent-nov19/README.md).
 
 **Necropolis.** Meydandaki bronz kakmaları izleyip kemiklik kapısını **E** ile aç. İki basamak kırmızı anahtara çıkar. Fildişi maskeli Screamer, yakındaki ölüleri çağırmadan önce öne eğiliyor ve çığlık atarken kollarını açıyor. [Kapının iki yönden geçişi](docs/necropolis-nov19/README.md) · [Screamer'ın oyun içi görüntüleri](docs/screamer-nov19/README.md).

@@ -1,0 +1,85 @@
+{
+  "sha256": "fb8fb766a0ed607a9c64a99e6ee502ea463d627081f2af0c9944753684f68843",
+  "browser": "157.0.8103.80",
+  "results": {
+    "normal": {
+      "steps": [
+        "Fresh Title, Chapter Select, Back and New Game work with only the keyboard",
+        "Menu M stays inactive and real held Tab still opens the map during play",
+        "Pointer exit clears held fire and blocks reload input until resumed",
+        "Window blur event releases native capture, Settings returns to the same pause, click recaptures without firing",
+        "Keyboard Continue starts the same saved campaign"
+      ],
+      "initial": [
+        6,
+        60
+      ],
+      "released": [
+        5,
+        60
+      ],
+      "chapter": 0
+    },
+    "realBrowserDenial": {
+      "stoppedBeforeGameControl": true,
+      "retryPaused": true,
+      "notice": "Mouse capture was blocked. If retry fails, open this HTML in its own tab."
+    },
+    "recoverableDenial": {
+      "rejected": 1,
+      "genuineRetryCaptured": true,
+      "retryDidNotFire": true
+    }
+  },
+  "pageErrors": [],
+  "network": [],
+  "passed": true,
+  "baselineCommit": "b8b77ffab2d9261e4c814792716551c3da4f338e",
+  "edge": {
+    "sha256": "fb8fb766a0ed607a9c64a99e6ee502ea463d627081f2af0c9944753684f68843",
+    "browser": "154.0.4258.53",
+    "results": {
+      "normal": {
+        "steps": [
+          "Fresh Title, Chapter Select, Back and New Game work with only the keyboard",
+          "Menu M stays inactive and real held Tab still opens the map during play",
+          "Pointer exit clears held fire and blocks reload input until resumed",
+          "Window blur event releases native capture, Settings returns to the same pause, click recaptures without firing",
+          "Keyboard Continue starts the same saved campaign"
+        ],
+        "initial": [
+          6,
+          60
+        ],
+        "released": [
+          5,
+          60
+        ],
+        "chapter": 0
+      },
+      "realBrowserDenial": {
+        "stoppedBeforeGameControl": true,
+        "retryPaused": true,
+        "notice": "Mouse capture was blocked. If retry fails, open this HTML in its own tab."
+      },
+      "recoverableDenial": {
+        "rejected": 1,
+        "genuineRetryCaptured": true,
+        "retryDidNotFire": true
+      }
+    },
+    "pageErrors": [],
+    "network": [],
+    "passed": true
+  },
+  "pauseSettings": {
+    "passed": true,
+    "checks": [
+      "Default real mouse input matches the original gain, zoom and clamp",
+      "Short-screen controls, Back and Resume preserve the same scene and player inventory",
+      "Custom sensitivity and inverted Y preserve native zoom, input lock and both pitch limits",
+      "Settings survive reopening the file; normal Settings and mouse Resume remain usable",
+      "Invalid saved values use defaults and storage denial still permits session changes"
+    ]
+  }
+}

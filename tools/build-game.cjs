@@ -72,6 +72,7 @@ const code = [
   "campaign-continue.js",
   "shrine-map.js",
   "pause-settings.js",
+  "player-input.js",
 ]
   .map((file) => fs.readFileSync(path.join(root, "src", file), "utf8"))
   .join("\n");
