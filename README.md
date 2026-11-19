@@ -26,7 +26,7 @@ Gotik piksel FPS oyununun on silah, deri eldiven ve prologue cehennem bölümü 
 
 **19 Kasım, Prologue.** Cehennem arenasındaki köz ocağı koyu bazalt ve ince bakır kuşakla yeniden işlendi. Arenanın doğusundaki üç demir fener, üst kemere giden basamakları sırayla aydınlatıyor. [Arena görüntüleri](docs/hell-hearth-nov19/README.md) · [Arenadan üst kemere oynanış](docs/hell-ascent-nov19/README.md).
 
-**Necropolis.** Meydandaki bronz kakmaları izleyip kemiklik kapısını **E** ile aç. İki basamak kırmızı anahtara çıkar. [Kapının iki yönden geçişi](docs/necropolis-nov19/README.md).
+**Necropolis.** Meydandaki bronz kakmaları izleyip kemiklik kapısını **E** ile aç. İki basamak kırmızı anahtara çıkar. Fildişi maskeli Screamer, yakındaki ölüleri çağırmadan önce öne eğiliyor ve çığlık atarken kollarını açıyor. [Kapının iki yönden geçişi](docs/necropolis-nov19/README.md) · [Screamer'ın oyun içi görüntüleri](docs/screamer-nov19/README.md).
 
 **Combat Rifle ve Nail Cannon.** **3** veya **7** ile silahı seç, **R** ile doldur. Tüfekte sol el şarjörü değiştirip kurma kolunu çekiyor. Nail Cannon'da sol el mandalı açıyor, pirinç hazneyi değiştiriyor ve mandalı kapatıyor. [Combat Rifle görüntü ve sesi](docs/rifle-nov19/README.md) · [Nail Cannon görüntü ve sesi](docs/nail-nov19/README.md).
 

@@ -1,6 +1,12 @@
-# Doğrulama — 14 Kasım 2026
+# Doğrulama
 
-## Zindan teslimi
+## 19 Kasım 2026
+
+Tek HTML dosyası 19.214.775 bayt. SHA-256 değeri `bee3c95c1b4611fac049aca5bf8d25aae200a0b176ee0827813f2282c3799093`. Art arda iki derleme aynı dosyayı verdi ve sekiz hatalı girdi dosyaya yazılmadan reddedildi. Chrome 11 bölümü WebGL ile açtı. Son HTML Chrome ve Edge’de ağ bağlantısı kapalıyken eski kaydı ve bölüm seçimini açtı. Ayrı temiz profillerde normal menüden yeni oyun başlatıldı, fareyle ateş edildi ve **R** ile mermi eksiksiz dolduruldu. [Yayımlanan HTML’nin doğrulaması](verification-data/nov19-screamer-release.json) · [Kaynak ve rapor karmaları](build-info.json).
+
+Screamer’ın ortaya çıkma koşulları, 110 yerel oyun adımı ve yakındaki zombiye etkisi önceki derlemeyle eşleşti. Arena ocağı ve fenerli basamaklar önceki oyunla 56.604 çarpışma örneğinde eşleşti. Necropolis kemiklik kapısı iki yönden açıldı. Kırmızı anahtar ve iki açık kapı **Continue** ile geri yüklendi. Combat Rifle ve Nail Cannon’ın şarjör ya da hazne hareketinde nişangâh üç ekran oranında açık kaldı. [Screamer](screamer-nov19/README.md) · [Sahne, kayıt, silah ve ses kontrolleri](verification-data/nov19-scenery-nail-release.json) · [Harita piksel karşılaştırması](verification-data/nov19-map-backdrop.json).
+
+## 14 Kasım 2026, zindan teslimi
 
 Yeni tek dosya 18.945.949 bayt. SHA-256 `fd809a3a410f390e21e9b2e4cc7ebfe2606ba8c346c2bb899062d91fc83a8d6e`. Art arda iki derleme aynı dosyayı verdi. Gerçek eski zindan kaydında keşfedilmiş 219 hücrenin 216'sı yeni plana taşındı. Yeniden şekillenen üç duvar hücresi tekrar ziyaret edilene kadar gizli kaldı. Bir sonraki kayıt ve Continue açılmış parmaklığı, tek sır puanını ve cephaneyi geri getirdi. [Kayıt aktarımı](gaol-sally-port-nov14/campaign-upgrade.json) · [Zindan ve port](gaol-sally-port-nov14/README.md) · [Harita ve pusula](wayfinding-nov14/README.md).
 

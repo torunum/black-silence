@@ -50,6 +50,7 @@ const code = [
   "enemy-animation.js",
   "guardian-volley.js",
   "dungeon-creatures.js",
+  "necropolis-screamer.js",
   "viewmodels.js",
   "finishers.js",
   "reload-audio-data.js",

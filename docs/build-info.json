@@ -1,7 +1,7 @@
 {
   "passed": true,
-  "bytes": 19204519,
-  "sha256": "e76bc683b32b9b11283a99231e3c816bc034e00772427e6581665adc6a3390d6",
+  "bytes": 19214775,
+  "sha256": "bee3c95c1b4611fac049aca5bf8d25aae200a0b176ee0827813f2282c3799093",
   "engineSha256": "6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899",
   "villageSha256": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627",
   "moduleHashes": {
@@ -12,6 +12,7 @@
     "enemy-animation.js": "767a60e867ff7b2a8917ae8b23fa938da8e8400bcfff883a0ebb13abb2eb02f3",
     "guardian-volley.js": "87fbdc8d921c74c119eadcce7164d2ef45d8e2216c512825c7961e67dcbbdab9",
     "dungeon-creatures.js": "f16ce76837b5878e405fefc1bd345f66068f2432ac2c125002ce0a978b2876fb",
+    "necropolis-screamer.js": "26c9284dc4b724a19256773373399b32cfb361fba979373e1cfc7f607700ca19",
     "viewmodels.js": "baab9bbd6dc11b5e8bd501b63838a018c5d61a04fd8f216f0ea62eca9602da62",
     "finishers.js": "8c2c7bdf13e17005c3383054560b155986d8e706b5bfda81e9f1a8224ee3c5b0",
     "reload-audio-data.js": "2f48b10a1225d1c007ee282d3c18f82c5022bb0267ed86d65feadf819ec1be30",
@@ -38,9 +39,9 @@
   "idempotentBuilds": 2,
   "invalidInputsRefusedWithoutWrite": 8,
   "file": "THE-BLACK-SILENCE.html",
-  "verifiedAt": "2026-11-19T10:26:18.637Z",
-  "previousRelease": "08329158d25a5d7486b73cb992e176ef58fbecd0d6339be4c49687afa946395d",
-  "baselineCommit": "237b9d2846b2271d5b81bf7a7246c9131c99a9c1",
+  "verifiedAt": "2026-11-19T10:46:15.821Z",
+  "previousRelease": "e76bc683b32b9b11283a99231e3c816bc034e00772427e6581665adc6a3390d6",
+  "baselineCommit": "983acdd0b8657e48cf6028a6a92ab4d5c40afb67",
   "verificationReports": [
     {
       "file": "docs/factory-nov14/verification.json",
@@ -165,6 +166,14 @@
     {
       "file": "docs/verification-data/nov19-scenery-nail-release.json",
       "sha256": "a1c8e23936a9090af7ef3ca54088879b7c7ab9dbc5874e7d3a06268de7b66527"
+    },
+    {
+      "file": "docs/screamer-nov19/verification.json",
+      "sha256": "aa2dcae78ce28e1ed27efc1ee0bf40ebed53464ecb79ee0a9eaebd6a197f8fae"
+    },
+    {
+      "file": "docs/verification-data/nov19-screamer-release.json",
+      "sha256": "41a445d5ae31baff9d5b77044e1ec432acf990b6d4d00126c9a5852ec4dc8041"
     }
   ]
 }
