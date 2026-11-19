@@ -253,13 +253,24 @@ const target = path.resolve(process.env.GAME_HTML || path.join(root, "THE-BLACK-
           "finisher starts with enemy animation module installed",
         );
         q.finishStep(0.4);
+        // The display pose is composed at the end of the enemy update.
+        q.enemyStep(0.01);
         const rotation = executed.sp.material.rotation;
         q.enemyStep(0.01);
         check(
           executed.executing &&
             !q.enemyAnimation(executed).recoil &&
+            Number.isFinite(rotation) &&
             executed.sp.material.rotation === rotation,
-          "execution retains its own target rotation",
+          "execution retains its composed rotation at a fixed animation time",
+        );
+        q.finishStep(0.06);
+        q.enemyStep(0.01);
+        check(
+          executed.executing &&
+            Number.isFinite(executed.sp.material.rotation) &&
+            executed.sp.material.rotation !== rotation,
+          "execution changes its composed rotation as the animation advances",
         );
         q.finishEnd();
         const boss = reset(4, "E");

@@ -24,6 +24,14 @@ Gotik piksel FPS oyununun on silah, deri eldiven ve prologue cehennem bölümü 
 
 ## Bu sürüm
 
+**Uçan tekme.** Yerde ileri doğru koşarken sağ tıkla. Sağ bot önce uzanıyor, sol bacak bükülü kalıp toparlanmada takip ediyor. [Eş kamera görüntüsü ve sesli klip](docs/dropkick-choreography-nov19.md).
+
+**Gravedigger.** Çağırdığı yaratıklar ilk karede doğru konumdan çiziliyor ve yara sesi sahnedeki konumlarından çalıyor. [Ses ve animasyon doğrulaması](docs/gravedigger-audio-nov19.md).
+
+**Heart of Silence.** Gövdesini sıkıştırması saldırının hazırlığını gösteriyor. Atışta kollarını açıyor, ardından bekleme veya yürüyüş pozuna dönüyor. [Aynı kameradan saldırı aşamaları](docs/heart-nov19/README.md).
+
+Sonuç ekranında, tek bir atış birden çok temas kaydetse de isabet yüzdesi en çok %100 gösteriliyor.
+
 **Yakın dövüş bitiricileri.** Sendeleyen düşmanda istem görünürken **E** tuşuna bas. Üç hareketin ayrı tutuşları, darbe araları ve toparlanma pozları var. [Oyun içi video ve kontroller](docs/finisher-choreography-nov19.md).
 
 **Mezarlık bekçisi.** Standart zombi, yıpranmış iş montu, keten kol sargısı ve ayrı botlarla yeniden çizildi. Yeni montun renkleri bitirici sırasında da görünüyor. [Oyun içi kareler ve sesli klip](docs/zombie-nov19/README.md).
@@ -150,7 +158,7 @@ Prologue'un cehennem alanına koyu bazalt döşeme, kemerli mimari, bronz detayl
 
 Yukarıdaki silah görüntüleri ve video 23 Ekim teslimatındandır. Son animasyon kanıtları `docs/weapon-animation-oct24b/` ve `docs/enemy-landing-oct24/` içindedir; her kaydın kaynak sürümü kendi doğrulama notlarında belirtilir. Bölüm düzeni korunur; son materyal karşılaştırmaları `docs/ritual-ivory-oct24c/` içindedir. [Düzeltilmiş native kamera/ışık kontrolü](docs/hell-environment.md) ve `docs/hell-capture-oct24/` mevcut ortamı gösterir. Tasarım hedefleri `assets/weapon-reference/` ve `assets/hand-reference/` içindedir; hedef görseller oyun ekran görüntüsü değildir.
 
-Son dosyanın hashleri, test kapsamı ve ölçüm sınırları [güncel doğrulama raporunda](docs/verification-data/nov19-execution-final.json) ve [build bilgisinde](docs/build-info.json) yer alır. [Önceki doğrulamalar](docs/verification.md).
+Son dosyanın hashleri, test kapsamı ve ölçüm sınırları [güncel doğrulama raporunda](docs/verification-data/nov19-afternoon-release.json) ve [build bilgisinde](docs/build-info.json) yer alır. [Önceki doğrulamalar](docs/verification.md).
 
 Silahların bir bölümü tam serbest açılı 3B model yerine, gerçek hacim ve hareketli parçalara bağlanan perspektifli resim yüzeyleri kullanır. Bu yöntem onaylanan birinci şahıs açısına göre hazırlanmıştır; her açıdan aynı ayrıntıyı sunan tam 3B model değildir. Bazı silah yüzeylerinde referansın ışık bilgisi resmin içinde bulunur. Cehennem ayrıntılarının bazı ışık vurguları da sabittir. Performans cihaz, tarayıcı ve sahneye göre değişir; tüm koşullarda sabit FPS garantisi yoktur.
 

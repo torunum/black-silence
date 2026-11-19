@@ -1,0 +1,269 @@
+{
+  "changedModuleSha256": "3d3abd7db91b62807a76f63bba54e3c851a5fcf5ba72c488ab2d331766da58c0",
+  "browser": "157.0.8103.80",
+  "originalHostileReproductions": [
+    {
+      "inputHtmlSha256": "f6585a733ff0ea1d9174de2e4db79677a507619992695b25a2106ab4217d74c5",
+      "cpuThrottle": 1.7,
+      "scriptedInputPollMs": 295,
+      "scope": "A prepared Ash Bell entrance, revolver fired with browser mouse buttons, keyboard movement and reload, scripted aim. Native actors, projectiles, and damage during the fight.",
+      "outcome": {
+        "phase": 2,
+        "bossHealth": 956,
+        "playerDied": true,
+        "shots": 30,
+        "hits": 14,
+        "realCues": 403,
+        "woundSounds": 11,
+        "summonSounds": 1,
+        "pageErrorCount": 4,
+        "rejectedAudioParamCount": 4,
+        "invalidSpriteRotationCount": "not instrumented"
+      },
+      "firstFault": {
+        "param": "createPanner.positionX",
+        "value": "NaN",
+        "cue": "spurtPulse",
+        "gameStack": [
+          "B9",
+          "KQ",
+          "nt",
+          "Wm",
+          "gt",
+          "ar",
+          "D4",
+          "AudioParam.value"
+        ],
+        "wound": [
+          "NaN",
+          "NaN",
+          "NaN"
+        ]
+      }
+    },
+    {
+      "inputHtmlSha256": "f6585a733ff0ea1d9174de2e4db79677a507619992695b25a2106ab4217d74c5",
+      "cpuThrottle": 1.7,
+      "scriptedInputPollMs": 295,
+      "scope": "A prepared Ash Bell entrance, revolver fired with browser mouse buttons, keyboard movement and reload, scripted aim. Native actors, projectiles, and damage during the fight.",
+      "outcome": {
+        "phase": 2,
+        "bossHealth": 752,
+        "playerDied": true,
+        "shots": 36,
+        "hits": 20,
+        "realCues": 505,
+        "woundSounds": 21,
+        "summonSounds": 1,
+        "pageErrorCount": 8,
+        "rejectedAudioParamCount": 8,
+        "invalidSpriteRotationCount": 10
+      },
+      "firstFault": {
+        "param": "createPanner.positionX",
+        "value": "NaN",
+        "cue": "spurtPulse",
+        "gameStack": [
+          "B9",
+          "KQ",
+          "nt",
+          "Wm",
+          "gt",
+          "ar",
+          "D4",
+          "AudioParam.value"
+        ],
+        "wound": [
+          "NaN",
+          "NaN",
+          "NaN"
+        ],
+        "firstBadSprite": {
+          "actor": "z",
+          "rotationBefore": "0",
+          "rotationAfter": "NaN",
+          "gaitClock": "0.0019935999999989434",
+          "rawRigWalkStep": 0.125,
+          "firstAudioRejectionDelayMs": 4716.199999988079
+        }
+      }
+    }
+  ],
+  "fixedHostileRun": {
+    "inputHtmlSha256": "fbab67a5d64d933fea952f8541a170e8ef32477f803796fe826e640446bec80d",
+    "cpuThrottle": 1.7,
+    "scriptedInputPollMs": 295,
+    "scope": "A prepared Ash Bell entrance, revolver fired with browser mouse buttons, keyboard movement and reload, scripted aim. Native actors, projectiles, and damage during the fight.",
+    "outcome": {
+      "phase": 2,
+      "bossHealth": 684,
+      "playerDied": true,
+      "shots": 36,
+      "hits": 19,
+      "realCues": 415,
+      "woundSounds": 7,
+      "summonSounds": 1,
+      "pageErrorCount": 0,
+      "rejectedAudioParamCount": 0,
+      "invalidSpriteRotationCount": 0
+    },
+    "firstFault": null
+  },
+  "phaseTwoComparison": {
+    "scope": "The fixture sets the phase-two summon timer. Native enemy update, damage, wound effects, PannerNode and WebGL run afterward. The two branches match physical traces for original actors and summons.",
+    "baseline": {
+      "inputHtmlSha256": "b8363527cc897bd1a62ce54bbf4ddb937d52e5ebaf715ab29a82d46ba755165d",
+      "cases": [
+        {
+          "actor": "z",
+          "firstSpritePoseFinite": [
+            false,
+            false
+          ],
+          "spritePoseFiniteAfter24Updates": [
+            false,
+            false
+          ],
+          "audio": {
+            "cue": "spurtPulse",
+            "projectedSource": [
+              "NaN",
+              "NaN",
+              "NaN"
+            ],
+            "appliedPannerPosition": [
+              0,
+              0,
+              0
+            ],
+            "pcmPeak": 0,
+            "rejectedWrites": [
+              {
+                "cue": "spurtPulse",
+                "param": "positionX",
+                "value": "NaN",
+                "message": "Failed to set the 'value' property on 'AudioParam': The provided float value is non-finite."
+              }
+            ]
+          },
+          "finiteCamera": true,
+          "nativeDraws": 124,
+          "glError": 0,
+          "actorsAndWoundSourcesRetired": true
+        },
+        {
+          "actor": "f",
+          "firstSpritePoseFinite": [
+            false,
+            false
+          ],
+          "spritePoseFiniteAfter24Updates": [
+            false,
+            false
+          ],
+          "audio": {
+            "cue": "spurtPulse",
+            "projectedSource": [
+              "NaN",
+              "NaN",
+              "NaN"
+            ],
+            "appliedPannerPosition": [
+              0,
+              0,
+              0
+            ],
+            "pcmPeak": 0,
+            "rejectedWrites": [
+              {
+                "cue": "spurtPulse",
+                "param": "positionX",
+                "value": "NaN",
+                "message": "Failed to set the 'value' property on 'AudioParam': The provided float value is non-finite."
+              }
+            ]
+          },
+          "finiteCamera": true,
+          "nativeDraws": 120,
+          "glError": 0,
+          "actorsAndWoundSourcesRetired": true
+        }
+      ]
+    },
+    "candidate": {
+      "inputHtmlSha256": "fbab67a5d64d933fea952f8541a170e8ef32477f803796fe826e640446bec80d",
+      "cases": [
+        {
+          "actor": "z",
+          "firstSpritePoseFinite": [
+            true,
+            true
+          ],
+          "spritePoseFiniteAfter24Updates": [
+            true,
+            true
+          ],
+          "audio": {
+            "cue": "spurtPulse",
+            "projectedSource": [
+              "35.43118662585747",
+              "1.1005263699913606",
+              "33.30176515761428"
+            ],
+            "appliedPannerPosition": [
+              35.43118667602539,
+              1.1005263328552246,
+              33.30176544189453
+            ],
+            "pcmPeak": 0.0005469617899507284,
+            "rejectedWrites": []
+          },
+          "finiteCamera": true,
+          "nativeDraws": 124,
+          "glError": 0,
+          "actorsAndWoundSourcesRetired": true
+        },
+        {
+          "actor": "f",
+          "firstSpritePoseFinite": [
+            true,
+            true
+          ],
+          "spritePoseFiniteAfter24Updates": [
+            true,
+            true
+          ],
+          "audio": {
+            "cue": "spurtPulse",
+            "projectedSource": [
+              "29.77315003639428",
+              "0.8495064204473842",
+              "33.75798060887797"
+            ],
+            "appliedPannerPosition": [
+              29.773149490356445,
+              0.8495064377784729,
+              33.75798034667969
+            ],
+            "pcmPeak": 0.0012847804464399815,
+            "rejectedWrites": []
+          },
+          "finiteCamera": true,
+          "nativeDraws": 118,
+          "glError": 0,
+          "actorsAndWoundSourcesRetired": true
+        }
+      ]
+    },
+    "physicalTracesMatch": true
+  },
+  "relatedTests": {
+    "reloadAudio": 125,
+    "zombieVoice": 14,
+    "enemyAnimation": {
+      "baseline": 40,
+      "candidate": 40,
+      "fixture": "Composed execution pose, fixed time compared against elapsed animation."
+    }
+  }
+}

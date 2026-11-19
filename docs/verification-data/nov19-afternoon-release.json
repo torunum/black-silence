@@ -1,0 +1,2069 @@
+{
+  "sha256": "48ca6290ff2ce2d13f9d1d95f4d5759f09b77b38d086a532793c263e977dbbcd",
+  "baselineCommit": "dd6cf26b12851f46c14b8e497bd4f350198bf518",
+  "previousSHA256": "b8363527cc897bd1a62ce54bbf4ddb937d52e5ebaf715ab29a82d46ba755165d",
+  "gravedigger": {
+    "browser": "157.0.8103.80",
+    "cases": [
+      {
+        "actor": "z",
+        "previousRejection": {
+          "cue": "spurtPulse",
+          "param": "positionX",
+          "value": "NaN"
+        },
+        "rendered": true,
+        "finiteFirstAndLaterPose": true,
+        "heardWoundSamples": [
+          {
+            "peak": 0.0009243465028703213,
+            "position": [
+              35.43118667602539,
+              1.1005263328552246,
+              33.30176544189453
+            ]
+          }
+        ],
+        "disposed": true
+      },
+      {
+        "actor": "f",
+        "previousRejection": {
+          "cue": "spurtPulse",
+          "param": "positionX",
+          "value": "NaN"
+        },
+        "rendered": true,
+        "finiteFirstAndLaterPose": true,
+        "heardWoundSamples": [
+          {
+            "peak": 0.0009927698411047459,
+            "position": [
+              29.773149490356445,
+              0.8495064377784729,
+              33.75798034667969
+            ]
+          }
+        ],
+        "disposed": true
+      }
+    ],
+    "live": {
+      "sha256": "48ca6290ff2ce2d13f9d1d95f4d5759f09b77b38d086a532793c263e977dbbcd",
+      "scope": "Prepared encounter entry and inventory. Native hostile actors and damage with browser movement and weapon inputs, plus scripted aim.",
+      "gameSecondsAtEnd": 65.511,
+      "phase": 2,
+      "finishedByPlayerDeath": true,
+      "rounds": 77,
+      "hits": 22,
+      "recordedSoundCalls": 800,
+      "summons": 1,
+      "woundEventsBeforeSummon": 7,
+      "javascriptErrors": 0,
+      "discardedAudioParameters": 0,
+      "invalidSpriteRotations": 0,
+      "nonFiniteSoundSources": 0
+    }
+  },
+  "heart": {
+    "passed": true,
+    "summary": [
+      {
+        "branch": "before",
+        "sha": "b8363527cc897bd1a62ce54bbf4ddb937d52e5ebaf715ab29a82d46ba755165d",
+        "hurtDuringRelease": "pain0:0",
+        "sightHandoff": {
+          "range": {
+            "site": [
+              12.75,
+              30.75
+            ],
+            "distance": 24.292488550990406,
+            "visible": true,
+            "previous": "atk0:0",
+            "outside": [
+              "atk0:0",
+              "atk0:0",
+              "atk0:0",
+              "atk0:0",
+              "atk1:0"
+            ],
+            "reentry": "atk1:0",
+            "extraOutside": 0,
+            "extraOrbs": 0
+          },
+          "cover": {
+            "site": [
+              37.25,
+              30.75
+            ],
+            "distance": 10.00624804809475,
+            "visible": false,
+            "previous": "atk0:0",
+            "outside": [
+              "atk0:0",
+              "atk0:0",
+              "atk0:0",
+              "atk0:0",
+              "atk1:0"
+            ],
+            "reentry": "atk1:0",
+            "extraOutside": 0,
+            "extraOrbs": 0
+          }
+        },
+        "cycles": [
+          {
+            "phase": 2,
+            "release": 28,
+            "orbs": 5,
+            "steps": 268,
+            "rest": "idle0:0",
+            "windup": "idle0:0",
+            "releases": [
+              {
+                "frame": 28,
+                "pose": "atk0:0"
+              },
+              {
+                "frame": 199,
+                "pose": "atk0:0"
+              }
+            ],
+            "firing": "atk0:0",
+            "settle": "atk0:0",
+            "post": "atk0:0",
+            "pain": "pain0:0",
+            "final": "atk0:0",
+            "rngCalls": 3510,
+            "cacheSize": 6,
+            "dimensions": [
+              {
+                "action": "idle",
+                "index": 0,
+                "width": 93,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  91,
+                  99
+                ],
+                "count": 3951
+              },
+              {
+                "action": "atk",
+                "index": 0,
+                "width": 93,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  92,
+                  99
+                ],
+                "count": 3956
+              },
+              {
+                "action": "atk",
+                "index": 1,
+                "width": 93,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  79,
+                  99
+                ],
+                "count": 3727
+              },
+              {
+                "action": "atk",
+                "index": 2,
+                "width": 93,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  86,
+                  99
+                ],
+                "count": 3888
+              }
+            ]
+          },
+          {
+            "phase": 1,
+            "release": 28,
+            "orbs": 1,
+            "steps": 268,
+            "rest": "walk0:0",
+            "windup": "walk2:0",
+            "releases": [
+              {
+                "frame": 28,
+                "pose": "atk0:0"
+              },
+              {
+                "frame": 235,
+                "pose": "atk0:0"
+              }
+            ],
+            "firing": "atk0:0",
+            "settle": "atk0:0",
+            "post": "atk0:0",
+            "pain": "pain0:0",
+            "final": "atk0:0",
+            "rngCalls": 2763,
+            "cacheSize": 10,
+            "dimensions": [
+              {
+                "action": "idle",
+                "index": 0,
+                "width": 93,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  91,
+                  99
+                ],
+                "count": 3951
+              },
+              {
+                "action": "atk",
+                "index": 0,
+                "width": 93,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  92,
+                  99
+                ],
+                "count": 3956
+              },
+              {
+                "action": "atk",
+                "index": 1,
+                "width": 93,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  79,
+                  99
+                ],
+                "count": 3727
+              },
+              {
+                "action": "atk",
+                "index": 2,
+                "width": 93,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  86,
+                  99
+                ],
+                "count": 3888
+              }
+            ]
+          },
+          {
+            "phase": 3,
+            "release": 28,
+            "orbs": 3,
+            "steps": 268,
+            "rest": "walk0:0",
+            "windup": "walk3:0",
+            "releases": [
+              {
+                "frame": 28,
+                "pose": "atk0:0"
+              },
+              {
+                "frame": 247,
+                "pose": "atk0:0"
+              }
+            ],
+            "firing": "atk0:0",
+            "settle": "atk0:0",
+            "post": "atk0:0",
+            "pain": "pain0:0",
+            "final": "atk0:0",
+            "rngCalls": 2907,
+            "cacheSize": 9,
+            "dimensions": [
+              {
+                "action": "idle",
+                "index": 0,
+                "width": 109,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  101,
+                  99
+                ],
+                "count": 4343
+              },
+              {
+                "action": "atk",
+                "index": 0,
+                "width": 109,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  104,
+                  99
+                ],
+                "count": 4387
+              },
+              {
+                "action": "atk",
+                "index": 1,
+                "width": 109,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  89,
+                  99
+                ],
+                "count": 4140
+              },
+              {
+                "action": "atk",
+                "index": 2,
+                "width": 109,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  97,
+                  99
+                ],
+                "count": 4283
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "branch": "after",
+        "sha": "48ca6290ff2ce2d13f9d1d95f4d5759f09b77b38d086a532793c263e977dbbcd",
+        "hurtDuringRelease": "pain0:0",
+        "sightHandoff": {
+          "range": {
+            "site": [
+              12.75,
+              30.75
+            ],
+            "distance": 24.292488550990406,
+            "visible": true,
+            "previous": "idle0:0",
+            "outside": [
+              "walk0:0",
+              "walk0:0",
+              "walk0:0",
+              "walk0:0",
+              "walk0:0"
+            ],
+            "reentry": "idle0:0",
+            "extraOutside": 0,
+            "extraOrbs": 0
+          },
+          "cover": {
+            "site": [
+              37.25,
+              30.75
+            ],
+            "distance": 10.00624804809475,
+            "visible": false,
+            "previous": "atk1:0",
+            "outside": [
+              "walk0:0",
+              "walk0:0",
+              "walk0:0",
+              "walk0:0",
+              "walk0:0"
+            ],
+            "reentry": "idle0:0",
+            "extraOutside": 0,
+            "extraOrbs": 0
+          }
+        },
+        "cycles": [
+          {
+            "phase": 2,
+            "release": 28,
+            "orbs": 5,
+            "steps": 268,
+            "rest": "idle0:0",
+            "windup": "atk0:0",
+            "releases": [
+              {
+                "frame": 28,
+                "pose": "atk1:0"
+              },
+              {
+                "frame": 199,
+                "pose": "atk1:0"
+              }
+            ],
+            "firing": "atk1:0",
+            "settle": "atk2:0",
+            "post": "idle0:0",
+            "pain": "pain0:0",
+            "final": "idle0:0",
+            "rngCalls": 3510,
+            "cacheSize": 6,
+            "dimensions": [
+              {
+                "action": "idle",
+                "index": 0,
+                "width": 93,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  91,
+                  99
+                ],
+                "count": 3951
+              },
+              {
+                "action": "atk",
+                "index": 0,
+                "width": 93,
+                "height": 100,
+                "bounds": [
+                  15,
+                  0,
+                  78,
+                  99
+                ],
+                "count": 3819
+              },
+              {
+                "action": "atk",
+                "index": 1,
+                "width": 93,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  79,
+                  99
+                ],
+                "count": 3727
+              },
+              {
+                "action": "atk",
+                "index": 2,
+                "width": 93,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  86,
+                  99
+                ],
+                "count": 3888
+              }
+            ]
+          },
+          {
+            "phase": 1,
+            "release": 28,
+            "orbs": 1,
+            "steps": 268,
+            "rest": "walk0:0",
+            "windup": "atk0:0",
+            "releases": [
+              {
+                "frame": 28,
+                "pose": "atk1:0"
+              },
+              {
+                "frame": 235,
+                "pose": "atk1:0"
+              }
+            ],
+            "firing": "atk1:0",
+            "settle": "atk2:0",
+            "post": "walk2:0",
+            "pain": "pain0:0",
+            "final": "idle0:0",
+            "rngCalls": 2763,
+            "cacheSize": 12,
+            "dimensions": [
+              {
+                "action": "idle",
+                "index": 0,
+                "width": 93,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  91,
+                  99
+                ],
+                "count": 3951
+              },
+              {
+                "action": "atk",
+                "index": 0,
+                "width": 93,
+                "height": 100,
+                "bounds": [
+                  15,
+                  0,
+                  78,
+                  99
+                ],
+                "count": 3819
+              },
+              {
+                "action": "atk",
+                "index": 1,
+                "width": 93,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  79,
+                  99
+                ],
+                "count": 3727
+              },
+              {
+                "action": "atk",
+                "index": 2,
+                "width": 93,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  86,
+                  99
+                ],
+                "count": 3888
+              }
+            ]
+          },
+          {
+            "phase": 3,
+            "release": 28,
+            "orbs": 3,
+            "steps": 268,
+            "rest": "walk0:0",
+            "windup": "atk0:0",
+            "releases": [
+              {
+                "frame": 28,
+                "pose": "atk1:0"
+              },
+              {
+                "frame": 247,
+                "pose": "atk1:0"
+              }
+            ],
+            "firing": "atk1:0",
+            "settle": "atk2:0",
+            "post": "idle0:0",
+            "pain": "pain0:0",
+            "final": "idle0:0",
+            "rngCalls": 2907,
+            "cacheSize": 8,
+            "dimensions": [
+              {
+                "action": "idle",
+                "index": 0,
+                "width": 109,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  101,
+                  99
+                ],
+                "count": 4343
+              },
+              {
+                "action": "atk",
+                "index": 0,
+                "width": 109,
+                "height": 100,
+                "bounds": [
+                  21,
+                  0,
+                  88,
+                  99
+                ],
+                "count": 4268
+              },
+              {
+                "action": "atk",
+                "index": 1,
+                "width": 109,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  89,
+                  99
+                ],
+                "count": 4140
+              },
+              {
+                "action": "atk",
+                "index": 2,
+                "width": 109,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  97,
+                  99
+                ],
+                "count": 4283
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "errors": []
+  },
+  "heartHandoff": {
+    "passed": true,
+    "summary": [
+      {
+        "branch": "before",
+        "sha": "df0eba7a770221c299af3332329d110a5433058b282666c3cbab661347b59678",
+        "hurtDuringRelease": "pain0:0",
+        "sightHandoff": {
+          "range": {
+            "site": [
+              12.75,
+              30.75
+            ],
+            "distance": 24.292488550990406,
+            "visible": true,
+            "previous": "idle0:0",
+            "outside": [
+              "atk0:0",
+              "atk0:0",
+              "atk0:0",
+              "atk0:0",
+              "atk1:0"
+            ],
+            "reentry": "idle0:0",
+            "extraOutside": 0,
+            "extraOrbs": 0
+          },
+          "cover": {
+            "site": [
+              37.25,
+              30.75
+            ],
+            "distance": 10.00624804809475,
+            "visible": false,
+            "previous": "atk1:0",
+            "outside": [
+              "atk0:0",
+              "atk0:0",
+              "atk0:0",
+              "atk0:0",
+              "atk1:0"
+            ],
+            "reentry": "atk1:0",
+            "extraOutside": 0,
+            "extraOrbs": 0
+          }
+        },
+        "cycles": [
+          {
+            "phase": 2,
+            "release": 28,
+            "orbs": 5,
+            "steps": 268,
+            "rest": "idle0:0",
+            "windup": "atk0:0",
+            "releases": [
+              {
+                "frame": 28,
+                "pose": "atk1:0"
+              },
+              {
+                "frame": 199,
+                "pose": "atk1:0"
+              }
+            ],
+            "firing": "atk1:0",
+            "settle": "atk2:0",
+            "post": "idle0:0",
+            "pain": "pain0:0",
+            "final": "idle0:0",
+            "rngCalls": 3510,
+            "cacheSize": 6,
+            "dimensions": [
+              {
+                "action": "idle",
+                "index": 0,
+                "width": 93,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  91,
+                  99
+                ],
+                "count": 3951
+              },
+              {
+                "action": "atk",
+                "index": 0,
+                "width": 93,
+                "height": 100,
+                "bounds": [
+                  15,
+                  0,
+                  78,
+                  99
+                ],
+                "count": 3819
+              },
+              {
+                "action": "atk",
+                "index": 1,
+                "width": 93,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  79,
+                  99
+                ],
+                "count": 3727
+              },
+              {
+                "action": "atk",
+                "index": 2,
+                "width": 93,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  86,
+                  99
+                ],
+                "count": 3888
+              }
+            ]
+          },
+          {
+            "phase": 1,
+            "release": 28,
+            "orbs": 1,
+            "steps": 268,
+            "rest": "walk0:0",
+            "windup": "atk0:0",
+            "releases": [
+              {
+                "frame": 28,
+                "pose": "atk1:0"
+              },
+              {
+                "frame": 235,
+                "pose": "atk1:0"
+              }
+            ],
+            "firing": "atk1:0",
+            "settle": "atk2:0",
+            "post": "walk2:0",
+            "pain": "pain0:0",
+            "final": "idle0:0",
+            "rngCalls": 2763,
+            "cacheSize": 12,
+            "dimensions": [
+              {
+                "action": "idle",
+                "index": 0,
+                "width": 93,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  91,
+                  99
+                ],
+                "count": 3951
+              },
+              {
+                "action": "atk",
+                "index": 0,
+                "width": 93,
+                "height": 100,
+                "bounds": [
+                  15,
+                  0,
+                  78,
+                  99
+                ],
+                "count": 3819
+              },
+              {
+                "action": "atk",
+                "index": 1,
+                "width": 93,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  79,
+                  99
+                ],
+                "count": 3727
+              },
+              {
+                "action": "atk",
+                "index": 2,
+                "width": 93,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  86,
+                  99
+                ],
+                "count": 3888
+              }
+            ]
+          },
+          {
+            "phase": 3,
+            "release": 28,
+            "orbs": 3,
+            "steps": 268,
+            "rest": "walk0:0",
+            "windup": "atk0:0",
+            "releases": [
+              {
+                "frame": 28,
+                "pose": "atk1:0"
+              },
+              {
+                "frame": 247,
+                "pose": "atk1:0"
+              }
+            ],
+            "firing": "atk1:0",
+            "settle": "atk2:0",
+            "post": "idle0:0",
+            "pain": "pain0:0",
+            "final": "idle0:0",
+            "rngCalls": 2907,
+            "cacheSize": 8,
+            "dimensions": [
+              {
+                "action": "idle",
+                "index": 0,
+                "width": 109,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  101,
+                  99
+                ],
+                "count": 4343
+              },
+              {
+                "action": "atk",
+                "index": 0,
+                "width": 109,
+                "height": 100,
+                "bounds": [
+                  21,
+                  0,
+                  88,
+                  99
+                ],
+                "count": 4268
+              },
+              {
+                "action": "atk",
+                "index": 1,
+                "width": 109,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  89,
+                  99
+                ],
+                "count": 4140
+              },
+              {
+                "action": "atk",
+                "index": 2,
+                "width": 109,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  97,
+                  99
+                ],
+                "count": 4283
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "branch": "after",
+        "sha": "48ca6290ff2ce2d13f9d1d95f4d5759f09b77b38d086a532793c263e977dbbcd",
+        "hurtDuringRelease": "pain0:0",
+        "sightHandoff": {
+          "range": {
+            "site": [
+              12.75,
+              30.75
+            ],
+            "distance": 24.292488550990406,
+            "visible": true,
+            "previous": "idle0:0",
+            "outside": [
+              "walk0:0",
+              "walk0:0",
+              "walk0:0",
+              "walk0:0",
+              "walk0:0"
+            ],
+            "reentry": "idle0:0",
+            "extraOutside": 0,
+            "extraOrbs": 0
+          },
+          "cover": {
+            "site": [
+              37.25,
+              30.75
+            ],
+            "distance": 10.00624804809475,
+            "visible": false,
+            "previous": "atk1:0",
+            "outside": [
+              "walk0:0",
+              "walk0:0",
+              "walk0:0",
+              "walk0:0",
+              "walk0:0"
+            ],
+            "reentry": "idle0:0",
+            "extraOutside": 0,
+            "extraOrbs": 0
+          }
+        },
+        "cycles": [
+          {
+            "phase": 2,
+            "release": 28,
+            "orbs": 5,
+            "steps": 268,
+            "rest": "idle0:0",
+            "windup": "atk0:0",
+            "releases": [
+              {
+                "frame": 28,
+                "pose": "atk1:0"
+              },
+              {
+                "frame": 199,
+                "pose": "atk1:0"
+              }
+            ],
+            "firing": "atk1:0",
+            "settle": "atk2:0",
+            "post": "idle0:0",
+            "pain": "pain0:0",
+            "final": "idle0:0",
+            "rngCalls": 3510,
+            "cacheSize": 6,
+            "dimensions": [
+              {
+                "action": "idle",
+                "index": 0,
+                "width": 93,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  91,
+                  99
+                ],
+                "count": 3951
+              },
+              {
+                "action": "atk",
+                "index": 0,
+                "width": 93,
+                "height": 100,
+                "bounds": [
+                  15,
+                  0,
+                  78,
+                  99
+                ],
+                "count": 3819
+              },
+              {
+                "action": "atk",
+                "index": 1,
+                "width": 93,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  79,
+                  99
+                ],
+                "count": 3727
+              },
+              {
+                "action": "atk",
+                "index": 2,
+                "width": 93,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  86,
+                  99
+                ],
+                "count": 3888
+              }
+            ]
+          },
+          {
+            "phase": 1,
+            "release": 28,
+            "orbs": 1,
+            "steps": 268,
+            "rest": "walk0:0",
+            "windup": "atk0:0",
+            "releases": [
+              {
+                "frame": 28,
+                "pose": "atk1:0"
+              },
+              {
+                "frame": 235,
+                "pose": "atk1:0"
+              }
+            ],
+            "firing": "atk1:0",
+            "settle": "atk2:0",
+            "post": "walk2:0",
+            "pain": "pain0:0",
+            "final": "idle0:0",
+            "rngCalls": 2763,
+            "cacheSize": 12,
+            "dimensions": [
+              {
+                "action": "idle",
+                "index": 0,
+                "width": 93,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  91,
+                  99
+                ],
+                "count": 3951
+              },
+              {
+                "action": "atk",
+                "index": 0,
+                "width": 93,
+                "height": 100,
+                "bounds": [
+                  15,
+                  0,
+                  78,
+                  99
+                ],
+                "count": 3819
+              },
+              {
+                "action": "atk",
+                "index": 1,
+                "width": 93,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  79,
+                  99
+                ],
+                "count": 3727
+              },
+              {
+                "action": "atk",
+                "index": 2,
+                "width": 93,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  86,
+                  99
+                ],
+                "count": 3888
+              }
+            ]
+          },
+          {
+            "phase": 3,
+            "release": 28,
+            "orbs": 3,
+            "steps": 268,
+            "rest": "walk0:0",
+            "windup": "atk0:0",
+            "releases": [
+              {
+                "frame": 28,
+                "pose": "atk1:0"
+              },
+              {
+                "frame": 247,
+                "pose": "atk1:0"
+              }
+            ],
+            "firing": "atk1:0",
+            "settle": "atk2:0",
+            "post": "idle0:0",
+            "pain": "pain0:0",
+            "final": "idle0:0",
+            "rngCalls": 2907,
+            "cacheSize": 8,
+            "dimensions": [
+              {
+                "action": "idle",
+                "index": 0,
+                "width": 109,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  101,
+                  99
+                ],
+                "count": 4343
+              },
+              {
+                "action": "atk",
+                "index": 0,
+                "width": 109,
+                "height": 100,
+                "bounds": [
+                  21,
+                  0,
+                  88,
+                  99
+                ],
+                "count": 4268
+              },
+              {
+                "action": "atk",
+                "index": 1,
+                "width": 109,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  89,
+                  99
+                ],
+                "count": 4140
+              },
+              {
+                "action": "atk",
+                "index": 2,
+                "width": 109,
+                "height": 100,
+                "bounds": [
+                  0,
+                  0,
+                  97,
+                  99
+                ],
+                "count": 4283
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "errors": []
+  },
+  "liveHeart": {
+    "sha256": "48ca6290ff2ce2d13f9d1d95f4d5759f09b77b38d086a532793c263e977dbbcd",
+    "attempts": 2,
+    "scope": "Read-only inspection for steering. Browser input alone moves player, aims, fires, navigates, interacts, reloads and switches weapons after launch.",
+    "setup": "Separately prepared, game-written shrine save; native Continue and actual mouse and keyboard inputs in the battle.",
+    "durationSeconds": 23.161,
+    "shots": 17,
+    "hits": 16,
+    "endings": {
+      "hp": 88.40000000000006,
+      "armor": 32.79999999999998,
+      "deaths": 0,
+      "heartHp": -60,
+      "heartPhase": 3
+    },
+    "summons": 3,
+    "displayedAccuracy": 94,
+    "victory": true,
+    "campaignCleared": true,
+    "screenshot": {
+      "file": "docs/heart-nov19/native-victory.png",
+      "sha256": "83a635235a2771d334cea88e1853583db932f621fdf08acac310a050b9d72336"
+    }
+  },
+  "enemyAnimation": {
+    "passed": 40,
+    "tests": [
+      "native gait and body weight advance while actually moving",
+      "slow movement halves gait cadence without changing stride length",
+      "stunned actors do not walk in place",
+      "ready melee attack shows native anticipation frame before damage",
+      "anticipation does not apply or reschedule damage",
+      "contact has recovery motion without inflating the sprite",
+      "t: native close melee receives a pre-contact pose without early damage",
+      "t: close melee retains native damage and cooldown",
+      "t: reach 1.56 preserves the native gap and distant attack band",
+      "t: reach 2.5 preserves the native gap and distant attack band",
+      "t: reach 3 preserves the native gap and distant attack band",
+      "t: reach 4 preserves the native gap and distant attack band",
+      "j: native close melee receives a pre-contact pose without early damage",
+      "j: close melee retains native damage and cooldown",
+      "j: reach 1.56 preserves the native gap and distant attack band",
+      "j: reach 2.5 preserves the native gap and distant attack band",
+      "j: reach 3 preserves the native gap and distant attack band",
+      "j: reach 4 preserves the native gap and distant attack band",
+      "directional recoil responds to the actual hit without changing damage",
+      "stagger visibly settles weight below the standing pose",
+      "stagger animation preserves position and hitbox dimensions",
+      "stagger expiry blends into recovery",
+      "flung trajectory and spin retain priority",
+      "living throw uses native reeling rig instead of a frozen walk frame",
+      "landing starts bounded presentation recovery after physical flight ends",
+      "landing weight changes sprite only, preserving root, hitbox and health",
+      "zero game time does not advance landing recovery",
+      "repeated hit does not restart landing or retain a body offset",
+      "death immediately returns landing sprite ownership to native corpse animation",
+      "short remaining throw still enters landing recovery",
+      "far actor releases the impact texture even when native distance culling skips its rig",
+      "landing preserves an urgent attack telegraph without advancing its damage",
+      "native contact still damages on its normal cooldown during landing recovery",
+      "stagger cue takes priority over ongoing landing weight and pain frames",
+      "finisher starts with enemy animation module installed",
+      "execution retains its composed rotation at a fixed animation time",
+      "execution changes its composed rotation as the animation advances",
+      "boss silhouette and dormant animation remain native",
+      "death owns the sprite and clears living recoil",
+      "scene reset discards transient animation state"
+    ],
+    "arena": {
+      "px": 3,
+      "pz": 7
+    }
+  },
+  "dropkick": {
+    "identicalOtherRasters": 81,
+    "leadingBootRasterDelta": 84,
+    "controls": [
+      {
+        "stage": "tap",
+        "trace": 214,
+        "screenshots": 3,
+        "inputSpeed": 0,
+        "hitAt": 0.13549999999999998,
+        "targetHp": 142,
+        "launch": 0
+      },
+      {
+        "stage": "drop",
+        "trace": 64,
+        "screenshots": 3,
+        "inputSpeed": 7.655782059612165,
+        "hitAt": 0.19500000000000003,
+        "targetHp": 122,
+        "launch": 1.0400000000000003
+      }
+    ]
+  },
+  "rifle": {
+    "weapon": 2,
+    "sourceSha": "48ca6290ff2ce2d13f9d1d95f4d5759f09b77b38d086a532793c263e977dbbcd",
+    "runs": [
+      {
+        "width": 1024,
+        "height": 768,
+        "initial": [
+          24,
+          50
+        ],
+        "afterFire": 20,
+        "final": [
+          24,
+          46
+        ],
+        "samples": {
+          "idle": {
+            "count": 26,
+            "nearest": 30.442076144704714,
+            "phase": 0.010411764705881711,
+            "obstructedPhases": []
+          },
+          "fire": {
+            "count": 23,
+            "nearest": 34.20409332229112,
+            "phase": 0.040764705882353584,
+            "obstructedPhases": []
+          },
+          "reload": {
+            "count": 97,
+            "nearest": 25.298221281347036,
+            "phase": 0.9677647058823531,
+            "obstructedPhases": []
+          }
+        },
+        "played": [
+          {
+            "event": "release",
+            "phase": 0.15452941176470628,
+            "target": 0.145
+          },
+          {
+            "event": "strip",
+            "phase": 0.24711764705882366,
+            "target": 0.245
+          },
+          {
+            "event": "guide",
+            "phase": 0.5354117647058827,
+            "target": 0.535
+          },
+          {
+            "event": "seat",
+            "phase": 0.6489411764705885,
+            "target": 0.64
+          },
+          {
+            "event": "drawBolt",
+            "phase": 0.7622352941176473,
+            "target": 0.76
+          },
+          {
+            "event": "catchBolt",
+            "phase": 0.8858823529411762,
+            "target": 0.885
+          }
+        ]
+      },
+      {
+        "width": 1280,
+        "height": 720,
+        "initial": [
+          24,
+          50
+        ],
+        "afterFire": 20,
+        "final": [
+          24,
+          46
+        ],
+        "samples": {
+          "idle": {
+            "count": 26,
+            "nearest": 27.85677655436824,
+            "phase": 0.010705882352941605,
+            "obstructedPhases": []
+          },
+          "fire": {
+            "count": 24,
+            "nearest": 32.2490309931942,
+            "phase": 0.050882352941176476,
+            "obstructedPhases": []
+          },
+          "reload": {
+            "count": 97,
+            "nearest": 24.083189157584588,
+            "phase": 0.9148823529411759,
+            "obstructedPhases": []
+          }
+        },
+        "played": [
+          {
+            "event": "release",
+            "phase": 0.15311764705882314,
+            "target": 0.145
+          },
+          {
+            "event": "strip",
+            "phase": 0.24558823529411763,
+            "target": 0.245
+          },
+          {
+            "event": "guide",
+            "phase": 0.5437647058823527,
+            "target": 0.535
+          },
+          {
+            "event": "seat",
+            "phase": 0.6471176470588227,
+            "target": 0.64
+          },
+          {
+            "event": "drawBolt",
+            "phase": 0.7605882352941177,
+            "target": 0.76
+          },
+          {
+            "event": "catchBolt",
+            "phase": 0.8938235294117645,
+            "target": 0.885
+          }
+        ]
+      },
+      {
+        "width": 1680,
+        "height": 720,
+        "initial": [
+          24,
+          50
+        ],
+        "afterFire": 20,
+        "final": [
+          24,
+          46
+        ],
+        "samples": {
+          "idle": {
+            "count": 26,
+            "nearest": 28.297531571435513,
+            "phase": 0.010294117647058825,
+            "obstructedPhases": []
+          },
+          "fire": {
+            "count": 24,
+            "nearest": 32.501323772615805,
+            "phase": 0.040764705882352516,
+            "obstructedPhases": []
+          },
+          "reload": {
+            "count": 97,
+            "nearest": 25.875765444899898,
+            "phase": 0.99770588235294,
+            "obstructedPhases": []
+          }
+        },
+        "played": [
+          {
+            "event": "release",
+            "phase": 0.15447058823529325,
+            "target": 0.145
+          },
+          {
+            "event": "strip",
+            "phase": 0.24782352941176422,
+            "target": 0.245
+          },
+          {
+            "event": "guide",
+            "phase": 0.5359411764705873,
+            "target": 0.535
+          },
+          {
+            "event": "seat",
+            "phase": 0.6489411764705886,
+            "target": 0.64
+          },
+          {
+            "event": "drawBolt",
+            "phase": 0.7607647058823523,
+            "target": 0.76
+          },
+          {
+            "event": "catchBolt",
+            "phase": 0.8944705882352929,
+            "target": 0.885
+          }
+        ]
+      }
+    ],
+    "errors": [],
+    "requests": []
+  },
+  "reload": {
+    "sha256": "48ca6290ff2ce2d13f9d1d95f4d5759f09b77b38d086a532793c263e977dbbcd",
+    "checks": 125,
+    "results": [
+      "weapon 0: old .18 casing event removed",
+      "weapon 0: native casing count at shared .27 phase",
+      "weapon 0: seven foley events exactly once",
+      "weapon 0: all event onsets within one simulation step",
+      "weapon 0: native ammo/reserve unchanged",
+      "weapon 0: native reload completion unchanged",
+      "weapon 0: zero delayed casing beeps or reload oscillators",
+      "weapon 0: completed voices released",
+      "weapon 1: old .18 casing event removed",
+      "weapon 1: native casing count at shared .27 phase",
+      "weapon 1: seven foley events exactly once",
+      "weapon 1: all event onsets within one simulation step",
+      "weapon 1: native ammo/reserve unchanged",
+      "weapon 1: native reload completion unchanged",
+      "weapon 1: zero delayed casing beeps or reload oscillators",
+      "weapon 1: completed voices released",
+      "weapon 2: each contact plays once, in order",
+      "weapon 2: recorded hits meet their animation windows",
+      "weapon 2: native ammo is conserved",
+      "weapon 2: no casing or synth chirp on reload",
+      "weapon 2: pause interrupts a live recording",
+      "weapon 2: pause releases contact and resonance",
+      "weapon 2: mute interrupts a live recording",
+      "weapon 2: mute releases contact and resonance",
+      "weapon 2: switch interrupts a live recording",
+      "weapon 2: switch releases contact and resonance",
+      "weapon 2: death interrupts a live recording",
+      "weapon 2: death releases contact and resonance",
+      "weapon 3: each contact plays once, in order",
+      "weapon 3: recorded hits meet their animation windows",
+      "weapon 3: native ammo is conserved",
+      "weapon 3: no casing or synth chirp on reload",
+      "weapon 3: pause interrupts a live recording",
+      "weapon 3: pause releases contact and resonance",
+      "weapon 3: mute interrupts a live recording",
+      "weapon 3: mute releases contact and resonance",
+      "weapon 3: switch interrupts a live recording",
+      "weapon 3: switch releases contact and resonance",
+      "weapon 3: death interrupts a live recording",
+      "weapon 3: death releases contact and resonance",
+      "weapon 5: each contact plays once, in order",
+      "weapon 5: recorded hits meet their animation windows",
+      "weapon 5: native ammo is conserved",
+      "weapon 5: no casing or synth chirp on reload",
+      "weapon 5: pause interrupts a live recording",
+      "weapon 5: pause releases contact and resonance",
+      "weapon 5: mute interrupts a live recording",
+      "weapon 5: mute releases contact and resonance",
+      "weapon 5: switch interrupts a live recording",
+      "weapon 5: switch releases contact and resonance",
+      "weapon 5: death interrupts a live recording",
+      "weapon 5: death releases contact and resonance",
+      "weapon 6: each contact plays once, in order",
+      "weapon 6: recorded hits meet their animation windows",
+      "weapon 6: native ammo is conserved",
+      "weapon 6: no casing or synth chirp on reload",
+      "weapon 6: pause interrupts a live recording",
+      "weapon 6: pause releases contact and resonance",
+      "weapon 6: mute interrupts a live recording",
+      "weapon 6: mute releases contact and resonance",
+      "weapon 6: switch interrupts a live recording",
+      "weapon 6: switch releases contact and resonance",
+      "weapon 6: death interrupts a live recording",
+      "weapon 6: death releases contact and resonance",
+      "weapon 7: each contact plays once, in order",
+      "weapon 7: recorded hits meet their animation windows",
+      "weapon 7: native ammo is conserved",
+      "weapon 7: no casing or synth chirp on reload",
+      "weapon 7: pause interrupts a live recording",
+      "weapon 7: pause releases contact and resonance",
+      "weapon 7: mute interrupts a live recording",
+      "weapon 7: mute releases contact and resonance",
+      "weapon 7: switch interrupts a live recording",
+      "weapon 7: switch releases contact and resonance",
+      "weapon 7: death interrupts a live recording",
+      "weapon 7: death releases contact and resonance",
+      "weapon 9: each contact plays once, in order",
+      "weapon 9: recorded hits meet their animation windows",
+      "weapon 9: native ammo is conserved",
+      "weapon 9: no casing or synth chirp on reload",
+      "weapon 9: pause interrupts a live recording",
+      "weapon 9: pause releases contact and resonance",
+      "weapon 9: mute interrupts a live recording",
+      "weapon 9: mute releases contact and resonance",
+      "weapon 9: switch interrupts a live recording",
+      "weapon 9: switch releases contact and resonance",
+      "weapon 9: death interrupts a live recording",
+      "weapon 9: death releases contact and resonance",
+      "glassLift: no clipped or nonfinite samples",
+      "glassLift: tail ends at silence",
+      "glassSeat: no clipped or nonfinite samples",
+      "glassSeat: tail ends at silence",
+      "rapid R does not restart or duplicate reload audio",
+      "reload creates real AudioBufferSource voices",
+      "weapon switch fades and releases reload voices",
+      "cancel after eject leaves no delayed old casing chirps",
+      "pause stops reload foley",
+      "pause has no wall-clock audio event queue",
+      "resume triggers only future phase crossings",
+      "focus loss stops reload voices",
+      "hidden tab stops reload voices",
+      "hidden tab cannot create new foley",
+      "master effects volume zero produces no foley voices",
+      "mute does not change ammo or casing visuals",
+      "muting mid-reload releases the existing voices",
+      "unmuting does not resurrect a prior transient",
+      "reset/new game releases active foley",
+      "death fixture has active reload voices",
+      "repeated nonlethal native damage preserves reload audio",
+      "native damage return value preserved",
+      "lethal native damage enters death state",
+      "death releases foley without a subsequent weapon update",
+      "repeated-stop fixture has active voices",
+      "repeated state checks cannot postpone an already scheduled stop",
+      "idempotent release still disconnects its voices",
+      "kick cancellation releases audio and preserves native combat cancellation",
+      "map change releases old foley",
+      "suspended context does not queue stale foley",
+      "user key gesture resumes the existing AudioContext",
+      "future events play after context resume",
+      "pause releases voices even while the audio clock is suspended",
+      "resuming a suspended context cannot resurrect cancelled foley",
+      "delayed native shotgun firing mechanism remains audible during a later reload",
+      "audio and animation share the same frozen timing object",
+      "shared timing cannot drift through runtime mutation"
+    ],
+    "pageErrors": []
+  },
+  "zombie": {
+    "checks": [
+      "Two authored clips ready at first playable scene",
+      "Real held mouse shots: z pain uses own recordings; native attack/death remain",
+      "Non-z pain and z alert/attack/death retain native sample routing",
+      "Native 40ms same-emitter throttle retained",
+      "Natural source end releases all owned nodes",
+      "pause stops active custom voices",
+      "reset stops active custom voices",
+      "map stops active custom voices",
+      "mute stops active custom voices",
+      "hidden stops active custom voices",
+      "blur stops active custom voices",
+      "death stops active custom voices",
+      "Real AudioContext replacement prepares own two recordings without stale buffers",
+      "Decode failure retains native fallback instead of silent/missing pain"
+    ],
+    "errors": []
+  },
+  "geometryCombat": {
+    "fixedWallCases": 76,
+    "liveWallRecoveries": 3,
+    "sewerDropkicks": 2,
+    "combat": {
+      "passed": 35,
+      "results": [
+        "spawn health receives the intended 25 percent increase",
+        "healthy enemies cannot stagger",
+        "failed critical-health roll cannot be retried",
+        "successful critical-health roll enables close-range finisher",
+        "airborne player cannot start finisher",
+        "wall blocks finisher selection",
+        "E action starts finisher on a valid target",
+        "finisher hides the interaction prompt during its animation",
+        "other attacks cannot steal a committed finisher kill",
+        "finisher suppresses movement and jumping without losing held input",
+        "finisher does not kill before contact frames",
+        "finisher final contact kills target and restores 15 health",
+        "finisher recovery releases combat lock",
+        "finisher final recovery frame preserves the head framing",
+        "level reset clears active finisher and target execution state",
+        "standing kick damage waits for boot contact",
+        "standing kick delivers its contact damage once",
+        "kick recovery cannot damage the same enemy again",
+        "forward sprint produces airborne dropkick",
+        "dropkick cancels reload and zoom",
+        "swept dropkick catches enemy crossed before contact and launches it",
+        "dropkick multi-frame contact cannot hit one target twice",
+        "thin authored walls stop launched enemies and apply collision damage",
+        "standing kick cannot damage through a wall",
+        "kick cannot break a prop on a different floor",
+        "sideways sprint remains a standing kick",
+        "paused game blocks new kicks",
+        "real first pistol bodyshot leaves 54HP without a stagger roll",
+        "real second pistol bodyshot can stagger a naturally damaged zombie",
+        "naturally wounded pistol target can be finished without editing its HP",
+        "natural pistol-to-finisher flow reaches a clean kill and recovery",
+        "real pistol headshot also exposes the occasional finisher window",
+        "real eight-pellet shotgun volley can stagger a naturally damaged zombie",
+        "real weapon damage still respects a failed stagger chance",
+        "a final ordinary shot kills normally instead of forcing a finisher"
+      ],
+      "arena": {
+        "px": 3,
+        "pz": 9
+      }
+    }
+  },
+  "webgl": {
+    "maps": [
+      {
+        "level": 0,
+        "width": 64,
+        "height": 62,
+        "enemies": 21
+      },
+      {
+        "level": 1,
+        "width": 58,
+        "height": 44,
+        "enemies": 23
+      },
+      {
+        "level": 2,
+        "width": 64,
+        "height": 46,
+        "enemies": 35
+      },
+      {
+        "level": 3,
+        "width": 54,
+        "height": 46,
+        "enemies": 37
+      },
+      {
+        "level": 4,
+        "width": 62,
+        "height": 46,
+        "enemies": 36
+      },
+      {
+        "level": 5,
+        "width": 58,
+        "height": 46,
+        "enemies": 34
+      },
+      {
+        "level": 6,
+        "width": 58,
+        "height": 46,
+        "enemies": 33
+      },
+      {
+        "level": 7,
+        "width": 62,
+        "height": 46,
+        "enemies": 33
+      },
+      {
+        "level": 8,
+        "width": 50,
+        "height": 42,
+        "enemies": 29
+      },
+      {
+        "level": 9,
+        "width": 100,
+        "height": 86,
+        "enemies": 115
+      },
+      {
+        "level": 10,
+        "width": 72,
+        "height": 64,
+        "enemies": 79
+      }
+    ],
+    "ordinaryLaunch": {
+      "offline": true,
+      "qaAbsent": true,
+      "viewport": "1920x1080"
+    },
+    "errors": []
+  },
+  "campaign": {
+    "sha256": "48ca6290ff2ce2d13f9d1d95f4d5759f09b77b38d086a532793c263e977dbbcd",
+    "scope": "Continuous native campaign from New Game. Fixed-step movement and door interaction through authored geometry. Actual Playwright E for bell and exits, Space for chapter cards. Bosses receive a seeded terminal hit through native damage. Hostile attacks are isolated during this route.",
+    "chapters": [
+      "PROLOGUE — OUT OF THE PIT",
+      "LEVEL 1 — THE ASH BELL MONASTERY",
+      "LEVEL 2 — THE GOTHIC DUNGEON",
+      "LEVEL 3 — THE ABANDONED CHURCH",
+      "LEVEL 4 — THE HOLLOW VILLAGE",
+      "LEVEL 5 — THE NECROPOLIS",
+      "LEVEL 6 — THE GRAVEYARD",
+      "LEVEL 7 — THE SEWERS",
+      "LEVEL 8 — THE FACTORY",
+      "LEVEL 9 — THE BONE CATHEDRAL",
+      "LEVEL 10 — THE WOMB"
+    ],
+    "transitions": 10,
+    "nativeVictory": true,
+    "campaignCleared": true,
+    "redKeys": 9,
+    "seals": 2,
+    "seededTerminalBossHits": 21
+  },
+  "offline": {
+    "sha256": "48ca6290ff2ce2d13f9d1d95f4d5759f09b77b38d086a532793c263e977dbbcd",
+    "browsers": [
+      {
+        "channel": "chrome",
+        "version": "157.0.8103.80",
+        "offline": true,
+        "legacySave": true,
+        "settingsPersist": true,
+        "chapterStarts": true,
+        "newGame": {
+          "pointerLock": true,
+          "initial": [
+            6,
+            60
+          ],
+          "afterFire": [
+            5,
+            60
+          ],
+          "afterReload": [
+            6,
+            59
+          ]
+        },
+        "pageErrors": [],
+        "network": []
+      },
+      {
+        "channel": "msedge",
+        "version": "154.0.4258.53",
+        "offline": true,
+        "legacySave": true,
+        "settingsPersist": true,
+        "chapterStarts": true,
+        "newGame": {
+          "pointerLock": true,
+          "initial": [
+            6,
+            60
+          ],
+          "afterFire": [
+            5,
+            60
+          ],
+          "afterReload": [
+            6,
+            59
+          ]
+        },
+        "pageErrors": [],
+        "network": []
+      }
+    ]
+  },
+  "standalone": {
+    "passed": true,
+    "htmlSha256": "48ca6290ff2ce2d13f9d1d95f4d5759f09b77b38d086a532793c263e977dbbcd",
+    "offline": true,
+    "ordinaryLaunch": true,
+    "isolatedFiles": 1,
+    "networkRequests": 0,
+    "qaBridge": false,
+    "initial": [
+      6,
+      60
+    ],
+    "fired": [
+      5,
+      60
+    ],
+    "reloaded": [
+      6,
+      59
+    ],
+    "masterPeak": 0.2685709595680237,
+    "errors": []
+  },
+  "chapterRecords": {
+    "browser": {
+      "first": {
+        "grade": "D",
+        "seconds": 94
+      },
+      "slower": {
+        "grade": "S",
+        "seconds": 360
+      },
+      "faster": {
+        "grade": "D",
+        "seconds": 42
+      },
+      "best": {
+        "grade": "S",
+        "seconds": 42
+      },
+      "victory": {
+        "grade": "D",
+        "seconds": 3
+      },
+      "blocked": {
+        "grade": "D",
+        "seconds": 55
+      },
+      "small": {
+        "width": 360,
+        "content": 360,
+        "top": 16,
+        "height": 480
+      },
+      "errors": [],
+      "network": []
+    },
+    "nativeFormatting": {
+      "sourceSha": "f211e4b2d0471fef0c838044d80dff1a8503a8c8c9b2b313768fb63985dddb41",
+      "moduleBaselineSha": "ad072e5d6a6e9eb7f6031b10660516948737a41ba74bd054d092fd5720914822",
+      "candidateSha": "44515f878f04075d088227f33b0d4a86d54b977c3f8405aff756fae229acb69e",
+      "scope": "Node VM executes exact native L6, B6, fk, h9 from the frozen HTML and the whole existing chapter-record module with only DOM/storage/timer boundaries stubbed.",
+      "checks": [
+        {
+          "screen": "chapter",
+          "name": "no shots",
+          "oldDisplay": 0,
+          "displayed": 0,
+          "shots": 0,
+          "hits": 0,
+          "grade": "D"
+        },
+        {
+          "screen": "chapter",
+          "name": "contacts with no counted rounds",
+          "oldDisplay": 0,
+          "displayed": 0,
+          "shots": 0,
+          "hits": 2,
+          "grade": "D"
+        },
+        {
+          "screen": "chapter",
+          "name": "partial ordinary shots",
+          "oldDisplay": 60,
+          "displayed": 60,
+          "shots": 10,
+          "hits": 6,
+          "grade": "C"
+        },
+        {
+          "screen": "chapter",
+          "name": "perfect ordinary shots",
+          "oldDisplay": 100,
+          "displayed": 100,
+          "shots": 10,
+          "hits": 10,
+          "grade": "B"
+        },
+        {
+          "screen": "chapter",
+          "name": "live captured total",
+          "oldDisplay": 105,
+          "displayed": 100,
+          "shots": 19,
+          "hits": 20,
+          "grade": "B"
+        },
+        {
+          "screen": "chapter",
+          "name": "genuine double contact",
+          "oldDisplay": 200,
+          "displayed": 100,
+          "shots": 1,
+          "hits": 2,
+          "grade": "B"
+        },
+        {
+          "screen": "victory",
+          "name": "no shots",
+          "oldDisplay": 0,
+          "displayed": 0,
+          "shots": 0,
+          "hits": 0,
+          "grade": "D"
+        },
+        {
+          "screen": "victory",
+          "name": "contacts with no counted rounds",
+          "oldDisplay": 0,
+          "displayed": 0,
+          "shots": 0,
+          "hits": 2,
+          "grade": "D"
+        },
+        {
+          "screen": "victory",
+          "name": "partial ordinary shots",
+          "oldDisplay": 60,
+          "displayed": 60,
+          "shots": 10,
+          "hits": 6,
+          "grade": "C"
+        },
+        {
+          "screen": "victory",
+          "name": "perfect ordinary shots",
+          "oldDisplay": 100,
+          "displayed": 100,
+          "shots": 10,
+          "hits": 10,
+          "grade": "B"
+        },
+        {
+          "screen": "victory",
+          "name": "live captured total",
+          "oldDisplay": 105,
+          "displayed": 100,
+          "shots": 19,
+          "hits": 20,
+          "grade": "B"
+        },
+        {
+          "screen": "victory",
+          "name": "genuine double contact",
+          "oldDisplay": 200,
+          "displayed": 100,
+          "shots": 1,
+          "hits": 2,
+          "grade": "B"
+        }
+      ]
+    }
+  },
+  "arsenal": {
+    "testedSHA256": "f211e4b2d0471fef0c838044d80dff1a8503a8c8c9b2b313768fb63985dddb41",
+    "modulesChangedAfterTest": [
+      "chapter-records.js"
+    ],
+    "scope": "Real R/digit keys, mouse fire/kick and RAF. Isolated setup inventories; no gameplay balance claim. Same-build cache ghost comparison, not old visual parity.",
+    "reloadRuns": 10,
+    "fireSwitchAndKickTransitions": 10,
+    "cacheComparisons": 10,
+    "rasterSamples": 1027,
+    "partialReloadFireCancellations": 8,
+    "singleRoundSlots": [
+      8,
+      9
+    ],
+    "display": {
+      "scope": "Native resize/graphics handlers; actual R for two representatives, fixed-pose display/cache checks separately. No FPS claim.",
+      "reloadResizeScenarios": 2,
+      "poseChecks": 36,
+      "cacheComparisons": 2
+    },
+    "errors": [],
+    "network": []
+  }
+}

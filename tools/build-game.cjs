@@ -49,6 +49,7 @@ const code = [
   "heavy-enemies.js",
   "enemy-animation.js",
   "guardian-volley.js",
+  "heart-animation.js",
   "dungeon-creatures.js",
   "necropolis-screamer.js",
   "groundskeeper-zombie.js",

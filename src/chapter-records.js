@@ -65,6 +65,16 @@
     panel.querySelector(".stats").after(recordLine(remember(T.level, result)));
   }
 
+  // A piercing shot can record multiple contacts. Keep those totals for
+  // grades and other systems, and cap only the result card's percentage.
+  const nativeStats = B6;
+  B6 = function (...args) {
+    const stats = nativeStats.apply(this, args);
+    return T.shots > 0 && T.hitsLanded > T.shots
+      ? stats.replace(/ACCURACY <b>\d+%<\/b>/, "ACCURACY <b>100%</b>")
+      : stats;
+  };
+
   const exit = fk;
   fk = function (...args) {
     const accepted = exit.apply(this, args);

@@ -44,6 +44,7 @@ window.chapterFixture = {
     if(!boss) throw Error("No Heart in final chapter");
     C.spawnGuard=60;
     qr(boss,10000,{wIdx:0,explosive:true});
+    T.shots=19; T.hitsLanded=20;
   }
 };`;
 
@@ -184,6 +185,11 @@ async function run() {
     await start(page, order.length-1);
     await page.evaluate(() => window.chapterFixture.killHeart());
     await page.locator("#win").waitFor({ timeout: 30000 });
+    assert.match(await page.locator("#winstats").innerText(), /\bACCURACY\s+100%(?:\s|$)/);
+    assert.deepEqual(await page.evaluate(() => {
+      const {T}=window.__BLACK_SILENCE_QA;
+      return [T.shots,T.hitsLanded];
+    }),[19,20]);
     const victory=await nativeResult(page,"win");
     assert.deepEqual(await stored(page,order.at(-1)),victory);
     await expectRecord(page,"#win",victory);

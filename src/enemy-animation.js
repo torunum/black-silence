@@ -9,6 +9,10 @@
     if (!state) {
       state = {
         clock: (enemy.x * 0.37 + enemy.z * 0.61) % 6.28,
+        // Native AI can summon new actors between the two passes of qtt.
+        // Their first pose tick needs a travel origin too.
+        beforeX: enemy.x,
+        beforeZ: enemy.z,
         walked: 0,
         gait: 0,
         moving: 0,

@@ -1,0 +1,494 @@
+{
+  "passed": true,
+  "summary": [
+    {
+      "branch": "before",
+      "sha": "b8363527cc897bd1a62ce54bbf4ddb937d52e5ebaf715ab29a82d46ba755165d",
+      "hurtDuringRelease": "pain0:0",
+      "cycles": [
+        {
+          "phase": 2,
+          "release": 28,
+          "orbs": 5,
+          "steps": 268,
+          "rest": "idle0:0",
+          "windup": "idle0:0",
+          "releases": [
+            {
+              "frame": 28,
+              "pose": "atk0:0"
+            },
+            {
+              "frame": 199,
+              "pose": "atk0:0"
+            }
+          ],
+          "firing": "atk0:0",
+          "settle": "atk0:0",
+          "post": "atk0:0",
+          "pain": "pain0:0",
+          "final": "atk0:0",
+          "rngCalls": 3510,
+          "cacheSize": 6,
+          "dimensions": [
+            {
+              "action": "idle",
+              "index": 0,
+              "width": 93,
+              "height": 100,
+              "bounds": [
+                0,
+                0,
+                91,
+                99
+              ],
+              "count": 3951
+            },
+            {
+              "action": "atk",
+              "index": 0,
+              "width": 93,
+              "height": 100,
+              "bounds": [
+                0,
+                0,
+                92,
+                99
+              ],
+              "count": 3956
+            },
+            {
+              "action": "atk",
+              "index": 1,
+              "width": 93,
+              "height": 100,
+              "bounds": [
+                0,
+                0,
+                79,
+                99
+              ],
+              "count": 3727
+            },
+            {
+              "action": "atk",
+              "index": 2,
+              "width": 93,
+              "height": 100,
+              "bounds": [
+                0,
+                0,
+                86,
+                99
+              ],
+              "count": 3888
+            }
+          ]
+        },
+        {
+          "phase": 1,
+          "release": 28,
+          "orbs": 1,
+          "steps": 268,
+          "rest": "walk0:0",
+          "windup": "walk2:0",
+          "releases": [
+            {
+              "frame": 28,
+              "pose": "atk0:0"
+            },
+            {
+              "frame": 235,
+              "pose": "atk0:0"
+            }
+          ],
+          "firing": "atk0:0",
+          "settle": "atk0:0",
+          "post": "atk0:0",
+          "pain": "pain0:0",
+          "final": "atk0:0",
+          "rngCalls": 2763,
+          "cacheSize": 10,
+          "dimensions": [
+            {
+              "action": "idle",
+              "index": 0,
+              "width": 93,
+              "height": 100,
+              "bounds": [
+                0,
+                0,
+                91,
+                99
+              ],
+              "count": 3951
+            },
+            {
+              "action": "atk",
+              "index": 0,
+              "width": 93,
+              "height": 100,
+              "bounds": [
+                0,
+                0,
+                92,
+                99
+              ],
+              "count": 3956
+            },
+            {
+              "action": "atk",
+              "index": 1,
+              "width": 93,
+              "height": 100,
+              "bounds": [
+                0,
+                0,
+                79,
+                99
+              ],
+              "count": 3727
+            },
+            {
+              "action": "atk",
+              "index": 2,
+              "width": 93,
+              "height": 100,
+              "bounds": [
+                0,
+                0,
+                86,
+                99
+              ],
+              "count": 3888
+            }
+          ]
+        },
+        {
+          "phase": 3,
+          "release": 28,
+          "orbs": 3,
+          "steps": 268,
+          "rest": "walk0:0",
+          "windup": "walk3:0",
+          "releases": [
+            {
+              "frame": 28,
+              "pose": "atk0:0"
+            },
+            {
+              "frame": 247,
+              "pose": "atk0:0"
+            }
+          ],
+          "firing": "atk0:0",
+          "settle": "atk0:0",
+          "post": "atk0:0",
+          "pain": "pain0:0",
+          "final": "atk0:0",
+          "rngCalls": 2907,
+          "cacheSize": 9,
+          "dimensions": [
+            {
+              "action": "idle",
+              "index": 0,
+              "width": 109,
+              "height": 100,
+              "bounds": [
+                0,
+                0,
+                101,
+                99
+              ],
+              "count": 4343
+            },
+            {
+              "action": "atk",
+              "index": 0,
+              "width": 109,
+              "height": 100,
+              "bounds": [
+                0,
+                0,
+                104,
+                99
+              ],
+              "count": 4387
+            },
+            {
+              "action": "atk",
+              "index": 1,
+              "width": 109,
+              "height": 100,
+              "bounds": [
+                0,
+                0,
+                89,
+                99
+              ],
+              "count": 4140
+            },
+            {
+              "action": "atk",
+              "index": 2,
+              "width": 109,
+              "height": 100,
+              "bounds": [
+                0,
+                0,
+                97,
+                99
+              ],
+              "count": 4283
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "branch": "after",
+      "sha": "685fdb8be257408539361314b349e8bba9fec2a6b7567a6c4e7b0b4ad2e91c98",
+      "hurtDuringRelease": "pain0:0",
+      "cycles": [
+        {
+          "phase": 2,
+          "release": 28,
+          "orbs": 5,
+          "steps": 268,
+          "rest": "idle0:0",
+          "windup": "atk0:0",
+          "releases": [
+            {
+              "frame": 28,
+              "pose": "atk1:0"
+            },
+            {
+              "frame": 199,
+              "pose": "atk1:0"
+            }
+          ],
+          "firing": "atk1:0",
+          "settle": "atk2:0",
+          "post": "idle0:0",
+          "pain": "pain0:0",
+          "final": "idle0:0",
+          "rngCalls": 3510,
+          "cacheSize": 6,
+          "dimensions": [
+            {
+              "action": "idle",
+              "index": 0,
+              "width": 93,
+              "height": 100,
+              "bounds": [
+                0,
+                0,
+                91,
+                99
+              ],
+              "count": 3951
+            },
+            {
+              "action": "atk",
+              "index": 0,
+              "width": 93,
+              "height": 100,
+              "bounds": [
+                15,
+                0,
+                78,
+                99
+              ],
+              "count": 3819
+            },
+            {
+              "action": "atk",
+              "index": 1,
+              "width": 93,
+              "height": 100,
+              "bounds": [
+                0,
+                0,
+                79,
+                99
+              ],
+              "count": 3727
+            },
+            {
+              "action": "atk",
+              "index": 2,
+              "width": 93,
+              "height": 100,
+              "bounds": [
+                0,
+                0,
+                86,
+                99
+              ],
+              "count": 3888
+            }
+          ]
+        },
+        {
+          "phase": 1,
+          "release": 28,
+          "orbs": 1,
+          "steps": 268,
+          "rest": "walk0:0",
+          "windup": "atk0:0",
+          "releases": [
+            {
+              "frame": 28,
+              "pose": "atk1:0"
+            },
+            {
+              "frame": 235,
+              "pose": "atk1:0"
+            }
+          ],
+          "firing": "atk1:0",
+          "settle": "atk2:0",
+          "post": "walk2:0",
+          "pain": "pain0:0",
+          "final": "idle0:0",
+          "rngCalls": 2763,
+          "cacheSize": 12,
+          "dimensions": [
+            {
+              "action": "idle",
+              "index": 0,
+              "width": 93,
+              "height": 100,
+              "bounds": [
+                0,
+                0,
+                91,
+                99
+              ],
+              "count": 3951
+            },
+            {
+              "action": "atk",
+              "index": 0,
+              "width": 93,
+              "height": 100,
+              "bounds": [
+                15,
+                0,
+                78,
+                99
+              ],
+              "count": 3819
+            },
+            {
+              "action": "atk",
+              "index": 1,
+              "width": 93,
+              "height": 100,
+              "bounds": [
+                0,
+                0,
+                79,
+                99
+              ],
+              "count": 3727
+            },
+            {
+              "action": "atk",
+              "index": 2,
+              "width": 93,
+              "height": 100,
+              "bounds": [
+                0,
+                0,
+                86,
+                99
+              ],
+              "count": 3888
+            }
+          ]
+        },
+        {
+          "phase": 3,
+          "release": 28,
+          "orbs": 3,
+          "steps": 268,
+          "rest": "walk0:0",
+          "windup": "atk0:0",
+          "releases": [
+            {
+              "frame": 28,
+              "pose": "atk1:0"
+            },
+            {
+              "frame": 247,
+              "pose": "atk1:0"
+            }
+          ],
+          "firing": "atk1:0",
+          "settle": "atk2:0",
+          "post": "idle0:0",
+          "pain": "pain0:0",
+          "final": "idle0:0",
+          "rngCalls": 2907,
+          "cacheSize": 8,
+          "dimensions": [
+            {
+              "action": "idle",
+              "index": 0,
+              "width": 109,
+              "height": 100,
+              "bounds": [
+                0,
+                0,
+                101,
+                99
+              ],
+              "count": 4343
+            },
+            {
+              "action": "atk",
+              "index": 0,
+              "width": 109,
+              "height": 100,
+              "bounds": [
+                21,
+                0,
+                88,
+                99
+              ],
+              "count": 4268
+            },
+            {
+              "action": "atk",
+              "index": 1,
+              "width": 109,
+              "height": 100,
+              "bounds": [
+                0,
+                0,
+                89,
+                99
+              ],
+              "count": 4140
+            },
+            {
+              "action": "atk",
+              "index": 2,
+              "width": 109,
+              "height": 100,
+              "bounds": [
+                0,
+                0,
+                97,
+                99
+              ],
+              "count": 4283
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

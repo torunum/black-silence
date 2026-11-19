@@ -626,6 +626,13 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       if(index===6)Te.topRow+=.10*Qe(pose.reload,.02,.84,.12)*Dk*_r;
       if(index===4)Te.topRow+=.35*Qe(pose.reload,.25,.76,.12)*Dk*_r;
     }
+    // Let the extended boots cross the weapon framing line during the hit.
+    // The raster key includes kick and drop, so the hint is cached per pose.
+    if (result && pose.kick >= 0 && pose.drop > 0 && pose.exec < 0) {
+      const phase = pose.kick / os;
+      const allowance = ease(phase, .13, .245) * (1 - ease(phase, .48, .72));
+      Te.topRow += .128 * allowance * Dk * _r;
+    }
     if(pose.reload<0&&pose.exec<0&&pose.kick<0)Te.topRow+=([0,.083,.18,.18,.17,.13,.18,.15,.20,.17][index]||0)*Dk*_r;
     if(result&&(index===2||index===6)&&pose.reload>=0&&pose.kick<0&&pose.exec<0){
       receiverTopHint=Te.topRow;
@@ -3357,28 +3364,61 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
     });
     mesh.pop();
   };
+  // [phase, hip x/y/z, yaw, thigh, knee, ankle, twist, toe roll]. The button
+  // action owns the timing and collision. These tracks only pose the boots.
+  const dropkickLead = [
+    [0, .145, -.39, -.05, .025, -1.10, 1.25, .45, .06, -.12],
+    [.105, .162, -.401, -.025, -.013, -.32, 1.44, .35, .08, -.16],
+    [.164, .198, -.401, .031, -.064, .107, 1.050, .22, -.115, -.203],
+    [.264, .259, -.364, .178, -.070, .249, .258, -.223, -.471, -.279],
+    [.329, .284, -.386, .156, -.076, .227, .297, -.194, -.450, -.257],
+    [.454, .262, -.418, .127, -.098, .213, .370, -.151, -.367, -.245],
+    [.595, .230, -.467, .094, -.082, .121, .565, -.044, -.186, -.218],
+    [.773, .169, -.519, .017, -.038, -.212, .935, .220, .015, -.168],
+    [1, .145, -.55, -.05, .025, -1.10, 1.25, .45, .06, -.12],
+  ];
+  const dropkickSupport = [
+    [0, -.145, -.39, -.05, -.025, -1.10, 1.25, .45, -.06, .12],
+    [.095, -.152, -.395, .005, -.040, -.28, 1.43, .37, -.085, .138],
+    [.173, -.160, -.411, .106, -.175, .379, 1.204, -.141, -.241, .161],
+    [.264, -.162, -.429, .215, -.285, .488, 1.018, -.174, -.380, .172],
+    [.375, -.168, -.433, .194, -.238, .480, 1.016, -.141, -.339, .175],
+    [.536, -.167, -.435, .152, -.179, .418, .992, -.082, -.238, .148],
+    [.685, -.157, -.446, .103, -.096, .373, .904, .026, -.154, .125],
+    [.786, -.155, -.478, .046, -.056, .261, .889, .165, -.104, .117],
+    [.885, -.150, -.522, -.009, -.031, -.165, 1.002, .263, -.070, .116],
+    [1, -.145, -.55, -.05, -.025, -1.10, 1.25, .45, -.06, .12],
+  ];
+  function dropkickLegPose(phase, left) {
+    const keys = left ? dropkickSupport : dropkickLead;
+    const end = keys.findIndex(key => phase < key[0]);
+    const a = keys[end - 1], b = keys[end];
+    const t = ease(phase, a[0], b[0]);
+    const [, hx, hy, hz, yaw, thigh, knee, ankle, twist, turn] =
+      a.map((value, index) => value + (b[index] - value) * t);
+    return { hx, hy, hz, yaw, thigh, knee, ankle, twist, turn };
+  }
   V4 = function (time, drop = false, left = false) {
     if (time < 0 || time >= os) return null;
-    const p = time / os,
-      wind = ease(p, 0, 0.17),
-      drive = ease(p, 0.17, drop ? 0.32 : 0.34),
-      recover = ease(p, drop ? 0.6 : 0.49, 1);
-    const extend = drive * (1 - recover),
-      draw = wind * (1 - recover),
-      side = left ? -1 : 1;
+    const p = time / os;
+    if (drop) return dropkickLegPose(p, left);
+
+    const wind = ease(p, 0, 0.17), drive = ease(p, 0.17, 0.34),
+      recover = ease(p, 0.49, 1);
+    const extend = drive * (1 - recover), draw = wind * (1 - recover);
     return {
-      hx: drop ? side * 0.145 : 0.085,
-      hy: (drop ? -0.39 : -0.35) - 0.16 * recover,
+      hx: 0.085,
+      hy: -0.35 - 0.16 * recover,
       hz: -0.05 + 0.19 * extend,
-      yaw: drop ? side * 0.025 : -0.22 - 0.035 * extend,
+      yaw: -0.22 - 0.035 * extend,
       thigh: -1.1 + 1.42 * draw - 0.04 * extend,
       knee: 1.25 + 0.66 * draw - 1.84 * extend,
       ankle: 0.45 - 0.72 * extend,
-      twist: drop ? side * 0.06 : 0.22 - 0.12 * extend,
-      turn: drop ? -side * (0.12 + 0.1 * extend) : -0.22 - 0.47 * extend,
+      twist: 0.22 - 0.12 * extend,
+      turn: -0.22 - 0.47 * extend,
     };
   };
-  // Keep the two feet visible throughout the leap, and lower the weapon cleanly.
+  // Lower the weapon until the legs complete their recovery.
   const oldAnimate = set.prototype.step;
   set.prototype.step = function (dt, now, state, weapon, model) {
     const pose = oldAnimate.call(this, dt, now, state, weapon, model);

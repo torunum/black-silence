@@ -5035,6 +5035,10 @@ window.__silenceMaterialTone=(material,x,y,z)=>{
     if (!state) {
       state = {
         clock: (enemy.x * 0.37 + enemy.z * 0.61) % 6.28,
+        // Native AI can summon new actors between the two passes of qtt.
+        // Their first pose tick needs a travel origin too.
+        beforeX: enemy.x,
+        beforeZ: enemy.z,
         walked: 0,
         gait: 0,
         moving: 0,
@@ -5597,6 +5601,106 @@ window.__silenceMaterialTone=(material,x,y,z)=>{
   pz=function(...args) { releaseTime=new WeakMap();scaleRecords=new WeakMap();
     overhead=null;return reset.apply(this,args); };
 })();
+
+/* HEART_ANIMATION_BEGIN */
+// Display the Living Heart's existing wind-up, release and settling poses.
+(() => {
+  const windupTime = .42, strikeTime = .10, settleTime = .34;
+  const states = new WeakMap();
+  let activeCast = null;
+
+  // Keep the roots at the original idle stance. Bend the arteries inward and
+  // contract the body just before the rig's original forward release.
+  function coil(ruptured) {
+    const pose = Di({spine:[.018,.015,-.025],chest:[-.055,.035,-.03],neck:[.02,0,.025],
+      aL:{f:.14,out:.28,e:.10,w:.14},aR:{f:.08,out:.39,e:.14,w:.22},
+      beat:ruptured?-.24:-.70,gape:ruptured?.60:.42});
+    pose.rot.elbowL[2] = -.92;
+    pose.rot.elbowR[2] = 1.08;
+    pose.x.coil = 1;
+    return pose;
+  }
+
+  const coreRim = E1("chest", "body", ({b,x}) => {
+    if (!x("coil")) return;
+    const core = Lo(b,1+x("beat")*.06);
+    const radius = .09+x("gape")*.08;
+    const arcPoint = (angle,edge) => [-.06+Math.cos(angle)*radius*edge, .02+Math.sin(angle)*radius*1.30*edge];
+    for (const [near,far] of [[2.38,2.88],[3.08,3.74],[4.12,4.64],[4.88,5.28]]) {
+      core.prz([arcPoint(near,.96),arcPoint(near,1.11),arcPoint(far,1.11),arcPoint(far,.96)],-.448,-.443,hh);
+    }
+  });
+  for (const [rig, ruptured] of [[e7,false],[A7,true]]) {
+    rig.poses = {...rig.poses, atk:[coil(ruptured), ...rig.poses.atk.slice(1)]};
+    rig.parts = [...rig.parts, coreRim];
+  }
+
+  const updatePriest = rtt;
+  rtt = function(heart, dt, distance, dx, dz) {
+    if (heart.key !== "G") return updatePriest(heart, dt, distance, dx, dz);
+    let state = states.get(heart);
+    if (!state) {
+      state = {volleyReset: -Infinity, melee: 0, stride: 0, priestAttack: false};
+      states.set(heart, state);
+    }
+    state.beforeVolley = heart.atkT;
+    state.beforeMelee = heart.cool;
+    const previous = activeCast;
+    activeCast = state;
+    try {
+      return updatePriest(heart, dt, distance, dx, dz);
+    } finally {
+      activeCast = previous;
+    }
+  };
+
+  const updatePose = Yu;
+  Yu = function(heart, dt, moving, stopped) {
+    if (heart.key !== "G" || heart.dead || heart.dormant)
+      return updatePose(heart, dt, moving, stopped);
+    const state = states.get(heart);
+    if (!state) return updatePose(heart, dt, moving, stopped);
+    const casting = state === activeCast;
+
+    // The cast resets atkT exactly when the orbs have already been emitted.
+    // Native priest logic never decays atkAnim while it owns the visible AI.
+    if (casting) {
+      const volley = heart.atkT > state.beforeVolley;
+      const melee = heart.cool > state.beforeMelee;
+      if (volley) state.volleyReset = heart.atkT;
+      if (volley || melee) state.priestAttack = true;
+      state.melee = melee ? R_ : Math.max(0, state.melee - dt);
+    } else {
+      // Outside the caster branch, native AI can still carry the previous
+      // attack timer. Let it decay without replaying that attack visually.
+      state.volleyReset = -Infinity;
+      state.melee = 0;
+      if (!(heart.atkAnim > 0)) state.priestAttack = false;
+      if (!state.priestAttack) return updatePose(heart, dt, moving, stopped);
+    }
+    if (stopped || heart.hurt > 0) return updatePose(heart, dt, moving, stopped);
+
+    const rig = wk(heart), mask = Mk(heart), crawling = (mask & wc) !== 0;
+    const age = state.volleyReset - heart.atkT;
+    const releasing = age >= 0 && age < settleTime;
+    let action, frame = 0;
+    if (casting && (releasing || state.melee > 0 || heart.atkT <= windupTime)) {
+      action = crawling ? "crawlAtk" : "atk";
+      if (releasing) frame = age < strikeTime ? 1 : 2;
+      else if (state.melee > 0) frame = state.melee > R_ * .6 ? 1 : 2;
+    } else if (moving) {
+      action = crawling ? "crawl" : "walk";
+      const count = Vu(rig.rig, action);
+      const interval = rig.rig.walkStep * (crawling ? 1.7 : 1);
+      state.stride = (state.stride + dt) % (count * interval);
+      frame = Math.min(count - 1, Math.floor(state.stride / interval));
+    } else {
+      action = crawling ? "crawlIdle" : "idle";
+    }
+    Ym(heart, rig.tex(action, frame, mask));
+  };
+})();
+/* HEART_ANIMATION_END */
 
 /* The dungeon warder and carrion hound use the original articulated sprite rigs. */
 (() => {
@@ -6833,6 +6937,13 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       if(index===3)Te.topRow+=.12*Qe(pose.reload,.02,.76,.12)*Dk*_r;
       if(index===6)Te.topRow+=.10*Qe(pose.reload,.02,.84,.12)*Dk*_r;
       if(index===4)Te.topRow+=.35*Qe(pose.reload,.25,.76,.12)*Dk*_r;
+    }
+    // Let the extended boots cross the weapon framing line during the hit.
+    // The raster key includes kick and drop, so the hint is cached per pose.
+    if (result && pose.kick >= 0 && pose.drop > 0 && pose.exec < 0) {
+      const phase = pose.kick / os;
+      const allowance = ease(phase, .13, .245) * (1 - ease(phase, .48, .72));
+      Te.topRow += .128 * allowance * Dk * _r;
     }
     if(pose.reload<0&&pose.exec<0&&pose.kick<0)Te.topRow+=([0,.083,.18,.18,.17,.13,.18,.15,.20,.17][index]||0)*Dk*_r;
     if(result&&(index===2||index===6)&&pose.reload>=0&&pose.kick<0&&pose.exec<0){
@@ -9565,28 +9676,61 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
     });
     mesh.pop();
   };
+  // [phase, hip x/y/z, yaw, thigh, knee, ankle, twist, toe roll]. The button
+  // action owns the timing and collision. These tracks only pose the boots.
+  const dropkickLead = [
+    [0, .145, -.39, -.05, .025, -1.10, 1.25, .45, .06, -.12],
+    [.105, .162, -.401, -.025, -.013, -.32, 1.44, .35, .08, -.16],
+    [.164, .198, -.401, .031, -.064, .107, 1.050, .22, -.115, -.203],
+    [.264, .259, -.364, .178, -.070, .249, .258, -.223, -.471, -.279],
+    [.329, .284, -.386, .156, -.076, .227, .297, -.194, -.450, -.257],
+    [.454, .262, -.418, .127, -.098, .213, .370, -.151, -.367, -.245],
+    [.595, .230, -.467, .094, -.082, .121, .565, -.044, -.186, -.218],
+    [.773, .169, -.519, .017, -.038, -.212, .935, .220, .015, -.168],
+    [1, .145, -.55, -.05, .025, -1.10, 1.25, .45, .06, -.12],
+  ];
+  const dropkickSupport = [
+    [0, -.145, -.39, -.05, -.025, -1.10, 1.25, .45, -.06, .12],
+    [.095, -.152, -.395, .005, -.040, -.28, 1.43, .37, -.085, .138],
+    [.173, -.160, -.411, .106, -.175, .379, 1.204, -.141, -.241, .161],
+    [.264, -.162, -.429, .215, -.285, .488, 1.018, -.174, -.380, .172],
+    [.375, -.168, -.433, .194, -.238, .480, 1.016, -.141, -.339, .175],
+    [.536, -.167, -.435, .152, -.179, .418, .992, -.082, -.238, .148],
+    [.685, -.157, -.446, .103, -.096, .373, .904, .026, -.154, .125],
+    [.786, -.155, -.478, .046, -.056, .261, .889, .165, -.104, .117],
+    [.885, -.150, -.522, -.009, -.031, -.165, 1.002, .263, -.070, .116],
+    [1, -.145, -.55, -.05, -.025, -1.10, 1.25, .45, -.06, .12],
+  ];
+  function dropkickLegPose(phase, left) {
+    const keys = left ? dropkickSupport : dropkickLead;
+    const end = keys.findIndex(key => phase < key[0]);
+    const a = keys[end - 1], b = keys[end];
+    const t = ease(phase, a[0], b[0]);
+    const [, hx, hy, hz, yaw, thigh, knee, ankle, twist, turn] =
+      a.map((value, index) => value + (b[index] - value) * t);
+    return { hx, hy, hz, yaw, thigh, knee, ankle, twist, turn };
+  }
   V4 = function (time, drop = false, left = false) {
     if (time < 0 || time >= os) return null;
-    const p = time / os,
-      wind = ease(p, 0, 0.17),
-      drive = ease(p, 0.17, drop ? 0.32 : 0.34),
-      recover = ease(p, drop ? 0.6 : 0.49, 1);
-    const extend = drive * (1 - recover),
-      draw = wind * (1 - recover),
-      side = left ? -1 : 1;
+    const p = time / os;
+    if (drop) return dropkickLegPose(p, left);
+
+    const wind = ease(p, 0, 0.17), drive = ease(p, 0.17, 0.34),
+      recover = ease(p, 0.49, 1);
+    const extend = drive * (1 - recover), draw = wind * (1 - recover);
     return {
-      hx: drop ? side * 0.145 : 0.085,
-      hy: (drop ? -0.39 : -0.35) - 0.16 * recover,
+      hx: 0.085,
+      hy: -0.35 - 0.16 * recover,
       hz: -0.05 + 0.19 * extend,
-      yaw: drop ? side * 0.025 : -0.22 - 0.035 * extend,
+      yaw: -0.22 - 0.035 * extend,
       thigh: -1.1 + 1.42 * draw - 0.04 * extend,
       knee: 1.25 + 0.66 * draw - 1.84 * extend,
       ankle: 0.45 - 0.72 * extend,
-      twist: drop ? side * 0.06 : 0.22 - 0.12 * extend,
-      turn: drop ? -side * (0.12 + 0.1 * extend) : -0.22 - 0.47 * extend,
+      twist: 0.22 - 0.12 * extend,
+      turn: -0.22 - 0.47 * extend,
     };
   };
-  // Keep the two feet visible throughout the leap, and lower the weapon cleanly.
+  // Lower the weapon until the legs complete their recovery.
   const oldAnimate = set.prototype.step;
   set.prototype.step = function (dt, now, state, weapon, model) {
     const pose = oldAnimate.call(this, dt, now, state, weapon, model);
@@ -15848,6 +15992,16 @@ const BLACK_SILENCE_RELOAD_PCM = {"latch":{"pcm":"AAD+//3/+v/9/wgADwAIACIAHAAHAD
     panel.querySelector(".chapter-record")?.remove();
     panel.querySelector(".stats").after(recordLine(remember(T.level, result)));
   }
+
+  // A piercing shot can record multiple contacts. Keep those totals for
+  // grades and other systems, and cap only the result card's percentage.
+  const nativeStats = B6;
+  B6 = function (...args) {
+    const stats = nativeStats.apply(this, args);
+    return T.shots > 0 && T.hitsLanded > T.shots
+      ? stats.replace(/ACCURACY <b>\d+%<\/b>/, "ACCURACY <b>100%</b>")
+      : stats;
+  };
 
   const exit = fk;
   fk = function (...args) {
