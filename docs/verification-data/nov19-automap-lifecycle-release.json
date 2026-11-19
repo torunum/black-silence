@@ -1,0 +1,630 @@
+{
+  "htmlSHA256": "145a2b448a71e91ea8dbd63be5149a2dedd1935cdd2cb32212d5a9f7a796c305",
+  "previousRelease": "bee3c95c1b4611fac049aca5bf8d25aae200a0b176ee0827813f2282c3799093",
+  "map": {
+    "htmlSHA256": "145a2b448a71e91ea8dbd63be5149a2dedd1935cdd2cb32212d5a9f7a796c305",
+    "checks": [
+      {
+        "viewport": [
+          1280,
+          720,
+          1
+        ],
+        "label": "explored 1× overview",
+        "draws": 0,
+        "pixels": 681550,
+        "matches": true
+      },
+      {
+        "viewport": [
+          1280,
+          720,
+          1
+        ],
+        "label": "2× from keyboard",
+        "draws": 0,
+        "pixels": 681550,
+        "matches": true
+      },
+      {
+        "viewport": [
+          1280,
+          720,
+          1
+        ],
+        "label": "4× from wheel",
+        "draws": 0,
+        "pixels": 681550,
+        "matches": true
+      },
+      {
+        "viewport": [
+          1280,
+          720,
+          1
+        ],
+        "label": "changed exploration bits",
+        "draws": 0,
+        "pixels": 681550,
+        "matches": true
+      },
+      {
+        "viewport": [
+          1280,
+          720,
+          1
+        ],
+        "label": "closed door",
+        "draws": 0,
+        "pixels": 681550,
+        "matches": true
+      },
+      {
+        "viewport": [
+          1280,
+          720,
+          1
+        ],
+        "label": "door opened by KeyE",
+        "draws": 0,
+        "pixels": 681550,
+        "matches": true
+      },
+      {
+        "viewport": [
+          1280,
+          720,
+          1
+        ],
+        "label": "raised lift",
+        "draws": 0,
+        "pixels": 681550,
+        "matches": true
+      },
+      {
+        "viewport": [
+          1280,
+          720,
+          1
+        ],
+        "label": "lowered lift",
+        "draws": 0,
+        "pixels": 681550,
+        "matches": true
+      },
+      {
+        "viewport": [
+          1280,
+          720,
+          1
+        ],
+        "label": "second chapter",
+        "draws": 0,
+        "pixels": 681550,
+        "matches": true
+      },
+      {
+        "viewport": [
+          360,
+          640,
+          2
+        ],
+        "label": "explored 1× overview",
+        "draws": 0,
+        "pixels": 680104,
+        "matches": true
+      },
+      {
+        "viewport": [
+          360,
+          640,
+          2
+        ],
+        "label": "2× from keyboard",
+        "draws": 0,
+        "pixels": 680104,
+        "matches": true
+      },
+      {
+        "viewport": [
+          360,
+          640,
+          2
+        ],
+        "label": "4× from wheel",
+        "draws": 0,
+        "pixels": 680104,
+        "matches": true
+      },
+      {
+        "viewport": [
+          360,
+          640,
+          2
+        ],
+        "label": "changed exploration bits",
+        "draws": 0,
+        "pixels": 680104,
+        "matches": true
+      },
+      {
+        "viewport": [
+          360,
+          640,
+          2
+        ],
+        "label": "closed door",
+        "draws": 0,
+        "pixels": 680104,
+        "matches": true
+      },
+      {
+        "viewport": [
+          360,
+          640,
+          2
+        ],
+        "label": "door opened by KeyE",
+        "draws": 0,
+        "pixels": 680104,
+        "matches": true
+      },
+      {
+        "viewport": [
+          360,
+          640,
+          2
+        ],
+        "label": "raised lift",
+        "draws": 0,
+        "pixels": 680104,
+        "matches": true
+      },
+      {
+        "viewport": [
+          360,
+          640,
+          2
+        ],
+        "label": "lowered lift",
+        "draws": 0,
+        "pixels": 680104,
+        "matches": true
+      },
+      {
+        "viewport": [
+          360,
+          640,
+          2
+        ],
+        "label": "second chapter",
+        "draws": 0,
+        "pixels": 680104,
+        "matches": true
+      },
+      {
+        "viewport": [
+          2560,
+          1440,
+          1
+        ],
+        "label": "explored 1× overview",
+        "draws": 1,
+        "pixels": 2724050,
+        "matches": true
+      },
+      {
+        "viewport": [
+          2560,
+          1440,
+          1
+        ],
+        "label": "2× from keyboard",
+        "draws": 1,
+        "pixels": 2724050,
+        "matches": true
+      },
+      {
+        "viewport": [
+          2560,
+          1440,
+          1
+        ],
+        "label": "4× from wheel",
+        "draws": 1,
+        "pixels": 2724050,
+        "matches": true
+      },
+      {
+        "viewport": [
+          2560,
+          1440,
+          1
+        ],
+        "label": "changed exploration bits",
+        "draws": 1,
+        "pixels": 2724050,
+        "matches": true
+      },
+      {
+        "viewport": [
+          2560,
+          1440,
+          1
+        ],
+        "label": "closed door",
+        "draws": 1,
+        "pixels": 2724050,
+        "matches": true
+      },
+      {
+        "viewport": [
+          2560,
+          1440,
+          1
+        ],
+        "label": "door opened by KeyE",
+        "draws": 1,
+        "pixels": 2724050,
+        "matches": true
+      },
+      {
+        "viewport": [
+          2560,
+          1440,
+          1
+        ],
+        "label": "raised lift",
+        "draws": 1,
+        "pixels": 2724050,
+        "matches": true
+      },
+      {
+        "viewport": [
+          2560,
+          1440,
+          1
+        ],
+        "label": "lowered lift",
+        "draws": 1,
+        "pixels": 2724050,
+        "matches": true
+      },
+      {
+        "viewport": [
+          2560,
+          1440,
+          1
+        ],
+        "label": "second chapter",
+        "draws": 1,
+        "pixels": 2724050,
+        "matches": true
+      }
+    ],
+    "chapterTransitions": [
+      {
+        "viewport": [
+          1280,
+          720,
+          1
+        ],
+        "retainedOutgoingDoorRecords": false
+      },
+      {
+        "viewport": [
+          360,
+          640,
+          2
+        ],
+        "retainedOutgoingDoorRecords": false
+      },
+      {
+        "viewport": [
+          2560,
+          1440,
+          1
+        ],
+        "retainedOutgoingDoorRecords": false
+      }
+    ],
+    "errors": []
+  },
+  "campaignSmoke": {
+    "viewport": "1280x720",
+    "maps": [
+      {
+        "level": 0,
+        "width": 64,
+        "height": 62,
+        "enemies": 21,
+        "finitePlayer": true,
+        "performance": {
+          "frames": 33,
+          "meanMs": 19.18,
+          "p95Ms": 33.8,
+          "maxMs": 82.8,
+          "approximateFPS": 52.1
+        }
+      },
+      {
+        "level": 1,
+        "width": 58,
+        "height": 44,
+        "enemies": 23,
+        "finitePlayer": true,
+        "performance": {
+          "frames": 33,
+          "meanMs": 20.23,
+          "p95Ms": 34.5,
+          "maxMs": 50.9,
+          "approximateFPS": 49.4
+        }
+      },
+      {
+        "level": 2,
+        "width": 64,
+        "height": 46,
+        "enemies": 35,
+        "finitePlayer": true,
+        "performance": {
+          "frames": 33,
+          "meanMs": 19.72,
+          "p95Ms": 33.6,
+          "maxMs": 49.4,
+          "approximateFPS": 50.7
+        }
+      },
+      {
+        "level": 3,
+        "width": 54,
+        "height": 46,
+        "enemies": 37,
+        "finitePlayer": true,
+        "performance": {
+          "frames": 33,
+          "meanMs": 25.25,
+          "p95Ms": 66.8,
+          "maxMs": 216.5,
+          "approximateFPS": 39.6
+        }
+      },
+      {
+        "level": 4,
+        "width": 62,
+        "height": 46,
+        "enemies": 36,
+        "finitePlayer": true,
+        "performance": {
+          "frames": 32,
+          "meanMs": 18.23,
+          "p95Ms": 33.4,
+          "maxMs": 36.1,
+          "approximateFPS": 54.8
+        }
+      },
+      {
+        "level": 5,
+        "width": 58,
+        "height": 46,
+        "enemies": 34,
+        "finitePlayer": true,
+        "performance": {
+          "frames": 33,
+          "meanMs": 18.72,
+          "p95Ms": 33.2,
+          "maxMs": 67.1,
+          "approximateFPS": 53.4
+        }
+      },
+      {
+        "level": 6,
+        "width": 58,
+        "height": 46,
+        "enemies": 33,
+        "finitePlayer": true,
+        "performance": {
+          "frames": 33,
+          "meanMs": 25.26,
+          "p95Ms": 50.8,
+          "maxMs": 67.4,
+          "approximateFPS": 39.6
+        }
+      },
+      {
+        "level": 7,
+        "width": 62,
+        "height": 46,
+        "enemies": 33,
+        "finitePlayer": true,
+        "performance": {
+          "frames": 32,
+          "meanMs": 17.68,
+          "p95Ms": 32.8,
+          "maxMs": 33.5,
+          "approximateFPS": 56.6
+        }
+      },
+      {
+        "level": 8,
+        "width": 50,
+        "height": 42,
+        "enemies": 29,
+        "finitePlayer": true,
+        "performance": {
+          "frames": 33,
+          "meanMs": 26.77,
+          "p95Ms": 66.6,
+          "maxMs": 66.8,
+          "approximateFPS": 37.4
+        }
+      },
+      {
+        "level": 9,
+        "width": 100,
+        "height": 86,
+        "enemies": 115,
+        "finitePlayer": true,
+        "performance": {
+          "frames": 33,
+          "meanMs": 31.31,
+          "p95Ms": 50.1,
+          "maxMs": 50.1,
+          "approximateFPS": 31.9
+        }
+      },
+      {
+        "level": 10,
+        "width": 72,
+        "height": 64,
+        "enemies": 79,
+        "finitePlayer": true,
+        "performance": {
+          "frames": 33,
+          "meanMs": 29.79,
+          "p95Ms": 66.5,
+          "maxMs": 116.6,
+          "approximateFPS": 33.6
+        }
+      }
+    ],
+    "actions": {
+      "dropkick": {
+        "x": 3,
+        "z": 9,
+        "y": 5.2,
+        "ex": 3,
+        "ez": 7,
+        "distance": 6.64397240322247,
+        "jump": 0.6093248000000004,
+        "enemyDistance": 4.548997558593751,
+        "airborne": true,
+        "finisherSeen": false,
+        "hp": 172,
+        "frames": {
+          "frames": 19,
+          "meanMs": 112.31,
+          "p95Ms": 349.9,
+          "maxMs": 349.9,
+          "approximateFPS": 8.9
+        }
+      },
+      "finisher": {
+        "x": 3,
+        "z": 9,
+        "y": 5.2,
+        "ex": 3,
+        "ez": 7,
+        "distance": 0.8499999999999996,
+        "jump": 0,
+        "enemyDistance": 0,
+        "airborne": false,
+        "finisherSeen": true,
+        "dead": true,
+        "frames": {
+          "frames": 38,
+          "meanMs": 53.46,
+          "p95Ms": 99.8,
+          "maxMs": 200,
+          "approximateFPS": 18.7
+        }
+      },
+      "warmFinishers": [
+        {
+          "requestedKind": 0,
+          "actualKind": 0,
+          "frames": 34,
+          "meanMs": 53.44,
+          "p95Ms": 100,
+          "maxMs": 116.9,
+          "approximateFPS": 18.7
+        },
+        {
+          "requestedKind": 1,
+          "actualKind": 1,
+          "frames": 37,
+          "meanMs": 43.28,
+          "p95Ms": 67.2,
+          "maxMs": 135.7,
+          "approximateFPS": 23.1
+        },
+        {
+          "requestedKind": 2,
+          "actualKind": 2,
+          "frames": 36,
+          "meanMs": 54.63,
+          "p95Ms": 133.6,
+          "maxMs": 166.8,
+          "approximateFPS": 18.3
+        }
+      ],
+      "restart": {
+        "melee": true,
+        "busy": false,
+        "exec": null,
+        "level": 0
+      }
+    },
+    "ordinaryLaunch": {
+      "offline": true,
+      "qaAbsent": true,
+      "viewport": "1920x1080"
+    },
+    "errors": []
+  },
+  "offline": {
+    "sha256": "145a2b448a71e91ea8dbd63be5149a2dedd1935cdd2cb32212d5a9f7a796c305",
+    "browsers": [
+      {
+        "channel": "chrome",
+        "version": "157.0.8103.80",
+        "offline": true,
+        "legacySave": true,
+        "settingsPersist": true,
+        "chapterStarts": true,
+        "newGame": {
+          "pointerLock": true,
+          "initial": [
+            6,
+            60
+          ],
+          "afterFire": [
+            5,
+            60
+          ],
+          "afterReload": [
+            6,
+            59
+          ]
+        },
+        "pageErrors": [],
+        "network": []
+      },
+      {
+        "channel": "msedge",
+        "version": "154.0.4258.53",
+        "offline": true,
+        "legacySave": true,
+        "settingsPersist": true,
+        "chapterStarts": true,
+        "newGame": {
+          "pointerLock": true,
+          "initial": [
+            6,
+            60
+          ],
+          "afterFire": [
+            5,
+            60
+          ],
+          "afterReload": [
+            6,
+            59
+          ]
+        },
+        "pageErrors": [],
+        "network": []
+      }
+    ]
+  }
+}

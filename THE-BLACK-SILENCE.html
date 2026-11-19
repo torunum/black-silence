@@ -15316,7 +15316,7 @@ const BLACK_SILENCE_RELOAD_PCM = {"latch":{"pcm":"AAD+//3/+v/9/wgADwAIACIAHAAHAD
   const backdrop = {
     canvas: null, context: null, current: false, pending: false,
     view: {}, discovery: null, mappedGrid: null, heights: null, liftHeight: null,
-    doors: null, doorList: [], openDoors: null
+    doorKeys: [], openDoors: null
   };
 
   function lamp(ctx, x, y, size) {
@@ -15424,19 +15424,20 @@ const BLACK_SILENCE_RELOAD_PCM = {"latch":{"pcm":"AAD+//3/+v/9/wgADwAIACIAHAAHAD
     return false;
   }
 
-  function updateDoors() {
-    // Level construction installs the door objects before its first frame.
-    // Opening, closing and restoring a checkpoint update those same objects.
-    if (backdrop.doors !== v.doors) {
-      backdrop.doors = v.doors;
-      backdrop.doorList = Object.values(v.doors);
-      backdrop.openDoors = new Uint8Array(backdrop.doorList.length);
+  function updateDoors(mapChanged) {
+    // The chapter build populates the table. Keep only keys and bits so a
+    // closed chart cannot retain an outgoing scene through its door meshes.
+    const doors = v.doors;
+    if (mapChanged) {
+      backdrop.doorKeys = Object.keys(doors);
+      backdrop.openDoors = new Uint8Array(backdrop.doorKeys.length);
     }
+    const {doorKeys, openDoors} = backdrop;
     let changed = false;
-    for (let i = 0; i < backdrop.doorList.length; i++) {
-      const open = Number(!!backdrop.doorList[i].open);
-      if (backdrop.openDoors[i] !== open) {
-        backdrop.openDoors[i] = open;
+    for (let i = 0; i < doorKeys.length; i++) {
+      const open = Number(!!doors[doorKeys[i]].open);
+      if (openDoors[i] !== open) {
+        openDoors[i] = open;
         changed = true;
       }
     }
@@ -15458,8 +15459,8 @@ const BLACK_SILENCE_RELOAD_PCM = {"latch":{"pcm":"AAD+//3/+v/9/wgADwAIACIAHAAHAD
       }
       return false;
     }
+    const doorsChanged = updateDoors(backdrop.mappedGrid !== map.grid);
     const mapChanged = updateDiscovery(map);
-    const doorsChanged = updateDoors();
     const liftHeight = de.def?.lift ? de.lift.h : null;
     const view = backdrop.view;
     const stable = view && view.width === width && view.height === height &&

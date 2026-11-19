@@ -9,8 +9,10 @@ const {pathToFileURL} = require("node:url");
 const {chromium} = require("playwright");
 const source = fs.readFileSync(process.argv[2] || "THE-BLACK-SILENCE.html", "utf8");
 const anchor = "Jk();ju();Yy();X$(J$);D0t();";
+const chartPainter = "  function paintChart(";
 const body = "    // Avoid reserving another very large pixel surface for extreme viewports.";
 assert.equal(source.split(anchor).length, 2);
+assert.equal(source.split(chartPainter).length, 2);
 assert.equal(source.split(body).length, 2);
 
 function chartTest() {
@@ -40,6 +42,15 @@ function chartTest() {
       V5(false);Be.inputLock=false;C.spawnGuard=200;
       for(const enemy of v.enemies)enemy.stun=200;
       survey();
+    },
+    changeChapter(level) {
+      const previousScene=J.scene, previousDoors=v.doors;
+      const records=Object.values(previousDoors);
+      if(!records.some(door=>door.mesh.parent===previousScene))throw Error("Expected an outgoing door attached to the scene");
+      const ownsPreviousDoor=value=>value===previousDoors||records.includes(value)||records.some(door=>door.mesh===value);
+      this.load(level);
+      return Object.values(window.inspectChartBackdrop()).some(value=>
+        ownsPreviousDoor(value)||(Array.isArray(value)&&value.some(ownsPreviousDoor)));
     },
     compare() {
       const surfaces=I0t(),canvas=surfaces.auto;
@@ -87,9 +98,10 @@ async function run() {
   const dir=fs.mkdtempSync(path.join(os.tmpdir(),"black-silence-chart-"));
   const file=path.join(dir,"chart.html");
   fs.writeFileSync(file,source.replace(body,()=>"    if (window.chartProbe?.bypass) return false;\n"+body)
+    .replace(chartPainter,()=>"  window.inspectChartBackdrop=()=>backdrop;\n"+chartPainter)
     .replace(anchor,()=>"("+chartTest.toString()+")();\n"+anchor));
   const browser=await chromium.launch({channel:"chrome"});
-  const checks=[], errors=[];
+  const checks=[], chapterTransitions=[], errors=[];
   try {
     for (const [width,height,pixel] of [[1280,720,1],[360,640,2],[2560,1440,1]]) {
       const context=await browser.newContext({offline:true,viewport:{width,height},deviceScaleFactor:pixel});
@@ -126,12 +138,18 @@ async function run() {
         await compare("raised lift");
         await call("lift","low");
         await compare("lowered lift");
-        await call("load",2);
+        await page.keyboard.press("KeyM");
+        await page.locator("#automap").waitFor({state:"hidden"});
+        const retainedOutgoingDoorRecords=await call("changeChapter",2);
+        assert.equal(retainedOutgoingDoorRecords,false,"The closed chart releases scene-owned door records");
+        chapterTransitions.push({viewport:[width,height,pixel],retainedOutgoingDoorRecords});
+        await page.keyboard.press("KeyM");
+        await page.locator("#automap").waitFor({state:"visible"});
         await compare("second chapter");
       } finally {await context.close();}
     }
     assert.deepEqual(errors,[]);
-    const report={htmlSHA256:crypto.createHash("sha256").update(source).digest("hex"),checks,errors};
+    const report={htmlSHA256:crypto.createHash("sha256").update(source).digest("hex"),checks,chapterTransitions,errors};
     if(process.argv[3])fs.writeFileSync(process.argv[3],JSON.stringify(report,null,2)+"\n");
     console.log(`PASS ${checks.length} native pixel-identical chart frames, three viewport/DPR combinations`);
   } finally {
