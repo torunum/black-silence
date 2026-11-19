@@ -1,7 +1,7 @@
 {
   "passed": true,
-  "bytes": 19284261,
-  "sha256": "631b5760524e333738464c1bc6ccca55ad18efda73abd34a108ae28973c9db1b",
+  "bytes": 19284328,
+  "sha256": "b8363527cc897bd1a62ce54bbf4ddb937d52e5ebaf715ab29a82d46ba755165d",
   "engineSha256": "6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899",
   "villageSha256": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627",
   "moduleHashes": {
@@ -15,7 +15,7 @@
     "necropolis-screamer.js": "26c9284dc4b724a19256773373399b32cfb361fba979373e1cfc7f607700ca19",
     "groundskeeper-zombie.js": "f049183e2efc592b87d4b151d6ca8ceed137fb08cdf535b01c2f37865d433a47",
     "viewmodels.js": "baab9bbd6dc11b5e8bd501b63838a018c5d61a04fd8f216f0ea62eca9602da62",
-    "finishers.js": "ecc086979fdf7d200fad357c06e04cc52ba203f42d74fe4fbfee6eec2f5e5f31",
+    "finishers.js": "970db423fbb2a8d3edc8c12ce041f6be1eebc940b3c042a624b12a25bd9374fe",
     "reload-audio-data.js": "2f48b10a1225d1c007ee282d3c18f82c5022bb0267ed86d65feadf819ec1be30",
     "reload-audio.js": "dc67dd605d54c11fbf9571a1b1b80c58fe82953fcdb1a13798e3f4b89d3e2f60",
     "zombie-audio.js": "7f883bd656b0f7e0784d68e9e47e7612704e1df6b299ffc52e6d3f2cfcba2803",
@@ -43,9 +43,9 @@
   "idempotentBuilds": 2,
   "invalidInputsRefusedWithoutWrite": 8,
   "file": "THE-BLACK-SILENCE.html",
-  "verifiedAt": "2026-11-19T12:51:02.903Z",
-  "previousRelease": "c3be0ab035103e3e24832b2656a72ce26459d919144ad0c9d7fe2abeb4671f65",
-  "baselineCommit": "31bbb7ecac3f9332ee8ae74250ffcbd6f2748bd0",
+  "verifiedAt": "2026-11-19T13:01:40.528Z",
+  "previousRelease": "631b5760524e333738464c1bc6ccca55ad18efda73abd34a108ae28973c9db1b",
+  "baselineCommit": "d54253d0a4b22adf3a6b2aa13a1e65230be7cba7",
   "verificationReports": [
     {
       "file": "docs/factory-nov14/verification.json",
@@ -218,6 +218,10 @@
     {
       "file": "docs/verification-data/nov19-execution-release.json",
       "sha256": "d4d5f960f1020503d3bb3de46ddde96972538bc18330a6c73f968556437c8bc8"
+    },
+    {
+      "file": "docs/verification-data/nov19-execution-final.json",
+      "sha256": "a6e7cc29c3cfa8628eb4ed23e7887f1aa27cd08378d9bf15db564185638a0243"
     }
   ]
 }

@@ -1,0 +1,937 @@
+{
+  "sha256": "b8363527cc897bd1a62ce54bbf4ddb937d52e5ebaf715ab29a82d46ba755165d",
+  "baselineCommit": "d54253d0a4b22adf3a6b2aa13a1e65230be7cba7",
+  "precedingBuild": "docs/verification-data/nov19-execution-release.json",
+  "finisher": {
+    "sha256": "b8363527cc897bd1a62ce54bbf4ddb937d52e5ebaf715ab29a82d46ba755165d",
+    "raster": {
+      "identicalSamples": 53,
+      "changedSamples": [
+        {
+          "time": 0.065,
+          "variant": 1
+        },
+        {
+          "time": 0.14,
+          "variant": 1
+        },
+        {
+          "time": 0.19,
+          "variant": 1
+        },
+        {
+          "time": 0.235,
+          "variant": 1
+        },
+        {
+          "time": 0.27,
+          "variant": 1
+        }
+      ],
+      "matchedCameraPhases": [
+        {
+          "at": 0.14,
+          "kind": 0,
+          "camera": [
+            19,
+            9.80752,
+            3.141592653589793,
+            0.21378592979236924
+          ]
+        },
+        {
+          "at": 0.19,
+          "kind": 0,
+          "camera": [
+            19,
+            10.022532499999999,
+            3.141592653589793,
+            0.270709160460937
+          ]
+        },
+        {
+          "at": 0.235,
+          "kind": 0,
+          "camera": [
+            19,
+            10.03,
+            3.141592653589793,
+            0.27268613493924654
+          ]
+        },
+        {
+          "at": 0.27,
+          "kind": 0,
+          "camera": [
+            19,
+            10.03,
+            3.141592653589793,
+            0.27268613493924654
+          ]
+        },
+        {
+          "at": 0.33,
+          "kind": 0,
+          "camera": [
+            19,
+            10.03,
+            3.141592653589793,
+            0.27268613493924654
+          ]
+        },
+        {
+          "at": 0.14,
+          "kind": 1,
+          "camera": [
+            19,
+            9.80752,
+            3.141592653589793,
+            0.21378592979236924
+          ]
+        },
+        {
+          "at": 0.19,
+          "kind": 1,
+          "camera": [
+            19,
+            10.022532499999999,
+            3.141592653589793,
+            0.270709160460937
+          ]
+        },
+        {
+          "at": 0.235,
+          "kind": 1,
+          "camera": [
+            19,
+            10.03,
+            3.141592653589793,
+            0.27268613493924654
+          ]
+        },
+        {
+          "at": 0.27,
+          "kind": 1,
+          "camera": [
+            19,
+            10.03,
+            3.141592653589793,
+            0.27268613493924654
+          ]
+        },
+        {
+          "at": 0.33,
+          "kind": 1,
+          "camera": [
+            19,
+            10.03,
+            3.141592653589793,
+            0.27268613493924654
+          ]
+        }
+      ],
+      "media": [
+        {
+          "file": "docs/finisher-choreography-nov19/pre-contact-stance-0190.png",
+          "sha256": "a6bceb9c0a8e21adde8cde1509527c60307d285cadc2d4bad56b73a3f7cac716"
+        },
+        {
+          "file": "docs/finisher-choreography-nov19/stance-v8-native.webm",
+          "sha256": "68f04002075538dad88f959aa8f23cd8f8e9696de714f1efeb54691eb4c907dd"
+        }
+      ]
+    },
+    "camera": {
+      "checks": [
+        "start 0/near",
+        "complete or native geometry abort 0/near",
+        "finite 0/near",
+        "root clearance 0/near",
+        "fixed terminal view 0/near",
+        "cleared on normal end 0/near",
+        "start 0/normal",
+        "complete or native geometry abort 0/normal",
+        "finite 0/normal",
+        "root clearance 0/normal",
+        "fixed terminal view 0/normal",
+        "cleared on normal end 0/normal",
+        "start 0/nearzero",
+        "complete or native geometry abort 0/nearzero",
+        "finite 0/nearzero",
+        "root clearance 0/nearzero",
+        "fixed terminal view 0/nearzero",
+        "cleared on normal end 0/nearzero",
+        "start 0/wall",
+        "complete or native geometry abort 0/wall",
+        "finite 0/wall",
+        "root clearance 0/wall",
+        "fixed terminal view 0/wall",
+        "cleared on normal end 0/wall",
+        "start 0/obstacle",
+        "complete or native geometry abort 0/obstacle",
+        "finite 0/obstacle",
+        "root clearance 0/obstacle",
+        "fixed terminal view 0/obstacle",
+        "cleared on normal end 0/obstacle",
+        "start 1/near",
+        "complete or native geometry abort 1/near",
+        "finite 1/near",
+        "root clearance 1/near",
+        "fixed terminal view 1/near",
+        "cleared on normal end 1/near",
+        "start 1/normal",
+        "complete or native geometry abort 1/normal",
+        "finite 1/normal",
+        "root clearance 1/normal",
+        "fixed terminal view 1/normal",
+        "cleared on normal end 1/normal",
+        "start 1/nearzero",
+        "complete or native geometry abort 1/nearzero",
+        "finite 1/nearzero",
+        "root clearance 1/nearzero",
+        "fixed terminal view 1/nearzero",
+        "cleared on normal end 1/nearzero",
+        "start 1/wall",
+        "complete or native geometry abort 1/wall",
+        "finite 1/wall",
+        "root clearance 1/wall",
+        "fixed terminal view 1/wall",
+        "cleared on normal end 1/wall",
+        "start 1/obstacle",
+        "complete or native geometry abort 1/obstacle",
+        "finite 1/obstacle",
+        "root clearance 1/obstacle",
+        "fixed terminal view 1/obstacle",
+        "cleared on normal end 1/obstacle",
+        "start 2/near",
+        "complete or native geometry abort 2/near",
+        "finite 2/near",
+        "root clearance 2/near",
+        "fixed terminal view 2/near",
+        "cleared on normal end 2/near",
+        "single completed arm near",
+        "arm aligned to retained view near",
+        "low downward arm release near",
+        "start 2/normal",
+        "complete or native geometry abort 2/normal",
+        "finite 2/normal",
+        "root clearance 2/normal",
+        "fixed terminal view 2/normal",
+        "cleared on normal end 2/normal",
+        "single completed arm normal",
+        "arm aligned to retained view normal",
+        "low downward arm release normal",
+        "start 2/nearzero",
+        "complete or native geometry abort 2/nearzero",
+        "finite 2/nearzero",
+        "root clearance 2/nearzero",
+        "fixed terminal view 2/nearzero",
+        "cleared on normal end 2/nearzero",
+        "single completed arm nearzero",
+        "arm aligned to retained view nearzero",
+        "low downward arm release nearzero",
+        "start 2/wall",
+        "complete or native geometry abort 2/wall",
+        "finite 2/wall",
+        "root clearance 2/wall",
+        "fixed terminal view 2/wall",
+        "cleared on normal end 2/wall",
+        "start 2/obstacle",
+        "complete or native geometry abort 2/obstacle",
+        "finite 2/obstacle",
+        "root clearance 2/obstacle",
+        "fixed terminal view 2/obstacle",
+        "cleared on normal end 2/obstacle",
+        "single completed arm obstacle",
+        "arm aligned to retained view obstacle",
+        "low downward arm release obstacle",
+        "start 0/near",
+        "dead before lifecycle death",
+        "native death clears",
+        "no retained latch death",
+        "start 0/near",
+        "dead before lifecycle reset",
+        "reset clears",
+        "no retained latch reset",
+        "start 0/near",
+        "dead before lifecycle map",
+        "native map clears",
+        "no retained latch map",
+        "start 0/near",
+        "dead before lifecycle targetRemoved",
+        "target removed clears",
+        "no retained latch targetRemoved",
+        "start 2/near",
+        "dead before lifecycle blocked",
+        "new obstacle disables restoration",
+        "clearing obstacle does not snap back",
+        "orientation retained through root fallback",
+        "native fallback root not restored after obstacle clears",
+        "blocked-root completion releases one held arm",
+        "blocked-root arm uses native position and retained direction",
+        "no retained latch blocked",
+        "start 0/near",
+        "first sequential latch clear",
+        "second sequential starts without reset",
+        "second approach cannot reuse prior terminal view",
+        "second sequential finishes clean"
+      ],
+      "scenes": 15,
+      "traceSamples": 1275,
+      "traceSHA256": "d410c33118c501432814e76d00154174f00506fd5626da07574aca6d0f28ee02",
+      "errors": []
+    },
+    "realInput": {
+      "scope": "Near-distance fixture spawns a low-health staggered target; actual held E starts native execution and real RAF advances choreography. A brief fixture RNG selector chooses each choreography before E; it is restored immediately after start. Fresh game per run. Native movement and held fire verify recovery. No source changes.",
+      "variants": [
+        {
+          "variant": 0,
+          "traceSamples": 126,
+          "recovered": true
+        },
+        {
+          "variant": 1,
+          "traceSamples": 127,
+          "recovered": true
+        },
+        {
+          "variant": 2,
+          "traceSamples": 142,
+          "recovered": true
+        }
+      ],
+      "errors": []
+    },
+    "timeline": {
+      "sha256": "b8363527cc897bd1a62ce54bbf4ddb937d52e5ebaf715ab29a82d46ba755165d",
+      "tests": [
+        {
+          "kind": 0,
+          "before": {
+            "busy": false,
+            "execution": null,
+            "deaths": 0,
+            "kills": 0,
+            "totalKills": 0,
+            "hp": 70,
+            "ammo": 6,
+            "actorHealth": 19,
+            "actorDead": false,
+            "actorDeathTime": 0,
+            "actorHeight": 4.9793125,
+            "actorFloor": 4.2,
+            "actorHitboxHeight": 1.652,
+            "poseExecution": -1
+          },
+          "paused": {
+            "busy": true,
+            "execution": {
+              "t": 0.39750000000000363,
+              "kind": 0
+            },
+            "deaths": 0,
+            "kills": 0,
+            "totalKills": 0,
+            "hp": 70,
+            "ammo": 6,
+            "actorHealth": 19,
+            "actorDead": false,
+            "actorExecuting": true,
+            "actorDeathTime": 0,
+            "actorHeight": 4.977866915019979,
+            "actorFloor": 4.2,
+            "actorHitboxHeight": 1.652,
+            "poseExecution": -1
+          },
+          "recovery": {
+            "busy": true,
+            "execution": {
+              "t": 1.0711280000000096,
+              "kind": 0
+            },
+            "deaths": 0,
+            "kills": 1,
+            "totalKills": 1,
+            "hp": 85,
+            "ammo": 6,
+            "actorHealth": -5,
+            "actorDead": true,
+            "actorExecuting": false,
+            "actorDeathTime": 0.27340000000000214,
+            "actorHeight": 4.4973600000000005,
+            "actorFloor": 4.2,
+            "actorHitboxHeight": 1.652,
+            "poseExecution": -1
+          },
+          "after": {
+            "busy": false,
+            "execution": null,
+            "deaths": 0,
+            "kills": 1,
+            "totalKills": 1,
+            "hp": 85,
+            "ammo": 6,
+            "actorHealth": -5,
+            "actorDead": true,
+            "actorExecuting": false,
+            "actorDeathTime": 0.7025999999999992,
+            "actorHeight": 4.4973600000000005,
+            "actorFloor": 4.2,
+            "actorHitboxHeight": 1.652,
+            "poseExecution": -1
+          }
+        },
+        {
+          "kind": 1,
+          "before": {
+            "busy": false,
+            "execution": null,
+            "deaths": 0,
+            "kills": 1,
+            "totalKills": 1,
+            "hp": 70,
+            "ammo": 6,
+            "actorHealth": 19,
+            "actorDead": false,
+            "actorDeathTime": 0,
+            "actorHeight": 4.966,
+            "actorFloor": 4.2,
+            "actorHitboxHeight": 1.652,
+            "poseExecution": -1
+          },
+          "paused": {
+            "busy": true,
+            "execution": {
+              "t": 0.3988479999999955,
+              "kind": 1
+            },
+            "deaths": 0,
+            "kills": 1,
+            "totalKills": 1,
+            "hp": 70,
+            "ammo": 6,
+            "actorHealth": 19,
+            "actorDead": false,
+            "actorExecuting": true,
+            "actorDeathTime": 0,
+            "actorHeight": 4.9406829398336205,
+            "actorFloor": 4.2,
+            "actorHitboxHeight": 1.652,
+            "poseExecution": -1
+          },
+          "recovery": {
+            "busy": true,
+            "execution": {
+              "t": 1.0696399999999908,
+              "kind": 1
+            },
+            "deaths": 0,
+            "kills": 2,
+            "totalKills": 2,
+            "hp": 85,
+            "ammo": 6,
+            "actorHealth": -90,
+            "actorDead": true,
+            "actorExecuting": false,
+            "actorDeathTime": 0,
+            "actorHeight": 4.942925646197293,
+            "actorFloor": 4.2,
+            "actorHitboxHeight": 1.652,
+            "poseExecution": -1
+          },
+          "after": {
+            "busy": false,
+            "execution": null,
+            "deaths": 0,
+            "kills": 2,
+            "totalKills": 2,
+            "hp": 85,
+            "ammo": 6,
+            "actorHealth": -90,
+            "actorDead": true,
+            "actorExecuting": false,
+            "actorDeathTime": 0,
+            "actorHeight": 4.942925646197293,
+            "actorFloor": 4.2,
+            "actorHitboxHeight": 1.652,
+            "poseExecution": -1
+          }
+        },
+        {
+          "kind": 2,
+          "before": {
+            "busy": false,
+            "execution": null,
+            "deaths": 0,
+            "kills": 2,
+            "totalKills": 2,
+            "hp": 70,
+            "ammo": 6,
+            "actorHealth": 19,
+            "actorDead": false,
+            "actorDeathTime": 0,
+            "actorHeight": 5.0899,
+            "actorFloor": 4.2,
+            "actorHitboxHeight": 1.8997999999999997,
+            "poseExecution": -1
+          },
+          "paused": {
+            "busy": true,
+            "execution": {
+              "t": 0.6756440000000046,
+              "kind": 2
+            },
+            "deaths": 0,
+            "kills": 2,
+            "totalKills": 2,
+            "hp": 70,
+            "ammo": 6,
+            "actorHealth": 19,
+            "actorDead": false,
+            "actorExecuting": true,
+            "actorDeathTime": 0,
+            "actorHeight": 5.066447770717707,
+            "actorFloor": 4.2,
+            "actorHitboxHeight": 1.8997999999999997,
+            "poseExecution": -1
+          },
+          "recovery": {
+            "busy": true,
+            "execution": {
+              "t": 1.0625440000000062,
+              "kind": 2
+            },
+            "deaths": 0,
+            "kills": 3,
+            "totalKills": 3,
+            "hp": 85,
+            "ammo": 6,
+            "actorHealth": -5,
+            "actorDead": true,
+            "actorExecuting": false,
+            "actorDeathTime": 0.269,
+            "actorHeight": 4.541964,
+            "actorFloor": 4.2,
+            "actorHitboxHeight": 1.8997999999999997,
+            "poseExecution": -1
+          },
+          "after": {
+            "busy": false,
+            "execution": null,
+            "deaths": 0,
+            "kills": 3,
+            "totalKills": 3,
+            "hp": 85,
+            "ammo": 6,
+            "actorHealth": -5,
+            "actorDead": true,
+            "actorExecuting": false,
+            "actorDeathTime": 0.760400000000009,
+            "actorHeight": 4.541964,
+            "actorFloor": 4.2,
+            "actorHitboxHeight": 1.8997999999999997,
+            "poseExecution": -1
+          }
+        },
+        {
+          "cancel": "obstruction after first beat",
+          "before": {
+            "busy": false,
+            "execution": null,
+            "deaths": 0,
+            "kills": 3,
+            "totalKills": 3,
+            "hp": 70,
+            "ammo": 6,
+            "actorHealth": 19,
+            "actorDead": false,
+            "actorDeathTime": 0,
+            "actorHeight": 4.966,
+            "actorFloor": 4.2,
+            "actorHitboxHeight": 1.652,
+            "poseExecution": -1
+          },
+          "after": {
+            "busy": false,
+            "execution": null,
+            "deaths": 0,
+            "kills": 3,
+            "totalKills": 3,
+            "hp": 70,
+            "ammo": 6,
+            "actorHealth": 19,
+            "actorDead": false,
+            "actorExecuting": false,
+            "actorDeathTime": 0,
+            "actorHeight": 5.020001374980804,
+            "actorFloor": 4.2,
+            "actorHitboxHeight": 1.652,
+            "poseExecution": -1
+          }
+        }
+      ],
+      "errors": [],
+      "passed": true
+    }
+  },
+  "campaign": {
+    "sha256": "b8363527cc897bd1a62ce54bbf4ddb937d52e5ebaf715ab29a82d46ba755165d",
+    "passed": true,
+    "scope": "Continuous native campaign from New Game. Fixed-step movement and door interaction through authored geometry. Actual Playwright E for bell and exits, Space for chapter cards. Bosses receive a seeded terminal hit through native damage. Hostile attacks are isolated during this route.",
+    "chapters": [
+      "PROLOGUE — OUT OF THE PIT",
+      "LEVEL 1 — THE ASH BELL MONASTERY",
+      "LEVEL 2 — THE GOTHIC DUNGEON",
+      "LEVEL 3 — THE ABANDONED CHURCH",
+      "LEVEL 4 — THE HOLLOW VILLAGE",
+      "LEVEL 5 — THE NECROPOLIS",
+      "LEVEL 6 — THE GRAVEYARD",
+      "LEVEL 7 — THE SEWERS",
+      "LEVEL 8 — THE FACTORY",
+      "LEVEL 9 — THE BONE CATHEDRAL",
+      "LEVEL 10 — THE WOMB"
+    ],
+    "transitions": 10,
+    "redKeys": 9,
+    "seals": 2,
+    "bossTerminalHits": 21,
+    "nativeVictory": true,
+    "campaignCleared": true,
+    "errors": []
+  },
+  "smoke": {
+    "candidateSHA256": "b8363527cc897bd1a62ce54bbf4ddb937d52e5ebaf715ab29a82d46ba755165d",
+    "viewport": "1280x720",
+    "maps": [
+      {
+        "level": 0,
+        "width": 64,
+        "height": 62,
+        "enemies": 21,
+        "finitePlayer": true,
+        "performance": {
+          "frames": 32,
+          "meanMs": 18.06,
+          "p95Ms": 18.2,
+          "maxMs": 35.2,
+          "approximateFPS": 55.4
+        }
+      },
+      {
+        "level": 1,
+        "width": 58,
+        "height": 44,
+        "enemies": 23,
+        "finitePlayer": true,
+        "performance": {
+          "frames": 32,
+          "meanMs": 17.51,
+          "p95Ms": 18.2,
+          "maxMs": 18.2,
+          "approximateFPS": 57.1
+        }
+      },
+      {
+        "level": 2,
+        "width": 64,
+        "height": 46,
+        "enemies": 35,
+        "finitePlayer": true,
+        "performance": {
+          "frames": 32,
+          "meanMs": 17.46,
+          "p95Ms": 18.1,
+          "maxMs": 18.2,
+          "approximateFPS": 57.3
+        }
+      },
+      {
+        "level": 3,
+        "width": 54,
+        "height": 46,
+        "enemies": 37,
+        "finitePlayer": true,
+        "performance": {
+          "frames": 32,
+          "meanMs": 17.47,
+          "p95Ms": 18.2,
+          "maxMs": 18.2,
+          "approximateFPS": 57.2
+        }
+      },
+      {
+        "level": 4,
+        "width": 62,
+        "height": 46,
+        "enemies": 36,
+        "finitePlayer": true,
+        "performance": {
+          "frames": 32,
+          "meanMs": 17.49,
+          "p95Ms": 17.9,
+          "maxMs": 18.2,
+          "approximateFPS": 57.2
+        }
+      },
+      {
+        "level": 5,
+        "width": 58,
+        "height": 46,
+        "enemies": 34,
+        "finitePlayer": true,
+        "performance": {
+          "frames": 32,
+          "meanMs": 17.49,
+          "p95Ms": 18.2,
+          "maxMs": 18.3,
+          "approximateFPS": 57.2
+        }
+      },
+      {
+        "level": 6,
+        "width": 58,
+        "height": 46,
+        "enemies": 33,
+        "finitePlayer": true,
+        "performance": {
+          "frames": 32,
+          "meanMs": 17.53,
+          "p95Ms": 18.2,
+          "maxMs": 18.2,
+          "approximateFPS": 57
+        }
+      },
+      {
+        "level": 7,
+        "width": 62,
+        "height": 46,
+        "enemies": 33,
+        "finitePlayer": true,
+        "performance": {
+          "frames": 33,
+          "meanMs": 18.38,
+          "p95Ms": 18.4,
+          "maxMs": 45,
+          "approximateFPS": 54.4
+        }
+      },
+      {
+        "level": 8,
+        "width": 50,
+        "height": 42,
+        "enemies": 29,
+        "finitePlayer": true,
+        "performance": {
+          "frames": 32,
+          "meanMs": 17.5,
+          "p95Ms": 18.2,
+          "maxMs": 18.2,
+          "approximateFPS": 57.1
+        }
+      },
+      {
+        "level": 9,
+        "width": 100,
+        "height": 86,
+        "enemies": 115,
+        "finitePlayer": true,
+        "performance": {
+          "frames": 32,
+          "meanMs": 23.32,
+          "p95Ms": 36.3,
+          "maxMs": 36.7,
+          "approximateFPS": 42.9
+        }
+      },
+      {
+        "level": 10,
+        "width": 72,
+        "height": 64,
+        "enemies": 79,
+        "finitePlayer": true,
+        "performance": {
+          "frames": 32,
+          "meanMs": 17.77,
+          "p95Ms": 18.3,
+          "maxMs": 18.4,
+          "approximateFPS": 56.3
+        }
+      }
+    ],
+    "actions": {
+      "dropkick": {
+        "x": 3,
+        "z": 9,
+        "y": 5.2,
+        "ex": 3,
+        "ez": 7,
+        "distance": 6.642273425000021,
+        "jump": 0.6189517196799992,
+        "enemyDistance": 4.548993769531228,
+        "airborne": true,
+        "finisherSeen": false,
+        "hp": 172,
+        "frames": {
+          "frames": 55,
+          "meanMs": 32,
+          "p95Ms": 72.5,
+          "maxMs": 161.9,
+          "approximateFPS": 31.3
+        }
+      },
+      "finisher": {
+        "x": 3,
+        "z": 9,
+        "y": 5.2,
+        "ex": 3,
+        "ez": 7,
+        "distance": 0.8499999999999996,
+        "jump": 0,
+        "enemyDistance": 0.7314610805660289,
+        "airborne": false,
+        "finisherSeen": true,
+        "dead": true,
+        "frames": {
+          "frames": 47,
+          "meanMs": 36.44,
+          "p95Ms": 54.6,
+          "maxMs": 162.5,
+          "approximateFPS": 27.4
+        }
+      },
+      "warmFinishers": [
+        {
+          "requestedKind": 0,
+          "actualKind": 0,
+          "frames": 51,
+          "meanMs": 34.84,
+          "p95Ms": 71.9,
+          "maxMs": 125.5,
+          "approximateFPS": 28.7
+        },
+        {
+          "requestedKind": 1,
+          "actualKind": 1,
+          "frames": 62,
+          "meanMs": 24.07,
+          "p95Ms": 36.5,
+          "maxMs": 53.9,
+          "approximateFPS": 41.5
+        },
+        {
+          "requestedKind": 2,
+          "actualKind": 2,
+          "frames": 57,
+          "meanMs": 26.3,
+          "p95Ms": 37.7,
+          "maxMs": 55.1,
+          "approximateFPS": 38
+        }
+      ],
+      "restart": {
+        "melee": true,
+        "busy": false,
+        "exec": null,
+        "level": 0
+      }
+    },
+    "ordinaryLaunch": {
+      "offline": true,
+      "qaAbsent": true,
+      "viewport": "1920x1080"
+    },
+    "errors": []
+  },
+  "offline": {
+    "sha256": "b8363527cc897bd1a62ce54bbf4ddb937d52e5ebaf715ab29a82d46ba755165d",
+    "browsers": [
+      {
+        "channel": "chrome",
+        "version": "157.0.8103.80",
+        "offline": true,
+        "legacySave": true,
+        "settingsPersist": true,
+        "chapterStarts": true,
+        "newGame": {
+          "pointerLock": true,
+          "initial": [
+            6,
+            60
+          ],
+          "afterFire": [
+            5,
+            60
+          ],
+          "afterReload": [
+            6,
+            59
+          ]
+        },
+        "pageErrors": [],
+        "network": []
+      },
+      {
+        "channel": "msedge",
+        "version": "154.0.4258.53",
+        "offline": true,
+        "legacySave": true,
+        "settingsPersist": true,
+        "chapterStarts": true,
+        "newGame": {
+          "pointerLock": true,
+          "initial": [
+            6,
+            60
+          ],
+          "afterFire": [
+            5,
+            60
+          ],
+          "afterReload": [
+            6,
+            59
+          ]
+        },
+        "pageErrors": [],
+        "network": []
+      }
+    ]
+  },
+  "compatibility": {
+    "sha256": "b8363527cc897bd1a62ce54bbf4ddb937d52e5ebaf715ab29a82d46ba755165d",
+    "legacySave": true,
+    "settingsPersist": true,
+    "chapterStarts": true,
+    "errors": [],
+    "network": []
+  },
+  "arsenal": {
+    "sha256": "b8363527cc897bd1a62ce54bbf4ddb937d52e5ebaf715ab29a82d46ba755165d",
+    "scope": "Real R/digit keys, mouse fire/kick and RAF. Isolated setup inventories; no gameplay balance claim. Same-build cache ghost comparison, not old visual parity.",
+    "weaponSlots": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "reloadRuns": 10,
+    "transitions": 10,
+    "cacheComparisons": 10,
+    "partialReloadFireCancellations": 8,
+    "singleRoundSlots": [
+      8,
+      9
+    ],
+    "rasterSamples": 524,
+    "visibleRasterSamples": 524,
+    "capturedReloadPhases": 30,
+    "errors": [],
+    "network": []
+  }
+}

@@ -6,15 +6,19 @@ The hands follow the enemy's visible shoulders and head through the approach. Cl
 
 ![Native pre-contact frame in the chapel courtyard](finisher-choreography-nov19/pre-contact.png)
 
-[Native gameplay clip with game audio](finisher-choreography-nov19/finishers-native.webm)
+[Earlier native gameplay clip with game audio](finisher-choreography-nov19/finishers-native.webm)
 
 The still uses a staggered Screamer to compare against the design reference. The video uses the regular zombie, with QA positioning the actor and selecting each of the three variants before a real **E** press. The game advances each execution and supplies the audio through its own master output. [Original DreamLoop pre-contact target](../assets/hand-reference/finisher-precontact-target-nov19.png)
+
+In the latest pass, the second execution separates the bracing hand from the drawn-back hand before contact. The comparison at 0.190 seconds uses native **E**, the same camera and an exact animation clock. Samples from the first and third executions and from 0.28 seconds onward in the second matched the preceding build. [Matched pre-contact frame](finisher-choreography-nov19/pre-contact-stance-0190.png)
+
+The new clip stages a regular zombie and selects the second variant. Real **Enter** and **E** input lead into the execution, followed by the weapon returning to view and native game audio. [Current gameplay clip](finisher-choreography-nov19/stance-v8-native.webm)
 
 ## Verification
 
 The comparison uses the finisher-only HTML (`095d4e04552534736886df9cfdc7566a5cb1e9777b9ca3f31546f1eb8f0e4d7f`) built on `b8b77ff`.
 
-The browser tests also ran against the published standalone HTML with the campaign and mouse capture fixes. [Published build results](verification-data/nov19-finisher-campaign-release.json)
+The browser tests also ran against the published standalone HTML with the campaign and mouse capture fixes. [Current build results](verification-data/nov19-execution-final.json) · [Earlier finisher integration results](verification-data/nov19-finisher-campaign-release.json)
 
 - Three Chrome runs verified **E**, return of **W** movement, held fire and pointer-lock mouse look.
 - The timeline test paused all three variants, repeated **E** and **R**, and resumed each for one kill and one 15-health reward. A wall inserted after the first beat cancelled a separate run with no kill, health reward or ammunition loss.
