@@ -1,0 +1,436 @@
+{
+  "tested": "2026-11-19",
+  "browser": "Offline Chrome on Windows, standalone file URL",
+  "chapterRoute": {
+    "candidateSha256": "9abe85a0a4555cbb18a1c6a028942aa86a173054437e059e59017c453b4c789d",
+    "scope": "Continuous native campaign from New Game. Fixed-step movement and door interaction through authored geometry. Actual Playwright E for bell and exits, Space for chapter cards. Bosses receive a seeded terminal hit through native damage. Hostile attacks are isolated during this route.",
+    "passed": true,
+    "pageErrors": [],
+    "counts": {
+      "chapters": 11,
+      "transitions": 10,
+      "gameUnits": 3875,
+      "doors": 54,
+      "redKeys": 9,
+      "seals": 2,
+      "bosses": 21,
+      "deaths": 0
+    },
+    "nativeVictoryVisible": true,
+    "campaignSlotClearedAtVictory": true,
+    "chapters": [
+      {
+        "index": 0,
+        "name": "PROLOGUE — OUT OF THE PIT",
+        "spawn": [
+          19,
+          9
+        ],
+        "gameUnits": 336,
+        "nativeMovementSteps": 8482,
+        "openedDoors": [],
+        "pickups": [
+          "w1"
+        ],
+        "bosses": [],
+        "bellRung": false,
+        "chapterExit": "E, chapter card, Space",
+        "nextChapter": "LEVEL 1 — THE ASH BELL MONASTERY"
+      },
+      {
+        "index": 1,
+        "name": "LEVEL 1 — THE ASH BELL MONASTERY",
+        "spawn": [
+          167,
+          153
+        ],
+        "gameUnits": 896,
+        "nativeMovementSteps": 22528,
+        "openedDoors": [
+          "42,6",
+          "42,13",
+          "25,16",
+          "41,27",
+          "27,33",
+          "37,33",
+          "64,36",
+          "20,37",
+          "23,42",
+          "64,43",
+          "90,43",
+          "30,47",
+          "64,50",
+          "87,51",
+          "35,52",
+          "64,53",
+          "42,58",
+          "58,58",
+          "75,65",
+          "83,73"
+        ],
+        "pickups": [
+          "seal_bell",
+          "seal_ash",
+          "w8"
+        ],
+        "bosses": [
+          {
+            "kind": "N",
+            "defeated": true
+          }
+        ],
+        "bellRung": true,
+        "chapterExit": "E, chapter card, Space",
+        "nextChapter": "LEVEL 2 — THE GOTHIC DUNGEON"
+      },
+      {
+        "index": 2,
+        "name": "LEVEL 2 — THE GOTHIC DUNGEON",
+        "spawn": [
+          7,
+          11
+        ],
+        "gameUnits": 215,
+        "nativeMovementSteps": 5266,
+        "openedDoors": [
+          "33,11",
+          "36,12",
+          "9,13",
+          "43,24",
+          "50,27",
+          "43,36"
+        ],
+        "pickups": [
+          "key"
+        ],
+        "bosses": [
+          {
+            "kind": "U",
+            "defeated": true
+          }
+        ],
+        "bellRung": false,
+        "chapterExit": "E, chapter card, Space",
+        "nextChapter": "LEVEL 3 — THE ABANDONED CHURCH"
+      },
+      {
+        "index": 3,
+        "name": "LEVEL 3 — THE ABANDONED CHURCH",
+        "spawn": [
+          121,
+          45
+        ],
+        "gameUnits": 374,
+        "nativeMovementSteps": 9215,
+        "openedDoors": [
+          "57,17",
+          "19,23",
+          "53,23"
+        ],
+        "pickups": [
+          "key"
+        ],
+        "bosses": [
+          {
+            "kind": "Q",
+            "defeated": true
+          },
+          {
+            "kind": "U",
+            "defeated": true
+          }
+        ],
+        "bellRung": false,
+        "chapterExit": "E, chapter card, Space",
+        "nextChapter": "LEVEL 4 — THE HOLLOW VILLAGE"
+      },
+      {
+        "index": 4,
+        "name": "LEVEL 4 — THE HOLLOW VILLAGE",
+        "spawn": [
+          71,
+          11
+        ],
+        "gameUnits": 286,
+        "nativeMovementSteps": 6966,
+        "openedDoors": [
+          "31,36",
+          "10,45",
+          "35,45"
+        ],
+        "pickups": [
+          "key"
+        ],
+        "bosses": [],
+        "bellRung": false,
+        "chapterExit": "E, chapter card, Space",
+        "nextChapter": "LEVEL 5 — THE NECROPOLIS"
+      },
+      {
+        "index": 5,
+        "name": "LEVEL 5 — THE NECROPOLIS",
+        "spawn": [
+          9,
+          75
+        ],
+        "gameUnits": 330,
+        "nativeMovementSteps": 8322,
+        "openedDoors": [
+          "34,21",
+          "31,27"
+        ],
+        "pickups": [
+          "key"
+        ],
+        "bosses": [
+          {
+            "kind": "E",
+            "defeated": true
+          },
+          {
+            "kind": "U",
+            "defeated": true
+          },
+          {
+            "kind": "Z",
+            "defeated": true
+          }
+        ],
+        "bellRung": false,
+        "chapterExit": "E, chapter card, Space",
+        "nextChapter": "LEVEL 6 — THE GRAVEYARD"
+      },
+      {
+        "index": 6,
+        "name": "LEVEL 6 — THE GRAVEYARD",
+        "spawn": [
+          15,
+          79
+        ],
+        "gameUnits": 268,
+        "nativeMovementSteps": 6605,
+        "openedDoors": [
+          "28,10",
+          "39,10",
+          "46,16",
+          "31,38",
+          "42,38"
+        ],
+        "pickups": [
+          "w9",
+          "key"
+        ],
+        "bosses": [
+          {
+            "kind": "E",
+            "defeated": true
+          },
+          {
+            "kind": "U",
+            "defeated": true
+          },
+          {
+            "kind": "N",
+            "defeated": true
+          }
+        ],
+        "bellRung": false,
+        "chapterExit": "E, chapter card, Space",
+        "nextChapter": "LEVEL 7 — THE SEWERS"
+      },
+      {
+        "index": 7,
+        "name": "LEVEL 7 — THE SEWERS",
+        "spawn": [
+          11,
+          79
+        ],
+        "gameUnits": 374,
+        "nativeMovementSteps": 9320,
+        "openedDoors": [
+          "46,14",
+          "37,22",
+          "40,28",
+          "33,38"
+        ],
+        "pickups": [
+          "key"
+        ],
+        "bosses": [
+          {
+            "kind": "E",
+            "defeated": true
+          },
+          {
+            "kind": "H",
+            "defeated": true
+          },
+          {
+            "kind": "U",
+            "defeated": true
+          }
+        ],
+        "bellRung": false,
+        "chapterExit": "E, chapter card, Space",
+        "nextChapter": "LEVEL 8 — THE FACTORY"
+      },
+      {
+        "index": 8,
+        "name": "LEVEL 8 — THE FACTORY",
+        "spawn": [
+          11,
+          77
+        ],
+        "gameUnits": 320,
+        "nativeMovementSteps": 8037,
+        "openedDoors": [
+          "44,11",
+          "35,18",
+          "42,29",
+          "28,36"
+        ],
+        "pickups": [
+          "key"
+        ],
+        "bosses": [
+          {
+            "kind": "E",
+            "defeated": true
+          },
+          {
+            "kind": "V",
+            "defeated": true
+          },
+          {
+            "kind": "U",
+            "defeated": true
+          }
+        ],
+        "bellRung": false,
+        "chapterExit": "E, chapter card, Space",
+        "nextChapter": "LEVEL 9 — THE BONE CATHEDRAL"
+      },
+      {
+        "index": 9,
+        "name": "LEVEL 9 — THE BONE CATHEDRAL",
+        "spawn": [
+          111,
+          67
+        ],
+        "gameUnits": 271,
+        "nativeMovementSteps": 6681,
+        "openedDoors": [
+          "44,28",
+          "55,31",
+          "24,32",
+          "18,41"
+        ],
+        "pickups": [
+          "key"
+        ],
+        "bosses": [
+          {
+            "kind": "Z",
+            "defeated": true
+          },
+          {
+            "kind": "U",
+            "defeated": true
+          }
+        ],
+        "bellRung": false,
+        "chapterExit": "E, chapter card, Space",
+        "nextChapter": "LEVEL 10 — THE WOMB"
+      },
+      {
+        "index": 10,
+        "name": "LEVEL 10 — THE WOMB",
+        "spawn": [
+          13,
+          63
+        ],
+        "gameUnits": 205,
+        "nativeMovementSteps": 5084,
+        "openedDoors": [
+          "24,15",
+          "32,28",
+          "22,31"
+        ],
+        "pickups": [
+          "key"
+        ],
+        "bosses": [
+          {
+            "kind": "E",
+            "defeated": true
+          },
+          {
+            "kind": "G",
+            "defeated": true
+          },
+          {
+            "kind": "U",
+            "defeated": true
+          }
+        ],
+        "bellRung": false,
+        "chapterExit": "native victory overlay",
+        "nextChapter": null
+      }
+    ]
+  },
+  "shrineRecovery": {
+    "legacy": "b8b77ff",
+    "legacySha256": "145a2b448a71e91ea8dbd63be5149a2dedd1935cdd2cb32212d5a9f7a796c305",
+    "candidateSha256": "9abe85a0a4555cbb18a1c6a028942aa86a173054437e059e59017c453b4c789d",
+    "checks": [
+      {
+        "name": "post-boss shrine reached with E and W on legacy file",
+        "saved": {
+          "x": 53.097154403020035,
+          "z": 42.4918101647518,
+          "yaw": 3.1065710689176904
+        }
+      },
+      {
+        "name": "legacy Continue restores native gate without replaying kill credit"
+      },
+      {
+        "name": "native death, Rise Again, E and Space reach the Gothic Dungeon"
+      },
+      {
+        "name": "restored Priest exit still requires the Cathedral Guardian"
+      },
+      {
+        "name": "legacy native shrine within its open red gate fell back to the entry",
+        "at": {
+          "x": 49.45169488199636,
+          "z": 31,
+          "yaw": 4.71238898038469
+        }
+      },
+      {
+        "name": "closed and wall-overlapping doorway snapshots remain rejected"
+      },
+      {
+        "name": "legacy final-boss shrine recovers native victory without another fight",
+        "saved": {
+          "x": 50.38502821532968,
+          "z": 30.5,
+          "yaw": 4.71238898038469
+        },
+        "nativeVictoryCalls": 1
+      },
+      {
+        "name": "legacy final-boss shrine recovers native victory without another fight",
+        "saved": {
+          "x": 49.45169488199636,
+          "z": 31,
+          "yaw": 4.71238898038469
+        },
+        "nativeVictoryCalls": 1
+      }
+    ],
+    "pageErrors": []
+  }
+}

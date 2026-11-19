@@ -24,9 +24,11 @@ Gotik piksel FPS oyununun on silah, deri eldiven ve prologue cehennem bölümü 
 
 ## Bu sürüm
 
+**Yakın dövüş bitiricileri.** Sendeleyen düşmanda istem görünürken **E** tuşuna bas. Üç hareketin ayrı tutuşları, darbe araları ve toparlanma pozları var. [Oyun içi video ve kontroller](docs/finisher-choreography-nov19.md).
+
 **Fare ve menü kontrolü.** Başlık menüsünde **Tab** ile dolaş, **Enter** veya **Space** ile seç. Fare yakalama engellenirse oyun duraklar ve yeniden deneme seçeneği gösterir. Oyun dönüşte basılı tuşları ve ateş girdisini sıfırlar. [Kontroller ve tarayıcı testi](docs/player-input-nov19.md).
 
-**Kampanya kayıtları.** Gravedigger karşılaşmasından sonra kayıt noktasına ulaşırsan **Continue** manastır çıkışını açık olarak geri yükler. Heart of Silence yenildikten sonra alınmış eski bir kayıt da oyunun finalini tamamlayabilir. [Eski kayıt ve bölüm geçişi testleri](docs/campaign-boss-restore-nov19.md).
+**Kampanya kayıtları.** Gravedigger karşılaşmasından sonra kayıt noktasına ulaşırsan **Continue** manastır çıkışını açık olarak geri yükler. Heart of Silence yenildikten sonra alınmış eski bir kayıt da oyunun finalini tamamlayabilir. [Eski kayıtların testleri](docs/campaign-boss-restore-nov19.md) · [11 bölümün geçiş testi](docs/campaign-progression-nov19.md).
 
 **19 Kasım, Prologue.** Cehennem arenasındaki köz ocağı koyu bazalt ve ince bakır kuşakla yeniden işlendi. Arenanın doğusundaki üç demir fener, üst kemere giden basamakları sırayla aydınlatıyor. [Arena görüntüleri](docs/hell-hearth-nov19/README.md) · [Arenadan üst kemere oynanış](docs/hell-ascent-nov19/README.md).
 
