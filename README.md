@@ -24,6 +24,12 @@ Gotik piksel FPS oyununun on silah, deri eldiven ve prologue cehennem bölümü 
 
 ## Bu sürüm
 
+**Factory.** Pres salonundan ustabaşının ofisine çıkan tünelin yanında, pirinç göstergeli basınç düzeneği yaklaşırken anahtar yolunu belirginleştiriyor. [Oyun içi kareler ve güzergâh testi](docs/factory-manifold-nov19/README.md).
+
+**Stake Gun.** Doldurma sırasında destek elinin iki parmağı kazığın çevresine kapanıyor ve kazık yerine otururken açılıyor. [Eş zamanlı kareler ve oyun içi klip](docs/stake-grip-nov19/README.md).
+
+**Harita.** **M** ile sabitlediğin haritayı yine **M** ile kapat. Yalnızca **Tab** basılıysa bırakınca kapanır. İkisi de etkinse **M** sabitlemeyi kaldırır. Haritanın alt satırı o anda hangi kontrolün geçerli olduğunu gösterir. [Harita kontrolleri](docs/wayfinding-nov14/README.md).
+
 **Womb.** Doğu anahtar geçidinin kemik kaburgaları ve paslı çerçevesi, kırmızı anahtarla açılan kapıyı uzaktan belirginleştiriyor. [Oyun içi önce ve sonra kareleri](docs/womb-east-valve-nov19/README.md).
 
 **Tommy Gun.** Tamburu yerleştirdikten sonra destek eli doğrudan kurma koluna uzanıyor ve çekiş başlamadan kola oturuyor. [Eş kamera kareleri ve zamanlama](docs/tommy-transition-nov19/README.md).
@@ -164,7 +170,7 @@ Prologue'un cehennem alanına koyu bazalt döşeme, kemerli mimari, bronz detayl
 
 Yukarıdaki silah görüntüleri ve video 23 Ekim teslimatındandır. Son animasyon kanıtları `docs/weapon-animation-oct24b/` ve `docs/enemy-landing-oct24/` içindedir; her kaydın kaynak sürümü kendi doğrulama notlarında belirtilir. Bölüm düzeni korunur; son materyal karşılaştırmaları `docs/ritual-ivory-oct24c/` içindedir. [Düzeltilmiş native kamera/ışık kontrolü](docs/hell-environment.md) ve `docs/hell-capture-oct24/` mevcut ortamı gösterir. Tasarım hedefleri `assets/weapon-reference/` ve `assets/hand-reference/` içindedir; hedef görseller oyun ekran görüntüsü değildir.
 
-Son dosyanın hashleri, test kapsamı ve ölçüm sınırları [güncel doğrulama raporunda](docs/verification-data/nov19-evening-release.json) ve [build bilgisinde](docs/build-info.json) yer alır. [Önceki doğrulamalar](docs/verification.md).
+Son dosyanın hashleri, test kapsamı ve ölçüm sınırları [güncel doğrulama raporunda](docs/verification-data/nov19-night-release.json) ve [build bilgisinde](docs/build-info.json) yer alır. [Önceki doğrulamalar](docs/verification.md).
 
 Silahların bir bölümü tam serbest açılı 3B model yerine, gerçek hacim ve hareketli parçalara bağlanan perspektifli resim yüzeyleri kullanır. Bu yöntem onaylanan birinci şahıs açısına göre hazırlanmıştır; her açıdan aynı ayrıntıyı sunan tam 3B model değildir. Bazı silah yüzeylerinde referansın ışık bilgisi resmin içinde bulunur. Cehennem ayrıntılarının bazı ışık vurguları da sabittir. Performans cihaz, tarayıcı ve sahneye göre değişir; tüm koşullarda sabit FPS garantisi yoktur.
 

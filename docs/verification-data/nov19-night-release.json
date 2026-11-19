@@ -1,0 +1,230 @@
+{
+  "sha256": "e0e15fb5cfe8ffb640d9e3a6abf664133c7919194693f22ff0d5690927a26667",
+  "bytes": 19386413,
+  "baselineCommit": "07b5f60ce211783ebfb9644304ff67873f806a51",
+  "previousSHA256": "65a12987749d90f6ba6d9ddd00eb642266df2f8723c5efa101f2f4c1e4d307d6",
+  "changedModules": {
+    "factory-office-manifold.js": "b5517bc8fc82b17f0711afd04039e0b7cb4afc1b49046e4005ec7320f4355c5a",
+    "shrine-map.js": "70fd8c26baa23b82e5e3aadb43a9367e819b6ae772ae01485bda9872e86bb573",
+    "viewmodels.js": "b986c9c9d4f8d7b6b09f6ea76f1c78314f60f597f07f837478d8d162c7ddf57b"
+  },
+  "build": {
+    "sourceModules": 37,
+    "runs": 2,
+    "idempotentBuildsPerRun": 2,
+    "invalidInputsRefusedPerRun": 8
+  },
+  "factory": {
+    "oldDrawCalls": 67,
+    "newDrawCalls": 68,
+    "collisionSamples": 9000,
+    "nativeInputsPerBuild": 22,
+    "acquiredOfficeKey": true,
+    "openedDoors": [
+      "28,36",
+      "42,29",
+      "35,18"
+    ],
+    "resourceDisposals": [
+      {
+        "level": 5,
+        "release": [
+          1,
+          1,
+          1
+        ]
+      },
+      {
+        "level": 7,
+        "release": [
+          1,
+          1,
+          1
+        ]
+      }
+    ],
+    "scope": "Offline W and E on the same authored route. Enemy attacks isolated for the comparison."
+  },
+  "chart": {
+    "checksPerBuild": 13,
+    "captions": [
+      "RELEASE TAB TO CLOSE",
+      "M  CLOSE",
+      "M  UNPIN"
+    ],
+    "viewports": [
+      [
+        360,
+        480
+      ],
+      [
+        1280,
+        720
+      ]
+    ],
+    "offline": true,
+    "ordinaryLaunch": true
+  },
+  "stake": {
+    "isolatedRasterCases": 600,
+    "isolatedUnchangedCases": 576,
+    "isolatedExpectedDifferences": 24,
+    "finiteVisibleFrames": 46,
+    "loaded": 1,
+    "reserve": 99,
+    "warmRenderSample": {
+      "sequence": "ABBA/BAAB",
+      "contextsPerBuild": 4,
+      "warmupReloadsPerContext": 2,
+      "measuredReloadsPerBuild": 24,
+      "before": {
+        "rafP50Ms": 17.4,
+        "rafP95Ms": 18.2,
+        "rasterCpuMedianMs": 10.5,
+        "rasterCpuMeanMs": 10.664,
+        "rasterCpuP95Ms": 14.6
+      },
+      "after": {
+        "rafP50Ms": 17.4,
+        "rafP95Ms": 18.2,
+        "rasterCpuMedianMs": 10.7,
+        "rasterCpuMeanMs": 11.223,
+        "rasterCpuP95Ms": 16.3
+      },
+      "scope": "Real R reloads in isolated headless Chrome contexts on one shared host, with the same controlled camera and enemies removed in both builds. Context medians overlap, with one high-tail context in each build."
+    }
+  },
+  "nativeWeaponRuntime": {
+    "weapons": 10,
+    "phaseCaptures": 30,
+    "readyFrames": 967,
+    "visibleFrames": 967,
+    "pageErrors": [],
+    "network": []
+  },
+  "offline": [
+    {
+      "channel": "chrome",
+      "version": "157.0.8103.80",
+      "offline": true,
+      "legacySave": true,
+      "settingsPersist": true,
+      "chapterStarts": true,
+      "newGame": {
+        "pointerLock": true,
+        "initial": [
+          6,
+          60
+        ],
+        "afterFire": [
+          5,
+          60
+        ],
+        "afterReload": [
+          6,
+          59
+        ]
+      },
+      "pageErrors": [],
+      "network": []
+    },
+    {
+      "channel": "msedge",
+      "version": "154.0.4258.53",
+      "offline": true,
+      "legacySave": true,
+      "settingsPersist": true,
+      "chapterStarts": true,
+      "newGame": {
+        "pointerLock": true,
+        "initial": [
+          6,
+          60
+        ],
+        "afterFire": [
+          5,
+          60
+        ],
+        "afterReload": [
+          6,
+          59
+        ]
+      },
+      "pageErrors": [],
+      "network": []
+    }
+  ],
+  "webgl": {
+    "chapters": 11,
+    "ordinaryOfflineLaunch": true,
+    "errors": []
+  },
+  "campaign": {
+    "chapters": [
+      "PROLOGUE — OUT OF THE PIT",
+      "LEVEL 1 — THE ASH BELL MONASTERY",
+      "LEVEL 2 — THE GOTHIC DUNGEON",
+      "LEVEL 3 — THE ABANDONED CHURCH",
+      "LEVEL 4 — THE HOLLOW VILLAGE",
+      "LEVEL 5 — THE NECROPOLIS",
+      "LEVEL 6 — THE GRAVEYARD",
+      "LEVEL 7 — THE SEWERS",
+      "LEVEL 8 — THE FACTORY",
+      "LEVEL 9 — THE BONE CATHEDRAL",
+      "LEVEL 10 — THE WOMB"
+    ],
+    "chapterExitCards": 10,
+    "nativeVictory": true,
+    "scope": "Continuous native campaign from New Game. Fixed-step movement and door interaction through authored geometry. Actual Playwright E for bell and exits, Space for chapter cards. Bosses receive a seeded terminal hit through native damage. Hostile attacks are isolated during this route."
+  },
+  "nativeHeartReplay": {
+    "start": "Stock Womb Chapter Select in offline Chrome",
+    "input": "Real keyboard and mouse",
+    "nativeRises": 2,
+    "victoryText": "THE PARISH FALLS SILENT",
+    "health": 79.6,
+    "armor": 44.4,
+    "enterReturnedToTitle": true,
+    "afterReload": {
+      "rank": "D",
+      "time": "2:18",
+      "campaignSlotEmpty": true
+    }
+  },
+  "gravediggerRegression": {
+    "baselineCommit": "dd6cf26",
+    "baselineObserved": [
+      "Nonfinite coordinates",
+      "AudioParam error"
+    ],
+    "summonClasses": 2,
+    "finiteAtBirth": true,
+    "finiteAfterTicks": 24,
+    "spatialWoundCue": "spurtPulse",
+    "positionMatchTolerance": 0.0001,
+    "pcmPeaks": [
+      0.003178,
+      0.001459
+    ],
+    "webglRendered": true,
+    "disposed": true,
+    "pageErrors": [],
+    "scope": "Seeded fixture used the native summon and wound behavior."
+  },
+  "browserSuites": [
+    "Factory native old/new route",
+    "Real chart footer controls",
+    "Ten native weapon runtimes",
+    "Eleven Chrome WebGL maps",
+    "Standalone offline Chrome and Edge",
+    "Full native campaign route"
+  ],
+  "supportingEvidence": [
+    "docs/factory-manifold-nov19/scope.json",
+    "docs/stake-grip-nov19/verification.json",
+    "docs/verification-data/nov19-map-controls.json",
+    "docs/stake-grip-nov19/stake-native.webm",
+    "docs/factory-manifold-nov19/native-route.md",
+    "docs/factory-manifold-nov19/native-route.png"
+  ]
+}

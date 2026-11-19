@@ -1,0 +1,30 @@
+{
+  "baselineCommit": "07b5f60",
+  "baselineHtmlSha256": "65a12987749d90f6ba6d9ddd00eb642266df2f8723c5efa101f2f4c1e4d307d6",
+  "candidateHtmlSha256": "46f950ddad869e2f656a2187b5892346b469e4bc8ab2de0500ba65173e45e599",
+  "candidateShrineMapSha256": "70fd8c26baa23b82e5e3aadb43a9367e819b6ae772ae01485bda9872e86bb573",
+  "browser": "Chrome 157.0.8103.80",
+  "offline": true,
+  "qaQuery": false,
+  "gameplayStatePatched": false,
+  "viewports": [[360, 480], [1280, 720]],
+  "renderedCaptionChecksPerBuild": 13,
+  "baselineFooterForEveryMode": "M / TAB  CLOSE",
+  "candidate": {
+    "onlyTabHeld": "RELEASE TAB TO CLOSE",
+    "onlyPinned": "M  CLOSE",
+    "pinnedWhileTabHeld": "M  UNPIN",
+    "afterUnpinWhileTabHeld": "RELEASE TAB TO CLOSE",
+    "afterReleasingTabWhilePinned": "M  CLOSE",
+    "minimumFooterGapPixels": 58.46
+  },
+  "passedOnBothBuilds": [
+    "Releasing Tab closes the held chart and keeps the pinned chart open",
+    "Pressing M while holding Tab changes the pin independently of the hold",
+    "The wheel reaches 2× and the plus key reaches 4×",
+    "Pausing hides the pinned chart and resuming restores it",
+    "Fresh Continue loads the same campaign and ammunition"
+  ],
+  "browserErrors": [],
+  "passed": true
+}

@@ -69,6 +69,7 @@ const code = [
   "necropolis-ossuary-entrance.js",
   "cathedral-reliquary.js",
   "womb-east-valve.js",
+  "factory-office-manifold.js",
   "render-warmup.js",
   "hud-updates.js",
   "display-settings.js",

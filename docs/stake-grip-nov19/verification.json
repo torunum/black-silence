@@ -1,0 +1,121 @@
+{
+  "scope": "Stake loading fingers only, native .13–.60 window; original palm/wrist/sleeve/stave/lever and gameplay unchanged.",
+  "baseSHA256": "65a12987749d90f6ba6d9ddd00eb642266df2f8723c5efa101f2f4c1e4d307d6",
+  "approvedArtSHA256": "cf4272ddc2423436b31508474dc5ee57c808859bcb6638d8ae57567c6747198e",
+  "finalCandidateSHA256": "4207dbf151f60710eaded14597e2e824608c540e751dc2894422e0cc6a5d4723",
+  "finalSourceSHA256": "b986c9c9d4f8d7b6b09f6ea76f1c78314f60f597f07f837478d8d162c7ddf57b",
+  "rasterParity": {
+    "cases": 600,
+    "exact": 576,
+    "intendedStakeCarryDifferences": 24,
+    "unexpected": 0,
+    "cosmeticDifferences": 0,
+    "pass": true,
+    "scope": "Only Stake index9 carrying .13-.60 may differ; all other weapons, idle, lever/recovery, boots and finishers must be raw/canvas exact."
+  },
+  "nativeRuntime": {
+    "inputSHA256": "4207dbf151f60710eaded14597e2e824608c540e751dc2894422e0cc6a5d4723",
+    "pass": true,
+    "scope": "Real R/digit keys, mouse fire/kick and RAF. Isolated setup inventories; no gameplay balance claim. Same-build cache ghost comparison, not old visual parity.",
+    "runs": [
+      {
+        "name": "STAKE GUN",
+        "reloadSeconds": 0.8,
+        "elapsedMs": 817,
+        "sampleCount": 40,
+        "visibleSampleCount": 40,
+        "mag": 1,
+        "reserve": 99
+      }
+    ],
+    "transitions": [
+      {
+        "index": 9,
+        "firedMag": 0,
+        "switchedTo": 0,
+        "cancelledMag": 0,
+        "kickRecovered": true
+      }
+    ],
+    "cache": [
+      {
+        "index": 9,
+        "match": true,
+        "before": "193a41302acca2fbef1e866227237b0b6a9185fd079fabf75caa388f3e2cde03",
+        "after": "193a41302acca2fbef1e866227237b0b6a9185fd079fabf75caa388f3e2cde03",
+        "presentationAndCacheStable": true
+      }
+    ],
+    "errors": [],
+    "network": []
+  },
+  "comparison": {
+    "method": "Each variant stock 0 key switch then actual R + native ammo endpoint; 0.59-exact is a controlled phase boundary probe; matched screenshots replay exact baseline native-sampled poses with paused world.",
+    "poses": [
+      {
+        "label": 0.15,
+        "actualReloadPhase": 0.17162500000000136,
+        "controlledBoundary": false
+      },
+      {
+        "label": 0.25,
+        "actualReloadPhase": 0.25862500000000177,
+        "controlledBoundary": false
+      },
+      {
+        "label": 0.35,
+        "actualReloadPhase": 0.3687499999999999,
+        "controlledBoundary": false
+      },
+      {
+        "label": 0.45,
+        "actualReloadPhase": 0.4560000000000012,
+        "controlledBoundary": false
+      },
+      {
+        "label": 0.55,
+        "actualReloadPhase": 0.5662499999999997,
+        "controlledBoundary": false
+      },
+      {
+        "label": 0.59,
+        "actualReloadPhase": 0.609125000000001,
+        "controlledBoundary": false
+      },
+      {
+        "label": 0.72,
+        "actualReloadPhase": 0.7398750000000015,
+        "controlledBoundary": false
+      },
+      {
+        "label": 0.85,
+        "actualReloadPhase": 0.871000000000001,
+        "controlledBoundary": false
+      },
+      {
+        "label": "0.59-exact",
+        "actualReloadPhase": 0.59,
+        "controlledBoundary": true
+      }
+    ],
+    "visualReview": "Independent baseline 7.0/10; approved V3 8.7/10. V4 is arithmetic-readability-only and raw/canvas exact to V3 in all 600 cases."
+  },
+  "nativeClip": {
+    "inputSHA256": "4207dbf151f60710eaded14597e2e824608c540e751dc2894422e0cc6a5d4723",
+    "scope": "Stock 0 key then actual R/native RAF and post-master WebAudio output. QA supplies selected Stake/reserve and removes enemies; subtitles hidden. No scripted view pose.",
+    "samples": 59,
+    "visibleFiniteSamples": 59,
+    "mag": 1,
+    "reserve": 99,
+    "errors": [],
+    "network": [],
+    "videoCodec": "VP9",
+    "audioCodec": "Opus",
+    "fps": 25,
+    "durationSeconds": 1.38,
+    "bytes": 584303,
+    "sha256": "03e6107ef2081f8e32963dc0055144ce5e97f27122fc004277df51a6fe65c6b8",
+    "audioTapSeconds": 1.5137000000178813,
+    "syncScope": "Audio starts when the preroll marker is removed; trim uses the first non-marker video frame. Video frame granularity is 40ms; physical audio-output latency is not measured."
+  }
+}

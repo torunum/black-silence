@@ -261,7 +261,11 @@
     const help = width >= 38 * unit ? "×   WHEEL / + / −  ZOOM" : "×   + / −  ZOOM";
     ctx.fillText(levels[zoom] + help, pad, height - unit);
     ctx.textAlign = "right";
-    ctx.fillStyle = ink; ctx.fillText("M / TAB  CLOSE", width - pad, height - unit);
+    const closeHint = map.open
+      ? (map.tabHeld ? "M  UNPIN" : "M  CLOSE")
+      : "RELEASE TAB TO CLOSE";
+    ctx.fillStyle = ink;
+    ctx.fillText(closeHint, width - pad, height - unit);
   };
 
   const visible = () => Be.started && !T.dead && !T.won && !Wk() && !Qm() && !Lw() && (We.open || We.tabHeld);

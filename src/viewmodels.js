@@ -3055,16 +3055,20 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
     [732,369],[751,373],[774,378],[803,389],[822,402],[835,419],[835,469],[591,469],
     [582,464],[587,454],[594,445],[578,441],[569,429],[573,418]
   ]],-.047,[[601,462],[827,454],[1010,746],[790,794]]);
-  // Two curled loading fingertips use the knuckles from the same brown glove.
-  // Their bases are under the far edge, tips sit across the stave's near edge.
-  const stakeDigits=[0,1].flatMap(k=>{
-    const digit=[[0,0],[3,-10],[10,-16],[17,-15],[21,-10],[23,1],[22,12],[17,21],[12,24],[6,21],[4,13]];
-    const uv=[[341,261],[345,251],[351,247],[356,249],[360,252],[366,263],[366,270],[362,279],[357,281],[350,278],[347,272]];
-    return r79Triangles(digit).map(ids=>{
-      const points=ids.map(i=>{const [x,y]=digit[i];return stakePoint(275+23*k+x,168+10*k+y,-.080+.0008*Math.max(0,y));});
-      return {points,uv:ids.map(i=>stakeUv(uv[i])),light:k?.87:.99};
+  // Two loading fingers roll up from the palm onto the stave's near face.
+  // Reuse the highlighted thumb leather, with their bases buried in the same
+  // glove. The native carry transform and release window remain unchanged.
+  const stakeDigits=[0,1].map(k=>{
+    const curve=[[0,24],[-3,9],[-2,-9],[2,-27],[9,-38],[18,-40],[25,-35],[29,-25],[26,-14],[20,-2],[19,12],[22,28]];
+    const uv=[[251,221],[246,201],[245,186],[247,172],[251,163],[259,160],[268,164],[275,174],[279,186],[274,196],[270,208],[269,224]];
+    const points=curve.map(([x,y])=>{
+      const px=279+29*k+x,py=180+12*k+y;
+      return {closed:stakePoint(px,py,-.090+.00050*Math.max(0,y)),
+        wrapped:stakePoint(px+x*.06,180+12*k+(y<0?y*(k?.87:1.03):y),-.070-.005*k+.00030*Math.max(0,y)),
+        open:stakePoint(px,207+12*k+(py-207-12*k)*.40,-.048)};
     });
-  });
+    return r79Triangles(curve).map(ids=>({points:ids.map(i=>points[i]),uv:ids.map(i=>stakeUv(uv[i])),light:k?.91:1.01}));
+  }).flat();
   const stakeBow=(()=>{
     const frontTab=stakePlate([[489,329],[505,332],[506,363],[502,383],[493,383],[488,357]],-.031,.018,WORN,
       [[489,334],[499,338],[500,363],[498,379],[493,375],[490,356]]);
@@ -3126,8 +3130,12 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       }
       stakeLeft(m,leverReach);
       if(t>.13 && t<.60){
-        const curl=Qe(t,.13,.60,.045);m.push();m.translate(...hold);m.pitch(-.27*(1-curl));m.translate(...hold.map(v=>-v));
-        for(const f of stakeDigits)paintedSurface(m,'relicSource',f.points,f.uv,f.light);
+        const curl=Qe(t,.13,.60,.045),wrap=1-ease(t,.43,.55);m.push();m.translate(...hold);m.pitch(-.27*(1-curl));m.translate(...hold.map(v=>-v));
+        const fingerPoint=p=>p.open.map((released,i)=>{
+          const carried=p.closed[i],curled=p.wrapped[i];
+          return released+(carried+(curled-carried)*wrap-released)*curl;
+        });
+        for(const f of stakeDigits)paintedSurface(m,'relicSource',f.points.map(fingerPoint),f.uv,f.light);
         m.pop();
       }
       m.pop();
