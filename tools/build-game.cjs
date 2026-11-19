@@ -51,6 +51,7 @@ const code = [
   "guardian-volley.js",
   "dungeon-creatures.js",
   "necropolis-screamer.js",
+  "groundskeeper-zombie.js",
   "viewmodels.js",
   "finishers.js",
   "reload-audio-data.js",

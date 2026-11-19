@@ -1,0 +1,350 @@
+{
+  "passed": true,
+  "builds": [
+    {
+      "branch": "before",
+      "htmlSHA256": "f6585a733ff0ea1d9174de2e4db79677a507619992695b25a2106ab4217d74c5",
+      "spawn": {
+        "hp": 88,
+        "reach": 12,
+        "height": 1.652,
+        "width": 1.18,
+        "speed": 2.4
+      },
+      "stagger": [
+        "pain1:0",
+        19,
+        12.5,
+        10,
+        100,
+        0,
+        4.583333333333333,
+        false
+      ],
+      "contactTick": 50,
+      "cache": {
+        "counts": [
+          17,
+          4,
+          21
+        ],
+        "stable": true,
+        "dimensions": [
+          72,
+          100
+        ],
+        "walkStep": 0.125,
+        "poses": [
+          "walk",
+          "idle",
+          "atk",
+          "pain",
+          "die",
+          "crawl",
+          "crawlIdle",
+          "crawlAtk",
+          "crawlPain",
+          "crawlDie"
+        ],
+        "parts": [
+          "head",
+          "lArm",
+          "rArm",
+          "legs"
+        ],
+        "detachedSize": [
+          [
+            18,
+            25
+          ],
+          [
+            13,
+            39
+          ],
+          [
+            11,
+            40
+          ],
+          [
+            41,
+            31
+          ]
+        ],
+        "bounds": [
+          [
+            9,
+            4,
+            58,
+            97,
+            2256
+          ],
+          [
+            8,
+            10,
+            59,
+            98,
+            2132
+          ],
+          [
+            13,
+            15,
+            62,
+            97,
+            2044
+          ],
+          [
+            0,
+            19,
+            61,
+            98,
+            2158
+          ],
+          [
+            12,
+            15,
+            63,
+            97,
+            2012
+          ],
+          [
+            0,
+            22,
+            70,
+            92,
+            2030
+          ],
+          [
+            12,
+            15,
+            66,
+            70,
+            1576
+          ],
+          [
+            0,
+            0,
+            17,
+            24,
+            331
+          ],
+          [
+            0,
+            0,
+            12,
+            38,
+            243
+          ],
+          [
+            0,
+            0,
+            10,
+            39,
+            238
+          ],
+          [
+            0,
+            0,
+            40,
+            30,
+            685
+          ]
+        ],
+        "colors": [
+          ""
+        ],
+        "unrelated": [
+          "srgb",
+          "srgb",
+          ""
+        ]
+      },
+      "decisionTicks": 150,
+      "distinctPoseFrames": [
+        "walk0:0",
+        "walk1:0",
+        "walk2:0",
+        "walk3:0",
+        "walk4:0",
+        "walk5:0",
+        "atk1:0",
+        "atk2:0",
+        "idle0:0",
+        "atk0:0"
+      ],
+      "minimumPlayerHP": 76
+    },
+    {
+      "branch": "after",
+      "htmlSHA256": "275a6632e3293419df6147c7812c7605aeec1b84a375888395ca1acc55203a80",
+      "spawn": {
+        "hp": 88,
+        "reach": 12,
+        "height": 1.652,
+        "width": 1.18,
+        "speed": 2.4
+      },
+      "stagger": [
+        "pain1:0",
+        19,
+        12.5,
+        10,
+        100,
+        0,
+        4.583333333333333,
+        false
+      ],
+      "contactTick": 50,
+      "cache": {
+        "counts": [
+          17,
+          4,
+          21
+        ],
+        "stable": true,
+        "dimensions": [
+          72,
+          100
+        ],
+        "walkStep": 0.125,
+        "poses": [
+          "walk",
+          "idle",
+          "atk",
+          "pain",
+          "die",
+          "crawl",
+          "crawlIdle",
+          "crawlAtk",
+          "crawlPain",
+          "crawlDie"
+        ],
+        "parts": [
+          "head",
+          "lArm",
+          "rArm",
+          "legs"
+        ],
+        "detachedSize": [
+          [
+            19,
+            28
+          ],
+          [
+            13,
+            39
+          ],
+          [
+            14,
+            39
+          ],
+          [
+            41,
+            33
+          ]
+        ],
+        "bounds": [
+          [
+            10,
+            1,
+            60,
+            98,
+            2714
+          ],
+          [
+            6,
+            6,
+            57,
+            99,
+            2602
+          ],
+          [
+            11,
+            15,
+            61,
+            98,
+            2435
+          ],
+          [
+            1,
+            15,
+            62,
+            98,
+            2666
+          ],
+          [
+            11,
+            11,
+            62,
+            98,
+            2448
+          ],
+          [
+            0,
+            23,
+            71,
+            92,
+            2371
+          ],
+          [
+            11,
+            12,
+            66,
+            70,
+            1723
+          ],
+          [
+            0,
+            0,
+            18,
+            27,
+            369
+          ],
+          [
+            0,
+            0,
+            12,
+            38,
+            348
+          ],
+          [
+            0,
+            0,
+            13,
+            38,
+            361
+          ],
+          [
+            0,
+            0,
+            40,
+            32,
+            897
+          ]
+        ],
+        "colors": [
+          "srgb"
+        ],
+        "unrelated": [
+          "srgb",
+          "srgb",
+          ""
+        ]
+      },
+      "decisionTicks": 150,
+      "distinctPoseFrames": [
+        "walk0:0",
+        "walk1:0",
+        "walk2:0",
+        "walk3:0",
+        "walk4:0",
+        "walk5:0",
+        "atk1:0",
+        "atk2:0",
+        "idle0:0",
+        "atk0:0"
+      ],
+      "minimumPlayerHP": 76
+    }
+  ],
+  "errors": []
+}

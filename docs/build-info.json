@@ -1,7 +1,7 @@
 {
   "passed": true,
-  "bytes": 19239374,
-  "sha256": "4e77959ced3de2bce91cc49293e7961b42718bce2e416a47a8ff59939b83b417",
+  "bytes": 19254118,
+  "sha256": "c3be0ab035103e3e24832b2656a72ce26459d919144ad0c9d7fe2abeb4671f65",
   "engineSha256": "6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899",
   "villageSha256": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627",
   "moduleHashes": {
@@ -13,8 +13,9 @@
     "guardian-volley.js": "87fbdc8d921c74c119eadcce7164d2ef45d8e2216c512825c7961e67dcbbdab9",
     "dungeon-creatures.js": "f16ce76837b5878e405fefc1bd345f66068f2432ac2c125002ce0a978b2876fb",
     "necropolis-screamer.js": "26c9284dc4b724a19256773373399b32cfb361fba979373e1cfc7f607700ca19",
+    "groundskeeper-zombie.js": "f049183e2efc592b87d4b151d6ca8ceed137fb08cdf535b01c2f37865d433a47",
     "viewmodels.js": "baab9bbd6dc11b5e8bd501b63838a018c5d61a04fd8f216f0ea62eca9602da62",
-    "finishers.js": "404b3e5e96ceb3c5368ca9b0ed166659b1dab4f8bc1779ee7cc7b9999f36f38c",
+    "finishers.js": "ecc086979fdf7d200fad357c06e04cc52ba203f42d74fe4fbfee6eec2f5e5f31",
     "reload-audio-data.js": "2f48b10a1225d1c007ee282d3c18f82c5022bb0267ed86d65feadf819ec1be30",
     "reload-audio.js": "dc67dd605d54c11fbf9571a1b1b80c58fe82953fcdb1a13798e3f4b89d3e2f60",
     "zombie-audio.js": "7f883bd656b0f7e0784d68e9e47e7612704e1df6b299ffc52e6d3f2cfcba2803",
@@ -41,9 +42,9 @@
   "idempotentBuilds": 2,
   "invalidInputsRefusedWithoutWrite": 8,
   "file": "THE-BLACK-SILENCE.html",
-  "verifiedAt": "2026-11-19T12:19:35.945Z",
-  "previousRelease": "f6585a733ff0ea1d9174de2e4db79677a507619992695b25a2106ab4217d74c5",
-  "baselineCommit": "f6ac6d84d86f9348b4763c822b3f3c7ec6def8b8",
+  "verifiedAt": "2026-11-19T12:30:47.709Z",
+  "previousRelease": "4e77959ced3de2bce91cc49293e7961b42718bce2e416a47a8ff59939b83b417",
+  "baselineCommit": "fa925f799b75bcb654d44942529f6531121fbe3b",
   "verificationReports": [
     {
       "file": "docs/factory-nov14/verification.json",
@@ -196,6 +197,14 @@
     {
       "file": "docs/verification-data/nov19-finisher-campaign-release.json",
       "sha256": "1dfeeb533bb5ef11b9726c484a2fc32381001d1a57c2981a7c5790248b3d49ae"
+    },
+    {
+      "file": "docs/zombie-nov19/verification.json",
+      "sha256": "f9a49bd159de1413e1763f5d6b5f67e9c33bb00816dd5f128d1b96e6909e20aa"
+    },
+    {
+      "file": "docs/verification-data/nov19-groundskeeper-release.json",
+      "sha256": "083f75fd0b54c24f1a38b28deb11080fa5709b185279f33cb01c881c66cd48f4"
     }
   ]
 }

@@ -468,6 +468,28 @@
   s0t = (mesh, kind, time) => optimizedRender(mesh, -1, kind, time);
   r0t = (mesh, kind, time) => optimizedRender(mesh, 1, kind, time);
 
+  // The left prop borrows the target's own cloth and exposed-skin ramps.
+  // Scope the donor palette to one software frame so world sprites, other
+  // opponents and every weapon retain the normal palette object.
+  let groundskeeperHeldPalette;
+  const nativeHeldRaster = h0t;
+  h0t = function (index, pose, center) {
+    const held = pose.execKind === 2 && pose.exec >= Lm[1] && pose.exec < Sk &&
+      leftArmAvailable && ve.e?.key === "z" && ve.e.sever?.lArm;
+    const skin = held && zL.palette.materials[16];
+    const wool = held && zL.palette.materials[19];
+    if (!skin || !wool) return nativeHeldRaster(index, pose, center);
+    const raster = Te.raster, previous = raster.pal;
+    groundskeeperHeldPalette ??= { ...previous, ...By({ ...previous.materials,
+      [O.COAT]: wool, [O.SKIN]: skin }) };
+    raster.pal = groundskeeperHeldPalette;
+    try {
+      return nativeHeldRaster(index, pose, center);
+    } finally {
+      raster.pal = previous;
+    }
+  };
+
   const nativeExecutionRasterKey = q0t;
   q0t = function (index, pose, center) {
     const key = nativeExecutionRasterKey(index, pose, center);
