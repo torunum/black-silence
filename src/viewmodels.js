@@ -589,7 +589,12 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
     const missingHalfWidth=(bj()/scale-Wr)/2;
     const extraBelow=index===4?.10:index===5?.125:index===7?.066:index===9?.07:0;
     const bottom=extraBelow&&pose.kick<0&&pose.exec<0?Math.ceil(extraBelow*Dk*_r)+16:0;
-    const margin=missingHalfWidth>0?Math.min(Wr,Math.ceil(missingHalfWidth/32)*32+32):0;
+    const nativeMargin=missingHalfWidth>0?Math.min(Wr,Math.ceil(missingHalfWidth/32)*32+32):0;
+    // The operating Sniper wrist alone crosses the fixed weapon canvas edge.
+    const sniperBolt=index===4&&pose.kick<0&&pose.exec<0?
+      (pose.reload<0?Qe(pose.action||0,.05,.95,.10):
+        Math.max(Qe(pose.reload,.03,.28,.065),Qe(pose.reload,.75,.99,.06))):0;
+    const margin=Math.max(nativeMargin,sniperBolt>0?80:0);
     if(margin!==sleeveMargin||bottom!==sleeveBottom){sleeveBottom=bottom;sleeveMargin=margin;Te.lastKey='';sleeveSurface=null;}
     const redraw=q0t(index,pose,cy)!==Te.lastKey;
     if(!redraw){
@@ -2031,9 +2036,16 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
     [[502,344],[507,337],[514,334],[523,336],[529,342],[530,350],[524,359],[517,364],[508,361],[503,355]],
     [[540,339],[554,342],[576,350],[597,358],[617,368],[638,381],[659,398],[681,417],[702,440],[718,462],[723,470],[530,470],[520,461],[512,456],[507,448],[505,438],[509,428],[502,419],[502,406],[508,396],[504,386],[507,376],[515,365],[526,350]],
   ];
-  const sniperPalmFaces=sniperPalmFolds.flatMap(poly=>r79Triangles(poly).map(ids=>{
-    const points=ids.map(i=>poly[i]);return {points,uv:points.map(([u,v])=>[u/1672,v/941])};
-  }));
+  // The same leather hand closes around the bolt: raised index above the
+  // spherical knob, opposing thumb across its near cheek, wrist below/right.
+  const sniperBoltFolds=[
+    [[767,833],[769,826],[776,824],[787,827],[794,834],[796,843],[790,850],[781,853],[772,849],[767,842]],
+    [[751,796],[757,784],[769,779],[783,783],[801,793],[825,806],[845,827],[858,848],[876,872],[891,891],[894,900],[815,916],[801,903],[791,892],[784,882],[781,870],[785,858],[779,848],[771,838],[781,829],[779,820],[776,809],[759,806],[750,802]],
+  ];
+  const sniperPalmFaces=sniperPalmFolds.flatMap((poly,k)=>r79Triangles(poly).map(ids=>({
+    points:ids.map(i=>poly[i]),closed:ids.map(i=>sniperBoltFolds[k][i]),
+    uv:ids.map(i=>[poly[i][0]/1672,poly[i][1]/941]),thumb:k===0,
+  })));
   const sniperWristSections=[
     [[563,452],[682,432],[.60,.84],[.86,.83]],
     [[590,482],[727,469],[.64,.91],[.92,.91]],
@@ -2147,7 +2159,15 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       referenceTriggerGuard(m,a.point,a.basis.w,[[535,850],[582,863],[595,882],[576,905],[548,895],[535,875]],[[543,860],[576,870],[584,880],[574,895],[554,887],[543,873]],[[560,858],[566,875],[561,886]]);
       m.push();if(boltReach>0)boltRig(boltReach);
       // A complete approved curled grasp follows one continuous grip-to-bolt rig.
-      const handPoint=([u,v],depth=-.058)=>a.point(rightContact[0]+(u-535)*.76,rightContact[1]+(v-375)*.76,depth);
+      const boltPad=a.point(773,813,-.028),glovePad=a.point(773,813,-.058);
+      const boltContact=boltPad.map((p,i)=>p-glovePad[i]);
+      const handPoint=([u,v],depth=-.058,closed=null,thumb=false)=>{
+        const released=a.point(rightContact[0]+(u-535)*.76,rightContact[1]+(v-375)*.76,depth);
+        if(!boltReach)return released;
+        const wrist=closed||[815+(u-530)*.409,916+(v-470)*.68-(u-530)*.083];
+        const carried=a.point(wrist[0],wrist[1],depth-(thumb?.005:0)).map((p,i)=>p+boltContact[i]);
+        return released.map((p,i)=>p+(carried[i]-p)*boltReach);
+      };
       // Continue the opaque cuff as a tapered leather forearm. Only sleeve UVs
       // are sampled; the source-board hand keeps its original knuckles/index.
       const sleeveStart=gloveTriangles.length;
@@ -2155,7 +2175,8 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
         const [l,r,lu,ru]=sniperWristSections[i-1],[l1,r1,lu1,ru1]=sniperWristSections[i];
         paintedSurface(m,'right',[l,r,r1,l1].map(p=>handPoint(p,-.056)),[lu,ru,ru1,lu1],.93);
       }
-      for(const face of sniperPalmFaces)paintedSurface(m,'firearmSource',face.points.map(p=>handPoint(p)),face.uv,.97);
+      for(const face of sniperPalmFaces)paintedSurface(m,'firearmSource',
+        face.points.map((p,i)=>handPoint(p,-.058,face.closed[i],face.thumb)),face.uv,.97);
       for(let i=sleeveStart;i<gloveTriangles.length;i++)gloveTriangles[i].sleeve=true;
       m.pop();a.anchor(m,137,614,.044);
     } finally {arsenalIndex=previous;}
@@ -2405,6 +2426,82 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
     canisterBody:buildNailPanel([[632,250],[704,265],[766,309],[760,393],[660,368],[624,331]],-.025,.029),
     canisterEnd:buildNailPanel([[767,311],[798,332],[814,371],[796,405],[773,414],[756,389],[753,352]],-.033,.023),
   };
+  // Turned cartridge and matching keyed receiver throat. Immutable rings
+  // share an axis; the native carrying rig moves the complete cartridge.
+  const nailCartridge=(()=>{
+    const origin=nailArtPoint(642,300,-.027),end=nailArtPoint(783,363,-.033);
+    const delta=end.map((p,i)=>p-origin[i]),length=Math.hypot(...delta);
+    const axis=delta.map(p=>p/length),radial=normalize(cross(axis,nailArtBasis.w));
+    const tangent=cross(axis,radial),sides=16,faces=[],socket=[];
+    const point=(distance,radius,angle)=>{
+      const along=distance/length,c=Math.cos(angle),s=Math.sin(angle),r=radius/.0315;
+      return nailArtPoint(642+141*along+r*(29*c-10*s),300+63*along+r*(15*c+48*s),
+        -.027-.006*along+.014*r*c);
+    };
+    const normal=points=>normalize(cross(points[1].map((p,i)=>p-points[0][i]),points[2].map((p,i)=>p-points[0][i])));
+    const add=(list,points,material,uv=null,light=1)=>list.push({points,material,uv,light,normal:normal(points)});
+    const bodyUV=(distance,angle)=>{
+      const along=Math.max(0,Math.min(1,distance/length));
+      const c=Math.cos(angle),s=Math.sin(angle);
+      return [(642+141*along+.84*(29*c-10*s))/1672,(300+63*along+.84*(15*c+48*s))/941];
+    };
+    const rows=[[-.018,.0085,WORN],[-.013,.010,WORN],[-.011,.010,BRONZE],[-.009,.009,WORN],[-.004,.009,WORN],
+      [0,.013,WORN],[.005,.013,WORN],[.009,.019,BRONZE],[.014,.027,BRONZE],[.020,.0305,BRONZE],
+      [.025,.0315,BRONZE],[length*.46,.0315,BRONZE],[length*.48,.0325,BRONZE],[length*.51,.0325,BRONZE],[length*.53,.0315,BRONZE],[length-.019,.0315,BRONZE],
+      [length-.016,.032,BRONZE],[length-.011,.032,BRONZE],
+      [length-.007,.0255,BRONZE,'bevel'],[length-.003,.0242,BRONZE,'bevel'],
+      [length-.001,.0236,WORN],[length+.003,.0236,WORN],
+      [length+.004,.0215,BRONZE,'bevel']];
+    for(let j=1;j<rows.length;j++)for(let k=0;k<sides;k++){
+      const [d0,r0]=rows[j-1],[d1,r1,material]=rows[j],a=k*Math.PI*2/sides,b=(k+1)*Math.PI*2/sides;
+      const points=[point(d0,r0,a),point(d0,r0,b),point(d1,r1,b),point(d1,r1,a)];
+      const steelUV=(distance,angle)=>[(290+25*Math.max(0,Math.min(1,(distance+.018)/(length+.018))))/1672,(128+8.75*Math.max(0,Math.min(1,(distance+.018)/(length+.018)))+5*Math.cos(angle))/941];
+      const finish=rows[j][3];
+      const bevelUV=(distance,angle)=>[(700+(distance-length)*1200+6*Math.cos(angle))/1672,(328+8*Math.sin(angle))/941];
+      const uvFor=finish==='bevel'?bevelUV:material===BRONZE?bodyUV:steelUV;
+      const uv=[uvFor(d0,a),uvFor(d0,b),uvFor(d1,b),uvFor(d1,a)];
+      const light=.67+.23*Math.max(0,-Math.cos((a+b)/2))+.13*Math.max(0,-Math.sin((a+b)/2));
+      add(faces,points,material,uv,light*(finish==='bevel'?1.08:1));
+    }
+    // An inset graphite plate sits behind a narrow brass bevel. The small
+    // slotted fastener is above center so it remains legible above the glove.
+    const capDepth=length+.0034,capRadius=.0215;
+    const capUV=angle=>[(300+13*Math.cos(angle))/1672,
+      (132+4.5*Math.cos(angle)+6*Math.sin(angle))/941];
+    const capCenter=point(capDepth,0,0);
+    for(let k=0;k<sides;k++){
+      const a=k*Math.PI*2/sides,b=(k+1)*Math.PI*2/sides;
+      add(faces,[capCenter,point(capDepth,capRadius,a),point(capDepth,capRadius,b)],WORN,
+        [[300/1672,132/941],capUV(a),capUV(b)],.66+.08*Math.max(0,-Math.sin(a)));
+    }
+    const screwDepth=length+.0052,center=point(screwDepth,0,0);
+    const offset=point(screwDepth,.013,-Math.PI/2).map((p,i)=>p-center[i]);
+    const screwPoint=(radius,angle,depth=screwDepth)=>point(depth,radius,angle).map((p,i)=>p+offset[i]);
+    add(faces,Array.from({length:8},(_,k)=>screwPoint(.0018,k*Math.PI/4)),BRONZE,
+      Array.from({length:8},(_,k)=>[(783+3*Math.cos(k*Math.PI/4))/1672,(365+3*Math.sin(k*Math.PI/4))/941]),1.15);
+    add(faces,[[-.0013,-.00025],[.0013,-.00025],[.0013,.00025],[-.0013,.00025]].map(([x,y])=>
+      screwPoint(Math.hypot(x,y),Math.atan2(y,x),screwDepth+.00035)),O.BLACK);
+    // A bevel, two key recesses, and an inner wall lead to a dark rear plate.
+    const bore=k=>k%8===1||k%8===2?.018:.0148;
+    for(let k=0;k<sides;k++){
+      const a=k*Math.PI*2/sides,b=(k+1)*Math.PI*2/sides,r0=bore(k),r1=bore((k+1)%sides);
+      const steelUV=(angle,r)=>[(300+13*r*Math.cos(angle))/1672,(132+4.5*r*Math.cos(angle)+6*r*Math.sin(angle))/941];
+      const brassUV=(angle,r)=>[(783+24*r*Math.cos(angle)-7*r*Math.sin(angle))/1672,(363+12*r*Math.cos(angle)+42*r*Math.sin(angle))/941];
+      add(socket,[point(-.003,.030,a),point(-.003,.030,b),point(.001,.024,b),point(.001,.024,a)],WORN,[steelUV(a,1),steelUV(b,1),steelUV(b,.8),steelUV(a,.8)],.89);
+      add(socket,[point(.001,.024,a),point(.001,.024,b),point(.002,r1,b),point(.002,r0,a)],BRONZE,
+        [brassUV(a,1),brassUV(b,1),brassUV(b,.76),brassUV(a,.76)],.87+.13*Math.max(0,-Math.cos(a)));
+      add(socket,[point(.002,r0,a),point(.002,r1,b),point(-.002,r1*.90,b),point(-.002,r0*.90,a)],WORN,[steelUV(a,.8),steelUV(b,.8),steelUV(b,.45),steelUV(a,.45)],.38+.35*Math.max(0,-Math.sin(a)));
+    }
+    add(socket,Array.from({length:sides},(_,k)=>point(-.002,.0145,k*Math.PI*2/sides)),O.BLACK);
+    return {faces,socket};
+  })();
+  function drawNailTurned(m,faces){
+    const part=m.part(),inverse=m.inverse();
+    for(const face of faces){
+      if(face.uv)paintedSurface(m,'relicSource',face.points,face.uv,face.light);
+      else m.face(face.points,face.normal,face.material,part,nailSurfaceOptions,inverse);
+    }
+  }
   Bet.present={y:.024,pitch:.037,roll:.02};
   Bet.draw=function(m,pose){
     const previous=arsenalIndex;arsenalIndex=6;
@@ -2428,29 +2525,7 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       drawNailPanel(m,nailPanels.lowerBrace);
       // A fixed ring and a shallow dark throat remain attached to the jacket.
       const P=nailArtPoint, basis=nailArtBasis, timeline=BLACK_SILENCE_NAIL_RELOAD;
-      const socket=P(642,300,-.027), socketPart=m.part(), inverse=m.inverse();
-      function ring(radius,angle,depth){
-        const s=Math.sin(angle),c=Math.cos(angle);
-        return socket.map((p,i)=>p+basis.u[i]*(c*radius*.68-s*radius*.21)
-          +basis.v[i]*(s*radius*.98+c*radius*.24)+basis.w[i]*depth);
-      }
-      const socketNormal=basis.w.map(v=>-v);
-      const rear=P(618,278,.011), socketBack=socket.map((n,i)=>n+basis.w[i]*.016);
-      m.limb(rear,socketBack,.011,.012,WORN,8,{tex:steel});
-      for(let k=0;k<12;k++){
-        const p=k*Math.PI/6,q=p+Math.PI/6;
-        // A narrow machined shoulder catches the light above the darker
-        // opening. The outer edge and inner wall belong to the same ring.
-        const uv=(angle,y)=>[(379+11*Math.cos(angle))/1672,(166+8*Math.sin(angle)+y)/941];
-        paintedSurface(m,"relicSource",[ring(.0255,p,-.008),ring(.0255,q,-.008),
-          ring(.018,q,-.009),ring(.018,p,-.009)],[uv(p,0),uv(q,0),uv(q,5),uv(p,5)],
-          .88+.17*Math.max(0,-Math.sin(p)));
-        m.face([ring(.0265,p,-.004),ring(.0265,q,-.004),ring(.018,q,-.008),ring(.018,p,-.008)],socketNormal,
-          k%5===1?BRONZE:WORN,socketPart,{tex:steel},inverse);
-        m.face([ring(.018,p,-.008),ring(.018,q,-.008),ring(.013,q,.012),ring(.013,p,.012)],
-          socketNormal,O.BLACK,socketPart,{},inverse);
-      }
-      m.face(Array.from({length:12},(_,i)=>ring(.013,i*Math.PI/6,.012)),socketNormal,O.BLACK,socketPart,{},inverse);
+      drawNailTurned(m,nailCartridge.socket);
 
       // The canister is held by a small hinged catch on the receiver.
       const latchPivot=P(628,263,-.033);
@@ -2496,13 +2571,7 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       m.translate(...casingHome);
       m.roll(angle);
       m.translate(...casingHome.map(v=>-v));
-      drawNailPanel(m,nailPanels.canisterBody);
-      drawNailPanel(m,nailPanels.canisterEnd);
-      // A dull nickel seal becomes visible as the canister clears its rim.
-      if(separation+axialStep>.06){
-        m.limb(P(634,294,-.028),P(617,282,-.027),.013,.012,WORN,8,{tex:steel});
-        m.limb(P(617,282,-.027),P(608,275,-.026),.011,.008,BRONZE,8,{tex:steel});
-      }
+      drawNailTurned(m,nailCartridge.faces);
       const canisterCamera=m.toCam(...graspHome);
       m.pop();
 

@@ -24,6 +24,20 @@ Gotik piksel FPS oyununun on silah, deri eldiven ve prologue cehennem bölümü 
 
 ## Bu sürüm
 
+**Ash Bell Manastırı’na varış.** Prologue merdiveninden çıktıktan sonra çan sesi mahzen kapısını işaret ediyor. Kısa sahnenin sonunda kontrol geri geliyor. `Space`, `Enter` veya tıklamayla sahneyi geçebilirsin. [Oyun içi sesli kayıt](docs/ash-bell-arrival-nov20/README.md) · [Yeni Oyun’dan mahzene canlı koşu](docs/ash-bell-arrival-nov20/native-route.md).
+
+**Ash Bell çan kulesi.** Bakıra işlenmiş kabartmalar çan odasına uzanan merdiveni işaretliyor. Özgün halatı **E** ile çekince yeni bronz çan sallanıyor ve asansör serbest kalıyor. [Aynı kameradan önce ve sonra](docs/ash-bell-aa-nov20/README.md).
+
+**Hollow Village.** Meydanın taş kuyusu, halatı ve kovası yeniden modellendi. İki ayrı sırt köyün arkasında farklı mesafelerde görünüyor. [Meydan, kuyu ve tarla görüntüleri](docs/hollow-village-aa-nov20/README.md).
+
+**Hollow Village’a varış.** Abandoned Church’ten çıkınca kısa kamera geçişi kuyuyu, yıkık kuleyi ve ayın altındaki sırtları gösteriyor. [Oyun içi kare ve geçiş kontrolleri](docs/hollow-village-arrival-nov20/README.md).
+
+**Köy ambarı.** Çatı katı merdiveninin kenarındaki sıcak ışık, anahtara çıkan basamakları görünür kılıyor. [Aynı kameradan önce ve sonra](docs/hollow-village-loft-nov20/README.md).
+
+**Factory Foreman.** Döküm zırhın panjurları atış hazırlığında açılıyor. Üçüncü evrede çatlaklar, açık fırın ışığı ve yana yüklenen duruş belirginleşiyor. [Aynı görüşten saldırı evreleri](docs/factory-foreman-nov20/README.md).
+
+**BMG ve Nail Cannon.** BMG’nin sağ eli doldururken sürgüyü kavrıyor. Nail Cannon’ın kademeli metal kartuşu ve açık yuvası, doldurma sırasında ayrı görünüyor. [El ve kartuş karşılaştırmaları ile sesli kayıtlar](docs/weapon-mechanics-nov20/README.md).
+
 **Factory.** Pres salonundan ustabaşının ofisine çıkan tünelin yanında, pirinç göstergeli basınç düzeneği yaklaşırken anahtar yolunu belirginleştiriyor. [Oyun içi kareler ve güzergâh testi](docs/factory-manifold-nov19/README.md).
 
 **Stake Gun.** Doldurma sırasında destek elinin iki parmağı kazığın çevresine kapanıyor ve kazık yerine otururken açılıyor. [Eş zamanlı kareler ve oyun içi klip](docs/stake-grip-nov19/README.md).
@@ -170,7 +184,7 @@ Prologue'un cehennem alanına koyu bazalt döşeme, kemerli mimari, bronz detayl
 
 Yukarıdaki silah görüntüleri ve video 23 Ekim teslimatındandır. Son animasyon kanıtları `docs/weapon-animation-oct24b/` ve `docs/enemy-landing-oct24/` içindedir; her kaydın kaynak sürümü kendi doğrulama notlarında belirtilir. Bölüm düzeni korunur; son materyal karşılaştırmaları `docs/ritual-ivory-oct24c/` içindedir. [Düzeltilmiş native kamera/ışık kontrolü](docs/hell-environment.md) ve `docs/hell-capture-oct24/` mevcut ortamı gösterir. Tasarım hedefleri `assets/weapon-reference/` ve `assets/hand-reference/` içindedir; hedef görseller oyun ekran görüntüsü değildir.
 
-Son dosyanın hashleri, test kapsamı ve ölçüm sınırları [güncel doğrulama raporunda](docs/verification-data/nov19-night-release.json) ve [build bilgisinde](docs/build-info.json) yer alır. [Önceki doğrulamalar](docs/verification.md).
+Son dosyanın hashleri, test kapsamı ve ölçüm sınırları [güncel doğrulama raporunda](docs/verification-data/nov20-aa-release.json) ve [build bilgisinde](docs/build-info.json) yer alır. [Önceki doğrulamalar](docs/verification.md).
 
 Silahların bir bölümü tam serbest açılı 3B model yerine, gerçek hacim ve hareketli parçalara bağlanan perspektifli resim yüzeyleri kullanır. Bu yöntem onaylanan birinci şahıs açısına göre hazırlanmıştır; her açıdan aynı ayrıntıyı sunan tam 3B model değildir. Bazı silah yüzeylerinde referansın ışık bilgisi resmin içinde bulunur. Cehennem ayrıntılarının bazı ışık vurguları da sabittir. Performans cihaz, tarayıcı ve sahneye göre değişir; tüm koşullarda sabit FPS garantisi yoktur.
 

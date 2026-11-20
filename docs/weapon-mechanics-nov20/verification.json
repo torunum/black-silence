@@ -1,0 +1,2901 @@
+{
+  "source": "src/viewmodels.js",
+  "sourceSHA256": "1dda8b10348ef423ea254617453358f7a4092e09d7ef8e12fbb3bb6cfe834b52",
+  "htmlSHA256": "aae58d3231e4c22071c443b53b5b26346f51afde2f8abd5656f11ce2cd147373",
+  "baseline": "e0e15fb5cfe8ffb640d9e3a6abf664133c7919194693f22ff0d5690927a26667",
+  "art": {
+    "method": "Official achimala DreamLoop, exact native camera anchor, generated target, private implementation, independent fresh critique.",
+    "bmg": {
+      "score": 8.25,
+      "threshold": 8,
+      "acceptedSource": "5980f5ed5ffc651cf2da86f1032900cf901a190e134ea3fc6ae2aea3784d06ff"
+    },
+    "nail": {
+      "score": 8.2,
+      "threshold": 8,
+      "acceptedSource": "1dda8b10348ef423ea254617453358f7a4092e09d7ef8e12fbb3bb6cfe834b52"
+    }
+  },
+  "selectedFrames": [
+    {
+      "index": 4,
+      "poses": [
+        {
+          "target": 0.18,
+          "pose": {
+            "x": 0,
+            "y": 0.06,
+            "z": 0,
+            "pitch": 0.12,
+            "yaw": 0,
+            "roll": 0.2,
+            "sx": 0,
+            "sy": 0.622852507327009,
+            "recoil": 0,
+            "action": 0,
+            "spin": 0,
+            "reload": 0.1823749999999995,
+            "heat": 0,
+            "kick": -1,
+            "empty": 0,
+            "drop": 0,
+            "exec": -1,
+            "execKind": 0
+          }
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "poses": [
+        {
+          "target": 0.38,
+          "pose": {
+            "x": 0,
+            "y": 0.024,
+            "z": 0,
+            "pitch": 0.037,
+            "yaw": 0,
+            "roll": 0.02,
+            "sx": 0,
+            "sy": -0.2974235453636915,
+            "recoil": 0,
+            "action": 0,
+            "spin": 0,
+            "reload": 0.38439999999999974,
+            "heat": 0,
+            "kick": -1,
+            "empty": 0,
+            "drop": 0,
+            "exec": -1,
+            "execKind": 0
+          }
+        },
+        {
+          "target": 0.78,
+          "pose": {
+            "x": 0,
+            "y": 0.024,
+            "z": 0,
+            "pitch": 0.037,
+            "yaw": 0,
+            "roll": 0.02,
+            "sx": 0,
+            "sy": 0.3030624348199303,
+            "recoil": 0,
+            "action": 0,
+            "spin": 0,
+            "reload": 0.7873999999999997,
+            "heat": 0,
+            "kick": -1,
+            "empty": 0,
+            "drop": 0,
+            "exec": -1,
+            "execKind": 0
+          }
+        }
+      ]
+    }
+  ],
+  "scope": {
+    "combined": {
+      "cases": 614,
+      "exact": 529,
+      "intended": 85,
+      "unexpected": 0
+    },
+    "isolatedNail": {
+      "cases": 614,
+      "exact": 557,
+      "intended": 57,
+      "unexpected": 0
+    },
+    "fields": [
+      "native raster RGBA",
+      "weapon canvas RGBA",
+      "complete sleeve RGBA and dimensions",
+      "native optic overlay RGBA"
+    ],
+    "controlled": "Frozen draw poses and cache transitions; four native optic overlay cases suppress the viewmodel."
+  },
+  "controls": {
+    "method": "Real R/digit keys, mouse fire/kick and RAF. Isolated setup inventories; no gameplay balance claim. Same-build cache ghost comparison, not old visual parity.",
+    "runs": [
+      {
+        "index": 4,
+        "reloadSeconds": 2.4,
+        "elapsedMs": 2428,
+        "mag": 4,
+        "reserve": 96
+      },
+      {
+        "index": 6,
+        "reloadSeconds": 2,
+        "elapsedMs": 2030,
+        "mag": 50,
+        "reserve": 50
+      }
+    ],
+    "transitions": [
+      {
+        "index": 4,
+        "firedMag": 3,
+        "switchedTo": 5,
+        "cancelledMag": 0,
+        "kickRecovered": true
+      },
+      {
+        "index": 6,
+        "firedMag": 49,
+        "switchedTo": 7,
+        "cancelledMag": 0,
+        "kickRecovered": true
+      }
+    ],
+    "fireCancellation": [
+      {
+        "index": 4,
+        "pass": true,
+        "state": "fire",
+        "reserve": 100
+      },
+      {
+        "index": 6,
+        "pass": true,
+        "state": "fire",
+        "reserve": 100
+      }
+    ],
+    "cache": [
+      {
+        "index": 4,
+        "match": true,
+        "before": "b39026fbe4b19699cef17790815ef66c3d7c8769afd325fbc2f5dad256d0d4b0",
+        "after": "b39026fbe4b19699cef17790815ef66c3d7c8769afd325fbc2f5dad256d0d4b0",
+        "presentationAndCacheStable": true
+      },
+      {
+        "index": 6,
+        "match": true,
+        "before": "cbb07b10da641f80649334f920ff6343a83bf12049bdbc28abad81667948219d",
+        "after": "cbb07b10da641f80649334f920ff6343a83bf12049bdbc28abad81667948219d",
+        "presentationAndCacheStable": true
+      }
+    ],
+    "errors": [],
+    "network": []
+  },
+  "optics": {
+    "controlledPhases": 9,
+    "actualZoomTransitions": [
+      {
+        "width": 1024,
+        "height": 768,
+        "scoped": {
+          "zoom": true,
+          "fov": 32.21411248484355,
+          "skipped": true,
+          "state": "reload"
+        },
+        "restored": {
+          "fov": 74.53965768546517,
+          "state": "reload",
+          "finite": true,
+          "visible": true,
+          "index": 4
+        }
+      },
+      {
+        "width": 1280,
+        "height": 720,
+        "scoped": {
+          "zoom": true,
+          "fov": 32.21282844864108,
+          "skipped": true,
+          "state": "reload"
+        },
+        "restored": {
+          "fov": 74.52463896291897,
+          "state": "reload",
+          "finite": true,
+          "visible": true,
+          "index": 4
+        }
+      },
+      {
+        "width": 1680,
+        "height": 720,
+        "scoped": {
+          "zoom": true,
+          "fov": 32.2108243558192,
+          "skipped": true,
+          "state": "reload"
+        },
+        "restored": {
+          "fov": 74.47580162879737,
+          "state": "reload",
+          "finite": true,
+          "visible": true,
+          "index": 4
+        }
+      }
+    ],
+    "resize": {
+      "before": {
+        "hash": 2982264275,
+        "width": 640,
+        "height": 400,
+        "index": 4,
+        "reload": 0.82,
+        "finite": true
+      },
+      "after": {
+        "hash": 2982264275,
+        "width": 640,
+        "height": 400,
+        "index": 4,
+        "reload": 0.82,
+        "finite": true
+      },
+      "passed": true
+    },
+    "errors": []
+  },
+  "performance": {
+    "bmg": {
+      "order": [
+        0,
+        1,
+        1,
+        0,
+        1,
+        0,
+        0,
+        1
+      ],
+      "warmupsPerContext": 2,
+      "measuredReloadsPerContext": 6,
+      "renderer": "ANGLE (Intel, Intel(R) UHD Graphics 630 (0x00009BC8) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "viewport": "1280x720",
+      "scope": "One headless Chrome process; isolated fresh contexts in ABBA then BAAB; deterministic seed and chapter0 starting camera; enemies removed equally. Two real-R warmups followed by six real-R measured reloads/context. QA resets magazine/reserve only between reloads. CPU samples cover h0t Sniper draws with a native reload pose; RAF intervals span the input-to-completion measurement window. Whole-build shared-host observation, not isolated bolt-glove cost or campaign FPS.",
+      "targets": [
+        {
+          "input": "Published baseline",
+          "sha256": "e0e15fb5cfe8ffb640d9e3a6abf664133c7919194693f22ff0d5690927a26667"
+        },
+        {
+          "input": "BMG-only candidate",
+          "sha256": "7dfc47808c2228ad90122ec3408e995fdbd0021cd35b43781e988f993daa1755"
+        }
+      ],
+      "summary": [
+        {
+          "variant": 0,
+          "contexts": 4,
+          "reloads": 24,
+          "cpu": {
+            "n": 3180,
+            "meanMs": 11.811855346114381,
+            "p50Ms": 11,
+            "p95Ms": 17,
+            "maxMs": 22.19999998807907
+          },
+          "frames": {
+            "n": 3187,
+            "meanMs": 18.0742390963288,
+            "p50Ms": 17.599999999998545,
+            "p95Ms": 18.299999999999272,
+            "maxMs": 40.20000000000073
+          },
+          "idleCPU": {
+            "n": 188,
+            "meanMs": 0.009042552811034183,
+            "p50Ms": 0,
+            "p95Ms": 0.09999996423721313,
+            "maxMs": 0.10000002384185791
+          },
+          "idleFrames": {
+            "n": 184,
+            "meanMs": 17.492391304347837,
+            "p50Ms": 17.599999999998545,
+            "p95Ms": 18.100000000000364,
+            "maxMs": 19.600000000000364
+          }
+        },
+        {
+          "variant": 1,
+          "contexts": 4,
+          "reloads": 24,
+          "cpu": {
+            "n": 3206,
+            "meanMs": 11.851029320017517,
+            "p50Ms": 11.399999976158142,
+            "p95Ms": 16.400000035762787,
+            "maxMs": 23.899999976158142
+          },
+          "frames": {
+            "n": 3212,
+            "meanMs": 17.909869240348673,
+            "p50Ms": 17.5,
+            "p95Ms": 18.200000000000728,
+            "maxMs": 36.10000000000218
+          },
+          "idleCPU": {
+            "n": 185,
+            "meanMs": 0.006486485455487225,
+            "p50Ms": 0,
+            "p95Ms": 0.09999996423721313,
+            "maxMs": 0.10000002384185791
+          },
+          "idleFrames": {
+            "n": 181,
+            "meanMs": 17.511602209944733,
+            "p50Ms": 17.30000000000109,
+            "p95Ms": 18.19999999999891,
+            "maxMs": 26.200000000000728
+          }
+        }
+      ],
+      "contexts": [
+        {
+          "ordinal": 0,
+          "variant": 0,
+          "summary": {
+            "cpu": {
+              "n": 780,
+              "meanMs": 12.744871795253877,
+              "p50Ms": 12.199999988079071,
+              "p95Ms": 17.69999998807907,
+              "maxMs": 22
+            },
+            "frames": {
+              "n": 783,
+              "meanMs": 18.44367816091953,
+              "p50Ms": 17.599999999998545,
+              "p95Ms": 25.5,
+              "maxMs": 38.80000000000291
+            },
+            "idleCPU": {
+              "n": 47,
+              "meanMs": 0.014893615499455878,
+              "p50Ms": 0,
+              "p95Ms": 0.10000002384185791,
+              "maxMs": 0.10000002384185791
+            },
+            "idleFrames": {
+              "n": 46,
+              "meanMs": 17.486956521739163,
+              "p50Ms": 17.400000000001455,
+              "p95Ms": 17.80000000000291,
+              "maxMs": 17.900000000001455
+            }
+          }
+        },
+        {
+          "ordinal": 1,
+          "variant": 1,
+          "summary": {
+            "cpu": {
+              "n": 820,
+              "meanMs": 10.934634145948944,
+              "p50Ms": 11,
+              "p95Ms": 12.5,
+              "maxMs": 17.899999976158142
+            },
+            "frames": {
+              "n": 821,
+              "meanMs": 17.510109622411694,
+              "p50Ms": 17.5,
+              "p95Ms": 18.200000000000728,
+              "maxMs": 26.100000000002183
+            },
+            "idleCPU": {
+              "n": 46,
+              "meanMs": 0.008695651655611784,
+              "p50Ms": 0,
+              "p95Ms": 0.09999996423721313,
+              "maxMs": 0.10000002384185791
+            },
+            "idleFrames": {
+              "n": 45,
+              "meanMs": 17.39555555555554,
+              "p50Ms": 17.200000000000728,
+              "p95Ms": 18.100000000000364,
+              "maxMs": 18.200000000000728
+            }
+          }
+        },
+        {
+          "ordinal": 2,
+          "variant": 1,
+          "summary": {
+            "cpu": {
+              "n": 784,
+              "meanMs": 12.321301020073648,
+              "p50Ms": 11.5,
+              "p95Ms": 17.899999976158142,
+              "maxMs": 23.5
+            },
+            "frames": {
+              "n": 785,
+              "meanMs": 18.279745222929943,
+              "p50Ms": 17.599999999998545,
+              "p95Ms": 18.5,
+              "maxMs": 36
+            },
+            "idleCPU": {
+              "n": 46,
+              "meanMs": 0.004347824532052745,
+              "p50Ms": 0,
+              "p95Ms": 0,
+              "maxMs": 0.09999996423721313
+            },
+            "idleFrames": {
+              "n": 45,
+              "meanMs": 17.62444444444441,
+              "p50Ms": 17.299999999999272,
+              "p95Ms": 18.19999999999891,
+              "maxMs": 26.200000000000728
+            }
+          }
+        },
+        {
+          "ordinal": 3,
+          "variant": 0,
+          "summary": {
+            "cpu": {
+              "n": 820,
+              "meanMs": 10.748536585235014,
+              "p50Ms": 10.599999964237213,
+              "p95Ms": 12.199999988079071,
+              "maxMs": 19.80000001192093
+            },
+            "frames": {
+              "n": 820,
+              "meanMs": 17.51475609756098,
+              "p50Ms": 17.400000000001455,
+              "p95Ms": 18.19999999999709,
+              "maxMs": 34.60000000000218
+            },
+            "idleCPU": {
+              "n": 47,
+              "meanMs": 0.006382978977041042,
+              "p50Ms": 0,
+              "p95Ms": 0.09999996423721313,
+              "maxMs": 0.10000002384185791
+            },
+            "idleFrames": {
+              "n": 46,
+              "meanMs": 17.497826086956554,
+              "p50Ms": 17.600000000000364,
+              "p95Ms": 18.100000000000364,
+              "maxMs": 18.200000000000728
+            }
+          }
+        },
+        {
+          "ordinal": 4,
+          "variant": 1,
+          "summary": {
+            "cpu": {
+              "n": 812,
+              "meanMs": 11.692980296506082,
+              "p50Ms": 11.300000011920929,
+              "p95Ms": 15.300000011920929,
+              "maxMs": 20.69999998807907
+            },
+            "frames": {
+              "n": 814,
+              "meanMs": 17.68550368550369,
+              "p50Ms": 17.400000000001455,
+              "p95Ms": 18.200000000000728,
+              "maxMs": 35.79999999999927
+            },
+            "idleCPU": {
+              "n": 47,
+              "meanMs": 0.004255317627115452,
+              "p50Ms": 0,
+              "p95Ms": 0,
+              "maxMs": 0.09999996423721313
+            },
+            "idleFrames": {
+              "n": 46,
+              "meanMs": 17.486956521739124,
+              "p50Ms": 17.30000000000109,
+              "p95Ms": 18.100000000000364,
+              "maxMs": 18.200000000000728
+            }
+          }
+        },
+        {
+          "ordinal": 5,
+          "variant": 0,
+          "summary": {
+            "cpu": {
+              "n": 780,
+              "meanMs": 12.089487179426046,
+              "p50Ms": 11,
+              "p95Ms": 18,
+              "maxMs": 22.19999998807907
+            },
+            "frames": {
+              "n": 782,
+              "meanMs": 18.410358056265984,
+              "p50Ms": 17.599999999998545,
+              "p95Ms": 20.799999999999272,
+              "maxMs": 38.89999999999782
+            },
+            "idleCPU": {
+              "n": 47,
+              "meanMs": 0.006382978977041042,
+              "p50Ms": 0,
+              "p95Ms": 0.09999996423721313,
+              "maxMs": 0.10000002384185791
+            },
+            "idleFrames": {
+              "n": 46,
+              "meanMs": 17.48913043478261,
+              "p50Ms": 17.599999999998545,
+              "p95Ms": 18,
+              "maxMs": 18.19999999999891
+            }
+          }
+        },
+        {
+          "ordinal": 6,
+          "variant": 0,
+          "summary": {
+            "cpu": {
+              "n": 800,
+              "meanMs": 11.721375000625848,
+              "p50Ms": 11,
+              "p95Ms": 16.5,
+              "maxMs": 21.399999976158142
+            },
+            "frames": {
+              "n": 802,
+              "meanMs": 17.957855361596007,
+              "p50Ms": 17.599999999998545,
+              "p95Ms": 18.299999999999272,
+              "maxMs": 40.20000000000073
+            },
+            "idleCPU": {
+              "n": 47,
+              "meanMs": 0.008510637790598768,
+              "p50Ms": 0,
+              "p95Ms": 0.09999996423721313,
+              "maxMs": 0.10000002384185791
+            },
+            "idleFrames": {
+              "n": 46,
+              "meanMs": 17.495652173913026,
+              "p50Ms": 17.400000000001455,
+              "p95Ms": 18.100000000000364,
+              "maxMs": 19.600000000000364
+            }
+          }
+        },
+        {
+          "ordinal": 7,
+          "variant": 1,
+          "summary": {
+            "cpu": {
+              "n": 790,
+              "meanMs": 12.497974683287778,
+              "p50Ms": 11.699999988079071,
+              "p95Ms": 18,
+              "maxMs": 23.899999976158142
+            },
+            "frames": {
+              "n": 792,
+              "meanMs": 18.18825757575759,
+              "p50Ms": 17.5,
+              "p95Ms": 18.399999999997817,
+              "maxMs": 36.10000000000218
+            },
+            "idleCPU": {
+              "n": 46,
+              "meanMs": 0.008695651655611784,
+              "p50Ms": 0,
+              "p95Ms": 0.09999996423721313,
+              "maxMs": 0.10000002384185791
+            },
+            "idleFrames": {
+              "n": 45,
+              "meanMs": 17.539999999999985,
+              "p50Ms": 17.599999999998545,
+              "p95Ms": 18.399999999999636,
+              "maxMs": 18.700000000000728
+            }
+          }
+        }
+      ]
+    },
+    "nail": {
+      "order": [
+        0,
+        1,
+        1,
+        0,
+        1,
+        0,
+        0,
+        1
+      ],
+      "warmupsPerContext": 2,
+      "measuredReloadsPerContext": 6,
+      "renderer": "ANGLE (Intel, Intel(R) UHD Graphics 630 (0x00009BC8) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "viewport": "1280x720",
+      "scope": "One headless Chrome process; isolated fresh contexts in ABBA then BAAB; deterministic seed and chapter0 starting camera; enemies removed equally. Two real-R warmups followed by six real-R measured reloads/context. QA resets magazine/reserve only between reloads. CPU samples cover h0t Nail draws with a native reload pose; RAF intervals span the input-to-completion measurement window. Whole-build shared-host observation, not isolated cartridge cost or campaign FPS.",
+      "targets": [
+        {
+          "input": "BMG-only candidate",
+          "sha256": "7dfc47808c2228ad90122ec3408e995fdbd0021cd35b43781e988f993daa1755"
+        },
+        {
+          "input": "BMG and Nail candidate",
+          "sha256": "aae58d3231e4c22071c443b53b5b26346f51afde2f8abd5656f11ce2cd147373"
+        }
+      ],
+      "summary": [
+        {
+          "variant": 0,
+          "contexts": 4,
+          "reloads": 24,
+          "cpu": {
+            "n": 2731,
+            "meanMs": 8.255730501246164,
+            "p50Ms": 7.900000035762787,
+            "p95Ms": 11.599999964237213,
+            "maxMs": 20.80000001192093
+          },
+          "frames": {
+            "n": 2737,
+            "meanMs": 17.52349287541098,
+            "p50Ms": 17.400000000001455,
+            "p95Ms": 18.19999999999891,
+            "maxMs": 36.400000000001455
+          },
+          "idleCPU": {
+            "n": 186,
+            "meanMs": 0.011827956925156296,
+            "p50Ms": 0,
+            "p95Ms": 0.10000002384185791,
+            "maxMs": 0.19999998807907104
+          },
+          "idleFrames": {
+            "n": 182,
+            "meanMs": 17.484615384615378,
+            "p50Ms": 17.5,
+            "p95Ms": 18.19999999999891,
+            "maxMs": 18.200000000000728
+          }
+        },
+        {
+          "variant": 1,
+          "contexts": 4,
+          "reloads": 24,
+          "cpu": {
+            "n": 2735,
+            "meanMs": 8.236745886087853,
+            "p50Ms": 8,
+            "p95Ms": 11.399999976158142,
+            "maxMs": 17.30000001192093
+          },
+          "frames": {
+            "n": 2737,
+            "meanMs": 17.499634636463202,
+            "p50Ms": 17.400000000001455,
+            "p95Ms": 18.19999999999709,
+            "maxMs": 35
+          },
+          "idleCPU": {
+            "n": 184,
+            "meanMs": 0.012500001036602518,
+            "p50Ms": 0,
+            "p95Ms": 0.10000002384185791,
+            "maxMs": 0.10000002384185791
+          },
+          "idleFrames": {
+            "n": 180,
+            "meanMs": 17.50388888888889,
+            "p50Ms": 17.5,
+            "p95Ms": 18.100000000000364,
+            "maxMs": 18.30000000000109
+          }
+        }
+      ],
+      "contexts": [
+        {
+          "ordinal": 0,
+          "variant": 0,
+          "summary": {
+            "cpu": {
+              "n": 683,
+              "meanMs": 8.146852122829738,
+              "p50Ms": 7.899999976158142,
+              "p95Ms": 12.199999988079071,
+              "maxMs": 17.799999952316284
+            },
+            "frames": {
+              "n": 683,
+              "meanMs": 17.496339677891655,
+              "p50Ms": 17.30000000000291,
+              "p95Ms": 18.19999999999709,
+              "maxMs": 34.70000000000073
+            },
+            "idleCPU": {
+              "n": 46,
+              "meanMs": 0.015217391045197197,
+              "p50Ms": 0,
+              "p95Ms": 0.10000002384185791,
+              "maxMs": 0.19999998807907104
+            },
+            "idleFrames": {
+              "n": 45,
+              "meanMs": 17.5,
+              "p50Ms": 17.599999999998545,
+              "p95Ms": 18.100000000000364,
+              "maxMs": 18.200000000000728
+            }
+          }
+        },
+        {
+          "ordinal": 1,
+          "variant": 1,
+          "summary": {
+            "cpu": {
+              "n": 685,
+              "meanMs": 8.293284670714915,
+              "p50Ms": 8,
+              "p95Ms": 12,
+              "maxMs": 17.30000001192093
+            },
+            "frames": {
+              "n": 686,
+              "meanMs": 17.47973760932944,
+              "p50Ms": 17.400000000001455,
+              "p95Ms": 18.100000000002183,
+              "maxMs": 18.899999999997817
+            },
+            "idleCPU": {
+              "n": 46,
+              "meanMs": 0.010869566513144451,
+              "p50Ms": 0,
+              "p95Ms": 0.10000002384185791,
+              "maxMs": 0.10000002384185791
+            },
+            "idleFrames": {
+              "n": 45,
+              "meanMs": 17.522222222222222,
+              "p50Ms": 17.599999999998545,
+              "p95Ms": 18.19999999999891,
+              "maxMs": 18.200000000000728
+            }
+          }
+        },
+        {
+          "ordinal": 2,
+          "variant": 1,
+          "summary": {
+            "cpu": {
+              "n": 684,
+              "meanMs": 8.15292397568449,
+              "p50Ms": 8,
+              "p95Ms": 11,
+              "maxMs": 15.899999976158142
+            },
+            "frames": {
+              "n": 684,
+              "meanMs": 17.48581871345029,
+              "p50Ms": 17.5,
+              "p95Ms": 18.100000000002183,
+              "maxMs": 18.399999999999636
+            },
+            "idleCPU": {
+              "n": 46,
+              "meanMs": 0.008695654247118078,
+              "p50Ms": 0,
+              "p95Ms": 0.10000002384185791,
+              "maxMs": 0.10000002384185791
+            },
+            "idleFrames": {
+              "n": 45,
+              "meanMs": 17.50444444444446,
+              "p50Ms": 17.600000000000364,
+              "p95Ms": 18.200000000000728,
+              "maxMs": 18.200000000000728
+            }
+          }
+        },
+        {
+          "ordinal": 3,
+          "variant": 0,
+          "summary": {
+            "cpu": {
+              "n": 684,
+              "meanMs": 7.701754386139195,
+              "p50Ms": 7.699999988079071,
+              "p95Ms": 9.100000023841858,
+              "maxMs": 16.19999998807907
+            },
+            "frames": {
+              "n": 684,
+              "meanMs": 17.50687134502924,
+              "p50Ms": 17.5,
+              "p95Ms": 18.19999999999709,
+              "maxMs": 23.700000000000728
+            },
+            "idleCPU": {
+              "n": 47,
+              "meanMs": 0.010638299140524356,
+              "p50Ms": 0,
+              "p95Ms": 0.10000002384185791,
+              "maxMs": 0.10000002384185791
+            },
+            "idleFrames": {
+              "n": 46,
+              "meanMs": 17.42391304347826,
+              "p50Ms": 17.200000000000728,
+              "p95Ms": 18.100000000000364,
+              "maxMs": 18.200000000000728
+            }
+          }
+        },
+        {
+          "ordinal": 4,
+          "variant": 1,
+          "summary": {
+            "cpu": {
+              "n": 684,
+              "meanMs": 7.945467835804175,
+              "p50Ms": 7.900000035762787,
+              "p95Ms": 10.400000035762787,
+              "maxMs": 15
+            },
+            "frames": {
+              "n": 684,
+              "meanMs": 17.481432748538012,
+              "p50Ms": 17.5,
+              "p95Ms": 18.19999999999709,
+              "maxMs": 18.700000000000728
+            },
+            "idleCPU": {
+              "n": 46,
+              "meanMs": 0.017391305902729862,
+              "p50Ms": 0,
+              "p95Ms": 0.10000002384185791,
+              "maxMs": 0.10000002384185791
+            },
+            "idleFrames": {
+              "n": 45,
+              "meanMs": 17.49555555555554,
+              "p50Ms": 17.399999999999636,
+              "p95Ms": 17.900000000001455,
+              "maxMs": 18.30000000000109
+            }
+          }
+        },
+        {
+          "ordinal": 5,
+          "variant": 0,
+          "summary": {
+            "cpu": {
+              "n": 683,
+              "meanMs": 8.435285504792828,
+              "p50Ms": 8.100000023841858,
+              "p95Ms": 11.699999988079071,
+              "maxMs": 15.699999988079071
+            },
+            "frames": {
+              "n": 686,
+              "meanMs": 17.5265306122449,
+              "p50Ms": 17.400000000001455,
+              "p95Ms": 18.200000000000728,
+              "maxMs": 35.60000000000218
+            },
+            "idleCPU": {
+              "n": 46,
+              "meanMs": 0.008695650359858637,
+              "p50Ms": 0,
+              "p95Ms": 0.09999996423721313,
+              "maxMs": 0.10000002384185791
+            },
+            "idleFrames": {
+              "n": 45,
+              "meanMs": 17.51555555555553,
+              "p50Ms": 17.5,
+              "p95Ms": 18.19999999999891,
+              "maxMs": 18.200000000000728
+            }
+          }
+        },
+        {
+          "ordinal": 6,
+          "variant": 0,
+          "summary": {
+            "cpu": {
+              "n": 681,
+              "meanMs": 8.741262847456463,
+              "p50Ms": 8.399999976158142,
+              "p95Ms": 12.099999964237213,
+              "maxMs": 20.80000001192093
+            },
+            "frames": {
+              "n": 684,
+              "meanMs": 17.564181286549708,
+              "p50Ms": 17.400000000001455,
+              "p95Ms": 18.19999999999709,
+              "maxMs": 36.400000000001455
+            },
+            "idleCPU": {
+              "n": 47,
+              "meanMs": 0.012765957954082084,
+              "p50Ms": 0,
+              "p95Ms": 0.10000002384185791,
+              "maxMs": 0.10000002384185791
+            },
+            "idleFrames": {
+              "n": 46,
+              "meanMs": 17.5,
+              "p50Ms": 17.599999999998545,
+              "p95Ms": 18.19999999999891,
+              "maxMs": 18.200000000000728
+            }
+          }
+        },
+        {
+          "ordinal": 7,
+          "variant": 1,
+          "summary": {
+            "cpu": {
+              "n": 682,
+              "meanMs": 8.556158357701344,
+              "p50Ms": 8.100000023841858,
+              "p95Ms": 12.399999976158142,
+              "maxMs": 16.400000035762787
+            },
+            "frames": {
+              "n": 683,
+              "meanMs": 17.55168374816984,
+              "p50Ms": 17.400000000001455,
+              "p95Ms": 18.200000000000728,
+              "maxMs": 35
+            },
+            "idleCPU": {
+              "n": 46,
+              "meanMs": 0.013043477483417677,
+              "p50Ms": 0,
+              "p95Ms": 0.10000002384185791,
+              "maxMs": 0.10000002384185791
+            },
+            "idleFrames": {
+              "n": 45,
+              "meanMs": 17.49333333333335,
+              "p50Ms": 17.5,
+              "p95Ms": 18.100000000000364,
+              "maxMs": 18.30000000000109
+            }
+          }
+        }
+      ]
+    }
+  },
+  "rawReports": [
+    "combined-scope/report.json",
+    "isolated-nail-scope/report.json",
+    "combined-runtime/report.json",
+    "combined-sniper-optics/report.json",
+    "bmg-repeat-budget/report.json",
+    "nail-repeat-budget/report.json"
+  ],
+  "nativeClips": [
+    {
+      "name": "bmg",
+      "file": "bmg-native.webm",
+      "sha256": "19ee033c39441fd652a30331d229a85cd88e4aee8f2e8a2486e3a4e66c2d56c7",
+      "bytes": 1322211,
+      "durationSeconds": 2.88,
+      "sourceHTMLSHA256": "aae58d3231e4c22071c443b53b5b26346f51afde2f8abd5656f11ce2cd147373",
+      "video": {
+        "codec": "VP9",
+        "width": 1280,
+        "height": 720,
+        "fps": 25
+      },
+      "audio": {
+        "codec": "Opus",
+        "sampleRate": 48000,
+        "channels": 2,
+        "source": "Existing game WebAudio output tapped after master; encoded audio copied into final container.",
+        "captureBytes": 47639
+      },
+      "controls": "Stock 5 key then actual R/native RAF and post-master WebAudio output. QA supplies selected BMG/reserve and removes enemies; subtitles hidden. No scripted view pose.",
+      "proof": {
+        "mag": 4,
+        "reserve": 96,
+        "samples": [
+          {
+            "time": 20241.8,
+            "state": "idle",
+            "phase": 0.15383333333333366,
+            "mag": 4,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20259.1,
+            "state": "idle",
+            "phase": 0.16104166666666667,
+            "mag": 4,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20276.4,
+            "state": "idle",
+            "phase": 0.16825000000000123,
+            "mag": 4,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20293.8,
+            "state": "idle",
+            "phase": 0.17550000000000032,
+            "mag": 4,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20311.8,
+            "state": "idle",
+            "phase": 0.18300000000000033,
+            "mag": 4,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20329.2,
+            "state": "idle",
+            "phase": 0.19025000000000095,
+            "mag": 4,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20346.8,
+            "state": "idle",
+            "phase": 0.19758333333333367,
+            "mag": 4,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20364.5,
+            "state": "idle",
+            "phase": 0.20495833333333396,
+            "mag": 4,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20382.5,
+            "state": "idle",
+            "phase": 0.21245833333333394,
+            "mag": 4,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20400.5,
+            "state": "idle",
+            "phase": 0.21995833333333395,
+            "mag": 4,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20417.9,
+            "state": "idle",
+            "phase": 0.22720833333333454,
+            "mag": 4,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20435.3,
+            "state": "reload",
+            "phase": 0,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20471,
+            "state": "reload",
+            "phase": 0.014875000000000303,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20506.3,
+            "state": "reload",
+            "phase": 0.029583333333333333,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20524.2,
+            "state": "reload",
+            "phase": 0.03704166666666727,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20559.4,
+            "state": "reload",
+            "phase": 0.051708333333334244,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20612.7,
+            "state": "reload",
+            "phase": 0.07254166666666759,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20649.5,
+            "state": "reload",
+            "phase": 0.08787500000000062,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20684.4,
+            "state": "reload",
+            "phase": 0.10241666666666789,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20701.7,
+            "state": "reload",
+            "phase": 0.10962500000000093,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20736.4,
+            "state": "reload",
+            "phase": 0.12408333333333457,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20771.9,
+            "state": "reload",
+            "phase": 0.13887500000000122,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20807.4,
+            "state": "reload",
+            "phase": 0.1536666666666679,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20842.5,
+            "state": "reload",
+            "phase": 0.16829166666666726,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20860.1,
+            "state": "reload",
+            "phase": 0.175625,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20895.9,
+            "state": "reload",
+            "phase": 0.19054166666666789,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20914.2,
+            "state": "reload",
+            "phase": 0.19816666666666757,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20949.3,
+            "state": "reload",
+            "phase": 0.21279166666666696,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20984.1,
+            "state": "reload",
+            "phase": 0.22729166666666667,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21001.5,
+            "state": "reload",
+            "phase": 0.23454166666666726,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21036.4,
+            "state": "reload",
+            "phase": 0.24908333333333454,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21071.8,
+            "state": "reload",
+            "phase": 0.26383333333333364,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21089.1,
+            "state": "reload",
+            "phase": 0.2710416666666667,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21124.3,
+            "state": "reload",
+            "phase": 0.2857083333333336,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21159.7,
+            "state": "reload",
+            "phase": 0.3004583333333342,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21177.4,
+            "state": "reload",
+            "phase": 0.3078333333333345,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21213.1,
+            "state": "reload",
+            "phase": 0.32270833333333326,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21230.9,
+            "state": "reload",
+            "phase": 0.33012500000000117,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21265.5,
+            "state": "reload",
+            "phase": 0.34454166666666725,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21301,
+            "state": "reload",
+            "phase": 0.3593333333333339,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21335.9,
+            "state": "reload",
+            "phase": 0.3738750000000012,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21355.4,
+            "state": "reload",
+            "phase": 0.38200000000000117,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21392,
+            "state": "reload",
+            "phase": 0.39725000000000055,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21409.4,
+            "state": "reload",
+            "phase": 0.40450000000000114,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21445.2,
+            "state": "reload",
+            "phase": 0.4194166666666675,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21481.8,
+            "state": "reload",
+            "phase": 0.4346666666666669,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21499.5,
+            "state": "reload",
+            "phase": 0.4420416666666672,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21534.3,
+            "state": "reload",
+            "phase": 0.4565416666666669,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21569.5,
+            "state": "reload",
+            "phase": 0.4712083333333339,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21605.3,
+            "state": "reload",
+            "phase": 0.48612500000000025,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21624.1,
+            "state": "reload",
+            "phase": 0.4939583333333333,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21659.3,
+            "state": "reload",
+            "phase": 0.5086250000000002,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21694,
+            "state": "reload",
+            "phase": 0.5230833333333339,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21729.3,
+            "state": "reload",
+            "phase": 0.5377916666666669,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21746.6,
+            "state": "reload",
+            "phase": 0.5449999999999998,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21764,
+            "state": "reload",
+            "phase": 0.5522500000000005,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21799.7,
+            "state": "reload",
+            "phase": 0.5671250000000008,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21817.1,
+            "state": "reload",
+            "phase": 0.5743749999999999,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21852.4,
+            "state": "reload",
+            "phase": 0.5890833333333344,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21869.6,
+            "state": "reload",
+            "phase": 0.5962499999999998,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21905.6,
+            "state": "reload",
+            "phase": 0.6112499999999998,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21923.9,
+            "state": "reload",
+            "phase": 0.6188750000000011,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21976.8,
+            "state": "reload",
+            "phase": 0.6397083333333344,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21994.8,
+            "state": "reload",
+            "phase": 0.6472083333333344,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22030,
+            "state": "reload",
+            "phase": 0.6618750000000014,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22067.1,
+            "state": "reload",
+            "phase": 0.6773333333333341,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22101.9,
+            "state": "reload",
+            "phase": 0.6918333333333353,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22119.2,
+            "state": "reload",
+            "phase": 0.6990416666666683,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22155,
+            "state": "reload",
+            "phase": 0.7139583333333347,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22172.8,
+            "state": "reload",
+            "phase": 0.7213750000000011,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22209.8,
+            "state": "reload",
+            "phase": 0.7367916666666677,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22244.9,
+            "state": "reload",
+            "phase": 0.7514166666666686,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22262.2,
+            "state": "reload",
+            "phase": 0.7586250000000015,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22297.3,
+            "state": "reload",
+            "phase": 0.773250000000001,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22332.4,
+            "state": "reload",
+            "phase": 0.7878750000000019,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22350.5,
+            "state": "reload",
+            "phase": 0.7954166666666679,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22385.7,
+            "state": "reload",
+            "phase": 0.8100833333333349,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22403.5,
+            "state": "reload",
+            "phase": 0.8175000000000013,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22438.3,
+            "state": "reload",
+            "phase": 0.832000000000001,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22455.7,
+            "state": "reload",
+            "phase": 0.8392500000000016,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22492.4,
+            "state": "reload",
+            "phase": 0.8545416666666685,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22527,
+            "state": "reload",
+            "phase": 0.8689583333333345,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22544.6,
+            "state": "reload",
+            "phase": 0.8762916666666672,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22579.9,
+            "state": "reload",
+            "phase": 0.8910000000000018,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22598.1,
+            "state": "reload",
+            "phase": 0.898583333333334,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22633.9,
+            "state": "reload",
+            "phase": 0.9135000000000018,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22651.7,
+            "state": "reload",
+            "phase": 0.9209166666666682,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22686.5,
+            "state": "reload",
+            "phase": 0.9354166666666679,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22704,
+            "state": "reload",
+            "phase": 0.9427083333333346,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22739.3,
+            "state": "reload",
+            "phase": 0.9574166666666677,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22758.1,
+            "state": "reload",
+            "phase": 0.9652500000000007,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22775.5,
+            "state": "reload",
+            "phase": 0.9725000000000014,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22810.9,
+            "state": "reload",
+            "phase": 0.987250000000002,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22828.3,
+            "state": "reload",
+            "phase": 0.9945000000000009,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22863.9,
+            "state": "idle",
+            "phase": 0,
+            "mag": 4,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22881.7,
+            "state": "idle",
+            "phase": 0.007416666666666363,
+            "mag": 4,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22899.1,
+            "state": "idle",
+            "phase": 0.014666666666665454,
+            "mag": 4,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22918.5,
+            "state": "idle",
+            "phase": 0.022749999999999392,
+            "mag": 4,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22941.1,
+            "state": "idle",
+            "phase": 0.03216666666666545,
+            "mag": 4,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22958.4,
+            "state": "idle",
+            "phase": 0.03937499999999999,
+            "mag": 4,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22977,
+            "state": "idle",
+            "phase": 0.04712499999999939,
+            "mag": 4,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 22994.9,
+            "state": "idle",
+            "phase": 0.05458333333333334,
+            "mag": 4,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 23012.7,
+            "state": "idle",
+            "phase": 0.061999999999999694,
+            "mag": 4,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 23030.9,
+            "state": "idle",
+            "phase": 0.06958333333333333,
+            "mag": 4,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 23049.3,
+            "state": "idle",
+            "phase": 0.07724999999999908,
+            "mag": 4,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 23066.8,
+            "state": "idle",
+            "phase": 0.08454166666666575,
+            "mag": 4,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 23085.1,
+            "state": "idle",
+            "phase": 0.09216666666666545,
+            "mag": 4,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 23102.9,
+            "state": "idle",
+            "phase": 0.09958333333333333,
+            "mag": 4,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 23121.1,
+            "state": "idle",
+            "phase": 0.10716666666666547,
+            "mag": 4,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 23138.6,
+            "state": "idle",
+            "phase": 0.11445833333333214,
+            "mag": 4,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 23155.9,
+            "state": "idle",
+            "phase": 0.12166666666666669,
+            "mag": 4,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 23173.9,
+            "state": "idle",
+            "phase": 0.1291666666666667,
+            "mag": 4,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 23191.7,
+            "state": "idle",
+            "phase": 0.13658333333333306,
+            "mag": 4,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 23209.3,
+            "state": "idle",
+            "phase": 0.14391666666666578,
+            "mag": 4,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 23226.7,
+            "state": "idle",
+            "phase": 0.1511666666666664,
+            "mag": 4,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 23263.2,
+            "state": "idle",
+            "phase": 0.16637499999999972,
+            "mag": 4,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 23281,
+            "state": "idle",
+            "phase": 0.1737916666666661,
+            "mag": 4,
+            "finite": true,
+            "visible": true
+          }
+        ]
+      },
+      "errors": [],
+      "network": [],
+      "sync": {
+        "markerFrames": 19,
+        "trimStart": 19.56,
+        "scope": "Audio starts when the preroll marker is removed; trim uses the first non-marker video frame. Video frame granularity is 40ms; physical audio-output latency is not measured."
+      },
+      "visualChecks": {
+        "pullSeconds": 0.65,
+        "returnSeconds": 2.4,
+        "completedAmmoSeconds": 2.82
+      }
+    },
+    {
+      "name": "nail",
+      "file": "nail-native.webm",
+      "sha256": "7a2fa196f28cbd8716da67864ad2dfc07460ee60bd6e5124ca940521bbd571d4",
+      "bytes": 980017,
+      "durationSeconds": 2.46,
+      "sourceHTMLSHA256": "aae58d3231e4c22071c443b53b5b26346f51afde2f8abd5656f11ce2cd147373",
+      "video": {
+        "codec": "VP9",
+        "width": 1280,
+        "height": 720,
+        "fps": 25
+      },
+      "audio": {
+        "codec": "Opus",
+        "sampleRate": 48000,
+        "channels": 2,
+        "source": "Existing game WebAudio output tapped after master; encoded audio copied into final container.",
+        "captureBytes": 40861
+      },
+      "controls": "Stock 7 key then actual R/native RAF and post-master WebAudio output. QA supplies selected NAIL/reserve and removes enemies; subtitles hidden. No scripted view pose.",
+      "proof": {
+        "mag": 50,
+        "reserve": 50,
+        "samples": [
+          {
+            "time": 19309.3,
+            "state": "idle",
+            "phase": 0.17504999999999926,
+            "mag": 50,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 19326.6,
+            "state": "idle",
+            "phase": 0.1836999999999989,
+            "mag": 50,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 19344.3,
+            "state": "idle",
+            "phase": 0.19254999999999925,
+            "mag": 50,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 19361.6,
+            "state": "idle",
+            "phase": 0.20119999999999888,
+            "mag": 50,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 19379.3,
+            "state": "idle",
+            "phase": 0.21004999999999924,
+            "mag": 50,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 19396.5,
+            "state": "idle",
+            "phase": 0.2186499999999996,
+            "mag": 50,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 19413.8,
+            "state": "idle",
+            "phase": 0.22729999999999922,
+            "mag": 50,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 19431.6,
+            "state": "idle",
+            "phase": 0.23619999999999886,
+            "mag": 50,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 19449.3,
+            "state": "idle",
+            "phase": 0.2450499999999992,
+            "mag": 50,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 19466.4,
+            "state": "idle",
+            "phase": 0.2536000000000003,
+            "mag": 50,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 19483.6,
+            "state": "idle",
+            "phase": 0.2621999999999989,
+            "mag": 50,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 19501.5,
+            "state": "reload",
+            "phase": 0.008950000000000728,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 19519.3,
+            "state": "reload",
+            "phase": 0.017850000000000366,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 19536.7,
+            "state": "reload",
+            "phase": 0.026550000000001094,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 19573,
+            "state": "reload",
+            "phase": 0.044700000000000725,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 19590.8,
+            "state": "reload",
+            "phase": 0.05360000000000036,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 19608.6,
+            "state": "reload",
+            "phase": 0.0625,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 19644.8,
+            "state": "reload",
+            "phase": 0.08060000000000037,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 19662.7,
+            "state": "reload",
+            "phase": 0.0895500000000011,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 19698.6,
+            "state": "reload",
+            "phase": 0.10750000000000001,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 19734,
+            "state": "reload",
+            "phase": 0.12520000000000076,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 19751.3,
+            "state": "reload",
+            "phase": 0.13385000000000039,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 19785.9,
+            "state": "reload",
+            "phase": 0.15115000000000148,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 19823.4,
+            "state": "reload",
+            "phase": 0.16990000000000147,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 19841.8,
+            "state": "reload",
+            "phase": 0.17910000000000037,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 19876.9,
+            "state": "reload",
+            "phase": 0.19665000000000146,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 19894.3,
+            "state": "reload",
+            "phase": 0.20535000000000037,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 19929.3,
+            "state": "reload",
+            "phase": 0.22285000000000038,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 19946.6,
+            "state": "reload",
+            "phase": 0.2315,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 19982,
+            "state": "reload",
+            "phase": 0.24920000000000075,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20017.2,
+            "state": "reload",
+            "phase": 0.26680000000000115,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20035.9,
+            "state": "reload",
+            "phase": 0.2761500000000015,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20071.7,
+            "state": "reload",
+            "phase": 0.29405000000000114,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20089.6,
+            "state": "reload",
+            "phase": 0.30300000000000005,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20124.3,
+            "state": "reload",
+            "phase": 0.3203500000000004,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20143.1,
+            "state": "reload",
+            "phase": 0.32975000000000004,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20178.6,
+            "state": "reload",
+            "phase": 0.34750000000000003,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20196.8,
+            "state": "reload",
+            "phase": 0.3566000000000004,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20214.2,
+            "state": "reload",
+            "phase": 0.3653000000000011,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20249.8,
+            "state": "reload",
+            "phase": 0.3831000000000004,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20284.7,
+            "state": "reload",
+            "phase": 0.4005500000000011,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20302.8,
+            "state": "reload",
+            "phase": 0.4096000000000004,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20320.5,
+            "state": "reload",
+            "phase": 0.41845000000000077,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20356.1,
+            "state": "reload",
+            "phase": 0.43625,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20373.5,
+            "state": "reload",
+            "phase": 0.44495000000000073,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20409.6,
+            "state": "reload",
+            "phase": 0.463,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20426.9,
+            "state": "reload",
+            "phase": 0.47165000000000146,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20463.1,
+            "state": "reload",
+            "phase": 0.48975,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20480.9,
+            "state": "reload",
+            "phase": 0.4986500000000015,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20516,
+            "state": "reload",
+            "phase": 0.5162000000000008,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20551.6,
+            "state": "reload",
+            "phase": 0.534,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20569.5,
+            "state": "reload",
+            "phase": 0.5429500000000007,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20604.3,
+            "state": "reload",
+            "phase": 0.5603500000000003,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20621.6,
+            "state": "reload",
+            "phase": 0.569,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20639.3,
+            "state": "reload",
+            "phase": 0.5778500000000003,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20674,
+            "state": "reload",
+            "phase": 0.5952000000000006,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20691.8,
+            "state": "reload",
+            "phase": 0.6041000000000003,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20726.9,
+            "state": "reload",
+            "phase": 0.6216500000000014,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20744.2,
+            "state": "reload",
+            "phase": 0.630300000000001,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20761.6,
+            "state": "reload",
+            "phase": 0.6389999999999999,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20796.7,
+            "state": "reload",
+            "phase": 0.656550000000001,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20814.1,
+            "state": "reload",
+            "phase": 0.6652499999999999,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20831.9,
+            "state": "reload",
+            "phase": 0.6741500000000014,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20867.5,
+            "state": "reload",
+            "phase": 0.6919500000000006,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20884.7,
+            "state": "reload",
+            "phase": 0.700550000000001,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20919.8,
+            "state": "reload",
+            "phase": 0.7181000000000003,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20938.4,
+            "state": "reload",
+            "phase": 0.7274000000000014,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20973,
+            "state": "reload",
+            "phase": 0.7447000000000007,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 20990.7,
+            "state": "reload",
+            "phase": 0.753550000000001,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21026.2,
+            "state": "reload",
+            "phase": 0.7713000000000011,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21044.5,
+            "state": "reload",
+            "phase": 0.7804500000000008,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21079.9,
+            "state": "reload",
+            "phase": 0.7981500000000015,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21097.1,
+            "state": "reload",
+            "phase": 0.80675,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21132.5,
+            "state": "reload",
+            "phase": 0.8244500000000007,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21150.4,
+            "state": "reload",
+            "phase": 0.8334000000000014,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21185.6,
+            "state": "reload",
+            "phase": 0.8509999999999999,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21202.9,
+            "state": "reload",
+            "phase": 0.8596500000000014,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21238.6,
+            "state": "reload",
+            "phase": 0.8775,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21273.3,
+            "state": "reload",
+            "phase": 0.8948500000000004,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21291.6,
+            "state": "reload",
+            "phase": 0.904,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21326.6,
+            "state": "reload",
+            "phase": 0.9215,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21344,
+            "state": "reload",
+            "phase": 0.9302000000000007,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21379.8,
+            "state": "reload",
+            "phase": 0.9481000000000003,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21414.6,
+            "state": "reload",
+            "phase": 0.9654999999999999,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21432.8,
+            "state": "reload",
+            "phase": 0.9746000000000002,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21468.6,
+            "state": "reload",
+            "phase": 0.9924999999999998,
+            "mag": 0,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21486.2,
+            "state": "idle",
+            "phase": 0,
+            "mag": 50,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21521.8,
+            "state": "idle",
+            "phase": 0.01779999999999927,
+            "mag": 50,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21540.1,
+            "state": "idle",
+            "phase": 0.026949999999998905,
+            "mag": 50,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21558.1,
+            "state": "idle",
+            "phase": 0.035949999999998906,
+            "mag": 50,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21575.5,
+            "state": "idle",
+            "phase": 0.044649999999999634,
+            "mag": 50,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21595.8,
+            "state": "idle",
+            "phase": 0.05479999999999927,
+            "mag": 50,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21613.4,
+            "state": "idle",
+            "phase": 0.06360000000000036,
+            "mag": 50,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21631.8,
+            "state": "idle",
+            "phase": 0.07279999999999927,
+            "mag": 50,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21649.7,
+            "state": "idle",
+            "phase": 0.08174999999999999,
+            "mag": 50,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21667.8,
+            "state": "idle",
+            "phase": 0.09079999999999926,
+            "mag": 50,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21685.4,
+            "state": "idle",
+            "phase": 0.09960000000000035,
+            "mag": 50,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21703.7,
+            "state": "idle",
+            "phase": 0.10874999999999999,
+            "mag": 50,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21721.5,
+            "state": "idle",
+            "phase": 0.11764999999999962,
+            "mag": 50,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21739.3,
+            "state": "idle",
+            "phase": 0.12654999999999925,
+            "mag": 50,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21757.3,
+            "state": "idle",
+            "phase": 0.13554999999999925,
+            "mag": 50,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21774.6,
+            "state": "idle",
+            "phase": 0.14419999999999888,
+            "mag": 50,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21791.9,
+            "state": "idle",
+            "phase": 0.15285000000000035,
+            "mag": 50,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21809.9,
+            "state": "idle",
+            "phase": 0.16185000000000035,
+            "mag": 50,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21827.2,
+            "state": "idle",
+            "phase": 0.17049999999999998,
+            "mag": 50,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21845.5,
+            "state": "idle",
+            "phase": 0.17964999999999962,
+            "mag": 50,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21862.9,
+            "state": "idle",
+            "phase": 0.18835000000000035,
+            "mag": 50,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21881.5,
+            "state": "idle",
+            "phase": 0.19764999999999963,
+            "mag": 50,
+            "finite": true,
+            "visible": true
+          },
+          {
+            "time": 21899.2,
+            "state": "idle",
+            "phase": 0.2065,
+            "mag": 50,
+            "finite": true,
+            "visible": true
+          }
+        ]
+      },
+      "errors": [],
+      "network": [],
+      "sync": {
+        "markerFrames": 20,
+        "trimStart": 18.64,
+        "scope": "Audio starts when the preroll marker is removed; trim uses the first non-marker video frame. Video frame granularity is 40ms; physical audio-output latency is not measured."
+      },
+      "visualChecks": {
+        "seatingSeconds": 1.55,
+        "completedAmmoSeconds": 2.4
+      }
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "sourceSHA256": "57c53ea96cda870166a54cc72b7cf08a136cfdc45dc71db961923af9b899ee53",
+  "stockHTML": "e0e15fb5cfe8ffb640d9e3a6abf664133c7919194693f22ff0d5690927a26667",
+  "candidateHTML": "94c626af0bcd2c7b5b78c82eca493a75b82350e0007a287eed209f712d172c15",
+  "scope": "Offline native Chrome file. Prologue ladder approach pose is staged. KeyE, Space, movement and door interaction are real browser inputs. Capture-loss is provoked with exitPointerLock for the pause case; the actual Resume button recaptures.",
+  "native": {
+    "caseCount": 6,
+    "errors": 0,
+    "sameMapAndCollisionLayout": true,
+    "playerAfterNatural": [
+      167,
+      1,
+      153,
+      0,
+      0
+    ],
+    "nativeLatchToPlayMs": 586.9,
+    "watchedLatchToPlayMs": 569.357,
+    "unscoredPlayedMs": 5647.443,
+    "worstCameraYawStepRadians": 0.019,
+    "naturalDoorOpened": true,
+    "earlyKeyboardDoorOpened": true,
+    "lateMouseDoorOpened": true,
+    "noShotsAdded": true,
+    "earlyKeyboardCompact": {
+      "reducedMotion": true,
+      "viewport": [
+        480,
+        480
+      ],
+      "keyboardFocusCheckPassed": true,
+      "visible": [
+        true,
+        true
+      ],
+      "gap": 37.796875,
+      "captionWidth": 436.796875,
+      "buttonHeight": 25
+    },
+    "captionsAccessibility": {
+      "live": "polite",
+      "role": "status",
+      "name": "Skip arrival cinematic"
+    },
+    "continuedReplayed": false,
+    "chapterSelectReplayed": false,
+    "pauseScope": "test forced native pointerlock loss; real Resume input",
+    "relief": {
+      "pos": [
+        165.23,
+        1.49,
+        148.23
+      ],
+      "triangles": 63,
+      "texture": [
+        71,
+        64
+      ]
+    }
+  },
+  "clock": [
+    {
+      "name": "fresh early keyboard skip credits zero, native repeats blocked",
+      "elapsed": 1750
+    },
+    {
+      "name": "warm_50fps",
+      "wallCredit": 5650,
+      "scoredTime": 2320
+    },
+    {
+      "name": "wall_hitch_5fps",
+      "wallCredit": 22600,
+      "scoredTime": 4150
+    },
+    {
+      "name": "hidden pause time preserved, actual resumed late-click tail excluded",
+      "before": 150,
+      "after": 223,
+      "wallPaused": 56000
+    },
+    {
+      "name": "new/restarted scene cancels previous story/clock"
+    }
+  ],
+  "clip": {
+    "sha256": "8c7aa808205046e501804c15c5894bd11a49ea8cd2b493de5248dc62ac51bba5",
+    "width": 960,
+    "height": 540,
+    "framesPerSecond": 25,
+    "codec": "VP9",
+    "audio": "Opus stereo 48 kHz from actual game WebAudio",
+    "durationSeconds": 10.4,
+    "bytes": 2130380,
+    "spatialTollCount": 1,
+    "actualAudioRecordedMs": 11422.2,
+    "captionFramesDecoded": true,
+    "lastFrameDoorOpen": true,
+    "perceivedLoudnessMeasured": false,
+    "networkRequests": 0,
+    "errors": 0
+  }
+}

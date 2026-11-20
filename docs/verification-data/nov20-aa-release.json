@@ -1,0 +1,453 @@
+{
+  "sha256": "452b55c7d328f913eeb1ebb075433cfb4c0439f49bc75d6dc230bcaae477c04e",
+  "bytes": 19886562,
+  "baselineCommit": "1c4ce792726350a19f1e2063dd5bb1b5c2d7ad3f",
+  "previousSHA256": "e0e15fb5cfe8ffb640d9e3a6abf664133c7919194693f22ff0d5690927a26667",
+  "sourceHashes": {
+    "viewmodels.js": "1dda8b10348ef423ea254617453358f7a4092e09d7ef8e12fbb3bb6cfe834b52",
+    "ash-bell-chamber.js": "e8d9f3f1c7f227882a2d37129dbba21c35bdd7f195f379346eae3390ea12d711",
+    "hollow-village-square.js": "feb29533d3d33b422681adcc05d6e631f020ce826ab5d391cffb541e0bf7bd72",
+    "hollow-village-loft-guide.js": "7cc9ccdbfbc63366c85f0926314a8206a7b5d1bad058ce37a81118ac7e5ea81b",
+    "ash-bell-arrival.js": "57c53ea96cda870166a54cc72b7cf08a136cfdc45dc71db961923af9b899ee53",
+    "hollow-village-arrival.js": "8fdc74fe8e9a9388b56c19d1064afa3580fa37722120f0ab09a1f00b7c4ed315",
+    "factory-foreman.js": "fb9d0b7719a6dec4acd6c19bff5fe3a4836e48f7cd45b35b5990ae8f4e2d91c7"
+  },
+  "build": {
+    "sourceModules": 43,
+    "testBuildRuns": 2,
+    "idempotentRebuildsPerRun": 2,
+    "invalidInputsRefusedPerRun": 8,
+    "engineSha256": "6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899",
+    "originalVillageRendererSha256": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627",
+    "byteReproducibleArtCompilers": [
+      "Ash Bell medallion",
+      "Ash Bell chamber",
+      "Hollow Village square",
+      "Hollow Village loft"
+    ]
+  },
+  "arrivals": {
+    "ashBell": {
+      "cases": [
+        "baseline",
+        "natural",
+        "continue",
+        "chapterSelect",
+        "earlyKeyboardReduced",
+        "pauseAndLateMouse"
+      ],
+      "clockCases": 5,
+      "cutscene": "6.2-second watched sequence. Verified actual keyboard and mouse skip, reduced motion, pause/resume, and no added campaign or chapter timing.",
+      "scope": "Exact Chrome file without qa flag. Prologue ladder approach pose is a fixture. All interaction and movement after that use native browser input. Pause scope labels simulated capture loss if CDP Escape does not deliver that browser event."
+    },
+    "hollowVillage": {
+      "cases": [
+        "natural",
+        "continue",
+        "chapterSelect",
+        "reducedMotion"
+      ],
+      "cutscene": "Uses the original 2.3-second arrival window and returns to the authored player pose.",
+      "scope": "Native New Game enters the Church through a staged native chapter load. Church terminal boss damage and exit approach are fixture preparation. All Village actions are native Playwright keyboard and pointer capture on the exact file. Continued/direct starts use the actual menu."
+    }
+  },
+  "ashBellChamber": {
+    "collisionSamples": 9600,
+    "realInputs": [
+      17,
+      17
+    ],
+    "drawCalls": [
+      362,
+      365
+    ],
+    "resourceDisposalChecks": 3,
+    "oldAndNewSavesRestored": true,
+    "scope": "Native movement, lever and lift with hostile behavior isolated for route parity."
+  },
+  "villageSquare": {
+    "collisionSamples": 71148,
+    "projectileSamples": 2535,
+    "realInputs": [
+      39,
+      39
+    ],
+    "resourceDisposalChecks": 3,
+    "scope": "Real movement and interaction from Village spawn. The route fixture holds hostile AI for old/new comparison."
+  },
+  "villageLoft": {
+    "collisionSamples": 2040,
+    "projectileSamples": 20400,
+    "realInputs": [
+      14,
+      14
+    ],
+    "resourceDisposalChecks": 2,
+    "scope": "The east aisle approach is staged and hostile AI is held. Players move up the authored stairs, acquire the key, and return using browser inputs."
+  },
+  "foreman": {
+    "samples": 351,
+    "rngCalls": 23474,
+    "phases": [
+      {
+        "phase": 1,
+        "launched": 1,
+        "cooldown": 3.4,
+        "damage": 15,
+        "recovery": "walk0:0"
+      },
+      {
+        "phase": 2,
+        "launched": 5,
+        "cooldown": 2.8,
+        "damage": 15,
+        "recovery": "foremanHotIdle0:0"
+      },
+      {
+        "phase": 3,
+        "launched": 3,
+        "cooldown": 3.6,
+        "damage": 15,
+        "recovery": "walk0:0"
+      }
+    ],
+    "chapterLoadOrder": "ABBA",
+    "warmChapterLoadMs": [
+      [
+        69.39999997615814,
+        62.30000001192093,
+        59.80000001192093
+      ],
+      [
+        71,
+        72.5,
+        85.30000001192093
+      ],
+      [
+        68.20000004768372,
+        60.89999997615814,
+        62.80000001192093
+      ],
+      [
+        63.59999996423721,
+        61.30000001192093,
+        66.60000002384186
+      ]
+    ],
+    "scope": "Matched native update steps after fixed encounter and phase preparation. Warm load measures one host."
+  },
+  "weapons": {
+    "count": 10,
+    "samples": 968,
+    "visible": 968,
+    "resizeReloads": 2,
+    "displayPoseCases": 36,
+    "isolatedComparisons": "docs/weapon-mechanics-nov20/verification.json"
+  },
+  "offline": [
+    {
+      "channel": "chrome",
+      "version": "157.0.8103.80",
+      "offline": true,
+      "legacySave": true,
+      "settingsPersist": true,
+      "chapterStarts": true,
+      "newGame": {
+        "pointerLock": true,
+        "initial": [
+          6,
+          60
+        ],
+        "afterFire": [
+          5,
+          60
+        ],
+        "afterReload": [
+          6,
+          59
+        ]
+      },
+      "pageErrors": [],
+      "network": []
+    },
+    {
+      "channel": "msedge",
+      "version": "154.0.4258.53",
+      "offline": true,
+      "legacySave": true,
+      "settingsPersist": true,
+      "chapterStarts": true,
+      "newGame": {
+        "pointerLock": true,
+        "initial": [
+          6,
+          60
+        ],
+        "afterFire": [
+          5,
+          60
+        ],
+        "afterReload": [
+          6,
+          59
+        ]
+      },
+      "pageErrors": [],
+      "network": []
+    }
+  ],
+  "webgl": {
+    "maps": 11,
+    "ordinaryOfflineLaunch": true
+  },
+  "campaign": {
+    "chapters": [
+      "PROLOGUE — OUT OF THE PIT",
+      "LEVEL 1 — THE ASH BELL MONASTERY",
+      "LEVEL 2 — THE GOTHIC DUNGEON",
+      "LEVEL 3 — THE ABANDONED CHURCH",
+      "LEVEL 4 — THE HOLLOW VILLAGE",
+      "LEVEL 5 — THE NECROPOLIS",
+      "LEVEL 6 — THE GRAVEYARD",
+      "LEVEL 7 — THE SEWERS",
+      "LEVEL 8 — THE FACTORY",
+      "LEVEL 9 — THE BONE CATHEDRAL",
+      "LEVEL 10 — THE WOMB"
+    ],
+    "nativeExitCards": 10,
+    "victory": true,
+    "scope": "Continuous native campaign from New Game. Fixed-step movement and door interaction through authored geometry. Actual Playwright E for bell and exits, Space for chapter cards. Bosses receive a seeded terminal hit through native damage. Hostile attacks are isolated during this route."
+  },
+  "nativePlay": {
+    "sha256": "452b55c7d328f913eeb1ebb075433cfb4c0439f49bc75d6dc230bcaae477c04e",
+    "prologueToAshBell": {
+      "start": "Ordinary offline Chrome New Game",
+      "input": "Real keyboard and mouse with stock enemies and equipment progression",
+      "ladderHealth": 100,
+      "deaths": 0,
+      "kills": 20,
+      "chapterEnemies": 21,
+      "shots": 124,
+      "hits": 119,
+      "crossedUsing": [
+        "E",
+        "Space"
+      ],
+      "ashBellCaptionsObserved": 2,
+      "nativeCryptDoorOpened": "83,73",
+      "pageErrors": [],
+      "networkRequests": []
+    },
+    "ashBellToGothicDungeon": {
+      "start": "Offline Chrome Chapter Select with stock equipment and active encounters",
+      "input": "Real keyboard and mouse",
+      "nativeRises": 2,
+      "openedNiches": 4,
+      "liftTravel": {
+        "from": 6,
+        "to": 1.2
+      },
+      "collectedSeals": [
+        "Bell Seal",
+        "Ash Seal"
+      ],
+      "twoSealGateOpened": true,
+      "gravediggerPhasesDefeated": [
+        1,
+        2,
+        3
+      ],
+      "healthAfterBoss": 66.8,
+      "armorAfterBoss": 3.2,
+      "result": {
+        "time": "4:53",
+        "accuracyPercent": 78,
+        "kills": 32,
+        "chapterEnemies": 115
+      },
+      "exitInput": "E",
+      "nextChapterInput": "Space",
+      "nextChapter": "The Gothic Dungeon",
+      "pageErrors": [],
+      "networkRequests": [],
+      "evidence": "docs/ash-bell-aa-nov20/native-route.md"
+    },
+    "villageToNecropolis": {
+      "start": "Offline Chrome Chapter Select with stock equipment and 79 active enemies",
+      "input": "Real keyboard and mouse",
+      "loftKeyCollected": true,
+      "nativeRises": 2,
+      "keyAndBarnDoorRetainedAfterBothRises": true,
+      "cemeteryGateOpenedWithKey": true,
+      "exitInput": "E",
+      "result": {
+        "rank": "D",
+        "time": "2:05",
+        "accuracyPercent": 98,
+        "kills": 23
+      },
+      "nextChapterInput": "Space",
+      "nextChapter": "The Necropolis",
+      "pageErrors": [],
+      "networkRequests": [],
+      "evidence": "docs/hollow-village-aa-nov20/native-route.md"
+    },
+    "factoryToBoneCathedral": {
+      "start": "Offline Chrome Chapter Select with stock equipment and active encounters",
+      "input": "Real keyboard and mouse",
+      "bossesDefeated": [
+        "Cathedral Guardian",
+        "Mutant Executioner",
+        "Foreman"
+      ],
+      "foremanHealthAtStartPhaseChangesAndDeath": [
+        2600,
+        1520,
+        570,
+        -70
+      ],
+      "shots": 91,
+      "contacts": 86,
+      "kills": 19,
+      "deaths": 1,
+      "nativeRises": 1,
+      "healthAtExit": 49.8,
+      "result": {
+        "rank": "C",
+        "time": "2:28",
+        "accuracyPercent": 95,
+        "kills": 19,
+        "chapterEnemies": 33
+      },
+      "exitInput": "E",
+      "nextChapterInput": "Space",
+      "nextChapter": "The Bone Cathedral",
+      "pageErrors": [],
+      "evidence": "docs/factory-foreman-nov20/native-route.md"
+    },
+    "wombHeart": {
+      "start": "Offline Chrome Chapter Select with stock equipment and active enemies",
+      "input": "Real keyboard and mouse",
+      "phasesReached": [
+        1,
+        2,
+        3
+      ],
+      "fightSecondsAtVictory": 25.859,
+      "shots": 21,
+      "hits": 21,
+      "deaths": 0,
+      "healthAtVictory": 73.4,
+      "armorAtVictory": 44.6,
+      "enterReturnedToTitle": true,
+      "afterReload": {
+        "rank": "D",
+        "time": "1:14",
+        "campaignSlotEmpty": true
+      },
+      "pageErrors": [],
+      "evidence": "docs/heart-nov19/native-aa-nov20.md"
+    }
+  },
+  "defensiveChecks": {
+    "gravediggerSummons": {
+      "referenceCommit": "dd6cf26",
+      "referenceFailure": "AudioParam positionX NaN",
+      "checkedNativeSummonKinds": [
+        "z",
+        "f"
+      ],
+      "finiteActors": 4,
+      "checkedUpdateSteps": 24,
+      "woundAudioPcmPeaks": [
+        0.000547,
+        0.002183
+      ],
+      "positionsMatched": true,
+      "sceneCleanup": true,
+      "pageErrors": [],
+      "scope": "Controlled offline native summon and wound fixtures."
+    },
+    "wallCollisions": {
+      "fixedGeometryCases": 76,
+      "liveRafCases": 3,
+      "lingeringFlight": false,
+      "settledCorpses": true,
+      "survivorMovement": 1.632,
+      "playerHealthBeforeAndAfterAttack": [
+        100,
+        88
+      ],
+      "pageErrors": [],
+      "scope": "Fixed collision fixtures plus native offline update frames."
+    }
+  },
+  "browserSuites": [
+    {
+      "name": "Native Ash Bell arrival and controls",
+      "seconds": 81.832
+    },
+    {
+      "name": "Native Village arrival and controls",
+      "seconds": 57.429
+    },
+    {
+      "name": "Ash Bell chamber route, mechanism, save, resources",
+      "seconds": 71.562
+    },
+    {
+      "name": "Hollow Village route, square, terrain, resources",
+      "seconds": 158.297
+    },
+    {
+      "name": "Hollow Village loft stairs, key and return",
+      "seconds": 58.53
+    },
+    {
+      "name": "Factory Foreman phase parity and warm readiness",
+      "seconds": 18.752
+    },
+    {
+      "name": "All ten weapons native reload, fire, switch, kick, cache",
+      "seconds": 43.585
+    },
+    {
+      "name": "Native display reload, resize and pose parity",
+      "seconds": 24.219
+    },
+    {
+      "name": "Eleven WebGL starts and normal Prologue",
+      "seconds": 52.714
+    },
+    {
+      "name": "Continuous campaign with seeded terminal boss hits",
+      "seconds": 83.265
+    },
+    {
+      "name": "Chrome and Edge ordinary offline single-file controls",
+      "seconds": 98.867
+    }
+  ],
+  "supportingEvidence": [
+    "docs/ash-bell-aa-nov20/scope.json",
+    "docs/ash-bell-aa-nov20/native-route.md",
+    "docs/ash-bell-aa-nov20/native-abbey-cleared.png",
+    "docs/ash-bell-arrival-nov20/verification.json",
+    "docs/ash-bell-arrival-nov20/arrival.webm",
+    "docs/ash-bell-arrival-nov20/native-route.md",
+    "docs/ash-bell-arrival-nov20/native-prologue-cleared.png",
+    "docs/hollow-village-aa-nov20/scope.json",
+    "docs/hollow-village-aa-nov20/native-route.md",
+    "docs/hollow-village-aa-nov20/native-village-cleared.png",
+    "docs/hollow-village-arrival-nov20/verification.json",
+    "docs/hollow-village-loft-nov20/scope.json",
+    "docs/factory-foreman-nov20/README.md",
+    "docs/factory-foreman-nov20/native-route.md",
+    "docs/factory-foreman-nov20/native-factory-cleared.png",
+    "docs/heart-nov19/native-aa-nov20.md",
+    "docs/heart-nov19/native-aa-nov20.png",
+    "docs/weapon-mechanics-nov20/verification.json",
+    "docs/weapon-mechanics-nov20/bmg-native.webm",
+    "docs/weapon-mechanics-nov20/nail-native.webm"
+  ]
+}

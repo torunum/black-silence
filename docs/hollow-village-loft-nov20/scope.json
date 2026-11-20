@@ -1,0 +1,156 @@
+{
+  "artVersion": "V3",
+  "sourceSha256": "7cc9ccdbfbc63366c85f0926314a8206a7b5d1bad058ce37a81118ac7e5ea81b",
+  "compared": [
+    {
+      "sha256": "5cb0195d19eb84470ba8904c15d2defcffd9f27d43449f634f09abbea769a1a8",
+      "bytes": 19669052,
+      "actualInputs": 14,
+      "keyAt": [
+        10.923619742723252,
+        4.6,
+        100.59956979975487
+      ],
+      "keyRetained": true,
+      "returnedEyeY": 2.2,
+      "render": {
+        "calls": 41,
+        "triangles": 97306,
+        "retired": [],
+        "meshes": []
+      }
+    },
+    {
+      "sha256": "e77184d14434a2f75ff1880eadd0113c59aaa0e3637de60cba9bb00f7bba39ca",
+      "bytes": 19702931,
+      "actualInputs": 14,
+      "keyAt": [
+        10.938402819689955,
+        4.6,
+        100.65944216818545
+      ],
+      "keyRetained": true,
+      "returnedEyeY": 2.2,
+      "render": {
+        "calls": 43,
+        "triangles": 100714,
+        "retired": [],
+        "meshes": [
+          {
+            "name": "hollowVillageLoftFittings",
+            "triangles": 940,
+            "min": [
+              27.450904846191406,
+              2.1415998935699463,
+              119.66600036621094
+            ],
+            "max": [
+              33.54499816894531,
+              3.760594367980957,
+              119.97599792480469
+            ],
+            "light": false,
+            "atlas": [
+              96,
+              64
+            ]
+          },
+          {
+            "name": "hollowVillageLoftSpill",
+            "triangles": 2468,
+            "min": [
+              26,
+              1.2000000476837158,
+              117.9739990234375
+            ],
+            "max": [
+              36,
+              4.550000190734863,
+              119.95500183105469
+            ],
+            "light": false,
+            "atlas": null
+          }
+        ]
+      }
+    }
+  ],
+  "camera": {
+    "eye": [
+      34.73,
+      2.2,
+      110.3
+    ],
+    "aim": [
+      28.1,
+      2.72,
+      118.7
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  "geometryClip": {
+    "southWallZ": 120,
+    "closestModelZ": 119.66600036621094,
+    "outerPlayerCenterZ": 119.65
+  },
+  "staging": "Enemy AI held. Controlled aisle position followed by genuine W and Shift+W on both versions.",
+  "movementAndElevationSamples": 2040,
+  "shotVolumeSamples": 20400,
+  "retirements": [
+    {
+      "other": 0,
+      "retired": [
+        {
+          "type": "BufferGeometry",
+          "disposed": 1
+        },
+        {
+          "type": "MeshBasicMaterial",
+          "disposed": 1
+        },
+        {
+          "type": 1009,
+          "disposed": 1
+        },
+        {
+          "type": "BufferGeometry",
+          "disposed": 1
+        },
+        {
+          "type": "MeshBasicMaterial",
+          "disposed": 1
+        }
+      ]
+    },
+    {
+      "other": 9,
+      "retired": [
+        {
+          "type": "BufferGeometry",
+          "disposed": 1
+        },
+        {
+          "type": "MeshBasicMaterial",
+          "disposed": 1
+        },
+        {
+          "type": 1009,
+          "disposed": 1
+        },
+        {
+          "type": "BufferGeometry",
+          "disposed": 1
+        },
+        {
+          "type": "MeshBasicMaterial",
+          "disposed": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "network": []
+}

@@ -1,7 +1,7 @@
 {
   "passed": true,
-  "bytes": 19386413,
-  "sha256": "e0e15fb5cfe8ffb640d9e3a6abf664133c7919194693f22ff0d5690927a26667",
+  "bytes": 19886562,
+  "sha256": "452b55c7d328f913eeb1ebb075433cfb4c0439f49bc75d6dc230bcaae477c04e",
   "engineSha256": "6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899",
   "villageSha256": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627",
   "moduleHashes": {
@@ -15,7 +15,7 @@
     "dungeon-creatures.js": "f16ce76837b5878e405fefc1bd345f66068f2432ac2c125002ce0a978b2876fb",
     "necropolis-screamer.js": "26c9284dc4b724a19256773373399b32cfb361fba979373e1cfc7f607700ca19",
     "groundskeeper-zombie.js": "f049183e2efc592b87d4b151d6ca8ceed137fb08cdf535b01c2f37865d433a47",
-    "viewmodels.js": "b986c9c9d4f8d7b6b09f6ea76f1c78314f60f597f07f837478d8d162c7ddf57b",
+    "viewmodels.js": "1dda8b10348ef423ea254617453358f7a4092e09d7ef8e12fbb3bb6cfe834b52",
     "finishers.js": "970db423fbb2a8d3edc8c12ce041f6be1eebc940b3c042a624b12a25bd9374fe",
     "reload-audio-data.js": "2f48b10a1225d1c007ee282d3c18f82c5022bb0267ed86d65feadf819ec1be30",
     "reload-audio.js": "dc67dd605d54c11fbf9571a1b1b80c58fe82953fcdb1a13798e3f4b89d3e2f60",
@@ -23,6 +23,7 @@
     "prologue.js": "1b5ab0b99ecc80e41d1e7c183b28a52fe6ce3c51900988e28da61c24d91a8891",
     "vigil-secret.js": "eee4d953810436e04f8758300541cd6a19ecd2272e39f8b781ffa212aa417e72",
     "monastery-nov14.js": "ca3ded666bb32ea82108e8d644c29edb6dc9fa5d5f1edb19c6dfb74050ff4609",
+    "ash-bell-chamber.js": "e8d9f3f1c7f227882a2d37129dbba21c35bdd7f195f379346eae3390ea12d711",
     "prologue-stained-glass.js": "61abbab4a1c33a2b27bfadf1bc8a78b2728bfb47ef8e59752f408ac337acaf58",
     "hell-arena-hearth.js": "2d273d0cc3b7beb5a1fa590e233e1454bd0ad3fc72f1624ce934f88445d606ef",
     "hell-ascent-lanterns.js": "44154df0f6039f9a1e2ec05340f76238842060382323277b2231b7b55d4f342b",
@@ -32,6 +33,8 @@
     "cathedral-reliquary.js": "2897bd75b63aaf8f5a39121a4563b495f258fa4591d4959c25a9b40a700dde8c",
     "womb-east-valve.js": "3853a63b565c9fe79218011fcccee828f576b5f64662b2087d54c1701f914e9b",
     "factory-office-manifold.js": "b5517bc8fc82b17f0711afd04039e0b7cb4afc1b49046e4005ec7320f4355c5a",
+    "hollow-village-square.js": "feb29533d3d33b422681adcc05d6e631f020ce826ab5d391cffb541e0bf7bd72",
+    "hollow-village-loft-guide.js": "7cc9ccdbfbc63366c85f0926314a8206a7b5d1bad058ce37a81118ac7e5ea81b",
     "render-warmup.js": "9a021fc24844f648460f0ee504653f74e200c1945dd33d4c8c06e71753325f15",
     "hud-updates.js": "d2047c2d4f92935dbf79b3dc22811341f19809aadaee3188db12339bc945531d",
     "display-settings.js": "55681d7f89f77607da0a0649367513f22697e4762f1bba953081da4f4b982289",
@@ -40,15 +43,18 @@
     "campaign-boss-restore.js": "0b80d503f54c334b0378250adc058f7cbb2c4ab161b455a78925c3614fd819de",
     "shrine-map.js": "70fd8c26baa23b82e5e3aadb43a9367e819b6ae772ae01485bda9872e86bb573",
     "pause-settings.js": "a930d33b67b02f347ff8f94f730bcacfa8134e0df313dd94b3f50f7078b65821",
+    "ash-bell-arrival.js": "57c53ea96cda870166a54cc72b7cf08a136cfdc45dc71db961923af9b899ee53",
+    "hollow-village-arrival.js": "8fdc74fe8e9a9388b56c19d1064afa3580fa37722120f0ab09a1f00b7c4ed315",
     "player-input.js": "082298631bad703c74bcafbcde3e74e8d475bec85e43067a5b25a515bb017b11",
+    "factory-foreman.js": "fb9d0b7719a6dec4acd6c19bff5fe3a4836e48f7cd45b35b5990ae8f4e2d91c7",
     "village-presentation.js": "d60bd40de6b093eadcfb9e3f99d822c0987250813647484bef79b73c96a0d627"
   },
   "idempotentBuilds": 2,
   "invalidInputsRefusedWithoutWrite": 8,
   "file": "THE-BLACK-SILENCE.html",
-  "verifiedAt": "2026-11-19T21:24:55.668Z",
-  "previousRelease": "65a12987749d90f6ba6d9ddd00eb642266df2f8723c5efa101f2f4c1e4d307d6",
-  "baselineCommit": "07b5f60ce211783ebfb9644304ff67873f806a51",
+  "verifiedAt": "2026-11-20T11:12:52.503Z",
+  "previousRelease": "e0e15fb5cfe8ffb640d9e3a6abf664133c7919194693f22ff0d5690927a26667",
+  "baselineCommit": "1c4ce792726350a19f1e2063dd5bb1b5c2d7ad3f",
   "verificationReports": [
     {
       "file": "docs/factory-nov14/verification.json",
@@ -297,6 +303,90 @@
     {
       "file": "docs/factory-manifold-nov19/native-clear.png",
       "sha256": "5c3a9d20905d741b7bc5c988ca9c03ca7755beaffaf9cb6e1b8fe1d01c1ae1a8"
+    },
+    {
+      "file": "docs/ash-bell-aa-nov20/scope.json",
+      "sha256": "f1611b5babdcee10199649a5d747df0bd7c4b7cd670b4e07db30277daedfadcd"
+    },
+    {
+      "file": "docs/ash-bell-aa-nov20/native-route.md",
+      "sha256": "097693087478075e7d76a6369bc8f35c3a0ff62161e4831d8f47b05ccc99286d"
+    },
+    {
+      "file": "docs/ash-bell-aa-nov20/native-abbey-cleared.png",
+      "sha256": "9316555ededa82d15803f7033b245c1b96ebe0d342a3d96191cd11a9025ed278"
+    },
+    {
+      "file": "docs/ash-bell-arrival-nov20/verification.json",
+      "sha256": "d933e6f93e5c044014ba1993af386f4c50fafb08ae002b34bbdd34b59965e3b2"
+    },
+    {
+      "file": "docs/ash-bell-arrival-nov20/arrival.webm",
+      "sha256": "8c7aa808205046e501804c15c5894bd11a49ea8cd2b493de5248dc62ac51bba5"
+    },
+    {
+      "file": "docs/ash-bell-arrival-nov20/native-route.md",
+      "sha256": "66d7f9e2c19618f09b7458c7498045c7445edcc6f1e7d3e852d9393201e2fb10"
+    },
+    {
+      "file": "docs/ash-bell-arrival-nov20/native-prologue-cleared.png",
+      "sha256": "dc3d2c35484464b7fbe9270273dd151604a50e42d6949e7682dda1b2fab5c254"
+    },
+    {
+      "file": "docs/hollow-village-aa-nov20/scope.json",
+      "sha256": "9fffe87b3f9ce7b9d360e891c0288875b0994495120cf83fb6d277e446fab6b0"
+    },
+    {
+      "file": "docs/hollow-village-aa-nov20/native-route.md",
+      "sha256": "d373823731894de342737c9f141eb588b15b02c2eb867175fe6645efb6cf125a"
+    },
+    {
+      "file": "docs/hollow-village-aa-nov20/native-village-cleared.png",
+      "sha256": "a736f2ea0701a614d0fcf21bd30942dc9431d581abd8c775e42642b9953b9f6f"
+    },
+    {
+      "file": "docs/hollow-village-arrival-nov20/verification.json",
+      "sha256": "93118cf21cedbfb49de08070ab899110236e9cf54553f5c8b91012bb56652b94"
+    },
+    {
+      "file": "docs/hollow-village-loft-nov20/scope.json",
+      "sha256": "a76cc851062309cfa0c5bd558368b75f095ca4dc18a3418ad975c8d5164c9113"
+    },
+    {
+      "file": "docs/factory-foreman-nov20/README.md",
+      "sha256": "2f75ae19f7f1ffc02d21b508fabb96baa3dd9785c87580c8a3a04fbdbdeb9116"
+    },
+    {
+      "file": "docs/factory-foreman-nov20/native-route.md",
+      "sha256": "f958d77498452c5aea80132efd14709b645650b03796a4090534af95fe456c27"
+    },
+    {
+      "file": "docs/factory-foreman-nov20/native-factory-cleared.png",
+      "sha256": "7f8d0082c4db52b0bd64fef030f07c5c41a8bffe280ee6543560c3d9ffa7b4ee"
+    },
+    {
+      "file": "docs/heart-nov19/native-aa-nov20.md",
+      "sha256": "c497e1d55e5c28d6e9ca2854f588a99821b4dfc2368108206c917e2bdc896259"
+    },
+    {
+      "file": "docs/heart-nov19/native-aa-nov20.png",
+      "sha256": "922658ab686bef2ebc2f24b32dba7467ebc95aa8d9fada7a54693cdcfaacd0de"
+    },
+    {
+      "file": "docs/weapon-mechanics-nov20/verification.json",
+      "sha256": "659e80941e8dd89f4af31acaef415b471d2240bf6b458f9e9b85fb268fe9b2b4"
+    },
+    {
+      "file": "docs/weapon-mechanics-nov20/bmg-native.webm",
+      "sha256": "19ee033c39441fd652a30331d229a85cd88e4aee8f2e8a2486e3a4e66c2d56c7"
+    },
+    {
+      "file": "docs/weapon-mechanics-nov20/nail-native.webm",
+      "sha256": "7a2fa196f28cbd8716da67864ad2dfc07460ee60bd6e5124ca940521bbd571d4"
+    },
+    {
+      "file": "docs/verification-data/nov20-aa-release.json",
+      "sha256": "3bc1d5dee2a285f188ba1b341ab8e88b64047601feb4eac2c81a49565427d857"
     }
   ]
 }

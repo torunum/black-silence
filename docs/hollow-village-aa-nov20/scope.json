@@ -1,0 +1,220 @@
+{
+  "artVersion": "V2",
+  "sourceSha256": "feb29533d3d33b422681adcc05d6e631f020ce826ab5d391cffb541e0bf7bd72",
+  "predecessor": {
+    "sha256": "e0e15fb5cfe8ffb640d9e3a6abf664133c7919194693f22ff0d5690927a26667",
+    "bytes": 19386413
+  },
+  "candidate": {
+    "sha256": "5cb0195d19eb84470ba8904c15d2defcffd9f27d43449f634f09abbea769a1a8",
+    "bytes": 19669052
+  },
+  "scope": {
+    "collision": 71148,
+    "projectile": 2535
+  },
+  "route": {
+    "oldInputs": 39,
+    "newInputs": 39,
+    "fromAuthoredSpawn": true,
+    "realControls": [
+      "W",
+      "Shift+W",
+      "E"
+    ],
+    "hostilesStaged": true,
+    "staircaseEyeYMinimum": 4,
+    "pickedKey": true,
+    "cemeteryGateOpen": true,
+    "checkpoint": 4,
+    "resumedKey": true,
+    "previousSaveAccepted": true
+  },
+  "camera": {
+    "nativeRaster": [
+      400,
+      225
+    ],
+    "fieldOfView": 78,
+    "far": 90,
+    "fog": [
+      [
+        0.03137254901960784,
+        0.058823529411764705,
+        0.09803921568627451
+      ],
+      0.0195
+    ],
+    "lateralMeters": 4,
+    "parallax": [
+      {
+        "name": "hollowVillage_distance",
+        "screenDx": 9.885010917649542
+      },
+      {
+        "name": "hollowVillage_hills",
+        "screenDx": 12.508228880953034
+      }
+    ]
+  },
+  "meshes": [
+    {
+      "name": "hollowVillage_squareWell",
+      "origin": [
+        71,
+        1.2,
+        25
+      ],
+      "triangles": 3700,
+      "atlas": [
+        160,
+        64
+      ],
+      "min": [
+        -0.921999990940094,
+        -0.014324193820357323,
+        -0.9665399789810181
+      ],
+      "max": [
+        0.9122722148895264,
+        2.805001735687256,
+        0.9665399789810181
+      ],
+      "visible": true,
+      "lights": 0
+    },
+    {
+      "name": "hollowVillage_distance",
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "triangles": 832,
+      "atlas": [
+        568,
+        86
+      ],
+      "min": [
+        -89.1036605834961,
+        -14.641754150390625,
+        100.96894836425781
+      ],
+      "max": [
+        234.3417510986328,
+        68.1837387084961,
+        197.9544219970703
+      ],
+      "visible": true,
+      "lights": 0
+    },
+    {
+      "name": "hollowVillage_hills",
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "triangles": 832,
+      "atlas": [
+        568,
+        86
+      ],
+      "min": [
+        -55.53354263305664,
+        -11.110418319702148,
+        82.31417083740234
+      ],
+      "max": [
+        200.09266662597656,
+        54.34843826293945,
+        158.9639892578125
+      ],
+      "visible": true,
+      "lights": 0
+    }
+  ],
+  "frameSample": {
+    "before": {
+      "frame": 364,
+      "calls": 250,
+      "triangles": 125428,
+      "points": 1648,
+      "lines": 0
+    },
+    "after": {
+      "frame": 66,
+      "calls": 249,
+      "triangles": 130588,
+      "points": 1648,
+      "lines": 0
+    },
+    "intervals": [
+      {
+        "samples": 24,
+        "medianMs": 17.600000000000364,
+        "p90Ms": 18.200000000000728
+      },
+      {
+        "samples": 24,
+        "medianMs": 17.199999999999818,
+        "p90Ms": 18.099999999999454
+      }
+    ],
+    "synchronousLoadMs": [
+      306.19999998807907,
+      136.19999998807907
+    ],
+    "caveat": "Single serial offline Chrome session with live effects and loaded shader caches, timings descriptive only."
+  },
+  "indoorVisibility": [
+    false,
+    false
+  ],
+  "exits": [
+    {
+      "level": 0,
+      "resources": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "level": 4,
+      "resources": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "level": 9,
+      "resources": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    }
+  ],
+  "errors": [],
+  "requests": []
+}

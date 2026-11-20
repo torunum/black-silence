@@ -1,0 +1,41 @@
+{
+  "scope": "Exact local Chrome file with native E/Space/W and captured mouse. Fresh campaign Church exit is staged by native level load, terminal boss damage and an approach pose. Village enemies, physics and damage stay live. Paired screenshot hides HUD overlays for visual comparison.",
+  "sourceSHA256": "8fdc74fe8e9a9388b56c19d1064afa3580fa37722120f0ab09a1f00b7c4ed315",
+  "baselineHTMLSHA256": "5cb0195d19eb84470ba8904c15d2defcffd9f27d43449f634f09abbea769a1a8",
+  "candidateHTMLSHA256": "f532906a827a153a8d0b5012b6b130eec245787dd73e28819956ab0698a65298",
+  "pairedFrameSHA256": "ef3d13e4617688fa1d7aee5d055cc20753c560db6eb2765865da5042e8fe8776",
+  "native": {
+    "cameraFrames": 130,
+    "baselineReleaseSeconds": 2.3081,
+    "candidateReleaseSeconds": 2.3079,
+    "baselineAtLatchHeadingRadians": 0,
+    "candidateAtLatchHeadingRadians": -3.1416,
+    "clearNativeCameraPath": true,
+    "unchangedReleasePose": [
+      71,
+      2.2,
+      11,
+      3.141592653589793,
+      0
+    ],
+    "churchLatchRetained": true,
+    "pointerCaptured": true,
+    "realStoreDoorOpened": true,
+    "storeDoor": "46,8",
+    "storeHealth": 88,
+    "shots": 0,
+    "nativeEnemyQuipBeforeNewLine": [
+      "see_z",
+      "village_from_church"
+    ],
+    "captionTriggerPosition": [
+      71,
+      12.479952546582135
+    ],
+    "existingCaptionPreserved": true,
+    "continueReplay": false,
+    "chapterSelectReplay": false,
+    "reducedMotionSteadyFrames": 130,
+    "errors": 0
+  }
+}

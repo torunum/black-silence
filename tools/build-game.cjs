@@ -61,6 +61,7 @@ const code = [
   "prologue.js",
   "vigil-secret.js",
   "monastery-nov14.js",
+  "ash-bell-chamber.js",
   "prologue-stained-glass.js",
   "hell-arena-hearth.js",
   "hell-ascent-lanterns.js",
@@ -70,6 +71,8 @@ const code = [
   "cathedral-reliquary.js",
   "womb-east-valve.js",
   "factory-office-manifold.js",
+  "hollow-village-square.js",
+  "hollow-village-loft-guide.js",
   "render-warmup.js",
   "hud-updates.js",
   "display-settings.js",
@@ -78,7 +81,10 @@ const code = [
   "campaign-boss-restore.js",
   "shrine-map.js",
   "pause-settings.js",
+  "ash-bell-arrival.js",
+  "hollow-village-arrival.js",
   "player-input.js",
+  "factory-foreman.js",
 ]
   .map((file) => fs.readFileSync(path.join(root, "src", file), "utf8"))
   .join("\n");
