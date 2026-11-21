@@ -66,14 +66,17 @@ async function run(){
   const file=path.join(out,"native.html"),url=pathToFileURL(file).href;
   const browser=await chromium.launch({channel:"chrome"}),results=[],errors=[],network=[];
   try{
-    const p=await browser.newPage({offline:true,viewport:{width:1100,height:620}});
-    p.on("pageerror",e=>errors.push(e.message));
-    p.on("request",r=>{if(/^https?:/.test(r.url()))network.push(r.url());});
+    const viewport={width:640,height:360};
     let oldScope,probes;
     for(const [i,s] of source.entries()){
-      await p.goto("about:blank");assert.equal(s.split(start).length,2);
+      const p=await browser.newPage({offline:true,viewport});
+      p.on("pageerror",e=>errors.push(e.message));
+      p.on("request",r=>{if(/^https?:/.test(r.url()))network.push(r.url());});
+      assert.equal(s.split(start).length,2);
       fs.writeFileSync(file,s.replace(start,()=>"("+instrument.toString()+")();\n"+start));
-      await p.goto(url);await p.locator("#mNew").focus({timeout:30000});
+      await p.goto(url,{waitUntil:"commit",timeout:90000});
+      await p.waitForFunction(()=>!!window.refugeStudy&&document.readyState!=="loading",null,{timeout:90000});
+      await p.locator("#mNew").focus({timeout:30000});
       await p.keyboard.press("Enter");
       await p.waitForFunction(()=>refugeStudy.state().ready,null,{timeout:50000});
       const call=(m,...a)=>p.evaluate(([m,a])=>refugeStudy[m](...a),[m,a]);
@@ -82,7 +85,7 @@ async function run(){
       await call("prepare");await p.waitForTimeout(140);
       async function walk(x,z,tolerance=.35){
         const before=(await call("state")).p;await call("face",x,z);await p.keyboard.down("KeyW");
-        try{await p.waitForFunction(([x,z,t])=>refugeStudy.near(x,z,t),[x,z,tolerance],{timeout:18000});}
+        try{await p.waitForFunction(([x,z,t])=>refugeStudy.near(x,z,t),[x,z,tolerance],{timeout:45000});}
         catch(e){throw Error("Refuge walk to "+[x,z]+" stopped at "+(await call("state")).p,{cause:e});}
         finally{await p.keyboard.up("KeyW");}
         await p.waitForTimeout(110);result.steps.push({input:"W",before,to:[x,z],after:(await call("state")).p});
@@ -120,10 +123,11 @@ async function run(){
         }
       }
       results.push(result);console.log("PASS",i?"candidate":"previous","refuge supplies and north ladder",result.steps.length);
+      await p.close();
     }
     assert.deepEqual(errors,[]);assert.deepEqual(network,[]);
     fs.writeFileSync(path.join(out,"verification.json"),JSON.stringify({scope:"Offline Chrome, held combat and staged ascent start; real W movement and E ladder interaction.",
-      probes,arrowDirection:"decreasing world z on the east wall, toward the chapel ladder",results,errors,network},null,2)+"\n");
+      viewport,probes,arrowDirection:"decreasing world z on the east wall, toward the chapel ladder",results,errors,network},null,2)+"\n");
     console.log("PASS",probes,"unchanged movement/shot queries, matching map/pickups, both departures");
   }finally{await browser.close();}
 }

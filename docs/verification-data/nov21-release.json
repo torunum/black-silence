@@ -2,6 +2,18 @@
   "htmlSha256": "99453b1aee4fa49be5f66076e3a7990b2036721c46f26037e911a0e81e3f4452",
   "htmlBytes": 21620009,
   "previousCommit": "41f20e7fa3651e98d0b8b23fd32794816d77da4a",
+  "componentEvidence": {
+    "refuge": {
+      "sourceSha256": "4d4bedfaf283ed6348ba3e6a0499f789a7e52cb68b1cbdc256b0685082ee33a4",
+      "isolatedReport": "../refuge-waymarker-nov21/verification.json",
+      "reachedInFinalFromNewGame": true
+    },
+    "boneSovereign": {
+      "scope": "Matched simulation across two volleys per phase. Checked on this exact HTML.",
+      "samples": 480,
+      "matchedNormalAndMirroredFrames": 104
+    }
+  },
   "normalPlay": {
     "scope": "Isolated desktop Chrome, physical game inputs and live enemies. The Prologue starts from New Game. Later chapters start with the stock pistol through Chapter Select with the menu unlock imported.",
     "prologue": {
@@ -57,6 +69,7 @@
         {
           "defeated": [],
           "minimumSovereignHP": 2400,
+          "furthestPhase": 1,
           "key": false,
           "nextLevel": null,
           "errors": 0
@@ -65,7 +78,8 @@
           "defeated": [
             "U"
           ],
-          "minimumSovereignHP": 1500,
+          "minimumSovereignHP": 1272,
+          "furthestPhase": 2,
           "key": true,
           "nextLevel": null,
           "errors": 0
@@ -73,6 +87,7 @@
         {
           "defeated": [],
           "minimumSovereignHP": null,
+          "furthestPhase": null,
           "key": false,
           "nextLevel": null,
           "errors": 0
@@ -81,7 +96,26 @@
           "defeated": [
             "U"
           ],
-          "minimumSovereignHP": 1500,
+          "minimumSovereignHP": 960,
+          "furthestPhase": 2,
+          "key": true,
+          "nextLevel": null,
+          "errors": 0
+        },
+        {
+          "defeated": [],
+          "minimumSovereignHP": null,
+          "furthestPhase": null,
+          "key": false,
+          "nextLevel": null,
+          "errors": 0
+        },
+        {
+          "defeated": [
+            "U"
+          ],
+          "minimumSovereignHP": 42,
+          "furthestPhase": 3,
           "key": true,
           "nextLevel": null,
           "errors": 0
@@ -89,6 +123,7 @@
         {
           "defeated": [],
           "minimumSovereignHP": 2400,
+          "furthestPhase": 1,
           "key": false,
           "nextLevel": null,
           "errors": 0
@@ -147,6 +182,7 @@
   "checks": [
     "arsenal",
     "build",
+    "campaign",
     "cathedral-tomb",
     "chapel-keepsake",
     "chapel-secret",
@@ -157,16 +193,21 @@
     "heart-live",
     "necropolis-live",
     "necropolis-vigil",
+    "offline",
     "prologue-clear",
+    "smoke",
     "sovereign",
     "tommy"
   ],
   "runsWithoutCompletion": [
     "cathedral-full",
-    "offline",
     "prologue-live",
-    "refuge",
-    "smoke"
+    "refuge"
   ],
-  "scopeOfAutomatedChecks": "Focused animation, save, collision and weapon tests use controlled fixtures. Campaign progression, where listed, covers eleven chapters with staged encounters."
+  "scopeOfAutomatedChecks": "Focused animation, save, collision and weapon tests use controlled fixtures. Campaign progression, where listed, covers eleven chapters with staged encounters.",
+  "runNotes": {
+    "cathedral-full": "The final build's ordinary runs reached the red key and fought the Bone Sovereign. See recorded phase/HP and the separate controlled campaign progression result.",
+    "prologue-live": "The final build reached the Prologue completion card through live combat. The same continuous run did not verify the subsequent Ash Bell crypt door.",
+    "refuge": "The paired replay timed out during startup or movement. The scoped component comparison and final New Game route are recorded separately."
+  }
 }
