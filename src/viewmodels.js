@@ -615,7 +615,7 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
         for(let y=0;y<Xs;y++)z.fill(-Infinity,y*width+sleeveMargin,y*width+sleeveMargin+Wr);
         sleeveSurface={canvas,ctx,image:ctx.createImageData(width,height),raster:{w:width,h:height,z},depth:new Float32Array(width*height)};}
       sleeveSurface.image.data.fill(0);
-      sleeveSurface.triangles=gloveTriangles.filter(t=>t.sleeve).map(t=>({...t,v:t.v.map(p=>({...p,x:p.x+sleeveMargin}))}));
+      sleeveSurface.triangles=gloveTriangles.filter(t=>t.sleeve||t.stockEdge).map(t=>({...t,v:t.v.map(p=>({...p,x:p.x+sleeveMargin}))}));
       compositePaintedGloves(sleeveSurface);
     }
     // topRow is the native presentation hint consumed by u0t, not a depth or
@@ -624,10 +624,9 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
     // Native reload framing otherwise pushes the loading hand below the viewport.
     // Offset the complete presentation once per redraw; retain depth, scale and shared part rigs.
     if(pose.reload>=0&&pose.exec<0&&pose.kick<0){
-      Te.topRow+=([0,.083,.18,.18,.17,.13,.18,.15,.20,.17][index]||0)*(1-Qe(pose.reload,0,1,.06))*Dk*_r;
+      Te.topRow+=([0,.083,.18,.042,.17,.13,.18,.15,.20,.17][index]||0)*(1-Qe(pose.reload,0,1,.06))*Dk*_r;
       if(index===5)Te.topRow+=.12*Qe(pose.reload,.15,.84,.12)*Dk*_r;
-      Te.topRow+=([0,0,.16,.15,0,0,.18,.18,0,0][index]||0)*Qe(pose.reload,0,1,.10)*Dk*_r;
-      if(index===3)Te.topRow+=.12*Qe(pose.reload,.02,.76,.12)*Dk*_r;
+      Te.topRow+=([0,0,.16,-.045,0,0,.18,.18,0,0][index]||0)*Qe(pose.reload,0,1,.10)*Dk*_r;
       if(index===6)Te.topRow+=.10*Qe(pose.reload,.02,.84,.12)*Dk*_r;
       if(index===4)Te.topRow+=.35*Qe(pose.reload,.25,.76,.12)*Dk*_r;
     }
@@ -638,7 +637,7 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
       const allowance = ease(phase, .13, .245) * (1 - ease(phase, .48, .72));
       Te.topRow += .128 * allowance * Dk * _r;
     }
-    if(pose.reload<0&&pose.exec<0&&pose.kick<0)Te.topRow+=([0,.083,.18,.18,.17,.13,.18,.15,.20,.17][index]||0)*Dk*_r;
+    if(pose.reload<0&&pose.exec<0&&pose.kick<0)Te.topRow+=([0,.083,.18,.042,.17,.13,.18,.15,.20,.17][index]||0)*Dk*_r;
     if(result&&(index===2||index===6)&&pose.reload>=0&&pose.kick<0&&pose.exec<0){
       receiverTopHint=Te.topRow;
       preserveReceiverSightline(index,pose);
@@ -1662,7 +1661,7 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
     for(let i=0;i<trigger.length-1;i++){const a=trigger[i],b=trigger[i+1];face([point(a[0]-2,a[1],depth-.003),point(b[0]-2,b[1],depth-.003),point(b[0]+2,b[1],depth-.003),point(a[0]+2,a[1],depth-.003)],EDGE);}
   }
   const firearmArt = {};
-  for (const [index, center, scale] of [[2,[548,314],.00063],[3,[1320,302],.00062],[4,[584,794],.000585],[5,[1410,806],.000586]]) {
+  for (const [index, center, scale] of [[2,[548,314],.00063],[3,[1320,302],.00050],[4,[584,794],.000585],[5,[1410,806],.000586]]) {
     const m=new Xf(Te.raster,1,0,0),h=vk[index].hold;
     m.yaw(h.yaw+Gm.yaw);m.pitch(Gm.pitch);m.roll(Gm.roll);m.pitch(h.pitch);m.roll(h.roll);
     const basis={u:m.dirFromCam([1,0,0]),v:m.dirFromCam([0,-1,0]),w:m.dirFromCam([0,0,1])};
@@ -1901,15 +1900,44 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
     vertices:tri.map(i=>tommyPoint(...tommyRelief[0][i],-.0202)),
     uv:tri.map(i=>[(836+tommyRelief[1][i][0])/1672,tommyRelief[1][i][1]/941])
   }));
+  const tommyThumb=[[212,279],[222,274],[239,266],[254,261],[264,262],[270,266],[271,273],[266,281],[251,289],[233,297],[216,302]];
+  const tommyThumbFaces=r79Triangles(tommyThumb).map(ids=>ids.map(i=>{
+    const [x,y]=tommyThumb[i],tip=ease(x,212,270);
+    return {folded:tommyPoint(x,y,-.035),cupped:tommyPoint(x+3+22*tip,y+8+27*tip,-.037-.006*tip),uv:[(836+x)/1672,y/941]};
+  }));
+  Ret.present={y:.021,pitch:.045,roll:-.24};
   Ret.draw=function(m,pose){
     const a=firearmArt[3],P=tommyPoint,t=pose.reload;
     const show=t<0?0:Qe(t,0,.99,.13),out=t<0?0:K0(t,...Ac.out)*(1-K0(t,...Ac.seat));
     const knob=t<0?0:Qe(t,...Ac.knob),reach=t<0?0:Qe(t,.005,.90,.12);
     const plate=(poly,d,th= .018,mat=WORN,uv=poly)=>a.hull(m,poly.map(([x,y])=>[836+x,y]),d,th,null,true,uv.map(([x,y])=>[836+x,y]),mat);
-    a.move(m,-.006,0,.042);m.roll(.115*show);m.pitch(-.047*show);
+    // Bring the drum in toward the support hand while keeping the sightline open.
+    const tension=t<0?0:Qe(t,.08,.31,.08)-.75*Qe(t,.46,.67,.06);
+    a.move(m,.113-.118*show,.024+.003*tension,.065);
+    const nose=P(131,139,.028);
+    m.translate(...nose);m.yaw(.5*(1-show));m.roll(.018*tension);m.translate(...nose.map(v=>-v));
     // The walnut belly reaches the action at the front of the grip. Its two
     // long edge surfaces share the same grain as the stock, past the wrist.
+    const stockStart=gloveTriangles.length;
     plate([[635,287],[658,289],[684,303],[719,326],[777,367],[834,397],[834,469],[644,469],[620,445],[596,422],[572,404],[551,383],[537,360],[527,346],[523,321],[541,320],[602,343],[628,350]],.013,.031,O.WOOD);
+    // The illustration stops midway through the stock. Continue its comb and
+    // belly in wood, then turn the heel into a curved, iron-capped butt.
+    plate([[644,469],[834,469],[834,551],[750,519],[694,492]],.013,.031,O.WOOD,
+      [[644,467],[834,467],[755,442],[695,452],[668,459]]);
+    plate([[834,397],[913,433],[913,501],[834,469]],.013,.031,O.WOOD,
+      [[834,397],[759,360],[759,422],[834,469]]);
+    plate([[834,469],[913,501],[913,576],[834,551]],.013,.031,O.WOOD,
+      [[834,468],[759,422],[720,436],[755,442]]);
+    plate([[913,433],[984,456],[1005,468],[1007,481],[990,531],[913,501]],.013,.031,O.WOOD,
+      [[759,360],[692,322],[679,318],[677,329],[687,370],[759,422]]);
+    plate([[913,501],[990,531],[981,573],[974,585],[960,589],[939,585],[913,576]],.013,.031,O.WOOD,
+      [[759,422],[687,370],[682,401],[678,413],[672,424],[690,431],[720,436]]);
+    plate([[984,456],[1004,461],[1015,469],[1019,479],[1018,490],[1001,546],[987,581],[978,591],[966,594],[952,590],[967,583],[980,559],[994,512],[1003,479],[1000,472]],.008,.040,WORN,
+      [[401,189],[407,190],[416,192],[424,196],[427,201],[423,207],[420,214],[414,217],[407,215],[403,211],[407,206],[412,203],[415,199],[412,197],[407,194]]);
+    // Ultrawide exposes the butt past the side of the fixed weapon raster.
+    if(sleeveMargin)for(let i=stockStart;i<gloveTriangles.length;i++){
+      const tri=gloveTriangles[i];tri.stockEdge=tri.v.some(p=>p.x>=Wr);
+    }
     plate([[520,317],[544,323],[595,343],[629,352],[636,293],[651,289],[648,361],[637,373],[597,360],[556,345],[528,340]],.004,.015,O.WOOD);
     plate([[473,298],[495,300],[521,312],[530,340],[506,354],[497,376],[502,432],[505,469],[486,469],[477,425],[461,384],[461,343]],.010,.030,O.WOOD,
       [[658,314],[673,322],[696,336],[714,361],[708,377],[709,392],[723,422],[726,438],[700,418],[681,392],[669,362],[657,339]]);
@@ -1942,8 +1970,11 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
     // reference edge, keeping the illustrated glove out of the magazine.
     const drumRig=()=>{
       const pivot=P(354,239,-.014);
-      a.move(m,-.038*out,.054*out,-.013*out);
-      m.translate(...pivot);m.roll(-.21*out);m.translate(...pivot.map(v=>-v));
+      // Pull the neck clear first. Turn the loose drum in the hand, then
+      // straighten it before the native magazine-seated event.
+      const turn=t<0?0:Qe(t,.14,.586,.17)*out;
+      a.move(m,-.024*out-.010*turn,.020*out-.009*turn,.010*turn);
+      m.translate(...pivot);m.roll(-.21*out+.12*turn);m.yaw(-.19*turn);m.translate(...pivot.map(v=>-v));
     };
     m.push();drumRig();
     plate([[312,216],[346,217],[369,225],[373,243],[355,255],[316,243],[306,233]],.001,.014,WORN,
@@ -1963,11 +1994,19 @@ window.__BLACK_SILENCE_GLOVE_ASSETS={"right":{"path":"assets/hand-reference/glov
     plate([[347,273],[357,269],[380,266],[386,270],[386,277],[376,281],[375,314],[367,316],[365,285],[358,289],[348,288]],-.024,.004,BRONZE);
     plate([[354,323],[360,320],[380,317],[386,320],[386,345],[378,350],[376,377],[365,379],[363,352],[357,350]],-.025,.005,BRONZE);
     m.pop();
-    const home=P(216,269,-.034),drumContact=P(329,353,-.057),stud=P(331,190,-.047);
+    const home=P(216,269,-.034),drumContact=P(284,307,-.049),stud=P(331,190,-.047);
     const finish=t<0?0:Math.min(K0(t,.64,.78),1-K0(t,.99-.088,.99));
     m.push();drumRig();const hand=home.map((v,i)=>{const grip=v+(drumContact[i]-v)*reach;return grip+(stud[i]-grip)*finish;});
-    m.translate(...hand.map((v,i)=>v-home[i]));a.move(m,.034*knob*finish,0,0);tommyLeft(m);m.pop();
-    m.push();a.move(m,.034*knob,0,0);plate([[315,179],[321,175],[329,176],[337,182],[338,190],[334,197],[327,201],[319,198],[315,190]],-.017,.014,BRONZE);m.pop();
+    m.translate(...hand.map((v,i)=>v-home[i]));a.move(m,.034*knob*finish,0,0);tommyLeft(m);
+    // As the hand cups the drum, open the bent thumb across its iron face.
+    // The heel stays in the palm while the two leather segments straighten.
+    const cup=reach*(1-finish);
+    if(cup>0){
+      for(const face of tommyThumbFaces)paintedSurface(m,'firearmSource',
+        face.map(({folded,cupped})=>folded.map((v,i)=>v+(cupped[i]-v)*cup)),face.map(p=>p.uv),1.01);
+    }
+    m.pop();
+    m.push();a.move(m,Math.max(.034*knob,.018*pose.action),0,0);plate([[315,179],[321,175],[329,176],[337,182],[338,190],[334,197],[327,201],[319,198],[315,190]],-.017,.014,BRONZE);m.pop();
     referenceTriggerGuard(m,P,a.basis.w,[[419,278],[435,283],[468,296],[470,315],[465,337],[451,339],[428,329],[418,317]],[[425,284],[439,289],[464,300],[463,315],[460,329],[451,332],[435,324],[426,315]],[[445,287],[447,300],[441,308]],-.022);
     tommyRight(m);m.anchor('muzzle',...P(131,139,.028));
   };

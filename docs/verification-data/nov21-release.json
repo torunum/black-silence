@@ -1,0 +1,172 @@
+{
+  "htmlSha256": "99453b1aee4fa49be5f66076e3a7990b2036721c46f26037e911a0e81e3f4452",
+  "htmlBytes": 21620009,
+  "previousCommit": "41f20e7fa3651e98d0b8b23fd32794816d77da4a",
+  "normalPlay": {
+    "scope": "Isolated desktop Chrome, physical game inputs and live enemies. The Prologue starts from New Game. Later chapters start with the stock pistol through Chapter Select with the menu unlock imported.",
+    "prologue": {
+      "entry": {
+        "hp": 100,
+        "armor": 0,
+        "shots": 0,
+        "hits": 0,
+        "kills": 0,
+        "deaths": 0
+      },
+      "familyPortrait": "ADEM“I remember that ribbon. She cut it from his Sunday coat.”",
+      "secretCountAfter": 1,
+      "originalShellPickup": "shells",
+      "refuge": {
+        "position": [
+          118.62305261341726,
+          5.2,
+          53.356205321298134
+        ],
+        "visibleModel": true,
+        "hp": 43
+      },
+      "completedAtLadder": {
+        "hp": 43,
+        "armor": 0,
+        "shots": 113,
+        "hits": 90,
+        "kills": 20,
+        "deaths": 0
+      },
+      "continuedThroughAshBellCryptDoor": false,
+      "pageErrors": []
+    },
+    "necropolis": {
+      "route": "Stock start, ossuary lantern, red key and through the original red lock",
+      "authoredHostiles": 37,
+      "keeperVisible": true,
+      "earnedFinishers": 2,
+      "closedToOpen": true,
+      "finish": {
+        "hp": 30,
+        "armor": 0,
+        "shots": 164,
+        "hits": 162,
+        "kills": 14,
+        "deaths": 0
+      },
+      "pageErrors": []
+    },
+    "boneCathedral": {
+      "attempts": [
+        {
+          "defeated": [],
+          "minimumSovereignHP": 2400,
+          "key": false,
+          "nextLevel": null,
+          "errors": 0
+        },
+        {
+          "defeated": [
+            "U"
+          ],
+          "minimumSovereignHP": 1500,
+          "key": true,
+          "nextLevel": null,
+          "errors": 0
+        },
+        {
+          "defeated": [],
+          "minimumSovereignHP": null,
+          "key": false,
+          "nextLevel": null,
+          "errors": 0
+        },
+        {
+          "defeated": [
+            "U"
+          ],
+          "minimumSovereignHP": 1500,
+          "key": true,
+          "nextLevel": null,
+          "errors": 0
+        },
+        {
+          "defeated": [],
+          "minimumSovereignHP": 2400,
+          "key": false,
+          "nextLevel": null,
+          "errors": 0
+        }
+      ],
+      "enteredTheWomb": false
+    },
+    "heart": {
+      "attempts": [
+        {
+          "fights": 4,
+          "defeated": false,
+          "winCard": false,
+          "recordRestored": false,
+          "errors": 0
+        },
+        {
+          "fights": 5,
+          "defeated": true,
+          "winCard": false,
+          "recordRestored": false,
+          "errors": 0
+        },
+        {
+          "fights": 0,
+          "defeated": false,
+          "winCard": false,
+          "recordRestored": false,
+          "errors": 0
+        },
+        {
+          "fights": 3,
+          "defeated": true,
+          "winCard": true,
+          "recordRestored": true,
+          "winningFight": {
+            "hp": 79.20000000000007,
+            "armor": 10.400000000000013,
+            "shots": 19,
+            "hits": 19,
+            "ms": 28401
+          },
+          "errors": 0
+        },
+        {
+          "fights": 0,
+          "defeated": false,
+          "winCard": false,
+          "recordRestored": false,
+          "errors": 0
+        }
+      ],
+      "restoredVictoryRecord": true
+    }
+  },
+  "checks": [
+    "arsenal",
+    "build",
+    "cathedral-tomb",
+    "chapel-keepsake",
+    "chapel-secret",
+    "finisher-compiler",
+    "finisher-input",
+    "finisher-reactions",
+    "finisher-timeline",
+    "heart-live",
+    "necropolis-live",
+    "necropolis-vigil",
+    "prologue-clear",
+    "sovereign",
+    "tommy"
+  ],
+  "runsWithoutCompletion": [
+    "cathedral-full",
+    "offline",
+    "prologue-live",
+    "refuge",
+    "smoke"
+  ],
+  "scopeOfAutomatedChecks": "Focused animation, save, collision and weapon tests use controlled fixtures. Campaign progression, where listed, covers eleven chapters with staged encounters."
+}

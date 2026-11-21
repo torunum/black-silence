@@ -1,0 +1,255 @@
+{
+  "baselineCommit": "41f20e7",
+  "source": "src/viewmodels.js",
+  "sourceSHA256": "4dbfd648524ed60025ed7624ff7f90c555c349e9736aecf08865cd6541e54761",
+  "privateFixtureSHA256": "e3fc92cd1d3fe5648719df175397cbe33a1ec309e1618e04187fa44bed5a0ddb",
+  "camera": [
+    68.94,
+    44.79,
+    0.1390297344687514,
+    6.276726839390398
+  ],
+  "before": [
+    {
+      "label": "idle",
+      "state": "idle",
+      "mag": 2,
+      "reserve": 60,
+      "muzzle": [
+        0.34331170432497427,
+        0.4703939168866434
+      ],
+      "centerTop": 0.49444444444444446
+    },
+    {
+      "label": "release",
+      "state": "reload",
+      "mag": 2,
+      "reserve": 60,
+      "muzzle": [
+        0.3838103943179587,
+        0.29566863616632333
+      ],
+      "centerTop": 0.3527777777777778
+    },
+    {
+      "label": "drum",
+      "state": "reload",
+      "mag": 2,
+      "reserve": 60,
+      "muzzle": [
+        0.38531654928903863,
+        0.298079404822735
+      ],
+      "centerTop": 0.35555555555555557
+    },
+    {
+      "label": "seat",
+      "state": "reload",
+      "mag": 2,
+      "reserve": 60,
+      "muzzle": [
+        0.38531654928903863,
+        0.298079404822735
+      ],
+      "centerTop": 0.35555555555555557
+    },
+    {
+      "label": "charge",
+      "state": "reload",
+      "mag": 2,
+      "reserve": 60,
+      "muzzle": [
+        0.38531654928903863,
+        0.41752384926717945
+      ],
+      "centerTop": 0.475
+    },
+    {
+      "label": "ready",
+      "state": "idle",
+      "mag": 36,
+      "reserve": 26,
+      "muzzle": [
+        0.34331170432497427,
+        0.4703939168866434
+      ],
+      "centerTop": 0.49444444444444446
+    },
+    {
+      "label": "fire",
+      "state": "fire",
+      "mag": 35,
+      "reserve": 26,
+      "muzzle": [
+        0.35054143031765145,
+        0.47169940577827724
+      ],
+      "centerTop": 0.5
+    }
+  ],
+  "after": [
+    {
+      "label": "idle",
+      "state": "idle",
+      "mag": 2,
+      "reserve": 60,
+      "muzzle": [
+        0.5436376048547842,
+        0.5984606329489301
+      ],
+      "centerTop": 0.8555555555555555
+    },
+    {
+      "label": "release",
+      "state": "reload",
+      "mag": 2,
+      "reserve": 60,
+      "muzzle": [
+        0.3940993132184262,
+        0.6080001150868766
+      ],
+      "centerTop": 0.6083333333333333
+    },
+    {
+      "label": "drum",
+      "state": "reload",
+      "mag": 2,
+      "reserve": 60,
+      "muzzle": [
+        0.39301350194388407,
+        0.6075630935107523
+      ],
+      "centerTop": 0.6055555555555555
+    },
+    {
+      "label": "seat",
+      "state": "reload",
+      "mag": 2,
+      "reserve": 60,
+      "muzzle": [
+        0.3924935304745856,
+        0.6057121460932154
+      ],
+      "centerTop": 0.6027777777777777
+    },
+    {
+      "label": "charge",
+      "state": "reload",
+      "mag": 2,
+      "reserve": 60,
+      "muzzle": [
+        0.39301350194388407,
+        0.6075630935107523
+      ],
+      "centerTop": 0.6055555555555555
+    },
+    {
+      "label": "ready",
+      "state": "idle",
+      "mag": 36,
+      "reserve": 26,
+      "muzzle": [
+        0.5436376048547842,
+        0.5984606329489301
+      ],
+      "centerTop": 0.8555555555555555
+    },
+    {
+      "label": "fire",
+      "state": "fire",
+      "mag": 35,
+      "reserve": 26,
+      "muzzle": [
+        0.5532329327093574,
+        0.5991291124045673
+      ],
+      "centerTop": 0.875
+    }
+  ],
+  "aspectAndAim": [
+    {
+      "width": 960,
+      "height": 720,
+      "idle": {
+        "state": "idle",
+        "t": 0.33840000000000153,
+        "centerTop": 0.8583333333333331,
+        "muzzleX": 0.5576626398063789,
+        "muzzleY": 0.59846063294893
+      },
+      "minimum": 0.6006944444444443,
+      "reloadFrames": 47,
+      "flashError": 0.29768524360743315,
+      "damage": 16
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "idle": {
+        "state": "idle",
+        "t": 0.21206666666666565,
+        "centerTop": 0.8555555555555555,
+        "muzzleX": 0.5436376052142744,
+        "muzzleY": 0.5984606325508687
+      },
+      "minimum": 0.5972222222222222,
+      "reloadFrames": 55,
+      "flashError": 0.059997158810607486,
+      "damage": 16
+    },
+    {
+      "width": 1680,
+      "height": 720,
+      "idle": {
+        "state": "idle",
+        "t": 0.16033333333333333,
+        "centerTop": 0.851682887266829,
+        "muzzleX": 0.5325186215254077,
+        "muzzleY": 0.5973657423614571
+      },
+      "minimum": 0.5966747769667479,
+      "reloadFrames": 36,
+      "flashError": 0.22233742886438326,
+      "damage": 16
+    }
+  ],
+  "gameplay": {
+    "passed": true,
+    "fireCancellation": [
+      {
+        "index": 3,
+        "pass": true,
+        "state": "idle",
+        "reserve": 100
+      }
+    ],
+    "transitions": [
+      {
+        "index": 3,
+        "firedMag": 29,
+        "switchedTo": 4,
+        "cancelledMag": 0,
+        "kickRecovered": true
+      }
+    ],
+    "ghosting": [
+      {
+        "weapon": 3,
+        "match": true,
+        "cacheStable": true
+      }
+    ],
+    "errors": []
+  },
+  "parity": {
+    "cases": 600,
+    "tommyDifferences": 63,
+    "otherDifferences": 0,
+    "passed": true
+  },
+  "inputs": {
+    "idleTarget": "815ca2cda9a25691a965b7857f2d03ed7ab9007ab1ea09a4b050fcdb064de20d",
+    "reloadTarget": "8966bc3b46a5a904e4540deb7dbaa530f49fd61da4f38b0e75287ee68c06bdcd"
+  }
+}

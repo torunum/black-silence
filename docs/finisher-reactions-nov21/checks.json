@@ -1,0 +1,659 @@
+{
+  "build": {
+    "scope": "Finisher-only standalone game on commit 41f20e7. The release report can additionally verify the combined game.",
+    "baselineSha256": "452b55c7d328f913eeb1ebb075433cfb4c0439f49bc75d6dc230bcaae477c04e",
+    "sha256": "25f0e33f740dad1e00bd44b5c2df504a21205b6cbc3d6d1e8925281310158a15",
+    "bytes": 20051390,
+    "deltaBytes": 164828,
+    "modules": {
+      "src/finishers.js": "175aa9a1b0e222486909efdfcc7e4d744dfbd79b636ca5d503de09ebf6a316ea",
+      "src/finisher-reaction-frames.js": "731e7b1ab023cf9851717d5dd8d40c93472f39bbce94810b9e9ce9a4f5b4d335"
+    }
+  },
+  "controls": {
+    "scope": "Native E, timeline, cache, and input recovery with QA-staged opponents.",
+    "runs": [
+      {
+        "key": "z",
+        "kind": 0,
+        "pausedAt": 0.4430839999999997,
+        "hp": 85,
+        "kills": 1,
+        "total": 1,
+        "dead": true,
+        "busy": false,
+        "ammo": 6,
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "grasp": true,
+        "fired": 3,
+        "time": 1.2390559999999982,
+        "controlReturned": true
+      },
+      {
+        "key": "s",
+        "kind": 1,
+        "pausedAt": 0.4334000000000007,
+        "hp": 85,
+        "kills": 2,
+        "total": 2,
+        "dead": true,
+        "busy": false,
+        "ammo": 6,
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14
+        ],
+        "grasp": false,
+        "fired": 3,
+        "time": 1.249708000000001,
+        "controlReturned": true
+      },
+      {
+        "key": "z",
+        "kind": 0,
+        "reduce": true,
+        "pausedAt": 0.43215999999999993,
+        "hp": 85,
+        "kills": 3,
+        "total": 3,
+        "dead": true,
+        "busy": false,
+        "ammo": 6,
+        "frames": [
+          0,
+          6
+        ],
+        "grasp": true,
+        "fired": 3,
+        "time": 1.2441760000000048,
+        "controlReturned": true
+      },
+      {
+        "key": "s",
+        "kind": 1,
+        "reduce": true,
+        "pausedAt": 0.4409320000000009,
+        "hp": 85,
+        "kills": 4,
+        "total": 4,
+        "dead": true,
+        "busy": false,
+        "ammo": 6,
+        "frames": [
+          0,
+          8
+        ],
+        "grasp": false,
+        "fired": 3,
+        "time": 1.2411159999999999,
+        "controlReturned": true
+      },
+      {
+        "key": "z",
+        "kind": 0,
+        "mask": 4,
+        "pausedAt": 0.4406919999999965,
+        "hp": 85,
+        "kills": 5,
+        "total": 5,
+        "dead": true,
+        "busy": false,
+        "ammo": 6,
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "grasp": false,
+        "fired": 3,
+        "time": 1.2421199999999972,
+        "controlReturned": true
+      },
+      {
+        "key": "z",
+        "kind": 2,
+        "pausedAt": 0.43599200000000277,
+        "hp": 85,
+        "kills": 6,
+        "total": 6,
+        "dead": true,
+        "busy": false,
+        "ammo": 6,
+        "frames": [],
+        "grasp": false,
+        "fired": 3,
+        "time": 1.244976000000004,
+        "controlReturned": true
+      },
+      {
+        "key": "s",
+        "kind": 1,
+        "cancel": true,
+        "pausedAt": 0.4355599999999978,
+        "hp": 70,
+        "kills": 6,
+        "total": 6,
+        "dead": false,
+        "busy": false,
+        "ammo": 6,
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "grasp": false,
+        "fired": 1,
+        "time": 0.4355599999999978,
+        "controlReturned": true
+      },
+      {
+        "key": "z",
+        "kind": 0,
+        "cancel": true,
+        "pausedAt": 0.443308000000002,
+        "hp": 70,
+        "kills": 6,
+        "total": 6,
+        "dead": false,
+        "busy": false,
+        "ammo": 6,
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "grasp": true,
+        "fired": 1,
+        "time": 0.443308000000002,
+        "controlReturned": true
+      }
+    ],
+    "errors": [],
+    "titleScreenSheets": []
+  },
+  "sprites": {
+    "exactBitmapsCompared": [
+      [
+        "s",
+        0,
+        0
+      ],
+      [
+        "s",
+        1,
+        0
+      ],
+      [
+        "s",
+        2,
+        0
+      ],
+      [
+        "s",
+        3,
+        0
+      ],
+      [
+        "s",
+        4,
+        0
+      ],
+      [
+        "s",
+        5,
+        0
+      ],
+      [
+        "s",
+        6,
+        0
+      ],
+      [
+        "s",
+        7,
+        0
+      ],
+      [
+        "s",
+        8,
+        0
+      ],
+      [
+        "s",
+        9,
+        0
+      ],
+      [
+        "s",
+        10,
+        0
+      ],
+      [
+        "s",
+        11,
+        0
+      ],
+      [
+        "s",
+        12,
+        0
+      ],
+      [
+        "s",
+        13,
+        0
+      ],
+      [
+        "s",
+        14,
+        0
+      ],
+      [
+        "s",
+        8,
+        2
+      ],
+      [
+        "s",
+        8,
+        4
+      ],
+      [
+        "s",
+        8,
+        6
+      ],
+      [
+        "z",
+        0,
+        0
+      ],
+      [
+        "z",
+        1,
+        0
+      ],
+      [
+        "z",
+        2,
+        0
+      ],
+      [
+        "z",
+        3,
+        0
+      ],
+      [
+        "z",
+        4,
+        0
+      ],
+      [
+        "z",
+        5,
+        0
+      ],
+      [
+        "z",
+        6,
+        0
+      ],
+      [
+        "z",
+        7,
+        0
+      ],
+      [
+        "z",
+        8,
+        0
+      ],
+      [
+        "z",
+        9,
+        0
+      ],
+      [
+        "z",
+        10,
+        0
+      ],
+      [
+        "z",
+        11,
+        0
+      ],
+      [
+        "z",
+        12,
+        0
+      ],
+      [
+        "z",
+        6,
+        2
+      ],
+      [
+        "z",
+        6,
+        4
+      ],
+      [
+        "z",
+        6,
+        6
+      ]
+    ],
+    "disposedOnDeparture": 4,
+    "verifiedRoster": [
+      "s",
+      "z"
+    ],
+    "preparedForRoster": [
+      "s",
+      "z"
+    ],
+    "sources": [
+      {
+        "actor": "Groundskeeper",
+        "sheetPixels": [
+          576,
+          800
+        ],
+        "posePixels": [
+          144,
+          200
+        ],
+        "frames": 13
+      },
+      {
+        "actor": "Screamer",
+        "sheetPixels": [
+          544,
+          776
+        ],
+        "posePixels": [
+          136,
+          194
+        ],
+        "frames": 15
+      }
+    ],
+    "embeddedFileBytes": 149767
+  },
+  "liveCombat": {
+    "scope": "QA stages a full-health enemy, a stock combat rifle and starting camera in the Prologue courtyard. All later aim, shots, movement and E are real native input. No random selector, health, stagger, damage or animation overrides.",
+    "attempts": [
+      {
+        "key": "z",
+        "form": "z",
+        "maxhp": 88,
+        "hp": 88,
+        "stagePlayer": 74,
+        "weapon": 2,
+        "trial": 1,
+        "bullets": [
+          {
+            "remaining": 22,
+            "targetHP": 60,
+            "dist": 2.4430925494165554
+          },
+          {
+            "remaining": 21,
+            "targetHP": 46,
+            "dist": 2.5141328046643125
+          },
+          {
+            "remaining": 20,
+            "targetHP": 32,
+            "dist": 2.648062570132491
+          },
+          {
+            "remaining": 19,
+            "targetHP": 18,
+            "stagger": 4.495900000000001,
+            "dist": 2.64431470700935
+          }
+        ],
+        "decision": {
+          "decided": true,
+          "stagger": 4.495900000000001,
+          "health": 18,
+          "dead": false
+        },
+        "kind": 0,
+        "result": {
+          "playerBefore": 74,
+          "playerAfter": 89,
+          "health": -5,
+          "dead": true,
+          "killDelta": 1
+        }
+      },
+      {
+        "key": "s",
+        "form": "s",
+        "maxhp": 70,
+        "hp": 70,
+        "stagePlayer": 74,
+        "weapon": 2,
+        "trial": 1,
+        "bullets": [
+          {
+            "remaining": 23,
+            "targetHP": 56,
+            "dist": 2.3401549349609985
+          },
+          {
+            "remaining": 22,
+            "targetHP": 42,
+            "dist": 2.4719414194163525
+          },
+          {
+            "remaining": 21,
+            "targetHP": 28,
+            "dist": 2.67123159277217
+          },
+          {
+            "remaining": 20,
+            "targetHP": 14,
+            "stagger": 4.4599,
+            "dist": 2.7551341926884194
+          }
+        ],
+        "decision": {
+          "decided": true,
+          "stagger": 4.4599,
+          "health": 14,
+          "dead": false
+        },
+        "kind": 1,
+        "result": {
+          "playerBefore": 74,
+          "playerAfter": 89,
+          "health": -90,
+          "dead": true,
+          "killDelta": 1
+        }
+      }
+    ],
+    "errors": []
+  },
+  "performance": {
+    "scope": "Single desktop Chrome session in an exclusive local browser window. Repeated first-use CPU measurements with caches evicted per round, procedural/sheet ABBA order. Live RAF intervals were measured in eight real E executions with matched effect RNG and actor staging, not a campaign-wide FPS benchmark.",
+    "values": {
+      "s": {
+        "procedural": {
+          "firstUseCPU": {
+            "n": 60,
+            "mean": 5.398,
+            "p50": 5,
+            "p95": 8.4,
+            "max": 9.5
+          },
+          "liveRAF": {
+            "n": 143,
+            "mean": 19.756,
+            "p50": 17.5,
+            "p95": 35.2,
+            "max": 51.5
+          }
+        },
+        "sheet": {
+          "firstUseCPU": {
+            "n": 60,
+            "mean": 0.108,
+            "p50": 0.1,
+            "p95": 0.2,
+            "max": 0.5
+          },
+          "liveRAF": {
+            "n": 152,
+            "mean": 18.668,
+            "p50": 17.5,
+            "p95": 34.9,
+            "max": 52.4
+          }
+        }
+      },
+      "z": {
+        "procedural": {
+          "firstUseCPU": {
+            "n": 52,
+            "mean": 5.931,
+            "p50": 5.6,
+            "p95": 7.7,
+            "max": 8.6
+          },
+          "liveRAF": {
+            "n": 159,
+            "mean": 17.801,
+            "p50": 17.5,
+            "p95": 18.3,
+            "max": 35.7
+          }
+        },
+        "sheet": {
+          "firstUseCPU": {
+            "n": 52,
+            "mean": 0.121,
+            "p50": 0.1,
+            "p95": 0.3,
+            "max": 0.6
+          },
+          "liveRAF": {
+            "n": 161,
+            "mean": 17.619,
+            "p50": 17.6,
+            "p95": 18.2,
+            "max": 21.4
+          }
+        }
+      }
+    },
+    "errors": []
+  },
+  "media": {
+    "groundskeeper": {
+      "comparison": {
+        "sourceClock": 0.55,
+        "camera": [
+          19,
+          10.03,
+          3.141592653589793,
+          0.27268613493924654
+        ],
+        "orderedPanels": [
+          "previous game",
+          "generated target",
+          "playable update"
+        ],
+        "sha256": "04a58dabca3b5f0327da31cef476cb362661e00db2d3b3fd11aeb009f20a38c9"
+      },
+      "nativeClip": {
+        "fixture": "QA stages opponent, low health, and variant. Real Enter and E; native animation and real game audio.",
+        "sha256": "ddb67116e1bd34a648651d3ca5b9f1ba54950678db19ce9315756c57c2ca06a9",
+        "bytes": 1388295,
+        "video": "VP9",
+        "audio": "Opus",
+        "fps": 25,
+        "audioDuration": 2.471199999988079,
+        "errors": []
+      }
+    },
+    "screamer": {
+      "comparison": {
+        "sourceClock": 0.3150000000000001,
+        "camera": [
+          19,
+          10.03,
+          3.141592653589793,
+          0.2342290361711624
+        ],
+        "orderedPanels": [
+          "previous game",
+          "generated target",
+          "playable update"
+        ],
+        "sha256": "e82ff483396883cc959afe29466b6bc526e451e92f42cafd58d3af6a173cc5b0"
+      },
+      "nativeClip": {
+        "fixture": "QA stages opponent, low health, and variant. Real Enter and E; native animation and real game audio.",
+        "sha256": "ef616e1b097b54fbe001a582f4e4a375daaf91c828e6929046bb1336c348b157",
+        "bytes": 1491130,
+        "video": "VP9",
+        "audio": "Opus",
+        "fps": 25,
+        "audioDuration": 5.553300000011921,
+        "errors": []
+      }
+    }
+  },
+  "passed": true
+}

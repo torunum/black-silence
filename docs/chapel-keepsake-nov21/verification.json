@@ -1,0 +1,87 @@
+{
+  "current": "3514953f70a014dac4d624cf59f477ae413225e081a8e26d0cac696da8b17056",
+  "previous": "452b55c7d328f913eeb1ebb075433cfb4c0439f49bc75d6dc230bcaae477c04e",
+  "checks": {
+    "oldOpen": {
+      "opened": true,
+      "present": true,
+      "restoredShells": 0,
+      "ammoAfterWalk": 6,
+      "spoken": 0
+    },
+    "keepsake": {
+      "vertices": 474,
+      "triangles": 158,
+      "min": [
+        68.98497250531574,
+        4.785409293911634,
+        10.983019896232818
+      ],
+      "max": [
+        69.21149050120866,
+        5.386382607134925,
+        11.418576284879007
+      ],
+      "parent": "chapelVigil",
+      "mesh": true,
+      "drawMeshes": 1,
+      "texture": [
+        92,
+        130
+      ]
+    },
+    "nativeDiscovery": [
+      {
+        "before": "",
+        "spoken": "ADEM“I remember that ribbon. She cut it from his Sunday coat.”",
+        "point": [
+          66.78,
+          10.35
+        ]
+      }
+    ],
+    "disposed": [
+      {
+        "type": "BufferGeometry",
+        "count": 1
+      },
+      {
+        "type": "MeshBasicMaterial",
+        "count": 1
+      },
+      {
+        "type": "chapelFamilyTintype",
+        "count": 1
+      }
+    ],
+    "layout": {
+      "probes": 2132,
+      "actors": 21,
+      "items": 25,
+      "dungeonBefore": [
+        "17,21",
+        "44,7",
+        "9,23"
+      ],
+      "dungeonAfter": [
+        "17,21",
+        "44,7",
+        "9,23"
+      ]
+    },
+    "rise": {
+      "opened": true,
+      "taken": true,
+      "ammo": 6,
+      "secret": 1
+    },
+    "newContinue": {
+      "opened": true,
+      "taken": true,
+      "ammo": 6,
+      "spoken": 0
+    }
+  },
+  "errors": [],
+  "requests": []
+}

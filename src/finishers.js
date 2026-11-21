@@ -540,6 +540,323 @@
   ];
   const settlingOpponents = new Set();
 
+  /* FINISHER_REACTION_MODELS_BEGIN */
+  // The mourner tucks one elbow against the clasp while the struck shoulder
+  // carries the mask across the gloves. Each return winds up the next beat.
+  // These are ordinary native joint poses and honor its detachable arm mask.
+  const mournerHold = hg([-.285,.02,.28], {
+    pelvis:[-.42,-.60,-.08], spine:[-.17,.21,.09], chest:[-.20,.23,.15],
+    neck:[-.31,-.12,.02], head:[.29,.04,.10], jaw:[.20,0,0],
+    shoulderL:[.22,-1.40,.60], elbowL:[-.85,0,-.35], wristL:[-.15,0,0],
+    shoulderR:[-.15,.23,-.06], elbowR:[-.27,0,.40], wristR:[-.15,0,0],
+    hipL:[-1.22,.13,.84], kneeL:[1.81,0,0], ankleL:[-.29,0,0],
+    hipR:[.07,0,-.12], kneeR:[.56,0,0], ankleR:[-.78,0,0],
+  }, $o(.48,.21));
+  function mournerPose(root, joints, claw, cloth) {
+    return hg(root, {...mournerHold.rot,...joints}, $o(claw,cloth));
+  }
+  const mournerPoses = [
+    Do({ spine:[.04,-.09,.05], chest:[.07,-.05,.07], neck:[-.03,-.06,-.04],
+      head:[-.07,-.13,-.03], jaw:.20, x:$o(.25,.08),
+      aL:{f:.31,out:.48,e:.62}, aR:{f:.32,out:.22,e:.63},
+      lL:{f:.13,k:.25,out:.08}, lR:{f:-.10,k:.22,out:.14} }),
+    mournerHold,
+    mournerPose([-.297,.045,.27], {
+      chest:[-.24,.20,.20], neck:[-.38,-.11,-.02], head:[.24,.05,.17], jaw:[.34,0,0],
+      shoulderL:[.14,-1.25,.80], elbowL:[-.96,0,-.33], shoulderR:[-.33,.31,-.10],
+      wristR:[-.29,.13,0], hipL:[-1.32,.16,.90],
+    }, .73,.62),
+    mournerPose([-.19,.006,.22], {
+      pelvis:[-.32,-.47,-.10], spine:[-.07,.13,.07], neck:[-.29,-.13,-.05],
+      head:[.17,-.01,.11], shoulderL:[.07,-1.13,.67], elbowL:[-.91,.04,-.32],
+      shoulderR:[-.38,.33,-.10], hipL:[-1.0,.16,.57], kneeL:[1.47,0,0],
+    }, .57,.36),
+    Do({ pelvis:[.10,-.04,.08], spine:[.11,.16,-.13], chest:[.12,.14,-.16],
+      neck:[-.13,-.12,-.04], head:[-.13,-.23,-.21], jaw:.30, x:$o(.72,.64),
+      aL:{f:.56,out:.69,e:.66,tw:-.31}, aR:{f:.51,out:.76,e:1.33,tw:.69},
+      lL:{f:.20,k:.65,out:.20}, lR:{f:.42,k:1.01,out:.23}, root:[.135,-.032,.035] }),
+    Do({ pelvis:[.09,-.02,.04], spine:[.16,.07,-.08], chest:[.09,.10,-.08],
+      neck:[-.10,-.07,-.03], head:[.06,-.13,-.12], jaw:.20, x:$o(.44,.37),
+      aL:{f:.42,out:.58,e:.72,tw:-.12}, aR:{f:.39,out:.55,e:1.20,tw:.49},
+      lL:{f:.27,k:.66,out:.12}, lR:{f:.26,k:.88,out:.09}, root:[.01,-.084,.018] }),
+  ];
+  // The ordinary 68 × 97 field sprite is magnified several times at arm's
+  // length. Rasterize this close-up from the same mesh with narrower pixels
+  // so the sockets, hood edge and open fingers survive the move towards it.
+  const closeupParts = OB.parts.map(part => {
+    if (part.joint !== "head" && part.joint !== "jaw") return part;
+    return {...part, draw({b, x}) {
+      // The field rig enlarges the hood for recognition at a distance.
+      const close = Lo(b, .72);
+      part.draw({b:close, x});
+      if (part.joint !== "head") return;
+      const mask = Lo(close, U3);
+      const shade = {tex:() => -1.0}, glint = {tex:() => .65};
+      // Cheek planes, brow and chipped lip within the original ivory outline.
+      mask.prz([[-.049,.186],[-.033,.170],[-.017,.167],[-.023,.141],[-.037,.119],[-.049,.153]],
+        -.137,-.130,fq,shade);
+      mask.prz([[.038,.181],[.053,.198],[.048,.151],[.035,.119],[.023,.104],[.030,.146]],
+        -.137,-.130,fq,shade);
+      mask.prz([[-.030,.238],[-.009,.252],[.013,.25],[.035,.233],[.006,.234],[-.023,.226]],
+        -.135,-.130,fq,glint);
+      mask.prz([[-.011,.171],[-.002,.182],[.005,.163],[.002,.143],[-.009,.139]],
+        -.140,-.133,fq,glint);
+      mask.prz([[-.017,.102],[-.007,.104],[.005,.101],[-.001,.095],[-.012,.095]],
+        -.141,-.136,fq,shade);
+    }};
+  });
+  const mournerCloseup = { ...OB, parts:closeupParts, frame:{...OB.frame, w:136, h:194} };
+  function drawGraspingHand({b, x}) {
+    const curl = x("claw");
+    const knuckle = 16, crease = 17;
+    b.ell(0,-.043,-.006,.063,.086,.037,knuckle,9);
+    for (const [offset,length,fan] of [
+      [-.050,.121,.31],[-.018,.146,.10],[.019,.139,-.10],[.052,.111,-.26],
+    ]) {
+      b.push();
+      b.translate(offset,-.086,-.012);
+      b.roll(fan);
+      b.pitch(-.08 - curl*.23);
+      b.ell(0,-.006,-.004,.018,.017,.015,knuckle,7);
+      G(b,0,0,0,-length*.51,.017,.015,knuckle,7);
+      b.translate(0,-length*.51,0);
+      b.pitch(-.26-curl*.60);
+      b.ell(0,.001,-.004,.016,.015,.014,knuckle,7);
+      G(b,0,0,.004,-length*.34,.015,.013,knuckle,7);
+      b.translate(0,-length*.34,0);
+      b.pitch(-.71-curl*.66);
+      b.ell(0,.001,-.002,.013,.012,.012,crease,6);
+      G(b,0,0,.003,-length*.28,.013,.009,knuckle,7);
+      b.ell(0,-length*.205,-.007,.008,.012,.004,24,6);
+      b.pop();
+    }
+    b.push();
+    b.translate(.048,-.025,-.010);
+    b.roll(-.88);
+    b.pitch(-.53-curl*.25);
+    G(b,0,0,0,-.083,.022,.012,knuckle,7);
+    b.pop();
+  }
+  const coatParts = zL.parts.map(part => part.joint === "wristR" ? {...part, draw:drawGraspingHand} : part);
+  coatParts.push(bo("spine","body",({b}) => {
+    for (const y of [.191,.057]) {
+      b.cyl(.026,y,-.165,-.146,.021,.018,8,25);
+      b.cyl(.026,y,-.169,-.164,.008,.009,7,20);
+    }
+  }));
+  coatParts.push(bo("elbowR","rArm",({b, x}) => {
+    // The old sleeve rides up the outside of the bent elbow. Fold tips cover
+    // the top edge of the first bandage and close together as the hand grips.
+    const tension = x("claw");
+    for (const [y, tilt, radius] of [[.012,.19,.094],[-.027,-.13,.089],[-.058,.24,.084]]) {
+      b.push();
+      b.translate(0,y+.009*tension,-.001);
+      b.roll(tilt);
+      G(b,0,0,.014,-.012,radius*.91,radius,20,9);
+      G(b,0,0,-.006,-.019,radius*1.01,radius*.91,19,9);
+      b.pop();
+    }
+    b.prz([[-.066,-.038],[-.036,-.049],[-.010,-.037],[.025,-.061],[.055,-.039],
+      [.062,-.070],[.024,-.087],[-.015,-.057],[-.038,-.072],[-.064,-.061]],
+      -.083,-.064,20);
+  }));
+  const groundskeeperCloseup = {...zL, frame:{...zL.frame, w:144, h:200}, parts:coatParts};
+  const graspModel = {...groundskeeperCloseup,
+    parts: groundskeeperCloseup.parts.filter(part => part.joint === "wristR"), stumps:[]};
+  const grippedCoat = hg([-0.058,-0.039,-0.315], {
+    pelvis:[0.266,-0.126,0], spine:[0.168,-0.245,0.07], chest:[0.102,0.064,0.032],
+    neck:[-0.184,-0.33,0.42], head:[-0.084,-0.14,-0.054], jaw:[0.49,0,0],
+    shoulderL:[0.058,-0.867,0.786], elbowL:[-1.031,0,-0.46], wristL:[-0.12,0,0],
+    shoulderR:[-1.344,1.387,-0.405], elbowR:[-0.565,-0.263,0.401], wristR:[0.208,-0.536,0.384],
+    hipL:[-0.35,0,0.22], kneeL:[0.72,0,0], ankleL:[-0.37,0,0],
+    hipR:[0.13,0,-0.16], kneeR:[0.62,0,0], ankleR:[-0.75,0,0],
+  }, {claw:.67});
+  function groundskeeperPose(root, joints, claw) {
+    return hg(root, {...grippedCoat.rot,...joints}, {claw});
+  }
+  const groundskeeperPoses = [
+    E0({ spine:[.09,-.08,.04], chest:[.10,-.05,.06], neck:[-.13,.06,-.02],
+      head:[.04,.10,-.08], jaw:.36, claw:.24, aL:{f:.22,out:.55,e:.66},
+      aR:{f:.42,out:.36,e:.95,tw:.42}, lL:{f:.21,k:.45,out:.16}, lR:{f:-.12,k:.42,out:.15} }),
+    groundskeeperPose([-.055,-.028,-.10], {
+      spine:[.13,-.23,.04], chest:[.02,-.22,.06], neck:[-.08,.05,.17], head:[.14,.20,-.10],
+      shoulderR:[-.68,1.15,.02], elbowR:[-1.23,.13,.09], wristR:[-.36,-.16,-.25],
+      shoulderL:[.23,-.25,.48], elbowL:[-1.04,0,-.04], hipL:[-.29,0,.18],
+    }, .28),
+    grippedCoat,
+    groundskeeperPose([-.06,-.055,-.32], {
+      pelvis:[.28,-.13,.01], spine:[.14,-.24,.06], neck:[-.13,-.17,.34],
+      head:[.20,.15,-.09], jaw:[.53,0,0], shoulderR:[-1.34,1.41,-.39],
+      elbowR:[-.63,-.24,.40], wristR:[.19,-.61,.31], kneeR:[.79,0,0],
+    }, .86),
+    groundskeeperPose([-.11,-.15,-.12], {
+      pelvis:[.23,-.15,.10], spine:[.19,-.25,.16], chest:[.10,-.20,.14],
+      neck:[-.10,.08,.18], head:[-.01,.29,.05], jaw:[.37,0,0],
+      shoulderR:[-.44,.97,-.09], elbowR:[-.72,.07,.09], wristR:[-.41,-.02,-.08],
+      shoulderL:[.21,-.16,.71], elbowL:[-.91,0,-.06], kneeL:[.89,0,0],
+    }, .27),
+  ];
+  function betweenPoses(a, b, t) {
+    const mix = (x,y) => x + (y-x)*t;
+    const mixedAxis = (x,y) => x.map((angle,i) => mix(angle,y[i]));
+    const angles = {}, channels = {}, zero = [0,0,0];
+    for (const joint of new Set([...Object.keys(a.rot),...Object.keys(b.rot)]))
+      angles[joint] = mixedAxis(a.rot[joint] || zero,b.rot[joint] || zero);
+    for (const key of new Set([...Object.keys(a.x),...Object.keys(b.x)]))
+      channels[key] = mix(a.x[key] || 0,b.x[key] || 0);
+    return hg(mixedAxis(a.root,b.root),angles,channels);
+  }
+  // The hands and camera run continuously. A held silhouette through each
+  // contact, with shorter in-betweens on either side, gives the sprite weight.
+  function makeReaction(model, authored, keys, heldFrame) {
+    const poses = keys.map(([,point]) => {
+      const index = Math.floor(point);
+      return point === index ? authored[index] : betweenPoses(authored[index],authored[index+1],point-index);
+    });
+    return {model, poses, keys, still:keys.findIndex(([,point]) => point === heldFrame)};
+  }
+  const mourner = makeReaction(mournerCloseup,mournerPoses,[
+    [.12,0],[.172,.33],[.213,.67],[.260,1],[.325,1.46],[.345,2],[.392,2.42],[.428,2.76],
+    [.463,3],[.545,3.35],[.568,3.75],[.59,4],[.641,4.36],[.675,4.71],[.713,5],
+  ],3);
+  const groundskeeper = makeReaction(groundskeeperCloseup,groundskeeperPoses,[
+    [.12,0],[.172,.33],[.212,.64],[.257,1],[.308,1.34],[.348,1.68],[.405,2],
+    [.563,2.47],[.591,3],[.66,3.27],[.696,3.58],[.728,3.82],[.759,4],
+  ],2);
+  /* FINISHER_REACTION_MODELS_END */
+  const chapterReactions = new Map();
+  function prepareReaction(clip) {
+    let cache = chapterReactions.get(clip);
+    if (cache) return cache;
+    cache = {intact:[], wounded:[], mask:0, sheet:null, ready:false};
+    chapterReactions.set(clip, cache);
+    const sheet = typeof finisherReactionSheets === "undefined" ? null : finisherReactionSheets[clip.model.key];
+    if (!sheet || sheet.frames !== clip.poses.length) return cache;
+    const image = new Image();
+    image.decoding = "async";
+    cache.sheet = sheet;
+    cache.image = image;
+    image.src = sheet.url;
+    image.decode().then(() => {
+      cache.ready = image.naturalWidth === sheet.w * sheet.columns &&
+        image.naturalHeight === sheet.h * Math.ceil(sheet.frames/sheet.columns);
+    }).catch(() => {}); // The native rig also draws a complete frame offline.
+    return cache;
+  }
+  function releaseTextures(textures) {
+    for (const texture of textures) texture?.dispose();
+    textures.length = 0;
+  }
+  function closeupFrame(clip, frame, mask) {
+    const cache = prepareReaction(clip);
+    if (mask && mask !== cache.mask) {
+      releaseTextures(cache.wounded);
+      cache.mask = mask;
+    }
+    const textures = mask ? cache.wounded : cache.intact;
+    if (textures[frame]) return textures[frame];
+    let texture;
+    if (!mask && cache.ready) {
+      const {w, h, columns} = cache.sheet;
+      const canvas = document.createElement("canvas");
+      canvas.width = w;
+      canvas.height = h;
+      canvas.getContext("2d").drawImage(cache.image, (frame % columns)*w, Math.floor(frame/columns)*h,
+        w,h,0,0,w,h);
+      texture = cs(() => new RV(canvas));
+      texture.magFilter = texture.minFilter = i0;
+      texture.generateMipmaps = false;
+    } else {
+      texture = wM(X7(clip.model, clip.poses[frame], mask, false));
+    }
+    texture.colorSpace = ha;
+    texture.needsUpdate = true;
+    textures[frame] = texture;
+    return texture;
+  }
+  const graspFrames = new Map();
+  function graspFrame(frame) {
+    let canvas = graspFrames.get(frame);
+    if (canvas) return canvas;
+    const pose = groundskeeper.poses[frame];
+    const pixels = X7(graspModel, pose, 0, false);
+    // The world sprite is lit by the courtyard. Carry that mid-tone across
+    // the edge of the player's cuff as the knuckles wrap over the leather.
+    for (let i = 0; i < pixels.data.length; i += 4) {
+      pixels.data[i] *= .72;
+      pixels.data[i+1] *= .71;
+      pixels.data[i+2] *= .69;
+    }
+    canvas = document.createElement("canvas");
+    canvas.width = pixels.w;
+    canvas.height = pixels.h;
+    $7(canvas.getContext("2d"), pixels);
+    graspFrames.set(frame, canvas);
+    return canvas;
+  }
+  let activeGrasp = null;
+  const loadReactionChapter = rp;
+  rp = function (...args) {
+    const result = loadReactionChapter.apply(this,args);
+    for (const cache of chapterReactions.values()) {
+      releaseTextures(cache.intact);
+      releaseTextures(cache.wounded);
+    }
+    chapterReactions.clear();
+    graspFrames.clear();
+    activeGrasp = null;
+    for (const enemy of v.enemies) {
+      if (enemy.key === "z" && wk(enemy)?.rig === zL) prepareReaction(groundskeeper);
+      if (enemy.key === "s" && wk(enemy)?.rig === OB) prepareReaction(mourner);
+    }
+    return result;
+  };
+  const graspCenter = new Y(), graspEdge = new Y();
+  const drawHandsWithGrasp = h0t;
+  h0t = function(index, pose, centerY) {
+    const previous = Te.lastKey;
+    const result = drawHandsWithGrasp(index,pose,centerY);
+    const enemy = ve.e;
+    if (!result || previous === Te.lastKey || !activeGrasp || !enemy || enemy !== activeGrasp.enemy ||
+        pose.exec < 0 || enemy.dead || enemy.sever?.rArm || !enemy.sp.visible) return result;
+    const sprite = enemy.sp, camera = J.camera, world = camera.matrixWorld.elements;
+    graspCenter.copy(sprite.position).project(camera);
+    if (!(graspCenter.z >= -1 && graspCenter.z <= 1)) return result;
+    graspEdge.copy(sprite.position);
+    graspEdge.x += world[0]; graspEdge.y += world[1]; graspEdge.z += world[2];
+    graspEdge.project(camera);
+    const w = bj(), h = MR(), scale = h/Dk/_r;
+    const unit = (graspEdge.x - graspCenter.x) * w / (2 * scale);
+    const x = ((1 + graspCenter.x)*w/2 - (w - Wr*scale)/2 - pose.sx) / scale;
+    const y = ((1 - graspCenter.y)*h/2 - h + Xs*scale - pose.sy) / scale;
+    const width = sprite.scale.x*unit, height = sprite.scale.y*unit;
+    const context = Te.ctx;
+    context.save();
+    context.globalCompositeOperation = "source-atop";
+    context.imageSmoothingEnabled = false;
+    context.translate(x,y);
+    context.rotate(-sprite.material.rotation);
+    context.drawImage(graspFrame(activeGrasp.frame), -width/2, -height/2, width, height);
+    context.restore();
+    return result;
+  };
+  const limitedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+  function showExecutionPose(enemy) {
+    activeGrasp = null;
+    const rig = wk(enemy);
+    if (enemy.sever?.legs || ve.t < .12) return false;
+    const clip = ve.kind === 0 && rig?.rig === zL ? groundskeeper :
+      ve.kind === 1 && rig?.rig === OB ? mourner : null;
+    if (!clip) return false;
+    const frame = limitedMotion.matches ? (ve.t < Lm[0] ? 0 : clip.still) :
+      clip.keys.findLastIndex(([at]) => ve.t >= at);
+    Ym(enemy, closeupFrame(clip, frame, Mk(enemy)));
+    const poseNumber = clip.keys[frame][1];
+    if (clip === groundskeeper && poseNumber >= 1.68 && poseNumber <= 3.27 && !enemy.sever?.rArm)
+      activeGrasp = {enemy, frame};
+    return true;
+  }
+
   function showCollapse(landing) {
     const enemy = landing.target;
     if (landing.scene !== J.scene || !v.enemies.includes(enemy) || enemy.gone ||
@@ -579,14 +896,17 @@
     const danger = animateFinisherOpponent(dt);
     for (const landing of settlingOpponents) showCollapse(landing);
     const enemy = ve.e;
-    if (!enemy || enemy.dead || !enemy.executing || !v.enemies.includes(enemy)) return danger;
+    if (!enemy || enemy.dead || !enemy.executing || !v.enemies.includes(enemy)) {
+      activeGrasp = null;
+      return danger;
+    }
     const [, lean, dip] = sampleTrack(opponentMotion[ve.kind], ve.t);
     const sprite = enemy.sp;
     const shift = Math.sin(lean) * enemy.h * .19;
     sprite.material.rotation = lean;
     sprite.position.set(enemy.x + Math.cos(Ct.yaw) * shift,
       Sa(enemy) + dip, enemy.z - Math.sin(Ct.yaw) * shift);
-    if (ve.t < .25 && !enemy.sever?.legs) {
+    if (!showExecutionPose(enemy) && ve.t < .25 && !enemy.sever?.legs) {
       const rig = wk(enemy);
       if (rig?.rig?.poses.idle) Ym(enemy, rig.tex("idle", 0, Mk(enemy)));
     }

@@ -75,6 +75,11 @@ window.__vigil={
      lights:J.scene.getObjectByName("chapelVigil")?.children.filter(o=>o.isLight).length||0,
      present:!!J.scene.getObjectByName("chapelVigil"),marks:Q0.marks.map(m=>[m.x,m.z])}
  },
+ dungeonSecrets(){
+   const map=gV[1].build(), authored=[];
+   for(let z=0;z<map.g.length;z++)for(let x=0;x<map.g[z].length;x++)if(map.g[z][x]==="S")authored.push(x+","+z);
+   return {authored:authored.sort(),live:Object.entries(v.doors).filter(([,door])=>door.secret).map(([cell])=>cell).sort()};
+ },
  save(){const m=Q0.marks.find(m=>!m.lit);if(!m)throw Error("No unlit native shrine");pose(m.x,m.z,m.x+1,m.z);QX(.016);return Q0.snap},
  restore(){C.spawnGuard=0;ta(10000,true);if(!T.dead||!s_())throw Error("Shrine restore failed")},
  grade(){const shots=T.shots,hits=T.hitsLanded,kills=T.kills;T.shots=10;T.hitsLanded=6;T.kills=T.enemiesTotal;
@@ -187,12 +192,15 @@ function writeAudio(data) {
     const restoredTaken=await state();
     assert(restoredTaken.taken&&restoredTaken.open&&restoredTaken.ammo===secondReward.ammo&&restoredTaken.all===secondReward.all&&restoredTaken.tolls===secondReward.tolls);
     await page.evaluate(()=>__BLACK_SILENCE_QA.load(1));const dungeon=await state();
-    assert(!dungeon.present && dungeon.total===2);
+    const dungeonSecrets=await page.evaluate(()=>__vigil.dungeonSecrets());
+    assert(!dungeon.present && !dungeonSecrets.authored.includes("34,5"),"The chapel secret belongs only to the Prologue");
+    assert(dungeonSecrets.authored.length>0 && dungeon.total===dungeonSecrets.authored.length);
+    assert.deepEqual(dungeonSecrets.live,dungeonSecrets.authored,"Each authored dungeon secret still has its native door");
     await page.evaluate(()=>{__BLACK_SILENCE_QA.load(0);__vigil.skip()});const fresh=await state();
     assert(fresh.present&&!fresh.open&&!fresh.taken&&fresh.total===1&&fresh.count===0);
     assert.deepEqual(errors,[]);assert.deepEqual(network,[]);
     const report={hash:crypto.createHash("sha256").update(html).digest("hex"),privateModuleInjection:injected,
-      initial,walked,closed,strike,opened,audio,gradeClosed,gradeOpen,restoredOpen,reward,finisher,secondReward,restoredTaken,dungeon,fresh,errors,network};
+      initial,walked,closed,strike,opened,audio,gradeClosed,gradeOpen,restoredOpen,reward,finisher,secondReward,restoredTaken,dungeon,dungeonSecrets,fresh,errors,network};
     fs.writeFileSync(path.join(output,"verification.json"),JSON.stringify(report,null,2)+"\n");
     console.log("PASS chapel vigil");
   }finally{await browser.close()}

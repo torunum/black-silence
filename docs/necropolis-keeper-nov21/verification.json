@@ -1,0 +1,118 @@
+{
+  "candidate": "1845218160b5e7b9ce24da3be1a1b4819e7ce5ed006af635cfa51b9b6260d509",
+  "baseline": "452b55c7d328f913eeb1ebb075433cfb4c0439f49bc75d6dc230bcaae477c04e",
+  "checks": {
+    "openSave": {
+      "mark": 1,
+      "open": true,
+      "lines": 0
+    },
+    "closedSave": {
+      "mark": 0,
+      "restoredBeforeDoor": true,
+      "nativePoses": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "interruptedLine": "ADEM“Locked. Naturally. Nothing in my life opens on the first try.”",
+      "afterNativeSubtitleCleared": "",
+      "spoken": "ADEM“I know that lamp. She walked me home the night we buried my father.”",
+      "clink": {
+        "position": [
+          68.62,
+          2.12,
+          39.57
+        ],
+        "partials": [
+          624,
+          1427,
+          913
+        ],
+        "at": 5687.800000011921
+      },
+      "pausedPose": 0
+    },
+    "geometry": {
+      "collisionSamples": 4200,
+      "doors": 6,
+      "actors": 37,
+      "items": 66
+    },
+    "rise": {
+      "mark": 1,
+      "open": true,
+      "pose": -1
+    },
+    "retiredResources": [
+      {
+        "name": "SpriteMaterial",
+        "count": 1
+      },
+      {
+        "name": "ossuaryKeeperPortrait",
+        "count": 1
+      },
+      {
+        "name": "BufferGeometry",
+        "count": 1
+      },
+      {
+        "name": "MeshBasicMaterial",
+        "count": 1
+      },
+      {
+        "name": 1009,
+        "count": 1
+      }
+    ],
+    "currentContinue": {
+      "mark": 1,
+      "open": true,
+      "cues": 0
+    },
+    "reverse": {
+      "direction": 1,
+      "lines": 0,
+      "cleared": [
+        69,
+        1,
+        45.411449780701616
+      ]
+    },
+    "sprint": {
+      "from": [
+        69,
+        47.1
+      ],
+      "to": [
+        69,
+        2.2,
+        26.26063687518116
+      ],
+      "encounterPoses": [
+        -1,
+        0,
+        1,
+        1,
+        -1
+      ],
+      "lock": false
+    },
+    "reduced": {
+      "pose": 3,
+      "point": [
+        69,
+        0.612,
+        39.57
+      ],
+      "lines": 1
+    }
+  },
+  "errors": []
+}

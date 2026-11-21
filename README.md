@@ -1,6 +1,6 @@
 # The Black Silence
 
-Gotik piksel FPS oyununun on silah, deri eldiven ve prologue cehennem bölümü güncellemesi.
+The Black Silence, Adem’in cehennem çukurundan çıkışıyla başlayan, on silahlı gotik bir piksel FPS. Kampanyanın tamamını tek bir HTML dosyasından oynayabilirsin.
 
 ## Oyna
 
@@ -23,6 +23,20 @@ Gotik piksel FPS oyununun on silah, deri eldiven ve prologue cehennem bölümü 
 | Sniper dürbünü | Z |
 
 ## Bu sürüm
+
+**Tommy Gun.** Dipçik omza daha yakın duruyor. Artık Necropolis kapısındaki feneri hem nişan alırken hem de tamburu değiştirirken görebilirsin. Doldurma sırasında sol el tamburu yerine oturtuyor, kurma kolunu çekiyor ve ön kabzaya dönüyor. [Önceki tutuş, çizim hedefi ve oyundaki yeni hali](docs/tommy-presentation-nov21/README.md)
+
+**Prologue sığınağı.** Cehennem merdivenlerinin sonundaki mumlu nişte kabartma bir merdiven ve bronz bir ok var. Okun gösterdiği sola dönersen şapele çıkan merdivene ulaşırsın. Revirdeki malzemeler sağdaki duvar boyunca duruyor. [Sığınağın oyuncunun gözünden görünüşü](docs/refuge-waymarker-nov21/after.png)
+
+**Fener taşıyıcısı.** Prologue’daki çifteyi bulduğun şapelde doğu duvarının çanını **E** ile çal. Açılan rafta altı fişeğin yanında eski bir aile fotoğrafı duruyor. Bakmak için biraz beklersen Adem yas kurdelesini hatırlıyor. Necropolis’te meydandan kemikliğe girerken fotoğraftaki kadın fenerini kaldırıp merdivene dönüyor. Sahne sırasında yürüyebilir ve savaşabilirsin. [Şapeldeki fotoğraf](docs/chapel-keepsake-nov21/README.md) · [Kemiklikteki karşılaşma](docs/necropolis-keeper-nov21/README.md)
+
+**İki yeni bitiriş tepkisi.** Sendeleyen düşmana yaklaşıp **E** tuşuna bas. Hareketlerden birinde mezarlık bekçisi sargılı eliyle Adem’in bileğini yakalıyor. Bir diğerinde Screamer’ın maskesi yana dönüyor, ardından omzu ve dizi çöküyor. [Aynı açıdan karşılaştırmalar ve iki sesli oyun kaydı](docs/finisher-reactions-nov21/README.md)
+
+**Bone Cathedral.** Güney mahzenindeki kırmızı anahtarın arkasında yontma taş bir piskopos mezarı var. Yanından geçtiğinde taş figürün botlarını ve lahit kapağının kalınlığını görebilirsin. Mezarın önündeki bronz kilit armasının eşini kutsal alan kapısında ara. [Mezar, anahtar ve kapının oyun içi görüntüleri](docs/cathedral-charnel-nov21/README.md)
+
+**Bone Sovereign.** Kırık taçlı hükümdarın asasını takip et. Omzunu açıp asayı kaldırdığında yaylım geliyor. Atıştan sonra eli aşağı inerken kaçmak veya karşılık vermek için zamanı okuyabilirsin. Son evrede yırtık pelerinin altındaki kaburgalar ve iki omzundaki kafatasları açığa çıkıyor. [Üç saldırı evresinin oyun içi görüntüleri](docs/bone-sovereign-nov21/README.md)
+
+Oynanabilir dosyanın SHA-256 özeti, normal oynanışta geçilen güzergâhlar ve otomatik kontroller [sürümün oynanış raporunda](docs/verification-data/nov21-release.json) yer alıyor. [Heart karşılaşmasının zafer ekranı](docs/verification-data/nov21-heart-victory.png)
 
 **Ash Bell Manastırı’na varış.** Prologue merdiveninden çıktıktan sonra çan sesi mahzen kapısını işaret ediyor. Kısa sahnenin sonunda kontrol geri geliyor. `Space`, `Enter` veya tıklamayla sahneyi geçebilirsin. [Oyun içi sesli kayıt](docs/ash-bell-arrival-nov20/README.md) · [Yeni Oyun’dan mahzene canlı koşu](docs/ash-bell-arrival-nov20/native-route.md).
 
