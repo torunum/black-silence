@@ -148,7 +148,7 @@
       "pistolLoaded": 6,
       "pistolReserve": 60
     },
-    "activeEnemiesAtStart": 115,
+    "livingEnemiesAtStart": 115,
     "westernCircuitCompleted": true,
     "openedDoors": [
       "83,73",
