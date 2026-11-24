@@ -14499,6 +14499,415 @@ const BLACK_SILENCE_RELOAD_PCM = {"latch":{"pcm":"AAD+//3/+v/9/wgADwAIACIAHAAHAD
 })();
 /* ASH_BELL_CHAMBER_END */
 
+/* ASH_CLOISTER_LAVABO_BEGIN */
+// A monastery's communal wash court joins the graveyard to the western aisle
+// of the nave. The original east processional route still runs beside it.
+(() => {
+  const level = 9;
+  const courtRows = [
+    // z, west, east, pavement height
+    [56,45,48,1.40], [57,45,48,1.65], [58,45,48,1.90], [59,45,48,2.15],
+    [60,45,48,2.40], [61,45,48,2.10], [62,42,48,1.80], [63,41,48,1.50],
+    [64,41,48,1.20], [65,41,48,1.20], [66,42,48,1.20], [67,44,48,1.20]
+  ];
+  const buildAbbey = gV[level].build;
+  gV[level].build = function(...args) {
+    const map = buildAbbey.apply(this,args);
+    const vault=map.cmap[68][46];
+    for (const [z,left,right,h] of courtRows) {
+      for (let x=left;x<=right;x++) {
+        if (map.g[z][x]==="#") map.g[z][x]=".";
+        map.hmap[z][x]=h;
+        map.cmap[z][x]=vault;
+      }
+    }
+    // The native dressing pass hung banners and glass on the old south wall
+    // of the nave. That span is now a walkable doorway.
+    map.decor=map.decor.filter(d=>!(d.z===57&&d.x>=45&&d.x<49&&
+      (d.k==="banner"||d.k==="glass"||d.k==="sconce"||d.k==="bench")));
+    return map;
+  };
+
+  const finishes = {
+    stone:[128,110,84], shade:[65,59,50], limestone:[169,145,106], mortar:[49,47,43],
+    iron:[56,61,56], bronze:[115,78,45], verdigris:[65,111,102], gold:[179,131,68],
+    darkWater:[36,67,64], water:[83,132,120], foam:[153,184,155], soot:[109,98,81],
+    red:[99,75,48], ochre:[128,98,61], ember:[249,161,69], flame:[255,224,149]
+  };
+  const finishNames=Object.keys(finishes), bankSize=32, atlasSize=bankSize*4;
+  const samples=/* LAVABO_MATERIALS_START */ {"stone":"iZ6TdoFtY1Vwf3KShn2WlYFsn01gY7R1ep5/iYaCc1Fue2t3e3Gkk4p3oF1pY6mSZI52hn2FfluDinZ1amGMfIN6tllhbK2Vcn2BdWeIcluVi5eQbmd2bm9+n2NnaaKMjJmceWxyZFqWgpyVf32Fd3d0fGtneKiTiJ+fjo5zeENwc4+AhYOehIh3gllQd5KTb5SYl5iMj013gHZueW6UeYmIlFtkYHCVcId7i42JilyLjX98Z2GCcoKXmW1zcIRyjZByhXSIhFt/kY6SfXhlaYJ9iWpgepmKj6WLlWd4bE18oYyQmYp4fnBocHRQc5mUjKGfqXJyb05vpIeFnYyKpId3j1tTcZyTnKCPqH+DhFV7im5ylXCEsJOKtFZwYnd6kJyQmH2Mg1OVkGx2e195lIqEqUl9b4Rif4uCjn6GiVaNi4aTh2hnc5iDqUp3hpKSln13dXh6g1SKg46cn3+Af4l/tU5ohI6usZCBa21yekhzj4mWnHmemHVyxWNUfIaol6Wal3d7fGtsh3KFmH2UlnuAgHhUZ26cenWMjI2Oioh3gXh8hXmSjYiNXnNec257hX1rZIeGno6WlG+Oe2yEgoiHWWdoiXaDnpN9bmZmmI+UlISaiW92e32IX3Fih4SMnJaMdmx5bnKPlIeVioJ4en1/Xm1id317mJSYf3mLXG9tdIeXj4GBln57aWlkgH6HfH+PhXKMZHh2fWhri32DsZyOZmxgdoucaIFsdHKZZ3qaiIB3Z2V1rq6ifphLZYCK","shade":"paarpafOy723rqquqLdm687l5dDYysrRqaqjpau5y8jHvbyu3rd71bvq5ePf09DRsqqqpa2mxMrH2MrB6+ur1YKWtp7fjdDPvK6wq6umvbvc5Mq16+efeWCWcJ6QZ4uEvLyws83K07up5JiDoYifYGBlbWBnZ2iEs8rPz827qbBwnWeDaohva21xbWxncXRqrMrRrN1uqZJwbHNpc2pta3FxcnF5eXR3jaWIrIBxbnN8fHNxc3VybGhranF0eXl4Z3RrbWVxdXN7fHV0c3BydWhtampsdnZ4Z2drdWVycXV1eHN0c3Buc2BxbWpscXV3amlwcXdwcXJ1dXBzc3Byc2lxbWprbXp6c2lna250cHJydXBsc3Fyb3FmbXBwbXZ6dmtna2x0c3J0cm1sbWtxcnFecG1wbG91dmlwampsbnd3cnNsb2tqanJpbWxwbW9qdVxwcGpsbnFzd3Rzc21oamlpZWxubW9tc2RxcHFxamtzdHR2c3JoaWxyXnNyb3RucWRhcG9xcHNucHFvc3VwcGxrXmdya3R2anJibW5yc3N1cGpvb3VwcHBrXlhlXGpkam5ibW50bHFxdnBkYGlibGViWlhYXFhkbG5iY29pbGFxb3BuYGFiZ2VkWmhsWWlac25nX2JeYGVhX3WCc3RpeGl5ZmlscGl0bG9aX2JeaGVtX3OChHR9eH55eGl7cIN0XmNpa3ZueXp9eH19foGBgoR9emx4goWDXndpeXZ6eXl9gH18fn2BgoR+enJ4fYOD","limestone":"mp1WZ6yWpKelnq28tLm5sL27qD1GQDsip5dWZ6yxusfFta28tKqgn7a/qD1GPjokvKJPhaexusewpaSuoaqgqZWgmEI/PjokvKJPhZSjorCwpaSueH59hpWoQEJAQEMsnYhAZ5SjqoGGgn9/eH59iY9sUUVBQEM2nYg3XHB6f4SEgomEa3iFiY9seUVLUEM2eWw3XHB6iJedh4mEa3iyrbRBeUVLUDY4eYI6coCCiJedjLWagI+yrbSVQ0FCSjY4jYI6cpGVjrSyjLWagaSys7OVQ0E3QjE8lXI8fZGVjrSgeLWZgaSyrpHrHj03QjE8lXI8gnWJaqGgeLWJhYqcj5HrHkFASD5Djm07gnWMbIeVdpeJhYqTgX7rS0FGRTxEjm03hHGCbJKAdoqAe4WTgX7r6y1FQTxHiFA3hHGCa4F1fYWAe5usmZLr6y1FMSk0dkcugHiCa4GLl5uViaesmYbr6x42MSk0dkcugJSXjZOLl5uVobW0rcfr6x41MSs7gGc9k5SXjZ6eq7CqobW0mOPrdh41MStVgFpbj5eenp6eq5SDhpyamOPrizM/QTZVhXZbj5icen1wfZSDhpx3auvrizM/QTdWhWJPdn57fIBraYhka353auvrpVU/QzdWjWJPdm5qbXRVaoJhdoWJc+vrpVVAQjpaf0hAam5qbXRnhI51eYWIc+vrsG1AQjpaf0hAeXd3g4ZnhI6HkZ2rduvrsF01NzNOjVRWeXd3n52FmoeHkZ2rjOvDgys2NyxC","mortar":"cXme1+vrQD1APj9IRVpYQkddalxTaZ/rcXKl4OvrRkBJSURXT2NYQkddalxTYorrbHqf3evrPUBJSURXT2NsSEtleWdRaoPrbHqf3evrPT5JTEtmSmJpSERnemlbZ5DrbYKh5evrREBLTlN0TmhtU05nemlbZ5DraHWPxOvrQz5CRFN0TmhtU05zhnFmcpjrZGyHxOvrQz5CREJiRlZZSEptfFhadIfrZGyHuevrQERCRUBgRFFNP0ZrdEhadIfranaN3OvrQEROUEx4RFFNP0ZrdEhVan/rcH6X6+vrQEROUEx4UW5kT058gFJSaJnrcH6X6+vrSkRRUlOJXG9vUk9/jFlYdpjrZW+M3+vrQEJITEx6UG1fUk9/jFlYdpjrYGR80evrPkFITEx6UG1fS0Vuc1FZcp7rZml80evrPkFGTlFuUmJZREZkZ0pOZH7rZmmAz+vrNDtHT1N0UWpnSVFzd0pOZH7rdnWS6+vrQTxNVmCKUWpnSVFzd09MYHrrcnSK6OvrQTxNVmCKXHx6TE9weVJUdJbrcnSK6OvrOj5IUlh9UXBvQ0FkZEpUbJbrcn6X6+vrPj5CT1l6WXRpQ0FkZEpUbInrbH6V3uvrNzZCT1l6WXRpREVmaU5fbpXrcn6V3uvrNzZFSlqFYXBaQ0ZmYUhfa5DrcnV/zevrPzpEUFZuUVxfRkloYUhfa5Dra2x+xuvhOz5BUVFuUVxfRkloZENjeIXrbmuLxuvhOz5BUVFtWFRVQ0VeYEFeb4PT","bronze":"4sFYW2RxYGlUcKV+iamhe1FdZFdcg5B1185jbWhbaWRsdoJqpnlZW1yVnV9WUXmX6+t5dXxhr5R2f3KZalxbX6rJrK9uWlpF6+txcoJbk4Nurq5nYlSP2tiIe8Cva15d6et5WnZmbGeSrn1YXHHGtmFXV014rG5f6+uDXXp0faCKW1thVKDFcU5XW1hOepFd6uuBXXFhp4BfXVlZmbJ2SVZYWVpKa6Jv6+uCT21vpm1fbmRvc62KU11ZVldWWpW52uV8T2SabGBiYq6+UpejYUxYU1lNUpurpb5yTmCYakxRkb2Wh5qzuYBZcF1chqaY6+t6SmKTYV6KtapkV1lxtLFsbWl+oIF76+uCSGSSkIFlSmSSV216ZpSmZKKPbGpr5NV7S2GSb0pPUVFeeVlufGJvrnBsiXVT1eqLT2OYaE1faFVRjXJ0jHBXk152hmVT6+uXSWWZcFhmeXJuZox4bHFwzW9fboWV6+uPSmWYalRdZWB4lJJ+YG131X1olJ51z9iEUGmYeH+EamSJnH15Zm99zYlwjXpg4eeOVmOXgmZpkZBXqIBkaGBlw4hobmV13OONVGSYdlJXaoqVpXNbWWRkwo1kcGxm6euNVmmdgGRjYI/RdFpbXGVnt5BlaWBd4OaVWWuZeJOgfF5fbWhnYV9ttZllZWBc1+iQWmiOcX6NbUxVdXBbWWpws5pcZGVc1eCIVmWFb26Sg15egLNvYH52noZVXGh46+uFV1JxaWheb5OKcXJfY3Vwh31cYXKL","verdigris":"goiVh4SFiXKFiYCIm5K1xZmhnqOHj5+Na3iVh4SKkXWFiYCRjJW1xZmdnaKHj5+Ia3iGkZuKkXWDhIaRjJWyvpWdnaKKiZOIW1iGkZuMiXiDhIaclauyvpWVoJKKiZOPW1iGc5eMiXiPkI2clauzt4SVoJKcnp+PdWJqc5eMhnqPkI2kkayzt4SXn5Gcnp+kdWJqXmVxhnqPjJ6kkay3wIKXn5Gft5OkfG1zXmVxY2aQjJ6njbC3wIKbl56ft5OIfG1zaW5QY2aQf62njbC2vpKbl56Mj3mIfGR5aW5QVFNpf62nhrS2vpKLfo+Mj3lacmR5aZhYVFNpWoGMhrS2lo6Lfo9bU1pacm50ZphYVGNZWoGMfp2flo5dVlxbU1pnfml0ZpRhYGNZZGFjfp2fXWVdVlxqa2xnfmlxYJRhYHRoZGFjaGFfXWVgYGVqa2x2kmpxYHNcYXRoZGxsaGFfZGJgYGV7dHl2kmp2c3Ncb3lxeWxsbmdoZGJgc3l7dHl7joJ2c3NeaHpxeXGDbmdod3Zqc3mBdXl7joJxdYVeaHp0fXGDbnOSd3ZqfnqBdXmBYpNxdYVmb3N0fXCKfHOSdoVofnp9fX6BYpNxd5Fmb3Nvc3CKfGygdoVodoB9fX59YpR6d5Fncntvc2+WeWyghYRedoCEgop9WJR6kJJncntze2+WeWydhYRegXuEgoqJWGx0kJJncYNze2+AfGydhn1kgXuJiI6JZGx0kKh3cYNweHGAfG6Ihn1kj4eJiI6e","gold":"WWp8rx4eHh4iMR4ePIFyeHdzIyxBSE88auvepy4jN0RPilAhmevr6+vrdjlNU1VaNsBRHiEeKC0wW0MiU3+bn6ndezJNYWxZL00gNUNET09ZlamwdHR6e4eVTiZKRkJjVl5YX2111Nvr6+vr6+vr6+vrXyE4Ix5bOlAzM0FKaKWpzszr3+vr6+vreC00LyxhN1A3MztKaEtMb3flQJtfbpTDfTE3QEFgHh40HiMoNEtMb3flQJtfbpTDfTI4Pz9qLCBXIicvPGBnjJbkVMloj4vrdTI4Pz9qMh5uNTIoSnB3lJ3LetXG68vrSS80NT1vJiJeUjgwWHZwlJfV3uvj6+vrQis3O0BtIiVSSyoxUml7j5XcuI9sdanrRSwxOzpfIiVSSyowXWFreIB7bGhjU1LrYSQxTFRpLTBbViowXWFreIBzsmm50nbrqSMkOUNWIipcTy8jW1hedIFzsmm5uXaq6860VEIwH1aAPzQrZmhnhpaF62nOnKFs6860VNV3LH1/LzkwPHFrkKeM2sLgv5WP6+vr69V3Ij01Hh4eJ0w+VnReatB2mlZna4Z4aoagIj01Z3JodIV1dnx3iZZbeXFwal5iSjU3YVxmZ3JodOvr6+vr6+vr6+vr6+vr6+uI6+vr6+vr6+vr6+vropq7wOTr4ujr69V2r6rFnaekq6KfpZ6mopq7wEnripWtsnp2V0xaTV5UZGReYV5WXTJbUknriszb0KubbF5mXm9QaWtUUmpUWz9temrrrczb0JGK","panel":"bGSanOV0cmZZhG5dWpxtSlNXSoxZXDxyhXKdvOt/dnB5nFdgWLRSU1NVRp5rXlFNcnWQrOZ8bF2je1lUZ65FUk9OToGEZmxPfG+Es9uDWmuiaGlqZqhPWVBTUpG1VF5ieW6Uq9V4S5ZoW166iK2EU1hfU6CUTVNaaWiLjqBuSpRmSI2ScZa1fGdYWKGPg66EenOQtut1Ro9dWrFgRFSwrVxlen2bfJzDenuSt+t+RI2MfEaNdGlikF2di2ZtbFWbbXCFrt93R45rRk1ae1V4XqdsZ3BZlmFjcnOfm9GHS5RkSGNNbW6Ia4ZacmF4mGBef3igoNSMR5VlUGpaUYJzcJdhaFSVb2Bcg4GZoOuLRpNmUGFzmY5babZ5W4F1XWZbe3SDf8qATJR0e2aFr3lia6KFbHZmfFpdbmuep82BT5KEkZhrf2xsYJ5+ZF11b2lWf3ubndiIUJRyYY1TbntkXJWEY2F7dYxfi3qaoOWJUZh7YFvNslVYYIaKXmh1g3FkiHKVpNyOU5l3d3qUeVFZV4aMYFx8e0lne2+XotiRVZVzjnhbZWRdW4KUYFxvXURTdW6VstGDUoFran9aZmxVZnaWV2Ffh3NKcHCcp+vrU4l7eo+Oaq9cenGCWGRRg5JjVltob7WrQW1lZGuGbW5ecGZ5XG6KcGBmirbr66nr62BTTkhcSDxPU1ldUFFcUU1Pgarr4bHr6+vr6+vr6+vn6+vFwLm46+e6dXiKhHeplJaZppS3lZabloyJkJOH6+vd","frieze":"VFhWYkpUU1dWV1VLVk5QTEdhWE9cU15ed2lkhlhiaGVmaWt1b2pnUl1gdF2NUWNnhmtvbWZsbHFmbG99h3t/W3dyfXGTamxweWtxX352c3B7f3R3e3Z1Y3WHtYqtg4KNxIuBbZSUjnWPhYiDg4mCh3JzlW3AcVBVs394eW9SX1RWWldYU2WVR1JUdVl8WV1f54iQdmROXV5sZWNza2+DbH9lmHhya29vtpyIfFxqcHFyamlycHNxjpuCooeVcnuFwpCBhl50e3hudIV3eWlyknOQoJNyen+J4oSCk11ocoJ8g3uEiG1lgHR+oX1ugWmMpoyPlVtyhIp+i46QeGRyjIKLq4WKd4NjypeAil9/hYCNbZ6NcGaAe3duhX+BdX6Ezo+Ii2mHineDe5V3j5KLc2FzlH5feJCDsZGUpI6OjYuClJNid39/g5Fwj51jeXd967GbqXSAiXh7gmpnfW6CZYB3eHdye5SQw5GRq3B+gouUn4B3h3KMdIdmeHBudZON656bs4WOkJKNk5JwgHGKhYx7koRwe4B166q+s4yJgn2BipNvhXtecZJ+e4Fse4OCoZuosJN6jIuFe3iUmYF5gop7kIZrcoZpsaWGp451fIOMfH2cgJBrk5OSfYJma2Raza+mrYZpfYpjXmR3pGhRZnGXaGhsdciv646St3WThH+FiKCckGSMqau4kai4orRluY2FqF6epXyDiYSQt5J9rpx4aGpwenN4sp59mYJ8eYJyhX17f2l0f3zKbnR0kKWn","flags":"Nk9VY2ZtaIF4XnlxbGhXX9qYwpOmfZ2WSlxiX1pgbWBhcHN0bmZynJ+njJRPtpmnaG9ncUZ6YmFicGhxaGZu48C2lbebyLKzYWZ6XW6MdG1hXV5tT1+vtryEwkTOtLbrTltvRY5vdGdybF5ZUlrFt6iixbOvu4F/WFxaZntoYHZ3bHFbYn+LnWnHdM29mlS6cmVTWVlWY3dxdnBfX6uSfI+lkceRjobLcWtTXFtiYGZyeWBsto2ftY5TraqQW8bTZmRqY2FeZ2NfV2xqyIOftrpSkYqhSru/b05KZ3Fpal9hUmvjpIydm2KPq4eLeIK7ZjpNZGxwc2ZmXVqpgZGnfEeejK1Gcmx0WkdUYGtdd3JwaOt6YZyRSl+bjbOmdkxgXlZbWlxZY2FqbM+RVYVISHB+vnOSX2OMV1tdZGdOXmBo6aOwgXM1dm5p2lRYY+vrSWJPY2NRZGtkrZGJlEVLboShTFSTTevrUWRVUmNvbWbMkp56g0lgb3roSHqEjYngWmJLV19ta2CkeX6EPmGBcmddSXWHkEN9SEpaUGReas2DhEuGTmZxantFXE58i1eiMztLV1lYXKaWhG5IVlZvT1/ZZGdOSOujVC5SVltc16B+Y3M1RkqUr9Dr61lMSI+xVEkwOFNWj2NxSn/Xwn3rtYvr68w+L2mwRTo2LDW9QYaGeOvr64LO65vr68CcL0d4jIxELS1CVc3rYMTopbDp6+Hr6+uaWVBKwLtzR0IzT0eyZMOxs6Dr6+vr6+vrbGh5","sky":"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owijCIMIgwijCEYhJRkkIUQphEEFWo3lhmpCAOQQowjECMQIowiDCIIIYghiCGIIYgCCCIIIggDECEcRyRkLGuoZqhHqGeoRCxqkCKQIxAjECKQIowhiAKMIxAikCKQIpAjECKMIgwhnIcMQBCHGSaVBJ1qHYsMIxAiDCIMIpAjEEMMQwxDDCKMIgghiCGIIZxnKGSsqqSEmEeQIowijCCQxwyBFMcZBZDlEOcMgYgijEMMQoxAEGUUhgwiDCIMIowiDCIMIgwiDCIMIgwiCCIIIgwiDCIMIgghiCGIIQgCDCIMIYwCDCKMIZyElISQhJCmlQcVRSrQFUmMA5BDDCOQQxAjECKMIowiDCGIIgwiCCIIIgwiDCMQI5AgGCSYRRxHKGcoZCxpLIsQIxAjkCMQIxAjDCKMIpAjECKQIxAikCMQIowiDCGchwxAkIeZRJ1qoashqgwjDCKMIgwijCMQIwwjDCKMIowijCKMIgwiDCIQIaBkmEYMIpAijCIMIhEEkKUUppkGFOYRBAyGCCMMQoxDkEGUppimjCKMIowjECMMIowijCMQIowijCKMIowikCKQIowjECKMIowiDCGIIYgCDCKMIowiHKUUhZSmlOSZSBlpmcgQxpADkEMMIwwjECMQIxAjkCMMIowjECKMIggijCMQI5BDkCMQI5BAFCSsiyhmpEeoZBQkFCeUI5QjkCOQIxAjECMQIxAjECMQI5AijCKQIqCnjEEQpaGLpaip7KXODCMQQwxCDCKMIxBCjCKMIgwijCMQQxBCkCKMIowhHGUYZ5BDlEAURxBDlSUQxhTGFOUQxxUGEMWIIwxDkEMQQ5BjjGGIIgwiDCIIIgwijCKMIgwiDCKMIgwijCKMIowijCKMIgwijCKMIgwiDCIMIowijEIchJRllKWQxxUmHakiDJCGDCMQIgwiDCKMIxAjDCKQIgwiDCKQIowiDCKMIxAjECMQIxAjECOQICyImEcQIxAgFCcUI5QjECMQIxAijCKQIxAijCKMIpAikCIMIowiHIQQZJCEHWgdaqGqIasMIwxCjCIIIowiCCGIAYgCjCKMIgwiDCKQI5BDECGgZBRHECMQQowijCKVBJClEMaVBZDmlQcVJggijCMMQoxCjEKMQYghCAGIIYgiDCIMIgwiDCIMIgwiDCIMIowiDCIMIgwiDCIMIYwiCCIMIowijCKMIhyElIUUphTHlSQZap2rjGIMIowijCIMIgwikCKQIowhiCEIIgwhiCGIIYgiCCKMIowjDCMMIwwhnEeUIxAgFEeUIxAjECMQIowiDCIMIowijCIMIowiDCKQIgwijCIch5BAkISZaZ2KoaodqgwjDCIIIggiDCIIIQQBiCKMIggiCCIMIgwikCOQIRxnkEMQIxBDECKQI5npFYmZix3IlWoRJZ7MlamIIxBDDEMMQ5BAkGYIAggiDCIMIowiDCIMIggiDCKMIowijCIMIYgjECMQI5BDEEKMIowijCMQIowhmIWYphSmFMeZJZ1qHYsMQxAjECKMIwwjECMMIowijCIMIgwijCKMIowijCKMIxAjECKQIxAjECOUIBRHkCOUI5QjECMQIxAiDCIMIgwiDCKQIowijCKQIpAiDCIMIyCnjEAMhxUnlSQZaR1qjCMMIowiCCIMIowiDCKMIowijCMQIxAijCMQIBRFGGQUR5BDkEMQI5AhnkyRixUlGYgVa5FHmmsRZghDEEMQQwxDEEMQQgwijCIMIgwiDCIMIYgiCCGIIYgiDCIMIYwiDCKMIxAjECKQIpAikCKMIxBCCCMQQwxDkEMMQ4xhEKYVBIQCjCOQIwwjDCMQIowiDCKMIowijCKMIowijCKMIowijCKMIxAjkCAUR5QjkCOQIxAjlCMQIxAjECKMIpAikCKQIpAikCMQIpAjECKMIgwinKeQQBCEGUodiqGrIaqMIowhiCIIIgwijCIMIgwijCKMIgwiDCIMIowiDCMQI5BDECKMIowiDCEVqxGFDOWQ5hEHkUQMxghijEMMQpBDEEMMQgwiDCIMIgwhiCGIAYgBjCIMIgwhiCIMIgwiDCIMIowiDCKMIgwiDCKMIpAikEGII5BjDEEQhJCGFMYU5Z1oDIYIIowijCIIIgwhiAGIIgwiDCIMIgwiDCKMIgwijCKMIgwgFEUYRJhHkCMQIxAjkCAUR5RDlEOQIxAjECMQIpAijCKQIpAikCKQIgwgiAOQYwxDjGEU55kkGUiZaYgBiAIIIYgCjCKMIowiDCKQIowiDCIMIgwijCKMI5RAFEeQQxBCkCKMIAjFlcgaLQ0EEYui7YhDEGMMYoxDEEMMQowijCKMIowiDCIMIgwijCIMIowijCIMIowiDCIMIowijCKMIowijCKMIowijCKMIySEFGUQpRSkkKSQp4yDFQQl7hTlBCIMIgwiDCKMIgwijCKMIYghiAGIIowijCKMIowijCOUQxAijCKQIxAjECMQIpAijCKMIgwiDCIMIgwCjCMQIpAjECKQIgwjkEM1CBBnjGAMh5kknUgZSBkpiAIIIowiDCKMIxAjECMQQxBCjCKMIowijCMQI5BAFEQUR5RDkEMQQxBAjMSM5IzkjOcaCiNxiEOQYwxijEKMQoxCjCIMIowiDCIMIgwCDCIMIgwiDCIMIgwijCIMIgwiDCIMIowijCIMIowiDCEEAxBCHIWIIBBkEIWUx5kGFOYU5hDnjKEQ5QgCDCIMIgwiDCKMIpAiDCIMIowjECMQIxAikCKQIBRHkCMQIxAjECMQIxAjECMQI5BDECKMIpAjECMQI5BDECMQIxBBBCMQQSjLEEOMY4yDFSQdSZ1rpciEAIQBiCIMIowijCMQIxAijCKMIpAijCKMIowijCAURJhnkEMQQxBCkCA=="} /* LAVABO_MATERIALS_END */;
+  // A tiled, pixel-scale surface. Each face gets its own directional light
+  // and corner variation so the cornices still read at the native resolution.
+  function surfaces(){
+    const texture=Z(e0(ctx=>{
+      const pixels=ctx.createImageData(atlasSize,atlasSize);
+      for(const [slot,name] of finishNames.entries()){
+        const base=finishes[name],stone=slot<4, metal=slot>=4&&slot<=7;
+        const key={red:"panel",ochre:"frieze",soot:"flags"}[name]||name;
+        const sample=samples[key]&&atob(samples[key]);
+        for(let y=0;y<bankSize;y++)for(let x=0;x<bankSize;x++){
+          const u=Math.max(1,Math.min(bankSize-2,x)),w=Math.max(1,Math.min(bankSize-2,y));
+          const hash=((u*547+w*659+slot*587+u*w*241)^(u*31+w*29))>>>0;
+          const grain=(hash%31-15)*(stone?.91:.55);
+          const veins=Math.sin(u*.39+Math.sin(w*.30)+slot*1.9)+Math.cos(w*.57-u*.14);
+          const deposit=stone&&veins< -1.15?-12:metal&&veins>.98?16:0;
+          const flow=slot>=8&&slot<=10?Math.sin(w*.74+Math.sin(u*.36)*1.05)*8:0;
+          const index=(((slot>>2)*bankSize+y)*atlasSize+(slot%4)*bankSize+x)*4;
+          const facet=sample?(sample.charCodeAt(Math.min(23,Math.floor(w*24/31))*24+Math.min(23,Math.floor(u*24/31)))-128):0;
+          for(let c=0;c<3;c++)pixels.data[index+c]=base[c]+grain*.68+flow+facet*(slot===12||slot===13?1.21:.72)+deposit*(metal?[.4,1,.83][c]:1);
+          pixels.data[index+3]=255;
+        }
+      }
+      ctx.putImageData(pixels,0,0);
+    },atlasSize,atlasSize));
+    texture.name="ashLavaboSurfaces";
+    texture.colorSpace=ha;texture.generateMipmaps=true;texture.minFilter=YC;
+    return texture;
+  }
+
+  function masonry(){
+    const positions=[],colors=[],uvs=[],index=[];
+    function face(points,kind,tone=1){
+      const a=points[0],b=points[1],c=points[2];
+      const ux=b[0]-a[0],uy=b[1]-a[1],uz=b[2]-a[2];
+      const vx=c[0]-a[0],vy=c[1]-a[1],vz=c[2]-a[2];
+      const nx=uy*vz-uz*vy,ny=uz*vx-ux*vz,nz=ux*vy-uy*vx;
+      const n=Math.hypot(nx,ny,nz)||1;
+      const light=tone*(.61+.22*Math.max(0,nx/n)+.24*Math.max(0,ny/n)+.23*Math.max(0,nz/n));
+      const slot=finishNames.indexOf(kind), start=positions.length/3;
+      const square=[[0,0],[1,0],[1,1],[0,1]];
+      for(let i=0;i<points.length;i++){
+        positions.push(...points[i]);
+        const [u,v]=square[i];
+        uvs.push(((slot%4)*bankSize+1.5+u*(bankSize-3))/atlasSize,
+          1-((slot>>2)*bankSize+1.5+(1-v)*(bankSize-3))/atlasSize);
+        const value=light*(i<2?.94:1);
+        colors.push(value,value*.985,value*.95);
+      }
+      index.push(start,start+1,start+2);
+      if(points.length===4)index.push(start,start+2,start+3);
+    }
+    function box(x,y,z,w,h,d,kind,tone=1){
+      const x0=x-w/2,x1=x+w/2,z0=z-d/2,z1=z+d/2,b=y-h/2,t=y+h/2;
+      face([[x0,b,z1],[x1,b,z1],[x1,t,z1],[x0,t,z1]],kind,tone);
+      face([[x1,b,z0],[x0,b,z0],[x0,t,z0],[x1,t,z0]],kind,tone);
+      face([[x1,b,z1],[x1,b,z0],[x1,t,z0],[x1,t,z1]],kind,tone);
+      face([[x0,b,z0],[x0,b,z1],[x0,t,z1],[x0,t,z0]],kind,tone);
+      face([[x0,t,z1],[x1,t,z1],[x1,t,z0],[x0,t,z0]],kind,tone);
+      face([[x0,b,z0],[x1,b,z0],[x1,b,z1],[x0,b,z1]],kind,tone*.78);
+    }
+    function band(x,z,y0,r0,y1,r1,kind,tone=1,sides=12,angle=Math.PI/8){
+      const pt=(i,r,y)=>[x+r*Math.sin(angle-2*Math.PI*i/sides),y,z+r*Math.cos(angle-2*Math.PI*i/sides)];
+      for(let i=0;i<sides;i++){
+        face([pt(i+1,r0,y0),pt(i,r0,y0),pt(i,r1,y1),pt(i+1,r1,y1)],kind,
+          tone*(.98+.035*Math.cos(i*11+angle)));
+      }
+    }
+    function disc(x,z,y,r,kind,tone=1,sides=16,angle=Math.PI/8){
+      for(let i=0;i<sides;i++){
+        const a=angle+i*Math.PI*2/sides,b=angle+(i+1)*Math.PI*2/sides;
+        face([[x,y,z],[x+r*Math.sin(a),y,z+r*Math.cos(a)],[x+r*Math.sin(b),y,z+r*Math.cos(b)]],kind,tone);
+      }
+    }
+    function pipe(a,b,r0,r1,kind,tone=1,sides=7){
+      const dir=new Y(...b).sub(new Y(...a)).normalize();
+      const right=new Y(0,0,1).cross(dir);
+      if(right.lengthSq()<.001)right.set(1,0,0);else right.normalize();
+      const up=dir.clone().cross(right);
+      function rim(at,r,i){
+        const t=Math.PI*2*i/sides,u=r*Math.cos(t),v=r*Math.sin(t);
+        return [at[0]+u*right.x+v*up.x,at[1]+u*right.y+v*up.y,at[2]+u*right.z+v*up.z];
+      }
+      for(let i=0;i<sides;i++)face([rim(a,r0,i),rim(a,r0,i+1),rim(b,r1,i+1),rim(b,r1,i)],kind,tone);
+    }
+    function finish(){
+      const geometry=Z(new h0());
+      geometry.setAttribute("position",new y0(new Float32Array(positions),3));
+      geometry.setAttribute("uv",new y0(new Float32Array(uvs),2));
+      geometry.setAttribute("color",new y0(new Float32Array(colors),3));
+      geometry.setIndex(index);geometry.computeBoundingSphere();
+      const material=Z(new $e({map:surfaces(),vertexColors:true,side:hi,toneMapped:false}));
+      const object=new pt(geometry,material);object.name="ashCloisterLavabo";
+      return object;
+    }
+    return {face,box,band,disc,pipe,finish};
+  }
+
+  // Native collision is indexed per map tile. The bowl footprint is clipped
+  // to the octagon with strips and the narrow shaft gets its own height.
+  function mass(x0,x1,z0,z1,height){
+    const body={x0,x1,z0,z1,y1:height};
+    for(let z=Math.floor(z0/P);z<=Math.floor(z1/P);z++)
+      for(let x=Math.floor(x0/P);x<=Math.floor(x1/P);x++){
+        const key=jM(x,z),parts=v.masses.get(key);
+        if(parts)parts.push(body);else v.masses.set(key,[body]);
+      }
+  }
+  const basinX=91.25,basinZ=130.90;
+  function laver(m){
+    const x=basinX,z=basinZ,f=ie(x,z);
+    const profile=[
+      [0,1.69,"shade"],[.07,1.69,"stone"],[.15,1.58,"limestone"],[.21,1.57,"shade"],
+      [.23,1.32,"stone"],[.30,1.33,"limestone"],[.40,1.41,"stone"],[.46,1.48,"bronze"],
+      [.92,1.52,"ochre"],[.96,1.56,"verdigris"],[1.04,1.65,"limestone"],[1.09,1.62,"limestone"],
+      [1.09,1.42,"shade"],[.99,1.28,"verdigris"]
+    ];
+    function turned(points,count,angle){
+      for(let n=1;n<points.length;n++){
+        const [y0,r0]=points[n-1],[y1,r1,kind]=points[n];
+        m.band(x,z,f+y0,r0,f+y1,r1,kind,1.1,count,angle);
+      }
+    }
+    turned(profile,8,Math.PI/8);
+    m.disc(x,z,f+1.035,1.36,"darkWater",1.2,8);
+    turned([[1.03,.63],[1.11,.68,"gold"],[1.21,.57,"bronze"],[1.33,.52,"verdigris"],
+      [1.76,.52,"red"],[1.80,.60,"gold"],[1.83,.62,"verdigris"],[1.95,.73,"bronze"],
+      [2.03,.74,"gold"],[2.06,.63,"verdigris"],[1.99,.50,"bronze"]],12,Math.PI/8);
+    m.disc(x,z,f+2.017,.555,"water",1.17,12);
+    turned([[2.02,.19],[2.13,.22,"bronze"],[2.19,.29,"gold"],[2.26,.17,"verdigris"],
+      [2.34,.14,"bronze"]],8,Math.PI/8);
+    const cy=f+2.63,orb=.32;
+    for(let i=0;i<6;i++){
+      const a=Math.PI*i/6;
+      for(let j=0;j<12;j++){
+        const point=n=>{
+          const t=n*Math.PI/6;
+          return [x+orb*Math.cos(t)*Math.cos(a),cy+orb*Math.sin(t),z+orb*Math.cos(t)*Math.sin(a)];
+        };
+        m.pipe(point(j),point(j+1),.031,.031,i%2?"bronze":"gold",1.25,5);
+      }
+    }
+    m.band(x,z,cy-.033,orb*1.035,cy+.033,orb*1.035,"gold",1.30,12);
+    m.pipe([x,cy+orb-.045,z],[x,cy+orb+.34,z],.048,.028,"gold",1.40,7);
+    m.pipe([x-.17,cy+orb+.21,z],[x+.17,cy+orb+.21,z],.032,.032,"gold",1.40,7);
+    for(let i=0;i<8;i++){
+      const a=(i+.5)*Math.PI/4,dx=Math.sin(a),dz=Math.cos(a);
+      const at=(r,y)=>[x+dx*r,f+y,z+dz*r];
+      // Ribbed metal leaves hold the lip of each stone basin segment.
+      m.pipe(at(1.39,.40),at(1.50,.92),.067,.060,"bronze",1.14);
+      m.pipe(at(1.47,.89),at(1.54,1.03),.072,.034,"gold",1.05);
+      if(i%2===0){
+        m.pipe(at(.53,2.003),at(.77,2.055),.083,.060,"verdigris",1.17);
+        m.pipe(at(.76,2.04),at(.87,1.96),.036,.026,"foam",1.21,5);
+        m.pipe(at(.87,1.96),at(.98,1.72),.026,.031,"water",1.28,5);
+        m.pipe(at(.98,1.72),at(1.07,1.055),.032,.044,"foam",1.06,5);
+        const px=x+dx*1.07,pz=z+dz*1.07;
+        m.band(px,pz,f+1.038,.085,f+1.044,.15,"foam",.94,10);
+        m.band(px,pz,f+1.037,.19,f+1.040,.225,"water",.99,10);
+      }
+    }
+    const edge=1.52;
+    for(const [lo,hi,half] of [[-edge,-1.15,.83],[-1.15,-.77,1.24],[-.77,.77,edge],[.77,1.15,1.24],[1.15,edge,.83]])
+      mass(x-half,x+half,z+lo,z+hi,1.09);
+    mass(x-.48,x+.48,z-.48,z+.48,2.03);
+    mass(x-.24,x+.24,z-.24,z+.24,2.88);
+    mass(x-.045,x+.045,z-.045,z+.045,3.29);
+  }
+
+  // Each stone in the gate has a face, soffit, outside and chipped front
+  // bevel. The ochre inner order reads as a continuous rib from a distance.
+  function arch(m,left,right,z,spring,rise,thickness,depth){
+    const mid=(left+right)/2,rx=(right-left)/2,count=15;
+    const point=(t,extra,d)=>{
+      const a=Math.PI*t,s=Math.sin(a);
+      return [mid-(rx+extra)*Math.cos(a),spring+(rise+extra)*s+.17*rise*(1-Math.abs(2*t-1))*s,z+d];
+    };
+    for(let i=0;i<count;i++){
+      const t=(i+.016)/count,u=(i+.984)/count,keystone=i===(count-1)/2;
+      const out=thickness*(keystone?1.25:1),face=depth+(keystone?.08:0);
+      const front=[point(t,0,face),point(u,0,face),point(u,out,face),point(t,out,face)];
+      m.face(front,keystone?"limestone":i%4===2?"shade":"stone",1.02+.12*Math.cos(i*11));
+      m.face([point(t,0,-depth),point(t,0,face),point(u,0,face),point(u,0,-depth)],"shade",.85);
+      m.face([point(t,out,face),point(u,out,face),point(u,out,-depth),point(t,out,-depth)],"stone",1.01);
+      m.face([point(u,0,-depth),point(t,0,-depth),point(t,out,-depth),point(u,out,-depth)],"stone",.95);
+      m.face([point(t,0,face+.009),point(u,0,face+.009),point(u,.066,face+.012),point(t,.066,face+.012)],"limestone",1.12);
+    }
+  }
+  function pier(m,x,z,f,top,w=.70){
+    const base=f+.30;
+    m.box(x,f+.095,z,w+.23,.19,w+.20,"shade");m.box(x,f+.25,z,w+.13,.12,w+.11,"limestone");
+    const n=5,h=(top-base-.28)/n;
+    for(let i=0;i<n;i++)m.box(x,base+(i+.5)*h,z,w,h-.012,w*.94,i===2?"shade":"stone",1.0+.055*Math.sin(i*9+x));
+    for(const dx of [-w*.34,w*.34])m.band(x+dx,z+w*.44,base,.076,top-.21,.075,"limestone",.99,7);
+    m.box(x,top-.205,z,w+.12,.15,w+.14,"shade");m.box(x,top-.082,z,w+.27,.12,w+.25,"limestone",1.14);
+    mass(x-w/2,x+w/2,z-w/2,z+w/2,top-f);
+  }
+  function lantern(m,x,z,f){
+    m.band(x,z,f,.31,f+.15,.29,"stone",1.05,8);
+    m.band(x,z,f+.15,.19,f+.40,.14,"iron",1.06,8);
+    m.band(x,z,f+.40,.18,f+.50,.26,"gold",1.17,8);
+    m.band(x,z,f+.50,.17,f+.93,.13,"ember",1.6,8);
+    m.band(x,z,f+.49,.10,f+.81,.075,"flame",1.6,7);
+    for(const [dx,dz] of [[-.13,-.13],[-.13,.13],[.13,-.13],[.13,.13]])
+      m.pipe([x+dx,f+.49,z+dz],[x+dx*.85,f+.96,z+dz*.85],.023,.023,"iron",1.06,5);
+    m.band(x,z,f+.94,.23,f+1.08,.13,"bronze",1.08,8);
+    m.band(x,z,f+1.08,.13,f+1.19,.018,"gold",1.15,8);
+  }
+  function threshold(m){
+    const z=135.83,f=1.2,spring=3.15;
+    for(const x of [88.44,97.62]){
+      pier(m,x,z,f,spring,.75);
+      m.box(x,f+.37,z+.49,.91,.53,.64,"shade",1.02);
+      m.box(x,f+.64,z+.51,1.01,.11,.74,"limestone",1.14);
+      lantern(m,x,z+.53,f+.71);
+      mass(x-.45,x+.45,z+.16,z+.81,.70);
+    }
+    arch(m,88.44,97.62,z,spring,1.59,.42,.35);
+    // Broken masonry shoulders carry the arch into the actual enclosure.
+    // Leave a ragged crown so the dark sky stays visible above the wash yard.
+    const left=88.44,right=97.62,mid=(left+right)/2,half=(right-left)/2,stones=16;
+    const edge=x=>{
+      const c=Math.max(-1,Math.min(1,(mid-x)/(half+.39))),t=Math.acos(c)/Math.PI;
+      return spring+(1.59+.38)*Math.sin(Math.PI*t)+.27*(1-Math.abs(2*t-1))*Math.sin(Math.PI*t);
+    };
+    for(let i=0;i<stones;i++){
+      const x0=left-.39+i*(right-left+.78)/stones+.006,x1=left-.39+(i+1)*(right-left+.78)/stones-.006;
+      const base0=edge(x0)-.035,base1=edge(x1)-.035;
+      const top=5.44+(i>=4&&i<=11?.18:0)+(i%5===2?.075:0);
+      const front=z+.26,back=z-.24,shade=.83+.13*((i*5)%8)/7;
+      m.face([[x0,base0,front],[x1,base1,front],[x1,top,front],[x0,top,front]],"stone",shade);
+      m.face([[x1,base1,back],[x0,base0,back],[x0,top,back],[x1,top,back]],"shade",shade);
+      m.box((x0+x1)/2,top+.030,z,x1-x0,.075,.63,"limestone",shade);
+    }
+    const nr=115.86,top=3.95;
+    for(const x of [90.37,97.65])pier(m,x,nr,ie(x,nr),top,.56);
+    arch(m,90.37,97.65,nr,top,.95,.32,.29);
+  }
+  function pavement(m){
+    // Bed the stones separately on each tread. Their long joints stagger
+    // through the level court and the north run follows the physical steps.
+    for(const [row,left,right,h] of courtRows){
+      for(let course=0;course<3;course++){
+        const z=row*P+(course+.5)*P/3,offset=(course+row)%2*.63;
+        for(let x=left*P-offset;x<(right+1)*P;x+=1.26){
+          const x0=Math.max(left*P,x)+.017,x1=Math.min((right+1)*P,x+1.26)-.017;
+          if(x1<=x0+.10)continue;
+          const center=(x0+x1)/2,hash=Math.abs(Math.sin(center*32.1+z*63.59));
+          const lamps=[[88.44,136.36],[97.62,136.36],[90.42,120.88],[87.16,124.35]];
+          const glow=Math.max(...lamps.map(([lx,lz])=>Math.exp(-((lx-center)**2+(lz-z)**2)/5.0)));
+          const near=Math.exp(-((center-basinX)**2+(z-basinZ)**2)/17);
+          const paver=hash<.44?"soot":"stone";
+          const brightness=.54+.24*hash+.40*glow+.16*near+(row<64?.10:0);
+          const far=z-P/6+.012,close=z+P/6-.012,y=h+.076;
+          m.face([[x0+.028,y,close],[x1,y,close-.009],[x1-.019,y,far],[x0,y,far+.008]],paver,brightness);
+          if(row>=60&&row<=64&&course===0&&x0>=90&&hash>.22){
+            m.face([[x0+.07,y+.004,far+.10],[x1-.10,y+.004,far+.10],
+               [x1-.085,y+.004,far+.018],[x0+.091,y+.004,far+.018]],"limestone",.89+.14*hash);
+          }
+        }
+      }
+    }
+    for(let row=61;row<=64;row++){
+      const z=row*2,y=ie(94,z-.04)+.076;
+      for(let j=0;j<8;j++){
+        const x=90.5+j*.92;
+        m.box(x,y-.050,z+.009,.904,.10,.094,j%4===0?"stone":"limestone",.86+.05*(j%3));
+      }
+    }
+    // Narrow drains spill from the wash station toward a west grating.
+    const z=130.87,f=1.2;
+    for(let i=0;i<7;i++){
+      const x=83.13+i*.89;
+      m.box(x,f+.085,z,.85,.015,.205,"shade",.78);
+      m.box(x+.005,f+.096,z,.84,.009,.091,i%2?"darkWater":"water",.91);
+    }
+  }
+  function rearArcade(m){
+    const z=124.17,xs=[84.22,86.95,89.67],spring=4.98;
+    for(let i=0;i<xs.length;i++){
+      const x=xs[i],f=ie(x,124.21);
+      pier(m,x,z,f,spring,.39);
+      m.band(x,z,spring+.10,.29,spring+1.04,.19,"stone",.91,8);
+      m.band(x,z,spring+1.04,.25,spring+1.57,.012,"limestone",.98,8);
+      if(i===2)continue;
+      const next=xs[i+1],mid=(next+x)/2;
+      m.box(mid,2.22,z-.01,next-x-.35,.80,.34,"shade",1.10);
+      m.box(mid,2.68,z+.01,next-x-.24,.13,.45,"limestone",1.13);
+      arch(m,x,next,z,spring,.98,.23,.21);
+      for(const bx of [mid-.47,mid+.47]){
+        m.band(bx,z+.02,2.72,.11,2.85,.074,"limestone",.98,8);
+        m.band(bx,z+.02,2.85,.074,3.36,.061,"shade",1.15,8);
+        m.band(bx,z+.02,3.36,.061,3.45,.105,"limestone",1.06,8);
+      }
+      m.box(mid,3.49,z+.01,next-x-.24,.095,.25,"stone",1.13);
+    }
+    lantern(m,87.15,124.43,2.78);
+  }
+  function windowView(scene){
+    // The arcade looks over a lower, inaccessible churchyard. The native
+    // stone parapet shields the bottom of this two-bay landscape.
+    if(!samples.sky)return;
+    const bytes=atob(samples.sky),width=112,height=74;
+    const texture=Z(e0(ctx=>{
+      const im=ctx.createImageData(width,height);
+      for(let i=0;i<width*height;i++){
+        const n=bytes.charCodeAt(i*2)|(bytes.charCodeAt(i*2+1)<<8);
+        im.data[i*4]=(n>>11)*255/31;im.data[i*4+1]=((n>>5)&63)*255/63;im.data[i*4+2]=(n&31)*255/31;
+        im.data[i*4+3]=255;
+      }
+      ctx.putImageData(im,0,0);
+    },width,height));
+    texture.name="ashCloisterDistantChurchyard";texture.colorSpace=ha;
+    texture.minFilter=YC;texture.generateMipmaps=true;
+    const geo=Z(new h0()),pos=[],uv=[],indices=[];
+    for(const mid of [85.585,88.31]){
+      const start=pos.length/3;
+      for(let j=0;j<=18;j++){
+        const t=j/18,x=mid-1.365*Math.cos(t*Math.PI),h=4.98+Math.sin(t*Math.PI)*(.98+.16*(1-Math.abs(t*2-1)));
+        for(const y of [2.65,h]){
+          pos.push(x,y,124.036);uv.push((x-84.22)/5.45,(y-2.65)/3.49);
+        }
+        if(j)indices.push(start+j*2-2,start+j*2,start+j*2+1,start+j*2-2,start+j*2+1,start+j*2-1);
+      }
+    }
+    geo.setAttribute("position",new y0(new Float32Array(pos),3));
+    geo.setAttribute("uv",new y0(new Float32Array(uv),2));geo.setIndex(indices);geo.computeBoundingSphere();
+    const material=Z(new $e({map:texture,side:hi,toneMapped:false}));
+    material.color.setRGB(1.35,1.48,1.60);
+    const object=new pt(geo,material);
+    object.name="ashCloisterOutlook";scene.add(object);
+  }
+  function gallery(m){
+    // The western wall is a rainwater catchment. An iron grille, limestone
+    // buttresses and old covers make it recognisable from the north return.
+    const f=1.20,wall=82.10;
+    for(const z of [126.54,129.70,131.65]){
+      const base=ie(wall+.45,z);
+      m.box(wall+.34,base+.24,z,.68,.48,.89,"shade");
+      m.box(wall+.27,base+1.60,z,.52,2.30,.60,"stone");
+      m.box(wall+.35,base+2.82,z,.71,.18,.79,"limestone");
+      m.box(wall+.23,base+3.23,z,.42,.62,.59,"stone");
+    }
+    const z=128.16;
+    m.box(wall+.13,f+1.87,z,.18,2.27,2.55,"mortar",.78);
+    m.box(wall+.28,f+.85,z,.48,.22,2.77,"stone",1.15);
+    for(let i=-3;i<=3;i++){
+      const p=z+i*.29,top=f+2.81-.12*Math.abs(i);
+      m.pipe([wall+.24,f+.97,p],[wall+.24,top,p],.037,.039,"bronze",1.02,6);
+    }
+    for(const y of [1.53,2.09,2.57])m.box(wall+.27,f+y,z,.083,.069,2.3,"verdigris",1.03);
+    // The north stair has a surviving open arcade on the west and a raised
+    // coping on the east. Both are fully outside the central running lane.
+    for(const side of [90.30,97.73]){
+      for(const z of [117.0,120.9,123.9]){
+      const base=ie(side,z),h=side<94?1.15:.78;
+        m.box(side,base+h/2,z,.38,h,.57,"stone",1.01);
+        m.box(side,base+h+.06,z,.52,.13,.69,"limestone",1.15);
+        mass(side-.20,side+.20,z-.29,z+.29,h+.13);
+      }
+    }
+    lantern(m,90.42,120.88,ie(90.42,120.88)+1.29);
+  }
+  const dress=FJ;
+  FJ=function(scene,map){
+    dress.apply(this,arguments);
+    if(T.level!==level||map.script?.lever?.[0]!==57||map.g[65]?.[43]!=="." )return;
+    const m=masonry();pavement(m);laver(m);threshold(m);gallery(m);rearArcade(m);
+    scene.add(m.finish());windowView(scene);
+  };
+})();
+/* ASH_CLOISTER_LAVABO_END */
+
 /* PROLOGUE_STAINED_GLASS_BEGIN */
 // Each apse has three separate splayed apertures. The original wall, plinth,
 // outer piers and altar footprint are emitted by the base decoration builder.
@@ -15456,6 +15865,279 @@ const BLACK_SILENCE_RELOAD_PCM = {"latch":{"pcm":"AAD+//3/+v/9/wgADwAIACIAHAAHAD
   };
 })();
 /* PROLOGUE_REFUGE_WAYMARKER_END */
+
+/* PROLOGUE_CINDER_VIADUCT_BEGIN */
+(() => {
+  // The ash sluice drains the east half of the second nave's trench. Leave
+  // the central causeway and the perimeter scramble intact as other routes.
+  const lowerFlight = [.15, .45, .75, 1.05, 1.05];
+  const upperFlight = [1.40, 1.75, 2.10];
+  // The far wall is a bank of closed furnace dampers. Preserve its recessed
+  // lancet stonework while letting the open wheel lead the foreground.
+  const shrine=di.hellLancetShrine;
+  di.cinderSluiceDampers={
+    ...shrine,
+    build(box,...args) {
+      shrine.build((tile,...rest)=>box(tile==="hellGlass"?"wrought":tile,...rest),...args);
+      for(const [x,height] of [[-1.6,2.35],[0,3.25],[1.6,2.35]]) {
+        box("dark",.67,height-.27,.035,E(x,1.18+(height-.27)/2,-.085));
+        for(let row=0;row<4;row++) {
+          const y=1.31+row*(height-.45)/4;
+          box("wrought",.64,.105,.11,E(x,y,-.14,-.26));
+          box("hellBronze",.61,.029,.05,E(x,y+.049,-.192));
+          if(row===2 || (row===1 && x===0))
+            box("hellGlass",x===0?.29:.14,.039,.025,E(x,y+.079,-.116));
+        }
+      }
+    }
+  };
+  const build = gV[0].build;
+  gV[0].build = function() {
+    const map = build.apply(this, arguments);
+    for (let row = 0; row < lowerFlight.length; row++) {
+      for (const x of [42, 43]) map.hmap[29 + row][x] = lowerFlight[row];
+    }
+    for (let col = 0; col < upperFlight.length; col++) {
+      for (const z of [32, 33]) map.hmap[z][44 + col] = upperFlight[col];
+    }
+    // This landing belongs to the high route: two players' widths to sidestep
+    // an attacker, see into the trench, or deliberately take the lower flight.
+    map.hmap[29][41] = 2.10;
+    const arch=map.decor.find(d=>d.k==="hellGreatArch" && d.x===40 && d.z===30.8);
+    if (arch) {
+      // Both loads now bear on solid upper-floor masonry behind the works.
+      arch.z=35.45;
+      arch.w=7.8;
+      arch.h=7.1;
+    }
+    const apse=map.decor.find(d=>d.k==="hellLancetShrine" && d.x===40 && d.z===39.7);
+    if(apse) apse.k="cinderSluiceDampers";
+    // Clear only the clutter that would now float in the mouth of the stair.
+    map.decor = map.decor.filter(d =>
+      !(d.k === "ember" && (d.x === 41 || d.x === 43) && d.z === 29) &&
+      !(d.k === "bones" && d.x === 44 && d.z === 33)
+    );
+    return map;
+  };
+
+  const texels = /* CINDER_VIADUCT_TEXELS_BEGIN */ "Z2omYgVaZ2pnYmdiZ2JGYiZaRmJnYkZih2pGYgVaZ2JGYiZixFEFWgVaZ2pnaodqh2qHakZiZ2qocodqJlqHaqhqZ2pGYodqZ2qHaodqh2qHaodqqGpGYshyh2pnYodqqHJnasRRBVoFWodqh2qoaqhqZ2qHamdqqGqHakZiqHKHamdiZ2ImYqhyh2pGYkZih2pnYkZiJmJnYodqJlpnaqhyJmLlUUZiJmImWmdiqGqHaodqh2pnamdqqHJnamdih2qHaodqRmKocodqZ2qHamdqZ2ImYodqZ2qoamdqqGqockZixFFGYmdiRmKocodqyHLIcqhqqGqHaodqZ2Kocmdqh2pnYodqqGpnYmdiZ2JGYkZiZ2JnaiZiyHJGYshyh2rlUcRRqHKHakZih2qHamdqqHKHaqhyh2pnamdqJmJnYmdih2qHamdiRmJGYmdqqGqHamdiRmJnYmdqRmKockZiJlrEUUZih2pnamdqZ2omYshyqHJnaodqZ2pGYkZiRmKHaodqZ2pnakZiZ2rIcshyyHKHamdiZ2JnamdiqHJnaiZaxFHEUYdqh2qHaodqZ2rpeqhyZ2qocqhqZ2pGYqhq6XKoaodqqHJnYodqqHLIcshyZ2pnYmdqqGqHamdqBVrlWaRRxFGHaodqRmLpeodqqGrpcqhyyHJnaodqRmKoaqhyyHKocqhyh2pnakZixFFnakZiJmJGYmdqh2omYgVaBVrlWeVRh2pnamdiyHKoaqhyh2qHaqhyZ2qockZiZ2pnYmdqpFGockZiJmIFWgVaJloFWgVah2pnamdqJlqocgVa5VlGYmdqZ2omWshyyHKHamdqh2qocodqqHJGYqRRxFHEUeVZBVpGYmdiRmImWmdiJmJnYshyBVpGYgl7qHJnYgVaRmLlWWdqRmKHaul66XLIcqhyyHLIcgl7Z2KkUcRRxFHlWQVaRmJGYgVaJlpnYiZiBVpGYgVaZ2rIcodqJmLlWSZixFFnYmdiRmLpcqhyyHKocmdiqHKocqhypFHEUeVZxFEFWiZaY0kFWmdqRmJnYiZiyHKHashyyHKHaqRRpFFnagVaBVpGYqhyqHKHaqhyh2pnYqhyZ2pGYgVaxFHEUaRR5VEFWqRRJlrIciZaRmJGYsRRh2rIcqhqBVrEUeVZh2omYgVah2qHaulyyHLIcshyh2qocqhyRmJnYmdqRmLEUcRRxFEFWuVZJmIFWgVaJloFWqhyyHLlWQVaY0mkUUZiZ2pGYmdiqHLIcodqqHLIcmdqRmLIcmdiKoOocqhyyHKHamdqi4vpegl7yHLlWQVaBVqkUQVa5VGkUYNJpFHlWSZiRmKHaiqDyHImYmdqh2qHaqhq6XqHaul6CXtnashyyHIqg0qD6XpKg+l6h2pGYiZixFHlWaRRpFGDSYNJg0kFWiZi5Vlriwl7JmLIcqhy6Xqocul6yHJnaodqRmJnYiZiZ2oFWgl7qHKLiwl7KoNri0qDKoPlUSZih2qoaoNJRmJGYkZiJmIFWmdiJmJnYmdiyHIJe+VZRmJGYul6h2omYmdiKoNnaqhq6Xqocgl76XJKg6yT6XrIcshyyHImYuVZBVqDSeVZqGrpeshyJmLEUYNJJmImYkZiBVrpeshyJlpnaqhqRmJGYmdiyHLIciZiZ2qocsyTTqSLi4uL6Xqocodqg0nlWeVZJlomYiZaJlrEUWdiBVpGYiZaJmJGYiZaZ2JnaulyRmImYshyZ2JnYul66XrIcsyT6XqLi4uLSoMJe8hyi4uocgVayHJnashyh2qHaiZaZ2omYiZaRmLlWUZiRmLIciZaJmImWiZih2rpeodqZ2oJe8hyqHLIcodqCXuHakqDZ2rEUYdqZ2qHaqyLh2omWqhqh2omYuVZBVomWkZiyHJGYkZiZ2JGYiZaqGpGYshyh2qoaiqDZ2pnYmdqrJMqg8hyyHJGYmdiKoOocmuDyHJGYiZaRmImYgVaRmJnamdqRmImYmdiyHImYkZiZ2KHaodqqHLIckZiRmKocqhyqHIqg0qDqHLIckqDh2qocouLJlomWkZiJmIFWiZiZ2pnYkZiJmJGYmdqJmImYshy6XJnYshyh2omYodqh2qHamdiSoPIcqhy6Xoqg2dqh2pnasRRBVpnaiZiJmImYkZiJmImYiZiBVomYiZiJmImYqhqCXuHaiZayHKHamdih2pGYul6h2pnYqhyqGpnYshyZ2rEUQVaRmJGYkZiRmJnYiZiRmJGYiZiqGomYkZiRmLpegl7RmJGYgl7qHLIcul6yHKoashyqHLpeul6h2rIcqhypFGkUQVaRmImYiZih2pGYiZiJmJGYmdiJmImYkZih2qocmdqh2pnashyZ2rIcodqyHImYsRRh2oJe8hy6XqocsRRpFEFWiZiJmLIcodqZ2omWiZaRmJGYiZiRmJGYodqRmJnYodqh2qocmdqyHJGYgl7h2rlWQl76Xqocgl7qHLEUaRR5VnlWSZiqGpGYmdiZ2JnYmdqZ2ImYiZiRmKHamdqRmKHaodqyHKocqhyRmJGYqhyxFHpeqhqqHLpeqhq5VmkUQVaJmImYqhyqGpnYmdqZ2pnYkZih2pnYodqh2qHamdqRmJnYodqZ2KHaqhqh2qockZiBVqocqhqyHLIcsRRpFEFWkZiRmKHamdqRmJGYmdiZ2JnaiZaRmJnaodqh2pnamdiZ2qHaodqZ2qHaodqRmImYqhqqHKHaul6qHIGSgZKBkpoWuZJBkqtg2haB0oHSgZKB0qJYidSqWIGSsliJ1InUuZJ5knmSSdSJ1IHSuZJB1LmScZJpUFkOcZBaFonUidSaFrmSQZK5kknUgdKJ1IGSgZKJ1IHSspqB0poWgZKJ1InUuZJxkknUmhaJ1KJYgdK5knGSaVBZDmlQWhaJ1InUmha5kkGSuZJJ1IHSidSBkoGSidSB0rKagdKaFoGSidSJ1LmScZJJ1JoWidSiWIHSuZJxkmlQWQ5pUEnUmhaJ1IHSidSJ1LGSWhaJ1InUgZKaFoHSgdKaFoHSmhaBkonUgdKBkonUmhaR1IHSsliBkrmSSdSpUGlQcZJJ1InUgZKBkoGSidSCmsHSidSJ1IGSgdKB0pHUmhaJ1JHUkdSaFonUgdKaFonUgdK5kmpYgZK5kknUqVBpUHGQQZKB0rmScZB5kknUgtrB0onUgdK5kkHSgZKR1InUidSJ1IGSkdSJ1JHUsZJxkHmSQZKR1IGSuZJJ1KlQeZJpUEGSgdK5knGQeZJJ1ILawdKJ1IHSuZJB0oGSkdSJ1InUidSBkpHUidSR1LGScZB5kkGSkdSBkrmSSdSpUHmSaVBJ1InUidSB0onUidSxkknUmha5kknUgdKB0oHSkdSSFInUgdKJ1JoWmhaxkkGSidSqWIHSidSJ1InUgZKB0rmSQZKBkoGSkdSJ1IGSgZKJ1InUuZJ5kkGSidSiVonUmhaJ1JIUkhSJ1IGSsZBJ1InUolaBkoGSgdKB0oGSgdKxkEGSgZKBkpHUidSBkoGSidSJ1LmSeZJBkonUolaJ1JoWidSSFJIUidSBkrGQSdSJ1KJWgZKBkoHSgdKBkoHSsZBBkoGSgZKB0rmSaVBJ1LJYkdSBkrmScZBJ1JoWkdSB1InUmhaJ1JHUgZKpUFoWidSBkonUuZJBkrmSQdKxkHmSSdSBkonUgZKJ1IGSidSyWInUmhaBkoHSmhaaFonUidSR1InUmhaiVoGSgZKiWIGSgZKBkrmSQZKBkonUqVBB0oGSuZJqWJHUidS5kknUoliJ1InUgdKBkoHSidSB0onUidSB0poWkhSBkoHSolaBkrmSQZKBkoGSgdKR1LGSQZKBkrmSaliR1InUuZJJ1KJYidSJ1IHSgZKB0onUgdKJ1InUgdKaFpIUgZKB0qJWgZK5kkGSgZKBkoHSkdSxkkGSgdKBkorcydSBkonUuZJiVoHSidSBkoGSidSaFoHSidSqWIHSmhaB1IHSidSJ1IHSidS5kknUuZJ5kkGSgZK5kknUkdSaFoHSidSB0rGSYliaFqlQQdKR1JoWidSJ1JoWmhaJ1KpYkdSR1IGSidSB0oGSuZJJ1IGSgZKxknGSUdSJ1JHUmhaB0onUgdKxkmJYmhapUEHSkdSaFonUidSaFpoWidSqWJHUkdSBkonUgdKBkrmSSdSBkoGSsZJxklHUgdKJ1IHSqVBJ1KpYgZK5knmSeZJJ1JoWgdKB1IHUidSSFIHSmhaJ1InUgZKJ1InUidSJ1InUgZKBkqlQcZJiWLmSQdKBkrGSSdSJ1IGSgdKpUEGSgZKaFoHSidSJ1IHSgZKB0onUidSB0oGSgdKJ1InUuZJJ1LmSeZJ5knmSYlaJ1InUidSxkHmSYla5knGQaVBB0onUgdKaFoHUmhaBkonUgdKaFpoWidSaFonUidSB0oHSgZK5knGSaVBxkFoWidSJ1InUsZB5kmJWuZJxkGlQQdKJ1IHSmhaB1JoWgZKJ1IHSmhaaFonUmhaJ1InUgdKB0oGSuZJxkmlQcZBaFqlQaVBpUGlQaVBR1LmSeZJpUHmScZBBkonUidSB0oGSgdKB0oHSidSJ1IHSkdSJ1IGSkdSB0rmSaVBxkmlQQdShDmlQcZBpUGEOeZJ5kkGSsZJBkrGSSdSJ1JoWsZBaFpHUidSxkknUkdSJ1InUgdSJ1IHSidS5knmSaVBpUEGSoQ5pUHGQaVBhDnmSeZJBkrGSQZKxkknUidSaFrGQWhaR1InUsZJJ1JHUidSJ1IHUidSB0onUuZJ5kmlQaVBBkoGSqVBpUGlQaVBhDmlQcZJ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YkmjUUJBg1GDSYNJg0mDSWJJo1GDSaNRo1FiSWJJg1GDSeRZg0ngOKuTYkkhQaNRYkkhQWJJYkmDSUZio1FiSWJJo1FCQYNRg0mDSYNJg0liSaNRg0mjUaNRYkliSYNRg0nkWYNJ4DgxxYNJQkGDSaNRo1GDSWJJo1GDUUJBg0mjUaNRYkmjUWJJYkmDSWJJQkEhQUJJg0liSWJJg0mDSWJJg0liSeA4McWDSUJBg0mjUaNRg0liSaNRg1FCQYNJo1GjUWJJo1FiSWJJg0liSUJBIUFCSYNJYkliSYNJg0liSYNJYkngOEJBYkkhQYNJg0mDSYNJYkklYuRZIUFCQUJBg0khQWJJQkGjUWJJYkkhQUJBo1GDSWJJo1GDSYNJg0khQSFB4DhCQWJJIUGDSYNJg0mDSWJJJWLkWSFBQkFCQYNJIUFiSUJBo1FiSWJJIUFCQaNRg0liSaNRg0mDSYNJIUEhQeA4QUFiSQA5YkliSUJJg0klYgVi5FmjUYNJIUHDUYNJYkliSWJJQkliSWJJg0liSYNJIUGDSUJBYkliSUJB4DigMEFBYkkAOWJJYklCSYNJJWIFYuRZo1GDSSFBw1GDSWJJYkliSUJJYkliSYNJYkmDSSFBg0lCQWJJYklCQeA4oDBBQYNJIUGDSYNJQkFCQSVio1GjUYNJZmpiSYNJxFGDSYNJg0mDSaNRg0mDSWJJg0lCQYNJg0liSaNRIUEAOYAoQUGDSSFBg0mDSUJBQkElYqNRo1GDSWZqYkmDScRRg0mDSYNJg0mjUYNJg0liSYNJQkGDSYNJYkmjUSFBADmAKEFBg0khQYNJg0lCQUJBJWKjUaNRg0lmamJJg0nEUYNJg0mDSYNJo1GDSYNJYkmDSUJBg0mDSWJJo1EhQQA5gChiScAwIUFiSYNJYkmjUaNRg0liSUJBYknkWWJJYkmDScRRo1GjUWJJ5FliSaNRo1FCQaNRo1FiSeRZg0ngOIAoiFqIWohaiFqIWqliqWKpYohaiFqIWqliqWKpYqliqWJoWmhaaFpHUkdSjHuMe4x7iFqIWohaBkoGSqVBpUGlQSdSJ1InUkdSR1InUidSJ1JHUkdSR1KJYoliiFqIWohaaFpoWmhaR1JHUqliqWKpYqliqWKpYsZJxkmlQaVBpUFHUkdSR1JHUkdSyWLJYsliaFpoWmhaaFpoWsliyWLJYupq6mrqakdSR1JHUkdSR1KIWohaiFrGScZJpUGlQaVBiFqIWohaaFpoWmhaaFpoWsliyWLJYkdSR1JoWmhaaFrqaupq6mrJYsliS3NLc0tz7ovui+6L5knmSaVBpUGlQYliiWKJYohaiFrJYsliyWLJYsliyWKpYqli6mrqaupqCmsKawpr6mrqaqliqWKpYkdSR1JHUuZJ5kmlQaVBpUGIWohaiFpoWmhaiFqIWohaiFqIWohaiFqIWohaiFqIWohaiFqIWohaiFpIWkhaSFqIWohaiFonUidSpUGlQaVBaFpoWmhaaFpoWmhaaFpoWohaiFqIWohaiFrJYsliyWKIWohaiFrJYsliTHtMe0x7THtMe0x7xknGSaVBpUGlQUdSR1JHUidSJ1JIWkhaSFpoWmhaaFpoWmhaaFpoWmha6mrqaupqyWLJYohaiFqIWspqymrKasVBxUGlQaVBpUGIWohaiFqIWohaiWKJYoliCmsKawprR1JHUqliqWKpYsliyWLJYsliyWJMe0x7THsrcytzK3PFQcVBpUGlQaVBiWKJYoliqWKpYmhaaFpoWspqymrKaupq6mrqaupq6mqJYoliiWKJYolibHtse2x7iFqIWohapUGlQaVBpUGlQaliqWKpYohaiFqJYoliiWKIWohaiFrJYsliqWKpYqliiWKJYoliiFqIWoliiWKJYmhaaFpoWoVBhUGEOYQ5hDkLcwtzC3OJYoliK3MrcytziFqIWohaqWKpYoliiWKJYkdSR1JHUkdSR1LJYsliyWInUidSJ1KEOYQ5pUGlQaVBR1JHUkdSiWKJYupq6mrqasliyWLJYmhaaFrJYsliyWILcwtzC3OpYqli7ovui+6LR1JHUkdSpUGlQaVBpUGlQYliiWKJYoliiWLJYsliyWKpYqliqWLJYsliyWLJYsliiWKJYoliyWLJYs2DzYPNg4haiFqIWqVBpUGlQaVBpUFoWmhaaFqJYoliaFpoWmhaiFqIWoha6mrqaktzS3NLc6liqWKpYqliqWLqaupq6mpIWkhaSFqFQYVBpUGlQaVBaFpoWmhayWLJYupq6mrqasliyWLJYsliyWILcwtzC3Pui+6L7osOjA6M8qzyrPKsJ1InUidShDmEOYVBhUGFQaliqWKpYoliiWKpYqliqWKJYoliiWKJYoliaFpoWmhaR1JHUkdSaFpoWqliqWKpYkhaSFpIWoVBhUGEOYQ5hDkrcytzK3PJYsliCmsKawprqWKpYqliaFpoWmx7bHtse6liqWKpYgprCmsrcytzK3MnUidSJ1KlQaVBpUGlQaVByWLJYslirYOtgytzK3Mrc4haiFqIWsliyWLqaupq6mqpYqliqWKpYqliqWKpYqliJ1InUidSpUGlQaVBpUGlQaliqWKpYupq6moKawprCmupYqliqWKIWohayWLJYsli6mrqaupqbHtsew6MDowOjAZKBkoGSqVBpUGlQaVBpUGIWohaiFpHUkdSqWKpYqliiWKJYoliiWKJYkdSR1JHUkdSR1JHUoliiWKJYoliiWIGSgZKBkqlQaVBpUGlQaVBJ1InUidSxUHFQUdSR1JHUmhaaFpoWidSJ1InUidSJ1JHUkdSR1JoWmhaR1JHUkdSBkoGSgZKpUGlQaVBpUGlQUdSR1JHUkdSR1InUidSJ1JHUkdSR1JHUkdSR1JHUkdSR1JHUkdSR1JHUmhaaFpoWuZJ5knmSaVBpUGlQaVBpUEnUidSJ1InUidSR1JHUkdSaFpoWmhaJ1InUkdSR1JHUkdSR1JHUitzK3NLc0tzS3PmSeZJ5kmEOYQ5hDmEOYQ5aFpoWmhaR1JHUohaiFqIWgZKBkoGSmhaaFonUidSJ1LmSeZJ5klHUkdSSFpIWkhaxUHFQcVBhDmEOYQ5hDmEOQZKBkoGSidSJ1JHUkdSR1JHUkdSR1InUidSB1IHUgdSR1JHUkdSjHuMe0dSR1JHUuZJ5knmSYQ5hDmEOYQ5hDlHUkdSR1LmSeZJiFqIWohaR1JHUkdSJ1InUkdSR1JHUidSJ1InUkdSR1InUidSJ1LmSeZJ5kmlQaVBpUGlQaVBR1JHUkdSaFpoWqliqWKpYohaiFqIWidSJ1LmSeZJ5knGScZJxknui+6LR1JHUkdSJ1InUidSpUGlQaVBpUGlQUdSR1JHUkdSR1JHUkdSR1JHUkdSR1JHUkdSJ1InUidSJ1InUidSL5QvlIhaiFqIWgZKBkoGSoVBhUGEOYQ5hDnmSeZJ5kknUidSR1JHUkdSR1JHUkdSJ1InUkdSR1JHUidSJ1InUsliyWIGSgZKBkrFQcVBxUGEOYQ5hDmEOYQ5R1JHUkdSxUHFQQZKBkoGSkdSR1JHUidSJ1IGSgZKBkrmSeZJ5klLc0tz5knmSeZJxUHFQcVBpUGlQaVBpUGlQWhaaFpoWkdSR1KpYqliqWIGSgZKBkonUidSaFpoWmhaJ1InUidSymrKagtzC3MLc8VBxUHFQaVBpUGlQaVBpUFGo6SSo5Ilo8SS5JIFm+SSBZsFmwWbJaMlo4erJaNmq2arBZsFmyWjBZsFmwWbBZslowWbBZsFmyWjBZuDigWbBZuDisSSJaMlowWbBZslowWbJqMloyajJaNmowWbZqOHq0ajBZsloyWjJaMlo2arJaMFmyajBZsFmyWjxJLEkgWbg4rEkiWjJaMFmwWbJaMFmyajJaMmoyWjZqMFm2ajh6tGowWbJaMloyWjJaNmqyWjBZsmowWbBZslo8SSxJIFm4OKxJIloyWjBZsFmyWjBZsmoyWjJqMlo2ajBZtmo4erRqMFmyWjJaMloyWjZqslowWbJqMFmwWbJaPEksSSpJJiisSSg4oFm+SS5JLlmmajBZsFmwWbBZvkmgWbJaMmoyajBZslo+SSJqPkkiWjJqMFmwWb5JLkkgWbg4rEkqSSYorEkoOKBZvkkuSS5ZpmowWbBZsFmwWb5JoFmyWjJqMmowWbJaPkkiaj5JIloyajBZsFm+SS5JIFm4OKxJLEkmKK5JKkkoOKxJKkkuSSRqPkksSS5JImowWbxJImo2ajBZvkmgWbJaMFm+SSJaMmo+SS5JIFmyWjJqODiqOSxJJiiuSSpJKDisSSpJLkkkaj5JLEkuSSJqMFm8SSJqNmowWb5JoFmyWjBZvkkiWjJqPkkuSSBZsloyajg4qjksSSYorkkqSSg4rEkqSS5JJGo+SSxJLkkiajBZvEkiajZqMFm+SaBZslowWb5JIloyaj5JLkkgWbJaMmo4OKo5LkkoOKxJLkksSS5ZolowWbJaPkkqSS5JrkmsSSY4rkmgWbBZslowWbBZsFmwWbo5IFm4OKxJIFmwWbg4qDiqSS5JKDisSS5JLEkuWaJaMFmyWj5JKkkuSa5JrEkmOK5JoFmwWbJaMFmwWbBZsFm6OSBZuDisSSBZsFm4OKg4qkkuSSg4rEkuSSxJLlmiWjBZslo+SSpJLkmuSaxJJjiuSaBZsFmyWjBZsFmwWbBZujkgWbg4rEkgWbBZuDioOKpJKkkqSSYoqkksSSpJLEkqSSo5KkkmKCg4qDioOKo5KkkoOKpJKkkoOKo5KkkqSSYoqkkoOKpJKDiqOSg4qDiuSSpJKkkmKKpJLEkqSSxJKkkqOSpJJigoOKg4qDiqOSpJKDiqSSpJKDiqOSpJKkkmKKpJKDiqSSg4qjkoOKg4rkkkajpJJGoyajJaOkkuSSBZslowWb6LuHq0ajRqNGoyajJqNGoyWjBZsFmwWbxJKjkoOKo5LEkoOKYoJigoOKxJJGo6SSRqMmoyWjpJLkkgWbJaMFm+i7h6tGo0ajRqMmoyajRqMlowWbBZsFm8SSo5KDiqOSxJKDimKCYoKDisSSRqOkkkajJqMlo6SS5JIFmyWjBZvou4erRqNGo0ajJqMmo0ajJaMFmwWbBZvEkqOSg4qjksSSg4pigmKCg4rEkmarh6uns+zcp7NGo6izqLMJvMizaszIs+i7p7MpxMiz6LvIs8izh6tGo4erZ6tnq0ajp6vIs8izp7Onq2erh6tmq4erp7Ps3KezRqOos6izCbzIs2rMyLPou6ezKcTIs+i7yLPIs4erRqOHq2erZ6tGo6eryLPIs6ezp6tnq4erZquHq6ez7Nyns0ajqLOoswm8yLNqzMiz6LunsynEyLPou8izyLOHq0ajh6tnq2erRqOnq8izyLOns6erZ6uHqym8SsRKxMizCbyns4erh6tGo8izSsQpxOm76bsJvKez6LsJvGrMyLOns+m7yLOHq0ajh6uns4erRqNGoyWjRqMpvErESsTIswm8p7OHq4erRqPIs0rEKcTpu+m7Cbyns+i7CbxqzMizp7Ppu8izh6tGo4erp7OHq0ajRqMlo0ajasxKxOm7Cbzpu8izyLMpxKezSsRqzAm8asyLzErEKcQpxIvMp7PIs0rEaswJvOm76Lvpu8izKsRqzGrMyLOns2rMSsTpuwm86bvIs8izKcSns0rEaswJvGrMi8xKxCnEKcSLzKezyLNKxGrMCbzpu+i76bvIsyrEasxqzMizp7NqzErE6bsJvOm7yLPIsynEp7NKxGrMCbxqzIvMSsQpxCnEi8yns8izSsRqzAm86bvou+m7yLMqxGrMaszIs6ezSsTpu+m7KsSnq8izZ6vou6er6LsJvKezCbxqzAm8yLPIs0rESsRKxKvMSsSns+m7yLMpxAm8q8xKxErEZ6unq0rE6bvpuyrEp6vIs2er6Lunq+i7Cbynswm8aswJvMizyLNKxErESsSrzErEp7Ppu8izKcQJvKvMSsRKxGerp6tKxOm76bsqxKeryLNnq+i7p6vouwm8p7MJvGrMCbzIs8izSsRKxErEq8xKxKez6bvIsynECbyrzErESsRnq6erq8xqzErESsTouyrEq9Ss1GrMi8ys1GvMi8xKxGrMKcRqzKzUzNSs1ErEi8xKxErECbxKxErESsRqzErECbzpu6vMasxKxErE6LsqxKvUrNRqzIvMrNRrzIvMSsRqzCnEasys1MzUrNRKxIvMSsRKxAm8SsRKxErEasxKxAm86buLzOzc7NxrzMzUb+2v9avUj+1u5WrMaszpu6ezqLOLzGrEKbxqzErESsRKxCnE6Lvpu8iz6Luos+i76btrzErEi8zs3Ozca8zM1G/tr/Wr1I/tbuVqzGrM6buns6izi8xqxCm8asxKxErESsQpxOi76bvIs+i7qLPou+m7a8xKxKRhxGGkWWNZIlFCUeVpBWpnei6sa5NneiZyRnImciZqpGGkYYNZg1mkWYNZpGHEYSZqxGHlacRhxGEFaqRhg1nEYUJRg1ljUQFJAUmkYUZyqHoqk4d6Z3pnekZyRnLEYYNZpGGDWYNZg1mDWYNZY1kFasRhpGHEYaRhg1mDWYNZxGGkWSZyxGFCUUJRJnJneqRhg1ljWaRhpGFjWUJRIlEiSWNRg1mDWaRhg1ljWWNRg1mkYYNZpGGkYYNZg1mkYaRZpFnEYaRZY1FCUWNRQlEiUQFJ4UjhSMBAwEDhQAFJIklCUUJRIlFCUQFJAUkBSQFJAUnhSMRhh3pncsiCqIJjWWNRJnLlaUJR4UhCUaRhpGFrk6iCBWqDWUJRpGGDWWNZY1kFakZy5WGDWWNZQlFjWSqTCYvMo2ubh3pGcoNZQlFCUYNZY1EBScBAAUmDWSZySpPIgod6JnLlaSZyRnImcuVpBWoFauVhBWoFauVhh3rIgiqLa5sqk6iC5WljWUJRIlGDWUJRAUkBSQVqBWomciqLJnIFagVqBWpGcgVqBWomckZyRnLIgumKrKOogiZyZ3oqk2ubBWrlYaRh5WlCUUJRg1ljUSJRAUnEYeVhZ3pKkwVqJnImcsRhxGEFauVpJnJGciqTrKOHeod6Z3pnesiC6YIqi6iCqIJneod65WnEYWNRpFkiUUJRJnJGcod67auoekZyBWomcuVhyIKHesiC6YqoeiZqxGFGcqh6Z3pneiZySpNrk4d6qHpGcqRhg1lCUcRhpFlCUSZyRnKogoubZ3Jnemd6BWqoeumCqIJnesiCJnKkYeVpBWrIgiZyBWomckZyyIJnegVqQlHEYYNZQlHEYYNZ4UjEYeVpRnKsm6iCb7TxzGubqIIJi0ZyZ3oqk0ZyJnImaod6qHrIggVqJmpGcgmL5WnEYcRhxGGkWUJRxGGDWeFIpGEmciZyJnLlae2ri5uogumKh3oFaiZyqHpGciZqBWoFamd6RnLEYQVqBWoFaqRhY1mDWcRhpFlCUaRZxGHhSEZy5WkmcoNZBWoJi4d6yILpiod6RnJnesiCZ3oFaiZqRnKHeiZyRnIFamd6RnLEYcRhxGGDWWNRpFnlaYNZIlHEYcRh5WFjWYNZqIKoemd6h3oFakZyZ3pnegVqJmrlaQVqRnLlYQVqRnJGcod6xGGkWcRhY1nEYaRhxGFjWQFJpGEFagVqpGGkYYd6RnJnemd6RnJneqh6Z3pneiZyZ3oFaod6Z3omciZq5WEJi+VppGHEYYNZCYukYaRZQlEBSemCqIIFaoNZg1mHeumCBWomaiZyZ3oFamd6Z3omcod6qHomaqiCZ3omciZqRnImcuVpxGFjWUZypGGDWWNZIlFneod6Z3qkYaRhRnLpiiZy5WlGckZyRnImaqh66YrpisiCJmrpiod6JmpGcqyjh3omckZyIlHlaaRhxGFjUQFJZ3pGcqiC5WHEYayj6YomcgVqh3qHeiZqRnJnekZyRnJnekZyh3qogmd66Yrpiod6JnLlYUJRxGGkYYNZIlEBSUZyZ3prm+VhBWprm2d6Z3JnesiCyIImcqiCh3pGcod6Z3pGcqiCh3pGcqiCCYsmcqRZQlFCUcRhQlGDWQFJ4UjEYYd6CYtjWYNZRnJGckZyRnKoekZyxGGogmd6RnKoemd6RnJGcmdyJmoFasiCRnLEYeVhpGFGcsRhpFkiUQFJ5WmHeqh6pGFCUQVqRnKHemd6h3pGcod6h3pnegmLyIKHeiZyRnJneiZq5WGoekZy5WnlaYNZ5WljWWNZg1kiUcRhZ3qDWWNZAUlCUcRhZ3qoeiZyJmpneiZyRnLpiqiCJnIFaiZqBWrEYeVhJnLlaWNZg1ljWYNZAUnhSOFI4UgFamdypGHEYYNZCYvIgmd6h3oFaqiCZ3qHesRhh3qogmd6JmpGciZyh3prk8iC5WGDWWNZ4UjhSOFIAUlCUYNZRnKHeod6Z3rEYSqT6YpnesiCh3qHeod6BWrEYWd6qIKHeod6RnJneqiCCYvIgqiC5WmkYWNRY1FCUYNZg1nlYaiCyILpiuVhxGFnegVqqIIJi0ZyqIKHegVq5Wlnemd6Z3pnekZyRnJGcqh6yIKoesRhBWqDWUJRpGEmaoNZ5WnIgsiC6YqkYSJR5WHpiqiCSpOogqiCyIImcuVpBWqoeod6JnJncsRhZ3qHeumK6YoFasiCg1mkYSZqBWomakZyKpNGciZyRnJCUYd6BWomamd6qIJGcod6RnJGcod6Z3pGciZyRnKogiZyJmoqk8iC5WnlYaRhg1lGcsiCJnKHesiCRnImcmd6IlGoesiCJnJnekZyJnJGciZqBWpGciZyBWpGciZyqHoFaiZyCYuogsRhg1nEYYNZJnImckZyh3pKk0ZyqIKogoNZZ3KoekZyJnLEYYNZJmpGckZyJnIFaiZqyIIJi6iCRnJneqh6BWrlYcRhxGGkYSZyxGFGcod66YrIgsiCRnKDWUZyRnIFagVqBWrlaSZqBWrlacRhxGEmamd6RnJnegVqZ3pnekZyJnLlYSZy5WEmcgVqRnKHeqiCJnLlYWNZQlEFaumC6YrIgmuTJnImaiZyRnImcod6qIJGcmd6pGHEYYd6SpNrm2ubqHomciZyRnIFaiZyqHpneiZyxGHEYUJR5WkFaiZyqILIgiZyBWomcmd6JnJGcmd6BWqHegVqRnJGciqTh3rEYaRh" /* CINDER_VIADUCT_TEXELS_END */;
+  const tileSize = 32, tileCount = 6, pitch = tileSize + 2;
+  const STONE = 0, TREAD = 1, SILL = 2, IRON = 3, BRONZE = 4, RUST = 5;
+  function makeAtlas() {
+    const bytes = atob(texels);
+    const texture = Z(e0(ctx => {
+      const rgba = ctx.createImageData(pitch * tileCount, pitch);
+      for (let tile = 0; tile < tileCount; tile++) {
+        for (let v = 0; v < pitch; v++) for (let u = 0; u < pitch; u++) {
+          const x = Math.max(0, Math.min(tileSize - 1, u - 1));
+          const y = Math.max(0, Math.min(tileSize - 1, v - 1));
+          const src = 2 * ((tile * tileSize + y) * tileSize + x);
+          const color = bytes.charCodeAt(src) | (bytes.charCodeAt(src + 1) << 8);
+          const dest = 4 * ((v * tileCount + tile) * pitch + u);
+          rgba.data[dest] = (color >> 11) * 255 / 31;
+          rgba.data[dest + 1] = ((color >> 5) & 63) * 255 / 63;
+          rgba.data[dest + 2] = (color & 31) * 255 / 31;
+          rgba.data[dest + 3] = 255;
+        }
+      }
+      ctx.putImageData(rgba, 0, 0);
+    }, pitch * tileCount, pitch));
+    texture.name = "cinderSluiceMasonryAndMetal";
+    texture.colorSpace = ha;
+    texture.minFilter = YC;
+    texture.generateMipmaps = true;
+    return texture;
+  }
+
+  function buildSluice(scene) {
+    const positions = [], uvs = [], colors = [], indices = [];
+    const uvCorners = [[0,0], [1,0], [1,1], [0,1]];
+    function quad(points, tile, light) {
+      const first = positions.length / 3;
+      for (let i = 0; i < points.length; i++) {
+        const [x,y,z] = points[i], [u,v] = uvCorners[i];
+        positions.push(x, y, z);
+        uvs.push((tile * pitch + 1.5 + u * (tileSize - 1)) / (tileCount * pitch),
+          (1.5 + v * (tileSize - 1)) / pitch);
+        const glow = Math.exp(-((x - 88) ** 2 / 14 + (z - 66) ** 2 / 32));
+        const shade = light * (.89 + .07 * Math.min(1, y / 3));
+        colors.push(shade + glow * .10, shade + glow * .023, shade * .96);
+      }
+      indices.push(first, first + 1, first + 2, first, first + 2, first + 3);
+    }
+    function box(x0, x1, y0, y1, z0, z1, tile, light = 1) {
+      quad([[x0,y0,z0],[x1,y0,z0],[x1,y1,z0],[x0,y1,z0]], tile, light);
+      quad([[x1,y0,z1],[x0,y0,z1],[x0,y1,z1],[x1,y1,z1]], tile, light * .82);
+      quad([[x0,y0,z1],[x0,y0,z0],[x0,y1,z0],[x0,y1,z1]], tile, light * .72);
+      quad([[x1,y0,z0],[x1,y0,z1],[x1,y1,z1],[x1,y1,z0]], tile, light * .86);
+      quad([[x0,y1,z0],[x1,y1,z0],[x1,y1,z1],[x0,y1,z1]], tile, light * 1.12);
+    }
+    // Tread joints are staggered between landings. The nosing projects only
+    // three centimetres past its native riser, so the seen and walked edges agree.
+    function course(x0, x1, z0, z1, y, previous, east, row) {
+      const run = east ? z1 - z0 : x1 - x0;
+      let start = 0, brick = 0;
+      while (start < run - .025) {
+        const length = brick === 0 && row % 2 ? .71 : 1.28 + .12 * Math.sin(brick * 7 + row);
+        const end = Math.min(run, start + length);
+        if (end - start < .05) break;
+        const lo = start + .009, hi = end - .009;
+        const a = east ? x0 : x0 + lo, b = east ? x1 : x0 + hi;
+        const c = east ? z0 + lo : z0, d = east ? z0 + hi : z1;
+        const light = .88 + .13 * Math.sin(brick * 2 + row * 8);
+        quad([[a,y+.012,c],[b,y+.012,c],[b,y+.012,d],[a,y+.012,d]], TREAD, light);
+        if (y > previous) {
+          const chip = .045 + .20 * (.5 + .5 * Math.sin(row * 11 + brick * 7));
+          if (east) {
+            box(a-.026, a+.12, y-.053, y+.016, c+chip, d, SILL, light);
+            quad([[a-.012,previous,c],[a-.012,previous,d],[a-.012,y-.061,d],[a-.012,y-.061,c]], STONE, light*.87);
+          } else {
+            box(a+chip,b,y-.053,y+.016,c-.026,c+.12,SILL,light);
+            quad([[a,previous,c-.012],[b,previous,c-.012],[b,y-.061,c-.012],[a,y-.061,c-.012]],STONE,light*.87);
+          }
+        }
+        start = end; brick++;
+      }
+    }
+    lowerFlight.forEach((y,i) => course(84,88,58+i*2,60+i*2,y,i ? lowerFlight[i-1] : 0,false,i));
+    upperFlight.forEach((y,i) => course(88+i*2,90+i*2,64,68,y,i ? upperFlight[i-1] : lowerFlight.at(-1),true,i+5));
+    course(82,84,58,60,2.10,2.10,false,5);
+    for(let i=0;i<3;i++) {
+      const x=82+i*.66;
+      box(x+.008, x+.65, 1.85,2.106,57.965,58.035,STONE,.98+i*.045);
+      box(83.968,84.035,1.85,2.106,58+i*.66+.009,58+(i+1)*.66-.01,STONE,1.01);
+    }
+
+    // A retaining wall has stone returns at the corner where the path turns.
+    // Only dress the exposed surfaces below the existing playable upper floor.
+    function retainingWall(x, z, length, axis, floor, top) {
+      for (let row = 0, y = floor; y < top - .04; row++) {
+        const nextY = Math.min(top, y + .43);
+        let s = 0, brick = 0;
+        while (s < length - .03) {
+          const end = Math.min(length, s + (row % 2 && brick === 0 ? .53 : 1.14));
+          const a = s + .014, b = end - .012;
+          if (b > a && axis === "x") box(x+a,x+b,y+.011,nextY-.013,z-.03,z+.022,STONE,.88+(row%3)*.035);
+          if (b > a && axis === "z") box(x-.022,x+.03,y+.011,nextY-.013,z+a,z+b,STONE,.65+(row%3)*.04);
+          s = end; brick++;
+        }
+        y = nextY;
+      }
+    }
+    for (let i = 1; i < lowerFlight.length; i++) retainingWall(84,58+i*2,2,"z",lowerFlight[i],2.10);
+    for (let i = 1; i < 3; i++) retainingWall(88,58+i*2,2,"z",lowerFlight[i],2.10);
+    retainingWall(84,68,4,"x",1.05,2.10);
+    retainingWall(88,68,2,"x",1.40,2.10);
+    retainingWall(90,68,2,"x",1.75,2.10);
+
+    // The old sluice gear is an open, double-sided casting. Its boss and axle
+    // stand proud on both banks, with bolted fishplates joining six cast arcs.
+    const cx = 85.75, cy = 3.72, cz = 68.65;
+    function polar(radius, angle, depth) {
+      return [cx + radius * Math.cos(angle), cy + radius * Math.sin(angle), cz + depth];
+    }
+    function band(inner, outer, a, b, front, back, tile, light) {
+      const ao = polar(outer,a,front), bo = polar(outer,b,front), ai = polar(inner,a,front), bi = polar(inner,b,front);
+      const ao2 = polar(outer,a,back), bo2 = polar(outer,b,back), ai2 = polar(inner,a,back), bi2 = polar(inner,b,back);
+      quad([ai,ao,bo,bi],tile,light); quad([bi2,bo2,ao2,ai2],tile,light*.80);
+      quad([ao,ao2,bo2,bo],tile,light*1.05); quad([bi,bi2,ai2,ai],tile,light*.70);
+    }
+    function plate(outline, front, back, tile, light) {
+      const side = (point,z) => [point[0],point[1],cz+z];
+      quad(outline.map(v=>side(v,front)),tile,light);
+      quad(outline.map(v=>side(v,back)),tile,light*.85);
+      for (let i=0;i<4;i++) {
+        const a=outline[i], b=outline[(i+1)%4];
+        quad([side(a,front),side(b,front),side(b,back),side(a,back)],tile,light*.85);
+      }
+    }
+    const tau = Math.PI * 2, radius = 2.23;
+    for (let i=0;i<36;i++) {
+      const a = i*tau/36, b=(i+1)*tau/36;
+      band(radius-.235,radius,a,b,-.155,.155,IRON,1.03+.16*Math.sin(i*1.97));
+      band(radius-.054,radius+.008,a,b,-.170,.167,BRONZE,1.13+.25*Math.cos(a));
+      band(.01,.39,a,b,-.23,.23,IRON,1.05);
+      if (i%6===0) band(radius-.24,radius+.025,a-.063,a+.063,-.177,.174,RUST,1.12);
+    }
+    for(let i=0;i<6;i++) {
+      const a=i*tau/6+Math.PI/2, dx=Math.cos(a), dy=Math.sin(a);
+      const corner=(r,w)=>[cx+r*dx-w*dy,cy+r*dy+w*dx];
+      plate([corner(.26,-.162),corner(radius-.13,-.102),corner(radius-.13,.102),corner(.26,.162)],-.105,.11,IRON,1.19);
+      plate([corner(.40,-.15),corner(radius-.15,-.10),corner(radius-.15,-.081),corner(.40,-.119)],-.115,-.105,BRONZE,1.04);
+    }
+    // Front-facing cylinders for the axle boss and bronze fasteners.
+    function rivet(x,y,r,front,back,tile,light,sides=8) {
+      for(let i=0;i<sides;i++){
+        const a=tau*i/sides, b=tau*(i+1)/sides;
+        const p=[x+r*Math.cos(a),y+r*Math.sin(a)],q=[x+r*Math.cos(b),y+r*Math.sin(b)];
+        quad([[x,y,cz+front],[...p,cz+front],[...q,cz+front],[x,y,cz+front]],tile,light);
+        quad([[...p,cz+front],[...q,cz+front],[...q,cz+back],[...p,cz+back]],tile,light*.73);
+        quad([[x,y,cz+back],[...q,cz+back],[...p,cz+back],[x,y,cz+back]],tile,light*.76);
+      }
+    }
+    rivet(cx,cy,.246,-.30,.29,BRONZE,1.07,10);
+    for(let i=0;i<6;i++){
+      const a=i*tau/6;
+      rivet(cx+Math.cos(a)*.321,cy+Math.sin(a)*.321,.036,-.263,.255,BRONZE,1.28,5);
+      rivet(cx+Math.cos(a)*(radius-.10),cy+Math.sin(a)*(radius-.10),.049,-.204,.193,BRONZE,1.27,6);
+    }
+    // Stone plinth, bearing blocks, cylindrical counterweight and hanging chain.
+    box(cx-2.70,cx+2.70,2.085,2.40,cz-.35,cz+.41,STONE,.87);
+    // The axle seats in the bearing on the opposite bank-facing side; leave
+    // daylight around it so the mechanism reads when approached in reverse.
+    box(cx-.33,cx+.33,2.40,cy-.09,cz+.18,cz+.41,STONE,.76);
+    rivet(cx,cy,.22,.16,.45,RUST,1.18,12);
+    for(const sign of [-1,1]){
+      const at=cx+sign*2.27;
+      box(at-.47,at+.47,2.40,2.62,cz-.39,cz+.44,SILL,.82);
+      box(at-.35,at+.35,2.62,cy+.03,cz-.30,cz+.33,STONE,1.02);
+      box(at-.42,at+.42,cy+.03,cy+.17,cz-.38,cz+.39,SILL,1.16);
+      box(at-.15,at+.15,cy-.18,cy+.13,cz-.42,cz-.295,IRON,1.03);
+      for(const off of [-.09,.09]) rivet(at+off,cy-.04,.034,-.44,-.402,BRONZE,1.17,5);
+    }
+    const chainX=cx+.76,chainZ=cz-.06;
+    for(let i=0;i<5;i++){
+      const top=cy+radius-.23-i*.087;
+      if(i%2) box(chainX-.021,chainX+.021,top-.12,top,chainZ-.047,chainZ+.047,RUST,1.15);
+      else {
+        for(const dx of [-.035,.035])box(chainX+dx-.010,chainX+dx+.010,top-.095,top,chainZ-.012,chainZ+.012,BRONZE,1.00);
+        box(chainX-.042,chainX+.042,top-.10,top-.080,chainZ-.012,chainZ+.012,IRON,1.2);
+      }
+    }
+    const weightBottom=cy+radius-1.04;
+    box(chainX-.15,chainX+.15,weightBottom,weightBottom+.37,chainZ-.105,chainZ+.105,IRON,1.25);
+    box(chainX-.16,chainX+.16,weightBottom,weightBottom+.05,chainZ-.112,chainZ+.112,BRONZE,1.14);
+
+    const geometry=Z(new h0());
+    geometry.setAttribute("position",new y0(new Float32Array(positions),3));
+    geometry.setAttribute("uv",new y0(new Float32Array(uvs),2));
+    geometry.setAttribute("color",new y0(new Float32Array(colors),3));
+    geometry.setIndex(indices);
+    geometry.computeBoundingSphere();
+    const material=Z(new $e({map:makeAtlas(),vertexColors:true,side:hi,toneMapped:false}));
+    const mesh=new pt(geometry,material);
+    mesh.name="prologueCinderSluice"; scene.add(mesh);
+    // Native movement uses ground footprints; shots respect height above grade.
+    const housings = [
+      {x0:cx-2.70,x1:cx+2.70,z0:cz-.35,z1:cz+.41,y1:.30},
+      ...[-1,1].map(s=>({x0:cx+s*2.27-.42,x1:cx+s*2.27+.42,z0:cz-.39,z1:cz+.41,y1:cy+.17-2.1}))
+    ];
+    for(const body of housings){
+      for(let z=Math.floor(body.z0/P);z<=Math.floor(body.z1/P);z++)
+        for(let x=Math.floor(body.x0/P);x<=Math.floor(body.x1/P);x++){
+          const k=jM(x,z), list=v.masses.get(k);
+          if(list)list.push(body);else v.masses.set(k,[body]);
+        }
+    }
+  }
+  const decorate=FJ;
+  FJ=function(scene,map) {
+    const value=decorate.apply(this,arguments);
+    if(T.level===0) buildSluice(scene);
+    return value;
+  };
+})();
+/* PROLOGUE_CINDER_VIADUCT_END */
 
 /* SEWER_WORKS_BEGIN */
 (() => {

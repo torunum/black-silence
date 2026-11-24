@@ -1,0 +1,353 @@
+{
+  "changed": [
+    {
+      "x": 41,
+      "z": 29,
+      "cell": ".",
+      "floor": 2.1,
+      "ceil": 14.8
+    },
+    {
+      "x": 42,
+      "z": 29,
+      "cell": ".",
+      "floor": 0.15,
+      "ceil": 14.8
+    },
+    {
+      "x": 43,
+      "z": 29,
+      "cell": "w",
+      "floor": 0.15,
+      "ceil": 14.8
+    },
+    {
+      "x": 42,
+      "z": 30,
+      "cell": ".",
+      "floor": 0.45,
+      "ceil": 14.8
+    },
+    {
+      "x": 43,
+      "z": 30,
+      "cell": ".",
+      "floor": 0.45,
+      "ceil": 14.8
+    },
+    {
+      "x": 42,
+      "z": 31,
+      "cell": ".",
+      "floor": 0.75,
+      "ceil": 14.8
+    },
+    {
+      "x": 43,
+      "z": 31,
+      "cell": ".",
+      "floor": 0.75,
+      "ceil": 14.8
+    },
+    {
+      "x": 42,
+      "z": 32,
+      "cell": ".",
+      "floor": 1.05,
+      "ceil": 14.8
+    },
+    {
+      "x": 43,
+      "z": 32,
+      "cell": ".",
+      "floor": 1.05,
+      "ceil": 14.8
+    },
+    {
+      "x": 44,
+      "z": 32,
+      "cell": ".",
+      "floor": 1.4,
+      "ceil": 14.8
+    },
+    {
+      "x": 45,
+      "z": 32,
+      "cell": ".",
+      "floor": 1.75,
+      "ceil": 14.8
+    },
+    {
+      "x": 42,
+      "z": 33,
+      "cell": ".",
+      "floor": 1.05,
+      "ceil": 14.8
+    },
+    {
+      "x": 43,
+      "z": 33,
+      "cell": ".",
+      "floor": 1.05,
+      "ceil": 14.8
+    },
+    {
+      "x": 44,
+      "z": 33,
+      "cell": ".",
+      "floor": 1.4,
+      "ceil": 14.8
+    },
+    {
+      "x": 45,
+      "z": 33,
+      "cell": ".",
+      "floor": 1.75,
+      "ceil": 14.8
+    }
+  ],
+  "legacyShrine": 0,
+  "legacyAutomap": "71b5d679",
+  "upperRoute": [
+    {
+      "floor": 2.1,
+      "x": 81,
+      "z": 56.89508812986979,
+      "eye": 3.1,
+      "level": 0,
+      "ready": true,
+      "hp": 100,
+      "ground": true,
+      "collision": false
+    },
+    {
+      "floor": 2.1,
+      "x": 81,
+      "z": 60.8836442599634,
+      "eye": 3.1,
+      "level": 0,
+      "ready": true,
+      "hp": 100,
+      "ground": true,
+      "collision": false
+    },
+    {
+      "floor": 2.1,
+      "x": 81,
+      "z": 63.73321154158694,
+      "eye": 3.1,
+      "level": 0,
+      "ready": true,
+      "hp": 100,
+      "ground": true,
+      "collision": false
+    },
+    {
+      "floor": 2.1,
+      "x": 81,
+      "z": 59.338164210137386,
+      "eye": 3.1,
+      "level": 0,
+      "ready": true,
+      "hp": 100,
+      "ground": true,
+      "collision": false
+    },
+    {
+      "floor": 2.1,
+      "x": 81,
+      "z": 55.06048797339237,
+      "eye": 3.1,
+      "level": 0,
+      "ready": true,
+      "hp": 100,
+      "ground": true,
+      "collision": false
+    }
+  ],
+  "lookout": [
+    {
+      "floor": 2.1,
+      "x": 81,
+      "z": 58.738171641836146,
+      "eye": 3.1,
+      "level": 0,
+      "ready": true,
+      "hp": 100,
+      "ground": true,
+      "collision": false
+    },
+    {
+      "floor": 2.1,
+      "x": 82.72172080321185,
+      "z": 59.235344243693774,
+      "eye": 3.1,
+      "level": 0,
+      "ready": true,
+      "hp": 100,
+      "ground": true,
+      "collision": false
+    },
+    {
+      "floor": 2.1,
+      "x": 83.10694049892923,
+      "z": 60.825918299929356,
+      "eye": 3.1,
+      "level": 0,
+      "ready": true,
+      "hp": 100,
+      "ground": true,
+      "collision": false
+    }
+  ],
+  "recovery": [
+    {
+      "floor": 0.45,
+      "x": 85.8736404270249,
+      "z": 60.75539568901151,
+      "eye": 1.45,
+      "level": 0,
+      "ready": true,
+      "hp": 100,
+      "ground": true,
+      "collision": false
+    },
+    {
+      "floor": 0.75,
+      "x": 86.12257285787112,
+      "z": 62.740448221867936,
+      "eye": 1.75,
+      "level": 0,
+      "ready": true,
+      "hp": 100,
+      "ground": true,
+      "collision": false
+    },
+    {
+      "floor": 1.05,
+      "x": 85.99336207089584,
+      "z": 64.64248100306492,
+      "eye": 2.05,
+      "level": 0,
+      "ready": true,
+      "hp": 100,
+      "ground": true,
+      "collision": false
+    },
+    {
+      "floor": 1.05,
+      "x": 85.98822133454568,
+      "z": 66.55236889387723,
+      "eye": 2.05,
+      "level": 0,
+      "ready": true,
+      "hp": 100,
+      "ground": true,
+      "collision": false
+    },
+    {
+      "floor": 1.4,
+      "x": 88.86922986275647,
+      "z": 66.94800317290503,
+      "eye": 2.4,
+      "level": 0,
+      "ready": true,
+      "hp": 100,
+      "ground": true,
+      "collision": false
+    },
+    {
+      "floor": 1.75,
+      "x": 90.70137814387259,
+      "z": 66.77153349325398,
+      "eye": 2.75,
+      "level": 0,
+      "ready": true,
+      "hp": 100,
+      "ground": true,
+      "collision": false
+    },
+    {
+      "floor": 2.1,
+      "x": 92.72370262452353,
+      "z": 66.84676873359538,
+      "eye": 3.1,
+      "level": 0,
+      "ready": true,
+      "hp": 100,
+      "ground": true,
+      "collision": false
+    },
+    {
+      "floor": 2.1,
+      "x": 93.05099208331605,
+      "z": 71.71636894935422,
+      "eye": 3.1,
+      "level": 0,
+      "ready": true,
+      "hp": 100,
+      "ground": true,
+      "collision": false
+    },
+    {
+      "floor": 2.1,
+      "x": 87.21438068307681,
+      "z": 75.87868848044401,
+      "eye": 3.1,
+      "level": 0,
+      "ready": true,
+      "hp": 100,
+      "ground": true,
+      "collision": false
+    }
+  ],
+  "cameras": {
+    "trench": {
+      "position": [
+        84.91,
+        1,
+        57.9
+      ],
+      "yaw": 3.5007225837694653,
+      "pitch": 0.075
+    },
+    "upper": {
+      "position": [
+        80.8,
+        3.1,
+        52.2
+      ],
+      "yaw": 3.4009243979904786,
+      "pitch": -0.01
+    }
+  },
+  "baseline": {
+    "draws": 109,
+    "triangles": 159754,
+    "drawnFrames": 341,
+    "ownTriangles": 0,
+    "customMeshes": 0,
+    "geometries": 195,
+    "textures": 57
+  },
+  "current": {
+    "draws": 110,
+    "triangles": 162762,
+    "drawnFrames": 344,
+    "ownTriangles": 3098,
+    "customMeshes": 1,
+    "geometries": 195,
+    "textures": 61
+  },
+  "lifecycle": {
+    "released": [
+      1,
+      1,
+      1
+    ],
+    "nextCount": 0,
+    "returned": 1
+  },
+  "errors": [],
+  "network": []
+}

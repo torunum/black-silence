@@ -1,0 +1,137 @@
+{
+  "htmlSha256": "0b1907ffa965099bf055a1c5792e9436382c2be3a4f2676e2d3eda85a665c42e",
+  "htmlBytes": 21699792,
+  "stockCommit": "97766ad2716d0bb52d036966d1300fea5f2d793c",
+  "stockHtmlSha256": "99453b1aee4fa49be5f66076e3a7990b2036721c46f26037e911a0e81e3f4452",
+  "build": {
+    "identicalRebuilds": 2,
+    "engineSha256": "6dd6c59430c843ef82b065bde2eba13fab8ce9d166876ba2877e6e90882e7899",
+    "invalidInputsRefused": 8
+  },
+  "geometry": {
+    "method": "Native chapter builders sampled at startup in offline desktop Chrome on both standalone HTML files.",
+    "changedChapters": [
+      {
+        "name": "PROLOGUE — OUT OF THE PIT",
+        "floors": {
+          "changedTiles": 15,
+          "inclusiveGridBounds": [
+            41,
+            29,
+            45,
+            33
+          ]
+        }
+      },
+      {
+        "name": "LEVEL 1 — THE ASH BELL MONASTERY",
+        "grid": {
+          "changedTiles": 59,
+          "inclusiveGridBounds": [
+            41,
+            58,
+            48,
+            67
+          ]
+        },
+        "floors": {
+          "changedTiles": 67,
+          "inclusiveGridBounds": [
+            41,
+            56,
+            48,
+            67
+          ]
+        },
+        "ceilings": {
+          "changedTiles": 59,
+          "inclusiveGridBounds": [
+            41,
+            58,
+            48,
+            67
+          ]
+        }
+      }
+    ],
+    "untouchedChapters": [
+      "LEVEL 2 — THE GOTHIC DUNGEON",
+      "LEVEL 3 — THE ABANDONED CHURCH",
+      "LEVEL 4 — THE HOLLOW VILLAGE",
+      "LEVEL 5 — THE NECROPOLIS",
+      "LEVEL 6 — THE GRAVEYARD",
+      "LEVEL 7 — THE SEWERS",
+      "LEVEL 8 — THE FACTORY",
+      "LEVEL 9 — THE BONE CATHEDRAL",
+      "LEVEL 10 — THE WOMB"
+    ],
+    "chapterObjectiveScriptsMatch": true
+  },
+  "abbeyDoors": {
+    "model": "Cardinal tile topology with six inventory and door states from south cloister",
+    "states": [
+      {
+        "state": "doors-closed",
+        "newCells": 59,
+        "lost": 0,
+        "unintentionallyOpened": 0
+      },
+      {
+        "state": "unlocked-ordinary-doors",
+        "newCells": 59,
+        "lost": 0,
+        "unintentionallyOpened": 0
+      },
+      {
+        "state": "bell-sounded",
+        "newCells": 59,
+        "lost": 0,
+        "unintentionallyOpened": 0
+      },
+      {
+        "state": "ash-seal",
+        "newCells": 59,
+        "lost": 0,
+        "unintentionallyOpened": 0
+      },
+      {
+        "state": "bell-seal",
+        "newCells": 59,
+        "lost": 0,
+        "unintentionallyOpened": 0
+      },
+      {
+        "state": "both-seals",
+        "newCells": 59,
+        "lost": 0,
+        "unintentionallyOpened": 0
+      }
+    ]
+  },
+  "campaign": {
+    "method": "Scripted navigation and encounters in a fixture built from the release. Normal-input play has separate evidence.",
+    "chapters": 11,
+    "victory": true,
+    "errors": []
+  },
+  "offline": [
+    {
+      "channel": "chrome",
+      "version": "158.0.8127.37",
+      "legacySave": true,
+      "settingsPersist": true,
+      "actualFireAndReload": true,
+      "errors": [],
+      "externalRequests": []
+    },
+    {
+      "channel": "msedge",
+      "version": "154.0.4258.53",
+      "legacySave": true,
+      "settingsPersist": true,
+      "actualFireAndReload": true,
+      "errors": [],
+      "externalRequests": []
+    }
+  ]
+}

@@ -1,0 +1,377 @@
+{
+  "sha256": "0b1907ffa965099bf055a1c5792e9436382c2be3a4f2676e2d3eda85a665c42e",
+  "bytes": 21699792,
+  "freshCampaign": {
+    "entry": "Main menu → New Game in a fresh offline Chrome profile.",
+    "controls": "Offline HTML in a fresh Chrome context. Native keyboard and captured mouse inputs drove the player. A read-only observer sampled native collisions, enemies and player state.",
+    "priorChapterUnlock": 0,
+    "priorCampaignSave": null,
+    "start": {
+      "hp": 100,
+      "armor": 0,
+      "loaded": 6,
+      "spare": 60
+    },
+    "route": [
+      {
+        "name": "second-bridge-near",
+        "position": [
+          80.64,
+          3.1,
+          55.27
+        ],
+        "floor": 2.1
+      },
+      {
+        "name": "missed-bridge-landing",
+        "position": [
+          85.16,
+          1.15,
+          58.36
+        ],
+        "floor": 0.15
+      },
+      {
+        "name": "culvert-foot",
+        "position": [
+          85.77,
+          1.45,
+          60.26
+        ],
+        "floor": 0.45
+      },
+      {
+        "name": "culvert-first-flight",
+        "position": [
+          85.99,
+          2.05,
+          64.33
+        ],
+        "floor": 1.05
+      },
+      {
+        "name": "culvert-switchback",
+        "position": [
+          85.99,
+          2.05,
+          66.99
+        ],
+        "floor": 1.05
+      },
+      {
+        "name": "culvert-second-flight",
+        "position": [
+          88.88,
+          2.4,
+          66.92
+        ],
+        "floor": 1.4
+      },
+      {
+        "name": "culvert-top",
+        "position": [
+          92.92,
+          3.1,
+          67.03
+        ],
+        "floor": 2.1
+      },
+      {
+        "name": "culvert-south-bank",
+        "position": [
+          94.01,
+          3.1,
+          71.83
+        ],
+        "floor": 2.1
+      },
+      {
+        "name": "arena-entry",
+        "position": [
+          99.04,
+          3.1,
+          93.07
+        ],
+        "floor": 2.1
+      },
+      {
+        "name": "climb-refuge",
+        "position": [
+          119.03,
+          5.2,
+          52.97
+        ],
+        "floor": 4.2
+      },
+      {
+        "name": "exit-ladder",
+        "position": [
+          106.37,
+          5.2,
+          17.35
+        ],
+        "floor": 4.2
+      }
+    ],
+    "prologue": {
+      "completed": true,
+      "kills": 14,
+      "shots": 117,
+      "hits": 96,
+      "deaths": 0,
+      "health": 100,
+      "lastShrineId": 0
+    },
+    "ashBell": {
+      "arrival": "Played in the normal campaign handoff; skipped with Space.",
+      "pointerLockRestored": true,
+      "firstDoor": {
+        "cell": "83,73",
+        "openedWith": "E",
+        "position": [
+          167,
+          1,
+          148.62
+        ]
+      }
+    },
+    "javascriptPageErrors": 0,
+    "externalNetworkRequests": 0,
+    "screenshot": "nov24-crypt-door-open.png"
+  },
+  "stockChapterSelect": {
+    "entry": "A separate offline profile imported the stock first-chapter eligibility flag. Enter selected Ash Bell in the Chapter Select menu.",
+    "controls": "Standard starting pistol, active enemies, real-time keyboard and captured mouse. Native movement, doors and combat.",
+    "start": {
+      "health": 100,
+      "armor": 0,
+      "pistolLoaded": 6,
+      "pistolReserve": 60
+    },
+    "activeEnemiesAtStart": 115,
+    "westernCircuitCompleted": true,
+    "openedDoors": [
+      "83,73",
+      "75,65"
+    ],
+    "route": [
+      {
+        "name": "first door",
+        "position": [
+          167,
+          1,
+          148.59
+        ],
+        "floor": 0
+      },
+      {
+        "name": "threshold",
+        "position": [
+          167,
+          1,
+          146.32
+        ],
+        "floor": 0
+      },
+      {
+        "name": "crypt bend",
+        "position": [
+          164.15,
+          1,
+          139.05
+        ],
+        "floor": 0
+      },
+      {
+        "name": "crypt stairs",
+        "position": [
+          159.82,
+          1,
+          134.58
+        ],
+        "floor": 0
+      },
+      {
+        "name": "graveyard door",
+        "position": [
+          152.4,
+          1,
+          129.82
+        ],
+        "floor": 0
+      },
+      {
+        "name": "graveyard door west",
+        "position": [
+          147.55,
+          1.6,
+          131.66
+        ],
+        "floor": 0.6
+      },
+      {
+        "name": "passage to graves",
+        "position": [
+          142.09,
+          2.2,
+          139.33
+        ],
+        "floor": 1.2
+      },
+      {
+        "name": "road north",
+        "position": [
+          134.81,
+          2.2,
+          143.35
+        ],
+        "floor": 1.2
+      },
+      {
+        "name": "road west",
+        "position": [
+          128.92,
+          2.2,
+          148.19
+        ],
+        "floor": 1.2
+      },
+      {
+        "name": "road turn",
+        "position": [
+          121.18,
+          2.2,
+          151.07
+        ],
+        "floor": 1.2
+      },
+      {
+        "name": "west headstones",
+        "position": [
+          118.11,
+          2.2,
+          145.39
+        ],
+        "floor": 1.2
+      },
+      {
+        "name": "west cross",
+        "position": [
+          108.46,
+          2.2,
+          144.91
+        ],
+        "floor": 1.2
+      },
+      {
+        "name": "burial turn",
+        "position": [
+          99.65,
+          2.2,
+          147.75
+        ],
+        "floor": 1.2
+      },
+      {
+        "name": "lavabo south mouth",
+        "position": [
+          93.12,
+          2.2,
+          137.45
+        ],
+        "floor": 1.2
+      },
+      {
+        "name": "washbasin corner",
+        "position": [
+          94.39,
+          2.2,
+          130.59
+        ],
+        "floor": 1.2
+      },
+      {
+        "name": "lavabo top",
+        "position": [
+          94.26,
+          2.8,
+          124.77
+        ],
+        "floor": 1.8
+      },
+      {
+        "name": "north landing",
+        "position": [
+          93.89,
+          3.4,
+          121.02
+        ],
+        "floor": 2.4
+      },
+      {
+        "name": "new north nave entry",
+        "position": [
+          94,
+          2.62,
+          113.47
+        ],
+        "floor": 1.4
+      },
+      {
+        "name": "nave floor",
+        "position": [
+          94.05,
+          2.2,
+          109.96
+        ],
+        "floor": 1.2
+      },
+      {
+        "name": "old middle lane north",
+        "position": [
+          102.22,
+          2.2,
+          114.41
+        ],
+        "floor": 1.2
+      },
+      {
+        "name": "old middle lane south",
+        "position": [
+          103.02,
+          2.2,
+          135.27
+        ],
+        "floor": 1.2
+      },
+      {
+        "name": "lavabo south mouth return",
+        "position": [
+          93.78,
+          2.2,
+          137.01
+        ],
+        "floor": 1.2
+      }
+    ],
+    "final": {
+      "health": 69,
+      "kills": 0,
+      "deaths": 0,
+      "seals": [],
+      "bellRung": false,
+      "sideNiches": [
+        {
+          "cell": "42,58",
+          "open": false
+        },
+        {
+          "cell": "58,58",
+          "open": false
+        }
+      ]
+    },
+    "javascriptPageErrors": 0,
+    "externalNetworkRequests": 0
+  }
+}
